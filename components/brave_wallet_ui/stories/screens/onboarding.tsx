@@ -1,4 +1,7 @@
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router'
+
 import {
   OnboardingWelcome,
   OnboardingCreatePassword,
@@ -6,40 +9,40 @@ import {
 } from '../../components/desktop'
 import {
   WalletOnboardingSteps,
-  ImportWalletError
+  PageState,
+  WalletRoutes,
+  WalletState
 } from '../../constants/types'
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
 import { OnboardingWrapper } from '../style'
 
-export interface Props {
-  recoveryPhrase: string[]
-  isMetaMaskInitialized: boolean
-  isCryptoWalletsInitialized: boolean
-  importError: ImportWalletError
-  checkIsStrongPassword: (value: string) => Promise<boolean>
-  onSetImportError: (hasError: boolean) => void
-  onPasswordProvided: (password: string) => void
-  onImportMetaMask: (password: string, newPassword: string) => void
-  onImportCryptoWallets: (password: string, newPassword: string) => void
-  onSubmit: (recoveryVerified: boolean) => void
-  onShowRestore: () => void
-}
+import { useLib } from '../../common/hooks/useLib'
+import * as WalletPageActions from '../../page/actions/wallet_page_actions'
 
-function Onboarding (props: Props) {
+export const Onboarding = () => {
+  // routing
+  let history = useHistory()
+  const { pathname: walletLocation } = useLocation()
+
+  // custom hooks
+  const { isStrongPassword: checkIsStrongPassword } = useLib()
+
+  // redux
+  const dispatch = useDispatch()
   const {
-    recoveryPhrase,
-    isMetaMaskInitialized,
+    isWalletCreated,
+    isWalletLocked
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  const {
+    mnemonic,
     isCryptoWalletsInitialized,
-    importError,
-    checkIsStrongPassword,
-    onSetImportError,
-    onPasswordProvided,
-    onSubmit,
-    onShowRestore,
-    onImportMetaMask,
-    onImportCryptoWallets
-  } = props
+    isMetaMaskInitialized,
+    importWalletError: importError
+  } = useSelector(({ page }: { page: PageState }) => page)
+
+  // state
   const [onboardingStep, setOnboardingStep] = React.useState<WalletOnboardingSteps>(WalletOnboardingSteps.OnboardingWelcome)
   const [isStrongPassword, setIsStrongPassword] = React.useState<boolean>(false)
   const [isStrongImportPassword, setIsStrongImportPassword] = React.useState<boolean>(false)
@@ -50,6 +53,127 @@ function Onboarding (props: Props) {
   const [needsNewPassword, setNeedsNewPassword] = React.useState<boolean>(false)
   const [useSamePasswordVerified, setUseSamePasswordVerified] = React.useState<boolean>(false)
 
+  // methods
+  const onImportMetaMask = React.useCallback((password: string, newPassword: string) => {
+    dispatch(WalletPageActions.importFromMetaMask({ password, newPassword }))
+  }, [])
+
+  const onImportCryptoWallets = React.useCallback((password: string, newPassword: string) => {
+    dispatch(WalletPageActions.importFromCryptoWallets({ password, newPassword }))
+  }, [])
+
+  const setImportWalletError = React.useCallback((hasError: boolean) => {
+    dispatch(WalletPageActions.setImportWalletError({ hasError }))
+  }, [])
+
+  const onShowRestore = React.useCallback(() => {
+    if (walletLocation === WalletRoutes.Restore) {
+      // If a user has not yet created a wallet and clicks Restore
+      // from the panel, we need to route to onboarding if they click back.
+      if (!isWalletCreated) {
+        history.push(WalletRoutes.Onboarding)
+        return
+      }
+      // If a user has created a wallet and clicks Restore from the panel
+      // while the wallet is locked, we need to route to unlock if they click back.
+      if (isWalletCreated && isWalletLocked) {
+        history.push(WalletRoutes.Unlock)
+      }
+    } else {
+      history.push(WalletRoutes.Restore)
+    }
+  }, [walletLocation, isWalletCreated, isWalletLocked])
+
+  const onPasswordProvided = React.useCallback((password: string) => {
+    dispatch(WalletPageActions.createWallet({ password }))
+  }, [])
+
+  const completeWalletSetup = React.useCallback((recoveryVerified: boolean) => {
+    if (recoveryVerified) {
+      dispatch(WalletPageActions.walletBackupComplete())
+    }
+    dispatch(WalletPageActions.walletSetupComplete())
+  }, [])
+
+  const nextStep = React.useCallback(() => {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && isCryptoWalletsInitialized) {
+      setOnboardingStep(WalletOnboardingSteps.OnboardingImportCryptoWallets)
+      return
+    }
+    if (onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet) {
+      completeWalletSetup(true)
+      return
+    }
+    if (onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword) {
+      onPasswordProvided(password)
+    }
+    setOnboardingStep(onboardingStep + 1)
+  }, [onboardingStep, completeWalletSetup, onPasswordProvided])
+
+  const onBack = React.useCallback(() => {
+    if (
+      onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets ||
+      onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask
+    ) {
+      setOnboardingStep(WalletOnboardingSteps.OnboardingWelcome)
+      setPassword('')
+      setConfirmedPassword('')
+      setNeedsNewPassword(false)
+      setUseSamePassword(false)
+      return
+    }
+    setOnboardingStep(onboardingStep - 1)
+  }, [onboardingStep])
+
+  const onSkipBackup = React.useCallback(() => {
+    completeWalletSetup(false)
+  }, [completeWalletSetup])
+
+  const handleImportPasswordChanged = React.useCallback(async (value: string) => {
+    if (importError.hasError) {
+      setImportWalletError(false)
+    }
+    if (needsNewPassword || useSamePasswordVerified) {
+      setNeedsNewPassword(false)
+      setUseSamePassword(false)
+    }
+    setImportPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongImportPassword(isStrong)
+  }, [importError, needsNewPassword, useSamePasswordVerified, setImportWalletError])
+
+  const handlePasswordChanged = React.useCallback(async (value: string) => {
+    setPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongPassword(isStrong)
+  }, [])
+
+  const onClickImportMetaMask = React.useCallback(() => {
+    setOnboardingStep(WalletOnboardingSteps.OnboardingImportMetaMask)
+  }, [])
+
+  const onImport = React.useCallback(
+    () => {
+      if (onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
+        onImportMetaMask(importPassword, confirmedPassword)
+      } else {
+        onImportCryptoWallets(importPassword, confirmedPassword)
+      }
+    },
+    [
+      onboardingStep,
+      importPassword,
+      confirmedPassword,
+      onImportMetaMask,
+      onImportCryptoWallets
+    ]
+  )
+
+  const startNormalOnboarding = React.useCallback(() => {
+    setOnboardingStep(WalletOnboardingSteps.OnboardingCreatePassword)
+  }, [])
+
+  // memos
   React.useMemo(() => {
     if (importError.hasError) {
       setPassword('')
@@ -60,75 +184,9 @@ function Onboarding (props: Props) {
     }
   }, [importError])
 
-  const nextStep = () => {
-    if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && isCryptoWalletsInitialized) {
-      setOnboardingStep(WalletOnboardingSteps.OnboardingImportCryptoWallets)
-      return
-    }
-    if (onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet) {
-      onSubmit(true)
-      return
-    }
-    if (onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword) {
-      onPasswordProvided(password)
-    }
-    setOnboardingStep(onboardingStep + 1)
-  }
-
-  const onBack = () => {
-    if (onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets ||
-      onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
-      setOnboardingStep(WalletOnboardingSteps.OnboardingWelcome)
-      setPassword('')
-      setConfirmedPassword('')
-      setNeedsNewPassword(false)
-      setUseSamePassword(false)
-      return
-    }
-    setOnboardingStep(onboardingStep - 1)
-  }
-
-  const onSkipBackup = () => {
-    onSubmit(false)
-  }
-
-  const handleImportPasswordChanged = async (value: string) => {
-    if (importError.hasError) {
-      onSetImportError(false)
-    }
-    if (needsNewPassword || useSamePasswordVerified) {
-      setNeedsNewPassword(false)
-      setUseSamePassword(false)
-    }
-    setImportPassword(value)
-    const isStrong = await checkIsStrongPassword(value)
-    setIsStrongImportPassword(isStrong)
-  }
-
-  const handlePasswordChanged = async (value: string) => {
-    setPassword(value)
-    const isStrong = await checkIsStrongPassword(value)
-    setIsStrongPassword(isStrong)
-  }
-
-  const handleConfirmPasswordChanged = (value: string) => {
-    setConfirmedPassword(value)
-  }
-
-  const onClickImportMetaMask = () => {
-    setOnboardingStep(WalletOnboardingSteps.OnboardingImportMetaMask)
-  }
-
-  const onImport = () => {
-    if (onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
-      onImportMetaMask(importPassword, confirmedPassword)
-    } else {
-      onImportCryptoWallets(importPassword, confirmedPassword)
-    }
-  }
-  const onUseSamePassword = (selected: boolean) => {
-    setUseSamePassword(selected)
-  }
+  const recoveryPhrase = React.useMemo(() => {
+    return (mnemonic || '').split(' ')
+  }, [mnemonic])
 
   const showBackButton = React.useMemo(() => {
     if (
@@ -157,10 +215,7 @@ function Onboarding (props: Props) {
     }
   }, [confirmedPassword, password])
 
-  const startNormalOnboarding = () => {
-    setOnboardingStep(WalletOnboardingSteps.OnboardingCreatePassword)
-  }
-
+  // effects
   React.useEffect(() => {
     if (useSamePassword) {
       handlePasswordChanged(importPassword)
@@ -181,12 +236,18 @@ function Onboarding (props: Props) {
     }
   }, [useSamePassword])
 
+  // computed
   const isImporting = onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask ||
     onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets
 
-  const isCreateWalletDisabled = checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''
+  const isCreateWalletDisabled = checkConfirmedPassword ||
+    checkPassword ||
+    password === '' ||
+    confirmedPassword === ''
+
   const isImportDisabled = isCreateWalletDisabled || importPassword === ''
 
+  // render
   return (
     <OnboardingWrapper>
       {showBackButton &&
@@ -206,7 +267,7 @@ function Onboarding (props: Props) {
           <OnboardingCreatePassword
             onSubmit={nextStep}
             onPasswordChanged={handlePasswordChanged}
-            onConfirmPasswordChanged={handleConfirmPasswordChanged}
+            onConfirmPasswordChanged={setConfirmedPassword}
             disabled={isCreateWalletDisabled}
             hasPasswordError={checkPassword}
             hasConfirmPasswordError={checkConfirmedPassword}
@@ -226,7 +287,7 @@ function Onboarding (props: Props) {
             onSubmit={onImport}
             onImportPasswordChanged={handleImportPasswordChanged}
             onPasswordChanged={handlePasswordChanged}
-            onConfirmPasswordChanged={handleConfirmPasswordChanged}
+            onConfirmPasswordChanged={setConfirmedPassword}
             disabled={isImportDisabled}
             onboardingStep={onboardingStep}
             importError={importError}
@@ -235,7 +296,7 @@ function Onboarding (props: Props) {
             hasConfirmPasswordError={checkConfirmedPassword}
             needsNewPassword={needsNewPassword}
             useSamePassword={useSamePassword}
-            onUseSamePassword={onUseSamePassword}
+            onUseSamePassword={setUseSamePassword}
             importPassword={importPassword}
             password={password}
             confirmedPassword={confirmedPassword}

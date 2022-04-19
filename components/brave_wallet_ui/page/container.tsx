@@ -19,7 +19,6 @@ import '../../../ui/webui/resources/fonts/muli.css'
 import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
 import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import {
-  UserAssetInfoType,
   BraveWallet,
   BuySendSwapTypes,
   PageState,
@@ -27,36 +26,23 @@ import {
   WalletAccountType,
   WalletPageState,
   WalletRoutes,
-  WalletState,
-  SupportedTestNetworks
+  WalletState
 } from '../constants/types'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
-import { AllNetworksOption } from '../options/network-filter-options'
+import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 
 // Utils
-import Amount from '../utils/amount'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
-import { mojoTimeDeltaToJSDate } from '../../common/mojomUtils'
-import { getTokensCoinType } from '../utils/network-utils'
 
 import {
   getBalance,
-  getBlockchainTokenInfo,
-  isStrongPassword,
   onConnectHardwareWallet
 } from '../common/async/lib'
 
 // Hooks
-import {
-  useAssets,
-  useBalance,
-  usePricing,
-  useTokenInfo,
-  useAssetManagement
-} from '../common/hooks'
-import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
+import { useAssets } from '../common/hooks'
 
 type Props = {
   wallet: WalletState
@@ -82,36 +68,23 @@ function Container (props: Props) {
     selectedNetwork,
     selectedAccount,
     hasInitialized,
-    portfolioPriceHistory,
-    selectedPortfolioTimeline,
-    isFetchingPortfolioPriceHistory,
     transactionSpotPrices,
-    addUserAssetError,
     defaultWallet,
     isMetaMaskInstalled,
     defaultCurrencies,
     fullTokenList,
-    userVisibleTokensInfo,
-    selectedNetworkFilter
+    userVisibleTokensInfo
   } = props.wallet
 
   // Page Props
   const {
-    invalidMnemonic,
     mnemonic,
     selectedTimeline,
     selectedAsset,
-    selectedAssetFiatPrice,
-    selectedAssetCryptoPrice,
-    selectedAssetPriceHistory,
     setupStillInProgress,
-    isFetchingPriceHistory,
     privateKey,
     importAccountError,
-    importWalletError,
-    showAddModal,
-    isCryptoWalletsInitialized,
-    isMetaMaskInitialized
+    showAddModal
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -122,19 +95,6 @@ function Container (props: Props) {
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
 
   const { buyAssetOptions } = useAssets()
-
-  const {
-    onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
-
-  const {
-    onAddCustomAsset,
-    onUpdateVisibleAssets
-  } = useAssetManagement()
-
-  const { computeFiatAmount } = usePricing(transactionSpotPrices)
-  const getAccountBalance = useBalance(networkList)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -162,24 +122,9 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const completeWalletSetup = (recoveryVerified: boolean) => {
-    if (recoveryVerified) {
-      props.walletPageActions.walletBackupComplete()
-    }
-    props.walletPageActions.walletSetupComplete()
-  }
-
   const onBackupWallet = () => {
     props.walletPageActions.walletBackupComplete()
     history.goBack()
-  }
-
-  const restoreWallet = (mnemonic: string, password: string, isLegacy: boolean) => {
-    props.walletPageActions.restoreWallet({ mnemonic, password, isLegacy })
-  }
-
-  const passwordProvided = (password: string) => {
-    props.walletPageActions.createWallet({ password })
   }
 
   const unlockWallet = () => {
@@ -208,102 +153,13 @@ function Container (props: Props) {
     }
   }
 
-  const restoreError = React.useMemo(() => {
-    if (invalidMnemonic) {
-      setTimeout(function () { props.walletPageActions.hasMnemonicError(false) }, 5000)
-      return true
-    }
-    return false
-  }, [invalidMnemonic])
-
   const recoveryPhrase = React.useMemo(() => {
     return (mnemonic || '').split(' ')
   }, [mnemonic])
 
-  // This will scrape all the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const tokensCoinType = getTokensCoinType(networkList, asset)
-    const amounts = accounts.filter((account) => account.coin === tokensCoinType).map((account) =>
-      getAccountBalance(account, asset))
-
-    // If a user has not yet created a FIL or SOL account,
-    // we return 0 until they create an account
-    if (amounts.length === 0) {
-      return '0'
-    }
-
-    return amounts.reduce(function (a, b) {
-      return a !== '' && b !== ''
-        ? new Amount(a).plus(b).format()
-        : ''
-    })
-  }, [accounts, networkList, getAccountBalance])
-
-  // This looks at the users asset list and returns the full balance for each asset
-  const userAssetList = React.useMemo(() => {
-    const allAssets = userVisibleTokensInfo.map((asset) => ({
-      asset: asset,
-      assetBalance: fullAssetBalance(asset)
-    }) as UserAssetInfoType)
-    // By default we dont show any testnetwork assets
-    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return allAssets.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
-    }
-    // If chainId is Localhost we also do a check for coinType to return
-    // the correct asset
-    if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
-      return allAssets.filter((asset) =>
-        asset.asset.chainId === selectedNetworkFilter.chainId &&
-        getTokensCoinType(networkList, asset.asset) === selectedNetworkFilter.coin
-      )
-    }
-    // Filter by all other assets by chainId's
-    return allAssets.filter((asset) => asset.asset.chainId === selectedNetworkFilter.chainId)
-  }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
-
   const onSelectAsset = (asset: BraveWallet.BlockchainToken) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
   }
-
-  // This will scrape all of the user's accounts and combine the fiat value for every asset
-  const fullPortfolioBalance = React.useMemo(() => {
-    const visibleAssetOptions = userAssetList
-      .filter((token) =>
-        token.asset.visible &&
-        !token.asset.isErc721
-      )
-
-    if (visibleAssetOptions.length === 0) {
-      return ''
-    }
-
-    const visibleAssetFiatBalances = visibleAssetOptions
-      .map((item) => {
-        return computeFiatAmount(item.assetBalance, item.asset.symbol, item.asset.decimals)
-      })
-
-    const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
-      return a.plus(b)
-    })
-    return grandTotal.formatAsFiat()
-  }, [userAssetList, fullAssetBalance, computeFiatAmount])
-
-  const onChangeTimeline = (timeline: BraveWallet.AssetPriceTimeframe) => {
-    if (selectedAsset) {
-      props.walletPageActions.selectAsset({ asset: selectedAsset, timeFrame: timeline })
-    } else {
-      props.walletActions.selectPortfolioTimeline(timeline)
-    }
-  }
-
-  const formattedPriceHistory = React.useMemo(() => {
-    return selectedAssetPriceHistory.map((obj) => {
-      return {
-        date: mojoTimeDeltaToJSDate(obj.date),
-        close: Number(obj.price)
-      }
-    })
-  }, [selectedAssetPriceHistory])
 
   const onShowAddModal = () => {
     props.walletPageActions.setShowAddModal(true)
@@ -349,10 +205,6 @@ function Container (props: Props) {
     props.walletPageActions.setImportAccountError(hasError)
   }
 
-  const onSetImportWalletError = (hasError: boolean) => {
-    props.walletPageActions.setImportWalletError({ hasError })
-  }
-
   const onRemoveAccount = (address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
     if (hardware) {
       props.walletPageActions.removeHardwareAccount({ address, coin })
@@ -378,32 +230,12 @@ function Container (props: Props) {
     props.walletPageActions.doneViewingPrivateKey()
   }
 
-  const onImportCryptoWallets = (password: string, newPassword: string) => {
-    props.walletPageActions.importFromCryptoWallets({ password, newPassword })
-  }
-
-  const onImportMetaMask = (password: string, newPassword: string) => {
-    props.walletPageActions.importFromMetaMask({ password, newPassword })
-  }
-
   const checkWalletsToImport = () => {
     props.walletPageActions.checkWalletsToImport()
   }
 
   const onOpenWalletSettings = () => {
     props.walletPageActions.openWalletSettings()
-  }
-
-  const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletActions.retryTransaction(transaction)
-  }
-
-  const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletActions.speedupTransaction(transaction)
-  }
-
-  const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletActions.cancelTransaction(transaction)
   }
 
   const onShowVisibleAssetsModal = (showModal: boolean) => {
@@ -501,29 +333,12 @@ function Container (props: Props) {
           <Route path={WalletRoutes.Restore} exact={true}>
             {isWalletLocked &&
               <OnboardingWrapper>
-                <OnboardingRestore
-                  checkIsStrongPassword={isStrongPassword}
-                  onRestore={restoreWallet}
-                  toggleShowRestore={onToggleShowRestore}
-                  hasRestoreError={restoreError}
-                />
+                <OnboardingRestore />
               </OnboardingWrapper>
             }
           </Route>
           <Route path={WalletRoutes.Onboarding} exact={true}>
-            <Onboarding
-              checkIsStrongPassword={isStrongPassword}
-              recoveryPhrase={recoveryPhrase}
-              onPasswordProvided={passwordProvided}
-              onSubmit={completeWalletSetup}
-              onShowRestore={onToggleShowRestore}
-              isCryptoWalletsInitialized={isCryptoWalletsInitialized}
-              isMetaMaskInitialized={isMetaMaskInitialized}
-              importError={importWalletError}
-              onSetImportError={onSetImportWalletError}
-              onImportCryptoWallets={onImportCryptoWallets}
-              onImportMetaMask={onImportMetaMask}
-            />
+            <Onboarding />
           </Route>
           <Route path={WalletRoutes.Unlock} exact={true}>
             {isWalletLocked &&
@@ -558,31 +373,18 @@ function Container (props: Props) {
                 onShowBackup={onShowBackup}
                 accounts={accounts}
                 networkList={networkList}
-                onChangeTimeline={onChangeTimeline}
                 onSelectAsset={onSelectAsset}
-                portfolioBalance={fullPortfolioBalance}
-                selectedAsset={selectedAsset}
-                selectedAssetFiatPrice={selectedAssetFiatPrice}
-                selectedAssetCryptoPrice={selectedAssetCryptoPrice}
-                selectedAssetPriceHistory={formattedPriceHistory}
-                portfolioPriceHistory={portfolioPriceHistory}
-                selectedTimeline={selectedTimeline}
-                selectedPortfolioTimeline={selectedPortfolioTimeline}
                 transactions={transactions}
-                userAssetList={userAssetList}
-                fullAssetList={fullTokenList}
                 onConnectHardwareWallet={onConnectHardwareWallet}
                 onCreateAccount={onCreateAccount}
                 onImportAccount={onImportAccount}
                 onImportFilecoinAccount={onImportFilecoinAccount}
                 isFilecoinEnabled={isFilecoinEnabled}
                 isSolanaEnabled={isSolanaEnabled}
-                isLoading={isFetchingPriceHistory}
                 showAddModal={showAddModal}
                 onHideAddModal={onHideAddModal}
                 onUpdateAccountName={onUpdateAccountName}
                 selectedNetwork={selectedNetwork}
-                isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
                 onRemoveAccount={onRemoveAccount}
                 privateKey={privateKey ?? ''}
                 onDoneViewingPrivateKey={onDoneViewingPrivateKey}
@@ -594,20 +396,12 @@ function Container (props: Props) {
                 transactionSpotPrices={transactionSpotPrices}
                 userVisibleTokensInfo={userVisibleTokensInfo}
                 getBalance={getBalance}
-                onAddCustomAsset={onAddCustomAsset}
-                addUserAssetError={addUserAssetError}
                 defaultWallet={defaultWallet}
                 onOpenWalletSettings={onOpenWalletSettings}
                 onShowAddModal={onShowAddModal}
                 isMetaMaskInstalled={isMetaMaskInstalled}
-                onRetryTransaction={onRetryTransaction}
-                onSpeedupTransaction={onSpeedupTransaction}
-                onCancelTransaction={onCancelTransaction}
                 onShowVisibleAssetsModal={onShowVisibleAssetsModal}
                 showVisibleAssetsModal={showVisibleAssetsModal}
-                onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
-                foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
-                onUpdateVisibleAssets={onUpdateVisibleAssets}
               />
             }
           </Route>

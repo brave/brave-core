@@ -245,4 +245,50 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
                                                        {"key1", "key2"}, json));
 }
 
+TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
+  std::string json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + std::to_string(INT64_MAX) +
+      "}";
+
+  EXPECT_EQ(ConvertInt64ToString("/result", json).value(),
+            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
+                std::to_string(INT64_MAX) + "\"}");
+
+  json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + std::to_string(INT64_MIN) +
+      "}";
+
+  EXPECT_EQ(ConvertInt64ToString("/result", json).value(),
+            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
+                std::to_string(INT64_MIN) + "\"}");
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
+  EXPECT_EQ(ConvertInt64ToString("/result", json).value(),
+            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}");
+
+  EXPECT_FALSE(ConvertInt64ToString("", json));
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1.2}";
+  EXPECT_FALSE(ConvertInt64ToString("/result", json));
+
+  json = "bad json";
+  EXPECT_FALSE(ConvertInt64ToString("/result", json));
+
+  EXPECT_FALSE(ConvertInt64ToString("/result", ""));
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"1\"}";
+  EXPECT_FALSE(ConvertInt64ToString("/result", json));
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{}}";
+  EXPECT_FALSE(ConvertInt64ToString("/result", json));
+
+  json = R"({"jsonrpc": "2.0", "id": 1,
+             "error": {
+               "code":-32601,
+               "message":"method does not exist"
+             }
+            })";
+  EXPECT_EQ(*ConvertInt64ToString("/result", json), json);
+}
+
 }  // namespace brave_wallet

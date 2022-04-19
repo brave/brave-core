@@ -1,13 +1,14 @@
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import * as EthereumBlockies from 'ethereum-blockies'
-import { useSelector } from 'react-redux'
 
 import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
   WalletAccountType,
-  DefaultCurrencies,
-  WalletState
+  WalletState,
+  WalletRoutes
 } from '../../../constants/types'
 
 // Utils
@@ -16,11 +17,11 @@ import { formatDateAsRelative } from '../../../utils/datetime-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
+import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 
 // Styled Components
 import {
@@ -49,96 +50,85 @@ import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
+import { WalletActions } from '../../../common/actions'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
   transaction: BraveWallet.TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   displayAccountName: boolean
-  defaultCurrencies: DefaultCurrencies
-  onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (asset: BraveWallet.BlockchainToken) => void
-  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
 
 const PortfolioTransactionItem = (props: Props) => {
   const {
     transaction,
     account,
-    selectedNetwork,
-    visibleTokens,
-    transactionSpotPrices,
     displayAccountName,
-    accounts,
-    defaultCurrencies,
-    onSelectAccount,
-    onSelectAsset,
-    onRetryTransaction,
-    onSpeedupTransaction,
-    onCancelTransaction
+    accounts
   } = props
-  const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
+  // routing
+  const history = useHistory()
+
+  // redux
+  const dispatch = useDispatch()
   const {
-    defaultNetworks
+    transactionSpotPrices,
+    defaultCurrencies,
+    userVisibleTokensInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  const transactionsNetwork = React.useMemo(() => {
-    return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
-  }, [defaultNetworks, transaction, selectedNetwork])
+  // state
+  const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
-  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
-  const transactionDetails = React.useMemo(
-    () => parseTransaction(transaction),
+  const isSolanaTransaction =
+    transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
+    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+
+  // custom hooks
+  const transactionsNetwork = useTransactionsNetwork(transaction)
+  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+
+  // methods
+  const onShowTransactionPopup = () => setShowTransactionPopup(true)
+
+  const onClickCopyTransactionHash = React.useCallback(
+    () => copyToClipboard(transaction.txHash),
+    [transaction.txHash]
+  )
+
+  const onClickRetryTransaction = React.useCallback(
+    () => dispatch(WalletActions.retryTransaction(transaction)),
     [transaction]
   )
 
-  const fromOrb = React.useMemo(() => {
-    return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails.sender])
+  const onClickSpeedupTransaction = React.useCallback(
+    () => dispatch(WalletActions.speedupTransaction(transaction)),
+    [transaction]
+  )
 
-  const toOrb = React.useMemo(() => {
-    return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails.recipient])
+  const onClickCancelTransaction = React.useCallback(
+    () => dispatch(WalletActions.cancelTransaction(transaction)),
+    [transaction]
+  )
 
-  const onShowTransactionPopup = () => {
-    setShowTransactionPopup(true)
-  }
-
-  const onHideTransactionPopup = () => {
+  const onHideTransactionPopup = React.useCallback(() => {
     if (showTransactionPopup) {
       setShowTransactionPopup(false)
     }
-  }
-
-  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
-
-  const onClickCopyTransactionHash = (transactionHash: string) => {
-    copyToClipboard(transactionHash)
-  }
-
-  const onClickRetryTransaction = () => {
-    onRetryTransaction(transaction)
-  }
-
-  const onClickSpeedupTransaction = () => {
-    onSpeedupTransaction(transaction)
-  }
-
-  const onClickCancelTransaction = () => {
-    onCancelTransaction(transaction)
-  }
+  }, [showTransactionPopup])
 
   const findWalletAccount = React.useCallback((address: string) => {
     return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())
   }, [accounts])
 
-  const onAddressClick = (address?: string) => () => {
+  const onSelectAccount = React.useCallback((account: WalletAccountType) => {
+    history.push(`${WalletRoutes.Accounts}/${account.address}`)
+  }, [history])
+
+  const onAddressClick = React.useCallback((address?: string) => () => {
     if (!address) {
       return
     }
@@ -151,13 +141,21 @@ const PortfolioTransactionItem = (props: Props) => {
     }
 
     onClickViewOnBlockExplorer('address', address)
-  }
+  }, [onSelectAccount, findWalletAccount, onClickViewOnBlockExplorer])
 
   const findToken = React.useCallback((symbol: string) => {
-    return visibleTokens.find((token) => token.symbol.toLowerCase() === symbol.toLowerCase())
-  }, [visibleTokens])
+    return userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === symbol.toLowerCase())
+  }, [userVisibleTokensInfo])
 
-  const onAssetClick = (symbol?: string) => () => {
+  const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    if (asset.contractAddress === '') {
+      history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+      return
+    }
+    history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
+  }, [history])
+
+  const onAssetClick = React.useCallback((symbol?: string) => () => {
     if (!symbol) {
       return
     }
@@ -166,56 +164,21 @@ const PortfolioTransactionItem = (props: Props) => {
     if (asset) {
       onSelectAsset(asset)
     }
-  }
+  }, [onSelectAsset, findToken])
 
-  const isSolanaTransaction =
-    transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
-    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+  // memos
+  const transactionDetails = React.useMemo(
+    () => parseTransaction(transaction),
+    [transaction, parseTransaction]
+  )
 
-  const transactionIntentLocale = React.useMemo(() => {
-    switch (true) {
-      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
-        const text = getLocale('braveWalletApprovalTransactionIntent')
-        return (
-          <>
-            {displayAccountName ? text : toProperCase(text)}{' '}
-            <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
-              {transactionDetails.symbol}
-            </AddressOrAsset>
-          </>
-        )
-      }
+  const fromOrb = React.useMemo(() => {
+    return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [transactionDetails.sender])
 
-      // Detect sending to 0x Exchange Proxy
-      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
-        const text = getLocale('braveWalletSwap')
-        return displayAccountName ? text.toLowerCase() : text
-      }
-
-      case transaction.txType === BraveWallet.TransactionType.ETHSend:
-      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
-      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
-      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
-      default: {
-        const text = getLocale('braveWalletTransactionSent')
-        return (
-          <>
-            {displayAccountName ? text : toProperCase(text)}{' '}
-            <AddressOrAsset
-              // Disabled for ERC721 tokens until we have NFT meta data
-              disabled={transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom || transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom}
-              onClick={onAssetClick(transactionDetails.symbol)}
-            >
-              {transactionDetails.symbol}
-              {transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom || transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-                ? ' ' + transactionDetails.erc721TokenId : ''}
-            </AddressOrAsset>
-          </>
-        )
-      }
-    }
-  }, [transaction])
+  const toOrb = React.useMemo(() => {
+    return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [transactionDetails.recipient])
 
   const transactionIntentDescription = React.useMemo(() => {
     switch (true) {
@@ -278,8 +241,60 @@ const PortfolioTransactionItem = (props: Props) => {
         )
       }
     }
-  }, [transactionDetails])
+  }, [transactionDetails, onAssetClick, onAddressClick])
 
+  const transactionIntentLocale = React.useMemo(() => {
+    switch (true) {
+      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
+        const text = getLocale('braveWalletApprovalTransactionIntent')
+        return (
+          <>
+            {displayAccountName ? text : toProperCase(text)}{' '}
+            <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
+              {transactionDetails.symbol}
+            </AddressOrAsset>
+          </>
+        )
+      }
+
+      // Detect sending to 0x Exchange Proxy
+      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
+        const text = getLocale('braveWalletSwap')
+        return displayAccountName ? text.toLowerCase() : text
+      }
+
+      case transaction.txType === BraveWallet.TransactionType.ETHSend:
+      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
+      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
+      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
+      default: {
+        const text = getLocale('braveWalletTransactionSent')
+        return (
+          <>
+            {displayAccountName ? text : toProperCase(text)}{' '}
+            <AddressOrAsset
+              // Disabled for ERC721 tokens until we have NFT meta data
+              disabled={
+                transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+                transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+              }
+              onClick={onAssetClick(transactionDetails.symbol)}
+            >
+              {transactionDetails.symbol}
+              {
+                transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+                transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+                  ? ' ' + transactionDetails.erc721TokenId
+                  : ''
+              }
+            </AddressOrAsset>
+          </>
+        )
+      }
+    }
+  }, [transaction, transactionDetails, displayAccountName, onAssetClick])
+
+  // render
   return (
     <StyledWrapper onClick={onHideTransactionPopup}>
       <TransactionDetailRow>
@@ -381,7 +396,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
             {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed, BraveWallet.TransactionStatus.Dropped].includes(transactionDetails.status) &&
               <TransactionPopupItem
-                onClick={() => onClickCopyTransactionHash(transaction.txHash)}
+                onClick={onClickCopyTransactionHash}
                 text={getLocale('braveWalletTransactionCopyHash')}
               />
             }

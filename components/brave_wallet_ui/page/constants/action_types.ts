@@ -70,7 +70,7 @@ export type PrivateKeyAvailablePayloadType = {
 }
 
 export type UpdateSelectedAssetType = {
-  asset: BraveWallet.BlockchainToken
+  asset?: BraveWallet.BlockchainToken | undefined
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 
