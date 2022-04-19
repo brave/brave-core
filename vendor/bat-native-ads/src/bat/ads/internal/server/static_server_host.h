@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/server/server_host_base.h"
+#include "bat/ads/internal/server/server_host_interface.h"
 
 namespace ads {
 
-class StaticServerHost final : public ServerHostBase {
+class StaticServerHost final : public ServerHostInterface {
  public:
   StaticServerHost();
   ~StaticServerHost() override;

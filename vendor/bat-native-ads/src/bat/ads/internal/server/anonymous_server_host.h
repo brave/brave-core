@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/server/server_host_base.h"
+#include "bat/ads/internal/server/server_host_interface.h"
 
 namespace ads {
 
-class AnonymousServerHost final : public ServerHostBase {
+class AnonymousServerHost final : public ServerHostInterface {
  public:
   AnonymousServerHost();
   ~AnonymousServerHost() override;

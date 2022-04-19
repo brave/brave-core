@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/server/server_host_base.h"
+#include "bat/ads/internal/server/server_host_interface.h"
 
 namespace ads {
 
-class GeoServerHost final : public ServerHostBase {
+class GeoServerHost final : public ServerHostInterface {
  public:
   GeoServerHost();
   ~GeoServerHost() override;

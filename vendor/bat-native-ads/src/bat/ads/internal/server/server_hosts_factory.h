@@ -8,15 +8,14 @@
 
 #include <memory>
 
+#include "bat/ads/internal/server/server_host_interface.h"
 #include "bat/ads/internal/server/server_host_types.h"
 
 namespace ads {
 
-class ServerHostBase;
-
 class ServerHostsFactory final {
  public:
-  static std::unique_ptr<ServerHostBase> Build(const ServerHostType type);
+  static std::unique_ptr<ServerHostInterface> Build(const ServerHostType type);
 };
 
 }  // namespace ads
