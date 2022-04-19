@@ -386,7 +386,7 @@ source_set("ads") {
     "src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.cc",
     "src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h",
     "src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor_constants.h",
-    "src/bat/ads/internal/ad_targeting/processors/processor.h",
+    "src/bat/ads/internal/ad_targeting/processors/processor_interface.h",
     "src/bat/ads/internal/ad_transfer/ad_transfer.cc",
     "src/bat/ads/internal/ad_transfer/ad_transfer.h",
     "src/bat/ads/internal/ads/ad_notifications/ad_notification.cc",
