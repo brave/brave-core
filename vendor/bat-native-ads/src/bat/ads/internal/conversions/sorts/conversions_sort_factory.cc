@@ -10,7 +10,7 @@
 
 namespace ads {
 
-std::unique_ptr<ConversionsSort> ConversionsSortFactory::Build(
+std::unique_ptr<ConversionsSortInterface> ConversionsSortFactory::Build(
     const ConversionSortType type) {
   switch (type) {
     case ConversionSortType::kNone: {

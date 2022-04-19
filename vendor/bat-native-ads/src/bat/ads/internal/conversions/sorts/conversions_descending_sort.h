@@ -6,11 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_SORTS_CONVERSIONS_DESCENDING_SORT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_SORTS_CONVERSIONS_DESCENDING_SORT_H_
 
-#include "bat/ads/internal/conversions/sorts/conversions_sort.h"
+#include "bat/ads/internal/conversions/sorts/conversions_sort_interface.h"
 
 namespace ads {
 
-class ConversionsDescendingSort final : public ConversionsSort {
+class ConversionsDescendingSort final : public ConversionsSortInterface {
  public:
   ConversionsDescendingSort();
   ~ConversionsDescendingSort() override;
