@@ -508,10 +508,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log(selectedTransaction)
   }
 
-  const onSelectBuyOption = (option: BraveWallet.OnRampProvider) => {
-    setSelectedBuyOption(option)
-  }
-
   return (
     <Provider store={store}>
       <StyledExtensionWrapper>
@@ -619,7 +615,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           selectedNetwork={selectedNetwork}
                           networkList={[]}
                           selectedBuyOption={selectedBuyOption}
-                          onSelectBuyOption={onSelectBuyOption}
+                          onSelectBuyOption={option => setSelectedBuyOption(option)}
                           rampAssetOptions={mockAccountAssetOptions}
                           wyreAssetOptions={mockAccountAssetOptions}/>
                       }
