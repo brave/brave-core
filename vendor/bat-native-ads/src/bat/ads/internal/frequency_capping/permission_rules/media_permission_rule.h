@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 
 namespace ads {
 
-class MediaPermissionRule final : public PermissionRule {
+class MediaPermissionRule final : public PermissionRuleInterface {
  public:
   MediaPermissionRule();
   ~MediaPermissionRule() override;
