@@ -15,7 +15,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/federated/covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_clicked_covariate_log_entry.h"
+#include "bat/ads/internal/federated/log_entries/ad_notification_clicked.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
 #include "bat/ads/internal/federated/log_entries/last_ad_notification_was_clicked.h"
@@ -188,11 +188,10 @@ void CovariateLogs::SetAdNotificationServedAt(const base::Time time) {
   SetCovariateLogEntry(std::move(ad_notification_served_at));
 }
 
-void CovariateLogs::SetAdNotificationWasClicked(bool was_clicked) {
-  auto ad_notification_clicked_covariate_log_entry =
-      std::make_unique<AdNotificationClickedCovariateLogEntry>();
-  ad_notification_clicked_covariate_log_entry->SetClicked(was_clicked);
-  SetCovariateLogEntry(std::move(ad_notification_clicked_covariate_log_entry));
+void CovariateLogs::SetAdNotificationClicked(bool clicked) {
+  auto ad_notification_clicked = std::make_unique<AdNotificationClicked>();
+  ad_notification_clicked->SetClicked(clicked);
+  SetCovariateLogEntry(std::move(ad_notification_clicked));
 }
 
 void CovariateLogs::LogTrainingInstance() {

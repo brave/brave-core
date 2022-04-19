@@ -41,7 +41,7 @@ class CovariateLogs final {
   brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
 
   void SetAdNotificationServedAt(const base::Time time);
-  void SetAdNotificationWasClicked(bool was_clicked);
+  void SetAdNotificationClicked(bool clicked);
   void LogTrainingInstance();
 
  private:

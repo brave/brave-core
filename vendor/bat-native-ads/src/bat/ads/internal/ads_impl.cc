@@ -845,7 +845,7 @@ void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kClicked});
 
-  covariate_logs_->SetAdNotificationWasClicked(true);
+  covariate_logs_->SetAdNotificationClicked(true);
   covariate_logs_->LogTrainingInstance();
 }
 
@@ -856,7 +856,7 @@ void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kDismissed});
 
-  covariate_logs_->SetAdNotificationWasClicked(false);
+  covariate_logs_->SetAdNotificationClicked(false);
   covariate_logs_->LogTrainingInstance();
 }
 
@@ -864,7 +864,7 @@ void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kTimedOut});
 
-  covariate_logs_->SetAdNotificationWasClicked(false);
+  covariate_logs_->SetAdNotificationClicked(false);
   covariate_logs_->LogTrainingInstance();
 }
 
