@@ -31,83 +31,88 @@ namespace {
 
 CovariateLogs* g_covariate_logs = nullptr;
 
-static base::NoDestructor<
+using UserActivityEventToCovariateTypesMapping =
     base::flat_map<UserActivityEventType,
                    std::pair<brave_federated::mojom::CovariateType,
-                             brave_federated::mojom::CovariateType>>>
-    kUserActivityEventMappings(
-        {{UserActivityEventType::kBrowserDidBecomeActive,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfBrowserDidBecomeActiveEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastBrowserDidBecomeActiveEvent}},
-         {UserActivityEventType::kBrowserWindowIsActive,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfBrowserWindowIsActiveEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastBrowserWindowIsActiveEvent}},
-         {UserActivityEventType::kBrowserWindowIsInactive,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfBrowserWindowIsInactiveEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastBrowserWindowIsInactiveEvent}},
-         {UserActivityEventType::kClickedBackOrForwardNavigationButtons,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfClickedBackOrForwardNavigationButtonsEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastClickedBackOrForwardNavigationButtonsEvent}},
-         {UserActivityEventType::kClickedLink,
-          {brave_federated::mojom::CovariateType::kNumberOfClickedLinkEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastClickedLinkEvent}},
-         {UserActivityEventType::kClickedReloadButton,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfClickedReloadButtonEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastClickedReloadButtonEvent}},
-         {UserActivityEventType::kClosedTab,
-          {brave_federated::mojom::CovariateType::kNumberOfClosedTabEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastClosedTabEvent}},
-         {UserActivityEventType::kFocusedOnExistingTab,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfFocusedOnExistingTabEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastFocusedOnExistingTabEvent}},
-         {UserActivityEventType::kNewNavigation,
-          {brave_federated::mojom::CovariateType::kNumberOfNewNavigationEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastNewNavigationEvent}},
-         {UserActivityEventType::kOpenedNewTab,
-          {brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastOpenedNewTabEvent}},
-         {UserActivityEventType::kPlayedMedia,
-          {brave_federated::mojom::CovariateType::kNumberOfPlayedMediaEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastPlayedMediaEvent}},
-         {UserActivityEventType::kSubmittedForm,
-          {brave_federated::mojom::CovariateType::kNumberOfSubmittedFormEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastSubmittedFormEvent}},
-         {UserActivityEventType::kTypedAndSelectedNonUrl,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfTypedAndSelectedNonUrlEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastTypedAndSelectedNonUrlEvent}},
-         {UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider,
-          {brave_federated::mojom::CovariateType::
-               kNumberOfTypedKeywordOtherThanDefaultSearchProviderEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastTypedKeywordOtherThanDefaultSearchProviderEvent}},
-         {UserActivityEventType::kTypedUrl,
-          {brave_federated::mojom::CovariateType::kNumberOfTypedUrlEvents,
-           brave_federated::mojom::CovariateType::
-               kTimeSinceLastTypedUrlEvent}}});
+                             brave_federated::mojom::CovariateType>>;
+UserActivityEventToCovariateTypesMapping&
+GetUserActivityEventToCovariateTypesMapping() {
+  static base::NoDestructor<UserActivityEventToCovariateTypesMapping> mappings(
+      {{UserActivityEventType::kBrowserDidBecomeActive,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfBrowserDidBecomeActiveEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastBrowserDidBecomeActiveEvent}},
+       {UserActivityEventType::kBrowserWindowIsActive,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfBrowserWindowIsActiveEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastBrowserWindowIsActiveEvent}},
+       {UserActivityEventType::kBrowserWindowIsInactive,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfBrowserWindowIsInactiveEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastBrowserWindowIsInactiveEvent}},
+       {UserActivityEventType::kClickedBackOrForwardNavigationButtons,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfClickedBackOrForwardNavigationButtonsEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastClickedBackOrForwardNavigationButtonsEvent}},
+       {UserActivityEventType::kClickedLink,
+        {brave_federated::mojom::CovariateType::kNumberOfClickedLinkEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastClickedLinkEvent}},
+       {UserActivityEventType::kClickedReloadButton,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfClickedReloadButtonEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastClickedReloadButtonEvent}},
+       {UserActivityEventType::kClosedTab,
+        {brave_federated::mojom::CovariateType::kNumberOfClosedTabEvents,
+         brave_federated::mojom::CovariateType::kTimeSinceLastClosedTabEvent}},
+       {UserActivityEventType::kFocusedOnExistingTab,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfFocusedOnExistingTabEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastFocusedOnExistingTabEvent}},
+       {UserActivityEventType::kNewNavigation,
+        {brave_federated::mojom::CovariateType::kNumberOfNewNavigationEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastNewNavigationEvent}},
+       {UserActivityEventType::kOpenedNewTab,
+        {brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastOpenedNewTabEvent}},
+       {UserActivityEventType::kPlayedMedia,
+        {brave_federated::mojom::CovariateType::kNumberOfPlayedMediaEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastPlayedMediaEvent}},
+       {UserActivityEventType::kSubmittedForm,
+        {brave_federated::mojom::CovariateType::kNumberOfSubmittedFormEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastSubmittedFormEvent}},
+       {UserActivityEventType::kTypedAndSelectedNonUrl,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfTypedAndSelectedNonUrlEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastTypedAndSelectedNonUrlEvent}},
+       {UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider,
+        {brave_federated::mojom::CovariateType::
+             kNumberOfTypedKeywordOtherThanDefaultSearchProviderEvents,
+         brave_federated::mojom::CovariateType::
+             kTimeSinceLastTypedKeywordOtherThanDefaultSearchProviderEvent}},
+       {UserActivityEventType::kTypedUrl,
+        {brave_federated::mojom::CovariateType::kNumberOfTypedUrlEvents,
+         brave_federated::mojom::CovariateType::kTimeSinceLastTypedUrlEvent}}});
+  return *mappings;
+}
 
-static base::NoDestructor<std::vector<base::TimeDelta>>
-    kAverageClickthroughRateTimeWindows({base::Days(1), base::Days(7),
-                                         base::Days(28)});
+using AverageClickthroughRateTimeWindows = std::vector<base::TimeDelta>;
+AverageClickthroughRateTimeWindows& GetAverageClickthroughRateTimeWindows() {
+  static base::NoDestructor<std::vector<base::TimeDelta>> time_windows(
+      {base::Days(1), base::Days(7), base::Days(28)});
+  return *time_windows;
+}
 
 }  // namespace
 
@@ -124,26 +129,28 @@ CovariateLogs::CovariateLogs() {
       std::make_unique<AdNotificationNumberOfTabsOpenedInPast30Minutes>());
   SetCovariateLogEntry(std::make_unique<LastAdNotificationWasClicked>());
 
-  for (const auto& average_clickthrough_rate_time_window :
-       *kAverageClickthroughRateTimeWindows) {
-    SetCovariateLogEntry(std::make_unique<AverageClickthroughRate>(
-        average_clickthrough_rate_time_window));
-  }
-
-  for (const auto& user_activity_event_mapping : *kUserActivityEventMappings) {
-    const UserActivityEventType event_type = user_activity_event_mapping.first;
+  for (const auto& user_activity_event_to_covariate_types_mapping :
+       GetUserActivityEventToCovariateTypesMapping()) {
+    const UserActivityEventType event_type =
+        user_activity_event_to_covariate_types_mapping.first;
 
     const brave_federated::mojom::CovariateType
         number_of_events_covariate_type =
-            user_activity_event_mapping.second.first;
+            user_activity_event_to_covariate_types_mapping.second.first;
     SetCovariateLogEntry(std::make_unique<NumberOfUserActivityEvents>(
         event_type, number_of_events_covariate_type));
 
     const brave_federated::mojom::CovariateType
         time_since_last_event_covariate_type =
-            user_activity_event_mapping.second.second;
+            user_activity_event_to_covariate_types_mapping.second.second;
     SetCovariateLogEntry(std::make_unique<TimeSinceLastUserActivityEvent>(
         event_type, time_since_last_event_covariate_type));
+  }
+
+  for (const auto& average_clickthrough_rate_time_window :
+       GetAverageClickthroughRateTimeWindows()) {
+    SetCovariateLogEntry(std::make_unique<AverageClickthroughRate>(
+        average_clickthrough_rate_time_window));
   }
 }
 
