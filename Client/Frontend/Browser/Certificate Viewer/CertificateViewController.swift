@@ -345,10 +345,9 @@ extension CertificateView {
 #if DEBUG
 struct CertificateView_Previews: PreviewProvider {
   static var previews: some View {
-    let model = BraveCertificate(name: "leaf")!
+    let model = BraveCertificateModel(name: "leaf")!
 
-    CertificateView()
-      .environmentObject(model)
+    CertificateView(model: model, evaluationError: nil)
   }
 }
 #endif

@@ -59,7 +59,7 @@ struct PlaylistEditFolderView: View {
 #if DEBUG
 struct PlaylistEditFolderView_Previews: PreviewProvider {
   static var previews: some View {
-    PlaylistEditFolderView()
+    PlaylistEditFolderView(currentFolder: .init(), currentFolderTitle: "Folder")
   }
 }
 #endif
