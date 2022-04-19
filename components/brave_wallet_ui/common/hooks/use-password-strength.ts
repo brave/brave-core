@@ -6,6 +6,20 @@
 import * as React from 'react'
 import { useLib } from './useLib'
 
+export interface PasswordStrengthResults {
+  isLongEnough: boolean
+  containsSpecialChar: boolean
+  containsUppercase: boolean
+  containsNumber: boolean
+}
+
+const STRONG_PASSWORD_RESULTS = {
+  containsNumber: true,
+  containsSpecialChar: true,
+  containsUppercase: true,
+  isLongEnough: true
+} as const
+
 export const usePasswordStrength = () => {
   // custom hooks
   const { isStrongPassword: checkIsStrongPassword } = useLib()
@@ -19,7 +33,7 @@ export const usePasswordStrength = () => {
     setPassword(value)
     const isStrong = await checkIsStrongPassword(value)
     setIsStrongPassword(isStrong)
-  }, [])
+  }, [checkIsStrongPassword])
 
   const hasPasswordError = React.useMemo(() => {
     if (password === '') {
@@ -35,6 +49,33 @@ export const usePasswordStrength = () => {
       return confirmedPassword !== password
     }
   }, [confirmedPassword, password])
+
+  // granular results of password strength check
+  const passwordStrength: PasswordStrengthResults = React.useMemo(() => {
+    if (isStrongPassword) {
+      // backend reported password as strong, so all checks passed
+      return STRONG_PASSWORD_RESULTS
+    }
+
+    // is at least 7 characters
+    const isLongEnough = password.length >= 7
+
+    // contains a special character
+    const containsSpecialChar = /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/g.test(password)
+
+    // contains an uppercase character
+    const containsUppercase = password.toLowerCase() !== password
+
+    // contains a number
+    const containsNumber = /\d/.test(password)
+
+    return {
+      isLongEnough,
+      containsSpecialChar,
+      containsUppercase,
+      containsNumber
+    }
+  }, [password, isStrongPassword])
 
   const isValid = !(
     hasConfirmedPasswordError ||
@@ -52,6 +93,7 @@ export const usePasswordStrength = () => {
     isValid,
     hasConfirmedPasswordError,
     hasPasswordError,
-    checkIsStrongPassword
+    checkIsStrongPassword,
+    passwordStrength
   }
 }

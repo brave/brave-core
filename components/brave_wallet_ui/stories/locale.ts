@@ -94,24 +94,37 @@ provideStrings({
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
+  braveWalletButtonNext: 'Next',
+  braveWalletButtonGotIt: 'Got it',
   braveWalletButtonCopy: 'Copy',
   braveWalletButtonCopied: 'Copied',
   braveWalletButtonVerify: 'Verify',
 
   // Wallet Onboarding Welcome
   braveWalletWelcomeTitle: 'Welcome to the new Brave Wallet',
-  braveWalletWelcomeDescription: 'Hold crypto assets in your custody. Track portfolio performance, and interact with Web3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.',
-  braveWalletWelcomeButton: 'Get Started',
+  braveWalletWelcomeDescription: 'Your gateway to a multi-chain Web3 experience for Defi, NFTs, and more. Supports Solana, Ethereum, Binance Smart Chain, Polygon, Avalance, or expand to any EVM chain.',
+  braveWalletWelcomeButton: 'Create a new wallet',
+  braveWalletWhatIsACryptoWallet: 'What’s a crypto wallet?',
+  braveWalletWelcomeIAlreadyHaveAWallet: 'I already have a wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
 
-  // Backup Wallet Intro
+  // Backup Wallet Intro (v2)
+  braveWalletOnboardingRecoveryPhraseBackupIntroTitle: 'Before you start backing up wallet',
+  braveWalletOnboardingRecoveryPhraseBackupIntroDescription: 'The 12 word recovery phrase that will be provided next step is a private key that allows you to access your wallet if you lose your devices.',
+  braveWalletRecoveryPhraseBackupWarningImportant: '$1Important:$2 Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.',
+
+  // Backup Wallet Intro (v1)
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
   braveWalletBackupIntroDescription: 'In the next step you’ll see a $1-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
   braveWalletBackupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
   braveWalletBackupButtonSkip: 'Skip',
   braveWalletBackupButtonCancel: 'Cancel',
 
-  // Recovery Phrase Backup
+  // Recovery Phrase Backup (v2)
+  braveWalletRecoveryPhraseBackupTitle: 'Next, let\'s back up your wallet.',
+  braveWalletRecoveryPhraseBackupWarning: 'Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.',
+
+  // Recovery Phrase Backup (v1)
   braveWalletRecoveryTitle: 'Your recovery phrase',
   braveWalletRecoveryDescription: 'Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
   braveWalletRecoveryWarning1: 'WARNING:',
@@ -125,12 +138,21 @@ provideStrings({
   braveWalletVerifyError: 'Recovery phrase did not match, please try again.',
 
   // Create Password
-  braveWalletCreatePasswordTitle: 'Secure your crypto assets with a password',
-  braveWalletCreatePasswordDescription: 'Passwords must be at least 7 characters, and contain at least one number and one special character.',
-  braveWalletCreatePasswordInput: 'Password',
-  braveWalletConfirmPasswordInput: 'Confirm password',
+  braveWalletCreatePasswordTitle: 'Create a new password',
+  braveWalletCreatePasswordDescription: 'You will need to enter the password to access your wallet from your Browser.',
+  braveWalletCreatePasswordInput: 'Enter new password',
+  braveWalletConfirmPasswordInput: 'Re-enter password',
   braveWalletCreatePasswordError: 'Password criteria doesn\'t match.',
   braveWalletConfirmPasswordError: 'Passwords do not match',
+  braveWalletPasswordMatch: 'Match!',
+  braveWalletPasswordIsStrong: 'Strong!',
+  braveWalletPasswordIsWeak: 'Weak',
+
+  // Create Password - Stength Tooltip
+  braveWalletPasswordStrengthTooltipHeading: 'At least:',
+  braveWalletPasswordStrengthTooltipIsLongEnough: '7 characters',
+  braveWalletPasswordStrengthTooltipContainsNumber: '1 number',
+  braveWalletPasswordStrengthTooltipContainsSpecialChar: '1 special character',
 
   // Lock Screen
   braveWalletEnterYourPassword: 'Enter your Brave Wallet password',

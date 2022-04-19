@@ -8,6 +8,7 @@ interface StyleProps {
   buttonType: PanelButtonTypes
   disabled?: boolean
   addTopMargin?: boolean
+  fullWidth?: boolean
 }
 
 export const StyledButton = styled(WalletButton) <Partial<StyleProps>>`

@@ -588,6 +588,8 @@ export enum WalletRoutes {
   OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
   OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+  OnboardingExplainRecoveryPhrase = '/crypto/onboarding/explain-recovery-phrase',
+  OnboardingBackupRecoveryPhrase = '/crypto/onboarding/backup-recovery-phrase',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -614,6 +616,7 @@ export enum WalletRoutes {
   // portfolio
   Portfolio = '/crypto/portfolio',
   PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
+  PortfolioSub = '/crypto/portfolio/:id?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
