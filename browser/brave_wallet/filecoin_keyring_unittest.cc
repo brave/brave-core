@@ -168,4 +168,27 @@ TEST(FilecoinKeyring, fil_private_key_public_key) {
                           [](int i) { return i == 0; }));
 }
 
+TEST(FilecoinKeyring, SignTransaction) {
+  FilecoinKeyring keyring;
+  EXPECT_FALSE(keyring.SignTransaction(nullptr));
+
+  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
+      "1", "2", "3", "4", "5", "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+      "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy", "6"));
+  EXPECT_FALSE(keyring.SignTransaction(&transaction.value()));
+
+  std::string private_key_base64 =
+      "rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=";
+  std::string input_key;
+  ASSERT_TRUE(base::Base64Decode(private_key_base64, &input_key));
+  ASSERT_FALSE(input_key.empty());
+  std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
+
+  auto address =
+      keyring.ImportFilecoinAccount(private_key, mojom::kFilecoinTestnet,
+                                    mojom::FilecoinAddressProtocol::SECP256K1);
+  EXPECT_EQ(address, "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
+  EXPECT_TRUE(keyring.SignTransaction(&transaction.value()));
+}
+
 }  // namespace brave_wallet

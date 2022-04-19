@@ -93,12 +93,13 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
   }, [])
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const { txDataUnion: { ethTxData1559: txData }, txType } = transactionInfo
+    const { txDataUnion: { ethTxData1559: txData, filTxData }, txType } = transactionInfo
     const isSolTransaction =
       txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-    const gasLimit = txData?.baseData.gasLimit || ''
+    const isFilTrtansaction = filTxData !== undefined
+    const gasLimit = isFilTrtansaction ? filTxData.gasLimit : txData?.baseData.gasLimit || ''
     const gasPrice = txData?.baseData.gasPrice || ''
     const maxFeePerGas = txData?.maxFeePerGas || ''
     const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''

@@ -32,7 +32,7 @@ class FilAddress {
   bool operator!=(const FilAddress& other) const;
 
   bool IsEmpty() const { return bytes_.empty(); }
-  mojom::FilecoinAddressProtocol protocol() { return protocol_; }
+  mojom::FilecoinAddressProtocol protocol() const { return protocol_; }
   std::string EncodeAsString() const;
 
  private:

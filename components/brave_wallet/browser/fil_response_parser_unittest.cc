@@ -265,4 +265,26 @@ TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
                                                            "cid", &exit_code));
 }
 
+TEST(FilResponseParserUnitTest, ParseSendFilecoinTransaction) {
+  std::string cid;
+  EXPECT_TRUE(brave_wallet::ParseSendFilecoinTransaction(GetResponse(R"({
+    "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+  })"),
+                                                         &cid));
+  EXPECT_EQ(cid,
+            "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4");
+
+  cid.clear();
+  EXPECT_FALSE(
+      brave_wallet::ParseSendFilecoinTransaction(GetResponse(R"({})"), &cid));
+  EXPECT_TRUE(cid.empty());
+
+  EXPECT_FALSE(brave_wallet::ParseSendFilecoinTransaction(
+      GetResponse(R"(broken)"), &cid));
+  EXPECT_TRUE(cid.empty());
+  EXPECT_FALSE(
+      brave_wallet::ParseSendFilecoinTransaction(GetResponse(""), &cid));
+  EXPECT_TRUE(cid.empty());
+}
+
 }  // namespace brave_wallet

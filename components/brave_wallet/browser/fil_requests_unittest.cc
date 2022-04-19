@@ -90,4 +90,55 @@ TEST(FilRequestUnitTest, getStateSearchMsgLimited) {
                 std::to_string(UINT64_MAX) + "]}");
 }
 
+TEST(FilRequestUnitTest, getSendTransaction) {
+  auto send = fil::getSendTransaction(R"({
+    "Message": {
+        "From": "from",
+        "GasFeeCap": "3",
+        "GasLimit": 1,
+        "GasPremium": "2",
+        "MethodNum": 0,
+        "Params": "",
+        "Nonce": 1,
+        "To": "to",
+        "Value": "6",
+        "Version": 0
+      },
+      "Signature": {
+        "Type": 1,
+        "Data": "signed_tx"
+      }
+    })");
+  ASSERT_TRUE(send);
+  CompareJSONs(*send,
+               R"({
+                "id": 1,
+                "jsonrpc": "2.0",
+                "method": "Filecoin.MpoolPush",
+                "params": [{
+                  "Message": {
+                      "From": "from",
+                      "GasFeeCap": "3",
+                      "GasLimit": 1,
+                      "GasPremium": "2",
+                      "MethodNum": 0,
+                      "Params": "",
+                      "Nonce": 1,
+                      "To": "to",
+                      "Value": "6",
+                      "Version": 0
+                    },
+                    "Signature": {
+                      "Type": 1,
+                      "Data": "signed_tx"
+                    }
+                  }
+                ]
+              })");
+  // broken json
+  EXPECT_FALSE(fil::getSendTransaction("broken"));
+  // empty json
+  EXPECT_FALSE(fil::getSendTransaction(""));
+}
+
 }  // namespace brave_wallet

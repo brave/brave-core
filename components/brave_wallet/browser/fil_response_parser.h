@@ -29,6 +29,9 @@ bool ParseFilGetChainHead(const std::string& json, uint64_t* height);
 bool ParseFilStateSearchMsgLimited(const std::string& json,
                                    const std::string& cid,
                                    int64_t* exit_code);
+// Returns parsed transaction CID.
+bool ParseSendFilecoinTransaction(const std::string& json,
+                                  std::string* tx_hash);
 
 }  // namespace brave_wallet
 
