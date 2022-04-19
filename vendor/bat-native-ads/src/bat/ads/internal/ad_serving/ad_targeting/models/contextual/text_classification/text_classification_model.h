@@ -6,13 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_MODEL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_MODEL_H_
 
-#include "bat/ads/internal/ad_serving/ad_targeting/models/model.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/model_interface.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace model {
 
-class TextClassification final : public Model {
+class TextClassification final : public ModelInterface {
  public:
   TextClassification();
   ~TextClassification() override;

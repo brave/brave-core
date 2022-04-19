@@ -338,7 +338,7 @@ source_set("ads") {
     "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_constants.h",
     "src/bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.cc",
     "src/bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h",
-    "src/bat/ads/internal/ad_serving/ad_targeting/models/model.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/model_interface.h",
     "src/bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.cc",
     "src/bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h",
     "src/bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h",
