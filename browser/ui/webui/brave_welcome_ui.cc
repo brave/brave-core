@@ -113,7 +113,6 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
  private:
   void HandleImportNowRequested(const base::Value::List& args);
   void HandleRecordP3A(const base::Value::List& args);
-  void HandleSetP3AEnable(const base::Value::List& args);
   Browser* GetBrowser();
 
   int screen_number_ = 0;
