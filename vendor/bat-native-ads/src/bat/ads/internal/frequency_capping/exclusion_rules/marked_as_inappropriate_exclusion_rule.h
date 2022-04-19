@@ -9,12 +9,12 @@
 #include <string>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
 
 class MarkedAsInappropriateExclusionRule final
-    : public ExclusionRule<CreativeAdInfo> {
+    : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   MarkedAsInappropriateExclusionRule();
   ~MarkedAsInappropriateExclusionRule() override;

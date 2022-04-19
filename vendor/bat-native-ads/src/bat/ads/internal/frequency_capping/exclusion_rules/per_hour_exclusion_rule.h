@@ -10,11 +10,12 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
 
-class PerHourExclusionRule final : public ExclusionRule<CreativeAdInfo> {
+class PerHourExclusionRule final
+    : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit PerHourExclusionRule(const AdEventList& ad_events);
   ~PerHourExclusionRule() override;
