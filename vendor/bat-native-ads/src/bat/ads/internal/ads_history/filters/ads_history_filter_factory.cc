@@ -6,11 +6,10 @@
 #include "bat/ads/internal/ads_history/filters/ads_history_filter_factory.h"
 
 #include "bat/ads/internal/ads_history/filters/ads_history_confirmation_filter.h"
-#include "bat/ads/internal/ads_history/filters/ads_history_filter.h"
 
 namespace ads {
 
-std::unique_ptr<AdsHistoryFilter> AdsHistoryFilterFactory::Build(
+std::unique_ptr<AdsHistoryFilterInterface> AdsHistoryFilterFactory::Build(
     const AdsHistoryFilterType type) {
   switch (type) {
     case AdsHistoryFilterType::kNone: {
