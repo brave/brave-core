@@ -61,10 +61,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
@@ -75,12 +71,14 @@ import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.SettingsActivity;
+import org.chromium.chrome.browser.share.qrcode.QRCodeGenerationRequest;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncService;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
@@ -1284,7 +1282,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                   } else {
                       String qrCodeString = getBraveSyncWorker().GetQrDataJson(seedHex);
                       assert qrCodeString != null && !qrCodeString.isEmpty();
-                      fillQrCode(qrCodeString);
+                      ChromeBrowserInitializer.getInstance().runNowOrAfterFullBrowserStarted(
+                              () -> fillQrCode(qrCodeString));
                   }
               }
           }
@@ -1292,38 +1291,22 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
   }
 
   private void fillQrCode(String qrDataFinal) {
-      new Thread(new Runnable() {
-          @Override
-          public void run() {
-              // Generate QR code
-              BitMatrix result;
-              try {
-                  result = new MultiFormatWriter().encode(
-                          qrDataFinal, BarcodeFormat.QR_CODE, WIDTH, WIDTH, null);
-              } catch (WriterException e) {
-                  Log.e(TAG, "QR code unsupported format: " + e);
-                  return;
-              }
-              int w = result.getWidth();
-              int h = result.getHeight();
-              int[] pixels = new int[w * h];
-              for (int y = 0; y < h; y++) {
-                  int offset = y * w;
-                  for (int x = 0; x < w; x++) {
-                      pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
-                  }
-              }
-              Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-              bitmap.setPixels(pixels, 0, WIDTH, 0, 0, w, h);
-              getActivity().runOnUiThread(new Runnable() {
+      QRCodeGenerationRequest.QRCodeServiceCallback callback =
+              new QRCodeGenerationRequest.QRCodeServiceCallback() {
                   @Override
-                  public void run() {
-                      mQRCodeImage.setImageBitmap(bitmap);
-                      mQRCodeImage.invalidate();
+                  public void onQRCodeAvailable(Bitmap bitmap) {
+                      if (bitmap != null) {
+                          getActivity().runOnUiThread(new Runnable() {
+                              @Override
+                              public void run() {
+                                  mQRCodeImage.setImageBitmap(bitmap);
+                                  mQRCodeImage.invalidate();
+                              }
+                          });
+                      }
                   }
-              });
-          }
-      }).start();
+              };
+      new QRCodeGenerationRequest(qrDataFinal, callback);
   }
 
   private void setAddLaptopLayout() {
