@@ -6,7 +6,7 @@
 module brave_federated.mojom;
 
 enum CovariateType {
-  kAdNotificationImpressionServedAt,
+  kAdNotificationServedAt,
   kAdNotificationWasClicked,
   kAverageClickthroughRate,
   kLastAdNotificationWasClicked,

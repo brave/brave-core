@@ -33,7 +33,7 @@ TEST_F(BatAdsCovariateLogsTest, GetTrainingInstance) {
 
 TEST_F(BatAdsCovariateLogsTest, GetTrainingInstanceWithSetters) {
   // Arrange
-  CovariateLogs::Get()->SetAdNotificationImpressionServedAt(Now());
+  CovariateLogs::Get()->SetAdNotificationServedAt(Now());
   CovariateLogs::Get()->SetAdNotificationWasClicked(true);
 
   // Act

@@ -833,8 +833,7 @@ void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 
-  const base::Time impression_served_at = base::Time::Now();
-  covariate_logs_->SetAdNotificationImpressionServedAt(impression_served_at);
+  covariate_logs_->SetAdNotificationServedAt(base::Time::Now());
 }
 
 void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
