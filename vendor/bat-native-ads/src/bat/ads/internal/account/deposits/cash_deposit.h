@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/account/deposits/deposit_base.h"
+#include "bat/ads/internal/account/deposits/deposit_interface.h"
 
 namespace ads {
 
-class CashDeposit final : public DepositBase {
+class CashDeposit final : public DepositInterface {
  public:
   CashDeposit();
   ~CashDeposit() override;
