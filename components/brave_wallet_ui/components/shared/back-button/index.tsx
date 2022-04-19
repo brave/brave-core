@@ -13,7 +13,10 @@ export interface Props {
 const BackButton = (props: Props) => {
   const { onSubmit } = props
   return (
-    <StyledWrapper onClick={onSubmit}><BackIcon />{getLocale('braveWalletBack')}</StyledWrapper>
+    <StyledWrapper onClick={onSubmit}>
+      <BackIcon />
+      {getLocale('braveWalletBack')}
+    </StyledWrapper>
   )
 }
 export default BackButton

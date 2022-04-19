@@ -19,23 +19,25 @@ import usePrevNetwork from './previous-network'
 import useIsMounted from './useIsMounted'
 import { useLib } from './useLib'
 import { useCopy } from './use-copy'
+import { usePasswordStrength } from './use-password-strength'
 
 export {
-  useAssets,
-  useSwap,
-  useBalance,
-  useTransactionParser,
-  useTransactionFeesParser,
-  usePricing,
   useAddressLabels,
-  useSend,
-  usePreset,
-  useTokenInfo,
-  useExplorer,
   useAssetManagement,
-  useLib,
-  useHasAccount,
-  usePrevNetwork,
+  useAssets,
+  useBalance,
   useCopy,
-  useIsMounted
+  useExplorer,
+  useHasAccount,
+  useIsMounted,
+  useLib,
+  usePasswordStrength,
+  usePreset,
+  usePrevNetwork,
+  usePricing,
+  useSend,
+  useSwap,
+  useTokenInfo,
+  useTransactionFeesParser,
+  useTransactionParser
 }

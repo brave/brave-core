@@ -1,0 +1,59 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+
+export const BarAndMessageContainer = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 12px;
+`
+
+// outer
+export const Bar = styled.div`
+  position: relative;
+  flex: 1;
+  box-sizing: border-box;
+  height: 8px;
+  border-radius: 100px;
+  margin-right: 40px;
+`
+
+export const BarBackground = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+  height: 8px;
+  background-color: ${(p) => p.theme.color.disabled};
+  opacity: 0.4;
+  border-radius: 100px;
+  width: 100%;
+  flex: 1;
+`
+
+// inner
+export const BarProgress = styled.div<{ criteria: boolean[] }>`
+  position: absolute;
+  height: 8px;
+  width: ${(p) => (p.criteria.filter(c => !!c).length / p.criteria.length) * 100}%;
+  border-radius: 100px;
+  background-color: ${(p) => p.criteria.filter(c => !!c).length === p.criteria.length ? p.theme.color.successBorder : p.theme.color.errorIcon};
+`
+
+export const BarMessage = styled.p<{ criteria: boolean[] }>`
+  color: ${(p) => p.criteria.filter(c => !!c).length === p.criteria.length ? p.theme.color.successBorder : p.theme.color.errorIcon};
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  letter-spacing: 0.01em;
+`

@@ -1,53 +1,104 @@
 import * as React from 'react'
 
 import {
-  StyledWrapper,
+  TipWrapper,
   Tip,
   Pointer,
-  ActionNotification
+  ActionNotification,
+  TipAndChildrenWrapper
 } from './style'
 
 export interface Props {
   children?: React.ReactNode
   position?: 'left' | 'right'
-  text: string
   actionText?: string
   isVisible: boolean
   isAddress?: boolean
   isActionVisible?: boolean
+  disableHoverEvents?: boolean
+  text: React.ReactNode
+  verticalPosition?: 'above' | 'below'
+  horizontalMarginPx?: number
+  pointerPosition?: 'left' | 'right' | 'center'
 }
 
-function Tooltip (props: Props) {
-  const { children, actionText, text, position, isVisible, isAddress, isActionVisible } = props
-  const [active, setActive] = React.useState(false)
+function Tooltip ({
+  actionText,
+  children,
+  disableHoverEvents,
+  horizontalMarginPx,
+  isActionVisible,
+  isAddress,
+  isVisible,
+  pointerPosition,
+  position,
+  text,
+  verticalPosition = 'below'
+}: Props) {
+  const [active, setActive] = React.useState(!!disableHoverEvents)
 
   const showTip = () => {
-    setActive(true)
+    !disableHoverEvents && setActive(true)
   }
 
   const hideTip = () => {
-    setActive(false)
+    !disableHoverEvents && setActive(false)
   }
 
-  return (
-    <StyledWrapper
-      onMouseEnter={showTip}
-      onMouseLeave={hideTip}
+  const toolTipPointer = React.useMemo(() => (
+    <Pointer
+      position={pointerPosition ?? position ?? 'center'}
+      verticalPosition={verticalPosition ?? 'below'}
+    />
+  ), [position, verticalPosition, pointerPosition])
+
+  const toolTip = React.useMemo(() => active && isVisible && (
+    <TipWrapper
+      position={position ?? 'center'}
+      verticalPosition={verticalPosition ?? 'below'}
+      horizontalMarginPx={horizontalMarginPx}
     >
-      {children}
-      {active && isVisible && !isActionVisible && (
-        <>
-          <Pointer position={position ?? 'center'} />
-          <Tip
+
+      {!isActionVisible && verticalPosition === 'below' && toolTipPointer}
+
+      {isActionVisible
+        ? <ActionNotification
+            verticalPosition={verticalPosition ?? 'below'}
+            position={position ?? 'center'}
+          >
+            {actionText}
+          </ActionNotification>
+        : <Tip
             isAddress={isAddress}
             position={position ?? 'center'}
+            verticalPosition={verticalPosition ?? 'below'}
           >
             {text}
           </Tip>
-        </>
-      )}
-      {isActionVisible && <ActionNotification position='center'>{actionText}</ActionNotification>}
-    </StyledWrapper>
+        }
+
+      {!isActionVisible && verticalPosition === 'above' && toolTipPointer}
+    </TipWrapper>
+  ), [
+    active,
+    isVisible,
+    position,
+    verticalPosition,
+    isAddress,
+    text,
+    horizontalMarginPx,
+    isActionVisible
+  ])
+
+  return (
+    <TipAndChildrenWrapper
+      onMouseEnter={showTip}
+      onMouseLeave={hideTip}
+    >
+      {verticalPosition === 'above' && toolTip}
+      {children}
+      {verticalPosition === 'below' && toolTip}
+    </TipAndChildrenWrapper>
   )
 }
 

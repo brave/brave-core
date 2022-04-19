@@ -31,7 +31,7 @@ import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
 // components
 import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import BuySendSwap from '../stories/screens/buy-send-swap'
-import Onboarding from '../stories/screens/onboarding'
+import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
@@ -178,7 +178,7 @@ export const Container = () => {
             requirement={setupStillInProgress || walletNotYetCreated}
             redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Portfolio}
           >
-            <Onboarding />
+            <OnboardingRoutes />
           </ProtectedRoute>
 
           <ProtectedRoute
