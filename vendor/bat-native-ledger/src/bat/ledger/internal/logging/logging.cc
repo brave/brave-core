@@ -5,24 +5,29 @@
 
 #include "bat/ledger/internal/logging/logging.h"
 
-#include "base/lazy_instance.h"
-#include "base/threading/thread_local.h"
+#include "base/memory/raw_ptr.h"
+#include "base/threading/sequence_local_storage_slot.h"
 #include "bat/ledger/ledger_client.h"
 
 namespace ledger {
 
-static base::LazyInstance<base::ThreadLocalPointer<LedgerClient>>::Leaky
-    g_ledger_client = LAZY_INSTANCE_INITIALIZER;  // NOT OWNED
-
-void set_ledger_client_for_logging(LedgerClient* ledger_client) {
-  g_ledger_client.Pointer()->Set(ledger_client);
+base::raw_ptr<LedgerClient>& GetLocalLedgerClient() {
+  static base::SequenceLocalStorageSlot<base::raw_ptr<LedgerClient>>
+      ledger_client;
+  return ledger_client.GetOrCreateValue();
 }
 
-void Log(const char* file,
-         const int line,
-         const int verbose_level,
-         const std::string& message) {
-  auto* ledger_client = g_ledger_client.Pointer()->Get();
+void set_ledger_client_for_logging(
+    LedgerClient* ledger_client) {
+  GetLocalLedgerClient() = ledger_client;
+}
+
+void Log(
+    const char* file,
+    const int line,
+    const int verbose_level,
+    const std::string& message) {
+  auto& ledger_client = GetLocalLedgerClient();
   if (!ledger_client) {
     return;
   }

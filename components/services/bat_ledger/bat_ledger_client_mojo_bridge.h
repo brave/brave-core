@@ -16,6 +16,7 @@
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 
 namespace bat_ledger {
 
@@ -125,6 +126,7 @@ class BatLedgerClientMojoBridge :
  private:
   bool Connected() const;
 
+  mojo::ScopedAllowSyncCallForTesting allow_sync_calls_;
   mojo::AssociatedRemote<mojom::BatLedgerClient> bat_ledger_client_;
 };
 
