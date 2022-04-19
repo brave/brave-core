@@ -10,11 +10,11 @@
 
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/account/user_data/user_data_builder.h"
+#include "bat/ads/internal/account/user_data/user_data_builder_interface.h"
 
 namespace ads {
 
-class ConfirmationsUserDataBuilder final : public UserDataBuilder {
+class ConfirmationsUserDataBuilder final : public UserDataBuilderInterface {
  public:
   ConfirmationsUserDataBuilder(const base::Time time,
                                const std::string& creative_instance_id,
