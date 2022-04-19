@@ -9,12 +9,12 @@
 #include <string>
 
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilder {
+class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilderInterface {
  public:
   explicit FetchPaymentTokenUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
