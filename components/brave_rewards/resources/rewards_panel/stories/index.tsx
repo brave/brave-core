@@ -44,6 +44,7 @@ function createHost (): Host {
       imageURL: grantCaptchaImageURL,
       hint: 'square',
       status: 'pending',
+      verifying: false,
       grantInfo: {
         id: 'grant123',
         createdAt: Date.now(),
