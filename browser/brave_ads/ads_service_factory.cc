@@ -71,16 +71,14 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
           ->GetForProfile(profile);
 #endif
-  brave_federated::AsyncDataStore<
-      brave_federated::AdNotificationTimingDataStore,
-      brave_federated::AdNotificationTimingTaskLog>*
-      ad_notification_data_store = nullptr;
+  brave_federated::AsyncDataStore* ad_notification_data_store = nullptr;
   auto* federated_service =
       brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
           profile);
   if (federated_service) {
-    ad_notification_data_store = federated_service->GetDataStoreService()
-                                     ->GetAdNotificationTimingDataStore();
+    ad_notification_data_store =
+        federated_service->GetDataStoreService()->GetDataStore(
+            "ad_notification_timing_task");
   }
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(

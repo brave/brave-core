@@ -13,8 +13,8 @@ export class FederatedInternalsBrowserProxy {
         this.handler.$.bindNewPipeAndPassReceiver());
   }
 
-  getAdStoreInfo() {
-    return this.handler.getAdStoreInfo();
+  getDataStoreInfo() {
+    return this.handler.getDataStoreInfo();
   }
 
   static getInstance() {

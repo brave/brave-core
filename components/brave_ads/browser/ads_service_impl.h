@@ -51,9 +51,6 @@ class Time;
 }  // namespace base
 
 namespace brave_federated {
-class AdNotificationTimingDataStore;
-struct AdNotificationTimingTaskLog;
-template <class T, class U>
 class AsyncDataStore;
 }  // namespace brave_federated
 
@@ -92,10 +89,7 @@ class AdsServiceImpl : public AdsService,
 #endif
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
-      brave_federated::AsyncDataStore<
-          brave_federated::AdNotificationTimingDataStore,
-          brave_federated::AdNotificationTimingTaskLog>*
-          ad_notification_timing_data_store);
+      brave_federated::AsyncDataStore* ad_notification_timing_data_store);
   ~AdsServiceImpl() override;
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
@@ -447,7 +441,7 @@ class AdsServiceImpl : public AdsService,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
-  void LogTrainingInstance(const brave_federated::mojom::TrainingInstancePtr
+  void LogTrainingInstance(brave_federated::mojom::TrainingInstancePtr
                                training_instance) override;
   void OnLogTrainingInstance(bool success);
 
@@ -534,10 +528,8 @@ class AdsServiceImpl : public AdsService,
   raw_ptr<brave_rewards::RewardsService> rewards_service_{
       nullptr};  // NOT OWNED
 
-  raw_ptr<brave_federated::AsyncDataStore<
-      brave_federated::AdNotificationTimingDataStore,
-      brave_federated::AdNotificationTimingTaskLog>>
-      ad_notification_timing_data_store_ = nullptr;  // NOT OWNED
+  raw_ptr<brave_federated::AsyncDataStore> ad_notification_timing_data_store_ =
+      nullptr;  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;

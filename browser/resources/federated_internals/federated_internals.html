@@ -10,8 +10,6 @@
 </head>
 
 <body i18n-values=".style.fontFamily:fontfamily;.style.fontSize:fontsize">
-  <h1 i18n-content="helloWorldTitle"></h1>
-
   <div>
     <label for="stores">Choose a data store:</label>
     <select name="stores" id="stores" form="storeform">
@@ -20,10 +18,10 @@
     <button id="data-store-logs-dump">Dump</button>
 
     <p id="service-message"></p>
-    <table id="ad-timing-tab">
+    <table id="data-store-tab">
       <caption hidden="true">Local ad timing logs</caption>
       <thead>
-        <tr id="ad-timing-headers">
+        <tr id="data-store-headers">
           <th></th>
         </tr>
       </thead>

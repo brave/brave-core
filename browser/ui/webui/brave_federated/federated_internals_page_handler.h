@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
 #include "brave/components/brave_federated/data_store_service.h"
-#include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
+#include "brave/components/brave_federated/data_stores/data_store.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -33,12 +33,11 @@ class FederatedInternalsPageHandler
   FederatedInternalsPageHandler& operator=(
       const FederatedInternalsPageHandler&) = delete;
 
-  void GetAdStoreInfo() override;
+  void GetDataStoreInfo() override;
 
  private:
-  void OnAdStoreInfoAvailable(
-      brave_federated::AdNotificationTimingDataStore::
-          IdToAdNotificationTimingTaskLogMap ad_notification_timing_logs);
+  void OnDataStoreInfoAvailable(
+      brave_federated::DataStore::TrainingData training_data);
 
   mojo::Receiver<federated_internals::mojom::PageHandler> receiver_;
   mojo::Remote<federated_internals::mojom::Page> page_;

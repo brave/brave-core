@@ -4,11 +4,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
-#include "brave/components/brave_federated/data_stores/test_data_store.h"
+#include "brave/components/brave_federated/data_stores/data_store.h"
 #include "sql/statement.h"
 #include "sql/test/scoped_error_expecter.h"
 #include "sql/test/test_helpers.h"
@@ -18,15 +19,16 @@
 
 namespace {
 
-struct TestTaskLogTestInfo {
-  int id;
-  int days_from_now;
-  bool label;
-} test_task_log_test_db[] = {
-    {0, 31, true},
-    {0, 15, false},
-    {0, 7, false},
-    {0, 1, true},
+struct TrainingDataTestInfo {
+  int training_instance_id;
+  int feature_name;
+  int feature_type;
+  std::string feature_value;
+} training_data_test_db[] = {
+    {0, 1, 0, "cat"},
+    {0, 2, 1, "24"},
+    {1, 1, 0, "dog"},
+    {1, 2, 1, "42"},
 };
 
 }  // namespace
@@ -40,20 +42,22 @@ class DataStoreTest : public testing::Test {
 
   void ClearDB();
   size_t CountRecords() const;
+  size_t CountTrainingInstances() const;
 
-  TestTaskLog TestTaskLogFromTestInfo(const TestTaskLogTestInfo& info);
+  DataStore::TrainingData TrainingDataFromTestInfo();
 
+  bool AddTrainingInstance(std::vector<mojom::Covariate> covariates);
   void AddAll();
 
   base::ScopedTempDir temp_dir_;
-  TestDataStore* test_data_store_;
+  DataStore* test_data_store_;
 };
 
 void DataStoreTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("test_data_store")));
-  test_data_store_ = new TestDataStore(db_path);
+  test_data_store_ = new DataStore(db_path);
   ASSERT_TRUE(test_data_store_->Init(0, "test_federated_task", 50, 30));
   ClearDB();
 }
@@ -63,7 +67,7 @@ void DataStoreTest::TearDown() {
 }
 
 void DataStoreTest::ClearDB() {
-  EXPECT_TRUE(test_data_store_->DeleteLogs());
+  EXPECT_TRUE(test_data_store_->DeleteTrainingData());
 }
 
 size_t DataStoreTest::CountRecords() const {
@@ -73,48 +77,107 @@ size_t DataStoreTest::CountRecords() const {
   return static_cast<size_t>(s.ColumnInt(0));
 }
 
-TestTaskLog DataStoreTest::TestTaskLogFromTestInfo(
-    const TestTaskLogTestInfo& info) {
-  return TestTaskLog(info.id, info.label,
-                     base::Time::Now() - base::Days(info.days_from_now));
+size_t DataStoreTest::CountTrainingInstances() const {
+  sql::Statement s(test_data_store_->db_.GetUniqueStatement(
+      "SELECT count(DISTINCT training_instance_id) FROM test_federated_task"));
+  EXPECT_TRUE(s.Step());
+  return static_cast<size_t>(s.ColumnInt(0));
+}
+
+DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
+  DataStore::TrainingData training_data;
+
+  for (size_t i = 0; i < std::size(training_data_test_db); ++i) {
+    auto entry = training_data_test_db[i];
+    int training_instance_id = entry.training_instance_id;
+    mojom::CovariatePtr covariate = mojom::Covariate::New();
+    covariate->covariate_type = (mojom::CovariateType)entry.feature_name;
+    covariate->data_type = (mojom::DataType)entry.feature_type;
+    covariate->value = entry.feature_value;
+
+    if (!base::Contains(training_data, training_instance_id)) {
+      std::vector<mojom::Covariate> covariates;
+      covariates.push_back(*covariate);
+      training_data.insert(std::make_pair(training_instance_id, covariates));
+    } else {
+      training_data[training_instance_id].push_back(*covariate);
+    }
+  }
+
+  return training_data;
+}
+
+bool DataStoreTest::AddTrainingInstance(
+    std::vector<mojom::Covariate> covariates) {
+  mojom::TrainingInstancePtr training_instance = mojom::TrainingInstance::New();
+  for (size_t j = 0; j < std::size(covariates); ++j) {
+    mojom::CovariatePtr covariate = mojom::Covariate::New();
+    covariate->covariate_type = covariates[j].covariate_type;
+    covariate->data_type = covariates[j].data_type;
+    covariate->value = covariates[j].value;
+    training_instance->covariates.push_back(std::move(covariate));
+  }
+  return test_data_store_->AddTrainingInstance(std::move(training_instance));
 }
 
 void DataStoreTest::AddAll() {
   ClearDB();
-  for (size_t i = 0; i < std::size(test_task_log_test_db); ++i) {
-    TestTaskLog test_log = TestTaskLogFromTestInfo(test_task_log_test_db[i]);
-    test_data_store_->AddLog(test_log);
+  DataStore::TrainingData training_data = TrainingDataFromTestInfo();
+  for (size_t i = 0; i < std::size(training_data); ++i) {
+    AddTrainingInstance(training_data[i]);
   }
-  EXPECT_EQ(std::size(test_task_log_test_db), CountRecords());
+  EXPECT_EQ(std::size(training_data_test_db), CountRecords());
+  EXPECT_EQ(std::size(training_data), CountTrainingInstances());
 }
 
 // Actual tests
 // -------------------------------------------------------------------------------------
 
+TEST_F(DataStoreTest, AddTrainingInstance) {
+  ClearDB();
+  EXPECT_EQ(0U, CountRecords());
+  DataStore::TrainingData training_data = TrainingDataFromTestInfo();
+  EXPECT_TRUE(AddTrainingInstance(training_data[0]));
+  EXPECT_EQ(1U, CountTrainingInstances());
+  EXPECT_TRUE(AddTrainingInstance(training_data[1]));
+  EXPECT_EQ(2U, CountTrainingInstances());
+}
+
+TEST_F(DataStoreTest, LoadTrainingData) {
+  AddAll();
+  EXPECT_EQ(4U, CountRecords());
+  EXPECT_EQ(2U, CountTrainingInstances());
+  auto training_data = test_data_store_->LoadTrainingData();
+
+  for (size_t i = 0; i < std::size(training_data_test_db) / 2; ++i) {
+    auto it = training_data.find(i + 1);
+    EXPECT_EQ(2U, std::size(it->second));
+    EXPECT_TRUE(it != training_data.end());
+  }
+}
+
 TEST_F(DataStoreTest, DeleteLogs) {
   AddAll();
   EXPECT_EQ(4U, CountRecords());
-  TestDataStore::TestTaskLogMap test_task_logs;
-  test_data_store_->LoadLogs(&test_task_logs);
-  EXPECT_EQ(test_task_logs.size(), CountRecords());
-  EXPECT_TRUE(test_data_store_->DeleteLogs());
+  DataStore::TrainingData training_data = test_data_store_->LoadTrainingData();
+  EXPECT_EQ(training_data.size(), CountTrainingInstances());
+  EXPECT_TRUE(test_data_store_->DeleteTrainingData());
   EXPECT_EQ(0U, CountRecords());
-  test_data_store_->LoadLogs(&test_task_logs);
+  training_data = test_data_store_->LoadTrainingData();
   EXPECT_EQ(0U, CountRecords());
 }
 
-TEST_F(DataStoreTest, EnforceRetentionPolicy) {
-  AddAll();
-  EXPECT_EQ(4U, CountRecords());
+// TEST_F(DataStoreTest, EnforceRetentionPolicy) {
+//   AddAll();
+//   EXPECT_EQ(4U, CountRecords());
 
-  test_data_store_->EnforceRetentionPolicy();
+//   test_data_store_->EnforceRetentionPolicy();
 
-  TestDataStore::TestTaskLogMap test_task_logs;
-  test_data_store_->LoadLogs(&test_task_logs);
-  EXPECT_EQ(3U, CountRecords());
+//   DataStore::TrainingData training_data =
+//   test_data_store_->LoadTrainingData(); EXPECT_EQ(3U, CountRecords());
 
-  auto it = test_task_logs.find(1);
-  EXPECT_TRUE(it == test_task_logs.end());
-}
+//   auto it = training_data.find(1);
+//   EXPECT_TRUE(it == training_data.end());
+// }
 
 }  // namespace brave_federated

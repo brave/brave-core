@@ -5,12 +5,15 @@
 
 module federated_internals.mojom;
 
-struct AdStoreLog {
-    int32 log_id;
-    double log_time;
-    string log_locale;
-    int32 log_number_of_tabs;
-    bool log_label;
+struct Covariate {
+  int32 training_instance_id;
+  int32 feature_name;
+  int32 data_type;
+  string value;
+};
+
+struct TrainingInstance {
+  array<Covariate> covariates; 
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -23,11 +26,11 @@ interface PageHandlerFactory {
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   // Gets the ad store info.
-  GetAdStoreInfo();
+  GetDataStoreInfo();
 };
 
 // Renderer-side handler for internal page to process the updates from
 // the federated service.
 interface Page {
-  OnAdStoreInfoAvailable(array<AdStoreLog> ad_store_logs);
+  OnDataStoreInfoAvailable(array<TrainingInstance> training_instances);
 };

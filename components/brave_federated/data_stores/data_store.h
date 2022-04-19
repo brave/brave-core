@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "sql/database.h"
 
 namespace brave_federated {
@@ -22,6 +23,7 @@ FORWARD_DECLARE_TEST(AdNotificationTimingDataStoreTest,
 class DataStore {
  public:
   explicit DataStore(const base::FilePath& database_path);
+  ~DataStore();
 
   DataStore(const DataStore&) = delete;
   DataStore& operator=(const DataStore&) = delete;
@@ -30,10 +32,15 @@ class DataStore {
             const std::string& task_name,
             int max_number_of_records,
             int max_retention_days);
-  bool DeleteLogs();
+
+  typedef base::flat_map<int, std::vector<mojom::CovariatePtr>> TrainingData;
+
+  bool AddTrainingInstance(const mojom::TrainingInstancePtr training_instance);
+  bool DeleteTrainingData();
+  TrainingData LoadTrainingData();
   void EnforceRetentionPolicy();
 
-  virtual ~DataStore();
+  void AddTrainingInstancesForTesting();
 
  protected:
   friend class DataStoreTest;
@@ -50,7 +57,7 @@ class DataStore {
   int max_retention_days_;
 
  private:
-  virtual bool EnsureTable();
+  bool EnsureTable();
 
   SEQUENCE_CHECKER(sequence_checker_);
 };
