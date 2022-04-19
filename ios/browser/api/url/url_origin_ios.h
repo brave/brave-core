@@ -70,7 +70,9 @@ NS_SWIFT_NAME(URLOrigin)
 
 /// An ASCII serialization of the Origin as per Section 6.2 of RFC 6454, with
 /// the addition that all Origins with a 'file' scheme serialize to "file://".
-@property(readonly) NSString* serialized;
+///
+/// Returns nil if opaque
+@property(readonly, nullable) NSString* serialized;
 
 /// Efficiently returns what GURL(Serialize()) would without re-parsing the
 /// URL. This can be used for the (rare) times a GURL representation is needed
@@ -82,7 +84,9 @@ NS_SWIFT_NAME(URLOrigin)
 /// Try not to use this method under normal circumstances, as it loses type
 /// information. Downstream consumers can mistake the returned GURL with a full
 /// URL (e.g. with a path component).
-@property(readonly) NSURL* url;
+///
+/// Returns nil if opaque
+@property(readonly, nullable) NSURL* url;
 
 /// Non-opaque origin is "same-origin" with `url` if their schemes, hosts, and
 /// ports are exact matches.  Opaque origin is never "same-origin" with any

@@ -7,6 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
+#include "brave/ios/browser/api/url/url_origin_ios+private.h"
 #include "net/base/mac/url_conversions.h"
 
 namespace brave_wallet {
@@ -16,7 +17,7 @@ void BraveWalletProviderDelegateBridge::ShowPanel() {
 }
 
 url::Origin BraveWalletProviderDelegateBridge::GetOrigin() const {
-  return url::Origin::Create(net::GURLWithNSURL([bridge_ getOrigin]));
+  return url::Origin([[bridge_ getOrigin] underlyingOrigin]);
 }
 
 void BraveWalletProviderDelegateBridge::RequestEthereumPermissions(
