@@ -2,7 +2,7 @@ import * as React from 'react'
 import theme from 'brave-ui/theme/colors/'
 
 interface CustomReferenceDotProps {
-  cx: number
+  cx: string
   cy: number
   isAsset: boolean
   isDown: boolean
