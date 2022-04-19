@@ -2221,9 +2221,38 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
 // Test cosmetic filtering on an element that already has an `!important`
 // marker on its `display` style.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       CosmeticFilteringOverridesImportant) {
+                       DISABLED_CosmeticFilteringOverridesImportant) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("###inline-block-important");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto result_first = EvalJs(contents,
+                             R"(async function waitCSSSelector() {
+          if (await checkSelector('#inline-block-important', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.error('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result_first.error.empty());
+  EXPECT_EQ(base::Value(true), result_first.value);
+}
+
+// Test cosmetic filtering on an element that already has an `!important`
+// marker on its `display` style, from an engine without the first-party
+// exception policy.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CustomCosmeticFilteringOverridesImportant) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateCustomAdBlockInstanceWithRules("###inline-block-important");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");

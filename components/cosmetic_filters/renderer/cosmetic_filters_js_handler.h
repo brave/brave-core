@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_COSMETIC_FILTERS_RENDERER_COSMETIC_FILTERS_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_RENDERER_COSMETIC_FILTERS_JS_HANDLER_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -69,11 +68,9 @@ class CosmeticFiltersJSHandler {
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);
 
-  void InjectStylesheet(const std::string& stylesheet, int id);
-  void UninjectStylesheet(int id);
+  void InjectStylesheet(const std::string& stylesheet);
 
   bool generichide_ = false;
-  std::map<int, std::unique_ptr<blink::WebString>> inserted_stylesheet_ids;
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
