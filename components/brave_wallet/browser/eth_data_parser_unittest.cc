@@ -13,6 +13,30 @@
 
 namespace brave_wallet {
 
+void TestGetTransactionInfoFromData(const std::string& data,
+                                    bool expected_result,
+                                    mojom::TransactionType expected_tx_type,
+                                    std::vector<std::string> expected_tx_params,
+                                    std::vector<std::string> expected_tx_args) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+
+  ASSERT_EQ(expected_result,
+            GetTransactionInfoFromData(data, &tx_type, &tx_params, &tx_args));
+  ASSERT_EQ(tx_type, expected_tx_type);
+  ASSERT_EQ(tx_params.size(), expected_tx_params.size());
+  ASSERT_EQ(tx_args.size(), expected_tx_args.size());
+
+  for (int i = 0; i < static_cast<int>(tx_params.size()); i++) {
+    ASSERT_EQ(tx_params[i], expected_tx_params[i]);
+  }
+
+  for (int i = 0; i < static_cast<int>(tx_args.size()); i++) {
+    ASSERT_EQ(tx_args[i], expected_tx_args[i]);
+  }
+}
+
 TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
@@ -170,56 +194,97 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
-  mojom::TransactionType tx_type;
-  std::vector<std::string> tx_params;
-  std::vector<std::string> tx_args;
-  ASSERT_TRUE(GetTransactionInfoFromData(
-      "0xf242432a00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe"
-      "5200000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52000000"
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000000000010000000000000000000000"
-      "0000000000000000000000000000000000000000a0000000000000000000000000000000"
-      "0000000000000000000000000000000000",
-      &tx_type, &tx_params, &tx_args));
-  ASSERT_EQ(tx_type, mojom::TransactionType::ERC1155SafeTransferFrom);
-  ASSERT_EQ(tx_params.size(), 5UL);
-  EXPECT_EQ(tx_params[0], "address");
-  EXPECT_EQ(tx_params[1], "address");
-  EXPECT_EQ(tx_params[2], "uint256");
-  EXPECT_EQ(tx_params[3], "uint256");
-  EXPECT_EQ(tx_params[4], "bytes");
-  ASSERT_EQ(tx_args.size(), 5UL);
-  EXPECT_EQ(tx_args[0], "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52");
-  EXPECT_EQ(tx_args[1], "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52");
-  EXPECT_EQ(tx_args[2], "0x0");
-  EXPECT_EQ(tx_args[3], "0x1");
-  EXPECT_EQ(
-      tx_args[4],
-      "0x0000000000000000000000000000000000000000000000000000000000000000");
+  // Valid empty bytes
+  TestGetTransactionInfoFromData(
+      "0xf242432a"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      true, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{"address", "address", "uint256", "uint256",
+                               "bytes"},
+      std::vector<std::string>{"0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                               "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                               "0x0", "0x1", "0x"});
 
-  // Missing a char for the last param
-  EXPECT_FALSE(GetTransactionInfoFromData(
-      "0xf242432a00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe"
-      "5200000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52000000"
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000000000010000000000000000000000"
-      "0000000000000000000000000000000000000000a0000000000000000000000000000000"
-      "000000000000000000000000000000000",
-      &tx_type, &tx_params, &tx_args));
+  // Valid empty bytes with extra tail data
+  TestGetTransactionInfoFromData(
+      "0xf242432a"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      true, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{"address", "address", "uint256", "uint256",
+                               "bytes"},
+      std::vector<std::string>{"0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                               "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                               "0x0", "0x1", "0x"});
 
-  // Incorrect offset in last (data) param, should 0xa0
-  EXPECT_FALSE(GetTransactionInfoFromData(
-      "0xf242432a00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe"
-      "5200000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52000000"
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000000000010000000000000000000000"
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "0000000000000000000000000000000000",
-      &tx_type, &tx_params, &tx_args));
+  // Valid non empty bytes
+  TestGetTransactionInfoFromData(
+      "0xf242432a"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "0000000000000000000000000000000000000000000000000000000000000010"
+      "0000000000000000000000000000000100000000000000000000000000000000",
+      true, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{"address", "address", "uint256", "uint256",
+                               "bytes"},
+      std::vector<std::string>{"0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                               "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                               "0x0", "0x1",
+                               "0x00000000000000000000000000000001"});
 
-  // No params
-  EXPECT_FALSE(
-      GetTransactionInfoFromData("0xf242432a", &tx_type, &tx_params, &tx_args));
+  // Invalid non empty bytes (length parameter too large)
+  TestGetTransactionInfoFromData(
+      "0xf242432a"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "0000000000000000000000000000000000000000000000000000000000000030"
+      "0000000000000000000000000000000100000000000000000000000000000000",
+      false, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{}, std::vector<std::string>{});
+
+  // Invalid (missing length)
+  TestGetTransactionInfoFromData(
+      "0xf242432a"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "00000000000000000000000000000000000000000000000000000000000000a0",
+      false, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{}, std::vector<std::string>{});
+
+  // Invalid (incorrect offset)
+  TestGetTransactionInfoFromData(
+      "0xf242432a"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d85977fe52"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      false, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{}, std::vector<std::string>{});
+
+  // Invalid (no params)
+  TestGetTransactionInfoFromData(
+      "0xf242432a", false, mojom::TransactionType::ERC1155SafeTransferFrom,
+      std::vector<std::string>{}, std::vector<std::string>{});
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataOther) {

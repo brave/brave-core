@@ -163,7 +163,7 @@ bool SafeTransferFrom(const std::string& from,
   // The receiver_data_arg is hardcoded as empty bytes to support basic
   // transfers only. It consists of two 32 byte parts. The first 32 bytes
   // specify the offset of SafeTransferFrom calldata where the parameter starts.
-  // The second 32 bytes is the data.
+  // The second 32 bytes is the length of the data.
   //
   // Since the preceding four arguments in the calldata
   // (to, from, id, amount) are all of fixed size (32 bytes), we can always
@@ -172,7 +172,7 @@ bool SafeTransferFrom(const std::string& from,
       "0x"
       // Offset
       "00000000000000000000000000000000000000000000000000000000000000a0"
-      // The empty bytes
+      // The length of the bytes
       "0000000000000000000000000000000000000000000000000000000000000000";
 
   std::vector<std::string> hex_strings = {function_hash, padded_from,

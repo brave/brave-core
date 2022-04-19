@@ -25,6 +25,8 @@ bool GetBytesHexFromSafeTransferFromData(const std::string& input,
   if (input.length() < 64 * 2) {
     return false;
   }
+
+  // Check calldata offset is as expected
   const std::string expected_offset =
       "00000000000000000000000000000000000000000000000000000000000000a0";
   const std::string offset = input.substr(0, 64);
@@ -32,8 +34,24 @@ bool GetBytesHexFromSafeTransferFromData(const std::string& input,
     return false;
   }
 
-  *arg = "0x" + input.substr(64);
+  // Split off the offset (32 bytes)
+  std::string left_over = input.substr(64);
 
+  // Fetch the length off the data
+  uint256_t length;
+  if (!brave_wallet::HexValueToUint256("0x" + left_over.substr(0, 64),
+                                       &length)) {
+    return false;
+  }
+
+  // Split off the data length (32 bytes)
+  left_over = left_over.substr(64);
+
+  // Fetch the data starting at the offset for `length` bytes
+  if (left_over.length() < static_cast<size_t>(length * 2)) {
+    return false;
+  }
+  *arg = "0x" + left_over.substr(0, static_cast<size_t>(length * 2));
   return true;
 }
 
