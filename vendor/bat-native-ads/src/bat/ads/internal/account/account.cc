@@ -12,7 +12,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/account/deposits/deposit_base.h"
+#include "bat/ads/internal/account/deposits/deposit_interface.h"
 #include "bat/ads/internal/account/deposits/deposits_factory.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers.h"
@@ -103,7 +103,7 @@ void Account::Deposit(const std::string& creative_instance_id,
   DCHECK_NE(AdType::kUndefined, ad_type.value());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 
-  std::unique_ptr<DepositBase> deposit =
+  std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(confirmation_type);
   DCHECK(deposit);
 

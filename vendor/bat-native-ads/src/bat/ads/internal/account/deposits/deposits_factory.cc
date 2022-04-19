@@ -7,12 +7,12 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/deposits/cash_deposit.h"
-#include "bat/ads/internal/account/deposits/deposit_base.h"
+#include "bat/ads/internal/account/deposits/deposit_interface.h"
 #include "bat/ads/internal/account/deposits/non_cash_deposit.h"
 
 namespace ads {
 
-std::unique_ptr<DepositBase> DepositsFactory::Build(
+std::unique_ptr<DepositInterface> DepositsFactory::Build(
     const ConfirmationType& confirmation_type) {
   switch (confirmation_type.value()) {
     case ConfirmationType::kViewed: {

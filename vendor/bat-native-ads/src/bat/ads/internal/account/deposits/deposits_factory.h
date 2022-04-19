@@ -8,14 +8,15 @@
 
 #include <memory>
 
+#include "bat/ads/internal/account/deposits/deposit_interface.h"
+
 namespace ads {
 
 class ConfirmationType;
-class DepositBase;
 
 class DepositsFactory final {
  public:
-  static std::unique_ptr<DepositBase> Build(
+  static std::unique_ptr<DepositInterface> Build(
       const ConfirmationType& confirmation_type);
 };
 
