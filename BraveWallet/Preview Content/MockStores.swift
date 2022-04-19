@@ -149,7 +149,11 @@ extension TransactionConfirmationStore {
       blockchainRegistry: MockBlockchainRegistry(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
-      keyringService: MockKeyringService()
+      keyringService: {
+        let service = MockKeyringService()
+        service.createWallet("password") { _  in }
+        return service
+      }()
     )
   }
 }

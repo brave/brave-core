@@ -26,7 +26,12 @@ extension String {
   var removingHexPrefix: String {
     hasPrefix("0x") ? String(dropFirst(2)) : self
   }
-  
+
+  /// Adds the `0x` prefix that if it does not exist on the string
+  var addingHexPrefix: String {
+    hasPrefix("0x") ? self : "0x\(self)"
+  }
+
   /// Check if the string is a valid ETH address
   var isETHAddress: Bool {
     // An address has to start with `0x`

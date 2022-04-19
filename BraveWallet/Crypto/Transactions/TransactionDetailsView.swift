@@ -56,7 +56,11 @@ struct TransactionDetailsView: View {
       if let contractAddress = info.txDataUnion.ethTxData1559?.baseData.to,
          let value = info.txArgs[safe: 1],
          let token = token(for: contractAddress) {
-        amount = formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+        if value.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame {
+          amount = Strings.Wallet.editPermissionsApproveUnlimited
+        } else {
+          amount = formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+        }
         return String(format: "%@ %@", amount, token.symbol)
       } else {
         return "0.0"
