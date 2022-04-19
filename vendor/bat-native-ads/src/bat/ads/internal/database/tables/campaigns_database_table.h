@@ -10,14 +10,14 @@
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
 namespace table {
 
-class Campaigns final : public Table {
+class Campaigns final : public TableInterface {
  public:
   Campaigns();
   ~Campaigns() override;

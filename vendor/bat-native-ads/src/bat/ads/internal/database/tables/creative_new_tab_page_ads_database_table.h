@@ -12,7 +12,7 @@
 #include "base/check_op.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table_aliases.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -29,7 +29,7 @@ class Deposits;
 class GeoTargets;
 class Segments;
 
-class CreativeNewTabPageAds final : public Table {
+class CreativeNewTabPageAds final : public TableInterface {
  public:
   CreativeNewTabPageAds();
   ~CreativeNewTabPageAds() override;
