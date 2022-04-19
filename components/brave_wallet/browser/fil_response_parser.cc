@@ -85,4 +85,16 @@ bool ParseFilStateSearchMsgLimited(const std::string& json,
   return base::StringToInt64(*code_value, exit_code);
 }
 
+bool ParseSendFilecoinTransaction(const std::string& json, std::string* cid) {
+  base::Value result;
+  if (!cid || !ParseResult(json, &result))
+    return false;
+
+  auto* cid_value = result.FindStringKey("/");
+  if (!cid_value)
+    return false;
+  *cid = *cid_value;
+  return true;
+}
+
 }  // namespace brave_wallet

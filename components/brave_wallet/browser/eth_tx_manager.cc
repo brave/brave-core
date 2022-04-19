@@ -543,7 +543,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
         false,
         mojom::ProviderErrorUnion::NewProviderError(
             mojom::ProviderError::kInternalError),
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SIGN_TRANSACTION_ERROR));
+        l10n_util::GetStringUTF8(IDS_WALLET_SIGN_TRANSACTION_ERROR));
     return;
   }
   PublishTransaction(meta->id(), meta->tx()->GetSignedTransaction(),

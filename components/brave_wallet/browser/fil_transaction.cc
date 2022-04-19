@@ -9,13 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
@@ -40,14 +37,12 @@ FilTransaction::FilTransaction(absl::optional<uint64_t> nonce,
                                const std::string& max_fee,
                                const FilAddress& to,
                                const FilAddress& from,
-                               const std::string& value,
-                               const std::string& cid)
+                               const std::string& value)
     : nonce_(nonce),
       gas_premium_(gas_premium),
       gas_fee_cap_(gas_fee_cap),
       gas_limit_(gas_limit),
       max_fee_(max_fee),
-      cid_(cid),
       to_(to),
       from_(from),
       value_(value) {}
@@ -58,7 +53,7 @@ bool FilTransaction::IsEqual(const FilTransaction& tx) const {
   return nonce_ == tx.nonce_ && gas_premium_ == tx.gas_premium_ &&
          gas_fee_cap_ == tx.gas_fee_cap_ && gas_limit_ == tx.gas_limit_ &&
          max_fee_ == tx.max_fee_ && to_ == tx.to_ && from_ == tx.from_ &&
-         value_ == tx.value_ && cid_ == tx.cid_;
+         value_ == tx.value_;
 }
 
 bool FilTransaction::operator==(const FilTransaction& other) const {
@@ -74,7 +69,7 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
     const mojom::FilTxDataPtr& tx_data) {
   FilTransaction tx;
   uint64_t nonce = 0;
-  if (!tx_data->nonce.empty() && base::StringToUint64(tx_data->nonce, &nonce)) {
+  if (tx_data->nonce.empty() || base::StringToUint64(tx_data->nonce, &nonce)) {
     tx.nonce_ = nonce;
   }
 
@@ -117,7 +112,7 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
 base::Value FilTransaction::ToValue() const {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("Nonce",
-                    nonce_ ? base::NumberToString(nonce_.value()) : "");
+                    nonce_ ? base::NumberToString(nonce_.value()) : "0");
   dict.SetStringKey("GasPremium", gas_premium_);
   dict.SetStringKey("GasFeeCap", gas_fee_cap_);
   dict.SetStringKey("MaxFee", max_fee_);
@@ -179,7 +174,7 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
   return tx;
 }
 
-std::string FilTransaction::GetMessageToSign() const {
+absl::optional<std::string> FilTransaction::GetMessageToSign() const {
   auto value = ToValue();
   value.RemoveKey("MaxFee");
   value.SetIntKey("MethodNum", 0);
@@ -187,10 +182,12 @@ std::string FilTransaction::GetMessageToSign() const {
   value.SetStringKey("Params", "");
   std::string json;
   base::JSONWriter::Write(value, &json);
+
   std::string converted_json =
-      json::convert_string_value_to_int64("/GasLimit", json.c_str(), false).c_str();
+      json::convert_string_value_to_int64("/GasLimit", json.c_str(), false)
+          .c_str();
   if (converted_json.empty())
-    return std::string();
+    return absl::nullopt;
   converted_json = json::convert_string_value_to_uint64(
                        "/Nonce", converted_json.c_str(), false)
                        .c_str();
@@ -201,8 +198,9 @@ std::string FilTransaction::GetMessageToSign() const {
 absl::optional<std::string> FilTransaction::GetSignedTransaction(
     const std::string& private_key_base64) const {
   auto message = GetMessageToSign();
-  std::string data(
-      filecoin::transaction_sign(message, private_key_base64).c_str());
+  if (!message)
+    return absl::nullopt;
+  std::string data(filecoin::transaction_sign(*message, private_key_base64));
   if (data.empty())
     return absl::nullopt;
   base::Value dict(base::Value::Type::DICTIONARY);
@@ -218,15 +216,15 @@ absl::optional<std::string> FilTransaction::GetSignedTransaction(
   std::string json;
   if (!base::JSONWriter::Write(dict, &json))
     return absl::nullopt;
-  base::ReplaceFirstSubstringAfterOffset(&json, 0, "\"{message}\"", message);
+  base::ReplaceFirstSubstringAfterOffset(&json, 0, "\"{message}\"", *message);
   return json;
 }
 
 mojom::FilTxDataPtr FilTransaction::ToFilTxData() const {
-  return mojom::FilTxData::New(nonce() ? base::NumberToString(*nonce()) : "",
-                               gas_premium(), gas_fee_cap(),
-                               base::NumberToString(gas_limit()), max_fee(),
-                               to().EncodeAsString(), value());
+  return mojom::FilTxData::New(
+      nonce() ? base::NumberToString(*nonce()) : "", gas_premium(),
+      gas_fee_cap(), base::NumberToString(gas_limit()), max_fee(),
+      to().EncodeAsString(), from().EncodeAsString(), value());
 }
 
 }  // namespace brave_wallet

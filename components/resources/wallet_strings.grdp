@@ -32,7 +32,7 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED" desc="The text of the response for eth_sendTransaction">User rejected the transaction</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_ERROR" desc="The text of the response for eth_sendTransaction">Error processing the transaction</message>
   <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
-  <message name="IDS_WALLET_ETH_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
+  <message name="IDS_WALLET_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
   <message name="IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC" desc="Invalid Chain ID response">Invalid chain ID response from RPC service</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>
   <message name="IDS_WALLET_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>

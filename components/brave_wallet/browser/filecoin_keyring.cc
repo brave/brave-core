@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
@@ -15,6 +14,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -140,6 +140,18 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
              hd_key->GetUncompressedPublicKey(),
              mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet)
       .EncodeAsString();
+}
+
+absl::optional<std::string> FilecoinKeyring::SignTransaction(
+    const FilTransaction* tx) {
+  if (!tx)
+    return absl::nullopt;
+  auto address = tx->from().EncodeAsString();
+  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  if (!hd_key)
+    return absl::nullopt;
+  std::string private_key = base::Base64Encode(hd_key->private_key());
+  return tx->GetSignedTransaction(private_key);
 }
 
 }  // namespace brave_wallet

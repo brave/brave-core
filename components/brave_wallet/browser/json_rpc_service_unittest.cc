@@ -763,7 +763,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
     EXPECT_TRUE(callback_called);
   }
-
+  void GetSendFilecoinTransaction(const std::string& signed_tx,
+                                  const std::string& expected_cid,
+                                  mojom::FilecoinProviderError expected_error,
+                                  const std::string& expected_error_message) {
+    bool callback_called = false;
+    base::RunLoop run_loop;
+    json_rpc_service_->SendFilecoinTransaction(
+        signed_tx,
+        base::BindLambdaForTesting([&](const std::string& cid,
+                                       mojom::FilecoinProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(cid, expected_cid);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          callback_called = true;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    EXPECT_TRUE(callback_called);
+  }
   void TestGetSPLTokenAccountBalance(
       const std::string& expected_amount,
       uint8_t expected_decimals,
@@ -3694,6 +3713,47 @@ TEST_F(JsonRpcServiceUnitTest, GetFilStateSearchMsgLimited) {
   GetFilStateSearchMsgLimited(
       "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30,
       INT64_MIN, mojom::FilecoinProviderError::kSuccess, "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, SendFilecoinTransaction) {
+  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolPush", "",
+                 R"({
+                   "id": 1,
+                   "jsonrpc": "2.0",
+                   "result": {
+                     "/": "cid"
+                   }
+                 })");
+  GetSendFilecoinTransaction("{}", "cid",
+                             mojom::FilecoinProviderError::kSuccess, "");
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolPush", "", R"(
+    {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "error":{
+          "code":-32602,
+          "message":"wrong param count"
+        }
+  })");
+  GetSendFilecoinTransaction("{}", "",
+                             mojom::FilecoinProviderError::kInvalidParams,
+                             "wrong param count");
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolPush", "", "");
+  GetSendFilecoinTransaction(
+      "{}", "", mojom::FilecoinProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  GetSendFilecoinTransaction(
+      "broken json", "", mojom::FilecoinProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  GetSendFilecoinTransaction(
+      "", "", mojom::FilecoinProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet
