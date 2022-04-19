@@ -615,7 +615,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           selectedNetwork={selectedNetwork}
                           networkList={[]}
                           selectedBuyOption={selectedBuyOption}
-                          onSelectBuyOption={option => setSelectedBuyOption(option)}
+                          onSelectBuyOption={setSelectedBuyOption}
                           rampAssetOptions={mockAccountAssetOptions}
                           wyreAssetOptions={mockAccountAssetOptions}/>
                       }
