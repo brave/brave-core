@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import { mockBasicAttentionToken, mockEthToken } from '../../../stories/mock-data/mock-asset-options'
 import { BraveWallet, GetChecksumEthAddressReturnInfo, GetEthAddrReturnInfo } from '../../../constants/types'
 
@@ -73,4 +78,13 @@ export const findUnstoppableDomainAddress = async (address: string) => {
 
 export const getChecksumEthAddress = async () => {
   return {} as GetChecksumEthAddressReturnInfo
+}
+
+export const isStrongPassword = (value: string) => {
+  return (
+    (value.length > 7) && // is at least 7 characters
+    /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/g.test(value) && // contains a special character
+    value.toLowerCase() !== value && // contains an uppercase character
+    /\d/.test(value) // contains a number
+  )
 }

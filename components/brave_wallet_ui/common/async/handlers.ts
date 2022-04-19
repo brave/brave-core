@@ -232,6 +232,41 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appIt
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.chainChangedEvent.getType(), async (store: Store, payload: ChainChangedEventPayloadType) => {
+  const keyringService = getAPIProxy().keyringService
+  const state = getWalletState(store)
+  const { accounts } = state
+  const selectedAccountAddress = await keyringService.getSelectedAccount(payload.coin)
+  const selectedAccount = accounts.find((account) => account.address === selectedAccountAddress.address) ?? accounts[0]
+  store.dispatch(WalletActions.setSelectedAccount(selectedAccount))
+  store.dispatch(WalletActions.setSelectedCoin(payload.coin))
+})
+
+handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: BraveWallet.NetworkInfo) => {
+  if (payload) {
+    const jsonRpcService = getAPIProxy().jsonRpcService
+    await jsonRpcService.setNetwork(payload.chainId, payload.coin)
+    store.dispatch(WalletActions.setNetwork(payload))
+  }
+})
+
+handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: WalletAccountType) => {
+  const { keyringService } = getAPIProxy()
+  const state = getWalletState(store)
+  const { defaultNetworks } = state
+
+  if (!(defaultNetworks.length > 0)) {
+    return
+  }
+
+  const defaultCoinTypesNetwork = defaultNetworks.find((network) => network.coin === payload.coin) ?? defaultNetworks[0]
+  await keyringService.setSelectedAccount(payload.address, payload.coin)
+  store.dispatch(WalletActions.setNetwork(defaultCoinTypesNetwork))
+  store.dispatch(WalletActions.setSelectedAccount(payload))
+  store.dispatch(WalletActions.setSelectedCoin(payload.coin))
+  await store.dispatch(refreshTransactionHistory(payload.address))
+})
+
 handler.on(WalletActions.initialized.getType(), async (store: Store, payload: WalletInfo) => {
   const keyringService = getAPIProxy().keyringService
   const state = getWalletState(store)

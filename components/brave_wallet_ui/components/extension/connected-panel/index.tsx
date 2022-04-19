@@ -1,4 +1,29 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { create, background } from 'ethereum-blockies'
+
+// Utils
+import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '../../../utils/reduce-address'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
+import Amount from '../../../utils/amount'
+
+// Hooks
+import { useExplorer, usePricing } from '../../../common/hooks'
+
+// types
+import {
+  WalletAccountType,
+  PanelTypes,
+  BraveWallet,
+  BuySupportedChains,
+  DefaultCurrencies
+} from '../../../constants/types'
 
 // Components
 import {
@@ -25,25 +50,6 @@ import {
   MoreAssetsButton
 } from './style'
 
-// Utils
-import { reduceAddress } from '../../../utils/reduce-address'
-import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import Amount from '../../../utils/amount'
-
-// Hooks
-import { useExplorer, usePricing } from '../../../common/hooks'
-
-import {
-  WalletAccountType,
-  PanelTypes,
-  BraveWallet,
-  BuySupportedChains,
-  DefaultCurrencies
-} from '../../../constants/types'
-import { create, background } from 'ethereum-blockies'
-import { getLocale } from '../../../../common/locale'
-
 export interface Props {
   spotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType
@@ -53,14 +59,12 @@ export interface Props {
   isSwapSupported: boolean
   defaultCurrencies: DefaultCurrencies
   navAction: (path: PanelTypes) => void
-  onLockWallet: () => void
   onOpenSettings: () => void
 }
 
-const ConnectedPanel = (props: Props) => {
+export const ConnectedPanel = (props: Props) => {
   const {
     spotPrices,
-    onLockWallet,
     onOpenSettings,
     isConnected,
     isSwapSupported,
@@ -70,34 +74,42 @@ const ConnectedPanel = (props: Props) => {
     originInfo,
     defaultCurrencies
   } = props
+
+  // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
 
-  const navigate = (path: PanelTypes) => () => {
+  // custom hooks
+  const { computeFiatAmount } = usePricing(spotPrices)
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+
+  // methods
+  const navigate = React.useCallback((path: PanelTypes) => () => {
     navAction(path)
-  }
+  }, [navAction])
 
-  const onExpand = () => {
+  const onExpand = React.useCallback(() => {
     navAction('expanded')
-  }
+  }, [navAction])
 
-  const onShowSitePermissions = () => {
+  const onShowSitePermissions = React.useCallback(() => {
     navAction('sitePermissions')
-  }
+  }, [navAction])
 
-  const onShowMore = () => {
+  const onShowMore = React.useCallback(() => {
     setShowMore(true)
-  }
+  }, [])
 
-  const onHideMore = () => {
+  const onHideMore = React.useCallback(() => {
     if (showMore) {
       setShowMore(false)
     }
-  }
+  }, [showMore])
 
-  const onCopyToClipboard = async () => {
+  const onCopyToClipboard = React.useCallback(async () => {
     await copyToClipboard(selectedAccount.address)
-  }
+  }, [selectedAccount.address])
 
+  // memos
   const bg = React.useMemo(() => {
     return background({ seed: selectedAccount.address.toLowerCase() })
   }, [selectedAccount.address])
@@ -110,23 +122,20 @@ const ConnectedPanel = (props: Props) => {
     return !BuySupportedChains.includes(selectedNetwork.chainId)
   }, [BuySupportedChains, selectedNetwork])
 
-  const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
-    .divideByDecimals(selectedNetwork.decimals)
-    .formatAsAsset(6, selectedNetwork.symbol)
-
-  const { computeFiatAmount } = usePricing(spotPrices)
-
   const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
     selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
   ), [computeFiatAmount, selectedNetwork, selectedAccount])
 
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  // computed
+  const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
+    .divideByDecimals(selectedNetwork.decimals)
+    .formatAsAsset(6, selectedNetwork.symbol)
 
+  // render
   return (
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
       <ConnectedHeader
         onExpand={onExpand}
-        onClickLock={onLockWallet}
         onClickSetting={onOpenSettings}
         onClickMore={onShowMore}
         onClickViewOnBlockExplorer={onClickViewOnBlockExplorer('address', selectedAccount.address)}

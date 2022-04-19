@@ -24,7 +24,7 @@ import TransactionPopup from './transaction-popup'
 import SwapTooltip from './swap-tooltip'
 import WithHideBalancePlaceholder from './with-hide-balance-placeholder'
 import NetworkFilterSelector from './network-filter-selector'
-import { CryptoView, PortfolioView } from './views'
+import { CryptoView, PortfolioAsset, PortfolioOverview } from './views'
 import {
   OnboardingWelcome,
   OnboardingBackup,
@@ -49,7 +49,8 @@ export {
   PortfolioTransactionItem,
   AddButton,
   CryptoView,
-  PortfolioView,
+  PortfolioAsset,
+  PortfolioOverview,
   OnboardingWelcome,
   OnboardingBackup,
   OnboardingRecovery,

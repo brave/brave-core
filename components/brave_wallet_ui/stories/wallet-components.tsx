@@ -1,6 +1,4 @@
 import * as React from 'react'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
 import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout, OnboardingVerify } from '../components/desktop'
@@ -10,25 +8,11 @@ import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import Onboarding from './screens/onboarding'
 import './locale'
-import { mockRecoveryPhrase } from './mock-data/user-accounts'
 import BackupWallet from './screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
-import { createStore, combineReducers } from 'redux'
-import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
-import { createWalletReducer } from '../common/reducers/wallet_reducer'
-import { createPageReducer } from '../page/reducers/page_reducer'
-import { mockPageState } from './mock-data/mock-page-state'
-import { mockWalletState } from './mock-data/mock-wallet-state'
-import { mockSendCryptoState } from './mock-data/send-crypto-state'
-import * as Lib from '../common/async/__mocks__/lib'
-import { LibContext } from '../common/context/lib.context'
-
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState),
-  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-}))
+import WalletPageStory from './wrappers/wallet-page-story-wrapper'
+import { mockedMnemonic } from './mock-data/user-accounts'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -104,17 +88,13 @@ _LineChartControls.story = {
 
 export const _Onboarding = () => {
   return (
-    <Provider store={store}>
-      <LibContext.Provider value={Lib as any}>
-        <BrowserRouter>
-          <WalletPageLayout>
-            <WalletSubViewLayout>
-              <Onboarding />
-            </WalletSubViewLayout>
-          </WalletPageLayout>
-        </BrowserRouter>
-      </LibContext.Provider>
-    </Provider>
+    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
+      <WalletPageLayout>
+        <WalletSubViewLayout>
+          <Onboarding />
+        </WalletSubViewLayout>
+      </WalletPageLayout>
+    </WalletPageStory>
   )
 }
 
@@ -127,12 +107,14 @@ export const _BackupWallet = () => {
     alert('Wallet Setup Complete!!!')
   }
 
-  return <BackupWallet
-    recoveryPhrase={mockRecoveryPhrase}
-    onSubmit={complete}
-    onCancel={complete}
-    isOnboarding={true}
-  />
+  return (
+    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
+      <BackupWallet
+        onCancel={complete}
+        isOnboarding={true}
+      />
+    </WalletPageStory>
+  )
 }
 
 _BackupWallet.story = {
@@ -140,10 +122,13 @@ _BackupWallet.story = {
 }
 
 export const _OnboardingVerify = () => {
-  return <OnboardingVerify
-    recoveryPhrase={mockRecoveryPhrase}
-    onNextStep={() => console.log('done')}
-  />
+  return (
+    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
+      <OnboardingVerify
+        onNextStep={() => console.log('done')}
+      />
+    </WalletPageStory>
+  )
 }
 
 _OnboardingVerify.story = {

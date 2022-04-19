@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { combineReducers, createStore } from 'redux'
 import { WalletWidgetStandIn } from './style'
 import {
   WalletPageLayout,
@@ -21,7 +20,7 @@ import BackupWallet from './screens/backup-wallet'
 import CryptoStoryView from './screens/crypto-story-view'
 import './locale'
 import BuySendSwap from './screens/buy-send-swap'
-import { mockRecoveryPhrase, mockUserAccounts } from './mock-data/user-accounts'
+import { mockUserAccounts } from './mock-data/user-accounts'
 import { mockRPCResponse } from './mock-data/rpc-response'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { getLocale } from '../../common/locale'
@@ -30,23 +29,9 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
-import { Provider } from 'react-redux'
-import { createWalletReducer } from '../common/reducers/wallet_reducer'
-import { mockWalletState } from './mock-data/mock-wallet-state'
-import { mockPageState } from './mock-data/mock-page-state'
-import { createPageReducer } from '../page/reducers/page_reducer'
-import * as Lib from '../common/async/__mocks__/lib'
-import { LibContext } from '../common/context/lib.context'
 import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
-import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
-import { mockSendCryptoState } from './mock-data/send-crypto-state'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
-
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState),
-  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-}))
+import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 
 export default {
   title: 'Wallet/Desktop',
@@ -297,7 +282,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [isSolanaEnabled] = React.useState<boolean>(true)
   const [needsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
-  const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
+  const [needsBackup] = React.useState<boolean>(true)
   const [showBackup, setShowBackup] = React.useState<boolean>(false)
   const [inputValue, setInputValue] = React.useState<string>('')
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
@@ -309,7 +294,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importAccountError, setImportAccountError] = React.useState<boolean>(false)
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
-  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
   const [selectedBuyOption, setSelectedBuyOption] = React.useState<BraveWallet.OnRampProvider>(BraveWallet.OnRampProvider.kRamp)
 
   const onToggleRestore = () => {
@@ -322,10 +306,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   //   setView(path)
   // }
 
-  const onWalletBackedUp = () => {
-    setNeedsBackup(false)
-  }
-
   const unlockWallet = () => {
     if (inputValue !== 'password') {
       setHasPasswordError(true)
@@ -334,17 +314,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     }
   }
 
-  const lockWallet = () => {
-    setWalletLocked(true)
-  }
-
   const handlePasswordChanged = (value: string) => {
     setHasPasswordError(false)
     setInputValue(value)
-  }
-
-  const onUpdateAccountName = (): { success: boolean } => {
-    return { success: true }
   }
 
   const onShowBackup = () => {
@@ -423,14 +395,14 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     alert(name)
   }
 
-  const onImportAccount = (name: string, key: string, coin: BraveWallet.CoinType) => {
+  const onImportAccount = () => {
     // doesnt do anything in storybook
   }
-  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string) => {
+  const onImportFilecoinAccount = () => {
     // doesnt do anything in storybook
   }
 
-  const onImportAccountFromJson = (name: string, password: string, json: string) => {
+  const onImportAccountFromJson = () => {
     // doesnt do anything in storybook
   }
 
@@ -469,7 +441,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     })
   }
 
-  const getBalance = (address: string): Promise<string> => {
+  const getBalance = (): Promise<string> => {
     return new Promise(async (resolve) => {
       resolve('0')
     })
@@ -479,133 +451,114 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     console.log(accounts)
   }
 
-  const onViewPrivateKey = () => {
-    // Doesnt do anything in storybook
-  }
-
-  const onDoneViewingPrivateKey = () => {
-    // Doesnt do anything in storybook
-  }
-
   const onSetImportAccountError = (hasError: boolean) => setImportAccountError(hasError)
 
-  const defaultCurrencies = {
-    fiat: 'USD',
-    crypto: 'BTC'
-  }
-
-  const onShowVisibleAssetsModal = (value: boolean) => {
-    setShowVisibleAssetsModal(value)
-  }
-
   return (
-    <Provider store={store}>
-      <LibContext.Provider value={Lib as any}>
-        <WalletPageLayout>
-          {/* <SideNav
-            navList={NavOptions}
-            selectedButton={view}
-            onSubmit={navigateTo}
-          /> */}
-          <WalletSubViewLayout>
-            {isRestoring ? (
-              <OnboardingRestore />
-            ) : (
-              <>
-                {needsOnboarding
-                  ? (
-                    <Onboarding />
-                  ) : (
-                    <>
-                      {view === 'crypto' ? (
-                        <>
-                          {walletLocked ? (
-                            <LockScreen
-                              hasPasswordError={hasPasswordError}
-                              onSubmit={unlockWallet}
-                              disabled={inputValue === ''}
-                              onPasswordChanged={handlePasswordChanged}
-                              onShowRestore={onToggleRestore}
-                            />
-                          ) : (
-                            <>
-                              {showBackup ? (
-                                <BackupWallet
-                                  isOnboarding={false}
-                                  onCancel={onHideBackup}
-                                  onSubmit={onWalletBackedUp}
-                                  recoveryPhrase={mockRecoveryPhrase}
-                                />
-                              ) : (
-                                <CryptoStoryView
-                                  defaultCurrencies={defaultCurrencies}
-                                  onLockWallet={lockWallet}
-                                  needsBackup={needsBackup}
-                                  onShowBackup={onShowBackup}
-                                  accounts={accounts}
-                                  transactions={transactionDummyData}
-                                  userAssetList={userAssetList}
-                                  onCreateAccount={onCreateAccount}
-                                  onImportAccount={onImportAccount}
-                                  isFilecoinEnabled={isFilecoinEnabled}
-                                  isSolanaEnabled={isSolanaEnabled}
-                                  onImportFilecoinAccount={onImportFilecoinAccount}
-                                  onConnectHardwareWallet={onConnectHardwareWallet}
-                                  onAddHardwareAccounts={onAddHardwareAccounts}
-                                  getBalance={getBalance}
-                                  showAddModal={showAddModal}
-                                  onToggleAddModal={onToggleAddModal}
-                                  onUpdateAccountName={onUpdateAccountName}
-                                  selectedNetwork={selectedNetwork}
-                                  onRemoveAccount={onRemoveAccount}
-                                  privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
-                                  onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-                                  onViewPrivateKey={onViewPrivateKey}
-                                  networkList={mockNetworks}
-                                  onImportAccountFromJson={onImportAccountFromJson}
-                                  hasImportError={importAccountError}
-                                  onSetImportError={onSetImportAccountError}
-                                  transactionSpotPrices={[]}
-                                  userVisibleTokensInfo={[]}
-                                  onShowVisibleAssetsModal={onShowVisibleAssetsModal}
-                                  showVisibleAssetsModal={showVisibleAssetsModal}
-                                />
-                              )}
-                            </>
-                          )}
-                        </>
-                      ) : (
-                        <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                          <h2>{view} view</h2>
-                        </div>
-                      )}
-                    </>
-                  )}
-              </>
-            )}
+    <WalletPageStory>
+      <WalletPageLayout>
+        {/* <SideNav
+          navList={NavOptions}
+          selectedButton={view}
+          onSubmit={navigateTo}
+        /> */}
+        <WalletSubViewLayout>
+          {isRestoring ? (
+            <OnboardingRestore />
+          ) : (
+            <>
+              {needsOnboarding
+                ? (
+                  <Onboarding />
+                ) : (
+                  <>
+                    {view === 'crypto' ? (
+                      <>
+                        {walletLocked ? (
+                          <LockScreen
+                            hasPasswordError={hasPasswordError}
+                            onSubmit={unlockWallet}
+                            disabled={inputValue === ''}
+                            onPasswordChanged={handlePasswordChanged}
+                            onShowRestore={onToggleRestore}
+                          />
+                        ) : (
+                          <>
+                            {showBackup ? (
+                              <BackupWallet
+                                isOnboarding={false}
+                                onCancel={onHideBackup}
+                                onSubmit={onWalletBackedUp}
+                                recoveryPhrase={mockRecoveryPhrase}
+                              />
+                            ) : (
+                              <CryptoStoryView
+                                defaultCurrencies={defaultCurrencies}
+                                onLockWallet={lockWallet}
+                                needsBackup={needsBackup}
+                                onShowBackup={onShowBackup}
+                                accounts={accounts}
+                                transactions={transactionDummyData}
+                                userAssetList={userAssetList}
+                                onCreateAccount={onCreateAccount}
+                                onImportAccount={onImportAccount}
+                                isFilecoinEnabled={isFilecoinEnabled}
+                                isSolanaEnabled={isSolanaEnabled}
+                                onImportFilecoinAccount={onImportFilecoinAccount}
+                                onConnectHardwareWallet={onConnectHardwareWallet}
+                                onAddHardwareAccounts={onAddHardwareAccounts}
+                                getBalance={getBalance}
+                                showAddModal={showAddModal}
+                                onToggleAddModal={onToggleAddModal}
+                                onUpdateAccountName={onUpdateAccountName}
+                                selectedNetwork={selectedNetwork}
+                                onRemoveAccount={onRemoveAccount}
+                                privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
+                                onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                                onViewPrivateKey={onViewPrivateKey}
+                                networkList={mockNetworks}
+                                onImportAccountFromJson={onImportAccountFromJson}
+                                hasImportError={importAccountError}
+                                onSetImportError={onSetImportAccountError}
+                                transactionSpotPrices={[]}
+                                userVisibleTokensInfo={[]}
+                                onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+                                showVisibleAssetsModal={showVisibleAssetsModal}
+                              />
+                            )}
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <h2>{view} view</h2>
+                      </div>
+                    )}
+                  </>
+                )}
+            </>
+          )}
 
-          </WalletSubViewLayout>
-          {!needsOnboarding && !walletLocked &&
-            <WalletWidgetStandIn>
-              <BuySendSwap
-                selectedTab={selectedWidgetTab}
-                buyAmount={buyAmount}
-                onSubmitBuy={onSubmitBuy}
-                onSetBuyAmount={onSetBuyAmount}
-                onSelectAccount={onSelectAccount}
-                onSelectTab={setSelectedWidgetTab}
-                buyAssetOptions={mockAccountAssetOptions}
-                wyreAssetOptions={mockAccountAssetOptions}
-                rampAssetOptions={mockAccountAssetOptions}
-                selectedBuyOption={selectedBuyOption}
-                onSelectBuyOption={setSelectedBuyOption}
-              />
-              <SweepstakesBanner />
-            </WalletWidgetStandIn>
-          }
-        </WalletPageLayout>
-      </LibContext.Provider>
-    </Provider>
+        </WalletSubViewLayout>
+        {!needsOnboarding && !walletLocked &&
+          <WalletWidgetStandIn>
+            <BuySendSwap
+              selectedTab={selectedWidgetTab}
+              buyAmount={buyAmount}
+              onSubmitBuy={onSubmitBuy}
+              onSetBuyAmount={onSetBuyAmount}
+              onSelectAccount={onSelectAccount}
+              onSelectTab={setSelectedWidgetTab}
+              buyAssetOptions={mockAccountAssetOptions}
+              wyreAssetOptions={mockAccountAssetOptions}
+              rampAssetOptions={mockAccountAssetOptions}
+              selectedBuyOption={selectedBuyOption}
+              onSelectBuyOption={setSelectedBuyOption}
+            />
+            <SweepstakesBanner />
+          </WalletWidgetStandIn>
+        }
+      </WalletPageLayout>
+    </WalletPageStory>
   )
 }
 

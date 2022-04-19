@@ -62,7 +62,7 @@ const defaultState: WalletState = {
         isEip1559: true
       }
     }
-  } as BraveWallet.NetworkInfo,
+  },
   accounts: [],
   userVisibleTokensInfo: [],
   transactions: {},

@@ -4,55 +4,50 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators, Dispatch } from 'redux'
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
+// actions
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
-import store from './store'
 
-import 'emptykit.css'
-import '../../../ui/webui/resources/fonts/poppins.css'
-import '../../../ui/webui/resources/fonts/muli.css'
-
-import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
-import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
+// types
 import {
   BraveWallet,
   BuySendSwapTypes,
   PageState,
   UpdateAccountNamePayloadType,
   WalletAccountType,
-  WalletPageState,
   WalletRoutes,
   WalletState
 } from '../constants/types'
+
+// style
+import 'emptykit.css'
+import '../../../ui/webui/resources/fonts/poppins.css'
+import '../../../ui/webui/resources/fonts/muli.css'
+import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
+
+// components
+import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
-
-import {
-  getBalance,
-  getBuyAssetUrl,
-  onConnectHardwareWallet
-} from '../common/async/lib'
+import { Skeleton } from '../components/shared/loading-skeleton/styles'
 
 // Hooks
-import { useAssets } from '../common/hooks'
+import { useAssets, useLib } from '../common/hooks'
+import ProtectedRoute from '../components/shared/protected-routing/protected-route'
 
-type Props = {
-  wallet: WalletState
-  page: PageState
-  walletPageActions: typeof WalletPageActions
-  walletActions: typeof WalletActions
-}
-
-function Container (props: Props) {
+export const Container = () => {
+  // routing
   let history = useHistory()
   const { pathname: walletLocation } = useLocation()
-  // Wallet Props
+
+  // redux
+  const dispatch = useDispatch()
+
   const {
     isFilecoinEnabled,
     isSolanaEnabled,
@@ -61,40 +56,32 @@ function Container (props: Props) {
     isWalletBackedUp,
     hasIncorrectPassword,
     accounts,
-    networkList,
-    transactions,
     selectedNetwork,
     selectedAccount,
     hasInitialized,
-    transactionSpotPrices,
     defaultWallet,
-    isMetaMaskInstalled,
-    defaultCurrencies,
-    fullTokenList,
-    userVisibleTokensInfo
-  } = props.wallet
+    isMetaMaskInstalled
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  // Page Props
-  const {
-    mnemonic,
-    selectedTimeline,
-    selectedAsset,
-    setupStillInProgress,
-    privateKey,
-    importAccountError,
-    showAddModal
-  } = props.page
+  const setupStillInProgress = useSelector(({ page }: { page: PageState }) => page.setupStillInProgress)
+  const importAccountError = useSelector(({ page }: { page: PageState }) => page.importAccountError)
 
-  // const [view, setView] = React.useState<NavTypes>('crypto')
+  // state
+  const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
-  const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
-  const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [selectedBuyOption, setSelectedBuyOption] = React.useState<BraveWallet.OnRampProvider>(BraveWallet.OnRampProvider.kRamp)
 
+  // custom hooks
   const { buyAssetOptions, wyreAssetOptions, rampAssetOptions } = useAssets()
+  const {
+    getBalance,
+    getBuyAssetUrl,
+    onConnectHardwareWallet
+  } = useLib()
 
+  // methods
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
       // If a user has not yet created a wallet and clicks Restore
@@ -118,65 +105,44 @@ function Container (props: Props) {
   }
 
   const onSelectAccount = (account: WalletAccountType) => {
-    props.walletActions.selectAccount(account)
+    dispatch(WalletActions.selectAccount(account))
   }
 
-  const onBackupWallet = () => {
-    props.walletPageActions.walletBackupComplete()
-    history.goBack()
-  }
-
-  const unlockWallet = () => {
-    props.walletActions.unlockWallet({ password: inputValue })
+  const unlockWallet = React.useCallback(() => {
+    dispatch(WalletActions.unlockWallet({ password: inputValue }))
     setInputValue('')
-  }
+    if (sessionRoute) {
+      history.push(sessionRoute)
+    } else {
+      history.push(WalletRoutes.Portfolio)
+    }
+  }, [inputValue, sessionRoute])
 
-  const lockWallet = () => {
-    props.walletActions.lockWallet()
-  }
-
-  const onShowBackup = () => {
-    props.walletPageActions.showRecoveryPhrase(true)
-    history.push(WalletRoutes.Backup)
-  }
-
-  const onHideBackup = () => {
-    props.walletPageActions.showRecoveryPhrase(false)
+  const onHideBackup = React.useCallback(() => {
+    dispatch(WalletPageActions.showRecoveryPhrase(false))
     history.goBack()
-  }
+  }, [])
 
-  const handlePasswordChanged = (value: string) => {
+  const handlePasswordChanged = React.useCallback((value: string) => {
     setInputValue(value)
     if (hasIncorrectPassword) {
-      props.walletActions.hasIncorrectPassword(false)
+      dispatch(WalletActions.hasIncorrectPassword(false))
     }
-  }
+  }, [hasIncorrectPassword])
 
-  const recoveryPhrase = React.useMemo(() => {
-    return (mnemonic || '').split(' ')
-  }, [mnemonic])
+  const onHideAddModal = React.useCallback(() => {
+    dispatch(WalletPageActions.setShowAddModal(false))
+  }, [])
 
-  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => {
-    props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
-  }
-
-  const onShowAddModal = () => {
-    props.walletPageActions.setShowAddModal(true)
-  }
-
-  const onHideAddModal = () => {
-    props.walletPageActions.setShowAddModal(false)
-  }
-
-  const onCreateAccount = (name: string, coin: BraveWallet.CoinType) => {
-    const created = props.walletActions.addAccount({ accountName: name, coin: coin })
+  const onCreateAccount = React.useCallback((name: string, coin: BraveWallet.CoinType) => {
+    const created = dispatch(WalletActions.addAccount({ accountName: name, coin: coin }))
     if (walletLocation.includes(WalletRoutes.Accounts)) {
       history.push(WalletRoutes.Accounts)
     }
     if (created) {
       onHideAddModal()
     }
-  }
+  }, [onHideAddModal])
 
   const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
     getBuyAssetUrl({
@@ -190,133 +156,63 @@ function Container (props: Props) {
       .catch(e => console.error(e))
   }
 
-  const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {
-    props.walletPageActions.addHardwareAccounts(selected)
-  }
+  const onAddHardwareAccounts = React.useCallback((selected: BraveWallet.HardwareWalletAccount[]) => {
+    dispatch(WalletPageActions.addHardwareAccounts(selected))
+  }, [])
 
-  const onImportAccount = (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
-    props.walletPageActions.importAccount({ accountName, privateKey, coin })
-  }
+  const onImportAccount = React.useCallback((accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
+    dispatch(WalletPageActions.importAccount({ accountName, privateKey, coin }))
+  }, [])
 
-  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string) => {
-    props.walletPageActions.importFilecoinAccount({ accountName, privateKey, network })
-  }
+  const onImportFilecoinAccount = React.useCallback((accountName: string, privateKey: string, network: string) => {
+    dispatch(WalletPageActions.importFilecoinAccount({ accountName, privateKey, network }))
+  }, [])
 
-  const onImportAccountFromJson = (accountName: string, password: string, json: string) => {
-    props.walletPageActions.importAccountFromJson({ accountName, password, json })
-  }
+  const onImportAccountFromJson = React.useCallback((accountName: string, password: string, json: string) => {
+    dispatch(WalletPageActions.importAccountFromJson({ accountName, password, json }))
+  }, [])
 
-  const onSetImportAccountError = (hasError: boolean) => {
-    props.walletPageActions.setImportAccountError(hasError)
-  }
+  const onSetImportAccountError = React.useCallback((hasError: boolean) => {
+    dispatch(WalletPageActions.setImportAccountError(hasError))
+  }, [])
 
-  const onRemoveAccount = (address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
+  const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
     if (hardware) {
-      props.walletPageActions.removeHardwareAccount({ address, coin })
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
       return
     }
-    props.walletPageActions.removeImportedAccount({ address, coin })
-  }
+    dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
+  }, [])
 
-  const onUpdateAccountName = (payload: UpdateAccountNamePayloadType): { success: boolean } => {
-    const result = props.walletPageActions.updateAccountName(payload)
+  const onUpdateAccountName = React.useCallback((payload: UpdateAccountNamePayloadType): { success: boolean } => {
+    const result = dispatch(WalletPageActions.updateAccountName(payload))
     return result ? { success: true } : { success: false }
-  }
+  }, [])
 
-  const fetchFullTokenList = () => {
-    props.walletActions.getAllTokensList()
-  }
+  const onViewPrivateKey = React.useCallback((address: string, isDefault: boolean, coin: BraveWallet.CoinType) => {
+    dispatch(WalletPageActions.viewPrivateKey({ address, isDefault, coin }))
+  }, [])
 
-  const onViewPrivateKey = (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => {
-    props.walletPageActions.viewPrivateKey({ address, isDefault, coin })
-  }
+  const onDoneViewingPrivateKey = React.useCallback(() => {
+    dispatch(WalletPageActions.doneViewingPrivateKey())
+  }, [])
 
-  const onDoneViewingPrivateKey = () => {
-    props.walletPageActions.doneViewingPrivateKey()
-  }
+  const onOpenWalletSettings = React.useCallback(() => {
+    dispatch(WalletPageActions.openWalletSettings())
+  }, [])
 
-  const checkWalletsToImport = () => {
-    props.walletPageActions.checkWalletsToImport()
-  }
+  // computed
+  const walletNotYetCreated = (!isWalletCreated || setupStillInProgress) && walletLocation !== WalletRoutes.Restore
+  const hideMainComponents =
+    (isWalletCreated && !setupStillInProgress) &&
+    !isWalletLocked &&
+    walletLocation !== WalletRoutes.Backup
 
-  const onOpenWalletSettings = () => {
-    props.walletPageActions.openWalletSettings()
-  }
+  const walletUnlockNeeded = (isWalletCreated && !setupStillInProgress) && isWalletLocked &&
+    walletLocation !== WalletRoutes.Unlock &&
+    walletLocation !== WalletRoutes.Restore
 
-  const onShowVisibleAssetsModal = (showModal: boolean) => {
-    if (showModal) {
-      if (fullTokenList.length === 0) {
-        fetchFullTokenList()
-      }
-      history.push(`${WalletRoutes.AddAssetModal}`)
-    } else {
-      history.push(`${WalletRoutes.Portfolio}`)
-    }
-    setShowVisibleAssetsModal(showModal)
-  }
-
-  React.useEffect(() => {
-    // Creates a list of Accepted Portfolio Routes
-    const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
-      if (token.contractAddress === '') {
-        return `${WalletRoutes.Portfolio}/${token.symbol}`
-      }
-      return `${WalletRoutes.Portfolio}/${token.contractAddress}`
-    })
-    // Creates a list of Accepted Account Routes
-    const acceptedAccountRoutes = accounts.map((account) => {
-      return `${WalletRoutes.Accounts}/${account.address}`
-    })
-
-    const allAcceptedRoutes = [
-      WalletRoutes.Backup,
-      WalletRoutes.Accounts,
-      WalletRoutes.AddAccountModal,
-      WalletRoutes.AddAssetModal,
-      WalletRoutes.Portfolio,
-      ...acceptedPortfolioRoutes,
-      ...acceptedAccountRoutes
-    ]
-
-    if (allAcceptedRoutes.includes(walletLocation)) {
-      setSessionRoute(walletLocation)
-    }
-
-    if (!hasInitialized) {
-      return
-    }
-    // If wallet is not yet created will Route to Onboarding
-    if ((!isWalletCreated || setupStillInProgress) && walletLocation !== WalletRoutes.Restore) {
-      checkWalletsToImport()
-      history.push(WalletRoutes.Onboarding)
-      // If wallet is created will Route to login
-    } else if (isWalletLocked && walletLocation !== WalletRoutes.Restore) {
-      history.push(WalletRoutes.Unlock)
-      // Allowed Private Routes if a wallet is unlocked else will redirect back to Portfolio
-    } else if (
-      !isWalletLocked &&
-      hasInitialized &&
-      !allAcceptedRoutes.includes(walletLocation) &&
-      acceptedAccountRoutes.length !== 0 &&
-      acceptedPortfolioRoutes.length !== 0
-    ) {
-      if (sessionRoute) {
-        history.push(sessionRoute)
-      } else {
-        history.push(WalletRoutes.Portfolio)
-      }
-    }
-  }, [
-    walletLocation,
-    isWalletCreated,
-    isWalletLocked,
-    hasInitialized,
-    setupStillInProgress,
-    selectedAsset,
-    userVisibleTokensInfo,
-    accounts
-  ])
-
+  // effects
   React.useEffect(() => {
     if (hasIncorrectPassword) {
       // Clear incorrect password
@@ -324,7 +220,22 @@ function Container (props: Props) {
     }
   }, [hasIncorrectPassword])
 
-  const hideMainComponents = (isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup
+  React.useEffect(() => {
+    // store the last url before wallet lock
+    // so that we can return to that page after unlock
+    if (
+      !walletLocation.includes(WalletRoutes.Onboarding) &&
+      walletLocation !== WalletRoutes.Unlock &&
+      walletLocation !== WalletRoutes.Restore // can be accessed from unlock screen
+    ) {
+      setSessionRoute(walletLocation)
+    }
+  }, [walletLocation])
+
+  // render
+  if (!hasInitialized) {
+    return <Skeleton />
+  }
 
   return (
     <WalletPageLayout>
@@ -333,85 +244,90 @@ function Container (props: Props) {
         selectedButton={view}
         onSubmit={navigateTo}
       /> */}
-      <Switch>
-        <WalletSubViewLayout>
-          <Route path={WalletRoutes.Restore} exact={true}>
-            {isWalletLocked &&
-              <OnboardingWrapper>
-                <OnboardingRestore />
-              </OnboardingWrapper>
-            }
-          </Route>
-          <Route path={WalletRoutes.Onboarding} exact={true}>
+      <WalletSubViewLayout>
+
+        <Switch>
+          <ProtectedRoute
+            path={WalletRoutes.Onboarding}
+            requirement={setupStillInProgress || walletNotYetCreated}
+            redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Portfolio}
+          >
             <Onboarding />
+          </ProtectedRoute>
+
+          <Route path={WalletRoutes.Restore} exact={true}>
+            <OnboardingWrapper>
+              <OnboardingRestore />
+            </OnboardingWrapper>
           </Route>
-          <Route path={WalletRoutes.Unlock} exact={true}>
-            {isWalletLocked &&
-              <OnboardingWrapper>
-                <LockScreen
-                  value={inputValue}
-                  onSubmit={unlockWallet}
-                  disabled={inputValue === ''}
-                  onPasswordChanged={handlePasswordChanged}
-                  hasPasswordError={hasIncorrectPassword}
-                  onShowRestore={onToggleShowRestore}
-                />
-              </OnboardingWrapper>
-            }
-          </Route>
+
+          <ProtectedRoute
+            path={WalletRoutes.Unlock}
+            redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Portfolio}
+            requirement={isWalletLocked && !walletNotYetCreated}
+            exact={true}
+          >
+            <OnboardingWrapper>
+              <LockScreen
+                value={inputValue}
+                onSubmit={unlockWallet}
+                disabled={inputValue === ''}
+                onPasswordChanged={handlePasswordChanged}
+                hasPasswordError={hasIncorrectPassword}
+                onShowRestore={onToggleShowRestore}
+              />
+            </OnboardingWrapper>
+          </ProtectedRoute>
+
+          {/* If wallet is not yet created will Route to Onboarding */}
+          {walletNotYetCreated && <Redirect to={WalletRoutes.Onboarding} />}
+
+          {/* Redirect to unlock screen if needed */}
+          {walletUnlockNeeded && <Redirect to={WalletRoutes.Unlock} />}
+
           <Route path={WalletRoutes.Backup} exact={true}>
             <OnboardingWrapper>
               <BackupWallet
                 isOnboarding={false}
                 onCancel={onHideBackup}
-                onSubmit={onBackupWallet}
-                recoveryPhrase={recoveryPhrase}
               />
             </OnboardingWrapper>
           </Route>
-          <Route path={WalletRoutes.CryptoPage} exact={true}>
-            {hideMainComponents &&
-              <CryptoView
-                defaultCurrencies={defaultCurrencies}
-                onLockWallet={lockWallet}
-                needsBackup={!isWalletBackedUp}
-                onShowBackup={onShowBackup}
-                accounts={accounts}
-                networkList={networkList}
-                onSelectAsset={onSelectAsset}
-                transactions={transactions}
-                onConnectHardwareWallet={onConnectHardwareWallet}
-                onCreateAccount={onCreateAccount}
-                onImportAccount={onImportAccount}
-                onImportFilecoinAccount={onImportFilecoinAccount}
-                isFilecoinEnabled={isFilecoinEnabled}
-                isSolanaEnabled={isSolanaEnabled}
-                showAddModal={showAddModal}
-                onHideAddModal={onHideAddModal}
-                onUpdateAccountName={onUpdateAccountName}
-                selectedNetwork={selectedNetwork}
-                onRemoveAccount={onRemoveAccount}
-                privateKey={privateKey ?? ''}
-                onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-                onViewPrivateKey={onViewPrivateKey}
-                onImportAccountFromJson={onImportAccountFromJson}
-                onSetImportError={onSetImportAccountError}
-                hasImportError={importAccountError}
-                onAddHardwareAccounts={onAddHardwareAccounts}
-                transactionSpotPrices={transactionSpotPrices}
-                userVisibleTokensInfo={userVisibleTokensInfo}
-                getBalance={getBalance}
-                defaultWallet={defaultWallet}
-                onOpenWalletSettings={onOpenWalletSettings}
-                onShowAddModal={onShowAddModal}
-                isMetaMaskInstalled={isMetaMaskInstalled}
-                onShowVisibleAssetsModal={onShowVisibleAssetsModal}
-                showVisibleAssetsModal={showVisibleAssetsModal}
-              />
-            }
-          </Route>
-        </WalletSubViewLayout>
-      </Switch>
+
+          {/* Default */}
+          <ProtectedRoute
+            path={WalletRoutes.CryptoPage}
+            requirement={!walletUnlockNeeded}
+            redirectRoute={WalletRoutes.Unlock}
+          >
+            <CryptoView
+              needsBackup={!isWalletBackedUp}
+              accounts={accounts}
+              onConnectHardwareWallet={onConnectHardwareWallet}
+              onCreateAccount={onCreateAccount}
+              onImportAccount={onImportAccount}
+              onImportFilecoinAccount={onImportFilecoinAccount}
+              isFilecoinEnabled={isFilecoinEnabled}
+              isSolanaEnabled={isSolanaEnabled}
+              onUpdateAccountName={onUpdateAccountName}
+              selectedNetwork={selectedNetwork}
+              onRemoveAccount={onRemoveAccount}
+              onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+              onViewPrivateKey={onViewPrivateKey}
+              onImportAccountFromJson={onImportAccountFromJson}
+              onSetImportError={onSetImportAccountError}
+              hasImportError={importAccountError}
+              onAddHardwareAccounts={onAddHardwareAccounts}
+              getBalance={getBalance}
+              defaultWallet={defaultWallet}
+              onOpenWalletSettings={onOpenWalletSettings}
+              isMetaMaskInstalled={isMetaMaskInstalled}
+            />
+          </ProtectedRoute>
+
+          <Redirect to={WalletRoutes.Portfolio} />
+        </Switch>
+      </WalletSubViewLayout>
       {hideMainComponents &&
         <WalletWidgetStandIn>
           <BuySendSwap
@@ -434,18 +350,4 @@ function Container (props: Props) {
   )
 }
 
-function mapStateToProps (state: WalletPageState): Partial<Props> {
-  return {
-    page: state.page,
-    wallet: state.wallet
-  }
-}
-
-function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
-  return {
-    walletPageActions: bindActionCreators(WalletPageActions, store.dispatch.bind(store)),
-    walletActions: bindActionCreators(WalletActions, store.dispatch.bind(store))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Container)
+export default Container

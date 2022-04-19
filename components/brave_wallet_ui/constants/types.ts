@@ -266,7 +266,6 @@ export interface PageState {
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
-
 }
 
 export interface WalletPageState {
@@ -558,26 +557,22 @@ export type UpdateAccountNamePayloadType = {
   isDerived: boolean
 }
 
-export enum WalletOnboardingSteps {
-  OnboardingWelcome = 0,
-  OnboardingCreatePassword = 1,
-  OnboardingBackupWallet = 2,
-  OnboardingImportMetaMask = 3,
-  OnboardingImportCryptoWallets = 4
-}
-
 export enum WalletRoutes {
-  Unlock = '/crypto/unlock',
-  Onboarding = '/crypto/onboarding',
-  Restore = '/crypto/restore-wallet',
-  Portfolio = '/crypto/portfolio',
-  PortfolioSub = '/crypto/portfolio/:id?',
   Accounts = '/crypto/accounts',
+  AccountsSub = '/crypto/accounts/:id?',
   AddAccountModal = '/crypto/accounts/add-account',
   AddAssetModal = '/crypto/portfolio/add-asset',
-  AccountsSub = '/crypto/accounts/:id?',
   Backup = '/crypto/backup-wallet',
-  CryptoPage = '/crypto/:category/:id?'
+  CryptoPage = '/crypto/:category/:id?',
+  Onboarding = '/crypto/onboarding',
+  OnboardingCreatePassword = '/crypto/onboarding/create-password',
+  OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
+  OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
+  OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+  Portfolio = '/crypto/portfolio',
+  PortfolioSub = '/crypto/portfolio/:id',
+  Restore = '/crypto/restore-wallet',
+  Unlock = '/crypto/unlock',
 }
 
 export const WalletOrigin = 'chrome://wallet'

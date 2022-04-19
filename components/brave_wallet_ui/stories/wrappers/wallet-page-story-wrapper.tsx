@@ -1,0 +1,58 @@
+import * as React from 'react'
+import { createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+
+// utils
+import { createSendCryptoReducer } from '../../common/reducers/send_crypto_reducer'
+import { createWalletReducer } from '../../common/reducers/wallet_reducer'
+import { createPageReducer } from '../../page/reducers/page_reducer'
+
+// types
+import { PageState, WalletState } from '../../constants/types'
+
+// components
+import { LibContext } from '../../common/context/lib.context'
+
+// Mocks
+import * as Lib from '../../common/async/__mocks__/lib'
+import { mockPageState } from '../mock-data/mock-page-state'
+import { mockWalletState } from '../mock-data/mock-wallet-state'
+import { mockSendCryptoState } from '../mock-data/send-crypto-state'
+
+export interface WalletPageStoryProps {
+  walletStateOverride?: Partial<WalletState>
+  pageStateOverride?: Partial<PageState>
+}
+
+export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryProps>> = ({
+  children,
+  pageStateOverride,
+  walletStateOverride
+}) => {
+  // redux
+  const store = createStore(combineReducers({
+    wallet: createWalletReducer({
+      ...mockWalletState,
+      ...(walletStateOverride || {})
+    }),
+    page: createPageReducer({
+      ...mockPageState,
+      ...(pageStateOverride || {})
+    }),
+    sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+  }))
+
+  // render
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <Provider store={store}>
+        <LibContext.Provider value={Lib as any}>
+          {children}
+        </LibContext.Provider>
+      </Provider>
+    </MemoryRouter>
+  )
+}
+
+export default WalletPageStory

@@ -1,23 +1,39 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { Route, useHistory, useLocation, useParams } from 'react-router-dom'
-import { StyledWrapper } from './style'
+import { useDispatch } from 'react-redux'
+import { Route, useHistory, useParams, Switch } from 'react-router-dom'
+
+// actions
+import { WalletPageActions } from '../../../../page/actions'
+
+// utils
+import { getLocale } from '../../../../../common/locale'
+
+// types
 import {
   BraveWallet,
   TopTabNavTypes,
-  AccountTransactions,
   WalletAccountType,
   UpdateAccountNamePayloadType,
   WalletRoutes,
-  DefaultCurrencies,
   AddAccountNavTypes
 } from '../../../../constants/types'
-import { TopNavOptions } from '../../../../options/top-nav-options'
-import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
-import { getLocale } from '../../../../../common/locale'
-import { PortfolioView, AccountsView } from '../'
-import {
-  HardwareWalletConnectOpts
-} from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { TOP_NAV_OPTIONS } from '../../../../options/top-nav-options'
+import { HardwareWalletConnectOpts } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
+
+// style
+import { StyledWrapper } from './style'
+
+// components
+import { TopTabNav, WalletBanner, AddAccountModal, EditVisibleAssetsModal } from '../../'
+import { PortfolioOverview } from '../portfolio/portfolio-overview'
+import { PortfolioAsset } from '../portfolio/portfolio-asset'
+import { Accounts } from '../accounts/accounts'
+import { Account } from '../accounts/account'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -25,9 +41,6 @@ interface ParamsType {
 }
 
 export interface Props {
-  onLockWallet: () => void
-  onShowBackup: () => void
-  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
   onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
   onImportFilecoinAccount: (accountName: string, key: string, network: string) => void
@@ -35,40 +48,24 @@ export interface Props {
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onShowAddModal: () => void
-  onHideAddModal: () => void
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (error: boolean) => void
   onOpenWalletSettings: () => void
-  defaultCurrencies: DefaultCurrencies
   hasImportError: boolean
-  transactionSpotPrices: BraveWallet.AssetPrice[]
-  privateKey: string
-  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   needsBackup: boolean
   accounts: WalletAccountType[]
-  networkList: BraveWallet.NetworkInfo[]
-  transactions: AccountTransactions
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
-  showAddModal: boolean
   selectedNetwork: BraveWallet.NetworkInfo
   defaultWallet: BraveWallet.DefaultWallet
   isMetaMaskInstalled: boolean
-  onShowVisibleAssetsModal: (showModal: boolean) => void
-  showVisibleAssetsModal: boolean
 }
 
 const CryptoView = (props: Props) => {
-  const { pathname: walletLocation } = useLocation()
-  let history = useHistory()
   const {
-    onLockWallet,
-    onShowBackup,
-    onSelectAsset,
     onCreateAccount,
     onConnectHardwareWallet,
     onAddHardwareAccounts,
@@ -82,213 +79,222 @@ const CryptoView = (props: Props) => {
     onImportAccountFromJson,
     onSetImportError,
     onOpenWalletSettings,
-    onShowAddModal,
-    onHideAddModal,
-    onShowVisibleAssetsModal,
-    showVisibleAssetsModal,
-    defaultCurrencies,
     defaultWallet,
     hasImportError,
-    userVisibleTokensInfo,
-    transactionSpotPrices,
-    privateKey,
     selectedNetwork,
     needsBackup,
     accounts,
-    networkList,
-    transactions,
     isFilecoinEnabled,
     isSolanaEnabled,
-    showAddModal,
     isMetaMaskInstalled
   } = props
+
+  // state
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
-  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [addAccountModalTab, setAddAccountModalTab] = React.useState<AddAccountNavTypes>('create')
 
-  let { category, id } = useParams<ParamsType>()
+  // routing
+  const history = useHistory()
+  const { category } = useParams<ParamsType>()
 
-  const onSelectTab = (path: TopTabNavTypes) => {
+  // redux
+  const dispatch = useDispatch()
+
+  // methods
+  const onShowBackup = React.useCallback(() => {
+    history.push(WalletRoutes.Backup)
+  }, [])
+
+  const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
+    if (showModal) {
+      history.push(`${WalletRoutes.AddAssetModal}`)
+    } else {
+      history.push(`${WalletRoutes.Portfolio}`)
+    }
+  }, [])
+
+  const onSelectTab = React.useCallback((path: TopTabNavTypes) => {
     history.push(`/crypto/${path}`)
-  }
+  }, [])
 
-  React.useEffect(() => {
-    if (category === 'portfolio') {
-      if (id !== undefined) {
-        if (id === 'add-asset') {
-          onShowVisibleAssetsModal(true)
-        } else {
-          // If the id length is greater than 15 assumes it's a contractAddress
-          const asset = id?.length > 15
-            ? userVisibleTokensInfo.find((token) => token.contractAddress === id)
-            : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
-          onSelectAsset(asset)
-          setHideNav(true)
-        }
-      } else {
-        onSelectAsset(undefined)
-        setHideNav(false)
-      }
-    }
-    if (category === 'accounts') {
-      if (id !== undefined) {
-        if (id === 'add-account') {
-          onShowAddModal()
-        } else {
-          const account = accounts.find((a) => a.address.toLowerCase() === id?.toLowerCase())
-          setSelectedAccount(account)
-          setHideNav(true)
-        }
-      } else {
-        setSelectedAccount(undefined)
-        setHideNav(false)
-      }
-    }
-  }, [id, userVisibleTokensInfo, category])
-
-  const toggleNav = () => {
+  const toggleNav = React.useCallback(() => {
     setHideNav(!hideNav)
-  }
+  }, [hideNav])
 
-  const onDismissBackupWarning = () => {
+  const onDismissBackupWarning = React.useCallback(() => {
     setShowBackupWarning(false)
-  }
+  }, [])
 
-  const onDismissDefaultWalletBanner = () => {
+  const onDismissDefaultWalletBanner = React.useCallback(() => {
     setShowDefaultWalletBanner(false)
-  }
+  }, [])
 
-  const onCloseAddModal = () => {
-    if (walletLocation.includes(WalletRoutes.Accounts)) {
-      history.push(WalletRoutes.Accounts)
-    }
-    onHideAddModal()
-  }
+  const onCloseAddModal = React.useCallback(() => {
+    history.push(WalletRoutes.Accounts)
+    dispatch(WalletPageActions.setShowAddModal(false))
+  }, [])
 
-  const onClickAddAccount = (tabId: AddAccountNavTypes) => () => {
+  const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
     setAddAccountModalTab(tabId)
-    onShowAddModal()
-  }
+    dispatch(WalletPageActions.setShowAddModal(true))
+    history.push(WalletRoutes.AddAccountModal)
+  }, [])
 
-  const goBack = () => {
-    setSelectedAccount(undefined)
+  const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
     setHideNav(false)
-  }
+  }, [])
 
-  const onSelectAccount = (account: WalletAccountType | undefined) => {
+  const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
     if (account) {
       history.push(`${WalletRoutes.Accounts}/${account.address}`)
     }
-  }
+  }, [])
 
-  const onClickSettings = () => {
+  const onClickSettings = React.useCallback(() => {
     chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-  }
+  }, [])
 
-  const onClickShowMore = () => {
+  const onClickShowMore = React.useCallback(() => {
     setShowMore(true)
-  }
+  }, [])
 
-  const onClickHideMore = () => {
+  const onClickHideMore = React.useCallback(() => {
     if (showMore) {
       setShowMore(false)
     }
-  }
+  }, [showMore])
 
+  const hideVisibleAssetsModal = React.useCallback(() => onShowVisibleAssetsModal(false), [])
+
+  // memos
+  const nav = React.useMemo(() => (
+    <>
+      <TopTabNav
+        selectedTab={category}
+        showMore={showMore}
+        hasMoreButtons={true}
+        onSelectTab={onSelectTab}
+        tabList={TOP_NAV_OPTIONS}
+        onClickBackup={onShowBackup}
+        onClickSettings={onClickSettings}
+        onClickMore={onClickShowMore}
+      />
+      {(defaultWallet !== BraveWallet.DefaultWallet.BraveWallet &&
+        (defaultWallet !== BraveWallet.DefaultWallet.BraveWalletPreferExtension || (defaultWallet === BraveWallet.DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
+        showDefaultWalletBanner &&
+        <WalletBanner
+          onDismiss={onDismissDefaultWalletBanner}
+          onClick={onOpenWalletSettings}
+          bannerType='warning'
+          buttonText={getLocale('braveWalletWalletPopupSettings')}
+          description={getLocale('braveWalletDefaultWalletBanner')}
+        />
+      }
+      {needsBackup && showBackupWarning &&
+        <WalletBanner
+          onDismiss={onDismissBackupWarning}
+          onClick={onShowBackup}
+          bannerType='danger'
+          buttonText={getLocale('braveWalletBackupButton')}
+          description={getLocale('braveWalletBackupWarningText')}
+        />
+      }
+    </>
+  ), [
+    category,
+    defaultWallet,
+    isMetaMaskInstalled,
+    needsBackup,
+    onClickSettings,
+    onClickShowMore,
+    onDismissBackupWarning,
+    onDismissDefaultWalletBanner,
+    onOpenWalletSettings,
+    onSelectTab,
+    onShowBackup,
+    showBackupWarning,
+    showDefaultWalletBanner,
+    showMore
+  ])
+
+  // render
   return (
     <StyledWrapper onClick={onClickHideMore}>
-      {!hideNav &&
-        <>
-          <TopTabNav
-            selectedTab={category}
-            showMore={showMore}
-            hasMoreButtons={true}
-            onSelectTab={onSelectTab}
-            tabList={TopNavOptions()}
-            onClickLock={onLockWallet}
-            onClickBackup={onShowBackup}
-            onClickSettings={onClickSettings}
-            onClickMore={onClickShowMore}
+      <Switch>
+        {/* Portfolio */}
+        <Route path={WalletRoutes.AddAssetModal} exact>
+          {nav}
+          <PortfolioOverview />
+          <EditVisibleAssetsModal
+            onClose={hideVisibleAssetsModal}
           />
-          {(defaultWallet !== BraveWallet.DefaultWallet.BraveWallet &&
-            (defaultWallet !== BraveWallet.DefaultWallet.BraveWalletPreferExtension || (defaultWallet === BraveWallet.DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
-            showDefaultWalletBanner &&
-            <WalletBanner
-              onDismiss={onDismissDefaultWalletBanner}
-              onClick={onOpenWalletSettings}
-              bannerType='warning'
-              buttonText={getLocale('braveWalletWalletPopupSettings')}
-              description={getLocale('braveWalletDefaultWalletBanner')}
-            />
-          }
-          {needsBackup && showBackupWarning &&
-            <WalletBanner
-              onDismiss={onDismissBackupWarning}
-              onClick={onShowBackup}
-              bannerType='danger'
-              buttonText={getLocale('braveWalletBackupButton')}
-              description={getLocale('braveWalletBackupWarningText')}
-            />
-          }
-        </>
-      }
+        </Route>
 
-      <Route path={WalletRoutes.PortfolioSub} exact={true}>
-        <PortfolioView
-          toggleNav={toggleNav}
-          onClickAddAccount={onClickAddAccount}
-          showVisibleAssetsModal={showVisibleAssetsModal}
-          onShowVisibleAssetsModal={onShowVisibleAssetsModal}
-        />
-      </Route>
-      <Route path={WalletRoutes.AccountsSub} exact={true}>
-        <AccountsView
-          defaultCurrencies={defaultCurrencies}
-          toggleNav={toggleNav}
-          accounts={accounts}
-          onClickAddAccount={onClickAddAccount}
-          onUpdateAccountName={onUpdateAccountName}
-          onRemoveAccount={onRemoveAccount}
-          onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-          onViewPrivateKey={onViewPrivateKey}
-          onSelectAccount={onSelectAccount}
-          goBack={goBack}
-          selectedAccount={selectedAccount}
-          privateKey={privateKey}
-          transactions={transactions}
-          transactionSpotPrices={transactionSpotPrices}
-          userVisibleTokensInfo={userVisibleTokensInfo}
-          networkList={networkList}
-        />
-      </Route>
+        <Route path={WalletRoutes.Portfolio} exact>
+          {nav}
+          <PortfolioOverview />
+        </Route>
 
-      {showAddModal &&
-        <AddAccountModal
-          accounts={accounts}
-          selectedNetwork={selectedNetwork}
-          onClose={onCloseAddModal}
-          onCreateAccount={onCreateAccount}
-          onImportAccount={onImportAccount}
-          isFilecoinEnabled={isFilecoinEnabled}
-          isSolanaEnabled={isSolanaEnabled}
-          onImportFilecoinAccount={onImportFilecoinAccount}
-          onConnectHardwareWallet={onConnectHardwareWallet}
-          onAddHardwareAccounts={onAddHardwareAccounts}
-          getBalance={getBalance}
-          onImportAccountFromJson={onImportAccountFromJson}
-          hasImportError={hasImportError}
-          onSetImportError={onSetImportError}
-          tab={addAccountModalTab}
-        />
-      }
+        <Route path={WalletRoutes.PortfolioSub} exact>
+          <PortfolioAsset onClickAddAccount={onClickAddAccount} />
+        </Route>
+
+        {/* Accounts */}
+        <Route path={WalletRoutes.AddAccountModal} exact>
+          {nav}
+          <Accounts
+            onClickAddAccount={onClickAddAccount}
+            onRemoveAccount={onRemoveAccount}
+            onSelectAccount={onSelectAccount}
+          />
+          <AddAccountModal
+            accounts={accounts}
+            selectedNetwork={selectedNetwork}
+            onClose={onCloseAddModal}
+            onCreateAccount={onCreateAccount}
+            onImportAccount={onImportAccount}
+            isFilecoinEnabled={isFilecoinEnabled}
+            isSolanaEnabled={isSolanaEnabled}
+            onImportFilecoinAccount={onImportFilecoinAccount}
+            onConnectHardwareWallet={onConnectHardwareWallet}
+            onAddHardwareAccounts={onAddHardwareAccounts}
+            getBalance={getBalance}
+            onImportAccountFromJson={onImportAccountFromJson}
+            hasImportError={hasImportError}
+            onSetImportError={onSetImportError}
+            tab={addAccountModalTab}
+          />
+        </Route>
+
+        <Route path={WalletRoutes.Accounts} exact>
+          {nav}
+          <Accounts
+            onClickAddAccount={onClickAddAccount}
+            onRemoveAccount={onRemoveAccount}
+            onSelectAccount={onSelectAccount}
+          />
+        </Route>
+
+        <Route path={WalletRoutes.AccountsSub} exact>
+          <Account
+            toggleNav={toggleNav}
+            onUpdateAccountName={onUpdateAccountName}
+            onRemoveAccount={onRemoveAccount}
+            onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+            onViewPrivateKey={onViewPrivateKey}
+            goBack={goBack}
+          />
+        </Route>
+
+      </Switch>
     </StyledWrapper>
   )
 }

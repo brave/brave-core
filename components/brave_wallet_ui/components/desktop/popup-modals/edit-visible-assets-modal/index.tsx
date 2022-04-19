@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BraveWallet } from '../../../../constants/types'
+import { BraveWallet, WalletState } from '../../../../constants/types'
 import {
   PopupModal,
   AssetWatchlistItem,
@@ -37,32 +37,34 @@ import {
 // Utils
 import Amount from '../../../../utils/amount'
 
+// hooks
+import { useAssetManagement, useLib, useTokenInfo } from '../../../../common/hooks'
+import { useSelector } from 'react-redux'
+
 export interface Props {
   onClose: () => void
-  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
-  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
-  addUserAssetError: boolean
-  fullAssetList: BraveWallet.BlockchainToken[]
-  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  selectedNetwork: BraveWallet.NetworkInfo
-  networkList: BraveWallet.NetworkInfo[]
-  onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
 
-const EditVisibleAssetsModal = (props: Props) => {
+const EditVisibleAssetsModal = ({ onClose }: Props) => {
+  // redux
   const {
-    fullAssetList,
-    userVisibleTokensInfo,
     addUserAssetError,
+    userVisibleTokensInfo,
     selectedNetwork,
     networkList,
-    onClose,
+    fullTokenList
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // custom hooks
+  const { getBlockchainTokenInfo } = useLib()
+  const {
     onAddCustomAsset,
+    onUpdateVisibleAssets
+  } = useAssetManagement()
+  const {
     onFindTokenInfoByContractAddress,
-    onUpdateVisibleAssets,
     foundTokenInfoByContractAddress
-  } = props
+  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
 
   // Token List States
   const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.BlockchainToken[]>([])
@@ -200,15 +202,15 @@ const EditVisibleAssetsModal = (props: Props) => {
       : userVisibleTokensInfo.map((token) => token.contractAddress.toLowerCase())
 
     const fullAssetsListPlusNativeToken = userVisibleContracts.includes('')
-      ? fullAssetList
-      : [nativeAsset, ...fullAssetList]
+      ? fullTokenList
+      : [nativeAsset, ...fullTokenList]
 
     const filteredTokenRegistry = fullAssetsListPlusNativeToken.filter((token) => !userVisibleContracts.includes(token.contractAddress.toLowerCase()))
 
     return isUserVisibleTokensInfoEmpty
       ? filteredTokenRegistry
       : [...userVisibleTokensInfo, ...filteredTokenRegistry]
-  }, [fullAssetList, userVisibleTokensInfo])
+  }, [fullTokenList, userVisibleTokensInfo])
 
   React.useEffect(() => {
     // Added this timeout to throttle setting the list
@@ -305,9 +307,9 @@ const EditVisibleAssetsModal = (props: Props) => {
       return false
     }
 
-    return !fullAssetList
+    return !fullTokenList
       .some(each => each.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
-  }, [fullAssetList])
+  }, [fullTokenList])
 
   const addOrRemoveTokenFromList = (selected: boolean, token: BraveWallet.BlockchainToken) => {
     if (selected) {
