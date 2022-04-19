@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ad_diagnostics/ads_enabled_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_diagnostics/catalog_id_ad_diagnostics_entry.h"
@@ -51,7 +50,7 @@ AdDiagnostics* AdDiagnostics::Get() {
 }
 
 void AdDiagnostics::SetDiagnosticsEntry(
-    std::unique_ptr<AdDiagnosticsEntry> entry) {
+    std::unique_ptr<AdDiagnosticsEntryInterface> entry) {
   DCHECK(entry);
   AdDiagnosticsEntryType type = entry->GetEntryType();
   ad_diagnostics_entries_[type] = std::move(entry);
@@ -70,7 +69,7 @@ base::Value AdDiagnostics::CollectDiagnostics() const {
   base::Value diagnostics(base::Value::Type::LIST);
 
   for (const auto& entry_pair : ad_diagnostics_entries_) {
-    AdDiagnosticsEntry* entry = entry_pair.second.get();
+    AdDiagnosticsEntryInterface* entry = entry_pair.second.get();
     AppendDiagnosticsKeyValue(entry->GetKey(), entry->GetValue(), &diagnostics);
   }
 

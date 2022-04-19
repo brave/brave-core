@@ -9,11 +9,12 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry_interface.h"
 
 namespace ads {
 
-class LastUnIdleTimestampAdDiagnosticsEntry final : public AdDiagnosticsEntry {
+class LastUnIdleTimestampAdDiagnosticsEntry final
+    : public AdDiagnosticsEntryInterface {
  public:
   LastUnIdleTimestampAdDiagnosticsEntry();
   LastUnIdleTimestampAdDiagnosticsEntry(
@@ -24,7 +25,7 @@ class LastUnIdleTimestampAdDiagnosticsEntry final : public AdDiagnosticsEntry {
 
   void SetLastUnIdleTimestamp(const base::Time time);
 
-  // AdDiagnosticsEntry
+  // AdDiagnosticsEntryInterface:
   AdDiagnosticsEntryType GetEntryType() const override;
   std::string GetKey() const override;
   std::string GetValue() const override;
