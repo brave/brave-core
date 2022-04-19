@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 616c88364d599be02afacc8d0d73f00bad374a82..d3b499dab740278ef6ab9a6e9117ed092c16d56b 100644
+index 616c88364d599be02afacc8d0d73f00bad374a82..dd6fb8b874fa9a78dc79ec6a23558eea6b1d1266 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -269,6 +269,7 @@ android_resources("chrome_app_java_resources") {
@@ -50,23 +50,15 @@ index 616c88364d599be02afacc8d0d73f00bad374a82..d3b499dab740278ef6ab9a6e9117ed09
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2454,6 +2460,7 @@ static_library("browser_test_support") {
-     "//url:gurl_android_test_helper",
-   ]
- }
-+_lib_dir = get_label_info("//brave/third_party/android_deps:com_wireguard_android($default_toolchain)","target_out_dir") + "/com_wireguard_android_java/jni"
- 
- # Defines a target that derives from the chrome public application. This
- # can be either an APK or an app bundle module. This supports
-@@ -2506,6 +2513,7 @@ template("chrome_public_apk_or_module_tmpl") {
+@@ -2506,6 +2512,7 @@ template("chrome_public_apk_or_module_tmpl") {
      load_library_from_apk = chromium_linker_supported
  
      version_name = chrome_version_name
-+    deps += ["//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar"]loadable_modules = [ "$_lib_dir/$android_app_abi/libwg-go.so"]
++    deps += brave_public_apk_or_module_tmpl_deps loadable_modules = brave_public_apk_or_module_tmpl_loadable_modules
    }
  }
  
-@@ -2647,6 +2655,7 @@ android_library("base_module_java") {
+@@ -2647,6 +2654,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
@@ -74,11 +66,11 @@ index 616c88364d599be02afacc8d0d73f00bad374a82..d3b499dab740278ef6ab9a6e9117ed09
  
    # More deps for DFMs.
    if (dfmify_dev_ui) {
-@@ -2797,6 +2806,7 @@ template("monochrome_public_apk_or_module_tmpl") {
+@@ -2797,6 +2805,7 @@ template("monochrome_public_apk_or_module_tmpl") {
          deps += [ "//weblayer/browser/java:upstream_java" ]
        }
      }
-+    deps += ["//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar"]if (current_cpu == "x86") {if (android_64bit_target_cpu) {if (invoker.is_64_bit_browser) {loadable_modules =[ "$_lib_dir/x86_64/libwg-go.so" ]} else {secondary_abi_loadable_modules =[ "$_lib_dir/x86/libwg-go.so" ]}} else {loadable_modules =[ "$_lib_dir/x86/libwg-go.so" ]}} else {if (!_is_bundle) {loadable_modules = [ "$_lib_dir/armeabi-v7a/libwg-go.so"]secondary_abi_loadable_modules = [ "$_lib_dir/arm64-v8a/libwg-go.so"]} else {loadable_modules = [ "$_lib_dir/arm64-v8a/libwg-go.so"]secondary_abi_loadable_modules = [ "$_lib_dir/armeabi-v7a/libwg-go.so"]} }
++    deps += brave_monochrome_public_apk_or_module_tmpl_deps loadable_modules = brave_monochrome_public_apk_or_module_tmpl_loadable_modules secondary_abi_loadable_modules = brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules
    }
  }
  

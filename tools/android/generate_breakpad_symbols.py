@@ -47,7 +47,7 @@ def GetRequiredLibsPaths(args, extension):
     # Set of libs which were not created by us
     ignored_libs = {
         'libarcore_sdk_c.so', # Augmented reality lib from Android SDK
-        'libwg-go.so'
+        'libwg-go.so' # Wireguard lib for Brave VPN
         }
 
     # Additional ABIs
