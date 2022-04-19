@@ -12,12 +12,12 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource.h"
+#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 namespace resource {
 
-class AntiTargeting final : public Resource<AntiTargetingInfo> {
+class AntiTargeting final : public ResourceInterface<AntiTargetingInfo> {
  public:
   AntiTargeting();
   ~AntiTargeting() override;

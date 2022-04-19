@@ -11,7 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource.h"
+#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 
@@ -24,7 +24,7 @@ class TextProcessing;
 namespace resource {
 
 class TextClassification final
-    : public Resource<ml::pipeline::TextProcessing*> {
+    : public ResourceInterface<ml::pipeline::TextProcessing*> {
  public:
   TextClassification();
   ~TextClassification() override;

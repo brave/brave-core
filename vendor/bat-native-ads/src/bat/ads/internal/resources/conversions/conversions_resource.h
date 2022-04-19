@@ -13,12 +13,12 @@
 #include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/resources/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource.h"
+#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 namespace resource {
 
-class Conversions final : public Resource<const ConversionsInfo*> {
+class Conversions final : public ResourceInterface<const ConversionsInfo*> {
  public:
   Conversions();
   ~Conversions() override;
