@@ -1051,6 +1051,41 @@ extension Strings {
       value: "Details",
       comment: "One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data"
     )
+    public static let confirmationViewEditPermissions = NSLocalizedString(
+      "wallet.confirmationViewEditPermissions",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Edit permissions",
+      comment: "The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction."
+    )
+    public static let confirmationViewAllowSpendTitle = NSLocalizedString(
+      "wallet.confirmationViewAllowSpendTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Allow this app to spend your %@?",
+      comment: "The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\""
+    )
+    public static let confirmationViewAllowSpendSubtitle = NSLocalizedString(
+      "wallet.confirmationViewAllowSpendSubtitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "By granting this permission, you are allowing this app to withdraw your %@ and automate transactions for you.",
+      comment: "The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\""
+    )
+    public static let confirmationViewUnlimitedWarning = NSLocalizedString(
+      "wallet.confirmationViewUnlimitedWarning",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Unlimited approval requested",
+      comment: "The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited."
+    )
+    public static let confirmationViewCurrentAllowance = NSLocalizedString(
+      "wallet.confirmationViewCurrentAllowance",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Current Allowance",
+      comment: "The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\"."
+    )
     public static let gasFee = NSLocalizedString(
       "wallet.gasFee",
       tableName: "BraveWallet",
@@ -1875,7 +1910,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Please check your inputs and try again.",
-      comment: "The error alert body when something is wrong when users try to edit transaction gas fee, priority fee or nonce value."
+      comment: "The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value."
     )
     public static let editTransactionErrorCTA = NSLocalizedString(
       "wallet.editTransactionErrorCTA",
@@ -1974,6 +2009,48 @@ extension Strings {
       bundle: .braveWallet,
       value: "This page wants to interact with Brave Wallet",
       comment: "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet."
+    )
+    public static let editPermissionsTitle = NSLocalizedString(
+      "wallet.editPermissionsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Edit Permissions",
+      comment: "The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction."
+    )
+    public static let editPermissionsApproveUnlimited = NSLocalizedString(
+      "wallet.editPermissionsApproveUnlimited",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Unlimited",
+      comment: "The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount."
+    )
+    public static let editPermissionsAllowanceHeader = NSLocalizedString(
+      "wallet.editPermissionsAllowanceHeader",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Spend limit permission allows %@ to withdraw and spend up to the following amount:",
+      comment: "The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\""
+    )
+    public static let editPermissionsProposedAllowanceHeader = NSLocalizedString(
+      "wallet.editPermissionsProposedAllowanceHeader",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Proposed allowance",
+      comment: "The header text shown in the row that displays the proposed allowance value."
+    )
+    public static let editPermissionsCustomAllowanceHeader = NSLocalizedString(
+      "wallet.editPermissionsCustomAllowanceHeader",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Set custom allowance",
+      comment: "The header text above the field to input a custom allowance value."
+    )
+    public static let editPermissionsSetUnlimited = NSLocalizedString(
+      "wallet.editPermissionsSetUnlimited",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Set Unlimited",
+      comment: "The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\"."
     )
   }
 }

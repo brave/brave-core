@@ -63,9 +63,14 @@ struct TransactionView: View {
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
     switch info.txType {
     case .erc20Approve:
-      let contractAddress = info.txDataUnion.ethTxData1559?.baseData.to ?? ""
-      if let value = info.txArgs[safe: 1], let token = token(for: contractAddress) {
-        Text(String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? "", token.symbol))
+      if let contractAddress = info.txDataUnion.ethTxData1559?.baseData.to,
+          let value = info.txArgs[safe: 1],
+          let token = token(for: contractAddress) {
+        if value.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame {
+          Text(String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, Strings.Wallet.editPermissionsApproveUnlimited, token.symbol))
+        } else {
+          Text(String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? "", token.symbol))
+        }
       } else {
         Text(Strings.Wallet.transactionUnknownApprovalTitle)
       }

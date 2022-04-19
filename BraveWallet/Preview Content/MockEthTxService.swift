@@ -9,8 +9,14 @@ import BraveCore
 #if DEBUG
 
 class MockTxService: BraveWalletTxService {
+  private let txs: [BraveWallet.TransactionInfo] = [
+    .previewConfirmedERC20Approve,
+    .previewConfirmedSend,
+    .previewConfirmedSwap
+  ]
+  
   func transactionInfo(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (BraveWallet.TransactionInfo?) -> Void) {
-    completion(nil)
+    completion(txs.first(where: { $0.id == txMetaId }))
   }
 
   func addUnapprovedTransaction(_ txData: BraveWallet.TxDataUnion, from: String, completion: @escaping (Bool, String, String) -> Void) {
@@ -21,16 +27,10 @@ class MockTxService: BraveWalletTxService {
   }
 
   func allTransactionInfo(_ coinType: BraveWallet.CoinType, from: String, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {
-    completion(
-      [
-        BraveWallet.TransactionInfo.previewConfirmedERC20Approve,
-        .previewConfirmedSend,
-        .previewConfirmedSwap,
-      ].map {
-        tx in
-        tx.txStatus = .unapproved
-        return tx
-      })
+    completion(txs.map { tx in
+      tx.txStatus = .unapproved
+      return tx
+    })
   }
 
   func add(_ observer: BraveWalletTxServiceObserver) {

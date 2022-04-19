@@ -108,7 +108,7 @@ extension BraveWallet.TransactionInfo {
             nonce: "0x5",
             gasPrice: "0x0",
             gasLimit: "0x520ca",
-            to: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+            to: "0xad6d458402f60fd3bd25163575031acdce07538d",
             value: "0x0",
             data: _transactionBase64ToData("CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8=")
           ),

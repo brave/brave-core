@@ -18,6 +18,11 @@ struct TransactionConfirmationView: View {
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.presentationMode) @Binding private var presentationMode
 
+  /// Blockie size for ERC 20 Approve transactions
+  @ScaledMetric private var blockieSize = 24
+  /// Favicon size for ERC 20 Approve transactions
+  @ScaledMetric private var faviconSize = 48
+
   private enum ViewMode: Int {
     case transaction
     case details
@@ -82,6 +87,83 @@ struct TransactionConfirmationView: View {
     }
   }
 
+  /// View showing the currently selected account with a blockie
+  @ViewBuilder private var accountView: some View {
+    HStack {
+      Text(keyringStore.selectedAccount.address.truncatedAddress)
+        .fontWeight(.semibold)
+      Blockie(address: keyringStore.selectedAccount.address)
+        .frame(width: blockieSize, height: blockieSize)
+    }
+  }
+
+  /// The view for changing between available pending transactions. ex. '1 of 4 Next'
+  @ViewBuilder private var transactionsButton: some View {
+    if confirmationStore.transactions.count > 1 {
+      let index = confirmationStore.transactions.firstIndex(of: activeTransaction) ?? 0
+      HStack {
+        Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.transactions.count))
+          .fontWeight(.semibold)
+        Button(action: next) {
+          Text(Strings.Wallet.nextTransaction)
+            .fontWeight(.semibold)
+            .foregroundColor(Color(.braveBlurpleTint))
+        }
+      }
+    } else {
+      EmptyView()
+    }
+  }
+
+  /// The header displayed for an `erc20Approve` txType transaction
+  @ViewBuilder private var erc20ApproveHeader: some View {
+    VStack(spacing: 20) {
+      VStack(spacing: 8) {
+        if let origin = confirmationStore.state.origin {
+          Image(systemName: "globe")
+            .frame(width: faviconSize, height: faviconSize)
+            .background(Color(.braveDisabled))
+            .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+          Text(verbatim: origin.absoluteString)
+            .font(.subheadline)
+            .foregroundColor(Color(.braveLabel))
+            .multilineTextAlignment(.center)
+        }
+        VStack(spacing: 10) {
+          Text(String.localizedStringWithFormat(Strings.Wallet.confirmationViewAllowSpendTitle, confirmationStore.state.symbol))
+            .fontWeight(.semibold)
+            .foregroundColor(Color(.bravePrimary))
+          Text(String.localizedStringWithFormat(Strings.Wallet.confirmationViewAllowSpendSubtitle, confirmationStore.state.symbol))
+            .font(.footnote)
+        }
+        .multilineTextAlignment(.center)
+      }
+      if confirmationStore.state.isUnlimitedApprovalRequested {
+        Label(Strings.Wallet.confirmationViewUnlimitedWarning, systemImage: "exclamationmark.triangle")
+          .padding(12)
+          .foregroundColor(Color(.braveErrorLabel))
+          .font(.subheadline)
+          .background(
+            Color(.braveErrorBackground)
+              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+          )
+      }
+      NavigationLink(
+        destination: EditPermissionsView(
+          proposedAllowance: activeTransaction.txArgs[safe: 1] ?? "",
+          confirmationStore: confirmationStore,
+          keyringStore: keyringStore,
+          networkStore: networkStore
+        )
+      ) {
+        Text(Strings.Wallet.confirmationViewEditPermissions)
+          .font(.subheadline.weight(.semibold))
+          .foregroundColor(Color(.braveBlurpleTint))
+      }
+    }
+    .padding()
+  }
+
   @ViewBuilder private var editGasFeeButton: some View {
     let titleView = Text(Strings.Wallet.editGasFeeButtonTitle)
       .fontWeight(.semibold)
@@ -118,31 +200,32 @@ struct TransactionConfirmationView: View {
       ScrollView(.vertical) {
         VStack {
           // Header
-          HStack {
+          HStack(alignment: .top) {
             Text(networkStore.selectedChain.shortChainName)
             Spacer()
-            if confirmationStore.transactions.count > 1 {
-              let index = confirmationStore.transactions.firstIndex(of: activeTransaction) ?? 0
-              Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.transactions.count))
-                .fontWeight(.semibold)
-              Button(action: next) {
-                Text(Strings.Wallet.nextTransaction)
-                  .fontWeight(.semibold)
-                  .foregroundColor(Color(.braveBlurpleTint))
+            VStack(alignment: .trailing) {
+              transactionsButton
+              if activeTransaction.txType == .erc20Approve {
+                accountView // for other txTypes, account is shown in `TransactionHeader`
               }
             }
           }
           .font(.callout)
           // Summary
-          TransactionHeader(
-            fromAccountAddress: activeTransaction.fromAddress,
-            fromAccountName: fromAccountName,
-            toAccountAddress: activeTransaction.ethTxToAddress,
-            toAccountName: toAccountName,
-            transactionType: transactionType,
-            value: "\(confirmationStore.state.value) \(confirmationStore.state.symbol)",
-            fiat: confirmationStore.state.fiat
-          )
+          if activeTransaction.txType == .erc20Approve {
+            erc20ApproveHeader
+          } else {
+            TransactionHeader(
+              fromAccountAddress: activeTransaction.fromAddress,
+              fromAccountName: fromAccountName,
+              toAccountAddress: activeTransaction.ethTxToAddress,
+              toAccountName: toAccountName,
+              transactionType: transactionType,
+              value: "\(confirmationStore.state.value) \(confirmationStore.state.symbol)",
+              fiat: confirmationStore.state.fiat
+            )
+          }
+
           // View Mode
           VStack(spacing: 12) {
             Picker("", selection: $viewMode) {
@@ -173,34 +256,58 @@ struct TransactionConfirmationView: View {
                   .accessibilityElement(children: .contain)
                   Divider()
                     .padding(.leading)
-                  HStack {
-                    Text(Strings.Wallet.total)
-                      .foregroundColor(Color(.bravePrimary))
-                      .font(.callout)
-                      .accessibility(sortPriority: 1)
-                    Spacer()
-                    VStack(alignment: .trailing) {
-                      Text(Strings.Wallet.amountAndGas)
-                        .font(.footnote)
-                        .foregroundColor(Color(.secondaryBraveLabel))
-                      Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol) + \(confirmationStore.state.gasValue) \(confirmationStore.state.gasSymbol)")
-                        .foregroundColor(Color(.bravePrimary))
-                      HStack(spacing: 4) {
-                        if !confirmationStore.state.isBalanceSufficient {
-                          Text(Strings.Wallet.insufficientBalance)
-                            .foregroundColor(Color(.braveErrorLabel))
-                        }
-                        Text(confirmationStore.state.totalFiat)
-                          .foregroundColor(
-                            confirmationStore.state.isBalanceSufficient ? Color(.braveLabel) : Color(.braveErrorLabel)
-                          )
+                  if activeTransaction.txType == .erc20Approve {
+                    Group {
+                      HStack {
+                        Text(Strings.Wallet.confirmationViewCurrentAllowance)
+                        Spacer()
+                        Text("\(confirmationStore.state.currentAllowance) \(confirmationStore.state.symbol)")
+                          .multilineTextAlignment(.trailing)
                       }
+                      .padding()
                       .accessibilityElement(children: .contain)
-                      .font(.footnote)
+                      Divider()
+                      HStack {
+                        Text(Strings.Wallet.editPermissionsProposedAllowanceHeader)
+                        Spacer()
+                        Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol)")
+                          .multilineTextAlignment(.trailing)
+                      }
+                      .padding()
+                      .accessibilityElement(children: .contain)
                     }
+                    .font(.callout)
+                    .foregroundColor(Color(.bravePrimary))
+                  } else {
+                    HStack {
+                      Text(Strings.Wallet.total)
+                        .foregroundColor(Color(.bravePrimary))
+                        .font(.callout)
+                        .accessibility(sortPriority: 1)
+                      Spacer()
+                      VStack(alignment: .trailing) {
+                        Text(Strings.Wallet.amountAndGas)
+                          .font(.footnote)
+                          .foregroundColor(Color(.secondaryBraveLabel))
+                        Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol) + \(confirmationStore.state.gasValue) \(confirmationStore.state.gasSymbol)")
+                          .foregroundColor(Color(.bravePrimary))
+                        HStack(spacing: 4) {
+                          if !confirmationStore.state.isBalanceSufficient {
+                            Text(Strings.Wallet.insufficientBalance)
+                              .foregroundColor(Color(.braveErrorLabel))
+                          }
+                          Text(confirmationStore.state.totalFiat)
+                            .foregroundColor(
+                              confirmationStore.state.isBalanceSufficient ? Color(.braveLabel) : Color(.braveErrorLabel)
+                            )
+                        }
+                        .accessibilityElement(children: .contain)
+                        .font(.footnote)
+                      }
+                    }
+                    .padding()
+                    .accessibilityElement(children: .contain)
                   }
-                  .padding()
-                  .accessibilityElement(children: .contain)
                   Divider()
                     .padding(.leading)
                   NavigationLink(

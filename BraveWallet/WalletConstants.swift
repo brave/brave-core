@@ -10,4 +10,7 @@ struct WalletConstants {
   ///
   /// This value will be formatted to a string such as 0.875%)
   static let braveSwapFee: Double = 0.00875
+
+  /// The wei value used for unlimited allowance in an ERC 20 transaction.
+  static let MAX_UINT256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 }

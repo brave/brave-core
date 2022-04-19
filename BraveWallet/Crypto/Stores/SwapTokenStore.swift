@@ -364,20 +364,28 @@ public class SwapTokenStore: ObservableObject {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
       let fromToken = selectedFromToken,
-      let accountInfo = accountInfo,
-      let balanceInWeiHex = weiFormatter.weiString(
-        from: selectedFromTokenBalance?.decimalExpansion(precisionAfterDecimalPoint: Int(fromToken.decimals), rounded: false) ?? "0",
-        radix: .hex,
-        decimals: Int(fromToken.decimals)
-      )
+      let accountInfo = accountInfo
     else { return }
+    
+    // IMPORTANT SECURITY NOTICE
+    //
+    // The token allowance suggested by Swap is always unlimited,
+    // i.e., max(uint256). While unlimited approvals are not safe from a
+    // security standpoint, and this puts the entire token balance at risk
+    // if 0x contracts are ever exploited, we still opted for this to give
+    // users a frictionless UX and save on gas fees.
+    //
+    // The transaction confirmation screen for ERC20 approve() shows a loud
+    // security notice, and still allows users to edit the default approval
+    // amount.
+    let allowance = WalletConstants.MAX_UINT256
 
     isMakingTx = true
     rpcService.network { [weak self] network in
       guard let self = self else { return }
       self.ethTxManagerProxy.makeErc20ApproveData(
         spenderAddress,
-        amount: "0x\(balanceInWeiHex)"
+        amount: allowance
       ) { success, data in
         guard success else { return }
         let baseData = BraveWallet.TxData(
