@@ -61,6 +61,7 @@ public class BravePrivacySettings extends PrivacySettings {
             "other_privacy_settings_section";
 
     private static final String PREF_HTTPSE = "httpse";
+    private static final String PREF_DE_AMP = "de_amp";
     private static final String PREF_IPFS_GATEWAY = "ipfs_gateway";
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_BLOCK_SCRIPTS = "scripts_block";
@@ -92,8 +93,9 @@ public class BravePrivacySettings extends PrivacySettings {
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
-            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_HTTPS_FIRST_MODE,
-            PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
+            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_DE_AMP, PREF_HTTPSE,
+            PREF_HTTPS_FIRST_MODE, PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES,
+            PREF_FINGERPRINTING_PROTECTION,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -125,6 +127,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
     private ChromeSwitchPreference mHttpsePref;
+    private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mHttpsFirstModePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mBlockScriptsPref;
@@ -154,6 +157,9 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
         mHttpsePref.setOnPreferenceChangeListener(this);
+
+        mDeAmpPref = (ChromeSwitchPreference) findPreference(PREF_DE_AMP);
+        mDeAmpPref.setOnPreferenceChangeListener(this);
 
         mHttpsFirstModePref = (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE);
         mHttpsFirstModePref.setVisible(mHttpsePref.isChecked());
@@ -277,6 +283,9 @@ public class BravePrivacySettings extends PrivacySettings {
                 UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, newValueBool);
             }
+        } else if (PREF_DE_AMP.equals(key)) {
+            BravePrefServiceBridge.getInstance().setDeAmpEnabled((boolean) newValue);
+
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
             BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
