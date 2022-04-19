@@ -38,7 +38,8 @@ export default function useSend () {
   const dispatch = useDispatch()
   const {
     selectedAccount,
-    fullTokenList
+    fullTokenList,
+    selectedNetwork
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
   const {
     addressError,
@@ -280,11 +281,11 @@ export default function useSend () {
 
   // effects
   React.useEffect(() => {
-    if (selectedSendAsset) {
+    if (selectedSendAsset?.chainId === selectedNetwork.chainId) {
       return
     }
     selectSendAsset(sendAssetOptions[0])
-  }, [sendAssetOptions, selectedSendAsset])
+  }, [sendAssetOptions, selectedSendAsset, selectedNetwork])
 
   React.useEffect(() => {
     if (selectedAccount?.coin === BraveWallet.CoinType.ETH) {
