@@ -7,11 +7,10 @@
 
 #include "bat/ads/internal/ads_history/sorts/ads_history_ascending_sort.h"
 #include "bat/ads/internal/ads_history/sorts/ads_history_descending_sort.h"
-#include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"
 
 namespace ads {
 
-std::unique_ptr<AdsHistorySort> AdsHistorySortFactory::Build(
+std::unique_ptr<AdsHistorySortInterface> AdsHistorySortFactory::Build(
     const AdsHistorySortType type) {
   switch (type) {
     case AdsHistorySortType::kNone: {
