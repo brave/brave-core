@@ -12,15 +12,23 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 
+// Cache active Browser instance's TabStripModel to give
+// to ShieldsPanelDataHandler when this is created because
+// CreatePanelHandler() is run in async.
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
+  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  tab_strip_model_ = browser->tab_strip_model();
+
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kShieldsPanelHost);
 
@@ -58,7 +66,6 @@ void ShieldsPanelUI::CreatePanelHandler(
 
   panel_handler_ =
       std::make_unique<ShieldsPanelHandler>(std::move(panel_receiver), this);
-
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-      std::move(data_handler_receiver), this);
+      std::move(data_handler_receiver), this, tab_strip_model_);
 }
