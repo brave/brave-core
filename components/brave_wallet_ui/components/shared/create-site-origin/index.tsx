@@ -10,7 +10,7 @@ const CreateSiteOrigin = (props: Props) => {
   const { originSpec, eTldPlusOne } = props
 
   const url = React.useMemo(() => {
-    if (originSpec.startsWith('chrome://wallet')) {
+    if (originSpec === 'chrome://wallet') {
       return <span>{getLocale('braveWalletPanelTitle')}</span>
     }
     if (eTldPlusOne) {

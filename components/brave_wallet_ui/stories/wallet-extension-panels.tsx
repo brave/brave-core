@@ -601,7 +601,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       {selectedPanel === 'send' &&
                         <Send
                           onChangeSendView={onChangeSendView}
-                          // selectedAssetBalance={(selectedAccount.nativeBalanceRegistry)[selectedAsset.chainId]}
                         />
                       }
                       {selectedPanel === 'buy' &&
@@ -733,6 +732,7 @@ export const _AddSuggestedToken = () => {
       <AddSuggestedTokenPanel
         onCancel={onCancel}
         onAddToken={onAddToken}
+        originInfo={originInfo}
         token={mockNewAssetOptions[2]}
         selectedNetwork={mockNetworks[0]}
       />

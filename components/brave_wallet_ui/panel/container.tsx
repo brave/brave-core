@@ -556,7 +556,7 @@ function Container (props: Props) {
           <AddSuggestedTokenPanel
             onCancel={onCancelAddSuggestedToken}
             onAddToken={onAddSuggestedToken}
-            // TODO(apaymyshev): make use of origin info here.
+            originInfo={suggestedTokenRequest?.origin ?? activeOrigin}
             token={suggestedTokenRequest?.token}
             selectedNetwork={selectedNetwork}
           />

@@ -253,6 +253,12 @@ function ConfirmTransactionPanel ({
             <FromCircle orb={fromOrb} />
             <ToCircle orb={toOrb} />
           </AccountCircleWrapper>
+          <URLText>
+            <CreateSiteOrigin
+              originSpec={originInfo.originSpec}
+              eTldPlusOne={originInfo.eTldPlusOne}
+            />
+          </URLText>
           <FromToRow>
             <AccountNameText>{fromAccountName}</AccountNameText>
             <ArrowIcon />

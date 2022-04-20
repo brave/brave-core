@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { BraveWallet } from '../../../constants/types'
 
+// Styled Components
 import {
   StyledWrapper,
   Title,
@@ -14,12 +15,15 @@ import {
   NetworkText,
   TopRow
 } from './style'
-import { withPlaceholderIcon, Tooltip } from '../../shared'
+import { URLText } from '../shared-panel-styles'
+
+// Components
+import { withPlaceholderIcon, Tooltip, CreateSiteOrigin } from '../../shared'
 import { NavButton } from '..'
-import { getLocale } from '../../../../common/locale'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import { getLocale } from '../../../../common/locale'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -27,6 +31,7 @@ import { useExplorer } from '../../../common/hooks'
 export interface Props {
   onCancel: () => void
   onAddToken: () => void
+  originInfo: BraveWallet.OriginInfo
   selectedNetwork: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
 }
@@ -36,7 +41,8 @@ function AddSuggestedTokenPanel (props: Props) {
     onCancel,
     onAddToken,
     token,
-    selectedNetwork
+    selectedNetwork,
+    originInfo
   } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -52,6 +58,12 @@ function AddSuggestedTokenPanel (props: Props) {
           <NetworkText>{selectedNetwork.chainName}</NetworkText>
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
+        <URLText>
+          <CreateSiteOrigin
+            originSpec={originInfo.originSpec}
+            eTldPlusOne={originInfo.eTldPlusOne}
+          />
+        </URLText>
         <Description>{getLocale('braveWalletAddSuggestedTokenDescription')}</Description>
         <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
         <TokenName>{token?.name ?? ''} ({token?.symbol ?? ''})</TokenName>
