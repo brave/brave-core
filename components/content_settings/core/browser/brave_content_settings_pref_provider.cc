@@ -43,38 +43,10 @@ const char kSessionModelPath[] = "model";
 const char kSettingPath[] = "setting";
 const char kPerResourcePath[] = "per_resource";
 
-const ContentSettingsPattern& GetFirstPartyPattern() {
-  static const base::NoDestructor<ContentSettingsPattern> kFirstPartyPattern(
-      ContentSettingsPattern::FromString("https://firstParty/*"));
-  return *kFirstPartyPattern;
-}
-
-Rule CloneRule(const Rule& original_rule, bool reverse_patterns = false) {
-  // brave plugin rules incorrectly use first party url as primary
-  Rule rule(reverse_patterns ? original_rule.secondary_pattern
-                             : original_rule.primary_pattern,
-            reverse_patterns ? original_rule.primary_pattern
-                             : original_rule.secondary_pattern,
-            original_rule.value.Clone(), original_rule.expiration,
-            original_rule.session_model);
-
-  if (!reverse_patterns) {
-    DCHECK(rule.primary_pattern != GetFirstPartyPattern());
-  } else if (rule.primary_pattern == GetFirstPartyPattern()) {
-    // We should only hit this for brave plugin rules.
-    if (!rule.secondary_pattern.MatchesAllHosts()) {
-      rule.primary_pattern = ContentSettingsPattern::FromString(base::StrCat(
-          {"*://[*.]",
-           net::registry_controlled_domains::GetDomainAndRegistry(
-               rule.secondary_pattern.GetHost(),
-               net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES),
-           "/*"}));
-    } else {
-      rule.primary_pattern = rule.secondary_pattern;
-    }
-  }
-
-  return rule;
+Rule CloneRule(const Rule& original_rule) {
+  return Rule(original_rule.primary_pattern, original_rule.secondary_pattern,
+              original_rule.value.Clone(), original_rule.expiration,
+              original_rule.session_model);
 }
 
 class BraveShieldsRuleIterator : public RuleIterator {
@@ -105,15 +77,13 @@ bool IsActive(const Rule& cookie_rule,
               const std::vector<Rule>& shield_rules) {
   // don't include default rules in the iterator
   if (cookie_rule.primary_pattern == ContentSettingsPattern::Wildcard() &&
-      (cookie_rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
-       cookie_rule.secondary_pattern == GetFirstPartyPattern())) {
+      cookie_rule.secondary_pattern == ContentSettingsPattern::Wildcard()) {
     return false;
   }
 
-  bool default_value = true;
   for (const auto& shield_rule : shield_rules) {
     auto primary_compare =
-        shield_rule.primary_pattern.Compare(cookie_rule.primary_pattern);
+        shield_rule.primary_pattern.Compare(cookie_rule.secondary_pattern);
     // TODO(bridiver) - verify that SUCCESSOR is correct and not PREDECESSOR
     if (primary_compare == ContentSettingsPattern::IDENTITY ||
         primary_compare == ContentSettingsPattern::SUCCESSOR) {
@@ -122,7 +92,7 @@ bool IsActive(const Rule& cookie_rule,
     }
   }
 
-  return default_value;
+  return true;
 }
 
 }  // namespace
@@ -377,40 +347,24 @@ bool BravePrefProvider::SetWebsiteSetting(
     ContentSettingsType content_type,
     base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
-  // TODO(bridiver) - this is currently broken in ways that can cause real
-  // problems if people try to use it so disable completely until we migrate
-  // the brave cookie settings to use CookieControlsMode::kBlockThirdParty
-  // https://github.com/brave/brave-browser/issues/16127
-  //
-  // handle changes to brave cookie settings from chromium cookie settings UI
-  // if (content_type == ContentSettingsType::COOKIES) {
-  //   base::Value value = in_value.Clone();
-  //   auto match = std::find_if(
-  //       brave_cookie_rules_[off_the_record_].begin(),
-  //       brave_cookie_rules_[off_the_record_].end(),
-  //       [primary_pattern, secondary_pattern, &value](const auto& rule) {
-  //         return rule.primary_pattern == primary_pattern &&
-  //                rule.secondary_pattern == secondary_pattern &&
-  //                ValueToContentSetting(rule.value) !=
-  //                    ValueToContentSetting(value); });
-  //   if (match != brave_cookie_rules_[off_the_record_].end()) {
-  //     // swap primary/secondary pattern - see CloneRule
-  //     auto plugin_primary_pattern = secondary_pattern;
-  //     auto plugin_secondary_pattern = primary_pattern;
-
-  //     // convert to legacy firstParty format for brave plugin settings
-  //     if (plugin_primary_pattern == plugin_secondary_pattern) {
-  //       plugin_secondary_pattern =
-  //           ContentSettingsPattern::FromString("https://firstParty/*");
-  //     }
-
-  //     // change to type ContentSettingsType::BRAVE_COOKIES
-  //     return SetWebsiteSettingInternal(
-  //         plugin_primary_pattern, plugin_secondary_pattern,
-  //         ContentSettingsType::BRAVE_COOKIES, std::move(in_value),
-  //         constraints);
-  //   }
-  // }
+  if (content_type == ContentSettingsType::COOKIES) {
+    base::Value value = in_value.Clone();
+    auto match = std::find_if(
+        brave_cookie_rules_[off_the_record_].begin(),
+        brave_cookie_rules_[off_the_record_].end(),
+        [primary_pattern, secondary_pattern, &value](const auto& rule) {
+          return rule.primary_pattern == primary_pattern &&
+                 rule.secondary_pattern == secondary_pattern &&
+                 ValueToContentSetting(rule.value) !=
+                     ValueToContentSetting(value);
+        });
+    if (match != brave_cookie_rules_[off_the_record_].end()) {
+      // change to type ContentSettingsType::BRAVE_COOKIES
+      return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
+                                       ContentSettingsType::BRAVE_COOKIES,
+                                       std::move(in_value), constraints);
+    }
+  }
 
   return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
                                    content_type, std::move(in_value),
@@ -494,15 +448,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
 
-  // add chromium cookies
-  {
-    auto chromium_cookies_iterator =
-        PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
-    while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
-      rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
-    }
-  }
-
   // collect shield rules
   std::vector<Rule> shield_rules;
   {
@@ -521,28 +466,18 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
       auto rule = brave_cookies_iterator->Next();
       if (IsActive(rule, shield_rules)) {
-        rules.emplace_back(CloneRule(rule, true));
-        brave_cookie_rules_[incognito].emplace_back(CloneRule(rule, true));
+        rules.emplace_back(CloneRule(rule));
+        brave_cookie_rules_[incognito].emplace_back(CloneRule(rule));
       }
     }
   }
 
-  // Adding shields down rules (they always override cookie rules).
-  for (const auto& shield_rule : shield_rules) {
-    // There is no global shields rule
-    if (shield_rule.primary_pattern.MatchesAllHosts())
-      NOTREACHED();
-
-    // Shields down.
-    if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {
-      rules.emplace_back(Rule(ContentSettingsPattern::Wildcard(),
-                              shield_rule.primary_pattern,
-                              ContentSettingToValue(CONTENT_SETTING_ALLOW),
-                              base::Time(), SessionModel::Durable));
-      brave_cookie_rules_[incognito].emplace_back(
-          Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
-               ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
-               SessionModel::Durable));
+  // add chromium cookies
+  {
+    auto chromium_cookies_iterator =
+        PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
+    while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
+      rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
     }
   }
 

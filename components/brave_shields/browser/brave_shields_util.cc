@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -15,8 +16,10 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/debounce/common/features.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -338,42 +341,106 @@ void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state) {
-  auto primary_pattern = GetPatternFromURL(url);
+  const auto host_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!host_pattern.IsValid())
     return;
 
-  map->SetContentSettingCustomScope(primary_pattern,
+  map->SetContentSettingCustomScope(host_pattern,
                                     ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::BRAVE_REFERRERS,
                                     GetDefaultBlockFromControlType(type));
 
-  map->SetContentSettingCustomScope(
-      primary_pattern,
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::BRAVE_COOKIES, GetDefaultAllowFromControlType(type));
+  const auto primary_pattern = ContentSettingsPattern::FromString(base::StrCat(
+      {"*://[*.]",
+       net::registry_controlled_domains::GetDomainAndRegistry(
+           host_pattern.GetHost(),
+           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES),
+       "/*"}));
 
+  // first-party rule:
+  map->SetContentSettingCustomScope(primary_pattern, host_pattern,
+                                    ContentSettingsType::BRAVE_COOKIES,
+                                    GetDefaultAllowFromControlType(type));
+  // general rule:
   map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::Wildcard(), host_pattern,
       ContentSettingsType::BRAVE_COOKIES, GetDefaultBlockFromControlType(type));
 
   RecordShieldsSettingChanged(local_state);
 }
 
-ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting =
-      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_COOKIES);
-
-  ContentSetting fp_setting = map->GetContentSetting(
-      url, GURL("https://firstParty/"), ContentSettingsType::BRAVE_COOKIES);
-
-  if (setting == CONTENT_SETTING_ALLOW) {
-    return ControlType::ALLOW;
-  } else if (fp_setting != CONTENT_SETTING_BLOCK) {
-    return ControlType::BLOCK_THIRD_PARTY;
-  } else {
-    return ControlType::BLOCK;
+struct CookieRules {
+  bool IsDefault() const {
+    return general_setting == CONTENT_SETTING_DEFAULT &&
+           first_party_setting == CONTENT_SETTING_DEFAULT;
   }
+
+  static CookieRules Get(HostContentSettingsMap* map,
+                        const GURL& url,
+                        ContentSettingsType content_type) {
+    content_settings::SettingInfo general_info;
+    const base::Value& general_value = map->GetWebsiteSetting(
+        GURL::EmptyGURL(), url, content_type, &general_info);
+
+    content_settings::SettingInfo first_party_info;
+    const base::Value& first_party_value =
+        map->GetWebsiteSetting(url, url, content_type, &first_party_info);
+
+    const ContentSettingsPattern& wildcard = ContentSettingsPattern::Wildcard();
+    if (general_info.primary_pattern == wildcard &&
+        general_info.secondary_pattern == wildcard &&
+        first_party_info.primary_pattern == wildcard &&
+        first_party_info.secondary_pattern == wildcard) {
+      return {CONTENT_SETTING_DEFAULT, CONTENT_SETTING_DEFAULT};
+    }
+
+    return {content_settings::ValueToContentSetting(general_value),
+            content_settings::ValueToContentSetting(first_party_value)};
+  }
+
+  ContentSetting general_setting = CONTENT_SETTING_DEFAULT;
+  ContentSetting first_party_setting = CONTENT_SETTING_DEFAULT;
+};
+
+// TODO(bridiver) - convert cookie settings to ContentSettingsType::COOKIES
+// while maintaining read backwards compat
+ControlType GetCookieControlType(
+    HostContentSettingsMap* map,
+    content_settings::CookieSettings* cookie_settings,
+    const GURL& url) {
+  DCHECK(map);
+  DCHECK(cookie_settings);
+
+  // Get explicitly defined brave rules (from pop-up combobox)
+  auto result = CookieRules::Get(map, url, ContentSettingsType::BRAVE_COOKIES);
+  if (result.IsDefault()) {
+    // If there are no explicit brave rules, check for user-defined (chromium)
+    result = CookieRules::Get(map, url, ContentSettingsType::COOKIES);
+    if (result.IsDefault()) {
+      // If there are no custom rules, get the default settings.
+      const ContentSetting default_cookies_setting =
+          cookie_settings->GetDefaultCookieSetting(nullptr);
+      const bool default_should_block_3p_cookies =
+          cookie_settings->ShouldBlockThirdPartyCookies();
+      if (default_cookies_setting == CONTENT_SETTING_BLOCK) {
+        // All cookies are blocked.
+        result = {CONTENT_SETTING_BLOCK, CONTENT_SETTING_BLOCK};
+      } else if (default_should_block_3p_cookies) {
+        // First-party cookies are allowed.
+        result = {CONTENT_SETTING_BLOCK, CONTENT_SETTING_ALLOW};
+      } else {
+        // All cookies are allowed.
+        result = {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ALLOW};
+      }
+    }
+  }
+
+  if (result.general_setting == CONTENT_SETTING_ALLOW)
+    return ControlType::ALLOW;
+  if (result.first_party_setting != CONTENT_SETTING_BLOCK)
+     return ControlType::BLOCK_THIRD_PARTY;
+  return ControlType::BLOCK;
 }
 
 bool AreReferrersAllowed(HostContentSettingsMap* map, const GURL& url) {

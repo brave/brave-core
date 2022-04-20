@@ -11,8 +11,10 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/public/browser/web_ui.h"
 #include "url/gurl.h"
 
@@ -123,8 +125,9 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetCookieControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  const ControlType setting = brave_shields::GetCookieControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0].Clone(),

@@ -20,11 +20,13 @@
 #include "brave/components/p3a/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
@@ -227,7 +229,7 @@ base::android::ScopedJavaLocalRef<jstring>
 JNI_BravePrefServiceBridge_GetCookiesBlockType(JNIEnv* env) {
   brave_shields::ControlType control_type = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-      GURL());
+      CookieSettingsFactory::GetForProfile(GetOriginalProfile()).get(), GURL());
   return base::android::ConvertUTF8ToJavaString(
       env, brave_shields::ControlTypeToString(control_type));
 }

@@ -12,11 +12,13 @@
 #include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "url/gurl.h"
 
@@ -163,11 +165,13 @@ base::android::ScopedJavaLocalRef<jstring>
     JNI_BraveShieldsContentSettings_GetCookieControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::ControlType control_type =
-      brave_shields::GetCookieControlType(
-          HostContentSettingsMapFactory::GetForProfile(
-              ProfileAndroid::FromProfileAndroid(j_profile)),
-          GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+  brave_shields::ControlType control_type = brave_shields::GetCookieControlType(
+      HostContentSettingsMapFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile)),
+      CookieSettingsFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile))
+          .get(),
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
       brave_shields::ControlTypeToString(control_type));

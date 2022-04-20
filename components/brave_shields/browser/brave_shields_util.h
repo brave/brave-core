@@ -17,6 +17,10 @@ namespace content {
 struct Referrer;
 }
 
+namespace content_settings {
+class CookieSettings;
+}
+
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
@@ -88,7 +92,10 @@ void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state = nullptr);
-ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
+ControlType GetCookieControlType(
+    HostContentSettingsMap* map,
+    content_settings::CookieSettings* cookie_settings,
+    const GURL& url);
 
 // Referrers is always set along with cookies so there is no setter and
 // these is just included for backwards compat.
