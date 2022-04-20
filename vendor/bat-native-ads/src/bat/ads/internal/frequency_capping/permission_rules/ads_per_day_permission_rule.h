@@ -6,8 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_DAY_PERMISSION_RULE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_ADS_PER_DAY_PERMISSION_RULE_H_
 
-#include <deque>
 #include <string>
+#include <vector>
 
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 
@@ -27,7 +27,7 @@ class AdsPerDayPermissionRule final : public PermissionRuleInterface {
   std::string GetLastMessage() const override;
 
  private:
-  bool DoesRespectCap(const std::deque<base::Time>& history);
+  bool DoesRespectCap(const std::vector<base::Time>& history);
 
   AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
   AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;

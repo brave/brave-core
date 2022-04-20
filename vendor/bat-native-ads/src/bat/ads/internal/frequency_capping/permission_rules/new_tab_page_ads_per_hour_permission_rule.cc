@@ -21,7 +21,7 @@ NewTabPageAdsPerHourPermissionRule::~NewTabPageAdsPerHourPermissionRule() =
     default;
 
 bool NewTabPageAdsPerHourPermissionRule::ShouldAllow() {
-  const std::deque<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -37,7 +37,7 @@ std::string NewTabPageAdsPerHourPermissionRule::GetLastMessage() const {
 }
 
 bool NewTabPageAdsPerHourPermissionRule::DoesRespectCap(
-    const std::deque<base::Time>& history) {
+    const std::vector<base::Time>& history) {
   const base::TimeDelta time_constraint = base::Hours(1);
 
   const int cap = features::GetMaximumNewTabPageAdsPerHour();

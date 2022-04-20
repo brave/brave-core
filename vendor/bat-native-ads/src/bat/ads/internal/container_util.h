@@ -7,23 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 
 #include <algorithm>
-#include <deque>
 #include <vector>
 
 #include "base/check_op.h"
 
 namespace ads {
-
-template <typename T>
-std::deque<T> VectorToDeque(const std::vector<T>& vector) {
-  std::deque<T> deque;
-
-  for (const auto& element : vector) {
-    deque.push_back(element);
-  }
-
-  return deque;
-}
 
 template <typename T>
 std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,

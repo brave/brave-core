@@ -21,7 +21,7 @@ SearchResultAdsPerHourPermissionRule::~SearchResultAdsPerHourPermissionRule() =
     default;
 
 bool SearchResultAdsPerHourPermissionRule::ShouldAllow() {
-  const std::deque<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -37,7 +37,7 @@ std::string SearchResultAdsPerHourPermissionRule::GetLastMessage() const {
 }
 
 bool SearchResultAdsPerHourPermissionRule::DoesRespectCap(
-    const std::deque<base::Time>& history) {
+    const std::vector<base::Time>& history) {
   const base::TimeDelta time_constraint = base::Hours(1);
 
   const int cap = features::GetMaximumSearchResultAdsPerHour();

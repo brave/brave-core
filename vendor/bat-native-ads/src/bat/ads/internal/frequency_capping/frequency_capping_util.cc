@@ -10,7 +10,7 @@
 namespace ads {
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
-    const std::deque<base::Time>& history,
+    const std::vector<base::Time>& history,
     const base::TimeDelta time_constraint,
     const int cap) {
   int count = 0;

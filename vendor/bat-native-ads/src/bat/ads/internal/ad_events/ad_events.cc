@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ad_events/ad_events.h"
 
+#include <algorithm>
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -98,19 +100,17 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
       id, ad_type.ToString(), confirmation_type.ToString(), timestamp);
 }
 
-std::deque<base::Time> GetAdEvents(const AdType& ad_type,
-                                   const ConfirmationType& confirmation_type) {
-  const std::vector<double>& history = AdsClientHelper::Get()->GetAdEvents(
+std::vector<base::Time> GetAdEvents(const AdType& ad_type,
+                                    const ConfirmationType& confirmation_type) {
+  const std::vector<double> timestamps = AdsClientHelper::Get()->GetAdEvents(
       ad_type.ToString(), confirmation_type.ToString());
 
-  std::deque<base::Time> deque;
+  std::vector<base::Time> history;
+  std::transform(
+      timestamps.begin(), timestamps.end(), std::back_inserter(history),
+      [](double timestamp) { return base::Time::FromDoubleT(timestamp); });
 
-  for (const auto& timestamp : history) {
-    const base::Time time = base::Time::FromDoubleT(timestamp);
-    deque.push_back(time);
-  }
-
-  return deque;
+  return history;
 }
 
 }  // namespace ads
