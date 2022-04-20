@@ -4,7 +4,6 @@ import {
   BuySendSwapViewTypes,
   ToOrFromType,
   DefaultCurrencies,
-  BuySupportedChains,
   BuyOption
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
@@ -92,9 +91,15 @@ function Buy (props: Props) {
     return selected !== undefined ? selected.label : ''
   }, [selectedBuyOption])
 
+  const isSelectedNetworkSupported = React.useMemo(() => {
+    return [...rampAssetOptions, ...wyreAssetOptions]
+      .map(asset => asset.chainId.toLowerCase())
+      .includes(selectedNetwork.chainId.toLowerCase())
+  }, [selectedNetwork])
+
   return (
     <StyledWrapper>
-      {BuySupportedChains.includes(selectedNetwork.chainId) ? (
+      {isSelectedNetworkSupported ? (
         <SwapInputComponent
           defaultCurrencies={defaultCurrencies}
           componentType='buyAmount'
