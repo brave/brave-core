@@ -348,15 +348,14 @@ bool BravePrefProvider::SetWebsiteSetting(
     base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
   if (content_type == ContentSettingsType::COOKIES) {
-    base::Value value = in_value.Clone();
-    auto match = std::find_if(
-        brave_cookie_rules_[off_the_record_].begin(),
-        brave_cookie_rules_[off_the_record_].end(),
-        [primary_pattern, secondary_pattern, &value](const auto& rule) {
+    auto match = base::ranges::find_if(
+        brave_cookie_rules_[off_the_record_],
+        [&primary_pattern = std::as_const(primary_pattern),
+         &secondary_pattern = std::as_const(secondary_pattern),
+         &in_value = std::as_const(in_value)](const auto& rule) {
           return rule.primary_pattern == primary_pattern &&
                  rule.secondary_pattern == secondary_pattern &&
-                 ValueToContentSetting(rule.value) !=
-                     ValueToContentSetting(value);
+                 rule.value != in_value;
         });
     if (match != brave_cookie_rules_[off_the_record_].end()) {
       // change to type ContentSettingsType::BRAVE_COOKIES
