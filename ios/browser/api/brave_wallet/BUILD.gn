@@ -32,6 +32,7 @@ source_set("brave_wallet") {
     "//base",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/ios/browser/api/url",
     "//ios/chrome/browser",
     "//net",
   ]

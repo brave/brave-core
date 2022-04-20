@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "brave_wallet.mojom.objc.h"
 
+@class URLOriginIOS;
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^BraveWalletProviderResultsCallback)(
@@ -19,7 +21,7 @@ typedef void (^BraveWalletProviderResultsCallback)(
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (void)showPanel;
-- (NSURL*)getOrigin;
+- (URLOriginIOS*)getOrigin;
 - (void)requestEthereumPermissions:
     (BraveWalletProviderResultsCallback)completion;
 - (void)getAllowedAccounts:(BOOL)includeAccountsWhenLocked

@@ -86,6 +86,9 @@
 }
 
 - (NSString*)serialized {
+  if (origin->opaque()) {
+    return nil;
+  }
   return base::SysUTF8ToNSString(origin->Serialize());
 }
 
