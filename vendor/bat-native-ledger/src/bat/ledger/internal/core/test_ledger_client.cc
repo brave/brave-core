@@ -39,8 +39,9 @@ std::string FakeEncryption::EncryptString(const std::string& value) {
 absl::optional<std::string> FakeEncryption::DecryptString(
     const std::string& value) {
   size_t pos = value.find("ENCRYPTED:");
-  if (pos == 0)
+  if (pos == 0) {
     return value.substr(10);
+  }
 
   return {};
 }
@@ -55,8 +56,9 @@ std::string FakeEncryption::Base64EncryptString(const std::string& value) {
 absl::optional<std::string> FakeEncryption::Base64DecryptString(
     const std::string& value) {
   std::string decoded;
-  if (!base::Base64Decode(value, &decoded))
+  if (!base::Base64Decode(value, &decoded)) {
     return {};
+  }
 
   return DecryptString(decoded);
 }
@@ -132,11 +134,13 @@ void TestLedgerClient::Log(const char* file,
                            const int verbose_level,
                            const std::string& message) {
   int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (verbose_level <= vlog_level)
+  if (verbose_level <= vlog_level) {
     logging::LogMessage(file, line, -verbose_level).stream() << message;
+  }
 
-  if (log_callback_)
+  if (log_callback_) {
     log_callback_.Run(message);
+  }
 }
 
 void TestLedgerClient::PublisherListNormalized(

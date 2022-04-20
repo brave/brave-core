@@ -50,7 +50,7 @@ class LedgerImpl : public Ledger {
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
-  BATLedgerContext* context() const;
+  BATLedgerContext& context();
 
   LedgerClient* ledger_client() const;
 
