@@ -155,7 +155,6 @@ public class NTPUtil {
         ViewGroup optinLayout = view.findViewById(R.id.optin_layout_id);
 
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
-
         ImageView sponsoredLogo = (ImageView)view.findViewById(R.id.sponsored_logo);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dpToPx(context, 170), dpToPx(context, 170));
 

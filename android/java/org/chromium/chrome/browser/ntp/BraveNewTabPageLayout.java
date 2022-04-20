@@ -387,7 +387,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
-
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             if (mSettingsBar != null) {
                 mSettingsBar.setAlpha(0f);
@@ -578,7 +577,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
 
             int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(
                     mNtpImageGlobal, mSiteSectionView.getHeight());
-
             if (toTop) {
                 imageCreditCorrection = 0;
             }
@@ -1059,8 +1057,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                 int pxHeight = ConfigurationUtils
                                                                        .getDisplayMetrics(mActivity)
                                                                        .get("height");
-                                                int margin = pxHeight
-                                                        - dpToPx(getContext(), 195 /*219*/);
+                                                int margin = pxHeight - dpToPx(getContext(), 195);
+
                                                 mParentScrollView.smoothScrollTo(0, margin);
                                             }
                                         }, 100);
@@ -1504,7 +1502,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 protected void onPostExecute(List<TopSiteTable> topSites) {
                     assert ThreadUtils.runningOnUiThread();
                     if (isCancelled()) return;
-
                     loadTopSites(topSites);
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -1686,6 +1683,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             superReferralSitesLayout.addView(view);
         }
         showFallBackNTPLayout();
+    }
+
+    private void updateImageCreditPosition() {
+        if (mImageCreditLayout == null) {
+            mImageCreditLayout = findViewById(R.id.image_credit_layout);
+        }
+        if (mImageCreditLayout != null) {
+            LinearLayout.LayoutParams linearLayoutParams =
+                    (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
+            int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(
+                    mNtpImageGlobal, mSiteSectionView.getHeight());
+
+            linearLayoutParams.setMargins(0, imageCreditCorrection, 0, 0);
+            if (mImageCreditLayout != null) {
+                mImageCreditLayout.setLayoutParams(linearLayoutParams);
+            }
+            mImageCreditLayout.requestLayout();
+        }
     }
 
     public void setTab(Tab tab) {
