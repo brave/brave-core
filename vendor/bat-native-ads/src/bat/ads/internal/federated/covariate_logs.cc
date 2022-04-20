@@ -15,10 +15,8 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/federated/covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_clicked_covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_impression_served_at_covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_locale_country_at_time_of_serving_covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_number_of_tabs_opened_in_past_30_minutes_log_entry.h"
+#include "bat/ads/internal/federated/log_entries/ad_notification_clicked.h"
+#include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
 #include "bat/ads/internal/federated/log_entries/last_ad_notification_was_clicked.h"
 #include "bat/ads/internal/federated/log_entries/number_of_user_activity_events.h"
@@ -122,11 +120,6 @@ CovariateLogs::CovariateLogs() {
   DCHECK_EQ(g_covariate_logs, nullptr);
   g_covariate_logs = this;
 
-  SetCovariateLogEntry(
-      std::make_unique<
-          AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry>());
-  SetCovariateLogEntry(
-      std::make_unique<AdNotificationNumberOfTabsOpenedInPast30Minutes>());
   SetCovariateLogEntry(std::make_unique<LastAdNotificationWasClicked>());
 
   for (const auto& user_activity_event_to_covariate_types_mapping :
@@ -196,20 +189,16 @@ brave_federated::mojom::TrainingInstancePtr CovariateLogs::GetTrainingInstance()
   return training_instance;
 }
 
-void CovariateLogs::SetAdNotificationImpressionServedAt(
-    const base::Time impression_served_at) {
-  auto impression_served_at_covariate_log_entry =
-      std::make_unique<AdNotificationImpressionServedAtCovariateLogEntry>();
-  impression_served_at_covariate_log_entry->SetLastImpressionAt(
-      impression_served_at);
-  SetCovariateLogEntry(std::move(impression_served_at_covariate_log_entry));
+void CovariateLogs::SetAdNotificationServedAt(const base::Time time) {
+  auto ad_notification_served_at = std::make_unique<AdNotificationServedAt>();
+  ad_notification_served_at->SetTime(time);
+  SetCovariateLogEntry(std::move(ad_notification_served_at));
 }
 
-void CovariateLogs::SetAdNotificationWasClicked(bool was_clicked) {
-  auto ad_notification_clicked_covariate_log_entry =
-      std::make_unique<AdNotificationClickedCovariateLogEntry>();
-  ad_notification_clicked_covariate_log_entry->SetClicked(was_clicked);
-  SetCovariateLogEntry(std::move(ad_notification_clicked_covariate_log_entry));
+void CovariateLogs::SetAdNotificationClicked(bool clicked) {
+  auto ad_notification_clicked = std::make_unique<AdNotificationClicked>();
+  ad_notification_clicked->SetClicked(clicked);
+  SetCovariateLogEntry(std::move(ad_notification_clicked));
 }
 
 void CovariateLogs::LogTrainingInstance() {

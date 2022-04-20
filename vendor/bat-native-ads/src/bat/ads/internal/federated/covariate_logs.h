@@ -40,9 +40,8 @@ class CovariateLogs final {
   void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntry> entry);
   brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
 
-  void SetAdNotificationImpressionServedAt(
-      const base::Time impression_served_at);
-  void SetAdNotificationWasClicked(bool was_clicked);
+  void SetAdNotificationServedAt(const base::Time time);
+  void SetAdNotificationClicked(bool clicked);
   void LogTrainingInstance();
 
  private:

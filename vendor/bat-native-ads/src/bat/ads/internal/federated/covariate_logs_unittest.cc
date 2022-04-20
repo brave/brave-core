@@ -28,20 +28,20 @@ TEST_F(BatAdsCovariateLogsTest, GetTrainingInstance) {
       CovariateLogs::Get()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(34U, training_covariates->covariates.size());
+  EXPECT_EQ(32U, training_covariates->covariates.size());
 }
 
 TEST_F(BatAdsCovariateLogsTest, GetTrainingInstanceWithSetters) {
   // Arrange
-  CovariateLogs::Get()->SetAdNotificationImpressionServedAt(Now());
-  CovariateLogs::Get()->SetAdNotificationWasClicked(true);
+  CovariateLogs::Get()->SetAdNotificationServedAt(Now());
+  CovariateLogs::Get()->SetAdNotificationClicked(true);
 
   // Act
   brave_federated::mojom::TrainingInstancePtr training_covariates =
       CovariateLogs::Get()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(36U, training_covariates->covariates.size());
+  EXPECT_EQ(34U, training_covariates->covariates.size());
 }
 
 }  // namespace ads

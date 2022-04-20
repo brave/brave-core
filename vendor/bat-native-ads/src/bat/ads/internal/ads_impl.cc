@@ -833,8 +833,7 @@ void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 
-  const base::Time impression_served_at = base::Time::Now();
-  covariate_logs_->SetAdNotificationImpressionServedAt(impression_served_at);
+  covariate_logs_->SetAdNotificationServedAt(base::Time::Now());
 }
 
 void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
@@ -846,7 +845,7 @@ void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kClicked});
 
-  covariate_logs_->SetAdNotificationWasClicked(true);
+  covariate_logs_->SetAdNotificationClicked(true);
   covariate_logs_->LogTrainingInstance();
 }
 
@@ -857,7 +856,7 @@ void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kDismissed});
 
-  covariate_logs_->SetAdNotificationWasClicked(false);
+  covariate_logs_->SetAdNotificationClicked(false);
   covariate_logs_->LogTrainingInstance();
 }
 
@@ -865,7 +864,7 @@ void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kTimedOut});
 
-  covariate_logs_->SetAdNotificationWasClicked(false);
+  covariate_logs_->SetAdNotificationClicked(false);
   covariate_logs_->LogTrainingInstance();
 }
 
