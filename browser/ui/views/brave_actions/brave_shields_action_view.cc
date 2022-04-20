@@ -235,6 +235,10 @@ void BraveShieldsActionView::OnResourcesChanged() {
   UpdateIconState();
 }
 
+void BraveShieldsActionView::OnShieldsEnabledChanged() {
+  UpdateIconState();
+}
+
 void BraveShieldsActionView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,

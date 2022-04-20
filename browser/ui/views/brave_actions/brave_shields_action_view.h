@@ -45,6 +45,7 @@ class BraveShieldsActionView
   std::unique_ptr<IconWithBadgeImageSource> GetImageSource();
   // brave_shields::BraveShieldsDataController
   void OnResourcesChanged() override;
+  void OnShieldsEnabledChanged() override;
   // TabStripModelObserver
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,

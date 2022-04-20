@@ -12,7 +12,10 @@
 
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -29,6 +32,7 @@ namespace brave_shields {
 class BraveShieldsDataController
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BraveShieldsDataController>,
+      public content_settings::Observer,
       public favicon::FaviconDriverObserver {
  public:
   BraveShieldsDataController(const BraveShieldsDataController&) = delete;
@@ -40,6 +44,7 @@ class BraveShieldsDataController
    public:
     virtual void OnResourcesChanged() = 0;
     virtual void OnFaviconUpdated() {}
+    virtual void OnShieldsEnabledChanged() {}
   };
 
   void HandleItemBlocked(const std::string& block_type,
@@ -80,6 +85,12 @@ class BraveShieldsDataController
       content::NavigationHandle* navigation_handle) override;
   void WebContentsDestroyed() override;
 
+  // content_settings::Observer
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
+
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
                         NotificationIconType notification_icon_type,
@@ -94,6 +105,8 @@ class BraveShieldsDataController
   std::set<GURL> resource_list_http_redirects_;
   std::set<GURL> resource_list_blocked_js_;
   std::set<GURL> resource_list_blocked_fingerprints_;
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      observation_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
