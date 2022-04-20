@@ -108,7 +108,7 @@ export const Onboarding = () => {
       onPasswordProvided(password)
     }
     setOnboardingStep(onboardingStep + 1)
-  }, [onboardingStep, completeWalletSetup, onPasswordProvided])
+  }, [onboardingStep, completeWalletSetup, onPasswordProvided, password])
 
   const onBack = React.useCallback(() => {
     if (
