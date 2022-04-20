@@ -103,10 +103,7 @@ void UpholdWallet::OnGetUser(const type::Result result,
     return callback(type::Result::LEDGER_OK);
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(uphold_wallet->status == type::WalletStatus::PENDING
-             ? uphold_wallet->address.empty()
-             : !uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
@@ -174,8 +171,7 @@ void UpholdWallet::OnCreateCard(const type::Result result,
     return callback(type::Result::LEDGER_OK);
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
@@ -235,8 +231,7 @@ void UpholdWallet::OnGetAnonFunds(const type::Result result,
     return callback(type::Result::LEDGER_OK);
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
   DCHECK(!id.empty());
 
   if (result != type::Result::LEDGER_OK || !balance) {
@@ -272,8 +267,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     return callback(type::Result::LEDGER_OK);
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
   DCHECK(!id.empty());
 
   switch (result) {
@@ -335,10 +329,7 @@ void UpholdWallet::OnTransferTokens(const type::Result result,
     return callback(type::Result::LEDGER_OK);
   }
 
-  if (uphold_wallet->status != type::WalletStatus::DISCONNECTED_VERIFIED) {
-    DCHECK(!uphold_wallet->token.empty());
-    DCHECK(!uphold_wallet->address.empty());
-  }
+  CheckWalletState(uphold_wallet.get());
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transferring tokens failed!");

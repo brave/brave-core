@@ -41,8 +41,7 @@ void UpholdAuthorization::Authorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  DCHECK(uphold_wallet->token.empty());
-  DCHECK(uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   const auto current_one_time = uphold_wallet->one_time_string;
 
@@ -120,8 +119,7 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  DCHECK(uphold_wallet->token.empty());
-  DCHECK(uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't exchange code for the access token!");

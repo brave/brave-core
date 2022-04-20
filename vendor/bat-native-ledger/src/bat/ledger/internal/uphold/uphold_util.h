@@ -51,6 +51,8 @@ void OnWalletStatusChange(LedgerImpl* ledger,
 
 bool ShouldShowNewlyVerifiedWallet();
 
+void CheckWalletState(const type::ExternalWallet* wallet);
+
 }  // namespace uphold
 }  // namespace ledger
 
