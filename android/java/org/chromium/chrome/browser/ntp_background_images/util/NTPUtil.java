@@ -114,14 +114,14 @@ public class NTPUtil {
             if (height > 0) {
                 widgetCompensation = dpToPx(activity, 80);
             } else {
-                widgetCompensation = dpToPx(activity, -22);
+                widgetCompensation = dpToPx(activity, -28);
             }
 
             if (ntpImage instanceof BackgroundImage) {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.12 : 0.88))
-                            : (int) (pxHeight - dpToPx(activity, 355));
+                            : (int) (pxHeight - dpToPx(activity, 380));
                 }
                 if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
                     imageCreditCorrection = (int) imageCreditCorrection - (int) (pxHeight * 0.04);
@@ -130,7 +130,7 @@ public class NTPUtil {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.02 : 0.98))
-                            : (int) (pxHeight - dpToPx(activity, 480));
+                            : (int) (pxHeight - dpToPx(activity, 505));
                 } else {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.28 : 0.72))

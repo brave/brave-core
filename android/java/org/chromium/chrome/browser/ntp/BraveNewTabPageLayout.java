@@ -1057,7 +1057,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                 int pxHeight = ConfigurationUtils
                                                                        .getDisplayMetrics(mActivity)
                                                                        .get("height");
-                                                int margin = pxHeight - dpToPx(getContext(), 195);
+                                                int margin = pxHeight - dpToPx(getContext(), 215);
 
                                                 mParentScrollView.smoothScrollTo(0, margin);
                                             }
