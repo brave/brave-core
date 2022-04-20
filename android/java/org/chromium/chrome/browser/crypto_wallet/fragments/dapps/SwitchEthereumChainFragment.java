@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -27,7 +26,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwitchEthereumChainFragment extends Fragment {
+public class SwitchEthereumChainFragment extends BaseDAppsFragment {
     private List<NavigationItem> mTabTitles;
 
     @Override

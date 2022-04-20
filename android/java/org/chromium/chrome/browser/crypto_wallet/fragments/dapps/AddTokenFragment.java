@@ -10,11 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
-
 import org.chromium.chrome.R;
 
-public class AddTokenFragment extends Fragment {
+public class AddTokenFragment extends BaseDAppsFragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

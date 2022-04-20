@@ -10,11 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
-
 import org.chromium.chrome.R;
 
-public class DAppsMessageFragment extends Fragment {
+public class DAppsMessageFragment extends BaseDAppsFragment {
     public static DAppsMessageFragment newInstance() {
         DAppsMessageFragment fragment = new DAppsMessageFragment();
         Bundle args = new Bundle();

@@ -106,8 +106,8 @@ public class BraveEthereumPermissionPromptDialog
             if (keyringInfo == null) {
                 return;
             }
-            mAccountsListAdapter =
-                    new BraveEthereumPermissionAccountsListAdapter(keyringInfo.accountInfos);
+            mAccountsListAdapter = new BraveEthereumPermissionAccountsListAdapter(
+                    keyringInfo.accountInfos, true, null);
             mRecyclerView.setAdapter(mAccountsListAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             mRecyclerView.setLayoutManager(layoutManager);
