@@ -8,5 +8,8 @@ specific_include_rules = {
   ],
   "ad_notifications.cc": [
     "+brave/common/brave_channel_info.h",
+  ],
+  "version_number_user_data.cc": [
+    "+brave/components/version_info/version_info.h",
   ]
 }
