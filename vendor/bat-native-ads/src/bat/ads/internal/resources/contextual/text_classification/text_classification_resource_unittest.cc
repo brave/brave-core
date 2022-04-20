@@ -51,9 +51,8 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadInvalidJsonResource) {
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
       .WillOnce(testing::Invoke([](const std::string& id, const int version,
                                    LoadFileCallback callback) {
-        const base::FilePath path = GetTestPath()
-                                        .AppendASCII("resources")
-                                        .AppendASCII(kInvalidJsonResourceFile);
+        const base::FilePath path =
+            GetFileResourcePath().AppendASCII(kInvalidJsonResourceFile);
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
@@ -74,9 +73,8 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadNotExistantJsonResource) {
   EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
       .WillOnce(testing::Invoke([](const std::string& id, const int version,
                                    LoadFileCallback callback) {
-        const base::FilePath path = GetTestPath()
-                                        .AppendASCII("resources")
-                                        .AppendASCII(kNotExistantResourceFile);
+        const base::FilePath path =
+            GetFileResourcePath().AppendASCII(kNotExistantResourceFile);
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);

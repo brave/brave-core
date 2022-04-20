@@ -30,7 +30,7 @@ class BatAdsEligibleAdNotificationsV1Issue17199Test : public UnitTestBase {
     ASSERT_TRUE(CopyFileFromTestPathToTempDir("client_issue_17199.json",
                                               "client.json"));
 
-    UnitTestBase::SetUpForTesting(/* integration_test */ false);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ false);
   }
 };
 

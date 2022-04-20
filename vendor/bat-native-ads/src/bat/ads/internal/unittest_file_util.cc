@@ -14,7 +14,7 @@ namespace ads {
 
 namespace {
 
-base::FilePath GetDataPath() {
+base::FilePath GetRootPath() {
   base::FilePath path;
   base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
   path = path.AppendASCII("brave");
@@ -24,46 +24,52 @@ base::FilePath GetDataPath() {
   return path;
 }
 
+absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
+  std::string content;
+  if (!base::ReadFileToString(path, &content)) {
+    return absl::nullopt;
+  }
+
+  return content;
+}
+
 }  // namespace
 
 base::FilePath GetTestPath() {
-  base::FilePath path = GetDataPath();
-  path = path.AppendASCII("test");
-  return path;
+  return GetRootPath().AppendASCII("test");
 }
 
 absl::optional<std::string> ReadFileFromTestPathToString(
     const std::string& name) {
-  base::FilePath path = GetTestPath();
-  path = path.AppendASCII(name);
-
-  std::string value;
-  if (!base::ReadFileToString(path, &value)) {
-    return absl::nullopt;
-  }
-
-  ParseAndReplaceTagsForText(&value);
-
-  return value;
+  const base::FilePath path = GetTestPath().AppendASCII(name);
+  return ReadFileToString(path);
 }
 
-base::FilePath GetResourcesPath() {
-  base::FilePath path = GetDataPath();
-  path = path.AppendASCII("resources");
-  return path;
-}
-
-absl::optional<std::string> ReadFileFromResourcePathToString(
+absl::optional<std::string> ReadFileFromTestPathAndParseTagsToString(
     const std::string& name) {
-  base::FilePath path = GetResourcesPath();
-  path = path.AppendASCII(name);
-
-  std::string value;
-  if (!base::ReadFileToString(path, &value)) {
+  absl::optional<std::string> content_optional =
+      ReadFileFromTestPathToString(name);
+  if (!content_optional.has_value()) {
     return absl::nullopt;
   }
 
-  return value;
+  ParseAndReplaceTagsForText(&content_optional.value());
+
+  return content_optional.value();
+}
+
+base::FilePath GetFileResourcePath() {
+  return GetTestPath().AppendASCII("resources");
+}
+
+base::FilePath GetDataResourcePath() {
+  return GetRootPath().AppendASCII("resources");
+}
+
+absl::optional<std::string> ReadFileFromDataResourcePathToString(
+    const std::string& name) {
+  const base::FilePath path = GetDataResourcePath().AppendASCII(name);
+  return ReadFileToString(path);
 }
 
 }  // namespace ads
