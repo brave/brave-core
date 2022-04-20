@@ -377,8 +377,8 @@ struct CookieRules {
   }
 
   static CookieRules Get(HostContentSettingsMap* map,
-                        const GURL& url,
-                        ContentSettingsType content_type) {
+                         const GURL& url,
+                         ContentSettingsType content_type) {
     content_settings::SettingInfo general_info;
     const base::Value& general_value = map->GetWebsiteSetting(
         GURL::EmptyGURL(), url, content_type, &general_info);
@@ -439,7 +439,7 @@ ControlType GetCookieControlType(
   if (result.general_setting == CONTENT_SETTING_ALLOW)
     return ControlType::ALLOW;
   if (result.first_party_setting != CONTENT_SETTING_BLOCK)
-     return ControlType::BLOCK_THIRD_PARTY;
+    return ControlType::BLOCK_THIRD_PARTY;
   return ControlType::BLOCK;
 }
 

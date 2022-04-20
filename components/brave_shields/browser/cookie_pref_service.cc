@@ -31,7 +31,8 @@ content_settings::CookieControlsMode ControlTypeToCookieControlsMode(
 void SetCookiePrefDefaults(HostContentSettingsMap* map,
                            content_settings::CookieSettings* cookie_seetings,
                            PrefService* prefs) {
-  const auto type = GetCookieControlType(map, cookie_seetings, GURL::EmptyGURL());
+  const auto type =
+      GetCookieControlType(map, cookie_seetings, GURL::EmptyGURL());
 
   prefs->SetInteger(prefs::kCookieControlsMode,
                     static_cast<int>(ControlTypeToCookieControlsMode(type)));
