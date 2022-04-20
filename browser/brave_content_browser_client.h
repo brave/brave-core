@@ -144,6 +144,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   void OverrideWebkitPrefs(content::WebContents* web_contents,
                            blink::web_pref::WebPreferences* prefs) override;
+  blink::UserAgentMetadata GetUserAgentMetadata() override;
 
  private:
   void OnAllowGoogleAuthChanged();
