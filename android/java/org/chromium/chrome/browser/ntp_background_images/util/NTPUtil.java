@@ -111,11 +111,11 @@ public class NTPUtil {
             imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.48 : 0.54))
                                                 : (int) (pxHeight * (isCompensate ? 0.60 : 0.30));
 
-            if(height>0) {
+            if (height > 0) {
                 widgetCompensation = dpToPx(activity, 80);
             } else {
                 widgetCompensation = dpToPx(activity, -22);
-           }
+            }
 
             if (ntpImage instanceof BackgroundImage) {
                 if (!isTablet) {
@@ -155,6 +155,7 @@ public class NTPUtil {
         ViewGroup optinLayout = view.findViewById(R.id.optin_layout_id);
 
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
+
         ImageView sponsoredLogo = (ImageView)view.findViewById(R.id.sponsored_logo);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dpToPx(context, 170), dpToPx(context, 170));
 
@@ -184,7 +185,6 @@ public class NTPUtil {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-
             int topMargin = correctImageCreditLayoutTopPosition(ntpImage, height);
             imageCreditLayoutParams.setMargins(0, topMargin, 0, 10);
 
