@@ -85,6 +85,7 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
           .c_str());
   return result;
 }
+
 }  // namespace fil
 
 }  // namespace brave_wallet

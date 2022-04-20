@@ -715,9 +715,12 @@ void JsonRpcService::GetFilStateSearchMsgLimited(
       base::BindOnce(&JsonRpcService::OnGetFilStateSearchMsgLimited,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), cid);
 
-  RequestInternal(fil::getStateSearchMsgLimited(cid, period), true, network_url,
-                  std::move(internal_callback));
+  RequestInternal(
+      fil::getStateSearchMsgLimited(cid, period), true, network_url,
+      std::move(internal_callback),
+      base::BindOnce(&ConvertInt64ToString, "/result/Receipt/ExitCode"));
 }
+
 void JsonRpcService::GetFilChainHead(GetFilChainHeadCallback callback) {
   auto network_url = network_urls_[mojom::CoinType::FIL];
   if (!network_url.is_valid()) {
@@ -733,6 +736,7 @@ void JsonRpcService::GetFilChainHead(GetFilChainHeadCallback callback) {
   RequestInternal(fil::getChainHead(), true, network_url,
                   std::move(internal_callback));
 }
+
 void JsonRpcService::OnGetFilChainHead(
     GetFilChainHeadCallback callback,
     const int status,

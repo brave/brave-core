@@ -74,15 +74,11 @@ bool ParseFilGetChainHead(const std::string& json, std::string* cid) {
 }
 
 // Returns parsed receipt exit code.
-bool ParseFilStateSearchMsgLimited(const std::string& raw_json,
+bool ParseFilStateSearchMsgLimited(const std::string& json,
                                    const std::string& cid,
                                    int64_t* exit_code) {
-  std::string converted_json(json::convert_int64_value_to_string(
-      "/result/Receipt/ExitCode", raw_json.c_str(), false));
-  if (converted_json.empty())
-    return false;
   base::Value result;
-  if (!exit_code || !ParseResult(converted_json, &result)) {
+  if (!exit_code || !ParseResult(json, &result) || !result.is_dict()) {
     return false;
   }
   auto* cid_value = result.FindStringPath("Message./");

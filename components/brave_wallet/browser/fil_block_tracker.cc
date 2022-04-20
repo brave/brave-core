@@ -31,10 +31,6 @@ void FilBlockTracker::Start(base::TimeDelta interval) {
                                    base::NullCallback(), false));
 }
 
-void FilBlockTracker::Stop() {
-  BlockTracker::Stop();
-}
-
 void FilBlockTracker::GetLatestBlockhash(GetLatestBlockhashCallback callback,
                                          bool try_cached_value) {
   if (try_cached_value && !latest_blockhash_.empty() &&

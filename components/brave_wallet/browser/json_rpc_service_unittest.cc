@@ -91,6 +91,38 @@ std::string GetGasFilEstimateResponse(int64_t value) {
   return response;
 }
 
+std::string GetFilStateSearchMsgLimitedResponse(int64_t value) {
+  std::string response =
+      R"({
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result":{
+            "Height": 22389,
+            "Message":
+            {
+                "/": "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy"
+            },
+            "Receipt":
+            {
+                "ExitCode": {exit_code},
+                "GasUsed": 1749648,
+                "Return": null
+            },
+            "ReturnDec": null,
+            "TipSet":
+            [
+                {
+                    "/": "bafy2bzacednkg6htmwwlkewl5wr2nezsovfgx5xb56l2uthz32uraqlmtsuzc"
+                }
+            ]
+        }
+      }
+    )";
+  base::ReplaceSubstringsAfterOffset(&response, 0, "{exit_code}",
+                                     std::to_string(value));
+  return response;
+}
+
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
@@ -595,14 +627,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
   void GetFilStateSearchMsgLimited(const std::string& cid,
                                    uint64_t period,
-                                   int expected_exit_code,
+                                   int64_t expected_exit_code,
                                    mojom::FilecoinProviderError expected_error,
                                    const std::string& expected_error_message) {
     bool callback_called = false;
     base::RunLoop run_loop;
     json_rpc_service_->GetFilStateSearchMsgLimited(
         cid, period,
-        base::BindLambdaForTesting([&](int exit_code,
+        base::BindLambdaForTesting([&](int64_t exit_code,
                                        mojom::FilecoinProviderError error,
                                        const std::string& error_message) {
           EXPECT_EQ(exit_code, expected_exit_code);
@@ -614,6 +646,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
     EXPECT_TRUE(callback_called);
   }
+
   void TestGetSPLTokenAccountBalance(
       const std::string& expected_amount,
       uint8_t expected_decimals,
@@ -3015,33 +3048,8 @@ TEST_F(JsonRpcServiceUnitTest, GetFilChainHead) {
 TEST_F(JsonRpcServiceUnitTest, GetFilStateSearchMsgLimited) {
   SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
-                 "Filecoin.StateSearchMsgLimited", "", R"(
-    {
-        "id": 1,
-        "jsonrpc": "2.0",
-        "result":
-        {
-            "Height": 22389,
-            "Message":
-            {
-                "/": "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy"
-            },
-            "Receipt":
-            {
-                "ExitCode": 0,
-                "GasUsed": 1749648,
-                "Return": null
-            },
-            "ReturnDec": null,
-            "TipSet":
-            [
-                {
-                    "/": "bafy2bzacednkg6htmwwlkewl5wr2nezsovfgx5xb56l2uthz32uraqlmtsuzc"
-                }
-            ]
-        }
-    }
-  )");
+                 "Filecoin.StateSearchMsgLimited", "",
+                 GetFilStateSearchMsgLimitedResponse(0));
 
   GetFilStateSearchMsgLimited(
       "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, 0,
@@ -3065,8 +3073,22 @@ TEST_F(JsonRpcServiceUnitTest, GetFilStateSearchMsgLimited) {
                  "Filecoin.StateSearchMsgLimited", "", R"({,})");
   GetFilStateSearchMsgLimited(
       "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, -1,
-      mojom::FilecoinProviderError::kParsingError,
-      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+      mojom::FilecoinProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.StateSearchMsgLimited", "",
+                 GetFilStateSearchMsgLimitedResponse(INT64_MAX));
+  GetFilStateSearchMsgLimited(
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30,
+      INT64_MAX, mojom::FilecoinProviderError::kSuccess, "");
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.StateSearchMsgLimited", "",
+                 GetFilStateSearchMsgLimitedResponse(INT64_MIN));
+  GetFilStateSearchMsgLimited(
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30,
+      INT64_MIN, mojom::FilecoinProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

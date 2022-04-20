@@ -238,17 +238,18 @@ void FilTxManager::UpdatePendingTransactions() {
     uint64_t depth = seconds == 0 ? 1 : seconds;
     json_rpc_service_->GetFilStateSearchMsgLimited(
         cid, depth,
-        base::BindOnce(&FilTxManager::OnGetTransactionStatus,
+        base::BindOnce(&FilTxManager::OnGetFilStateSearchMsgLimited,
                        weak_factory_.GetWeakPtr(), pending_transaction->id()));
   }
   known_no_pending_tx_ = pending_transactions.empty();
   CheckIfBlockTrackerShouldRun();
 }
 
-void FilTxManager::OnGetTransactionStatus(const std::string& tx_meta_id,
-                                          int exit_code,
-                                          mojom::FilecoinProviderError error,
-                                          const std::string& error_message) {
+void FilTxManager::OnGetFilStateSearchMsgLimited(
+    const std::string& tx_meta_id,
+    int64_t exit_code,
+    mojom::FilecoinProviderError error,
+    const std::string& error_message) {
   if (error != mojom::FilecoinProviderError::kSuccess)
     return;
   std::unique_ptr<FilTxMeta> meta =

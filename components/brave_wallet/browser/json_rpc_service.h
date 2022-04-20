@@ -94,7 +94,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   void GetFilChainHead(GetFilChainHeadCallback callback);
   using GetFilStateSearchMsgLimitedCallback =
-      base::OnceCallback<void(int code,
+      base::OnceCallback<void(int64_t code,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
   void GetFilStateSearchMsgLimited(

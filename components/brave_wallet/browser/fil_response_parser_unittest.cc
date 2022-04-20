@@ -224,19 +224,22 @@ TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
 TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
   int64_t exit_code = -1;
   EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
-      GetResponse("{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":" +
-                  std::to_string(INT64_MAX) + "}}"),
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          std::to_string(INT64_MAX) + "\"}}"),
       "cid", &exit_code));
   EXPECT_EQ(exit_code, INT64_MAX);
   EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
-      GetResponse("{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":" +
-                  std::to_string(INT64_MIN) + "}}"),
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          std::to_string(INT64_MIN) + "\"}}"),
       "cid", &exit_code));
   EXPECT_EQ(exit_code, INT64_MIN);
 
   EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
-      GetResponse("{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":" +
-                  std::to_string(INT64_MIN) + "}}"),
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          std::to_string(INT64_MIN) + "\"}}"),
       "anothercid", &exit_code));
 
   EXPECT_FALSE(
@@ -263,6 +266,8 @@ TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
       GetResponse(
           R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": {}}})"),
       "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(GetResponse("null"),
+                                                           "cid", &exit_code));
 }
 
 }  // namespace brave_wallet

@@ -80,10 +80,10 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       int64_t gas_limit,
       mojom::FilecoinProviderError error,
       const std::string& error_message);
-  void OnGetTransactionStatus(const std::string& tx_meta_id,
-                              int exit_code,
-                              mojom::FilecoinProviderError error,
-                              const std::string& error_message);
+  void OnGetFilStateSearchMsgLimited(const std::string& tx_meta_id,
+                                     int64_t exit_code,
+                                     mojom::FilecoinProviderError error,
+                                     const std::string& error_message);
   FilTxStateManager* GetFilTxStateManager();
   FilBlockTracker* GetFilBlockTracker();
 

@@ -42,7 +42,6 @@ class FilBlockTracker : public BlockTracker {
   std::string latest_blockhash() const { return latest_blockhash_; }
   // If timer is already running, it will be replaced with new interval
   void Start(base::TimeDelta interval) override;
-  void Stop() override;
 
  private:
   void OnGetLatestBlockhash(GetLatestBlockhashCallback callback,
