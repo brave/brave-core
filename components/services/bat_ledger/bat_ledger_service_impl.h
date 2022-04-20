@@ -20,6 +20,7 @@ namespace bat_ledger {
 
 class BatLedgerServiceImpl : public mojom::BatLedgerService {
  public:
+  BatLedgerServiceImpl();
   explicit BatLedgerServiceImpl(
       mojo::PendingReceiver<mojom::BatLedgerService> receiver);
 
@@ -48,8 +49,8 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void GetGeminiRetries(GetGeminiRetriesCallback callback) override;
 
  private:
-  mojo::Receiver<mojom::BatLedgerService> receiver_;
-  bool initialized_;
+  mojo::Receiver<mojom::BatLedgerService> receiver_{this};
+  bool initialized_ = false;
   mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> associated_receivers_;
 };
 

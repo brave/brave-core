@@ -28,6 +28,7 @@
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/components/combined_utility/browser/combined_utility_service.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
@@ -784,7 +785,8 @@ class RewardsServiceImpl : public RewardsService,
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;
-  mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
+  combined_utility::InterfaceHolder<bat_ledger::mojom::BatLedgerService>
+      bat_ledger_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
   const base::FilePath ledger_state_path_;

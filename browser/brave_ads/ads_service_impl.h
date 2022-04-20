@@ -28,6 +28,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
+#include "brave/components/combined_utility/browser/combined_utility_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
@@ -532,7 +533,8 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
-  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
+  combined_utility::InterfaceHolder<bat_ads::mojom::BatAdsService>
+      bat_ads_service_;
 
   // The task tracker for the HistoryService callbacks.
   base::CancelableTaskTracker task_tracker_;

@@ -1,0 +1,24 @@
+static_library("browser") {
+  sources = [
+    "combined_utility_service.cc",
+    "combined_utility_service.h",
+  ]
+
+  public_deps = [
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//brave/components/services/bat_ledger/public/interfaces",
+    "//brave/components/services/combined_utility/public/interfaces",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/resources",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//services/service_manager/public/cpp",
+  ]
+}

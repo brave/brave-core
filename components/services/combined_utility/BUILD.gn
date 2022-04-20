@@ -1,0 +1,19 @@
+static_library("lib") {
+  visibility = [
+    "//brave/test:*",
+    "//chrome/utility:*",
+  ]
+
+  sources = [
+    "combined_utility_impl.cc",
+    "combined_utility_impl.h",
+  ]
+
+  public_deps = [ "public/interfaces" ]
+
+  deps = [
+    "//brave/components/services/bat_ads:lib",
+    "//brave/components/services/bat_ledger:lib",
+    "//mojo/public/cpp/system",
+  ]
+}

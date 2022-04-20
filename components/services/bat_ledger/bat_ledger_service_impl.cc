@@ -19,10 +19,12 @@ bool testing() {
 
 namespace bat_ledger {
 
+BatLedgerServiceImpl::BatLedgerServiceImpl() = default;
+
 BatLedgerServiceImpl::BatLedgerServiceImpl(
-    mojo::PendingReceiver<mojom::BatLedgerService> receiver)
-    : receiver_(this, std::move(receiver)),
-    initialized_(false) {}
+    mojo::PendingReceiver<mojom::BatLedgerService> receiver) {
+  receiver_.Bind(std::move(receiver));
+}
 
 BatLedgerServiceImpl::~BatLedgerServiceImpl() = default;
 

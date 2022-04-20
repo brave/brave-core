@@ -13,10 +13,12 @@
 
 namespace bat_ads {
 
+BatAdsServiceImpl::BatAdsServiceImpl() = default;
+
 BatAdsServiceImpl::BatAdsServiceImpl(
-    mojo::PendingReceiver<mojom::BatAdsService> receiver)
-    : receiver_(this, std::move(receiver)),
-      is_initialized_(false) {}
+    mojo::PendingReceiver<mojom::BatAdsService> receiver) {
+  receiver_.Bind(std::move(receiver));
+}
 
 BatAdsServiceImpl::~BatAdsServiceImpl() {}
 

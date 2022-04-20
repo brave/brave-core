@@ -22,6 +22,7 @@ namespace bat_ads {
 
 class BatAdsServiceImpl : public mojom::BatAdsService {
  public:
+  BatAdsServiceImpl();
   explicit BatAdsServiceImpl(
       mojo::PendingReceiver<mojom::BatAdsService> receiver);
 
@@ -50,8 +51,8 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
       SetDebugCallback callback) override;
 
  private:
-  mojo::Receiver<mojom::BatAdsService> receiver_;
-  bool is_initialized_;
+  mojo::Receiver<mojom::BatAdsService> receiver_{this};
+  bool is_initialized_ = false;
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds> associated_receivers_;
 };
 

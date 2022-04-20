@@ -468,14 +468,13 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   BLOG(1, "Starting ledger process");
 
-  if (!bat_ledger_service_.is_bound()) {
-    content::ServiceProcessHost::Launch(
-        bat_ledger_service_.BindNewPipeAndPassReceiver(),
-        content::ServiceProcessHost::Options()
-            .WithDisplayName(IDS_UTILITY_PROCESS_LEDGER_NAME)
-            .Pass());
+  if (!bat_ledger_service_.Get().is_bound()) {
+    bat_ledger_service_ =
+        combined_utility::CombinedUtilityServiceFactory::GetForBrowserContext(
+            profile_)
+            ->MakeBatLedgerService();
 
-    bat_ledger_service_.set_disconnect_handler(
+    bat_ledger_service_.Get().set_disconnect_handler(
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
@@ -501,7 +500,7 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
     }
   }
 
-  bat_ledger_service_->Create(
+  bat_ledger_service_.Get()->Create(
       bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ledger_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
@@ -1477,7 +1476,7 @@ void RewardsServiceImpl::Reset() {
   current_media_fetchers_.clear();
   bat_ledger_.reset();
   bat_ledger_client_receiver_.reset();
-  bat_ledger_service_.reset();
+  bat_ledger_service_.Reset();
   ready_ = std::make_unique<base::OneShotEvent>();
   bool success =
       file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
@@ -2536,7 +2535,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
     return;
   }
 
-  bat_ledger_service_->SetTesting();
+  bat_ledger_service_.Get()->SetTesting();
   SetRetryInterval(1);
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
@@ -2563,44 +2562,44 @@ void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
 }
 
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  bat_ledger_service_->GetEnvironment(std::move(callback));
+  bat_ledger_service_.Get()->GetEnvironment(std::move(callback));
 }
 
 void RewardsServiceImpl::GetDebug(GetDebugCallback callback) {
-  bat_ledger_service_->GetDebug(std::move(callback));
+  bat_ledger_service_.Get()->GetDebug(std::move(callback));
 }
 
 void RewardsServiceImpl::GetReconcileInterval(
     GetReconcileIntervalCallback callback) {
-  bat_ledger_service_->GetReconcileInterval(std::move(callback));
+  bat_ledger_service_.Get()->GetReconcileInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  bat_ledger_service_->GetRetryInterval(std::move(callback));
+  bat_ledger_service_.Get()->GetRetryInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::GetGeminiRetries(GetGeminiRetriesCallback callback) {
-  bat_ledger_service_->GetGeminiRetries(std::move(callback));
+  bat_ledger_service_.Get()->GetGeminiRetries(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(ledger::type::Environment environment) {
-  bat_ledger_service_->SetEnvironment(environment);
+  bat_ledger_service_.Get()->SetEnvironment(environment);
 }
 
 void RewardsServiceImpl::SetDebug(bool debug) {
-  bat_ledger_service_->SetDebug(debug);
+  bat_ledger_service_.Get()->SetDebug(debug);
 }
 
 void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
-  bat_ledger_service_->SetReconcileInterval(interval);
+  bat_ledger_service_.Get()->SetReconcileInterval(interval);
 }
 
 void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
-  bat_ledger_service_->SetRetryInterval(interval);
+  bat_ledger_service_.Get()->SetRetryInterval(interval);
 }
 
 void RewardsServiceImpl::SetGeminiRetries(const int32_t retries) {
-  bat_ledger_service_->SetGeminiRetries(retries);
+  bat_ledger_service_.Get()->SetGeminiRetries(retries);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(

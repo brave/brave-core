@@ -13,6 +13,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_ledger/bat_ledger_service_impl.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/services/combined_utility/combined_utility_impl.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
@@ -62,6 +63,13 @@ auto RunBatAdsService(
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
 
+auto RunBatAdsLedgerFactory(
+    mojo::PendingReceiver<combined_utility::mojom::BatAdsLedgerFactory>
+        receiver) {
+  return std::make_unique<combined_utility::BatAdsLedgerFactoryImpl>(
+      std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentUtilityClient::BraveContentUtilityClient() = default;
@@ -84,6 +92,8 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunBatLedgerService);
 
   services.Add(RunBatAdsService);
+
+  services.Add(RunBatAdsLedgerFactory);
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }

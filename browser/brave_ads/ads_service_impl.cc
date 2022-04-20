@@ -565,7 +565,7 @@ void AdsServiceImpl::Shutdown() {
 
   bat_ads_.reset();
   bat_ads_client_receiver_.reset();
-  bat_ads_service_.reset();
+  bat_ads_service_.Reset();
 
   const bool success =
       file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
@@ -726,14 +726,13 @@ bool AdsServiceImpl::StartService() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!connected());
 
-  if (!bat_ads_service_.is_bound()) {
-    content::ServiceProcessHost::Launch(
-        bat_ads_service_.BindNewPipeAndPassReceiver(),
-        content::ServiceProcessHost::Options()
-            .WithDisplayName(IDS_SERVICE_BAT_ADS)
-            .Pass());
+  if (!bat_ads_service_.Get().is_bound()) {
+    bat_ads_service_ =
+        combined_utility::CombinedUtilityServiceFactory::GetForBrowserContext(
+            profile_)
+            ->MakeBatAdsService();
 
-    bat_ads_service_.set_disconnect_handler(
+    bat_ads_service_.Get().set_disconnect_handler(
         base::BindOnce(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
   }
 
@@ -847,7 +846,7 @@ void AdsServiceImpl::OnDetectUncertainFuture(const uint32_t number_of_start,
                                              const bool is_uncertain_future) {
   ads::mojom::SysInfoPtr sys_info = ads::mojom::SysInfo::New();
   sys_info->is_uncertain_future = is_uncertain_future;
-  bat_ads_service_->SetSysInfo(std::move(sys_info), base::NullCallback());
+  bat_ads_service_.Get()->SetSysInfo(std::move(sys_info), base::NullCallback());
 
   EnsureBaseDirectoryExists(number_of_start);
 }
@@ -897,7 +896,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
   database_ = std::make_unique<ads::Database>(
       base_path_.AppendASCII("database.sqlite"));
 
-  bat_ads_service_->Create(
+  bat_ads_service_.Get()->Create(
       bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
@@ -933,7 +932,7 @@ void AdsServiceImpl::SetEnvironment() {
   }
 #endif
 
-  bat_ads_service_->SetEnvironment(environment, base::NullCallback());
+  bat_ads_service_.Get()->SetEnvironment(environment, base::NullCallback());
 }
 
 void AdsServiceImpl::SetBuildChannel() {
@@ -941,13 +940,13 @@ void AdsServiceImpl::SetBuildChannel() {
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release" ? true : false;
 
-  bat_ads_service_->SetBuildChannel(std::move(build_channel),
-                                    base::NullCallback());
+  bat_ads_service_.Get()->SetBuildChannel(std::move(build_channel),
+                                          base::NullCallback());
 }
 
 void AdsServiceImpl::UpdateIsDebugFlag() {
   auto is_debug = IsDebug();
-  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
+  bat_ads_service_.Get()->SetDebug(is_debug, base::NullCallback());
 }
 
 bool AdsServiceImpl::IsDebug() const {

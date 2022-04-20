@@ -35,11 +35,15 @@ static_library("browser") {
     "switches.h",
   ]
 
+  public_deps =
+      [ "//brave/components/services/combined_utility/public/interfaces" ]
+
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
+    "//brave/components/combined_utility/browser",
     "//brave/components/resources",
     "//brave/components/services/bat_ledger/public/cpp",
     "//brave/vendor/bat-native-ads",

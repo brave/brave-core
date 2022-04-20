@@ -1,5 +1,6 @@
 static_library("lib") {
   visibility = [
+    "//brave/components/services/combined_utility:lib",
     "//brave/test:*",
     "//chrome/utility:*",
   ]
