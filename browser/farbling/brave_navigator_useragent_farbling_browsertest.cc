@@ -256,5 +256,4 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   std::string brands = EvalJs(contents(), kBrandScript).ExtractString();
   EXPECT_NE(std::string::npos, brands.find("Brave"));
   EXPECT_NE(std::string::npos, brands.find("Chromium"));
-  EXPECT_NE(std::string::npos, brands.find(";Not A Brand"));
 }
