@@ -6,9 +6,10 @@
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 
 #include "brave/components/brave_shields/browser/cookie_pref_service.h"
-#include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
@@ -30,17 +31,19 @@ CookiePrefServiceFactory* CookiePrefServiceFactory::GetInstance() {
 CookiePrefServiceFactory::CookiePrefServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "CookiePrefService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
+  DependsOn(CookieSettingsFactory::GetInstance());
+}
 
-CookiePrefServiceFactory::~CookiePrefServiceFactory() {}
+CookiePrefServiceFactory::~CookiePrefServiceFactory() = default;
 
 KeyedService* CookiePrefServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   return new CookiePrefService(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      profile->GetPrefs(),
-      g_browser_process->local_state());
+      CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs());
 }
 
 bool CookiePrefServiceFactory::ServiceIsCreatedWithBrowserContext() const {

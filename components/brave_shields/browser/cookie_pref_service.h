@@ -6,60 +6,26 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_COOKIE_PREF_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_COOKIE_PREF_SERVICE_H_
 
-#include <string>
-
-#include "base/memory/raw_ptr.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "components/content_settings/core/browser/content_settings_observer.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_change_registrar.h"
 
 class HostContentSettingsMap;
 class PrefService;
 
+namespace content_settings {
+class CookieSettings;
+}
+
 namespace brave_shields {
 
 // sync brave plugin cookie settings with chromium cookie prefs
-class CookiePrefService : public KeyedService,
-                          public content_settings::Observer {
+class CookiePrefService : public KeyedService {
  public:
   explicit CookiePrefService(HostContentSettingsMap* host_content_settings_map,
-                             PrefService* prefs,
-                             PrefService* local_state);
+                             content_settings::CookieSettings* cookie_settings,
+                             PrefService* prefs);
   CookiePrefService(const CookiePrefService&) = delete;
   CookiePrefService& operator=(const CookiePrefService&) = delete;
   ~CookiePrefService() override;
-
-  static ControlType CookieControlsModeToControlType(
-      content_settings::CookieControlsMode mode);
-
- private:
-  class Lock {
-   public:
-    Lock();
-    Lock(const Lock&) = delete;
-    Lock& operator=(const Lock&) = delete;
-    ~Lock();
-    bool Try();
-    void Release();
-
-   private:
-    bool locked_;
-  };
-
-  void OnPreferenceChanged();
-
-  // content_settings::Observer overrides:
-  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
-                               const ContentSettingsPattern& secondary_pattern,
-                               ContentSettingsType content_type) override;
-
-  Lock lock_;
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
-  raw_ptr<PrefService> prefs_ = nullptr;
-  raw_ptr<PrefService> local_state_ = nullptr;
-  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace brave_shields
