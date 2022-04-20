@@ -23,10 +23,11 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
-import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
-import org.chromium.chrome.browser.vpn.BraveVpnServerSelectionAdapter;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
+import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,7 +64,7 @@ public class BraveVpnServerSelectionPreferences
         automaticText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
+                BraveVpnUtils.selectedServerRegion = BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC;
                 BraveVpnUtils.mIsServerLocationChanged = true;
                 getActivity().onBackPressed();
             }
@@ -113,9 +114,15 @@ public class BraveVpnServerSelectionPreferences
     OnServerRegionSelection onServerRegionSelection = new OnServerRegionSelection() {
         @Override
         public void onServerRegionClick(BraveVpnServerRegion braveVpnServerRegion) {
-            BraveVpnPrefUtils.setServerRegion(braveVpnServerRegion.getName());
-            BraveVpnUtils.mIsServerLocationChanged = true;
-            getActivity().onBackPressed();
+            if (BraveVpnPrefUtils.getServerRegion().equals(braveVpnServerRegion.getName())) {
+                Toast.makeText(getActivity(), R.string.already_selected_the_server,
+                             Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                BraveVpnUtils.selectedServerRegion = braveVpnServerRegion.getName();
+                BraveVpnUtils.mIsServerLocationChanged = true;
+                getActivity().onBackPressed();
+            }
         }
     };
 

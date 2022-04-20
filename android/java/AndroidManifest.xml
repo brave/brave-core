@@ -95,26 +95,29 @@
     tools:ignore="LockedOrientationActivity"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.vpn.BraveVpnPlansActivity"
+    android:name="org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:noHistory="true"
+    android:launchMode="singleTask"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.vpn.BraveVpnProfileActivity"
+    android:name="org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:noHistory="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.vpn.activities.BraveVpnParentActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.vpn.BraveVpnParentActivity"
-    android:theme="@style/Theme.Chromium.Activity"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity"/>
-
-<activity
-    android:name="org.chromium.chrome.browser.vpn.BraveVpnSupportActivity"
+    android:name="org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
@@ -155,3 +158,17 @@
 <service android:name="org.chromium.chrome.browser.upgrade.BraveUpgradeJobIntentService"
     android:permission="android.permission.BIND_JOB_SERVICE"
     android:exported="false"/>
+
+<service
+    android:name="org.chromium.chrome.browser.vpn.wireguard.WireguardService"
+    android:exported="false">
+</service>
+
+<service
+    android:name="com.wireguard.android.backend.GoBackend$VpnService"
+    android:permission="android.permission.BIND_VPN_SERVICE"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="android.net.VpnService" />
+    </intent-filter>
+</service>

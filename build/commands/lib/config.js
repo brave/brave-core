@@ -20,8 +20,8 @@ if (process.platform === 'win32') {
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
-const run = (cmd, args = [], options) => {
-  const prog = spawnSync(cmd, args, options)
+const run = (cmd, args = []) => {
+  const prog = spawnSync(cmd, args)
   if (prog.status !== 0) {
     console.log(prog.stdout && prog.stdout.toString())
     console.error(prog.stderr && prog.stderr.toString())
@@ -40,7 +40,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
   // packages.config should include version string.
   let obj = Object.assign({}, packages.config, { version: packages.version })
   for (var i = 0, len = key.length; i < len; i++) {
-    if (obj === undefined) {
+    if (!obj) {
       return obj
     }
     obj = obj[key[i]]
@@ -50,7 +50,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
 
 const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json'], { cwd: rootDir })
+    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
@@ -148,6 +148,7 @@ const Config = function () {
   // this.buildProjects()
 
   this.braveVersion = packageConfig(['version']) || '0.0.0'
+
 
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
@@ -259,8 +260,7 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
-    dcheck_always_on:
-      getNPMConfig(['dcheck_always_on'], this.isComponentBuild()),
+    dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
     // Limit action pool (non-compile actions) to amount of CPU cores.
     // This prevents machine overload during builds with high -j value (goma for ex.).
@@ -400,6 +400,7 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'android') {
     args.target_os = 'android'
     args.android_channel = this.channel
+    args.enable_jdk_library_desugaring = false
     if (!this.isOfficialBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'

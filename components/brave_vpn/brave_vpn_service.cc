@@ -44,10 +44,9 @@ constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
 constexpr char kTimezonesForRegions[] =
     "api/v1.1/servers/timezones-for-regions";
-constexpr char kHostnameForRegion[] = "api/v1/servers/hostnames-for-region";
-constexpr char kCreateSubscriberCredential[] =
-    "api/v1/subscriber-credential/create";
+constexpr char kHostnameForRegion[] = "api/v1.2/servers/hostnames-for-region";
 constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
+constexpr char kCredential[] = "api/v1.3/device/";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
@@ -1032,7 +1031,7 @@ void BraveVpnService::OAuthRequest(
     const std::string& post_data,
     URLRequestCallback callback,
     const base::flat_map<std::string, std::string>& headers) {
-  api_request_helper_.Request(method, url, post_data, "application/json", false,
+  api_request_helper_.Request(method, url, post_data, "application/json", true,
                               std::move(callback), headers);
 }
 
@@ -1074,6 +1073,59 @@ void BraveVpnService::GetProfileCredentials(
   GURL base_url = GetURLWithPath(hostname, kProfileCredential);
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("subscriber-credential", subscriber_credential);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+}
+
+void BraveVpnService::GetWireguardProfileCredentials(
+    ResponseCallback callback,
+    const std::string& subscriber_credential,
+    const std::string& public_key,
+    const std::string& hostname) {
+  auto internal_callback =
+      base::BindOnce(&BraveVpnService::OnGetResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  GURL base_url = GetURLWithPath(hostname, kCredential);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("subscriber-credential", subscriber_credential);
+  dict.SetStringKey("public-key", public_key);
+  dict.SetStringKey("transport-protocol", "wireguard");
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+}
+
+void BraveVpnService::VerifyCredentials(
+    ResponseCallback callback,
+    const std::string& hostname,
+    const std::string& client_id,
+    const std::string& subscriber_credential,
+    const std::string& api_auth_token) {
+  auto internal_callback =
+      base::BindOnce(&BraveVpnService::OnGetResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  GURL base_url =
+      GetURLWithPath(hostname, kCredential + client_id + "/verify-credentials");
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("subscriber-credential", subscriber_credential);
+  dict.SetStringKey("api-auth-token", api_auth_token);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+}
+
+void BraveVpnService::InvalidateCredentials(
+    ResponseCallback callback,
+    const std::string& hostname,
+    const std::string& client_id,
+    const std::string& subscriber_credential,
+    const std::string& api_auth_token) {
+  auto internal_callback =
+      base::BindOnce(&BraveVpnService::OnGetResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  GURL base_url = GetURLWithPath(
+      hostname, kCredential + client_id + "/invalidate-credentials");
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("subscriber-credential", subscriber_credential);
+  dict.SetStringKey("api-auth-token", api_auth_token);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
@@ -1135,7 +1187,6 @@ void BraveVpnService::OnGetSanitizedJsonResponse(
 
   if (success)
     json_response = sanitized_json_response.value.value();
-
   std::move(callback).Run(json_response, success);
 }
 
@@ -1149,7 +1200,7 @@ void BraveVpnService::GetSubscriberCredential(
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  GURL base_url = GetURLWithPath(kVpnHost, kCreateSubscriberCredential);
+  GURL base_url = GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("product-type", product_type);
   dict.SetStringKey("product-id", product_id);

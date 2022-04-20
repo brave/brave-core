@@ -1,0 +1,25 @@
+import("//build/config/android/abi.gni")
+
+_brave_public_apk_or_module_tmpl_deps =
+    [ "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar" ]
+
+brave_public_apk_or_module_tmpl_deps = _brave_public_apk_or_module_tmpl_deps
+brave_monochrome_public_apk_or_module_tmpl_deps =
+    _brave_public_apk_or_module_tmpl_deps
+
+_lib_dir = get_label_info(
+               "//brave/third_party/android_deps:com_wireguard_android($default_toolchain)",
+               "target_out_dir") + "/com_wireguard_android_java/jni"
+
+brave_public_apk_or_module_tmpl_loadable_modules =
+    [ "$_lib_dir/$android_app_abi/libwg-go.so" ]
+
+brave_monochrome_public_apk_or_module_tmpl_loadable_modules = []
+brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules = []
+
+if (android_64bit_target_cpu) {
+  brave_monochrome_public_apk_or_module_tmpl_loadable_modules +=
+      [ "$_lib_dir/$android_app_abi/libwg-go.so" ]
+  brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules +=
+      [ "$_lib_dir/$android_app_secondary_abi/libwg-go.so" ]
+}

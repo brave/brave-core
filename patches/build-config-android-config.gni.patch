@@ -1,12 +1,12 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index 473214562b50bb9319771acd21deeea6f90829b3..3134b6b3533e3b88ee659087c18b0f224415ab03 100644
+index 473214562b50bb9319771acd21deeea6f90829b3..98d58421424f8db0a581a90ff231de6f896cbbd9 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
-@@ -3,6 +3,7 @@
- # found in the LICENSE file.
- 
- # This file contains common system config stuff for the Android build.
-+import("//brave/build/android/config.gni")
- 
- # NOTE: Because Chrome OS builds may depend on targets built with the Android
+@@ -8,6 +8,7 @@
  # toolchain, this GNI file may be read and processed from within Chrome OS
+ # toolchains. Checking |is_android| here would therefore be too restrictive.
+ if (is_android || is_chromeos) {
++  import("//brave/build/android/config.gni")
+   import("//build/config/android/channel.gni")
+   import("//build/config/chromecast_build.gni")
+   import("//build/config/dcheck_always_on.gni")

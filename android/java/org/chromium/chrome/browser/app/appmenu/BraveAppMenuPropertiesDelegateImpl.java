@@ -24,8 +24,12 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler.AppMenuItemType;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modelutil.MVCListAdapter;
+import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
     public BraveAppMenuPropertiesDelegateImpl(Context context,
@@ -50,6 +54,25 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
     @Override
     public int getAppMenuLayoutId() {
         return R.menu.brave_main_menu;
+    }
+
+    @Override
+    public ModelList getMenuItems(
+            CustomItemViewTypeProvider customItemViewTypeProvider, AppMenuHandler handler) {
+        ModelList modelList = super.getMenuItems(customItemViewTypeProvider, handler);
+
+        for (int i = 0; i < modelList.size(); ++i) {
+            MVCListAdapter.ListItem item = modelList.get(i);
+            int id = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
+
+            if (id == R.id.request_brave_vpn_row_menu_id) {
+                int menutype = AppMenuItemType.TITLE_BUTTON;
+
+                modelList.update(i, new MVCListAdapter.ListItem(menutype, item.model));
+            }
+        }
+
+        return modelList;
     }
 
     private void maybeReplaceIcons(Menu menu) {
