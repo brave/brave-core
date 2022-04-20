@@ -17,36 +17,39 @@ namespace brave_shields {
 
 namespace {
 
-content_settings::CookieControlsMode ControlTypeToCookieControlsMode(
-    ControlType type) {
-  switch (type) {
-    case ControlType::BLOCK_THIRD_PARTY:
-    case ControlType::BLOCK:
-      return content_settings::CookieControlsMode::kBlockThirdParty;
-    default:
-      return content_settings::CookieControlsMode::kOff;
-  }
-}
-
 void SetCookiePrefDefaults(HostContentSettingsMap* map,
                            content_settings::CookieSettings* cookie_seetings,
                            PrefService* prefs) {
+  using content_settings::CookieControlsMode;
+
+  const auto cookie_controls_mode =
+      static_cast<content_settings::CookieControlsMode>(
+          prefs->GetInteger(prefs::kCookieControlsMode));
+  switch (cookie_controls_mode) {
+    case CookieControlsMode::kOff:
+    case CookieControlsMode::kBlockThirdParty:
+      // Leave valid value as it is.
+      break;
+    default:
+      // Change kIncognitoOnly and potentially broken value to kBlockThirdParty.
+      prefs->SetInteger(prefs::kCookieControlsMode,
+                        static_cast<int>(CookieControlsMode::kBlockThirdParty));
+      break;
+  }
+
   const auto type =
       GetCookieControlType(map, cookie_seetings, GURL::EmptyGURL());
-
-  prefs->SetInteger(prefs::kCookieControlsMode,
-                    static_cast<int>(ControlTypeToCookieControlsMode(type)));
 
   if (type == ControlType::BLOCK) {
     prefs->SetInteger("profile.default_content_setting_values.cookies",
                       CONTENT_SETTING_BLOCK);
   } else {
-    int value =
+    const int value =
         prefs->GetInteger("profile.default_content_setting_values.cookies");
     if (IntToContentSetting(value) != CONTENT_SETTING_SESSION_ONLY) {
-      value = CONTENT_SETTING_ALLOW;
+      prefs->SetInteger("profile.default_content_setting_values.cookies",
+                        CONTENT_SETTING_ALLOW);
     }
-    prefs->SetInteger("profile.default_content_setting_values.cookies", value);
   }
 }
 
