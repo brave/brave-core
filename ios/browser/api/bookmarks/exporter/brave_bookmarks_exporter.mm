@@ -22,6 +22,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 #include "components/bookmarks/browser/bookmark_node.h"
@@ -32,7 +33,6 @@
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #import "net/base/mac/url_conversions.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -188,7 +188,8 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
       /*id=*/1,
       base::GUID::ParseLowercase(bookmarks::BookmarkNode::kBookmarkBarNodeGuid),
       GURL());
-  node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_FOLDER_NAME));
+  node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BOOKMARK_BAR_FOLDER_NAME));
   return node;
 }
 
@@ -198,7 +199,8 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
       base::GUID::ParseLowercase(
           bookmarks::BookmarkNode::kOtherBookmarksNodeGuid),
       GURL());
-  node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
+  node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
   return node;
 }
 
@@ -208,7 +210,8 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
       base::GUID::ParseLowercase(
           bookmarks::BookmarkNode::kMobileBookmarksNodeGuid),
       GURL());
-  node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));
+  node->SetTitle(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));
   return node;
 }
 @end

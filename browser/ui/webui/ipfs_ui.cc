@@ -117,7 +117,7 @@ IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
 
 IPFSUI::~IPFSUI() {}
 
-void IPFSDOMHandler::HandleGetConnectedPeers(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleGetConnectedPeers(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -142,7 +142,7 @@ void IPFSDOMHandler::OnGetConnectedPeers(
                                          std::move(stats_value));
 }
 
-void IPFSDOMHandler::HandleGetAddressesConfig(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleGetAddressesConfig(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -174,7 +174,7 @@ void IPFSDOMHandler::OnGetAddressesConfig(bool success,
                                          std::move(config_value));
 }
 
-void IPFSDOMHandler::HandleGetDaemonStatus(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleGetDaemonStatus(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -182,7 +182,7 @@ void IPFSDOMHandler::HandleGetDaemonStatus(base::Value::ConstListView args) {
   CallOnGetDaemonStatus(web_ui(), std::string());
 }
 
-void IPFSDOMHandler::HandleLaunchDaemon(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleLaunchDaemon(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -238,7 +238,7 @@ void IPFSDOMHandler::OnIpfsShutdown() {
   CallOnGetDaemonStatus(web_ui(), std::string());
 }
 
-void IPFSDOMHandler::HandleShutdownDaemon(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleShutdownDaemon(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -252,7 +252,7 @@ void IPFSDOMHandler::HandleShutdownDaemon(base::Value::ConstListView args) {
   service->ShutdownDaemon(base::NullCallback());
 }
 
-void IPFSDOMHandler::HandleRestartDaemon(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleRestartDaemon(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -267,7 +267,7 @@ void IPFSDOMHandler::HandleRestartDaemon(base::Value::ConstListView args) {
   }
 }
 
-void IPFSDOMHandler::HandleGetRepoStats(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleGetRepoStats(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -298,7 +298,7 @@ void IPFSDOMHandler::OnGetRepoStats(bool success,
                                          std::move(stats_value));
 }
 
-void IPFSDOMHandler::HandleGetNodeInfo(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleGetNodeInfo(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -313,7 +313,7 @@ void IPFSDOMHandler::HandleGetNodeInfo(base::Value::ConstListView args) {
                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IPFSDOMHandler::HandleGarbageCollection(base::Value::ConstListView args) {
+void IPFSDOMHandler::HandleGarbageCollection(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;

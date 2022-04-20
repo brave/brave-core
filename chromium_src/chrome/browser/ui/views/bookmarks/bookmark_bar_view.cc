@@ -66,9 +66,9 @@ void InstallNoHighlightPathGenerator(View* view) {
 }
 }  // namespace views
 
-#define BRAVE_LAYOUT \
-    LayoutBookmarkBarInstructionsView( \
-        this, model_, browser(), button_height, x, max_x, y);
+#define BRAVE_LAYOUT                                                  \
+  LayoutBookmarkBarInstructionsView(this, bookmark_model_, browser(), \
+                                    button_height, x, max_x, y);
 
 #define InstallPillHighlightPathGenerator InstallNoHighlightPathGenerator
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"

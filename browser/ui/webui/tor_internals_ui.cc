@@ -37,7 +37,7 @@ void TorInternalsDOMHandler::RegisterMessages() {
 }
 
 void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
@@ -53,7 +53,7 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
                                          std::move(info));
 }
 
-void TorInternalsDOMHandler::HandleGetTorLog(base::Value::ConstListView args) {
+void TorInternalsDOMHandler::HandleGetTorLog(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;

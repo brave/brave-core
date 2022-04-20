@@ -11,7 +11,6 @@
 #include <algorithm>
 
 #include "base/base64.h"
-#include "base/cxx17_backports.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/security/key_pair_info.h"
@@ -48,7 +47,7 @@ std::vector<uint8_t> GetHKDF(const std::string& secret) {
   const int result =
       HKDF(&derived_key.front(), kHKDFSeedLength, EVP_sha512(),
            &raw_secret.front(), raw_secret.size(), kHKDFSalt,
-           base::size(kHKDFSalt), info, sizeof(info) / sizeof(info[0]));
+           std::size(kHKDFSalt), info, sizeof(info) / sizeof(info[0]));
 
   if (result == 0) {
     return {};

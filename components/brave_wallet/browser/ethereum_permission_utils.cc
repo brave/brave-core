@@ -146,11 +146,10 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
   }
   query_parts.push_back(base::StringPrintf("origin=%s", origin.c_str()));
   std::string query_str = base::JoinString(query_parts, "&");
-  url::Replacements<char> replacements;
-  replacements.SetQuery(query_str.c_str(), url::Component(0, query_str.size()));
+  GURL::Replacements replacements;
+  replacements.SetQueryStr(query_str);
   std::string kConnectWithSite = "connectWithSite";
-  replacements.SetRef(kConnectWithSite.c_str(),
-                      url::Component(0, kConnectWithSite.size()));
+  replacements.SetRefStr(kConnectWithSite);
   return webui_base_url.ReplaceComponents(replacements);
 }
 

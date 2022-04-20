@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 #include "base/logging.h"
 

@@ -114,7 +114,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   const int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R', 'U' << 8 | 'S',
                              -1};
 
-  for (size_t i = 0; i < base::size(kCountryIds); ++i) {
+  for (size_t i = 0; i < std::size(kCountryIds); ++i) {
     prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
     std::vector<std::unique_ptr<TemplateURLData>> urls =
         GetPrepopulatedEngines(&prefs_, nullptr);

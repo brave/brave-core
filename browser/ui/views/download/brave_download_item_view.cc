@@ -10,6 +10,7 @@
 
 #include "base/auto_reset.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/download/download_item_mode.h"
 #include "chrome/browser/ui/views/download/download_shelf_view.h"
@@ -17,7 +18,6 @@
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/common/origin_util.h"
 #include "third_party/skia/include/core/SkColor.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -229,8 +229,8 @@ void BraveDownloadItemView::SetMode(download::DownloadItemMode mode) {
   if (!origin_url_text_.empty()) {
     std::u16string extra;
     if (!is_origin_url_secure_)
-      extra += char16_t(' ') +
-               l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
+      extra += char16_t(' ') + brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_NOT_SECURE_VERBOSE_STATE);
     extra += char16_t(' ') + origin_url_text_;
     accessible_name_ += extra;
   }

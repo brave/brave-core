@@ -81,11 +81,11 @@ TestTaskLog DataStoreTest::TestTaskLogFromTestInfo(
 
 void DataStoreTest::AddAll() {
   ClearDB();
-  for (size_t i = 0; i < base::size(test_task_log_test_db); ++i) {
+  for (size_t i = 0; i < std::size(test_task_log_test_db); ++i) {
     TestTaskLog test_log = TestTaskLogFromTestInfo(test_task_log_test_db[i]);
     test_data_store_->AddLog(test_log);
   }
-  EXPECT_EQ(base::size(test_task_log_test_db), CountRecords());
+  EXPECT_EQ(std::size(test_task_log_test_db), CountRecords());
 }
 
 // Actual tests

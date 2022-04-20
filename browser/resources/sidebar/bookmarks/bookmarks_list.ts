@@ -41,7 +41,7 @@ export class BookmarksListElement extends PolymerElement {
   private folders_: chrome.bookmarks.BookmarkTreeNode[];
   private openFolders_: string[];
 
-  ready() {
+  override ready() {
     super.ready();
     this.addEventListener(
         FOLDER_OPEN_CHANGED_EVENT,
@@ -50,7 +50,7 @@ export class BookmarksListElement extends PolymerElement {
     this.addEventListener('keydown', e => this.onKeydown_(e));
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.setAttribute('role', 'tree');
     this.bookmarksApi_.getFolders().then(folders => {
@@ -87,7 +87,7 @@ export class BookmarksListElement extends PolymerElement {
     });
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     for (const [eventName, callback] of this.listeners_.entries()) {
       this.bookmarksApi_.callbackRouter[eventName]!.removeListener(callback);
     }

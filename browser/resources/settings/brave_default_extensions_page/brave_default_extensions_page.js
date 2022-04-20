@@ -27,12 +27,26 @@ Polymer({
 
   properties: {
     showRestartToast_: Boolean,
-    torEnabled_: Boolean,
-    widevineEnabled_: Boolean,
     disableTorOption_: Boolean,
     decentralizedDnsEnabled_: Boolean,
     unstoppableDomainsResolveMethod_: Array,
     ensResolveMethod_: Array,
+    torEnabledPref_: {
+      type: Object,
+      value() {
+        // TODO(dbeam): this is basically only to appease PrefControlMixin.
+        // Maybe add a no-validate attribute instead? This makes little sense.
+        return {};
+      },
+    },
+    widevineEnabledPref_: {
+      type: Object,
+      value() {
+        // TODO(dbeam): this is basically only to appease PrefControlMixin.
+        // Maybe add a no-validate attribute instead? This makes little sense.
+        return {};
+      },
+    },
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -56,24 +70,12 @@ Polymer({
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
       this.showRestartToast_ = needsRestart
     })
-    this.addWebUIListener('tor-enabled-changed', (enabled) => {
-      this.torEnabled_ = enabled
-    })
-    this.addWebUIListener('widevine-enabled-changed', (enabled) => {
-      this.widevineEnabled_ = enabled
-    })
 
     this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast_ = show;
     });
-    this.browserProxy_.isTorEnabled().then(enabled => {
-      this.torEnabled_ = enabled
-    })
     this.browserProxy_.isTorManaged().then(managed => {
       this.disableTorOption_ = managed
-    })
-    this.browserProxy_.isWidevineEnabled().then(enabled => {
-      this.widevineEnabled_ = enabled
     })
     this.browserProxy_.isDecentralizedDnsEnabled().then(enabled => {
       this.decentralizedDnsEnabled_ = enabled
@@ -86,6 +88,16 @@ Polymer({
       this.Provider.ENS).then(list => {
       this.ensResolveMethod_ = list
     })
+
+    // PrefControlMixin checks for a pref being valid, so have to fake it,
+    // same as upstream.
+    const setTorEnabledPref = (enabled) => this.setTorEnabledPref_(enabled);
+    this.addWebUIListener('tor-enabled-changed', setTorEnabledPref);
+    this.browserProxy_.isTorEnabled().then(setTorEnabledPref);
+
+    const setWidevineEnabledPref = (enabled) => this.setWidevineEnabledPref_(enabled);
+    this.addWebUIListener('widevine-enabled-changed', setWidevineEnabledPref);
+    this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref);
   },
 
   onWebTorrentEnabledChange_: function() {
@@ -101,8 +113,26 @@ Polymer({
     window.open("chrome://restart", "_self");
   },
 
+  setTorEnabledPref_: function (enabled) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    };
+    this.torEnabledPref_ = pref;
+  },
+
   onTorEnabledChange_: function() {
     this.browserProxy_.setTorEnabled(this.$.torEnabled.checked);
+  },
+
+  setWidevineEnabledPref_: function (enabled) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    };
+    this.widevineEnabledPref_ = pref;
   },
 
   onWidevineEnabledChange_: function() {

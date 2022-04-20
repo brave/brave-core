@@ -6,6 +6,7 @@
 #include "base/bind.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,6 +29,10 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "content/public/common/content_features.h"
+#endif
 
 const char kTestHost[] = "a.test.com";
 const char kTestAmpPage[] = "/test.html";
@@ -53,7 +58,18 @@ const char kTestNonAmpBody[] =
 class DeAmpBrowserTest : public InProcessBrowserTest {
  public:
   DeAmpBrowserTest() {
-    feature_list_.InitAndEnableFeature(de_amp::features::kBraveDeAMP);
+    std::vector<base::Feature> disabled_features = {};
+#if BUILDFLAG(IS_MAC)
+    // On Mac, the DeAmpBrowserTest.AmpURLNotStoredInHistory test crashes
+    // due to https://crbug.com/1284500: DCHECK in
+    // blink::ContentToVisibleTimeReporter::TabWasShown when BFCache is
+    // used. To get around the crash, disabling BFCache for these tests
+    // until the upstream bug is fixed.
+    disabled_features.push_back({features::kBackForwardCache});
+#endif  // BUILDFLAG(IS_MAC)
+    feature_list_.InitWithFeatures(
+        /*enabled_features*/ {de_amp::features::kBraveDeAMP},
+        disabled_features);
   }
 
   void SetUpOnMainThread() override {

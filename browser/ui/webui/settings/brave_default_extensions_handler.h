@@ -45,24 +45,24 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void GetRestartNeeded(base::Value::ConstListView args);
-  void SetWebTorrentEnabled(base::Value::ConstListView args);
-  void SetHangoutsEnabled(base::Value::ConstListView args);
-  void SetIPFSCompanionEnabled(base::Value::ConstListView args);
-  void SetMediaRouterEnabled(base::Value::ConstListView args);
+  void GetRestartNeeded(const base::Value::List& args);
+  void SetWebTorrentEnabled(const base::Value::List& args);
+  void SetHangoutsEnabled(const base::Value::List& args);
+  void SetIPFSCompanionEnabled(const base::Value::List& args);
+  void SetMediaRouterEnabled(const base::Value::List& args);
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  void SetBraveWalletEnabled(base::Value::ConstListView args);
+  void SetBraveWalletEnabled(const base::Value::List& args);
 #endif
-  void SetTorEnabled(base::Value::ConstListView args);
-  void IsTorEnabled(base::Value::ConstListView args);
+  void SetTorEnabled(const base::Value::List& args);
+  void IsTorEnabled(const base::Value::List& args);
   void OnTorEnabledChanged();
-  void IsTorManaged(base::Value::ConstListView args);
-  void SetWidevineEnabled(base::Value::ConstListView args);
-  void IsWidevineEnabled(base::Value::ConstListView args);
+  void IsTorManaged(const base::Value::List& args);
+  void SetWidevineEnabled(const base::Value::List& args);
+  void IsWidevineEnabled(const base::Value::List& args);
   void OnWidevineEnabledChanged();
   void OnWalletTypeChanged();
-  void IsDecentralizedDnsEnabled(base::Value::ConstListView args);
-  void GetDecentralizedDnsResolveMethodList(base::Value::ConstListView args);
+  void IsDecentralizedDnsEnabled(const base::Value::List& args);
+  void GetDecentralizedDnsResolveMethodList(const base::Value::List& args);
 
   void InitializePrefCallbacks();
 
@@ -71,16 +71,16 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
                        bool success,
                        const std::string& error,
                        extensions::webstore_install::Result result);
-  void ResetWallet(base::Value::ConstListView args);
-  void ResetTransactionInfo(base::Value::ConstListView args);
+  void ResetWallet(const base::Value::List& args);
+  void ResetTransactionInfo(const base::Value::List& args);
   void OnRestartNeededChanged();
   bool IsRestartNeeded();
 
 #if BUILDFLAG(ENABLE_IPFS)
-  void SetIPFSStorageMax(base::Value::ConstListView args);
-  void ImportIpnsKey(base::Value::ConstListView args);
-  void LaunchIPFSService(base::Value::ConstListView args);
-  void ExportIPNSKey(base::Value::ConstListView args);
+  void SetIPFSStorageMax(const base::Value::List& args);
+  void ImportIpnsKey(const base::Value::List& args);
+  void LaunchIPFSService(const base::Value::List& args);
+  void ExportIPNSKey(const base::Value::List& args);
 
   // ui::SelectFileDialog::Listener
   void FileSelected(const base::FilePath& path,
@@ -96,7 +96,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
   void OnIpnsKeysLoaded(bool success) override;
-  void CheckIpfsNodeStatus(base::Value::ConstListView args);
+  void CheckIpfsNodeStatus(const base::Value::List& args);
   void NotifyNodeStatus();
 
   std::string dialog_key_;

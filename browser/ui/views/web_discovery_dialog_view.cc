@@ -11,6 +11,7 @@
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -73,12 +74,12 @@ WebDiscoveryDialogView::WebDiscoveryDialogView(Browser* browser,
     : browser_(browser), prefs_(prefs) {
   set_should_ignore_snapping(true);
   SetModalType(ui::MODAL_TYPE_CHILD);
-  SetButtonLabel(
-      ui::DIALOG_BUTTON_OK,
-      l10n_util::GetStringUTF16(IDS_WEB_DISCOVERY_DIALOG_OK_BUTTON_TEXT));
-  SetButtonLabel(
-      ui::DIALOG_BUTTON_CANCEL,
-      l10n_util::GetStringUTF16(IDS_WEB_DISCOVERY_DIALOG_CANCEL_BUTTON_TEXT));
+  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_WEB_DISCOVERY_DIALOG_OK_BUTTON_TEXT));
+  SetButtonLabel(ui::DIALOG_BUTTON_CANCEL,
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_WEB_DISCOVERY_DIALOG_CANCEL_BUTTON_TEXT));
 
   SetAcceptCallback(base::BindOnce(
       &WebDiscoveryDialogView::OnAcceptButtonClicked, base::Unretained(this)));
@@ -108,14 +109,16 @@ void WebDiscoveryDialogView::CreateChildViews() {
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)};
   auto* header_label = AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT),
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT),
       header_font));
   header_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   header_label->SetProperty(views::kMarginsKey, gfx::Insets(22, 0, 0, 0));
 
   size_t learn_more_offset;
-  const std::u16string learn_more_text = l10n_util::GetStringUTF16(
-      IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT_LEARN_MORE_PART);
+  const std::u16string learn_more_text =
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT_LEARN_MORE_PART);
   const std::u16string contents_text =
       l10n_util::GetStringFUTF16(IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT,
                                  learn_more_text, &learn_more_offset);
@@ -147,7 +150,8 @@ void WebDiscoveryDialogView::CreateChildViews() {
   contents_label->SizeToFit(360);
 
   dont_ask_again_checkbox_ = AddChildView(std::make_unique<views::Checkbox>(
-      l10n_util::GetStringUTF16(IDS_WEB_DISCOVERY_DIALOG_DONT_ASK_AGAIN_TEXT)));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_WEB_DISCOVERY_DIALOG_DONT_ASK_AGAIN_TEXT)));
 }
 
 views::ClientView* WebDiscoveryDialogView::CreateClientView(

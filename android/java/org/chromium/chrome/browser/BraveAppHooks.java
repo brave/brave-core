@@ -8,8 +8,6 @@ package org.chromium.chrome.browser;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.help.BraveHelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmark;
-import org.chromium.chrome.browser.partnercustomizations.BravePartnerBrowserCustomizations;
-import org.chromium.chrome.browser.partnercustomizations.PartnerBrowserCustomizations;
 
 public class BraveAppHooks extends AppHooksImpl {
     @Override
@@ -20,10 +18,5 @@ public class BraveAppHooks extends AppHooksImpl {
     @Override
     public PartnerBookmark.BookmarkIterator getPartnerBookmarkIterator() {
         return null;
-    }
-
-    @Override
-    public PartnerBrowserCustomizations.Provider getCustomizationProvider() {
-        return new BravePartnerBrowserCustomizations.ProviderPackage();
     }
 }

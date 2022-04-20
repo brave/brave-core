@@ -837,8 +837,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             String dexAggregatorSrc = getString(R.string.swap_dex_aggregator_name);
             String degAggregatorText = getString(R.string.wallet_dex_aggregator, dexAggregatorSrc);
 
-            NoUnderlineClickableSpan span = new NoUnderlineClickableSpan(
-                    getResources(), R.color.brave_action_color, (textView) -> {
+            NoUnderlineClickableSpan span =
+                    new NoUnderlineClickableSpan(this, R.color.brave_action_color, (textView) -> {
                         TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
                         TabUtils.bringChromeTabbedActivityToTheTop(BuySendSwapActivity.this);
                     });

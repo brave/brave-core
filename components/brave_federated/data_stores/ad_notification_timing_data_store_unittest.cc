@@ -89,10 +89,10 @@ AdNotificationTimingDataStoreTest::AdNotificationTimingTaskLogFromTestInfo(
 
 void AdNotificationTimingDataStoreTest::AddAll() {
   ClearDB();
-  for (size_t i = 0; i < base::size(ad_notification_task_log_test_db); ++i)
+  for (size_t i = 0; i < std::size(ad_notification_task_log_test_db); ++i)
     ad_notification_data_store_->AddLog(AdNotificationTimingTaskLogFromTestInfo(
         ad_notification_task_log_test_db[i]));
-  EXPECT_EQ(base::size(ad_notification_task_log_test_db), CountRecords());
+  EXPECT_EQ(std::size(ad_notification_task_log_test_db), CountRecords());
 }
 
 // Actual tests
@@ -131,7 +131,7 @@ TEST_F(AdNotificationTimingDataStoreTest, LoadLogs) {
   EXPECT_EQ(4U, CountRecords());
   auto ad_notification_timing_logs = ad_notification_data_store_->LoadLogs();
 
-  for (size_t i = 0; i < base::size(ad_notification_task_log_test_db); ++i) {
+  for (size_t i = 0; i < std::size(ad_notification_task_log_test_db); ++i) {
     auto it = ad_notification_timing_logs.find(i + 1);
     EXPECT_TRUE(it != ad_notification_timing_logs.end());
   }

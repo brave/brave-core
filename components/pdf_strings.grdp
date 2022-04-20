@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <if expr="enable_plugins">
+  <if expr="enable_pdf">
     <message name="IDS_PDF_DOWNLOAD_ORIGINAL" desc="The label for the menu option to download the original, unedited PDF document (without user's changes).">
       Without your changes
     </message>

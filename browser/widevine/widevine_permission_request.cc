@@ -6,13 +6,13 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 
 #include "brave/browser/widevine/widevine_utils.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "components/permissions/request_type.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/base/l10n/l10n_util.h"
 
 // static
 bool WidevinePermissionRequest::is_test_ = false;
@@ -34,7 +34,7 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
-  return l10n_util::GetStringUTF16(
+  return brave_l10n::GetLocalizedResourceUTF16String(
       GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
 }
 
@@ -69,5 +69,6 @@ void WidevinePermissionRequest::DeleteRequest() {
 }
 
 std::u16string WidevinePermissionRequest::GetExplanatoryMessageText() const {
-  return l10n_util::GetStringUTF16(IDS_WIDEVINE_INSTALL_MESSAGE);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_WIDEVINE_INSTALL_MESSAGE);
 }

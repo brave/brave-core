@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/base64url.h"
-#include "base/cxx17_backports.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "brave/common/brave_paths.h"
@@ -236,8 +235,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
       "key=value",
   };
 
-  constexpr size_t input_count = base::size(inputs);
-  static_assert(input_count == base::size(outputs),
+  constexpr size_t input_count = std::size(inputs);
+  static_assert(input_count == std::size(outputs),
                 "Inputs and outputs must have the same number of elements.");
 
   for (size_t i = 0; i < input_count; i++) {
@@ -253,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
       "", "foo=bar", "fbclid=1", "fbclid=2&key=value", "key=value&fbclid=3",
   };
 
-  constexpr size_t input_count = base::size(inputs);
+  constexpr size_t input_count = std::size(inputs);
 
   for (size_t i = 0; i < input_count; i++) {
     const GURL dest_url = landing_url(inputs[i], simple_landing_url());
@@ -341,8 +340,8 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
       "",
   };
 
-  constexpr size_t input_count = base::size(inputs);
-  static_assert(input_count == base::size(outputs),
+  constexpr size_t input_count = std::size(inputs);
+  static_assert(input_count == std::size(outputs),
                 "Inputs and outputs must have the same number of elements.");
 
   for (size_t i = 0; i < input_count; i++) {

@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/grit/generated_resources.h"
@@ -106,7 +107,8 @@ void SpeedreaderModeBubble::Init() {
   auto site = base::ASCIIToUTF16(host);
   auto offset = site.length();
   site.append(kSpeedreaderSeparator);
-  site.append(l10n_util::GetStringUTF16(IDS_PAGE_IS_DISTILLED));
+  site.append(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_PAGE_IS_DISTILLED));
   auto site_title_label = std::make_unique<views::StyledLabel>();
   site_title_label->SetText(site);
   site_title_label->SetLineHeight(kLineHeight);
@@ -131,16 +133,18 @@ void SpeedreaderModeBubble::Init() {
       std::make_unique<views::ToggleButton>(base::BindRepeating(
           &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
   site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
-  site_toggle_button->SetAccessibleName(l10n_util::GetStringUTF16(
-      IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE));
+  site_toggle_button->SetAccessibleName(
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE));
   site_toggle_button_ =
       site_toggle_view->AddChildView(std::move(site_toggle_button));
 
   AddChildView(std::move(site_toggle_view));
 
   auto site_toggle_explanation = BuildLabelWithEndingLink(
-      l10n_util::GetStringUTF16(IDS_SPEEDREADER_DISABLE_THIS_SITE),
-      l10n_util::GetStringUTF16(IDS_SETTINGS_TITLE),
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SPEEDREADER_DISABLE_THIS_SITE),
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_SETTINGS_TITLE),
       base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));

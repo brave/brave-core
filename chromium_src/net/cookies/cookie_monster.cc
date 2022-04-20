@@ -105,7 +105,7 @@ void CookieMonster::SetCanonicalCookieAsync(
     const GURL& source_url,
     const CookieOptions& options,
     SetCookiesCallback callback,
-    const CookieAccessResult* cookie_access_result) {
+    absl::optional<CookieAccessResult> cookie_access_result) {
   if (options.should_use_ephemeral_storage()) {
     if (!options.top_frame_origin()) {
       // Shouldn't happen, but don't do anything in this case.
@@ -121,13 +121,13 @@ void CookieMonster::SetCanonicalCookieAsync(
             options.top_frame_origin()->GetURL());
     ephemeral_monster->SetCanonicalCookieAsync(std::move(cookie), source_url,
                                                options, std::move(callback),
-                                               cookie_access_result);
+                                               std::move(cookie_access_result));
     return;
   }
 
-  ChromiumCookieMonster::SetCanonicalCookieAsync(std::move(cookie), source_url,
-                                                 options, std::move(callback),
-                                                 cookie_access_result);
+  ChromiumCookieMonster::SetCanonicalCookieAsync(
+      std::move(cookie), source_url, options, std::move(callback),
+      std::move(cookie_access_result));
 }
 
 void CookieMonster::GetCookieListWithOptionsAsync(

@@ -136,12 +136,11 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
       re2::RE2::GlobalReplace(&new_query, tracker_only_matcher.Get(), "");
 
   if (replacement_count > 0) {
-    url::Replacements<char> replacements;
+    GURL::Replacements replacements;
     if (new_query.empty()) {
       replacements.ClearQuery();
     } else {
-      replacements.SetQuery(new_query.c_str(),
-                            url::Component(0, new_query.size()));
+      replacements.SetQueryStr(new_query);
     }
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
   }

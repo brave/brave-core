@@ -76,13 +76,13 @@ void BraveSyncHandler::OnDeviceInfoChange() {
     FireWebUIListener("device-info-changed", GetSyncDeviceList());
 }
 
-void BraveSyncHandler::HandleGetDeviceList(base::Value::ConstListView args) {
+void BraveSyncHandler::HandleGetDeviceList(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
   ResolveJavascriptCallback(args[0].Clone(), GetSyncDeviceList());
 }
 
-void BraveSyncHandler::HandleGetSyncCode(base::Value::ConstListView args) {
+void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
 
@@ -94,7 +94,7 @@ void BraveSyncHandler::HandleGetSyncCode(base::Value::ConstListView args) {
   ResolveJavascriptCallback(args[0].Clone(), base::Value(sync_code));
 }
 
-void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
+void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
@@ -141,7 +141,7 @@ void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
                      std::move(callback_id_arg)));
 }
 
-void BraveSyncHandler::HandleSetSyncCode(base::Value::ConstListView args) {
+void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
@@ -162,7 +162,7 @@ void BraveSyncHandler::HandleSetSyncCode(base::Value::ConstListView args) {
   ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
 }
 
-void BraveSyncHandler::HandleReset(base::Value::ConstListView args) {
+void BraveSyncHandler::HandleReset(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
 
@@ -181,7 +181,7 @@ void BraveSyncHandler::HandleReset(base::Value::ConstListView args) {
                                        std::move(callback_id_arg)));
 }
 
-void BraveSyncHandler::HandleDeleteDevice(base::Value::ConstListView args) {
+void BraveSyncHandler::HandleDeleteDevice(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());

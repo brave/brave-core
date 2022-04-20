@@ -10,10 +10,10 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 
 BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
@@ -55,5 +55,5 @@ void BraveVPNStatusLabel::UpdateState() {
       break;
   }
 
-  SetText(l10n_util::GetStringUTF16(string_id));
+  SetText(brave_l10n::GetLocalizedResourceUTF16String(string_id));
 }

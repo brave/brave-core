@@ -32,7 +32,10 @@ brave_chrome_java_deps = [
   "//third_party/android_deps:google_play_services_vision_java",
 ]
 
-brave_chrome_all_java_deps = [ "//brave/android/features/tab_ui:java" ]
+brave_chrome_all_java_deps = [
+  "//brave/android/features/tab_ui:java",
+  "//brave/browser/partnercustomizations:delegate_public_impl_java",
+]
 
 # To use our overrided enum in java, put the header file of our overrided enum
 # in brave_android_java_enums_srcjar target and add the chromium header file of

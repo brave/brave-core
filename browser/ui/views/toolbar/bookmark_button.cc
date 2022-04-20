@@ -8,14 +8,14 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/strings/grit/components_strings.h"
 #include "components/omnibox/browser/vector_icons.h"
-#include "ui/base/l10n/l10n_util.h"
+#include "components/strings/grit/components_strings.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
@@ -46,5 +46,5 @@ void BookmarkButton::UpdateImageAndText() {
            gfx::CreateVectorIcon(icon, icon_color));
 
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
-  SetTooltipText(l10n_util::GetStringUTF16(tooltip_id));
+  SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
 }

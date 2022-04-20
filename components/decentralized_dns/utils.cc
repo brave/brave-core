@@ -11,10 +11,10 @@
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/net/decentralized_dns/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 namespace decentralized_dns {
@@ -99,21 +99,21 @@ bool IsENSResolveMethodEthereum(PrefService* local_state) {
 
 base::Value GetResolveMethodList(Provider provider) {
   base::Value list(base::Value::Type::LIST);
-  list.Append(MakeSelectValue(
-      ResolveMethodTypes::ASK,
-      l10n_util::GetStringUTF16(IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
+  list.Append(MakeSelectValue(ResolveMethodTypes::ASK,
+                              brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
   list.Append(
       MakeSelectValue(ResolveMethodTypes::DISABLED,
-                      l10n_util::GetStringUTF16(
+                      brave_l10n::GetLocalizedResourceUTF16String(
                           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED)));
   list.Append(MakeSelectValue(
       ResolveMethodTypes::DNS_OVER_HTTPS,
-      l10n_util::GetStringUTF16(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS)));
 
   list.Append(
       MakeSelectValue(ResolveMethodTypes::ETHEREUM,
-                      l10n_util::GetStringUTF16(
+                      brave_l10n::GetLocalizedResourceUTF16String(
                           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
 
   return list;

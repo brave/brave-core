@@ -58,11 +58,24 @@ RegisterPolymerTemplateModifications({
       }
     }
 
-    const privacySandboxLinkRow = templateContent.getElementById('privacySandboxLinkRow')
-    if (!privacySandboxLinkRow) {
-      console.error('[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page.')
-    } else {
-      privacySandboxLinkRow.setAttribute('hidden', 'true')
+    if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
+      const privacySandboxTemplate = templateContent.querySelector(`template[if*='isPrivacySandboxRestricted_']`)
+      if (!privacySandboxTemplate) {
+        console.error('[Brave Settings Overrides] Could not find template with if*=isPrivacySandboxRestricted_ on privacy page.')
+      } else {
+        const privacySandboxLinkRow = privacySandboxTemplate.content.getElementById('privacySandboxLinkRow')
+        if (!privacySandboxLinkRow) {
+          console.error('[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page.')
+        } else {
+          privacySandboxLinkRow.setAttribute('hidden', 'true')
+        }
+        const privacySandboxLink = privacySandboxTemplate.content.getElementById('privacySandboxLink')
+        if (!privacySandboxLink) {
+          console.error('[Brave Settings Overrides] Could not find privacySandboxLink id on privacy page.')
+        } else {
+          privacySandboxTemplate.setAttribute('hidden', 'true')
+        }
+      }
     }
   },
 })

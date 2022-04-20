@@ -36,7 +36,7 @@
 
         secure_hash->Update(CFDataGetBytePtr(cert_data),
                             CFDataGetLength(cert_data));
-        secure_hash->Finish(base::data(data), data.size());
+        secure_hash->Finish(std::data(data), data.size());
 
         _fingerprintHexEncoded =
             base::SysUTF8ToNSString(base::HexEncode(data.data(), data.size()));

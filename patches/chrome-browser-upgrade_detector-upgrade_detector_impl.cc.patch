@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index b75d845048909dc49f08f4ba27d88ed2e44c580b..f90107d11c9c7ac858d2e97691b14eefb51895b1 100644
+index 8b9fec4c6f39c8451b1b5493012082632e116f8a..e2d99f5bf9545112544bfe7e1db73e1710c8247c 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-@@ -451,7 +451,6 @@ void UpgradeDetectorImpl::Init() {
+@@ -450,7 +450,6 @@ void UpgradeDetectorImpl::Init() {
      std::string switch_name;
      if (cmd_line.HasSwitch(switches::kSimulateOutdatedNoAU)) {
        is_auto_update_enabled_ = false;
@@ -10,7 +10,7 @@ index b75d845048909dc49f08f4ba27d88ed2e44c580b..f90107d11c9c7ac858d2e97691b14eef
      } else {
        switch_name = switches::kSimulateOutdated;
      }
-@@ -480,7 +479,7 @@ void UpgradeDetectorImpl::Init() {
+@@ -479,7 +478,7 @@ void UpgradeDetectorImpl::Init() {
    // On Windows, only enable upgrade notifications for Google Chrome builds.
    // Chromium does not use an auto-updater.
  #if !BUILDFLAG(IS_WIN) || BUILDFLAG(GOOGLE_CHROME_BRANDING) || \

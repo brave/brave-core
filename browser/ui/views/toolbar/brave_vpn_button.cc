@@ -15,15 +15,16 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
+#include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/skia_util.h"
@@ -119,8 +120,8 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
       this, std::make_unique<BraveVPNButtonHighlightPathGenerator>(
                 GetToolbarInkDropInsets(this)));
 
-  label()->SetText(
-      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
+  label()->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
   gfx::FontList font_list = views::Label::GetDefaultFontList();
   constexpr int kFontSize = 12;
   label()->SetFontList(
@@ -134,8 +135,8 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
   // Views resulting in focusable nodes later on in the accessibility tree need
   // to have an accessible name for screen readers to see what they are about.
   // TODO(simonhong): Re-visit this name.
-  SetAccessibleName(
-      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
+  SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
 }
 
 BraveVPNButton::~BraveVPNButton() = default;

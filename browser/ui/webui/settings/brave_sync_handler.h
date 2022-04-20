@@ -39,12 +39,12 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void OnJavascriptDisallowed() override;
 
   // Custom message handlers:
-  void HandleGetDeviceList(base::Value::ConstListView args);
-  void HandleGetSyncCode(base::Value::ConstListView args);
-  void HandleSetSyncCode(base::Value::ConstListView args);
-  void HandleGetQRCode(base::Value::ConstListView args);
-  void HandleReset(base::Value::ConstListView args);
-  void HandleDeleteDevice(base::Value::ConstListView args);
+  void HandleGetDeviceList(const base::Value::List& args);
+  void HandleGetSyncCode(const base::Value::List& args);
+  void HandleSetSyncCode(const base::Value::List& args);
+  void HandleGetQRCode(const base::Value::List& args);
+  void HandleReset(const base::Value::List& args);
+  void HandleDeleteDevice(const base::Value::List& args);
 
   void OnResetDone(base::Value callback_id);
 
