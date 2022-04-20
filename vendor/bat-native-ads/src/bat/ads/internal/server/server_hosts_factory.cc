@@ -8,12 +8,11 @@
 #include "bat/ads/internal/server/anonymous_server_host.h"
 #include "bat/ads/internal/server/geo_server_host.h"
 #include "bat/ads/internal/server/non_anonymous_server_host.h"
-#include "bat/ads/internal/server/server_host_base.h"
 #include "bat/ads/internal/server/static_server_host.h"
 
 namespace ads {
 
-std::unique_ptr<ServerHostBase> ServerHostsFactory::Build(
+std::unique_ptr<ServerHostInterface> ServerHostsFactory::Build(
     const ServerHostType type) {
   switch (type) {
     case ServerHostType::kStatic: {

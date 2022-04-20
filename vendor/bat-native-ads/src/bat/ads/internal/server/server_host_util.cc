@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/check.h"
-#include "bat/ads/internal/server/server_host_base.h"
 #include "bat/ads/internal/server/server_host_types.h"
 #include "bat/ads/internal/server/server_hosts_factory.h"
 
@@ -18,7 +17,8 @@ namespace server {
 namespace {
 
 std::string GetHost(const ServerHostType type) {
-  std::unique_ptr<ServerHostBase> server_host = ServerHostsFactory::Build(type);
+  std::unique_ptr<ServerHostInterface> server_host =
+      ServerHostsFactory::Build(type);
   DCHECK(server_host);
 
   return server_host->Get();
