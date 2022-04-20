@@ -37,10 +37,4 @@ class SyncViewController: UIViewController {
 
     code()
   }
-
-  @objc func didLeaveSyncGroup() {
-    DispatchQueue.main.async { [weak self] in
-      self?.navigationController?.popToRootViewController(animated: true)
-    }
-  }
 }

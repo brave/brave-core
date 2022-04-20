@@ -400,8 +400,14 @@ extension SyncSettingsTableViewController {
           // So instead, we call `removeAllObservers` which won't hurt.
           // Calling `syncAPI.leaveSyncGroup() aka reset_sync` as of 1.34.x will crash the application.
 
-          syncAPI.removeAllObservers()
-          Preferences.Chromium.syncEnabled.value = false
+          // Commented out in 1.38.x to see if it helps users
+          // If it does, this will be removed in 1.39.x
+          // Reasoning: I suspect the server removes THIS device from the chain for some reason
+          // When that happens, we get `devices.count == 0` and we're removing observers and setting
+          // syncEnabled to false. What happens if we get 0 devices (including our own device), but the user is still on the chain??? This should not be possible afaik, because there has to be ONE device (our own) / this device at minimum.
+          // If this fixes it for users, it means someone changed something without telling us (same as 1.34.x).
+          //syncAPI.removeAllObservers()
+          //Preferences.Chromium.syncEnabled.value = false
           self.navigationController?.popToRootViewController(animated: true)
         } else {
           self.tableView.reloadData()

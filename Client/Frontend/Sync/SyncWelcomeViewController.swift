@@ -184,9 +184,10 @@ class SyncWelcomeViewController: SyncViewController {
       guard let self = self else { return }
 
       if !self.syncAPI.isInSyncGroup {
-        self.dismiss(animated: true)
         let bvc = self.currentScene?.browserViewController
-        bvc?.present(SyncAlerts.initializationError, animated: true)
+        self.dismiss(animated: true) {
+          bvc?.present(SyncAlerts.initializationError, animated: true)
+        }
       }
     }
   }
