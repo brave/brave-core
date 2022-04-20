@@ -34,7 +34,7 @@ const char kWyreBuyUrl[] =
     "&destCurrency=%s&amount=%s&accountId=%s&paymentMethod=debit-card";
 const char kRampBuyUrl[] =
     "https://buy.ramp.network/"
-    "?userAddress=%s&swapAsset=%s&swapAmount=%s&hostApiKey=%s";
+    "?userAddress=%s&swapAsset=%s&fiatValue=%s&fiatCurrency=USD&hostApiKey=%s";
 const char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
