@@ -95,7 +95,7 @@ function Buy (props: Props) {
     return [...rampAssetOptions, ...wyreAssetOptions]
       .map(asset => asset.chainId.toLowerCase())
       .includes(selectedNetwork.chainId.toLowerCase())
-  }, [selectedNetwork])
+  }, [selectedNetwork, rampAssetOptions, wyreAssetOptions])
 
   return (
     <StyledWrapper>
