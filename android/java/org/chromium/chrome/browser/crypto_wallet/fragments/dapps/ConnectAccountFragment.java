@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.permission.BraveEthereumPermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.DefaultFaviconHelper;
 import org.chromium.chrome.browser.ui.favicon.FaviconHelper.FaviconImageCallback;
@@ -42,8 +43,6 @@ import java.util.Locale;
 
 public class ConnectAccountFragment extends BaseDAppsFragment
         implements BraveEthereumPermissionAccountsListAdapter.BraveEthereumPermissionDelegate {
-    static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
-
     private TextView mWebSite;
     private TextView mAccountsConnected;
     private TextView mbtNewAccount;
@@ -88,7 +87,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                         }
                         AccountsPermissionsHelper accountsPermissionsHelper =
                                 new AccountsPermissionsHelper(getBraveWalletService(),
-                                        mAccountInfos, getCurrentHostHttpAddress().getSpec());
+                                        mAccountInfos,
+                                        Utils.originFromGURL(getCurrentHostHttpAddress()));
                         accountsPermissionsHelper.checkAccounts(() -> {
                             mAccountsWithPermissions =
                                     accountsPermissionsHelper.getAccountsWithPermissions();
@@ -119,7 +119,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mIsNativeInitialized = false;
-        mFaviconSize = 0; // MAX_BITMAP_SIZE_FOR_DOWNLOAD;
+        mFaviconSize = 0; // Max bitmap size for download;
         View view = inflater.inflate(R.layout.fragment_connect_account, container, false);
         mWebSite = view.findViewById(R.id.fragment_connect_account_website);
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
@@ -194,7 +194,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void connectAccount(AccountInfo account) {
         getBraveWalletService().addEthereumPermission(
-                getCurrentHostHttpAddress().getSpec(), account.address, success -> {
+                Utils.originFromGURL(getCurrentHostHttpAddress()), account.address, success -> {
                     if (!success) {
                         return;
                     }
@@ -210,7 +210,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void disconnectAccount(AccountInfo account) {
         getBraveWalletService().resetEthereumPermission(
-                getCurrentHostHttpAddress().getSpec(), account.address, success -> {
+                Utils.originFromGURL(getCurrentHostHttpAddress()), account.address, success -> {
                     if (!success) {
                         return;
                     }

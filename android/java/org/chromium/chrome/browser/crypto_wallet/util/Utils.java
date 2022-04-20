@@ -83,6 +83,7 @@ import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.io.InputStream;
 import java.lang.NumberFormatException;
@@ -1472,5 +1473,28 @@ public class Utils {
         if (chromeActivity == null) return Profile.getLastUsedRegularProfile(); // Last resort
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
+    }
+
+    public static org.chromium.url.internal.mojom.Origin originFromGURL(GURL address) {
+        org.chromium.url.internal.mojom.Origin hostOrigin =
+                new org.chromium.url.internal.mojom.Origin();
+        hostOrigin.scheme = address.getScheme();
+        hostOrigin.host = address.getHost();
+        hostOrigin.port = 0;
+        if (address.getPort().isEmpty()) {
+            if (hostOrigin.scheme.equals("http")) {
+                hostOrigin.port = 80;
+            } else if (hostOrigin.scheme.equals("https")) {
+                hostOrigin.port = 443;
+            }
+        } else {
+            try {
+                hostOrigin.port = Short.parseShort(address.getPort());
+            } catch (Exception e) {
+                hostOrigin.port = 443;
+            }
+        }
+
+        return hostOrigin;
     }
 }

@@ -166,25 +166,6 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateStatus() {
-        GURL address = getCurrentHostHttpAddress();
-        org.chromium.url.internal.mojom.Origin hostOrigin =
-                new org.chromium.url.internal.mojom.Origin();
-        hostOrigin.scheme = address.getScheme();
-        hostOrigin.host = address.getHost();
-        hostOrigin.port = 0;
-        if (address.getPort().isEmpty()) {
-            if (hostOrigin.scheme.equals("http")) {
-                hostOrigin.port = 80;
-            } else if (hostOrigin.scheme.equals("https")) {
-                hostOrigin.port = 443;
-            }
-        } else {
-            try {
-                hostOrigin.port = Short.parseShort(address.getPort());
-            } catch (Exception e) {
-            }
-        }
-
         mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
                 BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                     if (keyringInfo != null) {
@@ -193,7 +174,8 @@ public class BraveWalletPanel implements DialogInterface {
                     AccountsPermissionsHelper accountsPermissionsHelper =
                             new AccountsPermissionsHelper(
                                     mBraveWalletPanelServices.getBraveWalletService(),
-                                    mAccountInfos, hostOrigin);
+                                    mAccountInfos,
+                                    Utils.originFromGURL(getCurrentHostHttpAddress()));
                     accountsPermissionsHelper.checkAccounts(() -> {
                         mAccountsWithPermissions =
                                 accountsPermissionsHelper.getAccountsWithPermissions();
