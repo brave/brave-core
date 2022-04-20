@@ -543,12 +543,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // Notify brave cookie changes as ContentSettingsType::COOKIES
   if (initialized_ && (content_type == ContentSettingsType::BRAVE_COOKIES ||
                        content_type == ContentSettingsType::BRAVE_SHIELDS)) {
-    // PostTask here to avoid content settings autolock DCHECK
-    content::GetUIThreadTaskRunner({base::TaskPriority::USER_VISIBLE})
-        ->PostTask(FROM_HERE,
-                   base::BindOnce(&BravePrefProvider::NotifyChanges,
-                                  weak_factory_.GetWeakPtr(),
-                                  std::move(brave_cookie_updates), incognito));
+    NotifyChanges(brave_cookie_updates, incognito);
   }
 }
 
