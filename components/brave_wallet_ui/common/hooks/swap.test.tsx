@@ -5,9 +5,6 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import { mockAccount } from '../constants/mocks'
 import { BraveWallet } from '../../constants/types'
 
-// Options
-import { makeNetworkAsset } from '../../options/asset-options'
-
 // Hooks
 import { TextEncoder, TextDecoder } from 'util'
 global.TextDecoder = TextDecoder as any
@@ -37,11 +34,11 @@ const store = createStore(combineReducers({
 function renderHookOptionsWithCustomStore (store: any) {
   return {
     wrapper: ({ children }: { children?: React.ReactChildren }) =>
-    <Provider store={store}>
-      <LibContext.Provider value={MockedLib as any}>
-        {children}
-      </LibContext.Provider>
-    </Provider>
+      <Provider store={store}>
+        <LibContext.Provider value={MockedLib as any}>
+          {children}
+        </LibContext.Provider>
+      </Provider>
   }
 }
 
@@ -78,7 +75,7 @@ describe('useSwap hook', () => {
 
     await waitForNextUpdate()
 
-    expect(result.current.fromAsset).toEqual(makeNetworkAsset(mockWalletState.selectedNetwork))
+    expect(result.current.fromAsset).toEqual(mockEthToken)
 
     expect(result.current.toAsset).toEqual({
       coingeckoId: 'usd-coin',
@@ -92,7 +89,7 @@ describe('useSwap hook', () => {
       tokenId: '',
       visible: true,
       coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.ROPSTEN_CHAIN_ID
+      chainId: BraveWallet.MAINNET_CHAIN_ID
     })
   })
 

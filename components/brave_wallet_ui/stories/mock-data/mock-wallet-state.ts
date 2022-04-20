@@ -208,7 +208,7 @@ export const mockWalletState: WalletState = {
   pendingTransactions: [],
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
-  selectedNetwork: mockNetworkList[2],
+  selectedNetwork: mockNetworkList[0],
   selectedPendingTransaction: undefined,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   transactions: {},
