@@ -152,19 +152,28 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void DefaultBlockAllCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), brave_shields::ControlType::BLOCK, GURL());
+    browser()->profile()->GetPrefs()->SetInteger(
+        "profile.default_content_setting_values.cookies",
+        CONTENT_SETTING_BLOCK);
   }
 
   void DefaultBlockThirdPartyCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), brave_shields::ControlType::BLOCK_THIRD_PARTY,
-        GURL());
+    browser()->profile()->GetPrefs()->SetInteger(
+        "profile.default_content_setting_values.cookies",
+        CONTENT_SETTING_ALLOW);
+    browser()->profile()->GetPrefs()->SetInteger(
+        prefs::kCookieControlsMode,
+        static_cast<int>(
+            content_settings::CookieControlsMode::kBlockThirdParty));
   }
 
   void DefaultAllowAllCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), brave_shields::ControlType::ALLOW, GURL());
+    browser()->profile()->GetPrefs()->SetInteger(
+        "profile.default_content_setting_values.cookies",
+        CONTENT_SETTING_ALLOW);
+    browser()->profile()->GetPrefs()->SetInteger(
+        prefs::kCookieControlsMode,
+        static_cast<int>(content_settings::CookieControlsMode::kOff));
   }
 
   void AllowCookies(const GURL url) {
@@ -446,10 +455,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultAllowAllCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
-                browser()->profile()->GetPrefs()->GetInteger(
-                    prefs::kCookieControlsMode)),
-            content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_BLOCK);

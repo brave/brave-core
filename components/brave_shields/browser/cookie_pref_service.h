@@ -20,9 +20,7 @@ namespace brave_shields {
 // sync brave plugin cookie settings with chromium cookie prefs
 class CookiePrefService : public KeyedService {
  public:
-  explicit CookiePrefService(HostContentSettingsMap* host_content_settings_map,
-                             content_settings::CookieSettings* cookie_settings,
-                             PrefService* prefs);
+  explicit CookiePrefService(PrefService* prefs);
   CookiePrefService(const CookiePrefService&) = delete;
   CookiePrefService& operator=(const CookiePrefService&) = delete;
   ~CookiePrefService() override;
