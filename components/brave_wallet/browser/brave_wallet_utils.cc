@@ -903,6 +903,10 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
   prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
 }
 
+bool GetShowWalletTestNetworks(PrefService* prefs) {
+  return prefs->GetBoolean(kShowWalletTestNetworks);
+}
+
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCryptocurrency);
 }

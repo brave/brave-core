@@ -53,6 +53,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
+  registry->RegisterBooleanPref(kShowWalletTestNetworks, false);
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
