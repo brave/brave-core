@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace base {
@@ -16,8 +17,6 @@ class Time;
 }  // namespace base
 
 namespace ads {
-
-class CovariateLogEntry;
 
 // |CovariateLogs| collect training data for federated services such as
 // learning, tuning and evaluation. A row in the training data set is called
@@ -37,7 +36,7 @@ class CovariateLogs final {
 
   static bool HasInstance();
 
-  void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntry> entry);
+  void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntryInterface> entry);
   brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
 
   void SetAdNotificationServedAt(const base::Time time);
@@ -46,7 +45,7 @@ class CovariateLogs final {
 
  private:
   base::flat_map<brave_federated::mojom::CovariateType,
-                 std::unique_ptr<CovariateLogEntry>>
+                 std::unique_ptr<CovariateLogEntryInterface>>
       covariate_log_entries_;
 };
 

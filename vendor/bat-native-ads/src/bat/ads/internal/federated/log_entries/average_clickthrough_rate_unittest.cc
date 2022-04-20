@@ -24,7 +24,7 @@ class BatAdsFederatedLogEntriesAverageClickthroughRateTest
 };
 
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest, GetDataType) {
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(7));
 
   // Act
@@ -37,7 +37,7 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest, GetDataType) {
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
        GetValueWithoutHistory) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
   // Act
@@ -50,7 +50,7 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
        GetValueInvalidClicks) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
   const AdNotificationInfo ad;
@@ -68,7 +68,7 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
        GetValueNotInTimeWindow) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
   const AdNotificationInfo ad;
@@ -88,7 +88,7 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
        GetValueWithClickthroughRateOfZero) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
   const AdNotificationInfo ad;
@@ -104,7 +104,7 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
        GetValueWithClickthroughRateOfOne) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
   const AdNotificationInfo ad;
@@ -120,7 +120,7 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
 
 TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest, GetValue) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
   const AdNotificationInfo ad;

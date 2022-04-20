@@ -27,7 +27,7 @@ class BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest
 };
 
 TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest, GetDataType) {
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastAdNotificationWasClicked>();
 
   // Act
@@ -40,7 +40,7 @@ TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest, GetDataType) {
 TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
        GetValueWithoutHistory) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastAdNotificationWasClicked>();
 
   // Act
@@ -53,7 +53,7 @@ TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
 TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
        GetValueNotInTimeWindow) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastAdNotificationWasClicked>();
 
   const AdNotificationInfo ad;
@@ -72,7 +72,7 @@ TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
 TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
        GetValueWasClicked) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastAdNotificationWasClicked>();
 
   const AdNotificationInfo ad;
@@ -89,7 +89,7 @@ TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
 TEST_F(BatAdsFederatedLogEntriesLastAdNotificationWasClickedTest,
        GetValueWasNotClicked) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<LastAdNotificationWasClicked>();
 
   const AdNotificationInfo ad;

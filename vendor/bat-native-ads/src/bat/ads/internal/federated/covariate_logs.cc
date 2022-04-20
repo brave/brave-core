@@ -14,7 +14,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/federated/covariate_log_entry.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_clicked.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
@@ -164,7 +164,7 @@ bool CovariateLogs::HasInstance() {
 }
 
 void CovariateLogs::SetCovariateLogEntry(
-    std::unique_ptr<CovariateLogEntry> entry) {
+    std::unique_ptr<CovariateLogEntryInterface> entry) {
   DCHECK(entry);
   brave_federated::mojom::CovariateType key = entry->GetCovariateType();
   covariate_log_entries_[key] = std::move(entry);
@@ -175,7 +175,7 @@ brave_federated::mojom::TrainingInstancePtr CovariateLogs::GetTrainingInstance()
   brave_federated::mojom::TrainingInstancePtr training_instance =
       brave_federated::mojom::TrainingInstance::New();
   for (const auto& covariate_log_entry : covariate_log_entries_) {
-    const CovariateLogEntry* entry = covariate_log_entry.second.get();
+    const CovariateLogEntryInterface* entry = covariate_log_entry.second.get();
     DCHECK(entry);
 
     brave_federated::mojom::CovariatePtr covariate =

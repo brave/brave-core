@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/federated/covariate_log_entry.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 
 namespace ads {
 
-class LastAdNotificationWasClicked final : public CovariateLogEntry {
+class LastAdNotificationWasClicked final : public CovariateLogEntryInterface {
  public:
   LastAdNotificationWasClicked();
   LastAdNotificationWasClicked(const LastAdNotificationWasClicked&) = delete;
@@ -20,7 +20,7 @@ class LastAdNotificationWasClicked final : public CovariateLogEntry {
       delete;
   ~LastAdNotificationWasClicked() override;
 
-  // CovariateLogEntry:
+  // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;
