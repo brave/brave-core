@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -1124,7 +1125,9 @@ TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
   EXPECT_TRUE(callback_called);
 
   // invalid id or keyring is not yet created
+#if BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(IsKeyringInfoEmpty(&service, mojom::kSolanaKeyringId));
+#endif
   EXPECT_TRUE(IsKeyringInfoEmpty(&service, "invalid_id"));
 }
 
@@ -2863,12 +2866,17 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 
 TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   {
-    // Create default wallet with disabled filecoin & solana feature
+    // Create default wallet with disabled filecoin feature.
+    // Solana feature is enabled on desktop and disabled on Android.
     KeyringService service(json_rpc_service(), GetPrefs());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
+#if BUILDFLAG(IS_ANDROID)
     EXPECT_FALSE(service.encryptors_.contains(mojom::kSolanaKeyringId));
+#else
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
+#endif
   }
   {
     // Create wallet with enabled filecoin & solana
@@ -2890,7 +2898,11 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
+#if BUILDFLAG(IS_ANDROID)
     EXPECT_FALSE(service.encryptors_.contains(mojom::kSolanaKeyringId));
+#else
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
+#endif
     service.Lock();
     base::test::ScopedFeatureList feature_list;
     feature_list.InitWithFeatures(
@@ -2917,7 +2929,11 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
         RestoreWallet(&service, *mnemonic_to_be_restored, "brave", false));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
+#if BUILDFLAG(IS_ANDROID)
     EXPECT_FALSE(service.encryptors_.contains(mojom::kSolanaKeyringId));
+#else
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
+#endif
 
     base::test::ScopedFeatureList feature_list;
     feature_list.InitWithFeatures(
