@@ -8,13 +8,13 @@
 
 #include <deque>
 
-#include "bat/ads/internal/ads_history/sorts/ads_history_sort.h"
+#include "bat/ads/internal/ads_history/sorts/ads_history_sort_interface.h"
 
 namespace ads {
 
 struct AdHistoryInfo;
 
-class AdsHistoryDescendingSort final : public AdsHistorySort {
+class AdsHistoryDescendingSort final : public AdsHistorySortInterface {
  public:
   AdsHistoryDescendingSort();
   ~AdsHistoryDescendingSort() override;

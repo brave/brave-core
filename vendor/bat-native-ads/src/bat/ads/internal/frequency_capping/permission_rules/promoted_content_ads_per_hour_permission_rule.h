@@ -9,7 +9,7 @@
 #include <deque>
 #include <string>
 
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 
 namespace base {
 class Time;
@@ -17,7 +17,8 @@ class Time;
 
 namespace ads {
 
-class PromotedContentAdsPerHourPermissionRule final : public PermissionRule {
+class PromotedContentAdsPerHourPermissionRule final
+    : public PermissionRuleInterface {
  public:
   PromotedContentAdsPerHourPermissionRule();
   ~PromotedContentAdsPerHourPermissionRule() override;

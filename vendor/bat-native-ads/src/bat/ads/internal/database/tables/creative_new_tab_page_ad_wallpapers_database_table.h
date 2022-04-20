@@ -10,7 +10,7 @@
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class CreativeNewTabPageAdWallpapers final : public Table {
+class CreativeNewTabPageAdWallpapers final : public TableInterface {
  public:
   CreativeNewTabPageAdWallpapers();
   ~CreativeNewTabPageAdWallpapers() override;

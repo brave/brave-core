@@ -11,7 +11,6 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
@@ -111,7 +110,7 @@ bool ExclusionRulesBase::ShouldExcludeCreativeAd(
 
 bool ExclusionRulesBase::AddToCacheIfNeeded(
     const CreativeAdInfo& creative_ad,
-    ExclusionRule<CreativeAdInfo>* exclusion_rule) {
+    ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule) {
   DCHECK(exclusion_rule);
 
   if (IsCached(creative_ad)) {

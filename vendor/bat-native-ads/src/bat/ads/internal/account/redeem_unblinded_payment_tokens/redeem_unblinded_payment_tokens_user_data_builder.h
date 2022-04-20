@@ -6,13 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_USER_DATA_BUILDER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_USER_DATA_BUILDER_H_
 
-#include "bat/ads/internal/account/user_data/user_data_builder.h"
+#include "bat/ads/internal/account/user_data/user_data_builder_interface.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 
 namespace ads {
 
 class RedeemUnblindedPaymentTokensUserDataBuilder final
-    : public UserDataBuilder {
+    : public UserDataBuilderInterface {
  public:
   RedeemUnblindedPaymentTokensUserDataBuilder(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);

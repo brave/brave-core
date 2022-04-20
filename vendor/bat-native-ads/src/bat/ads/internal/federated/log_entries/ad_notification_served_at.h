@@ -9,11 +9,11 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/federated/covariate_log_entry.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 
 namespace ads {
 
-class AdNotificationServedAt final : public CovariateLogEntry {
+class AdNotificationServedAt final : public CovariateLogEntryInterface {
  public:
   AdNotificationServedAt();
   AdNotificationServedAt(const AdNotificationServedAt&) = delete;
@@ -22,7 +22,7 @@ class AdNotificationServedAt final : public CovariateLogEntry {
 
   void SetTime(const base::Time time);
 
-  // CovariateLogEntry:
+  // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

@@ -9,18 +9,18 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/federated/covariate_log_entry.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 
 namespace ads {
 
-class AverageClickthroughRate final : public CovariateLogEntry {
+class AverageClickthroughRate final : public CovariateLogEntryInterface {
  public:
   explicit AverageClickthroughRate(base::TimeDelta time_window);
   AverageClickthroughRate(const AverageClickthroughRate&) = delete;
   AverageClickthroughRate& operator=(const AverageClickthroughRate&) = delete;
   ~AverageClickthroughRate() override;
 
-  // CovariateLogEntry:
+  // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

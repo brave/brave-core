@@ -8,14 +8,14 @@
 
 #include <string>
 
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace geographic {
 
-class GetSubdivisionUrlRequestBuilder final : UrlRequestBuilder {
+class GetSubdivisionUrlRequestBuilder final : UrlRequestBuilderInterface {
  public:
   GetSubdivisionUrlRequestBuilder();
   ~GetSubdivisionUrlRequestBuilder() override;

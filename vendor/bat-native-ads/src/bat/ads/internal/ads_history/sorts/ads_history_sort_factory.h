@@ -9,14 +9,14 @@
 #include <memory>
 
 #include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/internal/ads_history/sorts/ads_history_sort_interface.h"
 
 namespace ads {
 
-class AdsHistorySort;
-
 class AdsHistorySortFactory final {
  public:
-  static std::unique_ptr<AdsHistorySort> Build(const AdsHistorySortType type);
+  static std::unique_ptr<AdsHistorySortInterface> Build(
+      const AdsHistorySortType type);
 };
 
 }  // namespace ads

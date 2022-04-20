@@ -11,7 +11,7 @@
 #include "base/check_op.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/conversion_queue_database_table_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -22,7 +22,7 @@ struct ConversionQueueItemInfo;
 namespace database {
 namespace table {
 
-class ConversionQueue final : public Table {
+class ConversionQueue final : public TableInterface {
  public:
   ConversionQueue();
   ~ConversionQueue() override;

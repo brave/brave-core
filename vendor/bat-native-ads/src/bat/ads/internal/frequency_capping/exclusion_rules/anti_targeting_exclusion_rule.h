@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
 
@@ -19,7 +19,8 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class AntiTargetingExclusionRule final : public ExclusionRule<CreativeAdInfo> {
+class AntiTargetingExclusionRule final
+    : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   AntiTargetingExclusionRule(resource::AntiTargeting* anti_targeting_resource,
                              const BrowsingHistoryList& browsing_history);

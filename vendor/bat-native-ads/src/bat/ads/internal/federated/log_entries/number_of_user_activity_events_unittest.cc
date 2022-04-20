@@ -25,7 +25,7 @@ class BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest
 
 TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<NumberOfUserActivityEvents>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
@@ -40,7 +40,7 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetDataType) {
 TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest,
        GetValueWithoutUserActivity) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<NumberOfUserActivityEvents>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
@@ -54,7 +54,7 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest,
 
 TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetValue) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry =
+  std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<NumberOfUserActivityEvents>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);

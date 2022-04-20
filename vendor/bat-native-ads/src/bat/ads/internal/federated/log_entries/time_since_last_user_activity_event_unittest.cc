@@ -27,7 +27,7 @@ class BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest
 TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest,
        GetDataType) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry = std::make_unique<
+  std::unique_ptr<CovariateLogEntryInterface> entry = std::make_unique<
       TimeSinceLastUserActivityEvent>(
       UserActivityEventType::kOpenedNewTab,
       brave_federated::mojom::CovariateType::kTimeSinceLastOpenedNewTabEvent);
@@ -42,7 +42,7 @@ TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest,
 TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest,
        GetValueWithoutHistory) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry = std::make_unique<
+  std::unique_ptr<CovariateLogEntryInterface> entry = std::make_unique<
       TimeSinceLastUserActivityEvent>(
       UserActivityEventType::kOpenedNewTab,
       brave_federated::mojom::CovariateType::kTimeSinceLastOpenedNewTabEvent);
@@ -56,7 +56,7 @@ TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest,
 
 TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest, GetValue) {
   // Arrange
-  std::unique_ptr<CovariateLogEntry> entry = std::make_unique<
+  std::unique_ptr<CovariateLogEntryInterface> entry = std::make_unique<
       TimeSinceLastUserActivityEvent>(
       UserActivityEventType::kOpenedNewTab,
       brave_federated::mojom::CovariateType::kTimeSinceLastOpenedNewTabEvent);

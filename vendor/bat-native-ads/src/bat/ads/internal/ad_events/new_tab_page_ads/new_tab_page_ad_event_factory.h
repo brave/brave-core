@@ -8,12 +8,10 @@
 
 #include <memory>
 
+#include "bat/ads/internal/ad_events/ad_event_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-template <typename T>
-class AdEvent;
 
 struct NewTabPageAdInfo;
 
@@ -21,7 +19,7 @@ namespace new_tab_page_ads {
 
 class AdEventFactory final {
  public:
-  static std::unique_ptr<AdEvent<NewTabPageAdInfo>> Build(
+  static std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> Build(
       const mojom::NewTabPageAdEventType event_type);
 };
 

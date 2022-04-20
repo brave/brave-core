@@ -8,12 +8,10 @@
 
 #include <memory>
 
+#include "bat/ads/internal/ad_events/ad_event_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-template <typename T>
-class AdEvent;
 
 struct SearchResultAdInfo;
 
@@ -21,7 +19,7 @@ namespace search_result_ads {
 
 class AdEventFactory final {
  public:
-  static std::unique_ptr<AdEvent<SearchResultAdInfo>> Build(
+  static std::unique_ptr<AdEventInterface<SearchResultAdInfo>> Build(
       const mojom::SearchResultAdEventType event_type);
 };
 

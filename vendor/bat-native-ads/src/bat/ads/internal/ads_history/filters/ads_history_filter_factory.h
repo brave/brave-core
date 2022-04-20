@@ -9,14 +9,13 @@
 #include <memory>
 
 #include "bat/ads/ads_history_filter_types.h"
+#include "bat/ads/internal/ads_history/filters/ads_history_filter_interface.h"
 
 namespace ads {
 
-class AdsHistoryFilter;
-
 class AdsHistoryFilterFactory final {
  public:
-  static std::unique_ptr<AdsHistoryFilter> Build(
+  static std::unique_ptr<AdsHistoryFilterInterface> Build(
       const AdsHistoryFilterType type);
 };
 

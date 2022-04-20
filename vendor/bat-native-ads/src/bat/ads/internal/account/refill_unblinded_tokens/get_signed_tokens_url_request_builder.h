@@ -9,12 +9,12 @@
 #include <string>
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-class GetSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
+class GetSignedTokensUrlRequestBuilder final : UrlRequestBuilderInterface {
  public:
   GetSignedTokensUrlRequestBuilder(const WalletInfo& wallet,
                                    const std::string& nonce);

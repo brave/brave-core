@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEDERATED_COVARIATE_LOG_ENTRY_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEDERATED_COVARIATE_LOG_ENTRY_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEDERATED_COVARIATE_LOG_ENTRY_INTERFACE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEDERATED_COVARIATE_LOG_ENTRY_INTERFACE_H_
 
 #include <string>
 
@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class CovariateLogEntry {
+class CovariateLogEntryInterface {
  public:
-  CovariateLogEntry();
-  virtual ~CovariateLogEntry();
+  virtual ~CovariateLogEntryInterface() = default;
 
   virtual brave_federated::mojom::DataType GetDataType() const = 0;
   virtual brave_federated::mojom::CovariateType GetCovariateType() const = 0;
@@ -24,4 +23,4 @@ class CovariateLogEntry {
 
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEDERATED_COVARIATE_LOG_ENTRY_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEDERATED_COVARIATE_LOG_ENTRY_INTERFACE_H_

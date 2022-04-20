@@ -8,12 +8,12 @@
 #include <string>
 
 #include "base/check.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 
-bool ShouldAllow(PermissionRule* permission_rule) {
+bool ShouldAllow(PermissionRuleInterface* permission_rule) {
   DCHECK(permission_rule);
 
   if (permission_rule->ShouldAllow()) {

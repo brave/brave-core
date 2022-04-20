@@ -10,13 +10,14 @@
 #include <string>
 
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "bat/ads/internal/ad_targeting/processors/processor.h"
+#include "bat/ads/internal/ad_targeting/processors/processor_interface.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace processor {
 
-class EpsilonGreedyBandit final : public Processor<BanditFeedbackInfo> {
+class EpsilonGreedyBandit final
+    : public ProcessorInterface<BanditFeedbackInfo> {
  public:
   EpsilonGreedyBandit();
   ~EpsilonGreedyBandit() override;

@@ -8,15 +8,15 @@
 
 #include <memory>
 
-#include "bat/ads/internal/conversions/conversion_sort_types.h"
+#include "bat/ads/internal/conversions/sorts/conversion_sort_types.h"
+#include "bat/ads/internal/conversions/sorts/conversions_sort_interface.h"
 
 namespace ads {
 
-class ConversionsSort;
-
 class ConversionsSortFactory final {
  public:
-  static std::unique_ptr<ConversionsSort> Build(const ConversionSortType type);
+  static std::unique_ptr<ConversionsSortInterface> Build(
+      const ConversionSortType type);
 };
 
 }  // namespace ads

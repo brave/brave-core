@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry.h"
+#include "bat/ads/internal/ad_diagnostics/ad_diagnostics_entry_interface.h"
 
 namespace ads {
 
-class CatalogIdAdDiagnosticsEntry final : public AdDiagnosticsEntry {
+class CatalogIdAdDiagnosticsEntry final : public AdDiagnosticsEntryInterface {
  public:
   CatalogIdAdDiagnosticsEntry();
   CatalogIdAdDiagnosticsEntry(const CatalogIdAdDiagnosticsEntry&) = delete;
@@ -20,7 +20,7 @@ class CatalogIdAdDiagnosticsEntry final : public AdDiagnosticsEntry {
       delete;
   ~CatalogIdAdDiagnosticsEntry() override;
 
-  // AdDiagnosticsEntry
+  // AdDiagnosticsEntryInterface:
   AdDiagnosticsEntryType GetEntryType() const override;
   std::string GetKey() const override;
   std::string GetValue() const override;

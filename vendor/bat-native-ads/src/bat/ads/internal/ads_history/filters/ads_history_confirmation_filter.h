@@ -8,13 +8,13 @@
 
 #include <deque>
 
-#include "bat/ads/internal/ads_history/filters/ads_history_filter.h"
+#include "bat/ads/internal/ads_history/filters/ads_history_filter_interface.h"
 
 namespace ads {
 
 struct AdHistoryInfo;
 
-class AdsHistoryConfirmationFilter final : public AdsHistoryFilter {
+class AdsHistoryConfirmationFilter final : public AdsHistoryFilterInterface {
  public:
   AdsHistoryConfirmationFilter();
   ~AdsHistoryConfirmationFilter() override;

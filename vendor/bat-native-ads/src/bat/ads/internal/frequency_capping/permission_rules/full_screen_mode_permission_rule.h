@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 
 namespace ads {
 
-class FullScreenModePermissionRule final : public PermissionRule {
+class FullScreenModePermissionRule final : public PermissionRuleInterface {
  public:
   FullScreenModePermissionRule();
   ~FullScreenModePermissionRule() override;

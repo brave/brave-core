@@ -10,11 +10,12 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
 
-class PerWeekExclusionRule final : public ExclusionRule<CreativeAdInfo> {
+class PerWeekExclusionRule final
+    : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit PerWeekExclusionRule(const AdEventList& ad_events);
   ~PerWeekExclusionRule() override;

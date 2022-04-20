@@ -10,7 +10,7 @@
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class AdEvents final : public Table {
+class AdEvents final : public TableInterface {
  public:
   AdEvents();
   ~AdEvents() override;

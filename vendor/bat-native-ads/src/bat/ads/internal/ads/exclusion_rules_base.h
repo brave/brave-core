@@ -13,6 +13,7 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
 namespace ads {
@@ -32,8 +33,6 @@ class ConversionExclusionRule;
 class DailyCapExclusionRule;
 class DaypartExclusionRule;
 class DislikeExclusionRule;
-template <typename T>
-class ExclusionRule;
 class MarkedAsInappropriateExclusionRule;
 class MarkedToNoLongerReceiveExclusionRule;
 class PerDayExclusionRule;
@@ -57,11 +56,12 @@ class ExclusionRulesBase {
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);
 
  protected:
-  std::vector<ExclusionRule<CreativeAdInfo>*> exclusion_rules_;
+  std::vector<ExclusionRuleInterface<CreativeAdInfo>*> exclusion_rules_;
 
   std::set<std::string> uuids_;
-  bool AddToCacheIfNeeded(const CreativeAdInfo& creative_ad,
-                          ExclusionRule<CreativeAdInfo>* exclusion_rule);
+  bool AddToCacheIfNeeded(
+      const CreativeAdInfo& creative_ad,
+      ExclusionRuleInterface<CreativeAdInfo>* exclusion_rule);
 
  private:
   bool IsCached(const CreativeAdInfo& creative_ad) const;

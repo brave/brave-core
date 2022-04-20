@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include "bat/ads/internal/federated/covariate_log_entry.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 
 namespace ads {
 
-class NumberOfUserActivityEvents final : public CovariateLogEntry {
+class NumberOfUserActivityEvents final : public CovariateLogEntryInterface {
  public:
   NumberOfUserActivityEvents(
       UserActivityEventType event_type,
@@ -23,7 +23,7 @@ class NumberOfUserActivityEvents final : public CovariateLogEntry {
       delete;
   ~NumberOfUserActivityEvents() override;
 
-  // CovariateLogEntry:
+  // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

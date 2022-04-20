@@ -19,7 +19,6 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_features.h"
-#include "bat/ads/internal/conversions/sorts/conversions_sort.h"
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"

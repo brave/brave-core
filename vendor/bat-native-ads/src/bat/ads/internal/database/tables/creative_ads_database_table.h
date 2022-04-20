@@ -10,7 +10,7 @@
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class CreativeAds final : public Table {
+class CreativeAds final : public TableInterface {
  public:
   CreativeAds();
   ~CreativeAds() override;

@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 
 namespace ads {
 
-class UserActivityPermissionRule final : public PermissionRule {
+class UserActivityPermissionRule final : public PermissionRuleInterface {
  public:
   UserActivityPermissionRule();
   ~UserActivityPermissionRule() override;
