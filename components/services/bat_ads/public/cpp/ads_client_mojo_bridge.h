@@ -48,7 +48,7 @@ class AdsClientMojoBridge
       ShouldShowNotificationsCallback callback) override;
   bool GetAdEvents(const std::string& ad_type,
                    const std::string& confirmation_type,
-                   std::vector<double>* out_ad_events) override;
+                   std::vector<base::Time>* out_ad_events) override;
   void GetAdEvents(const std::string& ad_type,
                    const std::string& confirmation_type,
                    GetAdEventsCallback callback) override;
@@ -99,7 +99,7 @@ class AdsClientMojoBridge
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
-                          const double timestamp) override;
+                          const base::Time time) override;
   void ResetAdEventsForId(const std::string& id) override;
 
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,

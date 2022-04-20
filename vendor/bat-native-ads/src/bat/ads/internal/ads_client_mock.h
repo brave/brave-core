@@ -40,11 +40,12 @@ class AdsClientMock : public AdsClient {
                      void(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
-                          const double timestamp));
+                          const base::Time time));
 
-  MOCK_CONST_METHOD2(GetAdEvents,
-                     std::vector<double>(const std::string& ad_type,
-                                         const std::string& confirmation_type));
+  MOCK_CONST_METHOD2(
+      GetAdEvents,
+      std::vector<base::Time>(const std::string& ad_type,
+                              const std::string& confirmation_type));
 
   MOCK_CONST_METHOD1(ResetAdEventsForId, void(const std::string& id));
 

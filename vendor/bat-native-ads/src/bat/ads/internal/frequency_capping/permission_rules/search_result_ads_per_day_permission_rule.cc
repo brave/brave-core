@@ -21,7 +21,7 @@ SearchResultAdsPerDayPermissionRule::~SearchResultAdsPerDayPermissionRule() =
     default;
 
 bool SearchResultAdsPerDayPermissionRule::ShouldAllow() {
-  const std::vector<base::Time> history =
+  const std::vector<base::Time>& history =
       GetAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {

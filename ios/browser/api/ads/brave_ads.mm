@@ -1244,16 +1244,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type
           confirmationType:(const std::string&)confirmation_type
-                 timestamp:(const double)timestamp {
+                      time:(const base::Time)time {
   if (!adEventHistory) {
     return;
   }
 
-  adEventHistory->RecordForId(id, ad_type, confirmation_type, timestamp);
+  adEventHistory->RecordForId(id, ad_type, confirmation_type, time);
 }
 
-- (std::vector<double>)getAdEvents:(const std::string&)ad_type
-                  confirmationType:(const std::string&)confirmation_type {
+- (std::vector<base::Time>)getAdEvents:(const std::string&)ad_type
+                      confirmationType:(const std::string&)confirmation_type {
   if (!adEventHistory) {
     return {};
   }

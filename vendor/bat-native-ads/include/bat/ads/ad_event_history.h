@@ -12,6 +12,10 @@
 #include "base/containers/flat_map.h"
 #include "bat/ads/export.h"
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace ads {
 
 class ADS_EXPORT AdEventHistory final {
@@ -22,15 +26,16 @@ class ADS_EXPORT AdEventHistory final {
   void RecordForId(const std::string& id,
                    const std::string& ad_type,
                    const std::string& confirmation_type,
-                   const double timestamp);
+                   const base::Time time);
 
-  std::vector<double> Get(const std::string& ad_type,
-                          const std::string& confirmation_type) const;
+  std::vector<base::Time> Get(const std::string& ad_type,
+                              const std::string& confirmation_type) const;
 
   void ResetForId(const std::string& id);
 
  private:
-  base::flat_map<std::string, base::flat_map<std::string, std::vector<double>>>
+  base::flat_map<std::string,
+                 base::flat_map<std::string, std::vector<base::Time>>>
       history_;
 };
 

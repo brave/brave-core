@@ -48,14 +48,14 @@ void AdsClientIOS::CloseNotification(const std::string& uuid) {
 void AdsClientIOS::RecordAdEventForId(const std::string& id,
                                       const std::string& ad_type,
                                       const std::string& confirmation_type,
-                                      const double timestamp) const {
+                                      const base::Time time) const {
   [bridge_ recordAdEventForId:id
                        adType:ad_type
              confirmationType:confirmation_type
-                    timestamp:timestamp];
+                         time:time];
 }
 
-std::vector<double> AdsClientIOS::GetAdEvents(
+std::vector<base::Time> AdsClientIOS::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];

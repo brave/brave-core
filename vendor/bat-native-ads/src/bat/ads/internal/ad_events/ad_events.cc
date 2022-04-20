@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/ad_events/ad_events.h"
 
-#include <algorithm>
-#include <iterator>
 #include <string>
-#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
@@ -89,28 +86,15 @@ void RebuildAdEventsFromDatabase() {
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event) {
-  const std::string& id = GetInstanceId();
-
-  const AdType& ad_type = ad_event.type;
-  const ConfirmationType& confirmation_type = ad_event.confirmation_type;
-
-  const double timestamp = ad_event.created_at.ToDoubleT();
-
   AdsClientHelper::Get()->RecordAdEventForId(
-      id, ad_type.ToString(), confirmation_type.ToString(), timestamp);
+      GetInstanceId(), ad_event.type.ToString(),
+      ad_event.confirmation_type.ToString(), ad_event.created_at);
 }
 
 std::vector<base::Time> GetAdEvents(const AdType& ad_type,
                                     const ConfirmationType& confirmation_type) {
-  const std::vector<double> timestamps = AdsClientHelper::Get()->GetAdEvents(
-      ad_type.ToString(), confirmation_type.ToString());
-
-  std::vector<base::Time> history;
-  std::transform(
-      timestamps.begin(), timestamps.end(), std::back_inserter(history),
-      [](double timestamp) { return base::Time::FromDoubleT(timestamp); });
-
-  return history;
+  return AdsClientHelper::Get()->GetAdEvents(ad_type.ToString(),
+                                             confirmation_type.ToString());
 }
 
 }  // namespace ads

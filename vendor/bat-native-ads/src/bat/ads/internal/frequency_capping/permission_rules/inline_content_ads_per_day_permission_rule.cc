@@ -21,7 +21,7 @@ InlineContentAdsPerDayPermissionRule::~InlineContentAdsPerDayPermissionRule() =
     default;
 
 bool InlineContentAdsPerDayPermissionRule::ShouldAllow() {
-  const std::vector<base::Time> history =
+  const std::vector<base::Time>& history =
       GetAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
