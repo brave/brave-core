@@ -472,6 +472,24 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     }
   }
 
+  // Adding shields down rules (they always override cookie rules).
+  for (const auto& shield_rule : shield_rules) {
+    // There is no global shields rule
+    DCHECK(!shield_rule.primary_pattern.MatchesAllHosts());
+
+    // Shields down.
+    if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {
+      rules.emplace_back(Rule(ContentSettingsPattern::Wildcard(),
+                              shield_rule.primary_pattern,
+                              ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                              base::Time(), SessionModel::Durable));
+      brave_cookie_rules_[incognito].emplace_back(
+          Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
+               ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
+               SessionModel::Durable));
+    }
+  }
+
   // add chromium cookies
   {
     auto chromium_cookies_iterator =
