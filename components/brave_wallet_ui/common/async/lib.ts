@@ -141,16 +141,13 @@ export async function getBuyAssetUrl (args: {
   address: string
   amount: string
 }) {
-  const _buyAmount = (args.onRampProvider === BraveWallet.OnRampProvider.kRamp
-    ? new Amount(args.amount).multiplyByDecimals(args.asset.decimals).value?.toString(10)
-    : args.amount) || ''
   const { blockchainRegistry } = getAPIProxy()
   const { url, error } = await blockchainRegistry.getBuyUrl(
     args.onRampProvider,
     args.chainId,
     args.address,
     args.asset.symbol,
-    _buyAmount
+    args.amount
   )
 
   if (error) {
