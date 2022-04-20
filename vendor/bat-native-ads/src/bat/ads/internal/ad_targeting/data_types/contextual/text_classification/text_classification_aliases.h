@@ -6,18 +6,19 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_ALIASES_H_
 
-#include <deque>
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "base/containers/circular_deque.h"
 
 namespace ads {
 namespace ad_targeting {
 
 using TextClassificationProbabilitiesMap = std::map<std::string, double>;
 using TextClassificationProbabilitiesList =
-    std::deque<TextClassificationProbabilitiesMap>;
+    base::circular_deque<TextClassificationProbabilitiesMap>;
 
 using SegmentProbabilityPair = std::pair<std::string, double>;
 using SegmentProbabilitiesList = std::vector<SegmentProbabilityPair>;

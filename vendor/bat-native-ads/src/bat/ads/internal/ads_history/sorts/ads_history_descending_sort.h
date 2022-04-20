@@ -6,8 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_SORTS_ADS_HISTORY_DESCENDING_SORT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_SORTS_ADS_HISTORY_DESCENDING_SORT_H_
 
-#include <deque>
-
+#include "base/containers/circular_deque.h"
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort_interface.h"
 
 namespace ads {
@@ -19,8 +18,8 @@ class AdsHistoryDescendingSort final : public AdsHistorySortInterface {
   AdsHistoryDescendingSort();
   ~AdsHistoryDescendingSort() override;
 
-  std::deque<AdHistoryInfo> Apply(
-      const std::deque<AdHistoryInfo>& history) const override;
+  base::circular_deque<AdHistoryInfo> Apply(
+      const base::circular_deque<AdHistoryInfo>& history) const override;
 };
 
 }  // namespace ads

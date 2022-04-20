@@ -6,11 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 
-#include <deque>
 #include <map>
 #include <memory>
 #include <string>
 
+#include "base/containers/circular_deque.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_aliases.h"
 #include "bat/ads/category_content_action_types.h"
@@ -54,7 +54,7 @@ class Client final {
   FlaggedAdList GetFlaggedAds() const;
 
   void AppendAdHistory(const AdHistoryInfo& ad_history);
-  const std::deque<AdHistoryInfo>& GetAdsHistory() const;
+  const base::circular_deque<AdHistoryInfo>& GetAdsHistory() const;
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,

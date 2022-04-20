@@ -46,8 +46,8 @@ AdsHistoryConfirmationFilter::AdsHistoryConfirmationFilter() = default;
 
 AdsHistoryConfirmationFilter::~AdsHistoryConfirmationFilter() = default;
 
-std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
-    const std::deque<AdHistoryInfo>& history) const {
+base::circular_deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
+    const base::circular_deque<AdHistoryInfo>& history) const {
   std::map<std::string, AdHistoryInfo> filtered_ads_history_map;
 
   for (const auto& ad : history) {
@@ -70,7 +70,7 @@ std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
     }
   }
 
-  std::deque<AdHistoryInfo> filtered_ads_history;
+  base::circular_deque<AdHistoryInfo> filtered_ads_history;
   for (const auto& filtered_ad : filtered_ads_history_map) {
     const AdHistoryInfo ad = filtered_ad.second;
     filtered_ads_history.push_back(ad);

@@ -78,6 +78,11 @@ std::vector<T> SetIntersection(std::vector<T> lhs, std::vector<T> rhs) {
   return intersection;
 }
 
+template <typename T>
+bool IsEqualContainers(const T& c1, const T& c2) {
+  return std::equal(c1.cbegin(), c1.cend(), c2.cbegin(), c2.cend());
+}
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_

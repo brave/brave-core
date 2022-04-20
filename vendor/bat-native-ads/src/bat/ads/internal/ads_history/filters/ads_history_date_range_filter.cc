@@ -14,11 +14,11 @@ AdsHistoryDateRangeFilter::AdsHistoryDateRangeFilter() = default;
 
 AdsHistoryDateRangeFilter::~AdsHistoryDateRangeFilter() = default;
 
-std::deque<AdHistoryInfo> AdsHistoryDateRangeFilter::Apply(
-    const std::deque<AdHistoryInfo>& history,
+base::circular_deque<AdHistoryInfo> AdsHistoryDateRangeFilter::Apply(
+    const base::circular_deque<AdHistoryInfo>& history,
     const base::Time from,
     const base::Time to) const {
-  std::deque<AdHistoryInfo> filtered_ads_history = history;
+  base::circular_deque<AdHistoryInfo> filtered_ads_history = history;
 
   const auto iter = std::remove_if(
       filtered_ads_history.begin(), filtered_ads_history.end(),

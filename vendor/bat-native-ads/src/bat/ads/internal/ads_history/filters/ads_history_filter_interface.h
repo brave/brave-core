@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_FILTERS_ADS_HISTORY_FILTER_INTERFACE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_FILTERS_ADS_HISTORY_FILTER_INTERFACE_H_
 
-#include <deque>
+#include "base/containers/circular_deque.h"
 
 namespace ads {
 
@@ -16,8 +16,8 @@ class AdsHistoryFilterInterface {
  public:
   virtual ~AdsHistoryFilterInterface() = default;
 
-  virtual std::deque<AdHistoryInfo> Apply(
-      const std::deque<AdHistoryInfo>& history) const = 0;
+  virtual base::circular_deque<AdHistoryInfo> Apply(
+      const base::circular_deque<AdHistoryInfo>& history) const = 0;
 };
 
 }  // namespace ads
