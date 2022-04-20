@@ -10,12 +10,12 @@
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/federated/covariate_logs_util.h"
+#include "bat/ads/internal/federated/covariates_constants.h"
 
 namespace ads {
 
 namespace {
 
-constexpr int kMissingValue = -1;
 constexpr int kClickedValue = 1;
 constexpr int kNotClickedValue = 0;
 constexpr base::TimeDelta kTimeWindow = base::Days(7);
@@ -45,7 +45,7 @@ std::string LastAdNotificationWasClicked::GetValue() const {
   const AdsHistoryInfo history =
       history::Get(filter_type, sort_type, from_time, to_time);
   if (history.items.empty()) {
-    return ToString(kMissingValue);
+    return ToString(kCovariateMissingValue);
   }
 
   const AdHistoryInfo& ad = history.items.front();

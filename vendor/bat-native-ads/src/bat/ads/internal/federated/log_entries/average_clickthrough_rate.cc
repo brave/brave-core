@@ -9,12 +9,9 @@
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/federated/covariate_logs_util.h"
+#include "bat/ads/internal/federated/covariates_constants.h"
 
 namespace ads {
-
-namespace {
-constexpr int kMissingValue = -1;
-}  // namespace
 
 AverageClickthroughRate::AverageClickthroughRate(base::TimeDelta time_window)
     : time_window_(time_window) {}
@@ -37,7 +34,7 @@ std::string AverageClickthroughRate::GetValue() const {
   const base::Time to = base::Time::Now();
   const AdsHistoryInfo history = history::Get(filter_type, sort_type, from, to);
   if (history.items.empty()) {
-    return ToString(kMissingValue);
+    return ToString(kCovariateMissingValue);
   }
 
   const int number_of_views = std::count_if(
@@ -47,7 +44,7 @@ std::string AverageClickthroughRate::GetValue() const {
       });
 
   if (number_of_views == 0) {
-    return ToString(kMissingValue);
+    return ToString(kCovariateMissingValue);
   }
 
   const int number_of_clicks = std::count_if(
@@ -57,7 +54,7 @@ std::string AverageClickthroughRate::GetValue() const {
       });
 
   if (number_of_clicks > number_of_views) {
-    return ToString(kMissingValue);
+    return ToString(kCovariateMissingValue);
   }
 
   const double clickthrough_rate =
