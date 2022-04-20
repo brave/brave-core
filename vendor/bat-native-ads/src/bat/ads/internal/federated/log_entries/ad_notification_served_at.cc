@@ -6,12 +6,9 @@
 #include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
 
 #include "bat/ads/internal/federated/covariate_logs_util.h"
+#include "bat/ads/internal/federated/covariates_constants.h"
 
 namespace ads {
-
-namespace {
-constexpr int kMissingValue = -1;
-}  // namespace
 
 AdNotificationServedAt::AdNotificationServedAt() = default;
 
@@ -32,7 +29,7 @@ brave_federated::mojom::CovariateType AdNotificationServedAt::GetCovariateType()
 
 std::string AdNotificationServedAt::GetValue() const {
   if (time_.is_null()) {
-    return ToString(kMissingValue);
+    return ToString(kCovariateMissingValue);
   }
 
   return ToString(time_);

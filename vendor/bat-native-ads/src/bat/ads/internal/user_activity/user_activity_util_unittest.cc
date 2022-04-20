@@ -6,6 +6,7 @@
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 
 #include "base/time/time.h"
+#include "bat/ads/internal/federated/covariates_constants.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -17,10 +18,6 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
-
-namespace {
-constexpr int64_t kMissingValue = -1;
-}  // namespace
 
 class BatAdsUserActivityUtilTest : public UnitTestBase {
  protected:
@@ -159,7 +156,7 @@ TEST_F(BatAdsUserActivityUtilTest,
       events, UserActivityEventType::kPlayedMedia);
 
   // Assert
-  EXPECT_EQ(kMissingValue, time);
+  EXPECT_EQ(kUserActivityMissingValue, time);
 }
 
 TEST_F(BatAdsUserActivityUtilTest,
@@ -173,7 +170,7 @@ TEST_F(BatAdsUserActivityUtilTest,
       events, UserActivityEventType::kPlayedMedia);
 
   // Assert
-  EXPECT_EQ(kMissingValue, time);
+  EXPECT_EQ(kUserActivityMissingValue, time);
 }
 
 TEST_F(BatAdsUserActivityUtilTest, ToUserActivityTriggers) {

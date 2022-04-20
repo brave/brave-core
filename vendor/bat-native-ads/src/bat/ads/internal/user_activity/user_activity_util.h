@@ -15,6 +15,8 @@
 
 namespace ads {
 
+constexpr int64_t kUserActivityMissingValue = -1;
+
 int GetNumberOfTabsOpened(const UserActivityEventList& events);
 
 int GetNumberOfUserActivityEvents(const UserActivityEventList& events,

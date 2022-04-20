@@ -16,10 +16,6 @@
 
 namespace ads {
 
-namespace {
-constexpr int64_t kMissingValue = -1;
-}  // namespace
-
 int GetNumberOfTabsOpened(const UserActivityEventList& events) {
   return std::count_if(
       events.cbegin(), events.cend(), [](const UserActivityEventInfo& event) {
@@ -44,7 +40,7 @@ int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
                    });
 
   if (iter == events.crend()) {
-    return kMissingValue;
+    return kUserActivityMissingValue;
   }
 
   const base::TimeDelta time_delta = base::Time::Now() - iter->created_at;
