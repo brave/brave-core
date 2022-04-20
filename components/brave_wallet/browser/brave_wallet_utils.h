@@ -102,6 +102,7 @@ std::vector<std::string> GetAllKnownSolNetworkIds();
 std::vector<std::string> GetAllKnownFilNetworkIds();
 std::string GetKnownEthNetworkId(const std::string& chain_id);
 
+GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);

@@ -240,7 +240,9 @@ const base::flat_map<std::string, std::string>
         {brave_wallet::mojom::kMainnetChainId,
          "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5"},
         {brave_wallet::mojom::kRinkebyChainId,
-         "0x3A2e74CF832cbA3d77E72708d55370119E4323a6"}};
+         "0x3A2e74CF832cbA3d77E72708d55370119E4323a6"},
+        {brave_wallet::mojom::kPolygonMainnetChainId,
+         "0xA3f32c8cd786dc089Bd1fC175F2707223aeE5d00"}};
 
 const base::flat_map<std::string, std::string> kEnsRegistryContractAddressMap =
     {{brave_wallet::mojom::kMainnetChainId,
@@ -905,6 +907,13 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
 
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCryptocurrency);
+}
+
+GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
+  if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId)
+    return GURL("https://polygon-rpc.com");
+
+  return GURL(GetInfuraURLForKnownChainId(chain_id));
 }
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(

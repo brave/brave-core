@@ -36,6 +36,8 @@ class SimpleURLLoader;
 class PrefService;
 
 namespace brave_wallet {
+template <class ResultType>
+class UnstoppableDomainsMultichainCalls;
 
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
@@ -377,7 +379,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
 
   void OnUnstoppableDomainsGetEthAddr(
-      UnstoppableDomainsGetEthAddrCallback callback,
+      const std::string& domain,
+      const std::string& chain_id,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
@@ -536,6 +539,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<url::Origin, std::string> switch_chain_requests_;
   base::flat_map<url::Origin, RequestCallback> switch_chain_callbacks_;
   base::flat_map<url::Origin, base::Value> switch_chain_ids_;
+
+  std::unique_ptr<UnstoppableDomainsMultichainCalls<std::string>>
+      ud_get_eth_addr_calls_;
+
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
