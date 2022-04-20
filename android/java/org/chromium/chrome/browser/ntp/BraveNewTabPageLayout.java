@@ -1685,24 +1685,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         showFallBackNTPLayout();
     }
 
-    private void updateImageCreditPosition() {
-        if (mImageCreditLayout == null) {
-            mImageCreditLayout = findViewById(R.id.image_credit_layout);
-        }
-        if (mImageCreditLayout != null) {
-            LinearLayout.LayoutParams linearLayoutParams =
-                    (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
-            int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(
-                    mNtpImageGlobal, mSiteSectionView.getHeight());
-
-            linearLayoutParams.setMargins(0, imageCreditCorrection, 0, 0);
-            if (mImageCreditLayout != null) {
-                mImageCreditLayout.setLayoutParams(linearLayoutParams);
-            }
-            mImageCreditLayout.requestLayout();
-        }
-    }
-
     public void setTab(Tab tab) {
         mTab = tab;
     }
