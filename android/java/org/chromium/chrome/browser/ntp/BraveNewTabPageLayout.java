@@ -46,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -304,8 +305,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        layoutParams.setMargins(dpToPx(mActivity, 16), dpToPx(mActivity, 16), dpToPx(mActivity, 16),
-                dpToPx(mActivity, 16));
+        int margin = dpToPx(mActivity, 16);
+        layoutParams.setMargins(margin, margin, margin, margin);
         mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
         mBraveStatsViewFallBackLayout.requestLayout();
 
@@ -321,7 +322,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         });
         BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
         mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
-
         int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
         if (mSiteSectionView.getParent() != null) {
             ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
@@ -576,9 +576,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         if (mImageCreditLayout != null) {
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
-            Log.e("tapan","here2");
             int imageCreditCorrection =
-                    NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal, shouldShowSuperReferral());
+                    NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal, mSiteSectionView.getHeight());
 
             if (toTop) {
                 imageCreditCorrection = 0;
@@ -1059,7 +1058,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                             } else {
                                                 
                                                 int pxHeight = ConfigurationUtils.getDisplayMetrics(mActivity).get("height");
-                                                int margin = pxHeight - dpToPx(getContext(), 219);
+                                                int margin = pxHeight - dpToPx(getContext(), 195/*219*/);
                                                 mParentScrollView.smoothScrollTo(0, margin);
                                             }
                                         }, 100);
@@ -1335,7 +1334,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         Point size = new Point();
         display.getSize(size);
 
-        NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage);
+        mSiteSectionView.post(new Runnable() {
+        @Override
+        public void run() {
+                correctPosition(false);
+            }
+        });
+        NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage, mSiteSectionView.getHeight());
+        
         ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
         TextView mCreditText = (TextView) findViewById(R.id.credit_text);
@@ -1680,6 +1686,25 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         showFallBackNTPLayout();
     }
 
+    private void updateImageCreditPosition() {
+
+        if (mImageCreditLayout == null) {
+            mImageCreditLayout = findViewById(R.id.image_credit_layout);
+        }
+        if (mImageCreditLayout != null) {
+            LinearLayout.LayoutParams linearLayoutParams =
+                    (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
+            int imageCreditCorrection =
+                    NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal, mSiteSectionView.getHeight());
+
+            linearLayoutParams.setMargins(0, imageCreditCorrection, 0, 0);
+            if (mImageCreditLayout != null) {
+                mImageCreditLayout.setLayoutParams(linearLayoutParams);
+            }
+            mImageCreditLayout.requestLayout();
+        }
+    }
+
     public void setTab(Tab tab) {
         mTab = tab;
     }
@@ -1693,8 +1718,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         return (TabImpl) getTab();
     }
 
-    @Override
+   @Override
     public void onTileCountChanged() {
+        new Handler().postDelayed(() -> {
+            if(mTileGroup!=null && mTileGroup.isEmpty()) {
+                correctPosition(false);
+            }
+        }, 100);
+        
         if (mTopsiteErrorMessage == null) {
             return;
         }
