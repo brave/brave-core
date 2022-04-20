@@ -98,11 +98,6 @@ class SyncAddDeviceViewController: SyncViewController {
     containerView.layer.cornerCurve = .continuous
     containerView.layer.masksToBounds = true
 
-    if !syncAPI.isInSyncGroup {
-      showInitializationError()
-      return
-    }
-
     qrCodeView = SyncQRCodeView(syncApi: syncAPI)
     containerView.addSubview(qrCodeView!)
     qrCodeView?.snp.makeConstraints { make in
@@ -114,11 +109,17 @@ class SyncAddDeviceViewController: SyncViewController {
     self.codewordsView.text = syncAPI.getSyncCode()
     self.setupVisuals()
   }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    if !syncAPI.isInSyncGroup {
+      showInitializationError()
+    }
+  }
 
   private func showInitializationError() {
-    present(SyncAlerts.initializationError, animated: true) {
-      self.syncAPI.leaveSyncGroup()
-    }
+    present(SyncAlerts.initializationError, animated: true)
   }
 
   private func setupVisuals() {
