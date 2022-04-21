@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveCore
 
 private struct ETLDEntry: CustomStringConvertible {
   let entry: String
@@ -260,8 +261,9 @@ extension URL {
     if !host.contains(".") {
       return host
     }
-
-    return publicSuffixFromHost(host, withAdditionalParts: 1)
+    
+    let registry = (self as NSURL).domainAndRegistry
+    return registry.isEmpty ? nil : registry
   }
 
   /**
@@ -320,7 +322,8 @@ extension URL {
     :returns: The public suffix for within the given hostname.
     */
   public var publicSuffix: String? {
-    return host.flatMap { publicSuffixFromHost($0, withAdditionalParts: 0) }
+    let registry = (self as NSURL).registry
+    return registry.isEmpty ? nil : registry
   }
 
   public func isWebPage(includeDataURIs: Bool = true) -> Bool {
@@ -735,6 +738,7 @@ public struct InternalURL {
 
 // MARK: Private Helpers
 private extension URL {
+  @available(*, deprecated, message: "Use URL.publicSuffix or URL.baseDomain depending on your needs")
   func publicSuffixFromHost(_ host: String, withAdditionalParts additionalPartCount: Int) -> String? {
     if host.isEmpty {
       return nil
