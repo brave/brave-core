@@ -30,7 +30,7 @@ class CaptchaDelegate
 
   bool ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override {
-    return brave_rewards::ShowAdaptiveCaptchaPanel(context_);
+    return brave_rewards::ShowRewardsPanel(context_, true);
   }
 
  private:

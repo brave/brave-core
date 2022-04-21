@@ -42,6 +42,18 @@ export interface GrantCaptchaInfo {
   grantInfo: GrantInfo
 }
 
+export type AdaptiveCaptchaStatus =
+  'pending' |
+  'success' |
+  'max-attempts-exceeded'
+
+export type AdaptiveCaptchaResult = 'success' | 'failure' | 'error'
+
+export interface AdaptiveCaptchaInfo {
+  url: string
+  status: AdaptiveCaptchaStatus
+}
+
 export interface Settings {
   adsPerHour: number
   autoContributeEnabled: boolean
@@ -67,6 +79,7 @@ export interface HostState {
   externalWallet: ExternalWallet | null
   summaryData: RewardsSummaryData
   notifications: Notification[]
+  adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
 }
 
 export type HostListener = (state: HostState) => void
@@ -90,4 +103,6 @@ export interface Host {
   dismissNotification: (notification: Notification) => void
   solveGrantCaptcha: (solution: { x: number, y: number }) => void
   clearGrantCaptcha: () => void
+  clearAdaptiveCaptcha: () => void
+  handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
 }

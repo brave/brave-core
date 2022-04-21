@@ -4,23 +4,39 @@
 
 import styled from 'styled-components'
 
-export const frameBox = styled.div`
+export const overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.33);
+`
+
+export const frameRoot = styled.div`
   iframe {
-    width: 323px;
+    width: 332px;
     height: 275px;
     font-family: var(--brave-font-heading);
     background: var(--brave-palette-white);
+    border-radius: 16px;
     border: 0;
-    margin-right: 4px;
   }
 `
 
-export const root = styled.div`
+export const modalRoot = styled.div`
   width: 332px;
   padding: 30px 16px 30px 25px;
   font-family: var(--brave-font-heading);
   background: var(--brave-palette-white);
   color: var(--brave-palette-neutral900);
+  border-radius: 16px;
 `
 
 export const title = styled.div`

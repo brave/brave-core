@@ -19,7 +19,6 @@
 #include "extensions/browser/extension_system.h"
 
 namespace {
-constexpr char kAdaptiveCaptchaPanelUrl[] = "adaptive_captcha_panel.html";
 constexpr char kRewardsPanelUrl[] = "brave_rewards_panel.html";
 
 bool ShowPanel(content::BrowserContext* context,
@@ -69,12 +68,14 @@ bool ShowPanel(content::BrowserContext* context,
 
 namespace brave_rewards {
 
-bool ShowRewardsPanel(content::BrowserContext* context) {
-  return ShowPanel(context, kRewardsPanelUrl);
-}
+bool ShowRewardsPanel(content::BrowserContext* context,
+                      bool load_adaptive_captcha) {
+  std::string url = kRewardsPanelUrl;
+  if (load_adaptive_captcha) {
+    url += "#load_adaptive_captcha";
+  }
 
-bool ShowAdaptiveCaptchaPanel(content::BrowserContext* context) {
-  return ShowPanel(context, kAdaptiveCaptchaPanelUrl);
+  return ShowPanel(context, url);
 }
 
 }  // namespace brave_rewards

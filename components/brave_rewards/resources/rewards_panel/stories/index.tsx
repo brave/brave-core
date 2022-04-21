@@ -4,7 +4,8 @@
 
 import * as React from 'react'
 
-import { Host, HostState } from '../lib/interfaces'
+import { AdaptiveCaptchaInfo, Host, HostState } from '../lib/interfaces'
+import { AdaptiveCaptchaView } from '../components/adaptive_captcha_view'
 import { Notification } from '../../shared/components/notifications'
 import { localeStrings } from './locale_strings'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -24,6 +25,12 @@ export default {
 const locale = {
   getString (key: string) {
     return localeStrings[key] || 'MISSING'
+  }
+}
+
+function actionLogger (name: string) {
+  return (...args: any[]) => {
+    console.log(name, ...args)
   }
 }
 
@@ -102,7 +109,11 @@ function createHost (): Host {
         timeStamp: Date.now(),
         provider: 'uphold'
       } as any
-    ]
+    ],
+    adaptiveCaptchaInfo: {
+      url: '',
+      status: 'pending'
+    }
   })
 
   return {
@@ -215,6 +226,32 @@ function createHost (): Host {
       stateManager.update({
         grantCaptchaInfo: null
       })
+    },
+
+    clearAdaptiveCaptcha () {
+      stateManager.update({
+        adaptiveCaptchaInfo: null
+      })
+    },
+
+    handleAdaptiveCaptchaResult (result) {
+      const { adaptiveCaptchaInfo } = stateManager.getState()
+      if (!adaptiveCaptchaInfo) {
+        return
+      }
+
+      console.log('handleAdaptiveCaptcha', result)
+
+      switch (result) {
+        case 'success':
+          stateManager.update({
+            adaptiveCaptchaInfo: { ...adaptiveCaptchaInfo, status: 'success' }
+          })
+          break
+        case 'failure':
+        case 'error':
+          break
+      }
     }
   }
 }
@@ -262,6 +299,26 @@ export function GrantNotification () {
               },
               timeStamp: Date.now()
             } as any}
+          />
+        </div>
+      </WithThemeVariables>
+    </LocaleContext.Provider>
+  )
+}
+
+export function AdaptiveCaptcha () {
+  const adaptiveCaptchaInfo: AdaptiveCaptchaInfo = {
+    url: '',
+    status: 'pending'
+  }
+  return (
+    <LocaleContext.Provider value={locale}>
+      <WithThemeVariables>
+        <div>
+          <AdaptiveCaptchaView
+            adaptiveCaptchaInfo={adaptiveCaptchaInfo}
+            onClose={actionLogger('onClose')}
+            onCaptchaResult={actionLogger('onCaptchaResult')}
           />
         </div>
       </WithThemeVariables>

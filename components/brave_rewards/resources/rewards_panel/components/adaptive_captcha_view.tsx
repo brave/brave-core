@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../shared/lib/locale_context'
-import { CaptchaStatus, CaptchaResult } from '../lib/interfaces'
+import { AdaptiveCaptchaInfo, AdaptiveCaptchaResult } from '../../rewards_panel/lib/interfaces'
 
 import * as styles from './adaptive_captcha_view.style'
 
@@ -30,16 +30,15 @@ const iframeAllow = `
 `
 
 interface Props {
-  captchaURL: string
-  captchaStatus: CaptchaStatus
+  adaptiveCaptchaInfo: AdaptiveCaptchaInfo
   onClose: () => void
-  onContactSupport: () => void
-  onCaptchaResult: (result: CaptchaResult) => void
+  onCaptchaResult: (result: AdaptiveCaptchaResult) => void
 }
 
 export function AdaptiveCaptchaView (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
+  const { adaptiveCaptchaInfo } = props
 
   React.useEffect(() => {
     const listener = (event: MessageEvent) => {
@@ -75,58 +74,69 @@ export function AdaptiveCaptchaView (props: Props) {
     return () => { window.removeEventListener('message', listener) }
   }, [props.onCaptchaResult])
 
+  function onContactSupport () {
+    window.open('https://support.brave.com/', '_blank')
+    props.onClose()
+  }
+
   function renderCaptcha () {
     return (
-      <styles.frameBox>
-        <iframe
-          ref={iframeRef}
-          allow={iframeAllow.trim().replace(/\n/g, '')}
-          src={props.captchaURL}
-          sandbox='allow-scripts'
-          scrolling='no'
-        />
-      </styles.frameBox>
+      <styles.overlay>
+        <styles.frameRoot>
+          <iframe
+            ref={iframeRef}
+            allow={iframeAllow.trim().replace(/\n/g, '')}
+            src={adaptiveCaptchaInfo.url}
+            sandbox='allow-scripts'
+            scrolling='no'
+          />
+        </styles.frameRoot>
+      </styles.overlay>
     )
   }
 
   function renderSuccess () {
     return (
-      <styles.root>
-        <styles.title>
-          <img src={checkIconSrc} />{getString('captchaSolvedTitle')}
-        </styles.title>
-        <styles.text>
-          {getString('captchaSolvedText')}
-        </styles.text>
-        <styles.closeAction>
-          <button onClick={props.onClose}>
-            {getString('captchaDismiss')}
-          </button>
-        </styles.closeAction>
-      </styles.root>
+      <styles.overlay>
+        <styles.modalRoot>
+          <styles.title>
+            <img src={checkIconSrc} />{getString('captchaSolvedTitle')}
+          </styles.title>
+          <styles.text>
+            {getString('captchaSolvedText')}
+          </styles.text>
+          <styles.closeAction>
+            <button onClick={props.onClose}>
+              {getString('captchaDismiss')}
+            </button>
+          </styles.closeAction>
+        </styles.modalRoot>
+      </styles.overlay>
     )
   }
 
   function renderMaxAttemptsExceededMessage () {
     return (
-      <styles.root>
-        <styles.title className='long'>
-          <img src={smileySadIconSrc} />
-          {getString('captchaMaxAttemptsExceededTitle')}
-        </styles.title>
-        <styles.text>
-          {getString('captchaMaxAttemptsExceededText')}
-        </styles.text>
-        <styles.helpAction>
-          <button onClick={props.onContactSupport}>
-            {getString('captchaContactSupport')}
-          </button>
-        </styles.helpAction>
-      </styles.root>
+      <styles.overlay>
+        <styles.modalRoot>
+          <styles.title className='long'>
+            <img src={smileySadIconSrc} />
+            {getString('captchaMaxAttemptsExceededTitle')}
+          </styles.title>
+          <styles.text>
+            {getString('captchaMaxAttemptsExceededText')}
+          </styles.text>
+          <styles.helpAction>
+            <button onClick={onContactSupport}>
+              {getString('captchaContactSupport')}
+            </button>
+          </styles.helpAction>
+        </styles.modalRoot>
+      </styles.overlay>
     )
   }
 
-  switch (props.captchaStatus) {
+  switch (adaptiveCaptchaInfo.status) {
     case 'pending': return renderCaptcha()
     case 'success': return renderSuccess()
     case 'max-attempts-exceeded': return renderMaxAttemptsExceededMessage()

@@ -12,8 +12,8 @@ class BrowserContext;
 
 namespace brave_rewards {
 
-bool ShowRewardsPanel(content::BrowserContext* profile);
-bool ShowAdaptiveCaptchaPanel(content::BrowserContext* profile);
+bool ShowRewardsPanel(content::BrowserContext* profile,
+                      bool load_adaptive_captcha = false);
 
 }  // namespace brave_rewards
 
