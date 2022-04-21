@@ -10,6 +10,7 @@
 
 #include "base/notreached.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"

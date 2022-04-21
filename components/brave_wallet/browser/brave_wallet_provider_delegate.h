@@ -18,9 +18,8 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegate {
  public:
-  enum class RequestPermissionsError { kNone, kRequestInProgress, kInternal };
   using RequestPermissionsCallback = base::OnceCallback<void(
-      RequestPermissionsError error,
+      mojom::RequestPermissionsError error,
       const absl::optional<std::vector<std::string>>& allowed_accounts)>;
   using IsAccountAllowedCallback = base::OnceCallback<void(bool allowed)>;
   using GetAllowedAccountsCallback =

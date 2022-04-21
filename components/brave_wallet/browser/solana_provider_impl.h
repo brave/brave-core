@@ -12,20 +12,20 @@
 
 #include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+class BraveWalletProviderDelegate;
 class KeyringService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
                                  mojom::KeyringServiceObserver {
  public:
-  using RequestPermissionsError =
-      BraveWalletProviderDelegate::RequestPermissionsError;
+  using RequestPermissionsError = mojom::RequestPermissionsError;
 
   SolanaProviderImpl(KeyringService* keyring_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);

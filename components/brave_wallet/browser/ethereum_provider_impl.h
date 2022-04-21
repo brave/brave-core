@@ -14,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -28,6 +27,7 @@ class PrefService;
 
 namespace brave_wallet {
 
+class BraveWalletProviderDelegate;
 class BraveWalletService;
 class JsonRpcService;
 class KeyringService;
@@ -44,8 +44,7 @@ class EthereumProviderImpl final
       base::OnceCallback<void(const std::vector<std::string>& accounts,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  using RequestPermissionsError =
-      BraveWalletProviderDelegate::RequestPermissionsError;
+  using RequestPermissionsError = mojom::RequestPermissionsError;
 
   EthereumProviderImpl(const EthereumProviderImpl&) = delete;
   EthereumProviderImpl& operator=(const EthereumProviderImpl&) = delete;

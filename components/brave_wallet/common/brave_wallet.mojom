@@ -1101,3 +1101,11 @@ struct SolanaTxData {
   TransactionType tx_type;
   array<SolanaInstruction> instructions;
 };
+
+// This is used by BraveWalletProviderDelegate::RequestPermissions for us to
+// auto generate same enum between c++ and obj-c
+enum RequestPermissionsError {
+  kNone = 0,
+  kRequestInProgress = 1,
+  kInternal = 2
+};

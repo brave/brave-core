@@ -45,13 +45,11 @@ void OnRequestPermissions(
   }
   // The responses array will be empty if operation failed.
   if (responses.empty()) {
-    std::move(callback).Run(
-        BraveWalletProviderDelegate::RequestPermissionsError::kInternal,
-        absl::nullopt);
+    std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
+                            absl::nullopt);
   } else {
-    std::move(callback).Run(
-        BraveWalletProviderDelegate::RequestPermissionsError::kNone,
-        granted_accounts);
+    std::move(callback).Run(mojom::RequestPermissionsError::kNone,
+                            granted_accounts);
   }
 }
 
@@ -127,14 +125,15 @@ void BraveWalletProviderDelegateImpl::RequestPermissions(
   auto request_type = CoinTypeToPermissionRequestType(type);
   auto content_setting_type = CoinTypeToContentSettingsType(type);
   if (!request_type || !content_setting_type) {
-    std::move(callback).Run(RequestPermissionsError::kInternal, absl::nullopt);
+    std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
+                            absl::nullopt);
     return;
   }
   // Check if there's already a permission request in progress
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
   if (rfh && permissions::BraveWalletPermissionContext::HasRequestsInProgress(
                  rfh, *request_type)) {
-    std::move(callback).Run(RequestPermissionsError::kRequestInProgress,
+    std::move(callback).Run(mojom::RequestPermissionsError::kRequestInProgress,
                             absl::nullopt);
     return;
   }
