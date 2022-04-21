@@ -9,7 +9,7 @@
 #include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
@@ -24,7 +24,6 @@ using blink::Supplement;
 
 namespace brave {
 
-typedef absl::random_internal::randen_engine<uint64_t> FarblingPRNG;
 typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(

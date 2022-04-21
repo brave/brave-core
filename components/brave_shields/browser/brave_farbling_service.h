@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_FARBLING_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_FARBLING_SERVICE_H_
 
-#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 
 class GURL;
 
@@ -15,8 +15,6 @@ class PrefRegistrySyncable;
 }
 
 namespace brave {
-
-typedef absl::random_internal::randen_engine<uint64_t> FarblingPRNG;
 
 class BraveFarblingService {
  public:

@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/modules/speech/speech_synthesis.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
-#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 

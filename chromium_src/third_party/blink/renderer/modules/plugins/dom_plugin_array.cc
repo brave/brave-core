@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
 #include "base/compiler_specific.h"
-#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"

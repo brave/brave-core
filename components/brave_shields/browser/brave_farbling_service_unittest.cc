@@ -4,12 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
-#include <random>
 #include <tuple>
 
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 #include "url/gurl.h"
 
 namespace {
