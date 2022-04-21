@@ -6,11 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
 
-#include <random>
-
 #include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
@@ -25,6 +24,7 @@ using blink::Supplement;
 
 namespace brave {
 
+typedef absl::random_internal::randen_engine<uint64_t> FarblingPRNG;
 typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
@@ -57,7 +57,7 @@ class CORE_EXPORT BraveSessionCache final
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const AtomicString& family_name);
-  std::mt19937_64 MakePseudoRandomGenerator();
+  FarblingPRNG MakePseudoRandomGenerator();
 
  private:
   bool farbling_enabled_;

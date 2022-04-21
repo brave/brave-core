@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <random>
-
+#include "third_party/blink/renderer/core/frame/navigator_device_memory.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
 #include "third_party/blink/public/common/device_memory/approximated_device_memory.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/navigator_device_memory.h"
 
 namespace brave {
 
@@ -50,7 +49,7 @@ float FarbleDeviceMemory(blink::ExecutionContext* context) {
     if (max_farbled_index <= min_farbled_index)
       return valid_values[min_farbled_index];
   }
-  std::mt19937_64 prng =
+  FarblingPRNG prng =
       BraveSessionCache::From(*context).MakePseudoRandomGenerator();
   return valid_values[min_farbled_index +
                       (prng() % (max_farbled_index + 1 - min_farbled_index))];

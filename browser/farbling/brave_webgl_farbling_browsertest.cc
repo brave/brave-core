@@ -152,9 +152,9 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
 
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
                        FarbleGetParameterWebGL2) {
-  const std::map<std::string, std::string> tests = {{"a.com", "101111101011"},
-                                                    {"b.com", "111011111011"},
-                                                    {"c.com", "101111000110"}};
+  const std::map<std::string, std::string> tests = {{"a.com", "101111111100"},
+                                                    {"b.com", "111110111100"},
+                                                    {"c.com", "000000100101"}};
   for (const auto& pair : tests) {
     std::string domain = pair.first;
     std::string expected_diff = pair.second;

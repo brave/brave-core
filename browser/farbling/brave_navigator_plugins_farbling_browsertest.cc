@@ -149,16 +149,16 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
-            "Xr1at27");
+            "8.fPHDhw");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].filename);",
                 contents()),
-            "SJEChw48ev3bNGD");
+            "06du37du3bt2bNmT");
   EXPECT_EQ(
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[0].description);",
           contents()),
-      "rVqVqVqVqVKlSpUqVqVKlSJEChQIECh");
+      "BgwYMmTpUq1aNmTJky5cOnTp069ePnTp");
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[0].length);",
                 contents()),
@@ -171,20 +171,20 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[0][0].description);",
           contents()),
-      "HDBAgQo0aNGDBgw48.fvXrVKFiRIkyZM");
+      "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].name);",
                 contents()),
-            "8.fPHDhw");
+            "Xr1at27");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].filename);",
                 contents()),
-            "06du37du3bt2bNmT");
+            "SJEChw48ev3bNGD");
   EXPECT_EQ(
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[1].description);",
           contents()),
-      "BgwYMmTpUq1aNmTJky5cOnTp069ePnTp");
+      "rVqVqVqVqVKlSpUqVqVKlSJEChQIECh");
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[1].length);",
                 contents()),
@@ -197,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[1][0].description);",
           contents()),
-      "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
+      "HDBAgQo0aNGDBgw48.fvXrVKFiRIkyZM");
 }
 
 // Tests that names of built-in plugins get farbled by default
@@ -222,13 +222,13 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(farbling_url());
   EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
+                "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
-            "Brave PDF plug in");
+            "OpenSource doc Renderer");
   EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[2].name);",
+                "domAutomationController.send(navigator.plugins[3].name);",
                 contents()),
-            "Chrome PDF and PS plug-in");
+            "Chrome doc Viewer");
 }
 
 // Tests that names of built-in plugins that get farbled will reset to their
@@ -240,13 +240,13 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(farbling_url());
   EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
+                "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
-            "Brave PDF plug in");
+            "OpenSource doc Renderer");
   EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[2].name);",
+                "domAutomationController.send(navigator.plugins[3].name);",
                 contents()),
-            "Chrome PDF and PS plug-in");
+            "Chrome doc Viewer");
 
   // Farbling level: off
   AllowFingerprinting();

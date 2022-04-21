@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
 #include "url/gurl.h"
 
 namespace {
@@ -48,13 +49,13 @@ TEST_F(BraveFarblingServiceTest, SessionTokens) {
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
   const std::array<std::tuple<GURL, bool, uint64_t>, 4> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), false, 2028179745801958218UL),
-      std::make_tuple<>(GURL("http://a.com"), true, 12718887648122721672UL),
-      std::make_tuple<>(GURL("http://b.com"), false, 12627633265124970774UL),
-      std::make_tuple<>(GURL("http://b.com"), true, 1158566490132461033UL),
+      std::make_tuple<>(GURL("http://a.com"), false, 16188622623906601575UL),
+      std::make_tuple<>(GURL("http://a.com"), true, 8942885125771927068UL),
+      std::make_tuple<>(GURL("http://b.com"), false, 10059331952077172763UL),
+      std::make_tuple<>(GURL("http://b.com"), true, 6702825749149599294UL),
   };
   for (const auto& c : test_cases) {
-    std::mt19937_64 prng;
+    brave::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
         std::get<0>(c), std::get<1>(c), &prng));
     EXPECT_EQ(prng(), std::get<2>(c));
@@ -65,13 +66,13 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValuesDifferentSeeds) {
   farbling_service()->set_session_tokens_for_testing(
       kAnotherTestSessionToken, kAnotherTestIncognitoSessionToken);
   const std::array<std::tuple<GURL, bool, uint64_t>, 4> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), false, 18429975235758321837UL),
-      std::make_tuple<>(GURL("http://a.com"), true, 4213427785562290572UL),
-      std::make_tuple<>(GURL("http://b.com"), false, 10921482181971726122UL),
-      std::make_tuple<>(GURL("http://b.com"), true, 234044960777734928UL),
+      std::make_tuple<>(GURL("http://a.com"), false, 6565599272117158152UL),
+      std::make_tuple<>(GURL("http://a.com"), true, 18152828989207203999UL),
+      std::make_tuple<>(GURL("http://b.com"), false, 10499595974068024348UL),
+      std::make_tuple<>(GURL("http://b.com"), true, 7485037097853289552UL),
   };
   for (const auto& c : test_cases) {
-    std::mt19937_64 prng;
+    brave::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
         std::get<0>(c), std::get<1>(c), &prng));
     EXPECT_EQ(prng(), std::get<2>(c));
@@ -90,7 +91,7 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
       GURL(""),
   };
   for (const auto& url : test_cases) {
-    std::mt19937_64 prng;
+    brave::FarblingPRNG prng;
     EXPECT_FALSE(
         farbling_service()->MakePseudoRandomGeneratorForURL(url, false, &prng));
     EXPECT_FALSE(

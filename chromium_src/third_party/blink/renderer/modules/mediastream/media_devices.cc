@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <random>
-
+#include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/modules/mediastream/media_device_info.h"
 
@@ -23,7 +22,7 @@ void FarbleMediaDevices(ExecutionContext* context,
     return;
   // Shuffle the list of devices pseudo-randomly, based on the
   // domain+session key, starting with the second device.
-  std::mt19937_64 prng =
+  FarblingPRNG prng =
       BraveSessionCache::From(*context).MakePseudoRandomGenerator();
   MediaDeviceInfoVector::iterator it_begin = media_devices->begin();
   std::shuffle(++it_begin, media_devices->end(), prng);

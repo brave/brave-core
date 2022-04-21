@@ -50,8 +50,8 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
-    top_level_page_url_ = https_server_.GetURL("a.test", "/");
-    farbling_url_ = https_server_.GetURL("a.test", "/simple.html");
+    top_level_page_url_ = https_server_.GetURL("b.test", "/");
+    farbling_url_ = https_server_.GetURL("b.test", "/simple.html");
   }
 
   BraveEnumerateDevicesFarblingBrowserTest(
