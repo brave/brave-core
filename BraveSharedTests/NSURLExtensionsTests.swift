@@ -6,6 +6,29 @@ import UIKit
 import XCTest
 @testable import Shared
 
+private extension String {
+  var isIPv6: Bool {
+    return self.contains(":")
+  }
+  
+  var baseDomain: String? {
+    guard !NSURL.isHostIPAddress(host: self) else { return nil }
+
+    // If this is just a hostname and not a FQDN, use the entire hostname.
+    if !self.contains(".") {
+      return self
+    }
+    
+    let registry = NSURL.domainAndRegistry(host: self)
+    return registry.isEmpty ? nil : registry
+  }
+  
+  var publicSuffix: String? {
+    let registry = NSURL.registry(host: self)
+    return registry.isEmpty ? nil : registry
+  }
+}
+
 class NSURLExtensionsTests: XCTestCase {
   func testRemovesHTTPFromURL() {
     let url = URL(string: "http://google.com")
@@ -76,59 +99,70 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://a.bbc.co.uk".asURL!
     let expected = url.publicSuffix!
     XCTAssertEqual("co.uk", expected)
+    XCTAssertEqual("co.uk", url.host?.publicSuffix!)
   }
 
   func testBaseDomainWithTrailingDot() {
     var url = URL(string: "https://test.domain.com")
     XCTAssertEqual(url?.baseDomain, "domain.com")
+    XCTAssertEqual(url?.host?.baseDomain, "domain.com")
 
     url = URL(string: "https://test.domain.com.")
-    XCTAssertEqual(url?.baseDomain, "domain.com")
+    XCTAssertEqual(url?.baseDomain, "domain.com.")
+    XCTAssertEqual(url?.host?.baseDomain, "domain.com.")
 
     url = URL(string: "https://test.domain.com..")
     XCTAssertEqual(url?.baseDomain, nil)
+    XCTAssertEqual(url?.host?.baseDomain, nil)
 
     url = URL(string: "https://foo")
     XCTAssertEqual(url?.baseDomain, "foo")
+    XCTAssertEqual(url?.host?.baseDomain, "foo")
 
     url = URL(string: "https://foo.")
-    XCTAssertEqual(url?.baseDomain, ".foo")
+    XCTAssertEqual(url?.host?.baseDomain, nil)
 
     url = URL(string: "https://.")
-    XCTAssertEqual(url?.baseDomain, "")
+    XCTAssertEqual(url?.baseDomain, nil)
+    XCTAssertEqual(url?.host?.baseDomain, nil)
   }
 
   func testCanadaComputers() {
     let url = "http://m.canadacomputers.com".asURL!
-    let actual = url.baseDomain!
+    let actual = url.baseDomain
     XCTAssertEqual("canadacomputers.com", actual)
+    XCTAssertEqual("canadacomputers.com", url.host?.baseDomain)
   }
 
   func testMultipleSuffixesInsideURL() {
     let url = "http://com:org@m.canadacomputers.co.uk".asURL!
-    let actual = url.baseDomain!
+    let actual = url.baseDomain
     XCTAssertEqual("canadacomputers.co.uk", actual)
+    XCTAssertEqual("canadacomputers.co.uk", url.host?.baseDomain)
   }
 
   func testNormalBaseDomainWithManySubdomains() {
     // TLD Entry: co.uk
     let url = "http://a.b.c.d.bbc.co.uk".asURL!
-    let expected = url.publicSuffix!
+    let expected = url.publicSuffix
     XCTAssertEqual("co.uk", expected)
+    XCTAssertEqual("co.uk", url.host?.publicSuffix)
   }
 
   func testWildCardDomainWithSingleSubdomain() {
     // TLD Entry: *.kawasaki.jp
     let url = "http://a.kawasaki.jp".asURL!
-    let expected = url.publicSuffix!
-    XCTAssertEqual("a.kawasaki.jp", expected)
+    let expected = url.publicSuffix
+    XCTAssertEqual(expected, nil)
+    XCTAssertEqual(url.host?.publicSuffix, nil)
   }
 
   func testWildCardDomainWithManySubdomains() {
     // TLD Entry: *.kawasaki.jp
     let url = "http://a.b.c.d.kawasaki.jp".asURL!
-    let expected = url.publicSuffix!
+    let expected = url.publicSuffix
     XCTAssertEqual("d.kawasaki.jp", expected)
+    XCTAssertEqual("d.kawasaki.jp", url.host?.publicSuffix)
   }
 
   func testExceptionDomain() {
@@ -136,6 +170,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://city.kawasaki.jp".asURL!
     let expected = url.publicSuffix!
     XCTAssertEqual("kawasaki.jp", expected)
+    XCTAssertEqual("kawasaki.jp", url.host?.publicSuffix)
   }
 
   //MARK: Base Domain
@@ -144,6 +179,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://bbc.co.uk".asURL!
     let expected = url.baseDomain!
     XCTAssertEqual("bbc.co.uk", expected)
+    XCTAssertEqual("bbc.co.uk", url.host?.baseDomain)
   }
 
   func testNormalBaseSubdomainWithAdditionalSubdomain() {
@@ -151,6 +187,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://a.bbc.co.uk".asURL!
     let expected = url.baseDomain!
     XCTAssertEqual("bbc.co.uk", expected)
+    XCTAssertEqual("bbc.co.uk", url.host?.baseDomain)
   }
 
   func testBaseDomainForWildcardDomain() {
@@ -158,6 +195,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://a.b.kawasaki.jp".asURL!
     let expected = url.baseDomain!
     XCTAssertEqual("a.b.kawasaki.jp", expected)
+    XCTAssertEqual("a.b.kawasaki.jp", url.host?.baseDomain)
   }
 
   func testBaseDomainForWildcardDomainWithAdditionalSubdomain() {
@@ -165,6 +203,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://a.b.c.kawasaki.jp".asURL!
     let expected = url.baseDomain!
     XCTAssertEqual("b.c.kawasaki.jp", expected)
+    XCTAssertEqual("b.c.kawasaki.jp", url.host?.baseDomain)
   }
 
   func testBaseDomainForExceptionDomain() {
@@ -172,6 +211,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://city.kawasaki.jp".asURL!
     let expected = url.baseDomain!
     XCTAssertEqual("city.kawasaki.jp", expected)
+    XCTAssertEqual("city.kawasaki.jp", url.host?.baseDomain)
   }
 
   func testBaseDomainForExceptionDomainWithAdditionalSubdomain() {
@@ -179,6 +219,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://a.city.kawasaki.jp".asURL!
     let expected = url.baseDomain!
     XCTAssertEqual("city.kawasaki.jp", expected)
+    XCTAssertEqual("city.kawasaki.jp", url.host?.baseDomain)
   }
 
   func testBugzillaURLDomain() {
@@ -195,6 +236,7 @@ class NSURLExtensionsTests: XCTestCase {
     let url = "http://[::1]/foo/bar".asURL!
     XCTAssertTrue(url.isIPv6)
     XCTAssertNil(url.baseDomain)
+    XCTAssertNil("[::1]".baseDomain)
     XCTAssertEqual(url.normalizedHost()!, "[::1]")
   }
 
