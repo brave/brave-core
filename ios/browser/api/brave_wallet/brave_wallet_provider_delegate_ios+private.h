@@ -23,6 +23,7 @@ class BraveWalletProviderDelegateBridge
   __weak id<BraveWalletProviderDelegate> bridge_;
 
   void ShowPanel() override;
+  void WalletInteractionDetected() override;
   url::Origin GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;

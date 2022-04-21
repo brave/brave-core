@@ -6,10 +6,7 @@
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/build/android/jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
-
-namespace content {
-class WebContents;
-}
+#include "content/public/browser/web_contents.h"
 
 namespace brave_wallet {
 
@@ -21,6 +18,11 @@ void ShowPanel(content::WebContents*) {
 void ShowWalletOnboarding(content::WebContents*) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
+}
+
+void WalletInteractionDetected(content::WebContents* web_contents) {
+  Java_BraveWalletProviderDelegateImplHelper_walletInteractionDetected(
+      base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
 }
 
 }  // namespace brave_wallet
