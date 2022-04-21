@@ -44,6 +44,7 @@ class BraveNotificationsPresenter: UIViewController {
   private var notificationsQueue: [BraveNotification] = []
   private var widthAnchor: NSLayoutConstraint?
   private var visibleNotification: BraveNotification?
+  private weak var currentPresentingVC: UIViewController?
   
   override func loadView() {
     let view = PresenterView(frame: UIScreen.main.bounds)
@@ -66,14 +67,12 @@ class BraveNotificationsPresenter: UIViewController {
       }
     }
     
-    if parent == nil {
-      presentingController.addChild(self)
-      presentingController.view.addSubview(view)
-      didMove(toParent: presentingController)
-    }
+    guard let window = presentingController.view.window else { return }
     
+    currentPresentingVC = presentingController
+    window.addSubview(view)
     view.snp.makeConstraints {
-      $0.edges.equalTo(presentingController.view.safeAreaLayoutGuide.snp.edges)
+      $0.edges.equalTo(window.safeAreaLayoutGuide.snp.edges)
     }
     
     let notificationView = notification.view
@@ -160,7 +159,7 @@ class BraveNotificationsPresenter: UIViewController {
           self.view.removeFromSuperview()
           self.removeFromParent()
         } else {
-          guard let presentingController = self.parent else { return }
+          guard let presentingController = self.currentPresentingVC else { return }
           self.display(notification: self.notificationsQueue.popLast()!, from: presentingController)
         }
       }
