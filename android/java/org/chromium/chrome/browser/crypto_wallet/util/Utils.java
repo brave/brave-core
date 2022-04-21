@@ -84,6 +84,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.io.InputStream;
 import java.lang.NumberFormatException;
@@ -1475,23 +1476,22 @@ public class Utils {
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }
 
-    public static org.chromium.url.internal.mojom.Origin originFromGURL(GURL address) {
-        org.chromium.url.internal.mojom.Origin hostOrigin =
-                new org.chromium.url.internal.mojom.Origin();
+    public static Origin originFromGURL(GURL address) {
+        Origin hostOrigin = new Origin();
         hostOrigin.scheme = address.getScheme();
         hostOrigin.host = address.getHost();
         hostOrigin.port = 0;
         if (address.getPort().isEmpty()) {
             if (hostOrigin.scheme.equals("http")) {
-                hostOrigin.port = 80;
+                hostOrigin.port = WalletConstants.HTTP_PORT;
             } else if (hostOrigin.scheme.equals("https")) {
-                hostOrigin.port = 443;
+                hostOrigin.port = WalletConstants.HTTPS_PORT;
             }
         } else {
             try {
                 hostOrigin.port = Short.parseShort(address.getPort());
             } catch (Exception e) {
-                hostOrigin.port = 443;
+                hostOrigin.port = WalletConstants.HTTPS_PORT;
             }
         }
 

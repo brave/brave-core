@@ -28,7 +28,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.permission.BraveEthereumPermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -55,12 +55,11 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     private boolean mIsNativeInitialized;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
-    private int mFaviconSize;
 
     private BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
-        if (activity instanceof BraveWalletDAppsActivity) {
-            return ((BraveWalletDAppsActivity) activity).getBraveWalletService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getBraveWalletService();
         }
 
         return null;
@@ -68,8 +67,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
-        if (activity instanceof BraveWalletDAppsActivity) {
-            return ((BraveWalletDAppsActivity) activity).getKeyringService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getKeyringService();
         }
 
         return null;
@@ -119,7 +118,6 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mIsNativeInitialized = false;
-        mFaviconSize = 0; // Max bitmap size for download;
         View view = inflater.inflate(R.layout.fragment_connect_account, container, false);
         mWebSite = view.findViewById(R.id.fragment_connect_account_website);
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
@@ -151,8 +149,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment
             GURL pageUrl = getCurrentHostHttpAddress();
             FaviconImageCallback imageCallback = (bitmap,
                     iconUrl) -> ConnectAccountFragment.this.onFaviconAvailable(pageUrl, bitmap);
+            // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
-                    activity.getCurrentProfile(), pageUrl, mFaviconSize, imageCallback);
+                    activity.getCurrentProfile(), pageUrl, 0, imageCallback);
         }
     }
 

@@ -95,21 +95,19 @@ public class BraveEthereumPermissionAccountsListAdapter
         holder.subTitleText.setText(stripAccountAddress(mAccountInfo[arrayPosition].address));
         setBlockiesBitmapResource(holder.iconImg, mAccountInfo[arrayPosition].address);
         if (mCheckBoxStyle) {
-            holder.accountAction.setVisibility(View.GONE);
             holder.accountCheck.setVisibility(View.VISIBLE);
             holder.accountCheck.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
-                                mCheckedPositions.add((Integer) arrayPosition);
+                                mCheckedPositions.add(arrayPosition);
                             } else {
-                                mCheckedPositions.remove((Integer) arrayPosition);
+                                mCheckedPositions.remove(arrayPosition);
                             }
                         }
                     });
         } else {
-            holder.accountCheck.setVisibility(View.GONE);
             if (hasPermission(mAccountInfo[arrayPosition].address)) {
                 if (mAccountInfo[arrayPosition].address.equals(mSelectedAccount)) {
                     holder.accountAction.setText(
