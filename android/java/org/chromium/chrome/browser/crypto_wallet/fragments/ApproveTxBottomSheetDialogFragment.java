@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -69,6 +70,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private int mChainDecimals;
     private TransactionConfirmationListener mTransactionConfirmationListener;
     private List<TransactionInfo> mTransactionInfos;
+    private Button mRejectAllTx;
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
             List<TransactionInfo> transactionInfos, TransactionInfo txInfo, String accountName,
@@ -93,6 +95,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mHandler = new Handler(Looper.getMainLooper());
         mChainSymbol = "ETH";
         mChainDecimals = 18;
+        mTransactionInfos = Collections.emptyList();
     }
 
     ApproveTxBottomSheetDialogFragment(List<TransactionInfo> transactionInfos,
@@ -182,11 +185,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-
         @SuppressLint("InflateParams")
         final View view =
                 LayoutInflater.from(getContext()).inflate(R.layout.approve_tx_bottom_sheet, null);
-
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -268,8 +269,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 approveTransaction();
             }
         });
-
         if (mTransactionInfos.size() > 1) {
+            // TODO: next button is not functional. Update next button text based on position in
+            //  mTransactionInfos list.
+            //  Refactor Approve pendingTxHelper code to update the mSelectedPendingRequest Tx
+            //  with the next Transaction.
             Button next = view.findViewById(R.id.btn_next_tx);
             next.setVisibility(View.VISIBLE);
             next.setOnClickListener(v -> {
@@ -277,22 +281,28 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     mTransactionConfirmationListener.onNextTransaction();
                 }
             });
-
-            Button rejectTxs = view.findViewById(R.id.btn_reject_transactions);
-            rejectTxs.setVisibility(View.VISIBLE);
-            rejectTxs.setOnClickListener(v -> {
+            mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
+            mRejectAllTx.setVisibility(View.VISIBLE);
+            mRejectAllTx.setOnClickListener(v -> {
                 if (mTransactionConfirmationListener != null) {
-                    // TODO: reject all transactions on backend
                     mTransactionConfirmationListener.onRejectAllTransactions();
                     dismiss();
                 }
             });
+            refreshListContentUi();
         }
     }
 
-    public void updateTransactionInfo(TransactionInfo transactionInfo) {
-        // TODO: show the details of new transaction when next button is clicked, maybe add account
-        // name as param if required
+    public void setTxList(List<TransactionInfo> transactionInfos) {
+        mTransactionInfos = transactionInfos;
+        if (isVisible()) {
+            refreshListContentUi();
+        }
+    }
+
+    private void refreshListContentUi() {
+        mRejectAllTx.setText(getString(
+                R.string.brave_wallet_queue_reject_all, String.valueOf(mTransactionInfos.size())));
     }
 
     private void fillAssetDependentControls(String asset, View view, int decimals) {
@@ -353,6 +363,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 return;
             }
             mRejected = true;
+            if (mTransactionConfirmationListener != null) {
+                mTransactionConfirmationListener.onRejectTransaction();
+            }
             dismiss();
         });
     }
@@ -370,7 +383,18 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 return;
             }
             mApproved = true;
+            if (mTransactionConfirmationListener != null) {
+                mTransactionConfirmationListener.onApproveTransaction();
+            }
             dismiss();
         });
+    }
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        if (mTransactionConfirmationListener != null) {
+            mTransactionConfirmationListener.onCancel();
+        }
     }
 }
