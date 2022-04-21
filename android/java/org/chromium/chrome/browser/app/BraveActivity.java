@@ -176,6 +176,7 @@ import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
@@ -474,6 +475,21 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (layout != null) {
             layout.showWalletIcon(true);
             layout.showWalletPanel();
+        }
+    }
+
+    public void walletInteractionDetected(WebContents webContents) {
+        Tab tab = getActivityTab();
+        if (tab == null
+                || !webContents.getLastCommittedUrl().equals(
+                        tab.getWebContents().getLastCommittedUrl())) {
+            return;
+        }
+
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.showWalletIcon(true);
         }
     }
 

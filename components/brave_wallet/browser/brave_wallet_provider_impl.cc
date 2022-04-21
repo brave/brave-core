@@ -320,6 +320,7 @@ void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
 
 void BraveWalletProviderImpl::IsLocked(IsLockedCallback callback) {
   keyring_service_->IsLocked(std::move(callback));
+  delegate_->WalletInteractionDetected();
 }
 
 void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
@@ -934,6 +935,7 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
 void BraveWalletProviderImpl::Request(base::Value input,
                                       RequestCallback callback) {
   CommonRequestOrSendAsync(std::move(input), std::move(callback));
+  delegate_->WalletInteractionDetected();
 }
 
 void BraveWalletProviderImpl::SendErrorOnRequest(
@@ -1130,6 +1132,7 @@ void BraveWalletProviderImpl::Send(const std::string& method,
   CommonRequestOrSendAsync(
       std::move(*GetJsonRpcRequest(method, std::move(params_ptr))),
       std::move(callback));
+  delegate_->WalletInteractionDetected();
 }
 
 void BraveWalletProviderImpl::RequestEthereumPermissions(
@@ -1147,6 +1150,7 @@ void BraveWalletProviderImpl::RequestEthereumPermissions(
 void BraveWalletProviderImpl::Enable(EnableCallback callback) {
   RequestEthereumPermissions(std::move(callback), base::Value(), "",
                              delegate_->GetOrigin());
+  delegate_->WalletInteractionDetected();
 }
 
 void BraveWalletProviderImpl::OnRequestEthereumPermissions(

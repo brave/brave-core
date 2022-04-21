@@ -115,6 +115,10 @@ void BraveWalletProviderDelegateImpl::ShowPanel() {
   ::brave_wallet::ShowPanel(web_contents_);
 }
 
+void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
+  ::brave_wallet::WalletInteractionDetected(web_contents_);
+}
+
 void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback) {
   // Check if there's already a permission request in progress

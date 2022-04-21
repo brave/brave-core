@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.content_public.browser.WebContents;
 
 @JNINamespace("brave_wallet")
 public class BraveWalletProviderDelegateImplHelper {
@@ -24,6 +25,14 @@ public class BraveWalletProviderDelegateImplHelper {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             activity.showWalletOnboarding();
+        }
+    }
+
+    @CalledByNative
+    public static void walletInteractionDetected(WebContents webContents) {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.walletInteractionDetected(webContents);
         }
     }
 }

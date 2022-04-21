@@ -33,6 +33,7 @@ class BraveWalletProviderDelegate {
   virtual ~BraveWalletProviderDelegate() = default;
 
   virtual void ShowPanel() = 0;
+  virtual void WalletInteractionDetected() = 0;
   virtual url::Origin GetOrigin() const = 0;
   virtual void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) = 0;

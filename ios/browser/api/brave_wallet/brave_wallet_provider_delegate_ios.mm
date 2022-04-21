@@ -16,6 +16,10 @@ void BraveWalletProviderDelegateBridge::ShowPanel() {
   [bridge_ showPanel];
 }
 
+void BraveWalletProviderDelegateBridge::WalletInteractionDetected() {
+  [bridge_ walletInteractionDetected];
+}
+
 url::Origin BraveWalletProviderDelegateBridge::GetOrigin() const {
   return url::Origin([[bridge_ getOrigin] underlyingOrigin]);
 }

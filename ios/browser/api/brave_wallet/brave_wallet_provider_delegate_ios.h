@@ -22,6 +22,7 @@ OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (void)showPanel;
 - (URLOriginIOS*)getOrigin;
+- (void)walletInteractionDetected;
 - (void)requestEthereumPermissions:
     (BraveWalletProviderResultsCallback)completion;
 - (void)getAllowedAccounts:(BOOL)includeAccountsWhenLocked
