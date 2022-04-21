@@ -25,6 +25,12 @@ export default function useAssetManagement (
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
 ) {
+  const onlyInLeft = (left: BraveWallet.BlockchainToken[], right: BraveWallet.BlockchainToken[]) =>
+    left.filter(leftValue =>
+      !right.some(rightValue =>
+        leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase() &&
+        leftValue.chainId === rightValue.chainId))
+
   const onAddUserAsset = (token: BraveWallet.BlockchainToken) => {
     addUserAsset({
       token: {
@@ -40,38 +46,28 @@ export default function useAssetManagement (
     refreshBalancesPricesAndHistory()
   }
 
-  const findVisibleTokenInfo = (token: BraveWallet.BlockchainToken) => {
-    return userVisibleTokensInfo.find((t) => t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
-  }
+  const findVisibleTokenInfo = React.useCallback((token: BraveWallet.BlockchainToken) =>
+    userVisibleTokensInfo.find(t =>
+      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+      t.chainId === token.chainId),
+    [userVisibleTokensInfo])
 
   const onUpdateVisibleAssets = React.useCallback((updatedTokensList: BraveWallet.BlockchainToken[]) => {
     // Gets a list of all added tokens and adds them to the userVisibleTokensInfo list
-    updatedTokensList.filter((firstItem) =>
-      !userVisibleTokensInfo.some((secondItem) =>
-        firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => onAddUserAsset(token))
+    onlyInLeft(updatedTokensList, userVisibleTokensInfo)
+      .forEach(token => onAddUserAsset(token))
 
     // Gets a list of all removed tokens and removes them from the userVisibleTokensInfo list
-    userVisibleTokensInfo.filter((firstItem) =>
-      !updatedTokensList.some((secondItem) =>
-        firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => removeUserAsset({ token, chainId: token?.chainId ?? '' }))
+    onlyInLeft(userVisibleTokensInfo, updatedTokensList)
+      .forEach(token => removeUserAsset({ token, chainId: token?.chainId ?? '' }))
 
-    // Gets a list of custom tokens returned from updatedTokensList payload
-    // then compares customTokens against userVisibleTokensInfo list and updates the custom tokens visibility if it has changed
-    updatedTokensList.filter((firstItem) =>
-      !fullTokenList.some((secondItem) =>
-        firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => {
+    // Gets a list of custom tokens and native assets returned from updatedTokensList payload
+    // then compares against userVisibleTokensInfo list and updates the tokens visibility if it has changed.
+    onlyInLeft(updatedTokensList, fullTokenList)
+      .forEach(token => {
         const foundToken = findVisibleTokenInfo(token)
-        // Since a networks native token (example 'ETH') can be removed from the the userVisibleTokensInfo list,
-        // when it is re-added we handle it as a custom token since it is not part of the token registry.
-        // This check here will add it only if it's value 'visible' is returned true
-        if (token.contractAddress.toLowerCase() === '' && !foundToken?.visible && token.visible) {
-          onAddUserAsset(token)
-        }
-        // Updates token visibility exluding a networks native token
-        if (foundToken?.visible !== token.visible && token.contractAddress.toLowerCase() !== '') {
+        // Updates token visibility
+        if (foundToken?.visible !== token.visible) {
           setUserAssetVisible({ token, chainId: token?.chainId ?? '', isVisible: token.visible })
         }
       })
