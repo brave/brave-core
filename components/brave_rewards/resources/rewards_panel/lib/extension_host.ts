@@ -244,6 +244,9 @@ export function createHost (): Host {
     addListeners()
 
     await Promise.all([
+      apiAdapter.getGrants().then((list) => {
+        updateGrants(list)
+      }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
       }),
@@ -274,10 +277,7 @@ export function createHost (): Host {
       updatePublisherInfo()
     ])
 
-    apiAdapter.getGrants().then((list) => {
-      updateGrants(list)
-      updateNotifications()
-    }).catch(console.error)
+    updateNotifications()
 
     requestPublisherInfo().catch(console.error)
 
