@@ -265,7 +265,9 @@ void FilTxManager::OnGetFilStateSearchMsgLimited(
                                         ? mojom::TransactionStatus::Confirmed
                                         : mojom::TransactionStatus::Error;
   meta->set_status(status);
-  meta->set_confirmed_time(base::Time::Now());
+  if (status == mojom::TransactionStatus::Confirmed) {
+    meta->set_confirmed_time(base::Time::Now());
+  }
   tx_state_manager_->AddOrUpdateTx(*meta);
 }
 
