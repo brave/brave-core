@@ -13,7 +13,6 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
@@ -43,9 +42,6 @@ class BraveWalletServiceDelegate {
   BraveWalletServiceDelegate& operator=(const BraveWalletServiceDelegate&) =
       delete;
   virtual ~BraveWalletServiceDelegate() = default;
-
-  static absl::optional<ContentSettingsType> CoinTypeToContentSettingsType(
-      mojom::CoinType coin_type);
 
   class Observer : public base::CheckedObserver {
    public:

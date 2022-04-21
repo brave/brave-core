@@ -14,7 +14,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
@@ -45,6 +44,29 @@ std::unique_ptr<base::Value> GetJsonRpcRequest(
   dictionary->SetKey("params", params->Clone());
   dictionary->SetKey("id", base::Value("1"));
   return dictionary;
+}
+
+// Common logic for filtering the list of accounts based on the selected account
+std::vector<std::string> FilterAccounts(
+    const std::vector<std::string>& accounts,
+    const absl::optional<std::string>& selected_account) {
+  // If one of the accounts matches the selected account, then only
+  // return that account.  This is for webcompat reasons.
+  // Some Dapps select the first account in the list, and some the
+  // last. So having only 1 item returned here makes it work for
+  // all Dapps.
+  std::vector<std::string> filtered_accounts;
+  for (const auto& account : accounts) {
+    if (selected_account &&
+        base::CompareCaseInsensitiveASCII(account, *selected_account) == 0) {
+      filtered_accounts.clear();
+      filtered_accounts.push_back(account);
+      break;
+    } else {
+      filtered_accounts.push_back(account);
+    }
+  }
+  return filtered_accounts;
 }
 
 }  // namespace
@@ -1139,10 +1161,84 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     const std::string& method,
     const url::Origin& origin) {
   DCHECK(delegate_);
-  delegate_->RequestEthereumPermissions(
-      base::BindOnce(&EthereumProviderImpl::OnRequestEthereumPermissions,
+  keyring_service_->GetKeyringInfo(
+      brave_wallet::mojom::kDefaultKeyringId,
+      base::BindOnce(
+          &EthereumProviderImpl::ContinueRequestEthereumPermissionsKeyringInfo,
+          weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
+          method, origin));
+}
+
+void EthereumProviderImpl::ContinueRequestEthereumPermissionsKeyringInfo(
+    RequestCallback callback,
+    base::Value id,
+    const std::string& method,
+    const url::Origin& origin,
+    brave_wallet::mojom::KeyringInfoPtr keyring_info) {
+  DCHECK_EQ(keyring_info->id, brave_wallet::mojom::kDefaultKeyringId);
+  if (!keyring_info->is_keyring_created) {
+    delegate_->ShowWalletOnboarding();
+    OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
+                                 origin, RequestPermissionsError::kInternal,
+                                 absl::nullopt);
+    return;
+  }
+
+  std::vector<std::string> addresses;
+  for (const auto& account_info : keyring_info->account_infos) {
+    addresses.push_back(account_info->address);
+  }
+
+  if (keyring_info->is_locked) {
+    if (pending_request_ethereum_permissions_callback_) {
+      OnRequestEthereumPermissions(
+          std::move(callback), std::move(id), method, origin,
+          RequestPermissionsError::kRequestInProgress, absl::nullopt);
+      return;
+    }
+    pending_request_ethereum_permissions_callback_ = std::move(callback);
+    pending_request_ethereum_permissions_id_ = std::move(id);
+    pending_request_ethereum_permissions_method_ = method;
+    pending_request_ethereum_permissions_origin_ = origin;
+    keyring_service_->RequestUnlock();
+    delegate_->ShowPanel();
+    return;
+  }
+
+  delegate_->GetAllowedAccounts(
+      mojom::CoinType::ETH, addresses,
+      base::BindOnce(&EthereumProviderImpl::ContinueRequestEthereumPermissions,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), method, origin));
+                     std::move(id), method, origin, addresses));
+}
+
+void EthereumProviderImpl::ContinueRequestEthereumPermissions(
+    RequestCallback callback,
+    base::Value id,
+    const std::string& method,
+    const url::Origin& origin,
+    const std::vector<std::string>& requested_accounts,
+    bool success,
+    const std::vector<std::string>& allowed_accounts) {
+  if (!success) {
+    OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
+                                 origin, RequestPermissionsError::kInternal,
+                                 absl::nullopt);
+    return;
+  }
+
+  if (success && !allowed_accounts.empty()) {
+    OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
+                                 origin, RequestPermissionsError::kNone,
+                                 allowed_accounts);
+  } else {
+    // Request accounts if no accounts are connected.
+    delegate_->RequestPermissions(
+        mojom::CoinType::ETH, requested_accounts,
+        base::BindOnce(&EthereumProviderImpl::OnRequestEthereumPermissions,
+                       weak_factory_.GetWeakPtr(), std::move(callback),
+                       std::move(id), method, origin));
+  }
 }
 
 void EthereumProviderImpl::Enable(EnableCallback callback) {
@@ -1156,31 +1252,18 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
     base::Value id,
     const std::string& method,
     const url::Origin& origin,
-    const std::vector<std::string>& accounts,
-    mojom::ProviderError error,
-    const std::string& error_message) {
+    RequestPermissionsError error,
+    const absl::optional<std::vector<std::string>>& allowed_accounts) {
   std::unique_ptr<base::Value> formed_response;
-  bool reject = error != mojom::ProviderError::kSuccess;
-  if (error == mojom::ProviderError::kSuccess && keyring_service_->IsLocked()) {
-    if (pending_request_ethereum_permissions_callback_) {
-      formed_response = GetProviderErrorDictionary(
-          mojom::ProviderError::kUserRejectedRequest,
-          l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
-      reject = true;
-      std::move(callback).Run(std::move(id), std::move(*formed_response),
-                              reject, "", true);
-      return;
-    }
-    pending_request_ethereum_permissions_callback_ = std::move(callback);
-    pending_request_ethereum_permissions_id_ = std::move(id);
-    pending_request_ethereum_permissions_method_ = method;
-    pending_request_ethereum_permissions_origin_ = origin;
-    keyring_service_->RequestUnlock();
-    delegate_->ShowPanel();
-    return;
+
+  bool success = error == RequestPermissionsError::kNone;
+  std::vector<std::string> accounts;
+  if (success && allowed_accounts) {
+    accounts = FilterAccounts(
+        *allowed_accounts,
+        keyring_service_->GetSelectedAccount(mojom::CoinType::ETH));
   }
 
-  bool success = error == mojom::ProviderError::kSuccess;
   std::string first_allowed_account;
   if (accounts.size() > 0) {
     first_allowed_account = accounts[0];
@@ -1190,7 +1273,20 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
         mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   } else if (!success) {
-    formed_response = GetProviderErrorDictionary(error, error_message);
+    switch (error) {
+      case RequestPermissionsError::kRequestInProgress:
+        formed_response = GetProviderErrorDictionary(
+            mojom::ProviderError::kUserRejectedRequest,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+        break;
+      case RequestPermissionsError::kInternal:
+        formed_response = GetProviderErrorDictionary(
+            mojom::ProviderError::kInternalError,
+            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        break;
+      default:
+        NOTREACHED();
+    }
   } else if (method == kRequestPermissionsMethod) {
     formed_response = base::Value::ToUniquePtrValue(
         PermissionRequestResponseToValue(origin, accounts));
@@ -1200,7 +1296,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
       formed_response->Append(base::Value(accounts[i]));
     }
   }
-  reject = !success || accounts.empty();
+  bool reject = !success || accounts.empty();
 
   std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
                           first_allowed_account, true);
@@ -1209,19 +1305,49 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
 void EthereumProviderImpl::GetAllowedAccounts(
     bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
+  keyring_service_->GetKeyringInfo(
+      brave_wallet::mojom::kDefaultKeyringId,
+      base::BindOnce(&EthereumProviderImpl::ContinueGetAllowedAccounts,
+                     weak_factory_.GetWeakPtr(), include_accounts_when_locked,
+                     std::move(callback)));
+}
+
+void EthereumProviderImpl::ContinueGetAllowedAccounts(
+    bool include_accounts_when_locked,
+    GetAllowedAccountsCallback callback,
+    brave_wallet::mojom::KeyringInfoPtr keyring_info) {
+  std::vector<std::string> addresses;
+  for (const auto& account_info : keyring_info->account_infos) {
+    addresses.push_back(account_info->address);
+  }
+
   DCHECK(delegate_);
   delegate_->GetAllowedAccounts(
-      mojom::CoinType::ETH, include_accounts_when_locked,
+      mojom::CoinType::ETH, addresses,
       base::BindOnce(&EthereumProviderImpl::OnGetAllowedAccounts,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), include_accounts_when_locked,
+                     keyring_info->is_locked,
+                     keyring_service_->GetSelectedAccount(mojom::CoinType::ETH),
+                     std::move(callback)));
 }
 
 void EthereumProviderImpl::OnGetAllowedAccounts(
+    bool include_accounts_when_locked,
+    bool keyring_locked,
+    const absl::optional<std::string>& selected_account,
     GetAllowedAccountsCallback callback,
-    const std::vector<std::string>& accounts,
-    mojom::ProviderError error,
-    const std::string& error_message) {
-  std::move(callback).Run(accounts, error, error_message);
+    bool success,
+    const std::vector<std::string>& accounts) {
+  std::vector<std::string> filtered_accounts;
+  if (!keyring_locked || include_accounts_when_locked) {
+    filtered_accounts = FilterAccounts(accounts, selected_account);
+  }
+
+  std::move(callback).Run(
+      filtered_accounts,
+      success ? mojom::ProviderError::kSuccess
+              : mojom::ProviderError::kInternalError,
+      success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 void EthereumProviderImpl::OnContinueGetAllowedAccounts(

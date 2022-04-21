@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"

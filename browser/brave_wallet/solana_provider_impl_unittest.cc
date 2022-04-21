@@ -326,7 +326,7 @@ TEST_F(SolanaProviderImplUnitTest, NoSelectedAccount) {
   // eagerly connect
   account = Connect(dict.Clone(), &error, &error_message);
   EXPECT_TRUE(account.empty());
-  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
 }
 

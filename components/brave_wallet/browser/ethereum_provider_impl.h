@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -27,7 +28,6 @@ class PrefService;
 
 namespace brave_wallet {
 
-class BraveWalletProviderDelegate;
 class BraveWalletService;
 class JsonRpcService;
 class KeyringService;
@@ -44,6 +44,8 @@ class EthereumProviderImpl final
       base::OnceCallback<void(const std::vector<std::string>& accounts,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
+  using RequestPermissionsError =
+      BraveWalletProviderDelegate::RequestPermissionsError;
 
   EthereumProviderImpl(const EthereumProviderImpl&) = delete;
   EthereumProviderImpl& operator=(const EthereumProviderImpl&) = delete;
@@ -101,10 +103,16 @@ class EthereumProviderImpl final
                         base::Value domain,
                         RequestCallback callback,
                         base::Value id);
-  void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
-                            const std::vector<std::string>& accounts,
-                            mojom::ProviderError error,
-                            const std::string& error_message);
+  void ContinueGetAllowedAccounts(
+      bool include_accounts_when_locked,
+      GetAllowedAccountsCallback callback,
+      brave_wallet::mojom::KeyringInfoPtr keyring_info);
+  void OnGetAllowedAccounts(bool include_accounts_when_locked,
+                            bool keyring_locked,
+                            const absl::optional<std::string>& selected_account,
+                            GetAllowedAccountsCallback callback,
+                            bool success,
+                            const std::vector<std::string>& accounts);
   void OnContinueGetAllowedAccounts(RequestCallback callback,
                                     base::Value id,
                                     const std::string& method,
@@ -319,13 +327,27 @@ class EthereumProviderImpl final
                                   base::Value id,
                                   const std::string& method,
                                   const url::Origin& origin);
-  void OnRequestEthereumPermissions(RequestCallback callback,
-                                    base::Value id,
-                                    const std::string& method,
-                                    const url::Origin& origin,
-                                    const std::vector<std::string>& accounts,
-                                    mojom::ProviderError error,
-                                    const std::string& error_message);
+  void ContinueRequestEthereumPermissionsKeyringInfo(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& method,
+      const url::Origin& origin,
+      brave_wallet::mojom::KeyringInfoPtr keyring_info);
+  void ContinueRequestEthereumPermissions(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& method,
+      const url::Origin& origin,
+      const std::vector<std::string>& requested_accounts,
+      bool success,
+      const std::vector<std::string>& allowed_accounts);
+  void OnRequestEthereumPermissions(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& method,
+      const url::Origin& origin,
+      RequestPermissionsError error,
+      const absl::optional<std::vector<std::string>>& allowed_accounts);
 
   int sign_message_id_ = 0;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;

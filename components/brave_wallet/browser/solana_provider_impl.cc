@@ -10,7 +10,6 @@
 
 #include "base/notreached.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -18,9 +17,11 @@
 namespace brave_wallet {
 
 namespace {
+
 // When onlyIfTrusted is true, the request would be rejected when selected
 // account doesn't have permission.
 constexpr char kOnlyIfTrustedOption[] = "onlyIfTrusted";
+
 }  // namespace
 
 SolanaProviderImpl::SolanaProviderImpl(
@@ -46,22 +47,31 @@ void SolanaProviderImpl::Init(
 void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
                                  ConnectCallback callback) {
   DCHECK(delegate_);
+  absl::optional<std::string> account =
+      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  if (!account) {
+    std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
+                            "");
+    return;
+  }
+
+  bool is_eagerly_connect = false;
   if (arg.has_value()) {
     const base::Value::Dict* arg_dict = arg->GetIfDict();
     if (arg_dict) {
       absl::optional<bool> only_if_trusted =
           arg_dict->FindBool(kOnlyIfTrustedOption);
       if (only_if_trusted.has_value() && *only_if_trusted) {
-        delegate_->IsSelectedAccountAllowed(
-            mojom::CoinType::SOL,
-            base::BindOnce(&SolanaProviderImpl::OnEagerlyConnect,
-                           weak_factory_.GetWeakPtr(), std::move(callback)));
-        return;
+        is_eagerly_connect = true;
       }
     }
   }
-  delegate_->RequestSolanaPermission(
-      base::BindOnce(&SolanaProviderImpl::OnConnect, weak_factory_.GetWeakPtr(),
+
+  delegate_->IsAccountAllowed(
+      mojom::CoinType::SOL, *account,
+      base::BindOnce(&SolanaProviderImpl::ContinueConnect,
+                     weak_factory_.GetWeakPtr(), is_eagerly_connect, *account,
                      std::move(callback)));
 }
 
@@ -130,36 +140,53 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
                           std::move(result));
 }
 
-void SolanaProviderImpl::OnConnect(ConnectCallback callback,
-                                   const absl::optional<std::string>& account,
-                                   mojom::SolanaProviderError error,
-                                   const std::string& error_message) {
-  if (error == mojom::SolanaProviderError::kSuccess) {
-    if (!account) {
-      std::move(callback).Run(
-          mojom::SolanaProviderError::kUserRejectedRequest,
-          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
-    } else {
-      std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
-                              *account);
-      connected_set_.insert(*account);
-    }
-  } else {
-    std::move(callback).Run(error, error_message, "");
-  }
-}
-
-void SolanaProviderImpl::OnEagerlyConnect(
-    ConnectCallback callback,
-    const absl::optional<std::string>& account,
-    bool allowed) {
-  if (allowed) {
-    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", *account);
-    connected_set_.insert(*account);
-  } else {
+void SolanaProviderImpl::ContinueConnect(bool is_eagerly_connect,
+                                         const std::string& selected_account,
+                                         ConnectCallback callback,
+                                         bool is_selected_account_allowed) {
+  if (is_selected_account_allowed) {
+    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+                            selected_account);
+    connected_set_.insert(selected_account);
+  } else if (!is_selected_account_allowed && is_eagerly_connect) {
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+  } else {
+    delegate_->RequestPermissions(
+        mojom::CoinType::SOL, {selected_account},
+        base::BindOnce(&SolanaProviderImpl::OnConnect,
+                       weak_factory_.GetWeakPtr(), selected_account,
+                       std::move(callback)));
+  }
+}
+
+void SolanaProviderImpl::OnConnect(
+    const std::string& requested_account,
+    ConnectCallback callback,
+    RequestPermissionsError error,
+    const absl::optional<std::vector<std::string>>& allowed_accounts) {
+  if (error == RequestPermissionsError::kInternal) {
+    std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
+                            "");
+  } else if (error == RequestPermissionsError::kRequestInProgress) {
+    std::move(callback).Run(
+        mojom::SolanaProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+  } else if (error == RequestPermissionsError::kNone) {
+    CHECK(allowed_accounts);
+    if (allowed_accounts->size()) {
+      std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+                              allowed_accounts->at(0));
+      connected_set_.insert(allowed_accounts->at(0));
+    } else {
+      std::move(callback).Run(
+          mojom::SolanaProviderError::kUserRejectedRequest,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+    }
+  } else {
+    NOTREACHED();
   }
 }
 

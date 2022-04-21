@@ -10,19 +10,6 @@
 
 namespace brave_wallet {
 
-absl::optional<ContentSettingsType>
-BraveWalletServiceDelegate::CoinTypeToContentSettingsType(
-    mojom::CoinType coin_type) {
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      return ContentSettingsType::BRAVE_ETHEREUM;
-    case mojom::CoinType::SOL:
-      return ContentSettingsType::BRAVE_SOLANA;
-    default:
-      return absl::nullopt;
-  }
-}
-
 void BraveWalletServiceDelegate::IsExternalWalletInstalled(
     mojom::ExternalWalletType type,
     IsExternalWalletInstalledCallback callback) {

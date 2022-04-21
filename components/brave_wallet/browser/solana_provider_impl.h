@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -19,11 +20,13 @@
 
 namespace brave_wallet {
 class KeyringService;
-class BraveWalletProviderDelegate;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
                                  mojom::KeyringServiceObserver {
  public:
+  using RequestPermissionsError =
+      BraveWalletProviderDelegate::RequestPermissionsError;
+
   SolanaProviderImpl(KeyringService* keyring_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
@@ -50,13 +53,15 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void Request(base::Value arg, RequestCallback callback) override;
 
  private:
-  void OnConnect(ConnectCallback callback,
-                 const absl::optional<std::string>& account,
-                 mojom::SolanaProviderError error,
-                 const std::string& error_message);
-  void OnEagerlyConnect(ConnectCallback callback,
-                        const absl::optional<std::string>& account,
-                        bool allowed);
+  void ContinueConnect(bool is_eagerly_connect,
+                       const std::string& selected_account,
+                       ConnectCallback callback,
+                       bool is_selected_account_allowed);
+  void OnConnect(
+      const std::string& requested_account,
+      ConnectCallback callback,
+      RequestPermissionsError error,
+      const absl::optional<std::vector<std::string>>& allowed_accounts);
 
   // mojom::KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override {}
