@@ -140,6 +140,7 @@ void JNI_BraveShieldsContentSettings_SetCookieControlType(JNIEnv* env,
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(
           ProfileAndroid::FromProfileAndroid(j_profile)),
+      ProfileAndroid::FromProfileAndroid(j_profile)->GetPrefs(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)),

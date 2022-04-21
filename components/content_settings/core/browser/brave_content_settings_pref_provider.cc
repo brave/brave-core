@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -347,17 +348,24 @@ bool BravePrefProvider::SetWebsiteSetting(
     ContentSettingsType content_type,
     base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
+  const auto rule_matcher =
+      [&primary_pattern = std::as_const(primary_pattern),
+       &secondary_pattern = std::as_const(secondary_pattern),
+       &in_value = std::as_const(in_value)](const Rule& rule) {
+        return rule.primary_pattern == primary_pattern &&
+               rule.secondary_pattern == secondary_pattern &&
+               rule.value != in_value;
+      };
+  const auto cookie_is_found_in = [&rule_matcher](const std::vector<Rule>& rules) {
+    return rules.cend() != base::ranges::find_if(rules, rule_matcher);
+  };
+
   if (content_type == ContentSettingsType::COOKIES) {
-    auto match = base::ranges::find_if(
-        brave_cookie_rules_[off_the_record_],
-        [&primary_pattern = std::as_const(primary_pattern),
-         &secondary_pattern = std::as_const(secondary_pattern),
-         &in_value = std::as_const(in_value)](const auto& rule) {
-          return rule.primary_pattern == primary_pattern &&
-                 rule.secondary_pattern == secondary_pattern &&
-                 rule.value != in_value;
-        });
-    if (match != brave_cookie_rules_[off_the_record_].end()) {
+    if (cookie_is_found_in(brave_shield_down_rules_[off_the_record_])) {
+      // Don't do anything with the generated Shiels-down rules.
+      return true;
+    }
+    if (cookie_is_found_in(brave_cookie_rules_[off_the_record_])) {
       // change to type ContentSettingsType::BRAVE_COOKIES
       return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
                                        ContentSettingsType::BRAVE_COOKIES,
@@ -411,6 +419,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                                           bool incognito) {
   std::vector<Rule> rules;
   auto old_rules = std::move(brave_cookie_rules_[incognito]);
+  auto old_shields_down_rules = std::move(brave_shield_down_rules_[incognito]);
 
   brave_cookie_rules_[incognito].clear();
 
@@ -482,6 +491,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                               shield_rule.primary_pattern,
                               ContentSettingToValue(CONTENT_SETTING_ALLOW),
                               base::Time(), SessionModel::Durable));
+      brave_shield_down_rules_[incognito].emplace_back(
+          Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
+               ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
+               SessionModel::Durable));
       brave_cookie_rules_[incognito].emplace_back(
           Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
                ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
@@ -534,7 +547,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                base::Value(), old_rule.expiration, old_rule.session_model));
     }
   }
-
   {
     base::AutoLock auto_lock(lock_);
     cookie_rules_[incognito] = std::move(rules);

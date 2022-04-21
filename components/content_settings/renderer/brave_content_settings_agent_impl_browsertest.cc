@@ -240,19 +240,21 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void Block3PCookies() {
-    brave_shields::SetCookieControlType(content_settings(),
-                                        ControlType::BLOCK_THIRD_PARTY,
-                                        top_level_page_url());
+    brave_shields::SetCookieControlType(
+        content_settings(), browser()->profile()->GetPrefs(),
+        ControlType::BLOCK_THIRD_PARTY, top_level_page_url());
   }
 
   void BlockCookies() {
-    brave_shields::SetCookieControlType(content_settings(), ControlType::BLOCK,
-                                        top_level_page_url());
+    brave_shields::SetCookieControlType(
+        content_settings(), browser()->profile()->GetPrefs(),
+        ControlType::BLOCK, top_level_page_url());
   }
 
   void AllowCookies() {
-    brave_shields::SetCookieControlType(content_settings(), ControlType::ALLOW,
-                                        top_level_page_url());
+    brave_shields::SetCookieControlType(
+        content_settings(), browser()->profile()->GetPrefs(),
+        ControlType::ALLOW, top_level_page_url());
   }
 
   void ShieldsDown() {

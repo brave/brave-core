@@ -178,16 +178,19 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
   void AllowCookies(const GURL url) {
     brave_shields::SetCookieControlType(content_settings(),
+                                        browser()->profile()->GetPrefs(),
                                         brave_shields::ControlType::ALLOW, url);
   }
 
   void BlockThirdPartyCookies(const GURL url) {
     brave_shields::SetCookieControlType(
-        content_settings(), brave_shields::ControlType::BLOCK_THIRD_PARTY, url);
+        content_settings(), browser()->profile()->GetPrefs(),
+        brave_shields::ControlType::BLOCK_THIRD_PARTY, url);
   }
 
   void BlockCookies(const GURL url) {
     brave_shields::SetCookieControlType(content_settings(),
+                                        browser()->profile()->GetPrefs(),
                                         brave_shields::ControlType::BLOCK, url);
   }
 

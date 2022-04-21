@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -18,6 +19,7 @@
 #include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -338,6 +340,7 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
 }
 
 void SetCookieControlType(HostContentSettingsMap* map,
+                          PrefService* profile_state,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state) {
@@ -346,11 +349,38 @@ void SetCookieControlType(HostContentSettingsMap* map,
   if (!host_pattern.IsValid())
     return;
 
+  if (host_pattern == ContentSettingsPattern::Wildcard()) {
+    // Default settings.
+    switch (type) {
+      case ControlType::ALLOW:
+        map->SetDefaultContentSetting(ContentSettingsType::COOKIES,
+                                      CONTENT_SETTING_ALLOW);
+        profile_state->SetInteger(
+            ::prefs::kCookieControlsMode,
+            static_cast<int>(content_settings::CookieControlsMode::kOff));
+        break;
+      case ControlType::BLOCK:
+        map->SetDefaultContentSetting(ContentSettingsType::COOKIES,
+                                      CONTENT_SETTING_BLOCK);
+        break;
+      case ControlType::BLOCK_THIRD_PARTY:
+        map->SetDefaultContentSetting(ContentSettingsType::COOKIES,
+                                      CONTENT_SETTING_ALLOW);
+        profile_state->SetInteger(
+            ::prefs::kCookieControlsMode,
+            static_cast<int>(
+                content_settings::CookieControlsMode::kBlockThirdParty));
+        break;
+      default:
+        NOTREACHED() << "Invalid ControlType for cookies";
+    }
+    return;
+  }
+
   map->SetContentSettingCustomScope(host_pattern,
                                     ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::BRAVE_REFERRERS,
                                     GetDefaultBlockFromControlType(type));
-
   const auto primary_pattern = ContentSettingsPattern::FromString(base::StrCat(
       {"*://[*.]",
        net::registry_controlled_domains::GetDomainAndRegistry(
@@ -358,21 +388,40 @@ void SetCookieControlType(HostContentSettingsMap* map,
            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES),
        "/*"}));
 
-  // first-party rule:
-  map->SetContentSettingCustomScope(primary_pattern, host_pattern,
-                                    ContentSettingsType::BRAVE_COOKIES,
-                                    GetDefaultAllowFromControlType(type));
-  // general rule:
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(), host_pattern,
-      ContentSettingsType::BRAVE_COOKIES, GetDefaultBlockFromControlType(type));
+  switch (type) {
+    case ControlType::BLOCK_THIRD_PARTY:
+      // general-rule:
+      map->SetContentSettingCustomScope(ContentSettingsPattern::Wildcard(),
+                                        host_pattern,
+                                        ContentSettingsType::BRAVE_COOKIES,
+                                        GetDefaultBlockFromControlType(type));
+      // first-party rule:
+      map->SetContentSettingCustomScope(primary_pattern, host_pattern,
+                                        ContentSettingsType::BRAVE_COOKIES,
+                                        GetDefaultAllowFromControlType(type));
+      break;
+    case ControlType::ALLOW:
+    case ControlType::BLOCK:
+      // first-party rule:
+      map->SetContentSettingCustomScope(primary_pattern, host_pattern,
+                                        ContentSettingsType::BRAVE_COOKIES,
+                                        CONTENT_SETTING_DEFAULT);
+      // general-rule:
+      map->SetContentSettingCustomScope(ContentSettingsPattern::Wildcard(),
+                                        host_pattern,
+                                        ContentSettingsType::BRAVE_COOKIES,
+                                        GetDefaultBlockFromControlType(type));
+      break;
+    default:
+      NOTREACHED() << "Invalid ControlType for cookies";
+  }
 
   RecordShieldsSettingChanged(local_state);
 }
 
 struct CookieRules {
-  bool IsDefault() const {
-    return general_setting == CONTENT_SETTING_DEFAULT &&
+  bool HasDefault() const {
+    return general_setting == CONTENT_SETTING_DEFAULT ||
            first_party_setting == CONTENT_SETTING_DEFAULT;
   }
 
@@ -399,6 +448,30 @@ struct CookieRules {
             content_settings::ValueToContentSetting(first_party_value)};
   }
 
+  static CookieRules GetDefault(
+      content_settings::CookieSettings* cookie_settings) {
+    const ContentSetting default_cookies_setting =
+        cookie_settings->GetDefaultCookieSetting(nullptr);
+    const bool default_should_block_3p_cookies =
+        cookie_settings->ShouldBlockThirdPartyCookies();
+    if (default_cookies_setting == CONTENT_SETTING_BLOCK) {
+      // All cookies are blocked.
+      return {CONTENT_SETTING_BLOCK, CONTENT_SETTING_BLOCK};
+    } else if (default_should_block_3p_cookies) {
+      // First-party cookies are allowed.
+      return {CONTENT_SETTING_BLOCK, CONTENT_SETTING_ALLOW};
+    }
+    // All cookies are allowed.
+    return {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ALLOW};
+  }
+
+  void Merge(const CookieRules& other) {
+    if (general_setting == CONTENT_SETTING_DEFAULT)
+      general_setting = other.general_setting;
+    if (first_party_setting == CONTENT_SETTING_DEFAULT)
+      first_party_setting = other.first_party_setting;
+  }
+
   ContentSetting general_setting = CONTENT_SETTING_DEFAULT;
   ContentSetting first_party_setting = CONTENT_SETTING_DEFAULT;
 };
@@ -412,28 +485,10 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  // Get explicitly defined brave rules (from pop-up combobox)
-  auto result = CookieRules::Get(map, url, ContentSettingsType::BRAVE_COOKIES);
-  if (result.IsDefault()) {
-    // If there are no explicit brave rules, check for user-defined (chromium)
-    result = CookieRules::Get(map, url, ContentSettingsType::COOKIES);
-    if (result.IsDefault()) {
-      // If there are no custom rules, get the default settings.
-      const ContentSetting default_cookies_setting =
-          cookie_settings->GetDefaultCookieSetting(nullptr);
-      const bool default_should_block_3p_cookies =
-          cookie_settings->ShouldBlockThirdPartyCookies();
-      if (default_cookies_setting == CONTENT_SETTING_BLOCK) {
-        // All cookies are blocked.
-        result = {CONTENT_SETTING_BLOCK, CONTENT_SETTING_BLOCK};
-      } else if (default_should_block_3p_cookies) {
-        // First-party cookies are allowed.
-        result = {CONTENT_SETTING_BLOCK, CONTENT_SETTING_ALLOW};
-      } else {
-        // All cookies are allowed.
-        result = {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ALLOW};
-      }
-    }
+  auto result = CookieRules::Get(map, url, ContentSettingsType::COOKIES);
+  if (result.HasDefault()) {
+    const auto default_rules = CookieRules::GetDefault(cookie_settings);
+    result.Merge(default_rules);
   }
 
   if (result.general_setting == CONTENT_SETTING_ALLOW)

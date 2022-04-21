@@ -142,7 +142,8 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
 
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+      profile_->GetPrefs(), ControlTypeFromString(value), GURL(),
+      g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(

@@ -86,6 +86,7 @@ class BravePrefProvider : public PrefProvider,
   std::map<bool /* is_incognito */, std::vector<Rule>> cookie_rules_
       GUARDED_BY(lock_);
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;
+  std::map<bool /* is_incognito */, std::vector<Rule>> brave_shield_down_rules_;
 
   bool initialized_;
   bool store_last_modified_;

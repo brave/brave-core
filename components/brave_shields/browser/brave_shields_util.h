@@ -89,6 +89,7 @@ DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
+                          PrefService* profile_state,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state = nullptr);

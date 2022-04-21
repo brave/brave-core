@@ -266,6 +266,7 @@ BraveShieldsSetCookieControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
+      profile->GetPrefs(),
       control_type,
       url,
       g_browser_process->local_state());

@@ -220,6 +220,7 @@ void JNI_BravePrefServiceBridge_SetCookiesBlockType(
     const base::android::JavaParamRef<jstring>& type) {
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
+      GetOriginalProfile()->GetPrefs(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(), g_browser_process->local_state());
