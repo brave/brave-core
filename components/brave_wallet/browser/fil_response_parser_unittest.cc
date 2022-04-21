@@ -212,6 +212,8 @@ TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
       GetResponse(R"({"Height": {}})"), &height));
   EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
       GetResponse(R"({"Height": []})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": ""})"), &height));
 }
 
 TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
