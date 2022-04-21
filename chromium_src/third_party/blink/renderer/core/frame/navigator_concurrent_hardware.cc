@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
 #include "base/compiler_specific.h"
 #include "base/system/sys_info.h"
 #include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
 
 namespace brave {
 

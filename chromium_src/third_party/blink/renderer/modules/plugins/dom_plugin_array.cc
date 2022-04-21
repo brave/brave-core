@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
 #include "base/compiler_specific.h"
 #include "third_party/abseil-cpp/absl/random/internal/randen_engine.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -10,7 +11,6 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/page/plugin_data.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin.h"
-#include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
@@ -68,7 +68,7 @@ void FarblePlugins(DOMPluginArray* owner,
     case BraveFarblingLevel::BALANCED: {
       LocalFrame* frame = owner->DomWindow()->GetFrame();
       FarblingPRNG prng = BraveSessionCache::From(*(frame->DomWindow()))
-                                 .MakePseudoRandomGenerator();
+                              .MakePseudoRandomGenerator();
       // The item() method will populate plugin info if any item of
       // |dom_plugins_| is null, but when it tries, it assumes the
       // length of |dom_plugins_| == the length of the underlying
