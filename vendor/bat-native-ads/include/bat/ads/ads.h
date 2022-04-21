@@ -207,7 +207,8 @@ class ADS_EXPORT Ads {
       const mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 
-  // Called to purge orphaned served ad events for the specified |ad_type|.
+  // Called to purge orphaned served ad events. Should only call before
+  // triggering new ad events for the specified |ad_type|.
   virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 
   // Called to remove all history. The callback takes one argument - |bool| is
