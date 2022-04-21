@@ -32,7 +32,7 @@ class CosmeticFiltersJSHandler {
                            const int32_t isolated_world_id);
   ~CosmeticFiltersJSHandler();
 
-  // Adds the "cs_worker" JavaScript object and its functions to the current
+  // Adds the "cf_worker" JavaScript object and its functions to the current
   // render_frame_.
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   // Fetches an initial set of resources to inject into the page if cosmetic
@@ -68,7 +68,10 @@ class CosmeticFiltersJSHandler {
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);
 
+  void InjectStylesheet(const std::string& stylesheet);
+
   bool generichide_ = false;
+
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
       cosmetic_filters_resources_;
