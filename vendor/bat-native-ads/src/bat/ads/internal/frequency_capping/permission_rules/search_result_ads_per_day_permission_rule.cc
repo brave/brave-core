@@ -21,7 +21,7 @@ SearchResultAdsPerDayPermissionRule::~SearchResultAdsPerDayPermissionRule() =
     default;
 
 bool SearchResultAdsPerDayPermissionRule::ShouldAllow() {
-  const std::deque<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -37,7 +37,7 @@ std::string SearchResultAdsPerDayPermissionRule::GetLastMessage() const {
 }
 
 bool SearchResultAdsPerDayPermissionRule::DoesRespectCap(
-    const std::deque<base::Time>& history) {
+    const std::vector<base::Time>& history) {
   const base::TimeDelta time_constraint = base::Days(1);
 
   const int cap = features::GetMaximumSearchResultAdsPerDay();

@@ -7,9 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_NOTIFICATIONS_AD_NOTIFICATIONS_H_
 
 #include <cstdint>
-#include <deque>
 #include <string>
 
+#include "base/containers/circular_deque.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_aliases.h"
 #include "build/build_config.h"
@@ -54,7 +54,7 @@ class AdNotifications final {
 #endif
 
  private:
-  std::deque<AdNotificationInfo> GetNotificationsFromList(
+  base::circular_deque<AdNotificationInfo> GetNotificationsFromList(
       base::Value* list) const;
 
   bool GetNotificationFromDictionary(base::DictionaryValue* dictionary,
@@ -101,7 +101,7 @@ class AdNotifications final {
 
   InitializeCallback callback_;
 
-  std::deque<AdNotificationInfo> ad_notifications_;
+  base::circular_deque<AdNotificationInfo> ad_notifications_;
 };
 
 }  // namespace ads

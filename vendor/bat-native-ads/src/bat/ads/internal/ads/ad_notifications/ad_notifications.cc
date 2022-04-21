@@ -225,12 +225,12 @@ void AdNotifications::RemoveAllAfterUpdate() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::deque<AdNotificationInfo> AdNotifications::GetNotificationsFromList(
-    base::Value* list) const {
+base::circular_deque<AdNotificationInfo>
+AdNotifications::GetNotificationsFromList(base::Value* list) const {
   DCHECK(list);
   DCHECK(list->is_list());
 
-  std::deque<AdNotificationInfo> notifications;
+  base::circular_deque<AdNotificationInfo> notifications;
 
   for (auto& item : list->GetList()) {
     base::DictionaryValue* dictionary = nullptr;

@@ -19,7 +19,7 @@ AdsPerDayPermissionRule::AdsPerDayPermissionRule() = default;
 AdsPerDayPermissionRule::~AdsPerDayPermissionRule() = default;
 
 bool AdsPerDayPermissionRule::ShouldAllow() {
-  const std::deque<base::Time>& history =
+  const std::vector<base::Time> history =
       GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -35,7 +35,7 @@ std::string AdsPerDayPermissionRule::GetLastMessage() const {
 }
 
 bool AdsPerDayPermissionRule::DoesRespectCap(
-    const std::deque<base::Time>& history) {
+    const std::vector<base::Time>& history) {
   const base::TimeDelta time_constraint = base::Days(1);
 
   const int cap = features::GetMaximumAdNotificationsPerDay();

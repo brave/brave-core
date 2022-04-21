@@ -147,7 +147,7 @@ void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
 #endif
 }
 
-const std::deque<AdHistoryInfo>& Client::GetAdsHistory() const {
+const base::circular_deque<AdHistoryInfo>& Client::GetAdsHistory() const {
   DCHECK(is_initialized_);
 
   return client_->ads_shown_history;

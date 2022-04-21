@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/client/client_info.h"
 
+#include <vector>
+
 #include "base/check.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
@@ -66,7 +68,7 @@ bool ClientInfo::FromJson(const std::string& json) {
       std::string segment = segment_history.name.GetString();
       DCHECK(!segment.empty());
 
-      std::deque<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
+      std::vector<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
       for (const auto& segment_history_item :
            segment_history.value.GetArray()) {
         ad_targeting::PurchaseIntentSignalHistoryInfo history;

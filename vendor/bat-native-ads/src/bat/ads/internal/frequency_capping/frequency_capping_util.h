@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UTIL_H_
 
-#include <deque>
+#include <vector>
 
 namespace base {
 class Time;
@@ -16,7 +16,7 @@ class TimeDelta;
 namespace ads {
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
-    const std::deque<base::Time>& history,
+    const std::vector<base::Time>& history,
     const base::TimeDelta time_constraint,
     const int cap);
 

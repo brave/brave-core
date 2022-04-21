@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/container_util.h"
 
-#include <deque>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -14,34 +13,6 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
-
-TEST(BatAdsContainerUtilTest, VectorToDeque) {
-  // Arrange
-  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
-                                           "item 4", "item 5", "item 6"};
-
-  // Act
-  const std::deque<std::string> deque = VectorToDeque(vector);
-
-  // Assert
-  const std::deque<std::string> expected_deque = {"item 1", "item 2", "item 3",
-                                                  "item 4", "item 5", "item 6"};
-
-  EXPECT_EQ(expected_deque, deque);
-}
-
-TEST(BatAdsContainerUtilTest, EmptyVectorToDeque) {
-  // Arrange
-  const std::vector<std::string> vector = {};
-
-  // Act
-  const std::deque<std::string> deque = VectorToDeque(vector);
-
-  // Assert
-  const std::deque<std::string> expected_deque = {};
-
-  EXPECT_EQ(expected_deque, deque);
-}
 
 TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
@@ -171,12 +142,12 @@ TEST(BatAdsContainerUtilTest, CompareEmptyMaps) {
 
 TEST(BatAdsContainerUtilTest, CompareMatchingSets) {
   // Arrange
-  const std::deque<std::string> deque_1 = {"deque 1", "deque 2"};
+  const std::vector<std::string> vec_1 = {"vec 1", "vec 2"};
 
-  const std::deque<std::string> deque_2 = {"deque 2", "deque 1"};
+  const std::vector<std::string> vec_2 = {"vec 2", "vec 1"};
 
   // Act
-  const bool does_equal = CompareAsSets(deque_1, deque_2);
+  const bool does_equal = CompareAsSets(vec_1, vec_2);
 
   // Assert
   EXPECT_TRUE(does_equal);
@@ -184,10 +155,10 @@ TEST(BatAdsContainerUtilTest, CompareMatchingSets) {
 
 TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingSets) {
   // Arrange
-  const std::deque<std::string> deque = {"deque 1", "deque 2"};
+  const std::vector<std::string> vec = {"vec 1", "vec 2"};
 
   // Act
-  const bool does_equal = CompareAsSets(deque, deque);
+  const bool does_equal = CompareAsSets(vec, vec);
 
   // Assert
   EXPECT_TRUE(does_equal);
@@ -195,12 +166,12 @@ TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingSets) {
 
 TEST(BatAdsContainerUtilTest, CompareNonMatchingSets) {
   // Arrange
-  const std::deque<std::string> deque_1 = {"deque 1", "deque 2"};
+  const std::vector<std::string> vec_1 = {"vec 1", "vec 2"};
 
-  const std::deque<std::string> deque_2 = {"deque 3", "deque 4"};
+  const std::vector<std::string> vec_2 = {"vec 3", "vec 4"};
 
   // Act
-  const bool does_equal = CompareAsSets(deque_1, deque_2);
+  const bool does_equal = CompareAsSets(vec_1, vec_2);
 
   // Assert
   EXPECT_FALSE(does_equal);
@@ -208,10 +179,10 @@ TEST(BatAdsContainerUtilTest, CompareNonMatchingSets) {
 
 TEST(BatAdsContainerUtilTest, CompareEmptySets) {
   // Arrange
-  const std::deque<std::string> deque = {};
+  const std::vector<std::string> vec = {};
 
   // Act
-  const bool does_equal = CompareAsSets(deque, deque);
+  const bool does_equal = CompareAsSets(vec, vec);
 
   // Assert
   EXPECT_TRUE(does_equal);

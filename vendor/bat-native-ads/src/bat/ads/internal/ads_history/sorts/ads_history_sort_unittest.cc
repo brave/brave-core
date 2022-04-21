@@ -5,9 +5,11 @@
 
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
 
+#include "base/containers/circular_deque.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/internal/container_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -16,8 +18,8 @@ namespace ads {
 
 namespace {
 
-std::deque<AdHistoryInfo> GetUnsortedAdsHistory() {
-  std::deque<AdHistoryInfo> ads_history;
+base::circular_deque<AdHistoryInfo> GetUnsortedAdsHistory() {
+  base::circular_deque<AdHistoryInfo> ads_history;
 
   AdHistoryInfo ad_history;
   ad_history.timestamp = 22222222222;
@@ -51,13 +53,13 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
   const auto sort =
       AdsHistorySortFactory::Build(AdsHistorySortType::kDescendingOrder);
 
-  std::deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  std::deque<AdHistoryInfo> expected_history;
+  base::circular_deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
   ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
@@ -70,7 +72,7 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
   ad_history.timestamp = 11111111111;
   expected_history.push_back(ad_history);
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
@@ -78,15 +80,15 @@ TEST(BatAdsAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   const auto sort =
       AdsHistorySortFactory::Build(AdsHistorySortType::kDescendingOrder);
 
-  std::deque<AdHistoryInfo> history = {};
+  base::circular_deque<AdHistoryInfo> history = {};
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  const std::deque<AdHistoryInfo> expected_history = {};
+  const base::circular_deque<AdHistoryInfo> expected_history = {};
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
@@ -94,7 +96,7 @@ TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
   const auto sort =
       AdsHistorySortFactory::Build(AdsHistorySortType::kAscendingOrder);
 
-  std::deque<AdHistoryInfo> expected_history;
+  base::circular_deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
   ad_history.timestamp = 11111111111;
   expected_history.push_back(ad_history);
@@ -107,13 +109,13 @@ TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
   ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
-  std::deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
@@ -121,14 +123,14 @@ TEST(BatAdsAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   const auto sort =
       AdsHistorySortFactory::Build(AdsHistorySortType::kAscendingOrder);
 
-  std::deque<AdHistoryInfo> expected_history;
-  std::deque<AdHistoryInfo> history;
+  base::circular_deque<AdHistoryInfo> expected_history;
+  base::circular_deque<AdHistoryInfo> history;
 
   // Act
   history = sort->Apply(history);
 
   // Assert
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 }  // namespace ads

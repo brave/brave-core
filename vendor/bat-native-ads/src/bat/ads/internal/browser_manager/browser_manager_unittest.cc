@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 
+#include <algorithm>
+
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -60,7 +63,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactive) {
@@ -91,7 +94,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
@@ -121,7 +124,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
@@ -152,7 +155,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 }  // namespace ads

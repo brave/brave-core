@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
@@ -84,7 +85,7 @@ TEST_F(BatAdsTabManagerTest, OpenedNewTabUserActivityEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, FocusedOnExistingTabUserActivityEvent) {
@@ -104,7 +105,7 @@ TEST_F(BatAdsTabManagerTest, FocusedOnExistingTabUserActivityEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, UpdatedIncognitoTab) {
@@ -130,7 +131,7 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingIncognitoTab) {
 
   const UserActivityEventList expected_events = {};
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, UpdatedOccludedTab) {
@@ -162,7 +163,7 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingOccludedTab) {
 
   const UserActivityEventList expected_events = {};
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithSameUrl) {
@@ -201,7 +202,7 @@ TEST_F(BatAdsTabManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, UpdatedExistingTab) {
@@ -242,7 +243,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenUpdatingExistingTab) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, ClosedTab) {
@@ -277,7 +278,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenClosingTab) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, PlayingMedia) {
@@ -311,7 +312,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenPlayingMedia) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
@@ -347,7 +348,7 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenAlreadyPlayingMedia) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, StoppedPlayingMedia) {
@@ -386,7 +387,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenStoppedPlayingMedia) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsTabManagerTest, GetVisibleTab) {

@@ -5,9 +5,11 @@
 
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
 
+#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ads_history_info.h"
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -18,8 +20,8 @@ namespace ads {
 
 namespace {
 
-std::deque<AdHistoryInfo> GetAdsHistory() {
-  std::deque<AdHistoryInfo> history;
+base::circular_deque<AdHistoryInfo> GetAdsHistory() {
+  base::circular_deque<AdHistoryInfo> history;
 
   AdHistoryInfo ad_history;
   ad_history.timestamp = 33333333333;
@@ -41,7 +43,7 @@ std::deque<AdHistoryInfo> GetAdsHistory() {
 TEST(BatAdsHistoryDateRangeFilterTest,
      FilterHistoryFromTimestamp44444444444ToDistantFuture) {
   // Arrange
-  std::deque<AdHistoryInfo> history = GetAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetAdsHistory();
 
   const base::Time from_time = TimestampToTime(44444444444);
   const base::Time to_time = MaxTime();
@@ -51,7 +53,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  std::deque<AdHistoryInfo> expected_history;
+  base::circular_deque<AdHistoryInfo> expected_history;
 
   AdHistoryInfo ad_history;
   ad_history.timestamp = 44444444444;
@@ -61,13 +63,13 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
      FilterHistoryFromTimestamp77777777777ToDistantFuture) {
   // Arrange
-  std::deque<AdHistoryInfo> history = GetAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetAdsHistory();
 
   const base::Time from_time = TimestampToTime(77777777777);
   const base::Time to_time = MaxTime();
@@ -77,15 +79,15 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  const std::deque<AdHistoryInfo> expected_history = {};
+  const base::circular_deque<AdHistoryInfo> expected_history = {};
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
      FilterHistoryFromDistantPastToTimestamp44444444444) {
   // Arrange
-  std::deque<AdHistoryInfo> history = GetAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetAdsHistory();
 
   const base::Time from_time = MinTime();
   const base::Time to_time = TimestampToTime(44444444444);
@@ -95,7 +97,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  std::deque<AdHistoryInfo> expected_history;
+  base::circular_deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
   ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
@@ -104,13 +106,13 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   ad_history.timestamp = 22222222222;
   expected_history.push_back(ad_history);
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
      FilterHistoryFromDistancePastToTimestamp11111111111) {
   // Arrange
-  std::deque<AdHistoryInfo> history = GetAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetAdsHistory();
 
   const base::Time from_time = MinTime();
   const base::Time to_time = TimestampToTime(11111111111);
@@ -120,15 +122,15 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  const std::deque<AdHistoryInfo> expected_history = {};
+  const base::circular_deque<AdHistoryInfo> expected_history = {};
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
      FilterHistoryFromDistantPastToDistantFuture) {
   // Arrange
-  std::deque<AdHistoryInfo> history = GetAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetAdsHistory();
 
   const base::Time from_time = MinTime();
   const base::Time to_time = MaxTime();
@@ -138,7 +140,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  std::deque<AdHistoryInfo> expected_history;
+  base::circular_deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
   ad_history.timestamp = 33333333333;
   expected_history.push_back(ad_history);
@@ -151,13 +153,13 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   ad_history.timestamp = 55555555555;
   expected_history.push_back(ad_history);
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
      FilterHistoryFromDistantFutureToDistantPast) {
   // Arrange
-  std::deque<AdHistoryInfo> history = GetAdsHistory();
+  base::circular_deque<AdHistoryInfo> history = GetAdsHistory();
 
   const base::Time from_time = MaxTime();
   const base::Time to_time = MinTime();
@@ -167,14 +169,14 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  const std::deque<AdHistoryInfo> expected_history = {};
+  const base::circular_deque<AdHistoryInfo> expected_history = {};
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest, FilterEmptyHistory) {
   // Arrange
-  std::deque<AdHistoryInfo> history;
+  base::circular_deque<AdHistoryInfo> history;
 
   const base::Time from_time = TimestampToTime(44444444444);
   const base::Time to_time = MaxTime();
@@ -184,9 +186,9 @@ TEST(BatAdsHistoryDateRangeFilterTest, FilterEmptyHistory) {
   history = filter.Apply(history, from_time, to_time);
 
   // Assert
-  const std::deque<AdHistoryInfo> expected_history = {};
+  const base::circular_deque<AdHistoryInfo> expected_history = {};
 
-  EXPECT_EQ(expected_history, history);
+  EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
 }  // namespace ads

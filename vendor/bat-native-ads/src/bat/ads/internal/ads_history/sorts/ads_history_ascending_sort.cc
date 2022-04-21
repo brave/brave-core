@@ -15,8 +15,8 @@ AdsHistoryAscendingSort::AdsHistoryAscendingSort() = default;
 
 AdsHistoryAscendingSort::~AdsHistoryAscendingSort() = default;
 
-std::deque<AdHistoryInfo> AdsHistoryAscendingSort::Apply(
-    const std::deque<AdHistoryInfo>& history) const {
+base::circular_deque<AdHistoryInfo> AdsHistoryAscendingSort::Apply(
+    const base::circular_deque<AdHistoryInfo>& history) const {
   auto sorted_history = history;
 
   std::sort(sorted_history.begin(), sorted_history.end(),

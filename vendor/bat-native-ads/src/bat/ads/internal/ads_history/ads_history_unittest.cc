@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ads_history/ads_history.h"
 
-#include <deque>
-
+#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -44,7 +43,8 @@ TEST_F(BatAdsAdsHistoryTest, AddAdNotification) {
   history::AddAdNotification(ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -57,7 +57,8 @@ TEST_F(BatAdsAdsHistoryTest, AddAdNotificationsToHistory) {
   history::AddAdNotification(ad, ConfirmationType::kClicked);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -69,7 +70,8 @@ TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAd) {
   history::AddNewTabPageAd(ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -82,7 +84,8 @@ TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAdWithMultipleEvents) {
   history::AddNewTabPageAd(ad, ConfirmationType::kClicked);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -94,7 +97,8 @@ TEST_F(BatAdsAdsHistoryTest, AddPromotedContentAd) {
   history::AddPromotedContentAd(ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -107,7 +111,8 @@ TEST_F(BatAdsAdsHistoryTest, AddPromotedContentWithMultipleEvents) {
   history::AddPromotedContentAd(ad, ConfirmationType::kClicked);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -119,7 +124,8 @@ TEST_F(BatAdsAdsHistoryTest, AddInlineContentAd) {
   history::AddInlineContentAd(ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -132,7 +138,8 @@ TEST_F(BatAdsAdsHistoryTest, AddInlineContentWithMultipleEvents) {
   history::AddInlineContentAd(ad, ConfirmationType::kClicked);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -144,7 +151,8 @@ TEST_F(BatAdsAdsHistoryTest, AddSearchResultAd) {
   history::AddSearchResultAd(ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -157,7 +165,8 @@ TEST_F(BatAdsAdsHistoryTest, AddSearchResultWithMultipleEvents) {
   history::AddSearchResultAd(ad, ConfirmationType::kClicked);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
@@ -181,7 +190,8 @@ TEST_F(BatAdsAdsHistoryTest, AddMultipleAdTypesToHistory) {
   history::AddSearchResultAd(search_result_ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(5UL, history.size());
 }
 
@@ -197,7 +207,8 @@ TEST_F(BatAdsAdsHistoryTest, PurgedHistoryEntriesOnOrAfter30Days) {
   history::AddPromotedContentAd(promoted_content_ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(1UL, history.size());
 }
 
@@ -213,7 +224,8 @@ TEST_F(BatAdsAdsHistoryTest, DoNotPurgedHistoryEntriesBefore30Days) {
   history::AddPromotedContentAd(promoted_content_ad, ConfirmationType::kViewed);
 
   // Assert
-  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  const base::circular_deque<AdHistoryInfo> history =
+      Client::Get()->GetAdsHistory();
   ASSERT_EQ(2UL, history.size());
 }
 
