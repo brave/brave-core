@@ -6,9 +6,10 @@
 package org.chromium.chrome.browser.crypto_wallet.listeners;
 
 public interface TransactionConfirmationListener {
-    void onNextTransaction();
-    void onConfirmTransaction();
-    void onRejectTransaction();
-    void onRejectAllTransactions();
-    void onDismiss();
+    default void onNextTransaction(){};
+    default void onApproveTransaction(){};
+    default void onRejectTransaction(){};
+    default void onRejectAllTransactions(){};
+    default void onDismiss(){};
+    default void onCancel(){};
 }

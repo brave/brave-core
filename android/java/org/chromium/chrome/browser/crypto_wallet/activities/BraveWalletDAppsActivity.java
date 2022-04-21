@@ -10,37 +10,35 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxData;
-import org.chromium.brave_wallet.mojom.TxData1559;
-import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SwitchEthereumChainFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
+import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BraveWalletDAppsActivity
         extends BraveWalletBaseActivity implements TransactionConfirmationListener {
     public static final String ACTIVITY_TYPE = "activityType";
-    private List<TransactionInfo> transactionInfos;
+    private static final String TAG = BraveWalletBaseActivity.class.getSimpleName();
     private ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment;
+    private PendingTxHelper mPendingTxHelper;
 
     public enum ActivityType {
         SIGN_MESSAGE(0),
@@ -88,7 +86,6 @@ public class BraveWalletDAppsActivity
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
             fragment = new AddTokenFragment();
         }
-
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_layout, fragment);
@@ -104,38 +101,43 @@ public class BraveWalletDAppsActivity
             addEthereumChain();
             finish();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
-            transactionInfos = new ArrayList<>();
-            TransactionInfo transactionInfo = new TransactionInfo();
-            transactionInfo.id = "";
-            transactionInfo.txType = TransactionType.MAX_VALUE;
-            transactionInfo.txParams = new String[] {};
-            transactionInfo.txArgs = new String[] {};
-            transactionInfo.txDataUnion = new TxDataUnion();
-
-            TxData1559 txData1559 = new TxData1559();
-            txData1559.maxPriorityFeePerGas = "0x0";
-            txData1559.baseData = new TxData();
-            txData1559.maxFeePerGas = "0x0";
-            txData1559.baseData.gasPrice = "0x0";
-            txData1559.baseData.gasLimit = "0x0";
-            txData1559.gasEstimation = new GasEstimation1559();
-            txData1559.gasEstimation.slowMaxFeePerGas = "0x0";
-            txData1559.gasEstimation.fastMaxFeePerGas = "0x0";
-            txData1559.gasEstimation.baseFeePerGas = "0x0";
-
-            txData1559.baseData.data = new byte[] {};
-            txData1559.baseData.to = "0x0";
-            txData1559.baseData.value = "0x0";
-
-            transactionInfo.txDataUnion.setEthTxData1559(txData1559);
-            transactionInfo.fromAddress = "0x0";
-
-            transactionInfos.add(transactionInfo);
-
-            approveTxBottomSheetDialogFragment = ApproveTxBottomSheetDialogFragment.newInstance(
-                    transactionInfos, transactionInfos.get(0), "", this);
-            approveTxBottomSheetDialogFragment.show(
-                    getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+            getKeyringService().getKeyringInfo(
+                    BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                        AccountInfo[] accountInfosTemp = keyringInfo.accountInfos;
+                        if (accountInfosTemp == null) {
+                            accountInfosTemp = new AccountInfo[] {};
+                        }
+                        mPendingTxHelper = new PendingTxHelper(
+                                getTxService(), accountInfosTemp, false, null, true);
+                        mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(
+                                this, hasNoPendingTx -> {
+                                    if (hasNoPendingTx) {
+                                        finish();
+                                    }
+                                });
+                        mPendingTxHelper.mSelectedPendingRequest.observe(this, transactionInfo -> {
+                            if (transactionInfo == null
+                                    || mPendingTxHelper.getPendingTransactions().size() == 0) {
+                                return;
+                            }
+                            if (approveTxBottomSheetDialogFragment != null
+                                    && approveTxBottomSheetDialogFragment.isVisible()) {
+                                // TODO: instead of dismiss, show the details of new Tx once
+                                //  onNextTransaction implementation is done
+                                approveTxBottomSheetDialogFragment.dismiss();
+                            }
+                            approveTxBottomSheetDialogFragment =
+                                    ApproveTxBottomSheetDialogFragment.newInstance(
+                                            mPendingTxHelper.getPendingTransactions(),
+                                            transactionInfo, "", this);
+                            approveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
+                                    ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+                            mPendingTxHelper.mTransactionInfoLd.observe(this, transactionInfos -> {
+                                approveTxBottomSheetDialogFragment.setTxList(transactionInfos);
+                            });
+                        });
+                        mPendingTxHelper.fetchTransactions(() -> {});
+                    });
         }
     }
 
@@ -144,35 +146,30 @@ public class BraveWalletDAppsActivity
         fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, "");
         fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-
         settingsLauncher.launchSettingsActivity(
                 this, BraveWalletAddNetworksFragment.class, fragmentArgs);
     }
 
     @Override
     public void onNextTransaction() {
-        // TODO: show the info of next Transaction if available otherwise dismiss activity
-    }
-
-    @Override
-    public void onConfirmTransaction() {
-        // TODO: show next unapproved transaction and only dismiss activity if none found
-        finish();
-    }
-
-    @Override
-    public void onRejectTransaction() {
-        // TODO: show next unapproved transaction and only dismiss activity if none found
-        finish();
+        // TODO: show the info of next Transaction via the pendingTxHelper if available,
+        //  otherwise dismiss activity
     }
 
     @Override
     public void onRejectAllTransactions() {
+        for (TransactionInfo transactionInfo : mPendingTxHelper.getPendingTransactions()) {
+            getTxService().rejectTransaction(CoinType.ETH, transactionInfo.id, success -> {
+                if (!success) {
+                    Log.e(TAG, "Transaction failed " + transactionInfo.id);
+                }
+            });
+        }
         finish();
     }
 
     @Override
-    public void onDismiss() {
+    public void onCancel() {
         finish();
     }
 }

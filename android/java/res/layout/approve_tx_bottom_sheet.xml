@@ -152,8 +152,7 @@
             android:layout_gravity="center"
             android:textAllCaps="false"
             android:textColor="@color/brave_action_color"
-            android:visibility="gone"
-            tools:text="Reject all transactions" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/approve_tx_bottom_sheet_action"

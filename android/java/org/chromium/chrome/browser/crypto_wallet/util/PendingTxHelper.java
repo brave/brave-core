@@ -5,28 +5,41 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
-public class PendingTxHelper {
+public class PendingTxHelper implements TxServiceObserver {
     private TxService mTxService;
     private AccountInfo[] mAccountInfos;
     private HashMap<String, TransactionInfo[]> mTxInfos;
     private boolean mReturnAll;
     private String mFilterByContractAddress;
     private String mRopstenContractAddress;
+    private final List<TransactionInfo> mTransactionInfos;
+    private final List<TransactionCacheRecord> mCacheTransactionInfos;
+    private boolean isFetchingTx;
+    private final MutableLiveData<TransactionInfo> _mSelectedPendingRequest;
+    private final MutableLiveData<Boolean> _mHasNoPendingTxAfterProcessing;
+    private final MutableLiveData<List<TransactionInfo>> _mTransactionInfos;
+    public LiveData<List<TransactionInfo>> mTransactionInfoLd;
+    public LiveData<TransactionInfo> mSelectedPendingRequest;
+    public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
 
     public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
             String filterByContractAddress) {
@@ -39,6 +52,22 @@ public class PendingTxHelper {
         if (mFilterByContractAddress != null && !mFilterByContractAddress.isEmpty()) {
             mRopstenContractAddress = Utils.getRopstenContractAddress(mFilterByContractAddress);
         }
+        mTransactionInfos = new ArrayList<>();
+        mCacheTransactionInfos = new ArrayList<>();
+        _mSelectedPendingRequest = new MutableLiveData<>();
+        _mHasNoPendingTxAfterProcessing = new MutableLiveData<>();
+        _mTransactionInfos = new MutableLiveData<>(Collections.emptyList());
+        mTransactionInfoLd = _mTransactionInfos;
+        mSelectedPendingRequest = _mSelectedPendingRequest;
+        mHasNoPendingTxAfterProcessing = _mHasNoPendingTxAfterProcessing;
+    }
+
+    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll,
+            String filterByContractAddress, boolean shouldObserveTxUpdates) {
+        this(txService, accountInfos, returnAll, filterByContractAddress);
+        if (shouldObserveTxUpdates) {
+            txService.addObserver(this);
+        }
     }
 
     public HashMap<String, TransactionInfo[]> getTransactions() {
@@ -46,6 +75,7 @@ public class PendingTxHelper {
     }
 
     public void fetchTransactions(Runnable runWhenDone) {
+        isFetchingTx = true;
         AsyncUtils.MultiResponseHandler allTxMultiResponse =
                 new AsyncUtils.MultiResponseHandler(mAccountInfos.length);
         ArrayList<AsyncUtils.GetAllTransactionInfoResponseContext> allTxContexts =
@@ -54,12 +84,9 @@ public class PendingTxHelper {
             AsyncUtils.GetAllTransactionInfoResponseContext allTxContext =
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
                             allTxMultiResponse.singleResponseComplete, accountInfo.name);
-
             allTxContexts.add(allTxContext);
-
             mTxService.getAllTransactionInfo(CoinType.ETH, accountInfo.address, allTxContext);
         }
-
         allTxMultiResponse.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext : allTxContexts) {
                 ArrayList<TransactionInfo> newValue = new ArrayList<TransactionInfo>();
@@ -91,16 +118,7 @@ public class PendingTxHelper {
                         }
                     }
                 }
-                Collections.sort(newValue, new Comparator<TransactionInfo>() {
-                    @Override
-                    public int compare(TransactionInfo lhs, TransactionInfo rhs) {
-                        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-                        return lhs.createdTime.microseconds > rhs.createdTime.microseconds
-                                ? -1
-                                : (lhs.createdTime.microseconds < rhs.createdTime.microseconds) ? 1
-                                                                                                : 0;
-                    }
-                });
+                Collections.sort(newValue, sortByDateComparator);
                 TransactionInfo[] newArray = new TransactionInfo[newValue.size()];
                 newArray = newValue.toArray(newArray);
                 TransactionInfo[] value = mTxInfos.get(allTxContext.name);
@@ -112,7 +130,140 @@ public class PendingTxHelper {
                     mTxInfos.put(allTxContext.name, both);
                 }
             }
+            isFetchingTx = false;
+            updateTransactionList();
             runWhenDone.run();
         });
+    }
+
+    @Override
+    public void onNewUnapprovedTx(TransactionInfo txInfo) {
+        processTx(txInfo, TxActionType.NEW_UNAPPROVED_TRANSACTION);
+    }
+
+    @Override
+    public void onUnapprovedTxUpdated(TransactionInfo txInfo) {
+        processTx(txInfo, TxActionType.UNAPPROVED_TRANSACTION_UPDATED);
+    }
+
+    @Override
+    public void onTransactionStatusChanged(TransactionInfo txInfo) {
+        processTx(txInfo, TxActionType.TRANSACTION_STATUS_CHANGED);
+    }
+
+    public List<TransactionInfo> getPendingTransactions() {
+        return mTransactionInfos;
+    }
+
+    private void updateTransactionList() {
+        mTransactionInfos.clear();
+        for (TransactionInfo[] transactionInfoArr : mTxInfos.values()) {
+            Collections.addAll(mTransactionInfos, transactionInfoArr);
+        }
+        processCachedTx();
+        Collections.sort(mTransactionInfos, sortByDateComparator);
+        _mTransactionInfos.postValue(mTransactionInfos);
+        postTxUpdates();
+    }
+
+    private void processTx(TransactionInfo txInfo, TxActionType txActionType) {
+        if (isFetchingTx) {
+            mCacheTransactionInfos.add(new TransactionCacheRecord(txActionType, txInfo));
+        } else {
+            updateTransactionList(txInfo, txActionType);
+            _mTransactionInfos.postValue(mTransactionInfos);
+        }
+    }
+
+    private void processCachedTx() {
+        if (!mCacheTransactionInfos.isEmpty()) {
+            for (TransactionCacheRecord info : mCacheTransactionInfos) {
+                updateTransactionList(info.getTransactionInfo(), info.getTxActionType());
+            }
+        }
+        mCacheTransactionInfos.clear();
+    }
+
+    private void updateTransactionList(TransactionInfo txInfo, TxActionType txActionType) {
+        if (txActionType == TxActionType.NEW_UNAPPROVED_TRANSACTION) {
+            if (mTransactionInfos.size() == 0) {
+                _mSelectedPendingRequest.postValue(txInfo);
+            }
+            mTransactionInfos.add(txInfo);
+        } else {
+            if (txActionType == TxActionType.UNAPPROVED_TRANSACTION_UPDATED) {
+                for (int i = 0; i < mTransactionInfos.size(); i++) {
+                    TransactionInfo info = mTransactionInfos.get(i);
+                    if (info.id.equals(txInfo.id)) {
+                        mTransactionInfos.set(i, txInfo);
+                        break;
+                    }
+                }
+                if (getSelectedPendingRequest() != null
+                        && getSelectedPendingRequest().id.equals(txInfo.id)) {
+                    _mSelectedPendingRequest.postValue(txInfo);
+                }
+            } else if (txActionType == TxActionType.TRANSACTION_STATUS_CHANGED) {
+                List<TransactionInfo> newTransactionInfos = new ArrayList<>();
+                for (int i = 0; i < mTransactionInfos.size(); i++) {
+                    TransactionInfo info = mTransactionInfos.get(i);
+                    if (!info.id.equals(txInfo.id)) {
+                        newTransactionInfos.add(info);
+                    }
+                }
+                if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
+                    newTransactionInfos.add(txInfo);
+                }
+                mTransactionInfos.clear();
+                mTransactionInfos.addAll(newTransactionInfos);
+                Collections.sort(mTransactionInfos, sortByDateComparator);
+                if ((_mSelectedPendingRequest.getValue() != null
+                                    && _mSelectedPendingRequest.getValue().id.equals(txInfo.id)
+                            || _mSelectedPendingRequest.getValue() == null)) {
+                    postTxUpdates();
+                }
+            }
+        }
+    }
+
+    public TransactionInfo getSelectedPendingRequest() {
+        return mSelectedPendingRequest.getValue();
+    }
+
+    private void postTxUpdates() {
+        if (mTransactionInfos.size() > 0) {
+            _mSelectedPendingRequest.postValue(mTransactionInfos.get(0));
+        } else {
+            _mSelectedPendingRequest.postValue(null);
+            _mHasNoPendingTxAfterProcessing.postValue(true);
+        }
+    }
+
+    private final Comparator<TransactionInfo> sortByDateComparator =
+            (lhs, rhs) -> Long.compare(rhs.createdTime.microseconds, lhs.createdTime.microseconds);
+
+    private static class TransactionCacheRecord {
+        private final TxActionType mTxActionType;
+        private final TransactionInfo mTransactionInfo;
+
+        public TransactionCacheRecord(
+                TxActionType mTxActionType, TransactionInfo mTransactionInfo) {
+            this.mTxActionType = mTxActionType;
+            this.mTransactionInfo = mTransactionInfo;
+        }
+
+        public TxActionType getTxActionType() {
+            return mTxActionType;
+        }
+
+        public TransactionInfo getTransactionInfo() {
+            return mTransactionInfo;
+        }
+    }
+
+    private enum TxActionType {
+        NEW_UNAPPROVED_TRANSACTION,
+        UNAPPROVED_TRANSACTION_UPDATED,
+        TRANSACTION_STATUS_CHANGED
     }
 }
