@@ -259,6 +259,10 @@ constexpr char kBraveWalletFilecoinDescription[] =
 constexpr char kBraveWalletSolanaName[] = "Enable Brave Wallet Solana support";
 constexpr char kBraveWalletSolanaDescription[] =
     "Solana support for native Brave Wallet";
+constexpr char kBraveWalletSolanaProviderName[] =
+    "Enable Brave Wallet Solana provider support";
+constexpr char kBraveWalletSolanaProviderDescription[] =
+    "Solana provider support for native Brave Wallet";
 
 constexpr char kBraveNewsName[] = "Enable Brave News";
 constexpr char kBraveNewsDescription[] =
@@ -388,7 +392,13 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveWalletSolanaName,                                \
      flag_descriptions::kBraveWalletSolanaDescription,                         \
      kOsDesktop | kOsAndroid,                                                  \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSolanaFeature)},
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSolanaFeature)},   \
+    {"brave-wallet-solana-provider",                                           \
+     flag_descriptions::kBraveWalletSolanaProviderName,                        \
+     flag_descriptions::kBraveWalletSolanaProviderDescription,                 \
+     kOsDesktop | kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(                                                       \
+      brave_wallet::features::kBraveWalletSolanaProviderFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                  \
     {"brave-news",                                                  \
