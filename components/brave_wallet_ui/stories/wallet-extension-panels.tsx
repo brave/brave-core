@@ -464,8 +464,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will navigate to full wallet restore page')
   }
 
-  const onDisconnectFromOrigin = (origin: Origin, address: string) => {
-    console.log(`Will disconnect ${address} from ${origin.host}`)
+  const onDisconnectFromOrigin = (origin: Origin, account: WalletAccountType, connectedAccounts: WalletAccountType[]) => {
+    console.log(`Will disconnect ${account.address} from ${origin.host}`)
   }
 
   const onConnectToOrigin = (origin: Origin, account: WalletAccountType) => {

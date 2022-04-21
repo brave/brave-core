@@ -15,7 +15,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/components/skus/browser/switches.h"
@@ -293,7 +293,7 @@ static bool CustomLogHandler(int severity,
       initWithBlockchainRegistry:registry];
 }
 
-- (nullable id<BraveWalletBraveWalletProvider>)
+- (nullable id<BraveWalletEthereumProvider>)
     walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing {
   auto* browserState = _mainBrowserState;
@@ -325,14 +325,14 @@ static bool CustomLogHandler(int severity,
     return nil;
   }
 
-  auto* provider = new brave_wallet::BraveWalletProviderImpl(
+  auto* provider = new brave_wallet::EthereumProviderImpl(
       ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
       json_rpc_service, tx_service, keyring_service, brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
       browserState->GetPrefs());
-  return [[BraveWalletBraveWalletProviderImpl alloc]
-      initWithBraveWalletProvider:provider];
+  return [[BraveWalletEthereumProviderImpl alloc]
+      initWithEthereumProvider:provider];
 }
 
 - (NSString*)walletProviderJS {

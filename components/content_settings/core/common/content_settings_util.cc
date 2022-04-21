@@ -20,9 +20,8 @@ ContentSetting GetDefaultFromContentSettingsType(
   if (content_type == ContentSettingsType::ADS) {
     return CONTENT_SETTING_BLOCK;
   } else if (content_type == ContentSettingsType::BRAVE_COSMETIC_FILTERING) {
-    return secondary_url == GURL("https://firstParty/")
-        ? CONTENT_SETTING_ALLOW
-        : CONTENT_SETTING_BLOCK;
+    return secondary_url == GURL("https://firstParty/") ? CONTENT_SETTING_ALLOW
+                                                        : CONTENT_SETTING_BLOCK;
   } else if (content_type == ContentSettingsType::BRAVE_TRACKERS) {
     return CONTENT_SETTING_BLOCK;
   } else if (content_type ==
@@ -37,7 +36,8 @@ ContentSetting GetDefaultFromContentSettingsType(
                                                         : CONTENT_SETTING_ALLOW;
   } else if (content_type == ContentSettingsType::BRAVE_SPEEDREADER) {
     return CONTENT_SETTING_ALLOW;
-  } else if (content_type == ContentSettingsType::BRAVE_ETHEREUM) {
+  } else if (content_type == ContentSettingsType::BRAVE_ETHEREUM ||
+             content_type == ContentSettingsType::BRAVE_SOLANA) {
     return CONTENT_SETTING_DEFAULT;
   }
 

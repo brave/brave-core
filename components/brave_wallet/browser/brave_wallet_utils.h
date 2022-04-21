@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -139,6 +140,9 @@ std::string GetWeb3ClientVersion();
 std::string eTLDPlusOne(const url::Origin& origin);
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
+
+absl::optional<ContentSettingsType> CoinTypeToContentSettingsType(
+    mojom::CoinType coin_type);
 
 }  // namespace brave_wallet
 

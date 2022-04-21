@@ -68,9 +68,9 @@ RegisterPolymerComponentReplacement(
               disabledLabel: 'siteSettingsBlocked'
             }
             lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
-            let indexForEthereum = indexForAutoplay + 1
             const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             if (isNativeBraveWalletEnabled) {
+              let indexForEthereum = indexForAutoplay + 1
               const ethereumItem = {
                 route: routes.SITE_SETTINGS_ETHEREUM,
                 id: 'ethereum',
@@ -80,6 +80,16 @@ RegisterPolymerComponentReplacement(
                 disabledLabel: 'siteSettingsEthereumBlock'
               }
               lists_.permissionsAdvanced.splice(indexForEthereum, 0, ethereumItem)
+              let indexForSolana = indexForEthereum + 1
+              const solanaItem = {
+                route: routes.SITE_SETTINGS_SOLANA,
+                id: 'solana',
+                label: 'siteSettingsSolana',
+                icon: 'cr:extension',
+                enabledLabel: 'siteSettingsSolanaAsk',
+                disabledLabel: 'siteSettingsSolanaBlock'
+              }
+              lists_.permissionsAdvanced.splice(indexForSolana, 0, solanaItem)
             }
           }
         }

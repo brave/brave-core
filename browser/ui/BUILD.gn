@@ -587,8 +587,8 @@ source_set("ui") {
 
   if (!is_android && !is_ios) {
     sources += [
-      "views/permission_bubble/ethereum_permission_prompt_impl.cc",
-      "views/permission_bubble/ethereum_permission_prompt_impl.h",
+      "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
+      "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
       "views/toolbar/wallet_button.h",
       "wallet_bubble_manager_delegate_impl.cc",

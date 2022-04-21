@@ -29,24 +29,25 @@ void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
   std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
-void BraveWalletServiceDelegate::AddEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    AddEthereumPermissionCallback callback) {
+void BraveWalletServiceDelegate::AddPermission(mojom::CoinType coin,
+                                               const url::Origin& origin,
+                                               const std::string& account,
+                                               AddPermissionCallback callback) {
   std::move(callback).Run(false);
 }
 
-void BraveWalletServiceDelegate::HasEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    HasEthereumPermissionCallback callback) {
+void BraveWalletServiceDelegate::HasPermission(mojom::CoinType coin,
+                                               const url::Origin& origin,
+                                               const std::string& account,
+                                               HasPermissionCallback callback) {
   std::move(callback).Run(false, false);
 }
 
-void BraveWalletServiceDelegate::ResetEthereumPermission(
+void BraveWalletServiceDelegate::ResetPermission(
+    mojom::CoinType coin,
     const url::Origin& origin,
     const std::string& account,
-    ResetEthereumPermissionCallback callback) {
+    ResetPermissionCallback callback) {
   std::move(callback).Run(false);
 }
 

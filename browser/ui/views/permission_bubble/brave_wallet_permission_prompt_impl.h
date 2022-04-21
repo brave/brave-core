@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
-#define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_BRAVE_WALLET_PERMISSION_PROMPT_IMPL_H_
+#define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_BRAVE_WALLET_PERMISSION_PROMPT_IMPL_H_
 
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
@@ -12,16 +12,17 @@
 
 class Browser;
 
-class EthereumPermissionPromptImpl : public permissions::PermissionPrompt {
+class BraveWalletPermissionPromptImpl : public permissions::PermissionPrompt {
  public:
-  EthereumPermissionPromptImpl(Browser* browser,
-                               content::WebContents* web_contents,
-                               Delegate* delegate);
-  ~EthereumPermissionPromptImpl() override;
+  BraveWalletPermissionPromptImpl(Browser* browser,
+                                  content::WebContents* web_contents,
+                                  Delegate* delegate);
+  ~BraveWalletPermissionPromptImpl() override;
 
-  EthereumPermissionPromptImpl(const EthereumPermissionPromptImpl&) = delete;
-  EthereumPermissionPromptImpl& operator=(const EthereumPermissionPromptImpl&) =
+  BraveWalletPermissionPromptImpl(const BraveWalletPermissionPromptImpl&) =
       delete;
+  BraveWalletPermissionPromptImpl& operator=(
+      const BraveWalletPermissionPromptImpl&) = delete;
 
   // permissions::PermissionPrompt:
   void UpdateAnchor() override;
@@ -37,4 +38,4 @@ class EthereumPermissionPromptImpl : public permissions::PermissionPrompt {
   base::TimeTicks permission_requested_time_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_ETHEREUM_PERMISSION_PROMPT_IMPL_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_BRAVE_WALLET_PERMISSION_PROMPT_IMPL_H_

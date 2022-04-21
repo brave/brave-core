@@ -11,14 +11,14 @@
 
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "build/build_config.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/permissions/brave_ethereum_permission_prompt_android.h"
+#include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
 #include "components/permissions/android/permission_prompt_android.h"
 #endif
 
@@ -33,8 +33,10 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
   // and let it bypass the origin check from Chromium when the original
   // requesting_origin & embedding_origin are the same.
   url::Origin original_requesting_origin;
-  if (type == ContentSettingsType::BRAVE_ETHEREUM &&
+  if ((type == ContentSettingsType::BRAVE_ETHEREUM ||
+       type == ContentSettingsType::BRAVE_SOLANA) &&
       brave_wallet::ParseRequestingOriginFromSubRequest(
+          permissions::ContentSettingsTypeToRequestType(type),
           url::Origin::Create(requesting_origin), &original_requesting_origin,
           nullptr) &&
       original_requesting_origin == url::Origin::Create(embedding_origin)) {
@@ -54,10 +56,10 @@ ChromePermissionsClient::MaybeCreateMessageUI(
       prompt->delegate()->Requests();
   if (requests.size() != 0 &&
       requests[0]->request_type() == permissions::RequestType::kBraveEthereum) {
-    auto delegate = std::make_unique<BraveEthereumPermissionPrompt::Delegate>(
+    auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
         std::move(prompt));
-    return std::make_unique<BraveEthereumPermissionPrompt>(web_contents,
-                                                           std::move(delegate));
+    return std::make_unique<BraveWalletPermissionPrompt>(web_contents,
+                                                         std::move(delegate));
   }
 
   return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,

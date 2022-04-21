@@ -568,8 +568,8 @@ export function refreshSitePermissions () {
 
     // Get a list of accounts with permissions of the active origin
     const getAllPermissions = await Promise.all(accounts.map(async (account) => {
-      const result = await braveWalletService.hasEthereumPermission(activeOrigin.origin, account.address)
-      if (result.hasPermission) {
+      const result = await braveWalletService.hasPermission(account.coin, activeOrigin.origin, account.address)
+      if (result.success && result.hasPermission) {
         return account
       }
 

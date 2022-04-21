@@ -97,7 +97,7 @@ class JSEthereumProvider : public mojom::EventsListener {
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   bool brave_use_native_wallet_;
-  mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
+  mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_;
   std::string chain_id_;

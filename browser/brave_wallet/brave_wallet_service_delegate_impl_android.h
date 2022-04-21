@@ -33,16 +33,18 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
       const BraveWalletServiceDelegateImpl&) = delete;
   ~BraveWalletServiceDelegateImpl() override;
 
-  void AddEthereumPermission(const url::Origin& origin,
-                             const std::string& account,
-                             AddEthereumPermissionCallback callback) override;
-  void HasEthereumPermission(const url::Origin& origin,
-                             const std::string& account,
-                             HasEthereumPermissionCallback callback) override;
-  void ResetEthereumPermission(
-      const url::Origin& origin,
-      const std::string& account,
-      ResetEthereumPermissionCallback callback) override;
+  void AddPermission(mojom::CoinType coin,
+                     const url::Origin& origin,
+                     const std::string& account,
+                     AddPermissionCallback callback) override;
+  void HasPermission(mojom::CoinType coin,
+                     const url::Origin& origin,
+                     const std::string& account,
+                     HasPermissionCallback callback) override;
+  void ResetPermission(mojom::CoinType coin,
+                       const url::Origin& origin,
+                       const std::string& account,
+                       ResetPermissionCallback callback) override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETHEREUM_PROVIDER_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETHEREUM_PROVIDER_IMPL_H_
 
 #include <map>
 #include <memory>
@@ -33,8 +33,8 @@ class JsonRpcService;
 class KeyringService;
 class TxService;
 
-class BraveWalletProviderImpl final
-    : public mojom::BraveWalletProvider,
+class EthereumProviderImpl final
+    : public mojom::EthereumProvider,
       public mojom::JsonRpcServiceObserver,
       public mojom::TxServiceObserver,
       public brave_wallet::mojom::KeyringServiceObserver,
@@ -44,17 +44,18 @@ class BraveWalletProviderImpl final
       base::OnceCallback<void(const std::vector<std::string>& accounts,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
+  using RequestPermissionsError = mojom::RequestPermissionsError;
 
-  BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
-  BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
-  BraveWalletProviderImpl(HostContentSettingsMap* host_content_settings_map,
-                          JsonRpcService* json_rpc_service,
-                          TxService* tx_service,
-                          KeyringService* keyring_service,
-                          BraveWalletService* brave_wallet_service,
-                          std::unique_ptr<BraveWalletProviderDelegate> delegate,
-                          PrefService* prefs);
-  ~BraveWalletProviderImpl() override;
+  EthereumProviderImpl(const EthereumProviderImpl&) = delete;
+  EthereumProviderImpl& operator=(const EthereumProviderImpl&) = delete;
+  EthereumProviderImpl(HostContentSettingsMap* host_content_settings_map,
+                       JsonRpcService* json_rpc_service,
+                       TxService* tx_service,
+                       KeyringService* keyring_service,
+                       BraveWalletService* brave_wallet_service,
+                       std::unique_ptr<BraveWalletProviderDelegate> delegate,
+                       PrefService* prefs);
+  ~EthereumProviderImpl() override;
 
   void SendErrorOnRequest(const mojom::ProviderError& error,
                           const std::string& error_message,
@@ -101,10 +102,16 @@ class BraveWalletProviderImpl final
                         base::Value domain,
                         RequestCallback callback,
                         base::Value id);
-  void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
-                            const std::vector<std::string>& accounts,
-                            mojom::ProviderError error,
-                            const std::string& error_message);
+  void ContinueGetAllowedAccounts(
+      bool include_accounts_when_locked,
+      GetAllowedAccountsCallback callback,
+      brave_wallet::mojom::KeyringInfoPtr keyring_info);
+  void OnGetAllowedAccounts(bool include_accounts_when_locked,
+                            bool keyring_locked,
+                            const absl::optional<std::string>& selected_account,
+                            GetAllowedAccountsCallback callback,
+                            bool success,
+                            const std::vector<std::string>& accounts);
   void OnContinueGetAllowedAccounts(RequestCallback callback,
                                     base::Value id,
                                     const std::string& method,
@@ -124,32 +131,32 @@ class BraveWalletProviderImpl final
                        base::Value id);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest, OnAddEthereumChain);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, OnAddEthereumChain);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApproveTransactionError);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApproveTransactionNoPermission);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApprove1559Transaction);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApprove1559TransactionNoChainId);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApprove1559TransactionError);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApprove1559TransactionNoPermission);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            OnAddEthereumChainRequestCompletedError);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            OnAddEthereumChainRequestCompletedSuccess);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            AddAndApproveTransaction);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsNoPermission);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsNoWallet);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsLocked);
-  friend class BraveWalletProviderImplUnitTest;
+  friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:
   void Init(
@@ -186,7 +193,6 @@ class BraveWalletProviderImpl final
 
   void OnChainApprovalResult(const std::string& chain_id,
                              const std::string& error);
-  void OnConnectionError();
   void OnAddUnapprovedTransaction(RequestCallback callback,
                                   base::Value id,
                                   const std::string& tx_meta_id,
@@ -320,13 +326,27 @@ class BraveWalletProviderImpl final
                                   base::Value id,
                                   const std::string& method,
                                   const url::Origin& origin);
-  void OnRequestEthereumPermissions(RequestCallback callback,
-                                    base::Value id,
-                                    const std::string& method,
-                                    const url::Origin& origin,
-                                    const std::vector<std::string>& accounts,
-                                    mojom::ProviderError error,
-                                    const std::string& error_message);
+  void ContinueRequestEthereumPermissionsKeyringInfo(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& method,
+      const url::Origin& origin,
+      brave_wallet::mojom::KeyringInfoPtr keyring_info);
+  void ContinueRequestEthereumPermissions(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& method,
+      const url::Origin& origin,
+      const std::vector<std::string>& requested_accounts,
+      bool success,
+      const std::vector<std::string>& allowed_accounts);
+  void OnRequestEthereumPermissions(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& method,
+      const url::Origin& origin,
+      RequestPermissionsError error,
+      const absl::optional<std::vector<std::string>>& allowed_accounts);
 
   int sign_message_id_ = 0;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
@@ -351,9 +371,9 @@ class BraveWalletProviderImpl final
   std::vector<std::string> known_allowed_accounts;
   bool first_known_accounts_check = true;
   PrefService* prefs_ = nullptr;
-  base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
+  base::WeakPtrFactory<EthereumProviderImpl> weak_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETHEREUM_PROVIDER_IMPL_H_

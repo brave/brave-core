@@ -6,18 +6,29 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
-class SolanaProviderImpl final : public mojom::SolanaProvider {
+class BraveWalletProviderDelegate;
+class KeyringService;
+
+class SolanaProviderImpl final : public mojom::SolanaProvider,
+                                 mojom::KeyringServiceObserver {
  public:
-  SolanaProviderImpl();
+  using RequestPermissionsError = mojom::RequestPermissionsError;
+
+  SolanaProviderImpl(KeyringService* keyring_service,
+                     std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -42,7 +53,42 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
   void Request(base::Value arg, RequestCallback callback) override;
 
  private:
+  void ContinueConnect(bool is_eagerly_connect,
+                       const std::string& selected_account,
+                       ConnectCallback callback,
+                       bool is_selected_account_allowed);
+  void OnConnect(
+      const std::string& requested_account,
+      ConnectCallback callback,
+      RequestPermissionsError error,
+      const absl::optional<std::vector<std::string>>& allowed_accounts);
+
+  // mojom::KeyringServiceObserver
+  void KeyringCreated(const std::string& keyring_id) override {}
+  void KeyringRestored(const std::string& keyring_id) override {}
+  void KeyringReset() override {}
+  void Locked() override {}
+  void Unlocked() override {}
+  void BackedUp() override {}
+  void AccountsChanged() override {}
+  void AutoLockMinutesChanged() override {}
+  void SelectedAccountChanged(mojom::CoinType coin) override;
+
+  // This set is used to maintain connected status for each frame, it is a
+  // separate non persistent status from site permission. It depends on if a
+  // site successfully call connect or not, calling disconnect will remove
+  // itself from this set. Note that site permission is required for a site to
+  // do connect, if an user reject the connect request, connect would fail. On
+  // the other hand, if the user approve the connect request, site permission
+  // will be saved and future connect from the same site will not ask user for
+  // permission again until the permission is removed.
+  base::flat_set<std::string> connected_set_;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
+  std::unique_ptr<BraveWalletProviderDelegate> delegate_;
+  base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 
 }  // namespace brave_wallet

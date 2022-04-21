@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PERMISSIONS_BRAVE_ETHEREUM_PERMISSION_PROMPT_ANDROID_H_
-#define BRAVE_BROWSER_PERMISSIONS_BRAVE_ETHEREUM_PERMISSION_PROMPT_ANDROID_H_
+#ifndef BRAVE_BROWSER_PERMISSIONS_BRAVE_WALLET_PERMISSION_PROMPT_ANDROID_H_
+#define BRAVE_BROWSER_PERMISSIONS_BRAVE_WALLET_PERMISSION_PROMPT_ANDROID_H_
 
 #include <memory>
 #include <string>
@@ -22,7 +22,7 @@ namespace permissions {
 class PermissionPromptAndroid;
 }
 
-class BraveEthereumPermissionPrompt
+class BraveWalletPermissionPrompt
     : public BraveEthereumPermissionPromptDialogController::Delegate,
       public permissions::PermissionsClient::PermissionMessageDelegate {
  public:
@@ -38,9 +38,9 @@ class BraveEthereumPermissionPrompt
     base::WeakPtr<permissions::PermissionPromptAndroid> permission_prompt_;
   };
 
-  BraveEthereumPermissionPrompt(content::WebContents* web_contents,
-                                std::unique_ptr<Delegate> delegate);
-  ~BraveEthereumPermissionPrompt() override;
+  BraveWalletPermissionPrompt(content::WebContents* web_contents,
+                              std::unique_ptr<Delegate> delegate);
+  ~BraveWalletPermissionPrompt() override;
 
  protected:
   // BraveEthereumPermissionPromptDialogController::Delegate:
@@ -57,4 +57,4 @@ class BraveEthereumPermissionPrompt
   bool has_interacted_with_dialog_ = false;
 };
 
-#endif  // BRAVE_BROWSER_PERMISSIONS_BRAVE_ETHEREUM_PERMISSION_PROMPT_ANDROID_H_
+#endif  // BRAVE_BROWSER_PERMISSIONS_BRAVE_WALLET_PERMISSION_PROMPT_ANDROID_H_

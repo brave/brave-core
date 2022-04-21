@@ -36,6 +36,7 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
   kAndroidInfobarPermissionCookie;            \
   case RequestType::kWidevine:                \
   case RequestType::kBraveEthereum:           \
+  case RequestType::kBraveSolana:             \
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
@@ -43,13 +44,16 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
   kMicIconValue;                    \
   case RequestType::kWidevine:      \
   case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
     return vector_icons::kExtensionIcon
 
 #define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE    \
   case permissions::RequestType::kWidevine:      \
     return "widevine";                           \
   case permissions::RequestType::kBraveEthereum: \
-    return "brave_ethereum";
+    return "brave_ethereum";                     \
+  case permissions::RequestType::kBraveSolana:   \
+    return "brave_solana";
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
@@ -68,6 +72,8 @@ RequestType ContentSettingsTypeToRequestType(
   switch (content_settings_type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
       return RequestType::kBraveEthereum;
+    case ContentSettingsType::BRAVE_SOLANA:
+      return RequestType::kBraveSolana;
     default:
       return ContentSettingsTypeToRequestType_ChromiumImpl(
           content_settings_type);

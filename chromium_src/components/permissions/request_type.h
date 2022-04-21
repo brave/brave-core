@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_REQUEST_TYPE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_REQUEST_TYPE_H_
 
-#define kStorageAccess kStorageAccess, kWidevine, kBraveEthereum
+#define kStorageAccess kStorageAccess, kWidevine, kBraveEthereum, kBraveSolana
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl

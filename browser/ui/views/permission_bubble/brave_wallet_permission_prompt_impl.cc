@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/permission_bubble/ethereum_permission_prompt_impl.h"
+#include "brave/browser/ui/views/permission_bubble/brave_wallet_permission_prompt_impl.h"
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "components/permissions/permission_uma_util.h"
 
-EthereumPermissionPromptImpl::EthereumPermissionPromptImpl(
+BraveWalletPermissionPromptImpl::BraveWalletPermissionPromptImpl(
     Browser* browser,
     content::WebContents* web_contents,
     Delegate* delegate)
@@ -20,25 +20,25 @@ EthereumPermissionPromptImpl::EthereumPermissionPromptImpl(
   ShowBubble();
 }
 
-EthereumPermissionPromptImpl::~EthereumPermissionPromptImpl() {
+BraveWalletPermissionPromptImpl::~BraveWalletPermissionPromptImpl() {
   brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_)
       ->CloseBubble();
 }
 
-void EthereumPermissionPromptImpl::ShowBubble() {
+void BraveWalletPermissionPromptImpl::ShowBubble() {
   brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_)
       ->ShowBubble();
 }
 
-void EthereumPermissionPromptImpl::UpdateAnchor() {}
+void BraveWalletPermissionPromptImpl::UpdateAnchor() {}
 
 permissions::PermissionPrompt::TabSwitchingBehavior
-EthereumPermissionPromptImpl::GetTabSwitchingBehavior() {
+BraveWalletPermissionPromptImpl::GetTabSwitchingBehavior() {
   return permissions::PermissionPrompt::TabSwitchingBehavior::
       kDestroyPromptButKeepRequestPending;
 }
 
 permissions::PermissionPromptDisposition
-EthereumPermissionPromptImpl::GetPromptDisposition() const {
+BraveWalletPermissionPromptImpl::GetPromptDisposition() const {
   return permissions::PermissionPromptDisposition::ANCHORED_BUBBLE;
 }

@@ -539,32 +539,32 @@ void BraveWalletService::OnNetworkListChanged() {
   }
 }
 
-void BraveWalletService::AddEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    AddEthereumPermissionCallback callback) {
+void BraveWalletService::AddPermission(mojom::CoinType coin,
+                                       const url::Origin& origin,
+                                       const std::string& account,
+                                       AddPermissionCallback callback) {
   if (delegate_)
-    delegate_->AddEthereumPermission(origin, account, std::move(callback));
+    delegate_->AddPermission(coin, origin, account, std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::HasEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    HasEthereumPermissionCallback callback) {
+void BraveWalletService::HasPermission(mojom::CoinType coin,
+                                       const url::Origin& origin,
+                                       const std::string& account,
+                                       HasPermissionCallback callback) {
   if (delegate_)
-    delegate_->HasEthereumPermission(origin, account, std::move(callback));
+    delegate_->HasPermission(coin, origin, account, std::move(callback));
   else
     std::move(callback).Run(false, false);
 }
 
-void BraveWalletService::ResetEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    ResetEthereumPermissionCallback callback) {
+void BraveWalletService::ResetPermission(mojom::CoinType coin,
+                                         const url::Origin& origin,
+                                         const std::string& account,
+                                         ResetPermissionCallback callback) {
   if (delegate_)
-    delegate_->ResetEthereumPermission(origin, account, std::move(callback));
+    delegate_->ResetPermission(coin, origin, account, std::move(callback));
   else
     std::move(callback).Run(false);
 }
@@ -913,7 +913,7 @@ void BraveWalletService::AddSignMessageRequest(
 
 void BraveWalletService::AddSuggestTokenRequest(
     mojom::AddSuggestTokenRequestPtr request,
-    mojom::BraveWalletProvider::RequestCallback callback,
+    mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   // wallet_watchAsset currently only expect non-empty contract address and
   // only ERC20 type.
@@ -957,7 +957,7 @@ void BraveWalletService::AddSuggestTokenRequest(
 void BraveWalletService::AddGetPublicKeyRequest(
     const std::string& address,
     const url::Origin& origin,
-    mojom::BraveWalletProvider::RequestCallback callback,
+    mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   // There can be only 1 request per origin
   if (add_get_encryption_public_key_requests_.contains(origin)) {
@@ -977,7 +977,7 @@ void BraveWalletService::AddGetPublicKeyRequest(
 
 void BraveWalletService::AddDecryptRequest(
     mojom::DecryptRequestPtr request,
-    mojom::BraveWalletProvider::RequestCallback callback,
+    mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   url::Origin origin = request->origin_info->origin;
   // There can be only 1 request per origin

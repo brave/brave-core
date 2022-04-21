@@ -17,7 +17,8 @@
   BRAVE_REFERRERS,                                                             \
   BRAVE_COOKIES,                                                               \
   BRAVE_SPEEDREADER,                                                           \
-  BRAVE_ETHEREUM
+  BRAVE_ETHEREUM,                                                              \
+  BRAVE_SOLANA
 // clang-format on
 
 #include "src/components/content_settings/core/common/content_settings_types.h"
