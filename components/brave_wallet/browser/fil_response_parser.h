@@ -24,7 +24,7 @@ bool ParseFilEstimateGas(const std::string& json,
                          std::string* gas_fee_cap,
                          int64_t* gas_limit);
 // Returns parsed chain head CID.
-bool ParseFilGetChainHead(const std::string& json, std::string* cid);
+bool ParseFilGetChainHead(const std::string& json, uint64_t* height);
 // Returns parsed receipt exit code.
 bool ParseFilStateSearchMsgLimited(const std::string& json,
                                    const std::string& cid,

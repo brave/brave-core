@@ -88,11 +88,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   mojom::CoinType coin,
                   const std::string& chaind_id,
                   GetBalanceCallback callback) override;
-  using GetFilChainHeadCallback =
-      base::OnceCallback<void(const std::string& cid,
+  using GetFilBlockHeightCallback =
+      base::OnceCallback<void(uint64_t height,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
-  void GetFilChainHead(GetFilChainHeadCallback callback);
+  void GetFilBlockHeight(GetFilBlockHeightCallback callback);
   using GetFilStateSearchMsgLimitedCallback =
       base::OnceCallback<void(int64_t code,
                               mojom::FilecoinProviderError error,
@@ -339,8 +339,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-  void OnGetFilChainHead(
-      GetFilChainHeadCallback callback,
+  void OnGetFilBlockHeight(
+      GetFilBlockHeightCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

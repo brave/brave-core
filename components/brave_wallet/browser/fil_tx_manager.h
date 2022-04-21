@@ -88,7 +88,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilBlockTracker* GetFilBlockTracker();
 
   // FilBlockTracker::Observer
-  void OnLatestBlockhashUpdated(const std::string& latest_blockhash) override;
+  void OnLatestHeightUpdated(uint64_t latest_height) override;
 
   // TxManager
   void UpdatePendingTransactions() override;

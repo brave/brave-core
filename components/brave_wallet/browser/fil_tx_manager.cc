@@ -235,9 +235,14 @@ void FilTxManager::UpdatePendingTransactions() {
     auto cid = pending_transaction->tx_hash();
     uint64_t seconds =
         (base::Time::Now() - pending_transaction->submitted_time()).InSeconds();
-    uint64_t depth = seconds == 0 ? 1 : seconds;
+    // StateSearchMsgLimited looks back up to limit epochs in the chain for a
+    // message. Returns its receipt and the tipset where it was executed.
+    // We assume that 1 block mined per second and taking a
+    // difference between current time and transaction submission to calculate
+    // the limit. In case of zero we are looking at last message.
+    uint64_t limit_epochs = seconds == 0 ? 1 : seconds;
     json_rpc_service_->GetFilStateSearchMsgLimited(
-        cid, depth,
+        cid, limit_epochs,
         base::BindOnce(&FilTxManager::OnGetFilStateSearchMsgLimited,
                        weak_factory_.GetWeakPtr(), pending_transaction->id()));
   }
@@ -264,8 +269,7 @@ void FilTxManager::OnGetFilStateSearchMsgLimited(
   tx_state_manager_->AddOrUpdateTx(*meta);
 }
 
-void FilTxManager::OnLatestBlockhashUpdated(
-    const std::string& latest_blockhash) {
+void FilTxManager::OnLatestHeightUpdated(uint64_t latest_height) {
   UpdatePendingTransactions();
 }
 

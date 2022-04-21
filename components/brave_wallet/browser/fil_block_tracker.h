@@ -27,30 +27,27 @@ class FilBlockTracker : public BlockTracker {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnLatestBlockhashUpdated(
-        const std::string& latest_blockhash) = 0;
+    virtual void OnLatestHeightUpdated(uint64_t latest_height) = 0;
   };
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-  using GetLatestBlockhashCallback =
-      base::OnceCallback<void(const std::string& latest_blockhash,
+  using GetFilBlockHeightCallback =
+      base::OnceCallback<void(uint64_t latest_height,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
-  void GetLatestBlockhash(GetLatestBlockhashCallback callback,
-                          bool try_cached_value);
-  std::string latest_blockhash() const { return latest_blockhash_; }
+  void GetFilBlockHeight(GetFilBlockHeightCallback callback);
+  uint64_t latest_height() const { return latest_height_; }
   // If timer is already running, it will be replaced with new interval
   void Start(base::TimeDelta interval) override;
 
  private:
-  void OnGetLatestBlockhash(GetLatestBlockhashCallback callback,
-                            const std::string& latest_blockhash,
-                            mojom::FilecoinProviderError error,
-                            const std::string& error_message);
+  void OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
+                           uint64_t latest_height,
+                           mojom::FilecoinProviderError error,
+                           const std::string& error_message);
 
-  std::string latest_blockhash_;
-  base::Time latest_blockhash_expired_time_;
+  uint64_t latest_height_ = 0;
   base::ObserverList<Observer> observers_;
 
   base::WeakPtrFactory<FilBlockTracker> weak_ptr_factory_;

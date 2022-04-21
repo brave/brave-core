@@ -189,36 +189,29 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
 }
 
 TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
-  std::string cid;
+  uint64_t height = 0;
   EXPECT_TRUE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({
         "Blocks":[],
         "Cids": [{
               "/": "bafy2bzaceauxm7waysuftonc4vod6wk4trdjx2ibw233dos6jcvkf5nrhflju"
         }],
-        "Height": 22452
+        "Height": "18446744073709551615"
       })"),
-                                                 &cid));
-  EXPECT_EQ(cid,
-            "bafy2bzaceauxm7waysuftonc4vod6wk4trdjx2ibw233dos6jcvkf5nrhflju");
-  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"()"), &cid));
-  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({})"), &cid));
-  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({,})"), &cid));
+                                                 &height));
+  EXPECT_EQ(height, 18446744073709551615u);
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"()"), &height));
   EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Cids": 11})"), &cid));
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({})"), &height));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({,})"), &height));
   EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
-      GetResponse(R"({"Cids": "abc"})"), &cid));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Cids": {}})"), &cid));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Cids": []})"), &cid));
+      GetResponse(R"({"Height": 11})"), &height));
   EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
-      GetResponse(R"({"Cids": [{}]})"), &cid));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":1}]})", &cid));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":[]}]})", &cid));
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":{}}]})", &cid));
+      GetResponse(R"({"Height": "abc"})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": {}})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": []})"), &height));
 }
 
 TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {

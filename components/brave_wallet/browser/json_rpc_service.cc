@@ -721,7 +721,7 @@ void JsonRpcService::GetFilStateSearchMsgLimited(
       base::BindOnce(&ConvertInt64ToString, "/result/Receipt/ExitCode"));
 }
 
-void JsonRpcService::GetFilChainHead(GetFilChainHeadCallback callback) {
+void JsonRpcService::GetFilBlockHeight(GetFilBlockHeightCallback callback) {
   auto network_url = network_urls_[mojom::CoinType::FIL];
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -730,35 +730,36 @@ void JsonRpcService::GetFilChainHead(GetFilChainHeadCallback callback) {
     return;
   }
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetFilChainHead,
+      base::BindOnce(&JsonRpcService::OnGetFilBlockHeight,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   RequestInternal(fil::getChainHead(), true, network_url,
-                  std::move(internal_callback));
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertUint64ToString, "/result/Height"));
 }
 
-void JsonRpcService::OnGetFilChainHead(
-    GetFilChainHeadCallback callback,
+void JsonRpcService::OnGetFilBlockHeight(
+    GetFilBlockHeightCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
     std::move(callback).Run(
-        std::string(), mojom::FilecoinProviderError::kInternalError,
+        0, mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  std::string cid;
-  if (!ParseFilGetChainHead(body, &cid)) {
+  uint64_t height = 0;
+  if (!ParseFilGetChainHead(body, &height)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
                                                    &error_message);
-    std::move(callback).Run(cid, error, error_message);
+    std::move(callback).Run(height, error, error_message);
     return;
   }
 
-  std::move(callback).Run(cid, mojom::FilecoinProviderError::kSuccess, "");
+  std::move(callback).Run(height, mojom::FilecoinProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetFilTransactionCount(const std::string& address,
