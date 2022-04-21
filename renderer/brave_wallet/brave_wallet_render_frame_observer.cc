@@ -58,7 +58,9 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   js_ethereum_provider_->ConnectEvent();
 
   if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletSolanaFeature)) {
+          brave_wallet::features::kBraveWalletSolanaFeature) &&
+      base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSolanaProviderFeature)) {
     if (!js_solana_provider_) {
       js_solana_provider_ = JSSolanaProvider::Install(
           dynamic_params.brave_use_native_wallet,
