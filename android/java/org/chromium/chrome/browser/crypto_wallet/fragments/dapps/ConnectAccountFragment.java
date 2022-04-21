@@ -86,8 +86,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                         }
                         AccountsPermissionsHelper accountsPermissionsHelper =
                                 new AccountsPermissionsHelper(getBraveWalletService(),
-                                        mAccountInfos,
-                                        Utils.originFromGURL(getCurrentHostHttpAddress()));
+                                        mAccountInfos, Utils.getCurrentMojomOrigin());
                         accountsPermissionsHelper.checkAccounts(() -> {
                             mAccountsWithPermissions =
                                     accountsPermissionsHelper.getAccountsWithPermissions();
@@ -193,7 +192,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void connectAccount(AccountInfo account) {
         getBraveWalletService().addEthereumPermission(
-                Utils.originFromGURL(getCurrentHostHttpAddress()), account.address, success -> {
+                Utils.getCurrentMojomOrigin(), account.address, success -> {
                     if (!success) {
                         return;
                     }
@@ -209,7 +208,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void disconnectAccount(AccountInfo account) {
         getBraveWalletService().resetEthereumPermission(
-                Utils.originFromGURL(getCurrentHostHttpAddress()), account.address, success -> {
+                Utils.getCurrentMojomOrigin(), account.address, success -> {
                     if (!success) {
                         return;
                     }

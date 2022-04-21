@@ -12,6 +12,4 @@ public final class WalletConstants {
     // BraveWalletAddNetworksFragment
     public static final String ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK = "activeNetwork";
     public static final String ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID = "chainId";
-    public static final int HTTP_PORT = 80;
-    public static final int HTTPS_PORT = 443;
 }

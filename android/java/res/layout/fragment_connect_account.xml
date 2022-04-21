@@ -103,19 +103,13 @@
             android:layout_alignParentTop="true"
             android:background="@color/wallet_edittext_outline_color" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingBottom="25dp"
-            android:fillViewport="true" >
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/accounts_list"
+           android:paddingTop="15dp"
+           android:paddingBottom="25dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/accounts_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-
-        </ScrollView>
     </RelativeLayout>
 
 </LinearLayout>

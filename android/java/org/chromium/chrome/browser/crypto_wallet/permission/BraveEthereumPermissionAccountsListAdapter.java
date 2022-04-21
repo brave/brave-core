@@ -184,8 +184,8 @@ public class BraveEthereumPermissionAccountsListAdapter
             this.iconImg = itemView.findViewById(R.id.icon);
             this.titleText = itemView.findViewById(R.id.title);
             this.subTitleText = itemView.findViewById(R.id.sub_title);
-            this.accountCheck = itemView.findViewById(R.id.accountCheck);
-            this.accountAction = itemView.findViewById(R.id.accountAction);
+            this.accountCheck = itemView.findViewById(R.id.account_check);
+            this.accountAction = itemView.findViewById(R.id.account_action);
         }
     }
 

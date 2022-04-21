@@ -52,14 +52,14 @@
     </LinearLayout>
 
    <android.widget.CheckBox
-       android:id="@+id/accountCheck"
+       android:id="@+id/account_check"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:visibility="gone"
        android:layout_gravity="end" />
 
     <TextView
-        android:id="@+id/accountAction"
+        android:id="@+id/account_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

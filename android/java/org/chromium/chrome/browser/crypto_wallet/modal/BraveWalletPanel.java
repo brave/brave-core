@@ -45,7 +45,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.url.GURL;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.HashSet;
@@ -174,8 +173,7 @@ public class BraveWalletPanel implements DialogInterface {
                     AccountsPermissionsHelper accountsPermissionsHelper =
                             new AccountsPermissionsHelper(
                                     mBraveWalletPanelServices.getBraveWalletService(),
-                                    mAccountInfos,
-                                    Utils.originFromGURL(getCurrentHostHttpAddress()));
+                                    mAccountInfos, Utils.getCurrentMojomOrigin());
                     accountsPermissionsHelper.checkAccounts(() -> {
                         mAccountsWithPermissions =
                                 accountsPermissionsHelper.getAccountsWithPermissions();
@@ -296,13 +294,5 @@ public class BraveWalletPanel implements DialogInterface {
         mAmountFiat = mPopupView.findViewById(R.id.tv_dapps_panel_amount_fiat);
         updateState();
         updateStatus();
-    }
-
-    private GURL getCurrentHostHttpAddress() {
-        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity != null) {
-            return activity.getActivityTab().getUrl().getOrigin();
-        }
-        return new GURL("");
     }
 }

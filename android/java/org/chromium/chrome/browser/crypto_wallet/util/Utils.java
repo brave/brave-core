@@ -71,6 +71,7 @@ import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
@@ -84,7 +85,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
-import org.chromium.url.internal.mojom.Origin;
 
 import java.io.InputStream;
 import java.lang.NumberFormatException;
@@ -1476,24 +1476,22 @@ public class Utils {
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }
 
-    public static Origin originFromGURL(GURL address) {
-        Origin hostOrigin = new Origin();
-        hostOrigin.scheme = address.getScheme();
-        hostOrigin.host = address.getHost();
-        hostOrigin.port = 0;
-        if (address.getPort().isEmpty()) {
-            if (hostOrigin.scheme.equals("http")) {
-                hostOrigin.port = WalletConstants.HTTP_PORT;
-            } else if (hostOrigin.scheme.equals("https")) {
-                hostOrigin.port = WalletConstants.HTTPS_PORT;
-            }
-        } else {
-            try {
-                hostOrigin.port = Short.parseShort(address.getPort());
-            } catch (Exception e) {
-                hostOrigin.port = WalletConstants.HTTPS_PORT;
-            }
+    public static org.chromium.url.internal.mojom.Origin getCurrentMojomOrigin() {
+        org.chromium.url.internal.mojom.Origin hostOrigin =
+                new org.chromium.url.internal.mojom.Origin();
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        if (activity == null) {
+            return hostOrigin;
         }
+
+        org.chromium.url.Origin urlOrigin =
+                activity.getActivityTab().getWebContents().getMainFrame().getLastCommittedOrigin();
+        if (urlOrigin == null) {
+            return hostOrigin;
+        }
+        hostOrigin.scheme = urlOrigin.getScheme();
+        hostOrigin.host = urlOrigin.getHost();
+        hostOrigin.port = (short) urlOrigin.getPort();
 
         return hostOrigin;
     }
