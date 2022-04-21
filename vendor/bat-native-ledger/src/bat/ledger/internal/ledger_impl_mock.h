@@ -27,6 +27,8 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(database, database::Database*());
 
+  MOCK_CONST_METHOD0(promotion, promotion::Promotion*());
+
   MOCK_METHOD2(Initialize, void(bool, ledger::ResultCallback));
 };
 
