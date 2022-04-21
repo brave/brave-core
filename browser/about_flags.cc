@@ -377,24 +377,24 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
     {"native-brave-wallet",                                                    \
      flag_descriptions::kNativeBraveWalletName,                                \
      flag_descriptions::kNativeBraveWalletDescription,                         \
-     kOsDesktop | kOsAndroid,                                                  \
+     kOsDesktop | flags_ui::kOsAndroid,                                        \
      FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},   \
     {"brave-wallet-filecoin",                                                  \
      flag_descriptions::kBraveWalletFilecoinName,                              \
      flag_descriptions::kBraveWalletFilecoinDescription,                       \
-     kOsDesktop | kOsAndroid,                                                  \
+     kOsDesktop | flags_ui::kOsAndroid,                                        \
      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletFilecoinFeature)}, \
     {"brave-wallet-solana",                                                    \
      flag_descriptions::kBraveWalletSolanaName,                                \
      flag_descriptions::kBraveWalletSolanaDescription,                         \
-     kOsDesktop | kOsAndroid,                                                  \
+     kOsDesktop | flags_ui::kOsAndroid,                                        \
      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSolanaFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                  \
     {"brave-news",                                                  \
      flag_descriptions::kBraveNewsName,                             \
      flag_descriptions::kBraveNewsDescription,                      \
-     kOsDesktop | kOsAndroid,                                       \
+     kOsDesktop | flags_ui::kOsAndroid,                             \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
