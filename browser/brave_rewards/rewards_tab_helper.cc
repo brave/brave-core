@@ -5,15 +5,25 @@
 
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
+#include <string>
+#include <utility>
+
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/components/ipfs/ipfs_constants.h"
+#endif
+
 #include "chrome/browser/profiles/profile.h"
+
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
+
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -22,85 +32,103 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#endif
-
-using blink::mojom::ResourceType;
-
-// DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsTabHelper);
-
 namespace brave_rewards {
 
 RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
-      content::WebContentsUserData<RewardsTabHelper>(*web_contents),
+    : content::WebContentsUserData<RewardsTabHelper>(*web_contents),
+      WebContentsObserver(web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
-  if (!tab_id_.is_valid())
-    return;
+  if (tab_id_.is_valid()) {
+    rewards_service_ = RewardsServiceFactory::GetForProfile(
+        Profile::FromBrowserContext(web_contents->GetBrowserContext()));
+  }
+
+  if (rewards_service_) {
+    rewards_service_->AddObserver(this);
+  }
 
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::AddObserver(this);
 #endif
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_)
-    rewards_service_->AddObserver(this);
 }
 
 RewardsTabHelper::~RewardsTabHelper() {
-  if (rewards_service_)
+  if (rewards_service_) {
     rewards_service_->RemoveObserver(this);
+  }
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::RemoveObserver(this);
 #endif
 }
 
+void RewardsTabHelper::AddObserver(Observer* observer) {
+  observer_list_.AddObserver(observer);
+}
+
+void RewardsTabHelper::RemoveObserver(Observer* observer) {
+  observer_list_.RemoveObserver(observer);
+}
+
+void RewardsTabHelper::SetPublisherIdForTab(const std::string& publisher_id) {
+  if (publisher_id != publisher_id_) {
+    publisher_id_ = publisher_id;
+    for (auto& observer : observer_list_) {
+      observer.OnPublisherForTabUpdated(publisher_id_);
+    }
+  }
+}
+
 void RewardsTabHelper::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (!rewards_service_ || render_frame_host->GetParent())
+  if (!rewards_service_ || render_frame_host->GetParent()) {
     return;
+  }
 
 #if BUILDFLAG(ENABLE_IPFS)
-  auto ipns_url = web_contents()->GetURL();
+  auto ipns_url = web_contents()->GetLastCommittedURL();
   if (ipns_url.SchemeIs(ipfs::kIPNSScheme)) {
     rewards_service_->OnLoad(tab_id_, ipns_url);
     return;
   }
 #endif
+
   rewards_service_->OnLoad(tab_id_, validated_url);
 }
 
 void RewardsTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
-  if (!rewards_service_ || !handle->IsInMainFrame() ||
-      !handle->HasCommitted() || handle->IsDownload())
+  if (!handle->IsInMainFrame() || !handle->HasCommitted() ||
+      handle->IsDownload()) {
     return;
+  }
 
-  rewards_service_->OnUnload(tab_id_);
+  SetPublisherIdForTab(RewardsService::GetPublisherIdFromURL(
+      web_contents()->GetLastCommittedURL()));
+
+  MaybeSavePublisherInfo();
+
+  if (rewards_service_) {
+    rewards_service_->OnUnload(tab_id_);
+  }
 }
 
 void RewardsTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
     const blink::mojom::ResourceLoadInfo& resource_load_info) {
-  if (!rewards_service_ || !render_frame_host)
+  if (!rewards_service_ || !render_frame_host) {
     return;
+  }
 
-  // TODO(nejczdovc): do we need to get anyother type then XHR??
   switch (resource_load_info.request_destination) {
-    // Formerly ResourceType::kMedia
     case network::mojom::RequestDestination::kAudio:
     case network::mojom::RequestDestination::kTrack:
     case network::mojom::RequestDestination::kVideo:
-    // Best match for ResourceType::kXhr (though, not limited to kXhr)
     case network::mojom::RequestDestination::kEmpty:
-    // Formerly ResourceType::kImage
     case network::mojom::RequestDestination::kImage:
     case network::mojom::RequestDestination::kScript:
       rewards_service_->OnXHRLoad(tab_id_, GURL(resource_load_info.final_url),
-                                  web_contents()->GetURL(),
+                                  web_contents()->GetLastCommittedURL(),
                                   resource_load_info.referrer);
       break;
     default:
@@ -109,8 +137,9 @@ void RewardsTabHelper::ResourceLoadComplete(
 }
 
 void RewardsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
-  if (!rewards_service_)
+  if (!rewards_service_) {
     return;
+  }
 
   if (visibility == content::Visibility::HIDDEN) {
     rewards_service_->OnHide(tab_id_);
@@ -122,33 +151,50 @@ void RewardsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void RewardsTabHelper::WebContentsDestroyed() {
-  if (rewards_service_)
+  if (rewards_service_) {
     rewards_service_->OnUnload(tab_id_);
+  }
 }
 
 #if !BUILDFLAG(IS_ANDROID)
 void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  if (!rewards_service_)
-    return;
-
-  if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
-      TabStripModel::kNoTab) {
+  if (rewards_service_ && BrowserHasWebContents(browser)) {
     rewards_service_->OnForeground(tab_id_);
   }
 }
-#endif
 
-#if !BUILDFLAG(IS_ANDROID)
 void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  if (!rewards_service_)
-    return;
-
-  if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
-      TabStripModel::kNoTab) {
+  if (rewards_service_ && BrowserHasWebContents(browser)) {
     rewards_service_->OnBackground(tab_id_);
   }
 }
+
+bool RewardsTabHelper::BrowserHasWebContents(Browser* browser) {
+  int index = browser->tab_strip_model()->GetIndexOfWebContents(web_contents());
+  return index != TabStripModel::kNoTab;
+}
 #endif
+
+void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
+  MaybeSavePublisherInfo();
+  if (rewards_service_) {
+    rewards_service_->OnLoad(tab_id_, web_contents()->GetLastCommittedURL());
+  }
+}
+
+void RewardsTabHelper::MaybeSavePublisherInfo() {
+  if (!rewards_service_) {
+    return;
+  }
+
+  // The Rewards system assumes that the |publisher_info| table is populated as
+  // the user nativates the web. Previously, this was accomplished within the
+  // background script of the Rewards extension.
+  // TODO(zenparsing): Consider changing the name of this method to be more
+  // self-documenting.
+  rewards_service_->GetPublisherActivityFromUrl(
+      tab_id_.id(), web_contents()->GetLastCommittedURL().spec(), "", "");
+}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper);
 

@@ -54,6 +54,10 @@ class LedgerClientMojoBridge :
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
+  void OnPublisherRegistryUpdated() override;
+
+  void OnPublisherUpdated(const std::string& publisher_id) override;
+
   void SetBooleanState(const std::string& name,
                        bool value,
                        SetBooleanStateCallback callback) override;

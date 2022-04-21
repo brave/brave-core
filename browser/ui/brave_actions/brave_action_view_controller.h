@@ -34,7 +34,6 @@ class BraveActionViewController : public ExtensionActionViewController {
   BraveActionViewController& operator=(const BraveActionViewController&) =
       delete;
 
-  bool IsEnabled(content::WebContents* web_contents) const override;
   gfx::Image GetIcon(content::WebContents* web_contents,
                      const gfx::Size& size) override;
   ui::MenuModel* GetContextMenu(

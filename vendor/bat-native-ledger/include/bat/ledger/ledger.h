@@ -286,6 +286,9 @@ class LEDGER_EXPORT Ledger {
                                    uint64_t duration,
                                    bool first_visit) = 0;
 
+  virtual void IsPublisherRegistered(const std::string& publisher_id,
+                                     std::function<void(bool)> callback) = 0;
+
   virtual void GetPublisherInfo(const std::string& publisher_key,
                                 GetPublisherInfoCallback callback) = 0;
 

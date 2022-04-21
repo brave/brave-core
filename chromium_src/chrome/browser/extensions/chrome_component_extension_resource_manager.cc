@@ -7,8 +7,6 @@
 
 #include "brave/components/brave_extension/grit/brave_extension_generated_map.h"
 #include "brave/components/brave_extension/grit/brave_extension_resources_map.h"
-#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources_map.h"
-#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_panel_generated_map.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -30,10 +28,6 @@
   AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize); \
   AddComponentResourceEntries(kBraveExtensionGenerated,              \
                               kBraveExtensionGeneratedSize);         \
-  AddComponentResourceEntries(kBraveRewardsExtensionResources,       \
-                              kBraveRewardsExtensionResourcesSize);  \
-  AddComponentResourceEntries(kBraveRewardsPanelGenerated,           \
-                              kBraveRewardsPanelGeneratedSize);      \
   BRAVE_WEBTORRENT_RESOURCES
 
 #include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"

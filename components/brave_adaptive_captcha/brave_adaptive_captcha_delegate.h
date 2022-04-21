@@ -14,7 +14,7 @@ class BraveAdaptiveCaptchaDelegate {
  public:
   virtual ~BraveAdaptiveCaptchaDelegate() = default;
 
-  virtual bool ShowScheduledCaptcha(const std::string& payment_id,
+  virtual void ShowScheduledCaptcha(const std::string& payment_id,
                                     const std::string& captcha_id) = 0;
 };
 

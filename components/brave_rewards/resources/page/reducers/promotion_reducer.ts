@@ -89,8 +89,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       // The grant captcha "lives" in the Rewards panel. Open the Rewards panel
       // with the grant ID specified in the URL.
-      chrome.braveRewards.openBrowserActionUI(
-        `brave_rewards_panel.html#grant_${promotionId}`)
+      chrome.braveRewards.openRewardsPanel(`claim-grant=${promotionId}`)
       break
     }
     case types.ON_CLAIM_PROMOTION: {

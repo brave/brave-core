@@ -51,8 +51,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const ledger::type::RewardsType type,
       const ledger::type::ContributionProcessor processor) {}
 
-  virtual void OnRequestAdsEnabledPopupClosed(bool ads_enabled) {}
-
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool ads_enabled) {}
@@ -64,6 +62,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       ledger::type::PublisherInfoList list) {}
+
+  virtual void OnPublisherRegistryUpdated() {}
+
+  virtual void OnPublisherUpdated(const std::string& publisher_id) {}
 
   virtual void OnStatementChanged(
       brave_rewards::RewardsService* rewards_service) {}

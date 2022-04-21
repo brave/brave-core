@@ -12,8 +12,6 @@ namespace switches {
 // alongside the definition of their values in the .cc file.
 extern const char kDisableBraveExtension[];
 
-extern const char kDisableBraveRewardsExtension[];
-
 extern const char kDisableBraveUpdate[];
 
 extern const char kDisableWebTorrentExtension[];

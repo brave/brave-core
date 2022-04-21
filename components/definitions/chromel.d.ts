@@ -73,6 +73,11 @@ declare namespace chrome.braveRewards {
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
   const getPublisherPanelInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
+
+  function setPublisherIdForTab (tabId: number, publisherId: string): void
+
+  function getPublisherInfoForTab (tabId: number, callback: (publisher?: RewardsExtension.PublisherInfo) => void): void
+
   const savePublisherInfo: (windowId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string, callback: (result: RewardsExtension.Result) => void) => {}
   const tipSite: (tabId: number, publisherKey: string, entryPoint: RewardsExtension.TipDialogEntryPoint) => {}
   const tipUser: (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, publisherScreenName: string, favIconUrl: string, postId: string, postTimestamp: string, postText: string) => {}
@@ -139,7 +144,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
   }
 
-  const openBrowserActionUI: (path?: string) => {}
+  function openRewardsPanel (args?: string): void
 
   const onUnblindedTokensReady: {
     addListener: (callback: () => void) => void
@@ -174,7 +179,6 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
-  const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
 }
 
 declare namespace chrome.binance {

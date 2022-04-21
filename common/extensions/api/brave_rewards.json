@@ -344,18 +344,12 @@
         ]
       },
       {
-        "name": "openBrowserActionUI",
+        "name": "openRewardsPanel",
         "type": "function",
-        "description": "Prompts the user with a popup UI",
+        "description": "Opens the Rewards panel in the active window.",
         "parameters": [
           {
-            "name": "windowId",
-            "type": "integer",
-            "minimum": 0,
-            "optional": true
-          },
-          {
-            "name": "relativePath",
+            "name": "args",
             "type": "string",
             "optional": true
           }
@@ -429,6 +423,77 @@
                   },
                   "favIconUrl": {
                     "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "setPublisherIdForTab",
+        "type": "function",
+        "description": "Sets the current publisher ID for the specified tab",
+        "parameters": [
+          {
+            "name": "tabId",
+            "type": "integer"
+          },
+          {
+            "name": "publisherId",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getPublisherInfoForTab",
+        "type": "function",
+        "description": "Returns publisher information for the specified tab",
+        "parameters": [
+          {
+            "name": "tabId",
+            "type": "integer"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "publisher",
+                "type": "object",
+                "optional": true,
+                "properties": {
+                  "percentage": {
+                    "type": "integer",
+                    "description": "publisher attention score"
+                  },
+                  "excluded": {
+                    "type": "boolean",
+                    "description": "is site excluded from auto contribute"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "provider (if media publisher) for this publisher"
+                  },
+                  "favIconUrl": {
+                    "type": "string",
+                    "description": "publisher image url"
+                  },
+                  "publisherKey": {
+                    "type": "string",
+                    "description": "publisher key, unique identifier"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "publisher name"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "url of the current tab"
+                  },
+                  "status": {
+                    "type": "integer",
+                    "description": "publisher status"
                   }
                 }
               }
@@ -1402,17 +1467,6 @@
                 "optional": true
               }
             }
-          }
-        ]
-      },
-      {
-        "name": "requestAdsEnabledPopupClosed",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "ads_enabled",
-            "type": "boolean"
           }
         ]
       }

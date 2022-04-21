@@ -52,9 +52,6 @@
     "META": {"sizes": {"includes": [500]}},
     "includes": [48800],
   },
-  "brave/components/brave_rewards/resources/extension/extension_static_resources.grd": {
-    "includes": [49300]
-  },
   "brave/components/brave_webtorrent/resources.grd": {
     "includes": [49400]
   },

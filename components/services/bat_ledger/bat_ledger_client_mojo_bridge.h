@@ -58,6 +58,9 @@ class BatLedgerClientMojoBridge :
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
+  void OnPublisherRegistryUpdated() override;
+  void OnPublisherUpdated(const std::string& publisher_id) override;
+
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
   void SetIntegerState(const std::string& name, int value) override;

@@ -1977,6 +1977,21 @@ void RewardsServiceImpl::UpdateMediaDuration(
       first_visit);
 }
 
+void RewardsServiceImpl::IsPublisherRegistered(
+    const std::string& publisher_id,
+    base::OnceCallback<void(bool)> callback) {
+  if (!Connected()) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](decltype(callback) callback) { std::move(callback).Run(false); },
+            std::move(callback)));
+    return;
+  }
+
+  bat_ledger_->IsPublisherRegistered(publisher_id, std::move(callback));
+}
+
 void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
@@ -2540,6 +2555,18 @@ void RewardsServiceImpl::PublisherListNormalized(
   }
 }
 
+void RewardsServiceImpl::OnPublisherRegistryUpdated() {
+  for (auto& observer : observers_) {
+    observer.OnPublisherRegistryUpdated();
+  }
+}
+
+void RewardsServiceImpl::OnPublisherUpdated(const std::string& publisher_id) {
+  for (auto& observer : observers_) {
+    observer.OnPublisherUpdated(publisher_id);
+  }
+}
+
 void RewardsServiceImpl::RefreshPublisher(
     const std::string& publisher_key,
     RefreshPublisherCallback callback) {
@@ -2867,17 +2894,6 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
       wallet_type,
       action,
       {});
-}
-
-void RewardsServiceImpl::RequestAdsEnabledPopupClosed(bool ads_enabled) {
-  if (ads_enabled) {
-    // If Rewards were previously enabled, this call will only turn on Ads.
-    EnableRewards();
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnRequestAdsEnabledPopupClosed(ads_enabled);
-  }
 }
 
 void RewardsServiceImpl::OnDisconnectWallet(

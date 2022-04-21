@@ -75,6 +75,8 @@ export function AdaptiveCaptchaView (props: Props) {
   }, [props.onCaptchaResult])
 
   function onContactSupport () {
+    // TODO(zenparsing): This doesn't work in WebUI. We should just make this
+    // into a link instead.
     window.open('https://support.brave.com/', '_blank')
     props.onClose()
   }

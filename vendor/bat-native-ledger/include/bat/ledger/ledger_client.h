@@ -62,6 +62,10 @@ class LEDGER_EXPORT LedgerClient {
       type::PublisherInfoPtr publisher_info,
       uint64_t windowId) = 0;
 
+  virtual void OnPublisherRegistryUpdated() = 0;
+
+  virtual void OnPublisherUpdated(const std::string& publisher_id) = 0;
+
   virtual void FetchFavIcon(
       const std::string& url,
       const std::string& favicon_key,

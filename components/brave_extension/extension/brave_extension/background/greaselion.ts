@@ -67,9 +67,6 @@ const connectionsByTabIdSenderId = new Map<string, ConnectionState>()
 // Maps publisher keys by media key
 const publisherKeysByMediaKey = new Map<string, string>()
 
-// Maps publisher keys by tabId
-const publisherKeysByTabId = new Map<number, string>()
-
 const braveRewardsExtensionId = 'jidkidbbcafjabdphckchenhfomhnfma'
 
 const buildTabIdSenderIdKey = (tabId: number, senderId: string) => {
@@ -247,19 +244,6 @@ const getPublisherPanelInfo = (tabId: number, publisherKey: string) => {
     })
 }
 
-const getPublisherPanelInfoByTabId = (tabId: number) => {
-  if (!tabId) {
-    return
-  }
-
-  const publisherKey = publisherKeysByTabId.get(tabId)
-  if (!publisherKey) {
-    return
-  }
-
-  getPublisherPanelInfo(tabId, publisherKey)
-}
-
 const savePublisherInfo = (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string) => {
   chrome.braveRewards.savePublisherInfo(
     tabId,
@@ -281,7 +265,7 @@ const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePu
     return
   }
 
-  publisherKeysByTabId.set(tabId, data.publisherKey)
+  chrome.braveRewards.setPublisherIdForTab(tabId, data.publisherKey)
 
   if (data.mediaKey && !publisherKeysByMediaKey.has(data.mediaKey)) {
     publisherKeysByMediaKey.set(data.mediaKey, data.publisherKey)
@@ -452,13 +436,13 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
       }
 
       connectionsByTabIdSenderId.delete(key)
-      publisherKeysByTabId.delete(port.sender.tab.id)
 
       port.onMessage.removeListener(onMessageListener)
     }
   })
 })
 
+// TODO: Is this unused?
 chrome.runtime.onMessageExternal.addListener(
   function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
     if (!msg || !msg.type || !sender || !sender.id) {
@@ -469,9 +453,6 @@ chrome.runtime.onMessageExternal.addListener(
         return
       }
       switch (msg.type) {
-        case 'GetPublisherPanelInfo':
-          getPublisherPanelInfoByTabId(msg.tabId)
-          break
         case 'SupportsGreaselion':
           sendResponse({ supported: true })
           break

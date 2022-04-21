@@ -26,13 +26,12 @@ class BraveRewardsGetLocaleFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsOpenBrowserActionUIFunction :
-    public ExtensionFunction {
+class BraveRewardsOpenRewardsPanelFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.openBrowserActionUI", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.openRewardsPanel", UNKNOWN)
 
  protected:
-  ~BraveRewardsOpenBrowserActionUIFunction() override;
+  ~BraveRewardsOpenRewardsPanelFunction() override;
 
   ResponseAction Run() override;
 };
@@ -60,6 +59,29 @@ class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
   void OnGetPublisherInfo(
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
+};
+
+class BraveRewardsSetPublisherIdForTabFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.setPublisherIdForTab", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSetPublisherIdForTabFunction() override;
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetPublisherInfoForTabFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherInfoForTab", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherInfoForTabFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetPublisherPanelInfo(ledger::type::Result result,
+                               ledger::type::PublisherInfoPtr info);
 };
 
 class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
@@ -542,18 +564,6 @@ class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsUpdatePrefsFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsRequestAdsEnabledPopupClosedFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.requestAdsEnabledPopupClosed",
-                             UNKNOWN)
-
- protected:
-  ~BraveRewardsRequestAdsEnabledPopupClosedFunction() override;
 
   ResponseAction Run() override;
 };

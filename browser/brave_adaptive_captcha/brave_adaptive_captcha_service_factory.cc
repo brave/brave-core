@@ -10,7 +10,8 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/brave_rewards/rewards_panel_helper.h"
+#include "brave/browser/brave_rewards/rewards_panel_service.h"
+#include "brave/browser/brave_rewards/rewards_panel_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
@@ -28,9 +29,14 @@ class CaptchaDelegate
   explicit CaptchaDelegate(content::BrowserContext* context)
       : context_(context) {}
 
-  bool ShowScheduledCaptcha(const std::string& payment_id,
+  void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override {
-    return brave_rewards::ShowRewardsPanel(context_, true);
+    auto* service = brave_rewards::RewardsPanelServiceFactory::GetForProfile(
+        Profile::FromBrowserContext(context_));
+
+    if (service) {
+      service->ShowAdaptiveCaptcha();
+    }
   }
 
  private:

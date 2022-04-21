@@ -2,8 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Store } from 'webext-redux'
-
 import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
@@ -223,31 +221,6 @@ function getMonthlyTipAmount (publisherKey: string) {
   })
 }
 
-// The mapping from WebContents (via tab) to publisher ID is currently
-// maintained in the Rewards extension's background script and is accessed using
-// message passing, implemented as a Redux store proxy using the "webext-redux"
-// library. Eventually, we should move the mapping into the browser and remove
-// this proxy.
-const backgroundReduxStore = new Store({ portName: 'REWARDSPANEL' })
-
-async function getPublisherFromBackgroundState (tabId: number) {
-  await backgroundReduxStore.ready()
-
-  const state = backgroundReduxStore.getState()
-  if (!state) {
-    return {}
-  }
-  const { rewardsPanelData } = state
-  if (!rewardsPanelData) {
-    return {}
-  }
-  const { publishers } = rewardsPanelData
-  if (!publishers) {
-    return {}
-  }
-  return publishers[`key_${tabId}`] || {}
-}
-
 function getTab (tabId: number) {
   return new Promise<chrome.tabs.Tab | null>((resolve) => {
     chrome.tabs.get(tabId, (tab) => { resolve(tab || null) })
@@ -286,45 +259,6 @@ function defaultPublisherInfo (url: string) {
   }
 }
 
-function isGreaselionURL (url: string) {
-  const parsedURL = parseURL(url)
-  if (!parsedURL) {
-    return false
-  }
-
-  const hosts = [
-    'github.com',
-    'reddit.com',
-    'twitch.tv',
-    'vimeo.com',
-    'youtube.com'
-  ]
-
-  const { hostname } = parsedURL
-  return hosts.some((h) => hostname.endsWith(`.${h}`) || hostname === h)
-}
-
-export async function fetchPublisherInfo (tabId: number) {
-  const tab = await getTab(tabId)
-  if (!tab || !tab.url) {
-    return
-  }
-
-  const { url } = tab
-
-  // Publisher info for "Greaselion" domains is managed by extension content
-  // scripts that execute within the context of the tab. We do not need to
-  // explicitly request publisher data for these domains.
-  if (isGreaselionURL(url)) {
-    return
-  }
-
-  if (isPublisherURL(url)) {
-    const favicon = tab.favIconUrl || ''
-    chrome.braveRewards.getPublisherData(tabId, url, favicon, '')
-  }
-}
-
 function getPublisherPlatform (name: string) {
   switch (name) {
     case 'twitter':
@@ -340,19 +274,28 @@ function getPublisherPlatform (name: string) {
 
 export async function getPublisherInfo (tabId: number) {
   const tab = await getTab(tabId)
-  if (!tab) {
+  if (!tab || !tab.url) {
     return null
   }
 
-  const publisher = await getPublisherFromBackgroundState(tabId)
+  if (!isPublisherURL(tab.url)) {
+    return null
+  }
+
+  const publisher = await new Promise<any>((resolve) => {
+    // TODO(zenparsing): This only gets the publisher info loaded into the
+    // database. It does not fetch data from the CDN.
+    chrome.braveRewards.getPublisherInfoForTab(tabId, resolve)
+  })
+
+  if (!publisher) {
+    return defaultPublisherInfo(tab.url)
+  }
+
   const { publisherKey } = publisher
 
   if (!publisherKey || typeof publisherKey !== 'string') {
-    const url = tab.url || ''
-    if (isPublisherURL(url)) {
-      return defaultPublisherInfo(url)
-    }
-    return null
+    return defaultPublisherInfo(tab.url)
   }
 
   const supportedWalletProviders: ExternalWalletProvider[] = []
@@ -388,13 +331,4 @@ export async function getPublisherInfo (tabId: number) {
   }
 
   return info
-}
-
-export function onPublisherDataUpdated (callback: () => void) {
-  chrome.braveRewards.onPublisherData.addListener(() => {
-    // The background script may not have updated its Redux store at the point
-    // when this callback is executed. Unfortunatley, we don't currently have a
-    // way to know when the update has finished and must rely on a short delay.
-    setTimeout(() => { callback() }, 200)
-  })
 }

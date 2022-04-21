@@ -160,6 +160,9 @@ class BatLedgerImpl :
       const uint64_t duration,
       const bool first_visit) override;
 
+  void IsPublisherRegistered(const std::string& publisher_id,
+                             IsPublisherRegisteredCallback callback) override;
+
   void GetPublisherInfo(
       const std::string& publisher_key,
       GetPublisherInfoCallback callback) override;

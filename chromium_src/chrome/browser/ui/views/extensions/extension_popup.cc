@@ -12,8 +12,7 @@ bool IsBraveExtension(extensions::ExtensionViewHost* host) {
   // Clipping issue is not present on linux.
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
   const auto extensionId = host->extension()->id();
-  return (extensionId == brave_extension_id ||
-          extensionId == brave_rewards_extension_id);
+  return extensionId == brave_extension_id;
 #endif
   return false;
 }

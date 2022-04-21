@@ -123,13 +123,6 @@ template("brave_extra_paks") {
       ]
     }
 
-    if (enable_extensions) {
-      sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak" ]
-
-      deps +=
-          [ "//brave/components/brave_rewards/resources/extension:resources" ]
-    }
-
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }

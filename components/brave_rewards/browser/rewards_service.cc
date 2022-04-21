@@ -5,22 +5,48 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
+#include <algorithm>
+#include <array>
+#include <string>
+
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "content/public/common/referrer.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#endif
+
+namespace {
+
+const std::array<std::string, 6> kGreaselionDomains = {
+    "twitter.com", "github.com", "reddit.com",
+    "twitch.tv",   "vimeo.com",  "youtube.com"};
+
+bool IsGreaselionURL(const GURL& url) {
+  return std::any_of(
+      kGreaselionDomains.begin(), kGreaselionDomains.end(),
+      [&url](auto& domain) {
+        return net::registry_controlled_domains::SameDomainOrHost(
+            url, GURL("https://" + domain),
+            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+      });
+}
+
+}  // namespace
 
 namespace brave_rewards {
 
-RewardsService::RewardsService() {
-}
+RewardsService::RewardsService() = default;
 
-RewardsService::~RewardsService() {
-}
+RewardsService::~RewardsService() = default;
 
 void RewardsService::AddObserver(RewardsServiceObserver* observer) {
   observers_.AddObserver(observer);
@@ -28,6 +54,25 @@ void RewardsService::AddObserver(RewardsServiceObserver* observer) {
 
 void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
   observers_.RemoveObserver(observer);
+}
+
+std::string RewardsService::GetPublisherIdFromURL(const GURL& url) {
+  if (IsGreaselionURL(url)) {
+    return "";
+  }
+
+#if BUILDFLAG(ENABLE_IPFS)
+  if (url.SchemeIs(ipfs::kIPNSScheme)) {
+    return ipfs::GetRegistryDomainFromIPNS(url);
+  }
+#endif
+
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return "";
+  }
+
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 // static

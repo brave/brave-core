@@ -24,6 +24,17 @@ export const root = styled.div`
   .panel-overlay-grant-captcha & {
     min-height: 576px;
   }
+
+  /* The Brave Talk opt-in is a special-case: for historical reasons it's not
+     presented as an overlay. Instead it should replace the panel content. */
+
+  .panel-overlay-brave-talk-opt-in & {
+    padding: 0;
+
+    .rewards-panel {
+      display: none;
+    }
+  }
 `
 
 export const loading = styled.div`

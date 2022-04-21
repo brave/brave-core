@@ -9,18 +9,14 @@
 #include <string>
 #include <utility>
 
-#include "base/command_line.h"
 #include "base/one_shot_event.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
-#include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
@@ -65,10 +61,7 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_registry_(extensions::ExtensionRegistry::Get(profile)),
       extension_action_manager_(
           extensions::ExtensionActionManager::Get(profile)),
-      brave_action_api_(extensions::BraveActionAPI::Get(browser)),
-      rewards_service_(
-          brave_rewards::RewardsServiceFactory::GetForProfile(profile)),
-      weak_ptr_factory_(this) {
+      brave_action_api_(extensions::BraveActionAPI::Get(browser)) {
   // Handle when the extension system is ready
   extension_system_->ready().Post(
       FROM_HERE, base::BindOnce(&BraveActionsContainer::OnExtensionSystemReady,
@@ -105,19 +98,12 @@ void BraveActionsContainer::Init() {
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
   AddActionViewForShields();
+  AddActionViewForRewards();
   // Populate actions
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV1)) {
     actions_[brave_extension_id].position_ = 1;
   }
-  actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
-
-  // React to Brave Rewards preferences changes.
-  show_brave_rewards_button_.Init(
-      brave_rewards::prefs::kShowButton, browser_->profile()->GetPrefs(),
-      base::BindRepeating(
-          &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
-          base::Unretained(this)));
 }
 
 bool BraveActionsContainer::IsContainerAction(const std::string& id) const {
@@ -129,24 +115,7 @@ bool BraveActionsContainer::ShouldShowAction(const std::string& id) const {
     return false;
   if (popup_owner_ && actions_.at(id).view_controller_.get() == popup_owner_)
     return true;
-  if (id == brave_rewards_extension_id)
-    return ShouldShowBraveRewardsAction();
   return true;
-}
-
-bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
-    return false;
-  }
-
-  if (!brave::IsRegularProfile(browser_->profile())) {
-    return false;
-  }
-
-  const PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_rewards::prefs::kShowButton);
 }
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
@@ -169,23 +138,14 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
     AttachAction(id);
-    // Handle if we are in a continuing pressed state for this extension.
-    if (is_rewards_pressed_ && id == brave_rewards_extension_id) {
-      is_rewards_pressed_ = false;
-      actions_[id].view_controller_->ExecuteUserAction(
-          ToolbarActionViewController::InvocationSource::kToolbarButton);
-    }
   }
 }
 
-void BraveActionsContainer::AddActionStubForRewards() {
-  const std::string id = brave_rewards_extension_id;
-  if (actions_[id].view_) {
-    return;
-  }
-  actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(
-      browser_->profile(), this);
-  AttachAction(id);
+void BraveActionsContainer::AddActionViewForRewards() {
+  auto button = std::make_unique<BraveRewardsActionView>(browser_);
+  rewards_action_btn_ = AddChildViewAt(std::move(button), 2);
+  rewards_action_btn_->SetPreferredSize(GetToolbarActionSize());
+  rewards_action_btn_->Update();
 }
 
 void BraveActionsContainer::AttachAction(const std::string& id) {
@@ -218,10 +178,6 @@ void BraveActionsContainer::AddAction(const std::string& id) {
       extension_registry_->enabled_extensions().GetByID(id);
   if (extension) {
     AddAction(extension);
-    return;
-  }
-  if (id == brave_rewards_extension_id) {
-    AddActionStubForRewards();
     return;
   }
   LOG(ERROR) << "Extension not found for Brave Action: " << id;
@@ -277,25 +233,45 @@ void BraveActionsContainer::AddActionViewForShields() {
 }
 
 void BraveActionsContainer::Update() {
-  // Update state of each action and also determine if there are any buttons to
-  // show
-  bool can_show = false;
-
   if (shields_action_btn_) {
     shields_action_btn_->Update();
+  }
+
+  if (rewards_action_btn_) {
+    rewards_action_btn_->Update();
+  }
+
+  for (auto& [_, value] : actions_) {
+    if (value.view_controller_) {
+      value.view_controller_->UpdateState();
+    }
+  }
+
+  UpdateVisibility();
+  Layout();
+}
+
+void BraveActionsContainer::UpdateVisibility() {
+  bool can_show = false;
+
+  // TODO(zenparsing): Can't we just iterate over children instead?
+  if (shields_action_btn_) {
     can_show = shields_action_btn_->GetVisible();
   }
 
-  for (auto const& pair : actions_) {
-    if (pair.second.view_controller_)
-      pair.second.view_controller_->UpdateState();
-    if (!can_show && pair.second.view_ && pair.second.view_->GetVisible())
-      can_show = true;
+  if (rewards_action_btn_) {
+    can_show = can_show || rewards_action_btn_->GetVisible();
   }
-  // only show separator if we're showing any buttons
-  const bool visible = !should_hide_ && can_show;
-  SetVisible(visible);
-  Layout();
+
+  for (auto& [_, value] : actions_) {
+    if (value.view_) {
+      can_show = can_show || value.view_->GetVisible();
+    }
+  }
+
+  // If no buttons are visible, then we want to hide this view so that the
+  // separator is not displayed.
+  SetVisible(!should_hide_ && can_show);
 }
 
 void BraveActionsContainer::SetShouldHide(bool should_hide) {
@@ -339,27 +315,6 @@ bool BraveActionsContainer::CanStartDragForView(View* sender,
 }
 // end ToolbarActionView::Delegate members
 
-// BraveRewardsActionStubView::Delegate members
-void BraveActionsContainer::OnRewardsStubButtonClicked() {
-  // Keep button state visually pressed until new extension button
-  // takes over.
-  actions_[brave_rewards_extension_id].view_->SetState(
-      views::Button::STATE_PRESSED);
-  extensions::ExtensionService* service =
-           extension_system_->extension_service();
-  if (service) {
-    is_rewards_pressed_ = true;
-    extensions::ComponentLoader* loader = service->component_loader();
-          static_cast<extensions::BraveComponentLoader*>(loader)->
-              AddRewardsExtension();
-
-    if (rewards_service_) {
-      rewards_service_->StartProcess(base::DoNothing());
-    }
-  }
-}
-// end BraveRewardsActionStubView::Delegate members
-
 void BraveActionsContainer::OnExtensionSystemReady() {
   // observe changes in extension system
   extension_registry_observer_.Observe(extension_registry_);
@@ -367,7 +322,6 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   brave_action_observer_.Observe(brave_action_api_);
   // Check if extensions already loaded
   AddAction(brave_extension_id);
-  AddAction(brave_rewards_extension_id);
 }
 
 // ExtensionRegistry::Observer
@@ -418,9 +372,8 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
   PreferredSizeChanged();
 }
 
-// Brave Rewards preferences change observers callback
-void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
-  UpdateActionVisibility(brave_rewards_extension_id);
+void BraveActionsContainer::ChildVisibilityChanged(views::View* child) {
+  UpdateVisibility();
 }
 
 ToolbarActionViewController* BraveActionsContainer::GetActionForId(
