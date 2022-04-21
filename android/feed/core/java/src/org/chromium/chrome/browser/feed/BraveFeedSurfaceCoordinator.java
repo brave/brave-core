@@ -9,11 +9,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.core.widget.NestedScrollView;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
@@ -41,7 +41,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private FrameLayout mRootView;
 
     // Own members.
-    private @Nullable ScrollView mScrollViewForPolicy;
+    private @Nullable NestedScrollView mScrollViewForPolicy;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
@@ -71,7 +71,9 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         // Remove all previously added views.
         mRootView.removeAllViews();
 
-        mScrollViewForPolicy = new ScrollView(mActivity);
+        mScrollViewForPolicy = new NestedScrollView(mActivity);
+        mScrollViewForPolicy.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         mScrollViewForPolicy.setBackgroundColor(
                 ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
         mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
@@ -88,11 +90,12 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             mScrollViewForPolicy.addView(mNtpHeader);
         }
         mRootView.addView(mScrollViewForPolicy);
+        mScrollViewForPolicy.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
     }
 
-    public ScrollView getScrollViewForPolicy() {
+    public NestedScrollView getScrollViewForPolicy() {
         return mScrollViewForPolicy;
     }
 

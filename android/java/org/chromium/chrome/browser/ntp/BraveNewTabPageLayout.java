@@ -45,12 +45,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.ImageViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -227,7 +227,7 @@ public class BraveNewTabPageLayout
     private TextView mLoading;
     private View mLoadingView;
     private View mFeedSpinner;
-    private ScrollView mParentScrollView;
+    private NestedScrollView mParentScrollView;
     private ViewGroup mImageCreditLayout;
     private ViewGroup mSettingsBar;
     private ViewGroup mNewContentButton;
@@ -974,7 +974,7 @@ public class BraveNewTabPageLayout
                 mParentScrollView.post(() -> {
                     mContainer.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.VISIBLE);
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                 });
             }
         } else {
@@ -1058,7 +1058,7 @@ public class BraveNewTabPageLayout
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManagerWrapper(mActivity, LinearLayoutManager.VERTICAL, false));
 
-        mParentScrollView = (ScrollView) mNtpContent.getParent();
+        mParentScrollView = (NestedScrollView) mNtpContent.getParent();
 
         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
         rootView.setFocusableInTouchMode(true);
@@ -1281,7 +1281,7 @@ public class BraveNewTabPageLayout
                                                                     NEWS_SCROLL_TO_TOP_RELOAD);
                                                             correctPosition(false);
                                                             mParentScrollView.fullScroll(
-                                                                    ScrollView.FOCUS_UP);
+                                                                    NestedScrollView.FOCUS_UP);
                                                             mRecyclerView.scrollToPosition(0);
                                                             return super.onDoubleTap(e);
                                                         }
@@ -1510,7 +1510,7 @@ public class BraveNewTabPageLayout
                     sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
                     sharedPreferencesEditor.apply();
                     correctPosition(false);
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                     mImageCreditLayout.setAlpha(1.0f);
                     mOptinLayout.setVisibility(View.GONE);
                 }
@@ -1545,7 +1545,7 @@ public class BraveNewTabPageLayout
                     }
 
                     getFeed();
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                     mRecyclerView.scrollToPosition(0);
                 }
             });
@@ -1746,7 +1746,7 @@ public class BraveNewTabPageLayout
                 initilizeSponsoredTab();
             }
             checkAndShowNTPImage(false);
-            mParentScrollView = (ScrollView) mNtpContent.getParent();
+            mParentScrollView = (NestedScrollView) mNtpContent.getParent();
             ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
             rootView.setFocusableInTouchMode(true);
             CompositorViewHolder compositorView = (CompositorViewHolder) rootView.getParent();
@@ -1798,7 +1798,7 @@ public class BraveNewTabPageLayout
                     BraveActivity.getBraveActivity().setBackground(bgWallpaper);
                 }
                 try {
-                    mParentScrollView = (ScrollView) mNtpContent.getParent();
+                    mParentScrollView = (NestedScrollView) mNtpContent.getParent();
                     if (mParentScrollView != null) {
                         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
 
