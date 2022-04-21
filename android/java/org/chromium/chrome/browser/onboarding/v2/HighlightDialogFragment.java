@@ -47,8 +47,8 @@ public class HighlightDialogFragment extends DialogFragment {
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews =
-            Arrays.asList(R.id.brave_stats_ads, R.id.brave_stats_data_saved, R.id.brave_stats_time);
+    private static final List<Integer> highlightViews = Arrays.asList(R.id.brave_stats_ads,
+            R.id.brave_stats_data_saved, R.id.brave_stats_time, R.id.ntp_stats_layout);
 
     private HighlightItem item;
     private HighlightView highlightView;
@@ -84,7 +84,7 @@ public class HighlightDialogFragment extends DialogFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (positionOffset == 0) {
-                    highlightView(isFromStats ? 2 : position);
+                    highlightView(isFromStats ? 3 : position);
                 }
             }
 
@@ -153,9 +153,7 @@ public class HighlightDialogFragment extends DialogFragment {
 
     private void highlightView(int position) {
         int viewId;
-        if (position == 3
-                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+        if (position == 3) {
             viewId = R.id.ntp_stats_layout;
         } else {
             viewId = highlightViews.get(position);
