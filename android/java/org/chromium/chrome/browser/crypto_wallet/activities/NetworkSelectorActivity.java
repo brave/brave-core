@@ -82,6 +82,7 @@ public class NetworkSelectorActivity
                                 Log.e(TAG, "Could not set network");
                             }
                         });
+                finish();        
             });
         }
     }
