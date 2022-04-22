@@ -25,6 +25,10 @@ struct CookieSettingWithBraveMetadata {
   CookieSettingWithBraveMetadata& operator=(CookieSettingWithBraveMetadata&&);
   ~CookieSettingWithBraveMetadata();
 
+  // Return true if any of the patterns is not "*", similar to
+  // content_settings::IsExplicitSetting().
+  bool IsExplicitSetting() const;
+
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   bool primary_pattern_matches_all_hosts = false;
   bool secondary_pattern_matches_all_hosts = false;
