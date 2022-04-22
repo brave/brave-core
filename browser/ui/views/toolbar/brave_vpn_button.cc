@@ -109,7 +109,9 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
                                         base::Unretained(this)),
                     std::make_unique<VPNButtonMenuModel>(browser),
-                    nullptr),
+                    nullptr,
+                    false),  // Long-pressing is not intended for something that
+                             // already shows a panel on click
       browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
   DCHECK(service_);
@@ -119,6 +121,16 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveVPNButtonHighlightPathGenerator>(
                 GetToolbarInkDropInsets(this)));
+
+  // The MenuButtonController makes sure the panel closes when clicked if the
+  // panel is already open.
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&BraveVPNButton::OnButtonPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
+  SetButtonController(std::move(menu_button_controller));
 
   label()->SetText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
