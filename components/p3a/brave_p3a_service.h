@@ -14,6 +14,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
+#include "base/strings/string_piece_forward.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/p3a_message.h"
