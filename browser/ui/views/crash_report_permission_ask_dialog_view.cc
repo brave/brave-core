@@ -187,7 +187,7 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   footnote_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kCenter);
   footnote->SetBackground(
-      views::CreateThemedSolidBackground(footnote, ui::kColorDialogBackground));
+      views::CreateThemedSolidBackground(ui::kColorDialogBackground));
 
   const std::u16string setting_text =
       brave_l10n::GetLocalizedResourceUTF16String(
