@@ -89,11 +89,12 @@ std::string CreateWebBundle() {
   std::string flbk_js_url_str =
       GURL(base::JoinString({kOriginTrialTestHostname, "fallback.js"}, "/"))
           .spec();
-  web_package::WebBundleBuilder builder(flbk_js_url_str, "");
-  auto pass_js_location = builder.AddResponse(
+  web_package::WebBundleBuilder builder;
+  builder.AddPrimaryURL(flbk_js_url_str);
+  builder.AddExchange(
+      pass_js_url_str,
       {{":status", "200"}, {"content-type", "application/javascript"}},
       "document.title = 'script loaded';");
-  builder.AddIndexEntry(pass_js_url_str, "", {pass_js_location});
   std::vector<uint8_t> bundle = builder.CreateBundle();
   return std::string(bundle.begin(), bundle.end());
 }
