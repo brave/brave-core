@@ -1246,4 +1246,9 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="2389181429986654814">Idi na <ph name="PROVIDER"/> za dovršetak provjere valjanosti</translation>
+<translation id="7793632266654336758">Obavite provjeru identiteta za početak primanja nagrada.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> traži javni ključ za šifriranje novčanika. Ako pristanete na davanje ključa, mrežno vam mjesto može slati šifrirane poruke.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> želi pročitati ovu poruku za ispunjavanje vašeg zahtjeva</translation>
+<translation id="6835073906252142271">Štitovi Brave blokiraju <ph name="NUMBER"/> elemente za praćenje, oglase i više</translation>
 </translationbundle>

@@ -192,6 +192,19 @@
     "message": "Contribuție automată",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Accesați $provider$ pentru finalizarea verificării",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Finalizați confirmarea identității pentru a începe să primiți recompense.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Deconectat",
     "description": ""

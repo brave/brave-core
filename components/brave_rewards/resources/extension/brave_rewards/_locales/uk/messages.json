@@ -192,6 +192,19 @@
     "message": "Автоматичний внесок",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Перейдіть до $provider$, щоб завершити верифікацію ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Пройдіть процедуру підтвердження особи й почніть отримувати винагороди.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Вихід виконано",
     "description": ""

@@ -192,6 +192,19 @@
     "message": "Automatinis indėlis",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Eikite į $provider$, kad užbaigtumėte patvirtinimą",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Atlikite tapatybės patvirtinimą, kad pradėtumėte gauti atlygį",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Atsijungta",
     "description": ""

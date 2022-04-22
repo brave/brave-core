@@ -192,6 +192,19 @@
     "message": "தானாக-பங்களி",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Go to $provider$ to complete verification",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Please complete identity verification in order to start receiving rewards.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Logged out",
     "description": ""

@@ -192,6 +192,19 @@
     "message": "Automatski doprinosi",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Idite na $provider$ da biste dovršili verifikaciju",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Dovršite verifikaciju identiteta da biste počeli da dobijate nagrade.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Odjavljeno",
     "description": ""

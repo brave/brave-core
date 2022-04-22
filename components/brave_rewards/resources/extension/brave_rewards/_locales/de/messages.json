@@ -192,6 +192,19 @@
     "message": "Automatische Spenden",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Zu $provider$ gehen, um die Verifizierung abzuschließen",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Bitte schließen Sie die Identitätsverifizierung ab, um Belohnungen zu sammeln.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Abgemeldet",
     "description": ""

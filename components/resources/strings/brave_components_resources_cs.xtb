@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="2389181429986654814">Pro dokončení ověření přejděte na web <ph name="PROVIDER"/></translation>
+<translation id="7793632266654336758">Abyste mohli začít dostávat odměny, vyplňte ověření identity.</translation>
+<translation id="423332628699531400">Stránka <ph name="SITE_ORIGIN"/> vyžaduje veřejný šifrovací klíč vaší peněženky. Pokud s udělením tohoto klíče budete souhlasit, bude vám stránka moci posílat šifrované zprávy.</translation>
+<translation id="5883819003576364085">Stránka <ph name="SITE_ORIGIN"/> by si ráda tuto zprávu přečetla pro vyhovění vašemu požadavku</translation>
+<translation id="6835073906252142271">Štíty Brave odrazily <ph name="NUMBER"/> Měření, reklam a další nežádoucí prvky</translation>
 </translationbundle>

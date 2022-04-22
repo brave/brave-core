@@ -192,6 +192,19 @@
     "message": "کمک خودکار",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "برای تکمیل تأیید هویت، به $provider$ بروید",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "به‌منظور شروع دریافت پاداش‌ها، لطفاً تأیید هویت را انجام دهید.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "از سیستم خارج شدید",
     "description": ""

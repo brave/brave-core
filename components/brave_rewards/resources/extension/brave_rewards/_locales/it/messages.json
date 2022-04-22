@@ -192,6 +192,19 @@
     "message": "Contribuisci automaticamente",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Passa a $provider$ per completare la verifica",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Completa la verifica dell’identità per iniziare a ricevere dei premi.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Disconnessione effettuata",
     "description": ""

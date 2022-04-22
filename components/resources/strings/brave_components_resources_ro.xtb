@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
+<translation id="2389181429986654814">Accesați <ph name="PROVIDER"/> pentru confirmare completă</translation>
+<translation id="7793632266654336758">Finalizați confirmarea identității pentru a începe să primiți recompense.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> vă solicită cheia de criptare publică a portofelelor. Dacă sunteți de acord să furnizați această cheie, site-ul va putea redacta mesaje criptate spre dvs.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ar dori să citească acest mesaj pentru a vă îndeplini solicitarea</translation>
+<translation id="6835073906252142271">Scuturile Brave <ph name="NUMBER"/> module de urmărire, anunțuri și altele blocate</translation>
 </translationbundle>

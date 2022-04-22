@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="2389181429986654814">Kinnitamise lõpuleviimiseks avage <ph name="PROVIDER"/></translation>
+<translation id="7793632266654336758">Palun kinnitage oma identiteet, et hakata preemiaid saama.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> küsib teie rahakoti avalikku krüptovõtit. Kui nõustute selle võtme andmisega, saab see veebisait koostada teile krüptitud sõnumeid.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> soovib lugeda seda sõnumit, et täita teie päring</translation>
+<translation id="6835073906252142271">Brave'i Kaitsed: <ph name="NUMBER"/> blokeeritud jälgijat, reklaami ja muud</translation>
 </translationbundle>

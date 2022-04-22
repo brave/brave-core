@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="2389181429986654814">Ga naar <ph name="PROVIDER"/> om de verificatie af te ronden</translation>
+<translation id="7793632266654336758">Voltooi de identiteitverificatie om te kunnen beginnen beloningen te ontvangen.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> vraagt de openbare coderingssleutel van uw wallet aan. Indien u deze sleutel deelt, kan de site versleutelde berichten aan u opstellen.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> wil dit bericht lezen om uw aanvraag af te ronden</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> geblokkeerde trackers, advertenties en nog veel meer</translation>
 </translationbundle>

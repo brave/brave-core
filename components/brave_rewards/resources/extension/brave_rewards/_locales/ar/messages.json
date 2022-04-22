@@ -192,6 +192,19 @@
     "message": "مساهمة تلقائية",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "انتقل إلى $provider$ لإكمال التحقق",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "نرجو إكمال التحقق من الهوية لبدء استلام المكافآت.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "تم تسجيل الخروج ",
     "description": ""

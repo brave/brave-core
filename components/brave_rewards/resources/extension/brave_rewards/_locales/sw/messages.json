@@ -192,6 +192,19 @@
     "message": "Auto-Contribute",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Nenda kwenye $provider$ ukamilise uthibitishaji",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Tafadhali kamilisha uthibitishaji wa utambulisho ili kuanza kupokea zawadi.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Umeondoka",
     "description": ""

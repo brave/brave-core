@@ -1245,4 +1245,9 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="2389181429986654814">Gå til <ph name="PROVIDER"/> for å fullføre bekreftelsen</translation>
+<translation id="7793632266654336758">Fullfør identitietsbekreftelsen for å begynne å motta belønninger.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> ber om den offentlige krypteringsnøkkelen for lommeboken din. Hvis du samtykker til å oppgi denne nøkkelen, vil siden kunne opprette krypterte meldinger til deg.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ønsker å lese denne meldingen for å fullføre forespørselen din</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/>Sporere, annonser med mer er blokkert</translation>
 </translationbundle>

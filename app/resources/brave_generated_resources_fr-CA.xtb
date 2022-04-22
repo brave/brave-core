@@ -467,4 +467,9 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
 <translation id="2234108191702901162">Impossible d'ajouter le réseau</translation>
 <translation id="2618193846561624884">Voulez-vous mettre à jour le réseau existant?</translation>
+<translation id="264150068416846820">Afficher les sites suggérés par Brave dans les suggestions autocomplètes</translation>
+<translation id="8578912649458880781">Ciblage des publicités au niveau de l'État</translation>
+<translation id="3678362265519557511">Cela permet à Brave de vous montrer des publicités spécifiques à votre État. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Définir Brave comme navigateur par défaut</translation>
+<translation id="8581710194025054669">Pour garantir le meilleur de la confidentialité en ligne, nous vous conseillons de définir Brave comme navigateur par défaut sur votre ordinateur. De cette façon, les liens sur lesquels vous cliquerez s'ouvriront avec les protections de confidentialité de Brave.</translation>
 </translationbundle>

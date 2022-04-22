@@ -461,4 +461,9 @@ Are you sure you want to do this?</translation>
 <translation id="1062463687579789365">Wallet networks customisation</translation>
 <translation id="2234108191702901162">Unable to add network</translation>
 <translation id="2618193846561624884">Do you want to update the existing network?</translation>
+<translation id="264150068416846820">Show Brave suggested sites in autocomplete suggestions</translation>
+<translation id="8578912649458880781">Area-level ad targeting</translation>
+<translation id="3678362265519557511">This allows Brave to show you ads meant specifically for your area. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Set Brave as default browser</translation>
+<translation id="8581710194025054669">To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.</translation>
 </translationbundle>

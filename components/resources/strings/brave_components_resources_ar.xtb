@@ -1247,4 +1247,9 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="2389181429986654814">انتقل إلى <ph name="PROVIDER"/> لإكمال التحقق</translation>
+<translation id="7793632266654336758">نرجو إكمال التحقق من الهوية لبدء استلام المكافآت.</translation>
+<translation id="423332628699531400">يطلب <ph name="SITE_ORIGIN"/> مفتاح التشفير العام الخاص بك. في حال موافقتك على مشاركته، سيتمكن الموقع من إنشاء رسائل مشفرة لك.</translation>
+<translation id="5883819003576364085">يرغب <ph name="SITE_ORIGIN"/> في قراءة هذه الرسالة لإكمال طلبك</translation>
+<translation id="6835073906252142271">تم حظر دروع حماية Brave<ph name="NUMBER"/> وأدوات التتبع والإعلانات وغيرها</translation>
 </translationbundle>

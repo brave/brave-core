@@ -192,6 +192,19 @@
     "message": "Автоматично даряване",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Към $provider$, за да завършите проверката",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Завършете проверката на самоличността, за да започнете да получавате награди.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Излязохте",
     "description": ""

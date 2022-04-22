@@ -192,6 +192,19 @@
     "message": "自动贡献",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "转到$provider$完成验证。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "请完成身份验证以开始接收奖励。",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "已退出登录",
     "description": ""

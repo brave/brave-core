@@ -192,6 +192,19 @@
     "message": "Автоматический взнос",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Завершить проверку личности можно здесь: $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Чтобы начать получать вознаграждения, завершите проверку личности.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Вы вышли",
     "description": ""

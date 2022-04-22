@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="2389181429986654814">Accédez à <ph name="PROVIDER"/> pour terminer la vérification</translation>
+<translation id="7793632266654336758">Veuillez terminer la vérification d'identité afin de commencer à recevoir des récompenses.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> demande la clé de chiffrement publique de vos portefeuilles. Si vous consentez à fournir cette clé, le site sera en mesure de vous composer des messages chiffrés.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> souhaite lire ce message pour terminer votre demande</translation>
+<translation id="6835073906252142271"><ph name="NUMBER"/> traceurs, publicités et autres bloqués par les Boucliers Brave</translation>
 </translationbundle>

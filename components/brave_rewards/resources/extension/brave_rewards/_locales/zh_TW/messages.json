@@ -192,6 +192,19 @@
     "message": "自動捐獻",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "前往 $provider$ 完成驗證",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "請完成身分驗證以開始接受獎勵。",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "已登出",
     "description": ""

@@ -466,4 +466,9 @@
 <translation id="1062463687579789365">定制钱包网络</translation>
 <translation id="2234108191702901162">无法添加网络</translation>
 <translation id="2618193846561624884">要更新现有网络吗？</translation>
+<translation id="264150068416846820">在自动完成建议中显示 Brave 的建议站点</translation>
+<translation id="8578912649458880781">状态级别广告靶向</translation>
+<translation id="3678362265519557511">这将允许 Brave 向您显示符合您状态的广告。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">将 Brave 设为默认浏览器</translation>
+<translation id="8581710194025054669">为了确保最佳的在线隐私，可以考虑将 Brave 设置为您电脑上的默认浏览器。将 Brave 设为默认浏览器后，您点击的任何网络链接都将享有 Brave 的隐私保护功能。</translation>
 </translationbundle>

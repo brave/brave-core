@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="2389181429986654814">Pumunta sa <ph name="PROVIDER"/> para makumpleto ang pag-verify.</translation>
+<translation id="7793632266654336758">Pakikumpleto ang pag-verify sa pagkakakilanlan para magsimulang makatanggap ng mga reward.</translation>
+<translation id="423332628699531400">Hinihingi ng <ph name="SITE_ORIGIN"/> ang public encryption key ng iyong wallet. Kung papayag kang ibigay ang key na ito, makakapag-compose ng mga naka-encrypt na mensahe ang site sa iyo.</translation>
+<translation id="5883819003576364085">Gustong basahin ng <ph name="SITE_ORIGIN"/> ang mensaheng ito para makumpleto ang iyong kahilingan</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> Tracker, ad at marami pa ang naba-block</translation>
 </translationbundle>

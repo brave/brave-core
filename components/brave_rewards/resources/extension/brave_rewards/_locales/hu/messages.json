@@ -192,6 +192,19 @@
     "message": "Automatikus támogatás",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Ugrás ide: $provider$ az ellenőrzés befejezéséhez",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Fejezze be a személyazonosságod igazolását, hogy jutalmakban részesülhessen",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Kijelentkezett",
     "description": ""

@@ -468,4 +468,10 @@ Segur que vols continuar?</translation>
 <translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
+<translation id="264150068416846820">Mostreu els llocs suggerits de Brave en suggeriments de complet automàtic</translation>
+<translation id="8578912649458880781">Orientació dels anuncis a nivell estatal</translation>
+<translation id="3678362265519557511">Això permet que Brave et mostri anuncis segons el teu estat.
+<ph name="BEGIN_LINK"/> Més informació<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Defineix Brave com a navegador predeterminat</translation>
+<translation id="8581710194025054669">Per tal de garantir la millor privadesa en línia, pensa a definir Brave com el navegador predeterminat del teu ordinador. Si Brave és el navegador per defecte, qualsevol enllaç web en el qual facis clic s'obrirà amb les proteccions de privacitat de Brave.</translation>
 </translationbundle>

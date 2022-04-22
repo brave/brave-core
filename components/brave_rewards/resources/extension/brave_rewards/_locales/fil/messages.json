@@ -192,6 +192,19 @@
     "message": "Awtomatikong Mag-ambag",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Pumunta sa $provider$ para makumpleto ang pag-verify",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Pakikumpleto ang pag-verify sa pagkakakilanlan para magsimulang makatanggap ng mga reward.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Na-log out",
     "description": ""

@@ -192,6 +192,19 @@
     "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು $provider$ ಗೆ ಹೋಗಿ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸುವುದನ್ನು ಆರಂಭಿಸುವುದಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಗುರುತು ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ",
     "description": ""

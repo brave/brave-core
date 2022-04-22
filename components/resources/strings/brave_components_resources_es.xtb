@@ -1246,4 +1246,9 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Ocultar tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostrar tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes saldo disponible en tu cuenta. Pásate por FTX para adquirir fondos.</translation>
+<translation id="2389181429986654814">Ir a <ph name="PROVIDER"/> para finalizar la verificación</translation>
+<translation id="7793632266654336758">Finaliza la verificación de identidad para empezar a recibir recompensas.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> solicita la clave de cifrado público de tus carteras. Si das tu consentimiento para facilitar esta clave, el sitio podrá enviarte mensajes cifrados.</translation>
+<translation id="5883819003576364085">A <ph name="SITE_ORIGIN"/> le gustaría leer este mensaje para responder a tu solicitud</translation>
+<translation id="6835073906252142271">Protecciones de Brave <ph name="NUMBER"/> Se han bloqueado rastreadores, anuncios y otros elementos</translation>
 </translationbundle>

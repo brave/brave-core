@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
+<translation id="2389181429986654814">Gå till <ph name="PROVIDER"/> för att slutföra verifieringen</translation>
+<translation id="7793632266654336758">Slutför identitetsverifieringen för att börja ta emot belöningar.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> begär dina plånböckers offentlig krypteringsnyckel. Om du samtycker till att tillhandahålla den här nyckeln kan webbplatsen skriva krypterade meddelanden till dig.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vill läsa det här meddelandet för att slutföra din begäran</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> spårare, annonser med mera är blockerade</translation>
 </translationbundle>

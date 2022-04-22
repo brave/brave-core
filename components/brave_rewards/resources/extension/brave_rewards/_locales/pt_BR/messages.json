@@ -192,6 +192,19 @@
     "message": "Contribuição Automática",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Acesse $provider$ para concluir a verificação",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Conclua a verificação de identidade para começar a receber recompensas.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Sessão encerrada",
     "description": ""

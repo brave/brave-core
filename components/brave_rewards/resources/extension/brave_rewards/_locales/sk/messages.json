@@ -192,6 +192,19 @@
     "message": "Automaticky prispieť",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Prejdite na $provider$ pre dokončenie overenia",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Dokončite overenie identity, aby ste mohli začať dostávať odmeny.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Odhlásené",
     "description": ""

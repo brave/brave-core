@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="2389181429986654814">Ugrás ide: <ph name="PROVIDER"/> az ellenőrzés befejezéséhez</translation>
+<translation id="7793632266654336758">Fejezze be a személyazonossága igazolását, hogy jutalmakban részesülhessen.</translation>
+<translation id="423332628699531400">A(z) <ph name="SITE_ORIGIN"/> a tárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcsa megadásához, a webhely képes lesz titkosított üzeneteket létrehozni Önnek.</translation>
+<translation id="5883819003576364085">A(z) <ph name="SITE_ORIGIN"/> el szeretné olvasni ezt az üzenetet a kérése végrehajtásához</translation>
+<translation id="6835073906252142271">Brave pajzsok – <ph name="NUMBER"/> nyomkövető, hirdetés és egyéb blokkolva</translation>
 </translationbundle>

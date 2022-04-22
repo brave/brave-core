@@ -192,6 +192,19 @@
     "message": "Auto-Sumbang",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Pergi ke $provider$ untuk melengkapkan pengesahan",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Sila lengkapkan pengesahan identiti untuk mula menerima ganjaran.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Dilog keluar",
     "description": ""

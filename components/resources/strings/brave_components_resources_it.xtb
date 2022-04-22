@@ -1246,4 +1246,9 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="2389181429986654814">Passa a <ph name="PROVIDER"/> per completare la verifica</translation>
+<translation id="7793632266654336758">Completa la verifica dell’identità per iniziare a ricevere dei premi.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> richiede la chiave di crittografia pubblica del tuo portafoglio. Se accetti di fornire la chiave, il sito potrà inviarti messaggi criptati.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vuole leggere questo messaggio per completare la richiesta</translation>
+<translation id="6835073906252142271">Protezioni Brave <ph name="NUMBER"/> tracker, annunci e altro bloccati</translation>
 </translationbundle>

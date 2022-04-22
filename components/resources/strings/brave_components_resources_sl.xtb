@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="2389181429986654814">Če želite dokončati preverjanje, pojdite na <ph name="PROVIDER"/></translation>
+<translation id="7793632266654336758">Če želite prejemati nagrade, dokončajte preverjanje identitete.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> zahteva javni šifrirni ključ vaše denarnice. Če se strinjate s posredovanjem tega ključa, vam bo spletno mesto lahko pošiljalo šifrirana sporočila.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> bi rad prebral to sporočilo, da dopolni vašo zahtevo</translation>
+<translation id="6835073906252142271">Ščit Brave Shields <ph name="NUMBER"/> blokira sledilnike, oglase in mnogo več</translation>
 </translationbundle>

@@ -462,4 +462,9 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1062463687579789365">Tilpasning af Wallet-netværk</translation>
 <translation id="2234108191702901162">Der kunne ikke tilføje netværk</translation>
 <translation id="2618193846561624884">Vil du opdatere det eksisterende netværk?</translation>
+<translation id="264150068416846820">Vis Braves foreslåede sider i forslag fra automatisk udfyldning</translation>
+<translation id="8578912649458880781">Reklametilpasning på statsniveau</translation>
+<translation id="3678362265519557511">Dette gør Brave i stand til at vise dig reklamer, der passer præcis på din delstat. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Angiv som standardbrowser</translation>
+<translation id="8581710194025054669">For at sikre den bedste mulige anonymitet online bør du overveje at indstille Brave til at være standardbrowser på din computer. Hvis Brave er din standardbrowser, vil alle weblinks, som du klikker på, blive åbnet med Braves beskyttelse af din anonymitet.</translation>
 </translationbundle>

@@ -192,6 +192,19 @@
     "message": "Automātiska ziedošana",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Doties uz $provider$, lai pabeigtu verifikāciju",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Pabeidziet identitātes verifikāciju, lai sāktu saņemt balvas.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Izrakstījies",
     "description": ""

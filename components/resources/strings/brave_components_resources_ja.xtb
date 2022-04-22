@@ -1248,4 +1248,9 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="2389181429986654814"><ph name="PROVIDER"/>に移動して認証を完了します</translation>
+<translation id="7793632266654336758">報酬を受け取るには、本人確認を完了する必要があります。</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/>が、あなたのウォレットの公開暗号鍵を要求しています。鍵の提供に同意すると、サイトで暗号化されたメッセージを作成することができます。</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/>が、リクエストを完了させるためにこのメッセージの閲覧を要求しています</translation>
+<translation id="6835073906252142271">Braveシールドで<ph name="NUMBER"/>件のトラッカー、広告などがブロックされました</translation>
 </translationbundle>

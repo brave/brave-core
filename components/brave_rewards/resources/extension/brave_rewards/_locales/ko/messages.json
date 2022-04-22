@@ -192,6 +192,19 @@
     "message": "자동 기부",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "$provider$로 이동하여 확인 완료",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "리워드 적립을 시작하려면 신원 확인을 완료하세요.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "로그아웃됨",
     "description": ""

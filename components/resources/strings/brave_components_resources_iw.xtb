@@ -1248,4 +1248,9 @@
 <translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
 <translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 <translation id="242959166945779492">אין לך יתרות בחשבון. בקר ב-FTX לרכישת יתרה.</translation>
+<translation id="2389181429986654814">עבור אל <ph name="PROVIDER"/> כדי להשלים את האימות</translation>
+<translation id="7793632266654336758">השלם את אימות זהותך על מנת להתחיל לקבל תגמולים.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> מבקש את מפתח ההצפנה הפומבי שלך. באמצעות מתן אישור להעביר את מפתח ההצפנה הזה, יתאפשר לאתר הזה לשלוח לך הודעות מוצפנות.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> מבקש לקרוא את ההודעה הזו כדי להשלים את הפעולה שלך</translation>
+<translation id="6835073906252142271">ההגנות של Brave <ph name="NUMBER"/>חוסמות אפשרויות מעקב, פרסומות ועוד</translation>
 </translationbundle>

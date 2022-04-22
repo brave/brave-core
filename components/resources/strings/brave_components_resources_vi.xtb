@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="2389181429986654814">Truy cập <ph name="PROVIDER"/> để hoàn thành xác minh</translation>
+<translation id="7793632266654336758">Vui lòng hoàn thành xác minh danh tính để bắt đầu nhận phần thưởng.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> đang yêu cầu khóa mã hóa công khai ví của bạn. Nếu bạn đồng ý cung cấp khóa này thì trang web có thể soạn tin nhắn được mã hóa cho bạn.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> muốn đọc tin nhắn này để hoàn thành yêu cầu của bạn</translation>
+<translation id="6835073906252142271">Khiên Brave <ph name="NUMBER"/> Trình theo dõi, quảng cáo và hơn thế nữa bị chặn</translation>
 </translationbundle>

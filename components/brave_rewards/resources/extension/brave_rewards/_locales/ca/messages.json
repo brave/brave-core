@@ -192,6 +192,19 @@
     "message": "Auto-Contribució",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Ves a $provider$ per completar la verificació ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Completa la verificació de la teva identitat per començar a rebre Brave Rewards.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Sessió tancada",
     "description": ""

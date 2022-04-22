@@ -467,4 +467,9 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
+<translation id="264150068416846820">在自動完成建議中顯示 Brave 建議的網站</translation>
+<translation id="8578912649458880781">國家級廣告定位</translation>
+<translation id="3678362265519557511">這允許 Brave 向您顯示符合您狀態的廣告。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">將 Brave 設為預設瀏覽器</translation>
+<translation id="8581710194025054669">若要享有最優質的網路隱私，不妨考慮將 Brave 設為您電腦上的預設瀏覽器。這麼做的話，每當您點選任何網頁連結，Brave 都會在開啟連結時一併啟動隱私防護機制。</translation>
 </translationbundle>

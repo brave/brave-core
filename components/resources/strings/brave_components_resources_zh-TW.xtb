@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="2389181429986654814">前往 <ph name="PROVIDER"/> 以完成驗證</translation>
+<translation id="7793632266654336758">請完成身分驗證以開始接受獎勵。</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> 要求取得您錢包的公共加密金鑰。如果您同意提供金鑰，網站就能編寫加密訊息給您。</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> 想讀取此訊息以完成您的要求</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> 個追蹤程式、廣告等項目已遭封鎖</translation>
 </translationbundle>

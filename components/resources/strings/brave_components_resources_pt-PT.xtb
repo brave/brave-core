@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Não mostrar os seus saldos no ecrã</translation>
 <translation id="4548946945059463969">Mostrar os seus saldos no ecrã</translation>
 <translation id="242959166945779492">Não tem saldos na sua conta. Visite FTX para comprar.</translation>
+<translation id="2389181429986654814">Aceder a <ph name="PROVIDER"/> para finalizar a verificação</translation>
+<translation id="7793632266654336758">Proceda à verificação da identidade para começar a receber recompensas.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> requer a chave de encriptação pública da sua carteira. Se a fornecer, este site poderá compor mensagens encriptadas para si.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> pretende ler esta mensagem para concluir o seu pedido</translation>
+<translation id="6835073906252142271">Proteções Brave: <ph name="NUMBER"/> rastreadores, anúncios e mais bloqueados</translation>
 </translationbundle>

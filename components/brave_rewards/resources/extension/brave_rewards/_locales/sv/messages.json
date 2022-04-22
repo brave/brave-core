@@ -192,6 +192,19 @@
     "message": "Bidra automatiskt",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Gå till $provider$ för att slutföra verifieringen",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Slutför identitetsverifieringen för att börja ta emot belöningar.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Utloggad",
     "description": ""

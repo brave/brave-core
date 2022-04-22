@@ -192,6 +192,19 @@
     "message": "Auto-Contribuer",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Allez sur $provider$ pour terminer la vérification",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Veuillez terminer la vérification d'identité afin de commencer à recevoir des récompenses.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Déconnecté",
     "description": ""

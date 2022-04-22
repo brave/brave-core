@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="2389181429986654814">Ves a <ph name="PROVIDER"/> per completar la verificació</translation>
+<translation id="7793632266654336758">Completa la verificació de la teva identitat per començar a rebre Brave Rewards.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> està  sol·licitant la clau de xifratge pública de les vostres carteres. Si doneu el consentiment per proporcionar aquesta clau, el lloc podrà compondre missatges xifrats per a vós.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vol llegir aquest missatge per completar la vostra sol·licitud</translation>
+<translation id="6835073906252142271">Protectors del Brave <ph name="NUMBER"/> rastrejadors, anuncis i més bloquejats</translation>
 </translationbundle>

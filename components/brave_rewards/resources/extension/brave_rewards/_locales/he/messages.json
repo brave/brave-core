@@ -192,6 +192,19 @@
     "message": "תרומה אוטומטית",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "עבור אל $provider$ כדי להשלים את האימות",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "השלם את אימות הזהות על מנת להתחיל לקבל תגמולים.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "התנתק",
     "description": ""

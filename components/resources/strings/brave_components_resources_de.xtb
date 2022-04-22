@@ -1246,4 +1246,9 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="2389181429986654814">Zu <ph name="PROVIDER"/> gehen, um die Verifizierung abzuschließen</translation>
+<translation id="7793632266654336758">Bitte schließen Sie die Identitätsverifizierung ab, um Belohnungen zu sammeln.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> fordert den öffentlichen Verschlüsselungscode Ihrer Wallet an. Wenn Sie der Bereitstellung dieses Schlüssels zustimmen, kann die Website verschlüsselte Nachrichten an Sie verfassen.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> möchte diese Nachricht lesen, um Ihre Anfrage abzuschließen</translation>
+<translation id="6835073906252142271">Brave Schutz hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 </translationbundle>

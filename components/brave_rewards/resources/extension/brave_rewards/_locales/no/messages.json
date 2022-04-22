@@ -192,6 +192,19 @@
     "message": "Auto-bidra",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Gå til $provider$ for å fullføre bekreftelsen.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Fullfør identitietsbekreftelsen for å begynne å motta belønninger.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Logget ut",
     "description": ""

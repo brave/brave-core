@@ -192,6 +192,19 @@
     "message": "Tự động Đóng góp",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Truy cập $provider$ để hoàn tất xác minh",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Vui lòng hoàn thành xác minh danh tính để bắt đầu nhận phần thưởng.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Đã đăng xuất",
     "description": ""

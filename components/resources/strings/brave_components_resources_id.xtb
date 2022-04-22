@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="2389181429986654814">Buka <ph name="PROVIDER"/> untuk melengkapi verifikasi</translation>
+<translation id="7793632266654336758">Silakan lengkapi verifikasi identitas agar dapat mulai menerima imbalan.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> meminta kunci enkripsi publik dompet Anda. Jika Anda setuju untuk memberikan kunci ini, situs tersebut akan dapat menyusun pesan terenkripsi untuk Anda.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ingin membaca pesan ini untuk menyelesaikan permintaan Anda</translation>
+<translation id="6835073906252142271">Perisai Brave <ph name="NUMBER"/> Pelacak, iklan, dan lebih banyak hal lagi telah diblokir</translation>
 </translationbundle>

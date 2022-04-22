@@ -192,6 +192,19 @@
     "message": "自動支援",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "$provider$へ移動して認証を完了",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "報酬を受け取るには、本人確認を完了する必要があります。",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "ログアウト済み",
     "description": ""

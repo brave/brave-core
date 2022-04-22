@@ -192,6 +192,19 @@
     "message": "Automatický příspěvek ",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "K ověření přejděte na $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Abyste mohli začít dostávat odměny, vyplňte ověření identity.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Odhlášeno",
     "description": ""

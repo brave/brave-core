@@ -192,6 +192,19 @@
     "message": "Auto-Contribute",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Πηγαίνετε στο $provider$ για να ολοκληρώσετε την επαλήθευση.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Για να αρχίσετε να λαμβάνετε Rewards, πρέπει να ολοκληρώσετε την επαλήθευση ταυτότητας",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Αποσυνδέθηκε",
     "description": ""

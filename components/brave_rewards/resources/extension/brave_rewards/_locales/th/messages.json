@@ -192,6 +192,19 @@
     "message": "มีส่วนร่วมอัตโนมัติ",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "ไปที่ $provider$ เพื่อยืนยันให้เสร็จสิ้น",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "กรุณายืนยันตัวตนให้เสร็จสิ้นเพื่อเริ่มรับรางวัล",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "ออกจากระบบ",
     "description": ""

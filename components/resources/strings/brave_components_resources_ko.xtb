@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="2389181429986654814"><ph name="PROVIDER"/>로 이동하여 확인 완료하기</translation>
+<translation id="7793632266654336758">리워드를 받기 시작하려면 신원 확인을 완료하세요.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/>가 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/>에서 이 메시지를 읽고 귀하의 요청을 처리하고자 합니다.</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
 </translationbundle>

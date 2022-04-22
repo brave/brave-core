@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="2389181429986654814">Siirry kohteeseen <ph name="PROVIDER"/> vahvistuksen suorittamiseksi</translation>
+<translation id="7793632266654336758">Viimeistele henkilöllisyyden vahvistus, jotta voit saada palkintoja.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> pyytää lompakkojesi julkista salausavainta. Jos suostut antamaan avaimen, sivusto voi luoda sinulle salattuja viestejä.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> haluaa lukea tämän viestin suorittaakseen pyyntösi</translation>
+<translation id="6835073906252142271">Brave-suojaukset <ph name="NUMBER"/> seurantatoimintoa, mainosta yms. estetty</translation>
 </translationbundle>

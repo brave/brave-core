@@ -1246,4 +1246,9 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="2389181429986654814">Przejdź do <ph name="PROVIDER"/>, aby zakończyć weryfikację</translation>
+<translation id="7793632266654336758">Zakończ weryfikację tożsamości, aby rozpocząć otrzymywać nagrody.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> żąda Twojego publicznego klucza szyfrowania. Jeśli zgodzisz się na jego przesłanie, strona będzie mogła wysyłać do Ciebie szyfrowane wiadomości.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> chce odczytać tę wiadomość, aby ukończyć przetwarzanie Twojego żądania</translation>
+<translation id="6835073906252142271">Tarcze Brave <ph name="NUMBER"/> Zablokowane skrypty śledzące, reklamy i inne</translation>
 </translationbundle>

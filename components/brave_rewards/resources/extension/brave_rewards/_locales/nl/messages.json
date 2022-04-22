@@ -192,6 +192,19 @@
     "message": "Auto-Contribute",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Ga naar $provider$ om de verificatie te voltooien",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Voltooi de identiteitverificatie om te kunnen beginnen beloningen te ontvangen.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Uitgelogd",
     "description": ""

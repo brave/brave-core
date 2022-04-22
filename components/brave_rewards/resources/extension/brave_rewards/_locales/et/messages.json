@@ -192,6 +192,19 @@
     "message": "Automaatne panustamine",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Kinnitamise lõpuleviimiseks avage $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Palun kinnitage oma identiteet, et hakata preemiaid saama.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Välja loginud",
     "description": ""

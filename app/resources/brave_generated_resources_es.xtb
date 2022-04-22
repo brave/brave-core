@@ -467,4 +467,9 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="1062463687579789365">Personalización de redes de carteras</translation>
 <translation id="2234108191702901162">No ha sido posible añadir la red</translation>
 <translation id="2618193846561624884">¿Deseas actualizar la red actual?</translation>
+<translation id="264150068416846820">Mostrar sitios sugeridos por Brave en sugerencias de autocompletar</translation>
+<translation id="8578912649458880781">Orientación de anuncios a nivel de estado</translation>
+<translation id="3678362265519557511">Esto permite a Brave mostrarte anuncios adaptados específicamente a tu estado. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Establece Brave como navegador predeterminado</translation>
+<translation id="8581710194025054669">Para garantizar la máxima protección de tu privacidad en Internet, plantéate establecer Brave como navegador predeterminado en tu ordenador. Si utilizas Brave de manera predeterminada, todos los enlaces en los que hagas clic se abrirán con las protecciones de privacidad de Brave.</translation>
 </translationbundle>

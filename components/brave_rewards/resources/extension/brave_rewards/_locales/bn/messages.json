@@ -192,6 +192,19 @@
     "message": "স্বতঃ-প্রদান",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "যাচাইকরণ সম্পূর্ণ করতে $provider$ এ যান",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "পুরস্কার পেতে অনুগ্রহ করে পরিচয়ের যাচাইকরণ সম্পূর্ণ করুন।",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "লগ আউট করেছেন",
     "description": ""

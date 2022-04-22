@@ -192,6 +192,19 @@
     "message": "Kontribusi Otomatis",
     "description": ""
   },
+  "walletCompleteVerificationLink": {
+    "message": "Buka $provider$ untuk melengkapi verifikasi",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Silakan lengkapi verifikasi identitas agar dapat mulai menerima imbalan.",
+    "description": ""
+  },
   "walletDisconnected": {
     "message": "Keluar",
     "description": ""
