@@ -192,19 +192,6 @@
     "message": "Osallistu automaattisesti",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Siirry palveluntarjoajaan $provider$ viimeistelläksesi vahvistuksen",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Viimeistele henkilöllisyyden vahvistus, jotta voit saada palkintoja.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Kirjautunut ulos",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Odottaa",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Väliaikainen ongelma vahvistamisessa palveluntarjoajan $provider$ kanssa. Brave-palkintosi pysyvät Odottavassa tilassa, ja ne yritetään vahvistaa uudelleen automaattisesti, mutta voit myös itse yrittää myöhemmin uudelleen.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Palkinnot mainoksista",

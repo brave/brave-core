@@ -427,44 +427,33 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7559243474426790340">Zimua Hali</translation>
 <translation id="8376263745431603066">Wezesha "Hali ya Usiku" (Majaribio)</translation>
 <translation id="1383876407941801731">Tafuta</translation>
-<translation id="1972589975368876259">Hariri Rafu</translation>
-<translation id="2490330380242414851">Ondoa Wijeti</translation>
 <translation id="8446884382197647889">Jifunze Zaidi</translation>
-<translation id="7384441892795736634">Onyesha Upya Data</translation>
-<translation id="4804818685124855865">Ondoa</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Inapatikana <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Nunua <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Anwani ya Amana</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo ya Amana</translation>
+<translation id="6755546361496900700">Kagua Ubadilishanaji</translation>
 <translation id="5110244215256675209">Nunua Sarafu Pepe</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Nunua <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Inapatikana <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Kagua Ubadilishanaji</translation>
-<translation id="2882813124794301799">Rafu ya Wijeti</translation>
 <translation id="13296465911709339">Maandishi yako yamenakiliwa kwenye ubao wa kunakili.</translation>
 <translation id="2735834606413553397">Anwani ya umma imenakiliwa kwenye ubao wa kunakili.</translation>
 <translation id="7144878232160441200">Jaribu tena</translation>
 <translation id="2977461003134694205">Takwimu za Faragha</translation>
-<translation id="4643117005422448078">Tovuti Maarufu</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Vifuatiliaji &amp; Matangazo Yamezuiwa, Kipimo Data Kimehifadhiwa na Makadirio ya Yaliyohifadhiwa ya Saa.</translation>
-<translation id="74417429503469271">Fungua tovuti za juu unazotembelea mara kwa mara.</translation>
 <translation id="2956070106555335453">Muhtasari</translation>
 <translation id="1366855498335432549">Weka Pesa</translation>
 <translation id="1301340234286078471">Badilisha</translation>
 <translation id="223536150967420869">Nunua</translation>
-<translation id="1714829281959608206">Washa uunganishaji Binance uangalie salio la akaunti ya Binance na ufanye biashara kwa sarafu pepe.</translation>
 <translation id="4584930231524505442">Ningependa kubadilisha...</translation>
 <translation id="5749014321384313843">Ningependa kutumia...</translation>
-<translation id="8688672835843460752">Inapatikana</translation>
 <translation id="2480674848181564169">Si salio la kutosha kubadilisha</translation>
 <translation id="2215334405220411393">Kiasi cha chini cha kubadilisha ni : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Imeshindwa kuunganisha</translation>
 <translation id="7742417737698031726">Ada</translation>
 <translation id="2122225204180056042">Utapokea</translation>
 <translation id="6432284126416751397">Thibitisha Ubadilishanaji</translation>
-<translation id="5137723827757859599">Hapana kitu hapa bado kwenye tovuti maarufu.</translation>
 <translation id="3891414008432200754">Bei</translation>
 <translation id="3733576242118819803">Thibitisha (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Ubadilishaji Haujafaulu. Tafadhali jaribu tena.</translation>
@@ -566,6 +555,8 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2759836790106646094">Hifadhi nakala ya pochi yako sasa hivi!</translation>
 <translation id="1078873179929044999">Katika hatua inayofuata utaona kauli ya urejeshaji ya maneno 12, ambayo unaweza kutumia kurejesha akaunti zako za msingi za crypto. Ihifadhi eneo salama. Kauli yako ya urejeshaji ni njia tu ya kupata uwezo wa kufikia akaunti endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, au unataka kubadilisha pochi.</translation>
 <translation id="2359808026110333948">Endelea</translation>
+<translation id="5488357322146334497">Ujumbe</translation>
+<translation id="7228169875515099943">DATA</translation>
 <translation id="1904000155026201268">Ninaelewa kwamba ikiwa nitapoteza uwezo wangu wa kulipa, sitaweza kufikia pochi yangu ya crpto.</translation>
 <translation id="3933122286596948824">Kaulisiri yako ya urejeshaji</translation>
 <translation id="5077747669435508720">Andika au nakili maneno haya katika mpangilio kamili ulioonyeshwa hapa chini na uyahifadhi mahali salama. Kauli yako ya urejeshaji ni njia tu ya kupata uwezo wa ufikiaji endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, unataka kubadilisha pochi.</translation>
@@ -864,4 +855,21 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="4945690646623486292">Teua Mtandao</translation>
 <translation id="8853725596990766789">Badilisha kiasi</translation>
 <translation id="5233638681132016545">Kichupo kipya</translation>
+<translation id="8006088103295786154">Fikia Brave Wallet</translation>
+<translation id="5308380583665731573">Unganisha</translation>
+<translation id="3432029672560911238">Akaunti ya mtumiaji</translation>
+<translation id="5753378322046059140">Badilisha akaunti</translation>
+<translation id="3897092660631435901">Menyu</translation>
+<translation id="42981349822642051">Panua</translation>
+<translation id="3586752056660754651">Ingia kwenye akaunti</translation>
+<translation id="6592721981110586529">Unganisha Na Brave Wallet</translation>
+<translation id="329813193938846695">Chagua akaunti</translation>
+<translation id="3890989020011724401">Akaunti mpya</translation>
+<translation id="291375746846291973">Unganisha tu na tovuti unazoamini.</translation>
+<translation id="385051799172605136">Rudi nyuma</translation>
+<translation id="1060221736464994328">Ruhusu tovuti hii kubadilisha mtandao?</translation>
+<translation id="2478788592457735063">Hii itabadilisha mtandao hadi kwenye mtandao ulioongezwa awali.</translation>
+<translation id="8756686998207163764">Badilisha mitandao</translation>
+<translation id="394256914628786902">Wezesha uundaji otomatiki wa Kikundi cha Kichupo</translation>
+<translation id="8274201358637112807">Ukurasa huu unataka kuingiliana na Brave Wallet</translation>
 </translationbundle>

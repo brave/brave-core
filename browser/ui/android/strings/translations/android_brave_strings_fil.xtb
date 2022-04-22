@@ -427,44 +427,33 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7559243474426790340">I-refresh ang Status</translation>
 <translation id="8376263745431603066">I-enable ang "Night Mode" (Pang-eksperimento)</translation>
 <translation id="1383876407941801731">Search</translation>
-<translation id="1972589975368876259">I-edit ang Stack</translation>
-<translation id="2490330380242414851">Alisin ang Widget</translation>
 <translation id="8446884382197647889">Matuto Pa</translation>
-<translation id="7384441892795736634">I-refresh ang Data</translation>
-<translation id="4804818685124855865">I-disconnect</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ang available</translation>
+<translation id="3414885529641505869">Bumili ng <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Address ng Deposito</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo ng Deposito</translation>
+<translation id="6755546361496900700">I-preview ang Conversion</translation>
 <translation id="5110244215256675209">Bumili ng Crypto</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Bumili ng <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ang available</translation>
-<translation id="6755546361496900700">I-preview ang Conversion</translation>
-<translation id="2882813124794301799">Stack ng Widget</translation>
 <translation id="13296465911709339">Nakopya ang iyong text sa clipboard.</translation>
 <translation id="2735834606413553397">Nakopya na sa clipboard ang pampublikong address.</translation>
 <translation id="7144878232160441200">I-retry</translation>
 <translation id="2977461003134694205">Mga Istatistika ng Privacy</translation>
-<translation id="4643117005422448078">Nangungunang Sites</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Mga Na-block na Tracker at Ad, Natipid na Bandwidth, at Mga Tinatayang Natipid na Oras.</translation>
-<translation id="74417429503469271">Buksan ang mga nangungunang site na madalas mong bisitahin.</translation>
 <translation id="2956070106555335453">Buod</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="1301340234286078471">I-convert</translation>
 <translation id="223536150967420869">Bumili</translation>
-<translation id="1714829281959608206">I-enable ang Binance connection para tingnan ang Binance account balance at mag-trade ng crypto.</translation>
 <translation id="4584930231524505442">Gusto kong mag-convert ng...</translation>
 <translation id="5749014321384313843">Gusto kong gumastos ng...</translation>
-<translation id="8688672835843460752">Available</translation>
 <translation id="2480674848181564169">Hindi sapat ang balanse para sa conversion</translation>
 <translation id="2215334405220411393">Ang minimum na halagang iko-convert ay : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Hindi makakonekta</translation>
 <translation id="7742417737698031726">Fee</translation>
 <translation id="2122225204180056042">Makakatanggap ka ng</translation>
 <translation id="6432284126416751397">I-confirm ang Conversion</translation>
-<translation id="5137723827757859599">Wala pang nakalagay rito sa mga nangungunang site.</translation>
 <translation id="3891414008432200754">Presyo</translation>
 <translation id="3733576242118819803">Kumpirmahin (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Nabigo ang Conversion. Pakisubukan ulit.</translation>
@@ -566,6 +555,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2759836790106646094">I-back up ang iyong wallet ngayon!</translation>
 <translation id="1078873179929044999">Sa susunod na hakbang makakakita ka ng 12 salitang parirala sa pag-recover, na pwede mong gamitin para i-recover ang iyong mga pangunahing account sa cryptocurrency. Itago ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account kung sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>
+<translation id="5488357322146334497">Mensahe</translation>
+<translation id="7228169875515099943">DATA</translation>
 <translation id="1904000155026201268">Nauunawaan ko na kung mawala ko ang aking mga salita para sa pag-recover, hindi ko maa-access ang aking crypto wallet.</translation>
 <translation id="3933122286596948824">Ang iyong parirala sa pag-recover</translation>
 <translation id="5077747669435508720">Isulat o kopyahin ang mga salitang ito sa mismong pagkakaayos na ipinapakita sa ibaba, at itago ang mga ito sa ligtas na lugar. Ang iyong parirala sa pag-recover ang nag-iisang paraan para maibalik ang access sa account sakaling may nakalimutang password, nawala o nanakaw na device, o gusto mong magpalit ng wallet.</translation>
@@ -864,4 +855,21 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4945690646623486292">Pumili ng Network</translation>
 <translation id="8853725596990766789">Baguhin ang halaga</translation>
 <translation id="5233638681132016545">Bagong tab</translation>
+<translation id="8006088103295786154">I-access ang Brave Wallet</translation>
+<translation id="5308380583665731573">Ikonekta</translation>
+<translation id="3432029672560911238">User account</translation>
+<translation id="5753378322046059140">Lumipat ng account</translation>
+<translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">I-expand</translation>
+<translation id="3586752056660754651">I-sign</translation>
+<translation id="6592721981110586529">Kumonekta sa Brave Wallet</translation>
+<translation id="329813193938846695">Pumili ng (mga) akawnt</translation>
+<translation id="3890989020011724401">Bagong account</translation>
+<translation id="291375746846291973">Kumonekta lamang sa mga site na pinagkakatiwalaan mo.</translation>
+<translation id="385051799172605136">Bumalik</translation>
+<translation id="1060221736464994328">Payagan ang site na ito na palitan ang network?</translation>
+<translation id="2478788592457735063">Papalitan nito ang network sa nakaraang naidagdag na network.</translation>
+<translation id="8756686998207163764">Palitan ang network</translation>
+<translation id="394256914628786902">I-enable ang awtomatikong paggawa ng Grupo ng Tab</translation>
+<translation id="8274201358637112807">Gusto ng page na ito na makipag-ugnayan sa Brave Wallet</translation>
 </translationbundle>

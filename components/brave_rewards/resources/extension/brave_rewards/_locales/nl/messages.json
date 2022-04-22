@@ -192,19 +192,6 @@
     "message": "Auto-Contribute",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Ga naar $provider$ om de verificatie te voltooien",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Voltooi de identiteitverificatie om te kunnen beginnen beloningen te ontvangen.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Uitgelogd",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "In afwachting",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Er is een tijdelijk probleem opgetreden bij het verifiëren met $provider$. Uw Brave-beloningen houden de status In behandeling. We proberen het automatisch opnieuw, maar u kunt het later ook zelf opnieuw proberen. ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Beloningen uit advertenties",

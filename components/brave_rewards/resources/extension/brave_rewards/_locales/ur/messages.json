@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Refresh",
+    "message": "ریفریش کریں",
     "description": ""
   },
   "pendingTipText": {
@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "ٹھیک ہے",
     "description": ""
   },
   "set": {
@@ -79,7 +79,7 @@
     "description": ""
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "منسوخ کریں",
     "description": ""
   },
   "grantCaptchaTitle": {
@@ -192,19 +192,6 @@
     "message": "Auto-Contribute",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Go to $provider$ to complete verification",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Please complete identity verification in order to start receiving rewards.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Logged out",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Pending",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "There is a temporary problem verifying with $provider$. Your Brave Rewards will remain in a Pending state and retry automatically, but you can also try again later.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Rewards from Ads",
@@ -471,15 +467,15 @@
     "description": ""
   },
   "onboardingTourContinue": {
-    "message": "Continue",
+    "message": "جاری رکھیں",
     "description": ""
   },
   "onboardingTourDone": {
-    "message": "Done",
+    "message": "ہوگیا",
     "description": ""
   },
   "onboardingTourSkip": {
-    "message": "Skip",
+    "message": "نظر انداز کریں",
     "description": ""
   },
   "onboardingTourSkipForNow": {
@@ -551,7 +547,7 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verify",
+    "message": "توثیق کریں",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
@@ -607,7 +603,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Dismiss",
+    "message": "برخاست کریں",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

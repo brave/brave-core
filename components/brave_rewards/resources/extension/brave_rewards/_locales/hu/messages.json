@@ -192,19 +192,6 @@
     "message": "Automatikus támogatás",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Ugrás ide: $provider$ az ellenőrzés befejezéséhez",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Fejezze be a személyazonosságod igazolását, hogy jutalmakban részesülhessen",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Kijelentkezett",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Várakozó",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Átmeneti hiba lépett fel a következő ellenőrzésénél: $provider$. Brave Jutalmai függő állapotban maradnak, ezek feldolgozását a rendszer automatikusan ismét megpróbálja majd, de Ön is újrapróbálhatja később.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Jutalmak az Ads révén",

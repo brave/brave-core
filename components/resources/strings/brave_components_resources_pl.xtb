@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Rozwiąż</translation>
 <translation id="6991128190741664836">Później</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Portfel</translation>
+<translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="8820817407110198400">Zakładki</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Błąd: Do zalogowania potrzebne jest zweryfikowane konto</translation>
 <translation id="5260522591743022748">Wygląda na to, że Twoje nagrody Brave zostały już zweryfikowane przez inne konto <ph name="PROVIDER"/>. Spróbuj zweryfikować ponownie za pomocą poprzedniego konta.</translation>
 <translation id="5111921830714291902">Błąd: Inne konto</translation>
+<translation id="6933939911547091461">Niestety, Twoje nagrody Brave nie mogą zostać zweryfikowane, ponieważ Twój region nie jest obecnie obsługiwany w zakresie weryfikacji nagród Brave.</translation>
+<translation id="8218538368080510976">Błąd: Nieobsługiwany region</translation>
 <translation id="5382684862562314222">BAT nie jest jeszcze obsługiwany portfelu Uphold w Twoim regionie.</translation>
 <translation id="9074594632540931067">Błąd: BAT niedostępny</translation>
 <translation id="413458922997276130">Twoje konto w portfelu Uphold jest obecnie zablokowane.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Otrzymano ogółem</translation>
 <translation id="824449983246282560">Nie masz żadnych środków na swoim koncie. Odwiedź Gemini, aby je nabyć.</translation>
 <translation id="8624961452383848703">Chcę przeliczyć...</translation>
+<translation id="1544192797660353713">Portfel</translation>
 <translation id="616639131065447379">Witamy w portfelach kryptowalut Brave</translation>
 <translation id="1740464057879304704">Crypto Wallets pozwala pracować z kryptowalutą i powiązanymi aktywami w przeglądarce Brave. Crypto Wallets wspiera tokeny Ethereum, takie jak ETH i BAT, oraz kolekcjonerskimi kryptowalutami, a także umożliwia pracę z Ðapps i innymi inteligentnymi kontraktami. Wszystko to przeznaczone jest dla osób zaznajomionych z Ethereum i innymi systemami blockchainowymi lub pragnących nauczyć się tych systemów.</translation>
 <translation id="4855440621031541830">Używaj portfeli kryptowalut tylko wtedy, gdy akceptujesz, że ponosisz całą odpowiedzialność za wszelkie ryzyko powiązane z użytkowaniem, a także to, że Brave Software nie ponosi żadnej odpowiedzialności za jakiekolwiek straty, w tym straty wypadkowe i wynikowe, których możesz doznać na skutek użytkowania.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Już wkrótce otrzymasz <ph name="AMOUNT"/> nagród/nagrody za <ph name="MONTH"/>. Trzymaj rękę na pulsie!</translation>
 <translation id="2659764755126740206">Przejdź do mojego konta <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Dodaj środki</translation>
-<translation id="2389181429986654814">Przejdź do <ph name="PROVIDER"/>, aby zakończyć weryfikację</translation>
-<translation id="7793632266654336758">Zakończ weryfikację tożsamości, aby rozpocząć otrzymywać nagrody.</translation>
 <translation id="2394961582378297792">Wylogowano</translation>
 <translation id="6080167751812750226">Rozłącz z <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Szacunkowe dochody</translation>
 <translation id="4244985009709452836">Zaloguj się do swojego konta <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Jednorazowe napiwki</translation>
+<translation id="7580329715937096918">Wystąpił tymczasowy problem z weryfikacją <ph name="PROVIDER"/>. Twoje nagrody Brave pozostaną w stanie Oczekującym, a ponowna próba zostanie podjęta automatycznie, ale możesz również spróbować ponownie później.</translation>
 <translation id="590733288489975971">Nagrody z reklam</translation>
 <translation id="6181762795539107980">Niezweryfikowane</translation>
 <translation id="3026978804849658576">Wyświetl zestawienie</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Przyznano token!</translation>
 <translation id="7701466644604753106">Włącz Speedreader</translation>
 <translation id="763042262431778831">Wyłącz Speedreader</translation>
-<translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="1148827340205946630">Użytkownik odrzucił żądanie.</translation>
 <translation id="2403819048476450281">Nieprawidłowe parametry</translation>
 <translation id="3955144560853195652">Łańcuch <ph name="VALUE"/> nie został dodany</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Wiadomość</translation>
 <translation id="3586752056660754651">Podpisz</translation>
 <translation id="3484981968509595506">DApp żąda Twojego publicznego klucza szyfrowania</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> żąda Twojego publicznego klucza szyfrowania. Jeśli zgodzisz się na jego przesłanie, strona będzie mogła wysyłać do Ciebie szyfrowane wiadomości.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> żąda publicznego klucza szyfrowania Twojego portfela. Jeśli zgodzisz się na jego przesłanie, strona będzie mogła wysyłać do Ciebie szyfrowane wiadomości.</translation>
 <translation id="3340247553212049934">Dostarcz</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> chce odczytać tę wiadomość, aby ukończyć przetwarzanie Twojego żądania</translation>
+<translation id="1619778919922494944">Ten DApp chciałby przeczytać tę wiadomość, aby zrealizować Twoje żądanie</translation>
 <translation id="714506544401754321">Odszyfruj wiadomość</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="9032898664193335413">Czy zezwolić tej aplikacji na wydawanie <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Opłata za gaz</translation>
 <translation id="7163997622278957886">Oferta</translation>
 <translation id="1074360622426001342">Kwota + gaz</translation>
+<translation id="2186011161688824046">Kwota + opłata</translation>
 <translation id="7084089311475827950">Brak danych.</translation>
 <translation id="5821668936183240062">dalej</translation>
 <translation id="793994607260936590">początek</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7-dniowa akcja konkursowa kryptowalut — suma nagród wynosząca 500 000 USD.</translation>
 <translation id="8292716346768453265">Weź udział już teraz!</translation>
+<translation id="6423985584914773314">Nieprawidłowy adres FIL</translation>
+<translation id="8528916244724490964">Wszystkie sieci</translation>
+<translation id="2781668117338732220">Sieci pomocnicze</translation>
+<translation id="2816106784624007524">Limit paliwa musi być liczbą całkowitą większą od 0</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Jeśli ta strona nie działa, wyłącz Tarczę. 
     <ph name="LINK_BEFORE"/>Uwaga: to może zmniejszyć ochronę prywatności zapewnianą przez Brave. <ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Zablokowane skrypty śledzące, reklamy i inne <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Zaawansowane elementy kontrolne</translation>
+<translation id="650318023204990401">Zaawansowane sterowanie</translation>
 <translation id="5799940914270080805">Zmiana tych ustawień może spowodować niepoprawne działanie stron.</translation>
 <translation id="9204041448536398473">Globalne ustawienia Tarczy</translation>
 <translation id="2108334320919763866">Ustawienia ogólne</translation>
-<translation id="1928321796986970424">Listy filtrów</translation>
+<translation id="4516904298421534459">Listy filtrów</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="131231380815754440">Włącz HTTPS</translation>
 <translation id="4824468494729001999">Zablokuj skrypty</translation>
 <translation id="3246600097575692802">Włącz zablokowane skrypty</translation>
 <translation id="3603525299146223354">Skrypty śledzące i reklamy</translation>
-<translation id="1146309636943354181">Skrypty śledzące i reklamy zablokowane (standardowo)</translation>
-<translation id="5973258875089964805">Skrypty śledzące i reklamy zablokowane (agresywnie)</translation>
+<translation id="4448697385961650078">Zablokuj skrypty śledzące i reklamy</translation>
+<translation id="8593054718053894081">Agresywnie blokuj trackery iamp;amp; reklamy</translation>
 <translation id="7384778069178817075">Zezwól na skrypty śledzące i reklamy</translation>
-<translation id="6203697265754637264">Pliki cookie stron trzecich zablokowane</translation>
-<translation id="4627427111733173920">Pliki cookie zablokowane</translation>
-<translation id="3972324600756617403">Wszystkie pliki cookie dozwolone</translation>
+<translation id="4941539331405513605">Zablokuj pliki cookie stron trzecich</translation>
+<translation id="6883611015375728278">Blokuj wszystkie pliki cookie</translation>
+<translation id="5657156137487675418">Zezwalaj na wszystkie pliki cookie</translation>
 <translation id="8366221601425141146">Zablokowano funkcję odcisku palca</translation>
-<translation id="5582686930349810484">Zablokuj rozpoznawanie urządzenia (standardowe)</translation>
-<translation id="6696441392507885865">Zablokowane rozpoznawanie urządzenia (ścisłe, strony mogą nie działać)</translation>
-<translation id="5882733945883311404">Zezwalaj na rozpoznawanie urządzenia</translation>
+<translation id="6531019308847917584">Zablokuj zdejmowanie odcisków palca</translation>
+<translation id="1899608006846124237">Siłowo zablokuj zdejmowanie odcisków palca</translation>
+<translation id="8034285923190068220">Zezwól na zbieranie odcisków palców</translation>
 <translation id="1992750560347846445">Zgłoś stronę</translation>
 <translation id="2387532482048804818">Poinformuj nas, jeśli strona nie działała poprawnie z włączonymi Tarczami.</translation>
-<translation id="9167355841012806439">Przeglądasz stronę bez ochrony prywatności Brave</translation>
-<translation id="6835073906252142271">Tarcze Brave <ph name="NUMBER"/> Zablokowane skrypty śledzące, reklamy i inne</translation>
+<translation id="3795015906457257780">Przeglądasz stronę bez zabezpieczeń prywatności Brave.</translation>
+<translation id="7194012750329511146">Tarcze Brave
+<ph name="NUMBER"/> Zablokowane skrypty śledzące, reklamy i inne</translation>
 <translation id="1742469581923031760">Łączenie…</translation>
 <translation id="1287487756047817908">Odłączanie…</translation>
 <translation id="2325196879156848326">Połączenie nie powiodło się</translation>

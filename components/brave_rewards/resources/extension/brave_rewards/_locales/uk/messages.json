@@ -192,19 +192,6 @@
     "message": "Автоматичний внесок",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Перейдіть до $provider$, щоб завершити верифікацію ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Пройдіть процедуру підтвердження особи й почніть отримувати винагороди.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Вихід виконано",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "В очікуванні",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Тимчасова проблема з перевіркою через $provider$. Ваш профіль Brave Rewards залишиться в статусі «В очікуванні», і спроба перевірки автоматично повториться, але ви також можете спробувати пізніше вручну.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Винагороди від рекламних оголошень",
