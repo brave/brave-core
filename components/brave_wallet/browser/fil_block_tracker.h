@@ -6,7 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_BLOCK_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_BLOCK_TRACKER_H_
 
+#include <string>
+
+#include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
@@ -15,12 +21,36 @@ class JsonRpcService;
 class FilBlockTracker : public BlockTracker {
  public:
   explicit FilBlockTracker(JsonRpcService* json_rpc_service);
-  ~FilBlockTracker() override = default;
+  ~FilBlockTracker() override;
   FilBlockTracker(const FilBlockTracker&) = delete;
   FilBlockTracker operator=(const FilBlockTracker&) = delete;
 
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnLatestHeightUpdated(uint64_t latest_height) = 0;
+  };
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+  using GetFilBlockHeightCallback =
+      base::OnceCallback<void(uint64_t latest_height,
+                              mojom::FilecoinProviderError error,
+                              const std::string& error_message)>;
+  void GetFilBlockHeight(GetFilBlockHeightCallback callback);
+  uint64_t latest_height() const { return latest_height_; }
   // If timer is already running, it will be replaced with new interval
   void Start(base::TimeDelta interval) override;
+
+ private:
+  void OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
+                           uint64_t latest_height,
+                           mojom::FilecoinProviderError error,
+                           const std::string& error_message);
+
+  uint64_t latest_height_ = 0;
+  base::ObserverList<Observer> observers_;
+
+  base::WeakPtrFactory<FilBlockTracker> weak_ptr_factory_;
 };
 
 }  // namespace brave_wallet

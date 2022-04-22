@@ -70,6 +70,22 @@ std::string getEstimateGas(const std::string& from_address,
                          .c_str());
 }
 
+std::string getChainHead() {
+  return GetJsonRpcNoParams("Filecoin.ChainHead");
+}
+
+std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
+  base::Value cid_value(base::Value::Type::DICTIONARY);
+  cid_value.SetStringKey("/", cid);
+  auto result =
+      GetJsonRpc2Params("Filecoin.StateSearchMsgLimited", std::move(cid_value),
+                        base::Value(std::to_string(period)));
+  result = std::string(
+      json::convert_string_value_to_uint64("/params/1", result.c_str(), false)
+          .c_str());
+  return result;
+}
+
 }  // namespace fil
 
 }  // namespace brave_wallet

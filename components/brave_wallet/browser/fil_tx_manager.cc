@@ -37,9 +37,13 @@ FilTxManager::FilTxManager(TxService* tx_service,
                 keyring_service,
                 prefs),
       nonce_tracker_(std::make_unique<FilNonceTracker>(GetFilTxStateManager(),
-                                                       json_rpc_service)) {}
+                                                       json_rpc_service)) {
+  GetFilBlockTracker()->AddObserver(this);
+}
 
-FilTxManager::~FilTxManager() = default;
+FilTxManager::~FilTxManager() {
+  GetFilBlockTracker()->RemoveObserver(this);
+}
 
 void FilTxManager::GetEstimatedGas(const std::string& from,
                                    const absl::optional<url::Origin>& origin,
@@ -224,6 +228,55 @@ FilTxStateManager* FilTxManager::GetFilTxStateManager() {
   return static_cast<FilTxStateManager*>(tx_state_manager_.get());
 }
 
-void FilTxManager::UpdatePendingTransactions() {}
+void FilTxManager::UpdatePendingTransactions() {
+  auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
+      mojom::TransactionStatus::Submitted, absl::nullopt);
+  for (const auto& pending_transaction : pending_transactions) {
+    auto cid = pending_transaction->tx_hash();
+    uint64_t seconds =
+        (base::Time::Now() - pending_transaction->submitted_time()).InSeconds();
+    // StateSearchMsgLimited looks back up to limit epochs in the chain for a
+    // message. Returns its receipt and the tipset where it was executed.
+    // We assume that 1 block mined per second and taking a
+    // difference between current time and transaction submission to calculate
+    // the limit. In case of zero we are looking at last message.
+    uint64_t limit_epochs = seconds == 0 ? 1 : seconds;
+    json_rpc_service_->GetFilStateSearchMsgLimited(
+        cid, limit_epochs,
+        base::BindOnce(&FilTxManager::OnGetFilStateSearchMsgLimited,
+                       weak_factory_.GetWeakPtr(), pending_transaction->id()));
+  }
+  known_no_pending_tx_ = pending_transactions.empty();
+  CheckIfBlockTrackerShouldRun();
+}
+
+void FilTxManager::OnGetFilStateSearchMsgLimited(
+    const std::string& tx_meta_id,
+    int64_t exit_code,
+    mojom::FilecoinProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::FilecoinProviderError::kSuccess)
+    return;
+  std::unique_ptr<FilTxMeta> meta =
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
+  if (!meta)
+    return;
+  mojom::TransactionStatus status = (exit_code == 0)
+                                        ? mojom::TransactionStatus::Confirmed
+                                        : mojom::TransactionStatus::Error;
+  meta->set_status(status);
+  if (status == mojom::TransactionStatus::Confirmed) {
+    meta->set_confirmed_time(base::Time::Now());
+  }
+  tx_state_manager_->AddOrUpdateTx(*meta);
+}
+
+void FilTxManager::OnLatestHeightUpdated(uint64_t latest_height) {
+  UpdatePendingTransactions();
+}
+
+FilBlockTracker* FilTxManager::GetFilBlockTracker() {
+  return static_cast<FilBlockTracker*>(block_tracker_.get());
+}
 
 }  // namespace brave_wallet
