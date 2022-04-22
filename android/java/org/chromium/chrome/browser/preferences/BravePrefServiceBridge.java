@@ -36,6 +36,13 @@ public class BravePrefServiceBridge {
     }
 
     /**
+     * @param whether De-AMP should be enabled.
+     */
+    public void setDeAmpEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setDeAmpEnabled(enabled);
+    }
+
+    /**
      * @param whether the IPFS gateway should be enabled.
      */
     public void setIpfsGatewayEnabled(boolean enabled) {
@@ -295,6 +302,7 @@ public class BravePrefServiceBridge {
         String getNoScriptControlType();
 
         void setHTTPSEEnabled(boolean enabled);
+        void setDeAmpEnabled(boolean enabled);
         void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
 

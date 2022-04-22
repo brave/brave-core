@@ -151,6 +151,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
         Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
+      <message name="IDS_DE_AMP_SWITCH" desc="Switch to activate De-AMP feature">
+        Auto-redirect AMP pages
+      </message>
+      <message name="IDS_DE_AMP_SUMMARY" desc="Summary for De-AMP feature">
+        Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions
+      </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
       </message>
