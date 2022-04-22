@@ -192,19 +192,6 @@
     "message": "Kontribusi Otomatis",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Buka $provider$ untuk melengkapi verifikasi",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Silakan lengkapi verifikasi identitas agar dapat mulai menerima imbalan.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Keluar",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Tertunda",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Terdapat masalah sementara saat memverifikasi dengan $provider$. Imbalan Brave Anda akan tetap dalam status Ditunda dan dicoba ulang secara otomatis, namun Anda juga dapat mencoba lagi nanti.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Imbalan dari Iklan",

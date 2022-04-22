@@ -192,19 +192,6 @@
     "message": "自动贡献",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "转到$provider$完成验证。",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "请完成身份验证以开始接收奖励。",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "已退出登录",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "等待审批",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "用 $provider$ 进行验证时出现临时性问题。您的 Brave Rewards 会继续处于“待处理” 状态并会自动重试，但您也可以稍后再试。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "广告奖励",

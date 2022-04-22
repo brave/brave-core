@@ -192,19 +192,6 @@
     "message": "Wspieraj automatycznie",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Przejdź do $provider$, aby zakończyć weryfikację",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Zakończ weryfikację tożsamości, aby rozpocząć otrzymywać nagrody.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Wylogowano",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Oczekuje",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Wystąpił tymczasowy problem z weryfikacją$provider$. Twoje nagrody Brave pozostaną w stanie Oczekującym, a ponowna próba zostanie podjęta automatycznie, ale możesz również spróbować ponownie później.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Nagrody z reklam",

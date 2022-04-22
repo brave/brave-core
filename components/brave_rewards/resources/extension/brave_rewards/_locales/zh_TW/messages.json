@@ -192,19 +192,6 @@
     "message": "自動捐獻",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "前往 $provider$ 完成驗證",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "請完成身分驗證以開始接受獎勵。",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "已登出",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "未定",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "驗證 $provider$ 時發生暫時性問題。您的 Brave 獎勵會處於「待處理」狀態，並將會自動重試，不過您也可以稍後再試。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "廣告獎勵",

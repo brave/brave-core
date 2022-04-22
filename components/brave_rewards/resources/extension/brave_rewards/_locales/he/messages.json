@@ -192,19 +192,6 @@
     "message": "תרומה אוטומטית",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "עבור אל $provider$ כדי להשלים את האימות",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "השלם את אימות הזהות על מנת להתחיל לקבל תגמולים.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "התנתק",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "בהמתנה",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "קיימת תקלה זמנית באימות עם $provider$. ה-Brave Rewards שלך ישארו במצב המתנה והאימות יתבצע שנית באופן אוטומטי. כמובן שגם אפשר לנסות שוב מאוחר יותר.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "תגמולים מפרסומות",

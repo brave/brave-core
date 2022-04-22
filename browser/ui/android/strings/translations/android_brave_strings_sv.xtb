@@ -427,44 +427,33 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7559243474426790340">Uppdatera status</translation>
 <translation id="8376263745431603066">Aktivera "Nattläge" (experimentellt)</translation>
 <translation id="1383876407941801731">Sök</translation>
-<translation id="1972589975368876259">Redigera Stack</translation>
-<translation id="2490330380242414851">Ta bort widget</translation>
 <translation id="8446884382197647889">Läs mer</translation>
-<translation id="7384441892795736634">Ladda om data</translation>
-<translation id="4804818685124855865">Koppla från</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Insättningsadress</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Insättningsmemo</translation>
+<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
 <translation id="5110244215256675209">Köp kryptovaluta</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Köp <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Tillgängligt <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Förhandsgranska omvandling</translation>
-<translation id="2882813124794301799">Widgetstapling</translation>
 <translation id="13296465911709339">Din text har kopierats till urklipp.</translation>
 <translation id="2735834606413553397">Den offentliga adressen har kopierats till urklipp.</translation>
 <translation id="7144878232160441200">Försök igen</translation>
 <translation id="2977461003134694205">Sekretessstatistik</translation>
-<translation id="4643117005422448078">Toppsajter</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Spårande &amp; annonser blockerade, sparad bandbredd och uppskattningar för tidsbesparing.</translation>
-<translation id="74417429503469271">Öppna toppwebbplatser du besöker ofta.</translation>
 <translation id="2956070106555335453">Sammanfattning</translation>
 <translation id="1366855498335432549">Sätt in</translation>
 <translation id="1301340234286078471">Omvandla</translation>
 <translation id="223536150967420869">Köp</translation>
-<translation id="1714829281959608206">Koppla till Binance för att se kontobalansen där och handla med kryptovaluta.</translation>
 <translation id="4584930231524505442">Jag vill omvandla ...</translation>
 <translation id="5749014321384313843">Jag vill spendera ...</translation>
-<translation id="8688672835843460752">Tillgänglig</translation>
 <translation id="2480674848181564169">Otillräcklig balans för konvertering</translation>
 <translation id="2215334405220411393">Minsta belopp att konvertera är : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Kan inte ansluta</translation>
 <translation id="7742417737698031726">Avgift</translation>
 <translation id="2122225204180056042">Du erhåller</translation>
 <translation id="6432284126416751397">Bekräfta omvandling</translation>
-<translation id="5137723827757859599">Det finns inget här ännu på toppwebbplatserna.</translation>
 <translation id="3891414008432200754">Pris</translation>
 <translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
@@ -566,6 +555,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2759836790106646094">Säkerhetskopiera din plånbok nu!</translation>
 <translation id="1078873179929044999">I nästa steg kommer du att se en återställningsfras på 12 ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
 <translation id="2359808026110333948">Fortsätt</translation>
+<translation id="5488357322146334497">Meddelande</translation>
+<translation id="7228169875515099943">DATA</translation>
 <translation id="1904000155026201268">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsfras.</translation>
 <translation id="3933122286596948824">Din återställningsfras</translation>
 <translation id="5077747669435508720">Skriv ner eller kopiera dessa ord i exakt ordning som visas nedan och spara dem någonstans säkert. Din återställningsfras är det enda sättet att återfå kontotillgång vid glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånbok.</translation>
@@ -810,6 +801,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1254969878422524947">Gräns per spets (Gwei)</translation>
 <translation id="7373308452149471621">Prisgräns per gas (Gwei)</translation>
 <translation id="5891811606602061966">Det gick inte att importera kontot. Vänligen försök igen.</translation>
+<translation id="1822506443689803572">Brave använder <ph name="DEX_PROVIDER"/> som en DEX-aggregator.</translation>
 <translation id="5061574358754621254">Prisdata från CoinGecko</translation>
 <translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
 <translation id="8574289650879708853">Lägg till anpassad tillgång</translation>
@@ -863,4 +855,21 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="4945690646623486292">Välj nätverk</translation>
 <translation id="8853725596990766789">Ändra summa</translation>
 <translation id="5233638681132016545">Ny flik</translation>
+<translation id="8006088103295786154">Åtkomst till Brave Wallet</translation>
+<translation id="5308380583665731573">Ansluta</translation>
+<translation id="3432029672560911238">Användarkonto</translation>
+<translation id="5753378322046059140">Byt konto</translation>
+<translation id="3897092660631435901">Meny</translation>
+<translation id="42981349822642051">Expandera</translation>
+<translation id="3586752056660754651">Signera</translation>
+<translation id="6592721981110586529">Anslut till Brave Wallet</translation>
+<translation id="329813193938846695">Välj konto(n)</translation>
+<translation id="3890989020011724401">Nytt konto</translation>
+<translation id="291375746846291973">Anslut endast till webbplatser som du litar på.</translation>
+<translation id="385051799172605136">Bakåt</translation>
+<translation id="1060221736464994328">Tillåt denna webbplats att byta nätverket?</translation>
+<translation id="2478788592457735063">Detta byter nätverket till ett som har lagts till tidigare.</translation>
+<translation id="8756686998207163764">Byta nätverk</translation>
+<translation id="394256914628786902">Aktivera automatiskt skapande av flikgrupp</translation>
+<translation id="8274201358637112807">Den här sidan vill interagera med Brave Wallet</translation>
 </translationbundle>

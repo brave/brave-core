@@ -192,19 +192,6 @@
     "message": "Auto-Contribució",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Ves a $provider$ per completar la verificació ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Completa la verificació de la teva identitat per començar a rebre Brave Rewards.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Sessió tancada",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Pendent",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Hi ha un problema temporal amb la verificació de $provider$.  Els teus Premis de Brave es mantindran en l'estat Pendent i es tornarà a provar automàticament, però també pots provar-ho manualment més tard.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Brave Rewards de Brave Ads",

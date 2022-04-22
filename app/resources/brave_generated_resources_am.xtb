@@ -55,7 +55,7 @@
 <translation id="5197219128592971597">ሁልጊዜ ኦሪጅናል (AMP ያልሆኑ) ገጽ URLs ን ይጎብኙ፣ ከ Google Accelerated Mobile ገጽ ስሪቶች ይልቅ</translation>
 <translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
 <translation id="597020512043916976">ዋና ዋና ገጾችን በራስ መሙያ ሃሳቦች ላይ አሳይ</translation>
-<translation id="264150068416846820">በ Brave የተጠቆሙ ገጾችን በራስ መሙያ ጥቁምተ ሃሳቦች ላይ አሳይ</translation>
+<translation id="301088458323355543">የተጠቆሙ ገጾችን በራስ መሙያ ጥቁምተ ሃሳቦች ላይ አሳይ</translation>
 <translation id="5529693968082667490">የትር ፍለጋ አዝራርን አሳይ</translation>
 <translation id="6414370348346025511">መደበኛ ጥበቃ በርቷል።</translation>
 <translation id="814018970995616154">በ Brave ውስጥ ከተከማቹ ደህንነታቸው ያልተጠበቁ ጣቢያዎች ዝርዝር ጋር URLs ን ይፈትሻል።</translation>
@@ -70,8 +70,8 @@
 <translation id="4851215387785619212">የ Brave Private ማስታወቂያዎች</translation>
 <translation id="7808122468353671181">የ Brave Ads ን በማየት ቶክኖችን ያግኙ። የቀረቡት ማስታወቂያዎች ከአሰሳ ባህሪዎ እንደተገኘት በእርስዎ ፍላጎቶች ላይ የተመሰረቱ ናቸው። የትኛውም የግል መረጃ ወይም የአሰሳ ታሪክ ከአሳሽዎ አይወጡም።</translation>
 <translation id="1758947220824279023">የሚታየው ከፍተኛው የማስታወቂያ ብዛት</translation>
-<translation id="8578912649458880781">የስቴት-ደረጃ ማስታወቂያ ማነጣጠር</translation>
-<translation id="3678362265519557511">ይህ Brave በተለይ ለግዛትዎ የታሰቡ ማስታወቂያዎችን እንዲያሳይ ያስችለዋል። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">የአከባቢ ማስታወቂያ ተገቢነት</translation>
+<translation id="2196950072404588793">ይህ Brave በተለይ ለአከባቢዎ የታሰቡ ማስታወቂያዎችን እንዲያሳይ ያስችለዋል። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
 <translation id="9132509928968869844">ወርሀዊ የራስ-መዋጮ አልተሳካም</translation>
 <translation id="7286722244752781970">ከመጎብኘቶ በፊት ዝቅተኛው የገፅ ሰዓት</translation>
@@ -144,8 +144,10 @@
 <translation id="130615081792797568">ቀላል እይታ</translation>
 <translation id="2360360976480535628">የላቀ እይታ</translation>
 <translation id="2133317862976486547">መከታተያ &amp; ማስታወቂያዎች እየታገዱ ናቸው</translation>
-<translation id="4385707520896576447">ኩኪ ማገድ</translation>
-<translation id="4978786495456601191">የጣት አሻራ ማገድ</translation>
+<translation id="8823559166155093873">ኩኪዎችን አግድ</translation>
+<translation id="6531019308847917584">የጣት አሻራዎችን አግድ</translation>
+<translation id="7607166182943595829">በቋንቋ ምርጫዎቼ መሰረት ጣቢያዎች የእኔን የጣት አሻራ እንዳይሰሩ አግድ</translation>
+<translation id="3497934980362703405">ይህን ቅንብር ማንቃት ድረ-ገጾች ምን ያህል ስለቋንቋ ምርጫዎችዎ መማር እንደሚችሉ ይቀንሳል።</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
 <translation id="4395160081588457461">ይመልከቱ &amp; ይሰማዎ</translation>
@@ -435,8 +437,6 @@
 <translation id="8487693399751278191">ዕልባቶችን አሁን አስመጣ...</translation>
 <translation id="2557899542277210112">ለፈጣን ተደራሽነት፣ ዕልባቶችዎን እዚህ የዕልባቶች ትር አሞሌ ላይ ያስቀምጡ።</translation>
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
-<translation id="2273851479262317744">Brave ን እንደ ነባሪ አሳሽ ያዘጋጁ</translation>
-<translation id="8581710194025054669">በኦንላይን ላይ ምርጥ ግላዊነትን ለማረጋገጥ፣ በኮምፒተርዎ ላይ Brave ን እንደ ነባሪ አሳሽ ያቀናብሩ። Brave ነባሪ አሳሽ ከተደረገ፣ እርስዎ ጠቅ የሚያደርጉት ማንኛውም የድር ማስፈንጠሪያ በ Brave የግላዊነት ጥበቃዎች ይከፈታል።</translation>
 <translation id="1968543937259008435">በኦንላይን ላይ ያለ ለምርጥ ግላዊነት ዝግጁ ነዎት?</translation>
 <translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
 <translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>

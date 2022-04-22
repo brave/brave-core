@@ -55,7 +55,7 @@
 <translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
 <translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
 <translation id="597020512043916976">자동 완성 제안에 인기 사이트 표시</translation>
-<translation id="264150068416846820">자동 완성 제안에 Brave 추천 사이트 표시</translation>
+<translation id="301088458323355543">자동 완성 제안에 추천 사이트 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
 <translation id="6414370348346025511">표준 보호가 켜져 있습니다.</translation>
 <translation id="814018970995616154">Brave에 저장된 안전하지 않은 사이트 목록을 이용해 URL을 확인합니다.</translation>
@@ -70,8 +70,8 @@
 <translation id="4851215387785619212">Brave Private Ads</translation>
 <translation id="7808122468353671181">Brave Ads를 보면 토큰이 적립됩니다. 광고는 사용자의 관심사를 기반으로 표시되며 브라우저의 성능을 저해하지 않습니다. 개인 데이터나 인터넷 사용 기록은 절대 브라우저에 남지 않습니다.</translation>
 <translation id="1758947220824279023">표시할 최대 광고 개수</translation>
-<translation id="8578912649458880781">주 단위 광고 타켓팅</translation>
-<translation id="3678362265519557511">이 설정을 켜면 Brave가 회원님이 거주하는 주에 특정된 광고를 표시합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">지역 광고 관련성</translation>
+<translation id="2196950072404588793">이 설정을 켜면 Brave가 현재 지역에 적합한 광고를 표시합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="9132509928968869844">월간 자동 기부 한도</translation>
 <translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
@@ -144,8 +144,10 @@
 <translation id="130615081792797568">간단한 보기</translation>
 <translation id="2360360976480535628">고급 보기</translation>
 <translation id="2133317862976486547">추적기 &amp; 광고 차단</translation>
-<translation id="4385707520896576447">쿠키 차단</translation>
-<translation id="4978786495456601191">지문 차단</translation>
+<translation id="8823559166155093873">쿠키 차단</translation>
+<translation id="6531019308847917584">지문 차단</translation>
+<translation id="7607166182943595829">언어 환경 설정을 기반으로 사이트가 지문을 남기지 못하게 합니다.</translation>
+<translation id="3497934980362703405">이 설정을 활성화하면 언어 환경설정에 대해 웹사이트가 수집하는 데이터의 양을 줄입니다.</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
 <translation id="4395160081588457461">보고 느끼기</translation>
@@ -435,8 +437,6 @@
 <translation id="8487693399751278191">지금 북마크 가져오기...</translation>
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
-<translation id="2273851479262317744">Brave를 기본 브라우저로 설정</translation>
-<translation id="8581710194025054669">온라인 프라이버시를 최대한 확보하려면 Brave를 컴퓨터의 기본 브라우저로 설정하세요. Brave를 기본 브라우저로 설정하면 웹 링크를 클릭하여 열 때 Brave의 프라이버시 보호가 적용됩니다.</translation>
 <translation id="1968543937259008435">가장 철저한 온라인 프라이버시를 접할 준비가 되셨나요?</translation>
 <translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>

@@ -192,19 +192,6 @@
     "message": "Auto-bidra",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Gå til $provider$ for å fullføre bekreftelsen.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Fullfør identitietsbekreftelsen for å begynne å motta belønninger.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Logget ut",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Påventende",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Det har oppstått et midlertidig problem med verifisering via $provider$. Brave-belønningene dine får statusen Venter, og vi prøver igjen automatisk. Du kan også prøve igjen senere.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Rewards fra Ads",

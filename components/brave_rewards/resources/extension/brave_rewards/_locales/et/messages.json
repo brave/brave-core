@@ -192,19 +192,6 @@
     "message": "Automaatne panustamine",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Kinnitamise lõpuleviimiseks avage $provider$",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Palun kinnitage oma identiteet, et hakata preemiaid saama.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Välja loginud",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Ootel",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Teenusepakkuja $provider$ kaudu kinnitamisel ilmnes ajutine probleem. Brave'i Preemiad jäävad ootel olekusse ja proovitakse automaatselt uuesti, aga võite ka ise hiljem uuesti proovida.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Preemiad Adsilt",

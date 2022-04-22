@@ -427,44 +427,33 @@
 <translation id="7559243474426790340">รีเฟรชสถานะ</translation>
 <translation id="8376263745431603066">เปิดใช้งาน "โหมดการคืน" (ทดลอง)</translation>
 <translation id="1383876407941801731">ค้นหา</translation>
-<translation id="1972589975368876259">แก้ไข Stack</translation>
-<translation id="2490330380242414851">นำวิตเจ็ตออก</translation>
 <translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
-<translation id="7384441892795736634">รีเฟรชข้อมูล</translation>
-<translation id="4804818685124855865">ยกเลิกการเชื่อมต่อ</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">พร้อมใช้งาน <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">ซื้อ <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ที่อยู่การฝาก</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> บันทึกฝากเงิน</translation>
+<translation id="6755546361496900700">ดูตัวอย่างการแปลงหน่วย</translation>
 <translation id="5110244215256675209">ซื้อสกุลเงินดิจิทัล</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">ซื้อ <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">พร้อมใช้งาน <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">ดูตัวอย่างการแปลงหน่วย</translation>
-<translation id="2882813124794301799">Widget Stack</translation>
 <translation id="13296465911709339">ข้อความของคุณได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="2735834606413553397">คัดลอกที่อยู่สาธารณะไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="7144878232160441200">ลองใหม่</translation>
 <translation id="2977461003134694205">สถิติความเป็นส่วนตัว</translation>
-<translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">บล็อกโฆษณา &amp; แอปติดตาม ประหยัดแบนด์วิดท์ และประหยัดเวลาโดยประมาณ</translation>
-<translation id="74417429503469271">เปิดเว็บไซต์ยอดนิยมที่คุณเข้าบ่อย</translation>
 <translation id="2956070106555335453">สรุป</translation>
 <translation id="1366855498335432549">ฝาก</translation>
 <translation id="1301340234286078471">แปลงหน่วย</translation>
 <translation id="223536150967420869">ซื้อ</translation>
-<translation id="1714829281959608206">เปิดการเชื่อมต่อ Binance เพื่อดูยอดคงเหลือในบัญชี Binance และซื้อขายสกุลเงินดิจิทัล</translation>
 <translation id="4584930231524505442">ฉันต้องการแปลงหน่วย...</translation>
 <translation id="5749014321384313843">ฉันต้องการจ่าย...</translation>
-<translation id="8688672835843460752">มีอยู่</translation>
 <translation id="2480674848181564169">ยอดเงินไม่เพียงพอต่อการแปลงสกุลเงิน</translation>
 <translation id="2215334405220411393">จำนวนขั้นต่ำในเพื่อแปลงค่าอยู่ที่ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">ไม่สามารถเชื่อมต่อได้</translation>
 <translation id="7742417737698031726">ค่าธรรมเนียม</translation>
 <translation id="2122225204180056042">คุณจะได้รับ</translation>
 <translation id="6432284126416751397">ยืนยันการแปลงหน่วย</translation>
-<translation id="5137723827757859599">ยังไม่มีอะไรในเว็บไซต์ยอดนิยม</translation>
 <translation id="3891414008432200754">ราคา</translation>
 <translation id="3733576242118819803">ยืนยัน (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">การสนทนาล้มเหลว โปรดลองอีกครั้ง</translation>
@@ -566,6 +555,8 @@
 <translation id="2759836790106646094">สำรองข้อมูลกระเป๋าเงินของคุณตอนนี้!</translation>
 <translation id="1078873179929044999">ในขั้นตอนถัดไป คุณจะได้เห็นกลุ่มคำสำหรับการกู้คืน (Recovery Phrase) 12 คำ ซึ่งคุณสามารถใช้ในการกู้คืนบัญชีคริปโตหลักของคุณได้ เก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานกระเป๋าเงิน</translation>
 <translation id="2359808026110333948">ดำเนินการต่อ</translation>
+<translation id="5488357322146334497">ข้อความ</translation>
+<translation id="7228169875515099943">ข้อมูล</translation>
 <translation id="1904000155026201268">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
 <translation id="3933122286596948824">วลีกู้คืนของคุณ</translation>
 <translation id="5077747669435508720">จดหรือคัดลอกคำเหล่านี้ไว้ตามลำดับที่ถูกต้องดังที่แสดงด้านล่างแล้วเก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานวอลเล็ต</translation>
@@ -810,6 +801,7 @@
 <translation id="1254969878422524947">วงเงินทิปต่อค่าแก๊ส (Gwei)</translation>
 <translation id="7373308452149471621">วงเงินราคาต่อค่าแก๊ส (Gwei)</translation>
 <translation id="5891811606602061966">นำเข้าบัญชีไม่สำเร็จ โปรดลองอีกครั้ง</translation>
+<translation id="1822506443689803572">Brave ใช้ <ph name="DEX_PROVIDER"/> เป็นเครื่องมือค้นหาตลาด​แลกเปลี่ยน (DEX Aggregator)</translation>
 <translation id="5061574358754621254">ข้อมูลราคาโดย CoinGecko</translation>
 <translation id="4626407663177532837">ใบเสนอราคารวมค่าธรรมเนียม Brave 0.875%</translation>
 <translation id="8574289650879708853">เพิ่มโทเค็นที่กำหนดเอง</translation>
@@ -863,4 +855,21 @@
 <translation id="4945690646623486292">เลือกเครือข่าย</translation>
 <translation id="8853725596990766789">เปลี่ยนจำนวน</translation>
 <translation id="5233638681132016545">แท็บใหม่</translation>
+<translation id="8006088103295786154">เข้าถึง Brave Wallet</translation>
+<translation id="5308380583665731573">เชื่อมต่อ</translation>
+<translation id="3432029672560911238">บัญชีผู้ใช้</translation>
+<translation id="5753378322046059140">สลับบัญชี</translation>
+<translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">ขยาย</translation>
+<translation id="3586752056660754651">เซ็นชื่อ</translation>
+<translation id="6592721981110586529">เชื่อมต่อกับ Brave Wallet</translation>
+<translation id="329813193938846695">เลือกบัญชี</translation>
+<translation id="3890989020011724401">บัญชีใหม่</translation>
+<translation id="291375746846291973">เชื่อมต่อไซต์ที่คุณเชื่อถือเท่านั้น</translation>
+<translation id="385051799172605136">กลับ</translation>
+<translation id="1060221736464994328">อนุญาตให้เว็บไซต์นี้สลับเครือข่ายหรือไม่</translation>
+<translation id="2478788592457735063">การดำเนินการนี้จะสลับเครือข่ายเป็นเครือข่ายที่เพิ่มไว้ก่อนหน้านี้</translation>
+<translation id="8756686998207163764">สลับเครือข่าย</translation>
+<translation id="394256914628786902">เปิดใช้งานการสร้างกลุ่มแท็บอัตโนมัติ</translation>
+<translation id="8274201358637112807">หน้านี้ต้องการโต้ตอบกับ Brave Wallet</translation>
 </translationbundle>
