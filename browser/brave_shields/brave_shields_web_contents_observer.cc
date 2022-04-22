@@ -20,6 +20,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
+#include "components/content_settings/common/content_settings_agent.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -69,24 +70,21 @@ BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 // --filter=BraveContentSettingsAgentImplBrowserTest.*
 void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
   web_contents->ForEachRenderFrameHost(
-      base::BindRepeating([](content::RenderFrameHost* frame) {
-        if (!frame->IsRenderFrameLive())
+      base::BindRepeating([](content::RenderFrameHost* rfh) {
+        if (!rfh->IsRenderFrameLive())
           return;
 
-        IPC::ChannelProxy* channel = frame->GetProcess()->GetChannel();
-        // channel might be NULL in tests.
-        if (channel) {
-          const auto* map = HostContentSettingsMapFactory::GetForProfile(
-              frame->GetBrowserContext());
+        mojo::AssociatedRemote<content_settings::mojom::ContentSettingsAgent>
+            agent;
+        rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
 
-          RendererContentSettingRules rules;
-          GetRendererContentSettingRules(map, &rules);
+        const auto* map = HostContentSettingsMapFactory::GetForProfile(
+            rfh->GetBrowserContext());
 
-          mojo::AssociatedRemote<chrome::mojom::RendererConfiguration>
-              rc_interface;
-          channel->GetRemoteAssociatedInterface(&rc_interface);
-          rc_interface->SetContentSettingRules(rules);
-        }
+        RendererContentSettingRules rules;
+        GetRendererContentSettingRules(map, &rules);
+
+        agent->SendRendererContentSettingRules(std::move(rules));
       }));
 }
 
