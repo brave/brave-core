@@ -1934,7 +1934,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_InvalidDomain) {
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
-  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.x", callback.Get());
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.test", callback.Get());
   base::RunLoop().RunUntilIdle();
 }
 
@@ -2151,14 +2151,51 @@ TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
   std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
                                             "brave-test.test-dev.eth"};
   for (const auto& domain : valid_domains)
-    EXPECT_TRUE(json_rpc_service_->IsValidDomain(domain))
+    EXPECT_TRUE(JsonRpcService::IsValidDomain(domain))
         << domain << " should be valid";
 
   std::vector<std::string> invalid_domains = {
       "",      ".eth",    "-brave.eth",      "brave-.eth",     "brave.e-th",
       "b.eth", "brave.e", "-brave.test.eth", "brave-.test.eth"};
   for (const auto& domain : invalid_domains)
-    EXPECT_FALSE(json_rpc_service_->IsValidDomain(domain))
+    EXPECT_FALSE(JsonRpcService::IsValidDomain(domain))
+        << domain << " should be invalid";
+}
+
+TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
+  // clang-format off
+  std::vector<std::string> valid_domains = {
+      "test.crypto",
+      "test.x",
+      "test.coin",
+      "test.nft",
+      "test.dao",
+      "test.wallet",
+      "test.888",
+      "test.blockchain",
+      "test.bitcoin",
+      "a.crypto",
+      "1.crypto",
+      "-.crypto",
+  };
+  std::vector<std::string> invalid_domains = {
+      "",
+      ".",
+      "crypto.",
+      "crypto.1",
+      ".crypto",
+      "crypto.brave",
+      "brave.crypto-",
+      "brave.test.crypto",
+      "brave.zil",
+  };
+  // clang-format on
+  for (const auto& domain : valid_domains)
+    EXPECT_TRUE(JsonRpcService::IsValidUnstoppableDomain(domain))
+        << domain << " should be valid";
+
+  for (const auto& domain : invalid_domains)
+    EXPECT_FALSE(JsonRpcService::IsValidUnstoppableDomain(domain))
         << domain << " should be invalid";
 }
 

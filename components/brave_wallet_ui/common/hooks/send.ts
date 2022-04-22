@@ -25,7 +25,9 @@ import { useAssets } from './assets'
 import { PendingCryptoSendState, SendCryptoActions } from '../reducers/send_crypto_reducer'
 
 const supportedENSExtensions = ['.eth']
-const supportedUDExtensions = ['.crypto']
+// Should match `kUDPattern` array from json_rpc_service.cc.
+const supportedUDExtensions = [
+  '.crypto', '.x', '.coin', '.nft', '.dao', '.wallet', '.888', '.blockchain', '.bitcoin']
 
 const endsWithAny = (extensions: string[], url: string) => {
   return extensions.some(function (suffix) {

@@ -144,4 +144,5 @@ void UnstoppableDomainsMultichainCalls<ResultType>::SetError(
 }
 
 template class UnstoppableDomainsMultichainCalls<std::string>;
+
 }  // namespace brave_wallet

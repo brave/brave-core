@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -30,6 +30,14 @@ class UnstoppableDomainsMultichainCall {
 
   UnstoppableDomainsMultichainCall() = default;
   ~UnstoppableDomainsMultichainCall() = default;
+  UnstoppableDomainsMultichainCall(const UnstoppableDomainsMultichainCall&) =
+      delete;
+  UnstoppableDomainsMultichainCall& operator=(
+      const UnstoppableDomainsMultichainCall&) = delete;
+  UnstoppableDomainsMultichainCall(UnstoppableDomainsMultichainCall&&) =
+      default;
+  UnstoppableDomainsMultichainCall& operator=(
+      UnstoppableDomainsMultichainCall&&) = default;
 
   bool SetNoResult(const std::string& chain_id);
   bool SetResult(const std::string& chain_id, ResultType result);
@@ -43,7 +51,7 @@ class UnstoppableDomainsMultichainCall {
   bool MaybeResolveCallbacks();
 
   // chain_id -> response.
-  std::map<std::string, Response> responses_;
+  base::flat_map<std::string, Response> responses_;
   std::vector<CallbackType> callbacks_;
 };
 
@@ -71,7 +79,8 @@ class UnstoppableDomainsMultichainCalls {
 
  private:
   // domain -> call
-  std::map<std::string, UnstoppableDomainsMultichainCall<ResultType>> calls_;
+  base::flat_map<std::string, UnstoppableDomainsMultichainCall<ResultType>>
+      calls_;
 };
 
 }  // namespace brave_wallet

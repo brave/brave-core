@@ -464,8 +464,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              bool success);
 
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
+  FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidUnstoppableDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, Reset);
-  bool IsValidDomain(const std::string& domain);
+  static bool IsValidDomain(const std::string& domain);
+  static bool IsValidUnstoppableDomain(const std::string& domain);
 
   void OnGetERC721OwnerOf(
       GetERC721OwnerOfCallback callback,

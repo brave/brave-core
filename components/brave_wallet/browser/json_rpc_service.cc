@@ -31,7 +31,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -51,6 +50,13 @@ namespace {
 // TLD & TLD-1 must be at least two characters.
 constexpr char kDomainPattern[] =
     "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
+
+// Non empty group of symbols of a-z | 0-9 | hyphen(-).
+// Then a dot.
+// Then one of fixed suffixes(should match `supportedUDExtensions` array from
+// send.ts).
+constexpr char kUDPattern[] =
+    "(?:[a-z0-9-]+)\\.(?:crypto|x|coin|nft|dao|wallet|888|blockchain|bitcoin)";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
@@ -1184,7 +1190,7 @@ void JsonRpcService::UnstoppableDomainsGetEthAddr(
     return;
   }
 
-  if (!IsValidDomain(domain)) {
+  if (!IsValidUnstoppableDomain(domain)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1418,9 +1424,16 @@ void JsonRpcService::OnGetIsEip1559(
                           mojom::ProviderError::kSuccess, "");
 }
 
+/*static*/
 bool JsonRpcService::IsValidDomain(const std::string& domain) {
   static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
-  return re2::RE2::FullMatch(domain, kDomainPattern);
+  return re2::RE2::FullMatch(domain, *kDomainRegex);
+}
+
+/*static*/
+bool JsonRpcService::IsValidUnstoppableDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kUDPattern);
+  return re2::RE2::FullMatch(domain, *kDomainRegex);
 }
 
 void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
