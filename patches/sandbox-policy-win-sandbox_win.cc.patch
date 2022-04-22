@@ -1,5 +1,5 @@
 diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
-index 8339cb51e2d2aef78d599ebe630ead6b2e79876b..e594fae1387db3feb2cb8aa302381df128170f21 100644
+index e4e7cfe65b87ef3bc6b88073dc384a50fd8256ea..80689c92a9e16ffb1b8042df169c60a1398b7cda 100644
 --- a/sandbox/policy/win/sandbox_win.cc
 +++ b/sandbox/policy/win/sandbox_win.cc
 @@ -749,6 +749,7 @@ ResultCode LaunchWithoutSandbox(

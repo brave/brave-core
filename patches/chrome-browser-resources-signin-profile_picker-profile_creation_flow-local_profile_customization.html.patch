@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_creation_flow/local_profile_customization.html b/chrome/browser/resources/signin/profile_picker/profile_creation_flow/local_profile_customization.html
-index a73b61096e93ca1833d9b0e3b52a5665fd82602f..b18eb62e532b9dc9445cb84ab0c80d0b14847b73 100644
+index b910e0777bc840b933f8dee4045475e6aeff1095..3ef8552de8f7e60cae3a194917ebb105a9505b52 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_creation_flow/local_profile_customization.html
 +++ b/chrome/browser/resources/signin/profile_picker/profile_creation_flow/local_profile_customization.html
-@@ -169,6 +169,7 @@
+@@ -172,6 +172,7 @@
    #doneButton {
      width : 32px;
    }

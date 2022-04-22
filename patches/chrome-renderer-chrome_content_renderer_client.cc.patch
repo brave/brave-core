@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 7a096b1c69de4ac1f878589f4ca71343919860a2..58d1ced88d664b99ae856be60d16e8feea389575 100644
+index abfb11349c9eeec7d3edf2e5ebc13d022e4eee88..cf5d10c957ed2675ac08dd09f287a331c1a1bfe3 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -524,7 +524,7 @@ void ChromeContentRendererClient::RenderFrameCreated(

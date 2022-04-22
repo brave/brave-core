@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/cookie_store/cookie_store.cc b/third_party/blink/renderer/modules/cookie_store/cookie_store.cc
-index fd0a30ff16469e1ccf2e11ccfc97e2e3c763100b..91f1db56a0d735696d93f63dcf44c732e73595bd 100644
+index fc2f5c8ecd2eacf6c27473acb809657adec95b63..70a914162d72402c80197125a9d4ad52e50c96de 100644
 --- a/third_party/blink/renderer/modules/cookie_store/cookie_store.cc
 +++ b/third_party/blink/renderer/modules/cookie_store/cookie_store.cc
 @@ -85,6 +85,7 @@ std::unique_ptr<net::CanonicalCookie> ToCanonicalCookie(
