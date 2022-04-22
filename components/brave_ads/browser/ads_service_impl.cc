@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/ads_service_impl.h"
+#include "brave/components/brave_ads/browser/ads_service_impl.h"
 
 #include <algorithm>
 #include <utility>
@@ -42,9 +42,7 @@
 #include "bat/ads/statement_info.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h"
-#include "brave/browser/brave_ads/service_sandbox_type.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
@@ -52,6 +50,7 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
@@ -66,7 +65,6 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -116,8 +114,6 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #endif
-
-using brave_rewards::RewardsNotificationService;
 
 namespace brave_ads {
 
@@ -225,6 +221,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
 #endif
     history::HistoryService* history_service,
+    brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore<
         brave_federated::AdNotificationTimingDataStore,
         brave_federated::AdNotificationTimingTaskLog>*
@@ -242,8 +239,7 @@ AdsServiceImpl::AdsServiceImpl(
       last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
       last_idle_time_(0),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
-      rewards_service_(
-          brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
+      rewards_service_(rewards_service),
       ad_notification_timing_data_store_(ad_notification_timing_data_store),
       bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);

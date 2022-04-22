@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_H_
-#define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 
 #include <cstdint>
 #include <list>
@@ -27,7 +27,6 @@
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
@@ -41,9 +40,6 @@
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
-
-using brave_ads::ResourceComponent;
-using brave_rewards::RewardsNotificationService;
 
 class NotificationDisplayService;
 class Profile;
@@ -93,6 +89,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
 #endif
       history::HistoryService* history_service,
+      brave_rewards::RewardsService* rewards_service,
       brave_federated::AsyncDataStore<
           brave_federated::AdNotificationTimingDataStore,
           brave_federated::AdNotificationTimingTaskLog>*
@@ -545,4 +542,4 @@ class AdsServiceImpl : public AdsService,
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_

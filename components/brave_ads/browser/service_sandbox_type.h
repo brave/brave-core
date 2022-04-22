@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_SERVICE_SANDBOX_TYPE_H_
-#define BRAVE_BROWSER_BRAVE_ADS_SERVICE_SANDBOX_TYPE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 
 #include "content/public/browser/service_process_host.h"
 
@@ -21,4 +21,4 @@ content::GetServiceSandboxType<bat_ads::mojom::BatAdsService>() {
   return sandbox::mojom::Sandbox::kUtility;
 }
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_SERVICE_SANDBOX_TYPE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_

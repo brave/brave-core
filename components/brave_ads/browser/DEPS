@@ -2,4 +2,44 @@
 include_rules = [
   "+bat/ads",
   "-bat/ads/internal",
+  "+bat/ledger/mojom_structs.h",
+  "+content/public/browser",
+  "+services/network/public",
+  "+ui/base",
+  "+ui/message_center/public",
 ]
+
+# Existing exceptions
+specific_include_rules = {
+  "ads_service_impl.cc": [
+    "+brave/browser/brave_ads/notification_helper/notification_helper.h",
+    "+brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h",
+    "+brave/browser/profiles/profile_util.h",
+    "+brave/common/brave_channel_info.h",
+    "+brave/common/pref_names.h",
+    "+brave/browser/brave_browser_process.h",
+    "+brave/browser/notifications/brave_notification_platform_bridge_helper_android.h",
+    "+chrome/common/chrome_paths.h",
+    "+chrome/browser/browser_process.h",
+    "+chrome/browser/fullscreen.h",
+    "+chrome/browser/notifications/notification_display_service.h",
+    "+chrome/browser/profiles/profile_manager.h",
+    "+chrome/browser/profiles/profile.h",
+    "+chrome/browser/ui/browser.h",
+    "+chrome/browser/ui/browser_finder.h",
+    "+chrome/browser/ui/browser_navigator.h",
+    "+chrome/browser/ui/browser_navigator_params.h",
+    "+chrome/browser/first_run/first_run.h",
+    "+chrome/common/chrome_constants.h",
+    "+chrome/browser/android/service_tab_launcher.h",
+    "+chrome/browser/android/tab_android.h",
+    "+chrome/browser/ui/android/tab_model/tab_model_list.h",
+  ],
+  "ads_service_impl.h": [
+    "+brave/browser/brave_ads/background_helper/background_helper.h",
+    "+chrome/browser/notifications/notification_handler.h",
+    "+mojo/public/cpp/bindings/associated_receiver.h",
+    "+mojo/public/cpp/bindings/associated_remote.h",
+    "+mojo/public/cpp/bindings/remote.h",
+  ],
+}
