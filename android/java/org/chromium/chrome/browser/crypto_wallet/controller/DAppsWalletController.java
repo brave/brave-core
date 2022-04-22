@@ -16,7 +16,6 @@ import androidx.lifecycle.LifecycleOwner;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
@@ -91,16 +90,10 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     }
 
     private void createAndShowWalletPanel() {
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            AccountInfo[] accountInfos = new AccountInfo[0];
-            if (keyringInfo != null) {
-                accountInfos = keyringInfo.accountInfos;
-            }
-            mBraveWalletPanel = new BraveWalletPanel(
-                    mAnchorViewHost, mDialogOrPanelDismissListener, this, accountInfos);
-            mBraveWalletPanel.showLikePopDownMenu();
-            setupLifeCycleUpdater();
-        });
+        mBraveWalletPanel =
+                new BraveWalletPanel(mAnchorViewHost, mDialogOrPanelDismissListener, this);
+        mBraveWalletPanel.showLikePopDownMenu();
+        setupLifeCycleUpdater();
     }
 
     private void setupLifeCycleUpdater() {

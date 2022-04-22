@@ -1215,6 +1215,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    public Profile getCurrentProfile() {
+        Tab tab = getActivityTab();
+        if (tab == null) {
+            return Profile.getLastUsedRegularProfile();
+        }
+
+        return Profile.fromWebContents(tab.getWebContents());
+    }
+
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
         if (tab != null && tab.getUrl().getSpec().equals(url)) {

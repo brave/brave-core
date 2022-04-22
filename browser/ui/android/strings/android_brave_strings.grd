@@ -2956,6 +2956,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_QUEUE_REJECT_ALL" desc="Confirm Transaction Queue Reject All Transactions">
       Reject <ph name="TRANSACTION_LENGTH"><ex>4</ex>%1$s</ph> transactions
     </message>
+    <message name="IDS_WALLET_SITE_PERMISSIONS" desc="Site Permissions dialog title.">
+      Site permissions
+    </message>
+    <message name="IDS_WALLET_ACCOUNTS_CONNECTED" desc="Site Permissions number of accounts connected.">
+      <ph name="VALUE">%1$s<ex>2</ex></ph> accounts connected
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_NEW_ACCOUNT" desc="Site Permissions new account button.">
+      New account
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_CONNECT" desc="Site Permissions connect account button title.">
+      Connect
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_SWITCH" desc="Site Permissions switch account button title.">
+      Switch
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_DISCONNECT" desc="Site Permissions disconnect account button title.">
+      Disconnect
+    </message>
     </messages>
   </release>
 </grit>

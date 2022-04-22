@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -22,7 +21,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapte
 import java.util.ArrayList;
 import java.util.List;
 
-public class SignMessageFragment extends BottomSheetDialogFragment {
+public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private List<String> mTabTitles;
 
     @Override

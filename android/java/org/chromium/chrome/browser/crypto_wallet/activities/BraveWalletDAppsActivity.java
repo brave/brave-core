@@ -22,6 +22,9 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SwitchEthereumChainFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
@@ -39,6 +42,7 @@ public class BraveWalletDAppsActivity
     private static final String TAG = BraveWalletBaseActivity.class.getSimpleName();
     private ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
+    private Fragment mFragment;
 
     public enum ActivityType {
         SIGN_MESSAGE(0),
@@ -78,17 +82,20 @@ public class BraveWalletDAppsActivity
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
                 intent.getIntExtra("activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
-        Fragment fragment = null;
+        mFragment = null;
         if (mActivityType == ActivityType.SIGN_MESSAGE) {
-            fragment = new SignMessageFragment();
+            mFragment = new SignMessageFragment();
         } else if (mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
-            fragment = new SwitchEthereumChainFragment();
+            mFragment = new SwitchEthereumChainFragment();
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
-            fragment = new AddTokenFragment();
+            mFragment = new AddTokenFragment();
+        } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
+            mFragment = new ConnectAccountFragment();
         }
-        if (fragment != null) {
+
+        if (mFragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.frame_layout, fragment);
+            ft.replace(R.id.frame_layout, mFragment);
             ft.commit();
         }
         onInitialLayoutInflationComplete();
@@ -138,6 +145,11 @@ public class BraveWalletDAppsActivity
                         });
                         mPendingTxHelper.fetchTransactions(() -> {});
                     });
+        }
+        if (mFragment instanceof BaseDAppsFragment) {
+            ((BaseDAppsFragment) mFragment).finishNativeInitialization();
+        } else if (mFragment instanceof BaseDAppsBottomSheetDialogFragment) {
+            ((BaseDAppsBottomSheetDialogFragment) mFragment).finishNativeInitialization();
         }
     }
 

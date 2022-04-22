@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -37,13 +38,13 @@ import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.url.GURL;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.HashSet;
@@ -80,14 +81,14 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     public BraveWalletPanel(View anchorViewHost, OnDismissListener onDismissListener,
-            BraveWalletPanelServices braveWalletPanelServices, AccountInfo[] accountInfos) {
+            BraveWalletPanelServices braveWalletPanelServices) {
         mAccountsWithPermissions = new HashSet<AccountInfo>();
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         mAnchorViewHost = anchorViewHost;
         mOnDismissListener = onDismissListener;
         mActivity = BraveActivity.getChromeTabbedActivity();
-        mAccountInfos = accountInfos;
+        mAccountInfos = new AccountInfo[0];
         mBraveWalletPanelServices = braveWalletPanelServices;
 
         mPopupWindow = new PopupWindow(mAnchorViewHost.getContext());
@@ -145,6 +146,7 @@ public class BraveWalletPanel implements DialogInterface {
     public void resume() {
         if (isShowing()) {
             updateState();
+            updateStatus();
         }
     }
 
@@ -163,31 +165,21 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateStatus() {
-        GURL address = getCurrentHostHttpAddress();
-        org.chromium.url.internal.mojom.Origin hostOrigin =
-                new org.chromium.url.internal.mojom.Origin();
-        hostOrigin.scheme = address.getScheme();
-        hostOrigin.host = address.getHost();
-        hostOrigin.port = 0;
-        if (address.getPort().isEmpty()) {
-            if (hostOrigin.scheme.equals("http")) {
-                hostOrigin.port = 80;
-            } else if (hostOrigin.scheme.equals("https")) {
-                hostOrigin.port = 443;
-            }
-        } else {
-            try {
-                hostOrigin.port = Short.parseShort(address.getPort());
-            } catch (Exception e) {
-            }
-        }
-
-        AccountsPermissionsHelper accountsPermissionsHelper = new AccountsPermissionsHelper(
-                mBraveWalletPanelServices.getBraveWalletService(), mAccountInfos, hostOrigin);
-        accountsPermissionsHelper.checkAccounts(() -> {
-            mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
-            updateAccount();
-        });
+        mBraveWalletPanelServices.getKeyringService().getKeyringInfo(
+                BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                    if (keyringInfo != null) {
+                        mAccountInfos = keyringInfo.accountInfos;
+                    }
+                    AccountsPermissionsHelper accountsPermissionsHelper =
+                            new AccountsPermissionsHelper(
+                                    mBraveWalletPanelServices.getBraveWalletService(),
+                                    mAccountInfos, Utils.getCurrentMojomOrigin());
+                    accountsPermissionsHelper.checkAccounts(() -> {
+                        mAccountsWithPermissions =
+                                accountsPermissionsHelper.getAccountsWithPermissions();
+                        updateAccount();
+                    });
+                });
     }
 
     private void updateAccount() {
@@ -287,6 +279,13 @@ public class BraveWalletPanel implements DialogInterface {
             mActivity.startActivity(intent);
         });
         mBtnConnectedStatus = mPopupView.findViewById(R.id.sp_dapps_panel_state);
+        mBtnConnectedStatus.setOnClickListener(v -> {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            if (activity != null) {
+                activity.openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.CONNECT_ACCOUNT);
+            }
+        });
         mPopupWindow.setContentView(mPopupView);
         mAccountImage = mPopupView.findViewById(R.id.iv_dapps_panel_account_image);
         mAccountName = mPopupView.findViewById(R.id.tv_dapps_panel_from_to);
@@ -295,14 +294,5 @@ public class BraveWalletPanel implements DialogInterface {
         mAmountFiat = mPopupView.findViewById(R.id.tv_dapps_panel_amount_fiat);
         updateState();
         updateStatus();
-        // TODO: show connected or disconnected account page
-    }
-
-    private GURL getCurrentHostHttpAddress() {
-        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
-        if (activity != null) {
-            return activity.getActivityTab().getUrl().getOrigin();
-        }
-        return new GURL("");
     }
 }
