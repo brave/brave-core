@@ -201,8 +201,8 @@ class AdsImpl final : public Ads,
 
   AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
                             const AdsHistorySortType sort_type,
-                            const double from_timestamp,
-                            const double to_timestamp) override;
+                            const base::Time from_time,
+                            const base::Time to_time) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

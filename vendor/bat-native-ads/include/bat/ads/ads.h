@@ -18,6 +18,10 @@
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace ads {
 
 class AdsClient;
@@ -29,7 +33,7 @@ struct AdNotificationInfo;
 // command-line arguments allow users to override the environment.
 extern mojom::Environment g_environment;
 
-// Returns the the system information.
+// Returns system information.
 mojom::SysInfo& SysInfo();
 
 // Returns the build channel.
@@ -216,12 +220,12 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
   // Called to get history filtered by |filter_type| and sorted by |sort_type|
-  // between the |from_timestamp| and |to_timestamp| date range. Returns
-  // |AdsHistoryInfo| containing info of the obtained history.
+  // between the |from_time| and |to_time| date range. Returns |AdsHistoryInfo|
+  // containing info of the obtained history.
   virtual AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
                                     const AdsHistorySortType sort_type,
-                                    const double from_timestamp,
-                                    const double to_timestamp) = 0;
+                                    const base::Time from_time,
+                                    const base::Time to_time) = 0;
 
   // Called to get the statement of accounts. The callback takes two arguments -
   // |bool| is set to |true| if successful otherwise |false|. |StatementInfo|

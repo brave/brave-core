@@ -1259,14 +1259,12 @@ void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
 
   AllowJavascript();
 
-  const base::Time to_time = base::Time::Now();
-  const uint64_t to_timestamp = to_time.ToDoubleT();
+  const base::Time now = base::Time::Now();
 
-  const base::Time from_time = to_time - base::Days(kDaysOfAdsHistory - 1);
-  const base::Time from_time_local_midnight = from_time.LocalMidnight();
-  const uint64_t from_timestamp = from_time_local_midnight.ToDoubleT();
+  const base::Time from_time = now - base::Days(kDaysOfAdsHistory - 1);
+  const base::Time from_time_at_local_midnight = from_time.LocalMidnight();
 
-  ads_service_->GetHistory(from_timestamp, to_timestamp,
+  ads_service_->GetHistory(from_time_at_local_midnight, now,
                            base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
                                           weak_factory_.GetWeakPtr()));
 }

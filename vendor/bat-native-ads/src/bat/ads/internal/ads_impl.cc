@@ -438,16 +438,13 @@ void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
 
 AdsHistoryInfo AdsImpl::GetHistory(const AdsHistoryFilterType filter_type,
                                    const AdsHistorySortType sort_type,
-                                   const double from_timestamp,
-                                   const double to_timestamp) {
+                                   const base::Time from_time,
+                                   const base::Time to_time) {
   if (!IsInitialized()) {
     return {};
   }
 
-  const base::Time from = base::Time::FromDoubleT(from_timestamp);
-  const base::Time to = base::Time::FromDoubleT(to_timestamp);
-
-  return history::Get(filter_type, sort_type, from, to);
+  return history::Get(filter_type, sort_type, from_time, to_time);
 }
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {

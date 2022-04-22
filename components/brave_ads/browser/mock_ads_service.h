@@ -96,7 +96,7 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(PurgeOrphanedAdEventsForType, void(const ads::mojom::AdType));
 
-  MOCK_METHOD3(GetHistory, void(double, double, OnGetHistoryCallback));
+  MOCK_METHOD3(GetHistory, void(base::Time, base::Time, OnGetHistoryCallback));
 
   MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
 

@@ -408,14 +408,14 @@ void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
                             base::Base64Encode(wallet->recovery_seed));
 }
 
-void AdsServiceImpl::GetHistory(const double from_timestamp,
-                                const double to_timestamp,
+void AdsServiceImpl::GetHistory(const base::Time from_time,
+                                const base::Time to_time,
                                 OnGetHistoryCallback callback) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->GetHistory(from_timestamp, to_timestamp,
+  bat_ads_->GetHistory(from_time, to_time,
                        base::BindOnce(&AdsServiceImpl::OnGetHistory,
                                       AsWeakPtr(), std::move(callback)));
 }
