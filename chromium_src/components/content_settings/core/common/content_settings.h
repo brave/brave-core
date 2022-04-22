@@ -16,6 +16,11 @@ struct RendererContentSettingRules
     : public RendererContentSettingRules_ChromiumImpl {
   RendererContentSettingRules();
   ~RendererContentSettingRules();
+  RendererContentSettingRules(const RendererContentSettingRules& rules);
+  RendererContentSettingRules(RendererContentSettingRules&& rules);
+  RendererContentSettingRules& operator=(
+      const RendererContentSettingRules& rules);
+  RendererContentSettingRules& operator=(RendererContentSettingRules&& rules);
 
   static bool IsRendererContentSetting(ContentSettingsType content_type);
 
