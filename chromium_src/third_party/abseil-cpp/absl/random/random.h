@@ -8,8 +8,14 @@
 
 #include "src/third_party/abseil-cpp/absl/random/random.h"
 
-namespace brave {
-typedef absl::random_internal::randen_engine<uint64_t> FarblingPRNG;
-}
+namespace absl {
+
+// Make randen_engine available for direct usage, because
+// absl::BitGen/InsecureBitGen uses always-on process-bound salt for seeded
+// generators.
+template <typename T>
+using randen_engine = random_internal::randen_engine<T>;
+
+}  // namespace absl
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_ABSEIL_CPP_ABSL_RANDOM_RANDOM_H_

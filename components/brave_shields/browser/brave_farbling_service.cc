@@ -53,8 +53,7 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
                sizeof session_key));
   CHECK(h.Sign(domain, domain_key, sizeof domain_key));
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
-  *prng = FarblingPRNG();
-  prng->seed(seed);
+  *prng = FarblingPRNG(seed);
   return true;
 }
 

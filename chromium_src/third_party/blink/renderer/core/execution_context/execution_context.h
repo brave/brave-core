@@ -24,6 +24,7 @@ using blink::Supplement;
 
 namespace brave {
 
+typedef absl::randen_engine<uint64_t> FarblingPRNG;
 typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(

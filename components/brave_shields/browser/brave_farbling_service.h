@@ -16,6 +16,8 @@ class PrefRegistrySyncable;
 
 namespace brave {
 
+typedef absl::randen_engine<uint64_t> FarblingPRNG;
+
 class BraveFarblingService {
  public:
   BraveFarblingService();
