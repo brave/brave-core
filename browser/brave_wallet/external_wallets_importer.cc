@@ -391,7 +391,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     return;
   }
 
-  const std::string* mnemonic = nullptr;
+  absl::optional<std::string> mnemonic = absl::nullopt;
   absl::optional<int> number_of_accounts = absl::nullopt;
   for (const auto& keyring : keyrings->GetList()) {
     DCHECK(keyring.is_dict());
@@ -403,11 +403,29 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     }
     if (*type != "HD Key Tree")
       continue;
-    mnemonic = keyring.FindStringPath("data.mnemonic");
-    if (!mnemonic) {
-      VLOG(0) << "keyring.data.menmonic is missing";
-      std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
-      return;
+    const std::string* str_mnemonic = keyring.FindStringPath("data.mnemonic");
+    // data.mnemonic is not string, try utf8 encoded byte array
+    if (!str_mnemonic) {
+      const auto& dict = keyring.GetDict();
+      const auto* list = dict.FindListByDottedPath("data.mnemonic");
+      std::vector<uint8_t> utf8_encoded_mnemonic;
+      if (list) {
+        for (const auto& item : *list) {
+          if (!item.is_int())
+            break;
+          utf8_encoded_mnemonic.push_back(item.GetInt());
+        }
+      }
+      if (utf8_encoded_mnemonic.empty()) {
+        VLOG(0) << "keyring.data.menmonic is missing";
+
+        std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
+        return;
+      }
+      mnemonic = std::string(utf8_encoded_mnemonic.begin(),
+                             utf8_encoded_mnemonic.end());
+    } else {
+      mnemonic = *str_mnemonic;
     }
     number_of_accounts = keyring.FindIntPath("data.numberOfAccounts");
     break;
