@@ -258,8 +258,15 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   net::EmbeddedTestServer https_server_;
 };
 
+#if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_WIN)
+#define MAYBE_SuggestPermissionIfWidevineDetected \
+  DISABLED_SuggestPermissionIfWidevineDetected
+#else
+#define MAYBE_SuggestPermissionIfWidevineDetected \
+  SuggestPermissionIfWidevineDetected
+#endif
 IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
-                       SuggestPermissionIfWidevineDetected) {
+                       MAYBE_SuggestPermissionIfWidevineDetected) {
   // In this test, we just want to know whether permission bubble is shown.
   GURL url = https_server_.GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
