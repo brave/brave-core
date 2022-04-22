@@ -192,19 +192,6 @@
     "message": "Automatische Spenden",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Zu $provider$ gehen, um die Verifizierung abzuschließen",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Bitte schließen Sie die Identitätsverifizierung ab, um Belohnungen zu sammeln.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Abgemeldet",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Ausstehend",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Beim Verifizieren mit $provider$ ist ein vorübergehendes Problem aufgetreten. Ihre Brave Belohnungen bleiben im Status „Ausstehend“ und wir versuchen es automatisch erneut, aber Sie können es auch später selbst noch einmal versuchen.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Belohnungen aus Ads",

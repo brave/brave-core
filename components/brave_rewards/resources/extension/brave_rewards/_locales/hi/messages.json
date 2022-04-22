@@ -192,19 +192,6 @@
     "message": "स्वतः-योगदान",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "वेरिफ़िकेशन पूरा करने के लिए $provider$ जाएं ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "रिवॉर्ड पाने के लिए कृपया पहचान वेरीफ़िकेशन पूरा करें.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "लॉग आउट हुआ",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "लंबित है",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "$provider$ के साथ वेरिफ़ाई करने में एक अस्थाई समस्या आ रही है. आपके Brave रिवॉर्ड पेंडिंग रहेंगे और अपने-आप फिर से कोशिश करेंगे, लेकिन आप भी बाद में फिर से कोशिश कर सकते हैं.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "विज्ञापनों से रिवॉर्ड",

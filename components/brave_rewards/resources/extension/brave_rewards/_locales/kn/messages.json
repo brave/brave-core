@@ -192,19 +192,6 @@
     "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು $provider$ ಗೆ ಹೋಗಿ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸುವುದನ್ನು ಆರಂಭಿಸುವುದಕ್ಕಾಗಿ ದಯವಿಟ್ಟು ಗುರುತು ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "$provider$ ಜೊತೆಗೆ ಪರಿಶೀಲಿಸುವಲ್ಲಿ ತಾತ್ಕಾಲಿಕ ಸಮಸ್ಯೆ ಇದೆ. ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಬಾಕಿ ಸ್ಥಿತಿಯಲ್ಲಿಯೇ ಇರುತ್ತದೆ ಮತ್ತು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸುತ್ತದೆ, ಆದರೆ ನೀವು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಸಹ ಪ್ರಯತ್ನಿಸಬಹುದು.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು",

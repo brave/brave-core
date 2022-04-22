@@ -192,19 +192,6 @@
     "message": "Automātiska ziedošana",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Doties uz $provider$, lai pabeigtu verifikāciju",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Pabeidziet identitātes verifikāciju, lai sāktu saņemt balvas.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Izrakstījies",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Gaida",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Radās īslaicīga $provider$ verifikācijas problēma. Jūsu Brave balvas saglabāsies neapstrādātā stāvoklī, un mēģinājums tiks veikts atkārtoti automātiski, bet varat arī mēģināt vēlāk.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Peļņa no reklāmām",

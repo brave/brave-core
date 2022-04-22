@@ -192,19 +192,6 @@
     "message": "Contribuisci automaticamente",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Passa a $provider$ per completare la verifica",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Completa la verifica dell’identità per iniziare a ricevere dei premi.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Disconnessione effettuata",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "In sospeso",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "C’è un problema temporaneo nella verifica con $provider$. L’account che hai creato per le Ricompense di Brave resterà in sospeso. Riproveremo automaticamente ma poi, se vuoi, puoi riprovare anche tu.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Premi di Brave Ads",

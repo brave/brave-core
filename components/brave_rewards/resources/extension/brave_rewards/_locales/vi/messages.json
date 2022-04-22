@@ -192,19 +192,6 @@
     "message": "Tự động Đóng góp",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Truy cập $provider$ để hoàn tất xác minh",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Vui lòng hoàn thành xác minh danh tính để bắt đầu nhận phần thưởng.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Đã đăng xuất",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Đang chờ xử lý",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Đã xảy ra lỗi tạm thời khi xác minh với $provider$. Phần thưởng Brave của bạn sẽ vẫn ở trạng thái Đang chờ xử lý và tự động thử lại, nhưng bạn cũng có thể thử lại sau.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Rewards từ Ads",

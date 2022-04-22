@@ -192,19 +192,6 @@
     "message": "自動支援",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "$provider$へ移動して認証を完了",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "報酬を受け取るには、本人確認を完了する必要があります。",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "ログアウト済み",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "保留中",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "一時的に、$provider$ の認証に問題が発生しています。Braveリワードのステータスは保留中となり、自動的に再試行されます。後ほどもう一度お試しいただくことも可能です。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Adsによる報酬",

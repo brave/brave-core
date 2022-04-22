@@ -426,44 +426,33 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7559243474426790340">Durumu Yenile</translation>
 <translation id="8376263745431603066">"Gece Modu"nu etkinleştir (Deneysel)</translation>
 <translation id="1383876407941801731">Ara</translation>
-<translation id="1972589975368876259">Yığını düzenle</translation>
-<translation id="2490330380242414851">Arabirim Öğesini Kaldır</translation>
 <translation id="8446884382197647889">Daha Fazla Bilgi Edinin</translation>
-<translation id="7384441892795736634">Verileri Yenile</translation>
-<translation id="4804818685124855865">Bağlantıyı Kes</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Kullanılabilir <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Satın al <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Mevduat Adresi</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Mevduat Dekontu</translation>
+<translation id="6755546361496900700">Dönüşümü Ön İzle</translation>
 <translation id="5110244215256675209">Kripto Para Birimi Satın Al</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Satın al <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Kullanılabilir <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Dönüşümü Ön İzle</translation>
-<translation id="2882813124794301799">Arabirim Öğesi Yığını</translation>
 <translation id="13296465911709339">Metnin panoya kopyalandı.</translation>
 <translation id="2735834606413553397">Halka açık adres panoya kopyalandı.</translation>
 <translation id="7144878232160441200">Tekrar Dene</translation>
 <translation id="2977461003134694205">Gizlilik İstatistikleri</translation>
-<translation id="4643117005422448078">En İyi Siteler</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">İzleyiciler &amp; Engellenen reklamlar, Tasarruf Edilen Bant Genişliği ve Tasarruf Edilen Zaman Tahminleri.</translation>
-<translation id="74417429503469271">Sık ziyaret ettiğiniz en iyi siteleri açın.</translation>
 <translation id="2956070106555335453">Özet</translation>
 <translation id="1366855498335432549">Para Yatır</translation>
 <translation id="1301340234286078471">Dönüştür</translation>
 <translation id="223536150967420869">Satın Al</translation>
-<translation id="1714829281959608206">Binance hesabı bakiyesini görüntülemek ve kripto para birimlerini alıp satmak için Binance bağlantısını etkinleştirin.</translation>
 <translation id="4584930231524505442">Şunu dönüştürmek istiyorum:</translation>
 <translation id="5749014321384313843">Şunu harcamak istiyorum:</translation>
-<translation id="8688672835843460752">Müsait</translation>
 <translation id="2480674848181564169">Çevirme için yeterli bakiye yok</translation>
 <translation id="2215334405220411393">Dönüştürülecek en az miktar : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Bağlanamadı</translation>
 <translation id="7742417737698031726">Ücret</translation>
 <translation id="2122225204180056042">Şunu alacaksınız:</translation>
 <translation id="6432284126416751397">Dönüşümü Onayla</translation>
-<translation id="5137723827757859599">En iyi sitelerde henüz bir şey yok.</translation>
 <translation id="3891414008432200754">Fiyat</translation>
 <translation id="3733576242118819803">Doğrulayın (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Dönüştürme Başarısız. Lütfen tekrar deneyin.</translation>
@@ -565,6 +554,8 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2759836790106646094">Cüzdanınızı hemen yedekleyin!</translation>
 <translation id="1078873179929044999">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik bir kurtarma tümcesi göreceksiniz. Bu tümceyi güvenli bir yerde saklayın. Kurtarma tümceniz; şifreyi unutmanız, cihazınızın kaybolması veya çalınması ya da cüzdanınızı değiştirmek istemeniz halinde hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 <translation id="2359808026110333948">Devam et</translation>
+<translation id="5488357322146334497">Mesaj</translation>
+<translation id="7228169875515099943">VERİ</translation>
 <translation id="1904000155026201268">Kurtarma ifademi kaybedersem kripto cüzdanıma erişemeyeceğimi anlıyorum.</translation>
 <translation id="3933122286596948824">Kurtarma ifadeniz</translation>
 <translation id="5077747669435508720">Bu sözcükleri aşağıda gösterilenle aynı sırada bir yere yazın veya kopyalayın ve güvenli bir yerde saklayın. Kurtarma cümleniz şifreyi unutmanız, cihazınızın kaybolması/çalınması veya cüzdanınızı değiştirmek istemeniz durumlarında hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
@@ -863,4 +854,21 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4945690646623486292">Ağ Seç</translation>
 <translation id="8853725596990766789">Miktarı değiştirin</translation>
 <translation id="5233638681132016545">Yeni sekme</translation>
+<translation id="8006088103295786154">Brave Cüzdan'a Eriş</translation>
+<translation id="5308380583665731573">Bağlan</translation>
+<translation id="3432029672560911238">Kullanıcı hesabı</translation>
+<translation id="5753378322046059140">Hesap değiştir</translation>
+<translation id="3897092660631435901">Menü</translation>
+<translation id="42981349822642051">Genişlet</translation>
+<translation id="3586752056660754651">İmza</translation>
+<translation id="6592721981110586529">Brave Cüzdan'la Bağlan</translation>
+<translation id="329813193938846695">Hesap(ları) seç</translation>
+<translation id="3890989020011724401">Yeni hesap</translation>
+<translation id="291375746846291973">Sadece güvendiğiniz sitelere bağlanın.</translation>
+<translation id="385051799172605136">Geri</translation>
+<translation id="1060221736464994328">Bu sitenin ağı değiştirmesine izin verilsin mi?</translation>
+<translation id="2478788592457735063">Bu, ağı daha önce eklenmiş bir ağa çevirir.</translation>
+<translation id="8756686998207163764">Ağı değiştir</translation>
+<translation id="394256914628786902">Sekme Grubu otomatik oluşturmayı etkinleştir</translation>
+<translation id="8274201358637112807">Bu sayfa Brave Cüzdan'la etkileşime geçmek istiyor</translation>
 </translationbundle>

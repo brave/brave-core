@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Λύση</translation>
 <translation id="6991128190741664836">Αργότερα</translation>
 <translation id="8112367589167674370">Συνομιλία Brave</translation>
-<translation id="1544192797660353713">Πορτοφόλι</translation>
+<translation id="8488282162676695335">Πορτοφόλι Brave</translation>
 <translation id="8820817407110198400">Σελιδοδείκτες</translation>
 <translation id="1644574205037202324">Ιστορικό</translation>
 <translation id="6165508094623778733">Μάθε περισσότερα</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Σφάλμα: Χρειάζεστε έναν επαληθευμένο λογαριασμό για να συνδεθείτε</translation>
 <translation id="5260522591743022748">Χμ, φαίνεται ότι οι Ανταμοιβές Brave σας έχουν ήδη επαληθευτεί με άλλον λογαριασμό <ph name="PROVIDER"/>. Δοκιμάστε να επαληθεύσετε ξανά χρησιμοποιώντας τον προηγούμενο λογαριασμό σας.</translation>
 <translation id="5111921830714291902">Σφάλμα: Διαφορετικός λογαριασμός</translation>
+<translation id="6933939911547091461">Δυστυχώς, οι Ανταμοιβές σας Brave δεν μπορούν να επαληθευτούν, γιατί δεν υποστηρίζεται η επαλήθευση Ανταμοιβών Brave για την περιοχή σας.</translation>
+<translation id="8218538368080510976">Σφάλμα: Η περιοχή δεν υποστηρίζεται</translation>
 <translation id="5382684862562314222">Το BAT δεν υποστηρίζεται ακόμα στην περιοχή σας στο Uphold.</translation>
 <translation id="9074594632540931067">Σφάλμα: BAT μη διαθέσιμο</translation>
 <translation id="413458922997276130">Ο λογαριασμός στο Uphold είναι προς το παρόν αποκλεισμένος.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Σύνολο που ελήφθη</translation>
 <translation id="824449983246282560">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφθείτε το Gemini, για να αγοράσετε υπόλοιπο.</translation>
 <translation id="8624961452383848703">Θέλω να μετατρέψω…</translation>
+<translation id="1544192797660353713">Πορτοφόλι</translation>
 <translation id="616639131065447379">Καλώς ήρθατε στο Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Το Crypto Wallets σάς επιτρέπει να εργάζεστε με κρυπτονομίσματα και σχετικά στοιχεία κεφαλαίου στο Brave. Το Crypto Wallets υποστηρίζει token Ethereum όπως ETH και BAT, καθώς και συλλεκτικά αντικείμενα και σας επιτρέπει να εργαστείτε με Ðapps και άλλα έξυπνα συμβόλαια. Όλα αυτά προορίζονται για άτομα που είναι εξοικειωμένα με το Ethereum και άλλα συστήματα blockchain - ή θέλουν πολύ να μάθουν.</translation>
 <translation id="4855440621031541830">Χρησιμοποιείτε το Crypto Wallets μόνο εάν αποδέχεστε ότι εσείς μόνο εσείς είστε υπεύθυνος για όλα τα ρίσκα που απορρέουν από τη χρήση του και ότι ότι το Brave Software δεν φέρει καμία ευθύνη ή οφειλή για οποιαδήποτε απώλεια συμπεριλαμβανομένων αμελητέων ή σημαντικών απωλειών που ίσως υποστείτε ως συνέπεια της χρήσης αυτής.</translation>
@@ -762,13 +765,12 @@
 <translation id="5878420576943709750">Οι ανταμοιβές σας <ph name="AMOUNT"/> <ph name="MONTH"/> είναι καθ' οδόν. Έχετε τον νου σας!</translation>
 <translation id="2659764755126740206">Μεταβείτε στον <ph name="PROVIDER"/> λογαριασμό σας</translation>
 <translation id="1165667598801520610">Προσθήκη Κεφαλαίων</translation>
-<translation id="2389181429986654814">Μεταβείτε στο <ph name="PROVIDER"/> για να ολοκληρώσετε την επαλήθευση</translation>
-<translation id="7793632266654336758">Για να αρχίσετε να λαμβάνετε Rewards, πρέπει να ολοκληρώσετε την επαλήθευση ταυτότητας</translation>
 <translation id="2394961582378297792">Αποσυνδέθηκε</translation>
 <translation id="6080167751812750226">Αποσυνδεθείτε από <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Εκτιμώμενα κέρδη</translation>
 <translation id="4244985009709452836">Συνδεθείτε στον λογαριασμό σας <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Φιλοδώρημα για μια φορά</translation>
+<translation id="7580329715937096918">Προσωρινά, υπάρχει πρόβλημα με την επαλήθευση από<ph name="PROVIDER"/>. Οι Ανταμοιβές Brave σας θα παραμείνουν σε κατάσταση εκκρεμότητας και θα γίνει αυτόματα επανάληψη της προσπάθειας, αλλά μπορείτε να προσπαθήσετε ξανά αργότερα.</translation>
 <translation id="590733288489975971">Brave Rewards από διαφημίσεις Brave Ads</translation>
 <translation id="6181762795539107980">Ανεπαλήθευτο</translation>
 <translation id="3026978804849658576">Προβολή δήλωσης</translation>
@@ -792,7 +794,6 @@
 <translation id="2221902203895354376">Είναι διαθέσιμη μια νέα επιβράβευση σε token!</translation>
 <translation id="7701466644604753106">Ενεργοποιήστε το Γρήγορο Γράψιμο</translation>
 <translation id="763042262431778831">Απενεργοποιήστε το Γρήγορο Γράψιμο</translation>
-<translation id="8488282162676695335">Πορτοφόλι Brave</translation>
 <translation id="1148827340205946630">Ο χρήστης απέρριψε το αίτημα</translation>
 <translation id="2403819048476450281">Μη έγκυρες παράμετροι.</translation>
 <translation id="3955144560853195652">Η αλυσίδα <ph name="VALUE"/> δεν έχει συνδεθεί</translation>
@@ -1005,9 +1006,9 @@
 <translation id="5488357322146334497">Μήνυμα</translation>
 <translation id="3586752056660754651">Υπογραφή</translation>
 <translation id="3484981968509595506">Μια DApp ζητά το δημόσιο κλειδί κρυπτογράφησης σας</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> ζητά το δημόσιο κλειδί κρυπτογράφησης των πορτοφολιών σας. Εάν συναινείτε στην παροχή αυτού του κλειδιού, ο ιστότοπος θα μπορεί να συνθέτει κρυπτογραφημένα μηνύματα προς εσάς.</translation>
+<translation id="1915212737651531313">Το <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ζητάει το δημόσιο κλειδί κρυπτογράφησης των πορτοφολιών σας. Αν συναινέσετε στην παροχή του κλειδιού, ο ιστότοπος θα μπορεί να συντάσσει κρυπτογραφημένα μηνύματα προς εσάς.</translation>
 <translation id="3340247553212049934">Παροχή</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> θα ήθελε να διαβάσει αυτό το μήνυμα για να ολοκληρώσει το αίτημά σας</translation>
+<translation id="1619778919922494944">Αυτό το DApp θα ήθελε να διαβάσει αυτό το μήνυμα για να ολοκληρώσει το αίτημά σας</translation>
 <translation id="714506544401754321">Αποκρυπτογράφηση μηνύματος</translation>
 <translation id="5039804452771397117">Επιτρέπεται</translation>
 <translation id="9032898664193335413">Να επιτραπεί σε αυτήν την εφαρμογή να ξοδέψει τα <ph name="TOKEN_SYMBOL"/> σας;</translation>
@@ -1035,6 +1036,7 @@
 <translation id="3948067511324628726">Χρέωση καυσίμου</translation>
 <translation id="7163997622278957886">Προσφορά</translation>
 <translation id="1074360622426001342">Ποσότητα + καύσιμο</translation>
+<translation id="2186011161688824046">Ποσό + χρέωση</translation>
 <translation id="7084089311475827950">Δεν υπάρχουν δεδομένα.</translation>
 <translation id="5821668936183240062">επόμενο</translation>
 <translation id="793994607260936590">πρώτη</translation>
@@ -1167,6 +1169,10 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 ημέρες δώρων κρυπτονoμισμάτων, ~500.000k σε βραβεία.</translation>
 <translation id="8292716346768453265">Μπείτε τώρα!</translation>
+<translation id="6423985584914773314">Μη έγκυρη διεύθυνση FIL</translation>
+<translation id="8528916244724490964">Όλα τα δίκτυα</translation>
+<translation id="2781668117338732220">Δευτερεύοντα δίκτυα</translation>
+<translation id="2816106784624007524">Το όριο καυσίμου πρέπει να είναι ακέραιος μεγαλύτερος του 0</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="3745016858329272300">Γενικές Πληροφορίες</translation>
 <translation id="4045404575593562245">Συμβάντα Ελέγχου Tor</translation>
@@ -1181,30 +1187,31 @@
 <translation id="7709075156958117386">Εάν αυτός ο ιστότοπος φαίνεται κατεστραμμένος, δοκιμάστε να απενεργοποιήσετε τις Ασπίδες. 
     <ph name="LINK_BEFORE"/>Σημείωση: αυτό μπορεί να μειώσει την προστασία απορρήτου του Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, διαφημίσεις και άλλα μπλοκαρίστηκαν <ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Προχωρημένες Ρυθμίσεις</translation>
+<translation id="650318023204990401">Ρυθμίσεις για προχωρημένους</translation>
 <translation id="5799940914270080805">Η αλλαγή αυτών των ρυθμίσεων μπορεί να σπάσει τους ιστότοπους.</translation>
 <translation id="9204041448536398473">Ρυθμίσεις Καθολικής Ασπίδας</translation>
 <translation id="2108334320919763866">Καθολικές προεπιλογές</translation>
-<translation id="1928321796986970424">Λίστες Φίλτρων</translation>
+<translation id="4516904298421534459">Λίστες φίλτρων</translation>
 <translation id="3570081523466826008">Αναβάθμιση συνδέσεων σε HTTPS</translation>
 <translation id="131231380815754440">Ενεργοποίηση HTTPS</translation>
 <translation id="4824468494729001999">Αποκλεισμός διαλόγων</translation>
 <translation id="3246600097575692802">Ενεργοποίηση αποκλεισμένων Script</translation>
 <translation id="3603525299146223354">Trackers &amp; διαφημίσεις</translation>
-<translation id="1146309636943354181">Trackers &amp; διαφημίσεις αποκλείστηκαν (συμβατικό)</translation>
-<translation id="5973258875089964805">Trackers &amp; διαφημίσεις αποκλείστηκαν (επιθετικό)</translation>
+<translation id="4448697385961650078">Αποκλεισμός ιχνηλατών &amp; διαφημίσεων</translation>
+<translation id="8593054718053894081">Επιθετικός αποκλεισμός ιχνηλατών &amp; διαφημίσεων</translation>
 <translation id="7384778069178817075">Αποδοχή όλων των trackers &amp; διαφημίσεων</translation>
-<translation id="6203697265754637264">Τα cookies μεταξύ ιστοτόπων αποκλείστηκαν</translation>
-<translation id="4627427111733173920">Τα cookies έχουν αποκλειστεί</translation>
-<translation id="3972324600756617403">Αποδοχή όλων των cookies</translation>
+<translation id="4941539331405513605">Αποκλεισμός cookies μεταξύ ιστοσελίδων</translation>
+<translation id="6883611015375728278">Αποκλεισμός όλων των cookies</translation>
+<translation id="5657156137487675418">Επιτρέψτε όλα τα cookies</translation>
 <translation id="8366221601425141146">Έγινε αποκλεισμός δακτυλικών αποτυπωμάτων</translation>
-<translation id="5582686930349810484">Αποκλεισμός δακτυλικών αποτυπωμάτων (τυπικό)</translation>
-<translation id="6696441392507885865">Αποκλεισμός δακτυλικών αποτυπωμάτων (αυστηρός, ενδέχεται να σπάσει ιστότοπους)</translation>
-<translation id="5882733945883311404">Επιτρέψτε όλα τα δακτυλικά αποτυπώματα</translation>
+<translation id="6531019308847917584">Αποκλεισμός αναγνώρισης αποτυπώματος</translation>
+<translation id="1899608006846124237">Επιθετικός αποκλεισμός αναγνώρισης αποτυπώματος</translation>
+<translation id="8034285923190068220">Να επιτρέπονται τα δακτυλικά αποτυπώματα</translation>
 <translation id="1992750560347846445">Αναφορά ιστότοπου</translation>
 <translation id="2387532482048804818">Πείτε μας εάν ο ιστότοπος δεν λειτουργούσε σωστά με τις Ασπίδες ενεργοποιημένες.</translation>
-<translation id="9167355841012806439">Βλέπετε αυτόν τον ιστότοπο χωρίς την προστασία απορρήτου του Brave</translation>
-<translation id="6835073906252142271">Ασπίδες Brave <ph name="NUMBER"/> Ιχνηλάτες, διαφημίσεις και άλλα μπλοκαρισμένα</translation>
+<translation id="3795015906457257780">Βλέπετε αυτόν τον ιστότοπο χωρίς την προστασία απορρήτου του Brave.</translation>
+<translation id="7194012750329511146">Ασπίδες Brave
+<ph name="NUMBER"/> Ιχνηλάτες, διαφημίσεις και άλλα μπλοκαρισμένα</translation>
 <translation id="1742469581923031760">Γίνεται σύνδεση…</translation>
 <translation id="1287487756047817908">Γίνεται αποσύνδεση…</translation>
 <translation id="2325196879156848326">Η σύνδεση απέτυχε</translation>

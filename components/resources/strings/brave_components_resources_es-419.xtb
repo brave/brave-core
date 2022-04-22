@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Resolver</translation>
 <translation id="6991128190741664836">Luego</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Billetera</translation>
+<translation id="8488282162676695335">Billetera de Brave</translation>
 <translation id="8820817407110198400">Barra de favoritos</translation>
 <translation id="1644574205037202324">Historial</translation>
 <translation id="6165508094623778733">Más información</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Error: Necesitas una cuenta verificada para iniciar sesión</translation>
 <translation id="5260522591743022748">Parece que tu perfil de Recompensas de Brave ya se ha verificado con otra cuenta de <ph name="PROVIDER"/>. Prueba a verificar una vez más usando tu cuenta anterior.</translation>
 <translation id="5111921830714291902">Error: cuenta diferente</translation>
+<translation id="6933939911547091461">Lamentablemente, no se puede verificar tu perfil de Recompensas de Brave porque el proceso de verificación no admite tu región en este momento.</translation>
+<translation id="8218538368080510976">Error: Región no admitida</translation>
 <translation id="5382684862562314222">Uphold aún no admite BAT en tu región.</translation>
 <translation id="9074594632540931067">Error: no hay BAT</translation>
 <translation id="413458922997276130">Actualmente, tu cuenta de Uphold está bloqueada.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Total recibido</translation>
 <translation id="824449983246282560">No tienes saldo en tu cuenta. Visita Gemini para adquirir fondos.</translation>
 <translation id="8624961452383848703">Quiero convertir...</translation>
+<translation id="1544192797660353713">Billetera</translation>
 <translation id="616639131065447379">Te damos la bienvenida a Crypto Wallets de Brave</translation>
 <translation id="1740464057879304704">Crypto Wallets te permite trabajar con criptomonedas y activos relacionados en Brave. Crypto Wallets admite tokens de Ethereum como ETH y BAT, además de coleccionables, y te permite trabajar con Ðaplicaciones y otros contratos inteligentes. Todo esto está destinado a personas que están familiarizadas con Ethereum y otros sistemas de cadena de bloques, o que sientan curiosidad por aprender.</translation>
 <translation id="4855440621031541830">Usa Crypto Wallets únicamente si aceptas que solo tú eres responsable de todos los riesgos asociados con dicho uso y que Brave Software no tiene ninguna responsabilidad ni obligación por cualquier pérdida, incluidas las pérdidas incidentales o consecuentes que puedas sufrir como resultado de dicho uso.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Tus recompensas de <ph name="MONTH"/> por un valor de <ph name="AMOUNT"/> pronto estarán disponibles. ¡Estate atento!</translation>
 <translation id="2659764755126740206">Ir a mi cuenta de <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Agregar fondos</translation>
-<translation id="2389181429986654814">Ir a <ph name="PROVIDER"/> para completar la verificación</translation>
-<translation id="7793632266654336758">Completa la verificación de identidad para empezar a recibir recompensas.</translation>
 <translation id="2394961582378297792">Sesión cerrada</translation>
 <translation id="6080167751812750226">Desconectar de <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ganancias estimadas</translation>
 <translation id="4244985009709452836">Inicia sesión en tu cuenta de <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Propinas por única vez</translation>
+<translation id="7580329715937096918">Se produce un problema temporal al realizar la verificación con <ph name="PROVIDER"/>. Tu perfil de Recompensas de Brave se mantendrá en estado "Pendiente" y volverá a intentarlo automáticamente, aunque también puedes dejarlo para más adelante.</translation>
 <translation id="590733288489975971">Recompensas de anuncios</translation>
 <translation id="6181762795539107980">Sin verificar</translation>
 <translation id="3026978804849658576">Ver estado</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">¡Hay una donación de tokens disponible!</translation>
 <translation id="7701466644604753106">Activar Speedreader</translation>
 <translation id="763042262431778831">Desactivar Speedreader</translation>
-<translation id="8488282162676695335">Billetera de Brave</translation>
 <translation id="1148827340205946630">El usuario rechazó la solicitud.</translation>
 <translation id="2403819048476450281">Los parámetros no son válidos.</translation>
 <translation id="3955144560853195652">No se ha agregado la cadena <ph name="VALUE"/></translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Mensaje</translation>
 <translation id="3586752056660754651">Firmar</translation>
 <translation id="3484981968509595506">Hay una dApp que solicita tu clave de cifrado público</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> solicita la clave de cifrado público de tus billeteras. Si das tu consentimiento para facilitar esta clave, el sitio podrá enviarte mensajes cifrados.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> solicita la clave de cifrado público de tus carteras. Si das tu consentimiento para facilitar esta clave, el sitio podrá enviarte mensajes cifrados.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
-<translation id="5883819003576364085">A <ph name="SITE_ORIGIN"/> le gustaría leer este mensaje para responder a tu solicitud</translation>
+<translation id="1619778919922494944">Esta dApp quiere leer este mensaje para responder a tu solicitud</translation>
 <translation id="714506544401754321">Descifrar el mensaje</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="9032898664193335413">¿Permitir que esta aplicación emplee tus <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Comisión de gas</translation>
 <translation id="7163997622278957886">Puja</translation>
 <translation id="1074360622426001342">Monto + gas</translation>
+<translation id="2186011161688824046">Cantidad + comisión</translation>
 <translation id="7084089311475827950">No hay datos.</translation>
 <translation id="5821668936183240062">siguiente</translation>
 <translation id="793994607260936590">primera</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Swap-stakes de Brave</translation>
 <translation id="7829441065063984927">7 días de criptorregalos, con premios valorados en ~$500.000.</translation>
 <translation id="8292716346768453265">¡Participa!</translation>
+<translation id="6423985584914773314">No es una dirección de FIL válida</translation>
+<translation id="8528916244724490964">Todas las redes</translation>
+<translation id="2781668117338732220">Redes secundarias</translation>
+<translation id="2816106784624007524">El límite de gas debe ser un número entero superior a 0</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Si el sitio no funciona, prueba a desactivar Protecciones. 
     <ph name="LINK_BEFORE"/>Nota: esto puede reducir la protección de la privacidad de Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Rastreadores, anuncios y más elementos bloqueados <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Controles avanzados</translation>
+<translation id="650318023204990401">Controles avanzados</translation>
 <translation id="5799940914270080805">Si se modificase esta configuración, los sitios podrían dejar de funcionar.</translation>
 <translation id="9204041448536398473">Configuración global de los escudos</translation>
 <translation id="2108334320919763866">Valores predeterminados globales</translation>
-<translation id="1928321796986970424">Filtrar listas</translation>
+<translation id="4516904298421534459">Filtrar listas</translation>
 <translation id="3570081523466826008">Actualice las conexiones a HTTPS</translation>
 <translation id="131231380815754440">Activar HTTPS</translation>
 <translation id="4824468494729001999">Bloquee los scripts</translation>
 <translation id="3246600097575692802">Permitir scripts bloqueados</translation>
 <translation id="3603525299146223354">Rastreadores y anuncios</translation>
-<translation id="1146309636943354181">Rastreadores y anuncios bloqueados (estándar)</translation>
-<translation id="5973258875089964805">Rastreadores y anuncios bloqueados (agresiva)</translation>
+<translation id="4448697385961650078">Bloquear rastreadores y anuncios</translation>
+<translation id="8593054718053894081">Forzar el bloqueo de controladores y anuncios</translation>
 <translation id="7384778069178817075">Permitir todos los rastreadores y anuncios</translation>
-<translation id="6203697265754637264">Bloquear cookies entres sitios</translation>
-<translation id="4627427111733173920">Cookies bloqueadas</translation>
-<translation id="3972324600756617403">Todas las cookies han sido permitidas</translation>
+<translation id="4941539331405513605">Bloquear cookies entre sitios</translation>
+<translation id="6883611015375728278">Bloquear todas las cookies</translation>
+<translation id="5657156137487675418">Permitir todas las cookies</translation>
 <translation id="8366221601425141146">Creación de huella digital del dispositivo bloqueada</translation>
-<translation id="5582686930349810484">Huellas digitales bloqueadas (estándar)</translation>
-<translation id="6696441392507885865">Huellas digitales bloqueadas (estricto, los sitios podrían dejar de funcionar)</translation>
-<translation id="5882733945883311404">Permitir todos los reconocimientos de huellas digitales</translation>
+<translation id="6531019308847917584">Bloquear huellas digitales</translation>
+<translation id="1899608006846124237">Forzar el bloqueo de huellas digitales</translation>
+<translation id="8034285923190068220">Permitir huellas digitales</translation>
 <translation id="1992750560347846445">Informar sobre el sitio</translation>
 <translation id="2387532482048804818">Dinos si el sitio no funcionó como es debido con las protecciones activadas.</translation>
-<translation id="9167355841012806439">Estás consultando este sitio sin la protección de privacidad de Brave</translation>
-<translation id="6835073906252142271">Las protecciones de Brave han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</translation>
+<translation id="3795015906457257780">Estás consultando este sitio sin las protecciones de privacidad de Brave.</translation>
+<translation id="7194012750329511146">Protecciones de Brave
+Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</translation>
 <translation id="1742469581923031760">Conectando…</translation>
 <translation id="1287487756047817908">Desconectando…</translation>
 <translation id="2325196879156848326">Error al establecer la conexión</translation>

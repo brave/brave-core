@@ -424,44 +424,33 @@
 <translation id="7559243474426790340">重新整理狀態</translation>
 <translation id="8376263745431603066">啟用「夜間模式」（實驗性）</translation>
 <translation id="1383876407941801731">搜尋</translation>
-<translation id="1972589975368876259">編輯堆疊</translation>
-<translation id="2490330380242414851">移除小工具</translation>
 <translation id="8446884382197647889">更多資訊</translation>
-<translation id="7384441892795736634">重新整理資料</translation>
-<translation id="4804818685124855865">解除連線</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">購買 <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款備忘單</translation>
+<translation id="6755546361496900700">預覽轉換</translation>
 <translation id="5110244215256675209">購買加密貨幣</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">購買 <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">預覽轉換</translation>
-<translation id="2882813124794301799">小工具堆疊</translation>
 <translation id="13296465911709339">您的文字已複製到剪貼簿。</translation>
 <translation id="2735834606413553397">已將公共地址複製到剪貼簿。</translation>
 <translation id="7144878232160441200">重試</translation>
 <translation id="2977461003134694205">隱私統計</translation>
-<translation id="4643117005422448078">熱門網站</translation>
 <translation id="6966052266404721769">幣安</translation>
-<translation id="1392658226187691544">追蹤器與廣告封鎖、已節省的頻寬以及節省時間預估。</translation>
-<translation id="74417429503469271">開啟您經常造訪的熱門網站。</translation>
 <translation id="2956070106555335453">摘要</translation>
 <translation id="1366855498335432549">存款</translation>
 <translation id="1301340234286078471">轉換</translation>
 <translation id="223536150967420869">購買</translation>
-<translation id="1714829281959608206">啟用幣安連線以檢視幣安的帳戶餘額並交易交密貨幣。</translation>
 <translation id="4584930231524505442">我想要轉換……</translation>
 <translation id="5749014321384313843">我想要花費……</translation>
-<translation id="8688672835843460752">可用</translation>
 <translation id="2480674848181564169">餘額不足，無法轉換</translation>
 <translation id="2215334405220411393">最低轉換金額為：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">無法連線</translation>
 <translation id="7742417737698031726">手續費</translation>
 <translation id="2122225204180056042">您將會收到</translation>
 <translation id="6432284126416751397">確認轉換</translation>
-<translation id="5137723827757859599">熱門網站上還沒有任何內容。</translation>
 <translation id="3891414008432200754">價格</translation>
 <translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">轉換失敗。請再試一次。</translation>
@@ -563,6 +552,8 @@
 <translation id="2759836790106646094">立刻備份您的錢包！</translation>
 <translation id="1078873179929044999">下一步您將看到一個 12 字的還原片語，可用於還原您的主加密帳戶。請妥善保管。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
 <translation id="2359808026110333948">繼續</translation>
+<translation id="5488357322146334497">訊息</translation>
+<translation id="7228169875515099943">資料</translation>
 <translation id="1904000155026201268">我了解一旦遺失備援短語，就無法存取加密貨幣錢包。</translation>
 <translation id="3933122286596948824">您的備援短語</translation>
 <translation id="5077747669435508720">嚴格按照下面所示的順序寫下或複製這些單詞，並妥善保管它們。還原片語是在忘記密碼、裝置遺失或被盜或者想切換錢包時找回帳戶存取權限的唯一方式。</translation>
@@ -807,6 +798,7 @@
 <translation id="1254969878422524947">每 GAS 小費限制 (Gwei)</translation>
 <translation id="7373308452149471621">每 GAS 價格限制 (Gwei)</translation>
 <translation id="5891811606602061966">匯入帳戶失敗，請再試一次。</translation>
+<translation id="1822506443689803572">Brave 使用 <ph name="DEX_PROVIDER"/> 作為 DEX 聚合器。</translation>
 <translation id="5061574358754621254">價格資料由 CoinGecko 提供</translation>
 <translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
 <translation id="8574289650879708853">新增自訂資產</translation>
@@ -860,4 +852,21 @@
 <translation id="4945690646623486292">選取網路</translation>
 <translation id="8853725596990766789">變更金額</translation>
 <translation id="5233638681132016545">新增分頁</translation>
+<translation id="8006088103295786154">存取 Brave 錢包</translation>
+<translation id="5308380583665731573">連線</translation>
+<translation id="3432029672560911238">使用者帳戶</translation>
+<translation id="5753378322046059140">切換帳戶</translation>
+<translation id="3897092660631435901">選單</translation>
+<translation id="42981349822642051">展开</translation>
+<translation id="3586752056660754651">簽署</translation>
+<translation id="6592721981110586529">與 Brave 錢包連結</translation>
+<translation id="329813193938846695">選取帳戶</translation>
+<translation id="3890989020011724401">新帳戶</translation>
+<translation id="291375746846291973">只與您信任的網站建立連結。</translation>
+<translation id="385051799172605136">返回</translation>
+<translation id="1060221736464994328">允許此站點切換網路？</translation>
+<translation id="2478788592457735063">這會將網路切換到之前新增的網路。</translation>
+<translation id="8756686998207163764">切換網路</translation>
+<translation id="394256914628786902">啟用「自動建立分頁群組」</translation>
+<translation id="8274201358637112807">此網頁希望與 Brave 錢包互動</translation>
 </translationbundle>

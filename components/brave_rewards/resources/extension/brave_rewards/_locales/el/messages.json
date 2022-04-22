@@ -192,19 +192,6 @@
     "message": "Auto-Contribute",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Πηγαίνετε στο $provider$ για να ολοκληρώσετε την επαλήθευση.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Για να αρχίσετε να λαμβάνετε Rewards, πρέπει να ολοκληρώσετε την επαλήθευση ταυτότητας",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Αποσυνδέθηκε",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Εκκρεμεί",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Υπάρχει προσωρινά πρόβλημα με την επαλήθευση από $provider$. Οι Ανταμοιβές Brave σας θα παραμείνουν σε κατάσταση εκκρεμότητας και θα γίνει αυτόματα επανάληψη της προσπάθειας, αλλά μπορείτε να προσπαθήσετε ξανά αργότερα.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Brave Rewards από διαφημίσεις Brave Ads",

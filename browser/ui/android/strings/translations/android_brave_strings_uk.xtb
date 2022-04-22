@@ -424,44 +424,33 @@
 <translation id="7559243474426790340">Оновити статус</translation>
 <translation id="8376263745431603066">Увімкнути "Нічний режим" (експериментальний)</translation>
 <translation id="1383876407941801731">Пошук</translation>
-<translation id="1972589975368876259">Редагувати стек</translation>
-<translation id="2490330380242414851">Видалити віджет</translation>
 <translation id="8446884382197647889">Докладніше</translation>
-<translation id="7384441892795736634">Оновити дані</translation>
-<translation id="4804818685124855865">Від'єднатись</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Купити <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адреса депозиту</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Мемо щодо депозиту</translation>
+<translation id="6755546361496900700">Переглянути обмін</translation>
 <translation id="5110244215256675209">Купити криптовалюту</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Купити <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Переглянути обмін</translation>
-<translation id="2882813124794301799">Стек віджетів</translation>
 <translation id="13296465911709339">Ваш текст було скопійовано до буферу обміну.</translation>
 <translation id="2735834606413553397">Публічну адресу було скопійовано до буферу обміну.</translation>
 <translation id="7144878232160441200">Спробувати знову</translation>
 <translation id="2977461003134694205">Статистика приватності</translation>
-<translation id="4643117005422448078">Найкращі сайти</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Відстежувачі таamp;amp; Реклама Блоковані, Приблизні заощадження пропускної здатності та часу.</translation>
-<translation id="74417429503469271">Відкрийте топ-сайти, які ви часто відвідуєте.</translation>
 <translation id="2956070106555335453">Звід</translation>
 <translation id="1366855498335432549">Внести депозит</translation>
 <translation id="1301340234286078471">Обміняти</translation>
 <translation id="223536150967420869">Купити</translation>
-<translation id="1714829281959608206">Дозвольте з'єднання з Binance для перегляду балансу і торгівлі криптовалютами.</translation>
 <translation id="4584930231524505442">Я хочу обміняти...</translation>
 <translation id="5749014321384313843">Я хочу витратити...</translation>
-<translation id="8688672835843460752">Доступно</translation>
 <translation id="2480674848181564169">Недостатній залишок для конвертування</translation>
 <translation id="2215334405220411393">Мінімальна сума для конвертації - це : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Не вдалось під'єднатись</translation>
 <translation id="7742417737698031726">Збір</translation>
 <translation id="2122225204180056042">Ви отримаєте</translation>
 <translation id="6432284126416751397">Підтвердити обмін</translation>
-<translation id="5137723827757859599">На топ-сайтах ще нічого немає.</translation>
 <translation id="3891414008432200754">Ціна</translation>
 <translation id="3733576242118819803">Підтвердити (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Не вдалось провести конвертацію. Будь ласка, спробуйте пізніше.</translation>
@@ -563,6 +552,8 @@
 <translation id="2759836790106646094">Створіть резервну копію гаманця зараз</translation>
 <translation id="1078873179929044999">На наступному етапі ви побачите відновлювальну фразу з 12 слів, якою можна скористатися для відновлення основних криптогаманців. Збережіть її в безпечному місці. Ваша відновлювальна фраза є єдиним способом відновлення доступу до облікового запису, якщо ви забудете пароль, загубите пристрій або його у вас вкрадуть, або якщо ви захочете змінити гаманці.</translation>
 <translation id="2359808026110333948">Продовжити</translation>
+<translation id="5488357322146334497">Повідомлення</translation>
+<translation id="7228169875515099943">ДАНІ</translation>
 <translation id="1904000155026201268">Я розумію, що якщо загублю відновлювальну фразу, я не зможу отримати доступ до свого криптогаманця.</translation>
 <translation id="3933122286596948824">Ваша відновлювальна фраза</translation>
 <translation id="5077747669435508720">Впишіть або скопіюйте ці слова в наведеному нижче порядку й збережіть їх у безпечному місці. Ваша відновлювальна фраза є єдиним способом відновлення доступу до облікового запису, якщо ви забудете пароль, загубите пристрій або його у вас вкрадуть чи ви захочете змінити гаманці.</translation>
@@ -807,6 +798,7 @@
 <translation id="1254969878422524947">Ліміт відрахування за пальне (Gwei)</translation>
 <translation id="7373308452149471621">Ліміт цін на пальне (Gwei)</translation>
 <translation id="5891811606602061966">Сталася помилка під час імпортування облікового запису. Спробуйте ще раз.</translation>
+<translation id="1822506443689803572">Brave використовує <ph name="DEX_PROVIDER"/> як агрегатор DEX.</translation>
 <translation id="5061574358754621254">Дані про ціни надано CoinGecko</translation>
 <translation id="4626407663177532837">Розцінка включає збір Brave у розмірі 0,875 %.</translation>
 <translation id="8574289650879708853">Додати користувацькі активи</translation>
@@ -860,4 +852,21 @@
 <translation id="4945690646623486292">Вибрати мережу</translation>
 <translation id="8853725596990766789">Змінити суму</translation>
 <translation id="5233638681132016545">Нова вкладка</translation>
+<translation id="8006088103295786154">Перейти у Brave Wallet</translation>
+<translation id="5308380583665731573">Під’єднатися</translation>
+<translation id="3432029672560911238">Обліковий запис користувача</translation>
+<translation id="5753378322046059140">Змінити обліковий запис</translation>
+<translation id="3897092660631435901">Меню</translation>
+<translation id="42981349822642051">Розкрити</translation>
+<translation id="3586752056660754651">Підписати</translation>
+<translation id="6592721981110586529">Підключитися за допомогою Brave Wallet</translation>
+<translation id="329813193938846695">Вибрати обліковку(-и)</translation>
+<translation id="3890989020011724401">Новий обліковий запис</translation>
+<translation id="291375746846291973">Прив'язувати лише до довірених сайтів.</translation>
+<translation id="385051799172605136">Назад</translation>
+<translation id="1060221736464994328">Дозволити цьому сайту перемикати мережі?</translation>
+<translation id="2478788592457735063">Ця дія призведе до перемикання на раніше додану мережу.</translation>
+<translation id="8756686998207163764">Переключити мережу</translation>
+<translation id="394256914628786902">Увімкнути автоматичне створення груп вкладок</translation>
+<translation id="8274201358637112807">Ця сторінка хоче взаємодіяти з Brave Wallet</translation>
 </translationbundle>

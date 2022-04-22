@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Решить</translation>
 <translation id="6991128190741664836">Позже</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Кошелек</translation>
+<translation id="8488282162676695335">Brave Кошелек</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="1644574205037202324">История</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Ошибка. Чтобы выполнить вход, нужно использовать подтвержденный аккаунт.</translation>
 <translation id="5260522591743022748">Похоже, ваш профиль Brave Наград уже подтвержден другим аккаунтом <ph name="PROVIDER"/>. Повторите попытку с предыдущим аккаунтом.</translation>
 <translation id="5111921830714291902">Ошибка: неверный аккаунт</translation>
+<translation id="6933939911547091461">Не удалось подтвердить профиль Brave Наград. В настоящее время проверка недоступна для вашего региона.</translation>
+<translation id="8218538368080510976">Ошибка: недоступно в этом регионе</translation>
 <translation id="5382684862562314222">Баллы BAT в Uphold еще не поддерживаются в вашем регионе.</translation>
 <translation id="9074594632540931067">Ошибка: баллы BAT недоступны</translation>
 <translation id="413458922997276130">Ваш аккаунт Uphold сейчас заблокирован.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Всего получено</translation>
 <translation id="824449983246282560">На вашем счете нет средств. Чтобы приобрести валюту, посетите Gemini.</translation>
 <translation id="8624961452383848703">Я хочу конвертировать…</translation>
+<translation id="1544192797660353713">Кошелек</translation>
 <translation id="616639131065447379">Добро пожаловать в криптовалютные кошельки Brave</translation>
 <translation id="1740464057879304704">Крипто-кошельки позволяют работать с криптовалютой и соответствующими активами в Brave. Крипто-кошельки поддерживают токены Ethereum, такие как ETH и BAT, а также предметы коллекционирования, и позволяют работать с Ðapps и другими смарт-контрактами. Все это предназначено для людей, которые знакомы с Ethereum и другими системами блокчейнов –или хотят обучиться работе с ними.</translation>
 <translation id="4855440621031541830">Используйте криптовалютные кошельки только в том случае, если вы осознаете, что несете полную ответственность за все риски, связанные с ними, и что Brave Software не несет ответственности за любые убытки, включая случайные или косвенные, которые вы можете понести в результате использования кошельков.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Вознаграждение за <ph name="MONTH"/> в размере <ph name="AMOUNT"/> скоро будет перечислено.</translation>
 <translation id="2659764755126740206">Перейти в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Внести средства</translation>
-<translation id="2389181429986654814">Перейти в аккаунт <ph name="PROVIDER"/>, чтобы завершить проверку</translation>
-<translation id="7793632266654336758">Чтобы начать получать вознаграждения, завершите проверку личности.</translation>
 <translation id="2394961582378297792">Вы вышли</translation>
 <translation id="6080167751812750226">Отключиться от <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Общий доход</translation>
 <translation id="4244985009709452836">Войти в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Разовые чаевые</translation>
+<translation id="7580329715937096918">Возникла временная проблема при проверке через <ph name="PROVIDER"/>. Статус кошелька останется «В ожидании». Система автоматически повторит попытку позже, но вы также можете сделать это самостоятельно.</translation>
 <translation id="590733288489975971">Вознаграждения за рекламу</translation>
 <translation id="6181762795539107980">Не подтвержден</translation>
 <translation id="3026978804849658576">Открыть отчет</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Вы можете получить бесплатные токены!</translation>
 <translation id="7701466644604753106">Включить Speedreader</translation>
 <translation id="763042262431778831">Выключить Speedreader</translation>
-<translation id="8488282162676695335">Кошелек Brave</translation>
 <translation id="1148827340205946630">Пользователь отклонил запрос.</translation>
 <translation id="2403819048476450281">Недопустимые параметры.</translation>
 <translation id="3955144560853195652">Цепь <ph name="VALUE"/> не добавлена.</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Сообщение</translation>
 <translation id="3586752056660754651">Подпись</translation>
 <translation id="3484981968509595506">DApp запрашивает открытый ключ шифрования</translation>
-<translation id="423332628699531400">Сайт <ph name="SITE_ORIGIN"/> запрашивает ваш открытый ключ шифрования. Если вы дадите согласие, этот сайт сможет составлять для вас зашифрованные сообщения.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> запрашивает открытый ключ шифрования. Если вы дадите согласие, этот сайт сможет составлять для вас зашифрованные сообщения.</translation>
 <translation id="3340247553212049934">Предоставить</translation>
-<translation id="5883819003576364085">Сайт <ph name="SITE_ORIGIN"/> запрашивает доступ к этому сообщению, чтобы выполнить ваш запрос</translation>
+<translation id="1619778919922494944">Для выполнения запроса приложению DApp нужен доступ к этому сообщению</translation>
 <translation id="714506544401754321">Расшифровать сообщение</translation>
 <translation id="5039804452771397117">Разрешить</translation>
 <translation id="9032898664193335413">Разрешить этому приложению использовать ваши <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Комиссия за газ</translation>
 <translation id="7163997622278957886">Ставка</translation>
 <translation id="1074360622426001342">Сумма + газ</translation>
+<translation id="2186011161688824046">Сумма + комиссия</translation>
 <translation id="7084089311475827950">Нет данных.</translation>
 <translation id="5821668936183240062">Далее</translation>
 <translation id="793994607260936590">Начать</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Своп-ставки</translation>
 <translation id="7829441065063984927">Целых 7 дней: криптоподарки и призы на общую сумму 500 тысяч долларов!</translation>
 <translation id="8292716346768453265">Участвовать</translation>
+<translation id="6423985584914773314">Недействительный адрес FIL.</translation>
+<translation id="8528916244724490964">Все сети</translation>
+<translation id="2781668117338732220">Дополнительные сети</translation>
+<translation id="2816106784624007524">Значение для лимита газа должно быть целым числом больше 0.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Общая информация</translation>
 <translation id="4045404575593562245">События контроля Tor</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Если сайт работает неправильно, отключите Щит. 
     <ph name="LINK_BEFORE"/>Примечание. Это может ослабить защиту конфиденциальности в Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Трекеры, реклама и другие элементы заблокированы. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Расширенные элементы управления</translation>
+<translation id="650318023204990401">Расширенное управление</translation>
 <translation id="5799940914270080805">В результате изменения этих настроек может быть нарушена работа некоторых сайтов.</translation>
 <translation id="9204041448536398473">Общие настройки Щита</translation>
 <translation id="2108334320919763866">Глобальная защита по умолчанию</translation>
-<translation id="1928321796986970424">Списки фильтров</translation>
+<translation id="4516904298421534459">Списки фильтров</translation>
 <translation id="3570081523466826008">Подключаться по HTTPS</translation>
 <translation id="131231380815754440">Включить HTTPS</translation>
 <translation id="4824468494729001999">Блокировать скрипты</translation>
 <translation id="3246600097575692802">Показать заблокированные скрипты</translation>
 <translation id="3603525299146223354">Трекеры и реклама</translation>
-<translation id="1146309636943354181">Трекеры и реклама блокируются (стандарт)</translation>
-<translation id="5973258875089964805">Трекеры и реклама блокируются (агрессивно)</translation>
+<translation id="4448697385961650078">Блокировать трекеры и рекламу</translation>
+<translation id="8593054718053894081">Полностью блокировать трекеры и рекламу</translation>
 <translation id="7384778069178817075">Разрешить все трекеры и рекламу</translation>
-<translation id="6203697265754637264">Межсайтовые куки заблокированы</translation>
-<translation id="4627427111733173920">Файлы куки заблокированы</translation>
-<translation id="3972324600756617403">Все файлы куки разрешены</translation>
+<translation id="4941539331405513605">Блокировать межсайтовые cookie</translation>
+<translation id="6883611015375728278">Блокировать все cookie</translation>
+<translation id="5657156137487675418">Разрешить все cookie</translation>
 <translation id="8366221601425141146">Сбор цифровых отпечатков заблокирован</translation>
-<translation id="5582686930349810484">Сбор цифровых отпечатков заблокирован (стандартно)</translation>
-<translation id="6696441392507885865">Сбор цифровых отпечатков заблокирован (может нарушать работу сайтов)</translation>
-<translation id="5882733945883311404">Разрешить сбор всех цифровых отпечатков</translation>
+<translation id="6531019308847917584">Блокировать цифровые отпечатки</translation>
+<translation id="1899608006846124237">Полностью блокировать цифровые отпечатки</translation>
+<translation id="8034285923190068220">Разрешить цифровой след</translation>
 <translation id="1992750560347846445">Сообщить о неработающем сайте</translation>
 <translation id="2387532482048804818">Сообщайте нам о сайтах, которые работают неправильно при включенном Щите.</translation>
-<translation id="9167355841012806439">Средства Brave для защиты конфиденциальности отключены на этом сайте.</translation>
-<translation id="6835073906252142271">Brave Щит: заблокировано трекеров и рекламных объявлений: <ph name="NUMBER"/></translation>
+<translation id="3795015906457257780">Средства Brave для защиты конфиденциальности отключены на этом сайте.</translation>
+<translation id="7194012750329511146">Brave Щит
+Заблокировано трекеров и рекламных объявлений: <ph name="NUMBER"/></translation>
 <translation id="1742469581923031760">Подключение…</translation>
 <translation id="1287487756047817908">Отключение…</translation>
 <translation id="2325196879156848326">Ошибка соединения.</translation>

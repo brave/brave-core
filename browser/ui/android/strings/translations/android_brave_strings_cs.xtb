@@ -424,44 +424,33 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7559243474426790340">Obnovit status</translation>
 <translation id="8376263745431603066">Zapnout Noční režim (experimentální)</translation>
 <translation id="1383876407941801731">Hledat</translation>
-<translation id="1972589975368876259">Upravit sbírku</translation>
-<translation id="2490330380242414851">Odstranit widget</translation>
 <translation id="8446884382197647889">Zjistit více</translation>
-<translation id="7384441892795736634">Aktualizovat data</translation>
-<translation id="4804818685124855865">Odpojit</translation>
 <translation id="4789438578712143420">≈ <ph name="USD_BALANCE"/> $</translation>
+<translation id="558614325644656740">Dostupných <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Nakupte <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adresa vkladu</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Poznámka ke vkladu</translation>
+<translation id="6755546361496900700">Náhled převodu</translation>
 <translation id="5110244215256675209">Koupit kryptoměny</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Nakupte <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Dostupných <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Náhled převodu</translation>
-<translation id="2882813124794301799">Sbírka widgetů</translation>
 <translation id="13296465911709339">Váš text byl zkopírován do schránky.</translation>
 <translation id="2735834606413553397">Veřejná adresa byla zkopírována do schránky.</translation>
 <translation id="7144878232160441200">Zkusit znovu</translation>
 <translation id="2977461003134694205">Statistiky soukromí</translation>
-<translation id="4643117005422448078">Top weby</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Zablokované sledovače a reklamy, uspořená data a odhady uspořeného času.</translation>
-<translation id="74417429503469271">Otevřené top stránky, které často navštěvujete.</translation>
 <translation id="2956070106555335453">Shrnutí</translation>
 <translation id="1366855498335432549">Vklad</translation>
 <translation id="1301340234286078471">Převést</translation>
 <translation id="223536150967420869">Koupit</translation>
-<translation id="1714829281959608206">Pro zobrazení zůstatku na účtu Binance a obchodování s kryptoměnami aktivujte propojení s Binance.</translation>
 <translation id="4584930231524505442">Chci převést...</translation>
 <translation id="5749014321384313843">Chci utratit...</translation>
-<translation id="8688672835843460752">K dispozici</translation>
 <translation id="2480674848181564169">Nedostatečný zůstatek pro převod</translation>
 <translation id="2215334405220411393">Minimální částka pro převod je: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Nelze se připojit</translation>
 <translation id="7742417737698031726">Poplatek</translation>
 <translation id="2122225204180056042">Dostanete</translation>
 <translation id="6432284126416751397">Potvrdit převod</translation>
-<translation id="5137723827757859599">Na top stránkách ještě nic není.</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="3733576242118819803">Potvrdit (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Převod se nezdařil. Zkuste to prosím znovu.</translation>
@@ -563,6 +552,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2759836790106646094">Zálohujte si peněženku hned teď!</translation>
 <translation id="1078873179929044999">V dalším kroku se zobrazí fráze pro obnovení o 12 slovech, kterou můžete použít k obnovení primárních krypto účtů. Uložte si ji na bezpečné místo. Vaše fráze pro obnovení je jediným způsobem, jak znovu získat přístup k účtu v případě zapomenutého hesla, ztráty nebo krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
 <translation id="2359808026110333948">Pokračovat</translation>
+<translation id="5488357322146334497">Message</translation>
+<translation id="7228169875515099943">DATA</translation>
 <translation id="1904000155026201268">Chápu, že pokud ztratím svoji obnovovací frázi, ztratím přístup ke své kryptopeněžence.</translation>
 <translation id="3933122286596948824">Vaše fráze pro obnovení</translation>
 <translation id="5077747669435508720">Zapište si nebo opište tato slova v přesném pořadí uvedeném níže a uložte je na bezpečné místo. Vaše obnovovací fráze je jediným způsobem, jak získat zpět přístup k účtu v případě zapomenutého hesla, ztráty či krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
@@ -807,6 +798,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1254969878422524947">Limit spropitného na plyn (Gwei)</translation>
 <translation id="7373308452149471621">Limit ceny za plyn (Gwei)</translation>
 <translation id="5891811606602061966">Účet se nepodařilo importovat, zkuste to znovu.</translation>
+<translation id="1822506443689803572">Brave používá <ph name="DEX_PROVIDER"/> jako agregátor DEX.</translation>
 <translation id="5061574358754621254">Údaje o cenách poskytované službou CoinGecko</translation>
 <translation id="4626407663177532837">Cenová nabídka zahrnuje poplatek pro Brave ve výši $0,875 %.</translation>
 <translation id="8574289650879708853">Přidejte vlastní prostředky</translation>
@@ -860,4 +852,21 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4945690646623486292">Zvolit síť</translation>
 <translation id="8853725596990766789">Změnit částku</translation>
 <translation id="5233638681132016545">Nová karta</translation>
+<translation id="8006088103295786154">Otevřít peněženku Brave</translation>
+<translation id="5308380583665731573">Connect</translation>
+<translation id="3432029672560911238">Uživatelský účet</translation>
+<translation id="5753378322046059140">Přepnout účet</translation>
+<translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">Rozšířit</translation>
+<translation id="3586752056660754651">Podepsat</translation>
+<translation id="6592721981110586529">Propojit s peněženkou Brave Wallet</translation>
+<translation id="329813193938846695">Vybrat účty</translation>
+<translation id="3890989020011724401">Nový účet</translation>
+<translation id="291375746846291973">Spojujte se pouze s weby, kterým důvěřujete.</translation>
+<translation id="385051799172605136">Back</translation>
+<translation id="1060221736464994328">Chcete této stránce povolit přepínání sítě?</translation>
+<translation id="2478788592457735063">Tím se síť přepne na dříve přidanou síť.</translation>
+<translation id="8756686998207163764">Přepnutí sítě</translation>
+<translation id="394256914628786902">Umožnit automatické vytvoření skupiny záložek</translation>
+<translation id="8274201358637112807">Tato stránka chce interagovat s peněženkou Brave</translation>
 </translationbundle>
