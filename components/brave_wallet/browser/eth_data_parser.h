@@ -7,16 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_DATA_PARSER_H_
 
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-bool GetTransactionInfoFromData(const std::string& data,
-                                mojom::TransactionType* tx_type,
-                                std::vector<std::string>* tx_params,
-                                std::vector<std::string>* tx_args);
+absl::optional<std::tuple<mojom::TransactionType,     // tx_type
+                          std::vector<std::string>,   // tx_params
+                          std::vector<std::string>>>  // tx_args
+GetTransactionInfoFromData(const std::vector<uint8_t>& data);
 
 }  // namespace brave_wallet
 

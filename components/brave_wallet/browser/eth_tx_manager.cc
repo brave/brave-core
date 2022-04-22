@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -246,9 +247,10 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   if (error != mojom::ProviderError::kSuccess ||
       !HexValueToUint256(result, &gas_limit)) {
     gas_limit = 0;
-    mojom::TransactionType tx_type;
-    if (GetTransactionInfoFromData(ToHex(tx->data()), &tx_type, nullptr,
-                                   nullptr)) {
+    auto tx_info = GetTransactionInfoFromData(tx->data());
+    if (tx_info) {
+      mojom::TransactionType tx_type = std::get<0>(*tx_info);
+
       // Try to use reasonable values when we can't get an estimation.
       // These are taken via looking through the different types of transactions
       // on etherscan and taking the next rounded up value for the largest found
@@ -921,9 +923,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
       tx->set_data(std::vector<uint8_t>());
     }
 
-    mojom::TransactionType tx_type;
-    if (!GetTransactionInfoFromData(ToHex(tx->data()), &tx_type, nullptr,
-                                    nullptr)) {
+    if (!GetTransactionInfoFromData(tx->data())) {
       std::move(callback).Run(
           false, "",
           l10n_util::GetStringUTF8(
