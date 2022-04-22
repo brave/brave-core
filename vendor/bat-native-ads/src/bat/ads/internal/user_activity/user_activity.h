@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include "bat/ads/internal/browser_manager/browser_manager_observer.h"
+#include "bat/ads/internal/tab_manager/tab_manager_observer.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
@@ -21,7 +22,8 @@ namespace ads {
 
 const int kMaximumHistoryEntries = 3600;
 
-class UserActivity final : public BrowserManagerObserver {
+class UserActivity final : public BrowserManagerObserver,
+                           public TabManagerObserver {
  public:
   UserActivity();
   ~UserActivity() override;
@@ -34,18 +36,27 @@ class UserActivity final : public BrowserManagerObserver {
   static bool HasInstance();
 
   void RecordEvent(const UserActivityEventType event_type);
-  void RecordEventForPageTransition(const PageTransitionType type);
-  void RecordEventForPageTransitionFromInt(const int32_t type);
+  void RecordEventForPageTransition(const int32_t type);
 
   UserActivityEventList GetHistoryForTimeWindow(
       const base::TimeDelta time_window) const;
 
  private:
+  void RecordEventForPageTransition(const PageTransitionType type);
+
   // BrowserManagerObserver:
   void OnBrowserDidBecomeActive() override;
   void OnBrowserDidResignActive() override;
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
+
+  // TabManagerObserver:
+  void OnTabDidChangeFocus(const int32_t id) override;
+  void OnTabDidChange(const int32_t id) override;
+  void OnDidOpenNewTab(const int32_t id) override;
+  void OnDidCloseTab(const int32_t id) override;
+  void OnTabDidStartPlayingMedia(const int32_t id) override;
+  void OnTabDidStopPlayingMedia(const int32_t id) override;
 
   UserActivityEventList history_;
 };

@@ -116,17 +116,20 @@ TEST_F(BatAdsUserActivityUtilTest,
 TEST_F(BatAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
   // Arrange
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   AdvanceClock(base::Minutes(30));
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   AdvanceClock(base::Minutes(5));
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   AdvanceClock(base::Minutes(5));
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
@@ -137,7 +140,7 @@ TEST_F(BatAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
   const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
-      events, UserActivityEventType::kPlayedMedia);
+      events, UserActivityEventType::kTabStartedPlayingMedia);
 
   // Assert
   const int64_t expected_time = 6 * base::Time::kSecondsPerMinute;
@@ -153,7 +156,7 @@ TEST_F(BatAdsUserActivityUtilTest,
   const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
-      events, UserActivityEventType::kPlayedMedia);
+      events, UserActivityEventType::kTabStartedPlayingMedia);
 
   // Assert
   EXPECT_EQ(kUserActivityMissingValue, time);
@@ -167,7 +170,7 @@ TEST_F(BatAdsUserActivityUtilTest,
   const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
-      events, UserActivityEventType::kPlayedMedia);
+      events, UserActivityEventType::kTabStartedPlayingMedia);
 
   // Assert
   EXPECT_EQ(kUserActivityMissingValue, time);

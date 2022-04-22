@@ -7,7 +7,6 @@
 
 #include "base/check_op.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -37,6 +36,16 @@ bool TabManager::HasInstance() {
   return g_tab_manager;
 }
 
+void TabManager::AddObserver(TabManagerObserver* observer) {
+  DCHECK(observer);
+  observers_.AddObserver(observer);
+}
+
+void TabManager::RemoveObserver(TabManagerObserver* observer) {
+  DCHECK(observer);
+  observers_.RemoveObserver(observer);
+}
+
 bool TabManager::IsVisible(const int32_t id) const {
   if (id == 0) {
     return false;
@@ -64,6 +73,16 @@ void TabManager::OnUpdated(const int32_t id,
       tab.url = url;
 
       AddTab(id, tab);
+    } else {
+      if (tabs_[id].url == url) {
+        return;
+      }
+
+      BLOG(2, "Tab id " << id << " was updated");
+
+      tabs_[id].url = url;
+
+      NotifyTabDidChange(id);
     }
 
     return;
@@ -76,9 +95,9 @@ void TabManager::OnUpdated(const int32_t id,
 
     BLOG(2, "Tab id " << id << " was updated");
 
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kTabUpdated);
-
     tabs_[id].url = url;
+
+    NotifyTabDidChange(id);
 
     return;
   }
@@ -96,16 +115,15 @@ void TabManager::OnUpdated(const int32_t id,
   if (GetForId(id)) {
     BLOG(2, "Focused on existing tab id " << id);
 
-    UserActivity::Get()->RecordEvent(
-        UserActivityEventType::kFocusedOnExistingTab);
-
     UpdateTab(id, tab);
+
+    NotifyTabDidChangeFocus(id);
   } else {
     BLOG(2, "Opened a new tab with id " << id);
 
-    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-
     AddTab(id, tab);
+
+    NotifyDidOpenNewTab(id);
   }
 }
 
@@ -114,7 +132,7 @@ void TabManager::OnClosed(const int32_t id) {
 
   RemoveTab(id);
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  NotifyDidCloseTab(id);
 }
 
 void TabManager::OnMediaPlaying(const int32_t id) {
@@ -124,9 +142,9 @@ void TabManager::OnMediaPlaying(const int32_t id) {
 
   BLOG(2, "Tab id " << id << " is playing media");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
-
   tabs_[id].is_playing_media = true;
+
+  NotifyTabDidStartPlayingMedia(id);
 }
 
 void TabManager::OnMediaStopped(const int32_t id) {
@@ -136,9 +154,9 @@ void TabManager::OnMediaStopped(const int32_t id) {
 
   BLOG(2, "Tab id " << id << " stopped playing media");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kStoppedPlayingMedia);
-
   tabs_[id].is_playing_media = false;
+
+  NotifyTabDidStopPlayingMedia(id);
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
@@ -180,6 +198,42 @@ void TabManager::UpdateTab(const int32_t id, const TabInfo& tab) {
 
 void TabManager::RemoveTab(const int32_t id) {
   tabs_.erase(id);
+}
+
+void TabManager::NotifyTabDidChangeFocus(const int32_t id) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTabDidChangeFocus(id);
+  }
+}
+
+void TabManager::NotifyTabDidChange(const int32_t id) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTabDidChange(id);
+  }
+}
+
+void TabManager::NotifyDidOpenNewTab(const int32_t id) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnDidOpenNewTab(id);
+  }
+}
+
+void TabManager::NotifyDidCloseTab(const int32_t id) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnDidCloseTab(id);
+  }
+}
+
+void TabManager::NotifyTabDidStartPlayingMedia(const int32_t id) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTabDidStartPlayingMedia(id);
+  }
+}
+
+void TabManager::NotifyTabDidStopPlayingMedia(const int32_t id) const {
+  for (TabManagerObserver& observer : observers_) {
+    observer.OnTabDidStopPlayingMedia(id);
+  }
 }
 
 }  // namespace ads

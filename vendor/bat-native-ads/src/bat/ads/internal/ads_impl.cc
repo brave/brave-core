@@ -228,7 +228,7 @@ void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
     return;
   }
 
-  user_activity_->RecordEventForPageTransitionFromInt(page_transition_type);
+  user_activity_->RecordEventForPageTransition(page_transition_type);
 }
 
 void AdsImpl::OnIdle() {
@@ -324,8 +324,6 @@ void AdsImpl::OnTabClosed(const int32_t tab_id) {
   }
 
   TabManager::Get()->OnClosed(tab_id);
-
-  ad_transfer_->Cancel(tab_id);
 }
 
 void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
@@ -541,6 +539,10 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   ad_diagnostics_ = std::make_unique<AdDiagnostics>();
 
+  browser_manager_ = std::make_unique<BrowserManager>();
+
+  tab_manager_ = std::make_unique<TabManager>();
+
   account_ = std::make_unique<Account>(token_generator_.get());
   account_->AddObserver(this);
 
@@ -606,10 +608,6 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   new_tab_page_ad_serving_->AddObserver(this);
   new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
   new_tab_page_ad_->AddObserver(this);
-
-  browser_manager_ = std::make_unique<BrowserManager>();
-
-  tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_ = std::make_unique<UserActivity>();
 

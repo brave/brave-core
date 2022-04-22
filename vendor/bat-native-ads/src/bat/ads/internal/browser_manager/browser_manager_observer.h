@@ -12,16 +12,16 @@ namespace ads {
 
 class BrowserManagerObserver : public base::CheckedObserver {
  public:
-  // Tells the delegate that the browser has become active.
+  // Invoked when the browser has become active.
   virtual void OnBrowserDidBecomeActive() {}
 
-  // Tells the delegate that the browser did become inactive.
+  // Invoked when the browser did become inactive.
   virtual void OnBrowserDidResignActive() {}
 
-  // Tells the delegate that the browser is now in the background.
+  // Invoked when the browser enters the foreground.
   virtual void OnBrowserDidEnterForeground() {}
 
-  // Tells the delegate that the browser is now in the foreground.
+  // Invoked when the browser enters the background.
   virtual void OnBrowserDidEnterBackground() {}
 
  protected:
