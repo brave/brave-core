@@ -42,6 +42,8 @@ public class SendTokenStore: ObservableObject {
     case sameAsFromAddress
     case contractAddress
     case notEthAddress
+    case missingChecksum
+    case invalidChecksum
 
     var errorDescription: String? {
       switch self {
@@ -51,6 +53,10 @@ public class SendTokenStore: ObservableObject {
         return Strings.Wallet.sendWarningAddressIsContract
       case .notEthAddress:
         return Strings.Wallet.sendWarningAddressNotValid
+      case .missingChecksum:
+        return Strings.Wallet.sendWarningAddressMissingChecksumInfo
+      case .invalidChecksum:
+        return Strings.Wallet.sendWarningAddressInvalidChecksum
       }
     }
   }
@@ -178,14 +184,29 @@ public class SendTokenStore: ObservableObject {
     }
     let normalizedSendAddress = sendAddress.lowercased()
     if !sendAddress.isETHAddress {
+      // 1. check if send address is a valid eth address
       addressError = .notEthAddress
     } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
+      // 2. check if send address is the same as the from address
       addressError = .sameAsFromAddress
     } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
       || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
+      // 3. check if send address is a contract address
       addressError = .contractAddress
     } else {
-      addressError = nil
+      keyringService.checksumEthAddress(sendAddress) { [self] checksumAddress in
+        if sendAddress == checksumAddress {
+          // 4. check if send address is the same as the checksum address from the `KeyringService`
+          addressError = nil
+        } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
+          // 5. check if send address has each of the alphabetic character as uppercase, or has each of
+          // the alphabeic character as lowercase
+          addressError = .missingChecksum
+        } else {
+          // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
+          addressError = .invalidChecksum
+        }
+      }
     }
   }
 

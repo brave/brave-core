@@ -37,7 +37,7 @@ struct SendTokenView: View {
     return sendAmount == 0
       || sendAmount > balance
       || sendTokenStore.sendAmount.isEmpty
-      || sendTokenStore.addressError != nil
+      || (sendTokenStore.addressError != nil && sendTokenStore.addressError != .missingChecksum)
   }
 
   var body: some View {

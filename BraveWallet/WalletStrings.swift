@@ -1597,6 +1597,20 @@ extension Strings {
       value: "Not a valid ETH address",
       comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address."
     )
+    public static let sendWarningAddressMissingChecksumInfo = NSLocalizedString(
+      "wallet.sendWarningAddressMissingChecksumInfo",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "This address cannot be verified (missing checksum). Proceed?",
+      comment: "A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information."
+    )
+    public static let sendWarningAddressInvalidChecksum = NSLocalizedString(
+      "wallet.sendWarningAddressInvalidChecksum",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.",
+      comment: "A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum."
+    )
     public static let betaLabel = NSLocalizedString(
       "wallet.betaLabel",
       tableName: "BraveWallet",
