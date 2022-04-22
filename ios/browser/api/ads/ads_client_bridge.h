@@ -45,9 +45,9 @@
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type
           confirmationType:(const std::string&)confirmation_type
-                 timestamp:(const double)timestamp;
-- (std::vector<double>)getAdEvents:(const std::string&)ad_type
-                  confirmationType:(const std::string&)confirmation_type;
+                      time:(const base::Time)time;
+- (std::vector<base::Time>)getAdEvents:(const std::string&)ad_type
+                      confirmationType:(const std::string&)confirmation_type;
 - (void)resetAdEventsForId:(const std::string&)id;
 - (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
           callback:(ads::UrlRequestCallback)callback;

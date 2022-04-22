@@ -32,7 +32,7 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
     return true;
   }
 
-  const std::vector<base::Time> history =
+  const std::vector<base::Time>& history =
       GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {

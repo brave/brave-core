@@ -90,25 +90,24 @@ void BatAdsClientMojoBridge::RecordAdEventForId(
     const std::string& id,
     const std::string& ad_type,
     const std::string& confirmation_type,
-    const double timestamp) const {
+    const base::Time time) const {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type,
-                                      timestamp);
+  bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, time);
 }
 
-std::vector<double> BatAdsClientMojoBridge::GetAdEvents(
+std::vector<base::Time> BatAdsClientMojoBridge::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   if (!connected()) {
     return {};
   }
 
-  std::vector<double> ad_events;
-  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_events);
-  return ad_events;
+  std::vector<base::Time> ad_event_history;
+  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_event_history);
+  return ad_event_history;
 }
 
 void BatAdsClientMojoBridge::ResetAdEventsForId(const std::string& id) const {

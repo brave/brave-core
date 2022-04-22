@@ -17,16 +17,15 @@ std::string GetTypeId(const std::string& ad_type,
   return ad_type + confirmation_type;
 }
 
-void PurgeHistoryOlderThan(std::vector<double>* history,
+void PurgeHistoryOlderThan(std::vector<base::Time>* history,
                            const base::TimeDelta time_delta) {
   DCHECK(history);
 
   const base::Time past = base::Time::Now() - time_delta;
 
-  const auto iter = std::remove_if(
-      history->begin(), history->end(), [&past](const double timestamp) {
-        return base::Time::FromDoubleT(timestamp) < past;
-      });
+  const auto iter =
+      std::remove_if(history->begin(), history->end(),
+                     [&past](const base::Time time) { return time < past; });
 
   history->erase(iter, history->end());
 }
@@ -40,20 +39,19 @@ AdEventHistory::~AdEventHistory() = default;
 void AdEventHistory::RecordForId(const std::string& id,
                                  const std::string& ad_type,
                                  const std::string& confirmation_type,
-                                 const double timestamp) {
+                                 const base::Time time) {
   DCHECK(!id.empty());
   DCHECK(!ad_type.empty());
   DCHECK(!confirmation_type.empty());
 
   const std::string& type_id = GetTypeId(ad_type, confirmation_type);
 
-  history_[id][type_id].push_back(timestamp);
+  history_[id][type_id].push_back(time);
 
-  const base::TimeDelta time_delta = base::Days(1);
-  PurgeHistoryOlderThan(&history_[id][type_id], time_delta);
+  PurgeHistoryOlderThan(&history_[id][type_id], base::Days(1));
 }
 
-std::vector<double> AdEventHistory::Get(
+std::vector<base::Time> AdEventHistory::Get(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   DCHECK(!ad_type.empty());
@@ -61,10 +59,10 @@ std::vector<double> AdEventHistory::Get(
 
   const std::string& type_id = GetTypeId(ad_type, confirmation_type);
 
-  std::vector<double> timestamps;
+  std::vector<base::Time> timestamps;
 
   for (const auto& history : history_) {
-    const base::flat_map<std::string, std::vector<double>>& ad_events =
+    const base::flat_map<std::string, std::vector<base::Time>>& ad_events =
         history.second;
 
     for (const auto& ad_event : ad_events) {
@@ -73,7 +71,7 @@ std::vector<double> AdEventHistory::Get(
         continue;
       }
 
-      const std::vector<double>& ad_event_timestamps = ad_event.second;
+      const std::vector<base::Time>& ad_event_timestamps = ad_event.second;
 
       timestamps.insert(timestamps.end(), ad_event_timestamps.cbegin(),
                         ad_event_timestamps.cend());

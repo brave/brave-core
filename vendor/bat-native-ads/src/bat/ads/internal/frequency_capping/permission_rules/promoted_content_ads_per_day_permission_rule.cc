@@ -21,7 +21,7 @@ PromotedContentAdsPerDayPermissionRule::
     ~PromotedContentAdsPerDayPermissionRule() = default;
 
 bool PromotedContentAdsPerDayPermissionRule::ShouldAllow() {
-  const std::vector<base::Time> history =
+  const std::vector<base::Time>& history =
       GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {

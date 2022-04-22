@@ -37,7 +37,7 @@ namespace {
 static base::flat_map<std::string, uint16_t> g_url_endpoint_indexes;
 
 static base::flat_map<std::string,
-                      base::flat_map<std::string, std::vector<double>>>
+                      base::flat_map<std::string, std::vector<base::Time>>>
     g_ad_event_history;
 
 static base::flat_map<std::string, std::string> g_prefs;
@@ -425,14 +425,14 @@ void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, RecordAdEventForId(_, _, _, _))
       .WillByDefault(Invoke(
           [](const std::string& id, const std::string& ad_type,
-             const std::string& confirmation_type, const double timestamp) {
+             const std::string& confirmation_type, const base::Time time) {
             DCHECK(!id.empty());
             DCHECK(!ad_type.empty());
             DCHECK(!confirmation_type.empty());
 
             const std::string& uuid = GetUuidForCurrentTest(id);
             const std::string& type_id = ad_type + confirmation_type;
-            g_ad_event_history[uuid][type_id].push_back(timestamp);
+            g_ad_event_history[uuid][type_id].push_back(time);
           }));
 }
 
@@ -440,7 +440,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetAdEvents(_, _))
       .WillByDefault(Invoke(
           [](const std::string& ad_type,
-             const std::string& confirmation_type) -> std::vector<double> {
+             const std::string& confirmation_type) -> std::vector<base::Time> {
             DCHECK(!ad_type.empty());
             DCHECK(!confirmation_type.empty());
 
@@ -449,7 +449,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
 
             const std::string& type_id = ad_type + confirmation_type;
 
-            std::vector<double> timestamps;
+            std::vector<base::Time> timestamps;
 
             for (const auto& ad_event_history : g_ad_event_history) {
               const std::string& uuid = ad_event_history.first;
@@ -459,7 +459,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
                 continue;
               }
 
-              const base::flat_map<std::string, std::vector<double>>&
+              const base::flat_map<std::string, std::vector<base::Time>>&
                   ad_events = ad_event_history.second;
 
               for (const auto& ad_event : ad_events) {
@@ -468,7 +468,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
                   continue;
                 }
 
-                const std::vector<double>& ad_event_timestamps =
+                const std::vector<base::Time>& ad_event_timestamps =
                     ad_event.second;
 
                 timestamps.insert(timestamps.end(),

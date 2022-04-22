@@ -2009,12 +2009,12 @@ void AdsServiceImpl::CloseNotification(const std::string& placement_id) {
 void AdsServiceImpl::RecordAdEventForId(const std::string& id,
                                         const std::string& ad_type,
                                         const std::string& confirmation_type,
-                                        const double timestamp) const {
+                                        const base::Time time) const {
   FrequencyCappingHelper::GetInstance()->RecordAdEventForId(
-      id, ad_type, confirmation_type, timestamp);
+      id, ad_type, confirmation_type, time);
 }
 
-std::vector<double> AdsServiceImpl::GetAdEvents(
+std::vector<base::Time> AdsServiceImpl::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   return FrequencyCappingHelper::GetInstance()->GetAdEvents(ad_type,

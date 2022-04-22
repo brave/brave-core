@@ -387,9 +387,9 @@ class AdsServiceImpl : public AdsService,
   void RecordAdEventForId(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
-                          const double timestamp) const override;
+                          const base::Time time) const override;
 
-  std::vector<double> GetAdEvents(
+  std::vector<base::Time> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
 

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -46,15 +47,14 @@ class ADS_EXPORT AdsClient {
   virtual void CloseNotification(const std::string& uuid) = 0;
 
   // Record an ad event for the specified |id|, |ad_type|, |confirmation_type|
-  // and |timestamp|.
+  // and |time|.
   virtual void RecordAdEventForId(const std::string& id,
                                   const std::string& ad_type,
                                   const std::string& confirmation_type,
-                                  const double timestamp) const = 0;
+                                  const base::Time time) const = 0;
 
-  // Get a list of ad event timestamps for the specified |ad_type| and
-  // |confirmation_type|.
-  virtual std::vector<double> GetAdEvents(
+  // Get ad event history for the specified |ad_type| and |confirmation_type|.
+  virtual std::vector<base::Time> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 
