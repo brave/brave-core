@@ -12,6 +12,8 @@ import batIconOn18Url from './img/rewards-on.png'
 import batIconOn36Url from './img/rewards-on@2x.png'
 import batIconOn54Url from './img/rewards-on@3x.png'
 
+const braveExtensionId = 'mnojpmjdmbbfmejpflffifhffcmidifd'
+
 const iconOn = {
   path: {
     18: batIconOn18Url,
@@ -55,6 +57,9 @@ chrome.runtime.onStartup.addListener(function () {
 chrome.runtime.onMessageExternal.addListener(
   function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
     if (!msg) {
+      return
+    }
+    if (!sender || !sender.id || sender.id !== braveExtensionId) {
       return
     }
     switch (msg.type) {
