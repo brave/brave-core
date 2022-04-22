@@ -142,7 +142,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
       ExecScriptGetInt(kHardwareConcurrencyScript, contents());
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 7);
+  EXPECT_EQ(completely_fake_value, 5);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
@@ -184,5 +184,5 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
                     &completely_fake_value);
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 7);
+  EXPECT_EQ(completely_fake_value, 5);
 }

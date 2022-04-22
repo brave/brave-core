@@ -251,9 +251,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // Farbling level: default
   // HTTP Accept-Language header should be farbled by domain.
   SetFingerprintingDefault(domain_b);
-  SetExpectedHTTPAcceptLanguage("la;q=0.8");
+  SetExpectedHTTPAcceptLanguage("la;q=0.6");
   NavigateToURLUntilLoadStop(url_b);
-  SetExpectedHTTPAcceptLanguage("la;q=0.9");
+  SetExpectedHTTPAcceptLanguage("la;q=0.5");
   SetFingerprintingDefault(domain_c);
   NavigateToURLUntilLoadStop(url_c);
 

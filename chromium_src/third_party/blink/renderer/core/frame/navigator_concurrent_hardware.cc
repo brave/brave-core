@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <random>
-
+#include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
 #include "base/compiler_specific.h"
 #include "base/system/sys_info.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
 
 namespace brave {
 
@@ -32,7 +31,7 @@ unsigned FarbleNumberOfProcessors(blink::ExecutionContext* context) {
       [[fallthrough]];
     }
     case BraveFarblingLevel::BALANCED: {
-      std::mt19937_64 prng =
+      FarblingPRNG prng =
           BraveSessionCache::From(*context).MakePseudoRandomGenerator();
       farbled_value =
           kFakeMinProcessors + (prng() % (true_value + 1 - kFakeMinProcessors));

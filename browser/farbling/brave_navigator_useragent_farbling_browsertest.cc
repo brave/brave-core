@@ -192,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // test known values
   NavigateToURLUntilLoadStop(url_b);
   auto max_ua_b = EvalJs(contents(), kUserAgentScript);
-  EXPECT_EQ(default_ua_b + "   ", max_ua_b);
+  EXPECT_EQ(default_ua_b + "    ", max_ua_b);
   BlockFingerprinting(domain_z);
   NavigateToURLUntilLoadStop(url_z);
   auto max_ua_z = EvalJs(contents(), kUserAgentScript);

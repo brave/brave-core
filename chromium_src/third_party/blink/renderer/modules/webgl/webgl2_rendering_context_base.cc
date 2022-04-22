@@ -24,7 +24,7 @@ ScriptValue FarbleGLIntParameter(WebGL2RenderingContextBase* owner,
   if (!owner->isContextLost())
     owner->ContextGL()->GetIntegerv(pname, &value);
   if (value > 0) {
-    std::mt19937_64 prng =
+    brave::FarblingPRNG prng =
         brave::BraveSessionCache::From(*ExecutionContext::From(script_state))
             .MakePseudoRandomGenerator();
     prng.discard(discard);
@@ -43,7 +43,7 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
   if (!owner->isContextLost())
     owner->ContextGL()->GetInteger64v(pname, &value);
   if (value > 0) {
-    std::mt19937_64 prng =
+    brave::FarblingPRNG prng =
         brave::BraveSessionCache::From(*ExecutionContext::From(script_state))
             .MakePseudoRandomGenerator();
     prng.discard(discard);

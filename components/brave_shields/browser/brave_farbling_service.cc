@@ -40,7 +40,7 @@ void BraveFarblingService::set_session_tokens_for_testing(
 bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     bool is_off_the_record,
-    std::mt19937_64* prng) {
+    FarblingPRNG* prng) {
   const std::string domain =
       net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
@@ -53,7 +53,7 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
                sizeof session_key));
   CHECK(h.Sign(domain, domain_key, sizeof domain_key));
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
-  *prng = std::mt19937_64(seed);
+  *prng = FarblingPRNG(seed);
   return true;
 }
 
