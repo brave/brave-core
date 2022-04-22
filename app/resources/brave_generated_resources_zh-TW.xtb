@@ -55,7 +55,7 @@
 <translation id="5197219128592971597">務必前往原始 (非 AMP) 頁面的 URL，而非使用 Google 的 Accelerated Mobile Page 版本</translation>
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
 <translation id="597020512043916976">在自動完成建議中顯示熱門網站</translation>
-<translation id="264150068416846820">在自動完成建議中顯示 Brave 建議的網站</translation>
+<translation id="301088458323355543">在自動完成建議中顯示建議的網站</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
 <translation id="6414370348346025511">標準防護已開啟。</translation>
 <translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
@@ -70,8 +70,8 @@
 <translation id="4851215387785619212">Brave 私密廣告</translation>
 <translation id="7808122468353671181">透過觀看 Brave 廣告來賺取代幣。我們會從您的瀏覽行為判斷您的喜好，並據此投放廣告。您的瀏覽器不會洩漏任何個人資料或瀏覽記錄。</translation>
 <translation id="1758947220824279023">廣告顯示數量上限</translation>
-<translation id="8578912649458880781">國家級廣告定位</translation>
-<translation id="3678362265519557511">這允許 Brave 向您顯示符合您狀態的廣告。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">區域廣告相關度</translation>
+<translation id="2196950072404588793">這能讓 Brave 向您顯示所在區域特有的廣告。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="9132509928968869844">每月自動捐獻限制</translation>
 <translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
@@ -144,8 +144,10 @@
 <translation id="130615081792797568">簡式瀏覽</translation>
 <translation id="2360360976480535628">進階瀏覽</translation>
 <translation id="2133317862976486547">追蹤器與廣告封鎖</translation>
-<translation id="4385707520896576447">Cookie 封鎖</translation>
-<translation id="4978786495456601191">指紋封鎖</translation>
+<translation id="8823559166155093873">封鎖 Cookie</translation>
+<translation id="6531019308847917584">封鎖指紋識別功能</translation>
+<translation id="7607166182943595829">根據我的語言偏好設定，防止網站識別我的指紋</translation>
+<translation id="3497934980362703405">啟用此設定會降低網站瞭解您語言偏好設定的程度。</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="4395160081588457461">外觀與感覺</translation>
@@ -435,8 +437,6 @@
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
-<translation id="2273851479262317744">將 Brave 設為預設瀏覽器</translation>
-<translation id="8581710194025054669">若要享有最優質的網路隱私，不妨考慮將 Brave 設為您電腦上的預設瀏覽器。這麼做的話，每當您點選任何網頁連結，Brave 都會在開啟連結時一併啟動隱私防護機制。</translation>
 <translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>

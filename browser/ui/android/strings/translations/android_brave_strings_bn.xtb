@@ -427,44 +427,33 @@
 <translation id="7559243474426790340">রিফ্রেশের স্থিতি</translation>
 <translation id="8376263745431603066">"নাইট মোড" সক্রিয় করুন (পরীক্ষামূলক)</translation>
 <translation id="1383876407941801731">সার্চ করুন</translation>
-<translation id="1972589975368876259">স্ট্যাক সম্পাদনা করুন</translation>
-<translation id="2490330380242414851">উইজেট সরান</translation>
 <translation id="8446884382197647889">আরও জানুন</translation>
-<translation id="7384441892795736634">ডেটা রিফ্রেশ করুন</translation>
-<translation id="4804818685124855865">সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">উপলব্ধ <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> কিনুন</translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ডিপোজিটের ঠিকানা</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> ডিপোজিট মেমো</translation>
+<translation id="6755546361496900700">রূপান্তর প্রিভিউ করুন</translation>
 <translation id="5110244215256675209">Crypto ক্রয় করুন</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> কিনুন</translation>
-<translation id="558614325644656740">উপলব্ধ <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">রূপান্তর প্রিভিউ করুন</translation>
-<translation id="2882813124794301799">উইজেট স্ট্যাক</translation>
 <translation id="13296465911709339">আপনার টেক্সট ক্লিপবোর্ডে কপি করা হয়েছে।</translation>
 <translation id="2735834606413553397">সর্বজনীনন ঠিকানা আপনার ক্লিপবোর্ডে কপি করা হয়েছে।</translation>
 <translation id="7144878232160441200">আবার চেষ্টা করুন</translation>
 <translation id="2977461003134694205">গোপনীয়তার স্থিতি</translation>
-<translation id="4643117005422448078">সেরা সাইটগুলি</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">ট্র্যাকার &amp; বিজ্ঞাপন রোধ করা হয়েছে, সংরক্ষিত ব্যান্ডউইথ, এবং সংরক্ষিত সময়ের অনুমানগুলি।</translation>
-<translation id="74417429503469271">আপনার প্রায়শই দেখা সেরা সাইটগুলি খুলুন।</translation>
 <translation id="2956070106555335453">সংক্ষিপ্তসার</translation>
 <translation id="1366855498335432549">জমা</translation>
 <translation id="1301340234286078471">রূপান্তর করুন</translation>
 <translation id="223536150967420869">ক্রয় করুন</translation>
-<translation id="1714829281959608206">Binance অ্যাকাউন্ট ব্যালেন্স দেখতে এবং Crypto ট্রেড করতে Binance সংযোগ সক্রিয় করুন।</translation>
 <translation id="4584930231524505442">আমি … পরিবর্তন করতে চাই</translation>
 <translation id="5749014321384313843">আমি ব্যয় করতে চাই...</translation>
-<translation id="8688672835843460752">উপলভ্য</translation>
 <translation id="2480674848181564169">রূপান্তরের জন্য পর্যাপ্ত ব্যালেন্স নেই</translation>
 <translation id="2215334405220411393">রূপান্তর করার জন্য ন্যুনতম অর্থরাশি : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">সংযোগ করতে পারছে না</translation>
 <translation id="7742417737698031726">ফী</translation>
 <translation id="2122225204180056042">আপনি পাবেন</translation>
 <translation id="6432284126416751397">রূপান্তর নিশ্চিত করুন</translation>
-<translation id="5137723827757859599">সেরা সাইটগুলিতে এখনও কিছু নেই।</translation>
 <translation id="3891414008432200754">মূল্য</translation>
 <translation id="3733576242118819803">নিশ্চিত করুন (<ph name="REMAINING_TIME"/>সেঃ)</translation>
 <translation id="1627064138060308910">রূপান্তর ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
@@ -566,6 +555,8 @@
 <translation id="2759836790106646094">আপনার ওয়ালেট এখনই ব্যাকআপ করুন!</translation>
 <translation id="1078873179929044999">পরের ধাপে আপনি একটি 12-শব্দের অ্যাকাউন্ট ফিরিয়ে আনার শব্দগুচ্ছ দেখবেন, যা আপনি আপনার প্রাথমিক ক্রিপ্টো অ্যাকাউন্টগুলো ফিরিয়ে আনার জন্য ব্যবহার করতে পারবেন। এটিকে কোথাও নিরাপদে রাখুন। আপনি পাসওয়ার্ড ভুলে গেলে, ডিভাইস হারালে বা চুরি গেলে অথবা আপনি ওয়ালেট স্যুইচ করতে চাইলে অ্যাকাউন্টে পুনরায় অ্যাক্সেস ফিরে পাওয়ার একমাত্র উপায় হলো আপনার অ্যাকাউন্ট ফিরিয়ে আনার শব্দগুচ্ছ।</translation>
 <translation id="2359808026110333948">চালিয়ে যান</translation>
+<translation id="5488357322146334497">বার্তা</translation>
+<translation id="7228169875515099943">ডেটা</translation>
 <translation id="1904000155026201268">আমি বুঝি যে আমি আমার রিকভারি শব্দগুলি হারিয়ে ফেললে, আমি আমার ক্রিপ্টো ওয়ালেট অ্যাক্সেস করতে পারব না।</translation>
 <translation id="3933122286596948824">আপনার রিকভারি বাক্যাংশ</translation>
 <translation id="5077747669435508720">নীচে দেখানো সঠিক ক্রমে এই শব্দগুলো লিখুন বা অনুলিপি করুন এবং সেগুলি নিরাপদ কোথাও সংরক্ষণ করুন। আপনার পুনরুদ্ধারের পদবন্ধটি পাসওয়ার্ড ভুলে যাওয়া, ডিভাইস হারানো বা চুরি যাওয়া বা আপনি ওয়ালেটগুলোর মধ্যে স্যুইচ করতে অ্যাকাউন্টে পুনরায় অ্যাক্সেস প্রাপ্তি ক্ষেত্রে একমাত্র উপায়।</translation>
@@ -810,6 +801,7 @@
 <translation id="1254969878422524947">গ্যাস প্রতি টিপের সীমা (গোয়েই)</translation>
 <translation id="7373308452149471621">প্রতি গ্যাস মূল্য সীমা (গোয়েই)</translation>
 <translation id="5891811606602061966">অ্যাকাউন্ট আমদানি করতে ব্যর্থ, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="1822506443689803572">Brave একটি DEX অ্যাগ্রিগ্রেটর হিসেবে <ph name="DEX_PROVIDER"/> ব্যবহার করে।</translation>
 <translation id="5061574358754621254">CoinGecko-এর দ্বারা পরিচালনা প্রাইস ডেটা</translation>
 <translation id="4626407663177532837">কোটটিতে 0.875% Brave ফি অন্তর্ভুক্ত আছে।</translation>
 <translation id="8574289650879708853">কাস্টম টোকেন যোগ করুন</translation>
@@ -863,4 +855,21 @@
 <translation id="4945690646623486292">নেটওয়ার্ক নির্বাচন করুন</translation>
 <translation id="8853725596990766789">অর্থরাশি পরিবর্তন করুন</translation>
 <translation id="5233638681132016545">নতুন ট্যাব</translation>
+<translation id="8006088103295786154">Brave ওয়ালেট অ্যাক্সেস করুন</translation>
+<translation id="5308380583665731573">সংযুক্ত করুন</translation>
+<translation id="3432029672560911238">ব্যবহারকারীর অ্যাকাউন্ট</translation>
+<translation id="5753378322046059140">অ্যাকাউন্ট সুইচ করুন</translation>
+<translation id="3897092660631435901">মেনু</translation>
+<translation id="42981349822642051">প্রসারিত করুন</translation>
+<translation id="3586752056660754651">স্বাক্ষর করুন</translation>
+<translation id="6592721981110586529">Brave ওয়ালেটের সাথে সংযোগ করুন</translation>
+<translation id="329813193938846695">অ্যাকাউন্ট (গুলি) নির্বাচন করুন</translation>
+<translation id="3890989020011724401">নতুন আ্যাকাউন্ট</translation>
+<translation id="291375746846291973">শুধুমাত্র আপনার বিশ্বাস সাইটের সাথে সংযুক্ত হন।</translation>
+<translation id="385051799172605136">ফিরুন</translation>
+<translation id="1060221736464994328">এই সাইটটিকে নেটওয়ার্ক স্যুইচ করার অনুমতি দেবেন?</translation>
+<translation id="2478788592457735063">এটি নেটওয়ার্কটিকে পূর্বে যোগ করা নেটওয়ার্কে স্যুইচ করবে।</translation>
+<translation id="8756686998207163764">নেটওয়ার্ক স্যুইচ করুন</translation>
+<translation id="394256914628786902">ট্যাব গ্রুপ স্বীয় সৃষ্টি সক্ষম করুন</translation>
+<translation id="8274201358637112807">এই পৃষ্ঠাটি Brave ওয়ালেটের সাথে ইন্ট্যার‍্যাক্ট করতে চায়</translation>
 </translationbundle>

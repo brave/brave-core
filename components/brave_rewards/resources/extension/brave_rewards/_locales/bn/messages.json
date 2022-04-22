@@ -192,19 +192,6 @@
     "message": "স্বতঃ-প্রদান",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "যাচাইকরণ সম্পূর্ণ করতে $provider$ এ যান",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "পুরস্কার পেতে অনুগ্রহ করে পরিচয়ের যাচাইকরণ সম্পূর্ণ করুন।",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "লগ আউট করেছেন",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "বিচারাধীন রয়েছে",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "$provider$ যাচাইকরণ বিষয়ক একটি সাময়িক সমস্যা হয়েছে। আপনার Brave পুরস্কারগুলি একটি বকেয়া অবস্থায় থাকবে এবং স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে, কিন্তু আপনি শুধুমাত্র পরেই আবার চেষ্টা করতে পারবেন।",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "বিজ্ঞাপন থেকে পুরস্কার",

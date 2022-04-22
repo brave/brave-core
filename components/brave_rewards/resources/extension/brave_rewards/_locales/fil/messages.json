@@ -192,19 +192,6 @@
     "message": "Awtomatikong Mag-ambag",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Pumunta sa $provider$ para makumpleto ang pag-verify",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Pakikumpleto ang pag-verify sa pagkakakilanlan para magsimulang makatanggap ng mga reward.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Na-log out",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Nakabinbin",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Pansamantalang nagkaproblema sa pag-verify sa $provider$. Mananatiling Pending ang status ng iyong Brave Rewards at awtomatiko itong magre-retry, pero puwede mo ring subukan uit sa ibang pagkakataon.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Mga Reward mula sa Ads",

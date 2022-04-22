@@ -95,7 +95,7 @@
 <translation id="1693773514029371138">解決</translation>
 <translation id="6991128190741664836">後で</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">ウォレット</translation>
+<translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="8820817407110198400">ブックマーク</translation>
 <translation id="1644574205037202324">履歴</translation>
 <translation id="6165508094623778733">詳細情報</translation>
@@ -255,6 +255,8 @@
 <translation id="3183954159462541696">エラー: ログインするには認証済みのアカウントが必要です</translation>
 <translation id="5260522591743022748">このBraveリワードは、すでに他の<ph name="PROVIDER"/>アカウントで認証済みのようです。以前のアカウントを使用してもう一度認証をお試しください。</translation>
 <translation id="5111921830714291902">エラー: 異なるアカウント</translation>
+<translation id="6933939911547091461">現時点ではお住まいの地域でBraveリワードの認証がサポートされていないため、Braveリワードを認証できません。</translation>
+<translation id="8218538368080510976">エラー: サポートされていない地域です</translation>
 <translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
 <translation id="9074594632540931067">エラー: BATの利用不可</translation>
 <translation id="413458922997276130">現在、Upholdのアカウントがブロックされています。</translation>
@@ -649,6 +651,7 @@
 <translation id="8851480289992540512">受け取った合計</translation>
 <translation id="824449983246282560">アカウントに残高がありません。購入するにはGeminiへ移動します。</translation>
 <translation id="8624961452383848703">取引希望数量…</translation>
+<translation id="1544192797660353713">ウォレット</translation>
 <translation id="616639131065447379">Brave暗号資産ウォレットへようこそ</translation>
 <translation id="1740464057879304704">Crypto（クリプト）ウォレットを使用すると、Braveで暗号通貨と関連するアセットを扱うことができます。Cryptoウォレットは、コレクティブルズはもちろんのこと、ETHやBATのようなEthereumトークンに対応し、Ðappsやその他のスマートコントラクトを扱うことができます。これはすべて、Ethereumやその他のブロックチェーンシステムに精通している方々、または学ぶことを楽しみにしている方々を対象としています。</translation>
 <translation id="4855440621031541830">この使用に関連するすべてのリスクの責任はあなた自身にあり、Brave Softwareがこの使用の結果として被る可能性のある偶発的、または結果的損失を含むいかなる損失についても責任または義務を負わないことを受け入れる場合にのみ、暗号資産ウォレットを使用してください。</translation>
@@ -764,13 +767,12 @@
 <translation id="5878420576943709750"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>を送金中です。少々お待ちください！</translation>
 <translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
-<translation id="2389181429986654814"><ph name="PROVIDER"/>に移動して認証を完了します</translation>
-<translation id="7793632266654336758">報酬を受け取るには、本人確認を完了する必要があります。</translation>
 <translation id="2394961582378297792">ログアウト済み</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/>との接続を解除</translation>
 <translation id="3600355176618429948">推定報酬</translation>
 <translation id="4244985009709452836"><ph name="PROVIDER"/>アカウントにログイン</translation>
 <translation id="2613359062756190460">一度だけチップを送る</translation>
+<translation id="7580329715937096918">一時的に、<ph name="PROVIDER"/> の認証に問題が発生しています。Braveリワードのステータスは保留中となり、自動的に再試行されます。後ほどもう一度お試しいただくことも可能です。</translation>
 <translation id="590733288489975971">AdsによるRewards</translation>
 <translation id="6181762795539107980">未認証</translation>
 <translation id="3026978804849658576">明細を表示</translation>
@@ -794,7 +796,6 @@
 <translation id="2221902203895354376">トークンの付与が可能です！</translation>
 <translation id="7701466644604753106">Speedreaderをオンにする</translation>
 <translation id="763042262431778831">Speedreaderをオフにする</translation>
-<translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="1148827340205946630">ユーザーがリクエストを拒否しました。</translation>
 <translation id="2403819048476450281">パラメーターが無効です。</translation>
 <translation id="3955144560853195652">チェーン「<ph name="VALUE"/>」は追加されていません</translation>
@@ -1007,9 +1008,9 @@
 <translation id="5488357322146334497">メッセージ</translation>
 <translation id="3586752056660754651">署名</translation>
 <translation id="3484981968509595506">DAppがあなたの公開暗号鍵を要求しています。</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/>が、あなたのウォレットの公開暗号鍵を要求しています。鍵の提供に同意すると、サイトで暗号化されたメッセージを作成することができます。</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> は、ウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、暗号化されたメッセージがサイトで作成されます。</translation>
 <translation id="3340247553212049934">提供</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/>が、リクエストを完了させるためにこのメッセージの閲覧を要求しています</translation>
+<translation id="1619778919922494944">このDAppは、このメッセージを読みリクエストを完了しようとしています</translation>
 <translation id="714506544401754321">メッセージを復号化</translation>
 <translation id="5039804452771397117">許可</translation>
 <translation id="9032898664193335413">このアプリに<ph name="TOKEN_SYMBOL"/>の使用を許可しますか？</translation>
@@ -1037,6 +1038,7 @@
 <translation id="3948067511324628726">ガス料金</translation>
 <translation id="7163997622278957886">入札</translation>
 <translation id="1074360622426001342">金額 + ガス</translation>
+<translation id="2186011161688824046">金額 + 手数料</translation>
 <translation id="7084089311475827950">データがありません。</translation>
 <translation id="5821668936183240062">次へ</translation>
 <translation id="793994607260936590">first</translation>
@@ -1169,6 +1171,10 @@
 <translation id="1752214435563414457">Braveスワップステーク</translation>
 <translation id="7829441065063984927">暗号資産が当たる7日間のキャンペーン！賞金総額50万ドル。</translation>
 <translation id="8292716346768453265">今すぐエントリー！</translation>
+<translation id="6423985584914773314">有効なFILアドレスではありません</translation>
+<translation id="8528916244724490964">すべてのネットワーク</translation>
+<translation id="2781668117338732220">セカンダリネットワーク</translation>
+<translation id="2816106784624007524">ガスリミットは、0以上の整数である必要があります</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1182,30 +1188,31 @@
 <translation id="260764436039299868">シールド<ph name="LINK_BEFORE"/>オフ<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">サイトの表示に問題があると思われる場合は、シールドを無効化してください<ph name="LINK_BEFORE"/>注意：これにより、Braveのプライバシー保護機能が低下する場合があります。<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">トラッカー、広告などをブロック。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">高度な設定</translation>
+<translation id="650318023204990401">高度なコントロール</translation>
 <translation id="5799940914270080805">これらの設定を変更すると、サイトの表示が崩れる場合があります。</translation>
 <translation id="9204041448536398473">Shieldのグローバル設定</translation>
 <translation id="2108334320919763866">グローバルのデフォルト設定</translation>
-<translation id="1928321796986970424">フィルターリスト</translation>
+<translation id="4516904298421534459">フィルターリスト</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="131231380815754440">HTTPSを有効にする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="3246600097575692802">ブロック済みのスクリプトを有効にする</translation>
 <translation id="3603525299146223354">トラッカーと広告</translation>
-<translation id="1146309636943354181">トラッカーと広告がブロックされました（スタンダード）</translation>
-<translation id="5973258875089964805">トラッカー広告をブロックしました（強力モード）</translation>
+<translation id="4448697385961650078">トラッカーと広告をブロック</translation>
+<translation id="8593054718053894081">すべてのトラッカーと広告をブロック</translation>
 <translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
-<translation id="6203697265754637264">クロスサイト・クッキーをブロック</translation>
-<translation id="4627427111733173920">クッキーをブロック</translation>
-<translation id="3972324600756617403">すべてのクッキーを許可</translation>
+<translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
+<translation id="6883611015375728278">全てのクッキーをブロック</translation>
+<translation id="5657156137487675418">全てのクッキーを許可する</translation>
 <translation id="8366221601425141146">フィンガープリントがブロックされました</translation>
-<translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
-<translation id="6696441392507885865">フィンガープリントをブロック（強、サイト破損の可能性）</translation>
-<translation id="5882733945883311404">すべてのフィンガープリントを許可</translation>
+<translation id="6531019308847917584">フィンガープリンティングをブロック</translation>
+<translation id="1899608006846124237">すべてのフィンガープリンティングをブロック</translation>
+<translation id="8034285923190068220">Fingerprinting機能を許可</translation>
 <translation id="1992750560347846445">サイトを報告</translation>
 <translation id="2387532482048804818">シールドをオンにした場合、サイトが正しく動作しませんでしたか？</translation>
-<translation id="9167355841012806439">Braveのプライバシー保護なしでこのサイトを閲覧しています</translation>
-<translation id="6835073906252142271">Braveシールドで<ph name="NUMBER"/>件のトラッカー、広告などがブロックされました</translation>
+<translation id="3795015906457257780">このサイトを表示中、Braveのプライバシーとセキュリティ保護は無効です。</translation>
+<translation id="7194012750329511146">Brave Shield
+で、<ph name="NUMBER"/>件のトラッカー、広告などがブロックされました</translation>
 <translation id="1742469581923031760">接続しています...</translation>
 <translation id="1287487756047817908">切断しています...</translation>
 <translation id="2325196879156848326">接続に失敗しました</translation>

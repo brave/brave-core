@@ -424,44 +424,33 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7559243474426790340">Status aktualisieren</translation>
 <translation id="8376263745431603066">"Nachtmodus" aktivieren (experimentell)</translation>
 <translation id="1383876407941801731">Suchen</translation>
-<translation id="1972589975368876259">Stapel Bearbeiten</translation>
-<translation id="2490330380242414851">Widget entfernen</translation>
 <translation id="8446884382197647889">Mehr...</translation>
-<translation id="7384441892795736634">Daten aktualisieren</translation>
-<translation id="4804818685124855865">Trennen</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Verfügbar <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> kaufen</translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Anzahlungsadresse</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo-Anzahlung</translation>
+<translation id="6755546361496900700">Umtauschvorschau</translation>
 <translation id="5110244215256675209">Kryptowährung kaufen</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> kaufen</translation>
-<translation id="558614325644656740">Verfügbar <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Umtauschvorschau</translation>
-<translation id="2882813124794301799">Widget Stapel</translation>
 <translation id="13296465911709339">Ihr Text wurde in die Zwischenablage kopiert.</translation>
 <translation id="2735834606413553397">Öffentliche Adresse wurde in die Zwischenablage kopiert.</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="2977461003134694205">Statistiken zur Privatsphäre</translation>
-<translation id="4643117005422448078">Führende Websites</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Tracker &amp; Ads blockiert, gesparte Bandwidth und geschätzte gesparte Zeit.</translation>
-<translation id="74417429503469271">Öffnen Sie Top-Seiten, die Sie regelmäßig besuchen.</translation>
 <translation id="2956070106555335453">Zusammenfassung</translation>
 <translation id="1366855498335432549">Einzahlung</translation>
 <translation id="1301340234286078471">Umtauschen</translation>
 <translation id="223536150967420869">Kaufen</translation>
-<translation id="1714829281959608206">Aktivieren Sie die Binance-Verbindung, um den Binance-Kontostand einzusehen und Kryptowährung zu handeln.</translation>
 <translation id="4584930231524505442">Ich möchte umtauschen ...</translation>
 <translation id="5749014321384313843">Ich möchte ausgeben ...</translation>
-<translation id="8688672835843460752">Verfügbar</translation>
 <translation id="2480674848181564169">Nicht genügend Guthaben für Konversion</translation>
 <translation id="2215334405220411393">Mindestmenge für die Umwandlung ist: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Verbindung nicht möglich</translation>
 <translation id="7742417737698031726">Gebühr</translation>
 <translation id="2122225204180056042">Sie erhalten</translation>
 <translation id="6432284126416751397">Umtausch bestätigen</translation>
-<translation id="5137723827757859599">Es gibt zurzeit noch nichts auf den Top-Seiten.</translation>
 <translation id="3891414008432200754">Preis</translation>
 <translation id="3733576242118819803">Bestätigen (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Konversion fehlgeschlagen. Bitte erneut versuchen.</translation>
@@ -563,6 +552,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2759836790106646094">Sichere jetzt deine Wallet!</translation>
 <translation id="1078873179929044999">Im nächsten Schritt sehen Sie eine 12-Wörter-Wiederherstellungsphrase, mit der Sie Ihre primären Krypto-Konten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff im Falle eines vergessenen Passworts, eines verlorenen oder gestohlenen Geräts oder eines Wechsels der Wallet wiederzuerlangen.</translation>
 <translation id="2359808026110333948">Fortfahren</translation>
+<translation id="5488357322146334497">Nachricht</translation>
+<translation id="7228169875515099943">DATEN</translation>
 <translation id="1904000155026201268">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet mehr habe, wenn ich meine Formulierung zur Wiederherstellung zur Wiederherstellung verliere.</translation>
 <translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
 <translation id="5077747669435508720">Schreiben oder kopieren Sie diese Wörter in der genauen Reihenfolge, die unten gezeigt wird, und bewahren Sie sie an einem sicheren Ort auf. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff wiederzuerlangen, wenn Sie Ihr Passwort vergessen, Ihr Gerät verloren oder gestohlen haben oder Ihre Wallet wechseln möchten.</translation>
@@ -807,6 +798,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1254969878422524947">Trinkgeldbegrenzung für Gebühren (Gwei)</translation>
 <translation id="7373308452149471621">Preisgrenze pro Gebühr (Gwei)</translation>
 <translation id="5891811606602061966">Fehler beim Importieren des Kontos. Bitte versuchen Sie es erneut.</translation>
+<translation id="1822506443689803572">Brave verwendet <ph name="DEX_PROVIDER"/> als DEX-Aggregator.</translation>
 <translation id="5061574358754621254">Preisdaten zur Verfügung gestellt von CoinGecko</translation>
 <translation id="4626407663177532837">Angebot beinhaltet eine Brave-Gebühr von 0,875 %.</translation>
 <translation id="8574289650879708853">Benutzerdefiniertes Asset hinzufügen</translation>
@@ -860,4 +852,21 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4945690646623486292">Netzwerk auswählen</translation>
 <translation id="8853725596990766789">Betrag ändern</translation>
 <translation id="5233638681132016545">Neuer Tab</translation>
+<translation id="8006088103295786154">Zugriff auf Brave-Wallet</translation>
+<translation id="5308380583665731573">Verbinden</translation>
+<translation id="3432029672560911238">Benutzerkonto</translation>
+<translation id="5753378322046059140">Konto wechseln</translation>
+<translation id="3897092660631435901">Menü</translation>
+<translation id="42981349822642051">Ausklappen</translation>
+<translation id="3586752056660754651">Unterschreiben</translation>
+<translation id="6592721981110586529">Mit Brave-Wallet verbinden</translation>
+<translation id="329813193938846695">Konten auswählen</translation>
+<translation id="3890989020011724401">Neues Konto</translation>
+<translation id="291375746846291973">Verbinden Sie sich nur mit Websites, denen Sie vertrauen.</translation>
+<translation id="385051799172605136">Zurück</translation>
+<translation id="1060221736464994328">Dieser Site erlauben, das Netzwerk zu wechseln?</translation>
+<translation id="2478788592457735063">Dadurch wird das Netzwerk zu einem zuvor hinzugefügten Netzwerk gewechselt.</translation>
+<translation id="8756686998207163764">Netzwerk wechseln</translation>
+<translation id="394256914628786902">Automatische Erstellung von Tabgruppen aktivieren</translation>
+<translation id="8274201358637112807">Diese Seite möchte mit der Brave-Wallet interagieren</translation>
 </translationbundle>

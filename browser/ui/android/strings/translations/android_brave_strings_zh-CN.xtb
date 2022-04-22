@@ -426,44 +426,33 @@
 <translation id="7559243474426790340">刷新状态</translation>
 <translation id="8376263745431603066">启用“夜间模式”（实验性功能）</translation>
 <translation id="1383876407941801731">搜索</translation>
-<translation id="1972589975368876259">编辑堆栈</translation>
-<translation id="2490330380242414851">移除小部件</translation>
 <translation id="8446884382197647889">详细了解</translation>
-<translation id="7384441892795736634">刷新数据</translation>
-<translation id="4804818685124855865">断开连接</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款单</translation>
+<translation id="6755546361496900700">预览兑换</translation>
 <translation id="5110244215256675209">购买 Crypto</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">预览兑换</translation>
-<translation id="2882813124794301799">小部件堆栈</translation>
 <translation id="13296465911709339">您的文本已复制到剪贴板。</translation>
 <translation id="2735834606413553397">公共地址已复制到剪贴板。</translation>
 <translation id="7144878232160441200">重试</translation>
 <translation id="2977461003134694205">隐私统计数据</translation>
-<translation id="4643117005422448078">热门网站</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">追踪器和广告已被屏蔽，所节省带宽和所节省时间的估算值。</translation>
-<translation id="74417429503469271">打开您经常访问的热门网站。</translation>
 <translation id="2956070106555335453">摘要</translation>
 <translation id="1366855498335432549">存入</translation>
 <translation id="1301340234286078471">兑换</translation>
 <translation id="223536150967420869">购买</translation>
-<translation id="1714829281959608206">启用 Binance 连接以查看 Binance 帐户余额并交易加密货币。</translation>
 <translation id="4584930231524505442">我想兑换...</translation>
 <translation id="5749014321384313843">我想消费...</translation>
-<translation id="8688672835843460752">可用</translation>
 <translation id="2480674848181564169">余额不足，无法转换</translation>
 <translation id="2215334405220411393">最低转换金额为：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">无法连接</translation>
 <translation id="7742417737698031726">费用</translation>
 <translation id="2122225204180056042">你会收到</translation>
 <translation id="6432284126416751397">确认兑换</translation>
-<translation id="5137723827757859599">热门网站上还没有任何内容。</translation>
 <translation id="3891414008432200754">价格</translation>
 <translation id="3733576242118819803">确认 (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">转换失败。请重试。</translation>
@@ -565,6 +554,8 @@
 <translation id="2759836790106646094">立即备份钱包！</translation>
 <translation id="1078873179929044999">接下来，您将看到一个 12 个单词的恢复短语，可以将其用于恢复主加密账户。确保其安全。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复帐户访问的唯一方法。</translation>
 <translation id="2359808026110333948">继续</translation>
+<translation id="5488357322146334497">消息</translation>
+<translation id="7228169875515099943">数据</translation>
 <translation id="1904000155026201268">我理解一旦我丢失我的恢复短语，我将无法访问我的加密钱包。</translation>
 <translation id="3933122286596948824">您的恢复密语</translation>
 <translation id="5077747669435508720">按照下面所示的顺序写下或复制这些单词，并将它们保存在安全的地方。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复账户访问的唯一方法。</translation>
@@ -863,4 +854,21 @@
 <translation id="4945690646623486292">选择网络</translation>
 <translation id="8853725596990766789">更改金额</translation>
 <translation id="5233638681132016545">打开新的标签页</translation>
+<translation id="8006088103295786154">存取 Brave 钱包</translation>
+<translation id="5308380583665731573">连接</translation>
+<translation id="3432029672560911238">用户帐户</translation>
+<translation id="5753378322046059140">切换帐号</translation>
+<translation id="3897092660631435901">菜单</translation>
+<translation id="42981349822642051">展开</translation>
+<translation id="3586752056660754651">签名</translation>
+<translation id="6592721981110586529">与 Brave Wallet 关联</translation>
+<translation id="329813193938846695">选择账户</translation>
+<translation id="3890989020011724401">新账户</translation>
+<translation id="291375746846291973">只连接到您信任的网站。</translation>
+<translation id="385051799172605136">后退</translation>
+<translation id="1060221736464994328">允许此站点切换网络？</translation>
+<translation id="2478788592457735063">这将把网络切换到先前添加的网络。</translation>
+<translation id="8756686998207163764">切换网络</translation>
+<translation id="394256914628786902">启用“标签组”自动创建</translation>
+<translation id="8274201358637112807">此页面想与 Brave 互动</translation>
 </translationbundle>

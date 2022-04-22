@@ -192,19 +192,6 @@
     "message": "Samodejni prispevek",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Če želite dokončati preverjanje, pojdite na $provider$ ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Če želite prejemati nagrade, dokončajte preverjanje identitete.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Odjavljeni",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Na čakanju",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Nastala je začasna težava pri preverjanju z $provider$. Nagrade Brave bodo ostale v stanju Čakajoče in bodo samodejno poskusile znova, lahko pa poskusite tudi pozneje.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Nagrade z oglaševanjem",

@@ -192,19 +192,6 @@
     "message": "Automaticky prispieť",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Prejdite na $provider$ pre dokončenie overenia",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Dokončite overenie identity, aby ste mohli začať dostávať odmeny.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Odhlásené",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Prebieha",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Objavil sa dočasný problém pri overovaní pomocou $provider$. Vaše Brave Rewards ostanú v stave Čakajúce a opätovne sa automaticky zopakujú, ale môžete to tiež skúsiť neskôr znova.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Odmeny za reklamy",

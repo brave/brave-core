@@ -192,19 +192,6 @@
     "message": "Автоматический взнос",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Завершить проверку личности можно здесь: $provider$.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Чтобы начать получать вознаграждения, завершите проверку личности.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Вы вышли",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "В ожидании",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Возникла временная проблема при проверке через $provider$. Статус кошелька останется «В ожидании». Система автоматически повторит попытку позже, но вы также можете сделать это самостоятельно.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Вознаграждения за рекламу",

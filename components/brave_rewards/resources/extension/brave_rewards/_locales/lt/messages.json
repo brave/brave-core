@@ -192,19 +192,6 @@
     "message": "Automatinis indėlis",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Eikite į $provider$, kad užbaigtumėte patvirtinimą",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Atlikite tapatybės patvirtinimą, kad pradėtumėte gauti atlygį",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Atsijungta",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Laukiama",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Patvirtinant per $provider$ kilo laikina problema. Jūsų „Brave“ atlygis liks laukimo būsenos ir bus bandoma kartoti automatiškai, tačiau taip pat galite dar kartą bandyti vėliau.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Atlygis už reklamą",

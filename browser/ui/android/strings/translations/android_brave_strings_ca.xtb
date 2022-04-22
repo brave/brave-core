@@ -427,37 +427,27 @@ Segur que vols continuar?</translation>
 <translation id="7559243474426790340">Actualitza l'estat</translation>
 <translation id="8376263745431603066">Activar el "mode nocturn" (experimental)</translation>
 <translation id="1383876407941801731">Cerca</translation>
-<translation id="1972589975368876259">Editeu la Pila</translation>
-<translation id="2490330380242414851">Elimineu el Giny</translation>
 <translation id="8446884382197647889">Més informació</translation>
-<translation id="7384441892795736634">Actualitzar dades</translation>
-<translation id="4804818685124855865">Desconnectar</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Disponible <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Comprar <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adreça de Dipòsit</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Deposit Memo</translation>
+<translation id="6755546361496900700">Vista Prèvia de Conversió</translation>
 <translation id="5110244215256675209">Compra Crypto</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Comprar <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Disponible <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Vista Prèvia de Conversió</translation>
-<translation id="2882813124794301799">Pila de Ginys</translation>
 <translation id="13296465911709339">El text s'ha copiat al porta-retalls.</translation>
 <translation id="2735834606413553397">S'ha copiat l'adreça pública al porta-retalls.</translation>
 <translation id="7144878232160441200">Torna-ho a intentar</translation>
 <translation id="2977461003134694205">Estadístiques de Privacitat</translation>
-<translation id="4643117005422448078">Principals llocs</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Rastrejadors &amp; Anuncis Bloquejats, Amplada de Banda guardada, i Aproximació del Temps Estalviat.</translation>
-<translation id="74417429503469271">Obrir els llocs principals que soleu visitar.</translation>
 <translation id="2956070106555335453">Resum</translation>
 <translation id="1366855498335432549">Dipositar</translation>
 <translation id="1301340234286078471">Convertir</translation>
 <translation id="223536150967420869">Compra</translation>
-<translation id="1714829281959608206">Habilitar la connexió de Binance per visualitzar el saldo del compte Binance i cel crypto-comerç</translation>
 <translation id="4584930231524505442">Vull convertir...</translation>
 <translation id="5749014321384313843">Vull gastar...</translation>
-<translation id="8688672835843460752">Disponible</translation>
 <translation id="2480674848181564169">No hi ha prou saldo per a la conversió</translation>
 <translation id="2215334405220411393">La quantitat mínima a convertir és:
 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
@@ -465,7 +455,6 @@ Segur que vols continuar?</translation>
 <translation id="7742417737698031726">Comissió</translation>
 <translation id="2122225204180056042">Rebràs</translation>
 <translation id="6432284126416751397">Confirmar Conversió</translation>
-<translation id="5137723827757859599">Encara no hi ha res als llocs principals.</translation>
 <translation id="3891414008432200754">Preu</translation>
 <translation id="3733576242118819803">Confirmar (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">La conversió ha fallat. Si us plau, torneu-ho a intentar.</translation>
@@ -567,6 +556,8 @@ Segur que vols continuar?</translation>
 <translation id="2759836790106646094">Feu una còpia de seguretat de la cartera ara!</translation>
 <translation id="1078873179929044999">Al pas següent veureu una frase de recuperació de 12 paraules que podeu utilitzar per recuperar els vostres comptes de criptomoneda principals. Deseu-la en un lloc segur. La vostra frase de recuperació és l'única manera de recuperar l'accés al compte en cas que oblideu la contrasenya, perdeu o us robin el dispositiu, o vulgueu canviar de cartera.</translation>
 <translation id="2359808026110333948">Continua</translation>
+<translation id="5488357322146334497">Missatge</translation>
+<translation id="7228169875515099943">DADES</translation>
 <translation id="1904000155026201268">Entenc que si perdo la meva frase de recuperació, no podré accedir al meu criptomoneder.</translation>
 <translation id="3933122286596948824">La vostra frase de recuperació</translation>
 <translation id="5077747669435508720">Anoteu o copieu aquestes paraules en el mateix ordre que es mostra a continuació i deseu-les en un lloc segur. La vostra frase de recuperació és l'única manera de recuperar l'accés al compte en cas que oblideu la contrasenya, perdeu o us robin el dispositiu, o vulgueu canviar de cartera.</translation>
@@ -811,6 +802,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="1254969878422524947">Límit de propina per gas (gwei)</translation>
 <translation id="7373308452149471621">Límit de preu per gas (gwei)</translation>
 <translation id="5891811606602061966">No ha estat possible importar el compte. Torneu-ho a provar.</translation>
+<translation id="1822506443689803572">Brave utilitza <ph name="DEX_PROVIDER"/> com a agregador de DEX.</translation>
 <translation id="5061574358754621254">Dades de preus impulsades per CoinGecko</translation>
 <translation id="4626407663177532837">El pressupost inclou una taxa de 0,875% de Brave.</translation>
 <translation id="8574289650879708853">Afegiu criptovalor personalitzat</translation>
@@ -864,4 +856,21 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="4945690646623486292">Seleccioneu una xarxa</translation>
 <translation id="8853725596990766789">Canvieu la quantitat</translation>
 <translation id="5233638681132016545">Pestanya nova</translation>
+<translation id="8006088103295786154">Accés a la Brave Wallet</translation>
+<translation id="5308380583665731573">Connecta</translation>
+<translation id="3432029672560911238">Compte d'usuari</translation>
+<translation id="5753378322046059140">Canvia de compte</translation>
+<translation id="3897092660631435901">Menú</translation>
+<translation id="42981349822642051">Expandeix</translation>
+<translation id="3586752056660754651">Signar</translation>
+<translation id="6592721981110586529">Connecta't amb la Brave Wallet</translation>
+<translation id="329813193938846695">Seleccioni els comptes</translation>
+<translation id="3890989020011724401">Nou compte</translation>
+<translation id="291375746846291973">Només connecti amb webs amb els quals confiï.</translation>
+<translation id="385051799172605136">Enrere</translation>
+<translation id="1060221736464994328">Vols permetre que aquest lloc canviï la xarxa?</translation>
+<translation id="2478788592457735063">Això canviarà la xarxa per una xarxa afegida prèviament.</translation>
+<translation id="8756686998207163764">Canviar la xarxa</translation>
+<translation id="394256914628786902">Permet la creació automàtica de grups de pestanyes</translation>
+<translation id="8274201358637112807">Aquesta pàgina vol interactuar amb la Brave Wallet</translation>
 </translationbundle>

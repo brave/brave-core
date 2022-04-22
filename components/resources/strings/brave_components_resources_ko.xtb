@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">풀기</translation>
 <translation id="6991128190741664836">나중에</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">월렛</translation>
+<translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="1644574205037202324">방문 기록</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">오류: 로그인하려면 계정을 검증해야 함</translation>
 <translation id="5260522591743022748">다른 <ph name="PROVIDER"/> 계정에서 이미 확인을 완료한 Brave Rewards인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.</translation>
 <translation id="5111921830714291902">오류: 다른 계정</translation>
+<translation id="6933939911547091461">현재 Brave Rewards 검증이 지원되지 않는 지역에 거주하시기 때문에 Brave Rewards를 검증받으실 수 없습니다.</translation>
+<translation id="8218538368080510976">오류: 지원되지 않는 지역</translation>
 <translation id="5382684862562314222">거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.</translation>
 <translation id="9074594632540931067">오류: BAT 이용 불가</translation>
 <translation id="413458922997276130">귀하의 Uphold 계정이 현재 차단되어 있습니다.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">받은 총계</translation>
 <translation id="824449983246282560">계정 내에 잔액이 없습니다. Gemini를 방문하여 구매하세요.</translation>
 <translation id="8624961452383848703">환전하고 싶음...</translation>
+<translation id="1544192797660353713">월렛</translation>
 <translation id="616639131065447379">Brave 암호 지갑에 오신 것을 환영합니다</translation>
 <translation id="1740464057879304704">암호화 지갑을 사용하면 Brave에서 암호 화폐 및 관련 자산으로 작업할 수 있습니다. 암호화 지갑은 수집품뿐만 아니라 ETH 및 BAT와 같은 Ethereum 토큰을 지원하며 Ðapps 및 기타 스마트 계약으로 작업할 수 있습니다. 이 모든 것은 Ethereum 및 기타 블록 체인 시스템에 익숙하거나 — 배우고 싶은 사람들을 위한 것입니다.</translation>
 <translation id="4855440621031541830">이 사용과 관련된 모든 위험에 대한 책임은 귀하에게 있으며 Brave 소프트웨어가 이 사용으로 인해 발생할 수 있는 우발적 또는 결과적 손실을 포함한 모든 손실에 대해 책임을지지 않음을 인정하는 경우에만 암호 지갑을 사용하세요.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750"><ph name="AMOUNT"/> <ph name="MONTH"/> 리워드가 곧 도착합니다. 곧 확인 가능합니다!</translation>
 <translation id="2659764755126740206">내 <ph name="PROVIDER"/> 계정으로 가기</translation>
 <translation id="1165667598801520610">자금 추가</translation>
-<translation id="2389181429986654814"><ph name="PROVIDER"/>로 이동하여 확인 완료하기</translation>
-<translation id="7793632266654336758">리워드를 받기 시작하려면 신원 확인을 완료하세요.</translation>
 <translation id="2394961582378297792">로그아웃됨</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/>에서 연결 해제</translation>
 <translation id="3600355176618429948">예상 수익</translation>
 <translation id="4244985009709452836"><ph name="PROVIDER"/> 계정에 로그인</translation>
 <translation id="2613359062756190460">일회성 팁</translation>
+<translation id="7580329715937096918"><ph name="PROVIDER"/>를 이용한 검증에 일시적인 문제가 발생했습니다. Brave Rewards가 보류 중 상태로 유지되며 자동으로 다시 시도합니다. 나중에 직접 다시 시도하셔도 됩니다.</translation>
 <translation id="590733288489975971">광고로 받은 리워드</translation>
 <translation id="6181762795539107980">미검증</translation>
 <translation id="3026978804849658576">명세서 보기</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">토큰 보조금을 받을 수 있습니다!</translation>
 <translation id="7701466644604753106">스피드리더 켜기</translation>
 <translation id="763042262431778831">스피드리더 끄기</translation>
-<translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="1148827340205946630">사용자가 요청을 거절했습니다.</translation>
 <translation id="2403819048476450281">잘못된 매개변수입니다.</translation>
 <translation id="3955144560853195652">체인 <ph name="VALUE"/> 추가되지 않음</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">메시지</translation>
 <translation id="3586752056660754651">서명</translation>
 <translation id="3484981968509595506">DApp이 공개 암호화 키를 요청합니다.</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/>가 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/>가 월렛 공개 암호화 키를 요청합니다. 키 제공에 동의하시면 이 사이트가 암호화된 메시지를 작성하여 보내드릴 수 있습니다.</translation>
 <translation id="3340247553212049934">제공</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/>에서 이 메시지를 읽고 귀하의 요청을 처리하고자 합니다.</translation>
+<translation id="1619778919922494944">이 DApp이 이 메시지를 읽고 요청을 완료하고자 합니다.</translation>
 <translation id="714506544401754321">메시지 암호 해독</translation>
 <translation id="5039804452771397117">허용</translation>
 <translation id="9032898664193335413">이 앱이 회원님의 <ph name="TOKEN_SYMBOL"/>를 사용할 수 있게 허용하시겠습니까?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">가스 수수료</translation>
 <translation id="7163997622278957886">입찰</translation>
 <translation id="1074360622426001342">금액 + 가스</translation>
+<translation id="2186011161688824046">금액 + 수수료</translation>
 <translation id="7084089311475827950">데이터 없음.</translation>
 <translation id="5821668936183240062">다음</translation>
 <translation id="793994607260936590">처음</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-스테이크</translation>
 <translation id="7829441065063984927">7일간 암호화폐 경품, 최대 50만 $ 상금.</translation>
 <translation id="8292716346768453265">지금 응모하세요!</translation>
+<translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
+<translation id="8528916244724490964">모든 네트워크</translation>
+<translation id="2781668117338732220">보조 네트워크</translation>
+<translation id="2816106784624007524">가스 한도는 0보다 큰 정수여야 합니다.</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1177,33 +1183,34 @@
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Brave Shields <ph name="LINK_BEFORE"/>비활성화됨<ph name="LINK_AFTER"/></translation>
-<translation id="7709075156958117386">사이트가 깨져 보이는 것 같습니다. 실드를 비활성화해 보세요.
+<translation id="7709075156958117386">사이트가 깨져 보이면, 실드를 비활성화해 보세요.
     <ph name="LINK_BEFORE"/>참고: 이렇게 하면 Brave의 프라이버시 보호 수준이 낮아집니다.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">트래커, 광고 등이 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">고급 설정</translation>
+<translation id="650318023204990401">고급 컨트롤</translation>
 <translation id="5799940914270080805">이 설정을 변경하면 사이트가 깨져 보일 수 있습니다.</translation>
 <translation id="9204041448536398473">전역 Shield 설정</translation>
 <translation id="2108334320919763866">전역 기본값</translation>
-<translation id="1928321796986970424">필터 목록</translation>
+<translation id="4516904298421534459">필터 목록</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="131231380815754440">HTTPS 활성화</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
 <translation id="3246600097575692802">차단된 스크립트 활성화</translation>
 <translation id="3603525299146223354">트래커 및 광고</translation>
-<translation id="1146309636943354181">트래커 &amp; 광고 차단(표준)</translation>
-<translation id="5973258875089964805">트래커 &amp; 광고가 차단됨(공격적)</translation>
+<translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
+<translation id="8593054718053894081">트래커 및 광고 공격적으로 차단</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
-<translation id="6203697265754637264">사이트 간 쿠키가 차단됨</translation>
-<translation id="4627427111733173920">쿠키 차단됨</translation>
-<translation id="3972324600756617403">모든 쿠키 허용됨</translation>
+<translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
+<translation id="6883611015375728278">모든 쿠키 차단</translation>
+<translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="8366221601425141146">지문 인식 차단됨</translation>
-<translation id="5582686930349810484">지문 채취 차단됨(표준)</translation>
-<translation id="6696441392507885865">핑거프린팅 차단됨(엄격, 사이트가 깨져 보일 수 있음)</translation>
-<translation id="5882733945883311404">모든 핑거프린팅 허용</translation>
+<translation id="6531019308847917584">지문 차단</translation>
+<translation id="1899608006846124237">지문 공격적으로 차단</translation>
+<translation id="8034285923190068220">지문 정보 허용하기</translation>
 <translation id="1992750560347846445">사이트 신고</translation>
 <translation id="2387532482048804818">실드를 활성화했을 때 사이트가 제대로 작동하지 않으면 알려주세요.</translation>
-<translation id="9167355841012806439">Brave 프라이버시 보호 없이 이 사이트를 보는 중</translation>
-<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
+<translation id="3795015906457257780">Brave 프라이버시 보호 없이 이 사이트를 보는 중</translation>
+<translation id="7194012750329511146">Brave Shields
+<ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
 <translation id="1742469581923031760">연결 중…</translation>
 <translation id="1287487756047817908">연결 해제 중…</translation>
 <translation id="2325196879156848326">연결 실패</translation>

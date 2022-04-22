@@ -426,44 +426,33 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7559243474426790340">Genopfrisk status</translation>
 <translation id="8376263745431603066">Aktivér "Nattilstand" (eksperimentel)</translation>
 <translation id="1383876407941801731">Søg</translation>
-<translation id="1972589975368876259">Redigér stak</translation>
-<translation id="2490330380242414851">Fjern widget</translation>
 <translation id="8446884382197647889">Få mere at vide</translation>
-<translation id="7384441892795736634">Opdater data</translation>
-<translation id="4804818685124855865">Afbryd</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tilgængelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Køb <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Indbetalingsadresse</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Indbetalingsbemærkning</translation>
+<translation id="6755546361496900700">Forhåndsvis Konvertering</translation>
 <translation id="5110244215256675209">Køb krypto</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Køb <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Tilgængelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Forhåndsvis Konvertering</translation>
-<translation id="2882813124794301799">Widget-stak</translation>
 <translation id="13296465911709339">Din tekst er kopieret til udklipsholderen.</translation>
 <translation id="2735834606413553397">Offentlig adresse blev kopieret til udklipsholderen.</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="2977461003134694205">Databeskyttelsesstatistik</translation>
-<translation id="4643117005422448078">Topsider</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Trackere og annoncer blokeret, besparet båndbredde og tidsbesparelsesestimater.</translation>
-<translation id="74417429503469271">Åbn de sider, du besøger oftest.</translation>
 <translation id="2956070106555335453">Resumé</translation>
 <translation id="1366855498335432549">Indsæt</translation>
 <translation id="1301340234286078471">Konverter</translation>
 <translation id="223536150967420869">Køb</translation>
-<translation id="1714829281959608206">Aktivér Binance-forbindelse for at se Binance-kontosaldo og handle krypto.</translation>
 <translation id="4584930231524505442">Jeg vil konvertere ...</translation>
 <translation id="5749014321384313843">Jeg vil bruge...</translation>
-<translation id="8688672835843460752">Tilgængelig</translation>
 <translation id="2480674848181564169">Ikke høj nok saldo til konvertering</translation>
 <translation id="2215334405220411393">Minimumsbeløb, der kan konverteres er: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Kunne ikke forbinde</translation>
 <translation id="7742417737698031726">Gebyr</translation>
 <translation id="2122225204180056042">Du vil modtage</translation>
 <translation id="6432284126416751397">Bekræft konvertering</translation>
-<translation id="5137723827757859599">Der er ikke noget her endnu under½ topsiderne.</translation>
 <translation id="3891414008432200754">Pris</translation>
 <translation id="3733576242118819803">Bekræft (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Konvertering mislykkedes. Prøv igen.</translation>
@@ -565,6 +554,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2759836790106646094">Lav en sikkerhedskopi af din tegnebog nu!</translation>
 <translation id="1078873179929044999">På det næste trin vil du se en gendannelsessætning på 12 ord, som du kan bruge til at gendanne dine primære crypto-konti. Opbevar den et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang på, hvis du har glemt din adgangskode, du mister din enhed, eller hvis du vil skifte wallet.</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
+<translation id="5488357322146334497">Besked</translation>
 <translation id="1904000155026201268">Jeg er indforstået med, at hvis jeg mister mine gendannelsessætning, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
 <translation id="3933122286596948824">Din gendannelsessætning</translation>
 <translation id="5077747669435508720">Nedskriv eller kopiér disse ord i denne præcise rækkefølge, og gem dem et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang til din konto på, hvis du glemmer din adgangskode, mister din enhed, eller hvis du vil skifte wallets.</translation>
@@ -809,6 +799,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1254969878422524947">Per-gas drikkepengegrænse (Gwei)</translation>
 <translation id="7373308452149471621">Per-gas prisgrænse (Gwei)</translation>
 <translation id="5891811606602061966">Kunne ikke importere konto. Prøv igen.</translation>
+<translation id="1822506443689803572">Brave bruger <ph name="DEX_PROVIDER"/> som en DEX-aggregator.</translation>
 <translation id="5061574358754621254">Prisdata leveret af CoinGecko</translation>
 <translation id="4626407663177532837">Priser inkluderer et Brave-gebyr på 0,875 %.</translation>
 <translation id="8574289650879708853">Tilføj tilpasset aktiv</translation>
@@ -862,4 +853,14 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4945690646623486292">Vælg netværk</translation>
 <translation id="8853725596990766789">Ændr beløb</translation>
 <translation id="5233638681132016545">Ny fane</translation>
+<translation id="5308380583665731573">Få forbindelse</translation>
+<translation id="3897092660631435901">Menu</translation>
+<translation id="3586752056660754651">Underskriv</translation>
+<translation id="329813193938846695">Vælg beløb</translation>
+<translation id="3890989020011724401">Ny konto</translation>
+<translation id="291375746846291973">Forbind kun med websteder, du stoler på.</translation>
+<translation id="385051799172605136">Tilbage</translation>
+<translation id="1060221736464994328">Tillad denne side at skifte netværk?</translation>
+<translation id="2478788592457735063">Dette vil skifte netværket til et tidligere tilføjet netværk.</translation>
+<translation id="8756686998207163764">Skift netværk</translation>
 </translationbundle>
