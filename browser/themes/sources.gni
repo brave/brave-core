@@ -12,6 +12,8 @@ if (!is_android) {
     "//brave/browser/themes/brave_dark_mode_utils.cc",
     "//brave/browser/themes/brave_theme_helper.cc",
     "//brave/browser/themes/brave_theme_helper.h",
+    "//brave/browser/themes/brave_theme_helper_utils.cc",
+    "//brave/browser/themes/brave_theme_helper_utils.h",
     "//brave/browser/themes/brave_theme_service.cc",
     "//brave/browser/themes/brave_theme_service.h",
   ]
