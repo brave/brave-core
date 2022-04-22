@@ -41,12 +41,12 @@ const char kObservingScriptletEntryPoint[] =
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = %s;
+          let text = '(function() {\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
             const textNode = document.createTextNode(text);
-            script.appendChild(textNode);;
+            script.appendChild(textNode);
             (document.head || document.documentElement).appendChild(script);
           } catch (ex) {
             /* Unused catch */
@@ -356,7 +356,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
   std::move(callback).Run();
 }
 
-void CosmeticFiltersJSHandler::ApplyRules() {
+void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (!resources_dict_ || web_frame->IsProvisional())
     return;
@@ -365,8 +365,9 @@ void CosmeticFiltersJSHandler::ApplyRules() {
   base::Value* injected_script = resources_dict_->FindPath("injected_script");
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
-    scriptlet_script =
-        base::StringPrintf(kScriptletInitScript, scriptlet_script.c_str());
+    scriptlet_script = base::StringPrintf(kScriptletInitScript,
+                                          de_amp_enabled ? "true" : "false",
+                                          scriptlet_script.c_str());
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(

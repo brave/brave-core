@@ -28,8 +28,10 @@ class CosmeticFiltersJsRenderFrameObserver
       public content::RenderFrameObserverTracker<
           CosmeticFiltersJsRenderFrameObserver> {
  public:
-  CosmeticFiltersJsRenderFrameObserver(content::RenderFrame* render_frame,
-                                       const int32_t isolated_world_id);
+  CosmeticFiltersJsRenderFrameObserver(
+      content::RenderFrame* render_frame,
+      const int32_t isolated_world_id,
+      base::RepeatingCallback<bool(void)> get_de_amp_enabled_closure_);
   ~CosmeticFiltersJsRenderFrameObserver() override;
 
   CosmeticFiltersJsRenderFrameObserver(
@@ -64,6 +66,7 @@ class CosmeticFiltersJsRenderFrameObserver
   std::unique_ptr<CosmeticFiltersJSHandler> native_javascript_handle_;
 
   GURL url_;
+  base::RepeatingCallback<bool(void)> get_de_amp_enabled_closure_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
 
