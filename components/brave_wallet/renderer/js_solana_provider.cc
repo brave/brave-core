@@ -37,10 +37,8 @@ static base::NoDestructor<std::string> g_provider_script("");
 
 }  // namespace
 
-JSSolanaProvider::JSSolanaProvider(bool use_native_wallet,
-                                   content::RenderFrame* render_frame)
-    : use_native_wallet_(use_native_wallet),
-      render_frame_(render_frame),
+JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
+    : render_frame_(render_frame),
       v8_value_converter_(content::V8ValueConverter::Create()) {
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(
@@ -83,47 +81,42 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 }
 
 // static
-std::unique_ptr<JSSolanaProvider> JSSolanaProvider::Install(
-    bool use_native_wallet,
-    bool allow_overwrite_window_solana,
-    bool is_main_world,
-    content::RenderFrame* render_frame,
-    v8::Local<v8::Context> context) {
-  std::unique_ptr<JSSolanaProvider> js_solana_provider(
-      new JSSolanaProvider(use_native_wallet, render_frame));
-  if (!js_solana_provider->Init(context, allow_overwrite_window_solana,
-                                is_main_world))
-    return nullptr;
-
-  return js_solana_provider;
-}
-
-bool JSSolanaProvider::Init(v8::Local<v8::Context> context,
-                            bool allow_overwrite_window_solana,
-                            bool is_main_world) {
+void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
+                               bool is_main_world,
+                               content::RenderFrame* render_frame,
+                               v8::Local<v8::Context> context) {
   v8::Isolate* isolate = context->GetIsolate();
-  v8::Local<v8::Object> global = context->Global();
-  v8::Local<v8::Value> solana_value;
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks_scope(
+      isolate, v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Context::Scope context_scope(context);
   if (is_main_world) {
+    v8::Local<v8::Object> global = context->Global();
+    v8::Local<v8::Value> solana_value;
     if (!global->Get(context, gin::StringToV8(isolate, "solana"))
              .ToLocal(&solana_value) ||
         !solana_value->IsObject()) {
-      gin::Handle<JSSolanaProvider> provider = gin::CreateHandle(isolate, this);
-      if (provider.IsEmpty())
-        return false;
+      gin::Handle<JSSolanaProvider> provider =
+          gin::CreateHandle(isolate, new JSSolanaProvider(render_frame));
+      CHECK(!provider.IsEmpty());
       global
           ->Set(context, gin::StringToSymbol(isolate, "solana"),
                 provider.ToV8())
           .Check();
     } else {
-      render_frame_->GetWebFrame()->AddMessageToConsole(
+      render_frame->GetWebFrame()->AddMessageToConsole(
           blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
                                    "Brave Wallet will not insert window.solana "
                                    "because it already exists!"));
     }
   }
-  InjectInitScript(allow_overwrite_window_solana, is_main_world);
-  return true;
+  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
+  if (!allow_overwrite_window_solana) {
+    SetProviderNonWritable(web_frame, "solana");
+  }
+  if (is_main_world) {
+    ExecuteScript(web_frame, *g_provider_script);
+  }
 }
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
@@ -168,19 +161,8 @@ void JSSolanaProvider::AccountChangedEvent(
   FireEvent(solana::kAccountChangedEvent, std::move(args));
 }
 
-void JSSolanaProvider::InjectInitScript(bool allow_overwrite_window_solana,
-                                        bool is_main_world) {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (!allow_overwrite_window_solana) {
-    SetProviderNonWritable(web_frame, "solana");
-  }
-  if (is_main_world) {
-    ExecuteScript(web_frame, *g_provider_script);
-  }
-}
-
 bool JSSolanaProvider::EnsureConnected() {
-  if (use_native_wallet_ && !solana_provider_.is_bound()) {
+  if (!solana_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
     solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
@@ -536,8 +518,7 @@ void JSSolanaProvider::OnConnect(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               result,
-               error == mojom::SolanaProviderError::kSuccess);
+               result, error == mojom::SolanaProviderError::kSuccess);
   if (error == mojom::SolanaProviderError::kSuccess) {
     v8::Local<v8::Value> v8_public_key;
     CHECK(
@@ -571,8 +552,7 @@ void JSSolanaProvider::OnSignAndSendTransaction(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               v8_result,
-               error == mojom::SolanaProviderError::kSuccess);
+               v8_result, error == mojom::SolanaProviderError::kSuccess);
 }
 
 void JSSolanaProvider::OnSignMessage(
@@ -619,8 +599,7 @@ void JSSolanaProvider::OnSignMessage(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               v8_result,
-               error == mojom::SolanaProviderError::kSuccess);
+               v8_result, error == mojom::SolanaProviderError::kSuccess);
 }
 
 void JSSolanaProvider::OnSignTransaction(
@@ -644,8 +623,7 @@ void JSSolanaProvider::OnSignTransaction(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               result,
-               error == mojom::SolanaProviderError::kSuccess);
+               result, error == mojom::SolanaProviderError::kSuccess);
 }
 
 void JSSolanaProvider::OnSignAllTransactions(
@@ -680,8 +658,7 @@ void JSSolanaProvider::OnSignAllTransactions(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               result,
-               error == mojom::SolanaProviderError::kSuccess);
+               result, error == mojom::SolanaProviderError::kSuccess);
 }
 
 void JSSolanaProvider::OnRequest(
@@ -717,8 +694,7 @@ void JSSolanaProvider::OnRequest(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               v8_result,
-               error == mojom::SolanaProviderError::kSuccess);
+               v8_result, error == mojom::SolanaProviderError::kSuccess);
 }
 
 void JSSolanaProvider::SendResponse(
