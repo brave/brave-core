@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index cbd9e864447c08a7755a290c2f49aa53b805b685..9223d613843e6bf2887c9293365f4df6c6f2e8ed 100644
+index 3512b57674bfd8ba84fd809cdcd2f31ebfc6101d..ce4ca6961e5845bf922ffc97f67813fa907884a2 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
 @@ -103,6 +103,7 @@ constexpr HistogramValue kHistogramValue[] = {
@@ -9,4 +9,4 @@ index cbd9e864447c08a7755a290c2f49aa53b805b685..9223d613843e6bf2887c9293365f4df6
 +    BRAVE_HISTOGRAM_VALUE_LIST
  };
  
- }  // namespace
+ void FilterRulesForType(ContentSettingsForOneType& settings,
