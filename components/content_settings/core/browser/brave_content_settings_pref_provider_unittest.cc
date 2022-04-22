@@ -298,7 +298,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   // Set pre-migrtion patterns different from defaults.
   // ------------------------------------------------------
   testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 1);
-  
+
   ContentSettingsPattern pattern = ContentSettingsPattern::FromURL(url);
   ContentSettingsPattern pattern2 = ContentSettingsPattern::FromURL(url2);
   // Cookies.

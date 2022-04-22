@@ -22,7 +22,7 @@ function MainPanel () {
   const handleToggleChange = async (isOn: boolean) => {
     await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(isOn)
     if (isOn) {
-      if (getSiteSettings) getSiteSettings();
+      if (getSiteSettings) getSiteSettings()
     }
   }
 

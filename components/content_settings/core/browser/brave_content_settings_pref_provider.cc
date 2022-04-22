@@ -430,9 +430,10 @@ bool BravePrefProvider::SetWebsiteSetting(
                rule.secondary_pattern == secondary_pattern &&
                rule.value != in_value;
       };
-  const auto cookie_is_found_in = [&rule_matcher](const std::vector<Rule>& rules) {
-    return rules.cend() != base::ranges::find_if(rules, rule_matcher);
-  };
+  const auto cookie_is_found_in =
+      [&rule_matcher](const std::vector<Rule>& rules) {
+        return rules.cend() != base::ranges::find_if(rules, rule_matcher);
+      };
 
   if (content_type == ContentSettingsType::COOKIES) {
     if (cookie_is_found_in(brave_shield_down_rules_[off_the_record_])) {

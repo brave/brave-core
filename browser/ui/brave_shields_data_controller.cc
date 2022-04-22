@@ -209,11 +209,12 @@ FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
 }
 
 CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
-    auto cookie_settings = CookieSettingsFactory::GetForProfile(
+  auto cookie_settings = CookieSettingsFactory::GetForProfile(
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
   const ControlType control_type = brave_shields::GetCookieControlType(
-      GetHostContentSettingsMap(web_contents()), cookie_settings.get(), GetCurrentSiteURL());
+      GetHostContentSettingsMap(web_contents()), cookie_settings.get(),
+      GetCurrentSiteURL());
 
   if (control_type == ControlType::ALLOW) {
     return CookieBlockMode::ALLOW;
@@ -307,8 +308,8 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
     control_type = ControlType::BLOCK;  // STANDARD
   }
 
-  brave_shields::SetCookieControlType(GetHostContentSettingsMap(web_contents()), prefs, control_type,
-                                      GetCurrentSiteURL(),
+  brave_shields::SetCookieControlType(GetHostContentSettingsMap(web_contents()),
+                                      prefs, control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
 
   ReloadWebContents();
