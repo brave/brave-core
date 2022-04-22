@@ -165,12 +165,35 @@ class ShieldsSetting {
 
 class ShieldsCookieSetting : public ShieldsSetting {
  public:
-  explicit ShieldsCookieSetting(BravePrefProvider* provider)
+  ShieldsCookieSetting(BravePrefProvider* provider, PrefService* prefs)
       : ShieldsSetting(
             provider,
             {{GURL(), ContentSettingsType::BRAVE_COOKIES},
              {GURL("https://firstParty/*"), ContentSettingsType::BRAVE_COOKIES},
-             {GURL(), ContentSettingsType::BRAVE_REFERRERS}}) {}
+             {GURL(), ContentSettingsType::BRAVE_REFERRERS}}),
+        prefs_(prefs) {}
+
+ private:
+  void CheckSettings(const GURL& url, ContentSetting setting) const override {
+    if (prefs_->GetInteger(kBraveShieldsSettingsVersion) < 3) {
+      return ShieldsSetting::CheckSettings(url, setting);
+    }
+    // We need this because if version below than 3 brave cookies patterns
+    // are reversed.
+    for (const auto& url_source : urls_) {
+      if (url_source.second == ContentSettingsType::BRAVE_COOKIES) {
+        EXPECT_EQ(setting,
+                  TestUtils::GetContentSetting(provider_, url_source.first, url,
+                                               url_source.second, false));
+      } else {
+        EXPECT_EQ(setting,
+                  TestUtils::GetContentSetting(provider_, url, url_source.first,
+                                               url_source.second, false));
+      }
+    }
+  }
+
+  PrefService* prefs_ = nullptr;
 };
 
 class ShieldsFingerprintingSetting : public ShieldsSetting {
@@ -253,7 +276,8 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
       testing_profile()->GetPrefs(), false /* incognito */,
       true /* store_last_modified */, false /* restore_session */);
 
-  ShieldsCookieSetting cookie_settings(&provider);
+  ShieldsCookieSetting cookie_settings(&provider,
+                                       testing_profile()->GetPrefs());
   ShieldsFingerprintingSetting fp_settings(&provider);
   ShieldsHTTPSESetting httpse_settings(&provider);
   ShieldsAdsSetting ads_settings(&provider);
@@ -273,6 +297,8 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
 
   // Set pre-migrtion patterns different from defaults.
   // ------------------------------------------------------
+  testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 1);
+  
   ContentSettingsPattern pattern = ContentSettingsPattern::FromURL(url);
   ContentSettingsPattern pattern2 = ContentSettingsPattern::FromURL(url2);
   // Cookies.
@@ -319,7 +345,6 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
 
   // Migrate settings.
   // ------------------------------------------------------
-  testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 1);
   provider.MigrateShieldsSettings(/*incognito*/ false);
 
   // Check post-migration settings.
@@ -387,12 +412,12 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
                              false /* restore_session */);
 
   // Should have migrated when constructed (with profile).
-  EXPECT_EQ(2, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(3, prefs->GetInteger(kBraveShieldsSettingsVersion));
 
   // Reset and check that migration runs.
   prefs->SetInteger(kBraveShieldsSettingsVersion, 1);
   provider.MigrateShieldsSettings(/*incognito*/ false);
-  EXPECT_EQ(2, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(3, prefs->GetInteger(kBraveShieldsSettingsVersion));
 
   // Test that migration doesn't run for another version.
   prefs->SetInteger(kBraveShieldsSettingsVersion, 5);

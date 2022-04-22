@@ -20,7 +20,9 @@
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -177,6 +179,8 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 
   // Now carry on with any other migration that we might need.
   MigrateShieldsSettingsV1ToV2();
+
+  MigrateShieldsSettingsV2ToV3();
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
@@ -302,6 +306,76 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
   prefs_->SetInteger(kBraveShieldsSettingsVersion, 2);
 }
 
+void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
+  // Check if migration is needed.
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 2)
+    return;
+
+  const ContentSettingsPattern& wildcard = ContentSettingsPattern::Wildcard();
+  const ContentSettingsPattern first_party(
+      ContentSettingsPattern::FromString("https://firstParty/*"));
+
+  auto rule_iterator =
+      PrefProvider::GetRuleIterator(ContentSettingsType::BRAVE_COOKIES,
+                                    /*off_the_record*/ false);
+
+  using OldRule = std::pair<ContentSettingsPattern, ContentSettingsPattern>;
+  std::vector<OldRule> old_rules;
+  std::vector<Rule> new_rules;
+
+  // Find rules that can be migrated and create replacement rules for them.
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto old_rule = rule_iterator->Next();
+    old_rules.emplace_back(old_rule.primary_pattern,
+                           old_rule.secondary_pattern);
+    if (old_rule.primary_pattern == wildcard &&
+        (old_rule.secondary_pattern == wildcard ||
+         old_rule.secondary_pattern == first_party)) {
+      // Remove default rules from BRAVE_COKIES because it's already mapped to
+      // the Chromium prefs.
+      continue;
+    }
+    if (old_rule.secondary_pattern == wildcard && !new_rules.empty() &&
+        new_rules.back().secondary_pattern == old_rule.primary_pattern &&
+        old_rule.value == new_rules.back().value) {
+      // Remove the "first-party" rule because it is a predecessor of a general
+      // rule that we are going to add.
+      new_rules.pop_back();
+    }
+
+    Rule new_rule;
+    new_rule.expiration = old_rule.expiration;
+    new_rule.session_model = old_rule.session_model;
+    new_rule.value = std::move(old_rule.value);
+    // Exchange primary and secondary patterns.
+    new_rule.secondary_pattern = old_rule.primary_pattern;
+    new_rule.primary_pattern = old_rule.secondary_pattern;
+    // Replace first party placeholder with actual pattern
+    if (new_rule.primary_pattern == first_party) {
+      new_rule
+          .primary_pattern = ContentSettingsPattern::FromString(base::StrCat(
+          {"*://[*.]",
+           net::registry_controlled_domains::GetDomainAndRegistry(
+               new_rule.secondary_pattern.GetHost(),
+               net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES),
+           "/*"}));
+    }
+    new_rules.push_back(std::move(new_rule));
+  }
+  rule_iterator.reset();
+
+  ClearAllContentSettingsRules(ContentSettingsType::BRAVE_COOKIES);
+  for (auto&& rule : new_rules) {
+    SetWebsiteSettingInternal(rule.primary_pattern, rule.secondary_pattern,
+                              ContentSettingsType::BRAVE_COOKIES,
+                              std::move(rule.value),
+                              {rule.expiration, rule.session_model});
+  }
+
+  // Mark migration as done.
+  prefs_->SetInteger(kBraveShieldsSettingsVersion, 3);
+}
+
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
     ContentSettingsType content_type) {
   using OldRule = std::pair<ContentSettingsPattern, ContentSettingsPattern>;
@@ -362,7 +436,8 @@ bool BravePrefProvider::SetWebsiteSetting(
 
   if (content_type == ContentSettingsType::COOKIES) {
     if (cookie_is_found_in(brave_shield_down_rules_[off_the_record_])) {
-      // Don't do anything with the generated Shiels-down rules.
+      // Don't do anything with the generated Shiels-down rules. Unremovable
+      // rule.
       return true;
     }
     if (cookie_is_found_in(brave_cookie_rules_[off_the_record_])) {
@@ -388,6 +463,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
   if (content_settings::IsShieldsContentSettingsType(content_type) &&
       primary_pattern == ContentSettingsPattern::Wildcard() &&
       secondary_pattern == ContentSettingsPattern::Wildcard()) {
+    DCHECK_NE(ContentSettingsType::BRAVE_COOKIES, content_type);
     base::Time modified_time =
         store_last_modified_ ? base::Time::Now() : base::Time();
 
