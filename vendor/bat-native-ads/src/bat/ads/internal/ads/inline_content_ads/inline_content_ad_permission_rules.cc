@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 
+#include "bat/ads/internal/frequency_capping/permission_rules/catalog_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/inline_content_ads_per_day_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/inline_content_ads_per_hour_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
@@ -27,6 +28,11 @@ bool PermissionRules::HasPermission() const {
 
   UserActivityPermissionRule user_activity_permission_rule;
   if (!ShouldAllow(&user_activity_permission_rule)) {
+    return false;
+  }
+
+  CatalogPermissionRule catalog_permission_rule;
+  if (!ShouldAllow(&catalog_permission_rule)) {
     return false;
   }
 
