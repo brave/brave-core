@@ -17,7 +17,8 @@ namespace brave_content {
 // A DataSource for chrome://brave-resources/ URLs.
 class BraveSharedResourcesDataSource : public content::URLDataSource {
  public:
-  BraveSharedResourcesDataSource(bool is_untrusted, const std::string& app_locale);
+  BraveSharedResourcesDataSource(bool is_untrusted,
+                                 const std::string& app_locale);
   BraveSharedResourcesDataSource(const BraveSharedResourcesDataSource&) =
       delete;
   BraveSharedResourcesDataSource& operator=(
@@ -39,8 +40,8 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
  private:
   std::string ResolveLocaleDependendResource(const std::string& path);
 
-   bool is_untrusted_ = false;
-   std::string app_language_code_;
+  bool is_untrusted_ = false;
+  std::string app_language_code_;
 };
 
 }  // namespace brave_content
