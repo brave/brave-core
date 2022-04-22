@@ -43,8 +43,6 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
 
-  std::unique_ptr<JSSolanaProvider> js_solana_provider_ = nullptr;
-
   GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;
 };
