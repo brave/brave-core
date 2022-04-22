@@ -55,11 +55,11 @@ namespace {
 void AddBraveSharedResourcesDataSourceToProfile(Profile* profile) {
   const auto& app_locale = g_browser_process->GetApplicationLocale();
   content::URLDataSource::Add(
-      profile,
-      std::make_unique<brave_content::BraveSharedResourcesDataSource>(false, app_locale));
+      profile, std::make_unique<brave_content::BraveSharedResourcesDataSource>(
+                   false, app_locale));
   content::URLDataSource::Add(
-      profile,
-      std::make_unique<brave_content::BraveSharedResourcesDataSource>(true, app_locale));
+      profile, std::make_unique<brave_content::BraveSharedResourcesDataSource>(
+                   true, app_locale));
 }
 
 }  // namespace
