@@ -191,8 +191,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     @Override
     public void connectAccount(AccountInfo account) {
-        getBraveWalletService().addEthereumPermission(
-                Utils.getCurrentMojomOrigin(), account.address, success -> {
+        getBraveWalletService().addPermission(
+                CoinType.ETH, Utils.getCurrentMojomOrigin(), account.address, success -> {
                     if (!success) {
                         return;
                     }
@@ -207,8 +207,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     @Override
     public void disconnectAccount(AccountInfo account) {
-        getBraveWalletService().resetEthereumPermission(
-                Utils.getCurrentMojomOrigin(), account.address, success -> {
+        getBraveWalletService().resetPermission(
+                CoinType.ETH, Utils.getCurrentMojomOrigin(), account.address, success -> {
                     if (!success) {
                         return;
                     }
