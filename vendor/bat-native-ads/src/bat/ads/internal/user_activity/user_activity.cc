@@ -10,6 +10,7 @@
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 #include "bat/ads/internal/user_activity/user_activity_features.h"
@@ -49,9 +50,13 @@ void LogEvent(const UserActivityEventType event_type) {
 UserActivity::UserActivity() {
   DCHECK_EQ(g_user_activity, nullptr);
   g_user_activity = this;
+
+  BrowserManager::Get()->AddObserver(this);
 }
 
 UserActivity::~UserActivity() {
+  BrowserManager::Get()->RemoveObserver(this);
+
   DCHECK(g_user_activity);
   g_user_activity = nullptr;
 }
@@ -133,6 +138,22 @@ UserActivityEventList UserActivity::GetHistoryForTimeWindow(
   filtered_history.erase(iter, filtered_history.end());
 
   return filtered_history;
+}
+
+void UserActivity::OnBrowserDidBecomeActive() {
+  RecordEvent(UserActivityEventType::kBrowserDidBecomeActive);
+}
+
+void UserActivity::OnBrowserDidResignActive() {
+  RecordEvent(UserActivityEventType::kBrowserDidResignActive);
+}
+
+void UserActivity::OnBrowserDidEnterForeground() {
+  RecordEvent(UserActivityEventType::kBrowserDidEnterForeground);
+}
+
+void UserActivity::OnBrowserDidEnterBackground() {
+  RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
 }  // namespace ads

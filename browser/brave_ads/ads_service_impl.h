@@ -475,8 +475,8 @@ class AdsServiceImpl : public AdsService,
   bool HasPrefPath(const std::string& path) const override;
 
   // BackgroundHelper::Observer implementation
-  void OnBackground() override;
-  void OnForeground() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 

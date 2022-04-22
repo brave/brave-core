@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+#include "bat/ads/internal/browser_manager/browser_manager_observer.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
@@ -20,10 +21,10 @@ namespace ads {
 
 const int kMaximumHistoryEntries = 3600;
 
-class UserActivity final {
+class UserActivity final : public BrowserManagerObserver {
  public:
   UserActivity();
-  ~UserActivity();
+  ~UserActivity() override;
 
   UserActivity(const UserActivity&) = delete;
   UserActivity& operator=(const UserActivity&) = delete;
@@ -40,6 +41,12 @@ class UserActivity final {
       const base::TimeDelta time_window) const;
 
  private:
+  // BrowserManagerObserver:
+  void OnBrowserDidBecomeActive() override;
+  void OnBrowserDidResignActive() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
+
   UserActivityEventList history_;
 };
 

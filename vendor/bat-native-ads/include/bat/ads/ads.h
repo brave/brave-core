@@ -99,11 +99,11 @@ class ADS_EXPORT Ads {
   // |prefs::kIdleTimeThreshold|. This should not be called on mobile devices.
   virtual void OnIdle() = 0;
 
-  // Called when the browser becomes active.
-  virtual void OnForeground() = 0;
+  // Called when the browser did enter the foreground.
+  virtual void OnBrowserDidEnterForeground() = 0;
 
-  // Called when the browser enters the background.
-  virtual void OnBackground() = 0;
+  // Called when the browser did enter the background.
+  virtual void OnBrowserDidEnterBackground() = 0;
 
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.

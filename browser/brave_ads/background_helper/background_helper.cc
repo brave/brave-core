@@ -27,15 +27,15 @@ void BackgroundHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BackgroundHelper::TriggerOnBackground() {
+void BackgroundHelper::TriggerOnForeground() {
   for (auto& observer : observers_) {
-    observer.OnBackground();
+    observer.OnBrowserDidEnterForeground();
   }
 }
 
-void BackgroundHelper::TriggerOnForeground() {
+void BackgroundHelper::TriggerOnBackground() {
   for (auto& observer : observers_) {
-    observer.OnForeground();
+    observer.OnBrowserDidEnterBackground();
   }
 }
 

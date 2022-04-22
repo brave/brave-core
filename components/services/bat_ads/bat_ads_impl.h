@@ -61,8 +61,8 @@ class BatAdsImpl :
   void OnUnIdle(const int idle_time, const bool was_locked) override;
   void OnIdle() override;
 
-  void OnForeground() override;
-  void OnBackground() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   void OnMediaPlaying(
       const int32_t tab_id) override;

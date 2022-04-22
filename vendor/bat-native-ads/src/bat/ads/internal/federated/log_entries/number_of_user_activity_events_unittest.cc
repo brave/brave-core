@@ -61,7 +61,7 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetValue) {
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowIsInactive);
+      UserActivityEventType::kBrowserDidResignActive);
 
   AdvanceClock(base::Minutes(31));
 

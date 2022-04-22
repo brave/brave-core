@@ -31,7 +31,7 @@ TEST_F(BatAdsUserActivityTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
+TEST_F(BatAdsUserActivityTest, RecordInitializedAdsEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kInitializedAds;
@@ -52,10 +52,10 @@ TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
   EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterForegroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
-      UserActivityEventType::kBrowserDidBecomeActive;
+      UserActivityEventType::kBrowserDidEnterForeground;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -472,6 +472,48 @@ TEST_F(BatAdsUserActivityTest, RecordUsedAddressBarEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kUsedAddressBar;
+
+  // Act
+  UserActivity::Get()->RecordEvent(event_type);
+
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+
+  // Assert
+  UserActivityEventList expected_events;
+  UserActivityEventInfo event;
+  event.type = event_type;
+  event.created_at = Now();
+  expected_events.push_back(event);
+
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+}
+
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
+  // Arrange
+  const UserActivityEventType event_type =
+      UserActivityEventType::kBrowserDidBecomeActive;
+
+  // Act
+  UserActivity::Get()->RecordEvent(event_type);
+
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+
+  // Assert
+  UserActivityEventList expected_events;
+  UserActivityEventInfo event;
+  event.type = event_type;
+  event.created_at = Now();
+  expected_events.push_back(event);
+
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+}
+
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidResignActiveEvent) {
+  // Arrange
+  const UserActivityEventType event_type =
+      UserActivityEventType::kBrowserDidResignActive;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);

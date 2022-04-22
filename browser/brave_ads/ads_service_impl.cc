@@ -2364,20 +2364,20 @@ bool AdsServiceImpl::HasPrefPath(const std::string& path) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdsServiceImpl::OnBackground() {
+void AdsServiceImpl::OnBrowserDidEnterForeground() {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnBackground();
+  bat_ads_->OnBrowserDidEnterForeground();
 }
 
-void AdsServiceImpl::OnForeground() {
+void AdsServiceImpl::OnBrowserDidEnterBackground() {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnForeground();
+  bat_ads_->OnBrowserDidEnterBackground();
 }
 
 }  // namespace brave_ads

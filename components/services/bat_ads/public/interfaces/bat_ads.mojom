@@ -85,8 +85,8 @@ interface BatAds {
   OnUserGesture(int32 page_transition_type);
   OnUnIdle(int32 idle_time, bool was_locked);
   OnIdle();
-  OnForeground();
-  OnBackground();
+  OnBrowserDidEnterForeground();
+  OnBrowserDidEnterBackground();
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_browser_active, bool is_incognito);
