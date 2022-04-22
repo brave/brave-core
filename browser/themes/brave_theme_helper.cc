@@ -7,6 +7,7 @@
 
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/themes/brave_theme_helper_utils.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -15,7 +16,6 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
-#include "ui/native_theme/native_theme.h"
 
 #if BUILDFLAG(IS_LINUX)
 #include "chrome/browser/themes/custom_theme_supplier.h"
@@ -27,55 +27,6 @@ namespace {
 // Omnibox text colors
 const SkColor kDarkOmniboxText = SkColorSetRGB(0xff, 0xff, 0xff);
 const SkColor kLightOmniboxText = SkColorSetRGB(0x42, 0x42, 0x42);
-
-// Location bar colors
-const SkColor kPrivateLocationBarBgBase = SkColorSetRGB(0x0B, 0x07, 0x24);
-const SkColor kDarkLocationBarBgBase = SkColorSetRGB(0x18, 0x1A, 0x21);
-const SkColor kDarkLocationBarHoverBg = SkColorSetRGB(0x23, 0x25, 0x2F);
-
-SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
-  if (priv) {
-    return hover ? color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                         {-1, -1, 0.54})
-                 : kPrivateLocationBarBgBase;
-  }
-
-  if (dark) {
-    return hover ? kDarkLocationBarHoverBg : kDarkLocationBarBgBase;
-  }
-
-  return hover ? color_utils::AlphaBlend(SK_ColorWHITE,
-                                         SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
-               : SK_ColorWHITE;
-}
-
-// Omnibox result bg colors
-SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
-  // For high contrast, selected rows use inverted colors to stand out more.
-  ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
-  bool high_contrast =
-      native_theme && native_theme->UserHasContrastPreference();
-  OmniboxPartState state = OmniboxPartState::NORMAL;
-  if (id == ThemeProperties::COLOR_OMNIBOX_RESULTS_BG_HOVERED) {
-    state = OmniboxPartState::HOVERED;
-  } else if (id == ThemeProperties::COLOR_OMNIBOX_RESULTS_BG_SELECTED) {
-    state = OmniboxPartState::SELECTED;
-  }
-
-  SkColor color;
-  if (priv) {
-    color = high_contrast ? color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                                  {-1, -1, 0.45})
-                          : kPrivateLocationBarBgBase;
-  } else if (dark) {
-    color = high_contrast ? gfx::kGoogleGrey900 : kDarkLocationBarBgBase;
-  } else {
-    color = SK_ColorWHITE;
-  }
-  return color_utils::BlendTowardMaxContrast(
-      color,
-      base::ClampRound(GetOmniboxStateOpacity(state) * 0xff));
-}
 
 #if BUILDFLAG(IS_LINUX)
 bool IsUsingSystemTheme(const CustomThemeSupplier* theme_supplier) {
@@ -169,6 +120,18 @@ SkColor BraveThemeHelper::GetDefaultColor(
   if (braveColor) {
     return braveColor.value();
   }
+
+  // Handles omnibox colors before upstream handles.
+  // We shares most of dark mode colors with upstream's incognito color.
+  // We set |incognito| to true below for dark mode before fetching upstream's
+  // default color because we share upstream's incognito colors for our dark
+  // mode. So, we should handle here for using our omnibox colors before setting
+  // |incognito|.
+  const absl::optional<SkColor> omnibox_color =
+      GetOmniboxColor(id, incognito, theme_supplier);
+  if (omnibox_color.has_value())
+    return omnibox_color.value();
+
   // Make sure we fallback to Chrome's dark theme (incognito) for our dark theme
   if (type == dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK) {
     incognito = true;
