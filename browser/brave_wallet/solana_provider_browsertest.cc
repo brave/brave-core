@@ -435,8 +435,10 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
 class SolanaProviderTest : public InProcessBrowserTest {
  public:
   SolanaProviderTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_wallet::features::kBraveWalletSolanaFeature);
+    feature_list_.InitWithFeatures(
+        {brave_wallet::features::kBraveWalletSolanaFeature,
+         brave_wallet::features::kBraveWalletSolanaProviderFeature},
+        {});
   }
 
   void SetUpOnMainThread() override {
