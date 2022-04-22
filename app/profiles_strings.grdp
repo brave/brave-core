@@ -464,7 +464,7 @@
       </message>
     </if>
     <if expr="chromeos_ash">
-      <message name="IDS_LAUNCH_APP_BUTTON" desc="Text shown on the button that launches kiosk app from Chrome OS login UI">
+      <message name="IDS_LAUNCH_APP_BUTTON" desc="Text shown on the button that launches kiosk app from ChromeOS login UI">
         Launch app
       </message>
       <message name="IDS_PIN_KEYBOARD_HINT_TEXT_PIN" desc="Text to display in the pin field for user pod when no pin has been entered.">
@@ -529,7 +529,7 @@
       Create
     </message>
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_LINK_DATA_CHECKBOX" desc="Label of the checkbox on the enterprise profile welcome screen that allows a user to link existing data to the new profile. The label informs the user that a profile will be created.">
-      Add existing browsing data (bookmarks, passwords, history) to profile
+      Keep local browsing data (bookmarks, passwords, history, etc.)
     </message>
 
     <!-- Profile Picker -->
@@ -693,6 +693,9 @@
       </message>
       <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_TITLE" desc="Title of the landing screen in first run experience for the primary profile. The screen promotes Brave sync.">
         Welcome to Brave, <ph name="ACCOUNT_FIRST_NAME">$1<ex>Jane</ex></ph>
+      </message>
+      <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_NO_NAME_TITLE" desc="Title of the screen shown when the user runs Brave for the first time. A simple, generic welcome message.">
+        Welcome to Brave
       </message>
       <message name="IDS_PRIMARY_PROFILE_FIRST_RUN_SUBTITLE" desc="Subtitle of the landing screen in first run experience for the primary profile. The screen promotes Brave sync.">
         Access your Brave browser stuff from <ph name="ACCOUNT_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph>

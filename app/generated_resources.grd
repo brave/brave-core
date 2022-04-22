@@ -2311,13 +2311,13 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="not is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit Private mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit guest mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit
         </message>
       </if>
@@ -2372,6 +2372,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_OPEN" desc="Label for the button prompting to bypass Deep Scanning">
         Open
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_NOW" desc="Label for the button prompting to open a download while deep scanning is in progress">
+        Open Now
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_DISK_FULL" desc="Status text for a download item that was interrupted because there is not enough room on the disk to download this file.">
         Out of storage space
@@ -2468,6 +2471,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DEEP_SCANNING_PROMPT" desc="Prompt for Deep Scanning of a download">
         Scan before opening
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING" desc="Status text for a download item that is being scanned.">
+        Scanning...
       </message>
 
       <!-- Desktop omnibox PWA install icon -->
@@ -3899,8 +3905,8 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </if>
         <if expr="not reven">
-          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
-            Chrome OS System Image Writer
+          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing ChromeOS system images.">
+            ChromeOS System Image Writer
           </message>
         </if>
       </if>
@@ -4463,13 +4469,13 @@ are declared in tools/grit/grit_rule.gni.
         </if>
         <if expr="not reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-            Run Chrome OS diagnostic tests.
+            Run ChromeOS diagnostic tests.
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-            Read Chrome OS device information and device data.
+            Read ChromeOS device information and device data.
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-            Read Chrome OS device and component serial numbers.
+            Read ChromeOS device and component serial numbers.
           </message>
         </if>
       </if>
@@ -4528,8 +4534,8 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="not reven">
-        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
-          App with 'kiosk_only' manifest attribute must be installed in Chrome OS kiosk mode
+        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in ChromeOS kiosk mode.">
+          App with 'kiosk_only' manifest attribute must be installed in ChromeOS kiosk mode
         </message>
       </if>
       <message name="IDS_EXTENSION_OVERLAPPING_WEB_EXTENT" desc="Error message when a user tries to install an app with a web extent that overlaps another installed app.">
@@ -4574,7 +4580,7 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </if>
         <if expr="chromeos_ash">
-          <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page on Chrome OS">
+          <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page on ChromeOS">
             Manage your extensions by clicking Extensions in the "More tools" menu.
           </message>
         </if>
@@ -5421,6 +5427,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PASSWORD_BUBBLES_FOOTER_SAVING_ON_DEVICE" desc="The footer text of the bubbles that offers users to save, update or manage stored passwords only locally in Brave.">
         Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> on this device
+      </message>
+      <message name="IDS_PASSWORD_MANAGEMENT_BUBBLE_FOOTER_ACCOUNT_STORE_USERS" desc="The footer text of the managment bubble the lists saved password for this website. This is used only for account store users.">
+        Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>
       </message>
       <message name="IDS_PASSWORD_MANAGER_GENERATED_PASSWORD_SAVED_MESSAGE_DESCRIPTION" desc="The description in the Brave Password Manager's message that appears after saving a password that was autogenerated for the user.">
         You can view and manage saved passwords in Brave Password Manager
@@ -6724,6 +6733,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_CHIP_LABEL" desc="The label of a button to open the current webpage in an installed app.">
           Open in app
         </message>
+        <message name="IDS_INTENT_CHIP_IPH" desc="The text for the In-Product Help bubble for the Intent Chip.">
+          Open websites in apps installed on your device
+        </message>
 
         <if expr="chromeos_ash or chromeos_lacros">
           <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
@@ -7257,11 +7269,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_ALL_PASSWORDS_LINK" desc="The text of the link in the password sheet that opens the password management section.">
           Manage passwords
         </message>
-        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved passwords from any origin if the user is about to fill a password field.">
-          Use other password
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_USERNAME" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved usernames from any origin if the user is about to fill a username field.">
-          Use other username
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_SELECT_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved credentials from any origin if the user is about to fill a password or username field. Allows user to pick one of the saved passwords to be filled in.">
+          Select password
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
@@ -7277,6 +7286,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in." formatter_data="android_java">
           Passwords are saved in your Brave sync chain (<ph name="ACCOUNT">%1$s<ex>user@gmail.com</ex></ph>) so you can use them on any device
+        </message>
+        <message name="IDS_PASSWORD_MESSAGE_NEVER_SAVE_MENU_ITEM" desc="Mobile: Label for 'Save Password' prompt cogwheel menu button via which users can tell the password manager to never offer to save passwords for the current site[CHAR_LIMIT=32]">
+          Never for this site
         </message>
       </if>
 
@@ -7399,7 +7411,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           This information helps us better understand your Assistant issue. It's stored for up to 90 days and access is restricted to appropriate engineering and feedback teams.
         </message>
         <message name="IDS_FEEDBACK_BLUETOOTH_LOGS_MESSAGE" desc="Message shown after user clicks on the bluetooth logs hyperlink">
-          To better diagnose Bluetooth issues, Bravers can include additional Bluetooth logs with their feedback reports. When this option is checked, your report will include btsnoop and HCI logs from your current session, sanitized to remove as much PII as possible. Access to these logs will be restricted to managers of the Chrome OS product group in Listnr. Logs will be purged after 90 days.
+          To better diagnose Bluetooth issues, Bravers can include additional Bluetooth logs with their feedback reports. When this option is checked, your report will include btsnoop and HCI logs from your current session, sanitized to remove as much PII as possible. Access to these logs will be restricted to managers of the ChromeOS product group in Listnr. Logs will be purged after 90 days.
         </message>
         <message name="IDS_FEEDBACK_OFFLINE_DIALOG_TITLE" desc="The title of the message box displayed when the user attempts to send a report while offline">
           Feedback Report
@@ -8495,6 +8507,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TITLE" desc="Title for the QR Generator dialog.">
         Scan QR Code
       </message>
+      <message name="IDS_SHARING_HUB_GENERATE_QR_CODE_LABEL" desc="The label for the Create QR Code option in the sharing hub menu.">
+        Create QR Code
+      </message>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_URL_TEXTFIELD_ACCESSIBLE_NAME" desc="Text to be spoken for the QR Code Generator's URL Textfield.">
         URL
       </message>
@@ -8535,6 +8550,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SHARING_HUB_SHARE_LABEL_ACCESSIBILITY" desc="The acccessibility label spoken by screen readers when the label for a Third Party Sharing Target gets focus but not visually rendered.">
         Share link to <ph name="SHARE_TARGET">$1<ex>Facebook</ex></ph>
+      </message>
+      <message name="IDS_SHARING_HUB_FOLLOW_LABEL" desc="The text label for the follow button in the Sharing Hub dialog and app menu.">
+        Follow
+      </message>
+      <message name="IDS_SHARING_HUB_FOLLOWING_LABEL" desc="The text label for the following button in the Sharing Hub dialog and app menu.">
+        Following
       </message>
 
       <!-- Desktop Screenshots feature within the share hub; desktop-only. -->
@@ -9584,10 +9605,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
           OK...
         </message>
         <if expr="chromeos_ash">
-          <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view/notification when the user needs to sign out and sign in again to Chrome OS.">
+          <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view/notification when the user needs to sign out and sign in again to ChromeOS.">
             Sign out then sign in again...
           </message>
-          <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign out and sign in again to Chrome OS.">
+          <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign out and sign in again to ChromeOS.">
             Sign out then sign in again...
           </message>
         </if>
@@ -9638,7 +9659,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR" desc="Message shown on the personal options page when there is an unrecoverable error.">
           Sync isn't working. Try signing in again.
         </message>
-        <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR_NEEDS_SIGNOUT" desc="Message shown on the personal options page when there is an unrecoverable error in Chrome OS as well as for managed accounts.">
+        <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR_NEEDS_SIGNOUT" desc="Message shown on the personal options page when there is an unrecoverable error in ChromeOS as well as for managed accounts.">
           Sync isn't working. Try signing out and back in again.
         </message>
         <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD" desc="Message indicating user must re-enter their sync password.">
@@ -9660,7 +9681,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
         </if>
         <if expr="chromeos_ash">
-          <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign out and sign in again to use sync on Chrome OS.">
+          <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign out and sign in again to use sync on ChromeOS.">
             Sign out then sign in again to start sync
           </message>
         </if>
@@ -9670,7 +9691,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
         </if>
         <if expr="chromeos_ash">
-          <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign out and sign in again to use sync on Chrome OS.">
+          <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign out and sign in again to use sync on ChromeOS.">
             Sign out
           </message>
           <message name="IDS_SYNC_TOKEN_HANDLE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when the user's token handle is invalid.">
@@ -9857,12 +9878,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Send message
       </message>
       <if expr="not chromeos_ash">
-        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="Not on Chrome OS.">
+        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="Not on ChromeOS.">
           Details are hidden while you share your screen
         </message>
       </if>
       <if expr="chromeos_ash">
-        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="On Chrome OS only.">
+        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="On ChromeOS only.">
           Details are hidden while you share your screen
         </message>
       </if>
@@ -10858,13 +10879,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_APP_LIST_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app list item">
           Pinned by administrator
         </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
           Sort by
         </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
           Name
         </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_COLOR" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their icon colors in the app list. This option is under the 'Reorder by' submenu">
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_COLOR" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items by their icon colors in the app list. This option is under the 'Reorder by' submenu">
           Color
         </message>
         <message name="IDS_APP_LIST_UNINSTALL_ITEM" desc="Title text for the 'uninstall' context menu item of an app list item.">
@@ -12554,7 +12575,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- FedCM Account Selection strings -->
     <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to promp user for sign in consent." translateable="false">
-        Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.com</ex></ph>
+      Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
+      Continue as <ph name="NAME">$1<ex>Albus (or Albus Dumbledore)</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service." translateable="false">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK">$2</ph>privacy policy<ph name="END_LINK">$3</ph>.
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">$2</ph>privacy policy<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>terms of service<ph name="END_LINK2">$5</ph>.
     </message>
 
     <!-- Input overlay strings -->

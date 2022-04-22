@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Settings-specific strings shared by Browser and Chrome OS settings -->
+<!-- Settings-specific strings shared by Browser and ChromeOS settings -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- All subpages -->
@@ -377,7 +377,7 @@
 
   <if expr="chromeos_ash or chromeos_lacros">
     <message name="IDS_BROWSER_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the browser sync feature.">
-      Your data will be synced across all Brave browsers where you have turned on sync for this account. For Chrome OS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Chrome OS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      Your data will be synced across all Brave browsers where you have turned on sync for this account. For ChromeOS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>ChromeOS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
     </message>
   </if>
 
