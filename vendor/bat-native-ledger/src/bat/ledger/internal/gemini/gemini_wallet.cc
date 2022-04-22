@@ -44,7 +44,8 @@ void GeminiWallet::Generate(ledger::ResultCallback callback) {
   wallet = GenerateLinks(std::move(wallet));
   ledger_->gemini()->SetWallet(wallet->Clone());
 
-  if (wallet->status == type::WalletStatus::VERIFIED) {
+  if (wallet->status == type::WalletStatus::VERIFIED ||
+      wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED) {
     ledger_->promotion()->TransferTokens(
         [callback](const type::Result result, const std::string& drain_id) {
           if (result != type::Result::LEDGER_OK) {

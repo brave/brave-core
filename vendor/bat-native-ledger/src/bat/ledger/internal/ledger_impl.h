@@ -56,7 +56,7 @@ class LedgerImpl : public Ledger {
 
   state::State* state() const;
 
-  promotion::Promotion* promotion() const;
+  virtual promotion::Promotion* promotion() const;
 
   publisher::Publisher* publisher() const;
 

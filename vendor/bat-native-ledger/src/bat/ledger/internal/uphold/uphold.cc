@@ -115,8 +115,7 @@ void Uphold::FetchBalance(FetchBalanceCallback callback) {
     return callback(type::Result::LEDGER_OK, 0.0);
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(!uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   auto url_callback =
       std::bind(&Uphold::OnFetchBalance, this, _1, _2, callback);
@@ -139,8 +138,7 @@ void Uphold::OnFetchBalance(const type::Result result,
     return callback(type::Result::LEDGER_ERROR, 0.0);
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(!uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");

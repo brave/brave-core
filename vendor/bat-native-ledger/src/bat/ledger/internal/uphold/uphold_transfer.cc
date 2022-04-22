@@ -40,8 +40,7 @@ void UpholdTransfer::Start(const Transaction& transaction,
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(!uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   auto url_callback =
       std::bind(&UpholdTransfer::OnCreateTransaction, this, _1, _2, callback);
@@ -64,8 +63,7 @@ void UpholdTransfer::OnCreateTransaction(const type::Result result,
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(!uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet(
@@ -116,8 +114,7 @@ void UpholdTransfer::OnCommitTransaction(const type::Result result,
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  DCHECK(!uphold_wallet->token.empty());
-  DCHECK(!uphold_wallet->address.empty());
+  CheckWalletState(uphold_wallet.get());
 
   if (result == type::Result::EXPIRED_TOKEN) {
     ledger_->uphold()->DisconnectWallet(

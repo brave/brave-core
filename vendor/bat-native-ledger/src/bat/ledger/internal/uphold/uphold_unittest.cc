@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
+#include "bat/ledger/internal/promotion/promotion_mock.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
@@ -45,6 +46,7 @@ class UpholdTest : public Test {
   std::unique_ptr<MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<database::MockDatabase> mock_database_;
+  std::unique_ptr<promotion::MockPromotion> mock_promotion_;
   std::unique_ptr<Uphold> uphold_;
 
   UpholdTest()
@@ -53,6 +55,8 @@ class UpholdTest : public Test {
             std::make_unique<MockLedgerImpl>(mock_ledger_client_.get())},
         mock_database_{
             std::make_unique<database::MockDatabase>(mock_ledger_impl_.get())},
+        mock_promotion_{std::make_unique<promotion::MockPromotion>(
+            mock_ledger_impl_.get())},
         uphold_{std::make_unique<Uphold>(mock_ledger_impl_.get())} {}
 };
 
@@ -387,10 +391,11 @@ TEST_P(Authorize, Paths) {
 
 // clang-format off
 using GenerateParamType = std::tuple<
-    std::string,                        // test name suffix
-    std::string,                        // input Uphold wallet
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    std::string,                         // test name suffix
+    std::string,                         // input Uphold wallet
+    type::Result,                        // expected result
+    absl::optional<type::WalletStatus>,  // expected status
+    bool                                 // expected to call TransferTokens
 >;
 
 struct Generate : UpholdTest,
@@ -404,19 +409,22 @@ INSTANTIATE_TEST_SUITE_P(
       "00_happy_path_no_wallet",
       {},
       type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      type::WalletStatus::NOT_CONNECTED,
+      false
     },
     GenerateParamType{  // Happy path (NOT_CONNECTED).
       "01_happy_path_NOT_CONNECTED",
       R"({ "status": 0 })",
       type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      type::WalletStatus::NOT_CONNECTED,
+      false
     },
     GenerateParamType{  // Happy path (DISCONNECTED_VERIFIED).
       "02_happy_path_DISCONNECTED_VERIFIED",
       R"({ "status": 4 })",
       type::Result::LEDGER_OK,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      type::WalletStatus::DISCONNECTED_VERIFIED,
+      true
     }),
   NameSuffixGenerator<GenerateParamType>
 );
@@ -427,6 +435,7 @@ TEST_P(Generate, Paths) {
   std::string uphold_wallet = std::get<1>(params);
   const auto expected_result = std::get<2>(params);
   const auto expected_status = std::get<3>(params);
+  const bool expected_to_call_transfer_tokens = std::get<4>(params);
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -440,6 +449,12 @@ TEST_P(Generate, Paths) {
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
+
+  ON_CALL(*mock_ledger_impl_, promotion())
+      .WillByDefault(Return(mock_promotion_.get()));
+
+  EXPECT_CALL(*mock_promotion_, TransferTokens(_))
+      .Times(expected_to_call_transfer_tokens ? 1 : 0);
 
   uphold_->GenerateWallet([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
@@ -695,6 +710,9 @@ TEST_P(GetUser, Paths) {
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
+
+  ON_CALL(*mock_ledger_impl_, promotion())
+      .WillByDefault(Return(mock_promotion_.get()));
 
   uphold_->GenerateWallet(
       [&](type::Result result) { ASSERT_EQ(result, expected_result); });
@@ -1403,6 +1421,9 @@ TEST_P(LinkWallet, Paths) {
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
+
+  ON_CALL(*mock_ledger_impl_, promotion())
+      .WillByDefault(Return(mock_promotion_.get()));
 
   ON_CALL(*mock_ledger_client_, GetBooleanState(state::kFetchOldBalance))
       .WillByDefault(Return(fetch_old_balance));
