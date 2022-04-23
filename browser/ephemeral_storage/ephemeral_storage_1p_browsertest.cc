@@ -417,6 +417,73 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
   ExpectValuesFromFramesAreEmpty(FROM_HERE, GetValuesFromFrames(site_a_tab2));
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
+                       PRE_DontEnable1PESWithGlobalSessionOnlyToggle) {
+  content_settings()->SetDefaultContentSetting(
+      ContentSettingsType::COOKIES,
+      ContentSetting::CONTENT_SETTING_SESSION_ONLY);
+
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  SetValuesInFrames(site_a_tab, "a.com", "from=a.com");
+  {
+    ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+    EXPECT_EQ("a.com", site_a_tab_values.main_frame.local_storage);
+    EXPECT_EQ("a.com", site_a_tab_values.iframe_1.local_storage);
+    EXPECT_EQ("a.com", site_a_tab_values.iframe_2.local_storage);
+
+    EXPECT_EQ("a.com", site_a_tab_values.main_frame.session_storage);
+    EXPECT_EQ("a.com", site_a_tab_values.iframe_1.session_storage);
+    EXPECT_EQ("a.com", site_a_tab_values.iframe_2.session_storage);
+
+    EXPECT_EQ("from=a.com", site_a_tab_values.main_frame.cookies);
+    EXPECT_EQ("from=a.com", site_a_tab_values.iframe_1.cookies);
+    EXPECT_EQ("from=a.com", site_a_tab_values.iframe_2.cookies);
+  }
+
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+  ExpectValuesFromFramesAreEmpty(FROM_HERE, GetValuesFromFrames(site_b_tab));
+
+  CloseWebContents(site_a_tab);
+
+  // Load a.com tab again, expect non-ephemeral values are kept.
+  site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  {
+    ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+    EXPECT_EQ("a.com", site_a_tab_values.main_frame.local_storage);
+    EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.local_storage);
+    EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.local_storage);
+
+    EXPECT_EQ(nullptr, site_a_tab_values.main_frame.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.session_storage);
+
+    EXPECT_EQ("from=a.com", site_a_tab_values.main_frame.cookies);
+    EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
+    EXPECT_EQ("", site_a_tab_values.iframe_2.cookies);
+  }
+  CloseWebContents(site_a_tab);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
+                       DontEnable1PESWithGlobalSessionOnlyToggle) {
+  // Load a.com after browser reopen, expect all values are cleared, because
+  // global CONTENT_SETTING_SESSION_ONLY mode is enabled.
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.local_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.local_storage);
+
+  EXPECT_EQ(nullptr, site_a_tab_values.main_frame.session_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, site_a_tab_values.iframe_2.session_storage);
+
+  EXPECT_EQ("", site_a_tab_values.main_frame.cookies);
+  EXPECT_EQ("", site_a_tab_values.iframe_1.cookies);
+  EXPECT_EQ("", site_a_tab_values.iframe_2.cookies);
+}
+
 IN_PROC_BROWSER_TEST_F(
     EphemeralStorage1pBrowserTest,
     DisabledShieldsAllowsPersistentCookiesFor1PesHostsIn3pFrames) {
