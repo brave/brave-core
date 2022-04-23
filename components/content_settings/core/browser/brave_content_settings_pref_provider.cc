@@ -52,30 +52,6 @@ Rule CloneRule(const Rule& original_rule) {
               original_rule.session_model);
 }
 
-class BraveShieldsRuleIterator : public RuleIterator {
- public:
-  BraveShieldsRuleIterator(base::Lock* lock, const std::vector<Rule>& rules)
-      : auto_lock_(*lock, base::AutoLock::AlreadyAcquired()),
-        rules_it_(rules.begin()),
-        rules_end_(rules.end()) {}
-
-  BraveShieldsRuleIterator(const BraveShieldsRuleIterator&) = delete;
-
-  BraveShieldsRuleIterator& operator=(const BraveShieldsRuleIterator&) = delete;
-
-  bool HasNext() const override { return rules_it_ != rules_end_; }
-
-  Rule Next() override {
-    DCHECK(HasNext());
-    return CloneRule(*(rules_it_++));
-  }
-
- private:
-  base::AutoLock auto_lock_;
-  std::vector<Rule>::const_iterator rules_it_;
-  const std::vector<Rule>::const_iterator rules_end_;
-};
-
 bool IsActive(const Rule& cookie_rule,
               const std::vector<Rule>& shield_rules) {
   // don't include default rules in the iterator
@@ -483,10 +459,8 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     ContentSettingsType content_type,
     bool incognito) const NO_THREAD_SAFETY_ANALYSIS {
   if (content_type == ContentSettingsType::COOKIES) {
-    // Lock is similar to the upstream ContentSettingsPref implementation.
-    lock_.Acquire();
     const auto& rules = cookie_rules_.at(incognito);
-    return std::make_unique<BraveShieldsRuleIterator>(&lock_, rules);
+    return rules.GetRuleIterator(content_type, &lock_);
   }
 
   return PrefProvider::GetRuleIterator(content_type, incognito);
@@ -532,6 +506,15 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
+
+  // add chromium cookies
+  {
+    auto chromium_cookies_iterator =
+        PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
+    while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
+      rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
+    }
+  }
 
   // collect shield rules
   std::vector<Rule> shield_rules;
@@ -579,15 +562,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     }
   }
 
-  // add chromium cookies
-  {
-    auto chromium_cookies_iterator =
-        PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
-    while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
-      rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
-    }
-  }
-
   // get the list of changes
   std::vector<Rule> brave_cookie_updates;
   for (const auto& new_rule : brave_cookie_rules_[incognito]) {
@@ -626,7 +600,12 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
   {
     base::AutoLock auto_lock(lock_);
-    cookie_rules_[incognito] = std::move(rules);
+    cookie_rules_[incognito].clear();
+    for (auto&& r : rules) {
+      cookie_rules_[incognito].SetValue(
+          r.primary_pattern, r.secondary_pattern, ContentSettingsType::COOKIES,
+          base::Time(), std::move(r.value), {r.expiration, r.session_model});
+    }
   }
 
   // Notify brave cookie changes as ContentSettingsType::COOKIES

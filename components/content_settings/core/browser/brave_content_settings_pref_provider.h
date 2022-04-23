@@ -15,6 +15,7 @@
 #include "base/synchronization/lock.h"
 #include "base/thread_annotations.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/content_settings_origin_identifier_value_map.h"
 #include "components/content_settings/core/browser/content_settings_pref_provider.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -84,7 +85,7 @@ class BravePrefProvider : public PrefProvider,
   void OnCookiePrefsChanged(const std::string& pref);
 
   mutable base::Lock lock_;
-  std::map<bool /* is_incognito */, std::vector<Rule>> cookie_rules_
+  std::map<bool /* is_incognito */, OriginIdentifierValueMap> cookie_rules_
       GUARDED_BY(lock_);
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_shield_down_rules_;
