@@ -425,44 +425,33 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7559243474426790340">Frissítési állapot</translation>
 <translation id="8376263745431603066">"Éjszakai mód” engedélyezése (kísérleti)</translation>
 <translation id="1383876407941801731">Keresés</translation>
-<translation id="1972589975368876259">Csokor szerkesztése</translation>
-<translation id="2490330380242414851">Widget eltávolítása</translation>
 <translation id="8446884382197647889">További információ</translation>
-<translation id="7384441892795736634">Adatok frissítése</translation>
-<translation id="4804818685124855865">Kapcsolat bontása</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Rendelkezésre álló <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> vásárlása</translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> letéti cím</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Letéti emlékeztető</translation>
+<translation id="6755546361496900700">Átváltás előnézete</translation>
 <translation id="5110244215256675209">Vásárolj kriptot</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> vásárlása</translation>
-<translation id="558614325644656740">Rendelkezésre álló <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Átváltás előnézete</translation>
-<translation id="2882813124794301799">Widgetcsokrok</translation>
 <translation id="13296465911709339">A szöveged a vágólapra lett másolva.</translation>
 <translation id="2735834606413553397">A nyilvános cím át lett másolva a vágólapra.</translation>
 <translation id="7144878232160441200">Újrapróbál</translation>
 <translation id="2977461003134694205">Adatvédelmi statisztikák</translation>
-<translation id="4643117005422448078">Népszerű oldalak</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Blokkolt követők és hirdetések, becsült megtakarított sávszélesség és idő.</translation>
-<translation id="74417429503469271">Nyisd meg a gyakran felkeresett legjobb oldalakat.</translation>
 <translation id="2956070106555335453">Összefoglalás</translation>
 <translation id="1366855498335432549">Letétbe helyezés</translation>
 <translation id="1301340234286078471">Átváltás</translation>
 <translation id="223536150967420869">Vásárolj</translation>
-<translation id="1714829281959608206">Binance kapcsolódás engedélyezése a Binance számlaegyenleg megtekintéséhez és kriptokereskedelemhez.</translation>
 <translation id="4584930231524505442">Szeretnék átváltani...</translation>
 <translation id="5749014321384313843">Költeni szeretnék...</translation>
-<translation id="8688672835843460752">Elérhető</translation>
 <translation id="2480674848181564169">Nincs elég egyenleg az átváltáshoz</translation>
 <translation id="2215334405220411393">A minimális átváltható összeg: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Nem sikerült csatlakozni</translation>
 <translation id="7742417737698031726">Díj</translation>
 <translation id="2122225204180056042">Kapni fogsz</translation>
 <translation id="6432284126416751397">Átváltás megerősítése</translation>
-<translation id="5137723827757859599">Még semmi nincs itt, a legjobb oldalakon.</translation>
 <translation id="3891414008432200754">Ár</translation>
 <translation id="3733576242118819803">Megerősítés: (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Az átváltás nem sikerült. Próbáld újra.</translation>
@@ -564,6 +553,8 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2759836790106646094">Készíts biztonsági mentést pénztárcádról most!</translation>
 <translation id="1078873179929044999">A következő lépésben egy 12 szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a fiókjaihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
 <translation id="2359808026110333948">Folytatás</translation>
+<translation id="5488357322146334497">Üzenet</translation>
+<translation id="7228169875515099943">ADATOK</translation>
 <translation id="1904000155026201268">Megértettem, hogy ha elvesztem a helyreállítási kifejezést, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
 <translation id="3933122286596948824">Helyreállítási kifejezés</translation>
 <translation id="5077747669435508720">Írja fel vagy másolja ki ezeket a szavakat a lent ábrázolt megfelelő sorrendben, és mentse el őket biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a számláihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
@@ -808,6 +799,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1254969878422524947">Gas egységenkénti határérték (Gwei)</translation>
 <translation id="7373308452149471621">Gas egységenkénti hatérérték (Gwei)</translation>
 <translation id="5891811606602061966">Sikertelen a számla importálása, próbálja újra</translation>
+<translation id="1822506443689803572">A Brave a <ph name="DEX_PROVIDER"/>-et használja DEX aggregátorként.</translation>
 <translation id="5061574358754621254">Az áradatokat a CoinGecko biztosítja</translation>
 <translation id="4626407663177532837">Az árajánlat tartalmazza a Brave 0,875% -os díját.</translation>
 <translation id="8574289650879708853">Egyéni eszköz hozzáadása</translation>
@@ -861,4 +853,21 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4945690646623486292">Hálózat kiválasztása</translation>
 <translation id="8853725596990766789">Összeg módosítása</translation>
 <translation id="5233638681132016545">Új lap</translation>
+<translation id="8006088103295786154">Hozzáférés a Brave pénztárcához</translation>
+<translation id="5308380583665731573">Csatlakozás</translation>
+<translation id="3432029672560911238">Felhasználói fiók</translation>
+<translation id="5753378322046059140">Fiókváltás</translation>
+<translation id="3897092660631435901">Menü</translation>
+<translation id="42981349822642051">Kibontás</translation>
+<translation id="3586752056660754651">Aláír</translation>
+<translation id="6592721981110586529">Csatlakozás Brave pénztárcával</translation>
+<translation id="329813193938846695">Fiók(ok) kiválasztása</translation>
+<translation id="3890989020011724401">Új fiók</translation>
+<translation id="291375746846291973">Csak olyan webhelyekhez csatlakozzon, amelyekben megbízik.</translation>
+<translation id="385051799172605136">Vissza</translation>
+<translation id="1060221736464994328">Engedélyezi, hogy ez az oldal hálózatot váltson?</translation>
+<translation id="2478788592457735063">Ez egy korábban hozzáadott hálózatra fog váltani.</translation>
+<translation id="8756686998207163764">Hálózátváltás</translation>
+<translation id="394256914628786902">Lapcsoportok automatikus létrehozásának engedélyezése</translation>
+<translation id="8274201358637112807">Az oldal szeretne kapcsolatba lépni a Brave pénztárcával</translation>
 </translationbundle>

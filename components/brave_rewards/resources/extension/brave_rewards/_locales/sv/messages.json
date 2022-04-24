@@ -192,19 +192,6 @@
     "message": "Bidra automatiskt",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Gå till $provider$ för att slutföra verifieringen",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Slutför identitetsverifieringen för att börja ta emot belöningar.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Utloggad",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Väntande",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Det finns ett tillfälligt problem med att verifiera med $provider$. Dina Brave Rewards kommer att förbli i ett väntande tillstånd och försöka igen automatiskt, men du kan också försöka igen senare.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Belöningar från Ads",

@@ -54,7 +54,7 @@
 <translation id="5197219128592971597">始终访问原始（非 AMP）页面 URL，而非谷歌的”加速移动页面“版本</translation>
 <translation id="5802665280774361839">在地址栏中显示自动完成</translation>
 <translation id="597020512043916976">在自动完成建议中显示顶级网站</translation>
-<translation id="264150068416846820">在自动完成建议中显示 Brave 的建议站点</translation>
+<translation id="301088458323355543">在自动完成建议中显示建议的网站</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="814018970995616154">检查带有保存在 Brave 中的不安全站点列表的 URL。</translation>
@@ -69,8 +69,8 @@
 <translation id="4851215387785619212">Brave 专属广告</translation>
 <translation id="7808122468353671181">通过观看 Brave 广告赚取代币。展示的广告是基于您的兴趣（根据您的浏览行为推断而来的）。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
 <translation id="1758947220824279023">待显示的最大广告个数</translation>
-<translation id="8578912649458880781">状态级别广告靶向</translation>
-<translation id="3678362265519557511">这将允许 Brave 向您显示符合您状态的广告。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">区域广告相关性</translation>
+<translation id="2196950072404588793">这使 Brave 可以向您显示专门针对您所在地区的广告。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="9132509928968869844">每月自动打赏限制</translation>
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
@@ -143,8 +143,10 @@
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
 <translation id="2133317862976486547">跟踪器和和广告拦截</translation>
-<translation id="4385707520896576447">拦截 Cookie</translation>
-<translation id="4978786495456601191">拦截指纹识别</translation>
+<translation id="8823559166155093873">阻止 cookies</translation>
+<translation id="6531019308847917584">阻止指纹识别</translation>
+<translation id="7607166182943595829">防止网站根据我的语言偏好对我进行指纹识别</translation>
+<translation id="3497934980362703405">启用此设置会减少网站对您的语言首选项的了解。</translation>
 <translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 <translation id="4824468494729001999">拦截脚本</translation>
 <translation id="4395160081588457461">外观感觉</translation>
@@ -434,8 +436,6 @@
 <translation id="8487693399751278191">立即导入书签...</translation>
 <translation id="2557899542277210112">要快速访问，请将书签放在书签栏的此处。</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
-<translation id="2273851479262317744">将 Brave 设为默认浏览器</translation>
-<translation id="8581710194025054669">为了确保最佳的在线隐私，可以考虑将 Brave 设置为您电脑上的默认浏览器。将 Brave 设为默认浏览器后，您点击的任何网络链接都将享有 Brave 的隐私保护功能。</translation>
 <translation id="1968543937259008435">准备好在线获得最佳隐私了吗？</translation>
 <translation id="6817415381278637662">将 Brave 设置为你的默认浏览器，以便你打开的每个网页都获得 Brave 的隐私保护。</translation>
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>

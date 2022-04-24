@@ -192,19 +192,6 @@
     "message": "자동 기부",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "$provider$로 이동하여 확인 완료",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "리워드 적립을 시작하려면 신원 확인을 완료하세요.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "로그아웃됨",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "대기 중",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "$provider$을(를) 이용한 검증에 일시적인 문제가 발생했습니다. Brave Rewards가 보류 중 상태로 유지되며 자동으로 다시 시도합니다. 나중에 직접 다시 시도하셔도 됩니다.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "광고로 받은 리워드",

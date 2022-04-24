@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Solve</translation>
 <translation id="6991128190741664836">Later</translation>
 <translation id="8112367589167674370">Brave talk</translation>
-<translation id="1544192797660353713">Wallet</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8820817407110198400">Bookmarks bar</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="6165508094623778733">Learn more</translation>
@@ -646,6 +646,7 @@
 <translation id="8851480289992540512">Total received</translation>
 <translation id="824449983246282560">You do not have any balances in your account. Visit Gemini to purchase some.</translation>
 <translation id="8624961452383848703">I want to convert …</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="616639131065447379">Welcome to Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems - or are excited to learn.</translation>
 <translation id="4855440621031541830">Only use Crypto Wallets if you accept that you alone are responsible for all risk associated with this use, and that Brave Software bears no responsibility or liability for any losses, including incidental or consequential losses you might suffer as a result of this use.</translation>
@@ -761,8 +762,6 @@
 <translation id="5878420576943709750">Your <ph name="AMOUNT"/> <ph name="MONTH"/> rewards are on the way. Keep an eye out!</translation>
 <translation id="2659764755126740206">Go to my <ph name="PROVIDER"/> account</translation>
 <translation id="1165667598801520610">Add Funds</translation>
-<translation id="2389181429986654814">Go to <ph name="PROVIDER"/> to complete verification</translation>
-<translation id="7793632266654336758">Please complete identity verification in order to start receiving rewards.</translation>
 <translation id="2394961582378297792">Logged out</translation>
 <translation id="6080167751812750226">Disconnect from <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Estimated earnings</translation>
@@ -791,7 +790,6 @@
 <translation id="2221902203895354376">A token grant is available!</translation>
 <translation id="7701466644604753106">Turn ON speedreader</translation>
 <translation id="763042262431778831">Turn OFF speedreader</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">The user rejected the request.</translation>
 <translation id="2403819048476450281">Invalid parameters.</translation>
 <translation id="3955144560853195652">Chain <ph name="VALUE"/> hasn't been added</translation>
@@ -1004,9 +1002,7 @@
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586752056660754651">Sign</translation>
 <translation id="3484981968509595506">A DApp is requesting your public encryption key</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
 <translation id="3340247553212049934">Provide</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> would like to read this message to complete your request</translation>
 <translation id="714506544401754321">Decrypt message</translation>
 <translation id="5039804452771397117">Allow</translation>
 <translation id="9032898664193335413">Allow this app to spend your <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1180,30 +1176,24 @@
 <translation id="7709075156958117386">If this site seems broken, try Shields down. 
    <ph name="LINK_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Advanced Controls</translation>
+<translation id="650318023204990401">Advanced controls</translation>
 <translation id="5799940914270080805">Changing these settings might break sites.</translation>
 <translation id="9204041448536398473">Global Shield settings</translation>
 <translation id="2108334320919763866">Global defaults</translation>
-<translation id="1928321796986970424">Filter lists</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="131231380815754440">Enable HTTPS</translation>
 <translation id="4824468494729001999">Block scripts</translation>
 <translation id="3246600097575692802">Enable scripts blocked</translation>
 <translation id="3603525299146223354">Trackers &amp; ads</translation>
-<translation id="1146309636943354181">Trackers &amp; ads blocked (standard)</translation>
-<translation id="5973258875089964805">Trackers &amp; ads blocked (aggressive)</translation>
+<translation id="4448697385961650078">Block trackers &amp; ads</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
-<translation id="6203697265754637264">Cross-site cookies blocked</translation>
-<translation id="4627427111733173920">Cookies blocked</translation>
-<translation id="3972324600756617403">All cookies allowed</translation>
+<translation id="4941539331405513605">Block cross-site cookies</translation>
+<translation id="6883611015375728278">Block all cookies</translation>
+<translation id="5657156137487675418">Allow all cookies</translation>
 <translation id="8366221601425141146">Fingerprinting blocked</translation>
-<translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
-<translation id="6696441392507885865">Fingerprinting blocked (strict, sites may break)</translation>
-<translation id="5882733945883311404">Allow all Fingerprinting</translation>
+<translation id="8034285923190068220">Allow fingerprinting</translation>
 <translation id="1992750560347846445">Report site</translation>
 <translation id="2387532482048804818">Tell us if the site wasn't working properly with Shields up.</translation>
-<translation id="9167355841012806439">You are viewing this site without Brave's privacy protection</translation>
-<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> trackers, ads and more blocked</translation>
 <translation id="1742469581923031760">Connecting…</translation>
 <translation id="1287487756047817908">Disconnecting…</translation>
 <translation id="2325196879156848326">Connection failed</translation>
