@@ -15,8 +15,11 @@ import android.util.Pair;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_news.mojom.DisplayAd;
+import org.chromium.brave_news.mojom.Image;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.url.mojom.Url;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static volatile DatabaseHelper mInstance;
 
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database Name
     private static final String DATABASE_NAME = "brave_db";
@@ -53,12 +56,95 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TopSiteTable.CREATE_TABLE);
         db.execSQL(BraveStatsTable.CREATE_TABLE);
         db.execSQL(SavedBandwidthTable.CREATE_TABLE);
+        db.execSQL(DisplayAdsTable.CREATE_TABLE);
     }
 
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);
+    }
+
+    public void insertAd(DisplayAd ad, int position, int tabId) {
+        if (ad != null && !isDisplayAdAlreadyAdded(ad.uuid)) {
+            Url imageUrlTemp = null;
+            Image adDataImage = ad.image;
+
+            switch (adDataImage.which()) {
+                case Image.Tag.PaddedImageUrl:
+                    imageUrlTemp = adDataImage.getPaddedImageUrl();
+                    break;
+                case Image.Tag.ImageUrl:
+                    imageUrlTemp = adDataImage.getImageUrl();
+                    break;
+            }
+            // get writable database as we want to write data
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DisplayAdsTable.COLUMN_UUID, ad.uuid);
+            values.put(DisplayAdsTable.COLUMN_CREATIVE_INSTANCE_ID, ad.creativeInstanceId);
+            values.put(DisplayAdsTable.COLUMN_POSITION, position);
+            values.put(DisplayAdsTable.COLUMN_TAB_ID, tabId);
+            values.put(DisplayAdsTable.COLUMN_AD_TITLE, ad.title);
+            values.put(DisplayAdsTable.COLUMN_AD_DESCRIPTION, ad.description);
+            values.put(DisplayAdsTable.COLUMN_AD_CTA_TEXT, ad.ctaText);
+            values.put(DisplayAdsTable.COLUMN_AD_CTA_LINK, ad.targetUrl.url);
+            values.put(DisplayAdsTable.COLUMN_AD_IMAGE, imageUrlTemp.url);
+
+            // insert row
+            long newRowId = db.insert(DisplayAdsTable.TABLE_NAME, null, values);
+        }
+    }
+
+    public boolean isDisplayAdAlreadyAdded(String uuid) {
+        String sql = "Select * from " + DisplayAdsTable.TABLE_NAME + " where "
+                + DisplayAdsTable.COLUMN_UUID + " = '" + uuid + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public void deleteDisplayAdsFromTab(int tabId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DisplayAdsTable.TABLE_NAME, DisplayAdsTable.COLUMN_TAB_ID + " = " + tabId, null);
+    }
+
+    @SuppressLint("Range")
+    public DisplayAdsTable getDisplayAd(int position, int tabId) {
+        String selectQuery = "SELECT  * FROM " + DisplayAdsTable.TABLE_NAME + " where "
+                + DisplayAdsTable.COLUMN_POSITION + " = " + position + " AND "
+                + DisplayAdsTable.COLUMN_TAB_ID + " = " + tabId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        DisplayAdsTable braveAd = new DisplayAdsTable(
+                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_UUID)),
+                cursor.getString(
+                        cursor.getColumnIndex(DisplayAdsTable.COLUMN_CREATIVE_INSTANCE_ID)),
+                cursor.getInt(cursor.getColumnIndex(DisplayAdsTable.COLUMN_POSITION)),
+                cursor.getInt(cursor.getColumnIndex(DisplayAdsTable.COLUMN_TAB_ID)),
+                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_TITLE)),
+                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_DESCRIPTION)),
+                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_CTA_TEXT)),
+                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_CTA_LINK)),
+                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_IMAGE)));
+
+        cursor.close();
+
+        return braveAd;
     }
 
     private boolean isTopSiteAlreadyAdded(String destinationUrl) {

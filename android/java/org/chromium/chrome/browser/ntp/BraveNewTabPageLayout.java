@@ -399,13 +399,18 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             }
             InitBraveNewsController();
             initNews();
-
             if (BraveActivity.getBraveActivity() != null && mIsNewsOn) {
                 new Handler().post(() -> {
                     Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-
                     if (tab != null && tab.getUrl().getSpec() != null
                             && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
+                        // purges display ads on tab change
+                        if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
+                            mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                        }
+
+                        BraveActivity.getBraveActivity().setLastTabId(tab.getId());
+
                         BraveActivity.getBraveActivity().inflateNewsSettingsBar();
                         mSettingsBar =
                                 (LinearLayout) mCompositorView.findViewById(R.id.news_settings_bar);
@@ -620,6 +625,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     try {
                         mFeedHash = feed.hash;
                         mNewsItemsFeedCard.clear();
+                        BraveNewsUtils.initCurrentAds();
                         mAdapterFeedCard.notifyItemRangeRemoved(0, mNewsItemsFeedCard.size());
                         SharedPreferencesManager.getInstance().writeString(
                                 BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, feed.hash);
@@ -1135,36 +1141,26 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                         // if viewed for more than 100 ms send the event
                         if (timeDiff > BraveNewsUtils.BRAVE_NEWS_VIEWD_CARD_TIME) {
                             if (mVisibleCard != null) {
-                                if (!mVisibleCard.isViewStatSent()) {
-                                    // send viewed cards events
-                                    if (mCardType.equals("promo")) {
-                                        if (!mUuid.equals("") && !mCreativeInstanceId.equals("")) {
-                                            mBraveNewsController.onPromotedItemView(
-                                                    mUuid, mCreativeInstanceId);
-                                        }
-                                    } else if (mCardType.equals("displayad")) {
-                                        if (mUuid != null && mCreativeInstanceId != null) {
-                                            if (!mUuid.equals("")
-                                                    && !mCreativeInstanceId.equals("")) {
-                                                mBraveNewsController.onDisplayAdView(
-                                                        mUuid, mCreativeInstanceId);
-                                            }
-                                        }
-                                    } else {
-                                        mmViewedNewsCardsCount++;
-                                        SharedPreferencesManager.getInstance().writeInt(
-                                                "mViewedNewsCardsCount_"
-                                                        + BraveActivity.getBraveActivity()
-                                                                  .getActivityTab()
-                                                                  .getId(),
-                                                mmViewedNewsCardsCount);
-
-                                        if (mmViewedNewsCardsCount > 0) {
-                                            mBraveNewsController.onSessionCardViewsCountChanged(
-                                                    (short) mmViewedNewsCardsCount);
-                                        }
+                                // send viewed cards events
+                                if (mCardType.equals("promo") && !mCardType.equals("displayad")) {
+                                    if (!mUuid.equals("") && !mCreativeInstanceId.equals("")) {
+                                        mVisibleCard.setViewStatSent(true);
+                                        mBraveNewsController.onPromotedItemView(
+                                                mUuid, mCreativeInstanceId);
                                     }
-                                    mVisibleCard.setViewStatSent(true);
+                                } else {
+                                    mmViewedNewsCardsCount++;
+                                    SharedPreferencesManager.getInstance().writeInt(
+                                            "mViewedNewsCardsCount_"
+                                                    + BraveActivity.getBraveActivity()
+                                                              .getActivityTab()
+                                                              .getId(),
+                                            mmViewedNewsCardsCount);
+
+                                    if (mmViewedNewsCardsCount > 0) {
+                                        mBraveNewsController.onSessionCardViewsCountChanged(
+                                                (short) mmViewedNewsCardsCount);
+                                    }
                                 }
                             }
                         }
@@ -1213,31 +1209,100 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                     }
                                 });
 
+                        Rect rvRect = new Rect();
+                        mRecyclerView.getGlobalVisibleRect(rvRect);
+
+                        int visiblePercentage = 0;
                         for (int viewPosition = firstVisibleItemPosition;
                                 viewPosition <= lastVisibleItemPosition; viewPosition++) {
-                            View itemView = manager.findViewByPosition(viewPosition);
-                            int visiblePercentage = (int) getVisibleHeightPercentage(itemView);
-                            if (visiblePercentage >= MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
-                                mVisibleCard = mNewsItemsFeedCard.get(viewPosition);
-                                // get params for view PROMOTED_ARTICLE
-                                if (mVisibleCard.getCardType() == CardType.PROMOTED_ARTICLE) {
-                                    mItemPosition = viewPosition;
-                                    mCreativeInstanceId =
-                                            BraveNewsUtils.getPromotionIdItem(mVisibleCard);
-                                    mUuid = mVisibleCard.getUuid();
-                                    mCardType = "promo";
+                            Rect rowRect = new Rect();
+                            if (linearLayoutManager.findViewByPosition(viewPosition) != null) {
+                                linearLayoutManager.findViewByPosition(viewPosition)
+                                        .getGlobalVisibleRect(rowRect);
+
+                                if (linearLayoutManager.findViewByPosition(viewPosition).getHeight()
+                                        > 0) {
+                                    if (rowRect.bottom >= rvRect.bottom) {
+                                        int visibleHeightFirst = rvRect.bottom - rowRect.top;
+                                        visiblePercentage = (visibleHeightFirst * 100)
+                                                / linearLayoutManager
+                                                          .findViewByPosition(viewPosition)
+                                                          .getHeight();
+                                    } else {
+                                        int visibleHeightFirst = rowRect.bottom - rvRect.top;
+                                        visiblePercentage = (visibleHeightFirst * 100)
+                                                / linearLayoutManager
+                                                          .findViewByPosition(viewPosition)
+                                                          .getHeight();
+                                    }
                                 }
-                                // get params for view DISPLAY_AD
-                                if (mVisibleCard.getCardType() == CardType.DISPLAY_AD) {
-                                    mItemPosition = viewPosition;
-                                    DisplayAd currentDisplayAd = NTPUtil.getsCurrentDisplayAd();
-                                    if (currentDisplayAd != null) {
-                                        mCreativeInstanceId = currentDisplayAd != null
-                                                ? currentDisplayAd.creativeInstanceId
-                                                : "";
-                                        mUuid = currentDisplayAd != null ? currentDisplayAd.uuid
-                                                                         : "";
-                                        mCardType = "displayad";
+
+                                if (visiblePercentage > 100) {
+                                    visiblePercentage = 100;
+                                }
+                            }
+
+                            final int visiblePercentageFinal = visiblePercentage;
+
+                            if (viewPosition >= 0) {
+                                if (visiblePercentageFinal >= MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
+                                    mVisibleCard = mNewsItemsFeedCard.get(viewPosition);
+                                    // get params for view PROMOTED_ARTICLE
+                                    if (mVisibleCard.getCardType() == CardType.PROMOTED_ARTICLE) {
+                                        mItemPosition = viewPosition;
+                                        mCreativeInstanceId =
+                                                BraveNewsUtils.getPromotionIdItem(mVisibleCard);
+                                        mUuid = mVisibleCard.getUuid();
+                                        mCardType = "promo";
+                                    }
+                                    // get params for view DISPLAY_AD
+                                    if (mVisibleCard.getCardType() == CardType.DISPLAY_AD) {
+                                        mItemPosition = viewPosition;
+                                        DisplayAd currentDisplayAd =
+                                                BraveNewsUtils.getFromDisplayAdsMap(viewPosition);
+                                        if (currentDisplayAd != null) {
+                                            mCreativeInstanceId = currentDisplayAd != null
+                                                    ? currentDisplayAd.creativeInstanceId
+                                                    : "";
+                                            mUuid = currentDisplayAd != null ? currentDisplayAd.uuid
+                                                                             : "";
+                                            mCardType = "displayad";
+
+                                            // if viewed for more than 100 ms and is more than 50%
+                                            // visible send the event
+                                            Timer timer = new Timer();
+                                            timer.schedule(new TimerTask() {
+                                                @Override
+                                                public void run() {
+                                                    new Thread() {
+                                                        @Override
+                                                        public void run() {
+                                                            if (!mDatabaseHelper
+                                                                            .isDisplayAdAlreadyAdded(
+                                                                                    mUuid)
+                                                                    && visiblePercentageFinal
+                                                                            > MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
+                                                                mVisibleCard.setViewStatSent(true);
+                                                                mBraveNewsController.onDisplayAdView(
+                                                                        mUuid, mCreativeInstanceId);
+                                                                DisplayAd currentDisplayAd =
+                                                                        BraveNewsUtils
+                                                                                .getFromDisplayAdsMap(
+                                                                                        mItemPosition);
+
+                                                                mDatabaseHelper.insertAd(
+                                                                        currentDisplayAd,
+                                                                        mItemPosition,
+                                                                        BraveActivity
+                                                                                .getBraveActivity()
+                                                                                .getActivityTab()
+                                                                                .getId());
+                                                            }
+                                                        }
+                                                    }.start();
+                                                }
+                                            }, BraveNewsUtils.BRAVE_NEWS_VIEWD_CARD_TIME);
+                                        }
                                     }
                                 }
                             }
@@ -1248,7 +1313,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 @Override
                 public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-
                     try {
                         int offset = recyclerView.computeVerticalScrollOffset();
                         mTouchScroll = true;
@@ -1311,22 +1375,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 }
             });
         }
-    }
-
-    private double getVisibleHeightPercentage(View view) {
-        Rect itemRect = new Rect();
-        double viewVisibleHeightPercentage = 0;
-        if (view != null) {
-            view.getLocalVisibleRect(itemRect);
-
-            // Find the height of the item.
-            double visibleHeight = itemRect.height();
-            double height = view.getMeasuredHeight();
-
-            viewVisibleHeightPercentage = ((visibleHeight / height) * 100);
-        }
-
-        return viewVisibleHeightPercentage;
     }
 
     private void processFeed() {

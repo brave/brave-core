@@ -19,8 +19,12 @@ import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BraveNewsUtils {
     public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 100; // milliseconds
+    private static Map<Integer, DisplayAd> sCurrentDisplayAds;
 
     public static String getPromotionIdItem(FeedItemsCard items) {
         String creativeInstanceId = "null";
@@ -37,6 +41,26 @@ public class BraveNewsUtils {
         }
 
         return creativeInstanceId;
+    }
+
+    public static void initCurrentAds() {
+        sCurrentDisplayAds = new HashMap<>();
+    }
+
+    public static void putToDisplayAdsMap(Integer index, DisplayAd ad) {
+        if (sCurrentDisplayAds == null) {
+            sCurrentDisplayAds = new HashMap<>();
+        }
+        sCurrentDisplayAds.put(index, ad);
+    }
+
+    public static DisplayAd getFromDisplayAdsMap(Integer index) {
+        if (sCurrentDisplayAds != null) {
+            DisplayAd foundItem = sCurrentDisplayAds.get(index);
+            return foundItem;
+        }
+
+        return null;
     }
 
     // method for logging news object. works by putting Log.d in the desired places of the parsing
