@@ -80,9 +80,10 @@ public class NetworkSelectorActivity
                         CoinType.ETH, (success) -> {
                             if (!success) {
                                 Log.e(TAG, "Could not set network");
+                            } else {
+                                finish();
                             }
                         });
-                finish();        
             });
         }
     }
