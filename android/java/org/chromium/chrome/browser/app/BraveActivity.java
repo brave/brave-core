@@ -228,6 +228,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public boolean mLoadedFeed;
     public boolean mComesFromNewTab;
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
+    private boolean isProcessingPendingDappsTxRequest;
+    private int mLastTabId;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
@@ -379,6 +381,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
+    }
+
+    public int getLastTabId() {
+        return mLastTabId;
+    }
+
+    public void setLastTabId(int lastTabId) {
+        this.mLastTabId = lastTabId;
     }
 
     public boolean isLoadedFeed() {
