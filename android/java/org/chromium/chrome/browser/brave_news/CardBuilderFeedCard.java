@@ -234,7 +234,7 @@ public class CardBuilderFeedCard {
 
                     mLinearLayout.setBackground(roundedBackground());
                     try {
-                        mBraveNewsController.getDisplayAd(adData -> {
+                        /*mBraveNewsController.getDisplayAd(adData -> {
                             if (adData != null) {
                                 NTPUtil.setsCurrentDisplayAd(adData);
                                 linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
@@ -392,6 +392,7 @@ public class CardBuilderFeedCard {
                                 });
                             }
                         });
+                        */
 
                     } catch (Exception e) {
                         Log.e(TAG, "displayad Exception" + e.getMessage());
