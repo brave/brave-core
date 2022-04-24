@@ -55,7 +55,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5197219128592971597">Aceda sempre aos URL originais das páginas (não AMP), em vez de às versões de páginas aceleradas para dispositivos móveis (AMP — "Accelerated Mobile Page") do Google</translation>
 <translation id="5802665280774361839">Apresentar o preenchimento automático na barra de endereços</translation>
 <translation id="597020512043916976">Mostrar sites principais em sugestões de preenchimento automático</translation>
-<translation id="264150068416846820">Mostrar sites principais em sugestões de preenchimento automático</translation>
+<translation id="301088458323355543">Exibir sites sugeridos nas sugestões de preenchimento automático</translation>
 <translation id="5529693968082667490">Mostrar botão de pesquisa de separadores</translation>
 <translation id="6414370348346025511">A proteção padrão está ativada.</translation>
 <translation id="814018970995616154">Verifica os URL com uma lista de sites não seguros armazenados no Brave.</translation>
@@ -70,8 +70,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4851215387785619212">Anúncios privados do Brave</translation>
 <translation id="7808122468353671181">Receba tokens ao visualizar os anúncios do Brave. Os anúncios apresentados são baseados nos interesses do utilizador conforme inferido pelo comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do navegador.</translation>
 <translation id="1758947220824279023">Número máximo de anúncios para apresentação</translation>
-<translation id="8578912649458880781">Segmentação de anúncios a nível de estado</translation>
-<translation id="3678362265519557511">Isto permite que o Brave apresente anúncios que correspondem especificamente ao seu estado. <ph name="BEGIN_LINK"/>Obter mais informações<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Relevância regional dos anúncios</translation>
+<translation id="2196950072404588793">Isso possibilita que o Brave mostre a você anúncios que correspondam especificamente à sua região. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="9132509928968869844">Limite de contribuição automática mensal</translation>
 <translation id="7286722244752781970">Tempo mínimo de página até registar uma visita</translation>
@@ -144,8 +144,10 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="130615081792797568">Visualização simples</translation>
 <translation id="2360360976480535628">Visualização avançada</translation>
 <translation id="2133317862976486547">Rastreadores e bloqueio de anúncios</translation>
-<translation id="4385707520896576447">Bloqueio de Cookies</translation>
-<translation id="4978786495456601191">Bloqueio de Impressão Digital</translation>
+<translation id="8823559166155093873">Bloquear cookies</translation>
+<translation id="6531019308847917584">Bloquear impressões digitais</translation>
+<translation id="7607166182943595829">Impedir que sites criem impressões digitais minhas com base nas minhas preferências de idioma</translation>
+<translation id="3497934980362703405">A ativação dessa configuração reduz o quanto os sites podem saber a respeito das suas preferências de idioma.</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="4395160081588457461">Look &amp; feel</translation>
@@ -435,8 +437,6 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="8487693399751278191">Importar marcadores agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, coloque os seus marcadores aqui na barra de marcadores.</translation>
 <translation id="2808630562319398131">Redefinir dados da Brave Rewards...</translation>
-<translation id="2273851479262317744">Definir o Brave como o navegador predefinido</translation>
-<translation id="8581710194025054669">Para garantir a melhor privacidade online, considere definir o Brave como o navegador predefinido no seu computador. Com o Brave como predefinição, qualquer ligação da Web em que clicar irá abrir com as proteções de privacidade do Brave.</translation>
 <translation id="1968543937259008435">Quer a melhor privacidade online?</translation>
 <translation id="6817415381278637662">Defina o Brave como navegador predefinido para ter acesso às proteções de privacidade Brave em todas as páginas web que abrir.</translation>
 <translation id="8722651357687610395">Definir o Brave como padrão</translation>
@@ -467,4 +467,9 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1062463687579789365">Personalização das redes da carteira</translation>
 <translation id="2234108191702901162">Não é possível adicionar a rede</translation>
 <translation id="2618193846561624884">Pretende atualizar a rede existente?</translation>
+<translation id="264150068416846820">Mostrar sites principais em sugestões de preenchimento automático</translation>
+<translation id="8578912649458880781">Segmentação de anúncios a nível de estado</translation>
+<translation id="3678362265519557511">Isto permite que o Brave apresente anúncios que correspondem especificamente ao seu estado. <ph name="BEGIN_LINK"/>Obter mais informações<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Definir o Brave como o navegador predefinido</translation>
+<translation id="8581710194025054669">Para garantir a melhor privacidade online, considere definir o Brave como o navegador predefinido no seu computador. Com o Brave como predefinição, qualquer ligação da Web em que clicar irá abrir com as proteções de privacidade do Brave.</translation>
 </translationbundle>

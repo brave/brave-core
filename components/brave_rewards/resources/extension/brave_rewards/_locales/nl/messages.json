@@ -243,6 +243,15 @@
     "message": "In afwachting",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Er is een tijdelijk probleem opgetreden bij het verifiëren met $provider$. Uw Brave-beloningen houden de status In behandeling. We proberen het automatisch opnieuw, maar u kunt het later ook zelf opnieuw proberen. ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Beloningen uit advertenties",
     "description": ""

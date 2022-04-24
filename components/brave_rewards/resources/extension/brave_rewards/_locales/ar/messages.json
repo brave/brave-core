@@ -243,6 +243,15 @@
     "message": "معلَّق",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "هناك مشكلة مؤقتة في التحقق مع $provider$. ستظل مكافآت Brave الخاصة بك في حالة قيد الانتظار وتعيد المحاولة تلقائيًّا، لكن يمكنك أيضًا المحاولة مجددًا لاحقًا.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "مكافآت من الإعلانات",
     "description": ""

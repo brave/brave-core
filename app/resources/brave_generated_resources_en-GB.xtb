@@ -55,7 +55,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5197219128592971597">Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions</translation>
 <translation id="5802665280774361839">Show autocomplete in address bar</translation>
 <translation id="597020512043916976">Show top sites in autocomplete suggestions</translation>
-<translation id="264150068416846820">Show Brave suggested sites in autocomplete suggestions</translation>
 <translation id="5529693968082667490">Show tab search button</translation>
 <translation id="6414370348346025511">Standard protection is on.</translation>
 <translation id="814018970995616154">Checks URLs with a list of unsafe sites stored in Brave.</translation>
@@ -70,8 +69,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4851215387785619212">Brave Private Ads</translation>
 <translation id="7808122468353671181">Earn tokens by viewing Brave ads. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="1758947220824279023">Maximum number of ads to display</translation>
-<translation id="8578912649458880781">Area-level ad targeting</translation>
-<translation id="3678362265519557511">This allows Brave to show you ads meant specifically for your area. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Regional ad relevance</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="9132509928968869844">Monthly auto-contribution limit</translation>
 <translation id="7286722244752781970">Minimum page time before logging a visit</translation>
@@ -144,8 +142,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="130615081792797568">Simple view</translation>
 <translation id="2360360976480535628">Advanced view</translation>
 <translation id="2133317862976486547">Trackers &amp; ads blocking</translation>
-<translation id="4385707520896576447">Cookie blocking</translation>
-<translation id="4978786495456601191">Fingerprinting blocking</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="4824468494729001999">Block scripts</translation>
 <translation id="4395160081588457461">Look &amp; feel</translation>
@@ -435,8 +431,6 @@ Are you sure you want to do this?</translation>
 <translation id="8487693399751278191">Import bookmarks now ...</translation>
 <translation id="2557899542277210112">For quick access, place your bookmarks here on the bookmarks bar.</translation>
 <translation id="2808630562319398131">Reset Brave Rewards data ...</translation>
-<translation id="2273851479262317744">Set Brave as default browser</translation>
-<translation id="8581710194025054669">To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.</translation>
 <translation id="1968543937259008435">Ready for the best privacy online?</translation>
 <translation id="6817415381278637662">Set Brave as your default browser to get Brave's privacy protections on every web page you open.</translation>
 <translation id="8722651357687610395">Set Brave as default</translation>
@@ -467,4 +461,9 @@ Are you sure you want to do this?</translation>
 <translation id="1062463687579789365">Wallet networks customisation</translation>
 <translation id="2234108191702901162">Unable to add network</translation>
 <translation id="2618193846561624884">Do you want to update the existing network?</translation>
+<translation id="264150068416846820">Show Brave suggested sites in autocomplete suggestions</translation>
+<translation id="8578912649458880781">Area-level ad targeting</translation>
+<translation id="3678362265519557511">This allows Brave to show you ads meant specifically for your area. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Set Brave as default browser</translation>
+<translation id="8581710194025054669">To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.</translation>
 </translationbundle>

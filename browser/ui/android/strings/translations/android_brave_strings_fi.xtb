@@ -427,44 +427,33 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7559243474426790340">Päivitä tila</translation>
 <translation id="8376263745431603066">Ota yötila käyttöön (kokeellinen)</translation>
 <translation id="1383876407941801731">Hae</translation>
-<translation id="1972589975368876259">Muokkaa pinoa</translation>
-<translation id="2490330380242414851">Poista pienoisohjelma</translation>
 <translation id="8446884382197647889">Lue lisää</translation>
-<translation id="7384441892795736634">Päivitä tiedot</translation>
-<translation id="4804818685124855865">Katkaise yhteys</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tarjolla <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Osta <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Talletusosoite</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Talletusmuistio</translation>
+<translation id="6755546361496900700">Muuntamisen esikatselu</translation>
 <translation id="5110244215256675209">Osta kryptovaluuttaa</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Osta <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Tarjolla <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Muuntamisen esikatselu</translation>
-<translation id="2882813124794301799">Pienoisohjelmapino</translation>
 <translation id="13296465911709339">Tekstisi on kopioitu leikepöydälle.</translation>
 <translation id="2735834606413553397">Julkinen osoite on kopioitu leikepöydälle.</translation>
 <translation id="7144878232160441200">Yritä uudestaan</translation>
 <translation id="2977461003134694205">Yksityisyysstatistiikka</translation>
-<translation id="4643117005422448078">Kärkisivustot</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Seurantalaitteet &amp; estettyjen mainosten, säästetyn kaistanleveyden ja säästetyn ajan arviot.</translation>
-<translation id="74417429503469271">Avaa suosituimmat sivut, joilla käyt usein.</translation>
 <translation id="2956070106555335453">Yhteenveto</translation>
 <translation id="1366855498335432549">Talleta</translation>
 <translation id="1301340234286078471">Muunna</translation>
 <translation id="223536150967420869">Osta</translation>
-<translation id="1714829281959608206">Ota Binance-yhteys käyttöön nähdäksesi Binance-tilin saldon ja vaihtaaksesi kryptovaluuttaa.</translation>
 <translation id="4584930231524505442">Haluan muuntaa...</translation>
 <translation id="5749014321384313843">Haluan käyttää...</translation>
-<translation id="8688672835843460752">Saatavilla</translation>
 <translation id="2480674848181564169">Ei tarpeeksi saldoa muunnokseen</translation>
 <translation id="2215334405220411393">Pienin muunnettava määrä on: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Yhdistäminen ei onnistu</translation>
 <translation id="7742417737698031726">Maksu</translation>
 <translation id="2122225204180056042">Saat</translation>
 <translation id="6432284126416751397">Vahvista muuntaminen</translation>
-<translation id="5137723827757859599">Suosituimpia sivuja ei vielä ole.</translation>
 <translation id="3891414008432200754">Hinta</translation>
 <translation id="3733576242118819803">Vahvista (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Muuntaminen epäonnistui. Yritä uudestaan.</translation>
@@ -566,6 +555,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2759836790106646094">Varmuuskopioi lompakkosi nyt!</translation>
 <translation id="1078873179929044999">Seuraavassa vaiheessa näet 12 sanan palautuslauseen, jonka avulla voit palauttaa ensisijaiset kryptotilisi. Säilytä sitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
 <translation id="2359808026110333948">Jatka</translation>
+<translation id="5488357322146334497">Viesti</translation>
+<translation id="7228169875515099943">TIEDOT</translation>
 <translation id="1904000155026201268">Ymmärrän, että jos kadotan palautuslauseeni, en voi käyttää kryptolompakkoani.</translation>
 <translation id="3933122286596948824">Palautuslauseesi</translation>
 <translation id="5077747669435508720">Kirjoita ylös tai kopioi nämä sanat alla esitetyssä järjestyksessä ja säilytä niitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
@@ -810,6 +801,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1254969878422524947">Gas-kohtainen tippiraja (Gwei)</translation>
 <translation id="7373308452149471621">Gas-kohtainen hintaraja (Gwei)</translation>
 <translation id="5891811606602061966">Tilin tuonti epäonnistui. Yritä uudelleen.</translation>
+<translation id="1822506443689803572">Brave käyttää <ph name="DEX_PROVIDER"/>:ää DEX-aggregaattorina.</translation>
 <translation id="5061574358754621254">Hintatiedot tarjoaa CoinGecko</translation>
 <translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
 <translation id="8574289650879708853">Lisää mukautettuja varoja</translation>
@@ -863,4 +855,21 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4945690646623486292">Valitse verkko</translation>
 <translation id="8853725596990766789">Muuta summa</translation>
 <translation id="5233638681132016545">Uusi välilehti</translation>
+<translation id="8006088103295786154">Käytä Brave-lompakkoa</translation>
+<translation id="5308380583665731573">Muodosta yhteys</translation>
+<translation id="3432029672560911238">Käyttäjätili</translation>
+<translation id="5753378322046059140">Vaihda tiliä</translation>
+<translation id="3897092660631435901">Valikko</translation>
+<translation id="42981349822642051">Laajenna</translation>
+<translation id="3586752056660754651">Allekirjoita</translation>
+<translation id="6592721981110586529">Muodosta yhteys Brave-lompakkoon</translation>
+<translation id="329813193938846695">Valitse tili(t)</translation>
+<translation id="3890989020011724401">Uusi tili</translation>
+<translation id="291375746846291973">Muodosta yhteys vain luotettaviin sivustoihin.</translation>
+<translation id="385051799172605136">Edellinen</translation>
+<translation id="1060221736464994328">Anna tälle sivustolle lupa vaihtaa verkkoa?</translation>
+<translation id="2478788592457735063">Tämä vaihtaa verkon aiemmin lisättyyn verkkoon.</translation>
+<translation id="8756686998207163764">Vaihda verkkoa</translation>
+<translation id="394256914628786902">Ota käyttöön välilehtiryhmän automaattinen luonti</translation>
+<translation id="8274201358637112807">Tämä sivu haluaa käyttää Brave-lompakkoa</translation>
 </translationbundle>

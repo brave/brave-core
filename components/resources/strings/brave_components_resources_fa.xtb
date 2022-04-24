@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">حل کردن</translation>
 <translation id="6991128190741664836">بعداً</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">کیف پول</translation>
+<translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="1644574205037202324">سابقه</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">خطا: برای ورود به سیستم، به حساب تأییدشده نیاز دارید</translation>
 <translation id="5260522591743022748">هوم، به نظر می‌رسد پاداش‌های Brave شما قبلاً با یک حساب <ph name="PROVIDER"/> دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود دوباره تأیید کنید.</translation>
 <translation id="5111921830714291902">خطا: حساب متفاوت</translation>
+<translation id="6933939911547091461">متأسفانه، امکان تأیید «پاداش‌های Brave» شما وجود ندارد،‌ زیرا منطقه شما در حال حاضر برای تأیید «پاداش‌های Brave» پشتیبانی نمی‌شود.</translation>
+<translation id="8218538368080510976">خطا: منطقه پشتیبانی نمی‌شود</translation>
 <translation id="5382684862562314222">توکن بت هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.</translation>
 <translation id="9074594632540931067">خطا: توکن بت دردسترس نیست</translation>
 <translation id="413458922997276130">درحال‌حاضر حسابتان در Uphold مسدود شده است.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">مجموع دریافت‌شده</translation>
 <translation id="824449983246282560">موجودی حساب شما خالی است. برای خرید به Gemini مراجعه کنید.</translation>
 <translation id="8624961452383848703">می‌خواهم تبدیل کنم…</translation>
+<translation id="1544192797660353713">کیف پول</translation>
 <translation id="616639131065447379">به «کیف پول‌های رمزگذاری‌شده Brave» خوش آمدید</translation>
 <translation id="1740464057879304704">کیف پول رمزنگاری به شما امکان می‌دهد با رمزارز و دارایی‌های مرتبط در Brave کار کنید. کیف پول‌های رمزنگاری از توکن‌های Ethereum (مانند ETH و BAT) و همچنین از موارد قابل جمع‌آوری پشتیبانی می‌کند و به شما امکان می‌دهد با Ðapps و سایر قراردادهای هوشمند کار کنید. همه اینها برای افرادی است که با Ethereum و سایر سیستم‌های رنجیره بلوکی آشنا هستند - یا از یادگیری هیجان‌زده می‌شوند.</translation>
 <translation id="4855440621031541830">تنها در صورتی از «کیف پول‌های رمزگذاری‌شده» استفاده کنید که می‌پذیرید در قبال تمام خطراتی که این استفاده در پی دارد، تنها شما مسئول هستید و می‌پذیرید که Brave Software در قبال هرگونه ضرر، شامل ضررهای ضمنی یا تبعی که ممکن است در نتیجه این استفاده بر شما تحمیل شود، هیچ‌گونه مسئولیت یا تعهدی ندارد.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">پاداش‌های <ph name="AMOUNT"/><ph name="MONTH"/> شما در راه هستند. گوش به زنگ باشید!</translation>
 <translation id="2659764755126740206">رفتن به حساب <ph name="PROVIDER"/> من</translation>
 <translation id="1165667598801520610">افزودن سرمایه</translation>
-<translation id="2389181429986654814">برای تکمیل تأیید هویت، به <ph name="PROVIDER"/> بروید.</translation>
-<translation id="7793632266654336758">به‌منظور شروع دریافت پاداش‌ها، لطفاً تأیید هویت را انجام دهید.</translation>
 <translation id="2394961582378297792">از سیستم خارج شدید</translation>
 <translation id="6080167751812750226">قطع ارتباط با <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">درآمدهای تخمینی</translation>
 <translation id="4244985009709452836">به حساب <ph name="PROVIDER"/> خود وارد شوید</translation>
 <translation id="2613359062756190460">انعام یک‌باره</translation>
+<translation id="7580329715937096918">مشکل موقتی در تأیید با <ph name="PROVIDER"/> وجود دارد. «پاداش‌های Brave» شما در وضعیت «در حال انتظار» خواهد ماند و به‌طور خودکار امتحان مجدد انجام می‌شود، اما خودتان نیز می‌توانید بعداً دوباره امتحان کنید.</translation>
 <translation id="590733288489975971">پاداش‌های حاصل از آگهی‌ها</translation>
 <translation id="6181762795539107980">تأییدنشده</translation>
 <translation id="3026978804849658576">مشاهده بیانیه</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">امتیار توکن در دسترس است!</translation>
 <translation id="7701466644604753106">روشن کردن تندخوان</translation>
 <translation id="763042262431778831">خاموش کردن تندخوان</translation>
-<translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="1148827340205946630">کاربر درخواست را رد کرد.</translation>
 <translation id="2403819048476450281">پارامترهای نامعتبر.</translation>
 <translation id="3955144560853195652">زنجیره <ph name="VALUE"/> اضافه نشد</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">پیام</translation>
 <translation id="3586752056660754651">علامت</translation>
 <translation id="3484981968509595506">یک DApp در حال ارائه درخواست برای کلید رمزگذاری عمومی شما است</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> در حال ارائه درخواست برای کلید رمزگذاری عمومی کیف پول‌هایتان است. اگر با ارائه این کلید موافقت کنید، سایت می‌تواند پیام‌های رمزگذاری‌شده برایتان بنویسد.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> در حال ارائه درخواست برای کلید رمزگذاری عمومی کیف پول‌هایتان است. اگر با ارائه این کلید موافقت کنید، سایت می‌تواند پیام‌های رمزگذاری‌شده برای شما بنویسد.</translation>
 <translation id="3340247553212049934">تهیه کنید</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> می‌خواهد برای تکمیل درخواستتان این پیام را بخواند</translation>
+<translation id="1619778919922494944">این DApp می‌خواهد برای تکمیل درخواست شما،‌ این پیام را بخواند</translation>
 <translation id="714506544401754321">رمزگشایی پیام</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="9032898664193335413">اجازه می‌دهید این برنامه <ph name="TOKEN_SYMBOL"/> را خرج کند؟</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">کارمزد گس</translation>
 <translation id="7163997622278957886">قیمت پیشنهادی</translation>
 <translation id="1074360622426001342">مبلغ + گس</translation>
+<translation id="2186011161688824046">مبلغ + کارمزد</translation>
 <translation id="7084089311475827950">بدون داده</translation>
 <translation id="5821668936183240062">بعدی</translation>
 <translation id="793994607260936590">اول</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">مبادله سهام Brave</translation>
 <translation id="7829441065063984927">7 روز هدایای رمزگذاری‌شده، معادل 500 هزار دلار جایزه است.</translation>
 <translation id="8292716346768453265">اکنون وارد شوید!</translation>
+<translation id="6423985584914773314">آدرس FIL معتبر نیست</translation>
+<translation id="8528916244724490964">تمام شبکه‌ها</translation>
+<translation id="2781668117338732220">شبکه‌های ثانویه</translation>
+<translation id="2816106784624007524">محدوده گس باید عدد صحیح بزرگ‌تر از 0 باشد</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">اگر این سایت خراب به نظر می‌رسد، سپرها را خاموش کنید.
 <ph name="LINK_BEFORE"/>توجه: این امر ممکن است محافظت از حریم خصوصی Brave را کاهش دهد.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ردیاب‌ها، آگهی‌ها و <ph name="LINK_BEFORE"/> موارد دیگر مسدود شدند. بیشتر بدانید<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">کنترل‌های پیشرفته</translation>
+<translation id="650318023204990401">کنترل‌های پیشرفته</translation>
 <translation id="5799940914270080805">تغییر این تنظیمات ممکن است سایت‌ها را خراب کند.</translation>
 <translation id="9204041448536398473">تنظیمات عمومی سپرها</translation>
 <translation id="2108334320919763866">تنظیمات پیش‌فرض سراسری</translation>
-<translation id="1928321796986970424">فهرست‌های فیلتر</translation>
+<translation id="4516904298421534459">فیلتر کردن فهرست‌ها</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="131231380815754440">فعال کردن HTTPS</translation>
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="3246600097575692802">فعال کردن اسکریپت‌های مسدود</translation>
 <translation id="3603525299146223354">ردیاب‌ها و آگهی‌ها</translation>
-<translation id="1146309636943354181">ردیاب‌ها و آگهی‌ها مسدود شده‌اند (استاندارد)</translation>
-<translation id="5973258875089964805">ردیاب‌ها و آگهی‌ها مسدود شده‌اند (تهاجمی)</translation>
+<translation id="4448697385961650078">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
+<translation id="8593054718053894081">مسدود کردن فعالانه ردیاب‌ها و آگهی‌ها</translation>
 <translation id="7384778069178817075">مجاز بودن همه ردیاب‌ها و آگهی‌ها</translation>
-<translation id="6203697265754637264">کوکی‌های بین سایتی مسدود شدند</translation>
-<translation id="4627427111733173920">کوکی‌ها مسدود شدند</translation>
-<translation id="3972324600756617403">همه کوکی‌ها مجاز هستند</translation>
+<translation id="4941539331405513605">مسدود کردن کوکی‌های بین سایتی</translation>
+<translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
+<translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
 <translation id="8366221601425141146">اثر انگشت مسدود شده است</translation>
-<translation id="5582686930349810484">تشخیص اثر انگشت مسدود شد (استاندارد)</translation>
-<translation id="6696441392507885865">انگشت‌نگاری مسدود شد (شدید، ممکن است منجر به خرابی سایت‌ها شود)</translation>
-<translation id="5882733945883311404">مجاز بودن انواع انگشت‌نگاری</translation>
+<translation id="6531019308847917584">مسدود کردن تشخیص اثر انگشت</translation>
+<translation id="1899608006846124237">مسدود کردن فعالانه تشخیص اثرانگشت</translation>
+<translation id="8034285923190068220">اجازه به اثر انگشت</translation>
 <translation id="1992750560347846445">گزارش سایت</translation>
 <translation id="2387532482048804818">اگر سایت با سپرهای روشن به‌درستی کار نکرد به ما اطلاع دهید.</translation>
-<translation id="9167355841012806439">بدون محافظت از حریم خصوصی Brave در حال مشاهده این سایت هستید</translation>
-<translation id="6835073906252142271">«سپرهای Brave»،‏ <ph name="NUMBER"/> ردیاب، آگهی و موارد بیشتر مسدود شد</translation>
+<translation id="3795015906457257780">بدون محافظت‌های حریم خصوصی Brave در حال مشاهده این سایت هستید.</translation>
+<translation id="7194012750329511146">«سپرهای Brave»
+<ph name="NUMBER"/> ردیاب‌،‌ آگهی و موارد دیگر مسدود شد</translation>
 <translation id="1742469581923031760">در حال اتصال…</translation>
 <translation id="1287487756047817908">در حال قطع اتصال…</translation>
 <translation id="2325196879156848326">اتصال قطع شد</translation>
@@ -1239,4 +1246,9 @@
 <translation id="6973157709854838218">پنهان کردن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="4548946945059463969">نشان دادن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="242959166945779492">هیچ موجودی در حسابتان ندارید. برای خرید مقداری ارز، به FTX بروید.</translation>
+<translation id="2389181429986654814">برای تکمیل تأیید هویت، به <ph name="PROVIDER"/> بروید.</translation>
+<translation id="7793632266654336758">به‌منظور شروع دریافت پاداش‌ها، لطفاً تأیید هویت را انجام دهید.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> در حال ارائه درخواست برای کلید رمزگذاری عمومی کیف پول‌هایتان است. اگر با ارائه این کلید موافقت کنید، سایت می‌تواند پیام‌های رمزگذاری‌شده برایتان بنویسد.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> می‌خواهد برای تکمیل درخواستتان این پیام را بخواند</translation>
+<translation id="6835073906252142271">«سپرهای Brave»،‏ <ph name="NUMBER"/> ردیاب، آگهی و موارد بیشتر مسدود شد</translation>
 </translationbundle>

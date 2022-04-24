@@ -243,6 +243,15 @@
     "message": "Probíhá",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Nastal dočasný problém s ověřením vašeho $provider$. Vaše odměny Brave zůstanou v nevyřízeném stavu. Můžete to zkusit znovu později nebo to automaticky znovu vyzkoušíme my.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Odměny z reklam",
     "description": ""

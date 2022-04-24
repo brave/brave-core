@@ -243,6 +243,15 @@
     "message": "Gaida",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Radās īslaicīga $provider$ verifikācijas problēma. Jūsu Brave balvas saglabāsies neapstrādātā stāvoklī, un mēģinājums tiks veikts atkārtoti automātiski, bet varat arī mēģināt vēlāk.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Peļņa no reklāmām",
     "description": ""

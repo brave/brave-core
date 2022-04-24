@@ -243,6 +243,15 @@
     "message": "保留中",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "一時的に、$provider$ の認証に問題が発生しています。Braveリワードのステータスは保留中となり、自動的に再試行されます。後ほどもう一度お試しいただくことも可能です。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Adsによる報酬",
     "description": ""

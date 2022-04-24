@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Atrisināt</translation>
 <translation id="6991128190741664836">Vēlāk</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Maks</translation>
+<translation id="8488282162676695335">Brave maks</translation>
 <translation id="8820817407110198400">Grāmatzīmes</translation>
 <translation id="1644574205037202324">Vēsture</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Kļūda: jums vajadzīgs verificēts konts, lai pieteiktos.</translation>
 <translation id="5260522591743022748">Hmm, šķiet, ka jūsu Brave Rewards jau ir verificētas citā <ph name="PROVIDER"/> kontā. Lūdzu, mēģiniet verificēt vēlreiz, izmantojot iepriekšējo kontu.</translation>
 <translation id="5111921830714291902">Kļūda: cits konts</translation>
+<translation id="6933939911547091461">Diemžēl jūsu Brave balvas nevar verificēt, jo Brave balvu verifikācija pašlaik jūsu reģionā netiek atbalstīta.</translation>
+<translation id="8218538368080510976">Kļūda: neatbalstīts reģions</translation>
 <translation id="5382684862562314222">BAT jūsu reģionā Uphold makos vēl netiek atbalstīts.</translation>
 <translation id="9074594632540931067">Kļūda: BAT nav pieejams</translation>
 <translation id="413458922997276130">Jūsu Uphold konts ir bloķēts.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Kopā saņemts</translation>
 <translation id="824449983246282560">Kontā nav pieejamu līdzekļu. Apmeklējiet Gemini, lai tos iegādātos.</translation>
 <translation id="8624961452383848703">Es vēlos konvertēt...</translation>
+<translation id="1544192797660353713">Maks</translation>
 <translation id="616639131065447379">Laipni lūdzam Brave kripto makos!</translation>
 <translation id="1740464057879304704">Crypto Wallets ļauj jums darboties ar kriptovalūtu un saistītiem aktīviem, izmantojot Brave. Crypto Wallets atbalsta tādus Ethereum žetonus kā ETH un BAT, kā arī kolekcijas žetonus, un ļauj darboties ar Ðapps un citiem viedajiem līgumiem. Tas ir paredzēts cilvēkiem, kuri pārzina Ethereum un citas blokķēdes sistēmas – vai vēlas to apgūt.</translation>
 <translation id="4855440621031541830">Izmantojiet kripto makus tikai tad, ja piekrītat, ka pilnībā atbildat par visiem ar šī pakalpojuma izmantošanu saistītajiem riskiem un Brave Software nekādā veidā neatbild par jebkādiem zaudējumiem, tai skaitā nejaušiem vai secīgiem zaudējumiem, kas jums var rasties šī pakalpojuma lietošanas rezultātā, un tam nav nekādu saistību attiecībā uz šādiem zaudējumiem.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Jūsu <ph name="AMOUNT"/><ph name="MONTH"/> atlīdzības ir ceļā. Gaidiet!</translation>
 <translation id="2659764755126740206">Doties uz manu <ph name="PROVIDER"/> kontu</translation>
 <translation id="1165667598801520610">Pievienot līdzekļus</translation>
-<translation id="2389181429986654814">Doties uz <ph name="PROVIDER"/> lai pabeigtu verifikāciju</translation>
-<translation id="7793632266654336758">Pabeidziet identitātes verifikāciju, lai sāktu saņemt balvas.</translation>
 <translation id="2394961582378297792">Izrakstījies</translation>
 <translation id="6080167751812750226">Atvienoties no <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Aptuvenā peļņa</translation>
 <translation id="4244985009709452836">Ielogojieties savā <ph name="PROVIDER"/> kontā</translation>
 <translation id="2613359062756190460">Vienreizējās dzeramnaudas</translation>
+<translation id="7580329715937096918">Radās īslaicīga <ph name="PROVIDER"/> verifikācijas problēma. Jūsu Brave balvas saglabāsies neapstrādātā stāvoklī, un mēģinājums tiks veikts atkārtoti automātiski, bet varat arī mēģināt vēlāk.</translation>
 <translation id="590733288489975971">Peļņa no reklāmām</translation>
 <translation id="6181762795539107980">Neapstiprināts</translation>
 <translation id="3026978804849658576">Skatīt pārskatu</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Pieejams marķiera piešķīrums</translation>
 <translation id="7701466644604753106">Ieslēgt ātro lasītāju</translation>
 <translation id="763042262431778831">Izslēgt ātro lasītāju</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">Lietotājs noraidīja pieprasījumu.</translation>
 <translation id="2403819048476450281">Nederīgi parametri.</translation>
 <translation id="3955144560853195652">Ķēde <ph name="VALUE"/> nav pievienota</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Ziņojums</translation>
 <translation id="3586752056660754651">Parakstīt</translation>
 <translation id="3484981968509595506">DApp pieprasa jūsu publisko šifrēšanas atslēgu</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> pieprasa jūsu maka publisko šifrēšanas atslēgu. Ja piekrītat norādīt šo atslēgu, vietne varēs jums veidot šifrētus ziņojumus.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> pieprasa jūsu maka publisko šifrēšanas atslēgu. Ja piekrītat šīs atslēgas sniegšanai jums varēs sacerēt šifrētus ziņojumus.</translation>
 <translation id="3340247553212049934">Iesniegt</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vēlas izlasīt šo ziņojumu, lai pabeigtu jūsu pieprasījumu</translation>
+<translation id="1619778919922494944">Šī DApp vēlas lasīt šo ziņojumu, lai pabeigtu jūsu pieprasījumu</translation>
 <translation id="714506544401754321">Atšifrēt ziņojumu</translation>
 <translation id="5039804452771397117">Atļaut</translation>
 <translation id="9032898664193335413">Ļaut šai lietotnei iztērēt jūsu <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Gas maksa</translation>
 <translation id="7163997622278957886">Cena</translation>
 <translation id="1074360622426001342">Summa + Gas</translation>
+<translation id="2186011161688824046">Summa + komisijas maksa</translation>
 <translation id="7084089311475827950">Nav datu.</translation>
 <translation id="5821668936183240062">tālāk</translation>
 <translation id="793994607260936590">pirmais</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Maiņas likmes</translation>
 <translation id="7829441065063984927">7 kriptovalūtu dāvanu dienas, balvās apmēram $500 000.</translation>
 <translation id="8292716346768453265">Piedalieties tagad!</translation>
+<translation id="6423985584914773314">Nederīga FIL adrese</translation>
+<translation id="8528916244724490964">Visi tīkli</translation>
+<translation id="2781668117338732220">Sekundārie tīkli</translation>
+<translation id="2816106784624007524">Gas robežvērtībai jābūt veselam skaitlim, kas lielāks par 0</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Ja vietne šķiet kļūdaina, pamēģiniet deaktivizēt aizsargus. 
     <ph name="LINK_BEFORE"/>Piezīme: tas var samazināt Brave privātuma aizsardzību.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Izsekotāji, reklāmas un vairāk bloķētu <ph name="LINK_BEFORE"/> Uzzināt vairāk <ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Papildu kontrole</translation>
+<translation id="650318023204990401">Papildu vadīklas</translation>
 <translation id="5799940914270080805">Šo iestatījumu maiņa var radīt vietņu darbības traucējumus.</translation>
 <translation id="9204041448536398473">Globālie aizsarga iestatījumi</translation>
 <translation id="2108334320919763866">Globālie noklusējuma iestatījumi</translation>
-<translation id="1928321796986970424">Filtrēt sarakstus</translation>
+<translation id="4516904298421534459">Filtru saraksti</translation>
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="131231380815754440">Iespējot HTTPS</translation>
 <translation id="4824468494729001999">Bloķēt skriptus</translation>
 <translation id="3246600097575692802">Iespējot bloķētos skriptus</translation>
 <translation id="3603525299146223354">Izsekotāji un reklāmas</translation>
-<translation id="1146309636943354181">Izsekotāji un reklāmas ir bloķēti (standarta režīms)</translation>
-<translation id="5973258875089964805">Izsekotāji un reklāmas ir bloķēti (agresīvais režīms)</translation>
+<translation id="4448697385961650078">Bloķēt izsekotājus un reklāmas</translation>
+<translation id="8593054718053894081">Agresīvi bloķēt izsekotājus un reklāmas</translation>
 <translation id="7384778069178817075">Atļaut visus izsekotājus un reklāmas</translation>
-<translation id="6203697265754637264">Bloķēti starpvietņu sīkfaili</translation>
-<translation id="4627427111733173920">Bloķētie sīkfaili</translation>
-<translation id="3972324600756617403">Atļauti visi sīkfaili</translation>
+<translation id="4941539331405513605">Bloķēt starpvietņu sīkfailus</translation>
+<translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
+<translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
 <translation id="8366221601425141146">Pirkstu nospiedumu ņemšana bloķēta</translation>
-<translation id="5582686930349810484">Pirkstu nospiedumu ņemšana bloķēta (standarta režīms)</translation>
-<translation id="6696441392507885865">Pirkstu nospiedumu ņemšana bloķēta (stingrais režīms, var radīt darbības traucējumus)</translation>
-<translation id="5882733945883311404">Atļaut visu pirkstu nospiedumu ņemšanu</translation>
+<translation id="6531019308847917584">Bloķēt identificējošās ciparvirknes veidošanu</translation>
+<translation id="1899608006846124237">Agresīvi bloķēt identificējošās ciparvirknes veidošanu</translation>
+<translation id="8034285923190068220">Atļaut pirkstu nospiedumu ņemšanu</translation>
 <translation id="1992750560347846445">Ziņot par vietni</translation>
 <translation id="2387532482048804818">Ziņojiet mums, ja vietne ar aktivizētiem aizsargiem nedarbojas pareizi.</translation>
-<translation id="9167355841012806439">Jūs skatāties šo vietni bez Brave privātuma aizsardzības</translation>
-<translation id="6835073906252142271">Brave Aizsargi <ph name="NUMBER"/> Izsekotāji, reklāmas un citi bloķēti</translation>
+<translation id="3795015906457257780">Jūsu skatāt šo vietni, neizmantojot Brave privātuma aizsardzību.</translation>
+<translation id="7194012750329511146">Brave aizsargi
+Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="1742469581923031760">Savienojas…</translation>
 <translation id="1287487756047817908">Atvienojas…</translation>
 <translation id="2325196879156848326">Savienojums neizdevās</translation>
@@ -1239,4 +1246,9 @@
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="2389181429986654814">Doties uz <ph name="PROVIDER"/> lai pabeigtu verifikāciju</translation>
+<translation id="7793632266654336758">Pabeidziet identitātes verifikāciju, lai sāktu saņemt balvas.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> pieprasa jūsu maka publisko šifrēšanas atslēgu. Ja piekrītat norādīt šo atslēgu, vietne varēs jums veidot šifrētus ziņojumus.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vēlas izlasīt šo ziņojumu, lai pabeigtu jūsu pieprasījumu</translation>
+<translation id="6835073906252142271">Brave Aizsargi <ph name="NUMBER"/> Izsekotāji, reklāmas un citi bloķēti</translation>
 </translationbundle>

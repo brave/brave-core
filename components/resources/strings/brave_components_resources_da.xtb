@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Løs</translation>
 <translation id="6991128190741664836">Senere</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Wallet</translation>
+<translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="8820817407110198400">Bogmærker</translation>
 <translation id="1644574205037202324">Historik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
@@ -646,6 +646,7 @@
 <translation id="8851480289992540512">Total modtaget</translation>
 <translation id="824449983246282560">Du kan ikke nogen saldo på din konto. Besøg Gemini for at købe valuta.</translation>
 <translation id="8624961452383848703">Jeg vil konvertere ...</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="616639131065447379">Velkommen til Brave Krypto-tegnebøger</translation>
 <translation id="1740464057879304704">Crypto Wallets giver dig mulighed for at arbejde med kryptovalutaer og relaterede aktiver i Brave. Crypto Wallets understøtter Ethereum-tokens som ETH og BAT samt samleobjekter og lader dig arbejde med Ðapps og andre smartkontrakter. Alt dette er beregnet til folk, der er fortrolige med Ethereum og andre blockchain-systemer - eller er glade for at lære.</translation>
 <translation id="4855440621031541830">Brug kun Krypto-tegnebøger hvis du er indforstået med, at du alene er ansvarlig for alle risici forbundet hermed, og at Brave Software ikke bærer nogen forpligtelse eller noget ansvar for eventuelle tab du måtte opleve som resultat af brug af Krypto-tegnebøger (herunder forbigående tab og følgetab).</translation>
@@ -761,8 +762,6 @@
 <translation id="5878420576943709750">Dine <ph name="AMOUNT"/> belønninger for <ph name="MONTH"/> er på vej. Hold øje med dem!</translation>
 <translation id="2659764755126740206">Gå til min <ph name="PROVIDER"/>-konto</translation>
 <translation id="1165667598801520610">Tilføj Penge</translation>
-<translation id="2389181429986654814">Gå til <ph name="PROVIDER"/> for at gennemføre bekræftelsen</translation>
-<translation id="7793632266654336758">Gennemfør venligst identitetsbekræftelsen for at komme i gang med at modtage belønninger.</translation>
 <translation id="2394961582378297792">Logget ud</translation>
 <translation id="6080167751812750226">Afbryd forbindelsen til <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Anslået indtjening</translation>
@@ -791,7 +790,6 @@
 <translation id="2221902203895354376">En poletbevilling er tilgængelig!</translation>
 <translation id="7701466644604753106">Tænd for speedreader</translation>
 <translation id="763042262431778831">SLUK for speedreader</translation>
-<translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="1148827340205946630">Brugeren afviste anmodningen.</translation>
 <translation id="2403819048476450281">Ugyldige parametre.</translation>
 <translation id="3955144560853195652">Kæden <ph name="VALUE"/> er ikke tilføjet</translation>
@@ -1004,9 +1002,7 @@
 <translation id="5488357322146334497">Besked</translation>
 <translation id="3586752056660754651">Underskriv</translation>
 <translation id="3484981968509595506">En DApp anmoder om din offentlige krypteringsnøgle</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> anmoder om den offentlige krypteringsnøgle til din wallet. Hvis du accepterer at dele denne nøgle, kan siden sende krypterede beskeder til dig.</translation>
 <translation id="3340247553212049934">Giv</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vil gerne læse denne besked for at fuldføre din anmodning</translation>
 <translation id="714506544401754321">Dekrypter besked</translation>
 <translation id="5039804452771397117">Tillad</translation>
 <translation id="9032898664193335413">Tillad, at denne app bruger dine <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1180,30 +1176,24 @@
 <translation id="7709075156958117386">Hvis siden virker ødelagt, så prøv med skjolde nede. 
     <ph name="LINK_BEFORE"/>Bemærk: Dette kan reducere Braves beskyttelse af privatlivet.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, reklamer med mere er blokeret <ph name="LINK_BEFORE"/>Læs mere<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Avanceret Styring</translation>
+<translation id="650318023204990401">Avancerede kontroller</translation>
 <translation id="5799940914270080805">Det kan ødelægge sider at ændre disse indstillinger.</translation>
 <translation id="9204041448536398473">Globale skjoldindstillinger</translation>
 <translation id="2108334320919763866">Global standard</translation>
-<translation id="1928321796986970424">Filterlister</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="131231380815754440">Aktivér HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="3246600097575692802">Aktivér Scripts blokeret</translation>
 <translation id="3603525299146223354">Trackers &amp; reklamer</translation>
-<translation id="1146309636943354181">Trackere &amp; reklamer blokeret (standard)</translation>
-<translation id="5973258875089964805">Trackere &amp; reklamer blokeret (aggressivt)</translation>
+<translation id="4448697385961650078">Blokér trackere &amp; reklamer</translation>
 <translation id="7384778069178817075">Tillad alle trackere &amp; reklamer</translation>
-<translation id="6203697265754637264">Cross-site-cookies blokeret</translation>
-<translation id="4627427111733173920">Cookies blokeret</translation>
-<translation id="3972324600756617403">Alle cookies tilladt</translation>
+<translation id="4941539331405513605">Blokér cross-site cookies</translation>
+<translation id="6883611015375728278">Blokér alle cookies</translation>
+<translation id="5657156137487675418">Tillad alle cookies</translation>
 <translation id="8366221601425141146">Fingeraftryk blokeret</translation>
-<translation id="5582686930349810484">Fingeraftryk er blokeret (standard)</translation>
-<translation id="6696441392507885865">Fingeraftryk blokeret (streng, kan ødelægge sider)</translation>
-<translation id="5882733945883311404">Tillad al fingeraftrykning</translation>
+<translation id="8034285923190068220">Tillad fingeraftryk</translation>
 <translation id="1992750560347846445">Anmeld side</translation>
 <translation id="2387532482048804818">Fortæl os, hvis siden ikke virkede korrekt med skjoldene oppe.</translation>
-<translation id="9167355841012806439">Du ser denne side uden Braves privatlivsbeskyttelse</translation>
-<translation id="6835073906252142271">Brave-skjolde <ph name="NUMBER"/> trackere, annoncer og mere er blokeret</translation>
 <translation id="1742469581923031760">Oprette forbindelse …</translation>
 <translation id="1287487756047817908">Afbryder forbindelse ...</translation>
 <translation id="2325196879156848326">Forbindelse fejlede</translation>
@@ -1239,4 +1229,9 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="2389181429986654814">Gå til <ph name="PROVIDER"/> for at gennemføre bekræftelsen</translation>
+<translation id="7793632266654336758">Gennemfør venligst identitetsbekræftelsen for at komme i gang med at modtage belønninger.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> anmoder om den offentlige krypteringsnøgle til din wallet. Hvis du accepterer at dele denne nøgle, kan siden sende krypterede beskeder til dig.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vil gerne læse denne besked for at fuldføre din anmodning</translation>
+<translation id="6835073906252142271">Brave-skjolde <ph name="NUMBER"/> trackere, annoncer og mere er blokeret</translation>
 </translationbundle>

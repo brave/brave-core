@@ -243,6 +243,15 @@
     "message": "Beklemede",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "$provider$ ile doğrulama konusunda geçici bir sorun var. Brave Ödülleriniz Bekleme durumunda kalacak ve otomatik olarak tekrar denenecek fakat siz de daha sonra tekrar deneyebilirsiniz.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Ads Ödülleri",
     "description": ""

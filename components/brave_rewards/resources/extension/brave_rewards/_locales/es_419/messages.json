@@ -243,6 +243,15 @@
     "message": "Pendiente",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Se produce un problema temporal al realizar la verificación con $provider$. Tu perfil de Recompensas de Brave se mantendrá en estado \"Pendiente\" y volverá a intentarlo automáticamente, aunque también puedes dejarlo para más adelante.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Recompensas de anuncios",
     "description": ""

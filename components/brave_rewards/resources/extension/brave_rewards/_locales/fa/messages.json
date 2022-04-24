@@ -243,6 +243,15 @@
     "message": "معوق",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "مشکل موقتی در تأیید با $provider$ وجود دارد. «پاداش‌های Brave» شما در وضعیت «در حال انتظار» خواهد ماند و به‌طور خودکار امتحان مجدد انجام می‌شود،‌ اما خودتان نیز می‌توانید بعداً دوباره امتحان کنید.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "پاداش‌های حاصل از آگهی‌ها",
     "description": ""

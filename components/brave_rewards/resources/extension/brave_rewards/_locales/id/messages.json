@@ -243,6 +243,15 @@
     "message": "Tertunda",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Terdapat masalah sementara saat memverifikasi dengan $provider$. Imbalan Brave Anda akan tetap dalam status Ditunda dan dicoba ulang secara otomatis, namun Anda juga dapat mencoba lagi nanti.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Imbalan dari Iklan",
     "description": ""

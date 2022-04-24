@@ -55,7 +55,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5197219128592971597">Zawsze odwiedzaj pierwotne (bez standardu AMP) adresy URL, a nie wersje stron korzystających ze standardu Accelerated Mobile Pages Google</translation>
 <translation id="5802665280774361839">Wyświetl elementy automatycznie wypełnione w pasku adresu</translation>
 <translation id="597020512043916976">Pokaż popularne strony w sugestiach autouzupełnienia</translation>
-<translation id="264150068416846820">Pokaż sugestie stron Brave w sugestiach autouzupełnienia</translation>
+<translation id="301088458323355543">Pokaż podpowiedzi stron w sugestiach autouzupełniania</translation>
 <translation id="5529693968082667490">Pokaż przycisk do wyszukiwania kart</translation>
 <translation id="6414370348346025511">Ochrona standardowa jest włączona.</translation>
 <translation id="814018970995616154">Porównuje adresy URL z listą niebezpiecznych witryn przechowywaną w Brave.</translation>
@@ -70,8 +70,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4851215387785619212">Prywatne reklamy Brave</translation>
 <translation id="7808122468353671181">Zarabiaj tokeny, oglądając reklamy Brave. Te reklamy odpowiadają Twoim zainteresowaniom, które są określane na podstawie przeglądanych przez Ciebie stron internetowych. Twoje dane osobowe oraz historia przeglądania przez cały czas pozostają wyłącznie w Twojej przeglądarce.</translation>
 <translation id="1758947220824279023">Maksymalna liczba reklam do wyświetlenia</translation>
-<translation id="8578912649458880781">Kierowanie reklam na poziomie regionalnym</translation>
-<translation id="3678362265519557511">Dzięki temu Brave może przedstawiać Ci reklamy przeznaczone specjalnie dla Twojego regionu. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Trafność reklam regionalnych</translation>
+<translation id="2196950072404588793">Dzięki temu Brave może przedstawiać Ci reklamy przeznaczone specjalnie dla Twojego regionu. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Wspieraj automatycznie</translation>
 <translation id="9132509928968869844">Miesięczny limit automatycznego wsparcia</translation>
 <translation id="7286722244752781970">Minimalny czas spędzony na stronie przed zalogowaniem odwiedzin</translation>
@@ -144,8 +144,10 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="130615081792797568">Widok podstawowy</translation>
 <translation id="2360360976480535628">Widok zaawansowany</translation>
 <translation id="2133317862976486547">Zablokuj skrypty śledzące i reklamy</translation>
-<translation id="4385707520896576447">Zablokuj pliki cookie</translation>
-<translation id="4978786495456601191">Zablokuj rozpoznawanie urządzenia</translation>
+<translation id="8823559166155093873">Zablokuj pliki cookies</translation>
+<translation id="6531019308847917584">Zablokuj zdejmowanie odcisków palca</translation>
+<translation id="7607166182943595829">Uniemożliwiaj witrynom zdejmowanie odcisków palców na podstawie moich preferencji językowych</translation>
+<translation id="3497934980362703405">Włączenie tego ustawienia zmniejsza zakres, w jakim witryny internetowe mogą poznawać preferencje językowe użytkownika.</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="4824468494729001999">Zablokuj skrypty</translation>
 <translation id="4395160081588457461">Popatrz i poczuj</translation>
@@ -434,8 +436,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8487693399751278191">Importuj zakładki...</translation>
 <translation id="2557899542277210112">Aby uzyskać szybki dostęp, umieść zakładki tutaj na pasku zakładek.</translation>
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
-<translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
-<translation id="8581710194025054669">Aby zapewnić sobie najlepszą ochronę prywatności w Internecie, rozważ ustawienie Brave jako domyślnej przeglądarki na swoim komputerze. Jeśli to zrobisz, każde kliknięte łącze internetowe będzie otwierane z wykorzystaniem ochrony prywatności Brave.</translation>
 <translation id="1968543937259008435">Gotów na korzystanie z najlepszej ochrony prywatności online?</translation>
 <translation id="6817415381278637662">Ustaw Brave jako przeglądarkę domyślną, aby skorzystać z ochrony prywatności Brave na każdej stronie sieci Web, którą otworzysz.</translation>
 <translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
@@ -466,4 +466,9 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1062463687579789365">Dostosowywanie sieci portfela</translation>
 <translation id="2234108191702901162">Nie można dodać sieci</translation>
 <translation id="2618193846561624884">Czy chcesz zaktualizować istniejącą sieć?</translation>
+<translation id="264150068416846820">Pokaż sugestie stron Brave w sugestiach autouzupełnienia</translation>
+<translation id="8578912649458880781">Kierowanie reklam na poziomie regionalnym</translation>
+<translation id="3678362265519557511">Dzięki temu Brave może przedstawiać Ci reklamy przeznaczone specjalnie dla Twojego regionu. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
+<translation id="8581710194025054669">Aby zapewnić sobie najlepszą ochronę prywatności w Internecie, rozważ ustawienie Brave jako domyślnej przeglądarki na swoim komputerze. Jeśli to zrobisz, każde kliknięte łącze internetowe będzie otwierane z wykorzystaniem ochrony prywatności Brave.</translation>
 </translationbundle>

@@ -243,6 +243,15 @@
     "message": "等待审批",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "用 $provider$ 进行验证时出现临时性问题。您的 Brave Rewards 会继续处于“待处理” 状态并会自动重试，但您也可以稍后再试。",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "广告奖励",
     "description": ""

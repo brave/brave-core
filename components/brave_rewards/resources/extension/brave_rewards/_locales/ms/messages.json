@@ -243,6 +243,15 @@
     "message": "Menunggu",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Terdapat masalah sementara bagi pengesahan menggunakan $provider$. Brave Rewards anda akan kekal dalam keadaan Menunggu dan cuba semula secara automatik, namun begitu anda juga boleh mencuba semula kemudian.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Ganjaran dari Iklan",
     "description": ""

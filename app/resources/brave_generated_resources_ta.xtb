@@ -24,7 +24,6 @@
 <translation id="1811404036171336214">புது தாவல் பக்கத்தில் எப்போதும் புத்தகக்குறிகளை காட்டு</translation>
 <translation id="5802665280774361839">முகவரிப்பட்டையில் தன்னிறைவுசெய்தலைக் காட்டு</translation>
 <translation id="597020512043916976">தன்னிறைவுசெய்தல் பரிந்துரைகளில் உயர்மட்ட தளங்களைக் காட்டு</translation>
-<translation id="264150068416846820">தன்னிறைவுசெய்தல் பரிந்துரைகளில் பிரேவ் பரிந்துரைக்குந்தளங்களைக் காட்டு</translation>
 <translation id="8798099450830957504">இயல்புநிலை</translation>
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
 <translation id="4851215387785619212">பிரேவ் தனிப்பட்ட விளம்பரங்கள்</translation>
@@ -65,8 +64,6 @@
 <translation id="130615081792797568">எளிய பார்வை</translation>
 <translation id="2360360976480535628">மேம்பட்ட பார்வை</translation>
 <translation id="2133317862976486547">தடமிகள் &amp; விளம்பரங்கள் தடுத்தல்</translation>
-<translation id="4385707520896576447">நினைவி தடுத்தல்</translation>
-<translation id="4978786495456601191">கைரேகை தடுத்தல்</translation>
 <translation id="3570081523466826008">HTTPSக்கு இணைப்புகளை தரமுயர்த்து</translation>
 <translation id="4824468494729001999">சிறுநிரல்களைத் தடு</translation>
 <translation id="4395160081588457461">பார்வை &amp; உணர்வு</translation>
@@ -179,10 +176,11 @@
 <translation id="8487693399751278191">இப்போது புத்தகக்குறிகளை இறக்கு...</translation>
 <translation id="2557899542277210112">விரைவு அணுகலுக்கு, உமது புத்தகக்குறிகளை இங்கே புத்தகக்குறி பட்டையில் வை.</translation>
 <translation id="2808630562319398131">பிரேவ் வெகுமதிகள் தரவை அகரமாக்கு...</translation>
-<translation id="2273851479262317744">இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
 <translation id="8722651357687610395">இயல்புநிலையாக பிரேவை அமை</translation>
 <translation id="2156993118928861787">செல்லாத முகவரி</translation>
 <translation id="2653659639078652383">சமர்ப்பி</translation>
 <translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
 <translation id="3047726704186619366">படவுரு உரலிகள்</translation>
+<translation id="264150068416846820">தன்னிறைவுசெய்தல் பரிந்துரைகளில் பிரேவ் பரிந்துரைக்குந்தளங்களைக் காட்டு</translation>
+<translation id="2273851479262317744">இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
 </translationbundle>

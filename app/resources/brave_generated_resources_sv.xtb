@@ -55,7 +55,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5197219128592971597">Besök alltid ursprungliga (icke-AMP) sidadresser i stället för Googles Accelerated Mobile Page-versioner</translation>
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
-<translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
+<translation id="301088458323355543">Visa föreslagna webbplatser i komplettera automatiskt-förslag</translation>
 <translation id="5529693968082667490">Visa knappen fliksök</translation>
 <translation id="6414370348346025511">Standardskyddet är på.</translation>
 <translation id="814018970995616154">Kontrollerar webbadresser mot en lista över osäkra webbplatser som lagras i Brave.</translation>
@@ -70,8 +70,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4851215387785619212">Braves privata annonser</translation>
 <translation id="7808122468353671181">Få tokens genom att se på annonser i Brave. De annonser som visas är baserade på dina intressen och hur du surfar på nätet. Personuppgifter och surfhistorik lämnar aldrig din webbläsare.</translation>
 <translation id="1758947220824279023">Maximalt antal annonser att visa</translation>
-<translation id="8578912649458880781">Målinriktning på statsnivå</translation>
-<translation id="3678362265519557511">Detta gör det möjligt för Brave att visa dig annonser som är särskilt avsedda för din stat. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Regional annonsrelevans</translation>
+<translation id="2196950072404588793">Detta gör det möjligt för Brave att visa dig annonser som är särskilt avsedda för din region. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="9132509928968869844">Månatlig automatisk donationsgräns</translation>
 <translation id="7286722244752781970">Minimum tid på en sida innan ett besök loggas</translation>
@@ -144,8 +144,10 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="130615081792797568">Enkel vy</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
 <translation id="2133317862976486547">Blockning av spårare och annonser</translation>
-<translation id="4385707520896576447">Blockning av cookies</translation>
-<translation id="4978786495456601191">Blockning av fingeravtrycksläsning</translation>
+<translation id="8823559166155093873">Blockera cookies</translation>
+<translation id="6531019308847917584">Blockera fingeravtryck</translation>
+<translation id="7607166182943595829">Förhindra webbplatser från att ta mitt fingeravtryck baserat på mina språkinställningar</translation>
+<translation id="3497934980362703405">Aktivering av den här inställningen minskar hur mycket webbplatser kan lära sig om dina språkinställningar.</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="4824468494729001999">Blockera skript</translation>
 <translation id="4395160081588457461">Titta och känna</translation>
@@ -435,8 +437,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8487693399751278191">Importera bokmärken nu ...</translation>
 <translation id="2557899542277210112">För snabb åtkomst kan du lägga dina bokmärken här.</translation>
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
-<translation id="2273851479262317744">Ange Brave som standardwebbläsare</translation>
-<translation id="8581710194025054669">För att säkerställa bästa integritet online bör du överväga att ange Brave som standardwebbläsare på din dator. Med Brave som standard öppnas alla webblänkar du klickar på med Braves integritetsskydd.</translation>
 <translation id="1968543937259008435">Är du redo för den bästa sekretessen online?</translation>
 <translation id="6817415381278637662">Ange Brave som standardwebbläsare för att få Braves sekretesskydd på varje webbsida du öppnar.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
@@ -467,4 +467,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>
 <translation id="2234108191702901162">Kunde inte lägga till nätverk</translation>
 <translation id="2618193846561624884">Vill du uppdatera det befintliga nätverket?</translation>
+<translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
+<translation id="8578912649458880781">Målinriktning på statsnivå</translation>
+<translation id="3678362265519557511">Detta gör det möjligt för Brave att visa dig annonser som är särskilt avsedda för din stat. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Ange Brave som standardwebbläsare</translation>
+<translation id="8581710194025054669">För att säkerställa bästa integritet online bör du överväga att ange Brave som standardwebbläsare på din dator. Med Brave som standard öppnas alla webblänkar du klickar på med Braves integritetsskydd.</translation>
 </translationbundle>

@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Løs</translation>
 <translation id="6991128190741664836">Senere</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Lommebok</translation>
+<translation id="8488282162676695335">Brave-lommebok</translation>
 <translation id="8820817407110198400">Bokmerker</translation>
 <translation id="1644574205037202324">Logg</translation>
 <translation id="6165508094623778733">Lær mer</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Feil: Du trenger en bekreftet konto for å logge på</translation>
 <translation id="5260522591743022748">Hmm, det ser ut som at Brave Rewards allerede er bekreftet med en annen <ph name="PROVIDER"/>-konto. Prøv å bekrefte på nytt med den tidligere kontoen.</translation>
 <translation id="5111921830714291902">Feil: Annen konto</translation>
+<translation id="6933939911547091461">Brave-belønningene dine kan dessverre ikke verifiseres, fordi det ikke er støtte for verifisering av Brave-belønninger for regionen din nå.</translation>
+<translation id="8218538368080510976">Feil: Regionen støttes ikke</translation>
 <translation id="5382684862562314222">BAT støttes ikke enda i regionen din på Uphold.</translation>
 <translation id="9074594632540931067">Feil: BAT utilgjengelig</translation>
 <translation id="413458922997276130">Kontoen din hos Uphold er for øyeblikket blokkert.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Mottatt totalt</translation>
 <translation id="824449983246282560">Du har ingen saldoer i kontoen. Gå til Gemini for å kjøpe.</translation>
 <translation id="8624961452383848703">Jeg vil konvertere ...</translation>
+<translation id="1544192797660353713">Lommebok</translation>
 <translation id="616639131065447379">Velkommen til Braves kryptolommebok</translation>
 <translation id="1740464057879304704">Crypto Wallets lar deg jobbe med kryptovaluta og relaterte midler i Brave. Crypto Wallets støtter Ethereum tokener som ETH og BAT, i tillegg til collectibles, og lar deg jobbe med Ðapps og andre smarte kontrakter. Alt dette er beregnet på personer som er kjente med Ethereum og andre blokk-kjede-systemer – eller er spente på å lære.</translation>
 <translation id="4855440621031541830">Bruk kryptolommebøker kun hvis du aksepterer at du ene og alene er ansvarlig for all risk assosiert med bruken av disse, og at Brave-programvaren bærer intet ansvar for tap, enten tilfeldig eller som følge av bruken av disse.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750"><ph name="AMOUNT"/>-belønningene dine for <ph name="MONTH"/> er på vei. Følg med!</translation>
 <translation id="2659764755126740206">Gå til <ph name="PROVIDER"/>-kontoen min</translation>
 <translation id="1165667598801520610">Legg til midler</translation>
-<translation id="2389181429986654814">Gå til <ph name="PROVIDER"/> for å fullføre bekreftelsen</translation>
-<translation id="7793632266654336758">Fullfør identitietsbekreftelsen for å begynne å motta belønninger.</translation>
 <translation id="2394961582378297792">Logget ut</translation>
 <translation id="6080167751812750226">Koble fra <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ansl. inntjening</translation>
 <translation id="4244985009709452836">Logg på din <ph name="PROVIDER"/>-konto</translation>
 <translation id="2613359062756190460">Engangstips</translation>
+<translation id="7580329715937096918">Det har oppstått et midlertidig problem med verifisering via <ph name="PROVIDER"/>. Brave-belønningene dine får statusen Venter, og vi prøver igjen automatisk. Du kan også prøve igjen senere.</translation>
 <translation id="590733288489975971">Rewards fra Ads</translation>
 <translation id="6181762795539107980">Ikke verifisert</translation>
 <translation id="3026978804849658576">Vis kontoutskrift</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">En ny tokenopptjening er tilgjengelig!</translation>
 <translation id="7701466644604753106">Slå PÅ Hurtigleser</translation>
 <translation id="763042262431778831">Slå AV Hurtigleser</translation>
-<translation id="8488282162676695335">Brave-lommebok</translation>
 <translation id="1148827340205946630">Brukeren avslo forespørselen</translation>
 <translation id="2403819048476450281">Ugyldige parametere.</translation>
 <translation id="3955144560853195652">Kjeden <ph name="VALUE"/> har ikke blitt lagt til</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Melding</translation>
 <translation id="3586752056660754651">Undertegn</translation>
 <translation id="3484981968509595506">En DApp ber om din offentlige krypteringsnøkkel</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> ber om den offentlige krypteringsnøkkelen for lommeboken din. Hvis du samtykker til å oppgi denne nøkkelen, vil siden kunne opprette krypterte meldinger til deg.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> ber om den offentlige krypteringsnøkkelen for lommeboken din. Hvis du samtykker til å oppgi denne nøkkelen, vil siden kunne opprette krypterte meldinger til deg.</translation>
 <translation id="3340247553212049934">Lever</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ønsker å lese denne meldingen for å fullføre forespørselen din</translation>
+<translation id="1619778919922494944">Denne DApp-en vil lese denne meldingen for å fullføre forespørselen din</translation>
 <translation id="714506544401754321">Dekrypter melding</translation>
 <translation id="5039804452771397117">Tillat</translation>
 <translation id="9032898664193335413">Tillat denne appen å bruke ditt <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">«Gas»-gebyr</translation>
 <translation id="7163997622278957886">Bud</translation>
 <translation id="1074360622426001342">Beløp + «gas»</translation>
+<translation id="2186011161688824046">Beløp + avgift</translation>
 <translation id="7084089311475827950">Ingen data.</translation>
 <translation id="5821668936183240062">neste</translation>
 <translation id="793994607260936590">første</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 dager med krypto-giveaways, USD 500 000 i premier</translation>
 <translation id="8292716346768453265">Bli med nå!</translation>
+<translation id="6423985584914773314">Ikke en gyldig FIL-adresse</translation>
+<translation id="8528916244724490964">Alle nettverk</translation>
+<translation id="2781668117338732220">Sekundære nettverk</translation>
+<translation id="2816106784624007524">«Gas»-grensen må være et heltall større enn 0</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
@@ -1179,30 +1185,31 @@
 <translation id="260764436039299868">Skjoldene er NEDE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Hvis dette nettstedet ser ut til å ha feil, prøv å senke skjoldene.<ph name="LINK_BEFORE"/>Merk: Dette kan svekke personvernbeskyttelsen fra Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Sporinger, reklamer og annet blokkert <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Avanserte kontroller</translation>
+<translation id="650318023204990401">Avanserte kontroller</translation>
 <translation id="5799940914270080805">Hvis du endrer disse innstillingene, kan du oppleve problemer med nettsider.</translation>
 <translation id="9204041448536398473">Globale Shield-innstillinger</translation>
 <translation id="2108334320919763866">Globale standardinnstillinger</translation>
-<translation id="1928321796986970424">Filtrer lister</translation>
+<translation id="4516904298421534459">Filtrer lister</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="131231380815754440">Aktiver HTTPS</translation>
 <translation id="4824468494729001999">Blokker skript</translation>
 <translation id="3246600097575692802">Aktiver blokkerte skript</translation>
 <translation id="3603525299146223354">Sporinger &amp; annonser</translation>
-<translation id="1146309636943354181">Sporing &amp; annonser blokkert (standard)</translation>
-<translation id="5973258875089964805">Sporing &amp; annonser blokkert (aggressivt)</translation>
+<translation id="4448697385961650078">Blokker sporere og annonser</translation>
+<translation id="8593054718053894081">Aggressiv blokkering av sporere og annonser</translation>
 <translation id="7384778069178817075">Tillat alle sporere og annonser</translation>
-<translation id="6203697265754637264">Tredjeparts informasjonskapsler blokkert</translation>
-<translation id="4627427111733173920">Informasjonskapler er blokkert</translation>
-<translation id="3972324600756617403">Alle informasjonskapsler er tillatt</translation>
+<translation id="4941539331405513605">Blokker informasjonskapsler på tvers av nettsider</translation>
+<translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
+<translation id="5657156137487675418">Tillat alle informasjonskapsler</translation>
 <translation id="8366221601425141146">Fingerprinting blokkert</translation>
-<translation id="5582686930349810484">Fingerskrift blokkert (standard)</translation>
-<translation id="6696441392507885865">Fingerskrift blokkert (streng, sider kan slutte å fungere)</translation>
-<translation id="5882733945883311404">Tillat all bruk av fingeravtrykk</translation>
+<translation id="6531019308847917584">Blokker fingerprinting</translation>
+<translation id="1899608006846124237">Aggressiv blokkering av fingerprinting</translation>
+<translation id="8034285923190068220">Tillat fingeravtrykk</translation>
 <translation id="1992750560347846445">Rapporter nettsted</translation>
 <translation id="2387532482048804818">Fortell oss om nettstedet ikke fungerte som det skulle med Skjoldene oppe.</translation>
-<translation id="9167355841012806439">Du besøker denne nettsiden uten Braves personvernbeskyttelse</translation>
-<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/>Sporere, annonser med mer er blokkert</translation>
+<translation id="3795015906457257780">Du besøker denne nettsiden uten Braves funksjoner for personvernbeskyttelse.</translation>
+<translation id="7194012750329511146">Brave Shields 
+<ph name="NUMBER"/>Sporere, annonser med mer er blokkert</translation>
 <translation id="1742469581923031760">Kobler til…</translation>
 <translation id="1287487756047817908">Kobler fra…</translation>
 <translation id="2325196879156848326">Tilkoblingen mislyktes</translation>
@@ -1238,4 +1245,9 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="2389181429986654814">Gå til <ph name="PROVIDER"/> for å fullføre bekreftelsen</translation>
+<translation id="7793632266654336758">Fullfør identitietsbekreftelsen for å begynne å motta belønninger.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> ber om den offentlige krypteringsnøkkelen for lommeboken din. Hvis du samtykker til å oppgi denne nøkkelen, vil siden kunne opprette krypterte meldinger til deg.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ønsker å lese denne meldingen for å fullføre forespørselen din</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/>Sporere, annonser med mer er blokkert</translation>
 </translationbundle>

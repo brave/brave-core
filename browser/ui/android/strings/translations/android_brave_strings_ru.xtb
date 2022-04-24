@@ -427,44 +427,33 @@
 <translation id="7559243474426790340">Обновить статус</translation>
 <translation id="8376263745431603066">Включить "Ночной режим" (Экспериментальная функция)</translation>
 <translation id="1383876407941801731">Поиск</translation>
-<translation id="1972589975368876259">Редактировать набор</translation>
-<translation id="2490330380242414851">Удалить виджет</translation>
 <translation id="8446884382197647889">Подробнее…</translation>
-<translation id="7384441892795736634">Обновить данные</translation>
-<translation id="4804818685124855865">Отключиться</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Купить <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Адрес депозита</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Памятка по депозиту</translation>
+<translation id="6755546361496900700">Предварительный просмотр конвертации</translation>
 <translation id="5110244215256675209">Купить криптовалюту</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Купить <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Доступно <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Предварительный просмотр конвертации</translation>
-<translation id="2882813124794301799">Набор виджетов</translation>
 <translation id="13296465911709339">Ваш текст скопирован в буфер обмена.</translation>
 <translation id="2735834606413553397">Общедоступный адрес скопирован в буфер обмена.</translation>
 <translation id="7144878232160441200">Повторить</translation>
 <translation id="2977461003134694205">Статистика конфиденциальности</translation>
-<translation id="4643117005422448078">Топ-сайты</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Заблокированные трекеры и реклама, сэкономленные данные и оценочные данные о сэкономленном времени.</translation>
-<translation id="74417429503469271">Откройте популярные сайты, которые вы часто посещаете.</translation>
 <translation id="2956070106555335453">Сводка</translation>
 <translation id="1366855498335432549">Депозит</translation>
 <translation id="1301340234286078471">Конвертировать</translation>
 <translation id="223536150967420869">Купить</translation>
-<translation id="1714829281959608206">Подключитесь к Binance, чтобы просматривать баланс счета Binance и торговать криптовалютой.</translation>
 <translation id="4584930231524505442">Я хочу конвертировать...</translation>
 <translation id="5749014321384313843">Я хочу потратить...</translation>
-<translation id="8688672835843460752">Доступно</translation>
 <translation id="2480674848181564169">Недостаточный для конвертации баланс</translation>
 <translation id="2215334405220411393">Минимальная сумма конвертирования: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Не удается подключиться</translation>
 <translation id="7742417737698031726">Комиссия</translation>
 <translation id="2122225204180056042">Вы получите</translation>
 <translation id="6432284126416751397">Подтвердить конвертацию</translation>
-<translation id="5137723827757859599">В разделе топ-сайтов пока ничего нет.</translation>
 <translation id="3891414008432200754">Цена</translation>
 <translation id="3733576242118819803">Подтвердить (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Конвертация не удалась. Пожалуйста, попробуйте еще раз.</translation>
@@ -566,6 +555,8 @@
 <translation id="2759836790106646094">Создайте резервную копию своего кошелька</translation>
 <translation id="1078873179929044999">На следующем шаге вы увидите секретную фразу из 12 слов, с помощью которой вы сможете восстановить доступ к основным криптовалютным счетам. Храните ее в безопасном месте. Без этой фразы вы не сможете восстановить доступ к счетам при потере или краже устройства, а также если забудете пароль или захотите сменить кошелек.</translation>
 <translation id="2359808026110333948">Продолжить</translation>
+<translation id="5488357322146334497">Сообщение</translation>
+<translation id="7228169875515099943">ДАННЫЕ</translation>
 <translation id="1904000155026201268">Я понимаю, что если я забуду секретную фразу, то не смогу войти в криптокошелек.</translation>
 <translation id="3933122286596948824">Ваша секретная фраза</translation>
 <translation id="5077747669435508720">Выпишите или скопируйте эти слова в указанном порядке и храните их в безопасном месте. Без секретной фразы вы не сможете восстановить доступ к счетам при потере или краже устройства, а также если забудете пароль или захотите сменить кошелек.</translation>
@@ -810,6 +801,7 @@
 <translation id="1254969878422524947">Лимит платежа за газ (Gwei)</translation>
 <translation id="7373308452149471621">Лимит цены на газ (Gwei)</translation>
 <translation id="5891811606602061966">Не удалось импортировать аккаунт. Повторите попытку.</translation>
+<translation id="1822506443689803572">Brave использует <ph name="DEX_PROVIDER"/> в качестве агрегатора данных с децентрализованных бирж.</translation>
 <translation id="5061574358754621254">Данные о ценах представлены порталом CoinGecko</translation>
 <translation id="4626407663177532837">Сумма включает комиссию Brave 0,875 %.</translation>
 <translation id="8574289650879708853">Добавить пользовательский актив</translation>
@@ -863,4 +855,21 @@
 <translation id="4945690646623486292">Выбор сети</translation>
 <translation id="8853725596990766789">Изменить сумму</translation>
 <translation id="5233638681132016545">Новая вкладка</translation>
+<translation id="8006088103295786154">Доступ к Brave Кошельку</translation>
+<translation id="5308380583665731573">Connect</translation>
+<translation id="3432029672560911238">Аккаунт пользователя</translation>
+<translation id="5753378322046059140">Сменить аккаунт</translation>
+<translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">Развернуть</translation>
+<translation id="3586752056660754651">Подпись</translation>
+<translation id="6592721981110586529">Подключение к Brave Кошельку</translation>
+<translation id="329813193938846695">Выберите аккаунт(-ы)</translation>
+<translation id="3890989020011724401">Новый аккаунт</translation>
+<translation id="291375746846291973">Подключайте аккаунты только к сайтам, которым доверяете.</translation>
+<translation id="385051799172605136">Back</translation>
+<translation id="1060221736464994328">Разрешить этому сайту переключить сеть?</translation>
+<translation id="2478788592457735063">Это действие поменяет сеть на предыдущую.</translation>
+<translation id="8756686998207163764">Поменять сеть</translation>
+<translation id="394256914628786902">Включить автоматическое создание групп вкладок</translation>
+<translation id="8274201358637112807">Эта страница запрашивает доступ к Brave Кошельку.</translation>
 </translationbundle>

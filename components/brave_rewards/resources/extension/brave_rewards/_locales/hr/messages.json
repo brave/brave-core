@@ -243,6 +243,15 @@
     "message": "Na čekanju",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Nastao je privremeni problem pri provjeravanju autentičnosti s pružateljem usluge $provider$. Vaše Nagrade Brave ostaju u stanju čekanja i automatski se vraćaju, no također možete pokušati ponovno kasnije.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Nagrade od značajke Ads",
     "description": ""

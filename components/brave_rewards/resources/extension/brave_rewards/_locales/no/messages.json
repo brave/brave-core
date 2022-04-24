@@ -243,6 +243,15 @@
     "message": "Påventende",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Det har oppstått et midlertidig problem med verifisering via $provider$. Brave-belønningene dine får statusen Venter, og vi prøver igjen automatisk. Du kan også prøve igjen senere.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Rewards fra Ads",
     "description": ""

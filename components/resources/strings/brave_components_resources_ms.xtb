@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Selesai</translation>
 <translation id="6991128190741664836">Kemudian</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Dompet</translation>
+<translation id="8488282162676695335">Dompet Brave</translation>
 <translation id="8820817407110198400">Penanda buku</translation>
 <translation id="1644574205037202324">Sejarah</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Ralat: Anda memerlukan akaun disahkan untuk log masuk</translation>
 <translation id="5260522591743022748">Oh, nampaknya Brave Rewards anda telahpun disahkan dengan akaun<ph name="PROVIDER"/> yang lain. Sila cuba sahkan sekali lagi menggunakan akaun anda yang sebelumnya.</translation>
 <translation id="5111921830714291902">Ralat: Akaun berbeza</translation>
+<translation id="6933939911547091461">Malangnya, Brave Rewards anda tidak dapat disahkan kerana wilayah anda tidak disokong untuk pengesahan Brave Rewards buat masa ini.</translation>
+<translation id="8218538368080510976">Ralat: Wilayah tidak disokong</translation>
 <translation id="5382684862562314222">BAT belum lagi disokong di rantau anda di Uphold.</translation>
 <translation id="9074594632540931067">Ralat: BAT tidak tersedia</translation>
 <translation id="413458922997276130">Akaun anda di Uphold disekat pada masa ini.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Jumlah diterima</translation>
 <translation id="824449983246282560">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati Gemini untuk membeli beberapa.</translation>
 <translation id="8624961452383848703">Saya mahu menukar…</translation>
+<translation id="1544192797660353713">Dompet</translation>
 <translation id="616639131065447379">Selamat datang ke Dompet Kripto Brave</translation>
 <translation id="1740464057879304704">Dompet Kripto membolehkan anda menggunakan mata wang kripto dan aset-aset berkaitan dalam Brave. Dompet Kripto menyokong token seperti ETH dan BAT, juga barang terkumpul, dan membolehkan anda menggunakan Dapp dan lain-lain kontrak. Kefungsian ini untuk pengguna yang telah biasa menggunakan Ethereum dan lain-lain sistem rantai blok - atau bagi mereka yang ingin belajar.</translation>
 <translation id="4855440621031541830">Hanya guna Dompet Kripto sekiranya anda menerima bahawa anda sendiri bertanggungjawab ke atas segala risiko yang berkaitan dengan penggunaan ini, dan bahawa Perisian Brave tidak akan memikul tanggungjawab mahupun liabiliti ke atas sebarang kerugian ketika kerugian kebetulan atau akibat yang anda mungkin akan alami akibat penggunaan ini.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Ganjaran <ph name="AMOUNT"/> <ph name="MONTH"/> anda sedang dalam perjalanan. Pastikan anda tidak ketinggalan!</translation>
 <translation id="2659764755126740206">Pergi ke akaun <ph name="PROVIDER"/> saya</translation>
 <translation id="1165667598801520610">Tambah Dana</translation>
-<translation id="2389181429986654814">Pergi ke <ph name="PROVIDER"/> untuk melengkapkan pengesahan</translation>
-<translation id="7793632266654336758">Sila lengkapkan pengesahan identiti untuk mula menerima ganjaran.</translation>
 <translation id="2394961582378297792">Dilog keluar</translation>
 <translation id="6080167751812750226">Putuskan sambungan daripada <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Pendapatan Anggaran</translation>
 <translation id="4244985009709452836">Log masuk ke akaun <ph name="PROVIDER"/> anda</translation>
 <translation id="2613359062756190460">Tip Sekali Guna</translation>
+<translation id="7580329715937096918">Terdapat masalah sementara bagi pengesahan dengan <ph name="PROVIDER"/>. Brave Rewards anda akan kekal dalam keadaan Menunggu dan akan cuba semula secara automatik. Namun begitu, anda juga boleh mencuba semula kemudian.</translation>
 <translation id="590733288489975971">Ganjaran dari Iklan</translation>
 <translation id="6181762795539107980">Tidak disahkan</translation>
 <translation id="3026978804849658576">Lihat penyata</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Geran token sudah tersedia!</translation>
 <translation id="7701466644604753106">HIDUPKAN Pembaca Kelajuan</translation>
 <translation id="763042262431778831">MATIKAN Pembaca Kelajuan</translation>
-<translation id="8488282162676695335">Dompet Brave</translation>
 <translation id="1148827340205946630">Pengguna menolak permintaan</translation>
 <translation id="2403819048476450281">Parameter tidak sah.</translation>
 <translation id="3955144560853195652">Rantaian <ph name="VALUE"/> belum ditambah</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Mesej</translation>
 <translation id="3586752056660754651">Tandatangan</translation>
 <translation id="3484981968509595506">DApp meminta kekunci penyulitan awam anda</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> meminta kekunci penyulitan awam dompet anda. Jika anda bersetuju untuk memberikan kekunci ini, laman tersebut boleh mengarang mesej tersulit kepada anda.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> meminta kekunci penyulitan awam dompet anda. Jika anda bersetuju untuk memberikan kekunci ini, laman tersebut boleh mengarang mesej tersulit kepada anda.</translation>
 <translation id="3340247553212049934">Sediakan</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ingin membaca mesej ini bagi melengkapkan permintaan anda</translation>
+<translation id="1619778919922494944">DApp ini mahu membaca mesej ini untuk melengkapkan permintaan anda</translation>
 <translation id="714506544401754321">Nyahsulitkan mesej</translation>
 <translation id="5039804452771397117">Benarkan</translation>
 <translation id="9032898664193335413">Benarkan aplikasi ini untuk membelanjakan <ph name="TOKEN_SYMBOL"/> anda?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Fi gas</translation>
 <translation id="7163997622278957886">Bida</translation>
 <translation id="1074360622426001342">Amaun + gas</translation>
+<translation id="2186011161688824046">Jumlah + yuran</translation>
 <translation id="7084089311475827950">Tiada data.</translation>
 <translation id="5821668936183240062">seterusnya</translation>
 <translation id="793994607260936590">pertama</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 hari hadiah percuma kripto, hadiah bernilai ~$500 ribu.</translation>
 <translation id="8292716346768453265">Sertai sekarang!</translation>
+<translation id="6423985584914773314">Bukan alamat FIL yang sah</translation>
+<translation id="8528916244724490964">Semua Rangkaian</translation>
+<translation id="2781668117338732220">Rangkaian Kedua</translation>
+<translation id="2816106784624007524">Had gas mestilah dalam bentuk nombor bulat yang lebih besar daripada 0</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Jika laman ini kelihatan terjejas, cuba Shields ke bawah. 
     <ph name="LINK_BEFORE"/>Perhatian: tindakan ini mungkin mengurangkan perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Penjejak, iklan dan lagi sekatan<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Kawalan Lanjutan</translation>
+<translation id="650318023204990401">Kawalan lanjutan</translation>
 <translation id="5799940914270080805">Tindakan mengubah tetapan ini boleh menjejaskan laman.</translation>
 <translation id="9204041448536398473">Tetapan Perisai Global</translation>
 <translation id="2108334320919763866">Lalai global</translation>
-<translation id="1928321796986970424">Senarai Penapis</translation>
+<translation id="4516904298421534459">Senarai penapis</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="131231380815754440">Aktifkan HTTPS</translation>
 <translation id="4824468494729001999">Sekat skrip</translation>
 <translation id="3246600097575692802">Aktifkan Skrip telah Disekat</translation>
 <translation id="3603525299146223354">Penjejak &amp; iklan</translation>
-<translation id="1146309636943354181">Penjejak &amp; iklan disekat (standard)</translation>
-<translation id="5973258875089964805">Iklan &amp; penjejak disekat (agresif)</translation>
+<translation id="4448697385961650078">Sekat iklan &amp; penjejak</translation>
+<translation id="8593054718053894081">Sekat penjejak &amp; iklan secara tegas</translation>
 <translation id="7384778069178817075">Benarkan semua penjejak &amp; iklan</translation>
-<translation id="6203697265754637264">Kuki merentas laman disekat</translation>
-<translation id="4627427111733173920">Kuki dihalang</translation>
-<translation id="3972324600756617403">Semua kuki dibenarkan</translation>
+<translation id="4941539331405513605">Sekat kuki merentas laman</translation>
+<translation id="6883611015375728278">Sekat semua kuki</translation>
+<translation id="5657156137487675418">Benarkan semua kuki</translation>
 <translation id="8366221601425141146">Pengecapan jari disekat</translation>
-<translation id="5582686930349810484">Pengecapan jari disekat (standard)</translation>
-<translation id="6696441392507885865">Pengecapan jari disekat (ketat, boleh menjejaskan laman)</translation>
-<translation id="5882733945883311404">Benarkan semua Pengecapan jari</translation>
+<translation id="6531019308847917584">Sekat cap jari</translation>
+<translation id="1899608006846124237">Menyekat cap jari secara tegas</translation>
+<translation id="8034285923190068220">Benarkan cap jari</translation>
 <translation id="1992750560347846445">Laporkan laman</translation>
 <translation id="2387532482048804818">Beritahu kami jika laman tidak berfungsi dengan lancar melalui Shields ke atas.</translation>
-<translation id="9167355841012806439">Anda sedang memaparkan laman ini tanpa perlindungan privasi Brave</translation>
-<translation id="6835073906252142271"><ph name="NUMBER"/> Penjejak Brave Shields, iklan dan pelbagai lagi disekat</translation>
+<translation id="3795015906457257780">Anda memaparkan laman ini tanpa perlindungan privasi Brave.</translation>
+<translation id="7194012750329511146">Brave Shields
+<ph name="NUMBER"/> Penjejak, iklan, dan pelbagai lagi disekat</translation>
 <translation id="1742469581923031760">Menyambung…</translation>
 <translation id="1287487756047817908">Memutuskan sambungan…</translation>
 <translation id="2325196879156848326">Sambungan Gagal</translation>
@@ -1239,4 +1246,9 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="2389181429986654814">Pergi ke <ph name="PROVIDER"/> untuk melengkapkan pengesahan</translation>
+<translation id="7793632266654336758">Sila lengkapkan pengesahan identiti untuk mula menerima ganjaran.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> meminta kekunci penyulitan awam dompet anda. Jika anda bersetuju untuk memberikan kekunci ini, laman tersebut boleh mengarang mesej tersulit kepada anda.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ingin membaca mesej ini bagi melengkapkan permintaan anda</translation>
+<translation id="6835073906252142271"><ph name="NUMBER"/> Penjejak Brave Shields, iklan dan pelbagai lagi disekat</translation>
 </translationbundle>

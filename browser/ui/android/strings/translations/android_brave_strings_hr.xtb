@@ -427,44 +427,33 @@ Sigurno želite to napraviti?</translation>
 <translation id="7559243474426790340">Osvježi stanje</translation>
 <translation id="8376263745431603066">Omogući "Noćni način rada" (Eksperimentalno)</translation>
 <translation id="1383876407941801731">Traži</translation>
-<translation id="1972589975368876259">Uredi stog</translation>
-<translation id="2490330380242414851">Ukloni miniaplikaciju</translation>
 <translation id="8446884382197647889">Saznajte više</translation>
-<translation id="7384441892795736634">Osvježi podatke</translation>
-<translation id="4804818685124855865">Prekini vezu</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Dostupno <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Kupi <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adresa za polog</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Podsjetnik na polog</translation>
+<translation id="6755546361496900700">Pretpregled pretvorbe</translation>
 <translation id="5110244215256675209">Kupi kriptovalutu</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Kupi <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Dostupno <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Pretpregled pretvorbe</translation>
-<translation id="2882813124794301799">Stog miniaplikacija</translation>
 <translation id="13296465911709339">Vaš je tekst kopiran u međuspremnik.</translation>
 <translation id="2735834606413553397">Javna adresa kopirana u međuspremnik.</translation>
 <translation id="7144878232160441200">Natrag</translation>
 <translation id="2977461003134694205">Statistika privatnosti</translation>
-<translation id="4643117005422448078">Najpopularnija mrežna mjesta</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Elementi za praćenje &amp; blokirani oglasi, spremljeni pojas i procjene ušteđenog vremena.</translation>
-<translation id="74417429503469271">Otvorite najpopularnija mrežna mjesta koja često posjećujete.</translation>
 <translation id="2956070106555335453">Sažetak</translation>
 <translation id="1366855498335432549">Polog</translation>
 <translation id="1301340234286078471">Pretvori</translation>
 <translation id="223536150967420869">Kupi</translation>
-<translation id="1714829281959608206">Omogućite vezu Binance za prikaz računa za Binance i trgovanje kriptovalutama.</translation>
 <translation id="4584930231524505442">Želim pretvoriti...</translation>
 <translation id="5749014321384313843">Želim potrošiti...</translation>
-<translation id="8688672835843460752">Dostupno</translation>
 <translation id="2480674848181564169">Raspoloživi iznos nije dovoljan za pretvorbu</translation>
 <translation id="2215334405220411393">Najmanji iznos za pretvaranje je: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Nije moguće povezivanje</translation>
 <translation id="7742417737698031726">Naknada</translation>
 <translation id="2122225204180056042">Primate</translation>
 <translation id="6432284126416751397">Potvrdi pretvorbu</translation>
-<translation id="5137723827757859599">Još nema ništa na najpopularnijim mrežnim mjestima.</translation>
 <translation id="3891414008432200754">Cijena</translation>
 <translation id="3733576242118819803">Potvrdi (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Nije se mogla obaviti pretvorba. Pokušajte ponovno.</translation>
@@ -566,6 +555,8 @@ Sigurno želite to napraviti?</translation>
 <translation id="2759836790106646094">Odmah izradite sigurnosnu kopiju svog novčanika!</translation>
 <translation id="1078873179929044999">U sljedećem koraku navodi se rečenica za oporavak od 12 riječi koju možete upotrijebiti za oporavak primarnih računa za kriptovalute. Spremite je na sigurno mjesto. Vaša rečenica za oporavak jedini je način za povraćanje pristupa računu ako zaboravite lozinku, ako se izgubi ili ukrade uređaj ili ako želite promijeniti novčanike.</translation>
 <translation id="2359808026110333948">Nastavi</translation>
+<translation id="5488357322146334497">Poruka</translation>
+<translation id="7228169875515099943">PODATCI</translation>
 <translation id="1904000155026201268">Razumijem da neću moći pristupiti svom novčaniku za kriptovalute ako izgubim svoju rečenicu za oporavak.</translation>
 <translation id="3933122286596948824">Vaša rečenica za oporavak</translation>
 <translation id="5077747669435508720">Zapišite ili kopirajte te riječi točnim redoslijedom prikazanim u nastavku i spremite ih na sigurno mjesto. Vaša rečenica za oporavak jedini je način za povraćanje pristupa računu ako zaboravite lozinku, ako se izgubi ili ukrade uređaj ili ako želite promijeniti novčanike.</translation>
@@ -810,6 +801,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="1254969878422524947">Ograničenje napojnice po gorivu (Gwei)</translation>
 <translation id="7373308452149471621">Ograničenje cijene po gorivu (Gwei)</translation>
 <translation id="5891811606602061966">Neuspješni uvoz računa. Pokušajte ponovno.</translation>
+<translation id="1822506443689803572">Novčanikom Brave upotrebljava se <ph name="DEX_PROVIDER"/> kao agregator DEX.</translation>
 <translation id="5061574358754621254">Podatke o cijenama pruža CoinGecko</translation>
 <translation id="4626407663177532837">Ponudom se uključuje naknada od 0,875 % za preglednik Brave.</translation>
 <translation id="8574289650879708853">Dodaj prilagođenu imovinu</translation>
@@ -863,4 +855,21 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="4945690646623486292">Odaberi mrežu</translation>
 <translation id="8853725596990766789">Promijeni iznos</translation>
 <translation id="5233638681132016545">Nova kartica</translation>
+<translation id="8006088103295786154">Pristupi novčaniku Brave</translation>
+<translation id="5308380583665731573">Povežite se</translation>
+<translation id="3432029672560911238">Korisnički račun</translation>
+<translation id="5753378322046059140">Promijeni račun</translation>
+<translation id="3897092660631435901">Izbornik</translation>
+<translation id="42981349822642051">Proširi</translation>
+<translation id="3586752056660754651">Registracija</translation>
+<translation id="6592721981110586529">Poveži se s novčanikom Brave</translation>
+<translation id="329813193938846695">Odaberite račune</translation>
+<translation id="3890989020011724401">Novi račun</translation>
+<translation id="291375746846291973">Povežite se samo s mrežnim mjestima u koja imate povjerenja.</translation>
+<translation id="385051799172605136">Natrag</translation>
+<translation id="1060221736464994328">Dopustiti ovom mrežnom mjestu promjenu mreže?</translation>
+<translation id="2478788592457735063">Time prebacujete mrežu na prethodno dodanu mrežu.</translation>
+<translation id="8756686998207163764">Promijeni mrežu</translation>
+<translation id="394256914628786902">Omogući automatsko stvaranje grupe kartica</translation>
+<translation id="8274201358637112807">Ova se stranica želi povezati s novčanikom Brave</translation>
 </translationbundle>

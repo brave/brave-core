@@ -1,10 +1,10 @@
 {
   "summary": {
-    "message": "Summary",
+    "message": "Opsomming",
     "description": ""
   },
   "tip": {
-    "message": "Tip",
+    "message": "Fooitjie",
     "description": ""
   },
   "unverifiedCreator": {
@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Refresh",
+    "message": "Verfris",
     "description": ""
   },
   "pendingTipText": {
@@ -51,15 +51,15 @@
     }
   },
   "attention": {
-    "message": "Attention",
+    "message": "Aandag",
     "description": ""
   },
   "sendTip": {
-    "message": "Send Tip",
+    "message": "Stuur fooitjie",
     "description": ""
   },
   "includeInAutoContribute": {
-    "message": "Include in Auto-Contribute",
+    "message": "Sluit by Outo-Bydrae in",
     "description": ""
   },
   "monthlyTip": {
@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "OK",
+    "message": "Goed",
     "description": ""
   },
   "set": {
@@ -75,11 +75,11 @@
     "description": ""
   },
   "changeAmount": {
-    "message": "Change amount",
+    "message": "Verander bedrag",
     "description": ""
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "Kanselleer",
     "description": ""
   },
   "grantCaptchaTitle": {
@@ -87,7 +87,7 @@
     "description": ""
   },
   "grantCaptchaFailedTitle": {
-    "message": "Hmm… Not Quite. Try Again.",
+    "message": "H’m… Nie Juis Nie. Probeer Weer.",
     "description": ""
   },
   "grantCaptchaHint": {
@@ -100,15 +100,15 @@
     }
   },
   "grantCaptchaPassedTitleUGP": {
-    "message": "It’s your lucky day!",
+    "message": "Dis u gelukkige dag!",
     "description": ""
   },
   "grantCaptchaPassedTextUGP": {
-    "message": "Your token grant is on its way.",
+    "message": "U tekentoelaag is op pad.",
     "description": ""
   },
   "grantCaptchaAmountUGP": {
-    "message": "Free Token Grant",
+    "message": "Gratis Tekentoelaag",
     "description": ""
   },
   "grantCaptchaPassedTitleAds": {
@@ -124,15 +124,15 @@
     "description": ""
   },
   "grantCaptchaExpiration": {
-    "message": "Grant Expiration Date",
+    "message": "Toelaagvervaldatum",
     "description": ""
   },
   "grantCaptchaErrorTitle": {
-    "message": "Oops, something is wrong. Please try again later.",
+    "message": "Oeps, iets het verkeerd geloop. Probeer asseblief later weer.",
     "description": ""
   },
   "grantCaptchaErrorText": {
-    "message": "Brave Rewards is having an issue. Please try again later.",
+    "message": "Brave-belonings ervaar ’n probleem. Probeer asseblief later weer.",
     "description": ""
   },
   "rewardsPaymentCheckStatus": {
@@ -185,11 +185,11 @@
     }
   },
   "walletAddFunds": {
-    "message": "Add Funds",
+    "message": "Voeg fondse toe",
     "description": ""
   },
   "walletAutoContribute": {
-    "message": "Auto-Contribute",
+    "message": "Outo-Bydrae",
     "description": ""
   },
   "walletCompleteVerificationLink": {
@@ -206,7 +206,7 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Logged out",
+    "message": "Uitgeteken",
     "description": ""
   },
   "walletDisconnectLink": {
@@ -232,23 +232,32 @@
     }
   },
   "walletMonthlyTips": {
-    "message": "Monthly Tips",
+    "message": "Maandelikse Fooitjies",
     "description": ""
   },
   "walletOneTimeTips": {
-    "message": "One-Time Tips",
+    "message": "Eenmalige Fooitjies",
     "description": ""
   },
   "walletPending": {
-    "message": "Pending",
+    "message": "Hangend",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "There is a temporary problem verifying with $provider$. Your Brave Rewards will remain in a Pending state and retry automatically, but you can also try again later.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
-    "message": "Rewards from Ads",
+    "message": "Belonings van advertensies",
     "description": ""
   },
   "walletRewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Beloningsopsomming",
     "description": ""
   },
   "walletUnverified": {
@@ -260,11 +269,11 @@
     "description": ""
   },
   "walletYourBalance": {
-    "message": "Your Balance",
+    "message": "U balans",
     "description": ""
   },
   "notificationAddFunds": {
-    "message": "Add Funds",
+    "message": "Voeg fondse toe",
     "description": ""
   },
   "notificationReconnect": {
@@ -280,15 +289,15 @@
     "description": ""
   },
   "notificationAddFundsTitle": {
-    "message": "Insufficient Funds",
+    "message": "Onvoldoende Fondse",
     "description": ""
   },
   "notificationAddFundsText": {
-    "message": "Your Brave Rewards account is waiting for a deposit.",
+    "message": "U Brave Rewards-rekening wag vir ’n deposito.",
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
-    "message": "Auto-Contribute",
+    "message": "Outo-Bydrae",
     "description": ""
   },
   "notificationAutoContributeCompletedText": {
@@ -309,7 +318,7 @@
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Back up now",
+    "message": "Maak nou rugsteun",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
@@ -372,11 +381,11 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "U geskeduleerde, maandelikse betaling vir Outobydrae en maandelikse fooitjies kon nie voltooi word nie as gevolg van onvoldoende fondse. Ons sal oor 30 dae weer probeer.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
-    "message": "There was a problem processing your contribution.",
+    "message": "Daar was ’n probleem met die prosessering van u bydrae.",
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
@@ -409,7 +418,7 @@
     "description": ""
   },
   "notificationPendingTipFailedText": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "U het fooitjies hangende weens onvoldoende fondse",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -421,11 +430,11 @@
     "description": ""
   },
   "onboardingSetupAdsHeader": {
-    "message": "How often do you want to see ads?",
+    "message": "Hoe gereeld wil u advertensies sien?",
     "description": ""
   },
   "onboardingSetupAdsSubheader": {
-    "message": "(ads per hour)",
+    "message": "(advertensies per uur)",
     "description": ""
   },
   "onboardingSetupContributeHeader": {
@@ -463,7 +472,7 @@
     }
   },
   "onboardingTourBack": {
-    "message": "Go Back",
+    "message": "Gaan terug",
     "description": ""
   },
   "onboardingTourBegin": {
@@ -471,15 +480,15 @@
     "description": ""
   },
   "onboardingTourContinue": {
-    "message": "Continue",
+    "message": "Gaan voort",
     "description": ""
   },
   "onboardingTourDone": {
-    "message": "Done",
+    "message": "Gedoen",
     "description": ""
   },
   "onboardingTourSkip": {
-    "message": "Skip",
+    "message": "Slaan oor",
     "description": ""
   },
   "onboardingTourSkipForNow": {
@@ -487,7 +496,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Welcome to Brave Rewards!",
+    "message": "Welkom by Brave-belonings!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {
@@ -519,7 +528,7 @@
     "description": ""
   },
   "onboardingPanelTippingHeader": {
-    "message": "Say thank you with tips",
+    "message": "Sê dankie met fooitjies",
     "description": ""
   },
   "onboardingPanelTippingText": {
@@ -551,7 +560,7 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verify",
+    "message": "Verifieer",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
@@ -559,7 +568,7 @@
     "description": ""
   },
   "onboardingPanelVerifyLater": {
-    "message": "Do it later",
+    "message": "Doen dit later",
     "description": ""
   },
   "onboardingPanelVerifyNow": {
@@ -607,7 +616,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Dismiss",
+    "message": "Wys Af",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

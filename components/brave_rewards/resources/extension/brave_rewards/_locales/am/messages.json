@@ -243,6 +243,15 @@
     "message": "በመጠበቅ ላይ",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "በ $provider$ ማረጋገጥ ላይ ጊዜያዊ ችግር አለ። የ Brave ሽልማቶችዎ በመጠባበቅ ላይ እንዳሉ ይቆያሉ፣ እና በራስ-ሰር እንደገና ይሞክሩ ፣ ግን ቆይተው እንደገና መሞከር ይችላሉ።",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "ከ Ads ሽልማቶች",
     "description": ""

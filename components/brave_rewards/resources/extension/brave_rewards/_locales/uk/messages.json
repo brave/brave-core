@@ -243,6 +243,15 @@
     "message": "В очікуванні",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Тимчасова проблема з перевіркою через $provider$. Ваш профіль Brave Rewards залишиться в статусі «В очікуванні», і спроба перевірки автоматично повториться, але ви також можете спробувати пізніше вручну.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Винагороди від рекламних оголошень",
     "description": ""

@@ -243,6 +243,15 @@
     "message": "U toku",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Trenuto postoji problem u potvrđivanju $provider$. Vaše Brave nagrade će ostati na čekanju i automatski će se ponovo proveravati, ali možete i ponovo pokušati kasnije.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Nagrade od Ads",
     "description": ""

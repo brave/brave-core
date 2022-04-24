@@ -243,6 +243,15 @@
     "message": "Inasubiri",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Kuna tatizo la muda katika kuthibitisha na $provider$. Brave Rewards zako zitasalia katika hali ya Zinazosubiri na kujaribu tena kiotomatiki, lakini pia unaweza kujaribu tena baadaye.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Zawadi kutoka Ads",
     "description": ""

@@ -54,7 +54,7 @@
 <translation id="5197219128592971597">Vienmēr apmeklējiet sākotnējo (kas nav AMP) lapu URL, nevis Google paātrināto mobilo lapu versijas</translation>
 <translation id="5802665280774361839">Parādīt automātiskās pabeigšanas ierakstus adreses joslā</translation>
 <translation id="597020512043916976">Rādīt populārākās vietnes automātiskās pabeigšanas ieteikumos</translation>
-<translation id="264150068416846820">Rādīt Brave ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
+<translation id="301088458323355543">Rādīt ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
 <translation id="6414370348346025511">Ieslēgta standarta aizsardzība.</translation>
 <translation id="814018970995616154">Salīdzina URL ar Brave saglabāto nedrošo vietņu sarakstu.</translation>
@@ -69,8 +69,8 @@
 <translation id="4851215387785619212">Brave privātās reklāmas</translation>
 <translation id="7808122468353671181">Nopelniet marķieri, apskatot Brave reklāmas. Parādītās reklāmas ir balstītas uz jūsu interesēm, ņemot vērā jūsu pārlūkošanas uzvedību. Personas dati un pārlūkošanas vēsture nekad netiek kopīgota ārpus jūsu pārlūka.</translation>
 <translation id="1758947220824279023">Maksimālais attēlojamo reklāmu skaits</translation>
-<translation id="8578912649458880781">Štata līmeņa reklāmu pielāgošana</translation>
-<translation id="3678362265519557511">Tas ļauj Brave parādīt jums reklāmas, kas paredzētas īpaši jūsu štatam. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Reģionālo reklāmu atbilstība</translation>
+<translation id="2196950072404588793">Tas ļauj Brave jums rādīt jūsu reģionam paredzētas reklāmas. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
 <translation id="9132509928968869844">Ikmēneša automātiskas ziedojumu limits</translation>
 <translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
@@ -143,8 +143,10 @@
 <translation id="130615081792797568">Vienkāršs skats</translation>
 <translation id="2360360976480535628">Uzlabots skats</translation>
 <translation id="2133317862976486547">Izsekotāju un reklāmu bloķēšana</translation>
-<translation id="4385707520896576447">Sīkfailu bloķēšana</translation>
-<translation id="4978786495456601191">Pirkstu nospiedumu ņemšanas bloķēšana</translation>
+<translation id="8823559166155093873">Bloķēt sīkfailus</translation>
+<translation id="6531019308847917584">Bloķēt identificējošās ciparvirknes veidošanu</translation>
+<translation id="7607166182943595829">Neļauj vietnēm veidot manu identificējošo ciparvirkni, pamatojoties uz manu valodas preferenci</translation>
+<translation id="3497934980362703405">Iespējojot šo iestatījumu, tiek samazināts tas, cik daudz tīmekļa vietnes var uzzināt par jūsu valodas preferencēm</translation>
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="4824468494729001999">Bloķēt skriptus</translation>
 <translation id="4395160081588457461">Izskats un noskaņojums</translation>
@@ -434,8 +436,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8487693399751278191">Importēt grāmatzīmes tagad...</translation>
 <translation id="2557899542277210112">Ātrai piekļuvei ievietojiet savas grāmatzīmes šeit, grāmatzīmju joslā.</translation>
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
-<translation id="2273851479262317744">Iestatīt Brave kā noklusējuma pārlūku</translation>
-<translation id="8581710194025054669">Lai tiešsaistē nodrošinātu augstāko privātuma līmeni, apsveriet iespēju iestatīt Brave kā datora noklusējuma pārlūku. Izmantojot Brave kā noklusējuma pārlūku, jebkura tīmekļa saite, uz kuras noklikšķināsiet, tiks atvērta, piemērojot Brave privātuma aizsardzību.</translation>
 <translation id="1968543937259008435">Vai esat gatavs izbaudīt drošāko privātumu tiešsaistē?</translation>
 <translation id="6817415381278637662">Iestatiet Brave kā savu noklusējuma pārlūku, lai saņemtu Brave privātuma aizsardzību ikvienā tīmekļa lapā, kuru atverat.</translation>
 <translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
@@ -466,4 +466,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
 <translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
 <translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
+<translation id="264150068416846820">Rādīt Brave ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
+<translation id="8578912649458880781">Štata līmeņa reklāmu pielāgošana</translation>
+<translation id="3678362265519557511">Tas ļauj Brave parādīt jums reklāmas, kas paredzētas īpaši jūsu štatam. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="8581710194025054669">Lai tiešsaistē nodrošinātu augstāko privātuma līmeni, apsveriet iespēju iestatīt Brave kā datora noklusējuma pārlūku. Izmantojot Brave kā noklusējuma pārlūku, jebkura tīmekļa saite, uz kuras noklikšķināsiet, tiks atvērta, piemērojot Brave privātuma aizsardzību.</translation>
 </translationbundle>

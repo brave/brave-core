@@ -243,6 +243,15 @@
     "message": "Ootel",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Teenusepakkuja $provider$ kaudu kinnitamisel ilmnes ajutine probleem. Brave'i Preemiad jäävad ootel olekusse ja proovitakse automaatselt uuesti, aga võite ka ise hiljem uuesti proovida.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Preemiad Adsilt",
     "description": ""

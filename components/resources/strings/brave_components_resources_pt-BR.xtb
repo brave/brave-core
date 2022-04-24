@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Resolver</translation>
 <translation id="6991128190741664836">Mais tarde</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Carteira</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8820817407110198400">Barra de favoritos</translation>
 <translation id="1644574205037202324">Histórico</translation>
 <translation id="6165508094623778733">Saber mais</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Erro: é necessário ter uma conta verificada para fazer login</translation>
 <translation id="5260522591743022748">Parece que sua conta das Recompensas Brave já foi verificada com outra conta do <ph name="PROVIDER"/>. Tente verificar novamente usando sua conta anterior.</translation>
 <translation id="5111921830714291902">Erro: conta diferente</translation>
+<translation id="6933939911547091461">Infelizmente, não é possível verificar suas Recompensas Brave, pois sua região não é compatível com essa verificação no momento.</translation>
+<translation id="8218538368080510976">Erro: região não compatível</translation>
 <translation id="5382684862562314222">O uso de BAT ainda não é aceito na sua região no Uphold.</translation>
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
 <translation id="413458922997276130">Sua conta do Uphold está bloqueada no momento.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Total recebido</translation>
 <translation id="824449983246282560">Você não tem nenhum saldo na sua conta. Acesse o Gemini para adquirir saldo.</translation>
 <translation id="8624961452383848703">Quero converter…</translation>
+<translation id="1544192797660353713">Carteira</translation>
 <translation id="616639131065447379">Bem-vindo ao Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Criptocarteiras permitem que você trabalhe com criptomoedas e ativos relacionados no Brave. As Criptocarteiras oferecem suporte a tokens de Ethereum como ETH e BAT, além de cobráveis, e permite que você trabalhe com Ðapps e outros contratos inteligentes. Tudo isso é para pessoas que estão familiarizadas com o Ethereum e outros sistemas de blockchain – ou estão empolgadas para aprender.</translation>
 <translation id="4855440621031541830">Só use Crypto Wallets se você aceita que é o único responsável por todo o risco associado a esta utilização e que o Brave Software não tem nenhuma responsabilidade por nenhuma perda, incluindo perdas incidentais ou consequentes que você possa sofrer como resultado desta utilização.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> estão a caminho. Fique de olho!</translation>
 <translation id="2659764755126740206">Acessar minha conta do <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Adicionar Fundos</translation>
-<translation id="2389181429986654814">Acesse <ph name="PROVIDER"/> para concluir a verificação</translation>
-<translation id="7793632266654336758">Conclua a verificação de identidade para começar a receber recompensas.</translation>
 <translation id="2394961582378297792">Sessão encerrada</translation>
 <translation id="6080167751812750226">Desconectar-se do <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ganhos estimados</translation>
 <translation id="4244985009709452836">Faça login na sua conta do <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Doações Únicas</translation>
+<translation id="7580329715937096918">Há um problema temporário na verificação do <ph name="PROVIDER"/>. Suas Recompensas Brave permanecerão em estado pendente e uma nova tentativa será realizada automaticamente, mas você também pode tentar novamente mais tarde.</translation>
 <translation id="590733288489975971">Recompensas do Ads</translation>
 <translation id="6181762795539107980">Não verificado</translation>
 <translation id="3026978804849658576">Ver extrato</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Uma concessão de token está disponível!</translation>
 <translation id="7701466644604753106">LIGAR Speedreader</translation>
 <translation id="763042262431778831">DESLIGAR Speedreader</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">O usuário rejeitou a solicitação.</translation>
 <translation id="2403819048476450281">Parâmetros inválidos.</translation>
 <translation id="3955144560853195652">A cadeia <ph name="VALUE"/> não foi adicionada</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Mensagem</translation>
 <translation id="3586752056660754651">Assinar</translation>
 <translation id="3484981968509595506">Um DApp está solicitando sua chave de criptografia pública</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
 <translation id="3340247553212049934">Providenciar</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> deseja ler esta mensagem para concluir sua solicitação</translation>
+<translation id="1619778919922494944">Este DApp deseja ler esta mensagem para concluir sua solicitação</translation>
 <translation id="714506544401754321">Descriptografar mensagem</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="9032898664193335413">Permitir que este app gaste seus <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Taxa de gás</translation>
 <translation id="7163997622278957886">Oferta</translation>
 <translation id="1074360622426001342">Valor + gás</translation>
+<translation id="2186011161688824046">Valor + taxa</translation>
 <translation id="7084089311475827950">Não há dados.</translation>
 <translation id="5821668936183240062">próxima</translation>
 <translation id="793994607260936590">primeira</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 dias de brindes em criptomoedas, cerca de US$ 500 mil em prêmios</translation>
 <translation id="8292716346768453265">Participe agora!</translation>
+<translation id="6423985584914773314">Não é um endereço FIL válido</translation>
+<translation id="8528916244724490964">Todas as redes</translation>
+<translation id="2781668117338732220">Redes secundárias</translation>
+<translation id="2816106784624007524">O limite de gás precisa ser um número inteiro superior a 0</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação Geral</translation>
 <translation id="4045404575593562245">Eventos de Controle do Tor</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Se este site parece não estar funcionando corretamente, tente desativar as Proteções. 
     <ph name="LINK_BEFORE"/>Observação: isso poderá reduzir as proteções de privacidade do Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Rastreadores, anúncios e outros conteúdos bloqueados <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Controles Avançados</translation>
+<translation id="650318023204990401">Controles avançados</translation>
 <translation id="5799940914270080805">A alteração dessas configurações pode fazer com que alguns sites não funcionem corretamente.</translation>
 <translation id="9204041448536398473">Configurações globais das Proteções</translation>
 <translation id="2108334320919763866">Padrões globais</translation>
-<translation id="1928321796986970424">Listas de filtros</translation>
+<translation id="4516904298421534459">Listas de filtros</translation>
 <translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="131231380815754440">Ativar HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="3246600097575692802">Expandir lista de scripts bloqueados</translation>
 <translation id="3603525299146223354">Rastreadores e anúncios</translation>
-<translation id="1146309636943354181">Rastreadores &amp; anúncios bloqueados (padrão)</translation>
-<translation id="5973258875089964805">Rastreadores &amp; anúncios bloqueados (agressivo)</translation>
+<translation id="4448697385961650078">Bloquear rastreadores e anúncios</translation>
+<translation id="8593054718053894081">Bloquear agressivamente rastreadores e anúncios</translation>
 <translation id="7384778069178817075">Permitir todos os rastreadores &amp; anúncios</translation>
-<translation id="6203697265754637264">Cookies cross-site bloqueados</translation>
-<translation id="4627427111733173920">Cookies bloqueados</translation>
-<translation id="3972324600756617403">Todos os cookies permitidos</translation>
+<translation id="4941539331405513605">Bloquear cookies em diferentes sites</translation>
+<translation id="6883611015375728278">Bloquear todos os cookies</translation>
+<translation id="5657156137487675418">Permitir todos os cookies</translation>
 <translation id="8366221601425141146">Impressão digital bloqueada.</translation>
-<translation id="5582686930349810484">Biometria bloqueada (padrão)</translation>
-<translation id="6696441392507885865">Impressão digital bloqueada (rigorosa; alguns sites podem não funcionar corretamente)</translation>
-<translation id="5882733945883311404">Permitir todas as impressões digitais</translation>
+<translation id="6531019308847917584">Bloquear impressões digitais</translation>
+<translation id="1899608006846124237">Bloquear agressivamente impressões digitais</translation>
+<translation id="8034285923190068220">Permitir impressão digital</translation>
 <translation id="1992750560347846445">Informar site com problema</translation>
 <translation id="2387532482048804818">Informe-nos se o site não estiver funcionando corretamente com as Proteções ativadas.</translation>
-<translation id="9167355841012806439">Você está visualizando este site sem a proteção de privacidade do Brave</translation>
-<translation id="6835073906252142271">Proteções do Brave <ph name="NUMBER"/> rastreadores, anúncios e outros conteúdos bloqueados</translation>
+<translation id="3795015906457257780">Você está visualizando este site sem as proteções de privacidade do Brave.</translation>
+<translation id="7194012750329511146">Proteções do Brave
+<ph name="NUMBER"/> rastreadores, anúncios e outros conteúdos bloqueados</translation>
 <translation id="1742469581923031760">Conectando…</translation>
 <translation id="1287487756047817908">Desconectando…</translation>
 <translation id="2325196879156848326">Falha na conexão</translation>
@@ -1239,4 +1246,9 @@
 <translation id="6973157709854838218">Ocultar a exibição dos seus saldos</translation>
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
+<translation id="2389181429986654814">Acesse <ph name="PROVIDER"/> para concluir a verificação</translation>
+<translation id="7793632266654336758">Conclua a verificação de identidade para começar a receber recompensas.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá enviar mensagens criptografadas para você.</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> deseja ler esta mensagem para concluir sua solicitação</translation>
+<translation id="6835073906252142271">Proteções do Brave <ph name="NUMBER"/> rastreadores, anúncios e outros conteúdos bloqueados</translation>
 </translationbundle>

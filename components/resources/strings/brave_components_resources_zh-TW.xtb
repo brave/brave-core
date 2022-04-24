@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">解決</translation>
 <translation id="6991128190741664836">稍後</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">錢包</translation>
+<translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="8820817407110198400">書籤列</translation>
 <translation id="1644574205037202324">歷史記錄</translation>
 <translation id="6165508094623778733">更多資訊</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">錯誤：您需要先驗證帳戶才能登入</translation>
 <translation id="5260522591743022748">您的 Brave 獎勵已使用其他 <ph name="PROVIDER"/> 帳戶驗證。請嘗試使用您先前的帳戶再次驗證。</translation>
 <translation id="5111921830714291902">錯誤：不同的帳號</translation>
+<translation id="6933939911547091461">很抱歉，由於您的所在地區目前不支援 Brave 獎勵驗證作業，因此系統無法驗證您的 Brave 獎勵。</translation>
+<translation id="8218538368080510976">錯誤：不支援此地區</translation>
 <translation id="5382684862562314222">您所在地區的 Uphold 服務尚未支援 BAT。</translation>
 <translation id="9074594632540931067">錯誤：無法使用 BAT</translation>
 <translation id="413458922997276130">您的 Uphold 帳號目前已遭封鎖。</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">總計收到</translation>
 <translation id="824449983246282560">您的帳號中沒有任何餘額。請造訪 Gemini 購買。</translation>
 <translation id="8624961452383848703">我想要轉換……</translation>
+<translation id="1544192797660353713">錢包</translation>
 <translation id="616639131065447379">歡迎使用 Brave 加密錢包</translation>
 <translation id="1740464057879304704">Crypto Wallets 讓您使用 Brave 的加密貨幣和相關資產。Crypto Wallets 支援 ETH 和 BAT 等以太坊權杖及收藏品，而且讓您使用 Ðapps 和其他智能合約。這一切都是專門提供給熟悉以太坊和其他區塊鏈系統的人——或是樂於學習它們的人。</translation>
 <translation id="4855440621031541830">僅當您接受獨自承單與所有使用的風險時才使用加密錢包，且 Brave Software 對因使用此軟體而可能造成的任何損失（包含任何直接或間接的損失）不負任何責任。</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">您 <ph name="AMOUNT"/> 的 <ph name="MONTH"/>獎勵即將入帳。敬請留意！</translation>
 <translation id="2659764755126740206">到我的<ph name="PROVIDER"/>帳戶</translation>
 <translation id="1165667598801520610">增加資金</translation>
-<translation id="2389181429986654814">前往 <ph name="PROVIDER"/> 以完成驗證</translation>
-<translation id="7793632266654336758">請完成身分驗證以開始接受獎勵。</translation>
 <translation id="2394961582378297792">已登出</translation>
 <translation id="6080167751812750226">取消連結 <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">預估收益</translation>
 <translation id="4244985009709452836">登入您的 <ph name="PROVIDER"/> 帳戶</translation>
 <translation id="2613359062756190460">一次性小費</translation>
+<translation id="7580329715937096918">驗證 <ph name="PROVIDER"/> 時發生暫時性問題。您的 Brave 獎勵會處於「待處理」狀態，並將自動重試，不過您也可以稍後再試。</translation>
 <translation id="590733288489975971">廣告獎勵</translation>
 <translation id="6181762795539107980">未驗證</translation>
 <translation id="3026978804849658576">檢視聲明</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">獲得一枚代幣獎勵！</translation>
 <translation id="7701466644604753106">開啟 Speedreader</translation>
 <translation id="763042262431778831">關閉 Speedreader</translation>
-<translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="1148827340205946630">使用者回絕了要求</translation>
 <translation id="2403819048476450281">無效的參數。</translation>
 <translation id="3955144560853195652">鏈 <ph name="VALUE"/> 尚未新增</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">訊息</translation>
 <translation id="3586752056660754651">簽署</translation>
 <translation id="3484981968509595506">DApp 要求取得您的公共加密金鑰</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> 要求取得您錢包的公共加密金鑰。如果您同意提供金鑰，網站就能編寫加密訊息給您。</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> 要求取得您錢包的公共加密金鑰。如果您同意提供此金鑰，本網站就能編寫要傳送給您的加密訊息。</translation>
 <translation id="3340247553212049934">提供</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> 想讀取此訊息以完成您的要求</translation>
+<translation id="1619778919922494944">此 DApp 想讀取此訊息，以完成您的要求</translation>
 <translation id="714506544401754321">解密郵件</translation>
 <translation id="5039804452771397117">允許</translation>
 <translation id="9032898664193335413">允許此應用程式花費您的 <ph name="TOKEN_SYMBOL"/>？</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Gas 費用</translation>
 <translation id="7163997622278957886">出價</translation>
 <translation id="1074360622426001342">數量 + gas</translation>
+<translation id="2186011161688824046">金額 + 費用</translation>
 <translation id="7084089311475827950">無資料。</translation>
 <translation id="5821668936183240062">下一步</translation>
 <translation id="793994607260936590">第一</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">加密貨幣贈送活動為期 7 天，獎項價值約 50 萬美元。</translation>
 <translation id="8292716346768453265">現在就參加！</translation>
+<translation id="6423985584914773314">此 FIL 地址無效</translation>
+<translation id="8528916244724490964">所有網路</translation>
+<translation id="2781668117338732220">次要網路</translation>
+<translation id="2816106784624007524">Gas 上限必須為大於 0 的整數</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">如果此網站感覺不太正常，請嘗試將 Shields 停用。
     <ph name="LINK_BEFORE"/>注意：這麼做可能會減損 Brave 的隱私防護。<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">已封鎖追蹤程式、廣告等 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">進階控管</translation>
+<translation id="650318023204990401">進階控制</translation>
 <translation id="5799940914270080805">變更這些設定可能會使網站無法正常運作。</translation>
 <translation id="9204041448536398473">全域防護設定</translation>
 <translation id="2108334320919763866">全域預設值</translation>
-<translation id="1928321796986970424">篩選清單</translation>
+<translation id="4516904298421534459">篩選清單</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="131231380815754440">啟用 HTTPS</translation>
 <translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="3246600097575692802">允許封鎖的指令檔</translation>
 <translation id="3603525299146223354">追蹤程式與廣告</translation>
-<translation id="1146309636943354181">追蹤器與廣告封鎖（標準）</translation>
-<translation id="5973258875089964805">追蹤器與廣告封鎖（積極）</translation>
+<translation id="4448697385961650078">封鎖追蹤器與廣告</translation>
+<translation id="8593054718053894081">積極封鎖追蹤程式和廣告</translation>
 <translation id="7384778069178817075">允許所有追蹤器與廣告</translation>
-<translation id="6203697265754637264">已封鎖跨站 cookies</translation>
-<translation id="4627427111733173920">被封鎖的 cookies</translation>
-<translation id="3972324600756617403">允許所有 cookies.</translation>
+<translation id="4941539331405513605">封鎖跨網站 cookies</translation>
+<translation id="6883611015375728278">阻擋所有 cookies</translation>
+<translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="8366221601425141146">採集指紋封鎖了</translation>
-<translation id="5582686930349810484">封鎖指紋（標準）</translation>
-<translation id="6696441392507885865">已封鎖指紋（嚴格，可能會破壞網站）</translation>
-<translation id="5882733945883311404">允許所有指紋</translation>
+<translation id="6531019308847917584">封鎖指紋識別功能</translation>
+<translation id="1899608006846124237">積極封鎖指紋識別功能</translation>
+<translation id="8034285923190068220">允許指紋識別</translation>
 <translation id="1992750560347846445">回報網站狀況</translation>
 <translation id="2387532482048804818">告訴我們網站是否在啟用 Shields 後就無法正常運作。</translation>
-<translation id="9167355841012806439">您正在缺少 Brave 隱私防護的情況下檢視這個網站</translation>
-<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> 個追蹤程式、廣告等項目已遭封鎖</translation>
+<translation id="3795015906457257780">目前您是在缺少 Brave 隱私防護的情況下檢視這個網站。</translation>
+<translation id="7194012750329511146">Brave Shields
+已封鎖 <ph name="NUMBER"/> 個追蹤程式、廣告等項目</translation>
 <translation id="1742469581923031760">連線中…</translation>
 <translation id="1287487756047817908">正在中斷連線…</translation>
 <translation id="2325196879156848326">連線失敗</translation>
@@ -1239,4 +1246,9 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="2389181429986654814">前往 <ph name="PROVIDER"/> 以完成驗證</translation>
+<translation id="7793632266654336758">請完成身分驗證以開始接受獎勵。</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> 要求取得您錢包的公共加密金鑰。如果您同意提供金鑰，網站就能編寫加密訊息給您。</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> 想讀取此訊息以完成您的要求</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> 個追蹤程式、廣告等項目已遭封鎖</translation>
 </translationbundle>

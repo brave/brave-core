@@ -425,44 +425,33 @@
 <translation id="7559243474426790340">ステータスを更新する</translation>
 <translation id="8376263745431603066">「ナイトモード」を有効にする（実験的）</translation>
 <translation id="1383876407941801731">検索</translation>
-<translation id="1972589975368876259">スタックを編集</translation>
-<translation id="2490330380242414851">ウィジェットを削除</translation>
 <translation id="8446884382197647889">詳しく知る</translation>
-<translation id="7384441892795736634">データを更新する</translation>
-<translation id="4804818685124855865">接続を切断する</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">利用可能な <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">購入 <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> デポジットアドレス</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> デポジットメモ</translation>
+<translation id="6755546361496900700">両替の内容を確認する</translation>
 <translation id="5110244215256675209">暗号資産を購入</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">購入 <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">利用可能な <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">両替の内容を確認する</translation>
-<translation id="2882813124794301799">ウィジェットのスタック</translation>
 <translation id="13296465911709339">テキストがクリップボードにコピーされました。</translation>
 <translation id="2735834606413553397">パブリックアドレスをクリップボードにコピーしました。</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="2977461003134694205">プライバシー統計</translation>
-<translation id="4643117005422448078">トップサイト</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">トラッカー &amp; 広告のブロック、帯域幅の節約、時間の節約の見積もり。</translation>
-<translation id="74417429503469271">頻繁にアクセスするトップサイトを開きます。</translation>
 <translation id="2956070106555335453">サマリ</translation>
 <translation id="1366855498335432549">預金</translation>
 <translation id="1301340234286078471">両替</translation>
 <translation id="223536150967420869">購入</translation>
-<translation id="1714829281959608206">Binanceアカウントの残高を表示し、暗号資産を取引するには、Binance接続を有効にしてください。</translation>
 <translation id="4584930231524505442">両替する:</translation>
 <translation id="5749014321384313843">購入する:</translation>
-<translation id="8688672835843460752">利用可能</translation>
 <translation id="2480674848181564169">両替のための十分な残高がありません</translation>
 <translation id="2215334405220411393">両替する最小額は : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">接続できません</translation>
 <translation id="7742417737698031726">料金</translation>
 <translation id="2122225204180056042">以下の資産を受け取ります</translation>
 <translation id="6432284126416751397">両替を確認する</translation>
-<translation id="5137723827757859599">トップサイトにはまだ何もありません。</translation>
 <translation id="3891414008432200754">価格</translation>
 <translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>秒)</translation>
 <translation id="1627064138060308910">両替に失敗しました。 もう一度やり直してください。</translation>
@@ -564,6 +553,8 @@
 <translation id="2759836790106646094">ウォレットを今すぐバックアップしましょう！</translation>
 <translation id="1078873179929044999">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる 12 語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="2359808026110333948">続ける</translation>
+<translation id="5488357322146334497">Message</translation>
+<translation id="7228169875515099943">データ</translation>
 <translation id="1904000155026201268">リカバリーフレーズを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="3933122286596948824">リカバリーフレーズ</translation>
 <translation id="5077747669435508720">これらの単語を以下に示す正確な順序で書き留めるかコピーして、安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを回復する唯一の方法が、このリカバリフレーズになります。</translation>
@@ -808,6 +799,7 @@
 <translation id="1254969878422524947">ガスあたりのチップ制限 (Gwei)</translation>
 <translation id="7373308452149471621">ガスあたりの価格制限 (Gwei)</translation>
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
+<translation id="1822506443689803572">BraveはDEXアグリゲーターとして<ph name="DEX_PROVIDER"/>を使用しています</translation>
 <translation id="5061574358754621254">CoinGeckoによる価格データ</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
 <translation id="8574289650879708853">カスタムアセットを追加</translation>
@@ -861,4 +853,21 @@
 <translation id="4945690646623486292">ネットワークを選択</translation>
 <translation id="8853725596990766789">金額を変更</translation>
 <translation id="5233638681132016545">新しいタブ</translation>
+<translation id="8006088103295786154">Braveウォレットにアクセス</translation>
+<translation id="5308380583665731573">接続</translation>
+<translation id="3432029672560911238">ユーザーアカウント</translation>
+<translation id="5753378322046059140">アカウントを変更</translation>
+<translation id="3897092660631435901">メニュー</translation>
+<translation id="42981349822642051">展開</translation>
+<translation id="3586752056660754651">Sign</translation>
+<translation id="6592721981110586529">Braveウォレットに接続</translation>
+<translation id="329813193938846695">アカウントを選択</translation>
+<translation id="3890989020011724401">新規アカウント</translation>
+<translation id="291375746846291973">信頼できるサイトにのみ接続してください。</translation>
+<translation id="385051799172605136">Back</translation>
+<translation id="1060221736464994328">このサイトのネットワーク切り替えを許可しますか？</translation>
+<translation id="2478788592457735063">この操作を行うと、現在のネットワークを以前に追加されたネットワークに切り替えます。</translation>
+<translation id="8756686998207163764">ネットワークを切り替え</translation>
+<translation id="394256914628786902">タブグループの自動作成を有効にする</translation>
+<translation id="8274201358637112807">このページは、Braveウォレットとの通信をリクエストしています</translation>
 </translationbundle>

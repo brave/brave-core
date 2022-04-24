@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Vyřešit</translation>
 <translation id="6991128190741664836">Později</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Peněženka</translation>
+<translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="1644574205037202324">Historie</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Chyba: Pro přihlášení je potřeba ověřený účet</translation>
 <translation id="5260522591743022748">Hmm, zdá se, že vaše odměny Brave už byly ověřeny jiným účtem <ph name="PROVIDER"/>. Zkuste ověření provést znova pomocí předchozího účtu.</translation>
 <translation id="5111921830714291902">Chyba: Jiný účet</translation>
+<translation id="6933939911547091461">Vaše odměny Brave bohužel nelze ověřit, protože ověření odměn Brave momentálně nepodporuje vaši oblast.</translation>
+<translation id="8218538368080510976">Chyba: Oblast není podporována</translation>
 <translation id="5382684862562314222">Služba BAT zatím není ve vašem regionu v systému Uphold podporována.</translation>
 <translation id="9074594632540931067">Chyba: Služba BAT není dostupná</translation>
 <translation id="413458922997276130">Váš účet je v systému Uphold momentálně zablokován.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Celkem přijato</translation>
 <translation id="824449983246282560">Nemáte žádné zůstatky na vašem účtu. Navštivte Gemini a nějaké si pořiďte.</translation>
 <translation id="8624961452383848703">Chci konvertovat…</translation>
+<translation id="1544192797660353713">Peněženka</translation>
 <translation id="616639131065447379">Vítejte v Kryptopeněženkách Brave</translation>
 <translation id="1740464057879304704">Komponenta Kryptopeněženky vám umožní pracovat s kryptoměnou a souvisejícími aktivy v aplikaci Brave. Komponenta Kryptopeněženky podporuje tokeny Ethereum, jako jsou například ETH a BAT, a také sběratelské předměty a umožňuje vám pracovat s aplikacemi Ðapps a dalšími chytrými smlouvami. Vše uvedené výše je určeno pro lidi, kteří jsou obeznámeni s měnou Ethereum a dalšími blockchainovými systémy – nebo se s nimi chtějí seznámit.</translation>
 <translation id="4855440621031541830">Kryptopeněženky používejte jen v případě souhlasu s tím, že vy sami jste zodpovědní za veškerá rizika spojená s jejich používáním a že na Brave Software nespočívá žádná zodpovědnost nebo záruka vůči jakýmkoliv ztrátám včetně nechtěných nebo výsledných ztrát, které můžete utrpět důsledkem tohoto používání.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Vaše <ph name="AMOUNT"/> <ph name="MONTH"/> odměny jsou na cestě. Mějte se na pozoru!</translation>
 <translation id="2659764755126740206">Přejít na můj účet <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Přidat prostředky</translation>
-<translation id="2389181429986654814">Pro dokončení ověření přejděte na web <ph name="PROVIDER"/></translation>
-<translation id="7793632266654336758">Abyste mohli začít dostávat odměny, vyplňte ověření identity.</translation>
 <translation id="2394961582378297792">Odhlášeno</translation>
 <translation id="6080167751812750226">Odpojit od <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Odhadovaný výdělek</translation>
 <translation id="4244985009709452836">Přihlaste se do svého účtu <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Jednorázové příspěvky</translation>
+<translation id="7580329715937096918">Nastal dočasný problém s ověřením vašeho <ph name="PROVIDER"/>. Vaše odměny Brave zůstanou v nevyřízeném stavu. Můžete to zkusit znovu později nebo to automaticky znovu vyzkoušíme my.</translation>
 <translation id="590733288489975971">Odměny z reklam</translation>
 <translation id="6181762795539107980">Neověřeno</translation>
 <translation id="3026978804849658576">Zobrazit výpis</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">K dispozici je udělení tokenu!</translation>
 <translation id="7701466644604753106">Zapnout Speedreader</translation>
 <translation id="763042262431778831">Vypnout Speedreader</translation>
-<translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="1148827340205946630">Uživatel požadavek zamítl</translation>
 <translation id="2403819048476450281">Neplatné parametry.</translation>
 <translation id="3955144560853195652">Řetězec <ph name="VALUE"/> nebyl přidán</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Zpráva</translation>
 <translation id="3586752056660754651">Podepsat</translation>
 <translation id="3484981968509595506">Váš veřejný šifrovací klíč je vyžadován ze strany DApp</translation>
-<translation id="423332628699531400">Stránka <ph name="SITE_ORIGIN"/> vyžaduje veřejný šifrovací klíč vaší peněženky. Pokud s udělením tohoto klíče budete souhlasit, bude vám stránka moci posílat šifrované zprávy.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> žádá veřejný šifrovací klíč vašich peněženek. Pokud budete souhlasit s poskytnutím tohoto klíče, stránka bude schopna vytvářet pro vás šifrované zprávy.</translation>
 <translation id="3340247553212049934">Poskytnout</translation>
-<translation id="5883819003576364085">Stránka <ph name="SITE_ORIGIN"/> by si ráda tuto zprávu přečetla pro vyhovění vašemu požadavku</translation>
+<translation id="1619778919922494944">Tato decentralizovaná aplikace (DApp) chce přečíst tuto zprávu, aby dokončila vaši žádost</translation>
 <translation id="714506544401754321">Dešifrovat zprávu</translation>
 <translation id="5039804452771397117">Povolit</translation>
 <translation id="9032898664193335413">Povolit této aplikaci utratit vaše <ph name="TOKEN_SYMBOL"/></translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Poplatek za plyn</translation>
 <translation id="7163997622278957886">Nabídka</translation>
 <translation id="1074360622426001342">Částka + plyn</translation>
+<translation id="2186011161688824046">Částka + poplatek</translation>
 <translation id="7084089311475827950">Chybí údaje.</translation>
 <translation id="5821668936183240062">další</translation>
 <translation id="793994607260936590">první</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Soutěž Brave Swap</translation>
 <translation id="7829441065063984927">7 dní krypto odměn, odměny v hodnotě až 500 000 $</translation>
 <translation id="8292716346768453265">Přidej se!</translation>
+<translation id="6423985584914773314">Neplatná adresa FIL</translation>
+<translation id="8528916244724490964">Všechny sítě</translation>
+<translation id="2781668117338732220">Sekundární sítě</translation>
+<translation id="2816106784624007524">Limit paliva musí být celé číslo větší než 0</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Obecné info</translation>
 <translation id="4045404575593562245">Kontrolní události Toru</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Pokud se stránka nezobrazuje správně, zkuste štíty vypnout. 
     <ph name="LINK_BEFORE"/>Poznámka: může dojít k omezení ochrany soukromí Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Počet zablokovaných sledovačů, reklam, atd. <ph name="LINK_BEFORE"/>Další informace<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Pokročilé ovládání</translation>
+<translation id="650318023204990401">Pokročilé nastavení</translation>
 <translation id="5799940914270080805">Změna tohoto nastavení může mít vliv na fungování stránek.</translation>
 <translation id="9204041448536398473">Nastavení globálního štítu</translation>
 <translation id="2108334320919763866">Globální výchozí nastavení</translation>
-<translation id="1928321796986970424">Seznamy filtrů</translation>
+<translation id="4516904298421534459">Seznamy filtrů</translation>
 <translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
 <translation id="131231380815754440">Aktivovat HTTPS</translation>
 <translation id="4824468494729001999">Blokovat skripty</translation>
 <translation id="3246600097575692802">Aktivovat blokování skriptů</translation>
 <translation id="3603525299146223354">Sledovače a reklamy</translation>
-<translation id="1146309636943354181">Sledování &amp; ads blokována (standardní)</translation>
-<translation id="5973258875089964805">Sledovací &amp; reklamy blokovány (agresivní)</translation>
+<translation id="4448697385961650078">Blokovat sledování &amp; ads</translation>
+<translation id="8593054718053894081">Agresivně blokovat sledování &amp; reklamy</translation>
 <translation id="7384778069178817075">Umožnit všechny sledující &amp; reklamy</translation>
-<translation id="6203697265754637264">Soubory cookies třetích stran blokovány</translation>
-<translation id="4627427111733173920">Soubory cookies jsou blokovány</translation>
-<translation id="3972324600756617403">Všechny soubory cookies povoleny</translation>
+<translation id="4941539331405513605">Blokovat cookies napříč stránkami</translation>
+<translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
+<translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="8366221601425141146">Shromažďování otisků zařízení bylo zablokováno</translation>
-<translation id="5582686930349810484">Získání otisku blokováno (standardně)</translation>
-<translation id="6696441392507885865">Získávání otisku blokováno (striktně, může narušit fungování stránek)</translation>
-<translation id="5882733945883311404">Povolit všechna získávání otisku</translation>
+<translation id="6531019308847917584">Blokovat otisky prstů</translation>
+<translation id="1899608006846124237">Agresivně blokovat otisky prstů</translation>
+<translation id="8034285923190068220">Povolit fingerprinting</translation>
 <translation id="1992750560347846445">Stránka pro nahlašování</translation>
 <translation id="2387532482048804818">Dejte nám vědět, pokud se stránka nezobrazovala správně se zapnutými štíty.</translation>
-<translation id="9167355841012806439">Tuto stránku procházíte bez ochrany soukromí Brave</translation>
-<translation id="6835073906252142271">Štíty Brave odrazily <ph name="NUMBER"/> Měření, reklam a další nežádoucí prvky</translation>
+<translation id="3795015906457257780">Tuto stránku procházíte bez ochrany soukromí Brave.</translation>
+<translation id="7194012750329511146">Štíty Brave odrazily
+<ph name="NUMBER"/> měření, reklam a další nežádoucí prvky</translation>
 <translation id="1742469581923031760">Připojování…</translation>
 <translation id="1287487756047817908">Odpojování…</translation>
 <translation id="2325196879156848326">Připojení selhalo</translation>
@@ -1239,4 +1246,9 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="2389181429986654814">Pro dokončení ověření přejděte na web <ph name="PROVIDER"/></translation>
+<translation id="7793632266654336758">Abyste mohli začít dostávat odměny, vyplňte ověření identity.</translation>
+<translation id="423332628699531400">Stránka <ph name="SITE_ORIGIN"/> vyžaduje veřejný šifrovací klíč vaší peněženky. Pokud s udělením tohoto klíče budete souhlasit, bude vám stránka moci posílat šifrované zprávy.</translation>
+<translation id="5883819003576364085">Stránka <ph name="SITE_ORIGIN"/> by si ráda tuto zprávu přečetla pro vyhovění vašemu požadavku</translation>
+<translation id="6835073906252142271">Štíty Brave odrazily <ph name="NUMBER"/> Měření, reklam a další nežádoucí prvky</translation>
 </translationbundle>

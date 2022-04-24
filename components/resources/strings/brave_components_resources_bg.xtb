@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Разрешаване</translation>
 <translation id="6991128190741664836">По-късно</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Портфейл</translation>
+<translation id="8488282162676695335">Портфейл в Brave</translation>
 <translation id="8820817407110198400">Отметки</translation>
 <translation id="1644574205037202324">История</translation>
 <translation id="6165508094623778733">Научете повече</translation>
@@ -646,6 +646,7 @@
 <translation id="8851480289992540512">Общо получени</translation>
 <translation id="824449983246282560">Нямате салдо по сметката си. Посетете Gemini, за да купите нещо.</translation>
 <translation id="8624961452383848703">Искам да конвертирам...</translation>
+<translation id="1544192797660353713">Портфейл</translation>
 <translation id="616639131065447379">Добре дошли в Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets ви позволява да работите с криптовалута и свързани активи в Brave. Crypto Wallets поддържа токени на Ethereum като ETH и BAT, както и колекционерски елементи, и ви позволява да работите с Ðapps и други интелигентни договори. Всичко това е предназначено за хора, които са запознати с Ethereum и други блокчейн системи — или са развълнувани да научат.</translation>
 <translation id="4855440621031541830">Използвайте Crypto Wallets, само ако приемате, че единствено вие носите отговорност за целия риск, свързан с тази употреба, и че Brave Software не носи отговорност или задължение за загуби, включително случайни или последващи загуби, които бихте могли да понесете в резултат на тази употреба.</translation>
@@ -762,8 +763,6 @@
 <translation id="5878420576943709750">Вашите награди от<ph name="AMOUNT"/> за <ph name="MONTH"/> са на път. Бъдете нащрек!</translation>
 <translation id="2659764755126740206">Отидете в моя акаунт <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Добавяне на средства</translation>
-<translation id="2389181429986654814">Към <ph name="PROVIDER"/>, за да завършите проверката</translation>
-<translation id="7793632266654336758">Завършете проверката на самоличността, за да започнете да получавате награди.</translation>
 <translation id="2394961582378297792">Излязохте</translation>
 <translation id="6080167751812750226">Прекъсване на връзката с<ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Прогнозни печалби</translation>
@@ -792,7 +791,6 @@
 <translation id="2221902203895354376">Наличен е безвъзмезден токен!</translation>
 <translation id="7701466644604753106">ВКЛЮЧВАНЕ на Speedreader</translation>
 <translation id="763042262431778831">ИЗКЛЮЧВАНЕ на Speedreader</translation>
-<translation id="8488282162676695335">Портфейл в Brave</translation>
 <translation id="1148827340205946630">Този потребител отказа заявката.</translation>
 <translation id="2403819048476450281">Параметрите са невалидни.</translation>
 <translation id="3955144560853195652">Веригата <ph name="VALUE"/> не е добавена</translation>
@@ -1005,9 +1003,7 @@
 <translation id="5488357322146334497">Съобщение</translation>
 <translation id="3586752056660754651">Подпис</translation>
 <translation id="3484981968509595506">DApp изисква Вашия публичен ключ за криптиране</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> изисква публичен ключ за криптиране на портфейлите Ви. Ако се съгласите да предоставите този ключ, сайтът ще може да съставя криптирани съобщения за Вас.</translation>
 <translation id="3340247553212049934">Осигуряване</translation>
-<translation id="5883819003576364085">От <ph name="SITE_ORIGIN"/> биха искали да прочете това съобщение, за да завършите заявката си</translation>
 <translation id="714506544401754321">Дешифриране на съобщението</translation>
 <translation id="5039804452771397117">Позволи</translation>
 <translation id="9032898664193335413">Разрешаване на това приложение да похарчи вашите <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1181,30 +1177,24 @@
 <translation id="7709075156958117386">Ако този сайт изглежда повреден, опитайте да смъкнете щитовете. 
     <ph name="LINK_BEFORE"/>Забележка: това може да намали защитата на поверителността на Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Проследяващите елементи, рекламите и други елементи са блокирани<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Допълнително управление</translation>
+<translation id="650318023204990401">Разширени контроли</translation>
 <translation id="5799940914270080805">Промяната на тези настройки може да повреди сайтовете.</translation>
 <translation id="9204041448536398473">Настройки на глобалния щит</translation>
 <translation id="2108334320919763866">Глобални настройки по подразбиране</translation>
-<translation id="1928321796986970424">Списъци с филтри</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="131231380815754440">Активиране на HTTPS</translation>
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
 <translation id="3246600097575692802">Разширяване на блокирани скриптове</translation>
 <translation id="3603525299146223354">Проследяващи елементи и реклами</translation>
-<translation id="1146309636943354181">Проследяването и рекламите са блокирани (стандартно)</translation>
-<translation id="5973258875089964805">Проследяването и рекламите са блокирани (агресивно)</translation>
+<translation id="4448697385961650078">Блокиране на проследяването и рекламите</translation>
 <translation id="7384778069178817075">Разрешаване на всички проследявания и реклами</translation>
-<translation id="6203697265754637264">Бисквитките между сайтове бяха блокирани</translation>
-<translation id="4627427111733173920">Блокирани бисквитки</translation>
-<translation id="3972324600756617403">Всички „бисквитки“ са разрешени</translation>
+<translation id="4941539331405513605">Блокиране на бисквитките между различни сайтове</translation>
+<translation id="6883611015375728278">Блокиране на всички „бисквитки“</translation>
+<translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
 <translation id="8366221601425141146">Цифровите отпечатъци са блокирани</translation>
-<translation id="5582686930349810484">Запазването на цифрови отпечатъци е блокирано (стандартно)</translation>
-<translation id="6696441392507885865">Отпечатъците са блокирани (стриктно, може да попречи на работата на сайтовете)</translation>
-<translation id="5882733945883311404">Разрешаване на всички пръстови отпечатъци</translation>
+<translation id="8034285923190068220">Позволяване на пръстови отпечатъци</translation>
 <translation id="1992750560347846445">Подаване на сигнал за сайта</translation>
 <translation id="2387532482048804818">Кажете ни, ако сайтът не работи правилно с вдигнати щитове.</translation>
-<translation id="9167355841012806439">Вие разглеждате този сайт без защитата на поверителността на Brave</translation>
-<translation id="6835073906252142271">Блокирани са <ph name="NUMBER"/> тракера, реклами и други за щитовете на Brave</translation>
 <translation id="1742469581923031760">Свързване…</translation>
 <translation id="1287487756047817908">Връзката се прекъсва…</translation>
 <translation id="2325196879156848326">Неуспешно свързване</translation>
@@ -1240,4 +1230,9 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="2389181429986654814">Към <ph name="PROVIDER"/>, за да завършите проверката</translation>
+<translation id="7793632266654336758">Завършете проверката на самоличността, за да започнете да получавате награди.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> изисква публичен ключ за криптиране на портфейлите Ви. Ако се съгласите да предоставите този ключ, сайтът ще може да съставя криптирани съобщения за Вас.</translation>
+<translation id="5883819003576364085">От <ph name="SITE_ORIGIN"/> биха искали да прочете това съобщение, за да завършите заявката си</translation>
+<translation id="6835073906252142271">Блокирани са <ph name="NUMBER"/> тракера, реклами и други за щитовете на Brave</translation>
 </translationbundle>

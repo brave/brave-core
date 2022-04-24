@@ -55,7 +55,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5197219128592971597">Namiesto verzií Accelerated Mobile Page od spoločnosti Google vždy navštevujte pôvodné (iné ako AMP) URL adresy webových stránok.</translation>
 <translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
 <translation id="597020512043916976">Zobraziť top stránky v návrhoch na automatické dopĺňanie</translation>
-<translation id="264150068416846820">Zobraziť stránky, ktoré odporúča Brave, v návrhoch na automatické dopĺňanie</translation>
+<translation id="301088458323355543">Zobraziť stránky v návrhoch na automatické dopĺňanie</translation>
 <translation id="5529693968082667490">Tlačidlo zobrazenia karty vyhľadávania</translation>
 <translation id="6414370348346025511">Štandardná ochrana je zapnutá.</translation>
 <translation id="814018970995616154">Kontroluje adresy URL so zoznamom nebezpečných stránok uloženým v Brave.</translation>
@@ -70,8 +70,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4851215387785619212">Súkromné reklamy Brave</translation>
 <translation id="7808122468353671181">Získavajte tokeny za zobrazovanie reklám Brave. Uvedené reklamy vychádzajú z vašich záujmov a sú vydedukované na základe vášho správania pri prehliadaní. Žiadne osobné údaje ani informácie o histórii prehliadania neopustia váš prehliadač.</translation>
 <translation id="1758947220824279023">Maximálny počet zobrazovaných reklám</translation>
-<translation id="8578912649458880781">Cielenie reklám na úrovni štátu</translation>
-<translation id="3678362265519557511">Vďaka tomu vám môže Brave ukazovať reklamy konkrétne pre váš stav. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Relevancia regionálnej reklamy</translation>
+<translation id="2196950072404588793">Vďaka tomu vám môže Brave ukazovať reklamy konkrétne pre váš región. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
 <translation id="9132509928968869844">Mesačný limit automatických príspevkov</translation>
 <translation id="7286722244752781970">Minimálny čas na stránke k zalogovaniu návštevy</translation>
@@ -144,8 +144,10 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="130615081792797568">Jednoduché zobrazenie</translation>
 <translation id="2360360976480535628">Rozšírené zobrazenie</translation>
 <translation id="2133317862976486547">Sledovania &amp; blokovanie reklám</translation>
-<translation id="4385707520896576447">Blokovanie súborov Cookies</translation>
-<translation id="4978786495456601191">Blokovanie používania odtlačkov prstov</translation>
+<translation id="8823559166155093873">Blokovanie súborov cookie</translation>
+<translation id="6531019308847917584">Blokovanie používania odtlačkov prstov</translation>
+<translation id="7607166182943595829">Zabrániť stránkam používať odtlačky prstov na základe mojich jazykových preferencií</translation>
+<translation id="3497934980362703405">Aktivácia tohto nastavenia zredukuje, koľko sa webové stránky môžu dozvedieť o vašich jazykových preferenciách.</translation>
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
 <translation id="4395160081588457461">Pozrieť &amp; cítiť</translation>
@@ -435,8 +437,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8487693399751278191">Importovať záložky teraz...</translation>
 <translation id="2557899542277210112">Pre rýchly prístup umiestnite svoje záložky sem na panel so záložkami.</translation>
 <translation id="2808630562319398131">Obnoviť údaje o Odmenách Brave</translation>
-<translation id="2273851479262317744">Nastaviť Brave ako predvolený prehliadač</translation>
-<translation id="8581710194025054669">Ak chcete zaistiť najlepšiu ochranu osobných údajov online, zvážte nastavenie Brave ako predvoleného prehliadača na svojom počítači. Keď je prehliadač Brave predvolený, každý webový odkaz, na ktorý kliknete, sa otvorí s ochranou osobných údajov Brave.</translation>
 <translation id="1968543937259008435">Ste pripravení na najlepšiu ochranu osobných údajov online?</translation>
 <translation id="6817415381278637662">Nastavte Brave ako predvolený prehliadač, aby ste získali ochranu osobných údajov Brave na každej webovej stránke, ktorú otvoríte.</translation>
 <translation id="8722651357687610395">Nastaviť Brave ako predvolené</translation>
@@ -467,4 +467,9 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1062463687579789365">Prispôsobenie sietí peňaženiek</translation>
 <translation id="2234108191702901162">Nepodarilo sa pridať sieť</translation>
 <translation id="2618193846561624884">Chcete aktualizovať existujúcu sieť?</translation>
+<translation id="264150068416846820">Zobraziť stránky, ktoré odporúča Brave, v návrhoch na automatické dopĺňanie</translation>
+<translation id="8578912649458880781">Cielenie reklám na úrovni štátu</translation>
+<translation id="3678362265519557511">Vďaka tomu vám môže Brave ukazovať reklamy konkrétne pre váš stav. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Nastaviť Brave ako predvolený prehliadač</translation>
+<translation id="8581710194025054669">Ak chcete zaistiť najlepšiu ochranu osobných údajov online, zvážte nastavenie Brave ako predvoleného prehliadača na svojom počítači. Keď je prehliadač Brave predvolený, každý webový odkaz, na ktorý kliknete, sa otvorí s ochranou osobných údajov Brave.</translation>
 </translationbundle>

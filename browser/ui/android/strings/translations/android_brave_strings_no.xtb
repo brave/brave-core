@@ -426,44 +426,33 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7559243474426790340">Oppdater status</translation>
 <translation id="8376263745431603066">Slå på «Nattmodus» (eksperimentelt)</translation>
 <translation id="1383876407941801731">Søk</translation>
-<translation id="1972589975368876259">Rediger stabel</translation>
-<translation id="2490330380242414851">Fjern widget</translation>
 <translation id="8446884382197647889">Les mer</translation>
-<translation id="7384441892795736634">Oppdater data</translation>
-<translation id="4804818685124855865">Koble fra</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Tilgjengelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Kjøp <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Innskuddsadresse</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Innskuddsnotat</translation>
+<translation id="6755546361496900700">Forhåndsvis konvertering</translation>
 <translation id="5110244215256675209">Kjøp kryptovaluta</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Kjøp <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Tilgjengelig <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Forhåndsvis konvertering</translation>
-<translation id="2882813124794301799">Widgetstabel</translation>
 <translation id="13296465911709339">Teksten din er kopiert til utklippstavlen.</translation>
 <translation id="2735834606413553397">Den offentlige adressen har blitt kopiert til utklippstavlen.</translation>
 <translation id="7144878232160441200">Prøv på nytt</translation>
 <translation id="2977461003134694205">Personvernstatistikk</translation>
-<translation id="4643117005422448078">Populære nettsteder</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Sporinger &amp; Blokkerte annonser, spart båndbredde og estimater for spart tid.</translation>
-<translation id="74417429503469271">Åpne toppnettsteder du nylig har besøkt.</translation>
 <translation id="2956070106555335453">Sammendrag</translation>
 <translation id="1366855498335432549">Innskudd</translation>
 <translation id="1301340234286078471">Konverter</translation>
 <translation id="223536150967420869">Kjøp</translation>
-<translation id="1714829281959608206">Slå på Binance-tilkoblingen for å se Binance-kontosaldoen og handle kryptovaluta.</translation>
 <translation id="4584930231524505442">Jeg vil konvertere …</translation>
 <translation id="5749014321384313843">Jeg vil bruke …</translation>
-<translation id="8688672835843460752">Tilgjengelig</translation>
 <translation id="2480674848181564169">Ikke nok balanse til konvertering</translation>
 <translation id="2215334405220411393">Minimumsbeløp å konvertere er: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Kunne ikke koble til</translation>
 <translation id="7742417737698031726">Avgift</translation>
 <translation id="2122225204180056042">Du mottar</translation>
 <translation id="6432284126416751397">Bekreft konvertering</translation>
-<translation id="5137723827757859599">Det er ikke noe her om toppsidene enda.</translation>
 <translation id="3891414008432200754">Pris</translation>
 <translation id="3733576242118819803">Bekreft (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Kunne ikke konvertere. Prøv på nytt.</translation>
@@ -565,6 +554,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2759836790106646094">Ta sikkerhetskopi av lommeboken din nå!</translation>
 <translation id="1078873179929044999">I neste trinn får du se en setning for gjenoppretting på 12 ord, som du kan bruke til å gjenopprette de primære kryptokontoene dine. Oppbevar det et trygt sted. Gjenopprettingssetningen din er den eneste måten du kan få tilbake kontotilgangen om du har glemt passordet, tapt eller blitt frastjålet enheten, eller du ønsker å bytte lommebok.</translation>
 <translation id="2359808026110333948">Fortsett</translation>
+<translation id="5488357322146334497">Melding</translation>
+<translation id="7228169875515099943">DATA</translation>
 <translation id="1904000155026201268">Jeg forstår at jeg ikke får tilgang til kryptolommeboken min igjen om jeg mister gjenopprettingsfrasen.</translation>
 <translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
 <translation id="5077747669435508720">Skriv ned eller kopier disse ordene i den nøyaktige rekkefølgen vist nedenfor, og lagre informasjonen på et trygt sted. Sikkerhetsfrasen din er den eneste måten du kan gjenopprette kontotilgangen på hvis du glemmer passordet, enheten din går tapt eller du vil bytte lommebøker.</translation>
@@ -809,6 +800,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1254969878422524947">Tipsgrense per «gas» (Gwei)</translation>
 <translation id="7373308452149471621">Prisgrense per «gas» (Gwei)</translation>
 <translation id="5891811606602061966">Kunne ikke importere kontoen – prøv på nytt.</translation>
+<translation id="1822506443689803572">Brave bruker <ph name="DEX_PROVIDER"/> som en DEX-aggregator.</translation>
 <translation id="5061574358754621254">Prisdata levert av CoinGecko</translation>
 <translation id="4626407663177532837">Tilbudet omfatter en Brave-avgift på 0,875 %.</translation>
 <translation id="8574289650879708853">Legg til egendefinert ressurs</translation>
@@ -862,4 +854,21 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="4945690646623486292">Velg nettverk</translation>
 <translation id="8853725596990766789">Endre beløp</translation>
 <translation id="5233638681132016545">Ny fane</translation>
+<translation id="8006088103295786154">Gå til Brave-lommeboken</translation>
+<translation id="5308380583665731573">Koble til</translation>
+<translation id="3432029672560911238">Brukerkonto</translation>
+<translation id="5753378322046059140">Bytt konto</translation>
+<translation id="3897092660631435901">Meny</translation>
+<translation id="42981349822642051">Utvid</translation>
+<translation id="3586752056660754651">Undertegn</translation>
+<translation id="6592721981110586529">Koble til Brave-lommeboken</translation>
+<translation id="329813193938846695">Velg konto(er)</translation>
+<translation id="3890989020011724401">Ny konto</translation>
+<translation id="291375746846291973">Koble kun til nettsteder som du stoler på.</translation>
+<translation id="385051799172605136">Tilbake</translation>
+<translation id="1060221736464994328">Vil du tillate dette nettstedet å bytte nettverk?</translation>
+<translation id="2478788592457735063">Dette bytter nettverket til et nettverk som tidligere har blitt lagt til.</translation>
+<translation id="8756686998207163764">Bytt nettverk</translation>
+<translation id="394256914628786902">Aktiver automatisk opprettelse av Fanegrupper</translation>
+<translation id="8274201358637112807">Denne siden vil koble til Brave-lommeboken</translation>
 </translationbundle>

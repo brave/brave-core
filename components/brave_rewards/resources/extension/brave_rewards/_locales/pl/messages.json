@@ -243,6 +243,15 @@
     "message": "Oczekuje",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Wystąpił tymczasowy problem z weryfikacją$provider$. Twoje nagrody Brave pozostaną w stanie Oczekującym, a ponowna próba zostanie podjęta automatycznie, ale możesz również spróbować ponownie później.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Nagrody z reklam",
     "description": ""

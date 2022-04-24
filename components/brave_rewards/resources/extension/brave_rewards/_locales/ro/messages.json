@@ -243,6 +243,15 @@
     "message": "În așteptare",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "$provider$ nu poate fi momentan confirmat, din cauza unei probleme. Recompensele Brave vor rămâne În așteptare și se va reîncerca confirmarea automată, însă puteți încerca și dvs. mai târziu. ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Recompense din reclame",
     "description": ""

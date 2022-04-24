@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">حلّ</translation>
 <translation id="6991128190741664836">لاحقاً</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">المحفظة</translation>
+<translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="8820817407110198400">الإشارات المرجعية</translation>
 <translation id="1644574205037202324">السجل</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">خطأ: أنت تحتاج إلى حساب تم التحقق منه لتسجيل الدخول</translation>
 <translation id="5260522591743022748">عفوًا، يبدو أن مكافآت Brave الخاصة بك تم التحقق منها بالفعل باستخدام حساب <ph name="PROVIDER"/> آخر. يرجى محاولة التحقق مرة أخرى باستخدام حسابك السابق.</translation>
 <translation id="5111921830714291902">خطأ: حساب مختلف</translation>
+<translation id="6933939911547091461">لسوء الحظ، لا يمكن التحقق من صحة مكافآت Brave لأن منطقتك ليست مدعومة للتحقق من مكافآت Brave في هذا الوقت.</translation>
+<translation id="8218538368080510976">خطأ: المنطقة غير مدعومة</translation>
 <translation id="5382684862562314222">لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.</translation>
 <translation id="9074594632540931067">خطأ: BAT غير متوفر</translation>
 <translation id="413458922997276130">حسابك في Uphold محظور حاليًا.</translation>
@@ -647,6 +649,7 @@
 <translation id="8851480289992540512">إجمالي المستلم</translation>
 <translation id="824449983246282560">ليس لديك أي أرصدة في حسابك. قم بزيارة Gemini لشراء بعض العملات.</translation>
 <translation id="8624961452383848703">أريد تحويل…</translation>
+<translation id="1544192797660353713">المحفظة</translation>
 <translation id="616639131065447379">أهلاً بك في Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">تتيح لك Crypto Wallets التعامل مع العملات المشفرة والأصول ذات الصلة في Brave. تدعم Crypto Wallets الرموز المميزة لإيثيريوم مثل ETH وBAT، بالإضافة إلى المقتنيات، وتتيح لك التعامل مع Ðapps/التطبيقات اللامركزية والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بالإيثيريوم وأنظمة سلسلة الكتل الأخرى - أو أولئك المتحمسون للتعلم.</translation>
 <translation id="4855440621031541830">استخدم Crypto Wallets فقط إذا كنت تقر بأنك وحدك مسؤول عن جميع المخاطر المرتبطة بهذا الاستخدام، وأن Brave Software لا تتحمل أي مسؤولية أو تبعة عن أي خسائر بما في ذلك الخسائر العرضية أو التبعية التي قد تتعرض لها نتيجةً لهذا الاستخدام.</translation>
@@ -762,13 +765,12 @@
 <translation id="5878420576943709750">مكافآتك <ph name="AMOUNT"/><ph name="MONTH"/> في الطريق إليك. ترقبها!</translation>
 <translation id="2659764755126740206">انتقل إلى <ph name="PROVIDER"/> حسابي</translation>
 <translation id="1165667598801520610">إضافة أموال</translation>
-<translation id="2389181429986654814">انتقل إلى <ph name="PROVIDER"/> لإكمال التحقق</translation>
-<translation id="7793632266654336758">نرجو إكمال التحقق من الهوية لبدء استلام المكافآت.</translation>
 <translation id="2394961582378297792">تم تسجيل الخروج</translation>
 <translation id="6080167751812750226">قطع الاتصال من <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">المكاسب المُقدَّرة</translation>
 <translation id="4244985009709452836">قم بتسجيل الدخول إلى حساب <ph name="PROVIDER"/> الخاص بك</translation>
 <translation id="2613359062756190460">تلميحات لمرة واحدة</translation>
+<translation id="7580329715937096918">هناك مشكلة مؤقتة في التحقق مع <ph name="PROVIDER"/>. ستظل مكافآت Brave الخاصة بك في حالة قيد الانتظار وتعيد المحاولة تلقائيًّا، لكن يمكنك أيضًا المحاولة مجددًا لاحقًا.</translation>
 <translation id="590733288489975971">مكافآت من الإعلانات</translation>
 <translation id="6181762795539107980">غير مُتحقق منه</translation>
 <translation id="3026978804849658576">عرض البيان</translation>
@@ -792,7 +794,6 @@
 <translation id="2221902203895354376">منحة الرموز المميزة متاحة!</translation>
 <translation id="7701466644604753106">تشغيل قارئ السرعة</translation>
 <translation id="763042262431778831">أوقف قارئ السرعة</translation>
-<translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="1148827340205946630">رفض المستخدم الطلب</translation>
 <translation id="2403819048476450281">معايير غير صالحة</translation>
 <translation id="3955144560853195652">لم تتم إضافة سلسلة <ph name="VALUE"/></translation>
@@ -1005,9 +1006,9 @@
 <translation id="5488357322146334497">رسالة</translation>
 <translation id="3586752056660754651">توقيع</translation>
 <translation id="3484981968509595506">يطلب DApp مفتاح التشفير العام الخاص بك</translation>
-<translation id="423332628699531400">يطلب <ph name="SITE_ORIGIN"/> مفتاح التشفير العام الخاص بك. في حال موافقتك على مشاركته، سيتمكن الموقع من إنشاء رسائل مشفرة لك.</translation>
+<translation id="1915212737651531313">يطلب <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> مفتاح التشفير العام الخاص بمحافظك. في حال موافقتك على مشاركته، سيتمكن الموقع من إنشاء رسائل مشفرة لك.</translation>
 <translation id="3340247553212049934">تزويد</translation>
-<translation id="5883819003576364085">يرغب <ph name="SITE_ORIGIN"/> في قراءة هذه الرسالة لإكمال طلبك</translation>
+<translation id="1619778919922494944">يرغب هذا التطبيق اللامركزي في قراءة هذه الرسالة لإكمال طلبك</translation>
 <translation id="714506544401754321">فك تشفير الرسالة</translation>
 <translation id="5039804452771397117">سماح</translation>
 <translation id="9032898664193335413">هل تسمح لهذا التطبيق بإنفاق <ph name="TOKEN_SYMBOL"/>؟</translation>
@@ -1035,6 +1036,7 @@
 <translation id="3948067511324628726">رسوم الغاز</translation>
 <translation id="7163997622278957886">عطاء</translation>
 <translation id="1074360622426001342">القيمة + الغاز</translation>
+<translation id="2186011161688824046">المبلغ + الرسوم</translation>
 <translation id="7084089311475827950">لا يوجد بيانات</translation>
 <translation id="5821668936183240062">التالي</translation>
 <translation id="793994607260936590">أولا</translation>
@@ -1167,6 +1169,10 @@
 <translation id="1752214435563414457">مخاطر تبديل Brave</translation>
 <translation id="7829441065063984927">7 أيام من هدايا العملات المشفرة، جوائز بقيمة 500 ألف دولار تقريبًا.</translation>
 <translation id="8292716346768453265">أدخل الآن!</translation>
+<translation id="6423985584914773314">ليس عنوان FIL صالح</translation>
+<translation id="8528916244724490964">كل الشبكات</translation>
+<translation id="2781668117338732220">الشبكات الثانوية</translation>
+<translation id="2816106784624007524">حد الغاز يجب أن يكون عددًا صحيحًا أكبر من 0</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1181,30 +1187,31 @@
 <translation id="7709075156958117386">إذا كان هذا الموقع يبدو معطلاً، فجرّب إيقاف تشغيل دروع الحماية.
 <ph name="LINK_BEFORE"/>انتبه: قد يقلل ذلك من حماية الخصوصية لـBrave. <ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">تم حظر أدوات التتبع والإعلانات وغيرها <ph name="LINK_BEFORE"/>معرفة المزيد <ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">الضوابط المتقدمة</translation>
+<translation id="650318023204990401">الضوابط المتقدمة</translation>
 <translation id="5799940914270080805">قد يتسبب تغيير هذه الإعدادات في تعطل المواقع.</translation>
 <translation id="9204041448536398473">إعدادات دروع الحماية العالمية</translation>
 <translation id="2108334320919763866">الإعدادات الافتراضية العالمية</translation>
-<translation id="1928321796986970424">ترشيح القائمة</translation>
+<translation id="4516904298421534459">ترشيح القوائم</translation>
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="131231380815754440">تمكين HTTPS</translation>
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
 <translation id="3246600097575692802">تمكين البرامج النصية المحظورة</translation>
 <translation id="3603525299146223354">أدوات التتبع &amp; الإعلانات</translation>
-<translation id="1146309636943354181">المتتبعات والإعلانات محجوبة (قياسي)</translation>
-<translation id="5973258875089964805">المتتبعات والإعلانات محجوبة (شديد)</translation>
+<translation id="4448697385961650078">حجب المتتبعات والإعلانات</translation>
+<translation id="8593054718053894081">حجب المتتبعات والإعلانات بشدة</translation>
 <translation id="7384778069178817075">السماح بجميع المتتبعات والإعلانات</translation>
-<translation id="6203697265754637264">تم حظر ملفات تعريف الارتباط عبر المواقع</translation>
-<translation id="4627427111733173920">تم حجب ملفات تعريف الارتباط</translation>
-<translation id="3972324600756617403">تم السماح بجميع ملفات تعريف الارتباط</translation>
+<translation id="4941539331405513605">حجب ملفات تعريف الارتباط عبر المواقع</translation>
+<translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
+<translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
 <translation id="8366221601425141146">تم حظر البصمات</translation>
-<translation id="5582686930349810484">حظر بصمات الأصابع (قياسي)</translation>
-<translation id="6696441392507885865">حظر بصمات الأصابع (دقيق، قد تتعطل المواقع)</translation>
-<translation id="5882733945883311404">السماح لجميع بصمات الأصابع</translation>
+<translation id="6531019308847917584">حجب مسح البصمة</translation>
+<translation id="1899608006846124237">حجب مسح البصمة بشدة</translation>
+<translation id="8034285923190068220">السماح بالبصمة</translation>
 <translation id="1992750560347846445">موقع الإبلاغ</translation>
 <translation id="2387532482048804818">أخبرنا إذا كان الموقع لا يعمل بشكل صحيح مع Shields up</translation>
-<translation id="9167355841012806439">أنت تطلع على هذا الموقع بدون حماية الخصوصية لـ Brave.</translation>
-<translation id="6835073906252142271">تم حظر دروع حماية Brave<ph name="NUMBER"/> وأدوات التتبع والإعلانات وغيرها</translation>
+<translation id="3795015906457257780">أنت تطلع على هذا الموقع بدون حمايات الخصوصية لـ Brave.</translation>
+<translation id="7194012750329511146">تم حظر دروع حماية Brave
+<ph name="NUMBER"/> وأدوات التتبع، والإعلانات’ وغيرها الكثير</translation>
 <translation id="1742469581923031760">الاتصال بــ…</translation>
 <translation id="1287487756047817908">عدم الاتصال بــ …</translation>
 <translation id="2325196879156848326">فشل الاتصال</translation>
@@ -1240,4 +1247,9 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="2389181429986654814">انتقل إلى <ph name="PROVIDER"/> لإكمال التحقق</translation>
+<translation id="7793632266654336758">نرجو إكمال التحقق من الهوية لبدء استلام المكافآت.</translation>
+<translation id="423332628699531400">يطلب <ph name="SITE_ORIGIN"/> مفتاح التشفير العام الخاص بك. في حال موافقتك على مشاركته، سيتمكن الموقع من إنشاء رسائل مشفرة لك.</translation>
+<translation id="5883819003576364085">يرغب <ph name="SITE_ORIGIN"/> في قراءة هذه الرسالة لإكمال طلبك</translation>
+<translation id="6835073906252142271">تم حظر دروع حماية Brave<ph name="NUMBER"/> وأدوات التتبع والإعلانات وغيرها</translation>
 </translationbundle>

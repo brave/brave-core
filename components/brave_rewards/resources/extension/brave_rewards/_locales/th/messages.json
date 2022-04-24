@@ -243,6 +243,15 @@
     "message": "รอดำเนินการ",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "เกิดปัญหาชั่วคราวในการยืนยันด้วย $provider$ Brave Rewards ของคุณจะคงสถานะรอดำเนินการและลองอีกครั้งโดยอัตโนมัติ แต่คุณสามารถลองอีกครั้งในภายหลังได้",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Rewards จาก Ads",
     "description": ""

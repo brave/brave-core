@@ -55,7 +55,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5197219128592971597">Accesați mereu adresele URL originale ale paginilor (non-AMP), în loc de versiunile Google Accelerated Mobile Page</translation>
 <translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
 <translation id="597020512043916976">Afișează principalele site-uri în sugestiile de completare automată</translation>
-<translation id="264150068416846820">Afișare site-uri sugerate de Brave în sugestiile de completare automată</translation>
+<translation id="301088458323355543">Afișați site-urile sugerate în sugestiile de completare automată</translation>
 <translation id="5529693968082667490">Afișează butonul de căutare file</translation>
 <translation id="6414370348346025511">Protecția standard este pornită.</translation>
 <translation id="814018970995616154">Verifică URL într-o listă de siteuri nesigure stocată în Brave.</translation>
@@ -70,8 +70,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4851215387785619212">Anunțuri private Brave</translation>
 <translation id="7808122468353671181">Câștigați token-uri afișând Brave Ads. Reclamele prezentate sunt alese în funcție de interesele dvs., care sunt deduse din comportamentul de navigare pe internet. Datele cu caracter personal și istoricul navigării rămân întotdeauna în browser.</translation>
 <translation id="1758947220824279023">Numărul maxim de reclame de afișat</translation>
-<translation id="8578912649458880781">Direcționare reclame la nivel de stat</translation>
-<translation id="3678362265519557511">Astfel, Brave vă poate afișa anunțuri destinate special statului dvs. <ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Relevanța regională a anunțurilor</translation>
+<translation id="2196950072404588793">Astfel, Brave va putea să afișeze reclame destinate regiunii dvs. <ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Contribuție automată</translation>
 <translation id="9132509928968869844">Limita lunară de contribuții automate</translation>
 <translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
@@ -144,8 +144,10 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="130615081792797568">Vizualizare simplă</translation>
 <translation id="2360360976480535628">Vizualizare avansată</translation>
 <translation id="2133317862976486547">Instrumente de urmărire și blocarea reclamelor</translation>
-<translation id="4385707520896576447">Blocarea cookie-urilor</translation>
-<translation id="4978786495456601191">Blocarea folosirii amprentei</translation>
+<translation id="8823559166155093873">Blochează cookie-urile</translation>
+<translation id="6531019308847917584">Blocați amprentarea</translation>
+<translation id="7607166182943595829">Împiedică amprentarea mea de către site-uri în funcție de preferințele lingvistice</translation>
+<translation id="3497934980362703405">Activarea acestei opțiuni reduce capacitatea site-urilor de a afla preferințele dvs. lingvistice.</translation>
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="4824468494729001999">Blocare scripturi</translation>
 <translation id="4395160081588457461">Priviți &amp; simțiți</translation>
@@ -435,8 +437,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8487693399751278191">Se importă marcajele acum...</translation>
 <translation id="2557899542277210112">Pentru acces rapid, rețineți-vă marcajele aici, în bara de marcaje.</translation>
 <translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
-<translation id="2273851479262317744">Setați Brave ca browser implicit</translation>
-<translation id="8581710194025054669">Pentru a beneficia de maximum de confidențialitate online, setați Brave ca browser implicit pe computer. Când browserul implicit este Brave, orice link accesat se va deschide utilizându-se protecțiile Brave în materie de confidențialitate.</translation>
 <translation id="1968543937259008435">Sunteți gata pentru cea mai bună experiență de confidențialitate online?</translation>
 <translation id="6817415381278637662">Setați Brave ca browser implicit pentru a beneficia de protecțiile de confidențialitate Brave pentru fiecare pagină deschisă.</translation>
 <translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
@@ -467,4 +467,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
 <translation id="2234108191702901162">Nu se poate adăuga rețeaua</translation>
 <translation id="2618193846561624884">Doriți să actualizați rețeaua existentă?</translation>
+<translation id="264150068416846820">Afișare site-uri sugerate de Brave în sugestiile de completare automată</translation>
+<translation id="8578912649458880781">Direcționare reclame la nivel de stat</translation>
+<translation id="3678362265519557511">Astfel, Brave vă poate afișa anunțuri destinate special statului dvs. <ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Setați Brave ca browser implicit</translation>
+<translation id="8581710194025054669">Pentru a beneficia de maximum de confidențialitate online, setați Brave ca browser implicit pe computer. Când browserul implicit este Brave, orice link accesat se va deschide utilizându-se protecțiile Brave în materie de confidențialitate.</translation>
 </translationbundle>

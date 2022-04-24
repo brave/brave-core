@@ -55,7 +55,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5197219128592971597">Uvijek posjetite izvorne URL-ove stranice (ne AMP-ove) umjesto Googleovih inačica ubrzanih stranica za mobilne uređaje</translation>
 <translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
 <translation id="597020512043916976">Prikaži glavna mrežna mjesta u prijedlozima koji se samostalno ispunjavanju</translation>
-<translation id="264150068416846820">Prikaži glavna mrežna mjesta Brave u prijedlozima koji se samostalno ispunjavanju</translation>
+<translation id="301088458323355543">Prikaži predložena mrežna mjesta u prijedlozima koji se samostalno ispunjavanju</translation>
 <translation id="5529693968082667490">Prikaži gumb za pretraživanje kartica</translation>
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="814018970995616154">Provjerite URL-ove s popisom nesigurnih mrežnih mjesta pohranjenih u pregledniku Brave.</translation>
@@ -70,8 +70,8 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="4851215387785619212">Privatni oglasi Brave</translation>
 <translation id="7808122468353671181">Zaradite tokene pregledavanjem oglasa Brave. Prikazani oglasi temelje se na vašim interesima pretpostavljenima na temelju vašeg ponašanja pri pregledavanju. Osobni podatci i povijest pregledavanja nikada ne nestaju iz vašeg preglednika.</translation>
 <translation id="1758947220824279023">Najveći broj oglasa za prikaz</translation>
-<translation id="8578912649458880781">Usmjeravanje oglasa na razini stanja</translation>
-<translation id="3678362265519557511">Time se omogućuje prikazivanje oglasa namijenjenih posebno za vaše stanje putem preglednika Brave. <ph name="BEGIN_LINK"/>Saznaj više<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Relevantnost regionalnog oglasa</translation>
+<translation id="2196950072404588793">Time se omogućuje prikazivanje oglasa namijenjenih posebno za vašu regiju putem preglednika Brave. <ph name="BEGIN_LINK"/>Doznaj više<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Automatski doprinos</translation>
 <translation id="9132509928968869844">Ograničenje automatskog mjesečnog doprinosa</translation>
 <translation id="7286722244752781970">Minimalno vrijeme provedeno na stranici prije evidentiranja posjeta</translation>
@@ -144,8 +144,10 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="130615081792797568">Jednostavni prikaz</translation>
 <translation id="2360360976480535628">Napredni prikaz</translation>
 <translation id="2133317862976486547">Blokiranje elementa za praćenje i oglasa</translation>
-<translation id="4385707520896576447">Blokiranje kolačića</translation>
-<translation id="4978786495456601191">Blokiranje pritiskanja prstima</translation>
+<translation id="8823559166155093873">Blokiraj kolačiće</translation>
+<translation id="6531019308847917584">Blokiraj izradu digitalnog otiska</translation>
+<translation id="7607166182943595829">Sprječava izradu digitalnog otiska na mrežnim mjestima na temelju jezičnih preferencija</translation>
+<translation id="3497934980362703405">Onemogućavanjem ove postavke smanjuje se količina informacija koju mrežna mjesta mogu doznati o vašim jezičnim preferencijama.</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="4395160081588457461">Pogledajte &amp; osjetite</translation>
@@ -435,8 +437,6 @@ Sigurno želite to napraviti?</translation>
 <translation id="8487693399751278191">Sada uvezite knjiške oznake...</translation>
 <translation id="2557899542277210112">Za brzo pristupanje postavite svoje knjiške oznake ovdje na traku za knjiške oznake.</translation>
 <translation id="2808630562319398131">Ponovno postavite podatke za Brave Rewards...</translation>
-<translation id="2273851479262317744">Postavi preglednik Brave kao zadani preglednik</translation>
-<translation id="8581710194025054669">Za jamčenje najbolje privatnosti na mreži razmotrite postavljanje preglednika Brave kao zadanog preglednika na svom računalu. Ako je preglednik Brave vaš zadani preglednik, bilo koja mrežna poveznica na koju kliknete otvara se uz zaštite privatnosti preglednika Brave.</translation>
 <translation id="1968543937259008435">Spremni za najvišu razinu privatnosti na mreži?</translation>
 <translation id="6817415381278637662">Postavite preglednik Brave kao zadani preglednik da biste imali njegovu zaštitu privatnosti na svakoj mrežnoj stranici.</translation>
 <translation id="8722651357687610395">Postavi preglednik Brave kao zadan</translation>
@@ -467,4 +467,9 @@ Sigurno želite to napraviti?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreža novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="2618193846561624884">Želite li ažurirati postojeću mrežu?</translation>
+<translation id="264150068416846820">Prikaži glavna mrežna mjesta Brave u prijedlozima koji se samostalno ispunjavanju</translation>
+<translation id="8578912649458880781">Usmjeravanje oglasa na razini stanja</translation>
+<translation id="3678362265519557511">Time se omogućuje prikazivanje oglasa namijenjenih posebno za vaše stanje putem preglednika Brave. <ph name="BEGIN_LINK"/>Saznaj više<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Postavi preglednik Brave kao zadani preglednik</translation>
+<translation id="8581710194025054669">Za jamčenje najbolje privatnosti na mreži razmotrite postavljanje preglednika Brave kao zadanog preglednika na svom računalu. Ako je preglednik Brave vaš zadani preglednik, bilo koja mrežna poveznica na koju kliknete otvara se uz zaštite privatnosti preglednika Brave.</translation>
 </translationbundle>

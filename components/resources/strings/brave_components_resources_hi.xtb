@@ -93,7 +93,7 @@
 <translation id="1693773514029371138">समाधान करें</translation>
 <translation id="6991128190741664836">बाद में</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">वॉलेट</translation>
+<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="8820817407110198400">बुकमार्क</translation>
 <translation id="1644574205037202324">इतिहास</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
@@ -253,6 +253,8 @@
 <translation id="3183954159462541696">गड़बड़ी : लॉग इन करने के लिए आपको एक वेरिफ़ाई किया गया अकाउंट चाहिए</translation>
 <translation id="5260522591743022748">हम्म, ऐसा लगता है कि आपका Brave Rewards पहले से ही दूसरे <ph name="PROVIDER"/> अकाउंट से वेरिफ़ाई किया जा चुका है. कृपया अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.</translation>
 <translation id="5111921830714291902">एरर: अलग अकाउंट</translation>
+<translation id="6933939911547091461">बदकिस्मती से, आपके Brave रिवॉर्ड को वेरिफ़ाई नहीं किया जा सकता क्योंकि आपके क्षेत्र के लिए इस समय Brave रिवॉर्ड वेरिफ़िकेशन सपोर्ट नहीं करता है.</translation>
+<translation id="8218538368080510976">गड़बड़ी: इस क्षेत्र के लिए सपोर्ट नहीं करता है</translation>
 <translation id="5382684862562314222">आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.</translation>
 <translation id="9074594632540931067">एरर: बैट अनुपलब्ध है</translation>
 <translation id="413458922997276130">Uphold पर आपका अकाउंट अभी ब्लॉक्ड है.</translation>
@@ -647,6 +649,7 @@
 <translation id="8851480289992540512">कुल प्राप्त हुआ</translation>
 <translation id="824449983246282560">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए Gemini पर जाएं.</translation>
 <translation id="8624961452383848703">मैं कन्वर्ट करना चाहता हूं...</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
 <translation id="616639131065447379">Brave क्रिप्टो वॉलेट में स्वागत है</translation>
 <translation id="1740464057879304704">क्रिप्टो वॉलेट आपको क्रिप्टोक्यूरेंसी और संबंधित परिसंपत्तियों के साथ ब्रेव में काम करने देता है। क्रिप्टो वॉलेट ETH और BAT जैसे एथेरियम टोकन को सपोर्ट करता है, साथ ही कलेक्टेबल्स का भी और आपको Ðapps और अन्य स्मार्ट कॉन्ट्रैक्ट के साथ काम करने देता है। यह सब उन लोगों के लिए है जो एथेरियम और अन्य ब्लॉकचैन सिस्टम से परिचित हैं — या सीखने के लिए उत्साहित हैं।</translation>
 <translation id="4855440621031541830">क्रिप्टो वॉलेट का उपयोग केवल तब करें जब आप स्वीकार करते हैं कि आप इस उपयोग से जुड़े सभी जोखिमों के लिए अकेले जिम्मेदार हैं और इस उपयोग के परिणामस्वरूप आपको होनेवाले किसी भी संभावित आकस्मिक या परिणामी नुकसान सहित किसी भी नुकसान के Brave सॉफ़्टवेयर की कोई ज़िम्मेदारी या दायित्व नहीं है।</translation>
@@ -762,13 +765,12 @@
 <translation id="5878420576943709750">आपका  <ph name="AMOUNT"/> <ph name="MONTH"/> रिवॉर्ड आ रहा है. नज़र बने रखें!</translation>
 <translation id="2659764755126740206">मेरे <ph name="PROVIDER"/> अकाउंट पर जाएँ</translation>
 <translation id="1165667598801520610">फंड्स जोड़ें</translation>
-<translation id="2389181429986654814">वेरिफ़िकेशन पूरा करने के लिए <ph name="PROVIDER"/> पर जाएँ</translation>
-<translation id="7793632266654336758">रिवॉर्ड पाने के लिए कृपया पहचान वेरीफ़िकेशन पूरा करें.</translation>
 <translation id="2394961582378297792">लॉग आउट हुआ</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/> से डिस्कनेक्ट करें</translation>
 <translation id="3600355176618429948">अनुमानित कमाई</translation>
 <translation id="4244985009709452836">अपने <ph name="PROVIDER"/> अकाउंट पर लॉगिन करें</translation>
 <translation id="2613359062756190460">1- टाइम टिप्स</translation>
+<translation id="7580329715937096918"><ph name="PROVIDER"/> के साथ वेरिफ़ाई करने में एक अस्थाई समस्या आ रही है. आपके Brave रिवॉर्ड पेंडिंग रहेंगे और अपने-आप फिर से कोशिश करेंगे, लेकिन आप भी बाद में फिर से कोशिश कर सकते हैं.</translation>
 <translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
 <translation id="6181762795539107980">वेरिफ़ाई नहीं किया गया है</translation>
 <translation id="3026978804849658576">स्टेटमेंट देखें</translation>
@@ -792,7 +794,6 @@
 <translation id="2221902203895354376">टोकन ग्रांट्स उपलब्ध है!</translation>
 <translation id="7701466644604753106">स्पीड रीडर चालू करें</translation>
 <translation id="763042262431778831">स्‍पीडरीडर बंद करें</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="1148827340205946630">उपयोगकर्ता ने अनुरोध को अस्वीकार किया है</translation>
 <translation id="2403819048476450281">अमान्य पैरामीटर.</translation>
 <translation id="3955144560853195652"><ph name="VALUE"/> चेन नहीं जोड़ी गई है</translation>
@@ -1005,9 +1006,9 @@
 <translation id="5488357322146334497">संदेश</translation>
 <translation id="3586752056660754651">साइन</translation>
 <translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> आपके वॉलेट के पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है. अगर आप यह पासवर्ड देने की सहमति देते हैं, तो साइट आपके लिए एनक्रिप्ट किए हुए मैसेज बना पाएगी.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> आपके वॉलेट के पब्लिक एनक्रिप्शन की का अनुरोध कर रहा है. अगर आप यह की देने पर सहमति देते हैं, तो साइट आपके लिए एनक्रिप्ट किए हुए मैसेज बना पाएगी.</translation>
 <translation id="3340247553212049934">प्रदान करें</translation>
-<translation id="5883819003576364085">आपका अनुरोध पूरा करने के लिए <ph name="SITE_ORIGIN"/> इस मैसेज को पढ़ना चाहता है</translation>
+<translation id="1619778919922494944">आपके अनुरोध को पूरा करने के लिए यह DApp इस मैसेज को पढ़ना चाहेगा</translation>
 <translation id="714506544401754321">संदेश को डिक्रिप्ट करें</translation>
 <translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="9032898664193335413">ऐप को आपके <ph name="TOKEN_SYMBOL"/> खर्च करने के लिए इजाज़त देंगे?</translation>
@@ -1035,6 +1036,7 @@
 <translation id="3948067511324628726">गैस शुल्क</translation>
 <translation id="7163997622278957886">Bid</translation>
 <translation id="1074360622426001342">राशि + गैस</translation>
+<translation id="2186011161688824046">राशि + शुल्क</translation>
 <translation id="7084089311475827950">कोई डेटा नहीं.</translation>
 <translation id="5821668936183240062">अगला</translation>
 <translation id="793994607260936590">पहला</translation>
@@ -1167,6 +1169,10 @@
 <translation id="1752214435563414457">Brave स्वैप-स्टेक्स</translation>
 <translation id="7829441065063984927">7 दिन तक मुफ़्त क्रिप्टो, इनाम में ~$5 लाख</translation>
 <translation id="8292716346768453265">अभी शामिल हों!</translation>
+<translation id="6423985584914773314">यह कोई मान्य FIL पता नहीं है</translation>
+<translation id="8528916244724490964">सभी नेटवर्क</translation>
+<translation id="2781668117338732220">सेकंडरी नेटवर्क</translation>
+<translation id="2816106784624007524">गैस की सीमा 0 से बड़ी कोई संख्या होनी चाहिए</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1181,30 +1187,31 @@
 <translation id="7709075156958117386">अगर यह साइट काम नहीं कर रही है, तो शील्ड को बंद करके कोशिश करें.
 <ph name="LINK_BEFORE"/>ध्यान दें: ऐसा करने से Brave की गोपनीयता सुरक्षा घट जाएगी.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads, and more blocked <ph name="LINK_BEFORE"/>और जानें <ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">उच्च स्तर नियंत्रण</translation>
+<translation id="650318023204990401">उन्नत कंट्रोल</translation>
 <translation id="5799940914270080805">इन सेटिंग को बदलने से साइट काम करना बंद कर सकती हैं.</translation>
 <translation id="9204041448536398473">ग्लोबल शील्ड सेटिंग</translation>
 <translation id="2108334320919763866">ग्लोबल डिफ़ॉल्ट</translation>
-<translation id="1928321796986970424">लिस्ट को फ़िल्टर करें</translation>
+<translation id="4516904298421534459">लिस्ट को फ़िल्टर करें</translation>
 <translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
 <translation id="131231380815754440">HTTPS इनेबल करें</translation>
 <translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
 <translation id="3246600097575692802">इनेबल किये गए स्क्रिप्ट ब्लॉक किए गए</translation>
 <translation id="3603525299146223354">ट्रैकर  &amp; ऐड</translation>
-<translation id="1146309636943354181">ट्रैकर्स और विज्ञापन ब्लॉक किए गए (सामान्य)</translation>
-<translation id="5973258875089964805">ट्रैकर्स और विज्ञापन ब्लॉक किए गए (प्रभाशाली)</translation>
+<translation id="4448697385961650078">ट्रैकर और विज्ञापनों को ब्लॉक करें</translation>
+<translation id="8593054718053894081">ट्रैकर और विज्ञापनों को तेज़ी से ब्लॉक करता है</translation>
 <translation id="7384778069178817075">सभी ट्रैकर्स और विज्ञापनों की अनुमति दें</translation>
-<translation id="6203697265754637264">क्रॉस-साइट कुकीज़ ब्लॉक किए गए</translation>
-<translation id="4627427111733173920">कूकीज़ बाधित हैं.</translation>
-<translation id="3972324600756617403">सभी कुकीज़ स्वीकार की गईं</translation>
+<translation id="4941539331405513605">क्रॉस-साइट कुकीज़ ब्लॉक करें</translation>
+<translation id="6883611015375728278">सभी कुकी को रोकें</translation>
+<translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="8366221601425141146">फिंगरप्रिंटिंग ब्लॉक किया गया</translation>
-<translation id="5582686930349810484">फ़िंगरप्रिंटिंग ब्लॉक की गई है (सामान्य)</translation>
-<translation id="6696441392507885865">फ़िंगरप्रिंटिंग ब्लॉक (सख्त, साइटों को ब्रेक कर सकते हैं)</translation>
-<translation id="5882733945883311404">सभी फिंगरप्रिंटिंग की अनुमति दें</translation>
+<translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
+<translation id="1899608006846124237">फ़िंगरप्रिंटिंग को तेज़ी से ब्लॉक करता है</translation>
+<translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
 <translation id="1992750560347846445">साइट की रिपोर्ट करें</translation>
 <translation id="2387532482048804818">अगर शील्ड चालू रखने पर साइट ठीक से काम नहीं कर रही थी, तो हमें बताएँ.</translation>
-<translation id="9167355841012806439">आप इस साइट को Brave की गोपनीयता सुरक्षा के बिना इस्तेमाल कर रहे हैं</translation>
-<translation id="6835073906252142271">Brave शील्ड ने <ph name="NUMBER"/> ट्रैकर, विज्ञापन और भी बहुत कुछ ब्लॉक किया है</translation>
+<translation id="3795015906457257780">आप Brave की प्राइवेसी सुविधा के बिना इस साइट को इस्तेमाल कर रहे हैं.</translation>
+<translation id="7194012750329511146">Brave शील्ड
+<ph name="NUMBER"/> ट्रैकर, विज्ञापन और अन्य चीज़ें ब्लॉक की गईं</translation>
 <translation id="1742469581923031760">कनेक्ट किया जा रहा है</translation>
 <translation id="1287487756047817908">डिसकनेक्ट किया जा रहा है</translation>
 <translation id="2325196879156848326">कनेक्शन नहीं हुआ है</translation>
@@ -1240,4 +1247,9 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="2389181429986654814">वेरिफ़िकेशन पूरा करने के लिए <ph name="PROVIDER"/> पर जाएँ</translation>
+<translation id="7793632266654336758">रिवॉर्ड पाने के लिए कृपया पहचान वेरीफ़िकेशन पूरा करें.</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> आपके वॉलेट के पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है. अगर आप यह पासवर्ड देने की सहमति देते हैं, तो साइट आपके लिए एनक्रिप्ट किए हुए मैसेज बना पाएगी.</translation>
+<translation id="5883819003576364085">आपका अनुरोध पूरा करने के लिए <ph name="SITE_ORIGIN"/> इस मैसेज को पढ़ना चाहता है</translation>
+<translation id="6835073906252142271">Brave शील्ड ने <ph name="NUMBER"/> ट्रैकर, विज्ञापन और भी बहुत कुछ ब्लॉक किया है</translation>
 </translationbundle>

@@ -243,6 +243,15 @@
     "message": "Nakabinbin",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Pansamantalang nagkaproblema sa pag-verify sa $provider$. Mananatiling Pending ang status ng iyong Brave Rewards at awtomatiko itong magre-retry, pero puwede mo ring subukan uit sa ibang pagkakataon.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Mga Reward mula sa Ads",
     "description": ""

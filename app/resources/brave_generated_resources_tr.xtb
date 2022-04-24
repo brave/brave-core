@@ -56,7 +56,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="5197219128592971597">Google'ın Hızlandırılmış Mobil Sayfa sürümleri yerine her zaman orijinal (AMP olmayan) sayfa URL'lerini ziyaret et</translation>
 <translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
 <translation id="597020512043916976">Otomatik tamamlamalı önerilerde en popüler siteleri göster</translation>
-<translation id="264150068416846820">Otomatik tamamlamalı önerilerde Brave'in önerdiği siteleri göster</translation>
+<translation id="301088458323355543">Otomatik tamamlama önerilerinde önerilen siteleri göster</translation>
 <translation id="5529693968082667490">Sekme arama düğmesini göster</translation>
 <translation id="6414370348346025511">Standart koruma açık.</translation>
 <translation id="814018970995616154">URL'leri Brave'de kayıtlı güvenli olmayan sitelerin listesine göre kontrol eder.</translation>
@@ -71,8 +71,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="4851215387785619212">Brave Özel Reklamları</translation>
 <translation id="7808122468353671181">Brave Reklamları sayesinde token kazanın. Gösterilen reklamlar, internette gezinme davranışlarınızdan yapılan çıkarımlara göre ilgi alanlarınızı yansıtır. Tarayıcınızdan hiçbir kişisel veri veya gezinme geçmişi alınmaz.</translation>
 <translation id="1758947220824279023">Gösterilecek maksimum reklam sayısı</translation>
-<translation id="8578912649458880781">Eyalet seviyesinde reklam hedefleme</translation>
-<translation id="3678362265519557511">Bu, Brave'in özellikle bulunduğunuz eyalet için hedeflenmiş reklamları göstermesine izin verir.<ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Bölgesel reklam uygunluğu düzeyi</translation>
+<translation id="2196950072404588793">Bu, Brave'in özellikle bölgeniz için tasarlanmış reklamları göstermesine izin verir. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Otomatik-Katkı</translation>
 <translation id="9132509928968869844">Aylık otomatik katkı limiti</translation>
 <translation id="7286722244752781970">Bir ziyareti kaydetmeden önce minimum sayfa zamanı</translation>
@@ -145,8 +145,10 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="130615081792797568">Basit görünüm</translation>
 <translation id="2360360976480535628">Gelişmiş görünüm</translation>
 <translation id="2133317862976486547">İzleyiciler &amp; reklam engelleme</translation>
-<translation id="4385707520896576447">Çerez engelleme</translation>
-<translation id="4978786495456601191">Parmak izi engelleme</translation>
+<translation id="8823559166155093873">Çerezleri engelle</translation>
+<translation id="6531019308847917584">Parmak izi kontrolünü engelle</translation>
+<translation id="7607166182943595829">Sitelerin dil tercihlerime bağlı olarak parmak izimi çıkarmasını engelle</translation>
+<translation id="3497934980362703405">Bu ayarı etkinleştirmek, web sitelerinin dil tercihleriniz hakkında edinebileceği bilgi miktarını azaltır.</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="4395160081588457461">Bak &amp; hisset</translation>
@@ -436,8 +438,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8487693399751278191">Yer imlerini şimdi içe aktar...</translation>
 <translation id="2557899542277210112">Hızlı erişim için, yer imlerinizi buradaki yer imi çubuğuna yerleştirin.</translation>
 <translation id="2808630562319398131">Brave Rewards verilerini yeniden ayarlayın...</translation>
-<translation id="2273851479262317744">Brave'i varsayılan tarayıcı olarak ayarlayın</translation>
-<translation id="8581710194025054669">En iyi çevrimiçi gizliliği sağlamak için Brave'i bilgisayarınızda varsayılan tarayıcı olarak ayarlamanız önerilir. Brave varsayılan tarayıcı olduğunda, tıkladığınız tüm web bağlantıları Brave'in gizlilik korumalarıyla açılacaktır.</translation>
 <translation id="1968543937259008435">Çevrimiçi ortamda en iyi gizliliğe hazır mısınız?</translation>
 <translation id="6817415381278637662">Açtığınız her web sayfasında Brave'in gizlilik korumalarını almak için Brave'i varsayılan tarayıcınız olarak ayarlayın.</translation>
 <translation id="8722651357687610395">Brave'i varsayılan yapın</translation>
@@ -468,4 +468,9 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1062463687579789365">Cüzdan ağları kişiselleştirme</translation>
 <translation id="2234108191702901162">Ağ eklenemiyor</translation>
 <translation id="2618193846561624884">Var olan ağı güncellemek istiyor musunuz?</translation>
+<translation id="264150068416846820">Otomatik tamamlamalı önerilerde Brave'in önerdiği siteleri göster</translation>
+<translation id="8578912649458880781">Eyalet seviyesinde reklam hedefleme</translation>
+<translation id="3678362265519557511">Bu, Brave'in özellikle bulunduğunuz eyalet için hedeflenmiş reklamları göstermesine izin verir.<ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Brave'i varsayılan tarayıcı olarak ayarlayın</translation>
+<translation id="8581710194025054669">En iyi çevrimiçi gizliliği sağlamak için Brave'i bilgisayarınızda varsayılan tarayıcı olarak ayarlamanız önerilir. Brave varsayılan tarayıcı olduğunda, tıkladığınız tüm web bağlantıları Brave'in gizlilik korumalarıyla açılacaktır.</translation>
 </translationbundle>

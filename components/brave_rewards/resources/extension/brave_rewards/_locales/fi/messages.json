@@ -243,6 +243,15 @@
     "message": "Odottaa",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Väliaikainen ongelma vahvistamisessa palveluntarjoajan $provider$ kanssa. Brave-palkintosi pysyvät Odottavassa tilassa, ja ne yritetään vahvistaa uudelleen automaattisesti, mutta voit myös itse yrittää myöhemmin uudelleen.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Palkinnot mainoksista",
     "description": ""

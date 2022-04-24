@@ -54,7 +54,7 @@
 <translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
 <translation id="5802665280774361839">הצג השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="597020512043916976">הצג אתרים מובילים בהצעות להשלמה אוטומטית</translation>
-<translation id="264150068416846820">הצג הצעות לאתרים על ידי Brave בהצעות להשלמה אוטומטית</translation>
+<translation id="301088458323355543">הצגת אתרים מומלצים בהצעות להשלמה אוטומטית</translation>
 <translation id="5529693968082667490">הצג לחצן חיפוש כרטיסייה</translation>
 <translation id="6414370348346025511">ההגנה הסטנדרטית מופעלת.</translation>
 <translation id="814018970995616154">בדיקת כתובות URL באמצעות רשימה של אתרים לא בטוחים ששמורה ב-Brave.</translation>
@@ -69,8 +69,8 @@
 <translation id="4851215387785619212">מודעות פרטיות Brave.</translation>
 <translation id="7808122468353671181">הרוויחו tokens על ידי הצגת  Brave Ads. הפרסומות המוצגות מבוססות על תחומי העניין שלכם, כפי שניתן להסיק מהרגלי הגלישה שלכם. אף נתונים אישיים או היסטוריית גלישה לא יעזבו את הדפדפן שלכם.</translation>
 <translation id="1758947220824279023">מספר מרבי של המודעות הניתנות להצגה</translation>
-<translation id="8578912649458880781">מיקוד פרסומות ברמת המדינה</translation>
-<translation id="3678362265519557511">תכונה זו מאפשרת ל-Brave להציג לך את הפרסומות המיועדות באופן ספיציפי למדינה שלך. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">פרסומות ממוקדות איזור</translation>
+<translation id="2196950072404588793">כך Brave תוכל להציג לך מודעות המיועדות באופן מיוחד לאזורך.<ph name="BEGIN_LINK"/>פרטים נוספים<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="9132509928968869844">גבול התרומה החודשית האוטומטית</translation>
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
@@ -143,8 +143,10 @@
 <translation id="130615081792797568">תצוגה רגילה</translation>
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
 <translation id="2133317862976486547">חסימת עוקבים &amp; פרסומות</translation>
-<translation id="4385707520896576447">חסימת קבצי עוגייה</translation>
-<translation id="4978786495456601191">חסימת טביעות אצבע</translation>
+<translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
+<translation id="6531019308847917584">חסימת טביעות אצבע</translation>
+<translation id="7607166182943595829">חסימת האפשרות של אתרים ליצור טביעת אצבע שלי בהתאם להעדפות השפה</translation>
+<translation id="3497934980362703405">הפעלת ההגדרה תקטין את יכולתם של אתרים שונים ללמוד על העדפות השפה שלך.</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="4395160081588457461">Look &amp; feel</translation>
@@ -432,8 +434,6 @@
 <translation id="8487693399751278191">ייבא סימניות עכשיו...</translation>
 <translation id="2557899542277210112">לגישה מהירה, יש למקם את הסימניות שלך כאן בסרגל הסימניות.</translation>
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
-<translation id="2273851479262317744">הגדירו את Brave כדפדפן ברירת המחדל</translation>
-<translation id="8581710194025054669">להבטחת הפרטיות הטובה ביותר באינטרנט, שקול להגדיר את Brave כדפדפן ברירת המחדל במחשב שלך. עם Brave כברירת מחדל, כל קישור אינטרנט שתלחץ עליו ייפתח עם הגנות הפרטיות של Brave</translation>
 <translation id="1968543937259008435">מוכנים לפרטיות הטובה ביותר ברשת?</translation>
 <translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
@@ -464,4 +464,9 @@
 <translation id="1062463687579789365">התאמה אישית של רשתות הארנק</translation>
 <translation id="2234108191702901162">לא ניתן להוסיף רשת</translation>
 <translation id="2618193846561624884">האם ברצונך לעדכן את הרשת הקיימת?</translation>
+<translation id="264150068416846820">הצג הצעות לאתרים על ידי Brave בהצעות להשלמה אוטומטית</translation>
+<translation id="8578912649458880781">מיקוד פרסומות ברמת המדינה</translation>
+<translation id="3678362265519557511">תכונה זו מאפשרת ל-Brave להציג לך את הפרסומות המיועדות באופן ספיציפי למדינה שלך. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">הגדירו את Brave כדפדפן ברירת המחדל</translation>
+<translation id="8581710194025054669">להבטחת הפרטיות הטובה ביותר באינטרנט, שקול להגדיר את Brave כדפדפן ברירת המחדל במחשב שלך. עם Brave כברירת מחדל, כל קישור אינטרנט שתלחץ עליו ייפתח עם הגנות הפרטיות של Brave</translation>
 </translationbundle>

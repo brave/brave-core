@@ -243,6 +243,15 @@
     "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "$provider$ ಜೊತೆಗೆ ಪರಿಶೀಲಿಸುವಲ್ಲಿ ತಾತ್ಕಾಲಿಕ ಸಮಸ್ಯೆ ಇದೆ. ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಬಾಕಿ ಸ್ಥಿತಿಯಲ್ಲಿಯೇ ಇರುತ್ತದೆ ಮತ್ತು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸುತ್ತದೆ, ಆದರೆ ನೀವು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಸಹ ಪ್ರಯತ್ನಿಸಬಹುದು.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು",
     "description": ""

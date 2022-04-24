@@ -55,7 +55,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5197219128592971597">Besuchen Sie immer die Originalseiten-URLs (ohne AMP) und nicht die Accelerated Mobile Page-Versionen von Google</translation>
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="597020512043916976">Top-Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
-<translation id="264150068416846820">Von Brave vorgeschlagene Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
+<translation id="301088458323355543">Vorgeschlagene Websites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
 <translation id="5529693968082667490">Tab-Suchschaltflächen anzeigen</translation>
 <translation id="6414370348346025511">Standardschutz ist aktiviert.</translation>
 <translation id="814018970995616154">Überprüft URLs anhand einer Liste mit unsicheren Seiten, die in Brave gespeichert ist.</translation>
@@ -70,8 +70,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4851215387785619212">Private Anzeigen von Brave</translation>
 <translation id="7808122468353671181">Verdienen Sie Token, indem Sie Brave Ads ansehen. Anzeigen werden basierend auf Ihren Interessen angezeigt, die aus Ihrem Browsing-Verhalten abgeleitet werden. Persönliche Daten oder der Browserverlauf verbleiben stets auf Ihrem Browser.</translation>
 <translation id="1758947220824279023">Maximale Anzahl der einzublendenden Anzeigen</translation>
-<translation id="8578912649458880781">Anzeigen-Targeting auf Statusebene</translation>
-<translation id="3678362265519557511">Auf diese Weise kann Brave Ihnen Anzeigen speziell für Ihren Status anzeigen. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Relevanz regionaler Anzeigen</translation>
+<translation id="2196950072404588793">Auf diese Weise kann Brave Ihnen Anzeigen speziell für Ihre Region anzeigen. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Automatische Spenden</translation>
 <translation id="9132509928968869844">Monatliches Limit für das automatische Beitragen</translation>
 <translation id="7286722244752781970">Minimale Nutzungsdauer einer Seite bevor sie mit einbezogen wird</translation>
@@ -144,8 +144,10 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="130615081792797568">Einfache Ansicht</translation>
 <translation id="2360360976480535628">Erweiterte Ansicht</translation>
 <translation id="2133317862976486547">Tracker &amp; Anzeigenblockierung</translation>
-<translation id="4385707520896576447">Cookie-Blockierung</translation>
-<translation id="4978786495456601191">Fingerprinting-Blockierung</translation>
+<translation id="8823559166155093873">Cookies blockieren</translation>
+<translation id="6531019308847917584">Fingerprinting blockieren</translation>
+<translation id="7607166182943595829">Verhindern, dass Websites aufgrund meiner Spracheinstellungen Fingerabdrücke von mir erstellen</translation>
+<translation id="3497934980362703405">Durch Aktivieren dieser Einstellung wird verringert, wie viel Websites über Ihre Spracheinstellungen erfahren können.</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="4824468494729001999">JavaScript blockieren</translation>
 <translation id="4395160081588457461">Look &amp; Gefühl</translation>
@@ -435,8 +437,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8487693399751278191">Lesezeichen jetzt importieren ...</translation>
 <translation id="2557899542277210112">Für schnellen Zugriff platzieren Sie Ihre Lesezeichen hier auf der Lesezeichenleiste.</translation>
 <translation id="2808630562319398131">Brave-Rewards-Daten zurücksetzen</translation>
-<translation id="2273851479262317744">Brave als Standardbrowser festlegen</translation>
-<translation id="8581710194025054669">Um online den besten Datenschutz zu gewährleisten, sollten Sie Brave als Standardbrowser auf Ihrem Computer festlegen. Mit Brave als Standard wird jeder Weblink, auf den Sie klicken, mit dem Datenschutz von Brave geöffnet.</translation>
 <translation id="1968543937259008435">Bereit für die beste Privatsphäre im Internet?</translation>
 <translation id="6817415381278637662">Legen Sie Brave als Ihren Standardbrowser fest, um den Datenschutz von Brave auf jeder Webseite zu erhalten, die Sie öffnen.</translation>
 <translation id="8722651357687610395">Brave als Standard einrichten</translation>
@@ -467,4 +467,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1062463687579789365">Anpassung der Wallet-Netzwerke</translation>
 <translation id="2234108191702901162">Netzwerk kann nicht hinzugefügt werden</translation>
 <translation id="2618193846561624884">Möchten Sie das vorhandene Netzwerk aktualisieren?</translation>
+<translation id="264150068416846820">Von Brave vorgeschlagene Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
+<translation id="8578912649458880781">Anzeigen-Targeting auf Statusebene</translation>
+<translation id="3678362265519557511">Auf diese Weise kann Brave Ihnen Anzeigen speziell für Ihren Status anzeigen. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
+<translation id="2273851479262317744">Brave als Standardbrowser festlegen</translation>
+<translation id="8581710194025054669">Um online den besten Datenschutz zu gewährleisten, sollten Sie Brave als Standardbrowser auf Ihrem Computer festlegen. Mit Brave als Standard wird jeder Weblink, auf den Sie klicken, mit dem Datenschutz von Brave geöffnet.</translation>
 </translationbundle>

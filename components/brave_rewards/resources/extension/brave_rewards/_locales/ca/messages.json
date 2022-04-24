@@ -243,6 +243,15 @@
     "message": "Pendent",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Hi ha un problema temporal amb la verificació de $provider$.  Els teus Premis de Brave es mantindran en l'estat Pendent i es tornarà a provar automàticament, però també pots provar-ho manualment més tard.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Brave Rewards de Brave Ads",
     "description": ""

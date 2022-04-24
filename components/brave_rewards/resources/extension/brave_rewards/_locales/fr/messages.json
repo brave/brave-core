@@ -243,6 +243,15 @@
     "message": "En attente",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Un problème temporaire est survenu lors de la vérification avec $provider$. Vos Récompenses Brave resteront en attente, mais de nouvelles tentatives seront effectuées automatiquement. Vous pourrez également réessayer plus tard.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Récompenses d'Ads",
     "description": ""
@@ -607,7 +616,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "Ignorer",
+    "message": "Fermer",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

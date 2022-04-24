@@ -243,6 +243,15 @@
     "message": "Várakozó",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Átmeneti hiba lépett fel a következő ellenőrzésénél: $provider$. Brave Jutalmai függő állapotban maradnak, ezek feldolgozását a rendszer automatikusan ismét megpróbálja majd, de Ön is újrapróbálhatja később.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Jutalmak az Ads révén",
     "description": ""
