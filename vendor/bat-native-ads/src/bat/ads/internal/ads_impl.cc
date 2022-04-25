@@ -153,15 +153,12 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
 
 void AdsImpl::OnPrefChanged(const std::string& path) {
   if (path == prefs::kEnabled) {
-    account_->MaybeGetIssuers();
-
     MaybeServeAdNotificationsAtRegularIntervals();
-  } else if (path == prefs::kAdsPerHour) {
-    ad_notification_serving_->OnPrefChanged(path);
-  } else if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode ||
-             path == prefs::kAdsSubdivisionTargetingCode) {
-    subdivision_targeting_->OnPrefChanged(path);
   }
+
+  account_->OnPrefChanged(path);
+  ad_notification_serving_->OnPrefChanged(path);
+  subdivision_targeting_->OnPrefChanged(path);
 }
 
 void AdsImpl::OnHtmlLoaded(const int32_t tab_id,

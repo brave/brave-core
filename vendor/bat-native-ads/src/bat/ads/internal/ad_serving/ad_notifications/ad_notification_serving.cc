@@ -70,6 +70,12 @@ void AdServing::RemoveObserver(AdNotificationServingObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void AdServing::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAdsPerHour) {
+    OnAdsPerHourPrefChanged();
+  }
+}
+
 void AdServing::StartServingAdsAtRegularIntervals() {
   if (timer_.IsRunning()) {
     return;
@@ -156,25 +162,23 @@ void AdServing::MaybeServeAd() {
       });
 }
 
-void AdServing::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
-    const int64_t ads_per_hour = settings::GetAdsPerHour();
-    BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
-
-    if (!ShouldServeAdsAtRegularIntervals()) {
-      return;
-    }
-
-    if (ads_per_hour == 0) {
-      StopServingAdsAtRegularIntervals();
-      return;
-    }
-
-    MaybeServeAdAtNextRegularInterval();
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
+
+void AdServing::OnAdsPerHourPrefChanged() {
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
+  if (ads_per_hour == 0) {
+    StopServingAdsAtRegularIntervals();
+    return;
+  }
+
+  MaybeServeAdAtNextRegularInterval();
+}
 
 bool AdServing::IsSupported() const {
   if (!eligible_ads_) {
