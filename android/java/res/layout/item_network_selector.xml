@@ -17,6 +17,7 @@
     android:paddingHorizontal="12dp"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
+    android:foreground="?android:attr/selectableItemBackground"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
