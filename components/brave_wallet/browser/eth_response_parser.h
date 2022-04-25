@@ -40,8 +40,8 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
     const std::string& json,
     std::vector<std::string>* values);
 
-bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
-                                           std::string* value);
+absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
+    const std::string& json);
 
 }  // namespace eth
 

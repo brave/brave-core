@@ -247,16 +247,19 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
   return brave_wallet::DecodeStringArray(result.substr(offset), values);
 }
 
-bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
-                                           std::string* value) {
-  DCHECK(value);
-
+absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
+    const std::string& json) {
   std::string result;
   if (!ParseSingleStringResult(json, &result))
-    return false;
+    return absl::nullopt;
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  return brave_wallet::DecodeString(offset, result, value);
+  std::string value;
+  if (!brave_wallet::DecodeString(offset, result, &value)) {
+    return absl::nullopt;
+  }
+
+  return value;
 }
 
 }  // namespace eth

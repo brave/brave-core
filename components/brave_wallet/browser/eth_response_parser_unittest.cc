@@ -251,16 +251,15 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {
       // Encoded string of 0x8aaD44321A86b170879d7A244c1e8d360c99DdA8
       "3078386161443434333231413836623137303837396437413234346331653864"
       "3336306339394464413800000000000000000000000000000000000000000000\"}";
-  std::string value;
-  EXPECT_TRUE(ParseUnstoppableDomainsProxyReaderGet(json, &value));
+  auto value = ParseUnstoppableDomainsProxyReaderGet(json);
+  EXPECT_TRUE(value);
   EXPECT_EQ(value, "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8");
 
-  value = "";
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x000000000000000000000000000000000000000000000000000000000000002000";
-  EXPECT_FALSE(ParseUnstoppableDomainsProxyReaderGet(json, &value));
-  EXPECT_TRUE(value.empty());
+  value = ParseUnstoppableDomainsProxyReaderGet(json);
+  EXPECT_FALSE(value);
 }
 
 TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {

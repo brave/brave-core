@@ -10,6 +10,7 @@
 #include <vector>
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -70,12 +71,12 @@ bool SupportsInterface(const std::string& interface_id, std::string* data);
 namespace unstoppable_domains {
 
 // Get mutiple record values mapped with keys of the target domain.
-bool GetMany(const std::vector<std::string>& keys,
-             const std::string& domain,
-             std::string* data);
+absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
+                                    const std::string& domain);
 
 // Get the value of the key for the target domain.
-bool Get(const std::string& key, const std::string& domain, std::string* data);
+absl::optional<std::string> Get(const std::string& key,
+                                const std::string& domain);
 
 }  // namespace unstoppable_domains
 

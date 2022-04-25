@@ -218,51 +218,56 @@ bool SupportsInterface(const std::string& interface_id, std::string* data) {
 
 namespace unstoppable_domains {
 
-bool GetMany(const std::vector<std::string>& keys,
-             const std::string& domain,
-             std::string* data) {
+absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
+                                    const std::string& domain) {
   const std::string function_hash =
       GetFunctionHash("getMany(string[],uint256)");
 
   std::string offset_for_array;
   if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_array)) {
-    return false;
+    return absl::nullopt;
   }
 
   std::string tokenID = Namehash(domain);
 
   std::string encoded_keys;
   if (!EncodeStringArray(keys, &encoded_keys)) {
-    return false;
+    return absl::nullopt;
   }
 
+  std::string data;
   std::vector<std::string> hex_strings = {function_hash, offset_for_array,
                                           tokenID, encoded_keys};
-  if (!ConcatHexStrings(hex_strings, data)) {
-    return false;
+  if (!ConcatHexStrings(hex_strings, &data)) {
+    return absl::nullopt;
   }
 
-  return true;
+  return data;
 }
 
-bool Get(const std::string& key, const std::string& domain, std::string* data) {
+absl::optional<std::string> Get(const std::string& key,
+                                const std::string& domain) {
   const std::string function_hash = GetFunctionHash("get(string,uint256)");
 
   std::string offset_for_key;
   if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_key)) {
-    return false;
+    return absl::nullopt;
   }
 
   std::string tokenID = Namehash(domain);
 
   std::string encoded_key;
   if (!EncodeString(key, &encoded_key)) {
-    return false;
+    return absl::nullopt;
   }
 
+  std::string data;
   std::vector<std::string> hex_strings = {function_hash, offset_for_key,
                                           tokenID, encoded_key};
-  return ConcatHexStrings(hex_strings, data);
+  if (!ConcatHexStrings(hex_strings, &data))
+    return absl::nullopt;
+
+  return data;
 }
 
 }  // namespace unstoppable_domains

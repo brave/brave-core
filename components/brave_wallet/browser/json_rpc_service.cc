@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/base64.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
+#include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
@@ -48,6 +50,13 @@ namespace {
 // TLD & TLD-1 must be at least two characters.
 constexpr char kDomainPattern[] =
     "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
+
+// Non empty group of symbols of a-z | 0-9 | hyphen(-).
+// Then a dot.
+// Then one of fixed suffixes(should match `supportedUDExtensions` array from
+// send.ts).
+constexpr char kUDPattern[] =
+    "(?:[a-z0-9-]+)\\.(?:crypto|x|coin|nft|dao|wallet|888|blockchain|bitcoin)";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
@@ -115,6 +124,8 @@ JsonRpcService::JsonRpcService(
     : api_request_helper_(new api_request_helper::APIRequestHelper(
           GetNetworkTrafficAnnotationTag(),
           url_loader_factory)),
+      ud_get_eth_addr_calls_(
+          std::make_unique<UnstoppableDomainsMultichainCalls<std::string>>()),
       prefs_(prefs),
       weak_ptr_factory_(this) {
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::ETH),
@@ -1210,8 +1221,8 @@ void JsonRpcService::UnstoppableDomainsProxyReaderGetMany(
     return;
   }
 
-  std::string data;
-  if (!unstoppable_domains::GetMany(keys, domain, &data)) {
+  auto data = unstoppable_domains::GetMany(keys, domain);
+  if (!data) {
     std::move(callback).Run(
         std::vector<std::string>(), mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1230,7 +1241,7 @@ void JsonRpcService::UnstoppableDomainsProxyReaderGetMany(
       base::BindOnce(&JsonRpcService::OnUnstoppableDomainsProxyReaderGetMany,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(
-      eth::eth_call("", contract_address, "", "", "", data, "latest"), true,
+      eth::eth_call("", contract_address, "", "", "", *data, "latest"), true,
       network_url, std::move(internal_callback));
 }
 
@@ -1261,62 +1272,69 @@ void JsonRpcService::OnUnstoppableDomainsProxyReaderGetMany(
 void JsonRpcService::UnstoppableDomainsGetEthAddr(
     const std::string& domain,
     UnstoppableDomainsGetEthAddrCallback callback) {
-  if (!IsValidDomain(domain)) {
+  if (ud_get_eth_addr_calls_->HasCall(domain)) {
+    ud_get_eth_addr_calls_->AddCallback(domain, std::move(callback));
+    return;
+  }
+
+  if (!IsValidUnstoppableDomain(domain)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
-  const std::string contract_address =
-      GetUnstoppableDomainsProxyReaderContractAddress(
-          chain_ids_[mojom::CoinType::ETH]);
-  if (contract_address.empty()) {
+  auto call_data = unstoppable_domains::Get(kCryptoEthAddressKey, domain);
+  if (!call_data) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
-  std::string data;
-  if (!unstoppable_domains::Get(kCryptoEthAddressKey, domain, &data)) {
-    std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
+  ud_get_eth_addr_calls_->AddCallback(domain, std::move(callback));
+  for (const auto& chain_id : ud_get_eth_addr_calls_->GetChains()) {
+    auto internal_callback =
+        base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetEthAddr,
+                       weak_ptr_factory_.GetWeakPtr(), domain, chain_id);
+    auto eth_call = eth::eth_call(
+        "", GetUnstoppableDomainsProxyReaderContractAddress(chain_id), "", "",
+        "", *call_data, "latest");
+    RequestInternal(std::move(eth_call), true,
+                    GetUnstoppableDomainsRpcUrl(chain_id),
+                    std::move(internal_callback));
   }
-
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetEthAddr,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(
-      eth::eth_call("", contract_address, "", "", "", data, "latest"), true,
-      network_urls_[mojom::CoinType::ETH], std::move(internal_callback));
 }
 
 void JsonRpcService::OnUnstoppableDomainsGetEthAddr(
-    UnstoppableDomainsGetEthAddrCallback callback,
+    const std::string& domain,
+    const std::string& chain_id,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
-    std::move(callback).Run(
-        "", mojom::ProviderError::kInternalError,
+    ud_get_eth_addr_calls_->SetError(
+        domain, chain_id, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  std::string address;
-  if (!eth::ParseUnstoppableDomainsProxyReaderGet(body, &address) ||
-      address.empty()) {
+  auto address = eth::ParseUnstoppableDomainsProxyReaderGet(body);
+  if (!address) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
-    std::move(callback).Run("", error, error_message);
+
+    ud_get_eth_addr_calls_->SetError(domain, chain_id, error, error_message);
     return;
   }
 
-  std::move(callback).Run(address, mojom::ProviderError::kSuccess, "");
+  if (address->empty()) {
+    ud_get_eth_addr_calls_->SetNoResult(domain, chain_id);
+    return;
+  }
+
+  ud_get_eth_addr_calls_->SetResult(domain, chain_id, address.value());
 }
 
 GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
@@ -1493,9 +1511,16 @@ void JsonRpcService::OnGetIsEip1559(
                           mojom::ProviderError::kSuccess, "");
 }
 
+/*static*/
 bool JsonRpcService::IsValidDomain(const std::string& domain) {
   static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
-  return re2::RE2::FullMatch(domain, kDomainPattern);
+  return re2::RE2::FullMatch(domain, *kDomainRegex);
+}
+
+/*static*/
+bool JsonRpcService::IsValidUnstoppableDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kUDPattern);
+  return re2::RE2::FullMatch(domain, *kDomainRegex);
 }
 
 void JsonRpcService::GetERC721OwnerOf(const std::string& contract,

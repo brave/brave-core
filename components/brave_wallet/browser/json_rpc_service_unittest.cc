@@ -9,11 +9,14 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/bind.h"
 #include "base/callback.h"
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/common/brave_services_key.h"
@@ -807,11 +810,11 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
+  network::TestURLLoaderFactory url_loader_factory_;
 
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
@@ -1832,44 +1835,203 @@ TEST_F(JsonRpcServiceUnitTest, UnstoppableDomainsProxyReaderGetMany) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(JsonRpcServiceUnitTest, UnstoppableDomainsGetEthAddr) {
-  // Non-support chain (localhost) should fail.
-  SetUDENSInterceptor(json_rpc_service_->GetChainId(mojom::CoinType::ETH));
-  bool callback_called = false;
-  json_rpc_service_->UnstoppableDomainsGetEthAddr(
-      "brad.crypto",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
+ public:
+  using GetEthAddrCallback =
+      mojom::JsonRpcService::UnstoppableDomainsGetEthAddrCallback;
 
-  callback_called = false;
-  EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
-  SetUDENSInterceptor(mojom::kMainnetChainId);
-  json_rpc_service_->UnstoppableDomainsGetEthAddr(
-      "brad-test.crypto",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kSuccess, "",
-                     "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8"));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  void SetUp() override {
+    JsonRpcServiceUnitTest::SetUp();
+    url_loader_factory_.SetInterceptor(base::BindRepeating(
+        &UnstoppableDomainsUnitTest::UDInterceptor, base::Unretained(this)));
+  }
 
-  // Return false if getting empty address result for non-exist domains.
-  callback_called = false;
-  SetInterceptor(
-      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH), "eth_call", "",
+  // Eth Mainnet: brad.crypto -> 0x8aaD44321A86b170879d7A244c1e8d360c99DdA8
+  static constexpr char k0x8aaD44Response[] =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"0x0000000000000000000000000000000000000000000000000000000000000020"
-      "0000000000000000000000000000000000000000000000000000000000000000\"}");
-  json_rpc_service_->UnstoppableDomainsGetEthAddr(
-      "non-exist.crypto",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kParsingError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
+      "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
+      "00000000000000000000000000000000000000000000000000000000002a307838616144"
+      "343433323141383662313730383739643741323434633165386433363063393944644138"
+      "00000000000000000000000000000000000000000000\"}";
+
+  // Plygon: javajobs.crypto -> 0x3a2f3f7aab82d69036763cfd3f755975f84496e
+  static constexpr char k0x3a2f3fResponse[] =
+      "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":"
+      "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
+      "00000000000000000000000000000000000000000000000000000000002a307833613266"
+      "336637616162383264363930333637363363666433663735353937356638343439366536"
+      "00000000000000000000000000000000000000000000\"}";
+
+  static constexpr char kEmptyResponse[] =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
+      "000000000000000000000000000000000000000000000000000000000000\"}";
+
+  void set_eth_mainnet_response(const char* response) {
+    eth_mainnet_response_ = response;
+  }
+
+  void set_polygon_response(const char* response) {
+    polygon_response_ = response;
+  }
+
+  void UDInterceptor(const network::ResourceRequest& request) {
+    base::StringPiece request_string(request.request_body->elements()
+                                         ->at(0)
+                                         .As<network::DataElementBytes>()
+                                         .AsStringPiece());
+    url_loader_factory_.ClearResponses();
+    if (base::Contains(request_string,
+                       GetFunctionHash("get(string,uint256)"))) {
+      if (eth_mainnet_response_ &&
+          request.url == GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId)) {
+        url_loader_factory_.AddResponse(request.url.spec(),
+                                        eth_mainnet_response_);
+        eth_mainnet_responses_++;
+        return;
+      }
+      if (polygon_response_ &&
+          request.url ==
+              GetUnstoppableDomainsRpcUrl(mojom::kPolygonMainnetChainId)) {
+        url_loader_factory_.AddResponse(request.url.spec(), polygon_response_);
+        polygon_responses_++;
+        return;
+      }
+    }
+
+    url_loader_factory_.AddResponse(request.url.spec(), "",
+                                    net::HTTP_REQUEST_TIMEOUT);
+  }
+
+  int polygon_responses() const { return polygon_responses_; }
+  int eth_mainnet_responses() const { return eth_mainnet_responses_; }
+
+ private:
+  const char* polygon_response_ = nullptr;
+  const char* eth_mainnet_response_ = nullptr;
+  int polygon_responses_ = 0;
+  int eth_mainnet_responses_ = 0;
+};
+
+TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonNetworkError) {
+  {
+    set_eth_mainnet_response(nullptr);
+    set_polygon_response(nullptr);
+    base::MockCallback<GetEthAddrCallback> callback;
+    EXPECT_CALL(callback,
+                Run("", mojom::ProviderError::kInternalError,
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto",
+                                                    callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  {
+    set_eth_mainnet_response(k0x8aaD44Response);
+    set_polygon_response(nullptr);
+    base::MockCallback<GetEthAddrCallback> callback;
+    EXPECT_CALL(callback,
+                Run("", mojom::ProviderError::kInternalError,
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto",
+                                                    callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+}
+
+TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_PolygonResult) {
+  {
+    set_eth_mainnet_response(nullptr);
+    set_polygon_response(k0x3a2f3fResponse);
+    base::MockCallback<GetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run("0x3a2f3f7aab82d69036763cfd3f755975f84496e6",
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
+                                                    callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  {
+    set_eth_mainnet_response(k0x8aaD44Response);
+    set_polygon_response(k0x3a2f3fResponse);
+    base::MockCallback<GetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run("0x3a2f3f7aab82d69036763cfd3f755975f84496e6",
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
+                                                    callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+
+  {
+    set_eth_mainnet_response(kEmptyResponse);
+    set_polygon_response(k0x3a2f3fResponse);
+    base::MockCallback<GetEthAddrCallback> callback;
+    EXPECT_CALL(callback, Run("0x3a2f3f7aab82d69036763cfd3f755975f84496e6",
+                              mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
+                                                    callback.Get());
+    base::RunLoop().RunUntilIdle();
+  }
+}
+
+TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_FallbackToEthMainnet) {
+  set_eth_mainnet_response(k0x8aaD44Response);
+  set_polygon_response(kEmptyResponse);
+  base::MockCallback<GetEthAddrCallback> callback;
+  EXPECT_CALL(callback, Run("0x8aaD44321A86b170879d7A244c1e8d360c99DdA8",
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto",
+                                                  callback.Get());
   base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_FallbackToEthMainnetError) {
+  set_eth_mainnet_response(nullptr);
+  set_polygon_response(kEmptyResponse);
+  base::MockCallback<GetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", mojom::ProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.crypto",
+                                                  callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_InvalidDomain) {
+  set_eth_mainnet_response(k0x8aaD44Response);
+  set_polygon_response(k0x3a2f3fResponse);
+  base::MockCallback<GetEthAddrCallback> callback;
+  EXPECT_CALL(callback,
+              Run("", mojom::ProviderError::kInvalidParams,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("brad.test", callback.Get());
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(UnstoppableDomainsUnitTest, GetEthAddr_ManyCalls) {
+  set_eth_mainnet_response(k0x8aaD44Response);
+  set_polygon_response(k0x3a2f3fResponse);
+
+  base::MockCallback<GetEthAddrCallback> callback1;
+  EXPECT_CALL(callback1, Run("0x3a2f3f7aab82d69036763cfd3f755975f84496e6",
+                             mojom::ProviderError::kSuccess, ""));
+  base::MockCallback<GetEthAddrCallback> callback2;
+  EXPECT_CALL(callback2, Run("0x3a2f3f7aab82d69036763cfd3f755975f84496e6",
+                             mojom::ProviderError::kSuccess, ""));
+  base::MockCallback<GetEthAddrCallback> callback3;
+  EXPECT_CALL(callback3, Run("0x3a2f3f7aab82d69036763cfd3f755975f84496e6",
+                             mojom::ProviderError::kSuccess, ""));
+
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
+                                                  callback1.Get());
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("javajobs.crypto",
+                                                  callback2.Get());
+  json_rpc_service_->UnstoppableDomainsGetEthAddr("another.crypto",
+                                                  callback3.Get());
+  base::RunLoop().RunUntilIdle();
+
+  EXPECT_EQ(eth_mainnet_responses(), 2);
+  EXPECT_EQ(polygon_responses(), 2);
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetIsEip1559) {
@@ -2059,14 +2221,51 @@ TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
   std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
                                             "brave-test.test-dev.eth"};
   for (const auto& domain : valid_domains)
-    EXPECT_TRUE(json_rpc_service_->IsValidDomain(domain))
+    EXPECT_TRUE(JsonRpcService::IsValidDomain(domain))
         << domain << " should be valid";
 
   std::vector<std::string> invalid_domains = {
       "",      ".eth",    "-brave.eth",      "brave-.eth",     "brave.e-th",
       "b.eth", "brave.e", "-brave.test.eth", "brave-.test.eth"};
   for (const auto& domain : invalid_domains)
-    EXPECT_FALSE(json_rpc_service_->IsValidDomain(domain))
+    EXPECT_FALSE(JsonRpcService::IsValidDomain(domain))
+        << domain << " should be invalid";
+}
+
+TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
+  // clang-format off
+  std::vector<std::string> valid_domains = {
+      "test.crypto",
+      "test.x",
+      "test.coin",
+      "test.nft",
+      "test.dao",
+      "test.wallet",
+      "test.888",
+      "test.blockchain",
+      "test.bitcoin",
+      "a.crypto",
+      "1.crypto",
+      "-.crypto",
+  };
+  std::vector<std::string> invalid_domains = {
+      "",
+      ".",
+      "crypto.",
+      "crypto.1",
+      ".crypto",
+      "crypto.brave",
+      "brave.crypto-",
+      "brave.test.crypto",
+      "brave.zil",
+  };
+  // clang-format on
+  for (const auto& domain : valid_domains)
+    EXPECT_TRUE(JsonRpcService::IsValidUnstoppableDomain(domain))
+        << domain << " should be valid";
+
+  for (const auto& domain : invalid_domains)
+    EXPECT_FALSE(JsonRpcService::IsValidUnstoppableDomain(domain))
         << domain << " should be invalid";
 }
 
