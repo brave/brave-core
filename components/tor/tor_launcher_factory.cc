@@ -11,7 +11,6 @@
 #include "base/callback_helpers.h"
 #include "base/task/bind_post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "components/grit/brave_components_strings.h"

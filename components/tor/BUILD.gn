@@ -24,7 +24,6 @@ static_library("tor") {
       "onion_location_navigation_throttle.h",
       "onion_location_tab_helper.cc",
       "onion_location_tab_helper.h",
-      "service_sandbox_type.h",
       "tor_control.cc",
       "tor_control.h",
       "tor_control_event.cc",

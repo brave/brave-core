@@ -6,5 +6,6 @@ mojom("interfaces") {
   ]
   public_deps = [
     "//mojo/public/mojom/base",
+    "//sandbox/policy/mojom",
   ]
 }
