@@ -41,7 +41,7 @@ namespace {
 // specified offset. The parsed value is NOT prefixed by "0x".
 absl::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
                                            size_t offset) {
-  if ((input.size() - offset) < 32)
+  if (offset > input.size() || input.size() - offset < 32)
     return absl::nullopt;
 
   return HexEncodeLower(input.data() + offset, 32);
@@ -59,7 +59,7 @@ absl::optional<std::string> GetArgFromData(const std::vector<uint8_t>& input,
 absl::optional<std::string> GetAddressFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
-  if ((input.size() - offset) < 32)
+  if (offset > input.size() || input.size() - offset < 32)
     return absl::nullopt;
 
   return "0x" + HexEncodeLower(input.data() + offset + 12, 20);
