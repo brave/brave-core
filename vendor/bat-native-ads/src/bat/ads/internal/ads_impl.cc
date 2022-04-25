@@ -269,16 +269,16 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
   MaybeServeAdNotification();
 }
 
-void AdsImpl::OnForeground() {
-  BrowserManager::Get()->OnForegrounded();
+void AdsImpl::OnBrowserDidEnterForeground() {
+  BrowserManager::Get()->OnDidEnterForeground();
 
   MaybeUpdateCatalog();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
 
-void AdsImpl::OnBackground() {
-  BrowserManager::Get()->OnBackgrounded();
+void AdsImpl::OnBrowserDidEnterBackground() {
+  BrowserManager::Get()->OnDidEnterBackground();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -309,9 +309,9 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
   }
 
   if (is_browser_active) {
-    BrowserManager::Get()->OnActive();
+    BrowserManager::Get()->OnDidBecomeActive();
   } else {
-    BrowserManager::Get()->OnInactive();
+    BrowserManager::Get()->OnDidResignActive();
   }
 
   const bool is_visible = is_active && is_browser_active;
@@ -619,7 +619,7 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 void AdsImpl::InitializeBrowserManager() {
   const bool is_browser_active = AdsClientHelper::Get()->IsBrowserActive();
 
-  BrowserManager::Get()->SetForegrounded(is_browser_active);
+  BrowserManager::Get()->SetForeground(is_browser_active);
   BrowserManager::Get()->SetActive(is_browser_active);
 }
 

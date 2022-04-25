@@ -149,8 +149,8 @@ class AdsImpl final : public Ads,
   void OnIdle() override;
   void OnUnIdle(const int idle_time, const bool was_locked) override;
 
-  void OnForeground() override;
-  void OnBackground() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   void OnMediaPlaying(const int32_t tab_id) override;
   void OnMediaStopped(const int32_t tab_id) override;

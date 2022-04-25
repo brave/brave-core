@@ -92,12 +92,12 @@ void BatAdsImpl::OnIdle() {
   ads_->OnIdle();
 }
 
-void BatAdsImpl::OnForeground() {
-  ads_->OnForeground();
+void BatAdsImpl::OnBrowserDidEnterForeground() {
+  ads_->OnBrowserDidEnterForeground();
 }
 
-void BatAdsImpl::OnBackground() {
-  ads_->OnBackground();
+void BatAdsImpl::OnBrowserDidEnterBackground() {
+  ads_->OnBrowserDidEnterBackground();
 }
 
 void BatAdsImpl::OnMediaPlaying(

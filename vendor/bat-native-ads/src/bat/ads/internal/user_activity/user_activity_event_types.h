@@ -15,7 +15,7 @@ namespace ads {
 
 enum class UserActivityEventType : int8_t {
   /* 00 */ kInitializedAds = 0,
-  /* 01 */ kBrowserDidBecomeActive,
+  /* 01 */ kBrowserDidEnterForeground,
   /* 02 */ kBrowserDidEnterBackground,
   /* 03 */ kClickedBackOrForwardNavigationButtons,
   /* 04 */ kClickedBookmark,
@@ -36,8 +36,8 @@ enum class UserActivityEventType : int8_t {
   /* 13 */ kTypedKeywordOtherThanDefaultSearchProvider,
   /* 14 */ kTypedUrl,
   /* 15 */ kUsedAddressBar,
-  /* 16 */ kBrowserWindowIsActive,
-  /* 17 */ kBrowserWindowIsInactive
+  /* 16 */ kBrowserDidBecomeActive,
+  /* 17 */ kBrowserDidResignActive
 };
 
 }  // namespace ads

@@ -6,6 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_MANAGER_BROWSER_MANAGER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_MANAGER_BROWSER_MANAGER_H_
 
+#include "base/observer_list.h"
+#include "bat/ads/internal/browser_manager/browser_manager_observer.h"
+
 namespace ads {
 
 class BrowserManager final {
@@ -20,20 +23,36 @@ class BrowserManager final {
 
   static bool HasInstance();
 
-  void SetActive(const bool is_active);
-  bool IsActive() const;
-  void OnActive();
-  void OnInactive();
+  void AddObserver(BrowserManagerObserver* observer);
+  void RemoveObserver(BrowserManagerObserver* observer);
 
-  void SetForegrounded(const bool is_foregrounded);
-  bool IsForegrounded() const;
-  void OnForegrounded();
-  void OnBackgrounded();
+  void OnDidBecomeActive();
+  void OnDidResignActive();
+
+  void OnDidEnterForeground();
+  void OnDidEnterBackground();
+
+  void SetActive(const bool is_active) { is_active_ = is_active; }
+
+  bool IsActive() const { return is_active_ && is_foreground_; }
+
+  void SetForeground(const bool is_foreground) {
+    is_foreground_ = is_foreground;
+  }
+
+  bool IsForeground() const { return is_foreground_; }
 
  private:
+  void NotifyBrowserDidBecomeActive() const;
+  void NotifyBrowserDidResignActive() const;
+  void NotifyBrowserDidEnterForeground() const;
+  void NotifyBrowserDidEnterBackground() const;
+
+  base::ObserverList<BrowserManagerObserver> observers_;
+
   bool is_active_ = false;
 
-  bool is_foregrounded_ = false;
+  bool is_foreground_ = false;
 };
 
 }  // namespace ads

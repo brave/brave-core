@@ -41,12 +41,12 @@ GetUserActivityEventToCovariateTypesMapping() {
              kNumberOfBrowserDidBecomeActiveEvents,
          brave_federated::mojom::CovariateType::
              kTimeSinceLastBrowserDidBecomeActiveEvent}},
-       {UserActivityEventType::kBrowserWindowIsActive,
+       {UserActivityEventType::kBrowserDidBecomeActive,
         {brave_federated::mojom::CovariateType::
              kNumberOfBrowserWindowIsActiveEvents,
          brave_federated::mojom::CovariateType::
              kTimeSinceLastBrowserWindowIsActiveEvent}},
-       {UserActivityEventType::kBrowserWindowIsInactive,
+       {UserActivityEventType::kBrowserDidResignActive,
         {brave_federated::mojom::CovariateType::
              kNumberOfBrowserWindowIsInactiveEvents,
          brave_federated::mojom::CovariateType::

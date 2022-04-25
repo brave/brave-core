@@ -477,14 +477,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnForeground();
+  ads->OnBrowserDidEnterForeground();
 }
 
 - (void)applicationDidBackground {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnBackground();
+  ads->OnBrowserDidEnterBackground();
 }
 
 #pragma mark - History

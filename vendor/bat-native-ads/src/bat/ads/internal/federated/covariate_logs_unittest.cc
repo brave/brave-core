@@ -28,7 +28,7 @@ TEST_F(BatAdsCovariateLogsTest, GetTrainingInstance) {
       CovariateLogs::Get()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(32U, training_covariates->covariates.size());
+  EXPECT_EQ(30U, training_covariates->covariates.size());
 }
 
 TEST_F(BatAdsCovariateLogsTest, GetTrainingInstanceWithSetters) {
@@ -41,7 +41,7 @@ TEST_F(BatAdsCovariateLogsTest, GetTrainingInstanceWithSetters) {
       CovariateLogs::Get()->GetTrainingInstance();
 
   // Assert
-  EXPECT_EQ(34U, training_covariates->covariates.size());
+  EXPECT_EQ(32U, training_covariates->covariates.size());
 }
 
 }  // namespace ads

@@ -18,8 +18,8 @@ class BackgroundHelper {
    public:
     virtual ~Observer() = default;
 
-    virtual void OnBackground() = 0;
-    virtual void OnForeground() = 0;
+    virtual void OnBrowserDidEnterForeground() = 0;
+    virtual void OnBrowserDidEnterBackground() = 0;
   };
 
   virtual ~BackgroundHelper();
@@ -32,8 +32,8 @@ class BackgroundHelper {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void TriggerOnBackground();
   void TriggerOnForeground();
+  void TriggerOnBackground();
 
   virtual bool IsForeground() const;
 

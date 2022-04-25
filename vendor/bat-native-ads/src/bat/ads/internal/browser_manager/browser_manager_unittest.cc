@@ -5,23 +5,52 @@
 
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 
-#include <algorithm>
-
-#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsBrowserManagerTest : public UnitTestBase {
+class BatAdsBrowserManagerTest : public BrowserManagerObserver,
+                                 public UnitTestBase {
  protected:
   BatAdsBrowserManagerTest() = default;
 
   ~BatAdsBrowserManagerTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    BrowserManager::Get()->AddObserver(this);
+  }
+
+  void TearDown() override {
+    BrowserManager::Get()->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
+
+  void OnBrowserDidBecomeActive() override {
+    browser_did_become_active_ = true;
+  }
+
+  void OnBrowserDidResignActive() override {
+    browser_did_resign_active_ = true;
+  }
+
+  void OnBrowserDidEnterForeground() override {
+    browser_did_enter_foreground_ = true;
+  }
+
+  void OnBrowserDidEnterBackground() override {
+    browser_did_enter_background_ = true;
+  }
+
+  bool browser_did_become_active_ = false;
+  bool browser_did_resign_active_ = false;
+  bool browser_did_enter_foreground_ = false;
+  bool browser_did_enter_background_ = false;
 };
 
 TEST_F(BatAdsBrowserManagerTest, HasInstance) {
@@ -34,128 +63,56 @@ TEST_F(BatAdsBrowserManagerTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActive) {
+TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
   // Arrange
-  BrowserManager::Get()->SetForegrounded(true);
+  BrowserManager::Get()->SetForeground(true);
   BrowserManager::Get()->SetActive(false);
 
   // Act
-  BrowserManager::Get()->OnActive();
+  BrowserManager::Get()->OnDidBecomeActive();
 
   // Assert
   EXPECT_TRUE(BrowserManager::Get()->IsActive());
+  EXPECT_TRUE(browser_did_become_active_);
+  EXPECT_FALSE(browser_did_resign_active_);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
-  // Arrange
-  BrowserManager::Get()->SetActive(false);
-
-  // Act
-  BrowserManager::Get()->OnActive();
-
-  // Assert
-  const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
-
-  UserActivityEventList expected_events;
-  UserActivityEventInfo event;
-  event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.created_at = Now();
-  expected_events.push_back(event);
-
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
-}
-
-TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactive) {
+TEST_F(BatAdsBrowserManagerTest, BrowserDidResignActive) {
   // Arrange
   BrowserManager::Get()->SetActive(true);
 
   // Act
-  BrowserManager::Get()->OnInactive();
+  BrowserManager::Get()->OnDidResignActive();
 
   // Assert
   EXPECT_FALSE(BrowserManager::Get()->IsActive());
+  EXPECT_FALSE(browser_did_become_active_);
+  EXPECT_TRUE(browser_did_resign_active_);
 }
 
-TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
-  // Arrange
-  BrowserManager::Get()->SetActive(true);
-
-  // Act
-  BrowserManager::Get()->OnInactive();
-
-  // Assert
-  const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
-
-  UserActivityEventList expected_events;
-  UserActivityEventInfo event;
-  event.type = UserActivityEventType::kBrowserWindowIsInactive;
-  event.created_at = Now();
-  expected_events.push_back(event);
-
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
-}
-
-TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
+TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterForeground) {
   // Arrange
 
   // Act
-  BrowserManager::Get()->OnForegrounded();
+  BrowserManager::Get()->OnDidEnterForeground();
 
   // Assert
-  EXPECT_TRUE(BrowserManager::Get()->IsForegrounded());
-}
-
-TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
-  // Arrange
-  BrowserManager::Get()->SetActive(false);
-
-  // Act
-  BrowserManager::Get()->OnActive();
-
-  // Assert
-  const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
-
-  UserActivityEventList expected_events;
-  UserActivityEventInfo event;
-  event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.created_at = Now();
-  expected_events.push_back(event);
-
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(BrowserManager::Get()->IsForeground());
+  EXPECT_TRUE(browser_did_enter_foreground_);
+  EXPECT_FALSE(browser_did_enter_background_);
 }
 
 TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
   // Arrange
-  BrowserManager::Get()->SetForegrounded(true);
+  BrowserManager::Get()->SetForeground(true);
 
   // Act
-  BrowserManager::Get()->OnBackgrounded();
+  BrowserManager::Get()->OnDidEnterBackground();
 
   // Assert
-  EXPECT_FALSE(BrowserManager::Get()->IsForegrounded());
-}
-
-TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
-  // Arrange
-  BrowserManager::Get()->SetForegrounded(true);
-
-  // Act
-  BrowserManager::Get()->OnBackgrounded();
-
-  // Assert
-  const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
-
-  UserActivityEventList expected_events;
-  UserActivityEventInfo event;
-  event.type = UserActivityEventType::kBrowserDidEnterBackground;
-  event.created_at = Now();
-  expected_events.push_back(event);
-
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_FALSE(BrowserManager::Get()->IsForeground());
+  EXPECT_FALSE(browser_did_enter_foreground_);
+  EXPECT_TRUE(browser_did_enter_background_);
 }
 
 }  // namespace ads
