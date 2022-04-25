@@ -123,4 +123,5 @@ export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCo
 export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')
 export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')
 export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')
+export const setShowTestNetworks = createAction<boolean>('setShowTestNetworks')
 export const addAccount = createAction<AddAccountPayloadType>('addAccount')

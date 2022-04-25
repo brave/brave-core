@@ -56,6 +56,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kBraveWalletSelectedCoin,
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
+  registry->RegisterBooleanPref(kShowWalletTestNetworks, false);
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
