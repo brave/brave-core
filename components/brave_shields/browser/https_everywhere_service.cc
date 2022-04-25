@@ -12,6 +12,7 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
+#include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
@@ -90,6 +91,15 @@ void HTTPSEverywhereService::Engine::Init(const base::FilePath& base_dir) {
       base_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
   base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
   base::FilePath destination = zip_db_file_path.DirName();
+  // Unzip doesn't allow overwriting existing files, so delete previously
+  // unzipped db. Attempting to delete a non-existent path returns success.
+  bool deleted = base::DeletePathRecursively(unzipped_level_db_path);
+  if (!deleted) {
+    LOG(ERROR) << "Failed to delete unzipped database directory "
+               << unzipped_level_db_path.value().c_str();
+    return;
+  }
+
   if (!zip::Unzip(zip_db_file_path, destination)) {
     LOG(ERROR) << "Failed to unzip database file "
                << zip_db_file_path.value().c_str();
