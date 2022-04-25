@@ -51,7 +51,7 @@ class Deposits final : public TableInterface {
                                   const std::string& creative_instance_id,
                                   GetDepositsCallback callback);
 
-  void MigrateToV22(mojom::DBTransaction* transaction);
+  void MigrateToV23(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table
