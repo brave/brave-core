@@ -12,6 +12,7 @@ const char kDefaultBaseCryptocurrency[] =
 const char kBraveWalletTransactions[] = "brave.wallet.transactions";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
+const char kShowWalletTestNetworks[] = "brave.wallet.show_wallet_test_networks";
 const char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
 const char kBraveWalletPingReportedUnlockTime[] =

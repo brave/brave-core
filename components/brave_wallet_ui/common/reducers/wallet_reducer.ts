@@ -520,6 +520,13 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
+  reducer.on(WalletActions.setShowTestNetworks, (state: WalletState, payload: boolean): WalletState => {
+    return {
+      ...state,
+      isTestNetworksEnabled: payload
+    }
+  })
+
   return reducer
 }
 

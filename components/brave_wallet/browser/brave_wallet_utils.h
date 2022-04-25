@@ -97,6 +97,7 @@ void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
+bool GetShowWalletTestNetworks(PrefService* prefs);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 std::vector<std::string> GetAllKnownEthNetworkIds();
 std::vector<std::string> GetAllKnownSolNetworkIds();

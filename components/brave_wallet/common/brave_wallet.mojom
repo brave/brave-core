@@ -1023,6 +1023,9 @@ interface BraveWalletService {
   // Sets the default base cryptocurrency
   SetDefaultBaseCryptocurrency(string cryptocurrency);
 
+  // Obtains the show test networks user pref from settings
+  GetShowWalletTestNetworks() => (bool isEnabled);
+
   // Adds the permission of coin type for the account
   AddPermission(CoinType coin, url.mojom.Origin origin, string account)
     => (bool success);
