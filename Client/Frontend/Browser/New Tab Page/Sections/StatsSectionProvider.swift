@@ -7,89 +7,154 @@ import Foundation
 import Shared
 import BraveShared
 import BraveUI
+import UIKit
 
 class StatsSectionProvider: NSObject, NTPSectionProvider {
+  let action: () -> Void
+  
+  init(action: @escaping () -> Void) {
+    self.action = action
+  }
+  
+  @objc private func tappedButton() {
+    action()
+  }
+  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 1
   }
-
+  
   func registerCells(to collectionView: UICollectionView) {
-    collectionView.register(NewTabCollectionViewCell<BraveShieldStatsView>.self)
+    collectionView.register(NewTabCenteredCollectionViewCell<BraveShieldStatsView>.self)
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return collectionView.dequeueReusableCell(for: indexPath) as NewTabCollectionViewCell<BraveShieldStatsView>
+    let cell = collectionView.dequeueReusableCell(for: indexPath) as NewTabCenteredCollectionViewCell<BraveShieldStatsView>
+    cell.view.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
+    return cell
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
     size.height = 110
     return size
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    
+    return UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
   }
 }
 
-class BraveShieldStatsView: UIView {
+class BraveShieldStatsView: SpringButton {
   private lazy var adsStatView: StatView = {
     let statView = StatView(frame: CGRect.zero)
     statView.title = Strings.shieldsAdAndTrackerStats.capitalized
     statView.color = .statsAdsBlockedTint
     return statView
   }()
-
+  
   private lazy var dataSavedStatView: StatView = {
     let statView = StatView(frame: .zero)
     statView.title = Strings.dataSavedStat
     statView.color = .statsDataSavedTint
     return statView
   }()
-
+  
   private lazy var timeStatView: StatView = {
     let statView = StatView(frame: .zero)
     statView.title = Strings.shieldsTimeStats
     statView.color = .statsTimeSavedTint
     return statView
   }()
-
-  private lazy var stats: [StatView] = {
-    return [self.adsStatView, self.dataSavedStatView, self.timeStatView]
-  }()
-
+  
+  private let statsStackView = UIStackView().then {
+    $0.distribution = .fillEqually
+    $0.spacing = 8
+  }
+  
+  private let topStackView = UIStackView().then {
+    $0.distribution = .equalSpacing
+    $0.alignment = .center
+    $0.isLayoutMarginsRelativeArrangement = true
+    $0.directionalLayoutMargins = .init(.init(top: 8, leading: 0, bottom: -4, trailing: 0))
+  }
+  
+  private let contentStackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.spacing = 8
+    $0.isLayoutMarginsRelativeArrangement = true
+    $0.directionalLayoutMargins = .init(.init(top: 0, leading: 16, bottom: 16, trailing: 16))
+  }
+  
+  private let privacyReportLabel = UILabel().then {
+    let image = #imageLiteral(resourceName: "privacy_reports_shield").template
+    $0.textColor = .white
+    $0.textAlignment = .center
+    
+    $0.attributedText = {
+      let imageAttachment = NSTextAttachment().then {
+        $0.image = image
+        if let image = $0.image {
+          $0.bounds = .init(x: 0, y: -3, width: image.size.width, height: image.size.height)
+        }
+      }
+      
+      var string = NSMutableAttributedString(attachment: imageAttachment)
+      
+      let padding = NSTextAttachment()
+      padding.bounds = CGRect(width: 6, height: 0)
+      
+      string.append(NSAttributedString(attachment: padding))
+      
+      string.append(NSMutableAttributedString(
+        string: Strings.PrivacyHub.privacyReportsTitle,
+        attributes: [.font: UIFont.systemFont(ofSize: 14.0, weight: .medium)]
+      ))
+      return string
+    }()
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
-
-    for s: StatView in stats {
-      addSubview(s)
+    
+    let image = UIImageView(image: #imageLiteral(resourceName: "privacy_reports_3dots").template)
+    image.tintColor = .white
+    
+    let background = UIView()
+    background.backgroundColor = .init(white: 0, alpha: 0.25)
+    background.layer.cornerRadius = 12
+    background.layer.cornerCurve = .continuous
+    background.isUserInteractionEnabled = false
+    insertSubview(background, at: 0)
+    background.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
-
+    
+    topStackView.addStackViewItems(.view(privacyReportLabel), .view(image))
+    statsStackView.addStackViewItems(.view(adsStatView), .view(dataSavedStatView), .view(timeStatView))
+    contentStackView.addStackViewItems(.view(topStackView), .view(statsStackView))
+    addSubview(contentStackView)
+    
+    contentStackView.isUserInteractionEnabled = false
     update()
-
+    
+    contentStackView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+      $0.width.equalTo(640)
+    }
+    
     NotificationCenter.default.addObserver(self, selector: #selector(update), name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
   }
-
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+  
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
-
-  override func layoutSubviews() {
-    let width: CGFloat = frame.width / CGFloat(stats.count)
-    var offset: CGFloat = 0
-    for s: StatView in stats {
-      var f: CGRect = s.frame
-      f.origin.x = offset
-      f.size = CGSize(width: width, height: frame.height)
-      s.frame = f
-      offset += width
-    }
-  }
-
+  
   @objc private func update() {
     adsStatView.stat = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection).kFormattedNumber
     dataSavedStatView.stat = BraveGlobalShieldStats.shared.dataSaved
@@ -103,19 +168,19 @@ private class StatView: UIView {
       statLabel.textColor = color
     }
   }
-
+  
   var stat: String = "" {
     didSet {
       statLabel.text = "\(stat)"
     }
   }
-
+  
   var title: String = "" {
     didSet {
       titleLabel.text = "\(title)"
     }
   }
-
+  
   fileprivate var statLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
@@ -124,7 +189,7 @@ private class StatView: UIView {
     label.adjustsFontSizeToFitWidth = true
     return label
   }()
-
+  
   fileprivate var titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
@@ -133,26 +198,23 @@ private class StatView: UIView {
     label.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
     return label
   }()
-
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
-
-    addSubview(statLabel)
-    addSubview(titleLabel)
-
-    statLabel.snp.makeConstraints({ (make) -> Void in
-      make.left.equalTo(0)
-      make.right.equalTo(0)
-      make.centerY.equalTo(self).offset(-(statLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).height) - 10)
-    })
-
-    titleLabel.snp.makeConstraints({ (make) -> Void in
-      make.left.equalTo(0)
-      make.right.equalTo(0)
-      make.top.equalTo(statLabel.snp.bottom).offset(5)
-    })
+    
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.alignment = .center
+    
+    stackView.addStackViewItems(.view(statLabel), .view(titleLabel))
+    
+    addSubview(stackView)
+    
+    stackView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
   }
-
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

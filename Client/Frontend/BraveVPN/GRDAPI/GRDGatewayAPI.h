@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// endpoint: "/api/v1.1/device/<device_token>/alerts"
 /// @param completion De-Serialized JSON from the server containing an array with all alerts
-- (void)getEvents:(void (^)(NSDictionary *response, BOOL success, NSString *error))completion;
+- (void)getEventsWithDummyData:(BOOL)useDummyData completion:(void(^)(NSDictionary *response, BOOL success, NSString * _Nullable error))completion;
 
 @end
 

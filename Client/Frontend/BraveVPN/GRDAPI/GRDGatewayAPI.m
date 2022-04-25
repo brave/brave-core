@@ -309,49 +309,41 @@
 }
 
 - (NSArray *)_fakeAlertsArray {
-    NSString *curDateStr = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+    NSNumber *curDateStr = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
     NSMutableArray *fakeAlerts = [NSMutableArray array];
    
     NSInteger i = 0;
-    for (i = 0; i < 20000; i++){
+    for (i = 0; i < 20; i++){
         [fakeAlerts addObject:@{@"action":@"drop",
                                 @"category":@"privacy-tracker-app",
                                 @"host":@"analytics.localytics.com",
-                                @"message":@"Prevented 'Localytics' from obtaining unknown data from device. Prevented 'Localytics' from obtaining unknown data from device Prevented 'Localytics' from obtaining unknown data from device Prevented 'Localytics' from obtaining unknown",
+                                @"message":@"'OpenX' is known to collect Personal data for advertising purposes",
                                 @"timestamp":curDateStr,
                                 @"title":@"Blocked Data Tracker",
                                 @"uuid":[[NSUUID UUID] UUIDString] }];
         
         [fakeAlerts addObject:@{@"action":@"drop",
                                 @"category":@"privacy-tracker-app-location",
-                                @"host":@"api.beaconsinspace.com",
-                                @"message":@"Prevented 'Beacons In Space' from obtaining unknown data from device",
+                                @"host":@"doubleclick.net",
+                                @"message":@"'DoubleClick' is known to collect device identifiers and other information",
                                 @"timestamp":curDateStr,
                                 @"title":@"Blocked Location Tracker",
                                 @"uuid":[[NSUUID UUID] UUIDString] }];
         
         [fakeAlerts addObject:@{@"action":@"drop",
-                                @"category":@"security-phishing",
-                                @"host":@"api.phishy-mcphishface-thisisanexampleofalonghostname.com",
-                                @"message":@"Prevented 'Phishy McPhishface' from obtaining unknown data from device",
+                                @"category":@"privacy-tracker-app",
+                                @"host":@"amazon.com",
+                                @"message":@"'Amazon Adsystem' is known to collect device identifiers and other information",
                                 @"timestamp":curDateStr,
                                 @"title":@"Blocked Phishing Attempt",
                                 @"uuid":[[NSUUID UUID] UUIDString] }];
         
         [fakeAlerts addObject:@{@"action":@"drop",
-                                @"category":@"encryption-allows-invalid-https",
+                                @"category":@"privacy-tracker-mail",
                                 @"host":@"facebook.com",
-                                @"message":@"Prevented 'Facebook', you're welcome",
+                                @"message":@"'Superhuman' is known to track your receipt of e-mail messages",
                                 @"timestamp":curDateStr,
                                 @"title":@"Blocked MITM",
-                                @"uuid":[[NSUUID UUID] UUIDString] }];
-        
-        [fakeAlerts addObject:@{@"action":@"drop",
-                                @"category":@"ads/aggressive",
-                                @"host":@"google.com",
-                                @"message":@"Prevented Google from forcing shit you don't need down your throat",
-                                @"timestamp":curDateStr,
-                                @"title":@"Blocked Ad Tracker",
                                 @"uuid":[[NSUUID UUID] UUIDString] }];
     }
     
@@ -360,73 +352,74 @@
     return [NSArray arrayWithArray:fakeAlerts];
 }
 
-- (void)getEvents:(void(^)(NSDictionary *response, BOOL success, NSString *error))completion {
-    if (self.dummyDataForDebugging == NO) {
-        if ([self _canMakeApiRequests] == NO) {
-            NSLog(@"[DEBUG][getEvents] cannot make API requests !!! won't continue");
-            if (completion) completion(nil, NO, @"cant make API requests");
-            return;
-        }
-        
-        if (!deviceIdentifier) {
-            if (completion) completion(nil, NO, @"An error occured!, Missing device id!");
-            return;
-        }
-        
-        NSString *apiEndpoint = [NSString stringWithFormat:@"/api/v1.1/device/%@/alerts", deviceIdentifier];
-        NSString *finalHost = [NSString stringWithFormat:@"https://%@%@", [self _baseHostname], apiEndpoint];
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:finalHost]];
-        NSDictionary *jsonDict = @{kKeychainStr_APIAuthToken:apiAuthToken};
-        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:nil]];
-        [request setHTTPMethod:@"POST"];
-        
-        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            if (error != nil) {
-                NSLog(@"Couldn't connect to host: %@", [error localizedDescription]);
-                if (completion) completion(nil, NO, @"Error connecting to host for getEvents");
-                return;
-            }
-            
-            NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-            if (statusCode == 500) {
-                NSLog(@"Internal server error");
-                if (completion) completion(nil, NO,@"Internal server error" );
-                return;
-                
-            } else if (statusCode == 401) {
-                NSLog(@"Auth failure. Needs to migrate device");
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAppNeedsSelfRepair];
-                if (completion) completion(nil, NO, @"Authentication failed. Server migration required");
-                return;
-                
-            } else if (statusCode == 400) {
-                NSLog(@"Bad Request");
-                if (completion) completion(nil, NO, @"Subscriber credential missing");
-                return;
-                
-            } else if (statusCode == 200) {
-                NSError *jsonError = nil;
-                NSDictionary *dictFromJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-                if (jsonError) {
-                    NSLog(@"Failed to decode JSON with alerts: %@", jsonError);
-                    if (completion) completion(nil, NO, @"Failed to decode JSON");
-                } else {
-                    if (completion) completion(dictFromJSON, YES, nil);
-                }
-                return;
-                
-            } else {
-                NSLog(@"Unknown error: %ld", statusCode);
-                if (completion) completion(nil, NO, [NSString stringWithFormat:@"Unknown error: %ld", statusCode]);
-            }
-        }];
-        [task resume];
-        
-    } else {
-        // Returning dummy data so that we can debug easily in the simulator
-        completion([NSDictionary dictionaryWithObject:[self _fakeAlertsArray] forKey:@"alerts"], YES, nil);
+- (void)getEventsWithDummyData:(BOOL)useDummyData completion:(void(^)(NSDictionary *response, BOOL success, NSString * _Nullable error))completion {
+  
+  if (useDummyData) {
+    // Returning dummy data so that we can debug easily in the simulator.
+    if (completion) completion([NSDictionary dictionaryWithObject:[self _fakeAlertsArray] forKey:@"alerts"], YES, nil);
+    return;
+  }
+  
+  if ([self _canMakeApiRequests] == NO) {
+    NSLog(@"[DEBUG][getEvents] cannot make API requests !!! won't continue");
+    if (completion) completion(nil, NO, @"cant make API requests");
+    return;
+  }
+  
+  if (!deviceIdentifier) {
+    if (completion) completion(nil, NO, @"An error occured!, Missing device id!");
+    return;
+  }
+  
+  NSString *apiEndpoint = [NSString stringWithFormat:@"/api/v1.1/device/%@/alerts", deviceIdentifier];
+  NSString *finalHost = [NSString stringWithFormat:@"https://%@%@", [self _baseHostname], apiEndpoint];
+  
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:finalHost]];
+  NSDictionary *jsonDict = @{kKeychainStr_APIAuthToken:apiAuthToken};
+  [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:nil]];
+  [request setHTTPMethod:@"POST"];
+  
+  NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    if (error != nil) {
+      NSLog(@"Couldn't connect to host: %@", [error localizedDescription]);
+      if (completion) completion(nil, NO, @"Error connecting to host for getEvents");
+      return;
     }
+    
+    NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+    if (statusCode == 500) {
+      NSLog(@"Internal server error");
+      if (completion) completion(nil, NO,@"Internal server error" );
+      return;
+      
+    } else if (statusCode == 401) {
+      NSLog(@"Auth failure. Needs to migrate device");
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAppNeedsSelfRepair];
+      if (completion) completion(nil, NO, @"Authentication failed. Server migration required");
+      return;
+      
+    } else if (statusCode == 400) {
+      NSLog(@"Bad Request");
+      if (completion) completion(nil, NO, @"Subscriber credential missing");
+      return;
+      
+    } else if (statusCode == 200) {
+      NSError *jsonError = nil;
+      NSDictionary *dictFromJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+      if (jsonError) {
+        NSLog(@"Failed to decode JSON with alerts: %@", jsonError);
+        if (completion) completion(nil, NO, @"Failed to decode JSON");
+      } else {
+        if (completion) completion(dictFromJSON, YES, nil);
+      }
+      return;
+      
+    } else {
+      NSLog(@"Unknown error: %ld", statusCode);
+      if (completion) completion(nil, NO, [NSString stringWithFormat:@"Unknown error: %ld", statusCode]);
+    }
+  }];
+  [task resume];
 }
 
 

@@ -30,7 +30,7 @@ extension BrowserViewController {
     // 1. User is brand new
     // 2. User hasn't completed onboarding
     if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
-      Preferences.General.isNewRetentionUser.value == true {
+       Preferences.General.isNewRetentionUser.value == true {
       let onboardingController = WelcomeViewController(
         profile: profile,
         rewards: rewards)
@@ -49,7 +49,7 @@ extension BrowserViewController {
           self.tabManager.selectTab(tab)
         } else {
           self.addNTPTutorialPage()
-
+          
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
           }
@@ -75,16 +75,25 @@ extension BrowserViewController {
   }
 
   func showNTPOnboarding() {
-    if Preferences.General.isNewRetentionUser.value == true,
-      Preferences.DebugFlag.skipNTPCallouts != true,
-      !topToolbar.inOverlayMode,
-      topToolbar.currentURL == nil,
-      !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
-      presentNTPStatsOnboarding()
+    if !topToolbar.inOverlayMode,
+       topToolbar.currentURL == nil,
+       Preferences.DebugFlag.skipNTPCallouts != true {
+      showPrivacyReportsOnboardingIfNeeded()
     }
   }
 
-  func presentNTPStatsOnboarding() {
+  func showPrivacyReportsOnboardingIfNeeded() {
+    if Preferences.PrivacyReports.ntpOnboardingCompleted.value || PrivateBrowsingManager.shared.isPrivateBrowsing {
+      return
+    }
+
+    let trackerCountThresholdForOnboarding = AppConstants.buildChannel.isPublic ? 250 : 20
+    let trackerAdsTotal = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
+
+    if trackerAdsTotal < trackerCountThresholdForOnboarding {
+      return
+    }
+
     // If a controller is already presented (such as menu), do not show onboarding
     guard presentedViewController == nil else {
       return
@@ -92,13 +101,13 @@ extension BrowserViewController {
 
     // We can only show this onboarding on the NTP
     guard let ntpController = tabManager.selectedTab?.newTabPageViewController,
-      let statsFrame = ntpController.ntpStatsOnboardingFrame
+          let statsFrame = ntpController.ntpStatsOnboardingFrame
     else {
       return
     }
 
     // Project the statsFrame to the current frame
-    let frame = view.convert(statsFrame, from: ntpController.view).insetBy(dx: -5.0, dy: 15.0)
+    let frame = view.convert(statsFrame, from: ntpController.view)
 
     // Create a border view
     let borderView = UIView().then {
@@ -116,15 +125,18 @@ extension BrowserViewController {
     view.addSubview(borderView)
     borderView.frame = frame
 
-    // Present the popover
+    // Present the popover and mark onboarding as complete
+    Preferences.PrivacyReports.ntpOnboardingCompleted.value = true
+
     let controller = WelcomeNTPOnboardingController()
     controller.setText(details: Strings.Onboarding.ntpOnboardingPopOverTrackerDescription)
+    controller.buttonText = Strings.PrivacyHub.onboardingButtonTitle
 
     let popover = PopoverController(contentController: controller)
     popover.arrowDistance = 10.0
     popover.present(from: borderView, on: self) { [weak popover, weak self] in
       guard let popover = popover,
-        let self = self
+            let self = self
       else { return }
 
       // Mask the shadow
@@ -144,11 +156,17 @@ extension BrowserViewController {
       }
 
       popover.backgroundOverlayView.layer.mask = maskShape
-      popover.popoverDidDismiss = { [weak self] _ in
+      popover.popoverDidDismiss = { _ in
         maskShape.removeFromSuperlayer()
         borderView.removeFromSuperview()
-        Preferences.FullScreenCallout.ntpCalloutCompleted.value = true
-        self?.presentNTPMenuOnboarding()
+      }
+
+      controller.buttonTapped = { [weak self] in
+        maskShape.removeFromSuperlayer()
+        borderView.removeFromSuperview()
+        DispatchQueue.main.async {
+          self?.openPrivacyReport()
+        }
       }
 
       DispatchQueue.main.async {
@@ -165,44 +183,9 @@ extension BrowserViewController {
     }
   }
 
-  func presentNTPMenuOnboarding() {
-    guard let menuButton = UIDevice.isIpad ? topToolbar.menuButton : toolbar?.menuButton else { return }
-    let controller = WelcomeNTPOnboardingController()
-    controller.setText(
-      title: Strings.Onboarding.ntpOnboardingPopoverDoneTitle,
-      details: Strings.Onboarding.ntpOnboardingPopoverDoneDescription)
-
-    let popover = PopoverController(contentController: controller)
-    popover.arrowDistance = 7.0
-    popover.present(from: menuButton, on: self)
-
-    if let icon = menuButton.imageView?.image {
-      let maskedView = controller.maskedPointerView(
-        icon: icon,
-        tint: menuButton.imageView?.tintColor)
-      popover.view.insertSubview(maskedView, aboveSubview: popover.backgroundOverlayView)
-      maskedView.frame = CGRect(width: 45.0, height: 45.0)
-      maskedView.center = view.convert(menuButton.center, from: menuButton.superview)
-      maskedView.layer.cornerRadius = max(maskedView.bounds.width, maskedView.bounds.height) / 2.0
-
-      popover.popoverDidDismiss = { _ in
-        maskedView.removeFromSuperview()
-      }
-    }
-  }
-
-  func notifyTrackersBlocked(domain: String, trackers: [String: [String]]) {
+  func notifyTrackersBlocked(domain: String, trackerName: String, remainingTrackersCount: Int) {
     let controller = WelcomeBraveBlockedAdsController().then {
-      var trackers = trackers
-      let first = trackers.popFirst()
-      let tracker = first?.key
-      let trackerCount =
-        ((first?.value.count ?? 0) - 1)
-        + trackers.reduce(0, { res, values in
-          res + values.value.count
-        })
-
-      $0.setData(domain: domain, trackerBlocked: tracker ?? "", trackerCount: trackerCount)
+      $0.setData(domain: domain, trackerBlocked: trackerName, trackerCount: remainingTrackersCount)
     }
 
     let popover = PopoverController(contentController: controller)
@@ -214,13 +197,13 @@ extension BrowserViewController {
       from: topToolbar.locationView.shieldsButton,
       on: popover,
       browser: self)
-    
+
     pulseAnimationView.animationViewPressed = { [weak self] in
       popover.dismissPopover() {
         self?.presentBraveShieldsViewController()
       }
     }
-    
+
     popover.popoverDidDismiss = { [weak self] _ in
       pulseAnimationView.removeFromSuperview()
 

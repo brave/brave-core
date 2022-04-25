@@ -60,48 +60,36 @@ extension BrowserViewController {
 
     var isAboutHomeUrl = false
     if let selectedTab = tabManager.selectedTab,
-      let url = selectedTab.url,
-      let internalURL = InternalURL(url) {
+       let url = selectedTab.url,
+       let internalURL = InternalURL(url) {
       isAboutHomeUrl = internalURL.isAboutHomeURL
     }
 
     guard let selectedTab = tabManager.selectedTab,
-      !Preferences.General.onboardingAdblockPopoverShown.value,
-      !benchmarkNotificationPresented,
-      !Preferences.AppState.backgroundedCleanly.value,
-      Preferences.General.isNewRetentionUser.value == true,
-      !topToolbar.inOverlayMode,
-      !isTabTrayActive,
-      selectedTab.webView?.scrollView.isDragging == false,
-      isAboutHomeUrl == false
+          !Preferences.General.onboardingAdblockPopoverShown.value,
+          !benchmarkNotificationPresented,
+          !Preferences.AppState.backgroundedCleanly.value,
+          Preferences.General.isNewRetentionUser.value == true,
+          !topToolbar.inOverlayMode,
+          !isTabTrayActive,
+          selectedTab.webView?.scrollView.isDragging == false,
+          isAboutHomeUrl == false
     else {
       return
     }
 
-    guard let onboardingList = OnboardingDisconnectList.loadFromFile() else {
-      log.error("CANNOT LOAD ONBOARDING DISCONNECT LIST")
-      return
-    }
+    let blockedRequests = selectedTab.contentBlocker.blockedRequests
 
-    var trackers = [String: [String]]()
-    let urls = selectedTab.contentBlocker.blockedRequests
-
-    for entity in onboardingList.entities {
-      for url in urls {
-        let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
-        let resources = entity.value.resources.filter({ $0 == domain })
-
-        if !resources.isEmpty {
-          trackers[entity.key] = resources
-        } else {
-          trackers[domain] = [domain]
-        }
-      }
-    }
-
-    if !trackers.isEmpty, let url = selectedTab.url {
+    if !blockedRequests.isEmpty,
+       let url = selectedTab.url,
+       let firstBlockedUrl = blockedRequests.first {
       let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
-      notifyTrackersBlocked(domain: domain, trackers: trackers)
+      let trackerName = BlockedTrackerParser.parse(url: firstBlockedUrl, fallbackToDomainURL: true) ?? domain
+
+      // Susbstracting 1 here because we show a name of the first tracker, plus all remaining trackers as a number.
+      notifyTrackersBlocked(
+        domain: domain, trackerName: trackerName,
+        remainingTrackersCount: blockedRequests.count - 1)
       Preferences.General.onboardingAdblockPopoverShown.value = true
     }
   }
@@ -111,27 +99,27 @@ extension BrowserViewController {
 
     var isAboutHomeUrl = false
     if let selectedTab = tabManager.selectedTab,
-      let url = selectedTab.url,
-      let internalURL = InternalURL(url) {
+       let url = selectedTab.url,
+       let internalURL = InternalURL(url) {
       isAboutHomeUrl = internalURL.isAboutHomeURL
     }
 
     guard let selectedTab = tabManager.selectedTab,
-      presentedViewController == nil,
-      !benchmarkNotificationPresented,
-      !isOnboardingOrFullScreenCalloutPresented,
-      !Preferences.AppState.backgroundedCleanly.value,
-      !topToolbar.inOverlayMode,
-      !isTabTrayActive,
-      selectedTab.webView?.scrollView.isDragging == false,
-      isAboutHomeUrl == false
+          presentedViewController == nil,
+          !benchmarkNotificationPresented,
+          !isOnboardingOrFullScreenCalloutPresented,
+          !Preferences.AppState.backgroundedCleanly.value,
+          !topToolbar.inOverlayMode,
+          !isTabTrayActive,
+          selectedTab.webView?.scrollView.isDragging == false,
+          isAboutHomeUrl == false
     else {
       return
     }
 
     // Step 1: Load a video on a streaming site
     if !Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value,
-      selectedTab.url?.isVideoSteamingSiteURL == true {
+       selectedTab.url?.isVideoSteamingSiteURL == true {
 
       notifyVideoAdsBlocked()
       Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value = true
@@ -165,10 +153,10 @@ extension BrowserViewController {
     // Data Saved Pop-Over only exist in JP locale
     if Locale.current.regionCode == "JP" {
       if !benchmarkNotificationPresented,
-        !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value {
+         !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value {
         guard let currentURL = selectedTab.url,
-          DataSaved.get(with: currentURL.absoluteString) == nil,
-          let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(currentURL)
+              DataSaved.get(with: currentURL.absoluteString) == nil,
+              let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(currentURL)
         else {
           return
         }
@@ -240,7 +228,7 @@ extension BrowserViewController {
   func showShareScreen() {
     dismiss(animated: true) {
       let globalShieldsActivityController =
-        ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController()
+      ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController()
       globalShieldsActivityController.popoverPresentationController?.sourceView = self.view
 
       globalShieldsActivityController.popoverPresentationController?.sourceRect = self.view.convert(

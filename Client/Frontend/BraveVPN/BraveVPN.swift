@@ -7,6 +7,7 @@ import UIKit
 import Shared
 import BraveShared
 import NetworkExtension
+import Data
 
 private let log = Logger.browserLogger
 
@@ -32,6 +33,8 @@ class BraveVPN {
       if let error = error {
         logAndStoreError("Failed to load vpn conection: \(error)")
       }
+
+      GRDGatewayAPI.shared()._loadCredentialsFromKeychain()
 
       if case .notPurchased = vpnState {
         // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
@@ -642,6 +645,52 @@ class BraveVPN {
       } catch {
         logAndStoreError("Failed to decode VPNRegion JSON: \(error.localizedDescription)")
         completion(nil)
+      }
+    }
+  }
+  
+  private static func shouldProcessVPNAlerts(considerDummyData: Bool) -> Bool {
+    if !Preferences.PrivacyReports.captureVPNAlerts.value {
+      return false
+    }
+    
+    if considerDummyData { return true }
+    
+    switch vpnState {
+    case .installed(let enabled):
+      return enabled
+    default:
+      return false
+    }
+  }
+
+  static func processVPNAlerts() {
+    if !shouldProcessVPNAlerts(considerDummyData: !AppConstants.buildChannel.isPublic) { return }
+
+    Task {
+      let (data, success, error) = await GRDGatewayAPI.shared().events(withDummyData: !AppConstants.buildChannel.isPublic)
+      if !success {
+        log.error("VPN getEvents call failed")
+        if let error = error {
+          log.warning(error)
+        }
+
+        return
+      }
+
+      guard let alertsData = data["alerts"] else {
+        log.error("Failed to unwrap json for vpn alerts")
+        return
+      }
+
+      do {
+        let dataAsJSON =
+          try JSONSerialization.data(withJSONObject: alertsData, options: [.fragmentsAllowed])
+        let decoded = try JSONDecoder().decode([BraveVPNAlertJSONModel].self, from: dataAsJSON)
+
+        BraveVPNAlert.batchInsertIfNotExists(alerts: decoded)
+      } catch {
+        log.error("Failed parsing vpn alerts data")
       }
     }
   }

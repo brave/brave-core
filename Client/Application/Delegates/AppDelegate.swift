@@ -281,6 +281,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     if Preferences.DAU.appRetentionLaunchDate.value == nil {
       Preferences.DAU.appRetentionLaunchDate.value = Date()
     }
+    
+    if isFirstLaunch {
+      Preferences.PrivacyReports.ntpOnboardingCompleted.value = false
+    }
 
     Preferences.General.isFirstLaunch.value = false
 

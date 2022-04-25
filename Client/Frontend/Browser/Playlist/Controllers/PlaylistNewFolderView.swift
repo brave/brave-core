@@ -14,6 +14,7 @@ class PlaylistFolderImageLoader: ObservableObject {
   @Published var image: UIImage?
 
   private let renderer = PlaylistThumbnailRenderer()
+  private let fetcher = FavIconImageRenderer()
 
   func load(thumbnail: PlaylistItem) {
     guard let mediaSrc = thumbnail.mediaSrc,
@@ -35,6 +36,12 @@ class PlaylistFolderImageLoader: ObservableObject {
     }
 
     loadImage(url: favIconUrl, isFavIcon: true)
+  }
+
+  func load(domainUrl: URL) {
+    fetcher.loadIcon(siteURL: domainUrl) { [weak self] image in
+      self?.image = image
+    }
   }
 
   private func loadImage(url: URL, isFavIcon: Bool) {

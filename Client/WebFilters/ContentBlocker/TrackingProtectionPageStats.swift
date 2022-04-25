@@ -6,6 +6,7 @@
 // The preload and postload js files are unmodified from Focus.
 
 import Shared
+import BraveShared
 import Data
 
 struct TPPageStats {
@@ -56,7 +57,7 @@ class TPStatsBlocklistChecker {
 
   func isBlocked(request: URLRequest, domain: Domain, resourceType: TPStatsResourceType? = nil, _ completion: @escaping (BlocklistName?) -> Void) {
 
-    guard let url = request.url, let host = url.host, !host.isEmpty else {
+    guard let url = request.url, let host = url.host, !host.isEmpty, let domainUrl = domain.url else {
       // TP Stats init isn't complete yet
       completion(nil)
       return
@@ -89,6 +90,14 @@ class TPStatsBlocklistChecker {
         && AdBlockStats.shared.shouldBlock(
           request,
           currentTabUrl: currentTabUrl) {
+
+        if Preferences.PrivacyReports.captureShieldsData.value,
+          let domainUrl = URL(string: domainUrl),
+          let blockedResourceHost = url.baseDomain,
+           !PrivateBrowsingManager.shared.isPrivateBrowsing {
+          PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainUrl, Date()))
+        }
+
         completion(BlocklistName.ad)
         return
       }

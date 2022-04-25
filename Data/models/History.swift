@@ -4,7 +4,7 @@ import CoreData
 import Shared
 import BraveShared
 
-private func getDate(_ dayOffset: Int) -> Date {
+func getDate(_ dayOffset: Int) -> Date {
   let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
   let nowComponents = calendar.dateComponents([Calendar.Component.year, Calendar.Component.month, Calendar.Component.day], from: Date())
   let today = calendar.date(from: nowComponents)!

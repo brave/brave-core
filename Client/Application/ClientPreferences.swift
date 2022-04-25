@@ -311,4 +311,20 @@ extension Preferences {
     static let enableCarPlayRestartPlayback =
       Option<Bool>(key: "playlist.enableCarPlayRestartPlayback", default: false)
   }
+    
+  final class PrivacyReports {
+    /// Used to track whether to prompt user to enable app notifications.
+    static let shouldShowNotificationPermissionCallout =
+    Option<Bool>(key: "privacy-hub.show-notification-permission-callout", default: true)
+    /// When disabled, no tracker data will be recorded for the Privacy Reports.
+    static let captureShieldsData = Option<Bool>(key: "privacy-hub.capture-shields-data", default: true)
+    /// When disabled, no Brave VPN alerts will be recorded for the Privacy Reports.
+    static let captureVPNAlerts = Option<Bool>(key: "privacy-hub.capture-vpn-alerts", default: true)
+    /// Tracker when to consolidate tracker and vpn data. By default the first consolidation happens 7 days after Privacy Reports build is installed.
+    static let nextConsolidationDate =
+    Option<Date>(key: "privacy-hub.next-consolidation-date", default: Date().advanced(by: 7.days))
+    /// Determines whether to show a Privacy Reports onboarding popup on the NTP.
+    static let ntpOnboardingCompleted =
+    Option<Bool>(key: "privacy-hub.onboarding-completed", default: true)
+  }
 }

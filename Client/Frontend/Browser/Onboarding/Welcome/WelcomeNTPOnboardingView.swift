@@ -9,9 +9,15 @@ import SnapKit
 import BraveUI
 
 class WelcomeNTPOnboardingController: UIViewController & PopoverContentComponent {
-  private let stackView = UIStackView().then {
+  private let textStackView = UIStackView().then {
     $0.spacing = 8.0
     $0.alignment = .top
+  }
+  
+  private let contentStackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.spacing = 16.0
+    $0.alignment = .fill
     $0.layoutMargins = UIEdgeInsets(equalInset: 20.0)
     $0.isLayoutMarginsRelativeArrangement = true
   }
@@ -33,16 +39,45 @@ class WelcomeNTPOnboardingController: UIViewController & PopoverContentComponent
     $0.setContentHuggingPriority(.defaultLow, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
+  
+  private let button = RoundInterfaceButton(type: .custom).then {
+    $0.setTitleColor(.white, for: .normal)
+    $0.backgroundColor = .braveBlurple
+    $0.titleLabel?.numberOfLines = 0
+    $0.titleLabel?.minimumScaleFactor = 0.7
+    $0.titleLabel?.adjustsFontSizeToFitWidth = true
+    $0.contentEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 16)
+  }
+  
+  var buttonText: String?
+  
+  var buttonTapped: (() -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.addSubview(stackView)
-    stackView.addArrangedSubview(iconView)
-    stackView.addArrangedSubview(textLabel)
-    stackView.snp.makeConstraints {
+    view.addSubview(contentStackView)
+    textStackView.addArrangedSubview(iconView)
+    textStackView.addArrangedSubview(textLabel)
+    
+    contentStackView.addArrangedSubview(textStackView)
+    if let buttonText = buttonText {
+      button.setTitle(buttonText, for: .normal)
+      button.snp.makeConstraints {
+        $0.height.equalTo(44.0)
+      }
+      button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+      contentStackView.addArrangedSubview(button)
+    }
+    
+    contentStackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+  }
+  
+  @objc func buttonAction() {
+    buttonTapped?()
+    dismiss(animated: true)
   }
 
   func setText(title: String? = nil, details: String) {

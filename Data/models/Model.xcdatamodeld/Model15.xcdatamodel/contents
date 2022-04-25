@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BlockedResource" representedClassName=".BlockedResource" syncable="YES">
+        <attribute name="domain" optional="YES" attributeType="String"/>
+        <attribute name="faviconUrl" optional="YES" attributeType="String"/>
+        <attribute name="host" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <fetchIndex name="byHost">
+            <fetchIndexElement property="host" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byDomain">
+            <fetchIndexElement property="domain" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
     <entity name="Bookmark" representedClassName=".Favorite" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="customTitle" optional="YES" attributeType="String"/>
@@ -26,6 +38,27 @@
         <fetchIndex name="byVisitsIndex">
             <fetchIndexElement property="visits" type="Binary" order="ascending"/>
         </fetchIndex>
+    </entity>
+    <entity name="BraveVPNAlert" representedClassName=".BraveVPNAlert" syncable="YES">
+        <attribute name="action" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="category" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="host" optional="YES" attributeType="String"/>
+        <attribute name="message" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <fetchIndex name="byUUID">
+            <fetchIndexElement property="uuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uuid"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
+                <constraint value="timestamp"/>
+                <constraint value="host"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="DataSaved" representedClassName=".DataSaved" syncable="YES">
         <attribute name="amount" optional="YES" attributeType="String"/>
@@ -147,7 +180,9 @@
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="tabs" inverseEntity="Device"/>
     </entity>
     <elements>
+        <element name="BlockedResource" positionX="-360" positionY="-279" width="128" height="89"/>
         <element name="Bookmark" positionX="0" positionY="-450" width="155" height="285"/>
+        <element name="BraveVPNAlert" positionX="-351" positionY="-270" width="128" height="134"/>
         <element name="DataSaved" positionX="-378.8814697265625" positionY="-320.8398132324219" width="128" height="59"/>
         <element name="Device" positionX="-314.8486938476562" positionY="-207" width="128" height="150"/>
         <element name="Domain" positionX="225" positionY="-321" width="128" height="239"/>

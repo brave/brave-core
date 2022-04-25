@@ -262,7 +262,7 @@ private class HLSThumbnailGenerator {
 // MARK: - FavIconImageRenderer
 
 /// A class for rendering a FavIcon onto a `UIImage`
-private class FavIconImageRenderer {
+class FavIconImageRenderer {
   private var task: DispatchWorkItem?
 
   deinit {
