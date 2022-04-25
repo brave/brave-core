@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/rand_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
@@ -53,8 +54,27 @@ void OpenJapanWelcomePage(Profile* profile) {
 
 // Returns whether the P3A opt-in prompt should be shown.
 bool IsP3AOptInEnabled() {
-  bool enabled =
-      base::FeatureList::IsEnabled(brave_welcome::features::kP3AOptIn);
+  bool enabled = false;
+  // Check the local_state pref for study status.
+  PrefService* local_state = g_browser_process->local_state();
+  if (local_state->FindPreference(brave::kP3AOptInEnabled)->IsDefaultValue()) {
+    // Decide on first run if an install should participate in opt_in.
+    if (base::RandDouble() < 0.05) {
+      local_state->SetString(brave::kP3AOptInEnabled, "true");
+    }
+  }
+  std::string pref = local_state->GetString(brave::kP3AEnabled);
+  if (pref.compare("true") == 0) {
+    enabled = true;
+  }
+  // Allow --enabled-features to override for testing.
+  // We can't support disable because there's no way to distinguish
+  // that from the first-run default.
+  if (!enabled &&
+      base::FeatureList::IsEnabled(brave_welcome::features::kP3AOptIn)) {
+    enabled = true;
+  }
+  // Allow
   VLOG(1) << "IsP3AOptInEnabled: " << enabled;
   return enabled;
 }

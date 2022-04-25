@@ -9,6 +9,7 @@
 namespace brave {
 
 extern const char kP3AEnabled[];
+extern const char kP3AOptInEnabled[];
 extern const char kP3ANoticeAcknowledged[];
 
 }  // namespace brave

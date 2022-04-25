@@ -109,6 +109,9 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
+  // Declare a placeholder for opt-in study participation.
+  registry->RegisterStringPref(kP3AOptInEnabled, "default");
+
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
 }
