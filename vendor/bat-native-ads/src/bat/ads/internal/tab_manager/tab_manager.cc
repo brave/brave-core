@@ -12,28 +12,28 @@
 namespace ads {
 
 namespace {
-TabManager* g_tab_manager = nullptr;
+TabManager* g_tab_manager_instance = nullptr;
 }  // namespace
 
 TabManager::TabManager() {
-  DCHECK_EQ(g_tab_manager, nullptr);
-  g_tab_manager = this;
+  DCHECK(!g_tab_manager_instance);
+  g_tab_manager_instance = this;
 }
 
 TabManager::~TabManager() {
-  DCHECK(g_tab_manager);
-  g_tab_manager = nullptr;
+  DCHECK_EQ(this, g_tab_manager_instance);
+  g_tab_manager_instance = nullptr;
 }
 
 // static
 TabManager* TabManager::Get() {
-  DCHECK(g_tab_manager);
-  return g_tab_manager;
+  DCHECK(g_tab_manager_instance);
+  return g_tab_manager_instance;
 }
 
 // static
 bool TabManager::HasInstance() {
-  return g_tab_manager;
+  return !!g_tab_manager_instance;
 }
 
 void TabManager::AddObserver(TabManagerObserver* observer) {

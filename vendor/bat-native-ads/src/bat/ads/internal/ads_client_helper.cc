@@ -5,34 +5,34 @@
 
 #include "bat/ads/internal/ads_client_helper.h"
 
-#include "base/check_op.h"
+#include "base/check.h"
 
 namespace ads {
 
 namespace {
-AdsClient* g_ads_client = nullptr;
+AdsClient* g_ads_client_instance = nullptr;
 }  // namespace
 
 AdsClientHelper::AdsClientHelper(AdsClient* ads_client) {
   DCHECK(ads_client);
-  DCHECK_EQ(g_ads_client, nullptr);
-  g_ads_client = ads_client;
+  DCHECK(!g_ads_client_instance);
+  g_ads_client_instance = ads_client;
 }
 
 AdsClientHelper::~AdsClientHelper() {
-  DCHECK(g_ads_client);
-  g_ads_client = nullptr;
+  DCHECK(g_ads_client_instance);
+  g_ads_client_instance = nullptr;
 }
 
 // static
 AdsClient* AdsClientHelper::Get() {
-  DCHECK(g_ads_client);
-  return g_ads_client;
+  DCHECK(g_ads_client_instance);
+  return g_ads_client_instance;
 }
 
 // static
 bool AdsClientHelper::HasInstance() {
-  return g_ads_client;
+  return !!g_ads_client_instance;
 }
 
 }  // namespace ads

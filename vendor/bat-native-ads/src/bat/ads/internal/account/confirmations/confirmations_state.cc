@@ -31,7 +31,7 @@ using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
 
-ConfirmationsState* g_confirmations_state = nullptr;
+ConfirmationsState* g_confirmations_state_instance = nullptr;
 
 constexpr char kConfirmationsFilename[] = "confirmations.json";
 
@@ -41,25 +41,24 @@ ConfirmationsState::ConfirmationsState()
     : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
       unblinded_payment_tokens_(
           std::make_unique<privacy::UnblindedPaymentTokens>()) {
-  DCHECK_EQ(g_confirmations_state, nullptr);
-
-  g_confirmations_state = this;
+  DCHECK(!g_confirmations_state_instance);
+  g_confirmations_state_instance = this;
 }
 
 ConfirmationsState::~ConfirmationsState() {
-  DCHECK(g_confirmations_state);
-  g_confirmations_state = nullptr;
+  DCHECK_EQ(this, g_confirmations_state_instance);
+  g_confirmations_state_instance = nullptr;
 }
 
 // static
 ConfirmationsState* ConfirmationsState::Get() {
-  DCHECK(g_confirmations_state);
-  return g_confirmations_state;
+  DCHECK(g_confirmations_state_instance);
+  return g_confirmations_state_instance;
 }
 
 // static
 bool ConfirmationsState::HasInstance() {
-  return g_confirmations_state;
+  return !!g_confirmations_state_instance;
 }
 
 void ConfirmationsState::Initialize(InitializeCallback callback) {
