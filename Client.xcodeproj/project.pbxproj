@@ -952,6 +952,8 @@
 		7DF9113D275AC86100EF0D8B /* WalletLoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */; };
 		7DF911C0276A8D1600EF0D8B /* SwapTokenStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF911BF276A8D1600EF0D8B /* SwapTokenStoreTests.swift */; };
 		7DF911DF27726E5E00EF0D8B /* BuyTokenStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */; };
+		8C99379028031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C99378F28031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift */; };
+		8C99379328031BF7001CD6E9 /* debouncing.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C99379228031BF7001CD6E9 /* debouncing.json */; };
 		8CB0FD9A27DAB06E00707490 /* FarblingProtection.js in Resources */ = {isa = PBXBuildFile; fileRef = 8CB0FD9927DAB06E00707490 /* FarblingProtection.js */; };
 		8CB0FDA827DB9D5400707490 /* ScriptFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FDA727DB9D5300707490 /* ScriptFactory.swift */; };
 		8CB0FDBA27E0EC1C00707490 /* UserScriptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FDB927E0EC1B00707490 /* UserScriptHelper.swift */; };
@@ -962,6 +964,7 @@
 		8CB0FE5027EB528200707490 /* RandomConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FE4F27EB528200707490 /* RandomConfiguration.swift */; };
 		8CB0FE5627EB596B00707490 /* RandomConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FE5527EB596B00707490 /* RandomConfigurationTests.swift */; };
 		8CB0FE5827EB5F5100707490 /* FarblingProtectionHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FE5727EB5F5000707490 /* FarblingProtectionHelperTests.swift */; };
+		8CB20EF427F5FF2100FFD689 /* DebouncingResourceDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB20EF327F5FF2100FFD689 /* DebouncingResourceDownloader.swift */; };
 		8CFEF62427F220E700CF3235 /* ScriptSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFEF62327F220E700CF3235 /* ScriptSourceType.swift */; };
 		8CFEF62627F2213A00CF3235 /* UserScriptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFEF62527F2213900CF3235 /* UserScriptType.swift */; };
 		A104E199210A384400D2323E /* ShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A104E198210A384400D2323E /* ShieldsViewController.swift */; };
@@ -2943,6 +2946,8 @@
 		7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletLoadingButton.swift; sourceTree = "<group>"; };
 		7DF911BF276A8D1600EF0D8B /* SwapTokenStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenStoreTests.swift; sourceTree = "<group>"; };
 		7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenStoreTest.swift; sourceTree = "<group>"; };
+		8C99378F28031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncingResourceDownloaderTests.swift; sourceTree = "<group>"; };
+		8C99379228031BF7001CD6E9 /* debouncing.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = debouncing.json; sourceTree = "<group>"; };
 		8CB0FD9927DAB06E00707490 /* FarblingProtection.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FarblingProtection.js; sourceTree = "<group>"; tabWidth = 2; };
 		8CB0FDA727DB9D5300707490 /* ScriptFactory.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ScriptFactory.swift; sourceTree = "<group>"; tabWidth = 2; };
 		8CB0FDB927E0EC1B00707490 /* UserScriptHelper.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = UserScriptHelper.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -2953,6 +2958,7 @@
 		8CB0FE4F27EB528200707490 /* RandomConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomConfiguration.swift; sourceTree = "<group>"; };
 		8CB0FE5527EB596B00707490 /* RandomConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomConfigurationTests.swift; sourceTree = "<group>"; };
 		8CB0FE5727EB5F5000707490 /* FarblingProtectionHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarblingProtectionHelperTests.swift; sourceTree = "<group>"; };
+		8CB20EF327F5FF2100FFD689 /* DebouncingResourceDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncingResourceDownloader.swift; sourceTree = "<group>"; };
 		8CFEF62327F220E700CF3235 /* ScriptSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptSourceType.swift; sourceTree = "<group>"; };
 		8CFEF62527F2213900CF3235 /* UserScriptType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScriptType.swift; sourceTree = "<group>"; };
 		A104E198210A384400D2323E /* ShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsViewController.swift; sourceTree = "<group>"; };
@@ -3508,6 +3514,7 @@
 				0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */,
 				0AEFB88622299E6A007AF600 /* AdblockerType.swift */,
 				CAFC6C9827D011C200F9CACC /* CosmeticFiltersResourceDownloader.swift */,
+				8CB20EF327F5FF2100FFD689 /* DebouncingResourceDownloader.swift */,
 			);
 			path = WebFilters;
 			sourceTree = "<group>";
@@ -5825,6 +5832,22 @@
 			path = "Brave Rewards";
 			sourceTree = "<group>";
 		};
+		8C99378C28031B17001CD6E9 /* Web Filters */ = {
+			isa = PBXGroup;
+			children = (
+				8C99378F28031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift */,
+			);
+			path = "Web Filters";
+			sourceTree = "<group>";
+		};
+		8C99379128031BDD001CD6E9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8C99379228031BF7001CD6E9 /* debouncing.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		8CB0FD8C27DAAE9400707490 /* User Scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -6605,7 +6628,9 @@
 		F84B21D61A090F8100AAB793 /* ClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				8C99379128031BDD001CD6E9 /* Resources */,
 				8CB0FDD227E12D4600707490 /* User Scripts */,
+				8C99378C28031B17001CD6E9 /* Web Filters */,
 				0AD9F88D22F05376008B4D95 /* AdblockRustTests.swift */,
 				0A4BEFD5221E13830005551A /* ContentBlockerTests.swift */,
 				E696FE501C47F86E00EC007C /* AuthenticatorTests.swift */,
@@ -7907,6 +7932,7 @@
 				A83E5B1A1C1DA8BF0026D912 /* image.gif in Resources */,
 				CA10BE772704BA7900A265A6 /* GlobalSignRootCA_R46.cer in Resources */,
 				27C5AE4B25D72B9700B8F50E /* states.opml in Resources */,
+				8C99379328031BF7001CD6E9 /* debouncing.json in Resources */,
 				CA10BE732704BA7900A265A6 /* AmazonRootCA1.cer in Resources */,
 				CA10BE762704BA7900A265A6 /* ISRGRootCA_X2.cer in Resources */,
 				CA10BE712704BA7900A265A6 /* GlobalSignRootCA_R1.cer in Resources */,
@@ -8504,6 +8530,7 @@
 				4422D57421BFFB7F00BF1855 /* prog.cc in Sources */,
 				CA939F5A27BADC7E006A9BB2 /* PlaylistMoveFolderView.swift in Sources */,
 				4422D42F21BFCF8900BF1855 /* HttpsEverywhereObjC.mm in Sources */,
+				8CB20EF427F5FF2100FFD689 /* DebouncingResourceDownloader.swift in Sources */,
 				4422D56B21BFFB7F00BF1855 /* prefilter_tree.cc in Sources */,
 				2F13B801273311CB00253A4D /* BrowserViewController+Callout.swift in Sources */,
 				4422D4FC21BFFB7600BF1855 /* version_set.cc in Sources */,
@@ -9010,6 +9037,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C99379028031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift in Sources */,
 				D3D488591ABB54CD00A93597 /* FileAccessorTests.swift in Sources */,
 				0AD9F88E22F05376008B4D95 /* AdblockRustTests.swift in Sources */,
 				CA84F896274F428B00B1388E /* SyncTests.swift in Sources */,
