@@ -399,6 +399,16 @@ extension TabLocationView: TabEventHandler {
   }
 }
 
+// MARK: - Hit Test
+extension TabLocationView {
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    if lockImageView.frame.insetBy(dx: -10, dy: -30).contains(point) {
+      return lockImageView
+    }
+    return super.hitTest(point, with: event)
+  }
+}
+
 class DisplayTextField: UITextField {
   weak var accessibilityActionsSource: AccessibilityActionsSource?
   var hostString: String = ""
