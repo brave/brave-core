@@ -876,12 +876,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 if (mActivity == null) {
                     mActivity = BraveActivity.getBraveActivity();
                 }
-                /*if (!ConfigurationUtils.isLandscape(mActivity) && prevScrollPosition > 1) {
-                    keepPosition(prevScrollPosition - 1);
-                } else {*/
+
                 keepPosition(
                         prevScrollPosition, prevRecyclerViewPosition, prevRecyclerViewItemPosition);
-                //}
             }
         } else {
             if (mOptinLayout != null) {
