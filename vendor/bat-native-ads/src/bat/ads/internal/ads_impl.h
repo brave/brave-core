@@ -160,7 +160,6 @@ class AdsImpl final : public Ads,
                     const bool is_active,
                     const bool is_browser_active,
                     const bool is_incognito) override;
-
   void OnTabClosed(const int32_t tab_id) override;
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
@@ -323,6 +322,8 @@ class AdsImpl final : public Ads,
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<AdDiagnostics> ad_diagnostics_;
+  std::unique_ptr<BrowserManager> browser_manager_;
+  std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
@@ -354,8 +355,6 @@ class AdsImpl final : public Ads,
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<SearchResultAd> search_result_ad_;
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
   std::unique_ptr<CovariateLogs> covariate_logs_;
 

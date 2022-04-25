@@ -222,7 +222,7 @@ TEST_F(BatAdsUserActivityTest, RecordClosedTabEvent) {
 TEST_F(BatAdsUserActivityTest, RecordFocusedOnExistingTabEvent) {
   // Arrange
   const UserActivityEventType event_type =
-      UserActivityEventType::kFocusedOnExistingTab;
+      UserActivityEventType::kTabChangedFocus;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -325,7 +325,8 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedNewTabEvent) {
 
 TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
   // Arrange
-  const UserActivityEventType event_type = UserActivityEventType::kPlayedMedia;
+  const UserActivityEventType event_type =
+      UserActivityEventType::kTabStartedPlayingMedia;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -346,7 +347,7 @@ TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
 TEST_F(BatAdsUserActivityTest, RecordStoppedPlayingMediaEvent) {
   // Arrange
   const UserActivityEventType event_type =
-      UserActivityEventType::kStoppedPlayingMedia;
+      UserActivityEventType::kTabStoppedPlayingMedia;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -546,15 +547,16 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kFocusedOnExistingTab);
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kTabChangedFocus);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kGeneratedKeyword);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kNewNavigation);
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedLinkFromExternalApplication);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kStoppedPlayingMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStoppedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kSubmittedForm);
 
   AdvanceClock(base::Hours(1));

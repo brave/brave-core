@@ -30,7 +30,8 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScore) {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
@@ -55,7 +56,8 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
@@ -79,7 +81,8 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
@@ -104,7 +107,8 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
@@ -129,7 +133,8 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
@@ -153,7 +158,8 @@ TEST_F(BatAdsUserActivityScoringTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);

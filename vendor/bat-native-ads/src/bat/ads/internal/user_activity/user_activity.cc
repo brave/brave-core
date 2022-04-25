@@ -12,6 +12,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 #include "bat/ads/internal/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
@@ -52,10 +53,12 @@ UserActivity::UserActivity() {
   g_user_activity = this;
 
   BrowserManager::Get()->AddObserver(this);
+  TabManager::Get()->AddObserver(this);
 }
 
 UserActivity::~UserActivity() {
   BrowserManager::Get()->RemoveObserver(this);
+  TabManager::Get()->RemoveObserver(this);
 
   DCHECK(g_user_activity);
   g_user_activity = nullptr;
@@ -85,6 +88,32 @@ void UserActivity::RecordEvent(const UserActivityEventType event_type) {
 
   LogEvent(event_type);
 }
+
+void UserActivity::RecordEventForPageTransition(const int32_t type) {
+  const PageTransitionType page_transition_type =
+      static_cast<PageTransitionType>(type);
+
+  RecordEventForPageTransition(page_transition_type);
+}
+
+UserActivityEventList UserActivity::GetHistoryForTimeWindow(
+    const base::TimeDelta time_window) const {
+  UserActivityEventList filtered_history = history_;
+
+  const base::Time time = base::Time::Now() - time_window;
+
+  const auto iter =
+      std::remove_if(filtered_history.begin(), filtered_history.end(),
+                     [&time](const UserActivityEventInfo& event) {
+                       return event.created_at < time;
+                     });
+
+  filtered_history.erase(iter, filtered_history.end());
+
+  return filtered_history;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 void UserActivity::RecordEventForPageTransition(const PageTransitionType type) {
   if (IsNewNavigation(type)) {
@@ -116,30 +145,6 @@ void UserActivity::RecordEventForPageTransition(const PageTransitionType type) {
   RecordEvent(event_type.value());
 }
 
-void UserActivity::RecordEventForPageTransitionFromInt(const int32_t type) {
-  const PageTransitionType page_transition_type =
-      static_cast<PageTransitionType>(type);
-
-  RecordEventForPageTransition(page_transition_type);
-}
-
-UserActivityEventList UserActivity::GetHistoryForTimeWindow(
-    const base::TimeDelta time_window) const {
-  UserActivityEventList filtered_history = history_;
-
-  const base::Time time = base::Time::Now() - time_window;
-
-  const auto iter =
-      std::remove_if(filtered_history.begin(), filtered_history.end(),
-                     [&time](const UserActivityEventInfo& event) {
-                       return event.created_at < time;
-                     });
-
-  filtered_history.erase(iter, filtered_history.end());
-
-  return filtered_history;
-}
-
 void UserActivity::OnBrowserDidBecomeActive() {
   RecordEvent(UserActivityEventType::kBrowserDidBecomeActive);
 }
@@ -154,6 +159,30 @@ void UserActivity::OnBrowserDidEnterForeground() {
 
 void UserActivity::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
+}
+
+void UserActivity::OnTabDidChangeFocus(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabChangedFocus);
+}
+
+void UserActivity::OnTabDidChange(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabUpdated);
+}
+
+void UserActivity::OnDidOpenNewTab(const int32_t id) {
+  RecordEvent(UserActivityEventType::kOpenedNewTab);
+}
+
+void UserActivity::OnDidCloseTab(const int32_t id) {
+  RecordEvent(UserActivityEventType::kClosedTab);
+}
+
+void UserActivity::OnTabDidStartPlayingMedia(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabStartedPlayingMedia);
+}
+
+void UserActivity::OnTabDidStopPlayingMedia(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
 }
 
 }  // namespace ads

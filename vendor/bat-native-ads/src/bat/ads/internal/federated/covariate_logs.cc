@@ -68,7 +68,7 @@ GetUserActivityEventToCovariateTypesMapping() {
        {UserActivityEventType::kClosedTab,
         {brave_federated::mojom::CovariateType::kNumberOfClosedTabEvents,
          brave_federated::mojom::CovariateType::kTimeSinceLastClosedTabEvent}},
-       {UserActivityEventType::kFocusedOnExistingTab,
+       {UserActivityEventType::kTabChangedFocus,
         {brave_federated::mojom::CovariateType::
              kNumberOfFocusedOnExistingTabEvents,
          brave_federated::mojom::CovariateType::
@@ -81,7 +81,7 @@ GetUserActivityEventToCovariateTypesMapping() {
         {brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents,
          brave_federated::mojom::CovariateType::
              kTimeSinceLastOpenedNewTabEvent}},
-       {UserActivityEventType::kPlayedMedia,
+       {UserActivityEventType::kTabStartedPlayingMedia,
         {brave_federated::mojom::CovariateType::kNumberOfPlayedMediaEvents,
          brave_federated::mojom::CovariateType::
              kTimeSinceLastPlayedMediaEvent}},

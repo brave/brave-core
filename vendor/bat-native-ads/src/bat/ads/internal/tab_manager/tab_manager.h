@@ -10,7 +10,9 @@
 #include <map>
 #include <string>
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
+#include "bat/ads/internal/tab_manager/tab_manager_observer.h"
 
 namespace absl {
 template <typename T>
@@ -30,6 +32,9 @@ class TabManager final {
   static TabManager* Get();
 
   static bool HasInstance();
+
+  void AddObserver(TabManagerObserver* observer);
+  void RemoveObserver(TabManagerObserver* observer);
 
   bool IsVisible(const int32_t id) const;
 
@@ -55,6 +60,15 @@ class TabManager final {
   void AddTab(const int32_t id, const TabInfo& tab);
   void UpdateTab(const int32_t id, const TabInfo& tab);
   void RemoveTab(const int32_t id);
+
+  void NotifyTabDidChangeFocus(const int32_t id) const;
+  void NotifyTabDidChange(const int32_t id) const;
+  void NotifyDidOpenNewTab(const int32_t id) const;
+  void NotifyDidCloseTab(const int32_t id) const;
+  void NotifyTabDidStartPlayingMedia(const int32_t id) const;
+  void NotifyTabDidStopPlayingMedia(const int32_t id) const;
+
+  base::ObserverList<TabManagerObserver> observers_;
 
   int32_t visible_tab_id_ = 0;
   int32_t last_visible_tab_id_ = 0;

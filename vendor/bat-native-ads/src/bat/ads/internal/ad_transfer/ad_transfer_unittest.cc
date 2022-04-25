@@ -16,11 +16,22 @@ namespace ads {
 
 class BatAdsAdTransferTest : public AdTransferObserver, public UnitTestBase {
  protected:
-  BatAdsAdTransferTest() : ad_transfer_(std::make_unique<AdTransfer>()) {
+  BatAdsAdTransferTest() = default;
+
+  ~BatAdsAdTransferTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    ad_transfer_ = std::make_unique<AdTransfer>();
     ad_transfer_->AddObserver(this);
   }
 
-  ~BatAdsAdTransferTest() override { ad_transfer_->RemoveObserver(this); }
+  void TearDown() override {
+    ad_transfer_->RemoveObserver(this);
+
+    UnitTestBase::TearDown();
+  }
 
   void OnDidTransferAd(const AdInfo& ad) override { ad_transfer_count_++; }
 
