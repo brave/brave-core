@@ -4330,3 +4330,323 @@ extension Strings {
     comment: "Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device."
   )
 }
+
+// MARK: - Privacy hub
+extension Strings {
+  public struct PrivacyHub {
+    public static let privacyReportsTitle = NSLocalizedString(
+      "privacyHub.privacyReportsTitle",
+      bundle: .braveShared,
+      value: "Privacy Hub",
+      comment: "Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers."
+    )
+    
+    public static let notificationCalloutBody = NSLocalizedString(
+      "privacyHub.notificationCalloutBody",
+      bundle: .braveShared,
+      value: "Get weekly privacy updates on tracker & ad blocking.",
+      comment: "Text of a callout to encourage user to enable Apple notification system."
+    )
+    
+    public static let notificationCalloutButtonText = NSLocalizedString(
+      "privacyHub.notificationCalloutButtonText",
+      bundle: .braveShared,
+      value: "Turn on notifications",
+      comment: "Text of a button to encourage user to enable Apple notification system."
+    )
+    
+    public static let noDataCalloutBody = NSLocalizedString(
+      "privacyHub.noDataCalloutBody",
+      bundle: .braveShared,
+      value: "Visit some websites to see data here.",
+      comment: "Text of a callout that tell user they need to browser some websites first in order to see privacy stats data"
+    )
+    
+    public static let lastWeekHeader = NSLocalizedString(
+      "privacyHub.lastWeekHeader",
+      bundle: .braveShared,
+      value: "Last week",
+      comment: "Header text, under it we display blocked items from last week"
+    )
+    
+    public static let mostFrequentTrackerAndAdTitle = NSLocalizedString(
+      "privacyHub.mostFrequentTrackerAndAdTitle",
+      bundle: .braveShared,
+      value: "Most Frequent Tracker & Ad",
+      comment: "Title under which we display a tracker which was most frequently detected by our ad blocking mechanism."
+    )
+    
+    public static let mostFrequentTrackerAndAdBody = NSLocalizedString(
+      "privacyHub.mostFrequentTrackerAndAdBody",
+      bundle: .braveShared,
+      value: "**%@** was blocked by Brave Shields on **%lld** sites",
+      comment: "Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites'"
+    )
+    
+    public static let noDataToShow = NSLocalizedString(
+      "privacyHub.noDataToShow",
+      bundle: .braveShared,
+      value: "No data to show yet.",
+      comment: "This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them."
+    )
+    
+    public static let riskiestWebsiteTitle = NSLocalizedString(
+      "privacyHub.riskiestWebsiteTitle",
+      bundle: .braveShared,
+      value: "Riskiest website you visited",
+      comment: "Title of a website that contained the most trackers per visit."
+    )
+    
+    public static let riskiestWebsiteBody = NSLocalizedString(
+      "privacyHub.riskiestWebsiteBody",
+      bundle: .braveShared,
+      value: "**%@** had an average of **%lld** trackers & ads blocked per visit",
+      comment: "Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit '"
+    )
+    
+    public static let vpnAlertsHeader = NSLocalizedString(
+      "privacyHub.vpnAlertsHeader",
+      bundle: .braveShared,
+      value: "Brave Firewall + VPN Alerts",
+      comment: "Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf."
+    )
+    
+    public static let allVPNAlertsButtonText = NSLocalizedString(
+      "privacyHub.allVPNAlertsButtonText",
+      bundle: .braveShared,
+      value: "All alerts",
+      comment: "Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker"
+    )
+    
+    public static let allTimeListsHeader = NSLocalizedString(
+      "privacyHub.allTimeListsHeader",
+      bundle: .braveShared,
+      value: "All time",
+      comment: "Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker."
+    )
+    
+    public static let allTimeTrackerTitle = NSLocalizedString(
+      "privacyHub.allTimeTrackerTitle",
+      bundle: .braveShared,
+      value: "Tracker & Ad",
+      comment: "Title under which we display most name of the most blocked tracker or ad."
+    )
+    
+    public static let allTimeWebsiteTitle = NSLocalizedString(
+      "privacyHub.allTimeWebsiteTitle",
+      bundle: .braveShared,
+      value: "Website",
+      comment: "Title under which we display a website on which there's the highest number of trackers or ads."
+    )
+    
+    public static let allTimeSitesCount = NSLocalizedString(
+      "privacyHub.allTimeSitesCount",
+      bundle: .braveShared,
+      value: "%lld sites",
+      comment: "Displays a number of websites on which we blocked trackers, example usage: '23 sites'"
+    )
+    
+    public static let allTimeTrackersCount = NSLocalizedString(
+      "privacyHub.allTimeTrackersCount",
+      bundle: .braveShared,
+      value: "%lld trackers & ads",
+      comment: "Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads'"
+    )
+    
+    public static let allTimeListsButtonText = NSLocalizedString(
+      "privacyHub.allTimeListsButtonText",
+      bundle: .braveShared,
+      value: "All time lists",
+      comment: "Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers"
+    )
+    
+    public static let allTimeListsTrackersView = NSLocalizedString(
+      "privacyHub.allTimeListsTrackersView",
+      bundle: .braveShared,
+      value: "Trackers & ads",
+      comment: "Title of a section to show total count of trackers blocked by Brave"
+    )
+    
+    public static let allTimeListsWebsitesView = NSLocalizedString(
+      "privacyHub.allTimeListsWebsitesView",
+      bundle: .braveShared,
+      value: "Websites",
+      comment: "Title of a section to show websites containing highest amount of trackers"
+    )
+    
+    public static let blockedBy = NSLocalizedString(
+      "privacyHub.blockedBy",
+      bundle: .braveShared,
+      value: "Blocked by",
+      comment: "Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN"
+    )
+    
+    public static let allTimeListTrackersHeaderTitle = NSLocalizedString(
+      "privacyHub.allTimeListTrackersHeaderTitle",
+      bundle: .braveShared,
+      value: "Most frequent trackers & ads on sites you Visit",
+      comment: "Header title for a list of most frequent ads and trackers detected."
+    )
+    
+    public static let allTimeListWebsitesHeaderTitle = NSLocalizedString(
+      "privacyHub.allTimeListWebsitesHeaderTitle",
+      bundle: .braveShared,
+      value: "Websites with the most trackers & ads",
+      comment: "Header title for a list of websites with ads and trackers."
+    )
+    
+    public static let vpvnAlertsTotalCount = NSLocalizedString(
+      "privacyHub.vpvnAlertsTotalCount",
+      bundle: .braveShared,
+      value: "Total count",
+      comment: "It shows a total count of items blocked by our VPN shields"
+    )
+    
+    public static let shieldsLabel = NSLocalizedString(
+      "privacyHub.shieldsLabel",
+      bundle: .braveShared,
+      value: "Shields",
+      comment: "This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields'"
+    )
+    
+    public static let vpnLabel = NSLocalizedString(
+      "privacyHub.vpnLabel",
+      bundle: .braveShared,
+      value: "Firewall + VPN",
+      comment: "This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN'"
+    )
+    
+    public static let blockedLabel = NSLocalizedString(
+      "privacyHub.blockedLabel",
+      bundle: .braveShared,
+      value: "Blocked",
+      comment: "It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked'"
+    )
+    
+    public static let vpnAlertRegularTrackerTypeSingular = NSLocalizedString(
+      "privacyHub.vpnAlertRegularTrackerTypeSingular",
+      bundle: .braveShared,
+      value: "Tracker or Ad",
+      comment: "Type of tracker blocked by the VPN, it's a regular tracker or an ad."
+    )
+    
+    public static let vpnAlertLocationTrackerTypeSingular = NSLocalizedString(
+      "privacyHub.vpnAlertLocationTrackerTypeSingular",
+      bundle: .braveShared,
+      value: "Location Ping",
+      comment: "Type of tracker blocked by the VPN, it's a tracker that asks you for your location."
+    )
+    
+    public static let vpnAlertEmailTrackerTypeSingular = NSLocalizedString(
+      "privacyHub.vpnAlertEmailTrackerTypeSingular",
+      bundle: .braveShared,
+      value: "Email Tracker",
+      comment: "Type of tracker blocked by the VPN, it's a tracker contained in an email."
+    )
+    
+    public static let vpnAlertRegularTrackerTypePlural = NSLocalizedString(
+      "privacyHub.vpnAlertRegularTrackerTypePlural",
+      bundle: .braveShared,
+      value: "Trackers & Ads",
+      comment: "Type of tracker blocked by the VPN, it's a regular tracker or an ad."
+    )
+    
+    public static let vpnAlertLocationTrackerTypePlural = NSLocalizedString(
+      "privacyHub.vpnAlertLocationTrackerTypePlural",
+      bundle: .braveShared,
+      value: "Location Pings",
+      comment: "Type of tracker blocked by the VPN, it's a tracker that asks you for your location."
+    )
+    
+    public static let vpnAlertEmailTrackerTypePlural = NSLocalizedString(
+      "privacyHub.vpnAlertEmailTrackerTypePlural",
+      bundle: .braveShared,
+      value: "Email Trackers",
+      comment: "Type of tracker blocked by the VPN, it's a tracker contained in an email."
+    )
+    
+    public static let notificationTitle = NSLocalizedString(
+      "privacyHub.notificationTitle",
+      bundle: .braveShared,
+      value: "Weekly Privacy Report",
+      comment: "Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open."
+    )
+    
+    public static let notificationMessage = NSLocalizedString(
+      "privacyHub.notificationMessage",
+      bundle: .braveShared,
+      value: "A recap of how Brave protected you online this week.",
+      comment: "Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open."
+    )
+    
+    public static let settingsEnableShieldsTitle = NSLocalizedString(
+      "privacyHub.settingsEnableShieldsTitle",
+      bundle: .braveShared,
+      value: "Show Shields Data",
+      comment: "Title of a setting that lets Brave monitor blocked network requests"
+    )
+    
+    public static let settingsEnableShieldsFooter = NSLocalizedString(
+      "privacyHub.settingsEnableShieldsFooter",
+      bundle: .braveShared,
+      value: "Privacy Hub shows a count of what Shields blocked. Setting will not affect Shields counter on new tab page. Shields data is not counted in private windows.",
+      comment: "This text explains a setting that lets Brave monitor blocked network requests"
+    )
+    
+    public static let settingsEnableVPNAlertsTitle = NSLocalizedString(
+      "privacyHub.settingsEnableVPNAlertsTitle",
+      bundle: .braveShared,
+      value: "Show VPN Alerts",
+      comment: "Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN"
+    )
+    
+    public static let settingsEnableVPNAlertsFooter = NSLocalizedString(
+      "privacyHub.settingsEnableVPNAlertsFooter",
+      bundle: .braveShared,
+      value: "Setting only applies if you've purchased VPN subscription.",
+      comment: "This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN"
+    )
+    
+    public static let settingsSlearDataTitle = NSLocalizedString(
+      "privacyHub.settingsSlearDataTitle",
+      bundle: .braveShared,
+      value: "Clear Shields Data",
+      comment: "Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them."
+    )
+    
+    public static let settingsSlearDataFooter = NSLocalizedString(
+      "privacyHub.settingsSlearDataFooter",
+      bundle: .braveShared,
+      value: "Resets the count of everything Shields has blocked.",
+      comment: "This text explains what the button to clear datain the Privacy Hub is for."
+    )
+    
+    public static let clearAllDataPrompt = NSLocalizedString(
+      "privacyHub.clearAllDataPrompt",
+      bundle: .braveShared,
+      value: "Clear all Shields data?",
+      comment: "A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature"
+    )
+    
+    public static let clearAllDataAccessibility = NSLocalizedString(
+      "privacyHub.clearAllDataAccessibility",
+      bundle: .braveShared,
+      value: "Clear Privacy Hub data",
+      comment: "Accessibility label for the 'clear all data' button."
+    )
+    
+    public static let privacyReportsDisclaimer = NSLocalizedString(
+      "privacyHub.privacyReportsDisclaimer",
+      bundle: .braveShared,
+      value: "Privacy Hub data is stored locally and never sent anywhere.",
+      comment: "Text of a disclaimer that explains how the data for generating privacy reprots is stored."
+    )
+    
+    public static let onboardingButtonTitle = NSLocalizedString(
+      "privacyHub.onboardingButtonTitle",
+      bundle: .braveShared,
+      value: "Open Privacy Hub",
+      comment: "Text of a button that opens up a Privacy Reports screen."
+    )
+  }
+}

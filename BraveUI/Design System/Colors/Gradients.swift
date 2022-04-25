@@ -36,7 +36,7 @@ public struct BraveGradient {
   public var stops: [Stop]
   public var startPoint: CGPoint
   public var endPoint: CGPoint
-
+  
   public init(stops: [Stop], angle: Angle) {
     let alpha = angle.radians
     let startPoint = CGPoint(
@@ -49,7 +49,7 @@ public struct BraveGradient {
     )
     self.init(stops: stops, startPoint: startPoint, endPoint: endPoint)
   }
-
+  
   public init(stops: [Stop], startPoint: CGPoint, endPoint: CGPoint) {
     self.stops = stops
     self.startPoint = startPoint
@@ -114,6 +114,15 @@ extension BraveGradient {
         .init(color: DesignSystemColor.gradient03_step1.color, position: 0.985),
       ],
       angle: .figmaDegrees(306)
+    )
+  }
+  public static var gradient05: BraveGradient {
+    .init(
+      stops: [
+        .init(color: DesignSystemColor.gradient05_step0.color, position: 0),
+        .init(color: DesignSystemColor.gradient05_step1.color, position: 1),
+      ],
+      angle: .figmaDegrees(126)
     )
   }
 }

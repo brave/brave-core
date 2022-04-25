@@ -57,6 +57,9 @@ enum DesignSystemColor: String {
   case gradient03_step0 = "gradient03-step0"
   case gradient03_step1 = "gradient03-step1"
 
+  case gradient05_step0 = "gradient05-step0"
+  case gradient05_step1 = "gradient05-step1"
+  
   var color: UIColor {
     return UIColor(named: rawValue, in: Bundle(for: BraveUI.self), compatibleWith: nil)!
   }

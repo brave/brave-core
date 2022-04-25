@@ -174,6 +174,13 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
   }()
 
   private lazy var manageWebsiteDataSection: Section = {
+    let privacyReportRow = Row(
+      text: Strings.PrivacyHub.privacyReportsTitle,
+      selection: { [unowned self] in
+        let controller = UIHostingController(rootView: PrivacyReportSettingsView())
+        self.navigationController?.pushViewController(controller, animated: true)
+      }, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+    
     return Section(
       rows: [
         Row(
@@ -186,7 +193,8 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
             // pushing SwiftUI with navigation/toolbars inside the PanModal is buggy…
             // presenting over context is also buggy (eats swipe gestures)
             self.present(controller, animated: true)
-          }, accessory: .disclosureIndicator)
+          }, accessory: .disclosureIndicator),
+        privacyReportRow
       ]
     )
   }()

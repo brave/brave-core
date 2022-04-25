@@ -21,4 +21,10 @@ public extension Preferences {
 
     public static let bookmark_v1_12_1RestorationCompleted = Option<Bool>(key: "database.1_12_1-bookmark-restoration-completed", default: false)
   }
+  
+  final class BraveVPNAlertTotals {
+    public static let consolidatedTrackerCount = Option<Int>(key: "vpn-alert-consolidated-tracker", default: 0)
+    public static let consolidatedLocationPingCount = Option<Int>(key: "vpn-alert-consolidated-location", default: 0)
+    public static let consolidatedEmailTrackerCount = Option<Int>(key: "vpn-alert-consolidated-email", default: 0)
+  }
 }
