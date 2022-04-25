@@ -89,7 +89,7 @@ public class NTPUtil {
         BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
     }
 
-    public static int correctImageCreditLayoutTopPosition(NTPImage ntpImage) {
+    public static int correctImageCreditLayoutTopPosition(NTPImage ntpImage, int height) {
         int imageCreditCorrection = 0;
         int widgetCompensation = 0;
         boolean isCompensate = false;
@@ -111,13 +111,17 @@ public class NTPUtil {
             imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.48 : 0.54))
                                                 : (int) (pxHeight * (isCompensate ? 0.60 : 0.30));
 
-            widgetCompensation = dpToPx(activity, 80);
+            if (height > 0) {
+                widgetCompensation = dpToPx(activity, 80);
+            } else {
+                widgetCompensation = dpToPx(activity, -28);
+            }
 
             if (ntpImage instanceof BackgroundImage) {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.12 : 0.88))
-                            : (int) (pxHeight - dpToPx(activity, 355));
+                            : (int) (pxHeight - dpToPx(activity, 380));
                 }
                 if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
                     imageCreditCorrection = (int) imageCreditCorrection - (int) (pxHeight * 0.04);
@@ -126,7 +130,7 @@ public class NTPUtil {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.02 : 0.98))
-                            : (int) (pxHeight - dpToPx(activity, 480));
+                            : (int) (pxHeight - dpToPx(activity, 505));
                 } else {
                     imageCreditCorrection = isLandscape
                             ? (int) (pxHeight * (isCompensate ? 0.28 : 0.72))
@@ -143,7 +147,7 @@ public class NTPUtil {
     }
 
     public static void updateOrientedUI(
-            Context context, ViewGroup view, Point size, NTPImage ntpImage) {
+            Context context, ViewGroup view, Point size, NTPImage ntpImage, int height) {
         LinearLayout parentLayout = (LinearLayout)view.findViewById(R.id.parent_layout);
         CompositorViewHolder compositorView = view.findViewById(R.id.compositor_view_holder);
         ViewGroup imageCreditLayout = view.findViewById(R.id.image_credit_layout);
@@ -151,7 +155,6 @@ public class NTPUtil {
         ViewGroup optinLayout = view.findViewById(R.id.optin_layout_id);
 
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
-
         ImageView sponsoredLogo = (ImageView)view.findViewById(R.id.sponsored_logo);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dpToPx(context, 170), dpToPx(context, 170));
 
@@ -181,7 +184,7 @@ public class NTPUtil {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            int topMargin = correctImageCreditLayoutTopPosition(ntpImage);
+            int topMargin = correctImageCreditLayoutTopPosition(ntpImage, height);
             imageCreditLayoutParams.setMargins(0, topMargin, 0, 10);
 
             View feedSpinner = (View) view.findViewById(R.id.feed_spinner);
