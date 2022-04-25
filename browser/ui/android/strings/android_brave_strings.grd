@@ -1828,9 +1828,6 @@ Are you sure you want to do this?
     <message name="IDS_MESSAGE" desc="Brave wallet message title text">
       Message
     </message>
-    <message name="IDS_DATA_TEXT" desc="Brave wallet data title text">
-      DATA
-    </message>
     <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
@@ -2973,6 +2970,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_DISCONNECT" desc="Site Permissions disconnect account button title.">
       Disconnect
+    </message>
+    <message name="IDS_FRAGMENT_SIGN_MESSAGE_DESCRIPTION" desc="Sign message dialog description.">
+      Your signature is being requested
     </message>
     </messages>
   </release>
