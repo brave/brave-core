@@ -1110,8 +1110,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
             mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                private int lastFirstVisibleItem;
-                private int overallYScroll = 0;
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
