@@ -11,6 +11,7 @@
 
 #include "base/callback_forward.h"
 #include "base/observer_list.h"
+#include "base/time/time.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
@@ -27,6 +28,7 @@ struct AdsHistoryInfo;
 namespace base {
 class DictionaryValue;
 class ListValue;
+class Time;
 }
 
 namespace user_prefs {
@@ -153,8 +155,8 @@ class AdsService : public KeyedService {
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type) = 0;
 
-  virtual void GetHistory(const double from_timestamp,
-                          const double to_timestamp,
+  virtual void GetHistory(const base::Time from_time,
+                          const base::Time to_time,
                           OnGetHistoryCallback callback) = 0;
 
   virtual void GetStatementOfAccounts(

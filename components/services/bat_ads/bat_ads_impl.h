@@ -115,8 +115,8 @@ class BatAdsImpl :
       const std::string& payment_id,
       const std::string& seed) override;
 
-  void GetHistory(const double from_timestamp,
-                  const double to_timestamp,
+  void GetHistory(const base::Time from_time,
+                  const base::Time to_time,
                   GetHistoryCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;

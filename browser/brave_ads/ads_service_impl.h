@@ -182,8 +182,8 @@ class AdsServiceImpl : public AdsService,
 
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
-  void GetHistory(const double from_timestamp,
-                  const double to_timestamp,
+  void GetHistory(const base::Time from_time,
+                  const base::Time to_time,
                   OnGetHistoryCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;

@@ -205,12 +205,12 @@ void BatAdsImpl::OnWalletUpdated(
   ads_->OnWalletUpdated(payment_id, seed);
 }
 
-void BatAdsImpl::GetHistory(const double from_timestamp,
-                            const double to_timestamp,
+void BatAdsImpl::GetHistory(const base::Time from_time,
+                            const base::Time to_time,
                             GetHistoryCallback callback) {
   ads::AdsHistoryInfo history = ads_->GetHistory(
       ads::AdsHistoryFilterType::kConfirmationType,
-      ads::AdsHistorySortType::kDescendingOrder, from_timestamp, to_timestamp);
+      ads::AdsHistorySortType::kDescendingOrder, from_time, to_time);
 
   std::move(callback).Run(history.ToJson());
 }

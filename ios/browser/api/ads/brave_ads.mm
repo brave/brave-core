@@ -17,6 +17,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
@@ -493,12 +494,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return @[];
   }
-  const double from_timestamp = std::numeric_limits<double>::min();
-  const double to_timestamp = std::numeric_limits<double>::max();
 
   const auto history = ads->GetHistory(ads::AdsHistoryFilterType::kNone,
                                        ads::AdsHistorySortType::kNone,
-                                       from_timestamp, to_timestamp);
+                                       base::Time::Min(), base::Time::Max());
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
