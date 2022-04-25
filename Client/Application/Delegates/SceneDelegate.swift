@@ -185,6 +185,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // `applicationDidBecomeActive` will get called whenever the Touch ID authentication overlay disappears.
     AdblockResourceDownloader.shared.startLoading()
     CosmeticFiltersResourceDownloader.shared.startLoading()
+    DebouncingResourceDownloader.shared.startLoading()
 
     if let scene = scene as? UIWindowScene {
       scene.browserViewController?.showWalletTransferExpiryPanelIfNeeded()
