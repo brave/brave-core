@@ -63,7 +63,7 @@ bool IsP3AOptInEnabled() {
       local_state->SetString(brave::kP3AOptInEnabled, "true");
     }
   }
-  std::string pref = local_state->GetString(brave::kP3AEnabled);
+  std::string pref = local_state->GetString(brave::kP3AOptInEnabled);
   if (pref.compare("true") == 0) {
     enabled = true;
   }
