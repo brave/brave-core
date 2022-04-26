@@ -9,42 +9,29 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TxData;
-import org.chromium.brave_wallet.mojom.TxData1559;
-import org.chromium.brave_wallet.mojom.TxDataUnion;
-import org.chromium.chrome.browser.crypto_wallet.fragments.TxDetailsFragment;
+import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.DAppsMessageFragment;
 
 import java.util.List;
 
 public class SignMessagePagerAdapter extends FragmentStateAdapter {
     private List<String> mTabTitles;
+    private SignMessageRequest mCurrentSignMessageRequest;
 
-    public SignMessagePagerAdapter(Fragment fragment, List<String> tabTitles) {
+    public SignMessagePagerAdapter(Fragment fragment, List<String> tabTitles,
+            SignMessageRequest currentSignMessageRequest) {
         super(fragment);
         mTabTitles = tabTitles;
+        mCurrentSignMessageRequest = currentSignMessageRequest;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        // It could be we have another tab in the future
         switch (position) {
             case 0:
-                return new DAppsMessageFragment();
-            case 1: {
-                // TODO: replace transactionInfo with required data param
-                TransactionInfo transactionInfo = new TransactionInfo();
-                transactionInfo.txParams = new String[] {};
-                transactionInfo.txArgs = new String[] {};
-                transactionInfo.txDataUnion = new TxDataUnion();
-
-                TxData1559 txData1559 = new TxData1559();
-                txData1559.baseData = new TxData();
-                txData1559.baseData.data = new byte[] {};
-                transactionInfo.txDataUnion.setEthTxData1559(txData1559);
-                return TxDetailsFragment.newInstance(transactionInfo);
-            }
+                return new DAppsMessageFragment(mCurrentSignMessageRequest);
         }
         throw new RuntimeException("Invalid fragment position " + position);
     }

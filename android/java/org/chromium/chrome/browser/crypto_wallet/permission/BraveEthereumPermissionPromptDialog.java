@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.content_public.browser.ImageDownloadCallback;
 import org.chromium.content_public.browser.WebContents;
@@ -82,6 +84,11 @@ public class BraveEthereumPermissionPromptDialog
         mFavIconImage = customView.findViewById(R.id.favicon);
         setFavIcon();
         mRecyclerView = customView.findViewById(R.id.accounts_list);
+        GURL visibleUrl = mWebContents.getVisibleUrl();
+        if (visibleUrl != null) {
+            TextView domain = customView.findViewById(R.id.domain);
+            domain.setText(visibleUrl.getOrigin().getSpec());
+        }
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
@@ -98,6 +105,10 @@ public class BraveEthereumPermissionPromptDialog
         mModalDialogManager.showDialog(mPropertyModel, ModalDialogType.APP);
         InitKeyringService();
         initAccounts();
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.dismissWalletPanelOrDialog();
+        }
     }
 
     private void initAccounts() {
