@@ -29,7 +29,7 @@ namespace ads {
 
 namespace {
 
-Client* g_client = nullptr;
+Client* g_client_instance = nullptr;
 
 constexpr char kClientFilename[] = "client.json";
 
@@ -81,24 +81,24 @@ CategoryContentOptActionType ToggleOptOutActionType(
 }  // namespace
 
 Client::Client() : client_(new ClientInfo()) {
-  DCHECK_EQ(g_client, nullptr);
-  g_client = this;
+  DCHECK(!g_client_instance);
+  g_client_instance = this;
 }
 
 Client::~Client() {
-  DCHECK(g_client);
-  g_client = nullptr;
+  DCHECK_EQ(this, g_client_instance);
+  g_client_instance = nullptr;
 }
 
 // static
 Client* Client::Get() {
-  DCHECK(g_client);
-  return g_client;
+  DCHECK(g_client_instance);
+  return g_client_instance;
 }
 
 // static
 bool Client::HasInstance() {
-  return g_client;
+  return !!g_client_instance;
 }
 
 FilteredAdvertiserList Client::GetFilteredAdvertisers() const {

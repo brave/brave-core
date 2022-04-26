@@ -11,28 +11,28 @@
 namespace ads {
 
 namespace {
-BrowserManager* g_browser_manager = nullptr;
+BrowserManager* g_browser_manager_instance = nullptr;
 }  // namespace
 
 BrowserManager::BrowserManager() {
-  DCHECK_EQ(g_browser_manager, nullptr);
-  g_browser_manager = this;
+  DCHECK(!g_browser_manager_instance);
+  g_browser_manager_instance = this;
 }
 
 BrowserManager::~BrowserManager() {
-  DCHECK(g_browser_manager);
-  g_browser_manager = nullptr;
+  DCHECK_EQ(this, g_browser_manager_instance);
+  g_browser_manager_instance = nullptr;
 }
 
 // static
 BrowserManager* BrowserManager::Get() {
-  DCHECK(g_browser_manager);
-  return g_browser_manager;
+  DCHECK(g_browser_manager_instance);
+  return g_browser_manager_instance;
 }
 
 // static
 bool BrowserManager::HasInstance() {
-  return g_browser_manager;
+  return !!g_browser_manager_instance;
 }
 
 void BrowserManager::AddObserver(BrowserManagerObserver* observer) {

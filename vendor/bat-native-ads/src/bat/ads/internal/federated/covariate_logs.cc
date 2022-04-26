@@ -27,7 +27,7 @@ namespace ads {
 
 namespace {
 
-CovariateLogs* g_covariate_logs = nullptr;
+CovariateLogs* g_covariate_logs_instance = nullptr;
 
 using UserActivityEventToCovariateTypesMapping =
     base::flat_map<UserActivityEventType,
@@ -117,8 +117,8 @@ AverageClickthroughRateTimeWindows& GetAverageClickthroughRateTimeWindows() {
 // TODO(https://github.com/brave/brave-browser/issues/22310): Refactor
 // CovariateLogs to Covariates
 CovariateLogs::CovariateLogs() {
-  DCHECK_EQ(g_covariate_logs, nullptr);
-  g_covariate_logs = this;
+  DCHECK(!g_covariate_logs_instance);
+  g_covariate_logs_instance = this;
 
   SetCovariateLogEntry(std::make_unique<LastAdNotificationWasClicked>());
 
@@ -148,19 +148,19 @@ CovariateLogs::CovariateLogs() {
 }
 
 CovariateLogs::~CovariateLogs() {
-  DCHECK(g_covariate_logs);
-  g_covariate_logs = nullptr;
+  DCHECK_EQ(this, g_covariate_logs_instance);
+  g_covariate_logs_instance = nullptr;
 }
 
 // static
 CovariateLogs* CovariateLogs::Get() {
-  DCHECK(g_covariate_logs);
-  return g_covariate_logs;
+  DCHECK(g_covariate_logs_instance);
+  return g_covariate_logs_instance;
 }
 
 // static
 bool CovariateLogs::HasInstance() {
-  return g_covariate_logs;
+  return !!g_covariate_logs_instance;
 }
 
 void CovariateLogs::SetCovariateLogEntry(

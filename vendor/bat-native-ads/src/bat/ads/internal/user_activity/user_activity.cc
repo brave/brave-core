@@ -24,7 +24,7 @@ namespace ads {
 
 namespace {
 
-UserActivity* g_user_activity = nullptr;
+UserActivity* g_user_activity_instance = nullptr;
 
 void LogEvent(const UserActivityEventType event_type) {
   const UserActivityTriggerList triggers =
@@ -49,8 +49,8 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivity::UserActivity() {
-  DCHECK_EQ(g_user_activity, nullptr);
-  g_user_activity = this;
+  DCHECK(!g_user_activity_instance);
+  g_user_activity_instance = this;
 
   BrowserManager::Get()->AddObserver(this);
   TabManager::Get()->AddObserver(this);
@@ -60,19 +60,19 @@ UserActivity::~UserActivity() {
   BrowserManager::Get()->RemoveObserver(this);
   TabManager::Get()->RemoveObserver(this);
 
-  DCHECK(g_user_activity);
-  g_user_activity = nullptr;
+  DCHECK_EQ(this, g_user_activity_instance);
+  g_user_activity_instance = nullptr;
 }
 
 // static
 UserActivity* UserActivity::Get() {
-  DCHECK(g_user_activity);
-  return g_user_activity;
+  DCHECK(g_user_activity_instance);
+  return g_user_activity_instance;
 }
 
 // static
 bool UserActivity::HasInstance() {
-  return g_user_activity;
+  return !!g_user_activity_instance;
 }
 
 void UserActivity::RecordEvent(const UserActivityEventType event_type) {

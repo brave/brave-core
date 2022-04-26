@@ -31,7 +31,7 @@ namespace ads {
 
 namespace {
 
-AdNotifications* g_ad_notifications = nullptr;
+AdNotifications* g_ad_notifications_instance = nullptr;
 
 #if BUILDFLAG(IS_ANDROID)
 constexpr int kMaximumAdNotifications = 3;
@@ -56,24 +56,24 @@ constexpr char kNotificationTargetUrlKey[] = "url";
 }  // namespace
 
 AdNotifications::AdNotifications() {
-  DCHECK_EQ(g_ad_notifications, nullptr);
-  g_ad_notifications = this;
+  DCHECK(!g_ad_notifications_instance);
+  g_ad_notifications_instance = this;
 }
 
 AdNotifications::~AdNotifications() {
-  DCHECK(g_ad_notifications);
-  g_ad_notifications = nullptr;
+  DCHECK_EQ(this, g_ad_notifications_instance);
+  g_ad_notifications_instance = nullptr;
 }
 
 // static
 AdNotifications* AdNotifications::Get() {
-  DCHECK(g_ad_notifications);
-  return g_ad_notifications;
+  DCHECK(g_ad_notifications_instance);
+  return g_ad_notifications_instance;
 }
 
 // static
 bool AdNotifications::HasInstance() {
-  return g_ad_notifications;
+  return !!g_ad_notifications_instance;
 }
 
 void AdNotifications::Initialize(InitializeCallback callback) {
