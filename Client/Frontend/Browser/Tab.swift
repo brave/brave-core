@@ -196,6 +196,7 @@ class Tab: NSObject {
     didSet { TabMO.saveScreenshotUUID(screenshotUUID, tabId: id) }
   }
   
+  var webStateDebounceTimer: Timer?
   var onPageReadyStateChanged: ((ReadyState.State) -> Void)?
 
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
