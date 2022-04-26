@@ -124,6 +124,15 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
                           "max-age%3D0&Access-Control-Allow-Origin: %2A"}))));
   }
 
+  void ExpectPreloadWorks() {
+    for (const auto* preloaded_host : {"brave.com", "accounts.google.com"}) {
+      GURL url(base::StrCat({"http://", preloaded_host, "/simple.html"}));
+      auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
+      ASSERT_TRUE(rfh);
+      EXPECT_TRUE(rfh->GetLastCommittedURL().SchemeIsCryptographic());
+    }
+  }
+
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
@@ -358,6 +367,10 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
   ExpectHSTSState(a_com_rfh, "c.com", true);
 }
 
+IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSPreloadWorks) {
+  ExpectPreloadWorks();
+}
+
 class HSTSPartitioningDisabledBrowserTest
     : public HSTSPartitioningBrowserTestBase {
  public:
@@ -408,4 +421,8 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest,
   auto* a_com_rfh2 = ui_test_utils::NavigateToURL(browser(), a_com_url);
   ASSERT_TRUE(a_com_rfh2);
   EXPECT_EQ(a_com_rfh2->GetLastCommittedURL(), a_com_url);
+}
+
+IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest, HSTSPreloadWorks) {
+  ExpectPreloadWorks();
 }
