@@ -156,6 +156,11 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
+    case IDC_CONTENT_CONTEXT_FORCE_PASTE:
+      // only enable if there is plain text data to paste - this is what
+      // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
+      // allows non text types
+      return IsPasteAndMatchStyleEnabled();
 #if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
@@ -218,6 +223,14 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
+    case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
+      std::u16string result;
+      ui::Clipboard::GetForCurrentThread()->ReadText(
+          ui::ClipboardBuffer::kCopyPaste,
+          CreateDataEndpoint(/*notify_if_restricted=*/true).get(), &result);
+      // Replace works just like Paste, but it doesn't trigger onpaste handlers
+      source_web_contents_->Replace(result);
+    }; break;
 #if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
@@ -356,7 +369,18 @@ void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
   int index = -1;
+
+  index = menu_model_.GetIndexOfCommandId(
+      IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
+  if (index != -1) {
+    menu_model_.InsertItemWithStringIdAt(
+          index + 1,
+          IDC_CONTENT_CONTEXT_FORCE_PASTE,
+          IDS_CONTENT_CONTEXT_FORCE_PASTE);
+  }
+
 #if BUILDFLAG(ENABLE_TOR)
+  index = -1;
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled() &&
       !params_.link_url.is_empty()) {
