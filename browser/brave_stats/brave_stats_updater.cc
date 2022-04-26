@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/version_info/version_info.h"
+#include "chrome/browser/background/background_mode_manager.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -58,7 +59,7 @@ static constexpr int kUpdateServerStartupPingDelaySeconds = 3;
 
 // Every five minutes, check if we need to ping the update server for
 // today.
-static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 5 * 60;
+static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 1 * 60;
 
 static constexpr int kMinimumUsageThreshold = 3;
 
@@ -294,6 +295,9 @@ void BraveStatsUpdater::OnThresholdLoaderComplete(
 }
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
+  VLOG(1) << "BraveStatsUpdater: In background? "
+          << g_browser_process->background_mode_manager()
+                 ->IsBackgroundWithoutWindows();
   // If we already pinged the stats server today, then we're done.
   std::string today_ymd = brave_stats::GetDateAsYMD(base::Time::Now());
   std::string last_check_ymd = pref_service_->GetString(kLastCheckYMD);
@@ -394,6 +398,9 @@ void BraveStatsUpdater::StartServerPingStartupTimer() {
 
 void BraveStatsUpdater::SendServerPing() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  VLOG(1) << "BraveStatsUpdater: Sending ping";
+
   auto traffic_annotation = AnonymousStatsAnnotation();
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
