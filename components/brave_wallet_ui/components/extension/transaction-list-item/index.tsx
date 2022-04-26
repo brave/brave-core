@@ -17,6 +17,7 @@ import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
+import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 
 // Styled Components
 import {
@@ -53,7 +54,6 @@ export interface Props {
 const TransactionsListItem = (props: Props) => {
   const {
     transaction,
-    selectedNetwork,
     visibleTokens,
     transactionSpotPrices,
     accounts,
@@ -61,7 +61,9 @@ const TransactionsListItem = (props: Props) => {
     onSelectTransaction
   } = props
 
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const transactionsNetwork = useTransactionsNetwork(transaction)
+
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]

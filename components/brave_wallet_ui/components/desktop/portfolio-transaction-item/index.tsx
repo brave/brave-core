@@ -18,6 +18,7 @@ import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
+import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 
 // Styled Components
 import {
@@ -67,7 +68,6 @@ const PortfolioTransactionItem = (props: Props) => {
   const {
     transaction,
     account,
-    selectedNetwork,
     visibleTokens,
     transactionSpotPrices,
     displayAccountName,
@@ -81,7 +81,9 @@ const PortfolioTransactionItem = (props: Props) => {
   } = props
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const transactionsNetwork = useTransactionsNetwork(transaction)
+
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]
@@ -105,7 +107,7 @@ const PortfolioTransactionItem = (props: Props) => {
     }
   }
 
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
 
   const onClickCopyTransactionHash = (transactionHash: string) => {
     copyToClipboard(transactionHash)
@@ -324,8 +326,8 @@ const PortfolioTransactionItem = (props: Props) => {
               <TransactionFeeTooltipBody>
                 {
                   new Amount(transactionDetails.gasFee)
-                    .divideByDecimals(selectedNetwork.decimals)
-                    .formatAsAsset(6, selectedNetwork.symbol)
+                    .divideByDecimals(transactionsNetwork.decimals)
+                    .formatAsAsset(6, transactionsNetwork.symbol)
                 }
               </TransactionFeeTooltipBody>
               <TransactionFeeTooltipBody>
