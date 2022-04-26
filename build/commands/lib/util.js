@@ -598,7 +598,6 @@ const util = {
         }
         util.run('goma_ctl', ['ensure_start'], options)
       }
-      util.run('goma_ctl', ['update_hook'], options)
     }
 
     if (config.isCI && config.use_goma) {
