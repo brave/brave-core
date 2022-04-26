@@ -601,8 +601,8 @@ void CreativeInlineContentAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 24: {
+      MigrateToV24(transaction);
       break;
     }
 
@@ -727,10 +727,10 @@ void CreativeInlineContentAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeInlineContentAds::MigrateToV19(mojom::DBTransaction* transaction) {
+void CreativeInlineContentAds::MigrateToV24(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, GetTableName());
+  util::Drop(transaction, "creative_inline_content_ads");
 
   const std::string& query =
       "CREATE TABLE creative_inline_content_ads "
