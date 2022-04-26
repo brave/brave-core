@@ -161,7 +161,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private static final int NEWS_SCROLL_TO_TOP_NEW = -1;
     private static final int NEWS_SCROLL_TO_TOP_RELOAD = -2;
     private static final String BRAVE_NESTED_SCROLLVIEW_POSITION = "nestedscrollview_position_";
-    private static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_position_";
+    private static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
+    private static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION =
+            "recyclerview_offset_position_";
 
     private View mBraveStatsViewFallBackLayout;
 
@@ -286,7 +288,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     BraveActivity.getBraveActivity().removeSettingsBar();
                     if (tab != null) {
                         SharedPreferencesManager.getInstance().writeInt(
-                                "position_" + tab.getId(), mPrevScrollPosition);
+                                BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(),
+                                mPrevScrollPosition);
                     }
                 }
             }
@@ -538,7 +541,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 Tab tab = BraveActivity.getBraveActivity().getActivityTab();
                 int prevRecyclerViewPosition = (tab != null)
                         ? SharedPreferencesManager.getInstance().readInt(
-                                "position_" + tab.getId(), 0)
+                                BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0)
                         : 0;
                 int prevScrollPosition = (tab != null)
                         ? SharedPreferencesManager.getInstance().readInt(
@@ -548,7 +551,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                         ? SharedPreferencesManager.getInstance().readInt(
                                 BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
                         : 0;
-
                 keepPosition(
                         prevScrollPosition, prevRecyclerViewPosition, prevRecyclerViewItemPosition);
             }
@@ -737,7 +739,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             mContainer.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.VISIBLE);
             mParentScrollView.post(() -> { mParentScrollView.scrollTo(0, prevScrollPosition); });
-
             if (prevRecyclerViewItemPosition > 0) {
                 RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
                 if (manager instanceof LinearLayoutManager) {
@@ -839,9 +840,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
                     BraveActivity.getBraveActivity().getNewsItemsFeedCards();
             Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-            // prevScrollPosition
             int prevRecyclerViewPosition = (tab != null)
-                    ? SharedPreferencesManager.getInstance().readInt("position_" + tab.getId(), 0)
+                    ? SharedPreferencesManager.getInstance().readInt(
+                            BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0)
                     : 0;
             int prevScrollPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
                                              BRAVE_NESTED_SCROLLVIEW_POSITION + tab.getId(), 0)
@@ -865,7 +866,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 getFeed();
                 if (tab != null) {
                     SharedPreferencesManager.getInstance().writeInt(
-                            "position_" + tab.getId(), NEWS_SCROLL_TO_TOP_NEW);
+                            BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(),
+                            NEWS_SCROLL_TO_TOP_NEW);
                 }
 
                 // Brave News interaction started
@@ -876,7 +878,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 if (mActivity == null) {
                     mActivity = BraveActivity.getBraveActivity();
                 }
-
                 keepPosition(
                         prevScrollPosition, prevRecyclerViewPosition, prevRecyclerViewItemPosition);
             }
@@ -887,80 +888,81 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         }
 
         ViewTreeObserver parentScrollViewObserver = mParentScrollView.getViewTreeObserver();
-        mParentScrollView.getViewTreeObserver().addOnScrollChangedListener(
-                new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        try {
-                            int scrollY = mParentScrollView.getScrollY();
+        mParentScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(
+                    NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY != oldScrollY) {
+                    try {
+                        if (BraveActivity.getBraveActivity() != null
+                                && BraveActivity.getBraveActivity().getActivityTab() != null) {
                             SharedPreferencesManager.getInstance().writeInt(
                                     BRAVE_NESTED_SCROLLVIEW_POSITION
                                             + BraveActivity.getBraveActivity()
                                                       .getActivityTab()
                                                       .getId(),
                                     scrollY);
-                            RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-                            if (manager instanceof LinearLayoutManager) {
-                                LinearLayoutManager linearLayoutManager =
-                                        (LinearLayoutManager) manager;
-                            }
-                            isScrolled = false;
-                            float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
-                            if (value >= 1) {
-                                value = 1;
-                            }
-                            float alpha = (float) (1 - value * 4);
-                            if (alpha < 1f) {
-                                mImageCreditLayout.setAlpha(alpha);
-                                mImageCreditLayout.requestLayout();
-                            }
-                            if (BraveActivity.getBraveActivity() != null
-                                    && BraveActivity.getBraveActivity().getActivityTab() != null) {
-                                if (UrlUtilities.isNTPUrl(BraveActivity.getBraveActivity()
-                                                                  .getActivityTab()
-                                                                  .getUrl()
-                                                                  .getSpec())) {
-                                    if (mSettingsBar != null) {
-                                        if (BraveActivity.getBraveActivity() != null) {
-                                            BraveActivity.getBraveActivity()
-                                                    .inflateNewsSettingsBar();
+                        }
+
+                        RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+                        if (manager instanceof LinearLayoutManager) {
+                            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
+                        }
+                        isScrolled = false;
+                        float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
+                        if (value >= 1) {
+                            value = 1;
+                        }
+                        float alpha = (float) (1 - value * 4);
+                        if (alpha < 1f) {
+                            mImageCreditLayout.setAlpha(alpha);
+                            mImageCreditLayout.requestLayout();
+                        }
+                        if (BraveActivity.getBraveActivity() != null
+                                && BraveActivity.getBraveActivity().getActivityTab() != null) {
+                            if (UrlUtilities.isNTPUrl(BraveActivity.getBraveActivity()
+                                                              .getActivityTab()
+                                                              .getUrl()
+                                                              .getSpec())) {
+                                if (mSettingsBar != null) {
+                                    if (BraveActivity.getBraveActivity() != null) {
+                                        BraveActivity.getBraveActivity().inflateNewsSettingsBar();
+                                    }
+                                    if (mSettingsBar.getVisibility() == View.VISIBLE) {
+                                        if (value > 0.4) {
+                                            mSettingsBar.setAlpha((float) (value + 0.5));
+                                        } else if (value < 0.4 && mSettingsBar.getAlpha() > 0f) {
+                                            mSettingsBar.setAlpha((float) (value - 0.2));
+                                        } else if (value == 1 && mSettingsBar.getAlpha() >= 1f) {
+                                            mSettingsBar.setAlpha(1);
+                                            mSettingsBar.requestLayout();
                                         }
-                                        if (mSettingsBar.getVisibility() == View.VISIBLE) {
-                                            if (value > 0.4) {
-                                                mSettingsBar.setAlpha((float) (value + 0.5));
-                                            } else if (value < 0.4
-                                                    && mSettingsBar.getAlpha() > 0f) {
-                                                mSettingsBar.setAlpha((float) (value - 0.2));
-                                            } else if (value == 1
-                                                    && mSettingsBar.getAlpha() >= 1f) {
-                                                mSettingsBar.setAlpha(1);
-                                                mSettingsBar.requestLayout();
-                                            }
-                                            if (mSettingsBar.getAlpha() >= 1) {
-                                                isScrolled = true;
-                                                mSettingsBarIsClickable = true;
-                                            } else {
-                                                mSettingsBarIsClickable = false;
-                                            }
-                                            if (mSettingsBar.getAlpha() <= 0) {
-                                                mSettingsBar.setVisibility(View.INVISIBLE);
-                                            }
+                                        if (mSettingsBar.getAlpha() >= 1) {
+                                            isScrolled = true;
+                                            mSettingsBarIsClickable = true;
                                         } else {
-                                            boolean isFromNewTab = BraveActivity.getBraveActivity()
-                                                                           .isComesFromNewTab();
-                                            if (scrollY > 200 && (mTouchScroll || isFromNewTab)) {
-                                                mSettingsBar.setVisibility(View.VISIBLE);
-                                                mSettingsBar.setAlpha(1);
-                                            }
+                                            mSettingsBarIsClickable = false;
+                                        }
+                                        if (mSettingsBar.getAlpha() <= 0) {
+                                            mSettingsBar.setVisibility(View.INVISIBLE);
+                                        }
+                                    } else {
+                                        boolean isFromNewTab = BraveActivity.getBraveActivity()
+                                                                       .isComesFromNewTab();
+                                        if (scrollY > 200 && (mTouchScroll || isFromNewTab)) {
+                                            mSettingsBar.setVisibility(View.VISIBLE);
+                                            mSettingsBar.setAlpha(1);
                                         }
                                     }
                                 }
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
+                }
+            }
+        });
 
         parentScrollViewObserver.addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -992,13 +994,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                     new GestureDetector.SimpleOnGestureListener() {
                                                         @Override
                                                         public boolean onDoubleTap(MotionEvent e) {
-                                                            SharedPreferencesManager.getInstance().writeInt(
-                                                                    "position_"
-                                                                            + BraveActivity
-                                                                                      .getBraveActivity()
-                                                                                      .getActivityTab()
-                                                                                      .getId(),
-                                                                    0 /*NEWS_SCROLL_TO_TOP_RELOAD*/);
+                                                            if (BraveActivity.getBraveActivity()
+                                                                            != null
+                                                                    && BraveActivity.getBraveActivity()
+                                                                                    .getActivityTab()
+                                                                            != null) {
+                                                                SharedPreferencesManager
+                                                                        .getInstance()
+                                                                        .writeInt(
+                                                                                BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                                                        + BraveActivity
+                                                                                                  .getBraveActivity()
+                                                                                                  .getActivityTab()
+                                                                                                  .getId(),
+                                                                                0);
+                                                            }
                                                             correctPosition(false);
                                                             mParentScrollView.fullScroll(
                                                                     NestedScrollView.FOCUS_UP);
@@ -1068,20 +1078,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                             }
 
                                             mParentScrollView.smoothScrollTo(0, scrollToY);
-                                            // mRecyclerView.scrollToPosition(0);
-                                            SharedPreferencesManager.getInstance().writeInt(
-                                                    "position_"
-                                                            + BraveActivity.getBraveActivity()
-                                                                      .getActivityTab()
-                                                                      .getId(),
-                                                    -1);
+                                            if (BraveActivity.getBraveActivity() != null
+                                                    && BraveActivity.getBraveActivity()
+                                                                    .getActivityTab()
+                                                            != null) {
+                                                SharedPreferencesManager.getInstance().writeInt(
+                                                        BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                                + BraveActivity.getBraveActivity()
+                                                                          .getActivityTab()
+                                                                          .getId(),
+                                                        -1);
 
-                                            SharedPreferencesManager.getInstance().writeInt(
-                                                    BRAVE_RECYCLERVIEW_POSITION
-                                                            + BraveActivity.getBraveActivity()
-                                                                      .getActivityTab()
-                                                                      .getId(),
-                                                    -1);
+                                                SharedPreferencesManager.getInstance().writeInt(
+                                                        BRAVE_RECYCLERVIEW_POSITION
+                                                                + BraveActivity.getBraveActivity()
+                                                                          .getActivityTab()
+                                                                          .getId(),
+                                                        -1);
+                                            }
                                         }, 100);
 
                                         newContentButtonText.setVisibility(View.VISIBLE);
@@ -1168,7 +1182,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                     mRecyclerView.getChildAdapterPosition(firstChild);
                             int verticalOffset = firstChild.getTop();
 
-                            SharedPreferencesManager.getInstance().writeInt("position_"
+                            SharedPreferencesManager.getInstance().writeInt(
+                                    BRAVE_RECYCLERVIEW_OFFSET_POSITION
                                             + BraveActivity.getBraveActivity()
                                                       .getActivityTab()
                                                       .getId(),
@@ -1565,7 +1580,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                                   .getSpec())) {
                                     mPrevScrollPosition =
                                             SharedPreferencesManager.getInstance().readInt(
-                                                    "position_"
+                                                    BRAVE_NESTED_SCROLLVIEW_POSITION
                                                             + BraveActivity.getBraveActivity()
                                                                       .getActivityTab()
                                                                       .getId(),
