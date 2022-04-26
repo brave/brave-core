@@ -176,8 +176,8 @@ void Deposits::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 22: {
-      MigrateToV22(transaction);
+    case 23: {
+      MigrateToV23(transaction);
       break;
     }
 
@@ -243,11 +243,11 @@ void Deposits::OnGetForCreativeInstanceId(
   callback(/* success */ true, deposit);
 }
 
-void Deposits::MigrateToV22(mojom::DBTransaction* transaction) {
+void Deposits::MigrateToV23(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string& query =
-      "CREATE TABLE deposits "
+      "CREATE TABLE IF NOT EXISTS deposits "
       "(creative_instance_id TEXT NOT NULL, "
       "value DOUBLE NOT NULL, "
       "expire_at TIMESTAMP NOT NULL, "

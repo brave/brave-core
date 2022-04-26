@@ -148,18 +148,8 @@ void Conversions::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 1: {
-      MigrateToV1(transaction);
-      break;
-    }
-
-    case 10: {
-      MigrateToV10(transaction);
-      break;
-    }
-
-    case 20: {
-      MigrateToV20(transaction);
+    case 23: {
+      MigrateToV23(transaction);
       break;
     }
 
@@ -224,54 +214,13 @@ void Conversions::OnGetConversions(mojom::DBCommandResponsePtr response,
   callback(/* success */ true, conversions);
 }
 
-void Conversions::MigrateToV1(mojom::DBTransaction* transaction) {
+void Conversions::MigrateToV23(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "ad_conversions");
 
-  const std::string& query =
-      "CREATE TABLE ad_conversions "
-      "(creative_set_id TEXT NOT NULL, "
-      "type TEXT NOT NULL, "
-      "url_pattern TEXT NOT NULL, "
-      "observation_window INTEGER NOT NULL, "
-      "expiry_timestamp TIMESTAMP NOT NULL, "
-      "UNIQUE(creative_set_id, type, url_pattern) ON CONFLICT REPLACE, "
-      "PRIMARY KEY(creative_set_id, type, url_pattern))";
-
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-
-  util::CreateIndex(transaction, "ad_conversions", "creative_set_id");
-}
-
-void Conversions::MigrateToV10(mojom::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Rename(transaction, "ad_conversions", "creative_ad_conversions");
-
-  const std::string& query =
-      "ALTER TABLE creative_ad_conversions "
-      "ADD COLUMN advertiser_public_key TEXT";
-
-  mojom::DBCommandPtr command = mojom::DBCommand::New();
-  command->type = mojom::DBCommand::Type::EXECUTE;
-  command->command = query;
-  transaction->commands.push_back(std::move(command));
-
-  util::CreateIndex(transaction, "creative_ad_conversions", "creative_set_id");
-}
-
-void Conversions::MigrateToV20(mojom::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string& temp_table_name = "creative_ad_conversions_temp";
-
-  const std::string& query =
-      "CREATE TABLE creative_ad_conversions_temp "
+  const std::string query =
+      "CREATE TABLE IF NOT EXISTS creative_ad_conversions "
       "(creative_set_id TEXT NOT NULL, "
       "type TEXT NOT NULL, "
       "url_pattern TEXT NOT NULL, "
@@ -286,18 +235,6 @@ void Conversions::MigrateToV20(mojom::DBTransaction* transaction) {
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
-
-  // Copy columns to temporary table
-  const std::vector<std::string>& columns = {
-      "creative_set_id",    "type",
-      "url_pattern",        "advertiser_public_key",
-      "observation_window", "expiry_timestamp"};
-
-  util::CopyColumns(transaction, "creative_ad_conversions", temp_table_name,
-                    columns, /* should_drop */ true);
-
-  // Rename temporary table
-  util::Rename(transaction, temp_table_name, "creative_ad_conversions");
 }
 
 }  // namespace table
