@@ -146,6 +146,7 @@ test("brave_unit_tests") {
     "//components/bookmarks/browser/bookmark_model_unittest.cc",
     "//components/sync/base/model_type_unittest.cc",
     "//components/sync/driver/sync_auth_manager_unittest.cc",
+    "//components/sync/engine/sync_scheduler_impl_unittest.cc",
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 

@@ -6,6 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_SCHEDULER_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_SCHEDULER_IMPL_H_
 
+namespace syncer {
+
+extern const char kNigoriFolderNotReadyError[];
+
+}  // namespace syncer
+
 #define DoPollSyncCycleJob                                                    \
   HandleBraveConfigurationFailure(const StatusController& status_controller); \
   void DoPollSyncCycleJob
