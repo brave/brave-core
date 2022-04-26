@@ -23,6 +23,8 @@ class SubdivisionTargeting final {
   SubdivisionTargeting();
   ~SubdivisionTargeting();
 
+  void OnPrefChanged(const std::string& path);
+
   bool ShouldAllowForLocale(const std::string& locale) const;
 
   bool IsDisabled() const;
@@ -32,9 +34,10 @@ class SubdivisionTargeting final {
 
   std::string GetSubdivisionCode() const;
 
-  void OnPrefChanged(const std::string& path);
-
  private:
+  void OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged();
+  void OnAdsSubdivisionTargetingCodePrefChanged();
+
   std::string GetLazyAutoDetectedSubdivisionCode() const;
   std::string GetLazySubdivisionCode() const;
 

@@ -72,7 +72,7 @@ class ADS_EXPORT Ads {
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Called when a pref changes for the specified |path|.
+  // Called when a preference has changed for the specified |path|.
   virtual void OnPrefChanged(const std::string& path) = 0;
 
   // Called when a page has loaded and the content is available for analysis.

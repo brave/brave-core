@@ -46,14 +46,16 @@ class AdServing final {
   void AddObserver(AdNotificationServingObserver* observer);
   void RemoveObserver(AdNotificationServingObserver* observer);
 
+  void OnPrefChanged(const std::string& path);
+
   void StartServingAdsAtRegularIntervals();
   void StopServingAdsAtRegularIntervals();
 
   void MaybeServeAd();
 
-  void OnPrefChanged(const std::string& path);
-
  private:
+  void OnAdsPerHourPrefChanged();
+
   bool IsSupported() const;
 
   bool ShouldServeAdsAtRegularIntervals() const;

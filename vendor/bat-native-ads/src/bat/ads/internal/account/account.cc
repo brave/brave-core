@@ -62,6 +62,12 @@ void Account::RemoveObserver(AccountObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void Account::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kEnabled) {
+    OnEnabledPrefChanged();
+  }
+}
+
 bool Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo& last_wallet = wallet_->Get();
 
@@ -134,6 +140,10 @@ void Account::ProcessClearingCycle() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Account::OnEnabledPrefChanged() {
+  MaybeGetIssuers();
+}
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const AdType& ad_type,
