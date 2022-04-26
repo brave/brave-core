@@ -91,22 +91,15 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
 
   for (auto& value : list_values) {
     const base::Value::Dict* dictionary = value.GetIfDict();
-    if (!dictionary) {
-      FAIL();
-    }
-
+    ASSERT_TRUE(dictionary);
     const std::string* unblinded_payment_token_value =
         dictionary->FindString("unblinded_token");
-    if (!unblinded_payment_token_value) {
-      FAIL();
-    }
+    ASSERT_TRUE(unblinded_payment_token_value);
     const std::string unblinded_payment_token_base64 =
         *unblinded_payment_token_value;
 
     const std::string* public_key_value = dictionary->FindString("public_key");
-    if (!public_key_value) {
-      FAIL();
-    }
+    ASSERT_TRUE(public_key_value);
     const std::string public_key_base64 = *public_key_value;
 
     UnblindedPaymentTokenInfo unblinded_payment_token;
@@ -119,12 +112,9 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
     unblinded_payment_token.ad_type = AdType::kAdNotification;
 
-    if (!get_unblinded_payment_tokens()->TokenExists(unblinded_payment_token)) {
-      FAIL();
-    }
+    EXPECT_TRUE(
+        get_unblinded_payment_tokens()->TokenExists(unblinded_payment_token));
   }
-
-  SUCCEED();
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsListWithEmptyList) {
@@ -230,12 +220,9 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokens) {
 
   // Assert
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
-    if (!get_unblinded_payment_tokens()->TokenExists(unblinded_payment_token)) {
-      FAIL();
-    }
+    EXPECT_TRUE(
+        get_unblinded_payment_tokens()->TokenExists(unblinded_payment_token));
   }
-
-  SUCCEED();
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, DoNotAddDuplicateTokens) {
