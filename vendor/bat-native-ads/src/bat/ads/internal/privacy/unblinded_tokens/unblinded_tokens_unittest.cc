@@ -91,21 +91,14 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
 
   for (auto& value : list_values) {
     const base::Value::Dict* dictionary = value.GetIfDict();
-    if (!dictionary) {
-      FAIL();
-    }
-
+    ASSERT_TRUE(dictionary);
     const std::string* unblinded_token_value =
         dictionary->FindString("unblinded_token");
-    if (!unblinded_token_value) {
-      FAIL();
-    }
+    ASSERT_TRUE(unblinded_token_value);
     const std::string unblinded_token_base64 = *unblinded_token_value;
 
     const std::string* public_key_value = dictionary->FindString("public_key");
-    if (!public_key_value) {
-      FAIL();
-    }
+    ASSERT_TRUE(public_key_value);
     const std::string public_key_base64 = *public_key_value;
 
     UnblindedTokenInfo unblinded_token;
@@ -113,12 +106,8 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
         UnblindedToken::decode_base64(unblinded_token_base64);
     unblinded_token.public_key = PublicKey::decode_base64(public_key_base64);
 
-    if (!get_unblinded_tokens()->TokenExists(unblinded_token)) {
-      FAIL();
-    }
+    EXPECT_TRUE(get_unblinded_tokens()->TokenExists(unblinded_token));
   }
-
-  SUCCEED();
 }
 
 TEST_F(BatAdsUnblindedTokensTest, GetTokensAsListWithEmptyList) {
@@ -216,12 +205,8 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
 
   // Assert
   for (const auto& unblinded_token : unblinded_tokens) {
-    if (!get_unblinded_tokens()->TokenExists(unblinded_token)) {
-      FAIL();
-    }
+    EXPECT_TRUE(get_unblinded_tokens()->TokenExists(unblinded_token));
   }
-
-  SUCCEED();
 }
 
 TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
