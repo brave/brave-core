@@ -461,9 +461,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 mIsShowOptin =
                         sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
                 mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
-                mOptinLayout.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
-                initNews();
+                if ((!mIsNewsOn && mIsShowOptin) || (mIsNewsOn && !mIsShowOptin)) {
+                    SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+                    sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
+                    sharedPreferencesEditor.apply();
+                    mOptinLayout.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                    initNews();
+                }
             }
         };
     }
@@ -839,7 +844,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
 
         mIsNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
-        mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
+        mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
         mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
 
         if ((!mIsNewsOn && mIsShowOptin) || (mIsNewsOn && mIsShowOptin)) {
@@ -1237,8 +1242,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
                     sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
                     sharedPreferencesEditor.apply();
-                    BravePrefServiceBridge.getInstance().setNewsOptIn(true);
-                    BravePrefServiceBridge.getInstance().setShowNews(false);
                     correctPosition(false);
                     mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                     mImageCreditLayout.setAlpha(1.0f);
