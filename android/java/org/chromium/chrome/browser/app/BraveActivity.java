@@ -454,7 +454,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void dismissWalletPanelOrDialog() {
-        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+        BraveToolbarLayoutImpl layout = findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
             layout.dismissWalletPanelOrDialog();

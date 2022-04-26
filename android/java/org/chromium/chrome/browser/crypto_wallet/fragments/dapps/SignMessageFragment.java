@@ -30,7 +30,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -50,33 +49,6 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private TextView mNetworkName;
     private ExecutorService mExecutor;
     private Handler mHandler;
-
-    private BraveWalletService getBraveWalletService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getBraveWalletService();
-        }
-
-        return null;
-    }
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    private JsonRpcService getJsonRpcService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getJsonRpcService();
-        }
-
-        return null;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,20 +70,12 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mNetworkName = view.findViewById(R.id.fragment_sign_msg_tv_network_name);
         mViewPager.setUserInputEnabled(false);
 
-        view.findViewById(R.id.fragment_sign_msg_btn_cancel)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        notifySignMessageRequestProcessed(false);
-                    }
-                });
-        view.findViewById(R.id.fragment_sign_msg_btn_sign)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        notifySignMessageRequestProcessed(true);
-                    }
-                });
+        view.findViewById(R.id.fragment_sign_msg_btn_cancel).setOnClickListener(v -> {
+            notifySignMessageRequestProcessed(false);
+        });
+        view.findViewById(R.id.fragment_sign_msg_btn_sign).setOnClickListener(v -> {
+            notifySignMessageRequestProcessed(true);
+        });
 
         return view;
     }
