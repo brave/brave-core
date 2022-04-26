@@ -5,25 +5,27 @@
 
 #include "brave/browser/ui/wallet_bubble_manager_delegate_impl.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/callback.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
 
 template <typename T>
-class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
+class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
+                                 public views::ViewObserver {
  public:
   BraveWebUIBubbleManagerT(views::View* anchor_view,
                            Browser* browser,
@@ -38,6 +40,8 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog() override {
     auto bubble_view = WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog();
     bubble_view_ = bubble_view.get();
+    brave_observer_ =
+        WalletBubbleFocusObserver::CreateForView(bubble_view_, browser_);
     web_ui_contents_for_testing_ = bubble_view_->web_view()->GetWebContents();
     // Checking if we create WalletPanelUI instance of WebUI and
     // extracting BubbleContentsWrapper class to pass real browser delegate
@@ -76,6 +80,7 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
     auto contents_wrapper = WebUIBubbleManagerT<T>::cached_contents_wrapper();
     if (!contents_wrapper)
       return;
+    brave_observer_.reset();
     for (auto tab_id : contents_wrapper->GetPopupIds()) {
       Browser* popup_browser = nullptr;
       content::WebContents* popup_contents =
@@ -103,6 +108,8 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
   void SetCloseOnDeactivate(bool close) {
     if (bubble_view_) {
       bubble_view_->set_close_on_deactivate(close);
+      if (brave_observer_)
+        brave_observer_->UpdateBubbleDeactivationState(close);
     }
   }
 
@@ -112,6 +119,7 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
 
  private:
   Browser* browser_ = nullptr;
+  std::unique_ptr<WalletBubbleFocusObserver> brave_observer_;
   WebUIBubbleDialogView* bubble_view_ = nullptr;
   content::WebContents* web_ui_contents_for_testing_ = nullptr;
   base::WeakPtrFactory<BraveWebUIBubbleManagerT<T>> weak_factory_{this};
