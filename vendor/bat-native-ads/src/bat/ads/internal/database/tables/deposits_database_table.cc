@@ -176,8 +176,8 @@ void Deposits::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 23: {
-      MigrateToV23(transaction);
+    case 24: {
+      MigrateToV24(transaction);
       break;
     }
 
@@ -243,7 +243,7 @@ void Deposits::OnGetForCreativeInstanceId(
   callback(/* success */ true, deposit);
 }
 
-void Deposits::MigrateToV23(mojom::DBTransaction* transaction) {
+void Deposits::MigrateToV24(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string& query =

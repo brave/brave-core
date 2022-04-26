@@ -86,8 +86,8 @@ void Campaigns::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 24: {
+      MigrateToV24(transaction);
       break;
     }
 
@@ -119,10 +119,10 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Campaigns::MigrateToV19(mojom::DBTransaction* transaction) {
+void Campaigns::MigrateToV24(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, GetTableName());
+  util::Drop(transaction, "campaigns");
 
   const std::string& query =
       "CREATE TABLE campaigns "
