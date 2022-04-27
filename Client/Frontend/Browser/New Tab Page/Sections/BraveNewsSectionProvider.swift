@@ -190,7 +190,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       if case .ad(let ad) = card {
         iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
           self?.rewards.ads.reportInlineContentAdEvent(
-            ad.uuid,
+            ad.placementID,
             creativeInstanceId: ad.creativeInstanceID,
             eventType: .viewed
           )

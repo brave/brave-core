@@ -20,7 +20,8 @@ extension BraveWallet.BlockchainToken {
     visible: false,
     tokenId: "",
     coingeckoId: "",
-    chainId: ""
+    chainId: "",
+    coin: .eth
   )
 }
 
@@ -61,7 +62,8 @@ extension BraveWallet.TransactionInfo {
       txArgs: [],
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508)
+      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      originInfo: .init()
     )
   }
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
@@ -94,7 +96,8 @@ extension BraveWallet.TransactionInfo {
       txArgs: [],
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508)
+      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      originInfo: .init()
     )
   }
   static var previewConfirmedERC20Approve: BraveWallet.TransactionInfo {
@@ -124,7 +127,8 @@ extension BraveWallet.TransactionInfo {
       txArgs: ["0xe592427a0aece92de3edee1f18e0157c05861564Z", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
       createdTime: Date(timeIntervalSince1970: 1636399671),
       submittedTime: Date(timeIntervalSince1970: 1636399673),
-      confirmedTime: Date(timeIntervalSince1970: 1636402508)
+      confirmedTime: Date(timeIntervalSince1970: 1636402508),
+      originInfo: .init()
     )
   }
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {

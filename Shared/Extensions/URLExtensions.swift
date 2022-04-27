@@ -157,13 +157,6 @@ extension URL {
     return nil
   }
 
-  public var origin: String? {
-    guard isWebPage(includeDataURIs: false), let hostPort = self.hostPort, let scheme = scheme else {
-      return nil
-    }
-    return "\(scheme)://\(hostPort)/"
-  }
-
   /**
      * Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
      *

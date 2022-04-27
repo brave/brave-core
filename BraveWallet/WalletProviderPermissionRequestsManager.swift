@@ -17,7 +17,7 @@ public struct WebpagePermissionRequest: Equatable {
     case granted(accounts: [String])
   }
   /// The origin that requested this permission
-  let requestingOrigin: URL
+  let requestingOrigin: URLOrigin
   /// The type of request
   let coinType: BraveWallet.CoinType
   /// A handler to be called when the user either approves or rejects the connection request
@@ -45,14 +45,14 @@ public class WalletProviderPermissionRequestsManager {
   /// Adds a permission request for a specific origin and coin type. Optionally you can be notified of the
   /// users response by providing a closure
   public func beginRequest(
-    for origin: URL,
+    for origin: URLOrigin,
     coinType: BraveWallet.CoinType,
     completion: ((WebpagePermissionRequest.Response) -> Void)? = nil
   ) -> WebpagePermissionRequest {
     let request = WebpagePermissionRequest(requestingOrigin: origin, coinType: coinType) { [weak self] decision in
-      guard let self = self else { return }
+      guard let self = self, let originURL = origin.url else { return }
       if case .granted(let accounts) = decision {
-        Domain.setEthereumPermissions(forUrl: origin, accounts: accounts, grant: true)
+        Domain.setEthereumPermissions(forUrl: originURL, accounts: accounts, grant: true)
       }
       self.requests.removeAll(where: { $0.requestingOrigin == origin && $0.coinType == coinType })
       completion?(decision)
@@ -61,12 +61,12 @@ public class WalletProviderPermissionRequestsManager {
     return request
   }
   
-  public func hasPendingRequest(for origin: URL, coinType: BraveWallet.CoinType) -> Bool {
+  public func hasPendingRequest(for origin: URLOrigin, coinType: BraveWallet.CoinType) -> Bool {
     requests.contains(where: { $0.requestingOrigin == origin && $0.coinType == coinType })
   }
   
   /// Returns a list of pending requests waiting for a given origin
-  public func pendingRequests(for origin: URL) -> [WebpagePermissionRequest] {
+  public func pendingRequests(for origin: URLOrigin) -> [WebpagePermissionRequest] {
     requests.filter({ $0.requestingOrigin == origin })
   }
   

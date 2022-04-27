@@ -5,6 +5,7 @@
 
 import Foundation
 import UIKit
+import BraveCore
 import SwiftUI
 
 /// Displays a summary of the users wallet when they are visiting a webpage that wants to connect with the
@@ -15,7 +16,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
 
   public init(
     walletStore: WalletStore,
-    origin: URL
+    origin: URLOrigin
   ) {
     gesture = WalletInteractionGestureRecognizer(
       keyringStore: walletStore.keyringStore

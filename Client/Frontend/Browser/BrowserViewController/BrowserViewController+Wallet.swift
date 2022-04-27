@@ -82,10 +82,10 @@ extension BrowserViewController: BraveWalletProviderDelegate {
     presentWalletPanel()
   }
 
-  func getOrigin() -> URL {
-    guard let origin = tabManager.selectedTab?.url?.origin?.asURL else {
+  func getOrigin() -> URLOrigin {
+    guard let origin = tabManager.selectedTab?.url?.origin else {
       assert(false, "We should have a valid origin to get to this point")
-      return NSURL() as URL // We can't make an "empty" URL like you can with NSURL
+      return .init()
     }
     return origin
   }
@@ -104,7 +104,7 @@ extension BrowserViewController: BraveWalletProviderDelegate {
       
       // Check if eth permissions already exist for this origin and if they don't, ensure the user allows
       // ethereum provider access
-      let ethPermissions = Domain.ethereumPermissions(forUrl: origin) ?? []
+      let ethPermissions = origin.url.map { Domain.ethereumPermissions(forUrl: $0) ?? [] } ?? []
       if ethPermissions.isEmpty, !Preferences.Wallet.allowEthereumProviderAccountRequests.value {
         completion([], .userRejectedRequest, "User rejected request")
         return
@@ -211,7 +211,7 @@ extension Tab: BraveWalletEventsListener {
     // This method is called immediately upon creation of the wallet provider, which happens at tab
     // configuration, which means it may not be selected or ready yet.
     guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
-          let origin = url?.origin?.asURL else {
+          let originURL = url?.origin.url else {
       return ([], .internalError, "Internal error")
     }
     let isLocked = await keyringService.isLocked()
@@ -219,7 +219,7 @@ extension Tab: BraveWalletEventsListener {
       return ([], .success, "")
     }
     let selectedAccount = await keyringService.selectedAccount(.eth)
-    let permissions = Domain.ethereumPermissions(forUrl: origin)
+    let permissions = Domain.ethereumPermissions(forUrl: originURL)
     return (
       filterAccounts(permissions ?? [], selectedAccount: selectedAccount),
       .success,

@@ -43,11 +43,12 @@ class AccountActivityStore: ObservableObject {
   }
 
   private func fetchAssets() {
-    rpcService.chainId { [self] chainId in
-      blockchainRegistry.allTokens(chainId) { [self] allTokens in
+    rpcService.network { [self] network in
+      let chainId = network.chainId
+      blockchainRegistry.allTokens(chainId, coin: network.coin) { [self] allTokens in
         self.allTokens = allTokens
       }
-      walletService.userAssets(chainId) { [self] tokens in
+      walletService.userAssets(chainId, coin: network.coin) { [self] tokens in
         var updatedAssets = tokens.map {
           AssetViewModel(token: $0, decimalBalance: 0, price: "", history: [])
         }

@@ -44,11 +44,11 @@ class TransactionConfirmationStoreTests: XCTestCase {
       completion(transactions)
     }
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
-    blockchainRegistry._allTokens = { _, completion in
+    blockchainRegistry._allTokens = { _, _, completion in
       completion(allTokens)
     }
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { _, completion in
+    walletService._userAssets = { _, _, completion in
       completion([])
     }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
@@ -278,6 +278,7 @@ private extension BraveWallet.BlockchainToken {
     visible: false,
     tokenId: "",
     coingeckoId: "",
-    chainId: ""
+    chainId: "",
+    coin: .eth
   )
 }

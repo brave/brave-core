@@ -118,20 +118,12 @@ struct AddCustomAssetView: View {
   }
 
   private func addCustomToken() {
-    let token = BraveWallet.BlockchainToken(
-      contractAddress: addressInput,
+    userAssetStore.addUserAsset(
+      address: addressInput,
       name: nameInput,
-      logo: "",
-      isErc20: true,
-      isErc721: false,
       symbol: symbolInput,
-      decimals: Int32(decimalsInput) ?? 18,
-      visible: true,
-      tokenId: "",
-      coingeckoId: "",
-      chainId: ""
-    )
-    userAssetStore.addUserAsset(token: token) { [self] success in
+      decimals: Int(decimalsInput) ?? 18
+    ) { [self] success in
       if success {
         presentationMode.dismiss()
       } else {

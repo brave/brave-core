@@ -39,8 +39,8 @@ public class BuyTokenStore: ObservableObject {
       return
     }
 
-    blockchainRegistry.buyUrl(BraveWallet.MainnetChainId, address: account.address, symbol: token.symbol, amount: amount) { url in
-      completion(url)
+    blockchainRegistry.buyUrl(.wyre, chainId: BraveWallet.MainnetChainId, address: account.address, symbol: token.symbol, amount: amount) { url, error  in
+      completion(error != nil ? nil : url)
     }
   }
 
@@ -51,7 +51,7 @@ public class BuyTokenStore: ObservableObject {
   }
 
   func fetchBuyTokens() {
-    blockchainRegistry.buyTokens(BraveWallet.MainnetChainId) { [self] tokens in
+    blockchainRegistry.buyTokens(.wyre, chainId: BraveWallet.MainnetChainId) { [self] tokens in
       buyTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
       if selectedBuyToken == nil, let index = tokens.firstIndex(where: { $0.symbol == "BAT" }) {
         selectedBuyToken = tokens[index]

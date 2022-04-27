@@ -22,7 +22,7 @@ class RewardsNotification: NSObject, BraveNotification {
   
   var view: UIView
   var dismissAction: (() -> Void)?
-  var id: String { ad.uuid }
+  var id: String { ad.placementID }
   let ad: AdNotification
   var dismissPolicy: DismissPolicy {
     guard let adView = view as? AdView else { return .automatic() }

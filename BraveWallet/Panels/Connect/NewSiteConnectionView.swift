@@ -12,14 +12,14 @@ import BraveCore
 /// A view to display to a user to allow them to setup a connection to a dApp for the first time.
 public struct NewSiteConnectionView: View {
   @ObservedObject var keyringStore: KeyringStore
-  var origin: URL
+  var origin: URLOrigin
   var onConnect: (_ addresses: [String]) -> Void
   
   @available(iOS, introduced: 14.0, deprecated: 15.0, message: "Use PresentationMode on iOS 15")
   var onDismiss: () -> Void
   
   public init(
-    origin: URL,
+    origin: URLOrigin,
     keyringStore: KeyringStore,
     onConnect: @escaping (_ addresses: [String]) -> Void,
     onDismiss: @escaping () -> Void
@@ -40,10 +40,12 @@ public struct NewSiteConnectionView: View {
         .frame(width: faviconSize, height: faviconSize)
         .background(Color(.braveDisabled))
         .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-      Text(verbatim: origin.absoluteString)
-        .font(.subheadline)
-        .foregroundColor(Color(.braveLabel))
-        .multilineTextAlignment(.center)
+      origin.url.map { url in
+        Text(verbatim: url.absoluteString)
+          .font(.subheadline)
+          .foregroundColor(Color(.braveLabel))
+          .multilineTextAlignment(.center)
+      }
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
         .foregroundColor(Color(.bravePrimary))
@@ -194,7 +196,7 @@ public struct NewSiteConnectionView: View {
 struct NewSiteConnectionView_Previews: PreviewProvider {
   static var previews: some View {
     NewSiteConnectionView(
-      origin: URL(string: "https://app.uniswap.org")!,
+      origin: .init(url: URL(string: "https://app.uniswap.org")!),
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
         store.addPrimaryAccount("Account 2", completion: nil)

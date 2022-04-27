@@ -48,6 +48,10 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   func processHardwareSignature(_ txMetaId: String, v: String, r: String, s: String, completion: @escaping (Bool, BraveWallet.ProviderError, String) -> Void) {
     completion(false, .internalError, "Error Message")
   }
+  
+  func makeErc1155Transfer(fromData from: String, to: String, tokenId: String, value: String, contractAddress: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+    completion(false, [])
+  }
 }
 
 #endif

@@ -13,14 +13,13 @@ public class AssetStore: ObservableObject, Equatable {
       if isCustomToken {
         walletService.setUserAssetVisible(
           token,
-          chainId: chainId,
           visible: isVisible
         ) { _ in }
       } else {
         if isVisible {
-          walletService.addUserAsset(token, chainId: chainId) { _ in }
+          walletService.addUserAsset(token) { _ in }
         } else {
-          walletService.removeUserAsset(token, chainId: chainId) { _ in }
+          walletService.removeUserAsset(token) { _ in }
         }
       }
     }
@@ -76,9 +75,9 @@ public class UserAssetsStore: ObservableObject {
   }
 
   private func updateSelectedAssets(_ network: BraveWallet.NetworkInfo) {
-    walletService.userAssets(network.chainId) { [self] userAssets in
+    walletService.userAssets(network.chainId, coin: network.coin) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
-      blockchainRegistry.allTokens(network.chainId) { [self] registryTokens in
+      blockchainRegistry.allTokens(network.chainId, coin: network.coin) { [self] registryTokens in
         allTokens = registryTokens + [network.nativeToken]
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
@@ -95,10 +94,30 @@ public class UserAssetsStore: ObservableObject {
     }
   }
 
-  func addUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (_ success: Bool) -> Void) {
+  func addUserAsset(
+    address: String,
+    name: String,
+    symbol: String,
+    decimals: Int,
+    completion: @escaping (_ success: Bool) -> Void
+  ) {
     rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.walletService.addUserAsset(token, chainId: network.chainId) { success in
+      let token = BraveWallet.BlockchainToken(
+        contractAddress: address,
+        name: name,
+        logo: "",
+        isErc20: true,
+        isErc721: false,
+        symbol: symbol,
+        decimals: Int32(decimals),
+        visible: true,
+        tokenId: "",
+        coingeckoId: "",
+        chainId: "",
+        coin: network.coin
+      )
+      self.walletService.addUserAsset(token) { success in
         if success {
           self.updateSelectedAssets(network)
         }
@@ -110,7 +129,7 @@ public class UserAssetsStore: ObservableObject {
   func removeUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (_ success: Bool) -> Void) {
     rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.walletService.removeUserAsset(token, chainId: network.chainId) { success in
+      self.walletService.removeUserAsset(token) { success in
         if success {
           self.updateSelectedAssets(network)
         }

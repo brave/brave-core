@@ -49,7 +49,7 @@ class PortfolioStoreTests: XCTestCase {
       completion(mockBalanceWei, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { _, completion in
+    walletService._userAssets = { _, _, completion in
       completion(mockUserAssets)
     }
     let assetRatioService = BraveWallet.TestAssetRatioService()

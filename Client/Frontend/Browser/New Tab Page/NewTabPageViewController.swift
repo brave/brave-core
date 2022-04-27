@@ -594,7 +594,7 @@ class NewTabPageViewController: UIViewController {
       guard let url = ad.targetURL.asURL else { return }
       if !switchingToPrivateMode {
         rewards.ads.reportInlineContentAdEvent(
-          ad.uuid,
+          ad.placementID,
           creativeInstanceId: ad.creativeInstanceID,
           eventType: .clicked
         )
