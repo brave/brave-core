@@ -309,8 +309,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        int margin = dpToPx(mActivity, 16); 
-        layoutParams.setMargins(margin, margin, margin, margin);    
+        int margin = dpToPx(mActivity, 16);
+        layoutParams.setMargins(margin, margin, margin, margin);
 
         mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
         mBraveStatsViewFallBackLayout.requestLayout();
@@ -590,7 +590,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
 
-            int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(    
+            int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(
                     mNtpImageGlobal, mSiteSectionView.getHeight());
 
             if (toTop) {
@@ -866,7 +866,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                              "mViewedNewsCardsCount_" + tab.getId())
                                                    : 0;
 
-            if (prevScrollPosition ==  0 && prevRecyclerViewPosition == 0   
+            if (prevScrollPosition == 0 && prevRecyclerViewPosition == 0
                     && prevRecyclerViewItemPosition == 0) {
                 isFeedLoaded = false;
                 existingNewsFeedObject = null;
@@ -1375,13 +1375,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-         mSiteSectionView.post(new Runnable() { 
-            @Override   
-            public void run() { 
-                correctPosition(false); 
-            }   
-        }); 
-        NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage, mSiteSectionView.getHeight());    
+        mSiteSectionView.post(new Runnable() {
+            @Override
+            public void run() {
+                correctPosition(false);
+            }
+        });
+        NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage, mSiteSectionView.getHeight());
 
         ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
@@ -1742,10 +1742,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
 
     @Override
     public void onTileCountChanged() {
-        new Handler().postDelayed(() -> {   
-            if (mTileGroup != null && mTileGroup.isEmpty()) {   
-                correctPosition(false); 
-            }   
+        new Handler().postDelayed(() -> {
+            if (mTileGroup != null && mTileGroup.isEmpty()) {
+                correctPosition(false);
+            }
         }, 100);
 
         if (mTopsiteErrorMessage == null) {
