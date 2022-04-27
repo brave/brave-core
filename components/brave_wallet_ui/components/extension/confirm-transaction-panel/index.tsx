@@ -20,6 +20,7 @@ import Amount from '../../../utils/amount'
 
 // Hooks
 import { usePricing, useTransactionParser, useTokenInfo } from '../../../common/hooks'
+import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 
 import { getLocale } from '../../../../common/locale'
 import { withPlaceholderIcon } from '../../shared'
@@ -109,7 +110,6 @@ function ConfirmTransactionPanel (props: Props) {
   const {
     siteURL,
     accounts,
-    selectedNetwork,
     transactionInfo,
     visibleTokens,
     transactionSpotPrices,
@@ -129,6 +129,8 @@ function ConfirmTransactionPanel (props: Props) {
     updateUnapprovedTransactionNonce
   } = props
 
+  const transactionsNetwork = useTransactionsNetwork(transactionInfo)
+
   const transactionGasEstimates = transactionInfo.txDataUnion.ethTxData1559?.gasEstimation
 
   const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
@@ -146,13 +148,13 @@ function ConfirmTransactionPanel (props: Props) {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
 
   const { findAssetPrice } = usePricing(transactionSpotPrices)
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
   const transactionDetails = parseTransaction(transactionInfo)
 
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, transactionsNetwork)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -266,8 +268,8 @@ function ConfirmTransactionPanel (props: Props) {
       <EditGas
         transactionInfo={transactionInfo}
         onCancel={onToggleEditGas}
-        networkSpotPrice={findAssetPrice(selectedNetwork.symbol)}
-        selectedNetwork={selectedNetwork}
+        networkSpotPrice={findAssetPrice(transactionsNetwork.symbol)}
+        selectedNetwork={transactionsNetwork}
         baseFeePerGas={baseFeePerGas}
         suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
@@ -306,7 +308,7 @@ function ConfirmTransactionPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
+        <NetworkText>{reduceNetworkDisplayName(transactionsNetwork.chainName)}</NetworkText>
         {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
           <AddressAndOrb>
             <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
@@ -337,7 +339,7 @@ function ConfirmTransactionPanel (props: Props) {
           {transactionDetails.isApprovalUnlimited &&
             <WarningBox>
               <WarningTitleRow>
-                <WarningIcon/>
+                <WarningIcon />
                 <WarningTitle>
                   {getLocale('braveWalletAllowSpendUnlimitedWarningTitle')}
                 </WarningTitle>
@@ -361,7 +363,7 @@ function ConfirmTransactionPanel (props: Props) {
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
           {(transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder asset={transactionDetails.erc721BlockchainToken} network={selectedNetwork} />
+            <AssetIconWithPlaceholder asset={transactionDetails.erc721BlockchainToken} network={transactionsNetwork} />
           }
           <TransactionAmountBig>
             {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
@@ -394,7 +396,7 @@ function ConfirmTransactionPanel (props: Props) {
         />
 
         <AdvancedTransactionSettingsButton
-          onSubmit={ onToggleAdvancedTransactionSettings }
+          onSubmit={onToggleAdvancedTransactionSettings}
         />
       </TabRow>
       <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve}>
@@ -409,8 +411,8 @@ function ConfirmTransactionPanel (props: Props) {
                     <TransactionTypeText>
                       {
                         new Amount(transactionDetails.gasFee)
-                          .divideByDecimals(selectedNetwork.decimals)
-                          .formatAsAsset(6, selectedNetwork.symbol)
+                          .divideByDecimals(transactionsNetwork.decimals)
+                          .formatAsAsset(6, transactionsNetwork.symbol)
                       }
                     </TransactionTypeText>
                   </SectionRow>
@@ -439,7 +441,7 @@ function ConfirmTransactionPanel (props: Props) {
                         transactionDetails.isApprovalUnlimited
                           ? getLocale('braveWalletTransactionApproveUnlimited')
                           : new Amount(transactionDetails.valueExact)
-                              .formatAsAsset(undefined, transactionDetails.symbol)
+                            .formatAsAsset(undefined, transactionDetails.symbol)
                       }
                     </TransactionTypeText>
                     <TransactionText />
@@ -456,8 +458,8 @@ function ConfirmTransactionPanel (props: Props) {
                     <TransactionTypeText>
                       {
                         new Amount(transactionDetails.gasFee)
-                          .divideByDecimals(selectedNetwork.decimals)
-                          .formatAsAsset(6, selectedNetwork.symbol)
+                          .divideByDecimals(transactionsNetwork.decimals)
+                          .formatAsAsset(6, transactionsNetwork.symbol)
                       }
                     </TransactionTypeText>
                     <TransactionText>
@@ -479,7 +481,7 @@ function ConfirmTransactionPanel (props: Props) {
                         ? new Amount(transactionDetails.valueExact)
                           .format(undefined, true)
                         : transactionDetails.valueExact
-                      } {transactionDetails.symbol} + {new Amount(transactionDetails.gasFee).divideByDecimals(selectedNetwork.decimals).formatAsAsset(6, selectedNetwork.symbol)}
+                      } {transactionDetails.symbol} + {new Amount(transactionDetails.gasFee).divideByDecimals(transactionsNetwork.decimals).formatAsAsset(6, transactionsNetwork.symbol)}
                     </GrandTotalText>
                   </SingleRow>
                   <TransactionText
