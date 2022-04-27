@@ -2936,7 +2936,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Connection error
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_SELECTION_ERROR" desc="Network activity toolbar title">
-      Unable to set network to 
+      Unable to set network to <ph name="NETWORK_NAME">'%1$s'</ph>
     </message>
     <message name="IDS_ALWAYS_ON_DIALOG_TEXT" desc="Always on vpn text">
       It appears you have other VPNs on this device set to “Always on”. To enable Brave Firewall + VPN, first disable this “Always on” setting for other VPNs before connecting again. If the problem persists, try uninstalling other VPNs.
