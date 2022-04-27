@@ -9,10 +9,7 @@ import { StyledWrapper } from '../../components/desktop/views/crypto/style'
 import {
   TopTabNavTypes,
   BraveWallet,
-  AppsListType,
-  UserAssetInfoType,
-  WalletAccountType,
-  AddAccountNavTypes
+  AppsListType
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -21,64 +18,28 @@ import { getLocale } from '../../../common/locale'
 import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
 import { Accounts, PortfolioOverview } from '../../components/desktop/views'
-import {
-  HardwareWalletConnectOpts
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import WalletPageStory from '../wrappers/wallet-page-story-wrapper'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
   showAddModal: boolean
-  userAssetList: UserAssetInfoType[]
-  accounts: WalletAccountType[]
   needsBackup: boolean
-  hasImportError: boolean
-  isFilecoinEnabled: boolean
-  isSolanaEnabled: boolean
-  onSetImportError: (hasError: boolean) => void
-  onImportAccountFromJson: (accountName: string, password: string, json: string) => void
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
-  onToggleAddModal: () => void
-  getBalance: (address: string) => Promise<string>
-  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
-  onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
-  onImportFilecoinAccount: (accountName: string, privateKey: string, network: string) => void
-  onCreateAccount: (name: string) => void
   onShowBackup: () => void
 }
 
 const CryptoStoryView = (props: Props) => {
   const {
-    hasImportError,
-    selectedNetwork,
     needsBackup,
-    accounts,
     showAddModal,
-    isFilecoinEnabled,
-    isSolanaEnabled,
-    onShowBackup,
-    onCreateAccount,
-    onConnectHardwareWallet,
-    onAddHardwareAccounts,
-    getBalance,
-    onImportAccount,
-    onImportFilecoinAccount,
-    onToggleAddModal,
-    onRemoveAccount,
-    onImportAccountFromJson,
-    onSetImportError
+    onShowBackup
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
-  const [, setSelectedAccount] = React.useState<WalletAccountType>()
-  const [hideNav, setHideNav] = React.useState<boolean>(false)
+  const [hideNav] = React.useState<boolean>(false)
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
-  const [addAccountModalTab, setAddAccountModalTab] = React.useState<AddAccountNavTypes>('create')
   const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const browseMore = () => {
@@ -104,26 +65,8 @@ const CryptoStoryView = (props: Props) => {
     filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
-  const toggleNav = () => {
-    setHideNav(!hideNav)
-  }
-
   const onDismissBackupWarning = () => {
     setShowBackupWarning(false)
-  }
-
-  const onClickAddAccount = (tabId: AddAccountNavTypes) => () => {
-    setAddAccountModalTab(tabId)
-    onToggleAddModal()
-  }
-
-  const onCloseAddModal = () => {
-    onToggleAddModal()
-  }
-
-  const onSelectAccount = (account: WalletAccountType) => {
-    setSelectedAccount(account)
-    toggleNav()
   }
 
   const onDismissDefaultWalletBanner = () => {
@@ -200,30 +143,10 @@ const CryptoStoryView = (props: Props) => {
           <PortfolioOverview />
         }
         {selectedTab === 'accounts' &&
-          <Accounts
-            onClickAddAccount={onClickAddAccount}
-            onRemoveAccount={onRemoveAccount}
-            onSelectAccount={onSelectAccount}
-          />
+          <Accounts />
         }
         {showAddModal &&
-          <AddAccountModal
-            accounts={accounts}
-            selectedNetwork={selectedNetwork}
-            onClose={onCloseAddModal}
-            onCreateAccount={onCreateAccount}
-            onImportAccount={onImportAccount}
-            onImportFilecoinAccount={onImportFilecoinAccount}
-            isFilecoinEnabled={isFilecoinEnabled}
-            isSolanaEnabled={isSolanaEnabled}
-            onConnectHardwareWallet={onConnectHardwareWallet}
-            onAddHardwareAccounts={onAddHardwareAccounts}
-            getBalance={getBalance}
-            onImportAccountFromJson={onImportAccountFromJson}
-            hasImportError={hasImportError}
-            onSetImportError={onSetImportError}
-            tab={addAccountModalTab}
-          />
+          <AddAccountModal />
         }
       </StyledWrapper>
     </WalletPageStory>

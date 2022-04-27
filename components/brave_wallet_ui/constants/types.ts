@@ -558,21 +558,44 @@ export type UpdateAccountNamePayloadType = {
 }
 
 export enum WalletRoutes {
-  Accounts = '/crypto/accounts',
-  AccountsSub = '/crypto/accounts/:id?',
-  AddAccountModal = '/crypto/accounts/add-account',
-  AddAssetModal = '/crypto/portfolio/add-asset',
-  Backup = '/crypto/backup-wallet',
+  // index
   CryptoPage = '/crypto/:category/:id?',
+
+  // onboarding
   Onboarding = '/crypto/onboarding',
   OnboardingCreatePassword = '/crypto/onboarding/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
   OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
-  Portfolio = '/crypto/portfolio',
-  PortfolioSub = '/crypto/portfolio/:id',
+
+  // accounts
+  Accounts = '/crypto/accounts',
+  Account = '/crypto/accounts/:id',
+
+  // add account modals
+  AddAccountModal = '/crypto/accounts/add-account',
+  CreateAccountModalStart = '/crypto/accounts/add-account/create/',
+  CreateAccountModal = '/crypto/accounts/add-account/create/:accountTypeName?',
+
+  // import account modals
+  ImportAccountModalStart = '/crypto/accounts/add-account/import/',
+  ImportAccountModal = '/crypto/accounts/add-account/import/:accountTypeName?',
+
+  // hardware wallet import modals
+  AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
+  AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
+
+  // wallet mangement
+  Backup = '/crypto/backup-wallet',
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
+
+  // portfolio
+  Portfolio = '/crypto/portfolio',
+  PortfolioAsset = '/crypto/portfolio/:id',
+
+  // portfolio asset modals
+  AddAssetModal = '/crypto/portfolio/add-asset',
 }
 
 export const WalletOrigin = 'chrome://wallet'

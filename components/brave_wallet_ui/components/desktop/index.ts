@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import SideNavButton from './side-nav-button'
 import SideNav from './side-nav'
 import TopTabNavButton from './top-tab-nav-button'
@@ -15,7 +20,7 @@ import LockScreen from './lock-screen'
 import WalletMorePopup from './wallet-more-popup'
 import WalletBanner from './wallet-banner'
 import PopupModal from './popup-modals'
-import AddAccountModal from './popup-modals/add-account-modal'
+import { AddAccountModal } from './popup-modals/add-account-modal'
 import AccountSettingsModal from './popup-modals/account-settings-modal'
 import EditVisibleAssetsModal from './popup-modals/edit-visible-assets-modal'
 import AssetWatchlistItem from './asset-watchlist-item'

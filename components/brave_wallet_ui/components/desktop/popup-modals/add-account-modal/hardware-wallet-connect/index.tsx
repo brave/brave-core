@@ -1,8 +1,19 @@
-import * as React from 'react'
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+// utils
 import { getLocale } from '../../../../../../common/locale'
+import { getBalance } from '../../../../../common/async/lib'
+
+// components
+import HardwareWalletAccountsList from './accounts-list'
 import { NavButton } from '../../../../extension'
-import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
+
 // Styled Components
 import { DisclaimerText, InfoIcon } from '../style'
 import {
@@ -18,29 +29,49 @@ import {
   ErrorText,
   LoadIcon
 } from './style'
+
 // Custom types
-import { HardwareWalletConnectOpts, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
-import HardwareWalletAccountsList from './accounts-list'
+import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+import { WalletPageActions } from '../../../../../page/actions'
+import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
+
+// hooks
+import { useLib } from '../../../../../common/hooks'
 
 export interface Props {
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
-  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
-  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
-  onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
-  preAddedHardwareWalletAccounts: WalletAccountType[]
   selectedAccountType: CreateAccountOptionsType
-  selectedNetwork: BraveWallet.NetworkInfo
-  filecoinNetwork: FilecoinNetwork
 }
 
-export default function (props: Props) {
-  const {
-    selectedAccountType,
-    selectedNetwork,
-    filecoinNetwork
-  } = props
+const getErrorMessage = (error: any, accountTypeName: string) => {
+  if (error.statusCode && error.statusCode === 27404) { // Unknown Error
+    return { error: getLocale('braveWalletConnectHardwareInfo2').replace('$1', accountTypeName), userHint: '' }
+  }
+
+  if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) { // INCORRECT_LENGTH or INS_NOT_SUPPORTED
+    return { error: error.message, userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint') }
+  }
+
+  if (!error || !error.message) {
+    return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
+  }
+
+  return { error: error.message, userHint: '' }
+}
+
+export const HardwareWalletConnect = (props: Props) => {
+  const { selectedAccountType } = props
+
+  // lib
+  const { onConnectHardwareWallet } = useLib()
+
+  // redux
+  const dispatch = useDispatch()
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  const savedAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
@@ -50,24 +81,12 @@ export default function (props: Props) {
     LedgerDerivationPaths.LedgerLive
   )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-  const getErrorMessage = (error: any, accountTypeName: string) => {
-    if (error.statusCode && error.statusCode === 27404) { // Unknown Error
-      return { error: getLocale('braveWalletConnectHardwareInfo2').replace('$1', accountTypeName), userHint: '' }
-    }
+  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
 
-    if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) { // INCORRECT_LENGTH or INS_NOT_SUPPORTED
-      return { error: error.message, userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint') }
-    }
-
-    if (!error || !error.message) {
-      return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
-    }
-
-    return { error: error.message, userHint: '' }
-  }
-  const onFilecoinNetworkChanged = (network: FilecoinNetwork) => {
-    props.onChangeFilecoinNetwork(network)
-    props.onConnectHardwareWallet({
+  // methods
+  const onFilecoinNetworkChanged = React.useCallback((network: FilecoinNetwork) => {
+    setFilecoinNetwork(network)
+    onConnectHardwareWallet({
       hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
       startIndex: 0,
       stopIndex: DerivationBatchSize,
@@ -81,11 +100,16 @@ export default function (props: Props) {
     }).finally(
       () => setIsConnecting(false)
     )
-  }
-  const onChangeDerivationScheme = (scheme: HardwareDerivationScheme) => {
+  }, [onConnectHardwareWallet, selectedAccountType])
+
+  const onAddHardwareAccounts = React.useCallback((selected: BraveWallet.HardwareWalletAccount[]) => {
+    dispatch(WalletPageActions.addHardwareAccounts(selected))
+  }, [])
+
+  const onChangeDerivationScheme = React.useCallback((scheme: HardwareDerivationScheme) => {
     setSelectedDerivationScheme(scheme)
     setAccounts([])
-    props.onConnectHardwareWallet({
+    onConnectHardwareWallet({
       hardware: selectedHardwareWallet,
       startIndex: 0,
       stopIndex: DerivationBatchSize,
@@ -100,9 +124,9 @@ export default function (props: Props) {
     }).finally(
       () => setIsConnecting(false)
     )
-  }
+  }, [onConnectHardwareWallet, selectedHardwareWallet, selectedAccountType, filecoinNetwork])
 
-  const getDefaultAccountName = (account: BraveWallet.HardwareWalletAccount) => {
+  const getDefaultAccountName = React.useCallback((account: BraveWallet.HardwareWalletAccount) => {
     const index = accounts.findIndex(e => e.address === account.address)
     let schemeString
     switch (selectedDerivationScheme) {
@@ -116,45 +140,41 @@ export default function (props: Props) {
     return index === 0
       ? `${account.hardwareVendor}${schemeString}`
       : `${account.hardwareVendor} ${index}${schemeString}`
-  }
+  }, [accounts, selectedDerivationScheme])
 
-  const onAddAccounts = () => {
-    const selectedAccounts = accounts.filter(o => selectedDerivationPaths.includes(o.derivationPath))
+  const onAddAccounts = React.useCallback(() => {
+    const selectedAccounts = accounts.filter(account => selectedDerivationPaths.includes(account.derivationPath))
     const renamedSelectedAccounts = selectedAccounts
       .map(account => ({ ...account, name: getDefaultAccountName(account) }))
-    props.onAddHardwareAccounts(renamedSelectedAccounts)
-  }
+    onAddHardwareAccounts(renamedSelectedAccounts)
+  }, [accounts, selectedDerivationPaths, getDefaultAccountName, onAddHardwareAccounts])
 
-  const getBalance = (address: string, coin: BraveWallet.CoinType) => {
-    return props.getBalance(address, coin)
-  }
-
-  const selectVendor = (vendor: HardwareVendor) => {
+  const selectVendor = React.useCallback((vendor: HardwareVendor) => {
     const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
     setSelectedDerivationScheme(Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme)
     setSelectedHardwareWallet(vendor)
-  }
+  }, [])
 
-  const onSelectLedger = () => {
+  const onSelectLedger = React.useCallback(() => {
     if (selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR) {
       setConnectionError(undefined)
     }
 
     selectVendor(BraveWallet.LEDGER_HARDWARE_VENDOR)
-  }
+  }, [selectedHardwareWallet, selectVendor])
 
-  const onSelectTrezor = () => {
+  const onSelectTrezor = React.useCallback(() => {
     if (selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR) {
       setConnectionError(undefined)
     }
 
     selectVendor(BraveWallet.TREZOR_HARDWARE_VENDOR)
-  }
+  }, [selectedHardwareWallet, selectVendor])
 
-  const onSubmit = () => {
+  const onSubmit = React.useCallback(() => {
     setConnectionError(undefined)
     setIsConnecting(true)
-    props.onConnectHardwareWallet({
+    onConnectHardwareWallet({
       hardware: selectedHardwareWallet,
       startIndex: accounts.length,
       stopIndex: accounts.length + DerivationBatchSize,
@@ -170,14 +190,22 @@ export default function (props: Props) {
     }).finally(
       () => setIsConnecting(false)
     )
-  }
+  }, [onConnectHardwareWallet, selectedHardwareWallet, accounts, selectedDerivationScheme, selectedAccountType, filecoinNetwork])
 
+  // memos
+  const preAddedHardwareWalletAccounts = React.useMemo(() => {
+    return savedAccounts.filter(account =>
+      ['Ledger', 'Trezor'].includes(account.accountType)
+    )
+  }, [savedAccounts])
+
+  // render
   if (showAccountsList) {
     return (
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}
         accounts={accounts}
-        preAddedHardwareWalletAccounts={props.preAddedHardwareWalletAccounts}
+        preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
         onLoadMore={onSubmit}
         selectedDerivationPaths={selectedDerivationPaths}
         setSelectedDerivationPaths={setSelectedDerivationPaths}
@@ -244,3 +272,5 @@ export default function (props: Props) {
     </>
   )
 }
+
+export default HardwareWalletConnect

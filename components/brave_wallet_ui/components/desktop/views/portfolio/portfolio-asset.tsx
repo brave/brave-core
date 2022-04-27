@@ -65,17 +65,9 @@ import {
 } from './style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
-interface Props {
-  onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
-}
-
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 
-export const PortfolioAsset = (props: Props) => {
-  const {
-    onClickAddAccount
-  } = props
-
+export const PortfolioAsset = () => {
   // routing
   const history = useHistory()
   const { id: assetId } = useParams<{ id?: string }>()
@@ -268,6 +260,10 @@ export const PortfolioAsset = (props: Props) => {
   const isNftAsset = selectedAssetFromParams?.isErc721
 
   // methods
+  const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
+    history.push(WalletRoutes.AddAccountModal)
+  }, [])
+
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
     dispatch(WalletPageActions.selectAsset({
       asset: selectedAsset,

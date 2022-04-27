@@ -55,13 +55,13 @@ import { useBalance } from '../../../../common/hooks'
 
 // Actions
 import { WalletActions } from '../../../../common/actions'
+import { WalletPageActions } from '../../../../page/actions'
 
 export interface Props {
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   goBack: () => void
 }
 
@@ -71,8 +71,7 @@ export const Account = (props: Props) => {
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     toggleNav,
-    onUpdateAccountName,
-    onRemoveAccount
+    onUpdateAccountName
   } = props
 
   const { id: accountId } = useParams<{ id: string }>()
@@ -162,6 +161,14 @@ export const Account = (props: Props) => {
   const onCloseEditModal = React.useCallback(() => {
     setShowEditModal(false)
     setEditTab('details')
+  }, [])
+
+  const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
+    if (hardware) {
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
+      return
+    }
+    dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
   }, [])
 
   // effects

@@ -1,0 +1,91 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router'
+
+// utils
+import { getLocale } from '$web-common/locale'
+
+// options
+import { CreateAccountOptions } from '../../../../options/create-account-options'
+
+// types
+import { CreateAccountOptionsType, WalletRoutes, WalletState } from '../../../../constants/types'
+
+// actions
+import { WalletPageActions } from '../../../../page/actions'
+
+// components
+import { DividerLine } from '../../../extension'
+import PopupModal from '..'
+
+// style
+import {
+  StyledWrapper
+} from './style'
+import HardwareWalletConnect from './hardware-wallet-connect'
+import { SelectAccountType } from './select-account-type/select-account-type'
+
+interface Params {
+  accountTypeName: string
+}
+
+export const AddHardwareAccountModal = () => {
+  // routing
+  const history = useHistory()
+  const { accountTypeName } = useParams<Params>()
+
+  // redux
+  const dispatch = useDispatch()
+  const isFilecoinEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isFilecoinEnabled)
+  const isSolanaEnabled = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isSolanaEnabled)
+
+  // memos
+  const createAccountOptions = React.useMemo(
+    () => CreateAccountOptions(isFilecoinEnabled, isSolanaEnabled),
+    [isFilecoinEnabled, isSolanaEnabled]
+  )
+
+  const selectedAccountType: CreateAccountOptionsType | undefined = React.useMemo(() => {
+    return createAccountOptions.find((option) => {
+      return option.name.toLowerCase() === accountTypeName?.toLowerCase()
+    })
+  }, [createAccountOptions, accountTypeName])
+
+  // methods
+  const setImportError = React.useCallback((hasError: boolean) => {
+    dispatch(WalletPageActions.setImportAccountError(hasError))
+  }, [])
+
+  const onClickClose = React.useCallback(() => {
+    setImportError(false)
+    history.push(WalletRoutes.Accounts)
+  }, [])
+
+  const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
+    history.push(WalletRoutes.AddHardwareAccountModal.replace(':accountTypeName?', accountType.name.toLowerCase()))
+  }, [])
+
+  // render
+  return (
+    <PopupModal title={getLocale('braveWalletAddAccountImportHardware')} onClose={onClickClose}>
+      <DividerLine />
+
+      {selectedAccountType &&
+        <StyledWrapper>
+          <HardwareWalletConnect selectedAccountType={selectedAccountType} />
+        </StyledWrapper>
+      }
+
+      {!selectedAccountType &&
+        <SelectAccountType onSelectAccountType={onSelectAccountType} buttonText={getLocale('braveWalletAddAccountConnect')} />
+      }
+    </PopupModal>
+  )
+}
+
+export default AddHardwareAccountModal

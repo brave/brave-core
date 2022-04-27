@@ -213,7 +213,7 @@ export const createWalletReducer = (initialState: WalletState) => {
 
     let accounts: WalletAccountType[] = [...state.accounts]
     accounts.forEach((account, accountIndex) => {
-      payload.balances[accountIndex].forEach((info, tokenIndex) => {
+      payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
         if (info.error === BraveWallet.ProviderError.kSuccess) {
           const contractAddress = visibleTokens[tokenIndex].contractAddress.toLowerCase()
           accounts[accountIndex].tokenBalanceRegistry[contractAddress] = Amount.normalize(info.balance)

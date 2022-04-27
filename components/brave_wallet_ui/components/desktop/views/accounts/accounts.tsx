@@ -4,18 +4,23 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 
 import {
   WalletAccountType,
   BraveWallet,
   AddAccountNavTypes,
-  WalletState
+  WalletState,
+  WalletRoutes
 } from '../../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { groupAccountsById, sortAccountsByName } from '../../../../utils/account-utils'
+
+// actions
+import { WalletPageActions } from '../../../../page/actions'
 
 // Styled Components
 import {
@@ -38,19 +43,38 @@ import {
   AddButton
 } from '../..'
 
-export interface Props {
-  onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
-  onSelectAccount: (account: WalletAccountType) => void
-}
+export const Accounts = () => {
+  // routing
+  const history = useHistory()
 
-export const Accounts = ({
-  onSelectAccount,
-  onClickAddAccount,
-  onRemoveAccount
-}: Props) => {
   // redux
+  const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // methods
+  const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
+    if (account) {
+      history.push(`${WalletRoutes.Accounts}/${account.address}`)
+    }
+  }, [])
+
+  const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
+    switch (tabId) {
+      case 'create': return history.push(WalletRoutes.CreateAccountModalStart)
+      case 'hardware': return history.push(WalletRoutes.AddHardwareAccountModalStart)
+      case 'import': return history.push(WalletRoutes.ImportAccountModalStart)
+      default: return history.push(WalletRoutes.AddAccountModal)
+    }
+    // dispatch(WalletPageActions.setShowAddModal(true))
+  }, [])
+
+  const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
+    if (hardware) {
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
+      return
+    }
+    dispatch(WalletPageActions.removeImportedAccount({ address, coin }))
+  }, [])
 
   // memos
   const primaryAccounts = React.useMemo(() => {

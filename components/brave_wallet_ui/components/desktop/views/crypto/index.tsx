@@ -4,11 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { Route, useHistory, useParams, Switch } from 'react-router-dom'
-
-// actions
-import { WalletPageActions } from '../../../../page/actions'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -17,23 +13,21 @@ import { getLocale } from '../../../../../common/locale'
 import {
   BraveWallet,
   TopTabNavTypes,
-  WalletAccountType,
   UpdateAccountNamePayloadType,
-  WalletRoutes,
-  AddAccountNavTypes
+  WalletRoutes
 } from '../../../../constants/types'
 import { TOP_NAV_OPTIONS } from '../../../../options/top-nav-options'
-import { HardwareWalletConnectOpts } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 // style
 import { StyledWrapper } from './style'
 
 // components
-import { TopTabNav, WalletBanner, AddAccountModal, EditVisibleAssetsModal } from '../../'
+import { TopTabNav, WalletBanner, EditVisibleAssetsModal } from '../../'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
 import { PortfolioAsset } from '../portfolio/portfolio-asset'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
+import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -41,51 +35,23 @@ interface ParamsType {
 }
 
 export interface Props {
-  onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
-  onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
-  onImportFilecoinAccount: (accountName: string, key: string, network: string) => void
-  onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
-  onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
-  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
-  onImportAccountFromJson: (accountName: string, password: string, json: string) => void
-  onSetImportError: (error: boolean) => void
   onOpenWalletSettings: () => void
-  hasImportError: boolean
   needsBackup: boolean
-  accounts: WalletAccountType[]
-  isFilecoinEnabled: boolean
-  isSolanaEnabled: boolean
-  selectedNetwork: BraveWallet.NetworkInfo
   defaultWallet: BraveWallet.DefaultWallet
   isMetaMaskInstalled: boolean
 }
 
 const CryptoView = (props: Props) => {
   const {
-    onCreateAccount,
-    onConnectHardwareWallet,
-    onAddHardwareAccounts,
-    getBalance,
-    onImportAccount,
-    onImportFilecoinAccount,
     onUpdateAccountName,
-    onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
-    onImportAccountFromJson,
-    onSetImportError,
     onOpenWalletSettings,
     defaultWallet,
-    hasImportError,
-    selectedNetwork,
     needsBackup,
-    accounts,
-    isFilecoinEnabled,
-    isSolanaEnabled,
     isMetaMaskInstalled
   } = props
 
@@ -94,14 +60,10 @@ const CryptoView = (props: Props) => {
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [showMore, setShowMore] = React.useState<boolean>(false)
-  const [addAccountModalTab, setAddAccountModalTab] = React.useState<AddAccountNavTypes>('create')
 
   // routing
   const history = useHistory()
   const { category } = useParams<ParamsType>()
-
-  // redux
-  const dispatch = useDispatch()
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -132,26 +94,9 @@ const CryptoView = (props: Props) => {
     setShowDefaultWalletBanner(false)
   }, [])
 
-  const onCloseAddModal = React.useCallback(() => {
-    history.push(WalletRoutes.Accounts)
-    dispatch(WalletPageActions.setShowAddModal(false))
-  }, [])
-
-  const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
-    setAddAccountModalTab(tabId)
-    dispatch(WalletPageActions.setShowAddModal(true))
-    history.push(WalletRoutes.AddAccountModal)
-  }, [])
-
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
     setHideNav(false)
-  }, [])
-
-  const onSelectAccount = React.useCallback((account: WalletAccountType | undefined) => {
-    if (account) {
-      history.push(`${WalletRoutes.Accounts}/${account.address}`)
-    }
   }, [])
 
   const onClickSettings = React.useCallback(() => {
@@ -172,7 +117,10 @@ const CryptoView = (props: Props) => {
     }
   }, [showMore])
 
-  const hideVisibleAssetsModal = React.useCallback(() => onShowVisibleAssetsModal(false), [])
+  const hideVisibleAssetsModal = React.useCallback(
+    () => onShowVisibleAssetsModal(false),
+    [onShowVisibleAssetsModal]
+  )
 
   // memos
   const nav = React.useMemo(() => (
@@ -230,70 +178,54 @@ const CryptoView = (props: Props) => {
     <StyledWrapper onClick={onClickHideMore}>
       <Switch>
         {/* Portfolio */}
-        <Route path={WalletRoutes.AddAssetModal} exact>
-          {nav}
-          <PortfolioOverview />
-          <EditVisibleAssetsModal
-            onClose={hideVisibleAssetsModal}
-          />
-        </Route>
-
-        <Route path={WalletRoutes.Portfolio} exact>
+        <Route path={WalletRoutes.AddAssetModal} exact>{/* Show portfolio overview in background */}
           {nav}
           <PortfolioOverview />
         </Route>
 
-        <Route path={WalletRoutes.PortfolioSub} exact>
-          <PortfolioAsset onClickAddAccount={onClickAddAccount} />
+        <Route path={WalletRoutes.PortfolioAsset} exact>
+          <PortfolioAsset />
+        </Route>
+
+        <Route path={WalletRoutes.Portfolio}>
+          {nav}
+          <PortfolioOverview />
         </Route>
 
         {/* Accounts */}
-        <Route path={WalletRoutes.AddAccountModal} exact>
+        <Route path={WalletRoutes.AddAccountModal}>{/* Show accounts overview in background */}
           {nav}
-          <Accounts
-            onClickAddAccount={onClickAddAccount}
-            onRemoveAccount={onRemoveAccount}
-            onSelectAccount={onSelectAccount}
-          />
-          <AddAccountModal
-            accounts={accounts}
-            selectedNetwork={selectedNetwork}
-            onClose={onCloseAddModal}
-            onCreateAccount={onCreateAccount}
-            onImportAccount={onImportAccount}
-            isFilecoinEnabled={isFilecoinEnabled}
-            isSolanaEnabled={isSolanaEnabled}
-            onImportFilecoinAccount={onImportFilecoinAccount}
-            onConnectHardwareWallet={onConnectHardwareWallet}
-            onAddHardwareAccounts={onAddHardwareAccounts}
-            getBalance={getBalance}
-            onImportAccountFromJson={onImportAccountFromJson}
-            hasImportError={hasImportError}
-            onSetImportError={onSetImportError}
-            tab={addAccountModalTab}
-          />
+          <Accounts />
         </Route>
 
-        <Route path={WalletRoutes.Accounts} exact>
-          {nav}
-          <Accounts
-            onClickAddAccount={onClickAddAccount}
-            onRemoveAccount={onRemoveAccount}
-            onSelectAccount={onSelectAccount}
-          />
-        </Route>
-
-        <Route path={WalletRoutes.AccountsSub} exact>
+        <Route path={WalletRoutes.Account}>
           <Account
             toggleNav={toggleNav}
             onUpdateAccountName={onUpdateAccountName}
-            onRemoveAccount={onRemoveAccount}
             onDoneViewingPrivateKey={onDoneViewingPrivateKey}
             onViewPrivateKey={onViewPrivateKey}
             goBack={goBack}
           />
         </Route>
 
+        <Route path={WalletRoutes.Accounts}>
+          {nav}
+          <Accounts />
+        </Route>
+
+      </Switch>
+
+      {/* modals */}
+      <Switch>
+        <Route path={WalletRoutes.AddAssetModal} exact>
+          <EditVisibleAssetsModal
+            onClose={hideVisibleAssetsModal}
+          />
+        </Route>
+
+        <Route path={WalletRoutes.AddAccountModal}>
+          <AddAccountModal />
+        </Route>
       </Switch>
     </StyledWrapper>
   )
