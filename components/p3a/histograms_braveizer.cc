@@ -6,6 +6,7 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 
 #include "base/bind.h"
+#include "base/logging.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
@@ -57,6 +58,7 @@ void HistogramsBraveizer::DoHistogramBravetization(
     uint64_t name_hash,
     base::HistogramBase::Sample sample) {
   DCHECK(histogram_name);
+  VLOG(1) << "HistogramsBraveizer: metric name " << histogram_name << sample;
   if (strcmp("Bookmarks.Count.OnProfileLoad", histogram_name) == 0) {
     constexpr int kIntervals[] = {5, 20, 100, 500, 1000, 5000, 10000};
     const int* it = std::lower_bound(kIntervals, std::end(kIntervals), sample);
