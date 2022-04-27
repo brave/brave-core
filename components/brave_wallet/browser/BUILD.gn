@@ -110,6 +110,8 @@ static_library("browser") {
     "tx_service.h",
     "tx_state_manager.cc",
     "tx_state_manager.h",
+    "unstoppable_domains_dns_resolve.cc",
+    "unstoppable_domains_dns_resolve.h",
     "unstoppable_domains_multichain_calls.cc",
     "unstoppable_domains_multichain_calls.h",
     "wallet_data_files_installer.cc",

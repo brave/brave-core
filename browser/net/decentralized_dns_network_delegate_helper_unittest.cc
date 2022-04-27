@@ -7,12 +7,15 @@
 
 #include <memory>
 
+#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/decentralized_dns/utils.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -21,6 +24,9 @@
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -37,8 +43,16 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
   ~DecentralizedDnsNetworkDelegateHelperTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(features::kDecentralizedDns);
     profile_ = std::make_unique<TestingProfile>();
+
+    shared_url_loader_factory_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &test_url_loader_factory_);
+    json_rpc_service_ =
+        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
+            browser_context());
+    json_rpc_service_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
   }
 
   void TearDown() override {
@@ -46,14 +60,21 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
     local_state_.reset();
   }
 
+  content::BrowserContext* browser_context() { return profile_.get(); }
   TestingProfile* profile() { return profile_.get(); }
   PrefService* local_state() { return local_state_->Get(); }
+  network::TestURLLoaderFactory& test_url_loader_factory() {
+    return test_url_loader_factory_;
+  }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
-  base::test::ScopedFeatureList feature_list_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_ = nullptr;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
@@ -113,57 +134,103 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
+       DecentralizedDnsPreRedirectTLDs) {
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+  const char* valid_urls[] = {
+      "https://brave.crypto", "https://brave.x",
+      "https://brave.coin",   "https://brave.nft",
+      "https://brave.dao",    "https://brave.wallet",
+      "https://brave.888",    "https://brave.blockchain",
+      "https://brave.bitcoin"};
+  for (auto* url : valid_urls) {
+    auto brave_request_info =
+        std::make_shared<brave::BraveRequestInfo>(GURL(url));
+    brave_request_info->browser_context = profile();
+    EXPECT_EQ(net::ERR_IO_PENDING,
+              OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+                  ResponseCallback(), brave_request_info));
+  }
+
+  const char* invalid_urls[] = {
+      "https://brave",
+      "https://brave.com",
+      "https://brave.zil",
+  };
+  for (auto* url : invalid_urls) {
+    auto brave_request_info =
+        std::make_shared<brave::BraveRequestInfo>(GURL(url));
+    brave_request_info->browser_context = profile();
+    EXPECT_EQ(net::OK, OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+                           ResponseCallback(), brave_request_info));
+  }
+}
+
+TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
        UnstoppableDomainsRedirectWork) {
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+
   GURL url("http://brave.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->browser_context = profile();
+
+  auto polygon_spec = brave_wallet::GetUnstoppableDomainsRpcUrl(
+                          brave_wallet::mojom::kPolygonMainnetChainId)
+                          .spec();
+  auto eth_spec = brave_wallet::GetUnstoppableDomainsRpcUrl(
+                      brave_wallet::mojom::kMainnetChainId)
+                      .spec();
 
   // No redirect for failed requests.
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, std::vector<std::string>(),
-      brave_wallet::mojom::ProviderError::kInternalError, "todo");
+  EXPECT_EQ(net::ERR_IO_PENDING,
+            OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+                ResponseCallback(), brave_request_info));
+  test_url_loader_factory().SimulateResponseForPendingRequest(
+      polygon_spec,
+      brave_wallet::MakeJsonRpcStringArrayResponse(
+          {"", "", "", "", "", "https://brave.com"}),
+      net::HTTP_REQUEST_TIMEOUT);
+  test_url_loader_factory().SimulateResponseForPendingRequest(
+      eth_spec,
+      brave_wallet::MakeJsonRpcStringArrayResponse(
+          {"", "", "", "", "", "https://brave.com"}),
+      net::HTTP_REQUEST_TIMEOUT);
+  base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, std::vector<std::string>(),
-      brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  // Polygon result.
+  EXPECT_EQ(net::ERR_IO_PENDING,
+            OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+                ResponseCallback(), brave_request_info));
+  test_url_loader_factory().SimulateResponseForPendingRequest(
+      polygon_spec,
+      brave_wallet::MakeJsonRpcStringArrayResponse(
+          {"", "", "", "", "", "https://brave.com"}),
+      net::HTTP_OK);
+  test_url_loader_factory().SimulateResponseForPendingRequest(
+      eth_spec,
+      brave_wallet::MakeJsonRpcStringArrayResponse(
+          {"hash", "", "", "", "", ""}),
+      net::HTTP_OK);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/");
 
-  // Has both IPFS URI & fallback URL.
-  std::vector<std::string> result = {
-      "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",  // dweb.ipfs.hash
-      "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",  // ipfs.html.value
-      "",                                                // dns.A
-      "",                                                // dns.AAAA
-      "https://fallback1.test.com",                      // browser.redirect_url
-      "https://fallback2.test.com",  // ipfs.redirect_domain.value
-  };
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, result,
-      brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_EQ("ipfs://QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",
-            brave_request_info->new_url_spec);
-
-  // Has legacy IPFS URI & fallback URL
-  result[static_cast<int>(RecordKeys::DWEB_IPFS_HASH)] = "";
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, result,
-      brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_EQ("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
-            brave_request_info->new_url_spec);
-
-  // Has both fallback URL
-  result[static_cast<int>(RecordKeys::IPFS_HTML_VALUE)] = "";
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, result,
-      brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_EQ("https://fallback1.test.com/", brave_request_info->new_url_spec);
-
-  // Has legacy URL
-  result[static_cast<int>(RecordKeys::BROWSER_REDIRECT_URL)] = "";
-  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
-      ResponseCallback(), brave_request_info, result,
-      brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_EQ("https://fallback2.test.com/", brave_request_info->new_url_spec);
+  // Eth result.
+  EXPECT_EQ(net::ERR_IO_PENDING,
+            OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+                ResponseCallback(), brave_request_info));
+  test_url_loader_factory().SimulateResponseForPendingRequest(
+      polygon_spec,
+      brave_wallet::MakeJsonRpcStringArrayResponse({"", "", "", "", "", ""}),
+      net::HTTP_OK);
+  test_url_loader_factory().SimulateResponseForPendingRequest(
+      eth_spec,
+      brave_wallet::MakeJsonRpcStringArrayResponse(
+          {"hash", "", "", "", "", ""}),
+      net::HTTP_OK);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(brave_request_info->new_url_spec, "ipfs://hash");
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
@@ -209,9 +276,9 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   OnBeforeURLRequest_EnsRedirectWork(
       ResponseCallback(), brave_request_info, content_hash,
       brave_wallet::mojom::ProviderError::kSuccess, "");
-  EXPECT_EQ(
-      brave_request_info->new_url_spec,
-      "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+  EXPECT_EQ(brave_request_info->new_url_spec,
+            "ipfs://"
+            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
 }
 
 }  // namespace decentralized_dns

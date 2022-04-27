@@ -36,7 +36,11 @@ bool IsDecentralizedDnsEnabled() {
 }
 
 bool IsUnstoppableDomainsTLD(const GURL& url) {
-  return base::EndsWith(url.host_piece(), kCryptoDomain);
+  for (auto* domain : kUnstoppableDomains) {
+    if (base::EndsWith(url.host_piece(), domain))
+      return true;
+  }
+  return false;
 }
 
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state) {

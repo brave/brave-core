@@ -229,16 +229,15 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGetMany) {
       "https://fallback2.test.com",  // ipfs.redirect_domain.value
   };
 
-  std::vector<std::string> values;
-  EXPECT_TRUE(ParseUnstoppableDomainsProxyReaderGetMany(json, &values));
+  auto values = ParseUnstoppableDomainsProxyReaderGetMany(json);
+  ASSERT_TRUE(values);
   EXPECT_EQ(values, expected_values);
 
-  values.clear();
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x000000000000000000000000000000000000000000000000000000000000002000";
-  EXPECT_FALSE(ParseUnstoppableDomainsProxyReaderGetMany(json, &values));
-  EXPECT_TRUE(values.empty());
+  values = ParseUnstoppableDomainsProxyReaderGetMany(json);
+  ASSERT_FALSE(values);
 }
 
 TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {

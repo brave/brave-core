@@ -8,7 +8,9 @@
 
 namespace decentralized_dns {
 
-constexpr char kCryptoDomain[] = ".crypto";
+constexpr const char* kUnstoppableDomains[] = {
+    ".crypto", ".x",   ".coin",       ".nft",    ".dao",
+    ".wallet", ".888", ".blockchain", ".bitcoin"};
 constexpr char kUnstoppableDomainsDoHResolver[] =
     "https://resolver.unstoppable.io/dns-query{?brave_UD}";
 

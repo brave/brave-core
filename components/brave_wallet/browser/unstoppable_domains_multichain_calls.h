@@ -14,10 +14,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_wallet {
+namespace brave_wallet::unstoppable_domains {
 
 template <class ResultType>
-class UnstoppableDomainsMultichainCall {
+class MultichainCall {
  public:
   using CallbackType = base::OnceCallback<
       void(const ResultType&, mojom::ProviderError, const std::string&)>;
@@ -28,16 +28,12 @@ class UnstoppableDomainsMultichainCall {
     absl::optional<std::string> error_message;
   };
 
-  UnstoppableDomainsMultichainCall() = default;
-  ~UnstoppableDomainsMultichainCall() = default;
-  UnstoppableDomainsMultichainCall(const UnstoppableDomainsMultichainCall&) =
-      delete;
-  UnstoppableDomainsMultichainCall& operator=(
-      const UnstoppableDomainsMultichainCall&) = delete;
-  UnstoppableDomainsMultichainCall(UnstoppableDomainsMultichainCall&&) =
-      default;
-  UnstoppableDomainsMultichainCall& operator=(
-      UnstoppableDomainsMultichainCall&&) = default;
+  MultichainCall() = default;
+  ~MultichainCall() = default;
+  MultichainCall(const MultichainCall&) = delete;
+  MultichainCall& operator=(const MultichainCall&) = delete;
+  MultichainCall(MultichainCall&&) = default;
+  MultichainCall& operator=(MultichainCall&&) = default;
 
   bool SetNoResult(const std::string& chain_id);
   bool SetResult(const std::string& chain_id, ResultType result);
@@ -56,13 +52,12 @@ class UnstoppableDomainsMultichainCall {
 };
 
 template <class ResultType>
-class UnstoppableDomainsMultichainCalls {
+class MultichainCalls {
  public:
-  using CallbackType =
-      typename UnstoppableDomainsMultichainCall<ResultType>::CallbackType;
+  using CallbackType = typename MultichainCall<ResultType>::CallbackType;
 
-  UnstoppableDomainsMultichainCalls() = default;
-  ~UnstoppableDomainsMultichainCalls() = default;
+  MultichainCalls() = default;
+  ~MultichainCalls() = default;
 
   std::vector<std::string> GetChains() const;
 
@@ -79,10 +74,8 @@ class UnstoppableDomainsMultichainCalls {
 
  private:
   // domain -> call
-  base::flat_map<std::string, UnstoppableDomainsMultichainCall<ResultType>>
-      calls_;
+  base::flat_map<std::string, MultichainCall<ResultType>> calls_;
 };
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::unstoppable_domains
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_

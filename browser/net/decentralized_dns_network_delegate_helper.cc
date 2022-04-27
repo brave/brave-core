@@ -20,14 +20,6 @@
 
 namespace decentralized_dns {
 
-namespace {
-
-std::string GetValue(const std::vector<std::string>& arr, RecordKeys key) {
-  return arr[static_cast<size_t>(key)];
-}
-
-}  // namespace
-
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -45,10 +37,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (IsUnstoppableDomainsTLD(ctx->request_url) &&
       IsUnstoppableDomainsResolveMethodEthereum(
           g_browser_process->local_state())) {
-    auto keys = std::vector<std::string>(std::begin(kRecordKeys),
-                                         std::end(kRecordKeys));
-    json_rpc_service->UnstoppableDomainsProxyReaderGetMany(
-        brave_wallet::mojom::kMainnetChainId, ctx->request_url.host(), keys,
+    json_rpc_service->UnstoppableDomainsResolveDns(
+        ctx->request_url.host(),
         base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
                        next_callback, ctx));
 
@@ -92,37 +82,11 @@ void OnBeforeURLRequest_EnsRedirectWork(
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    const std::vector<std::string>& values,
+    const GURL& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != brave_wallet::mojom::ProviderError::kSuccess ||
-      values.size() != static_cast<size_t>(RecordKeys::MAX_RECORD_KEY) + 1) {
-    if (!next_callback.is_null())
-      next_callback.Run();
-    return;
-  }
-
-  // Redirect to ipfs URI if content hash is set, otherwise, fallback to the
-  // set redirect URL. If no records available to use, do nothing. See
-  // https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm
-  // for more details.
-  //
-  // TODO(jocelyn): Do not fallback to the set redirect URL if dns.A or
-  // dns.AAAA is not empty once we support the classical DNS records case.
-  std::string ipfs_uri = GetValue(values, RecordKeys::DWEB_IPFS_HASH);
-  if (ipfs_uri.empty()) {  // Try legacy value.
-    ipfs_uri = GetValue(values, RecordKeys::IPFS_HTML_VALUE);
-  }
-
-  std::string fallback_url = GetValue(values, RecordKeys::BROWSER_REDIRECT_URL);
-  if (fallback_url.empty()) {  // Try legacy value.
-    fallback_url = GetValue(values, RecordKeys::IPFS_REDIRECT_DOMAIN_VALUE);
-  }
-
-  if (!ipfs_uri.empty()) {
-    ctx->new_url_spec = GURL("ipfs://" + ipfs_uri).spec();
-  } else if (!fallback_url.empty()) {
-    ctx->new_url_spec = GURL(fallback_url).spec();
+  if (error == brave_wallet::mojom::ProviderError::kSuccess && url.is_valid()) {
+    ctx->new_url_spec = url.spec();
   }
 
   if (!next_callback.is_null())

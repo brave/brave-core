@@ -37,8 +37,11 @@ class SimpleURLLoader;
 class PrefService;
 
 namespace brave_wallet {
+
+namespace unstoppable_domains {
 template <class ResultType>
-class UnstoppableDomainsMultichainCalls;
+class MultichainCalls;
+}  // namespace unstoppable_domains
 
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
@@ -141,16 +144,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& spender_address,
                               GetERC20TokenAllowanceCallback callback) override;
 
-  using UnstoppableDomainsProxyReaderGetManyCallback =
-      base::OnceCallback<void(const std::vector<std::string>& values,
+  using UnstoppableDomainsResolveDnsCallback =
+      base::OnceCallback<void(const GURL& url,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  // Call getMany function of ProxyReader contract from Unstoppable Domains.
-  void UnstoppableDomainsProxyReaderGetMany(
-      const std::string& chain_id,
+  void UnstoppableDomainsResolveDns(
       const std::string& domain,
-      const std::vector<std::string>& keys,
-      UnstoppableDomainsProxyReaderGetManyCallback callback);
+      UnstoppableDomainsResolveDnsCallback callback);
 
   void UnstoppableDomainsGetEthAddr(
       const std::string& domain,
@@ -403,8 +403,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnUnstoppableDomainsProxyReaderGetMany(
-      UnstoppableDomainsProxyReaderGetManyCallback callback,
+  void OnUnstoppableDomainsResolveDns(
+      const std::string& domain,
+      const std::string& chain_id,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
@@ -595,8 +596,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<url::Origin, RequestCallback> switch_chain_callbacks_;
   base::flat_map<url::Origin, base::Value> switch_chain_ids_;
 
-  std::unique_ptr<UnstoppableDomainsMultichainCalls<std::string>>
+  std::unique_ptr<unstoppable_domains::MultichainCalls<std::string>>
       ud_get_eth_addr_calls_;
+  std::unique_ptr<unstoppable_domains::MultichainCalls<GURL>>
+      ud_resolve_dns_calls_;
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 

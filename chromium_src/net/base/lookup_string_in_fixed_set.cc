@@ -41,13 +41,16 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
     return kDafsaFound;
   }
 
-  // Recognize .crypto and .eth as known TLDs for decentralized DNS support.
-  // With this, when users type *.crypto or *.eth in omnibox, it will be parsed
-  // as OmniboxInputType::URL input type instead of OmniboxInputType::UNKNOWN,
-  // The first entry in the autocomplete list will be URL instead of search.
-  if (base::EndsWith(host, decentralized_dns::kCryptoDomain)) {
-    *suffix_length = strlen(decentralized_dns::kCryptoDomain) - 1;
-    return kDafsaFound;
+  // Recognize .crypto(and other ud suffixes) and .eth as known TLDs for
+  // decentralized DNS support. With this, when users type *.crypto or *.eth in
+  // omnibox, it will be parsed as OmniboxInputType::URL input type instead of
+  // OmniboxInputType::UNKNOWN, The first entry in the autocomplete list will be
+  // URL instead of search.
+  for (auto* unstoppabe_domain : decentralized_dns::kUnstoppableDomains) {
+    if (base::EndsWith(host, unstoppabe_domain)) {
+      *suffix_length = strlen(unstoppabe_domain) - 1;
+      return kDafsaFound;
+    }
   }
   if (base::EndsWith(host, decentralized_dns::kEthDomain)) {
     *suffix_length = strlen(decentralized_dns::kEthDomain) - 1;

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "base/strings/string_util.h"
 #include "brave/net/decentralized_dns/constants.h"
 #include "net/dns/dns_config.h"
@@ -17,11 +19,16 @@ bool GetNextIndex(const std::string& hostname,
   base::StringPiece server =
       config.doh_config.servers()[*doh_server_index].server_template();
 
+  bool is_unstoppable_domain = std::any_of(
+      std::begin(decentralized_dns::kUnstoppableDomains),
+      std::end(decentralized_dns::kUnstoppableDomains),
+      [&hostname](auto* domain) { return base::EndsWith(hostname, domain); });
+  bool is_eth_domain = base::EndsWith(hostname, decentralized_dns::kEthDomain);
+
   // Skip decentralized DNS resolvers if it is not target TLDs.
   while ((server == decentralized_dns::kUnstoppableDomainsDoHResolver &&
-          !base::EndsWith(hostname, decentralized_dns::kCryptoDomain)) ||
-         (server == decentralized_dns::kENSDoHResolver &&
-          !base::EndsWith(hostname, decentralized_dns::kEthDomain))) {
+          !is_unstoppable_domain) ||
+         (server == decentralized_dns::kENSDoHResolver && !is_eth_domain)) {
     // No next available index to attempt.
     if (!dns_server_iterator->AttemptAvailable()) {
       return false;
