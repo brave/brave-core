@@ -24,6 +24,7 @@
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/background/background_mode_manager.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/metrics/tab_stats/tab_stats_tracker.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/channel_info.h"
@@ -297,7 +298,9 @@ void BraveStatsUpdater::OnThresholdLoaderComplete(
 void BraveStatsUpdater::OnServerPingTimerFired() {
   VLOG(1) << "BraveStatsUpdater: In background? "
           << g_browser_process->background_mode_manager()
-                 ->IsBackgroundWithoutWindows();
+                 ->IsBackgroundWithoutWindows()
+          << " windows open? "
+          << metrics::TabStatsTracker::GetInstance()->tab_stats().window_count;
   // If we already pinged the stats server today, then we're done.
   std::string today_ymd = brave_stats::GetDateAsYMD(base::Time::Now());
   std::string last_check_ymd = pref_service_->GetString(kLastCheckYMD);
