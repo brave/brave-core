@@ -10,11 +10,11 @@
 
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
@@ -208,9 +208,9 @@ void BatAdsImpl::OnWalletUpdated(
 void BatAdsImpl::GetHistory(const base::Time from_time,
                             const base::Time to_time,
                             GetHistoryCallback callback) {
-  ads::AdsHistoryInfo history = ads_->GetHistory(
-      ads::AdsHistoryFilterType::kConfirmationType,
-      ads::AdsHistorySortType::kDescendingOrder, from_time, to_time);
+  ads::HistoryInfo history = ads_->GetHistory(
+      ads::HistoryFilterType::kConfirmationType,
+      ads::HistorySortType::kDescendingOrder, from_time, to_time);
 
   std::move(callback).Run(history.ToJson());
 }

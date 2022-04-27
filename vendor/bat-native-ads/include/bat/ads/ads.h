@@ -12,10 +12,10 @@
 
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_aliases.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace base {
@@ -25,7 +25,7 @@ class Time;
 namespace ads {
 
 class AdsClient;
-struct AdsHistoryInfo;
+struct HistoryInfo;
 struct AdNotificationInfo;
 
 // |g_environment| indicates whether URL requests should use the production or
@@ -220,12 +220,12 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
   // Called to get history filtered by |filter_type| and sorted by |sort_type|
-  // between the |from_time| and |to_time| date range. Returns |AdsHistoryInfo|
+  // between the |from_time| and |to_time| date range. Returns |HistoryInfo|
   // containing info of the obtained history.
-  virtual AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
-                                    const AdsHistorySortType sort_type,
-                                    const base::Time from_time,
-                                    const base::Time to_time) = 0;
+  virtual HistoryInfo GetHistory(const HistoryFilterType filter_type,
+                                 const HistorySortType sort_type,
+                                 const base::Time from_time,
+                                 const base::Time to_time) = 0;
 
   // Called to get the statement of accounts. The callback takes two arguments -
   // |bool| is set to |true| if successful otherwise |false|. |StatementInfo|

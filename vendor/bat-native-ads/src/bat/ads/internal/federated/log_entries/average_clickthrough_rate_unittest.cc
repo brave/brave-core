@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*

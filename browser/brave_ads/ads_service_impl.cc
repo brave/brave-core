@@ -32,10 +32,10 @@
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history_info.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
@@ -1322,31 +1322,30 @@ void AdsServiceImpl::OnTriggerSearchResultAdEvent(
 
 void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
                                   const std::string& json) {
-  ads::AdsHistoryInfo ads_history;
-  ads_history.FromJson(json);
+  ads::HistoryInfo history;
+  history.FromJson(json);
 
   // Build the list structure required by the webUI
   int uuid = 0;
   base::ListValue list;
 
-  for (const auto& item : ads_history.items) {
-    base::DictionaryValue ad_history_dictionary;
+  for (const auto& item : history.items) {
+    base::DictionaryValue history_item_dictionary;
     base::DictionaryValue ad_content_dictionary = item.ad_content.ToValue();
-    ad_history_dictionary.SetPath("adContent",
-                                  std::move(ad_content_dictionary));
+    history_item_dictionary.SetPath("adContent",
+                                    std::move(ad_content_dictionary));
     base::DictionaryValue category_content_dictionary =
         item.category_content.ToValue();
-    ad_history_dictionary.SetPath("categoryContent",
-                                  std::move(category_content_dictionary));
-    base::ListValue ad_history_list;
-    ad_history_list.Append(std::move(ad_history_dictionary));
+    history_item_dictionary.SetPath("categoryContent",
+                                    std::move(category_content_dictionary));
+    base::ListValue history_item_list;
+    history_item_list.Append(std::move(history_item_dictionary));
 
     base::DictionaryValue dictionary;
     dictionary.SetStringKey("uuid", base::NumberToString(uuid++));
-    const base::Time time = base::Time::FromDoubleT(item.timestamp);
-    const double js_time = time.ToJsTimeIgnoringNull();
+    const double js_time = item.time.ToJsTimeIgnoringNull();
     dictionary.SetDoubleKey("timestampInMilliseconds", js_time);
-    dictionary.SetPath("adDetailRows", std::move(ad_history_list));
+    dictionary.SetPath("adDetailRows", std::move(history_item_list));
 
     list.Append(std::move(dictionary));
   }

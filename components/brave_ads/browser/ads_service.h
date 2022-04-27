@@ -22,7 +22,7 @@
 #include "url/gurl.h"
 
 namespace ads {
-struct AdsHistoryInfo;
+struct HistoryInfo;
 }
 
 namespace base {

@@ -34,7 +34,7 @@ struct PurchaseIntentSignalHistoryInfo;
 
 class AdType;
 struct AdContentInfo;
-struct AdHistoryInfo;
+struct HistoryItemInfo;
 struct AdInfo;
 struct ClientInfo;
 
@@ -53,8 +53,8 @@ class Client final {
   FilteredCategoryList GetFilteredCategories() const;
   FlaggedAdList GetFlaggedAds() const;
 
-  void AppendAdHistory(const AdHistoryInfo& ad_history);
-  const base::circular_deque<AdHistoryInfo>& GetAdsHistory() const;
+  void AppendHistory(const HistoryItemInfo& history_item);
+  const base::circular_deque<HistoryItemInfo>& GetHistory() const;
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,

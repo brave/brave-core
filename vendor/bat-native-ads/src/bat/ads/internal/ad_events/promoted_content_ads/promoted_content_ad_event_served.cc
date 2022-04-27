@@ -7,7 +7,7 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
