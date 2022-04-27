@@ -211,6 +211,7 @@ handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: 
   const jsonRpcService = getAPIProxy().jsonRpcService
   await jsonRpcService.setNetwork(payload.chainId, payload.coin)
   store.dispatch(WalletActions.setNetwork(payload))
+  await store.dispatch(refreshNetworkInfo())
 })
 
 handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: WalletAccountType) => {
