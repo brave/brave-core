@@ -61,7 +61,7 @@ class WalletButtonMenuModel : public ui::SimpleMenuModel,
 
   void Build() {
     AddItemWithStringId(HideBraveWalletIcon,
-                        IDS_SETTINGS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR);
+                        IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR);
   }
 
   raw_ptr<PrefService> prefs_ = nullptr;

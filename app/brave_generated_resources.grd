@@ -425,7 +425,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
 
       <!-- Brave Wallet Extension -->
-      <message name="IDS_SETTINGS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
+      <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
         Hide Brave Wallet icon on toolbar
       </message>
 
