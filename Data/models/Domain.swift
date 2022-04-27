@@ -136,14 +136,23 @@ public final class Domain: NSManagedObject, CRUD {
   }
 
   // MARK: Wallet
-
-  public class func setBraveWalletDappPermission(forUrl url: URL, account: String, grant: Bool) {
+  
+  public class func setEthereumPermissions(forUrl url: URL, account: String, grant: Bool) {
+    setEthereumPermissions(forUrl: url, accounts: [account], grant: grant)
+  }
+  
+  public class func setEthereumPermissions(forUrl url: URL, accounts: [String], grant: Bool) {
     // no dapps support in private browsing mode
     let _context: WriteContext = .new(inMemory: false)
-    setWalletDappPermission(forUrl: url, account: account, grant: grant, context: _context)
+    setEthereumPermissions(forUrl: url, accounts: accounts, grant: grant, context: _context)
   }
-
-  public func permissionGranted(for account: String) -> Bool {
+  
+  public class func ethereumPermissions(forUrl url: URL) -> [String]? {
+    let domain = getOrCreateInternal(url, saveStrategy: .persistentStore)
+    return domain.wallet_permittedAccounts?.split(separator: ",").map(String.init)
+  }
+  
+  public func ethereumPermissions(for account: String) -> Bool {
     if let permittedAccount = wallet_permittedAccounts {
       return permittedAccount.components(separatedBy: ",").contains(account)
     }
@@ -300,17 +309,19 @@ extension Domain {
   }
 
   // MARK: Wallet
-
-  class func setWalletDappPermission(forUrl url: URL, account: String, grant: Bool, context: WriteContext = .new(inMemory: false)) {
+  
+  class func setEthereumPermissions(forUrl url: URL, accounts: [String], grant: Bool, context: WriteContext = .new(inMemory: false)) {
     DataController.perform(context: context) { context in
-      // Not saving here, save happens in `perform` method.
-      let domain = Domain.getOrCreateInternal(
-        url, context: context,
-        saveStrategy: .persistentStore)
-      domain.setWalletDappPermission(account: account, grant: grant, context: context)
+      for account in accounts {
+        // Not saving here, save happens in `perform` method.
+        let domain = Domain.getOrCreateInternal(
+          url, context: context,
+          saveStrategy: .persistentStore)
+        domain.setWalletDappPermission(account: account, grant: grant, context: context)
+      }
     }
   }
-
+  
   private func setWalletDappPermission(
     account: String, grant: Bool,
     context: NSManagedObjectContext

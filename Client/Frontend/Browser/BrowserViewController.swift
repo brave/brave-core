@@ -92,8 +92,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   var updateDisplayedPopoverProperties: (() -> Void)?
 
   let profile: Profile
-  let tabManager: TabManager
   let braveCore: BraveCoreMain
+  let tabManager: TabManager
   let migration: Migration?
   let bookmarkManager: BookmarkManager
 
@@ -388,6 +388,15 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     screenshotHelper = ScreenshotHelper(tabManager: tabManager)
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
+    #if WALLET_DAPPS_ENABLED
+    tabManager.makeWalletProvider = { [weak self] tab in
+      guard let self = self,
+            let provider = self.braveCore.walletProvider(with: self, isPrivateBrowsing: tab.isPrivate) else {
+        return nil
+      }
+      return (provider, js: self.braveCore.walletProviderJS)
+    }
+    #endif
     downloadQueue.delegate = self
 
     // Observe some user preferences
@@ -2033,10 +2042,13 @@ extension BrowserViewController: TabDelegate {
     readerMode.delegate = self
     tab.addContentScript(readerMode, name: ReaderMode.name(), contentWorld: .defaultClient)
 
-    // only add the logins helper if the tab is not a private browsing tab
+        // only add the logins helper and wallet provider if the tab is not a private browsing tab
     if !tab.isPrivate {
       let logins = LoginsHelper(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI)
       tab.addContentScript(logins, name: LoginsHelper.name(), contentWorld: .defaultClient)
+      #if WALLET_DAPPS_ENABLED
+      tab.addContentScript(EthereumProviderHelper(tab: tab), name: EthereumProviderHelper.name(), contentWorld: .page)
+      #endif
     }
 
     let errorHelper = ErrorPageHelper(certStore: profile.certStore)
@@ -2372,6 +2384,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     updateInContentHomePanel(selected?.url as URL?)
+        updateURLBarWalletButton()
   }
 
   func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {

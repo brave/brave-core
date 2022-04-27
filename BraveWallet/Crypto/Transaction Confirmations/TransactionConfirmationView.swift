@@ -105,7 +105,7 @@ struct TransactionConfirmationView: View {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.transactions.count))
           .fontWeight(.semibold)
         Button(action: next) {
-          Text(Strings.Wallet.nextTransaction)
+          Text(Strings.Wallet.next)
             .fontWeight(.semibold)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -331,7 +331,7 @@ struct TransactionConfirmationView: View {
                 }
               case .details:
                 VStack(alignment: .leading) {
-                  DetailsTextView(text: transactionDetails)
+                  StaticTextView(text: transactionDetails)
                     .frame(maxWidth: .infinity)
                     .frame(height: 200)
                     .background(Color(.tertiaryBraveGroupedBackground))
@@ -425,7 +425,7 @@ struct TransactionConfirmationView: View {
     Button(action: {
       confirmationStore.confirm(transaction: activeTransaction)
     }) {
-      Label(Strings.Wallet.confirmTransactionButtonTitle, systemImage: "checkmark.circle.fill")
+      Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
     .disabled(!confirmationStore.state.isBalanceSufficient)
@@ -434,8 +434,9 @@ struct TransactionConfirmationView: View {
 
 /// We needed a `TextEditor` that couldn't be edited and had a clear background color
 /// so we have to fallback to UIKit for this
-private struct DetailsTextView: UIViewRepresentable {
+struct StaticTextView: UIViewRepresentable {
   var text: String
+  var isMonospaced: Bool = true
 
   func makeUIView(context: Context) -> UITextView {
     let textView = UITextView()
@@ -445,7 +446,9 @@ private struct DetailsTextView: UIViewRepresentable {
     textView.font = {
       let metrics = UIFontMetrics(forTextStyle: .body)
       let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-      let font = UIFont.monospacedSystemFont(ofSize: desc.pointSize, weight: .regular)
+      let font = isMonospaced ?
+        UIFont.monospacedSystemFont(ofSize: desc.pointSize, weight: .regular) :
+        UIFont.systemFont(ofSize: desc.pointSize, weight: .regular)
       return metrics.scaledFont(for: font)
     }()
     textView.adjustsFontForContentSizeCategory = true

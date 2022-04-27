@@ -13,7 +13,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
   
   private func setupStore(
-    network: BraveWallet.NetworkInfo = .ropsten,
+    network: BraveWallet.NetworkInfo = .mockRopsten,
     accountInfos: [BraveWallet.AccountInfo] = [],
     allTokens: [BraveWallet.BlockchainToken] = [],
     transactions: [BraveWallet.TransactionInfo] = [],

@@ -5,6 +5,20 @@
 
 import BraveCore
 
+enum PendingWebpageRequest: Equatable {
+  case addChain(BraveWallet.NetworkInfo)
+  case switchChain(BraveWallet.SwitchChainRequest)
+  case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
+  case signMessage(BraveWallet.SignMessageRequest)
+}
+
+enum WebpageRequestResponse: Equatable {
+  case switchChain(approved: Bool, origin: URL)
+  case addNetwork(approved: Bool, chainId: String)
+  case addSuggestedToken(approved: Bool, contractAddresses: [String])
+  case signMessage(approved: Bool, id: Int32)
+}
+
 public class CryptoStore: ObservableObject {
   public let networkStore: NetworkStore
   public let portfolioStore: PortfolioStore
@@ -27,6 +41,7 @@ public class CryptoStore: ObservableObject {
     }
   }
   @Published private(set) var hasUnapprovedTransactions: Bool = false
+  @Published private(set) var pendingWebpageRequest: PendingWebpageRequest?
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -214,6 +229,38 @@ public class CryptoStore: ObservableObject {
           self.isPresentingTransactionConfirmations = !pendingTransactions.isEmpty
         }
       }
+    }
+  }
+  
+  func fetchPendingRequests() {
+    Task { @MainActor in
+      // TODO: Add check for eth permissions… get first eth request 
+      if let chainRequest = await rpcService.pendingChainRequests().first {
+        pendingWebpageRequest = .addChain(chainRequest)
+      } else if let signMessageRequest = await walletService.pendingSignMessageRequests().first {
+        pendingWebpageRequest = .signMessage(signMessageRequest)
+      } else if let switchRequest = await rpcService.pendingSwitchChainRequests().first {
+        pendingWebpageRequest = .switchChain(switchRequest)
+      } else if let addTokenRequest = await walletService.pendingAddSuggestTokenRequests().first {
+        pendingWebpageRequest = .addSuggestedToken(addTokenRequest)
+      }
+    }
+  }
+
+  func handleWebpageRequestResponse(_ response: WebpageRequestResponse) {
+    switch response {
+    case let .switchChain(approved, origin):
+      rpcService.notifySwitchChainRequestProcessed(approved, origin: origin)
+      pendingWebpageRequest = nil
+    case let .addNetwork(approved, chainId):
+      rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
+      pendingWebpageRequest = nil
+    case let .addSuggestedToken(approved, contractAddresses):
+      walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: contractAddresses)
+      pendingWebpageRequest = nil
+    case let .signMessage(approved, id):
+      walletService.notifySignMessageRequestProcessed(approved, id: id)
+      pendingWebpageRequest = nil
     }
   }
 }

@@ -23,7 +23,8 @@ protocol TabLocationViewDelegate {
   func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView)
   func tabLocationViewDidTapRewardsButton(_ urlBar: TabLocationView)
   func tabLocationViewDidLongPressRewardsButton(_ urlBar: TabLocationView)
-
+  func tabLocationViewDidTapWalletButton(_ urlBar: TabLocationView)
+  
   /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
   @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
 }
@@ -174,7 +175,14 @@ class TabLocationView: UIView {
     $0.tintColor = .white
     $0.addTarget(self, action: #selector(didClickPlaylistButton), for: .touchUpInside)
   }
-
+  
+  lazy var walletButton = WalletURLBarButton(frame: .zero).then {
+    $0.accessibilityIdentifier = "TabToolbar.walletButton"
+    $0.isAccessibilityElement = true
+    $0.buttonState = .inactive
+    $0.addTarget(self, action: #selector(tappedWalletButton), for: .touchUpInside)
+  }
+  
   lazy var reloadButton = ToolbarButton(top: true).then {
     $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
     $0.isAccessibilityElement = true
@@ -227,8 +235,8 @@ class TabLocationView: UIView {
 
     addGestureRecognizer(longPressRecognizer)
     addGestureRecognizer(tapRecognizer)
-
-    let optionSubviews = [readerModeButton, playlistButton, reloadButton, separatorLine, shieldsButton, rewardsButton]
+    
+    let optionSubviews = [readerModeButton, walletButton, playlistButton, reloadButton, separatorLine, shieldsButton, rewardsButton]
     optionSubviews.forEach {
       ($0 as? UIButton)?.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -341,7 +349,11 @@ class TabLocationView: UIView {
       delegate?.tabLocationViewDidLongPressRewardsButton(self)
     }
   }
-
+  
+  @objc func tappedWalletButton() {
+    delegate?.tabLocationViewDidTapWalletButton(self)
+  }
+  
   fileprivate func updateTextWithURL() {
     (urlTextField as? DisplayTextField)?.hostString = url?.host ?? ""
     urlTextField.text = url?.withoutWWW.schemelessAbsoluteString.trim("/")

@@ -13,6 +13,7 @@ import BraveUI
 public struct CryptoView: View {
   var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
+  var presentingContext: PresentingContext
 
   // in iOS 15, PresentationMode will be available in SwiftUI hosted by UIHostingController
   // but for now we'll have to manage this ourselves
@@ -22,10 +23,12 @@ public struct CryptoView: View {
 
   public init(
     walletStore: WalletStore,
-    keyringStore: KeyringStore
+    keyringStore: KeyringStore,
+    presentingContext: PresentingContext
   ) {
     self.walletStore = walletStore
     self.keyringStore = keyringStore
+    self.presentingContext = presentingContext
   }
 
   private enum VisibleScreen: Equatable {
@@ -48,7 +51,12 @@ public struct CryptoView: View {
   @ToolbarContentBuilder
   private var dismissButtonToolbarContents: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: { dismissAction?() }) {
+      Button(action: {
+        if case .requestEthererumPermissions(let request) = presentingContext {
+          request.decisionHandler(.rejected)
+        }
+        dismissAction?()
+      }) {
         Image("wallet-dismiss")
           .renderingMode(.template)
           .foregroundColor(Color(.braveOrange))
@@ -61,11 +69,37 @@ public struct CryptoView: View {
       switch visibleScreen {
       case .crypto:
         if let store = walletStore.cryptoStore {
-          CryptoContainerView(
-            keyringStore: keyringStore,
-            cryptoStore: store,
-            toolbarDismissContent: dismissButtonToolbarContents
-          )
+          Group {
+            switch presentingContext {
+            case .`default`:
+              CryptoContainerView(
+                keyringStore: keyringStore,
+                cryptoStore: store,
+                toolbarDismissContent: dismissButtonToolbarContents
+              )
+            case .webpageRequests:
+              WebpageRequestContainerView(
+                keyringStore: keyringStore,
+                cryptoStore: store,
+                toolbarDismissContent: dismissButtonToolbarContents
+              )
+            case .requestEthererumPermissions(let request):
+              NewSiteConnectionView(
+                origin: request.requestingOrigin,
+                keyringStore: keyringStore,
+                onConnect: {
+                  request.decisionHandler(.granted(accounts: $0))
+                  dismissAction?()
+                },
+                onDismiss: {
+                  request.decisionHandler(.rejected)
+                  dismissAction?()
+                }
+              )
+            case .panelUnlockOrSetup:
+              EmptyView()
+            }
+          }
           .transition(.asymmetric(insertion: .identity, removal: .opacity))
         }
       case .unlock:
@@ -95,6 +129,11 @@ public struct CryptoView: View {
       .init(action: { url in
         openWalletURLAction?(url)
       }))
+    .onChange(of: visibleScreen) { newValue in
+      if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
+        dismissAction?()
+      }
+    }
   }
 }
 
