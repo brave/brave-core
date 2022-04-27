@@ -84,7 +84,7 @@ class AssetDetailStore: ObservableObject {
     isLoadingPrice = true
     isLoadingChart = true
 
-    blockchainRegistry.buyTokens(BraveWallet.MainnetChainId) { [self] tokens in
+    blockchainRegistry.buyTokens(.wyre, chainId: BraveWallet.MainnetChainId) { [self] tokens in
       isBuySupported = tokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
     }
 

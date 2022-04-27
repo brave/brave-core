@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
+import BraveCore
 @testable import Client
 
 class AdblockRustTests: XCTestCase {
@@ -18,7 +19,7 @@ class AdblockRustTests: XCTestCase {
           @@good-advertisement
       """
 
-    let engine = AdblockRustEngine(rules: rules)
+    let engine = AdblockEngine(rules: rules)
 
     XCTAssert(engine.shouldBlock(requestUrl: "http://example.com/-advertisement-icon.", requestHost: "example.com", sourceHost: "example.com"))
 

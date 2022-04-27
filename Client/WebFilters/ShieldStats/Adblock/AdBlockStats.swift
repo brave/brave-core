@@ -4,6 +4,7 @@ import Foundation
 import Shared
 import BraveShared
 import Combine
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -16,10 +17,10 @@ class AdBlockStats: LocalAdblockResourceProtocol {
   fileprivate var fifoCacheOfUrlsChecked = FifoDict()
 
   // Adblock engine for general adblock lists.
-  private let generalAdblockEngine: AdblockRustEngine
+  private let generalAdblockEngine: AdblockEngine
 
   /// Adblock engine for regional, non-english locales.
-  private var regionalAdblockEngine: AdblockRustEngine?
+  private var regionalAdblockEngine: AdblockEngine?
 
   /// The task that downloads all the files. Can be cancelled
   private var downloadTask: AnyCancellable?
@@ -27,7 +28,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
   fileprivate var isRegionalAdblockEnabled: Bool { return Preferences.Shields.useRegionAdBlock.value }
 
   fileprivate init() {
-    generalAdblockEngine = AdblockRustEngine()
+    generalAdblockEngine = AdblockEngine()
   }
 
   static let adblockSerialQueue = DispatchQueue(label: "com.brave.adblock-dispatch-queue")
@@ -47,7 +48,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     do {
       let data = try Data(contentsOf: fileUrl)
       AdBlockStats.adblockSerialQueue.async {
-        self.generalAdblockEngine.set(data: data)
+        self.generalAdblockEngine.deserialize(data: data)
       }
     } catch {
       log.error("Failed to parse bundled general blocklist: \(error)")
@@ -147,7 +148,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
 
   func setDataFile(data: Data, id: String) -> AnyPublisher<Void, Error> {
     if !isGeneralAdblocker(id: id) && regionalAdblockEngine == nil {
-      regionalAdblockEngine = AdblockRustEngine()
+      regionalAdblockEngine = AdblockEngine()
     }
 
     guard let engine = isGeneralAdblocker(id: id) ? generalAdblockEngine : regionalAdblockEngine else {
@@ -157,7 +158,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     return Combine.Deferred {
       Future { completion in
         AdBlockStats.adblockSerialQueue.async {
-          if engine.set(data: data) {
+          if engine.deserialize(data: data) {
             log.debug("Adblock file with id: \(id) deserialized successfully")
             // Clearing the cache or checked urls.
             // The new list can bring blocked resource that were previously set as not-blocked.
@@ -178,7 +179,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
 
 extension AdBlockStats {
   func cosmeticFiltersScript(for url: URL) throws -> String? {
-    guard let rules = CosmeticFiltersResourceDownloader.shared.cssRules(for: url)?.data(using: .utf8) else {
+    guard let rules = CosmeticFiltersResourceDownloader.shared.cssRules(for: url).data(using: .utf8) else {
       return nil
     }
     

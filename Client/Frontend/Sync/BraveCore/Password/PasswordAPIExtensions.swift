@@ -28,15 +28,16 @@ extension PasswordForm {
   }
 
   var displayURLString: String {
-    self.url.origin ?? self.signOnRealm
+    return signOnRealm
   }
 
 }
 
 extension BravePasswordAPI {
   func fetchFromScript(_ url: URL, script: [String: Any]) -> PasswordForm? {
-    guard let signOnRealm = url.origin,
-      let formURL = URL(string: signOnRealm),
+    let origin = url.origin
+    guard !origin.isOpaque,
+      let originURL = origin.url,
       let username = script["username"] as? String,
       let usernameElement = script["usernameField"] as? String,
       let password = script["password"] as? String,
@@ -46,8 +47,8 @@ extension BravePasswordAPI {
     }
 
     let loginForm = PasswordForm(
-      url: formURL,
-      signOnRealm: signOnRealm,
+      url: originURL,
+      signOnRealm: originURL.absoluteString,
       dateCreated: Date(),
       dateLastUsed: Date(),
       datePasswordChanged: Date(),

@@ -116,9 +116,9 @@ public class TransactionConfirmationStore: ObservableObject {
     state = .init()  // Reset state
     isLoading = true
 
-    rpcService.chainId { [weak self] chainId in
+    rpcService.network { [weak self] selectedChain in
       guard let self = self else { return }
-      self.rpcService.network { selectedChain in
+      let chainId = selectedChain.chainId
         self.selectedChain = selectedChain
 
         self.state.gasSymbol = selectedChain.symbol
@@ -127,8 +127,8 @@ public class TransactionConfirmationStore: ObservableObject {
         let formatter = WeiFormatter(decimalFormatStyle: .balance)
         let txValue = transaction.ethTxValue.removingHexPrefix
         
-        self.blockchainRegistry.allTokens(chainId) { tokens in
-          self.walletService.userAssets(chainId) { userAssets in
+      self.blockchainRegistry.allTokens(chainId, coin: selectedChain.coin) { tokens in
+        self.walletService.userAssets(chainId, coin: selectedChain.coin) { userAssets in
             let allTokens = tokens + userAssets.filter { asset in
               // Only get custom tokens
               !tokens.contains(where: { $0.contractAddress(in: selectedChain).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
@@ -170,6 +170,10 @@ public class TransactionConfirmationStore: ObservableObject {
             case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
               self.state.symbol = selectedChain.symbol
               self.state.value = formatter.decimalString(for: txValue, radix: .hex, decimals: Int(selectedChain.decimals)) ?? ""
+          case .solanaSystemTransfer,
+              .solanaSplTokenTransfer,
+              .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+            break
             @unknown default:
               break
             }
@@ -178,7 +182,6 @@ public class TransactionConfirmationStore: ObservableObject {
         }
       }
     }
-  }
 
   private func fetchAssetRatios(for symbol: String, gasSymbol: String) {
     @discardableResult func updateState() -> Bool {
@@ -353,8 +356,8 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   
   func fetchTokens(completion: (([BraveWallet.BlockchainToken]) -> Void)? = nil) {
-    rpcService.chainId(.eth) { [weak self] chainId in
-      self?.blockchainRegistry.allTokens(chainId) { tokens in
+    rpcService.network { [weak self] network in
+      self?.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
         self?.allTokens = tokens
         completion?(tokens)
       }

@@ -252,7 +252,7 @@ class LoginsHelper: TabContentScript {
 
     let promptMessage = String(
       format: isUpdating ? Strings.updateLoginUsernamePrompt : Strings.saveLoginUsernamePrompt, username,
-      login.url.origin ?? login.signOnRealm)
+      login.displayURLString)
 
     snackBar = TimerSnackBar(
       text: promptMessage,

@@ -7,6 +7,7 @@ import Foundation
 import Shared
 import BraveShared
 import Combine
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -41,7 +42,7 @@ class CosmeticFiltersResourceDownloader {
   static let folderName = "cmf-data"
   private let servicesKeyName = "SERVICES_KEY"
   private let servicesKeyHeaderValue = "BraveServiceKey"
-  private var engine = AdblockRustEngine()
+  private var engine = AdblockEngine()
   private var initialLoad: AnyCancellable?
   private var downloadTask: AnyCancellable?
 
@@ -84,7 +85,7 @@ class CosmeticFiltersResourceDownloader {
       // `engine_add_resources` on an existing engine
       // This is because `engine_add_resources` will ADD resources, and not delete old ones
       // Thus we get a huge amount of memory usage and slow down.
-      let tempEngine = AdblockRustEngine()
+      let tempEngine = AdblockEngine()
       
       let cosmeticSamplesTask = downloadCosmeticSamples(with: tempEngine).catch { error -> AnyPublisher<Void, Never> in
         log.error("Failed to Download Cosmetic-Filters (CosmeticSamples): \(error)")
@@ -100,7 +101,7 @@ class CosmeticFiltersResourceDownloader {
         .collect()
         .subscribe(on: DispatchQueue.global(qos: .userInitiated))
         .receive(on: DispatchQueue.main)
-        .map { [weak self] _ -> AnyPublisher<AdblockRustEngine, Error> in
+        .map { [weak self] _ -> AnyPublisher<AdblockEngine, Error> in
           guard let self = self else {
             return Fail(error: "Error: Cosmetic-Filters Downloader Deallocated").eraseToAnyPublisher()
           }
@@ -110,7 +111,7 @@ class CosmeticFiltersResourceDownloader {
           // if any functions are called more than once
           // We cannot `reset` the Rust Engine
           // So instead, we discard it and replace it with a new one
-          let newEngine = AdblockRustEngine()
+          let newEngine = AdblockEngine()
           return self.loadDownloadedFiles(into: newEngine).map({ newEngine }).eraseToAnyPublisher()
         }
         .flatMap { $0 }
@@ -125,11 +126,11 @@ class CosmeticFiltersResourceDownloader {
     }
   }
 
-  func cssRules(for url: URL) -> String? {
-    engine.cssRules(for: url)
+  func cssRules(for url: URL) -> String {
+    engine.cosmeticResourcesForURL(url.absoluteString)
   }
 
-  private func loadDownloadedFiles(into engine: AdblockRustEngine) -> AnyPublisher<Void, Error> {
+  private func loadDownloadedFiles(into engine: AdblockEngine) -> AnyPublisher<Void, Error> {
     let fm = FileManager.default
     guard let folderUrl = fm.getOrCreateFolder(name: CosmeticFiltersResourceDownloader.folderName) else {
       return Fail(error: "Could not get directory with .dat and .json files").eraseToAnyPublisher()
@@ -159,7 +160,7 @@ class CosmeticFiltersResourceDownloader {
       .eraseToAnyPublisher()
   }
 
-  private func downloadCosmeticSamples(with engine: AdblockRustEngine) -> AnyPublisher<Void, Error> {
+  private func downloadCosmeticSamples(with engine: AdblockEngine) -> AnyPublisher<Void, Error> {
     downloadResources(for: engine, type: .cosmeticSample)
       .receive(on: DispatchQueue.main)
       .map {
@@ -169,7 +170,7 @@ class CosmeticFiltersResourceDownloader {
       .eraseToAnyPublisher()
   }
 
-  private func downloadResourceSamples(with engine: AdblockRustEngine) -> AnyPublisher<Void, Error> {
+  private func downloadResourceSamples(with engine: AdblockEngine) -> AnyPublisher<Void, Error> {
     return downloadResources(for: engine, type: .resourceSample)
       .receive(on: DispatchQueue.main)
       .map {
@@ -180,7 +181,7 @@ class CosmeticFiltersResourceDownloader {
   }
 
   private func downloadResources(
-    for engine: AdblockRustEngine,
+    for engine: AdblockEngine,
     type: CosmeticFilterType
   ) -> AnyPublisher<Void, Error> {
     let nm = networkManager
@@ -288,7 +289,7 @@ class CosmeticFiltersResourceDownloader {
   }
 
   private func setUpFiles(
-    into engine: AdblockRustEngine,
+    into engine: AdblockEngine,
     resources: [CosmeticFilterNetworkResource]
   ) -> AnyPublisher<Void, Error> {
     if resources.isEmpty {
@@ -319,11 +320,11 @@ class CosmeticFiltersResourceDownloader {
       .eraseToAnyPublisher()
   }
 
-  private func setDataFile(into engine: AdblockRustEngine, data: Data, id: String) -> AnyPublisher<Void, Error> {
+  private func setDataFile(into engine: AdblockEngine, data: Data, id: String) -> AnyPublisher<Void, Error> {
     Combine.Deferred {
       Future { completion in
         CosmeticFiltersResourceDownloader.queue.async {
-          if engine.set(data: data) {
+          if engine.deserialize(data: data) {
             completion(.success(()))
           } else {
             completion(.failure("Failed to deserialize adblock list with id: \(id)"))
@@ -333,7 +334,7 @@ class CosmeticFiltersResourceDownloader {
     }.eraseToAnyPublisher()
   }
 
-  private func setJSONFile(into engine: AdblockRustEngine, data: Data, id: String) -> AnyPublisher<Void, Error> {
+  private func setJSONFile(into engine: AdblockEngine, data: Data, id: String) -> AnyPublisher<Void, Error> {
     Combine.Deferred {
       Future { completion in
         CosmeticFiltersResourceDownloader.queue.async {
@@ -342,7 +343,8 @@ class CosmeticFiltersResourceDownloader {
             return
           }
           
-          if engine.set(json: data) {
+          if let json = String(data: data, encoding: .utf8) {
+            engine.addResources(json)
             completion(.success(()))
           } else {
             completion(.failure("Invalid JSON String - Bad Encoding"))

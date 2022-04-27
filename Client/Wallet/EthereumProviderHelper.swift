@@ -83,9 +83,6 @@ class EthereumProviderHelper: TabContentScript {
     // The web page has communicated with `window.ethereum`, so we should show the wallet icon
     tab.isWalletIconVisible = true
     
-    let securityOrigin = message.frameInfo.securityOrigin
-    let origin = "\(securityOrigin.protocol)://\(securityOrigin.host):\(securityOrigin.port)"
-    
     func handleResponse(
       id: MojoBase.Value,
       formedResponse: MojoBase.Value,
@@ -109,7 +106,7 @@ class EthereumProviderHelper: TabContentScript {
         replyHandler(nil, "Invalid args")
         return
       }
-      provider.request(requestPayload, origin: origin, completion: handleResponse)
+      provider.request(requestPayload, completion: handleResponse)
     case .isConnected:
       replyHandler(nil, nil)
     case .enable:
@@ -119,7 +116,7 @@ class EthereumProviderHelper: TabContentScript {
         replyHandler(nil, "Invalid args")
         return
       }
-      provider.request(requestPayload, origin: origin, completion: handleResponse)
+      provider.request(requestPayload, completion: handleResponse)
     case .send:
       struct SendPayload {
         var method: String
@@ -140,7 +137,7 @@ class EthereumProviderHelper: TabContentScript {
       if sendPayload.method.isEmpty {
         if let params = sendPayload.params, params.tag != .null {
           // Same as sendAsync
-          provider.request(params, origin: origin, completion: handleResponse)
+          provider.request(params, completion: handleResponse)
         } else {
           // Empty method with no params is not valid
           replyHandler(nil, "Invalid args")
@@ -159,7 +156,6 @@ class EthereumProviderHelper: TabContentScript {
       provider.send(
         sendPayload.method,
         params: sendPayload.params ?? .init(listValue: []),
-        origin: origin,
         completion: handleResponse
       )
     case .isUnlocked:

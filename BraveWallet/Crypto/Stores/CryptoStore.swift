@@ -6,7 +6,7 @@
 import BraveCore
 
 enum PendingWebpageRequest: Equatable {
-  case addChain(BraveWallet.NetworkInfo)
+  case addChain(BraveWallet.AddChainRequest)
   case switchChain(BraveWallet.SwitchChainRequest)
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
   case signMessage(BraveWallet.SignMessageRequest)
@@ -235,7 +235,7 @@ public class CryptoStore: ObservableObject {
   func fetchPendingRequests() {
     Task { @MainActor in
       // TODO: Add check for eth permissions… get first eth request 
-      if let chainRequest = await rpcService.pendingChainRequests().first {
+      if let chainRequest = await rpcService.pendingAddChainRequests().first {
         pendingWebpageRequest = .addChain(chainRequest)
       } else if let signMessageRequest = await walletService.pendingSignMessageRequests().first {
         pendingWebpageRequest = .signMessage(signMessageRequest)
@@ -250,7 +250,7 @@ public class CryptoStore: ObservableObject {
   func handleWebpageRequestResponse(_ response: WebpageRequestResponse) {
     switch response {
     case let .switchChain(approved, origin):
-      rpcService.notifySwitchChainRequestProcessed(approved, origin: origin)
+      rpcService.notifySwitchChainRequestProcessed(approved, origin: origin.origin)
       pendingWebpageRequest = nil
     case let .addNetwork(approved, chainId):
       rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)

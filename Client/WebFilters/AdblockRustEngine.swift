@@ -1,81 +1,37 @@
-//
-//  AdBlockRustEngine.swift
-//  AdblockRust
-//
-//  Created by Kyle Hickinson on 2021-01-13.
-//
+// Copyright 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
 import BraveCore
 
-extension Data {
-  fileprivate var int8Array: [Int8] {
-    return self.map { Int8(bitPattern: $0) }
-  }
-}
-
-/// A wrapper around adblock_rust_lib header.
-public class AdblockRustEngine {
-  private let engine: OpaquePointer
-
-  var deserializationPending = false
-
-  public init(rules: String = "") { engine = engine_create(rules) }
-  deinit { engine_destroy(engine) }
-
-  public static func setDomainResolver(_ resolver: @escaping C_DomainResolverCallback) {
-    set_domain_resolver(resolver)
-  }
-
+extension AdblockEngine {
   public func shouldBlock(requestUrl: String, requestHost: String, sourceHost: String) -> Bool {
-    if deserializationPending {
-      return false
-    }
-
-    let thirdPartyRequest = requestHost != sourceHost
-
-    var emptyPointer: UnsafeMutablePointer<Int8>?
-
-    var didMatchRule: Bool = false
-    var didMatchException: Bool = false
-    var didMatchImportant: Bool = false
-
-    engine_match(
-      engine, requestUrl, requestHost,
-      sourceHost, thirdPartyRequest, "script",
-      &didMatchRule, &didMatchException, &didMatchImportant,
-      UnsafeMutablePointer(mutating: &emptyPointer))
-    return didMatchRule
+    return matches(
+      url: requestUrl,
+      host: requestHost,
+      tabHost: sourceHost,
+      isThirdParty: requestUrl != sourceHost,
+      resourceType: "script"
+    ).didMatchRule
   }
-
+  
+  @available(*, deprecated, renamed: "deserialize(data:)")
   @discardableResult
   public func set(data: Data) -> Bool {
-    // Extra safety check to prevent race condition in case engine deserialization
-    // is called from another thread than `shouldBlock` invocation(#2699).
-    deserializationPending = true
-
-    let status = engine_deserialize(engine, data.int8Array, data.count)
-    if !status { assertionFailure("Failed to deserialize engine") }
-
-    deserializationPending = false
-    return status
+    deserialize(data: data)
   }
-
+  
+  @available(*, deprecated, message: "Use AdblockEngine.addResources(_:)")
   public func set(json: Data) -> Bool {
-    guard let string = String(data: json, encoding: .utf8),
-          let cString = NSString(string: string).utf8String else {
+    guard let string = String(data: json, encoding: .utf8) else {
       return false
     }
-    
-    // Extra safety check to prevent race condition in case engine deserialization
-    // is called from another thread than `shouldBlock` invocation(#2699).
-    deserializationPending = true
-    engine_add_resources(engine, cString)
-    deserializationPending = false
+    addResources(string)
     return true
   }
-
-  func cssRules(for url: URL) -> String? {
-    String(cString: engine_url_cosmetic_resources(engine, url.absoluteString))
-  }
 }
+
+@available(*, deprecated, renamed: "AdblockEngine")
+typealias AdblockRustEngine = AdblockEngine

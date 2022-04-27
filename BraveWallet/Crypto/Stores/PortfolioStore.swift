@@ -151,9 +151,9 @@ public class PortfolioStore: ObservableObject {
 
   func update() {
     isLoadingBalances = true
-    rpcService.chainId { [self] chainId in
+    rpcService.network { [self] network in
       // Get user assets for the selected chain
-      walletService.userAssets(chainId) { [self] tokens in
+      walletService.userAssets(network.chainId, coin: network.coin) { [self] tokens in
         let visibleTokens = tokens.filter(\.visible)
         let dispatchGroup = DispatchGroup()
         // fetch user balances, then fetch price history for tokens with non-zero balance

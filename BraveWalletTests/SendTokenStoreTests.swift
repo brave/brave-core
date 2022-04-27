@@ -123,7 +123,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       prefilledToken: nil
     )
-    let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "")
+    let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     store.selectedSendToken = token
     store.setUpTest()
 
@@ -177,7 +177,7 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
-    walletService._userAssets = { $1([.previewToken]) }
+    walletService._userAssets = { $2([.previewToken]) }
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._selectedAccount = { $1("account-address") }

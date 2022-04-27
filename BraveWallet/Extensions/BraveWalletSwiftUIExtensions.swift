@@ -111,7 +111,8 @@ extension BraveWallet.NetworkInfo: Identifiable {
       visible: false,
       tokenId: "",
       coingeckoId: "",
-      chainId: ""
+      chainId: "",
+      coin: coin
     )
   }
 
