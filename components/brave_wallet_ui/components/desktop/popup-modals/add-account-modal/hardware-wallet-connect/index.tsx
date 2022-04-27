@@ -42,6 +42,7 @@ import { useLib } from '../../../../../common/hooks'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
+  onSuccess: () => void
 }
 
 const getErrorMessage = (error: any, accountTypeName: string) => {
@@ -60,9 +61,7 @@ const getErrorMessage = (error: any, accountTypeName: string) => {
   return { error: error.message, userHint: '' }
 }
 
-export const HardwareWalletConnect = (props: Props) => {
-  const { selectedAccountType } = props
-
+export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props) => {
   // lib
   const { onConnectHardwareWallet } = useLib()
 
@@ -104,7 +103,8 @@ export const HardwareWalletConnect = (props: Props) => {
 
   const onAddHardwareAccounts = React.useCallback((selected: BraveWallet.HardwareWalletAccount[]) => {
     dispatch(WalletPageActions.addHardwareAccounts(selected))
-  }, [])
+    onSuccess()
+  }, [onSuccess])
 
   const onChangeDerivationScheme = React.useCallback((scheme: HardwareDerivationScheme) => {
     setSelectedDerivationScheme(scheme)

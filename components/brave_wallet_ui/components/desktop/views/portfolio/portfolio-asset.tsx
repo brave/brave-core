@@ -291,7 +291,7 @@ export const PortfolioAsset = () => {
     setHideBalances(prevHideBalances => !prevHideBalances)
   }, [])
 
-  // effect
+  // effects
   React.useEffect(() => {
     setfilteredAssetList(userAssetList)
   }, [userAssetList])

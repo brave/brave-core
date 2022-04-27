@@ -74,6 +74,7 @@ export const Account = (props: Props) => {
     onUpdateAccountName
   } = props
 
+  // routing
   const { id: accountId } = useParams<{ id: string }>()
 
   // redux

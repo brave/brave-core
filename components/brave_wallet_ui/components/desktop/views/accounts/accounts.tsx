@@ -65,7 +65,6 @@ export const Accounts = () => {
       case 'import': return history.push(WalletRoutes.ImportAccountModalStart)
       default: return history.push(WalletRoutes.AddAccountModal)
     }
-    // dispatch(WalletPageActions.setShowAddModal(true))
   }, [])
 
   const onRemoveAccount = React.useCallback((address: string, hardware: boolean, coin: BraveWallet.CoinType) => {

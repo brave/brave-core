@@ -22,13 +22,13 @@ import { WalletPageActions } from '../../../../page/actions'
 // components
 import { DividerLine } from '../../../extension'
 import PopupModal from '..'
+import { HardwareWalletConnect } from './hardware-wallet-connect'
+import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style
 import {
   StyledWrapper
 } from './style'
-import HardwareWalletConnect from './hardware-wallet-connect'
-import { SelectAccountType } from './select-account-type/select-account-type'
 
 interface Params {
   accountTypeName: string
@@ -61,7 +61,7 @@ export const AddHardwareAccountModal = () => {
     dispatch(WalletPageActions.setImportAccountError(hasError))
   }, [])
 
-  const onClickClose = React.useCallback(() => {
+  const closeModal = React.useCallback(() => {
     setImportError(false)
     history.push(WalletRoutes.Accounts)
   }, [])
@@ -72,17 +72,27 @@ export const AddHardwareAccountModal = () => {
 
   // render
   return (
-    <PopupModal title={getLocale('braveWalletAddAccountImportHardware')} onClose={onClickClose}>
+    <PopupModal
+      title={getLocale('braveWalletAddAccountImportHardware')}
+      onClose={closeModal}
+    >
+
       <DividerLine />
 
       {selectedAccountType &&
         <StyledWrapper>
-          <HardwareWalletConnect selectedAccountType={selectedAccountType} />
+          <HardwareWalletConnect
+            selectedAccountType={selectedAccountType}
+            onSuccess={closeModal}
+          />
         </StyledWrapper>
       }
 
       {!selectedAccountType &&
-        <SelectAccountType onSelectAccountType={onSelectAccountType} buttonText={getLocale('braveWalletAddAccountConnect')} />
+        <SelectAccountType
+          onSelectAccountType={onSelectAccountType}
+          buttonText={getLocale('braveWalletAddAccountConnect')}
+        />
       }
     </PopupModal>
   )
