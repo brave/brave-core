@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.ts b/chrome/browser/resources/settings/site_settings/constants.ts
-index f0c43b2b42618f930e2269eb50ecdc81c096ad04..84100558941c520e43c878061026618ada2d4336 100644
+index f0c43b2b42618f930e2269eb50ecdc81c096ad04..1369c2634942f7f7501b699f68f27f3a8f79a158 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.ts
 +++ b/chrome/browser/resources/settings/site_settings/constants.ts
 @@ -45,6 +45,7 @@ export enum ContentSettingsTypes {
