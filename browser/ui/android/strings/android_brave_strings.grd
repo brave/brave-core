@@ -2974,6 +2974,30 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_FRAGMENT_SIGN_MESSAGE_DESCRIPTION" desc="Sign message dialog description.">
       Your signature is being requested
     </message>
-    </messages>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME" desc="Add network panel name label">
+      Network name
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_URL" desc="Add network panel url label">
+      Network URL
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_ID" desc="Add network panel chain id label">
+      Chain ID
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">
+      Currency symbol
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE" desc="Add network panel network tab title">
+      Network
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">
+      This will allow this network to be used within Brave Wallet.
+    </message>
+    <message name="IDS_BRAVE_WALLET" desc="Brave Wallet text for string detection with localization">
+      Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
+      Allow this site to add a network?
+    </message>
+  </messages>
   </release>
 </grit>

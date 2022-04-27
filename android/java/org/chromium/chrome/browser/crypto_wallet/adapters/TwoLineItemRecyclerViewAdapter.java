@@ -36,7 +36,7 @@ public class TwoLineItemRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mTvTitle.setText(mValues.get(position).getSubTitle());
+        holder.mTvTitle.setText(mValues.get(position).getTitle());
         holder.mTvSubtitle.setText(mValues.get(position).getSubTitle());
     }
 

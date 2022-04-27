@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 public class TwoLineItemFragment extends Fragment {
     private List<TwoLineItemDataSource> items;
+    private TwoLineItemRecyclerViewAdapter adapter;
 
     public TwoLineItemFragment(List<TwoLineItemDataSource> items) {
         this.items = items;
@@ -39,9 +41,16 @@ public class TwoLineItemFragment extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_two_line_item_list, container, false);
-
         RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setAdapter(new TwoLineItemRecyclerViewAdapter(items));
+        adapter = new TwoLineItemRecyclerViewAdapter(items);
+        recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void invalidateData() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

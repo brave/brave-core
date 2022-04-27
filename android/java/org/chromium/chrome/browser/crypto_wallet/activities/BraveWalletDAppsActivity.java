@@ -5,11 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
-import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
-
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
@@ -21,23 +17,20 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainNetworkFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SwitchEthereumChainFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
-import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BraveWalletDAppsActivity
-        extends BraveWalletBaseActivity implements TransactionConfirmationListener {
+public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
+        implements TransactionConfirmationListener,
+                   AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     public static final String ACTIVITY_TYPE = "activityType";
     private static final String TAG = BraveWalletBaseActivity.class.getSimpleName();
     private ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment;
@@ -82,31 +75,75 @@ public class BraveWalletDAppsActivity
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
                 intent.getIntExtra("activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
-        mFragment = null;
-        if (mActivityType == ActivityType.SIGN_MESSAGE) {
-            mFragment = new SignMessageFragment();
-        } else if (mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
-            mFragment = new SwitchEthereumChainFragment();
-        } else if (mActivityType == ActivityType.ADD_TOKEN) {
-            mFragment = new AddTokenFragment();
-        } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
-            mFragment = new ConnectAccountFragment();
-        }
-
-        if (mFragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.frame_layout, mFragment);
-            ft.commit();
-        }
         onInitialLayoutInflationComplete();
     }
 
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN) {
-            addEthereumChain();
+        processPendingDappsRequest();
+        if (mFragment != null) {
+            // Note: finishNativeInitialization can be triggered before the creation of Fragment's
+            // view
+            if (mFragment instanceof BaseDAppsFragment) {
+                ((BaseDAppsFragment) mFragment).finishNativeInitialization();
+            } else if (mFragment instanceof BaseDAppsBottomSheetDialogFragment) {
+                ((BaseDAppsBottomSheetDialogFragment) mFragment).finishNativeInitialization();
+            }
+        }
+    }
+
+    @Override
+    public void onAddRequestProcessed(boolean hasMoreRequests) {
+        processPendingAddSwitchRequest(hasMoreRequests);
+    }
+
+    @Override
+    public void onSwitchRequestProcessed(boolean hasMoreRequests) {
+        processPendingAddSwitchRequest(hasMoreRequests);
+    }
+
+    @Override
+    public void onNextTransaction() {
+        // TODO: show the info of next Transaction via the pendingTxHelper if available,
+        //  otherwise dismiss activity
+    }
+
+    @Override
+    public void onRejectAllTransactions() {
+        for (TransactionInfo transactionInfo : mPendingTxHelper.getPendingTransactions()) {
+            getTxService().rejectTransaction(CoinType.ETH, transactionInfo.id, success -> {
+                if (!success) {
+                    Log.e(TAG, "Transaction failed " + transactionInfo.id);
+                }
+            });
+        }
+        finish();
+    }
+
+    @Override
+    public void onCancel() {
+        finish();
+    }
+
+    /*
+     * Process the next request by reloading the AddSwitchChainNetworkFragment
+     * which will load the next pending request
+     */
+    private void processPendingAddSwitchRequest(boolean hasMoreRequests) {
+        if (hasMoreRequests) {
+            processPendingDappsRequest();
+        } else {
             finish();
+        }
+    }
+
+    private void processPendingDappsRequest() {
+        mFragment = null;
+        if (mActivityType == ActivityType.SIGN_MESSAGE) {
+            mFragment = new SignMessageFragment();
+        } else if (mActivityType == ActivityType.ADD_TOKEN) {
+            mFragment = new AddTokenFragment();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
             getKeyringService().getKeyringInfo(
                     BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
@@ -145,43 +182,18 @@ public class BraveWalletDAppsActivity
                         });
                         mPendingTxHelper.fetchTransactions(() -> {});
                     });
+        } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
+                || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
+            mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
         }
-        if (mFragment instanceof BaseDAppsFragment) {
-            ((BaseDAppsFragment) mFragment).finishNativeInitialization();
-        } else if (mFragment instanceof BaseDAppsBottomSheetDialogFragment) {
-            ((BaseDAppsBottomSheetDialogFragment) mFragment).finishNativeInitialization();
+        showCurrentFragment();
+    }
+
+    private void showCurrentFragment() {
+        if (mFragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_layout, mFragment);
+            ft.commit();
         }
-    }
-
-    private void addEthereumChain() {
-        Bundle fragmentArgs = new Bundle();
-        fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, "");
-        fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
-        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-        settingsLauncher.launchSettingsActivity(
-                this, BraveWalletAddNetworksFragment.class, fragmentArgs);
-    }
-
-    @Override
-    public void onNextTransaction() {
-        // TODO: show the info of next Transaction via the pendingTxHelper if available,
-        //  otherwise dismiss activity
-    }
-
-    @Override
-    public void onRejectAllTransactions() {
-        for (TransactionInfo transactionInfo : mPendingTxHelper.getPendingTransactions()) {
-            getTxService().rejectTransaction(CoinType.ETH, transactionInfo.id, success -> {
-                if (!success) {
-                    Log.e(TAG, "Transaction failed " + transactionInfo.id);
-                }
-            });
-        }
-        finish();
-    }
-
-    @Override
-    public void onCancel() {
-        finish();
     }
 }

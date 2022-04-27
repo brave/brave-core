@@ -52,7 +52,7 @@
         tools:text="http://0.0.0.127" />
 
     <TextView
-        android:id="@+id/fragment_add_token_tv_title"
+        android:id="@+id/fragment_add_switch_chain_tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@id/fragment_add_token_tv_site" />
 
     <TextView
-        android:id="@+id/fragment_add_token_tv_text"
+        android:id="@+id/fragment_add_switch_chain_tv_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -76,7 +76,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_add_token_tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_add_switch_chain_tv_title" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/fragment_switch_eth_chain_tv_message_tabs"
@@ -86,7 +86,7 @@
         android:background="@color/wallet_toolbar_bg_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_add_token_tv_text"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_add_switch_chain_tv_text"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/tab_color"
         app:tabSelectedTextColor="@color/tab_color"
@@ -112,7 +112,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/fragment_switch_eth_chain_btn_cancel"
+            android:id="@+id/fragment_add_switch_eth_chain_btn_cancel"
             style="@style/BraveWalletButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/fragment_switch_eth_chain_btn_sign"
+            android:id="@+id/fragment_add_switch_eth_chain_btn_sign"
             style="@style/BraveWalletButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,8 +133,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:drawableStart="@drawable/check"
-            android:text="@string/brave_wallet_allow_change_network_button" />
+            android:drawableStart="@drawable/check" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
