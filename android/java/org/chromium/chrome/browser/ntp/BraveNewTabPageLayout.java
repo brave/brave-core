@@ -1188,7 +1188,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
 
                         if (BraveActivity.getBraveActivity() != null
                                 && BraveActivity.getBraveActivity().getActivityTab() != null) {
-
                             View firstChild = mRecyclerView.getChildAt(0);
                             int firstVisiblePosition =
                                     mRecyclerView.getChildAdapterPosition(firstChild);
