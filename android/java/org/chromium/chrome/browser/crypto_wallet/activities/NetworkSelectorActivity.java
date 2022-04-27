@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import android.widget.Toast;
+
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -24,6 +26,7 @@ public class NetworkSelectorActivity
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter networkSelectorAdapter;
     private MaterialToolbar mToolbar;
+    private String mSelectedNetwork;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -62,8 +65,8 @@ public class NetworkSelectorActivity
         jsonRpcService.getChainId(CoinType.ETH, chainId -> {
             jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String strNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
-                networkSelectorAdapter.setSelectedNetwork(strNetwork);
+                mSelectedNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
+                networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
             });
         });
     }
@@ -79,6 +82,8 @@ public class NetworkSelectorActivity
                                 this, networkSelectorItem.getNetworkName(), customNetworks),
                         CoinType.ETH, (success) -> {
                             if (!success) {
+                                Toast.makeText(this, getResources().getString(R.string.brave_wallet_network_selection_error) +" '"+networkSelectorItem.getNetworkShortName()+"'", Toast.LENGTH_SHORT).show();
+                                networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
                                 Log.e(TAG, "Could not set network");
                             } else {
                                 finish();
