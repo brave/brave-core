@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_NET_HTTP_TRANSPORT_SECURITY_STATE_H_
 
 #include "brave/net/http/partitioned_host_state_map.h"
+#include "net/base/isolation_info.h"
 
 #define enabled_sts_hosts_                                                  \
   enabled_sts_hosts_unused_;                                                \
@@ -18,7 +19,7 @@
   bool ShouldUpgradeToSSL(const NetworkIsolationKey& network_isolation_key, \
                           const std::string& host,                          \
                           const NetLogWithSource& net_log);                 \
-  bool AddHSTSHeader(const NetworkIsolationKey& network_isolation_key,      \
+  bool AddHSTSHeader(const IsolationInfo& isolation_info,                   \
                      const std::string& host, const std::string& value);    \
                                                                             \
  private:                                                                   \

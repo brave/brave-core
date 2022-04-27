@@ -367,6 +367,23 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
   ExpectHSTSState(a_com_rfh, "c.com", true);
 }
 
+IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
+                       HSTSIsSetInMainFrameOnNavigation) {
+  GURL a_com_set_hsts_url(
+      "https://a.com/set-header?Strict-Transport-Security: max-age%3D600000");
+  auto* a_com_set_hsts_rfh =
+      ui_test_utils::NavigateToURL(browser(), a_com_set_hsts_url);
+  ASSERT_TRUE(a_com_set_hsts_rfh);
+  EXPECT_EQ(a_com_set_hsts_rfh->GetLastCommittedURL(), a_com_set_hsts_url);
+
+  GURL a_com_url("http://a.com/simple.html");
+  auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_TRUE(a_com_rfh);
+  EXPECT_TRUE(a_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
+}
+
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSPreloadWorks) {
   ExpectPreloadWorks();
 }

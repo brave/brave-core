@@ -14,7 +14,7 @@
   ShouldUpgradeToSSL(request->isolation_info().network_isolation_key(), host, \
                      net_log)
 #define AddHSTSHeader(host, value) \
-  AddHSTSHeader(request_->isolation_info().network_isolation_key(), host, value)
+  AddHSTSHeader(request_->isolation_info(), host, value)
 
 #include "src/net/url_request/url_request_http_job.cc"
 
