@@ -417,7 +417,7 @@ extension PopoverController {
 
     containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
       .scaledBy(x: scale, y: scale)
-      .rotated(by: rotation)
+//            .rotated(by: rotation)
       .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
 
     if pan.state == .ended {
@@ -558,7 +558,7 @@ extension PopoverController: BasicAnimationControllerDelegate {
       animations: {
         self.containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
           .scaledBy(x: 0.001, y: 0.001)
-          .rotated(by: rotationAngle)
+//                .rotated(by: rotationAngle)
           .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
       }
     ) { finished in

@@ -1023,12 +1023,12 @@ extension Strings {
       value: "%lld of %lld",
       comment: "Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4'"
     )
-    public static let nextTransaction = NSLocalizedString(
-      "wallet.nextTransaction",
+    public static let next = NSLocalizedString(
+      "wallet.next",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Next",
-      comment: "A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction"
+      comment: "1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests."
     )
     public static let transactionFromToAccessibilityLabel = NSLocalizedString(
       "wallet.transactionFromToAccessibilityLabel",
@@ -1142,12 +1142,12 @@ extension Strings {
       value: "Confirm Transactions",
       comment: "The title of the transaction confirmation panel UI when there are multiple transactions to confirm"
     )
-    public static let confirmTransactionButtonTitle = NSLocalizedString(
-      "wallet.confirmTransactionButtonTitle",
+    public static let confirm = NSLocalizedString(
+      "wallet.confirm",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Confirm",
-      comment: "A button title to confirm a transaction. It is shown below details about a given transaction"
+      comment: "1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen."
     )
     public static let rejectTransactionButtonTitle = NSLocalizedString(
       "wallet.rejectTransactionButtonTitle",
@@ -2065,6 +2065,34 @@ extension Strings {
       bundle: .braveWallet,
       value: "Set Unlimited",
       comment: "The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\"."
+    )
+    public static let newSiteConnectScreenTitle = NSLocalizedString(
+      "wallet.newSiteConnectScreenTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Connect",
+      comment: "The transaction edit error alert button which will dismiss the alert."
+    )
+    public static let newSiteConnectMessage = NSLocalizedString(
+      "wallet.newSiteConnectMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Connect to Brave Wallet",
+      comment: "The message displayed below the dapp's origin url in new site connection screen."
+    )
+    public static let newSiteConnectFooter = NSLocalizedString(
+      "wallet.newSiteConnectFooter",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Only connect with sites you trust.",
+      comment: "The footer message displayed above the Next button in new site connection screen."
+    )
+    public static let newSiteConnectConfirmationMessage = NSLocalizedString(
+      "wallet.newSiteConnectConfirmationMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "View the addresses of your permitted accounts (required)",
+      comment: "A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with."
     )
   }
 }

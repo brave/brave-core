@@ -23,7 +23,7 @@ extension String {
   }
 
   /// Removes the `0x` prefix that may exist on the string
-  var removingHexPrefix: String {
+  public var removingHexPrefix: String {
     hasPrefix("0x") ? String(dropFirst(2)) : self
   }
 

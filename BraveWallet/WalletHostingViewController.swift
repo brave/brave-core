@@ -17,19 +17,36 @@ public protocol BraveWalletDelegate: AnyObject {
   func openWalletURL(_ url: URL)
 }
 
+/// The context of which wallet is being presented. Controls what content is shown when the wallet is unlocked
+public enum PresentingContext {
+  /// The default context shows the main wallet view which includes portfolio, buy/send/swap, etc.
+  case `default`
+  /// Shows the user any pending requests made by webpages such as new adding networks, tokens, etc.
+  case webpageRequests
+  /// Shows when a webpage wants to connect with the users wallet
+  case requestEthererumPermissions(_ request: WebpagePermissionRequest)
+  /// Shows the user only the unlock/setup screen then dismisses to view an unlocked panel
+  case panelUnlockOrSetup
+}
+
 /// The initial wallet controller to present when the user wants to view their wallet
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   public weak var delegate: BraveWalletDelegate?
   private var cancellable: AnyCancellable?
-
-  public init(walletStore: WalletStore) {
+  
+  public init(
+    walletStore: WalletStore,
+    presentingContext: PresentingContext = .default,
+    onUnlock: (() -> Void)? = nil
+  ) {
     gesture = WalletInteractionGestureRecognizer(
       keyringStore: walletStore.keyringStore
     )
     super.init(
       rootView: CryptoView(
         walletStore: walletStore,
-        keyringStore: walletStore.keyringStore
+        keyringStore: walletStore.keyringStore,
+        presentingContext: presentingContext
       )
     )
     rootView.dismissAction = { [unowned self] in
@@ -40,53 +57,57 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         self.delegate?.openWalletURL(url)
       }
     }
-    // SwiftUI has a bug where nested sheets do not dismiss correctly if the root View holding onto
-    // the sheet is removed from the view hierarchy. The root's sheet stays visible even though the
-    // root doesn't exist anymore.
-    //
-    // As a workaround to this issue, we can just watch keyring's `isLocked` value from here
-    // and dismiss the first sheet ourselves to ensure we dont get stuck with a child view visible
-    // while the wallet is locked.
     cancellable = walletStore.keyringStore.$keyring
-      .dropFirst()
+      .dropFirst() // Drop initial value
       .map(\.isLocked)
       .removeDuplicates()
+      .dropFirst() // Drop first async fetch of keyring
       .sink { [weak self] isLocked in
+        if !isLocked {
+          onUnlock?()
+        }
+        // SwiftUI has a bug where nested sheets do not dismiss correctly if the root View holding onto
+        // the sheet is removed from the view hierarchy. The root's sheet stays visible even though the
+        // root doesn't exist anymore.
+        //
+        // As a workaround to this issue, we can just watch keyring's `isLocked` value from here
+        // and dismiss the first sheet ourselves to ensure we dont get stuck with a child view visible
+        // while the wallet is locked.
         if let self = self, isLocked, self.presentedViewController != nil {
           self.dismiss(animated: true)
         }
       }
   }
-
+  
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-
+  
   deinit {
     gesture.view?.removeGestureRecognizer(gesture)
   }
-
+  
   private let gesture: WalletInteractionGestureRecognizer
-
+  
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     view.window?.addGestureRecognizer(gesture)
     UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
   }
-
+  
   // MARK: -
-
+  
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
     [.portrait, .portraitUpsideDown]
   }
-
+  
   public override var shouldAutorotate: Bool {
     true
   }
 }
 
-private class WalletInteractionGestureRecognizer: UIGestureRecognizer {
+class WalletInteractionGestureRecognizer: UIGestureRecognizer {
   private let store: KeyringStore
   init(keyringStore: KeyringStore) {
     store = keyringStore

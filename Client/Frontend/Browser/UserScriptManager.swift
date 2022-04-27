@@ -5,6 +5,7 @@
 import WebKit
 import Shared
 import Data
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -98,7 +99,8 @@ class UserScriptManager {
     isPaymentRequestEnabled: Bool,
     isWebCompatibilityMediaSourceAPIEnabled: Bool,
     isMediaBackgroundPlaybackEnabled: Bool,
-    isNightModeEnabled: Bool
+    isNightModeEnabled: Bool,
+    walletProviderJS: String?
   ) {
     self.tab = tab
     self.isCookieBlockingEnabled = isCookieBlockingEnabled
@@ -108,7 +110,8 @@ class UserScriptManager {
     self.isMediaBackgroundPlaybackEnabled = isMediaBackgroundPlaybackEnabled
     self.isNightModeEnabled = isNightModeEnabled
     self.userScriptTypes = []
-
+    self.walletProviderJS = walletProviderJS
+    
     reloadUserScripts()
   }
 
@@ -347,6 +350,31 @@ class UserScriptManager {
       in: .page)
   }()
 
+  private let walletProviderScript: WKUserScript? = {
+    guard let path = Bundle.main.path(forResource: "WalletEthereumProvider", ofType: "js"),
+          let source = try? String(contentsOfFile: path) else {
+      return nil
+    }
+    
+    var alteredSource = source
+    
+    let replacements = [
+      "$<security_token>": UserScriptManager.securityTokenString,
+      "$<handler>": "walletEthereumProvider_\(messageHandlerTokenString)",
+    ]
+    
+    replacements.forEach({
+      alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
+    })
+    
+    return WKUserScript(source: alteredSource,
+                        injectionTime: .atDocumentStart,
+                        forMainFrameOnly: true,
+                        in: .page)
+  }()
+
+  private var walletProviderJS: String?
+    
   private func reloadUserScripts() {
     tab?.webView?.configuration.userContentController.do {
       $0.removeAllUserScripts()
@@ -397,6 +425,15 @@ class UserScriptManager {
           log.error(error)
         }
       }
+
+      #if WALLET_DAPPS_ENABLED
+      if let script = walletProviderScript, tab?.isPrivate == false {
+        $0.addUserScript(script)
+        if let providerJS = walletProviderJS {
+          $0.addUserScript(.init(source: providerJS, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page))
+        }
+      }
+      #endif
     }
   }
 }

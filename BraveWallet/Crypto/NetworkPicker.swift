@@ -75,7 +75,7 @@ struct NetworkPicker: View {
 #if DEBUG
 struct NetworkPicker_Previews: PreviewProvider {
   static var previews: some View {
-    NetworkPicker(networkStore: .previewStore, selectedNetwork: .constant(.mainnet))
+    NetworkPicker(networkStore: .previewStore, selectedNetwork: .constant(.mockMainnet))
       .padding()
       .previewLayout(.sizeThatFits)
       .previewColorSchemes()
