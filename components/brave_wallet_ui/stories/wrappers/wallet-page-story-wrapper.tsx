@@ -8,6 +8,9 @@ import { createSendCryptoReducer } from '../../common/reducers/send_crypto_reduc
 import { createWalletReducer } from '../../common/reducers/wallet_reducer'
 import { createPageReducer } from '../../page/reducers/page_reducer'
 
+// actions
+import { WalletActions } from '../../common/actions'
+
 // types
 import { PageState, WalletState } from '../../constants/types'
 
@@ -31,17 +34,23 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
   walletStateOverride
 }) => {
   // redux
-  const store = createStore(combineReducers({
-    wallet: createWalletReducer({
-      ...mockWalletState,
-      ...(walletStateOverride || {})
-    }),
-    page: createPageReducer({
-      ...mockPageState,
-      ...(pageStateOverride || {})
-    }),
-    sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-  }))
+  const store = React.useMemo(() => {
+    return createStore(combineReducers({
+      wallet: createWalletReducer({
+        ...mockWalletState,
+        ...(walletStateOverride || {})
+      }),
+      page: createPageReducer({
+        ...mockPageState,
+        ...(pageStateOverride || {})
+      }),
+      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+    }))
+  }, [walletStateOverride, pageStateOverride])
+
+  React.useEffect(() => {
+    store && store.dispatch(WalletActions.initialize())
+  }, [store])
 
   // render
   return (
