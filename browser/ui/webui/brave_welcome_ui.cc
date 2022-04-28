@@ -153,6 +153,9 @@ void WelcomeDOMHandler::HandleImportNowRequested(
 }
 
 void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
+  if (args.size() < 4) {
+    return;
+  }
   if (!args[0].is_int() || !args[1].is_bool() || !args[2].is_bool() ||
       !args[3].is_bool()) {
     return;
