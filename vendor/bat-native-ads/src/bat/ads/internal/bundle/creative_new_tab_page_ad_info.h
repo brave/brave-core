@@ -10,6 +10,7 @@
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_wallpaper_info_aliases.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -23,7 +24,7 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   bool operator!=(const CreativeNewTabPageAdInfo& rhs) const;
 
   std::string company_name;
-  std::string image_url;
+  GURL image_url;
   std::string alt;
   CreativeNewTabPageAdWallpaperList wallpapers;
 };

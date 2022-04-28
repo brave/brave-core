@@ -9,6 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -23,7 +24,7 @@ struct CreativeInlineContentAdInfo final : CreativeAdInfo {
 
   std::string title;
   std::string description;
-  std::string image_url;
+  GURL image_url;
   std::string dimensions;
   std::string cta_text;
 };

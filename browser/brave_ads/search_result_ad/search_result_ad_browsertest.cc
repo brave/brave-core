@@ -24,6 +24,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_browser_tests --filter=SearchResultAdTest*
 
@@ -51,7 +52,7 @@ void CheckSampleSearchAdMetadata(
   EXPECT_EQ(search_result_ad->advertiser_id,
             base::StrCat({"data-advertiser-id", index}));
   EXPECT_EQ(search_result_ad->target_url,
-            base::StrCat({"data-landing-page", index}));
+            GURL(base::StrCat({"https://brave.com/data-landing-page", index})));
   EXPECT_EQ(search_result_ad->headline_text,
             base::StrCat({"data-headline-text", index}));
   EXPECT_EQ(search_result_ad->description,

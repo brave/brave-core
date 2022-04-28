@@ -34,7 +34,6 @@ class Conversions final : public ResourceInterface<const ConversionsInfo*> {
 
  private:
   void OnLoadAndParseResource(ParsingResultPtr<ConversionsInfo> result);
-  bool FromValue(base::Value resource_value);
 
   bool is_initialized_ = false;
 

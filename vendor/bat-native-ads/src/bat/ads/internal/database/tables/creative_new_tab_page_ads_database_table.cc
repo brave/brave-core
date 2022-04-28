@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -53,7 +52,7 @@ int BindParameters(mojom::DBCommand* command,
     BindString(command, index++, creative_ad.creative_set_id);
     BindString(command, index++, creative_ad.campaign_id);
     BindString(command, index++, creative_ad.company_name);
-    BindString(command, index++, creative_ad.image_url);
+    BindString(command, index++, creative_ad.image_url.spec());
     BindString(command, index++, creative_ad.alt);
 
     count++;
@@ -83,9 +82,9 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.value = ColumnDouble(record, 13);
   creative_ad.segment = ColumnString(record, 14);
   creative_ad.geo_targets.insert(ColumnString(record, 15));
-  creative_ad.target_url = ColumnString(record, 16);
+  creative_ad.target_url = GURL(ColumnString(record, 16));
   creative_ad.company_name = ColumnString(record, 17);
-  creative_ad.image_url = ColumnString(record, 18);
+  creative_ad.image_url = GURL(ColumnString(record, 18));
   creative_ad.alt = ColumnString(record, 19);
   creative_ad.ptr = ColumnDouble(record, 20);
 
@@ -96,7 +95,7 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.dayparts.push_back(daypart);
 
   CreativeNewTabPageAdWallpaperInfo wallpaper;
-  wallpaper.image_url = ColumnString(record, 24);
+  wallpaper.image_url = GURL(ColumnString(record, 24));
   wallpaper.focal_point.x = ColumnInt(record, 25);
   wallpaper.focal_point.y = ColumnInt(record, 26);
   creative_ad.wallpapers.push_back(wallpaper);

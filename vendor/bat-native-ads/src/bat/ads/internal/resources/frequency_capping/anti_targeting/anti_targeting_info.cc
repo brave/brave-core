@@ -65,9 +65,9 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
       return {};
     }
 
-    std::set<std::string> sites;
+    std::set<GURL> sites;
     for (const auto& site : iter.value().GetList()) {
-      sites.insert(site.GetString());
+      sites.insert(GURL(site.GetString()));
     }
 
     anti_targeting->sites.insert({iter.key(), sites});

@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
 
 #include <cstdint>
-#include <string>
 #include <vector>
 
 #include "base/observer_list.h"
@@ -15,6 +14,8 @@
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/tab_manager/tab_manager_observer.h"
 #include "bat/ads/internal/timer.h"
+
+class GURL;
 
 namespace base {
 class Time;
@@ -33,13 +34,13 @@ class AdTransfer final : public TabManagerObserver {
   void set_last_clicked_ad(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
   void MaybeTransferAd(const int32_t tab_id,
-                       const std::vector<std::string>& redirect_chain);
+                       const std::vector<GURL>& redirect_chain);
 
  private:
   void TransferAd(const int32_t tab_id,
-                  const std::vector<std::string>& redirect_chain);
+                  const std::vector<GURL>& redirect_chain);
   void OnTransferAd(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain);
+                    const std::vector<GURL>& redirect_chain);
 
   void Cancel(const int32_t tab_id);
 

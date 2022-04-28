@@ -11,6 +11,8 @@
 
 #include "bat/ads/internal/search_engine/search_provider_info.h"
 
+class GURL;
+
 namespace ads {
 
 const std::vector<SearchProviderInfo> _search_providers = {
@@ -139,8 +141,8 @@ class SearchProviders final {
   SearchProviders();
   ~SearchProviders();
 
-  static bool IsSearchEngine(const std::string& url);
-  static std::string ExtractSearchQueryKeywords(const std::string& url);
+  static bool IsSearchEngine(const GURL& url);
+  static std::string ExtractSearchQueryKeywords(const GURL& url);
 };
 
 }  // namespace ads

@@ -37,7 +37,7 @@
     self.segment = base::SysUTF8ToNSString(info.segment);
     self.title = base::SysUTF8ToNSString(info.title);
     self.body = base::SysUTF8ToNSString(info.body);
-    self.targetURL = base::SysUTF8ToNSString(info.target_url);
+    self.targetURL = base::SysUTF8ToNSString(info.target_url.spec());
   }
   return self;
 }

@@ -5,7 +5,10 @@ mojom("interfaces") {
 
   sources = [ "bat_ads.mojom" ]
 
-  public_deps = [ "//mojo/public/mojom/base" ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
 
   deps = [
     "//brave/components/brave_federated/public/interfaces",

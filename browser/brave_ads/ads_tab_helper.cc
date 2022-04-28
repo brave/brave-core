@@ -6,6 +6,7 @@
 #include "brave/browser/brave_ads/ads_tab_helper.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -62,7 +63,7 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetVisibleURL(),
+  ads_service_->OnTabUpdated(tab_id_, GURL(web_contents()->GetVisibleURL()),
                              is_active_, is_browser_active_);
 }
 

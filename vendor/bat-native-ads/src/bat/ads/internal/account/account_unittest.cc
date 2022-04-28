@@ -422,7 +422,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
-  info.target_url = "https://brave.com";
+  info.target_url = GURL("https://brave.com");
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
   info.ptr = 1.0;
@@ -511,7 +511,7 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   info.segment = "technology & computing-software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};
-  info.target_url = "https://brave.com";
+  info.target_url = GURL("https://brave.com");
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
   info.ptr = 1.0;

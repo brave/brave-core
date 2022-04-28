@@ -21,7 +21,7 @@ TEST(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
   expected_url_request->url =
-      R"(https://static.ads.bravesoftware.com/v1/issuers/)";
+      GURL(R"(https://static.ads.bravesoftware.com/v1/issuers/)");
   expected_url_request->method = mojom::UrlRequestMethod::kGet;
 
   EXPECT_EQ(expected_url_request, url_request);

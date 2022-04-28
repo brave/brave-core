@@ -33,10 +33,13 @@ mojom::UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string GetSignedTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v2/confirmation/token/%s?nonce=%s",
-                            server::GetNonAnonymousHost().c_str(),
-                            wallet_.id.c_str(), nonce_.c_str());
+GURL GetSignedTokensUrlRequestBuilder::BuildUrl() const {
+  const std::string spec =
+      base::StringPrintf("%s/v2/confirmation/token/%s?nonce=%s",
+                         server::GetNonAnonymousHost().c_str(),
+                         wallet_.id.c_str(), nonce_.c_str());
+
+  return GURL(spec);
 }
 
 }  // namespace ads

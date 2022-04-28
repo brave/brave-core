@@ -13,8 +13,6 @@
 
 namespace ads {
 
-struct ConversionInfo;
-struct DepositInfo;
 struct SearchResultAdInfo;
 
 class SearchResultAd final : public SearchResultAdObserver {
@@ -25,9 +23,6 @@ class SearchResultAd final : public SearchResultAdObserver {
   void AddObserver(SearchResultAdObserver* observer);
   void RemoveObserver(SearchResultAdObserver* observer);
 
-  // TODO(tmancey): Add a callback as we must not call FireEvent while another
-  // event is in progress; otherwise, frequency capping will not work. We should
-  // look at moving ad events to a serial queue to be processed one at a time
   void FireEvent(const mojom::SearchResultAdPtr& ad_mojom,
                  const mojom::SearchResultAdEventType event_type,
                  TriggerSearchResultAdEventCallback callback) const;

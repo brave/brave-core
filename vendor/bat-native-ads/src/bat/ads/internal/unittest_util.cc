@@ -66,14 +66,14 @@ URLEndpointResponses GetUrlEndpointResponsesForPath(
   return iter->second;
 }
 
-bool GetNextUrlEndpointResponse(const std::string& url,
+bool GetNextUrlEndpointResponse(const GURL& url,
                                 const URLEndpoints& endpoints,
                                 URLEndpointResponse* url_endpoint_response) {
-  DCHECK(!url.empty()) << "Empty URL";
+  DCHECK(url.is_valid()) << "Invalid URL: " << url;
   DCHECK(!endpoints.empty()) << "Missing endpoints";
   DCHECK(url_endpoint_response);
 
-  const std::string path = GURL(url).PathForRequest();
+  const std::string path = url.PathForRequest();
 
   const URLEndpointResponses url_endpoint_responses =
       GetUrlEndpointResponsesForPath(endpoints, path);
@@ -495,11 +495,12 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetBrowsingHistory(_, _, _))
       .WillByDefault(Invoke([](const int max_count, const int days_ago,
                                GetBrowsingHistoryCallback callback) {
-        std::vector<std::string> history;
+        std::vector<GURL> history;
+
         for (int i = 0; i < max_count; i++) {
-          const std::string entry =
+          const std::string spec =
               base::StringPrintf("https://www.brave.com/%d", i);
-          history.push_back(entry);
+          history.push_back(GURL(spec));
         }
 
         callback(history);

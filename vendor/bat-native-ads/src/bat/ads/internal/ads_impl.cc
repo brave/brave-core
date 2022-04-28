@@ -59,6 +59,7 @@
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/resources/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
@@ -79,6 +80,7 @@
 #include "bat/ads/statement_info.h"
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
@@ -162,7 +164,7 @@ void AdsImpl::OnPrefChanged(const std::string& path) {
 }
 
 void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                           const std::vector<std::string>& redirect_chain,
+                           const std::vector<GURL>& redirect_chain,
                            const std::string& html) {
   DCHECK(!redirect_chain.empty());
 
@@ -184,7 +186,7 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
 }
 
 void AdsImpl::OnTextLoaded(const int32_t tab_id,
-                           const std::vector<std::string>& redirect_chain,
+                           const std::vector<GURL>& redirect_chain,
                            const std::string& text) {
   DCHECK(!redirect_chain.empty());
 
@@ -199,16 +201,17 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
   }
   last_text_loaded_hash_ = hash;
 
-  const std::string url = redirect_chain.back();
+  const GURL& url = redirect_chain.back();
 
-  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
     BLOG(1, "Visited URL is not supported");
     return;
   }
 
   const absl::optional<TabInfo> last_visible_tab =
       TabManager::Get()->GetLastVisible();
-  if (!SameDomainOrHost(url, last_visible_tab ? last_visible_tab->url : "")) {
+  if (!SameDomainOrHost(url,
+                        last_visible_tab ? last_visible_tab->url : GURL())) {
     purchase_intent_processor_->Process(GURL(url));
   }
 
@@ -293,7 +296,7 @@ void AdsImpl::OnMediaStopped(const int32_t tab_id) {
 }
 
 void AdsImpl::OnTabUpdated(const int32_t tab_id,
-                           const std::string& url,
+                           const GURL& url,
                            const bool is_active,
                            const bool is_browser_active,
                            const bool is_incognito) {

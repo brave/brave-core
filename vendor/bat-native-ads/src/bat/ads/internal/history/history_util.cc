@@ -11,6 +11,7 @@
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/url_util.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -30,7 +31,7 @@ HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
   history_item.ad_content.advertiser_id = ad.advertiser_id;
   history_item.ad_content.brand = title;
   history_item.ad_content.brand_info = description;
-  history_item.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
+  history_item.ad_content.brand_display_url = GURL(ad.target_url).host();
   history_item.ad_content.brand_url = ad.target_url;
   history_item.ad_content.like_action_type =
       Client::Get()->GetAdContentLikeActionTypeForAdvertiser(ad.advertiser_id);

@@ -30,6 +30,7 @@
 #include "bat/ads/pref_names.h"
 #include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -108,7 +109,7 @@ bool DoesConfirmationTypeMatchConversionType(
 
 std::string ExtractConversionIdFromText(
     const std::string& html,
-    const std::vector<std::string>& redirect_chain,
+    const std::vector<GURL>& redirect_chain,
     const std::string& conversion_url_pattern,
     const ConversionIdPatternMap& conversion_id_patterns) {
   std::string conversion_id;
@@ -120,8 +121,7 @@ std::string ExtractConversionIdFromText(
     const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
       const auto url_iter = std::find_if(
-          redirect_chain.cbegin(), redirect_chain.cend(),
-          [=](const std::string& url) {
+          redirect_chain.cbegin(), redirect_chain.cend(), [=](const GURL& url) {
             return DoesUrlMatchPattern(url, conversion_url_pattern);
           });
 
@@ -129,7 +129,8 @@ std::string ExtractConversionIdFromText(
         return conversion_id;
       }
 
-      text = *url_iter;
+      GURL url = *url_iter;
+      text = url.spec();
     }
 
     conversion_id_pattern = conversion_id_pattern_info.id_pattern;
@@ -209,7 +210,7 @@ void Conversions::RemoveObserver(ConversionsObserver* observer) {
 }
 
 void Conversions::MaybeConvert(
-    const std::vector<std::string>& redirect_chain,
+    const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns) {
   if (!ShouldAllow()) {
@@ -217,8 +218,8 @@ void Conversions::MaybeConvert(
     return;
   }
 
-  const std::string& url = redirect_chain.back();
-  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
+  const GURL& url = redirect_chain.back();
+  if (!url.SchemeIsHTTPOrHTTPS()) {
     BLOG(1, "URL is not supported for conversions");
     return;
   }
@@ -256,7 +257,7 @@ bool Conversions::ShouldAllow() const {
 }
 
 void Conversions::CheckRedirectChain(
-    const std::vector<std::string>& redirect_chain,
+    const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionIdPatternMap& conversion_id_patterns) {
   BLOG(1, "Checking URL for conversions");
@@ -344,26 +345,25 @@ void Conversions::Convert(
 }
 
 ConversionList Conversions::FilterConversions(
-    const std::vector<std::string>& redirect_chain,
+    const std::vector<GURL>& redirect_chain,
     const ConversionList& conversions) {
   ConversionList filtered_conversions;
 
-  std::copy_if(
-      conversions.cbegin(), conversions.cend(),
-      std::back_inserter(filtered_conversions),
-      [&redirect_chain](const ConversionInfo& conversion) {
-        const auto iter = std::find_if(
-            redirect_chain.begin(), redirect_chain.end(),
-            [&conversion](const std::string& url) {
-              return DoesUrlMatchPattern(url, conversion.url_pattern);
-            });
+  std::copy_if(conversions.cbegin(), conversions.cend(),
+               std::back_inserter(filtered_conversions),
+               [&redirect_chain](const ConversionInfo& conversion) {
+                 const auto iter = std::find_if(
+                     redirect_chain.begin(), redirect_chain.end(),
+                     [&conversion](const GURL& url) {
+                       return DoesUrlMatchPattern(url, conversion.url_pattern);
+                     });
 
-        if (iter == redirect_chain.end()) {
-          return false;
-        }
+                 if (iter == redirect_chain.end()) {
+                   return false;
+                 }
 
-        return true;
-      });
+                 return true;
+               });
 
   return filtered_conversions;
 }

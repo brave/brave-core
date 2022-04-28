@@ -29,7 +29,7 @@ bool AdInfo::IsValid() const {
   if (type == AdType::kUndefined || placement_id.empty() ||
       creative_instance_id.empty() || creative_set_id.empty() ||
       campaign_id.empty() || advertiser_id.empty() || segment.empty() ||
-      target_url.empty()) {
+      !target_url.is_valid()) {
     return false;
   }
 

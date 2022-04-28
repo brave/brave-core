@@ -63,7 +63,7 @@ base::DictionaryValue AdContentInfo::ToValue() const {
   dictionary.SetStringKey("brand", brand);
   dictionary.SetStringKey("brandInfo", brand_info);
   dictionary.SetStringKey("brandDisplayUrl", brand_display_url);
-  dictionary.SetStringKey("brandUrl", brand_url);
+  dictionary.SetStringKey("brandUrl", brand_url.spec());
   dictionary.SetIntKey("likeAction", static_cast<int>(like_action_type));
   dictionary.SetStringKey("adAction", confirmation_type.ToString());
   dictionary.SetBoolKey("savedAd", is_saved);
@@ -130,7 +130,7 @@ bool AdContentInfo::FromValue(const base::Value& value) {
 
   const std::string* brand_url_value = dictionary->FindStringKey("brandUrl");
   if (brand_url_value) {
-    brand_url = *brand_url_value;
+    brand_url = GURL(*brand_url_value);
   }
 
   const absl::optional<int> like_action_type_optional =
@@ -215,7 +215,7 @@ bool AdContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("brand_url")) {
-    brand_url = document["brand_url"].GetString();
+    brand_url = GURL(document["brand_url"].GetString());
   }
 
   if (document.HasMember("like_action")) {
@@ -269,7 +269,7 @@ void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
   writer->String(info.brand_display_url.c_str());
 
   writer->String("brand_url");
-  writer->String(info.brand_url.c_str());
+  writer->String(info.brand_url.spec().c_str());
 
   writer->String("like_action");
   writer->Int(static_cast<int>(info.like_action_type));

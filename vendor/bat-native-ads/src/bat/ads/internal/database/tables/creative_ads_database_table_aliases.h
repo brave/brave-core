@@ -9,9 +9,9 @@
 #include <functional>
 #include <string>
 
-namespace ads {
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 
-struct CreativeAdInfo;
+namespace ads {
 
 using GetCreativeAdCallback =
     std::function<void(const bool success,

@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"

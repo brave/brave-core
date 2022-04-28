@@ -46,10 +46,11 @@ mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v2/confirmation/token/%s",
-                            server::GetNonAnonymousHost().c_str(),
-                            wallet_.id.c_str());
+GURL RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
+  const std::string spec = base::StringPrintf(
+      "%s/v2/confirmation/token/%s", server::GetNonAnonymousHost().c_str(),
+      wallet_.id.c_str());
+  return GURL(spec);
 }
 
 std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(

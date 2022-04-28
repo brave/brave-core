@@ -10,11 +10,14 @@
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -62,8 +65,8 @@ class ADS_EXPORT AdsClient {
   virtual void ResetAdEventsForId(const std::string& id) const = 0;
 
   // Get browsing history from |days_ago| limited to |max_count| entries. The
-  // callback takes one argument - |std::vector<std::string>| containing a list
-  // of URLs.
+  // callback takes one argument - |std::vector<GURL>| containing a list of
+  // URLs.
   virtual void GetBrowsingHistory(const int max_count,
                                   const int days_ago,
                                   GetBrowsingHistoryCallback callback) = 0;

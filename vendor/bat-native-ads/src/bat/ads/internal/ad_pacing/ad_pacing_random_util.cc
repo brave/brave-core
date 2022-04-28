@@ -6,11 +6,10 @@
 #include "bat/ads/internal/ad_pacing/ad_pacing_random_util.h"
 
 #include "base/rand_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
-
 absl::optional<double> g_ad_pacing_random_number;
-
 }  // namespace
 
 namespace ads {

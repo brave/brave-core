@@ -178,7 +178,7 @@ void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
 }
 
 void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,
-                          const std::vector<std::string>& history) {
+                          const std::vector<GURL>& history) {
   callback(history);
 }
 

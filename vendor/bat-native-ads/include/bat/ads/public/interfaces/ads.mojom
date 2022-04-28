@@ -4,6 +4,8 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module ads.mojom;
 
+import "url/mojom/url.mojom";
+
 enum Environment {
   kStaging = 0,
   kProduction
@@ -68,7 +70,7 @@ struct SearchResultAd {
   string creative_set_id;
   string campaign_id;
   string advertiser_id;
-  string target_url;
+  url.mojom.Url target_url;
   string headline_text;
   string description;
   double value;
@@ -92,7 +94,7 @@ enum P2AEventType {
 };
 
 struct UrlRequest {
-  string url;
+  url.mojom.Url url;
   array<string> headers;
   string content;
   string content_type;
@@ -100,7 +102,7 @@ struct UrlRequest {
 };
 
 struct UrlResponse {
-  string url;
+  url.mojom.Url url;
   int32 status_code;
   string body;
   map<string, string> headers;

@@ -178,7 +178,7 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     for (const auto& site : site_list->GetList()) {
       ad_targeting::PurchaseIntentSiteInfo info;
       info.segments = site_segments;
-      info.url_netloc = site.GetString();
+      info.url_netloc = GURL(site.GetString());
       info.weight = 1;
 
       purchase_intent->sites.push_back(info);

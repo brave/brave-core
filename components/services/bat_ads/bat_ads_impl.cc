@@ -69,13 +69,13 @@ void BatAdsImpl::OnPrefChanged(const std::string& path) {
 }
 
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
-                              const std::vector<std::string>& redirect_chain,
+                              const std::vector<GURL>& redirect_chain,
                               const std::string& html) {
   ads_->OnHtmlLoaded(tab_id, redirect_chain, html);
 }
 
 void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
-                              const std::vector<std::string>& redirect_chain,
+                              const std::vector<GURL>& redirect_chain,
                               const std::string& text) {
   ads_->OnTextLoaded(tab_id, redirect_chain, text);
 }
@@ -110,12 +110,11 @@ void BatAdsImpl::OnMediaStopped(
   ads_->OnMediaStopped(tab_id);
 }
 
-void BatAdsImpl::OnTabUpdated(
-    const int32_t tab_id,
-    const std::string& url,
-    const bool is_active,
-    const bool is_browser_active,
-    const bool is_incognito) {
+void BatAdsImpl::OnTabUpdated(const int32_t tab_id,
+                              const GURL& url,
+                              const bool is_active,
+                              const bool is_browser_active,
+                              const bool is_incognito) {
   ads_->OnTabUpdated(tab_id, url, is_active, is_browser_active, is_incognito);
 }
 

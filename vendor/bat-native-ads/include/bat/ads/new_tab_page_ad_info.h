@@ -11,6 +11,7 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/new_tab_page_ad_wallpaper_info_aliases.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -25,7 +26,7 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   bool FromJson(const std::string& json);
 
   std::string company_name;
-  std::string image_url;
+  GURL image_url;
   std::string alt;
   NewTabPageAdWallpaperList wallpapers;
 };

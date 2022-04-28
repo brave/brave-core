@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -53,7 +52,7 @@ int BindParameters(mojom::DBCommand* command,
     BindString(command, index++, creative_ad.campaign_id);
     BindString(command, index++, creative_ad.title);
     BindString(command, index++, creative_ad.description);
-    BindString(command, index++, creative_ad.image_url);
+    BindString(command, index++, creative_ad.image_url.spec());
     BindString(command, index++, creative_ad.dimensions);
     BindString(command, index++, creative_ad.cta_text);
 
@@ -85,10 +84,10 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.split_test_group = ColumnString(record, 14);
   creative_ad.segment = ColumnString(record, 15);
   creative_ad.geo_targets.insert(ColumnString(record, 16));
-  creative_ad.target_url = ColumnString(record, 17);
+  creative_ad.target_url = GURL(ColumnString(record, 17));
   creative_ad.title = ColumnString(record, 18);
   creative_ad.description = ColumnString(record, 19);
-  creative_ad.image_url = ColumnString(record, 20);
+  creative_ad.image_url = GURL(ColumnString(record, 20));
   creative_ad.dimensions = ColumnString(record, 21);
   creative_ad.cta_text = ColumnString(record, 22);
   creative_ad.ptr = ColumnDouble(record, 23);

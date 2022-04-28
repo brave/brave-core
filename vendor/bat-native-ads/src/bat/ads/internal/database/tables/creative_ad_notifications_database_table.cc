@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -82,7 +81,7 @@ CreativeAdNotificationInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.split_test_group = ColumnString(record, 14);
   creative_ad.segment = ColumnString(record, 15);
   creative_ad.geo_targets.insert(ColumnString(record, 16));
-  creative_ad.target_url = ColumnString(record, 17);
+  creative_ad.target_url = GURL(ColumnString(record, 17));
   creative_ad.title = ColumnString(record, 18);
   creative_ad.body = ColumnString(record, 19);
   creative_ad.ptr = ColumnDouble(record, 20);

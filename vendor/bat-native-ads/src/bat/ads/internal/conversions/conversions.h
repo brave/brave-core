@@ -16,6 +16,8 @@
 #include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/timer.h"
 
+class GURL;
+
 namespace ads {
 
 struct AdEventInfo;
@@ -32,23 +34,22 @@ class Conversions final {
 
   bool ShouldAllow() const;
 
-  void MaybeConvert(const std::vector<std::string>& redirect_chain,
+  void MaybeConvert(const std::vector<GURL>& redirect_chain,
                     const std::string& html,
                     const ConversionIdPatternMap& conversion_id_patterns);
 
   void StartTimerIfReady();
 
  private:
-  void CheckRedirectChain(const std::vector<std::string>& redirect_chain,
+  void CheckRedirectChain(const std::vector<GURL>& redirect_chain,
                           const std::string& html,
                           const ConversionIdPatternMap& conversion_id_patterns);
 
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
 
-  ConversionList FilterConversions(
-      const std::vector<std::string>& redirect_chain,
-      const ConversionList& conversions);
+  ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
+                                   const ConversionList& conversions);
   ConversionList SortConversions(const ConversionList& conversions);
 
   void AddItemToQueue(const AdEventInfo& ad_event,

@@ -195,7 +195,8 @@ bool CatalogInfo::FromJson(const std::string& json,
           auto payload = creative["payload"].GetObject();
           creative_info.payload.body = payload["body"].GetString();
           creative_info.payload.title = payload["title"].GetString();
-          creative_info.payload.target_url = payload["targetUrl"].GetString();
+          creative_info.payload.target_url =
+              GURL(payload["targetUrl"].GetString());
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
@@ -219,7 +220,8 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_info.payload.title = payload["title"].GetString();
           creative_info.payload.description =
               payload["description"].GetString();
-          creative_info.payload.image_url = payload["imageUrl"].GetString();
+          creative_info.payload.image_url =
+              GURL(payload["imageUrl"].GetString());
           if (!GURL(creative_info.payload.image_url).is_valid()) {
             BLOG(1, "Invalid image URL for creative instance id "
                         << creative_instance_id);
@@ -227,7 +229,8 @@ bool CatalogInfo::FromJson(const std::string& json,
           }
           creative_info.payload.dimensions = payload["dimensions"].GetString();
           creative_info.payload.cta_text = payload["ctaText"].GetString();
-          creative_info.payload.target_url = payload["targetUrl"].GetString();
+          creative_info.payload.target_url =
+              GURL(payload["targetUrl"].GetString());
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
@@ -252,9 +255,10 @@ bool CatalogInfo::FromJson(const std::string& json,
           auto logo = payload["logo"].GetObject();
 
           creative_info.payload.company_name = logo["companyName"].GetString();
-          creative_info.payload.image_url = logo["imageUrl"].GetString();
+          creative_info.payload.image_url = GURL(logo["imageUrl"].GetString());
           creative_info.payload.alt = logo["alt"].GetString();
-          creative_info.payload.target_url = logo["destinationUrl"].GetString();
+          creative_info.payload.target_url =
+              GURL(logo["destinationUrl"].GetString());
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
@@ -263,7 +267,7 @@ bool CatalogInfo::FromJson(const std::string& json,
 
           for (const auto& item : payload["wallpapers"].GetArray()) {
             CatalogNewTabPageAdWallpaperInfo wallpaper;
-            wallpaper.image_url = item["imageUrl"].GetString();
+            wallpaper.image_url = GURL(item["imageUrl"].GetString());
 
             const auto& focal_point = item["focalPoint"].GetObject();
             wallpaper.focal_point.x = focal_point["x"].GetInt();
@@ -289,7 +293,7 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_info.payload.title = payload["title"].GetString();
           creative_info.payload.description =
               payload["description"].GetString();
-          creative_info.payload.target_url = payload["feed"].GetString();
+          creative_info.payload.target_url = GURL(payload["feed"].GetString());
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);

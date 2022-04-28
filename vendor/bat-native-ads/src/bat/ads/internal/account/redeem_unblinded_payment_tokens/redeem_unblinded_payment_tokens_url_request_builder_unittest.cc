@@ -95,8 +95,8 @@ TEST(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForRPill) {
     mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
     mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-    expected_url_request->url =
-        R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
+    expected_url_request->url = GURL(
+        R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
     expected_url_request->headers = {
         R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
         R"(accept: application/json)"};
@@ -139,8 +139,8 @@ TEST(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
     mojom::UrlRequestPtr url_request = url_request_builder.Build();
 
     mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-    expected_url_request->url =
-        R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)";
+    expected_url_request->url = GURL(
+        R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
     expected_url_request->headers = {
         R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
         R"(accept: application/json)"};

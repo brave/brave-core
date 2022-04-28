@@ -21,7 +21,7 @@ bool NewTabPageAdInfo::IsValid() const {
     return false;
   }
 
-  if (company_name.empty() || image_url.empty() || alt.empty() ||
+  if (company_name.empty() || !image_url.is_valid() || alt.empty() ||
       wallpapers.empty()) {
     return false;
   }
@@ -77,7 +77,7 @@ bool NewTabPageAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("image_url")) {
-    image_url = document["image_url"].GetString();
+    image_url = GURL(document["image_url"].GetString());
   }
 
   if (document.HasMember("alt")) {
@@ -88,7 +88,7 @@ bool NewTabPageAdInfo::FromJson(const std::string& json) {
   // JSON
 
   if (document.HasMember("target_url")) {
-    target_url = document["target_url"].GetString();
+    target_url = GURL(document["target_url"].GetString());
   }
 
   return true;
@@ -122,7 +122,7 @@ void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   writer->String(info.company_name.c_str());
 
   writer->String("image_url");
-  writer->String(info.image_url.c_str());
+  writer->String(info.image_url.spec().c_str());
 
   writer->String("alt");
   writer->String(info.alt.c_str());
@@ -131,7 +131,7 @@ void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   // JSON
 
   writer->String("target_url");
-  writer->String(info.target_url.c_str());
+  writer->String(info.target_url.spec().c_str());
 
   writer->EndObject();
 }

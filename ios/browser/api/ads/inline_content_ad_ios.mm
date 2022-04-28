@@ -41,10 +41,10 @@
     self.segment = base::SysUTF8ToNSString(info.segment);
     self.title = base::SysUTF8ToNSString(info.title);
     self.message = base::SysUTF8ToNSString(info.description);
-    self.imageURL = base::SysUTF8ToNSString(info.image_url);
+    self.imageURL = base::SysUTF8ToNSString(info.image_url.spec());
     self.dimensions = base::SysUTF8ToNSString(info.dimensions);
     self.ctaText = base::SysUTF8ToNSString(info.cta_text);
-    self.targetURL = base::SysUTF8ToNSString(info.target_url);
+    self.targetURL = base::SysUTF8ToNSString(info.target_url.spec());
   }
   return self;
 }

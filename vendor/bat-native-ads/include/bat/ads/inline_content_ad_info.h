@@ -10,6 +10,7 @@
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
+#include "url/gurl.h"
 
 namespace base {
 class DictionaryValue;
@@ -36,7 +37,7 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
 
   std::string title;
   std::string description;
-  std::string image_url;
+  GURL image_url;
   std::string dimensions;
   std::string cta_text;
 };

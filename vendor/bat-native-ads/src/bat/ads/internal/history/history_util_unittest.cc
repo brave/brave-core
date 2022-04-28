@@ -36,7 +36,7 @@ TEST_F(BatAdsHistoryUtilTest, BuildAd) {
   ad.campaign_id = "e0fc8a2d-db96-44fb-8522-d299cb98559e";
   ad.advertiser_id = "49e008eb-5e37-4828-975f-e0de3a017b02";
   ad.segment = "technology & computing-software";
-  ad.target_url = "https://brave.com";
+  ad.target_url = GURL("https://brave.com");
 
   // Act
   const HistoryItemInfo& history_item =
@@ -55,8 +55,7 @@ TEST_F(BatAdsHistoryUtilTest, BuildAd) {
   expected_history_item.ad_content.advertiser_id = ad.advertiser_id;
   expected_history_item.ad_content.brand = "title";
   expected_history_item.ad_content.brand_info = "description";
-  expected_history_item.ad_content.brand_display_url =
-      GetHostFromUrl(ad.target_url);
+  expected_history_item.ad_content.brand_display_url = ad.target_url.host();
   expected_history_item.ad_content.brand_url = ad.target_url;
   expected_history_item.ad_content.confirmation_type =
       ConfirmationType::kViewed;

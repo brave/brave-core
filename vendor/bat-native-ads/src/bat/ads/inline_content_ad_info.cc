@@ -34,7 +34,7 @@ bool InlineContentAdInfo::IsValid() const {
     return false;
   }
 
-  if (title.empty() || description.empty() || image_url.empty() ||
+  if (title.empty() || description.empty() || !image_url.is_valid() ||
       dimensions.empty() || cta_text.empty()) {
     return false;
   }
@@ -53,10 +53,10 @@ base::DictionaryValue InlineContentAdInfo::ToValue() const {
   dictionary.SetStringKey("segment", segment);
   dictionary.SetStringKey("title", title);
   dictionary.SetStringKey("description", description);
-  dictionary.SetStringKey("imageUrl", image_url);
+  dictionary.SetStringKey("imageUrl", image_url.spec());
   dictionary.SetStringKey("dimensions", dimensions);
   dictionary.SetStringKey("ctaText", cta_text);
-  dictionary.SetStringKey("targetUrl", target_url);
+  dictionary.SetStringKey("targetUrl", target_url.spec());
 
   return dictionary;
 }
@@ -114,7 +114,7 @@ bool InlineContentAdInfo::FromValue(const base::Value& value) {
 
   const std::string* image_url_value = dictionary->FindStringKey("imageUrl");
   if (image_url_value) {
-    image_url = *image_url_value;
+    image_url = GURL(*image_url_value);
   }
 
   const std::string* dimensions_value = dictionary->FindStringKey("dimensions");
@@ -129,7 +129,7 @@ bool InlineContentAdInfo::FromValue(const base::Value& value) {
 
   const std::string* target_url_value = dictionary->FindStringKey("targetUrl");
   if (target_url_value) {
-    target_url = *target_url_value;
+    target_url = GURL(*target_url_value);
   }
 
   return true;
@@ -187,7 +187,7 @@ bool InlineContentAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("image_url")) {
-    image_url = document["image_url"].GetString();
+    image_url = GURL(document["image_url"].GetString());
   }
 
   if (document.HasMember("dimensions")) {
@@ -199,7 +199,7 @@ bool InlineContentAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("target_url")) {
-    target_url = document["target_url"].GetString();
+    target_url = GURL(document["target_url"].GetString());
   }
 
   return true;
@@ -236,7 +236,7 @@ void SaveToJson(JsonWriter* writer, const InlineContentAdInfo& info) {
   writer->String(info.description.c_str());
 
   writer->String("image_url");
-  writer->String(info.image_url.c_str());
+  writer->String(info.image_url.spec().c_str());
 
   writer->String("dimensions");
   writer->String(info.dimensions.c_str());
@@ -245,7 +245,7 @@ void SaveToJson(JsonWriter* writer, const InlineContentAdInfo& info) {
   writer->String(info.cta_text.c_str());
 
   writer->String("target_url");
-  writer->String(info.target_url.c_str());
+  writer->String(info.target_url.spec().c_str());
 
   writer->EndObject();
 }
