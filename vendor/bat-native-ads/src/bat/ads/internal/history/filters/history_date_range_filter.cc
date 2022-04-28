@@ -9,9 +9,9 @@
 
 namespace ads {
 
-HistoryDateRangeFilter::HistoryDateRangeFilter(const base::Time from,
-                                               const base::Time to)
-    : from_(from), to_(to) {}
+HistoryDateRangeFilter::HistoryDateRangeFilter(const base::Time from_time,
+                                               const base::Time to_time)
+    : from_time_(from_time), to_time_(to_time) {}
 
 HistoryDateRangeFilter::~HistoryDateRangeFilter() = default;
 
@@ -22,7 +22,7 @@ base::circular_deque<HistoryItemInfo> HistoryDateRangeFilter::Apply(
   const auto iter = std::remove_if(
       filtered_history.begin(), filtered_history.end(),
       [=](HistoryItemInfo& history_item) {
-        return history_item.time < from_ || history_item.time > to_;
+        return history_item.time < from_time_ || history_item.time > to_time_;
       });
 
   filtered_history.erase(iter, filtered_history.end());

@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/federated/covariate_logs_util.h"
 #include "bat/ads/internal/federated/covariates_constants.h"
 #include "bat/ads/internal/history/history.h"
 
@@ -28,13 +28,14 @@ AverageClickthroughRate::GetCovariateType() const {
 }
 
 std::string AverageClickthroughRate::GetValue() const {
-  const HistoryFilterType filter_type = HistoryFilterType::kNone;
-  const HistorySortType sort_type = HistorySortType::kNone;
-  const base::Time from = base::Time::Now() - time_window_;
-  const base::Time to = base::Time::Now();
-  const HistoryInfo history = history::Get(filter_type, sort_type, from, to);
+  const base::Time now = base::Time::Now();
+  const base::Time from_time = now - time_window_;
+  const base::Time to_time = now;
+
+  const HistoryInfo history = history::Get(
+      HistoryFilterType::kNone, HistorySortType::kNone, from_time, to_time);
   if (history.items.empty()) {
-    return ToString(kCovariateMissingValue);
+    return base::NumberToString(kCovariateMissingValue);
   }
 
   const int number_of_views = std::count_if(
@@ -44,7 +45,7 @@ std::string AverageClickthroughRate::GetValue() const {
       });
 
   if (number_of_views == 0) {
-    return ToString(kCovariateMissingValue);
+    return base::NumberToString(kCovariateMissingValue);
   }
 
   const int number_of_clicks = std::count_if(
@@ -54,7 +55,7 @@ std::string AverageClickthroughRate::GetValue() const {
       });
 
   if (number_of_clicks > number_of_views) {
-    return ToString(kCovariateMissingValue);
+    return base::NumberToString(kCovariateMissingValue);
   }
 
   const double clickthrough_rate =
@@ -62,7 +63,7 @@ std::string AverageClickthroughRate::GetValue() const {
   DCHECK_GE(clickthrough_rate, 0.0);
   DCHECK_LE(clickthrough_rate, 1.0);
 
-  return ToString(clickthrough_rate);
+  return base::NumberToString(clickthrough_rate);
 }
 
 }  // namespace ads

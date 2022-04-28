@@ -20,8 +20,6 @@
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/ad_diagnostics/ad_diagnostics.h"
-#include "bat/ads/internal/ad_diagnostics/last_unidle_timestamp_ad_diagnostics_entry.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
@@ -48,6 +46,8 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/diagnostics/diagnostics.h"
+#include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/federated/covariate_logs.h"
 #include "bat/ads/internal/history/history.h"
@@ -237,11 +237,7 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
     return;
   }
 
-  auto last_unidle_timestamp_diagnostics =
-      std::make_unique<LastUnIdleTimestampAdDiagnosticsEntry>();
-  last_unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
-  AdDiagnostics::Get()->SetDiagnosticsEntry(
-      std::move(last_unidle_timestamp_diagnostics));
+  SetLastUnIdleTimeDiagnosticEntry();
 
   MaybeUpdateIdleTimeThreshold();
 
@@ -456,8 +452,8 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
       });
 }
 
-void AdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
-  AdDiagnostics::Get()->GetAdDiagnostics(std::move(callback));
+void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
+  Diagnostics::Get()->Get(std::move(callback));
 }
 
 AdContentLikeActionType AdsImpl::ToggleAdThumbUp(const std::string& json) {
@@ -531,7 +527,7 @@ bool AdsImpl::ToggleFlaggedAd(const std::string& json) {
 void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
-  ad_diagnostics_ = std::make_unique<AdDiagnostics>();
+  diagnostics_ = std::make_unique<Diagnostics>();
 
   browser_manager_ = std::make_unique<BrowserManager>();
 

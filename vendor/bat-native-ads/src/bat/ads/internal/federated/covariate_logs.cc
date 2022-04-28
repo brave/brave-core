@@ -9,12 +9,10 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_clicked.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"

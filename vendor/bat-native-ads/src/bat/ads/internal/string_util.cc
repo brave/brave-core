@@ -6,14 +6,19 @@
 #include "bat/ads/internal/string_util.h"
 
 #include "base/check.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
 
 namespace {
+
+constexpr char kTrue[] = "true";
+constexpr char kFalse[] = "false";
 
 std::string Strip(const std::string& value, const std::string& pattern) {
   DCHECK(!pattern.empty());
@@ -60,6 +65,10 @@ std::string StripNonAlphaNumericCharacters(const std::string& value) {
       escaped_characters.c_str());
 
   return Strip(value, pattern);
+}
+
+std::string BoolToString(const bool value) {
+  return value ? kTrue : kFalse;
 }
 
 }  // namespace ads

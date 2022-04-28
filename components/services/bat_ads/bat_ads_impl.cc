@@ -224,12 +224,11 @@ void BatAdsImpl::GetStatementOfAccounts(
       std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1, _2));
 }
 
-void BatAdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
-  auto* holder = new CallbackHolder<GetAdDiagnosticsCallback>(
+void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
+  auto* holder = new CallbackHolder<GetDiagnosticsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetAdDiagnostics(
-      std::bind(BatAdsImpl::OnGetAdDiagnostics, holder, _1, _2));
+  ads_->GetDiagnostics(std::bind(BatAdsImpl::OnGetDiagnostics, holder, _1, _2));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(const std::string& json,
@@ -357,8 +356,8 @@ void BatAdsImpl::OnGetStatementOfAccounts(
 }
 
 // static
-void BatAdsImpl::OnGetAdDiagnostics(
-    CallbackHolder<GetAdDiagnosticsCallback>* holder,
+void BatAdsImpl::OnGetDiagnostics(
+    CallbackHolder<GetDiagnosticsCallback>* holder,
     const bool success,
     const std::string& json) {
   DCHECK(holder);

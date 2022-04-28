@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
 
-#include "bat/ads/internal/federated/covariate_logs_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/federated/covariates_constants.h"
 
 namespace ads {
@@ -29,10 +29,10 @@ brave_federated::mojom::CovariateType AdNotificationServedAt::GetCovariateType()
 
 std::string AdNotificationServedAt::GetValue() const {
   if (time_.is_null()) {
-    return ToString(kCovariateMissingValue);
+    return base::NumberToString(kCovariateMissingValue);
   }
 
-  return ToString(time_);
+  return base::NumberToString(time_.ToDoubleT());
 }
 
 }  // namespace ads

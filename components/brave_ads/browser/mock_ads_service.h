@@ -100,7 +100,7 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
 
-  MOCK_METHOD1(GetAdDiagnostics, void(GetAdDiagnosticsCallback));
+  MOCK_METHOD1(GetDiagnostics, void(GetDiagnosticsCallback));
 
   MOCK_METHOD2(ToggleAdThumbUp,
                void(const std::string&, OnToggleAdThumbUpCallback));

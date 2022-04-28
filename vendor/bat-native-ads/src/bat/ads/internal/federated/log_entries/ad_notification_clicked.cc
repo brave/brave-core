@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/federated/log_entries/ad_notification_clicked.h"
 
-#include "bat/ads/internal/federated/covariate_logs_util.h"
+#include "bat/ads/internal/string_util.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {
@@ -28,7 +28,7 @@ brave_federated::mojom::CovariateType AdNotificationClicked::GetCovariateType()
 }
 
 std::string AdNotificationClicked::GetValue() const {
-  return ToString(clicked_);
+  return BoolToString(clicked_);
 }
 
 }  // namespace ads

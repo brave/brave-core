@@ -121,7 +121,7 @@ class BatAdsImpl :
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void ToggleAdThumbUp(const std::string& json,
                        ToggleAdThumbUpCallback callback) override;
@@ -193,10 +193,9 @@ class BatAdsImpl :
         const bool success,
         const ads::StatementInfo& statement);
 
-    static void OnGetAdDiagnostics(
-        CallbackHolder<GetAdDiagnosticsCallback>* holder,
-        const bool success,
-        const std::string& json);
+    static void OnGetDiagnostics(CallbackHolder<GetDiagnosticsCallback>* holder,
+                                 const bool success,
+                                 const std::string& json);
 
     std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
     std::unique_ptr<ads::Ads> ads_;

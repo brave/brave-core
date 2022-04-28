@@ -103,6 +103,9 @@ void UnitTestBase::InitializeAds() {
 }
 
 AdsImpl* UnitTestBase::GetAds() const {
+  CHECK(is_integration_test_)
+      << "|GetAds| should only be called if |SetUpForTesting| was initialized "
+         "for integration testing";
   return ads_.get();
 }
 
@@ -209,6 +212,8 @@ void UnitTestBase::Initialize() {
   database_initialize_ = std::make_unique<database::Initialize>();
   database_initialize_->CreateOrOpen(
       [](const bool success) { ASSERT_TRUE(success); });
+
+  diagnostics_ = std::make_unique<Diagnostics>();
 
   browser_manager_ = std::make_unique<BrowserManager>();
 

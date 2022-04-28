@@ -36,7 +36,7 @@ using TriggerSearchResultAdEventCallback =
 using GetStatementOfAccountsCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
-using GetAdDiagnosticsCallback =
+using GetDiagnosticsCallback =
     std::function<void(const bool, const std::string&)>;
 
 }  // namespace ads
