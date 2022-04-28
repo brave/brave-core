@@ -62,6 +62,39 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmpNotAtEnd) {
   CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
+TEST(DeAmpUtilUnitTest, DetectAmpWithAmpEmptyAttribute) {
+  const std::string body =
+      "<html amp=\"\" xyzzy>"
+      "<head>"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
+TEST(DeAmpUtilUnitTest, DetectAmpWithEmojiEmptyAttribute) {
+  const std::string body =
+      "<html tomato ⚡=\"\" xyzzy >"
+      "<head>"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
+TEST(DeAmpUtilUnitTest, DetectAmpWithEmojiEmptyAttributeSingleQuotes) {
+  const std::string body =
+      "<html tomato ⚡='' xyzzy >"
+      "<head>"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
+}
+
 TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
   const std::string body =
       "<DOCTYPE! html>\n"
