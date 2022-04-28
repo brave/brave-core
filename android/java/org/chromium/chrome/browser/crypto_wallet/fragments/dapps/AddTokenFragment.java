@@ -30,8 +30,8 @@ import java.util.concurrent.Executors;
 
 public class AddTokenFragment extends BaseDAppsFragment {
     private AddSuggestTokenRequest mCurrentAddSuggestTokenRequest;
-    private Button mbtCancel;
-    private Button mbtAdd;
+    private Button mBtCancel;
+    private Button mBtAdd;
     private TextView mNetworkName;
     private TextView mWebSite;
     private TextView mTokenName;
@@ -46,8 +46,8 @@ public class AddTokenFragment extends BaseDAppsFragment {
         mHandler = new Handler(Looper.getMainLooper());
         View view = inflater.inflate(R.layout.fragment_add_token, container, false);
 
-        mbtCancel = view.findViewById(R.id.fragment_add_btn_cancel);
-        mbtAdd = view.findViewById(R.id.fragment_add_btn_add);
+        mBtCancel = view.findViewById(R.id.fragment_add_btn_cancel);
+        mBtAdd = view.findViewById(R.id.fragment_add_btn_add);
         mNetworkName = view.findViewById(R.id.fragment_add_token_tv_network_name);
         mWebSite = view.findViewById(R.id.fragment_add_token_tv_web_site);
         mTokenImage = view.findViewById(R.id.fragment_add_token_iv_token);
@@ -79,9 +79,9 @@ public class AddTokenFragment extends BaseDAppsFragment {
             }
             mCurrentAddSuggestTokenRequest = requests[0];
             if (init) {
-                mbtCancel.setOnClickListener(
+                mBtCancel.setOnClickListener(
                         v -> { notifyAddSuggestTokenRequestProcessed(false); });
-                mbtAdd.setOnClickListener(v -> { notifyAddSuggestTokenRequestProcessed(true); });
+                mBtAdd.setOnClickListener(v -> { notifyAddSuggestTokenRequestProcessed(true); });
             }
             mWebSite.setText(mCurrentAddSuggestTokenRequest.origin.originSpec);
             initToken();

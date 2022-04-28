@@ -48,8 +48,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private ImageView mAccountImage;
     private TextView mAccountName;
     private TextView mNetworkName;
-    private Button mbtCancel;
-    private Button mbtSign;
+    private Button mBtCancel;
+    private Button mBtSign;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
@@ -73,8 +73,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mNetworkName = view.findViewById(R.id.fragment_sign_msg_tv_network_name);
         mViewPager.setUserInputEnabled(false);
 
-        mbtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
-        mbtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
+        mBtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
+        mBtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
         initComponents();
 
         return view;
@@ -110,8 +110,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                     (tab, position) -> tab.setText(mTabTitles.get(position)))
                     .attach();
             if (init) {
-                mbtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
-                mbtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
+                mBtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
+                mBtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
             }
         });
     }

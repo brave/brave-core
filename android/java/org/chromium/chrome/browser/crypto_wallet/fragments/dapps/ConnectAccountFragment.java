@@ -119,7 +119,6 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     private void initComponents() {
-        updateAccounts();
         mFaviconHelper = new FaviconHelper();
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
