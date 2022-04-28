@@ -44,6 +44,11 @@ constexpr char kGetCircuitEstablishedCmd[] =
     "GETINFO status/circuit-established";
 constexpr char kGetCircuitEstablishedReply[] = "status/circuit-established=";
 
+template <size_t Sz>
+constexpr size_t length(const char (&)[Sz]) noexcept {
+  return Sz - 1;
+}
+
 static std::string escapify(const char* buf, int len) {
   std::ostringstream s;
   for (int i = 0; i < len; i++) {
@@ -396,7 +401,7 @@ void TorControl::GetVersionLine(std::string* version,
     VLOG(0) << "tor: unexpected " << kGetVersionCmd << " reply";
     return;
   }
-  *version = reply.substr(strlen(kGetVersionReply));
+  *version = reply.substr(length(kGetVersionReply));
 }
 
 void TorControl::GetVersionDone(
@@ -441,7 +446,7 @@ void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
     VLOG(0) << "tor: unexpected " << kGetSOCKSListenersCmd << " reply";
     return;
   }
-  listeners->push_back(reply.substr(strlen(kGetSOCKSListenersReply)));
+  listeners->push_back(reply.substr(length(kGetSOCKSListenersReply)));
 }
 
 void TorControl::GetSOCKSListenersDone(
@@ -487,7 +492,7 @@ void TorControl::GetCircuitEstablishedLine(std::string* established,
     VLOG(0) << "tor: unexpected " << kGetCircuitEstablishedCmd << " reply";
     return;
   }
-  *established = reply.substr(strlen(kGetCircuitEstablishedReply));
+  *established = reply.substr(length(kGetCircuitEstablishedReply));
 }
 
 void TorControl::GetCircuitEstablishedDone(
