@@ -7,7 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_CLICKED_H_
 
 #include "bat/ads/internal/ad_events/ad_event_interface.h"
-#include "bat/ads/internal/ads/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 
 namespace ads {
 namespace search_result_ads {

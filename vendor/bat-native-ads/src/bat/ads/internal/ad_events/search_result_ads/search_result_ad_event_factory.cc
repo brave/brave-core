@@ -8,7 +8,7 @@
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_served.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_viewed.h"
-#include "bat/ads/internal/ads/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 
 namespace ads {
 namespace search_result_ads {
