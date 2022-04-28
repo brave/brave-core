@@ -21,12 +21,12 @@
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
-#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
-#include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/internal/ads/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notification_observer.h"
+#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_observer.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_observer.h"
+#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {

@@ -11,8 +11,8 @@
 
 #include "base/check.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/internal/ads/exclusion_rules_base.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/creatives/exclusion_rules_base.h"
 
 namespace ads {
 

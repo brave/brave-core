@@ -8,8 +8,8 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/logging.h"
 
