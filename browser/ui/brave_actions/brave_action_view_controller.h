@@ -34,11 +34,6 @@ class BraveActionViewController : public ExtensionActionViewController {
   BraveActionViewController& operator=(const BraveActionViewController&) =
       delete;
 
-  static std::unique_ptr<BraveActionViewController> Create(
-      const extensions::ExtensionId& extension_id,
-      Browser* browser,
-      ExtensionsContainer* extensions_container);
-
   bool IsEnabled(content::WebContents* web_contents) const override;
   gfx::Image GetIcon(content::WebContents* web_contents,
                      const gfx::Size& size) override;
@@ -50,7 +45,10 @@ class BraveActionViewController : public ExtensionActionViewController {
       const std::string& extension_id);
 
  private:
-  // New instances should be instantiated with Create().
+  friend class BraveRewardsActionViewController;
+  friend class BraveActionViewControllerFactory;
+  // New instances should be instantiated with
+  // BraveActionViewControllerFactory::Create().
   BraveActionViewController(
       scoped_refptr<const extensions::Extension> extension,
       Browser* browser,
