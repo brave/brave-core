@@ -272,6 +272,7 @@
 		2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2729E7D226F502AC00200648 /* AccountPicker.swift */; };
 		272B862B270BD96F005ED304 /* SandboxInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272B862A270BD96F005ED304 /* SandboxInspectorView.swift */; };
 		273EB3A72422AB24002A8AAF /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9616E6A240EE43F00667C2D /* PaymentRequest.swift */; };
+		273F9857281AE3D100C7E7D4 /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift */; };
 		274398E224E4827800E79605 /* FeedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E124E4827800E79605 /* FeedCard.swift */; };
 		274398E524E4829900E79605 /* FeedFillStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E424E4829900E79605 /* FeedFillStrategy.swift */; };
@@ -3533,6 +3534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2775690525ACF95400C129AF /* SPMLibraries.framework in Frameworks */,
+				273F9857281AE3D100C7E7D4 /* BraveCore.xcframework in Frameworks */,
 				27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */,
 				5DE768A520B3458400FF5533 /* Shared.framework in Frameworks */,
 			);
@@ -10977,6 +10979,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -11655,6 +11658,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -14224,6 +14228,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -14457,6 +14462,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -14763,6 +14769,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -15016,6 +15023,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
