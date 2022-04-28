@@ -188,7 +188,7 @@ class AdsServiceImpl : public AdsService,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void ToggleAdThumbUp(const std::string& json,
                        OnToggleAdThumbUpCallback callback) override;
@@ -298,9 +298,9 @@ class AdsServiceImpl : public AdsService,
                                 const bool success,
                                 const std::string& json);
 
-  void OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
-                          const bool success,
-                          const std::string& json);
+  void OnGetDiagnostics(GetDiagnosticsCallback callback,
+                        const bool success,
+                        const std::string& json);
 
   void OnRemoveAllHistory(const bool success);
 

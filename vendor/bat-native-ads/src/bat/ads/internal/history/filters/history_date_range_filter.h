@@ -16,15 +16,15 @@ struct HistoryItemInfo;
 
 class HistoryDateRangeFilter final : public HistoryFilterInterface {
  public:
-  HistoryDateRangeFilter(const base::Time from, const base::Time to);
+  HistoryDateRangeFilter(const base::Time from_time, const base::Time to_time);
   ~HistoryDateRangeFilter() override;
 
   base::circular_deque<HistoryItemInfo> Apply(
       const base::circular_deque<HistoryItemInfo>& history) const override;
 
  private:
-  base::Time from_;
-  base::Time to_;
+  base::Time from_time_;
+  base::Time to_time_;
 };
 
 }  // namespace ads

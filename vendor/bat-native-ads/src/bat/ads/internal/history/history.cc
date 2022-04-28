@@ -28,12 +28,12 @@ namespace history {
 
 HistoryInfo Get(const HistoryFilterType filter_type,
                 const HistorySortType sort_type,
-                const base::Time from,
-                const base::Time to) {
+                const base::Time from_time,
+                const base::Time to_time) {
   base::circular_deque<HistoryItemInfo> history = Client::Get()->GetHistory();
 
   const auto date_range_filter =
-      std::make_unique<HistoryDateRangeFilter>(from, to);
+      std::make_unique<HistoryDateRangeFilter>(from_time, to_time);
   if (date_range_filter) {
     history = date_range_filter->Apply(history);
   }

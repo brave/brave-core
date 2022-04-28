@@ -104,7 +104,7 @@ interface BatAds {
   OnWalletUpdated(string payment_id, string seed);
   GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.BigString json);
   GetStatementOfAccounts() => (bool success, string json);
-  GetAdDiagnostics() => (bool success, string json);
+  GetDiagnostics() => (bool success, string json);
   ToggleAdThumbUp(string json) => (string json);
   ToggleAdThumbDown(string json) => (string json);
   ToggleAdOptIn(string category, int32 action) => (string category, int32 action);

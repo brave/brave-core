@@ -8,11 +8,16 @@
 
 #include <string>
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace ads {
 
 std::string StripNonAlphaCharacters(const std::string& value);
-
 std::string StripNonAlphaNumericCharacters(const std::string& value);
+
+std::string BoolToString(const bool value);
 
 }  // namespace ads
 

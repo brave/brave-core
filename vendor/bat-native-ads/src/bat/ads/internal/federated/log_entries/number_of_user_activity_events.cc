@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/federated/log_entries/number_of_user_activity_events.h"
 
-#include "bat/ads/internal/federated/covariate_logs_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"
 
@@ -32,7 +32,8 @@ std::string NumberOfUserActivityEvents::GetValue() const {
   const UserActivityEventList events =
       UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
 
-  return ToString(GetNumberOfUserActivityEvents(events, event_type_));
+  return base::NumberToString(
+      GetNumberOfUserActivityEvents(events, event_type_));
 }
 
 }  // namespace ads

@@ -428,7 +428,7 @@ void RewardsInternalsDOMHandler::GetAdDiagnostics(
 
   AllowJavascript();
 
-  ads_service_->GetAdDiagnostics(
+  ads_service_->GetDiagnostics(
       base::BindOnce(&RewardsInternalsDOMHandler::OnGetAdDiagnostics,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -449,12 +449,11 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(const bool success,
   }
 
 #if DCHECK_IS_ON()
-  DCHECK(diagnostics.is_list()) << "Diagnostics should be a list";
+  DCHECK(diagnostics.is_list()) << "Diagnostics must be a list";
   for (const auto& entry : diagnostics.GetList()) {
-    DCHECK(entry.is_dict()) << "Diagnostics entry should be a dictionary";
-    DCHECK(entry.FindKey("key")) << "Diagnostics entry should have 'key' key";
-    DCHECK(entry.FindKey("value"))
-        << "Diagnostics entry should have 'value' key";
+    DCHECK(entry.is_dict()) << "Diagnostic entry must be a dictionary";
+    DCHECK(entry.FindKey("name")) << "Diagnostic entry missing 'name' key";
+    DCHECK(entry.FindKey("value")) << "Diagnostic entry missing 'value' key";
   }
 #endif  // DCHECK_IS_ON()
 

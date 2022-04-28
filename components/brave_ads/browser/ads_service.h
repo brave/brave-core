@@ -63,7 +63,7 @@ using TriggerSearchResultAdEventCallback =
 using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
 
-using GetAdDiagnosticsCallback =
+using GetDiagnosticsCallback =
     base::OnceCallback<void(const bool, const std::string&)>;
 
 class AdsService : public KeyedService {
@@ -162,7 +162,7 @@ class AdsService : public KeyedService {
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
+  virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(const std::string& json,
                                OnToggleAdThumbUpCallback callback) = 0;

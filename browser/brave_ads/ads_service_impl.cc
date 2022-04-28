@@ -432,14 +432,14 @@ void AdsServiceImpl::GetStatementOfAccounts(
                      std::move(callback)));
 }
 
-void AdsServiceImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
+void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!connected()) {
     std::move(callback).Run(/* success */ false, "");
     return;
   }
 
-  bat_ads_->GetAdDiagnostics(base::BindOnce(&AdsServiceImpl::OnGetAdDiagnostics,
-                                            AsWeakPtr(), std::move(callback)));
+  bat_ads_->GetDiagnostics(base::BindOnce(&AdsServiceImpl::OnGetDiagnostics,
+                                          AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleAdThumbUp(const std::string& json,
@@ -1374,9 +1374,9 @@ void AdsServiceImpl::OnGetStatementOfAccounts(
       statement.earnings_this_month, statement.earnings_last_month);
 }
 
-void AdsServiceImpl::OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
-                                        const bool success,
-                                        const std::string& json) {
+void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
+                                      const bool success,
+                                      const std::string& json) {
   std::move(callback).Run(success, json);
 }
 

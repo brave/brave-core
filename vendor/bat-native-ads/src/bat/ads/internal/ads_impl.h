@@ -75,7 +75,7 @@ class TokenGeneratorInterface;
 }  // namespace privacy
 
 class Account;
-class AdDiagnostics;
+class Diagnostics;
 class AdNotification;
 class AdNotifications;
 class AdServer;
@@ -206,7 +206,7 @@ class AdsImpl final : public Ads,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   AdContentLikeActionType ToggleAdThumbUp(const std::string& json) override;
   AdContentLikeActionType ToggleAdThumbDown(const std::string& json) override;
@@ -321,7 +321,7 @@ class AdsImpl final : public Ads,
   bool is_initialized_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
-  std::unique_ptr<AdDiagnostics> ad_diagnostics_;
+  std::unique_ptr<Diagnostics> diagnostics_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;

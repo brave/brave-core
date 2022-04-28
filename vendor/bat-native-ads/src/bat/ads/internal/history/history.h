@@ -29,8 +29,8 @@ const int kForDays = 30;
 
 HistoryInfo Get(const HistoryFilterType filter_type,
                 const HistorySortType sort_type,
-                const base::Time from,
-                const base::Time to);
+                const base::Time from_time,
+                const base::Time to_time);
 
 void AddAdNotification(const AdNotificationInfo& ad,
                        const ConfirmationType& confirmation_type);
