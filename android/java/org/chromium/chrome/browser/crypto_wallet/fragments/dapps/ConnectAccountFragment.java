@@ -52,27 +52,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     private BraveEthereumPermissionAccountsListAdapter mAccountsListAdapter;
     private RecyclerView mRecyclerView;
     private String mSelectedAccount;
-    private boolean mIsNativeInitialized;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
-
-    private BraveWalletService getBraveWalletService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getBraveWalletService();
-        }
-
-        return null;
-    }
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletBaseActivity) {
-            return ((BraveWalletBaseActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateAccounts() {
@@ -116,7 +97,6 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsNativeInitialized = false;
         View view = inflater.inflate(R.layout.fragment_connect_account, container, false);
         mWebSite = view.findViewById(R.id.fragment_connect_account_website);
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
@@ -133,15 +113,12 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mFavicon = view.findViewById(R.id.favicon);
 
         mWebSite.setText(getCurrentHostHttpAddress().getSpec());
+        initComponents();
 
         return view;
     }
 
-    @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
-        updateAccounts();
-        mIsNativeInitialized = true;
+    private void initComponents() {
         mFaviconHelper = new FaviconHelper();
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
@@ -167,9 +144,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (mIsNativeInitialized) {
-            updateAccounts();
-        }
+        updateAccounts();
     }
 
     @Override

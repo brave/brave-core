@@ -15,8 +15,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 
 public class BaseDAppsBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    public void finishNativeInitialization(){};
-
     public BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
