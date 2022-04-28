@@ -18,6 +18,7 @@ pub struct MessageAPI {
     pub sequence: u64,
     #[serde(with = "tokenamount")]
     pub value: TokenAmount,
+    #[serde(rename="Method")]
     pub method_num: MethodNum,
     #[serde(with = "rawbytes")]
     pub params: RawBytes,

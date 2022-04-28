@@ -180,7 +180,7 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
 absl::optional<std::string> FilTransaction::GetMessageToSign() const {
   auto value = ToValue();
   value.RemoveKey("MaxFee");
-  value.SetIntKey("MethodNum", 0);
+  value.SetIntKey("Method", 0);
   value.SetIntKey("Version", 0);
   value.SetStringKey("Params", "");
   std::string json;

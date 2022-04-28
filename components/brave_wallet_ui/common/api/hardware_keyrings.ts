@@ -44,9 +44,11 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
 
 export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-    const ledgerKeyring = getLedgerHardwareKeyring(coin)
-    assert(type === ledgerKeyring.type())
-    return ledgerKeyring
+    if (coin === BraveWallet.CoinType.ETH) {
+      return getLedgerEthereumHardwareKeyring()
+    } else if (coin === BraveWallet.CoinType.FIL) {
+      return getLedgerFilecoinHardwareKeyring()
+    }
   }
 
   const trezorKeyring = getTrezorHardwareKeyring()
@@ -54,14 +56,14 @@ export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.Coin
   return trezorKeyring
 }
 
-export function getLedgerHardwareKeyring (coin: BraveWallet.CoinType): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.LedgerFilecoinKeyring {
-  if (coin === BraveWallet.CoinType.ETH) {
-    if (!ethereumHardwareKeyring) {
-      ethereumHardwareKeyring = new LedgerBridgeKeyring()
-    }
-    return ethereumHardwareKeyring
+export function getLedgerEthereumHardwareKeyring (): LedgerBridgeKeyring {
+  if (!ethereumHardwareKeyring) {
+    ethereumHardwareKeyring = new LedgerBridgeKeyring()
   }
-  assert(coin === BraveWallet.CoinType.FIL)
+  return ethereumHardwareKeyring
+}
+
+export function getLedgerFilecoinHardwareKeyring (): FilecoinLedgerKeyring {
   if (!filecoinHardwareKeyring) {
     filecoinHardwareKeyring = new FilecoinLedgerKeyring()
   }

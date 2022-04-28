@@ -2661,7 +2661,7 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
         "GasFeeCap": "3",
         "GasLimit": 4,
         "GasPremium": "2",
-        "MethodNum": 0,
+        "Method": 0,
         "Nonce": 1,
         "Params": "",
         "To": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",

@@ -1,5 +1,6 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
 import { BraveWallet } from '../../constants/types'
+import { SignedLotusMessage } from '@glif/filecoin-message'
 
 export const FilecoinNetworkTypes = [
   BraveWallet.FILECOIN_MAINNET, BraveWallet.FILECOIN_TESTNET
@@ -30,7 +31,7 @@ export type HardwareOperationResult = {
 }
 
 export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
-  payload?: EthereumSignedTx
+  payload?: EthereumSignedTx | SignedLotusMessage
 }
 
 export type SignHardwareMessageOperationResult = HardwareOperationResult & {
@@ -67,3 +68,5 @@ export const FilecoinNetworkLocaleMapping = {
   [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
   [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
 }
+
+export const DerivationBatch = 4
