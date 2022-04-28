@@ -7,21 +7,6 @@ import SwiftUI
 import BraveCore
 import Shared
 
-// Modifier workaround for FB9812596 to avoid crashing on iOS 14 on Release builds
-@available(iOS 15.0, *)
-private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
-  var action: () -> Void
-
-  func body(content: Content) -> some View {
-    content
-      .swipeActions(edge: .trailing) {
-        Button(role: .destructive, action: action) {
-          Label(Strings.Wallet.delete, systemImage: "trash")
-        }
-      }
-  }
-}
-
 struct CustomNetworkListView: View {
   @ObservedObject var networkStore: NetworkStore
   @State private var isPresentingNetworkDetails: CustomNetworkModel?
@@ -80,12 +65,13 @@ struct CustomNetworkListView: View {
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
               content
-                .modifier(
-                  SwipeActionsViewModifier_FB9812596 {
-                    withAnimation(.default) {
-                      removeNetwork(network)
-                    }
-                  })
+                .swipeActions(edge: .trailing) {
+                  Button(role: .destructive, action: {
+                    removeNetwork(network)
+                  }) {
+                    Label(Strings.Wallet.delete, systemImage: "trash")
+                  }
+                }
             } else {
               content
             }
