@@ -44,9 +44,7 @@ class Conversions final : public Table {
   void OnGetConversions(mojom::DBCommandResponsePtr response,
                         GetConversionsCallback callback);
 
-  void MigrateToV1(mojom::DBTransaction* transaction);
-  void MigrateToV10(mojom::DBTransaction* transaction);
-  void MigrateToV20(mojom::DBTransaction* transaction);
+  void MigrateToV22(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table
