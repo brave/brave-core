@@ -39,7 +39,7 @@ class PlaylistFolderImageLoader: ObservableObject {
   }
 
   func load(domainUrl: URL) {
-    fetcher.loadIcon(siteURL: domainUrl) { [weak self] image in
+    fetcher.loadIcon(siteURL: domainUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing) { [weak self] image in
       self?.image = image
     }
   }

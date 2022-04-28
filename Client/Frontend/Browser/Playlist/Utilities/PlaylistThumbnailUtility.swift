@@ -131,7 +131,7 @@ public class PlaylistThumbnailRenderer {
 
   private func loadFavIconThumbnail(url: URL, completion: @escaping (UIImage?) -> Void) {
     favIconGenerator = FavIconImageRenderer()
-    favIconGenerator?.loadIcon(siteURL: url) { icon in
+    favIconGenerator?.loadIcon(siteURL: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing) { icon in
       DispatchQueue.main.async {
         completion(icon)
       }
@@ -269,10 +269,10 @@ class FavIconImageRenderer {
     task?.cancel()
   }
 
-  func loadIcon(siteURL: URL, completion: ((UIImage?) -> Void)?) {
+  func loadIcon(siteURL: URL, persistent: Bool, completion: ((UIImage?) -> Void)?) {
     task?.cancel()
     task = DispatchWorkItem {
-      let domain = Domain.getOrCreate(forUrl: siteURL, persistent: false)
+      let domain = Domain.getOrCreate(forUrl: siteURL, persistent: persistent)
       var faviconFetcher: FaviconFetcher? = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: domain)
       faviconFetcher?.load() { [weak self] _, attributes in
         faviconFetcher = nil
