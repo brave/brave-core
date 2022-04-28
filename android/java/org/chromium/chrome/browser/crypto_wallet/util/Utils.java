@@ -1020,29 +1020,34 @@ public class Utils {
             }
             throw new RuntimeException("Activity must implement ApprovedTxObserver");
         } else {
-            if (txInfo.txHash == null) {
+            if (txInfo.txHash == null || txInfo.txHash.isEmpty()) {
                 return;
             }
-            assert jsonRpcService != null;
-            jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-                jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
-                    for (NetworkInfo network : networks) {
-                        if (!chainId.equals(network.chainId)) {
-                            continue;
-                        }
-                        String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
-                        if (blockExplorerUrl.length() > 2) {
-                            blockExplorerUrl =
-                                    blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
-                                    + "/tx/" + txInfo.txHash;
-                            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-                            TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                            break;
-                        }
-                    }
-                });
-            });
+            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity);
         }
+    }
+
+    public static void openAddress(
+            String toAppend, JsonRpcService jsonRpcService, AppCompatActivity activity) {
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
+                for (NetworkInfo network : networks) {
+                    if (!chainId.equals(network.chainId)) {
+                        continue;
+                    }
+                    String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
+                    if (blockExplorerUrl.length() > 2) {
+                        blockExplorerUrl =
+                                blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
+                                + toAppend;
+                        TabUtils.openUrlInNewTab(false, blockExplorerUrl);
+                        TabUtils.bringChromeTabbedActivityToTheTop(activity);
+                        break;
+                    }
+                }
+            });
+        });
     }
 
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,

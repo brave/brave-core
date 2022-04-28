@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.ExecutorService;
@@ -35,6 +36,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
     private TextView mNetworkName;
     private TextView mWebSite;
     private TextView mTokenName;
+    private TextView mTokenAddress;
     private ImageView mTokenImage;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -52,6 +54,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
         mWebSite = view.findViewById(R.id.fragment_add_token_tv_web_site);
         mTokenImage = view.findViewById(R.id.fragment_add_token_iv_token);
         mTokenName = view.findViewById(R.id.fragment_add_token_tv_token);
+        mTokenAddress = view.findViewById(R.id.fragment_add_token_tv_address);
         initComponents(true);
 
         return view;
@@ -82,6 +85,14 @@ public class AddTokenFragment extends BaseDAppsFragment {
                 mBtCancel.setOnClickListener(
                         v -> { notifyAddSuggestTokenRequestProcessed(false); });
                 mBtAdd.setOnClickListener(v -> { notifyAddSuggestTokenRequestProcessed(true); });
+                mTokenAddress.setOnClickListener(v -> {
+                    Activity activity = getActivity();
+                    if (activity instanceof BraveWalletBaseActivity) {
+                        Utils.openAddress(
+                                "/token/" + mCurrentAddSuggestTokenRequest.token.contractAddress,
+                                getJsonRpcService(), (BraveWalletBaseActivity) activity);
+                    }
+                });
             }
             mWebSite.setText(mCurrentAddSuggestTokenRequest.origin.originSpec);
             initToken();
@@ -118,5 +129,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
             tokenName += " (" + mCurrentAddSuggestTokenRequest.token.symbol + ")";
         }
         mTokenName.setText(tokenName);
+        mTokenAddress.setText(
+                Utils.stripAccountAddress(mCurrentAddSuggestTokenRequest.token.contractAddress));
     }
 }
