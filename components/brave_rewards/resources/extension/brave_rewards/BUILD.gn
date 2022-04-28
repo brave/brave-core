@@ -7,10 +7,6 @@ group("brave_rewards") {
 transpile_web_ui("brave_rewards_panel") {
   entry_points = [
     [
-      "adaptive_captcha_panel",
-      rebase_path("adaptive_captcha_panel.tsx"),
-    ],
-    [
       "brave_rewards_panel",
       rebase_path("brave_rewards_panel.tsx"),
     ],

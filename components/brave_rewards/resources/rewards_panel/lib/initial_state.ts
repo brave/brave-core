@@ -38,6 +38,7 @@ export function getInitialState (): HostState {
       monthlyTips: 0,
       pendingTips: 0
     },
-    notifications: []
+    notifications: [],
+    adaptiveCaptchaInfo: null
   }
 }

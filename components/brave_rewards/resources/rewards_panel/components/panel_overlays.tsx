@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
 import { RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
+import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
 
@@ -42,6 +43,8 @@ export function PanelOverlays () {
     React.useState(host.state.grantCaptchaInfo)
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
+  const [adaptiveCaptchaInfo, setAdaptiveCaptchaInfo] =
+    React.useState(host.state.adaptiveCaptchaInfo)
 
   const [showTour, setShowTour] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
@@ -53,6 +56,7 @@ export function PanelOverlays () {
     setExternalWalletProviders(state.externalWalletProviders)
     setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
+    setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
   })
 
   React.useEffect(() => {
@@ -100,6 +104,22 @@ export function PanelOverlays () {
     return (
       <NamedOverlay name='opt-in'>
         <RewardsOptInModal onEnable={onEnable} onTakeTour={toggleTour} />
+      </NamedOverlay>
+    )
+  }
+
+  if (adaptiveCaptchaInfo) {
+    const onClose = () => {
+      host.clearAdaptiveCaptcha()
+    }
+
+    return (
+      <NamedOverlay name='adaptive-captcha'>
+        <AdaptiveCaptchaView
+          adaptiveCaptchaInfo={adaptiveCaptchaInfo}
+          onClose={onClose}
+          onCaptchaResult={host.handleAdaptiveCaptchaResult}
+        />
       </NamedOverlay>
     )
   }

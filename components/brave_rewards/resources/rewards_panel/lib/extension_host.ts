@@ -17,7 +17,7 @@ import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import * as apiAdapter from './extension_api_adapter'
 
-type LocaleStorageKey = 'catcha-grant-id'
+type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
 
 function closePanel () {
   window.close()
@@ -52,7 +52,7 @@ function getCurrentTabInfo () {
 
 export function createHost (): Host {
   const stateManager = createStateManager(getInitialState())
-  const storage = createLocalStorageScope<LocaleStorageKey>('rewards-panel')
+  const storage = createLocalStorageScope<LocalStorageKey>('rewards-panel')
   const grants = new Map<string, GrantInfo>()
 
   async function updatePublisherInfo () {
@@ -70,7 +70,7 @@ export function createHost (): Host {
     storage.writeJSON('catcha-grant-id', '')
   }
 
-  function loadCaptcha (grantId: string, status: GrantCaptchaStatus) {
+  function loadGrantCaptcha (grantId: string, status: GrantCaptchaStatus) {
     const grantInfo = grants.get(grantId)
     if (!grantInfo) {
       clearGrantCaptcha()
@@ -103,6 +103,32 @@ export function createHost (): Host {
           grantInfo
         }
       })
+    })
+  }
+
+  function clearAdaptiveCaptcha () {
+    stateManager.update({ adaptiveCaptchaInfo: null })
+    storage.writeJSON('load-adaptive-captcha', false)
+  }
+
+  function loadAdaptiveCaptcha () {
+    chrome.braveRewards.getScheduledCaptchaInfo((scheduledCaptchaInfo) => {
+      if (!scheduledCaptchaInfo.url) {
+        clearAdaptiveCaptcha()
+        return
+      }
+      stateManager.update({
+        adaptiveCaptchaInfo: {
+          url: scheduledCaptchaInfo.url,
+          status: scheduledCaptchaInfo.maxAttemptsExceeded
+            ? 'max-attempts-exceeded'
+            : 'pending'
+        }
+      })
+
+      // Store the adaptive captcha loading state so that if the user closes and
+      // reopens the panel they can attempt the same captcha.
+      storage.writeJSON('load-adaptive-captcha', true)
     })
   }
 
@@ -142,17 +168,31 @@ export function createHost (): Host {
   function handleStartupParameters () {
     const { hash } = location
 
+    const adaptiveCaptchaMatch = hash.match(/^#?load_adaptive_captcha$/i)
+    if (adaptiveCaptchaMatch) {
+      location.hash = ''
+      loadAdaptiveCaptcha()
+      return
+    }
+
+    const shouldLoadAdaptiveCaptcha = storage.readJSON('load-adaptive-captcha')
+    if (shouldLoadAdaptiveCaptcha && typeof shouldLoadAdaptiveCaptcha === 'boolean') {
+      location.hash = ''
+      loadAdaptiveCaptcha()
+      return
+    }
+
     const grantMatch = hash.match(/^#?grant_([\s\S]+)$/i)
     if (grantMatch) {
       location.hash = ''
-      loadCaptcha(grantMatch[1], 'pending')
+      loadGrantCaptcha(grantMatch[1], 'pending')
       return
     }
 
     const grantId = storage.readJSON('catcha-grant-id')
     if (grantId && typeof grantId === 'string') {
       location.hash = ''
-      loadCaptcha(grantId, 'pending')
+      loadGrantCaptcha(grantId, 'pending')
     }
   }
 
@@ -417,7 +457,7 @@ export function createHost (): Host {
           openTab('chrome://rewards#manage-wallet')
           break
         case 'claim-grant':
-          loadCaptcha((action as ClaimGrantAction).grantId, 'pending')
+          loadGrantCaptcha((action as ClaimGrantAction).grantId, 'pending')
           break
         case 'add-funds':
           handleExternalWalletAction('add-funds')
@@ -476,11 +516,34 @@ export function createHost (): Host {
 
         // If the user failed the captcha, request a new captcha for the user.
         if (status === 'failed') {
-          loadCaptcha(grantId, 'failed')
+          loadGrantCaptcha(grantId, 'failed')
         }
       })
     },
 
-    clearGrantCaptcha
+    clearGrantCaptcha,
+
+    clearAdaptiveCaptcha,
+
+    handleAdaptiveCaptchaResult (result) {
+      const { adaptiveCaptchaInfo } = stateManager.getState()
+      if (!adaptiveCaptchaInfo) {
+        return
+      }
+
+      switch (result) {
+        case 'success':
+          chrome.braveRewards.updateScheduledCaptchaResult(true)
+          stateManager.update({
+            adaptiveCaptchaInfo: { ...adaptiveCaptchaInfo, status: 'success' }
+          })
+          break
+        case 'failure':
+        case 'error':
+          chrome.braveRewards.updateScheduledCaptchaResult(false)
+          loadAdaptiveCaptcha()
+          break
+      }
+    }
   }
 }
