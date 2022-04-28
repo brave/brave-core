@@ -662,9 +662,11 @@ void EthTxManager::MakeERC721TransferFromData(
     return;
   }
 
+  const std::string chain_id =
+      json_rpc_service_->GetChainId(mojom::CoinType::ETH);
   // Check if safeTransferFrom is supported first.
   json_rpc_service_->GetSupportsInterface(
-      contract_address, kERC721InterfaceId,
+      contract_address, kERC721InterfaceId, chain_id,
       base::BindOnce(&EthTxManager::ContinueMakeERC721TransferFromData,
                      weak_factory_.GetWeakPtr(), from, to, token_id_uint,
                      std::move(callback)));

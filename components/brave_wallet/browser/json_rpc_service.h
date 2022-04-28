@@ -25,6 +25,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -247,17 +248,22 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                         const std::string& chain_id,
                         GetERC721OwnerOfCallback callback) override;
 
+  void GetERC1155TokenBalance(const std::string& contract_address,
+                              const std::string& owner_address,
+                              const std::string& token_id,
+                              const std::string& chain_id,
+                              GetERC1155TokenBalanceCallback callback) override;
+
   void GetERC721TokenBalance(const std::string& contract_address,
                              const std::string& token_id,
                              const std::string& account_address,
                              const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
-  void GetERC1155TokenBalance(const std::string& contract_address,
-                              const std::string& owner_address,
-                              const std::string& token_id,
-                              const std::string& chain_id,
-                              GetERC1155TokenBalanceCallback callback) override;
+  void GetERC721Metadata(const std::string& contract_address,
+                         const std::string& token_id,
+                         const std::string& chain_id,
+                         GetERC721MetadataCallback callback) override;
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased
@@ -267,8 +273,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(bool is_supported,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
+
   void GetSupportsInterface(const std::string& contract_address,
                             const std::string& interface_id,
+                            const std::string& chain_id,
                             GetSupportsInterfaceCallback callback);
 
   using SwitchEthereumChainRequestCallback =
@@ -498,11 +506,33 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  void OnGetSupportsInterfaceERC721Metadata(const std::string& contract_address,
+                                            const std::string& signature,
+                                            const GURL& network_url,
+                                            GetERC721MetadataCallback callback,
+                                            bool is_supported,
+                                            mojom::ProviderError error,
+                                            const std::string& error_message);
+
   void ContinueGetERC721TokenBalance(const std::string& account_address,
                                      GetERC721TokenBalanceCallback callback,
                                      const std::string& owner_address,
                                      mojom::ProviderError error,
                                      const std::string& error_message);
+  void OnGetERC721TokenUri(
+      GetERC721MetadataCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetERC721MetadataPayload(
+      GetERC721MetadataCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnSanitizeERC721Metadata(GetERC721MetadataCallback callback,
+                                data_decoder::JsonSanitizer::Result result);
 
   void OnGetSupportsInterface(
       GetSupportsInterfaceCallback callback,

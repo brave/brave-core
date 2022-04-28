@@ -17,6 +17,7 @@ namespace brave_wallet {
 
 namespace eth {
 
+bool ParseStringResult(const std::string& json, std::string* value);
 bool ParseAddressResult(const std::string& json, std::string* address);
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num);
 bool ParseEthGetFeeHistory(const std::string& json,
@@ -42,6 +43,11 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 
 absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
     const std::string& json);
+
+bool ParseERC721TokenUri(const std::string& json, GURL* url);
+
+// Get the JSON included in a data URI with a mime type application/json
+bool ParseDataURIAndExtractJSON(const GURL url, std::string* json);
 
 }  // namespace eth
 
