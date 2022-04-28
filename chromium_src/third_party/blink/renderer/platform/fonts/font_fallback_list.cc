@@ -31,7 +31,8 @@ void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
 // does NOT find a matching font, because we want to allow web fonts
 // unconditionally.
 #define BRAVE_GET_FONT_DATA                         \
-  if (brave::GetAllowFontFamilyCallback() &&        \
+  if ((!curr_family->FamilyIsGeneric()) &&          \
+      brave::GetAllowFontFamilyCallback() &&        \
       !brave::GetAllowFontFamilyCallback()->Run(    \
           GetFontSelector()->GetExecutionContext(), \
           curr_family->FamilyName()))               \
