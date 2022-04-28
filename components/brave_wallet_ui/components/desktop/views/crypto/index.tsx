@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route, useHistory, useParams, Switch } from 'react-router-dom'
+import { Route, useHistory, useParams, Switch, Redirect } from 'react-router-dom'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -212,6 +212,8 @@ const CryptoView = (props: Props) => {
           {nav}
           <Accounts />
         </Route>
+
+        <Redirect to={WalletRoutes.Portfolio} />
 
       </Switch>
 

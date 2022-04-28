@@ -18,15 +18,15 @@ export const AddAccountModal = () => {
   return (
     <Switch>
 
-      <Route path={WalletRoutes.AddHardwareAccountModal}>
+      <Route path={WalletRoutes.AddHardwareAccountModal} exact>
         <AddHardwareAccountModal />
       </Route>
 
-      <Route path={WalletRoutes.ImportAccountModal}>
+      <Route path={WalletRoutes.ImportAccountModal} exact>
         <ImportAccountModal />
       </Route>
 
-      <Route path={WalletRoutes.CreateAccountModal}>
+      <Route path={WalletRoutes.CreateAccountModal} exact>
         <CreateAccountModal />
       </Route>
 
