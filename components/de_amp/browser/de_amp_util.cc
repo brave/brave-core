@@ -18,8 +18,11 @@ namespace {
 // Check for "amp" or "⚡" in <html> tag
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
 constexpr char kGetHtmlTagPattern[] = "(<\\s*?html\\s.*?>)";
+// To see the expected behaviour of this regex, please see unit tests in
+// de_amp_util_unittest.cc
 constexpr char kDetectAmpPattern[] =
-    "(?:<.*?\\s.*?(amp|⚡|amp=\"\\s*\"|amp='\\s*')(?:\\s.*?>|>|/>))";
+    "(?:<.*?\\s.*?(amp|⚡|⚡=\"\\s*\"|⚡=\'\\s*\'|amp=\"\\s*\"|amp='\\s*')(?:\\s.*"
+    "?>|>|/>))";
 // Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 constexpr char kFindCanonicalLinkTagPattern[] =
