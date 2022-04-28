@@ -33,19 +33,19 @@ import {
 } from '../../common/async/lib'
 import {
   signTrezorTransaction,
-  signLedgerTransaction,
+  signLedgerEthereumTransaction,
   signMessageWithHardwareKeyring,
   cancelHardwareOperation,
   dialogErrorFromLedgerErrorCode,
-  dialogErrorFromTrezorErrorCode
+  dialogErrorFromTrezorErrorCode,
+  signLedgerFilecoinTransaction
 } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
-
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { HardwareVendor } from '../../common/api/hardware_keyrings'
 import { isRemoteImageURL } from '../../utils/string-utils'
+import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 
 const handler = new AsyncActionHandler()
 
@@ -260,7 +260,9 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
-    const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.path, txInfo)
+    const { success, error, code } = (found.coin === BraveWallet.CoinType.ETH)
+       ? await signLedgerEthereumTransaction(apiProxy, hardwareAccount.path, txInfo, found.coin)
+       : await signLedgerFilecoinTransaction(apiProxy, txInfo, found.coin)
     if (success) {
       refreshTransactionHistory(txInfo.fromAddress)
       await store.dispatch(PanelActions.setSelectedTransaction(txInfo))

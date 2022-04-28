@@ -448,7 +448,7 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
         "GasFeeCap": "3",
         "GasLimit": 4,
         "GasPremium": "2",
-        "MethodNum": 0,
+        "Method": 0,
         "Nonce": 1,
         "Params": "",
         "To": "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy",

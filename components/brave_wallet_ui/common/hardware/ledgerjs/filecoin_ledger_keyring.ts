@@ -11,11 +11,14 @@ import { BraveWallet } from '../../../constants/types'
 import { LedgerFilecoinKeyring } from '../interfaces'
 import { HardwareVendor, getCoinName } from '../../api/hardware_keyrings'
 import {
+  FilecoinNetwork,
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
 } from '../types'
+import { getLocale } from '../../../../common/locale'
+import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
 
 export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   private deviceId: string
@@ -29,19 +32,20 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     return LEDGER_HARDWARE_VENDOR
   }
 
-  getAccounts = async (from: number, to: number, coinType?: CoinType): Promise<GetAccountsHardwareOperationResult> => {
+  getAccounts = async (from: number, to: number, network: FilecoinNetwork): Promise<GetAccountsHardwareOperationResult> => {
     const unlocked = await this.unlock()
     if (!unlocked.success || !this.provider) {
       return unlocked
     }
     from = (from < 0) ? 0 : from
     const app: LedgerProvider = this.provider
+    const coinType = network === BraveWallet.FILECOIN_TESTNET ? CoinType.TEST : CoinType.MAIN
     const accounts = await app.getAccounts(from, to, coinType)
     const result = []
     for (let i = 0; i < accounts.length; i++) {
       result.push({
         address: accounts[i],
-        derivationPath: this.getPathForIndex(from + i),
+        derivationPath: this.getPathForIndex(from + i, coinType),
         name: getCoinName(this.coin()) + ' ' + this.type(),
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
@@ -55,31 +59,38 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     return this.provider !== undefined
   }
 
+  makeApp = async () => {
+    const transportWrapper = new TransportWrapper()
+    await transportWrapper.connect()
+    let provider = new LedgerProvider({
+      transport: transportWrapper.transport,
+      minLedgerVersion: {
+        major: 0,
+        minor: 0,
+        patch: 1
+      }
+    })
+    await provider.ready()
+
+    transportWrapper.transport.on('disconnect', this.onDisconnected)
+    this.provider = provider
+  }
+
   unlock = async (): Promise<HardwareOperationResult> => {
     if (this.provider) {
       return { success: true }
     }
     try {
-      const transportWrapper = new TransportWrapper()
-      await transportWrapper.connect()
-      let provider = new LedgerProvider({
-        transport: transportWrapper.transport,
-        minLedgerVersion: {
-          major: 0,
-          minor: 0,
-          patch: 1
-        }
-      })
-      await provider.ready()
-
-      const app: LedgerProvider = provider
+      await this.makeApp()
+      if (!this.provider) {
+        return { success: false }
+      }
+      const app: LedgerProvider = this.provider
       const address = await app.getAccounts(0, 1, CoinType.TEST)
       this.deviceId = address[0]
-      transportWrapper.transport.on('disconnect', this.onDisconnected)
-      this.provider = provider
       return { success: this.isUnlocked() }
     } catch (e) {
-      return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
+      return { success: false, error: getLocale('braveWalletLedgerFilecoinUnlockError') }
     }
   }
 
@@ -87,12 +98,35 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     throw new Error('Method not implemented.')
   }
 
-  signTransaction (path: string, rawTxHex: string): Promise<SignHardwareTransactionOperationResult> {
-    throw new Error('Method not implemented.')
+  signTransaction = async (path: string, message: string): Promise<SignHardwareTransactionOperationResult> => {
+    const unlocked = await this.unlock()
+    if (!unlocked.success || !this.provider) {
+      return { success: false, error: unlocked.error }
+    }
+    try {
+      const parsed = JSON.parse(message)
+      let lotusMessage: LotusMessage = {
+        To: parsed.To,
+        From: parsed.From,
+        Nonce: parsed.Nonce,
+        Value: parsed.Value,
+        GasPremium: parsed.GasPremium,
+        GasLimit: parsed.GasLimit,
+        GasFeeCap: parsed.GasFeeCap,
+        Method: parsed.Method,
+        Params: parsed.Params
+      }
+      const signed: SignedLotusMessage = await this.provider?.sign(parsed.From, lotusMessage)
+      return { success: true, payload: signed }
+    } catch (e) {
+      return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
+    }
   }
 
-  private readonly getPathForIndex = (index: number): string => {
-    return `m/44'/461'/0'/0/${index}`
+  private readonly getPathForIndex = (index: number, type: CoinType): string => {
+    // For TEST coin type use 1 instead of 461.
+    // https://github.com/glifio/modules/blob/primary/packages/filecoin-wallet-provider/src/utils/createPath/index.ts
+    return type === CoinType.MAIN ? `m/44'/461'/0'/0/${index}` : `m/44'/1'/0'/0/${index}`
   }
 
   private onDisconnected = (e: any) => {
