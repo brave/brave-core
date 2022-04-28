@@ -129,7 +129,6 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
 WelcomeDOMHandler::~WelcomeDOMHandler() {
   VLOG(1) << "WelcomeDOMHandler dtor: recording p3a values";
   RecordP3AHistogram(screen_number_, finished_);
-  MaybeRecordP3AOptIn(screen_number_, finished_, p3a_opt_in_);
 }
 
 Browser* WelcomeDOMHandler::GetBrowser() {
