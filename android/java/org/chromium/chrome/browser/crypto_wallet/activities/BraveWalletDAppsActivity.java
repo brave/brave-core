@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainN
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.BaseDAppsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
@@ -82,15 +83,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         processPendingDappsRequest();
-        if (mFragment != null) {
-            // Note: finishNativeInitialization can be triggered before the creation of Fragment's
-            // view
-            if (mFragment instanceof BaseDAppsFragment) {
-                ((BaseDAppsFragment) mFragment).finishNativeInitialization();
-            } else if (mFragment instanceof BaseDAppsBottomSheetDialogFragment) {
-                ((BaseDAppsBottomSheetDialogFragment) mFragment).finishNativeInitialization();
-            }
-        }
     }
 
     @Override
@@ -185,6 +177,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
                 || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
             mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
+        } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
+            mFragment = new ConnectAccountFragment();
         }
         showCurrentFragment();
     }

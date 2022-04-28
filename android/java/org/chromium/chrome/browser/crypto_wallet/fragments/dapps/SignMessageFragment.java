@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +48,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private ImageView mAccountImage;
     private TextView mAccountName;
     private TextView mNetworkName;
+    private Button mbtCancel;
+    private Button mbtSign;
     private ExecutorService mExecutor;
     private Handler mHandler;
 
@@ -70,12 +73,9 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mNetworkName = view.findViewById(R.id.fragment_sign_msg_tv_network_name);
         mViewPager.setUserInputEnabled(false);
 
-        view.findViewById(R.id.fragment_sign_msg_btn_cancel).setOnClickListener(v -> {
-            notifySignMessageRequestProcessed(false);
-        });
-        view.findViewById(R.id.fragment_sign_msg_btn_sign).setOnClickListener(v -> {
-            notifySignMessageRequestProcessed(true);
-        });
+        mbtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
+        mbtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
+        initComponents();
 
         return view;
     }
@@ -83,18 +83,16 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private void notifySignMessageRequestProcessed(boolean approved) {
         getBraveWalletService().notifySignMessageRequestProcessed(
                 approved, mCurrentSignMessageRequest.id);
-        fillSignMessageInfo();
+        fillSignMessageInfo(false);
     }
 
-    @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
-        fillSignMessageInfo();
+    private void initComponents() {
+        fillSignMessageInfo(true);
         updateAccount();
         updateNetwork();
     }
 
-    private void fillSignMessageInfo() {
+    private void fillSignMessageInfo(boolean init) {
         getBraveWalletService().getPendingSignMessageRequests(requests -> {
             if (requests == null || requests.length == 0) {
                 Intent intent = new Intent();
@@ -111,6 +109,10 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
             new TabLayoutMediator(mTabLayout, mViewPager,
                     (tab, position) -> tab.setText(mTabTitles.get(position)))
                     .attach();
+            if (init) {
+                mbtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
+                mbtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
+            }
         });
     }
 
