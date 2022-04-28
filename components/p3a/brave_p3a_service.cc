@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/i18n/timezone.h"
 #include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
@@ -62,6 +63,10 @@ constexpr char kP2AJsonServerUrl[] = "https://p2a-json.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
+// If enabled at first-run will enroll an install in opt-in prompting.
+const base::Feature kP3AOptInFeature{"P3AOptIn",
+                                     base::FEATURE_DISABLED_BY_DEFAULT};
+
 bool IsSuspendedMetric(base::StringPiece metric_name,
                        uint64_t value_or_bucket) {
   return value_or_bucket == kSuspendedMetricBucket;
@@ -92,6 +97,25 @@ base::Time NextMonday(base::Time time) {
   return result;
 }
 
+// Determine if this installation is opt-in or opt-out for reporting.
+void InitOptInStatus(PrefService* local_state) {
+  if (local_state->GetInteger(kP3AOptIn) == P3AOptInStage::kUnSet) {
+    bool enable_for_testing = base::FeatureList::IsEnabled(kP3AOptInFeature);
+    // Hard-code enrollment criteria. We can't use a Griffin study
+    // to determine participation because we need to decide at first-run
+    // when the seed hasn't been downloaded yet.
+    if (base::RandDouble() < 0.05 || enable_for_testing) {
+      // Turn P3A off and require user opt-in to enable it.
+      local_state->SetInteger(kP3AOptIn, P3AOptInStage::kOptIn);
+      local_state->SetDefaultPrefValue(kP3AEnabled, base::Value(false));
+    } else {
+      // Leave things as the default, but update kP3AOptIn so we
+      // know an enrollment decision has been made.
+      local_state->SetInteger(kP3AOptIn, P3AOptInStage::kDefault);
+    }
+  }
+}
+
 }  // namespace
 
 BraveP3AService::BraveP3AService(PrefService* local_state,
@@ -110,7 +134,7 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
   // Declare a placeholder for opt-in study participation.
-  registry->RegisterStringPref(kP3AOptInEnabled, "default");
+  registry->RegisterIntegerPref(kP3AOptIn, P3AOptInStage::kUnSet);
 
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
@@ -130,6 +154,8 @@ void BraveP3AService::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   // Init basic prefs.
   initialized_ = true;
+
+  InitOptInStatus(local_state_);
 
   average_upload_interval_ = base::Seconds(kDefaultUploadIntervalSeconds);
 

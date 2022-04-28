@@ -9,8 +9,14 @@
 namespace brave {
 
 extern const char kP3AEnabled[];
-extern const char kP3AOptInEnabled[];
+extern const char kP3AOptIn[];
 extern const char kP3ANoticeAcknowledged[];
+
+enum P3AOptInStage {
+  kUnSet = 0,
+  kDefault,
+  kOptIn,
+};
 
 }  // namespace brave
 

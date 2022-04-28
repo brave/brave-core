@@ -12,7 +12,6 @@ namespace features {
 
 const base::Feature kShowRewardsCard{"ShowRewardsCard",
                                      base::FEATURE_DISABLED_BY_DEFAULT};
-const base::Feature kP3AOptIn{"P3AOptIn", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace brave_welcome

@@ -12,7 +12,6 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/rand_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
@@ -57,24 +56,10 @@ bool IsP3AOptInEnabled() {
   bool enabled = false;
   // Check the local_state pref for study status.
   PrefService* local_state = g_browser_process->local_state();
-  if (local_state->FindPreference(brave::kP3AOptInEnabled)->IsDefaultValue()) {
-    // Decide on first run if an install should participate in opt_in.
-    if (base::RandDouble() < 0.05) {
-      local_state->SetString(brave::kP3AOptInEnabled, "true");
-    }
-  }
-  std::string pref = local_state->GetString(brave::kP3AOptInEnabled);
-  if (pref.compare("true") == 0) {
+  if (local_state->GetInteger(brave::kP3AOptIn) ==
+      brave::P3AOptInStage::kOptIn) {
     enabled = true;
   }
-  // Allow --enabled-features to override for testing.
-  // We can't support disable because there's no way to distinguish
-  // that from the first-run default.
-  if (!enabled &&
-      base::FeatureList::IsEnabled(brave_welcome::features::kP3AOptIn)) {
-    enabled = true;
-  }
-  // Allow
   VLOG(1) << "IsP3AOptInEnabled: " << enabled;
   return enabled;
 }
@@ -100,7 +85,7 @@ void MaybeRecordP3AOptIn(int screen_number, bool finished, bool opt_in) {
   if (!IsP3AOptInEnabled()) {
     return;
   }
-  VLOG(2) << "MaybeRecordP3aOptIn screen_number " << screen_number << " opt_in "
+  VLOG(2) << "MaybeRecordP3AOptIn screen_number " << screen_number << " opt_in "
           << opt_in;
 
   int answer = 0;  // Did not see prompt.
@@ -237,28 +222,6 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       "showRewardsCard",
       base::FeatureList::IsEnabled(brave_welcome::features::kShowRewardsCard));
   source->AddBoolean("showP3AOptIn", IsP3AOptInEnabled());
-
-  // Prepare for P3A opt-in study
-  if (IsP3AOptInEnabled()) {
-    DLOG(INFO) << "pref check";
-    PrefService* local_state = g_browser_process->local_state();
-    bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
-    auto* p3a_pref = local_state->FindPreference(brave::kP3AEnabled);
-    DCHECK(p3a_pref);
-    DLOG(INFO) << "kP3AEnabled: " << enabled
-               << (p3a_pref->IsDefaultValue() ? " default" : " modified");
-    // Opt-in means we should disable P3A without user action.
-    // FeatureList isn't available at the time brave_p3a_service
-    // registers the enable pref, so check whether it's ever been
-    // changed here and turn it off if there's been no prior modification.
-    if (p3a_pref->IsDefaultValue()) {
-      DLOG(INFO) << "Opt-in study, disabling P3A";
-      local_state->SetBoolean(brave::kP3AEnabled, false);
-      // verify we've modified the value and won't clobber the user
-      // choice later...
-      DCHECK(!p3a_pref->IsDefaultValue());
-    }
-  }
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }
