@@ -135,7 +135,7 @@ export const SubDropDown = styled.div`
   top: -6px;
   left: 240px;
   z-index: 9;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
   @media screen and (max-width: 800px) {
     left: -252px;
