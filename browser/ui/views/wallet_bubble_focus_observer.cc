@@ -69,7 +69,7 @@ void WalletBubbleFocusObserver::SetBubbleDeactivationState(
 }
 
 bool WalletBubbleFocusObserver::GetCurrentBubbleDeactivationState() {
-  return web_ui_bubble_view_->close_on_deactivate();
+  return web_ui_bubble_view_->ShouldCloseOnDeactivate();
 }
 
 void WalletBubbleFocusObserver::CloseBubble() {
