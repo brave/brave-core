@@ -243,6 +243,8 @@ void BindBraveAdsHost(
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
   auto* context = frame_host->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
 
   mojo::MakeSelfOwnedReceiver(
 #if BUILDFLAG(IS_ANDROID)
@@ -250,7 +252,7 @@ void BindBraveAdsHost(
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
       std::make_unique<brave_ads::BraveAdsHost>(
 #endif  // BUILDFLAG(IS_ANDROID)
-          profile),
+          profile, web_contents),
       std::move(receiver));
 #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
 }
@@ -500,7 +502,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {
+  if (brave_ads::features::IsRequestAdsEnabledApiEnabled() ||
+      base::FeatureList::IsEnabled(
+          brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents)) {
     map->Add<brave_ads::mojom::BraveAdsHost>(
         base::BindRepeating(&BindBraveAdsHost));
   }

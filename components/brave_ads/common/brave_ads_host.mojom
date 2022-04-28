@@ -1,5 +1,7 @@
 module brave_ads.mojom;
 
 interface BraveAdsHost {
+  MaybeTriggerAdViewedEvent(string creative_instance_id) => (bool event_triggered);
+
   RequestAdsEnabled() => (bool result);
 };

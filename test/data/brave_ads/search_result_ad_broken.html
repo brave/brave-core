@@ -24,6 +24,14 @@
       ]
     }
   </script>
+  <script>
+    const load = () => {
+      fetch('https://search-ads-confirmation.brave.com/v10/view?creativeInstanceId=data-creative-instance-id-1')
+        .then(response => {})
+        .catch((error) => {});
+    }
+    window.onload = load;
+  </script>
 </head>
 <body></body>
 </html>
