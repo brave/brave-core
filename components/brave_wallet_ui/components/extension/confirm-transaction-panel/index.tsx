@@ -13,7 +13,7 @@ import { getLocale } from '../../../../common/locale'
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 
 // Components
-import { CreateSiteOrigin } from '../../shared'
+import { CreateSiteOrigin, Tooltip } from '../../shared'
 
 // Components
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
@@ -92,6 +92,7 @@ function ConfirmTransactionPanel ({
     findAssetPrice,
     foundTokenInfoByContractAddress,
     fromAccountName,
+    fromAddress,
     fromOrb,
     isConfirmButtonDisabled,
     isERC20Approve,
@@ -195,7 +196,13 @@ function ConfirmTransactionPanel ({
         <NetworkText>{reduceNetworkDisplayName(transactionsNetwork.chainName)}</NetworkText>
         {isERC20Approve &&
           <AddressAndOrb>
-            <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
+            <Tooltip
+              text={transactionDetails.recipient}
+              isAddress={true}
+              position='right'
+            >
+              <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
+            </Tooltip>
             <AccountCircle orb={toOrb} />
           </AddressAndOrb>
         }
@@ -260,9 +267,21 @@ function ConfirmTransactionPanel ({
             />
           </URLText>
           <FromToRow>
-            <AccountNameText>{fromAccountName}</AccountNameText>
+            <Tooltip
+              text={fromAddress}
+              isAddress={true}
+              position='left'
+            >
+              <AccountNameText>{fromAccountName}</AccountNameText>
+            </Tooltip>
             <ArrowIcon />
-            <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
+            <Tooltip
+              text={transactionDetails.recipient}
+              isAddress={true}
+              position='right'
+            >
+              <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
+            </Tooltip>
           </FromToRow>
 
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>

@@ -144,7 +144,7 @@ const ConnectedPanel = (props: Props) => {
           )}
           <Tooltip
             text={selectedNetwork.chainName}
-            positionRight={true}
+            position='right'
           >
             <SelectNetworkButton
               onClick={navigate('networks')}

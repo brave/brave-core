@@ -65,6 +65,7 @@ export const ToCircle = styled.div<Partial<StyleProps>>`
 `
 
 export const AccountNameText = styled.span`
+  cursor: default;
   font-family: Poppins;
   font-size: 13px;
   line-height: 20px;

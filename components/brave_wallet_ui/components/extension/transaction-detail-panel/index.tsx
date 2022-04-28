@@ -49,6 +49,7 @@ import {
 
 import { StatusBubble } from '../../shared/style'
 import { TransactionStatusTooltip } from '../transaction-status-tooltip'
+import { Tooltip } from '../../shared'
 
 export interface Props {
   transaction: BraveWallet.TransactionInfo
@@ -178,9 +179,21 @@ const TransactionDetailPanel = (props: Props) => {
         <ToCircle orb={toOrb} />
       </OrbContainer>
       <FromToRow>
-        <AccountNameText>{transactionDetails.senderLabel}</AccountNameText>
+        <Tooltip
+          text={transactionDetails.sender}
+          isAddress={true}
+          position='left'
+        >
+          <AccountNameText>{transactionDetails.senderLabel}</AccountNameText>
+        </Tooltip>
         <ArrowIcon />
-        <AccountNameText>{transactionDetails.recipientLabel}</AccountNameText>
+        <Tooltip
+          text={transactionDetails.recipient}
+          isAddress={true}
+          position='right'
+        >
+          <AccountNameText>{transactionDetails.recipientLabel}</AccountNameText>
+        </Tooltip>
       </FromToRow>
       <PanelDescription>{transactionTitle}</PanelDescription>
       <TransactionValue>{transactionValue}</TransactionValue>

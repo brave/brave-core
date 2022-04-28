@@ -218,6 +218,7 @@ export const usePendingTransactions = () => {
     findAssetPrice,
     foundTokenInfoByContractAddress,
     fromAccountName,
+    fromAddress: transactionInfo?.fromAddress ?? '',
     fromOrb,
     isConfirmButtonDisabled,
     isERC20Approve,
