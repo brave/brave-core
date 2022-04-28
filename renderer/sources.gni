@@ -8,6 +8,8 @@ brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.h",
   "//brave/renderer/brave_render_thread_observer.cc",
   "//brave/renderer/brave_render_thread_observer.h",
+  "//brave/renderer/brave_url_loader_throttle_provider.cc",
+  "//brave/renderer/brave_url_loader_throttle_provider.h",
 ]
 
 brave_chrome_renderer_public_deps = [

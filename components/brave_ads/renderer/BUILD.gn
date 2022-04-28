@@ -4,11 +4,14 @@ source_set("renderer") {
     "brave_ads_js_handler.h",
     "brave_ads_render_frame_observer.cc",
     "brave_ads_render_frame_observer.h",
+    "search_result_ad_renderer_throttle.cc",
+    "search_result_ad_renderer_throttle.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_ads/common:mojom",
+    "//brave/components/brave_ads/common",
+    "//brave/components/brave_search/common",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
@@ -16,4 +19,6 @@ source_set("renderer") {
     "//third_party/blink/public/common",
     "//v8",
   ]
+
+  public_deps = [ "//brave/components/brave_ads/common:mojom" ]
 }

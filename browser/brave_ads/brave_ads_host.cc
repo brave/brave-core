@@ -10,15 +10,19 @@
 #include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "components/sessions/content/session_tab_helper.h"
+#include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
@@ -30,11 +34,37 @@ constexpr char kAdsEnableRelativeUrl[] = "request_ads_enabled_panel.html";
 
 }  // namespace
 
-BraveAdsHost::BraveAdsHost(Profile* profile) : profile_(profile) {
+BraveAdsHost::BraveAdsHost(Profile* profile, content::WebContents* web_contents)
+    : profile_(profile), web_contents_(web_contents) {
   DCHECK(profile_);
+  DCHECK(web_contents_);
 }
 
 BraveAdsHost::~BraveAdsHost() {}
+
+void BraveAdsHost::MaybeTriggerAdViewedEvent(
+    const std::string& creative_instance_id,
+    MaybeTriggerAdViewedEventCallback callback) {
+  DCHECK(callback);
+  DCHECK(!creative_instance_id.empty());
+
+  SearchResultAdService* search_result_ad_service =
+      SearchResultAdServiceFactory::GetForProfile(profile_);
+
+  if (!search_result_ad_service) {
+    std::move(callback).Run(/* event_triggered */ false);
+    return;
+  }
+
+  SessionID tab_id = sessions::SessionTabHelper::IdForTab(web_contents_);
+  if (!tab_id.is_valid()) {
+    std::move(callback).Run(/* event_triggered */ false);
+    return;
+  }
+
+  search_result_ad_service->MaybeTriggerSearchResultAdViewedEvent(
+      creative_instance_id, tab_id, std::move(callback));
+}
 
 void BraveAdsHost::RequestAdsEnabled(RequestAdsEnabledCallback callback) {
   DCHECK(callback);

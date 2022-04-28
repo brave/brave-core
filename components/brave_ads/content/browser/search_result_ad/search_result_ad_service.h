@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_SEARCH_RESULT_AD_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_SEARCH_RESULT_AD_SERVICE_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -14,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/sessions/core/session_id.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
@@ -33,27 +35,64 @@ class SearchResultAdService : public KeyedService {
   SearchResultAdService(const SearchResultAdService&) = delete;
   SearchResultAdService& operator=(const SearchResultAdService&) = delete;
 
-  void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host);
+  void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host,
+                                   SessionID tab_id,
+                                   bool should_trigger_viewed_event);
+
+  void OnDidFinishNavigation(SessionID tab_id);
+
+  void OnTabClosed(SessionID tab_id);
+
+  void MaybeTriggerSearchResultAdViewedEvent(
+      const std::string& creative_instance_id,
+      SessionID tab_id,
+      base::OnceCallback<void(bool)> callback);
 
   void SetMetadataRequestFinishedCallbackForTesting(base::OnceClosure callback);
 
   AdsService* SetAdsServiceForTesting(AdsService* ads_service);
 
  private:
+  struct AdViewedEventCallbackInfo {
+    AdViewedEventCallbackInfo();
+    AdViewedEventCallbackInfo(AdViewedEventCallbackInfo&& info);
+    AdViewedEventCallbackInfo& operator=(AdViewedEventCallbackInfo&& info);
+    ~AdViewedEventCallbackInfo();
+
+    std::string creative_instance_id;
+    base::OnceCallback<void(bool)> callback;
+  };
+
+  void ResetState(SessionID tab_id);
+
   void OnRetrieveSearchResultAdEntities(
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
+      SessionID tab_id,
       blink::mojom::WebPagePtr web_page);
 
-  void TriggerSearchResultAdViewedEvents(
-      std::vector<ads::mojom::SearchResultAdPtr> search_result_ads);
+  void RunAdViewedEventPendingCallbacks(SessionID tab_id, bool ads_fetched);
 
-  void OnTriggerSearchResultAdViewedEvents(
-      std::vector<ads::mojom::SearchResultAdPtr> search_result_ads,
+  bool QueueSearchResultAdViewedEvent(const std::string& creative_instance_id,
+                                      SessionID tab_id);
+
+  void TriggerSearchResultAdViewedEventFromQueue();
+
+  void OnTriggerSearchResultAdViewedEvent(
       bool success,
       const std::string& placement_id,
       ads::mojom::SearchResultAdEventType ad_event_type);
 
   raw_ptr<AdsService> ads_service_ = nullptr;
+
+  std::map<SessionID, std::map<std::string, ads::mojom::SearchResultAdPtr>>
+      search_result_ads_;
+
+  std::map<SessionID, std::vector<AdViewedEventCallbackInfo>>
+      ad_viewed_event_pending_callbacks_;
+
+  base::circular_deque<ads::mojom::SearchResultAdPtr> ad_viewed_event_queue_;
+
+  bool trigger_ad_viewed_event_in_progress_ = false;
 
   base::OnceClosure metadata_request_finished_callback_for_testing_;
 

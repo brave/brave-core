@@ -40,6 +40,25 @@
       ]
     }
   </script>
+  <script>
+    const load = () => {
+      fetch('https://search-ads-confirmation.brave.com/v10/view?creativeInstanceId=data-creative-instance-id-1')
+        .then(response => {})
+        .catch((error) => {});
+      fetch('https://search-ads-confirmation.brave.com/v10/view?creativeInstanceId=data-creative-instance-id-2')
+        .then(response => {})
+        .catch((error) => {});
+      // Somthing went wrong and we've sent view confirmation twice for data-creative-instance-id-1.
+      fetch('https://search-ads-confirmation.brave.com/v10/view?creativeInstanceId=data-creative-instance-id-1')
+        .then(response => {})
+        .catch((error) => {});
+      // Somthing went wrong and we've sent not existant view confirmation.
+      fetch('https://search-ads-confirmation.brave.com/v10/view?creativeInstanceId=not-existant')
+        .then(response => {})
+        .catch((error) => {});
+    }
+    window.onload = load;
+  </script>
 </head>
 <body></body>
 </html>

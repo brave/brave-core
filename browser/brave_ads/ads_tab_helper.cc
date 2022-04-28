@@ -124,6 +124,9 @@ void AdsTabHelper::DidFinishNavigation(
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
   if (!navigation_handle->IsSameDocument()) {
+    if (search_result_ad_service_) {
+      search_result_ad_service_->OnDidFinishNavigation(tab_id_);
+    }
     should_process_ = navigation_handle->GetRestoreType() ==
                       content::RestoreType::kNotRestored;
     return;
@@ -136,16 +139,17 @@ void AdsTabHelper::DidFinishNavigation(
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
+  content::RenderFrameHost* render_frame_host = web_contents()->GetMainFrame();
+  if (search_result_ad_service_) {
+    search_result_ad_service_->MaybeRetrieveSearchResultAd(
+        render_frame_host, tab_id_, should_process_);
+  }
+
   if (!should_process_) {
     return;
   }
 
-  content::RenderFrameHost* render_frame_host = web_contents()->GetMainFrame();
   RunIsolatedJavaScript(render_frame_host);
-
-  if (search_result_ad_service_) {
-    search_result_ad_service_->MaybeRetrieveSearchResultAd(render_frame_host);
-  }
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -203,6 +207,10 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void AdsTabHelper::WebContentsDestroyed() {
+  if (search_result_ad_service_) {
+    search_result_ad_service_->OnTabClosed(tab_id_);
+  }
+
   if (!ads_service_) {
     return;
   }
