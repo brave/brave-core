@@ -9,12 +9,12 @@
 
 #include "base/check.h"
 #include "base/hash/hash.h"
-#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -41,7 +41,6 @@
 #include "bat/ads/internal/ads/search_result_ads/search_result_ad.h"
 #include "bat/ads/internal/ads/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
@@ -51,6 +50,7 @@
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/federated/covariate_logs.h"
+#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversion_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/logging.h"
@@ -433,10 +433,10 @@ void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   callback(/* success */ true);
 }
 
-AdsHistoryInfo AdsImpl::GetHistory(const AdsHistoryFilterType filter_type,
-                                   const AdsHistorySortType sort_type,
-                                   const base::Time from_time,
-                                   const base::Time to_time) {
+HistoryInfo AdsImpl::GetHistory(const HistoryFilterType filter_type,
+                                const HistorySortType sort_type,
+                                const base::Time from_time,
+                                const base::Time to_time) {
   if (!IsInitialized()) {
     return {};
   }

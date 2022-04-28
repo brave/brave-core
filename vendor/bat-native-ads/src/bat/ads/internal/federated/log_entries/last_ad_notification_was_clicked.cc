@@ -6,11 +6,11 @@
 #include "bat/ads/internal/federated/log_entries/last_ad_notification_was_clicked.h"
 
 #include "base/time/time.h"
-#include "bat/ads/ad_history_info.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/federated/covariate_logs_util.h"
 #include "bat/ads/internal/federated/covariates_constants.h"
+#include "bat/ads/internal/history/history.h"
 
 namespace ads {
 
@@ -37,18 +37,18 @@ LastAdNotificationWasClicked::GetCovariateType() const {
 }
 
 std::string LastAdNotificationWasClicked::GetValue() const {
-  const AdsHistoryFilterType filter_type = AdsHistoryFilterType::kNone;
-  const AdsHistorySortType sort_type = AdsHistorySortType::kDescendingOrder;
+  const HistoryFilterType filter_type = HistoryFilterType::kNone;
+  const HistorySortType sort_type = HistorySortType::kDescendingOrder;
   const base::Time now = base::Time::Now();
   const base::Time from_time = now - kTimeWindow;
   const base::Time to_time = now;
-  const AdsHistoryInfo history =
+  const HistoryInfo history =
       history::Get(filter_type, sort_type, from_time, to_time);
   if (history.items.empty()) {
     return ToString(kCovariateMissingValue);
   }
 
-  const AdHistoryInfo& ad = history.items.front();
+  const HistoryItemInfo& ad = history.items.front();
   if (ad.ad_content.confirmation_type == ConfirmationType::kClicked) {
     return ToString(kClickedValue);
   }

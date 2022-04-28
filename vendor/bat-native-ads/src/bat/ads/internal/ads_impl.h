@@ -13,8 +13,8 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
@@ -95,7 +95,7 @@ class TabManager;
 class UserActivity;
 struct AdInfo;
 struct AdNotificationInfo;
-struct AdsHistoryInfo;
+struct HistoryInfo;
 struct ConversionQueueItemInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
@@ -199,10 +199,10 @@ class AdsImpl final : public Ads,
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
-                            const AdsHistorySortType sort_type,
-                            const base::Time from_time,
-                            const base::Time to_time) override;
+  HistoryInfo GetHistory(const HistoryFilterType filter_type,
+                         const HistorySortType sort_type,
+                         const base::Time from_time,
+                         const base::Time to_time) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

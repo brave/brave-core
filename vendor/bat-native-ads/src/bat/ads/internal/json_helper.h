@@ -24,14 +24,14 @@
 namespace ads {
 
 struct AdContentInfo;
-struct AdHistoryInfo;
+struct HistoryItemInfo;
 struct AdPreferencesInfo;
 struct CategoryContentInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
 void SaveToJson(JsonWriter* writer, const AdContentInfo& info);
-void SaveToJson(JsonWriter* writer, const AdHistoryInfo& info);
+void SaveToJson(JsonWriter* writer, const HistoryItemInfo& info);
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info);
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info);
 

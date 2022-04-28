@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
 
-#include "bat/ads/ad_history_info.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/federated/covariate_logs_util.h"
 #include "bat/ads/internal/federated/covariates_constants.h"
+#include "bat/ads/internal/history/history.h"
 
 namespace ads {
 
@@ -28,18 +28,18 @@ AverageClickthroughRate::GetCovariateType() const {
 }
 
 std::string AverageClickthroughRate::GetValue() const {
-  const AdsHistoryFilterType filter_type = AdsHistoryFilterType::kNone;
-  const AdsHistorySortType sort_type = AdsHistorySortType::kNone;
+  const HistoryFilterType filter_type = HistoryFilterType::kNone;
+  const HistorySortType sort_type = HistorySortType::kNone;
   const base::Time from = base::Time::Now() - time_window_;
   const base::Time to = base::Time::Now();
-  const AdsHistoryInfo history = history::Get(filter_type, sort_type, from, to);
+  const HistoryInfo history = history::Get(filter_type, sort_type, from, to);
   if (history.items.empty()) {
     return ToString(kCovariateMissingValue);
   }
 
   const int number_of_views = std::count_if(
       history.items.cbegin(), history.items.cend(),
-      [](const AdHistoryInfo& info) {
+      [](const HistoryItemInfo& info) {
         return info.ad_content.confirmation_type == ConfirmationType::kViewed;
       });
 
@@ -49,7 +49,7 @@ std::string AverageClickthroughRate::GetValue() const {
 
   const int number_of_clicks = std::count_if(
       history.items.cbegin(), history.items.cend(),
-      [](const AdHistoryInfo& info) {
+      [](const HistoryItemInfo& info) {
         return info.ad_content.confirmation_type == ConfirmationType::kClicked;
       });
 

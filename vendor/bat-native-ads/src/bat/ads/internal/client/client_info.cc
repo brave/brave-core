@@ -52,11 +52,12 @@ bool ClientInfo::FromJson(const std::string& json) {
       if (ad_shown.IsInt64()) {
         continue;
       }
-      AdHistoryInfo ad_history;
+      HistoryItemInfo history_item;
       rapidjson::StringBuffer buffer;
       rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (ad_shown.Accept(writer) && ad_history.FromJson(buffer.GetString())) {
-        ads_shown_history.push_back(ad_history);
+      if (ad_shown.Accept(writer) &&
+          history_item.FromJson(buffer.GetString())) {
+        history.push_back(history_item);
       }
     }
   }
@@ -151,8 +152,8 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
 
   writer->String("adsShownHistory");
   writer->StartArray();
-  for (const auto& ad_shown : info.ads_shown_history) {
-    SaveToJson(writer, ad_shown);
+  for (const auto& item : info.history) {
+    SaveToJson(writer, item);
   }
   writer->EndArray();
 

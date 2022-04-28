@@ -21,14 +21,14 @@
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
-#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_aliases.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/database.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/statement_info.h"
@@ -495,13 +495,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     return @[];
   }
 
-  const auto history = ads->GetHistory(ads::AdsHistoryFilterType::kNone,
-                                       ads::AdsHistorySortType::kNone,
+  const auto history = ads->GetHistory(ads::HistoryFilterType::kNone,
+                                       ads::HistorySortType::kNone,
                                        base::Time::Min(), base::Time::Max());
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
-    const auto date = [NSDate dateWithTimeIntervalSince1970:item.timestamp];
+    const auto date =
+        [NSDate dateWithTimeIntervalSince1970:item.time.ToDoubleT()];
     [dates addObject:date];
   }
 
