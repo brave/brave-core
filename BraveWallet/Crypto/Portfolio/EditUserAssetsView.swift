@@ -36,21 +36,6 @@ private struct EditTokenView: View {
   }
 }
 
-// Modifier workaround for FB9812596 to avoid crashing on iOS 14 on Release builds
-@available(iOS 15.0, *)
-private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
-  var action: () -> Void
-
-  func body(content: Content) -> some View {
-    content
-      .swipeActions(edge: .trailing) {
-        Button(role: .destructive, action: action) {
-          Label(Strings.Wallet.delete, systemImage: "trash")
-        }
-      }
-  }
-}
-
 struct EditUserAssetsView: View {
   @ObservedObject var userAssetsStore: UserAssetsStore
   var assetsUpdated: () -> Void
@@ -115,10 +100,13 @@ struct EditUserAssetsView: View {
                   .osAvailabilityModifiers { content in
                     if #available(iOS 15.0, *) {
                       content
-                        .modifier(
-                          SwipeActionsViewModifier_FB9812596 {
+                        .swipeActions(edge: .trailing) {
+                          Button(role: .destructive, action: {
                             removeCustomToken(store.token)
-                          })
+                          }) {
+                            Label(Strings.Wallet.delete, systemImage: "trash")
+                          }
+                        }
                     } else {
                       content
                         .contextMenu {
