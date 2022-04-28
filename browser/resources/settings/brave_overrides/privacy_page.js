@@ -25,8 +25,8 @@ RegisterPolymerTemplateModifications({
         <template is="dom-if" route-path="/content/autoplay" no-search>
           <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryAutoplay')}">
             <category-default-setting
-                toggle-off-label="${I18nBehavior.i18n('siteSettingsBlocked')}"
-                toggle-on-label="${I18nBehavior.i18n('siteSettingsAllowed')}"
+                toggle-off-label="${I18nBehavior.i18n('siteSettingsAutoplayBlock')}"
+                toggle-on-label="${I18nBehavior.i18n('siteSettingsAutoplayAllow')}"
                 category="[[contentSettingsTypesEnum_.AUTOPLAY}}">
             </category-default-setting>
             <category-setting-exceptions
