@@ -150,8 +150,7 @@ absl::optional<std::string> FilecoinKeyring::SignTransaction(
   HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
   if (!hd_key)
     return absl::nullopt;
-  std::string private_key = base::Base64Encode(hd_key->private_key());
-  return tx->GetSignedTransaction(private_key);
+  return tx->GetSignedTransaction(base::Base64Encode(hd_key->private_key()));
 }
 
 }  // namespace brave_wallet
