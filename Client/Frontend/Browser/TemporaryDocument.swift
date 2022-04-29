@@ -50,7 +50,7 @@ class TemporaryDocument: NSObject {
       return await task.value
     }
     
-    let task = Task<URL, Never> {
+    let task = Task<URL, Never> { @MainActor in
       return await withCheckedContinuation { continuation in
         pendingContinuation = continuation
         
