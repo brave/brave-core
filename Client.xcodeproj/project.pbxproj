@@ -450,6 +450,8 @@
 		27B68E5D25C88CA7002D0826 /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = 27B68E5C25C88CA7002D0826 /* FeedKit */; };
 		27B68E9425C8911D002D0826 /* BraveNewsAddSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B68E9325C8911D002D0826 /* BraveNewsAddSourceViewController.swift */; };
 		27BC119327A9C90E0097ADCD /* WalletPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BC119227A9C90E0097ADCD /* WalletPanelView.swift */; };
+		27C1DBC7281C612C00CB282F /* BraveCore.xcframework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27C1DBC9281C615400CB282F /* MaterialComponents.xcframework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27C22A9026409FF200419FC7 /* WindowProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C22A8F26409FF200419FC7 /* WindowProtection.swift */; };
 		27C405E3242559AE00347246 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; };
 		27C405E924255A2B00347246 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
@@ -1638,6 +1640,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				27C1DBC9281C615400CB282F /* MaterialComponents.xcframework in CopyFiles */,
+				27C1DBC7281C612C00CB282F /* BraveCore.xcframework in CopyFiles */,
 				0ACF621322FDC17800297576 /* Shared.framework in CopyFiles */,
 				0ACF621422FDC17800297576 /* BraveShared.framework in CopyFiles */,
 			);
