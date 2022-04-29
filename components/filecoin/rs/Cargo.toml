@@ -10,7 +10,7 @@ base64 = "0.13.0"
 blake2b_simd = "1.0"
 bls-signatures = { version = "0.11.3", default-features = false, features = ["pairing"] }
 cxx = { path = "../../../../third_party/rust/cxx/v1/crate"}
-fvm_shared = "0.3.1"
+fvm_shared = { version = "0.6.1 " }
 hex = "0.4"
 libsecp256k1 = "0.6"
 num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}
@@ -19,6 +19,7 @@ serde_cbor = "0.11.1"
 serde_json = "^1.0.59"
 thiserror = "^1.0.30"
 zx-bip44 = "0.1.0"
+fvm_ipld_encoding = "0.2.0"
 
 [lib]
 name = "filecoin_cxx"
