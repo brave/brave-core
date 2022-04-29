@@ -9,7 +9,6 @@
 #include <functional>
 #include <utility>
 
-#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"

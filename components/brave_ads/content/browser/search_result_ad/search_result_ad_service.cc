@@ -128,7 +128,10 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   } else if (name == kDataAdvertiserId) {
     return GetStringValue(ad_property, &search_result_ad->advertiser_id);
   } else if (name == kDataLandingPage) {
-    return GetStringValue(ad_property, &search_result_ad->target_url);
+    std::string target_url;
+    const bool success = GetStringValue(ad_property, &target_url);
+    search_result_ad->target_url = GURL(target_url);
+    return success;
   } else if (name == kDataHeadlineText) {
     return GetStringValue(ad_property, &search_result_ad->headline_text);
   } else if (name == kDataDescription) {

@@ -82,7 +82,7 @@ bool AdNotificationInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("target_url")) {
-    target_url = document["target_url"].GetString();
+    target_url = GURL(document["target_url"].GetString());
   }
 
   return true;
@@ -119,7 +119,7 @@ void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info) {
   writer->String(info.body.c_str());
 
   writer->String("target_url");
-  writer->String(info.target_url.c_str());
+  writer->String(info.target_url.spec().c_str());
 
   writer->EndObject();
 }

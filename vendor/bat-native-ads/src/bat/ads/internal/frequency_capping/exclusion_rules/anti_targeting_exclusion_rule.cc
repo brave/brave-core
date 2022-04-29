@@ -17,8 +17,8 @@ namespace ads {
 namespace {
 
 bool HasVisitedSiteOnAntiTargetingList(
-    const BrowsingHistoryList browsing_history,
-    const resource::AntiTargetingList anti_targeting_sites) {
+    const BrowsingHistoryList& browsing_history,
+    const resource::AntiTargetingSiteList& anti_targeting_sites) {
   const auto iter = std::find_first_of(
       anti_targeting_sites.cbegin(), anti_targeting_sites.cend(),
       browsing_history.cbegin(), browsing_history.cend(), SameDomainOrHost);

@@ -26,8 +26,10 @@ mojom::UrlRequestPtr IssuersUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string IssuersUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/issuers/", server::GetStaticHost().c_str());
+GURL IssuersUrlRequestBuilder::BuildUrl() const {
+  const std::string spec =
+      base::StringPrintf("%s/v1/issuers/", server::GetStaticHost().c_str());
+  return GURL(spec);
 }
 
 }  // namespace ads

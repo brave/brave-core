@@ -265,7 +265,7 @@ class AdsServiceImpl : public AdsService,
   void OnOpenNewTabWithAd(const std::string& json);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
-  void OpenNewTabWithUrl(const std::string& url);
+  void OpenNewTabWithUrl(const GURL& url);
 
   void NotificationTimedOut(const std::string& placement_id);
 

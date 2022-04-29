@@ -14,6 +14,7 @@
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/url_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -39,9 +40,8 @@ void AdTransfer::RemoveObserver(AdTransferObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void AdTransfer::MaybeTransferAd(
-    const int32_t tab_id,
-    const std::vector<std::string>& redirect_chain) {
+void AdTransfer::MaybeTransferAd(const int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain) {
   if (!last_clicked_ad_.IsValid()) {
     return;
   }
@@ -62,7 +62,7 @@ void AdTransfer::MaybeTransferAd(
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdTransfer::TransferAd(const int32_t tab_id,
-                            const std::vector<std::string>& redirect_chain) {
+                            const std::vector<GURL>& redirect_chain) {
   timer_.Stop();
 
   transferring_ad_tab_id_ = tab_id;
@@ -77,7 +77,7 @@ void AdTransfer::TransferAd(const int32_t tab_id,
 }
 
 void AdTransfer::OnTransferAd(const int32_t tab_id,
-                              const std::vector<std::string>& redirect_chain) {
+                              const std::vector<GURL>& redirect_chain) {
   const AdInfo ad = last_clicked_ad_;
   last_clicked_ad_ = {};
 

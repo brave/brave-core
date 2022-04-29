@@ -13,6 +13,7 @@
 #include "base/callback.h"
 #include "base/files/file.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -28,7 +29,7 @@ using RunDBTransactionCallback =
     std::function<void(mojom::DBCommandResponsePtr)>;
 
 using GetBrowsingHistoryCallback =
-    std::function<void(const std::vector<std::string>&)>;
+    std::function<void(const std::vector<GURL>&)>;
 
 using GetScheduledCaptchaCallback =
     base::OnceCallback<void(const std::string&)>;

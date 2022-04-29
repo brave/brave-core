@@ -28,8 +28,10 @@ mojom::UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string GetSubdivisionUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/getstate", server::GetGeoHost().c_str());
+GURL GetSubdivisionUrlRequestBuilder::BuildUrl() const {
+  const std::string spec =
+      base::StringPrintf("%s/v1/getstate", server::GetGeoHost().c_str());
+  return GURL(spec);
 }
 
 }  // namespace geographic

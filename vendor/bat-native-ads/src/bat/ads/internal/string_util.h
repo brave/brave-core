@@ -8,10 +8,6 @@
 
 #include <string>
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace ads {
 
 std::string StripNonAlphaCharacters(const std::string& value);

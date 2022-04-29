@@ -36,7 +36,7 @@ CreativeInlineContentAdInfo BuildCreativeInlineContentAd() {
 
   creative_inline_content_ad.title = "Test Ad Title";
   creative_inline_content_ad.description = "Test Ad Description";
-  creative_inline_content_ad.image_url = "https://brave.com/image";
+  creative_inline_content_ad.image_url = GURL("https://brave.com/image");
   creative_inline_content_ad.dimensions = "200x100";
   creative_inline_content_ad.cta_text = "Call to action text";
 

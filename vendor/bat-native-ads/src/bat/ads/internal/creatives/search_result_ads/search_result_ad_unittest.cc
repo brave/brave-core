@@ -20,7 +20,6 @@
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -43,7 +42,7 @@ mojom::SearchResultAdPtr BuildAd(const std::string& placement_id,
   ad_mojom->creative_set_id = "7a41297b-ff7f-4ca8-9787-b4c9c1105f01";
   ad_mojom->campaign_id = "be5d25ca-93e4-4a16-8f8b-4714abca31ed";
   ad_mojom->advertiser_id = "f82389c6-c6ca-4db5-99f9-724f038efddf";
-  ad_mojom->target_url = "https://brave.com";
+  ad_mojom->target_url = GURL("https://brave.com");
   ad_mojom->headline_text = "headline";
   ad_mojom->description = "description";
   ad_mojom->value = 1.0;

@@ -55,10 +55,11 @@ mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v2/confirmation/payment/%s",
-                            server::GetNonAnonymousHost().c_str(),
-                            wallet_.id.c_str());
+GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
+  const std::string spec = base::StringPrintf(
+      "%s/v2/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
+      wallet_.id.c_str());
+  return GURL(spec);
 }
 
 std::vector<std::string>

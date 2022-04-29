@@ -27,9 +27,10 @@ mojom::UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string GetCatalogUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v%d/catalog", server::GetStaticHost().c_str(),
-                            kCatalogVersion);
+GURL GetCatalogUrlRequestBuilder::BuildUrl() const {
+  const std::string spec = base::StringPrintf(
+      "%s/v%d/catalog", server::GetStaticHost().c_str(), kCatalogVersion);
+  return GURL(spec);
 }
 
 }  // namespace ads

@@ -14,6 +14,7 @@
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -33,7 +34,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
   mojom::UrlRequestPtr Build() override;
 
  private:
-  std::string BuildUrl() const;
+  GURL BuildUrl() const;
 
   std::vector<std::string> BuildHeaders() const;
 

@@ -7,9 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SITE_INFO_H_
 
 #include <cstdint>
-#include <string>
 
 #include "bat/ads/internal/segments/segments_aliases.h"
+#include "url/gurl.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -18,7 +18,7 @@ struct PurchaseIntentSiteInfo final {
  public:
   PurchaseIntentSiteInfo();
   PurchaseIntentSiteInfo(const SegmentList& segments,
-                         const std::string& url_netloc,
+                         const GURL& url_netloc,
                          const uint16_t weight);
   PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& info);
   ~PurchaseIntentSiteInfo();
@@ -27,7 +27,7 @@ struct PurchaseIntentSiteInfo final {
   bool operator!=(const PurchaseIntentSiteInfo& rhs) const;
 
   SegmentList segments;
-  std::string url_netloc;
+  GURL url_netloc;
   uint16_t weight = 0;
 };
 

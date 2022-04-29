@@ -9,6 +9,7 @@ import "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom"
 import "mojo/public/mojom/base/big_string.mojom";
 import "mojo/public/mojom/base/file.mojom";
 import "mojo/public/mojom/base/time.mojom";
+import "url/mojom/url.mojom";
 
 // Service which hands out bat ads.
 interface BatAdsService {
@@ -61,7 +62,7 @@ interface BatAdsClient {
   ClearScheduledCaptcha();
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
-  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
+  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
   RecordP2AEvent(string name, ads.mojom.P2AEventType type, string value);
@@ -81,8 +82,8 @@ interface BatAds {
   Shutdown() => (bool success);
   ChangeLocale(string locale);
   OnPrefChanged(string path);
-  OnHtmlLoaded(int32 tab_id, array<string> redirect_chain, string html);
-  OnTextLoaded(int32 tab_id, array<string> redirect_chain, string text);
+  OnHtmlLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
+  OnTextLoaded(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
   OnUserGesture(int32 page_transition_type);
   OnUnIdle(int32 idle_time, bool was_locked);
   OnIdle();
@@ -90,7 +91,7 @@ interface BatAds {
   OnBrowserDidEnterBackground();
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
-  OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_browser_active, bool is_incognito);
+  OnTabUpdated(int32 tab_id, url.mojom.Url url, bool is_active, bool is_browser_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
   GetAdNotification(string placement_id) => (string json);
   TriggerAdNotificationEvent(string placement_id, ads.mojom.AdNotificationEventType event_type);

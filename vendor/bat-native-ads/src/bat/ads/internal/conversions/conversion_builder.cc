@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

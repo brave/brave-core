@@ -42,7 +42,7 @@ int BindParameters(mojom::DBCommand* command,
     BindInt(command, index++, creative_ad.total_max);
     BindDouble(command, index++, creative_ad.value);
     BindString(command, index++, creative_ad.split_test_group);
-    BindString(command, index++, creative_ad.target_url);
+    BindString(command, index++, creative_ad.target_url.spec());
 
     count++;
   }
@@ -62,7 +62,7 @@ CreativeAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.per_month = ColumnInt(record, 4);
   creative_ad.total_max = ColumnInt(record, 5);
   creative_ad.value = ColumnDouble(record, 6);
-  creative_ad.target_url = ColumnString(record, 7);
+  creative_ad.target_url = GURL(ColumnString(record, 7));
 
   return creative_ad;
 }

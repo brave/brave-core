@@ -11,6 +11,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -23,7 +24,7 @@ class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilderInterface {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  std::string BuildUrl() const;
+  GURL BuildUrl() const;
 
   ConfirmationInfo confirmation_;
 };

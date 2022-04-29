@@ -8,13 +8,16 @@
 
 #include <string>
 
-#include "base/time/time.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/transactions_database_table_aliases.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/transaction_info_aliases.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 namespace database {

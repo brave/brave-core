@@ -49,11 +49,11 @@ class BatAdsImpl :
   void OnPrefChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
 
   void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
   void OnUserGesture(const int32_t page_transition_type) override;
@@ -69,12 +69,11 @@ class BatAdsImpl :
   void OnMediaStopped(
       const int32_t tab_id) override;
 
-  void OnTabUpdated(
-      const int32_t tab_id,
-      const std::string& url,
-      const bool is_active,
-      const bool is_browser_active,
-      const bool is_incognito) override;
+  void OnTabUpdated(const int32_t tab_id,
+                    const GURL& url,
+                    const bool is_active,
+                    const bool is_browser_active,
+                    const bool is_incognito) override;
   void OnTabClosed(
       const int32_t tab_id) override;
 

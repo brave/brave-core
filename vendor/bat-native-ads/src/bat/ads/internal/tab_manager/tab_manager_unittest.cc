@@ -80,7 +80,7 @@ TEST_F(BatAdsTabManagerTest, IsTabVisible) {
   // Arrange
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
 
   // Assert
   EXPECT_TRUE(TabManager::Get()->IsVisible(1));
@@ -90,7 +90,7 @@ TEST_F(BatAdsTabManagerTest, IsTabOccluded) {
   // Arrange
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), false, false);
 
   // Assert
   EXPECT_FALSE(TabManager::Get()->IsVisible(1));
@@ -100,14 +100,14 @@ TEST_F(BatAdsTabManagerTest, OpenNewTab) {
   // Arrange
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
 
   // Assert
   absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://brave.com";
+  expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
   EXPECT_EQ(expected_tab, tab);
 
@@ -121,11 +121,11 @@ TEST_F(BatAdsTabManagerTest, OpenNewTab) {
 
 TEST_F(BatAdsTabManagerTest, ChangeTabFocus) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), false, false);
   ResetObserver();
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
 
   // Assert
   EXPECT_TRUE(tab_did_change_focus_);
@@ -140,7 +140,7 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
   // Arrange
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, true);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, true);
 
   // Assert
   EXPECT_FALSE(TabManager::Get()->GetForId(1));
@@ -155,18 +155,18 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateIncognitoTab) {
 
 TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), false, false);
   ResetObserver();
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), false, false);
 
   // Assert
   absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://brave.com";
+  expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
   EXPECT_EQ(expected_tab, tab.value());
 
@@ -180,18 +180,19 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
 
 TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), false, false);
   ResetObserver();
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com/about", false, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com/about"), false,
+                               false);
 
   // Assert
   absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://brave.com/about";
+  expected_tab.url = GURL("https://brave.com/about");
   expected_tab.is_playing_media = false;
   EXPECT_EQ(expected_tab, tab.value());
 
@@ -205,18 +206,18 @@ TEST_F(BatAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
 
 TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
 
   // Assert
   absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://brave.com";
+  expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
   EXPECT_EQ(expected_tab, tab.value());
 
@@ -230,18 +231,18 @@ TEST_F(BatAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
 
 TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act
-  TabManager::Get()->OnUpdated(1, "https://brave.com/about", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com/about"), true, false);
 
   // Assert
   absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://brave.com/about";
+  expected_tab.url = GURL("https://brave.com/about");
   expected_tab.is_playing_media = false;
   EXPECT_EQ(expected_tab, tab.value());
 
@@ -255,7 +256,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
 
 TEST_F(BatAdsTabManagerTest, CloseTab) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act
@@ -274,7 +275,7 @@ TEST_F(BatAdsTabManagerTest, CloseTab) {
 
 TEST_F(BatAdsTabManagerTest, PlayMedia) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"), true, false);
   ResetObserver();
 
   // Act
@@ -293,7 +294,7 @@ TEST_F(BatAdsTabManagerTest, PlayMedia) {
 
 TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"), true, false);
   TabManager::Get()->OnMediaPlaying(1);
   ResetObserver();
 
@@ -313,7 +314,7 @@ TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
 
 TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
   TabManager::Get()->OnMediaPlaying(1);
   ResetObserver();
 
@@ -333,8 +334,8 @@ TEST_F(BatAdsTabManagerTest, StopPlayingMedia) {
 
 TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
-  TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"), true, false);
+  TabManager::Get()->OnUpdated(2, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act
@@ -345,7 +346,7 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
 
   TabInfo expected_tab;
   expected_tab.id = 2;
-  expected_tab.url = "https://brave.com";
+  expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
 
   EXPECT_EQ(expected_tab, tab);
@@ -353,8 +354,8 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
 
 TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
-  TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://foobar.com"), true, false);
+  TabManager::Get()->OnUpdated(2, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act
@@ -366,7 +367,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://foobar.com";
+  expected_tab.url = GURL("https://foobar.com");
   expected_tab.is_playing_media = false;
 
   EXPECT_EQ(expected_tab, tab);
@@ -374,7 +375,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
 
 TEST_F(BatAdsTabManagerTest, GetTabForId) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act
@@ -385,7 +386,7 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
 
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.url = "https://brave.com";
+  expected_tab.url = GURL("https://brave.com");
   expected_tab.is_playing_media = false;
 
   EXPECT_EQ(expected_tab, tab);
@@ -393,7 +394,7 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
 
 TEST_F(BatAdsTabManagerTest, DoNotGetTabForMissingId) {
   // Arrange
-  TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
+  TabManager::Get()->OnUpdated(1, GURL("https://brave.com"), true, false);
   ResetObserver();
 
   // Act

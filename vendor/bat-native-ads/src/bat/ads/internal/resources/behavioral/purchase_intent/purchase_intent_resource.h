@@ -10,11 +10,15 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
 #include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
+
+namespace ad_targeting {
+struct PurchaseIntentInfo;
+}  // namespace ad_targeting
+
 namespace resource {
 
 class PurchaseIntent final

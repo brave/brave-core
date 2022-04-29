@@ -6,9 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_NEW_TAB_PAGE_AD_WALLPAPER_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_NEW_TAB_PAGE_AD_WALLPAPER_INFO_H_
 
-#include <string>
-
 #include "bat/ads/internal/catalog/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -21,7 +20,7 @@ struct CatalogNewTabPageAdWallpaperInfo final {
   bool operator==(const CatalogNewTabPageAdWallpaperInfo& rhs) const;
   bool operator!=(const CatalogNewTabPageAdWallpaperInfo& rhs) const;
 
-  std::string image_url;
+  GURL image_url;
   CatalogNewTabPageAdWallpaperFocalPointInfo focal_point;
 };
 

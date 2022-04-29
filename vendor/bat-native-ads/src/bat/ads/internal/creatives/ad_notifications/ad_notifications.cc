@@ -297,10 +297,11 @@ bool AdNotifications::GetNotificationFromDictionary(
     return false;
   }
 
-  if (!GetTargetUrlFromDictionary(dictionary,
-                                  &new_ad_notification.target_url)) {
+  std::string target_url;
+  if (!GetTargetUrlFromDictionary(dictionary, &target_url)) {
     return false;
   }
+  new_ad_notification.target_url = GURL(target_url);
 
   *ad_notification = new_ad_notification;
 
@@ -502,7 +503,7 @@ base::Value AdNotifications::GetAsList() {
     dictionary.SetStringKey(kNotificationTitleKey, ad_notification.title);
     dictionary.SetStringKey(kNotificationBodyKey, ad_notification.body);
     dictionary.SetStringKey(kNotificationTargetUrlKey,
-                            ad_notification.target_url);
+                            ad_notification.target_url.spec());
 
     list.Append(std::move(dictionary));
   }

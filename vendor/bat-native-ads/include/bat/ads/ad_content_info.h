@@ -12,6 +12,7 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/export.h"
+#include "url/gurl.h"
 
 namespace base {
 class DictionaryValue;
@@ -46,7 +47,7 @@ struct ADS_EXPORT AdContentInfo final {
   std::string brand;
   std::string brand_info;
   std::string brand_display_url;
-  std::string brand_url;
+  GURL brand_url;
   AdContentLikeActionType like_action_type = AdContentLikeActionType::kNeutral;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   bool is_saved = false;

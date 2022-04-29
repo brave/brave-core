@@ -16,6 +16,8 @@
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
+class GURL;
+
 namespace bat_ads {
 
 class AdsClientMojoBridge
@@ -175,7 +177,7 @@ class AdsClientMojoBridge
 
   static void OnGetBrowsingHistory(
       CallbackHolder<GetBrowsingHistoryCallback>* holder,
-      const std::vector<std::string>& history);
+      const std::vector<GURL>& history);
 
   static void OnLoad(CallbackHolder<LoadCallback>* holder,
                      const bool success,

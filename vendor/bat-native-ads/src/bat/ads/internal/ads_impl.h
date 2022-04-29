@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
@@ -28,6 +27,12 @@
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+
+class GURL;
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -137,11 +142,11 @@ class AdsImpl final : public Ads,
   void OnPrefChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
 
   void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
   void OnUserGesture(const int32_t page_transition_type) override;
@@ -156,7 +161,7 @@ class AdsImpl final : public Ads,
   void OnMediaStopped(const int32_t tab_id) override;
 
   void OnTabUpdated(const int32_t tab_id,
-                    const std::string& url,
+                    const GURL& url,
                     const bool is_active,
                     const bool is_browser_active,
                     const bool is_incognito) override;

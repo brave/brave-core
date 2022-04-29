@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"

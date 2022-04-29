@@ -321,12 +321,7 @@ void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
     return;
   }
 
-  std::vector<std::string> redirect_chain_as_strings;
-  for (const auto& url : redirect_chain) {
-    redirect_chain_as_strings.push_back(url.spec());
-  }
-
-  bat_ads_->OnHtmlLoaded(tab_id.id(), redirect_chain_as_strings, html);
+  bat_ads_->OnHtmlLoaded(tab_id.id(), redirect_chain, html);
 }
 
 void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
@@ -336,12 +331,7 @@ void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
     return;
   }
 
-  std::vector<std::string> redirect_chain_as_strings;
-  for (const auto& url : redirect_chain) {
-    redirect_chain_as_strings.push_back(url.spec());
-  }
-
-  bat_ads_->OnTextLoaded(tab_id.id(), redirect_chain_as_strings, text);
+  bat_ads_->OnTextLoaded(tab_id.id(), redirect_chain, text);
 }
 
 void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {
@@ -378,7 +368,7 @@ void AdsServiceImpl::OnTabUpdated(const SessionID& tab_id,
 
   const bool is_incognito = !brave::IsRegularProfile(profile_);
 
-  bat_ads_->OnTabUpdated(tab_id.id(), url.spec(), is_active, is_browser_active,
+  bat_ads_->OnTabUpdated(tab_id.id(), url, is_active, is_browser_active,
                          is_incognito);
 }
 
@@ -1195,20 +1185,19 @@ void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
   retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
-void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
+void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   if (g_browser_process->IsShuttingDown()) {
     return;
   }
 
-  GURL gurl(url);
-  if (!gurl.is_valid()) {
+  if (!url.is_valid()) {
     VLOG(0) << "Failed to open new tab due to invalid URL: " << url;
     return;
   }
 
 #if BUILDFLAG(IS_ANDROID)
   // ServiceTabLauncher can currently only launch new tabs
-  const content::OpenURLParams params(gurl, content::Referrer(),
+  const content::OpenURLParams params(url, content::Referrer(),
                                       WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                       ui::PAGE_TRANSITION_LINK, true);
   ServiceTabLauncher::GetInstance()->LaunchTab(
@@ -1219,7 +1208,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
     browser = Browser::Create(Browser::CreateParams(profile_, true));
   }
 
-  NavigateParams nav_params(browser, gurl, ui::PAGE_TRANSITION_LINK);
+  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
   nav_params.path_behavior = NavigateParams::IGNORE_AND_NAVIGATE;
@@ -1288,7 +1277,7 @@ void AdsServiceImpl::OnURLRequestComplete(
   }
 
   ads::mojom::UrlResponse url_response;
-  url_response.url = url_loader->GetFinalURL().spec();
+  url_response.url = url_loader->GetFinalURL();
   url_response.status_code = response_code;
   url_response.body = response_body ? *response_body : "";
   url_response.headers = headers;
@@ -1912,12 +1901,12 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
     message_center::RichNotificationData notification_data;
     notification_data.context_message = u" ";
 
-    const std::string url = kAdNotificationUrlPrefix + info.placement_id;
+    const GURL url = GURL(kAdNotificationUrlPrefix + info.placement_id);
 
     std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
             message_center::NOTIFICATION_TYPE_SIMPLE, info.placement_id, title,
-            body, gfx::Image(), std::u16string(), GURL(url),
+            body, gfx::Image(), std::u16string(), url,
             message_center::NotifierId(
                 message_center::NotifierType::SYSTEM_COMPONENT,
                 "service.ads_service"),
@@ -1996,10 +1985,10 @@ void AdsServiceImpl::CloseNotification(const std::string& placement_id) {
   } else {
 #if BUILDFLAG(IS_ANDROID)
     const std::string brave_ads_url_prefix = kAdNotificationUrlPrefix;
-    const GURL service_worker_scope =
+    const GURL url =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
     BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-        placement_id, service_worker_scope);
+        placement_id, url);
 #endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, placement_id);
   }
@@ -2027,7 +2016,7 @@ void AdsServiceImpl::ResetAdEventsForId(const std::string& id) const {
 void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestPtr url_request,
                                 ads::UrlRequestCallback callback) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(url_request->url);
+  resource_request->url = url_request->url;
   resource_request->method = URLMethodToRequestType(url_request->method);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   for (const auto& header : url_request->headers) {
@@ -2133,9 +2122,9 @@ void AdsServiceImpl::OnBrowsingHistorySearchComplete(
     return;
   }
 
-  std::vector<std::string> history;
+  std::vector<GURL> history;
   for (const auto& result : results) {
-    history.push_back(result.url().GetWithEmptyPath().spec());
+    history.push_back(result.url().GetWithEmptyPath());
   }
 
   std::sort(history.begin(), history.end());

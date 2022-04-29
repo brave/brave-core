@@ -79,7 +79,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_ad_notification.payload.title =
         "Test Ad Notification Campaign 1 Title";
     catalog_creative_ad_notification.payload.target_url =
-        "https://brave.com/1/ad_notification";
+        GURL("https://brave.com/1/ad_notification");
     catalog_creative_ad_notifications.push_back(
         catalog_creative_ad_notification);
 
@@ -97,20 +97,20 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
     catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 1";
     catalog_creative_new_tab_page_ad.payload.image_url =
-        "https://brave.com/1/test.jpg";
+        GURL("https://brave.com/1/test.jpg");
     catalog_creative_new_tab_page_ad.payload.alt =
         "Test New Tab Page Ad Campaign 1";
     catalog_creative_new_tab_page_ad.payload.target_url =
-        "https://brave.com/1/new_tab_page_ad";
+        GURL("https://brave.com/1/new_tab_page_ad");
     CatalogNewTabPageAdWallpaperInfo wallpaper_1;
-    wallpaper_1.image_url = "https://brave.com/1/test2.jpg";
+    wallpaper_1.image_url = GURL("https://brave.com/1/test2.jpg");
     CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
     focal_point_1.x = 1200;
     focal_point_1.y = 1400;
     wallpaper_1.focal_point = focal_point_1;
     catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
     CatalogNewTabPageAdWallpaperInfo wallpaper_2;
-    wallpaper_2.image_url = "https://brave.com/1/test3.jpg";
+    wallpaper_2.image_url = GURL("https://brave.com/1/test3.jpg");
     CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
     focal_point_2.x = 1200;
     focal_point_2.y = 1400;
@@ -137,7 +137,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_promoted_content_ad.payload.description =
         "Test Promoted Content Ad Campaign 1";
     catalog_creative_promoted_content_ad.payload.target_url =
-        "https://brave.com/1/promoted_content_ad";
+        GURL("https://brave.com/1/promoted_content_ad");
     catalog_creative_promoted_content_ads.push_back(
         catalog_creative_promoted_content_ad);
 
@@ -158,12 +158,12 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ad.payload.description =
         "Test Inline Content Ad Campaign 1";
     catalog_creative_inline_content_ad.payload.image_url =
-        "https://www.brave.com/1/image.png";
+        GURL("https://www.brave.com/1/image.png");
     catalog_creative_inline_content_ad.payload.dimensions = "200x100";
     catalog_creative_inline_content_ad.payload.cta_text =
         "Call to Action Text 1";
     catalog_creative_inline_content_ad.payload.target_url =
-        "https://brave.com/1/inline_content_ad";
+        GURL("https://brave.com/1/inline_content_ad");
     catalog_creative_inline_content_ads.push_back(
         catalog_creative_inline_content_ad);
 
@@ -282,7 +282,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_ad_notification.payload.title =
         "Test Ad Notification Campaign 2 Title";
     catalog_creative_ad_notification.payload.target_url =
-        "https://brave.com/2/ad_notification";
+        GURL("https://brave.com/2/ad_notification");
     catalog_creative_ad_notifications.push_back(
         catalog_creative_ad_notification);
 
@@ -300,20 +300,20 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
     catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 2";
     catalog_creative_new_tab_page_ad.payload.image_url =
-        "https://brave.com/2/test.jpg";
+        GURL("https://brave.com/2/test.jpg");
     catalog_creative_new_tab_page_ad.payload.alt =
         "Test New Tab Page Ad Campaign 2";
     catalog_creative_new_tab_page_ad.payload.target_url =
-        "https://brave.com/2/new_tab_page_ad";
+        GURL("https://brave.com/2/new_tab_page_ad");
     CatalogNewTabPageAdWallpaperInfo wallpaper_1;
-    wallpaper_1.image_url = "https://brave.com/2/test2.jpg";
+    wallpaper_1.image_url = GURL("https://brave.com/2/test2.jpg");
     CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_1;
     focal_point_1.x = 1000;
     focal_point_1.y = 1200;
     wallpaper_1.focal_point = focal_point_1;
     catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper_1);
     CatalogNewTabPageAdWallpaperInfo wallpaper_2;
-    wallpaper_2.image_url = "https://brave.com/2/test3.jpg";
+    wallpaper_2.image_url = GURL("https://brave.com/2/test3.jpg");
     CatalogNewTabPageAdWallpaperFocalPointInfo focal_point_2;
     focal_point_2.x = 500;
     focal_point_2.y = 600;
@@ -340,7 +340,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_promoted_content_ad.payload.description =
         "Test Promoted Content Ad Campaign 2";
     catalog_creative_promoted_content_ad.payload.target_url =
-        "https://brave.com/2/promoted_content_ad";
+        GURL("https://brave.com/2/promoted_content_ad");
     catalog_creative_promoted_content_ads.push_back(
         catalog_creative_promoted_content_ad);
 
@@ -361,12 +361,12 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ad.payload.description =
         "Test Inline Content Ad Campaign 2";
     catalog_creative_inline_content_ad.payload.image_url =
-        "https://www.brave.com/2/image.png";
+        GURL("https://www.brave.com/2/image.png");
     catalog_creative_inline_content_ad.payload.dimensions = "100x200";
     catalog_creative_inline_content_ad.payload.cta_text =
         "Call to Action Text 2";
     catalog_creative_inline_content_ad.payload.target_url =
-        "https://brave.com/2/inline_content_ad";
+        GURL("https://brave.com/2/inline_content_ad");
     catalog_creative_inline_content_ads.push_back(
         catalog_creative_inline_content_ad);
 

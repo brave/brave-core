@@ -55,7 +55,7 @@ bool TabManager::IsVisible(const int32_t id) const {
 }
 
 void TabManager::OnUpdated(const int32_t id,
-                           const std::string& url,
+                           const GURL& url,
                            const bool is_visible,
                            const bool is_incognito) {
   if (is_incognito) {

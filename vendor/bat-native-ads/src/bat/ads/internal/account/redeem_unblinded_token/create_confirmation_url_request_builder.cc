@@ -37,17 +37,17 @@ mojom::UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string CreateConfirmationUrlRequestBuilder::BuildUrl() const {
-  std::string url = base::StringPrintf("%s/v2/confirmation/%s",
-                                       server::GetAnonymousHost().c_str(),
-                                       confirmation_.id.c_str());
+GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
+  std::string spec = base::StringPrintf("%s/v2/confirmation/%s",
+                                        server::GetAnonymousHost().c_str(),
+                                        confirmation_.id.c_str());
 
   if (!confirmation_.credential.empty()) {
-    url += "/";
-    url += confirmation_.credential;
+    spec += "/";
+    spec += confirmation_.credential;
   }
 
-  return url;
+  return GURL(spec);
 }
 
 std::vector<std::string> CreateConfirmationUrlRequestBuilder::BuildHeaders()

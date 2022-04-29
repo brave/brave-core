@@ -13,40 +13,23 @@
 
 namespace ads {
 
-bool DoesUrlMatchPattern(const std::string& url, const std::string& pattern) {
-  if (url.empty() || pattern.empty()) {
+bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern) {
+  if (!url.is_valid() || pattern.empty()) {
     return false;
   }
 
   std::string quoted_pattern = RE2::QuoteMeta(pattern);
   RE2::GlobalReplace(&quoted_pattern, "\\\\\\*", ".*");
 
-  return RE2::FullMatch(url, quoted_pattern);
+  return RE2::FullMatch(url.spec(), quoted_pattern);
 }
 
-bool DoesUrlHaveSchemeHTTPOrHTTPS(const std::string& url) {
-  DCHECK(!url.empty());
-
-  return GURL(url).SchemeIsHTTPOrHTTPS();
-}
-
-std::string GetHostFromUrl(const std::string& url) {
-  GURL gurl(url);
-  if (!gurl.is_valid()) {
-    return "";
-  }
-
-  return gurl.host();
-}
-
-bool SameDomainOrHost(const std::string& lhs, const std::string& rhs) {
+bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
   return net::registry_controlled_domains::SameDomainOrHost(
-      GURL(lhs), GURL(rhs),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+      lhs, rhs, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
-bool DomainOrHostExists(const std::vector<std::string>& urls,
-                        const std::string& url) {
+bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url) {
   for (const auto& element : urls) {
     if (SameDomainOrHost(element, url)) {
       return true;

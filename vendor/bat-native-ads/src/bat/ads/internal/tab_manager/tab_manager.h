@@ -8,11 +8,12 @@
 
 #include <cstdint>
 #include <map>
-#include <string>
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager_observer.h"
+
+class GURL;
 
 namespace absl {
 template <typename T>
@@ -39,7 +40,7 @@ class TabManager final {
   bool IsVisible(const int32_t id) const;
 
   void OnUpdated(const int32_t id,
-                 const std::string& url,
+                 const GURL& url,
                  const bool is_visible,
                  const bool is_incognito);
 

@@ -36,6 +36,7 @@
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
 #import "inline_content_ad_ios.h"
+#include "net/base/mac/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -545,12 +546,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  std::vector<std::string> urls;
+  std::vector<GURL> urls;
   for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(base::SysNSStringToUTF8(redirectURL.absoluteString));
+    urls.push_back(net::GURLWithNSURL(redirectURL));
   }
-  urls.push_back(urlString);
+  urls.push_back(net::GURLWithNSURL(url));
   ads->OnTextLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(text));
   ads->OnHtmlLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
@@ -576,8 +576,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected,
+  ads->OnTabUpdated((int32_t)tabId, net::GURLWithNSURL(url), isSelected,
                     [self isBrowserActive], isPrivate);
 }
 
@@ -745,11 +744,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       {ads::mojom::UrlRequestMethod::kPost, "POST"},
       {ads::mojom::UrlRequestMethod::kPut, "PUT"}};
 
-  const auto copiedURL = base::SysUTF8ToNSString(url_request->url);
+  const auto copiedURL = url_request->url;
 
   const auto __weak weakSelf = self;
   return [self.commonOps
-      loadURLRequest:url_request->url
+      loadURLRequest:url_request->url.spec()
              headers:url_request->headers
              content:url_request->content
         content_type:url_request->content_type
@@ -763,7 +762,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                 return;
               }
               ads::mojom::UrlResponse url_response;
-              url_response.url = base::SysNSStringToUTF8(copiedURL);
+              url_response.url = copiedURL;
               url_response.status_code = statusCode;
               url_response.body = response;
               url_response.headers = headers;

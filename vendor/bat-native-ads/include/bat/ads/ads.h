@@ -17,6 +17,7 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace base {
 class Time;
@@ -79,14 +80,14 @@ class ADS_EXPORT Ads {
   // |redirect_chain| containing redirect URLs that occurred for this
   // navigation. |html| containing the page content as HTML.
   virtual void OnHtmlLoaded(const int32_t tab_id,
-                            const std::vector<std::string>& redirect_chain,
+                            const std::vector<GURL>& redirect_chain,
                             const std::string& html) = 0;
 
   // Called when a page has loaded and the content is available for analysis.
   // |redirect_chain| containing redirect URLs that occurred for this
   // navigation. |text| containing the page content as text.
   virtual void OnTextLoaded(const int32_t tab_id,
-                            const std::vector<std::string>& redirect_chain,
+                            const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
@@ -123,7 +124,7 @@ class ADS_EXPORT Ads {
   // window is active otherwise |false|. |is_incognito| is set to |true| if the
   // tab is incognito otherwise |false|.
   virtual void OnTabUpdated(const int32_t tab_id,
-                            const std::string& url,
+                            const GURL& url,
                             const bool is_active,
                             const bool is_browser_active,
                             const bool is_incognito) = 0;
@@ -204,8 +205,9 @@ class ADS_EXPORT Ads {
   // |event_type| event for the ad specified in |ad_mojom|. The callback takes
   // three arguments - |bool| is set to |true| if successful otherwise |false|,
   // |std::string| containing the placement id and
-  // |mojom::SearchResultAdEventType| containing the event type. Should only be
-  // called again after the callback has been fired.
+  // |mojom::SearchResultAdEventType| containing the event type. NOTE: You
+  // should wait for the callback before calling another |kViewed| event to
+  // handle frequency capping.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdPtr ad_mojom,
       const mojom::SearchResultAdEventType event_type,

@@ -33,7 +33,7 @@ int BindParameters(mojom::DBCommand* command,
   for (const auto& creative_ad : creative_ads) {
     for (const auto& wallpaper : creative_ad.wallpapers) {
       BindString(command, index++, creative_ad.creative_instance_id);
-      BindString(command, index++, wallpaper.image_url);
+      BindString(command, index++, wallpaper.image_url.spec());
       BindInt(command, index++, wallpaper.focal_point.x);
       BindInt(command, index++, wallpaper.focal_point.y);
     }

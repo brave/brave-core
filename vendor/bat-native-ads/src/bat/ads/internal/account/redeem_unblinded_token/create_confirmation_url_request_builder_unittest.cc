@@ -55,7 +55,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -92,7 +92,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -129,7 +129,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -166,7 +166,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -203,7 +203,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -240,7 +240,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -277,7 +277,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -314,7 +314,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -351,7 +351,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -388,7 +388,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -425,7 +425,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -462,7 +462,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
