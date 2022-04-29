@@ -119,4 +119,24 @@ TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
+TEST(BatAdsStringUtilTest, BoolToStringForTrue) {
+  // Arrange
+
+  // Act
+  const std::string value = BoolToString(true);
+
+  // Assert
+  EXPECT_EQ("true", value);
+}
+
+TEST(BatAdsStringUtilTest, BoolToStringForFalse) {
+  // Arrange
+
+  // Act
+  const std::string value = BoolToString(false);
+
+  // Assert
+  EXPECT_EQ("false", value);
+}
+
 }  // namespace ads
