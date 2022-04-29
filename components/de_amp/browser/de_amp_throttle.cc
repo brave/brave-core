@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -27,12 +28,18 @@
 
 namespace de_amp {
 
+constexpr char kDeAmpHeaderName[] = "X-Brave-De-AMP";
+
 // static
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     const network::ResourceRequest& request,
     const content::WebContents::Getter& wc_getter) {
   auto* contents = wc_getter.Run();
+
+  if (request.headers.HasHeader(kDeAmpHeaderName)) {
+    return nullptr;
+  }
 
   if (!contents)
     return nullptr;
@@ -76,19 +83,27 @@ void DeAmpThrottle::WillProcessResponse(
       std::move(new_remote), std::move(new_receiver), de_amp_loader);
 }
 
-void DeAmpThrottle::Redirect(const GURL& new_url, const GURL& response_url) {
+bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
+                                     const GURL& response_url) {
   auto* contents = wc_getter_.Run();
 
   if (!contents)
-    return;
+    return false;
 
   auto* entry = contents->GetController().GetPendingEntry();
   if (!entry) {
     if (contents->GetController().GetVisibleEntry()) {
       entry = contents->GetController().GetVisibleEntry();
     } else {
-      return;
+      return false;
     }
+  }
+
+  // If the canonical/target URL is the same as the current pending URL being
+  // navigated to, we should stop De-AMPing. This is done to prevent redirect
+  // loops. https://github.com/brave/brave-browser/issues/22610
+  if (new_url == entry->GetURL()) {
+    return false;
   }
 
   DCHECK(entry->GetURL() == response_url);
@@ -108,6 +123,7 @@ void DeAmpThrottle::Redirect(const GURL& new_url, const GURL& response_url) {
   auto redirect_chain = request_.navigation_redirect_chain;
   DCHECK(redirect_chain.size());
   params.redirect_chain = std::move(redirect_chain);
+  params.extra_headers += base::StringPrintf("%s: true\r\n", kDeAmpHeaderName);
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(
@@ -118,6 +134,7 @@ void DeAmpThrottle::Redirect(const GURL& new_url, const GURL& response_url) {
                        web_contents->OpenURL(params);
                      },
                      contents->GetWeakPtr(), std::move(params)));
+  return true;
 }
 
 }  // namespace de_amp

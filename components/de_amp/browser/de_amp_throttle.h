@@ -39,7 +39,7 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override;
 
-  void Redirect(const GURL& new_url, const GURL& response_url);
+  bool OpenCanonicalURL(const GURL& new_url, const GURL& response_url);
 
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
