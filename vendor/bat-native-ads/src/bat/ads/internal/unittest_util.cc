@@ -10,7 +10,6 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
-#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
@@ -94,7 +93,7 @@ bool GetNextUrlEndpointResponse(const std::string& url,
   } else {
     if (url_endpoint_response_indexes_iter->second ==
         url_endpoint_responses.size() - 1) {
-      NOTREACHED() << "Missing MockUrlRequest endpoint response for " << url;
+      DCHECK(false) << "Missing MockUrlRequest endpoint response for " << url;
       return false;
     }
 
@@ -119,9 +118,8 @@ base::flat_map<std::string, std::string> UrlRequestHeadersToMap(
   for (const auto& header : headers) {
     const std::vector<std::string> components = base::SplitString(
         header, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-
     if (components.size() != 2) {
-      NOTREACHED();
+      DCHECK(false) << "Invalid header: " << header;
       continue;
     }
 

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/unittest_tag_parser_util.h"
 
-#include <string>
 #include <vector>
 
 #include "base/check.h"
@@ -111,23 +110,23 @@ void ReplaceTagsForText(std::string* text,
   for (const auto& tag : tags) {
     const std::vector<std::string> components = base::SplitString(
         tag, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-
     if (components.size() != 2) {
-      FAIL() << "Invalid tag: " << tag;
-      return;
+      DCHECK(false) << "Invalid tag: " << tag;
+      continue;
     }
 
     const std::string key = components.at(0);
     std::string value = components.at(1);
 
     if (key == "time") {
-      if (!ParseTimeTag(&value)) {
-        FAIL() << "Invalid tag: " << tag;
-        return;
+      const bool success = ParseTimeTag(&value);
+      if (!success) {
+        DCHECK(false) << "Invalid tag: " << tag;
+        continue;
       }
     } else {
-      FAIL() << "Unknown tag: " << tag;
-      return;
+      DCHECK(false) << "Unknown tag: " << tag;
+      continue;
     }
 
     const std::string enclosed_tag = base::StringPrintf("<%s>", tag.c_str());
