@@ -1069,8 +1069,8 @@
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Пошук за підказками";
 
-/* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "Історія та закладки";
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Відкрити вкладки, закладки й журнал";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Видалити дані пошуку";
@@ -1098,6 +1098,9 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Пошукові підказки %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Перейти до цієї вкладки";
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Пошукова система %@";
