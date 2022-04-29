@@ -295,6 +295,9 @@ class TestJsonRpcServiceObserver
       observer_receiver_{this};
 };
 
+constexpr char https_metadata_response[] =
+    R"({"attributes":[{"trait_type":"Feet","value":"Green Shoes"},{"trait_type":"Legs","value":"Tan Pants"},{"trait_type":"Suspenders","value":"White Suspenders"},{"trait_type":"Upper Body","value":"Indigo Turtleneck"},{"trait_type":"Sleeves","value":"Long Sleeves"},{"trait_type":"Hat","value":"Yellow / Blue Pointy Beanie"},{"trait_type":"Eyes","value":"White Nerd Glasses"},{"trait_type":"Mouth","value":"Toothpick"},{"trait_type":"Ears","value":"Bing Bong Stick"},{"trait_type":"Right Arm","value":"Swinging"},{"trait_type":"Left Arm","value":"Diamond Hand"},{"trait_type":"Background","value":"Blue"}],"description":"5,000 animated Invisible Friends hiding in the metaverse. A collection by Markus Magnusson & Random Character Collective.","image":"https://rcc.mypinata.cloud/ipfs/QmXmuSenZRnofhGMz2NyT3Yc4Zrty1TypuiBKDcaBsNw9V/1817.gif","name":"Invisible Friends #1817"})";
+
 }  // namespace
 
 class JsonRpcServiceUnitTest : public testing::Test {
@@ -446,7 +449,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
-  void SetERC721MetadataInterceptor(
+  void SetTokenMetadataInterceptor(
+      const std::string& interface_id,
       const std::string& chain_id,
       const std::string& supports_interface_provider_response,
       const std::string& token_uri_provider_response = "",
@@ -458,7 +462,9 @@ class JsonRpcServiceUnitTest : public testing::Test {
         brave_wallet::GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, supports_interface_status, token_uri_status, metadata_status,
+        [&, interface_id, supports_interface_provider_response,
+         token_uri_provider_response, metadata_response,
+         supports_interface_status, token_uri_status, metadata_status,
          network_url](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           if (request.method ==
@@ -471,16 +477,22 @@ class JsonRpcServiceUnitTest : public testing::Test {
             bool is_supports_interface_req =
                 request_string.find(GetFunctionHash(
                     "supportsInterface(bytes4)")) != std::string::npos;
-            bool is_token_uri_req =
-                request_string.find(GetFunctionHash("tokenURI(uint256)")) !=
-                std::string::npos;
             if (is_supports_interface_req) {
+              ASSERT_NE(request_string.find(interface_id.substr(2)),
+                        std::string::npos);
               EXPECT_EQ(request.url.spec(), network_url);
               url_loader_factory_.AddResponse(
                   network_url.spec(), supports_interface_provider_response,
                   supports_interface_status);
               return;
-            } else if (is_token_uri_req) {
+            } else {
+              std::string function_hash;
+              if (interface_id == kERC721MetadataInterfaceId) {
+                function_hash = GetFunctionHash("tokenURI(uint256)");
+              } else {
+                function_hash = GetFunctionHash("uri(uint256)");
+              }
+              ASSERT_NE(request_string.find(function_hash), std::string::npos);
               url_loader_factory_.AddResponse(network_url.spec(),
                                               token_uri_provider_response,
                                               token_uri_status);
@@ -645,6 +657,47 @@ class JsonRpcServiceUnitTest : public testing::Test {
     base::RunLoop run_loop;
     json_rpc_service_->GetERC721Metadata(
         contract, token_id, chain_id,
+        base::BindLambdaForTesting([&](const std::string& response,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(response, expected_response);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestGetERC1155Metadata(const std::string& contract,
+                              const std::string& token_id,
+                              const std::string& chain_id,
+                              const std::string& expected_response,
+                              mojom::ProviderError expected_error,
+                              const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetERC1155Metadata(
+        contract, token_id, chain_id,
+        base::BindLambdaForTesting([&](const std::string& response,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(response, expected_response);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestGetTokenMetadata(const std::string& contract,
+                            const std::string& token_id,
+                            const std::string& chain_id,
+                            const std::string& interface_id,
+                            const std::string& expected_response,
+                            mojom::ProviderError expected_error,
+                            const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetTokenMetadata(
+        contract, token_id, chain_id, interface_id,
         base::BindLambdaForTesting([&](const std::string& response,
                                        mojom::ProviderError error,
                                        const std::string& error_message) {
@@ -2417,7 +2470,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(JsonRpcServiceUnitTest, GetERC721Metadata) {
+TEST_F(JsonRpcServiceUnitTest, GetTokenMetadata) {
   const std::string https_token_uri_response = R"({
       "jsonrpc":"2.0",
       "id":1,
@@ -2475,154 +2528,227 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Metadata) {
 
   // Invalid inputs
   // (1/3) Invalid contract address
-  TestGetERC721Metadata(
-      "", "0x1", mojom::kMainnetChainId, "",
-      mojom::ProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  TestGetTokenMetadata("", "0x1", mojom::kMainnetChainId,
+                       kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInvalidParams,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // (2/3) Invalid token ID
-  TestGetERC721Metadata(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", mojom::kMainnetChainId,
-      "", mojom::ProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  TestGetTokenMetadata("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInvalidParams,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // (3/3) Invalid chain ID
-  TestGetERC721Metadata(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "", "",
-      mojom::ProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  TestGetTokenMetadata("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
+                       kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInvalidParams,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Mismatched
+  // (4/4) Unknown interfaceID
+  TestGetTokenMetadata("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
+                       kERC721InterfaceId, "",
+                       mojom::ProviderError::kInvalidParams,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // Valid inputs
   // (1/3) HTTP URI
-  SetERC721MetadataInterceptor(
-      mojom::kMainnetChainId, interface_supported_response,
-      https_token_uri_response, https_metadata_response);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, https_metadata_response,
-                        mojom::ProviderError::kSuccess, "");
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, https_token_uri_response,
+      https_metadata_response);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId,
+                       https_metadata_response, mojom::ProviderError::kSuccess,
+                       "");
 
   // (2/3) IPFS URI
-  SetERC721MetadataInterceptor(mojom::kLocalhostChainId,
-                               interface_supported_response,
-                               ipfs_token_uri_response, ipfs_metadata_response);
-  TestGetERC721Metadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                        mojom::kLocalhostChainId, ipfs_metadata_response,
-                        mojom::ProviderError::kSuccess, "");
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kLocalhostChainId,
+                              interface_supported_response,
+                              ipfs_token_uri_response, ipfs_metadata_response);
+  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
+                       mojom::kLocalhostChainId, kERC721MetadataInterfaceId,
+                       ipfs_metadata_response, mojom::ProviderError::kSuccess,
+                       "");
 
   // (3/3) Data URI
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_supported_response,
-                               data_token_uri_response);
-  TestGetERC721Metadata(
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, data_token_uri_response);
+  TestGetTokenMetadata(
       "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-      mojom::kMainnetChainId,
+      mojom::kMainnetChainId, kERC721MetadataInterfaceId,
       R"({"attributes":"","description":"Non fungible lion","image":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIj48cGF0aCBkPSIiLz48L3N2Zz4=","name":"NFL"})",
       mojom::ProviderError::kSuccess, "");
 
   // Invalid supportsInterface response
   // (1/4) Timeout
-  SetERC721MetadataInterceptor(
-      mojom::kMainnetChainId, interface_supported_response,
-      https_token_uri_response, "", net::HTTP_REQUEST_TIMEOUT);
-  TestGetERC721Metadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kInternalError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, https_token_uri_response, "",
+      net::HTTP_REQUEST_TIMEOUT);
+  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInternalError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // (2/4) Invalid JSON
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId, invalid_json);
-  TestGetERC721Metadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kParsingError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kMainnetChainId, invalid_json);
+  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kParsingError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // (3/4) Request exceeds provider limit
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId, exceeds_limit_json);
-  TestGetERC721Metadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kLimitExceeded,
-                        "Request exceeds defined limit");
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kMainnetChainId, exceeds_limit_json);
+  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kLimitExceeded,
+                       "Request exceeds defined limit");
 
   // (4/4) Interface not supported
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_not_supported_response);
-  TestGetERC721Metadata(
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kMainnetChainId,
+                              interface_not_supported_response);
+  TestGetTokenMetadata(
       "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-      mojom::kMainnetChainId, "", mojom::ProviderError::kMethodNotSupported,
+      mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+      mojom::ProviderError::kMethodNotSupported,
       l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
 
   // Invalid tokenURI response (6 total)
   // (1/6) Timeout
-  SetERC721MetadataInterceptor(
-      mojom::kMainnetChainId, interface_supported_response,
-      https_token_uri_response, "", net::HTTP_OK, net::HTTP_REQUEST_TIMEOUT);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kInternalError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, https_token_uri_response, "", net::HTTP_OK,
+      net::HTTP_REQUEST_TIMEOUT);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInternalError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // (2/6) Invalid Provider JSON
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_supported_response, invalid_json);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kParsingError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kMainnetChainId,
+                              interface_supported_response, invalid_json);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kParsingError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // (3/6) Invalid JSON in data URI
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_supported_response,
-                               data_token_uri_response_invalid_json);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kParsingError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, data_token_uri_response_invalid_json);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kParsingError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // (4/6) Empty string as JSON in data URI
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_supported_response,
-                               data_token_uri_response_empty_string);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kParsingError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, data_token_uri_response_empty_string);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kParsingError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // (5/6) Request exceeds limit
-  SetERC721MetadataInterceptor(
-      mojom::kMainnetChainId, interface_supported_response, exceeds_limit_json);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kLimitExceeded,
-                        "Request exceeds defined limit");
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kMainnetChainId,
+                              interface_supported_response, exceeds_limit_json);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kLimitExceeded,
+                       "Request exceeds defined limit");
 
   // (6/6) URI scheme is not suported (HTTP)
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_supported_response,
-                               http_token_uri_response);
-  TestGetERC721Metadata(
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, http_token_uri_response);
+  TestGetTokenMetadata(
       "0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-      mojom::kMainnetChainId, "", mojom::ProviderError::kMethodNotSupported,
+      mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+      mojom::ProviderError::kMethodNotSupported,
       l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
 
   // Invalid metadata response (2 total)
   // (1/2) Timeout
-  SetERC721MetadataInterceptor(
-      mojom::kMainnetChainId, interface_supported_response,
-      https_token_uri_response, https_metadata_response, net::HTTP_OK,
-      net::HTTP_OK, net::HTTP_REQUEST_TIMEOUT);
-  TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kInternalError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, https_token_uri_response,
+      https_metadata_response, net::HTTP_OK, net::HTTP_OK,
+      net::HTTP_REQUEST_TIMEOUT);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInternalError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // (2/2) Invalid JSON
-  SetERC721MetadataInterceptor(mojom::kMainnetChainId,
-                               interface_supported_response,
-                               ipfs_token_uri_response, invalid_json);
+  SetTokenMetadataInterceptor(
+      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, ipfs_token_uri_response, invalid_json);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kParsingError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // ERC1155
+  SetTokenMetadataInterceptor(
+      kERC1155MetadataInterfaceId, mojom::kMainnetChainId,
+      interface_supported_response, https_token_uri_response,
+      https_metadata_response);
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC1155MetadataInterfaceId,
+                       https_metadata_response, mojom::ProviderError::kSuccess,
+                       "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetERC721Metadata) {
+  // Ensure GetERC721Metadata passes the correct interface ID to
+  // GetTokenMetadata
+  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
+                              mojom::kMainnetChainId,
+                              R"({
+                                  "jsonrpc":"2.0",
+                                  "id":1,
+                                  "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
+                              })",
+                              R"({
+                                  "jsonrpc":"2.0",
+                                  "id":1,
+                                  "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
+                              })",
+                              https_metadata_response);
   TestGetERC721Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                        mojom::kMainnetChainId, "",
-                        mojom::ProviderError::kParsingError,
-                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+                        mojom::kMainnetChainId, https_metadata_response,
+                        mojom::ProviderError::kSuccess, "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetERC1155Metadata) {
+  // Ensure GetERC1155Metadata passes the correct interface ID to
+  // GetTokenMetadata
+  SetTokenMetadataInterceptor(kERC1155MetadataInterfaceId,
+                              mojom::kMainnetChainId,
+                              R"({
+                                  "jsonrpc":"2.0",
+                                  "id":1,
+                                  "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
+                              })",
+                              R"({
+                                  "jsonrpc":"2.0",
+                                  "id":1,
+                                  "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
+                              })",
+                              https_metadata_response);
+  TestGetERC1155Metadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                         mojom::kMainnetChainId, https_metadata_response,
+                         mojom::ProviderError::kSuccess, "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {

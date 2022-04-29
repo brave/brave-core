@@ -1634,7 +1634,26 @@ void JsonRpcService::ContinueGetERC721TokenBalance(
 void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
                                        const std::string& token_id,
                                        const std::string& chain_id,
-                                       GetERC721MetadataCallback callback) {
+                                       GetTokenMetadataCallback callback) {
+  JsonRpcService::GetTokenMetadata(contract_address, token_id, chain_id,
+                                   kERC721MetadataInterfaceId,
+                                   std::move(callback));
+}
+
+void JsonRpcService::GetERC1155Metadata(const std::string& contract_address,
+                                        const std::string& token_id,
+                                        const std::string& chain_id,
+                                        GetTokenMetadataCallback callback) {
+  JsonRpcService::GetTokenMetadata(contract_address, token_id, chain_id,
+                                   kERC1155MetadataInterfaceId,
+                                   std::move(callback));
+}
+
+void JsonRpcService::GetTokenMetadata(const std::string& contract_address,
+                                      const std::string& token_id,
+                                      const std::string& chain_id,
+                                      const std::string& interface_id,
+                                      GetTokenMetadataCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -1659,7 +1678,22 @@ void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
   }
 
   std::string function_signature;
-  if (!erc721::TokenUri(token_id_uint, &function_signature)) {
+  if (interface_id == kERC721MetadataInterfaceId) {
+    if (!erc721::TokenUri(token_id_uint, &function_signature)) {
+      std::move(callback).Run(
+          "", mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return;
+    }
+  } else if (interface_id == kERC1155MetadataInterfaceId) {
+    if (!erc1155::Uri(token_id_uint, &function_signature)) {
+      std::move(callback).Run(
+          "", mojom::ProviderError::kInvalidParams,
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return;
+    }
+  } else {
+    // Unknown inteface ID
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1667,19 +1701,19 @@ void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
   }
 
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetSupportsInterfaceERC721Metadata,
+      base::BindOnce(&JsonRpcService::OnGetSupportsInterfaceTokenMetadata,
                      weak_ptr_factory_.GetWeakPtr(), contract_address,
                      function_signature, network_url, std::move(callback));
 
-  GetSupportsInterface(contract_address, kERC721MetadataInterfaceId, chain_id,
+  GetSupportsInterface(contract_address, interface_id, chain_id,
                        std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetSupportsInterfaceERC721Metadata(
+void JsonRpcService::OnGetSupportsInterfaceTokenMetadata(
     const std::string& contract_address,
     const std::string& function_signature,
     const GURL& network_url,
-    GetERC721MetadataCallback callback,
+    GetTokenMetadataCallback callback,
     bool is_supported,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -1696,17 +1730,16 @@ void JsonRpcService::OnGetSupportsInterfaceERC721Metadata(
   }
 
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetERC721TokenUri,
+      base::BindOnce(&JsonRpcService::OnGetTokenUri,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  // Call tokenURI on the ERC721 contract
   RequestInternal(eth::eth_call("", contract_address, "", "", "",
                                 function_signature, "latest"),
                   true, network_url, std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetERC721TokenUri(
-    GetERC721MetadataCallback callback,
+void JsonRpcService::OnGetTokenUri(
+    GetTokenMetadataCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -1719,7 +1752,7 @@ void JsonRpcService::OnGetERC721TokenUri(
 
   // Parse response JSON that wraps the result
   GURL url;
-  if (!eth::ParseERC721TokenUri(body, &url)) {
+  if (!eth::ParseTokenUri(body, &url)) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
@@ -1751,7 +1784,7 @@ void JsonRpcService::OnGetERC721TokenUri(
     // Sanitize JSON
     data_decoder::JsonSanitizer::Sanitize(
         std::move(metadata_json),
-        base::BindOnce(&JsonRpcService::OnSanitizeERC721Metadata,
+        base::BindOnce(&JsonRpcService::OnSanitizeTokenMetadata,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     return;
   }
@@ -1765,14 +1798,14 @@ void JsonRpcService::OnGetERC721TokenUri(
   }
 
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetERC721MetadataPayload,
+      base::BindOnce(&JsonRpcService::OnGetTokenMetadataPayload,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request("GET", url, "", "", true,
                                std::move(internal_callback));
 }
 
-void JsonRpcService::OnSanitizeERC721Metadata(
-    GetERC721MetadataCallback callback,
+void JsonRpcService::OnSanitizeTokenMetadata(
+    GetTokenMetadataCallback callback,
     data_decoder::JsonSanitizer::Result result) {
   if (result.error) {
     VLOG(1) << "Data URI JSON validation error:" << *result.error;
@@ -1789,8 +1822,8 @@ void JsonRpcService::OnSanitizeERC721Metadata(
   std::move(callback).Run(metadata_json, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::OnGetERC721MetadataPayload(
-    GetERC721MetadataCallback callback,
+void JsonRpcService::OnGetTokenMetadataPayload(
+    GetTokenMetadataCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {

@@ -132,6 +132,16 @@ TEST(EthCallDataBuilderTest, BalanceOf) {
       "b60000000000000000000000000000000000000000000000000000000000000001");
 }
 
+TEST(EthCallDataBuilderTest, Uri) {
+  std::string data;
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
+  Uri(token_id, &data);
+  ASSERT_EQ(data,
+            "0x0e89341c00000000000000000000000000000000000000000000000000000000"
+            "0000000f");
+}
+
 }  // namespace erc1155
 
 namespace erc165 {
