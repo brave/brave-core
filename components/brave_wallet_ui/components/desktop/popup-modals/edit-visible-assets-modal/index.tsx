@@ -392,8 +392,9 @@ const EditVisibleAssetsModal = (props: Props) => {
       (tokenDecimals === '0' && tokenID === '') ||
       tokenDecimals === '' ||
       tokenContractAddress === '' ||
-      !tokenContractAddress.toLowerCase().startsWith('0x')
-  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress])
+      (customAssetsNetwork.coin !== BraveWallet.CoinType.SOL &&
+        !tokenContractAddress.toLowerCase().startsWith('0x'))
+  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress, customAssetsNetwork])
 
   const onCloseModal = () => {
     resetInputFields()
