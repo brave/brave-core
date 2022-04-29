@@ -6,15 +6,14 @@
 #ifndef BRAVE_COMPONENTS_TOR_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_TOR_PREF_NAMES_H_
 
-namespace tor {
-namespace prefs {
+namespace tor::prefs {
 
 extern const char kTorDisabled[];
 
 // Automatically open onion available site or .onion domain in Tor window
 extern const char kAutoOnionRedirect[];
+extern const char kBridgesConfig[];
 
-}  // namespace prefs
 }  // namespace tor
 
 #endif  // BRAVE_COMPONENTS_TOR_PREF_NAMES_H_

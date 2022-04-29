@@ -5,12 +5,11 @@
 
 #include "brave/components/tor/pref_names.h"
 
-namespace tor {
-namespace prefs {
+namespace tor::prefs {
 
 const char kTorDisabled[] = "tor.tor_disabled";
 
 const char kAutoOnionRedirect[] = "tor.auto_onion_location";
+const char kBridgesConfig[] = "tor.bridges";
 
-}  // namespace prefs
 }  // namespace tor
