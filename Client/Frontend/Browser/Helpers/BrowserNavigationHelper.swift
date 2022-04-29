@@ -69,7 +69,7 @@ class BrowserNavigationHelper {
     guard let bvc = bvc else { return }
     dismissView()
 
-    func share(url: URL) {
+    @MainActor @Sendable func share(url: URL) {
       bvc.presentActivityViewController(
         url,
         tab: url.isFileURL ? nil : bvc.tabManager.selectedTab,
@@ -80,26 +80,25 @@ class BrowserNavigationHelper {
     }
 
     guard let tab = bvc.tabManager.selectedTab, let url = tab.url else { return }
-
-    if let temporaryDocument = tab.temporaryDocument {
-      temporaryDocument.getURL().uponQueue(
-        .main,
-        block: { tempDocURL in
-          // If we successfully got a temp file URL, share it like a downloaded file,
-          // otherwise present the ordinary share menu for the web URL.
-          if tempDocURL.isFileURL {
-            share(url: tempDocURL)
-          } else {
-            share(url: url)
-          }
-        })
-    } else if url.isReaderModeURL, let readerSourceURL = url.decodeReaderModeURL {
-      // We want to decode the underlying url that generated the reader mode file and share that instead
-      // This way we avoid sharing a url of a local file
-      share(url: readerSourceURL)
-    } else {
-      // Otherwise share the tab url
-      share(url: url)
+    
+    Task { @MainActor in
+      if let temporaryDocument = tab.temporaryDocument {
+        let tempDocURL = await temporaryDocument.getURL()
+        // If we successfully got a temp file URL, share it like a downloaded file,
+        // otherwise present the ordinary share menu for the web URL.
+        if tempDocURL.isFileURL {
+          share(url: tempDocURL)
+        } else {
+          share(url: url)
+        }
+      } else if url.isReaderModeURL, let readerSourceURL = url.decodeReaderModeURL {
+        // We want to decode the underlying url that generated the reader mode file and share that instead
+        // This way we avoid sharing a url of a local file
+        share(url: readerSourceURL)
+      } else {
+        // Otherwise share the tab url
+        share(url: url)
+      }
     }
   }
 

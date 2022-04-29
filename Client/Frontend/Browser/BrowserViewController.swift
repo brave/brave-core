@@ -69,7 +69,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   let backgroundDataSource = NTPDataSource()
   let feedDataSource = FeedDataSource()
 
-  var loadQueue = Deferred<Void>()
+  private var postSetupTasks: [() -> Void] = []
+  private var setupTasksCompleted: Bool = false
 
   lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
 
@@ -142,7 +143,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
   let downloadQueue = DownloadQueue()
 
-  fileprivate var contentBlockListDeferred: Deferred<()>?
+  fileprivate var contentBlockListCompiled: Bool = false
   private var cancellables: Set<AnyCancellable> = []
 
   // Web filters
@@ -422,7 +423,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
     
     // Lists need to be compiled before attempting tab restoration
-    contentBlockListDeferred = Deferred<()>()
     
     var contentBlockListTask: AnyCancellable?
     contentBlockListTask = ContentBlockerHelper.compileBundledLists()
@@ -433,7 +433,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         }
           
         contentBlockListTask = nil
-        self?.contentBlockListDeferred?.fill(())
+        
+        self?.contentBlockListCompiled = true
+        self?.setupTabs()
     } receiveValue: { _ in
       log.debug("Content Blocker successfully compiled bundled lists")
     }
@@ -871,22 +873,29 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   }
 
   fileprivate func setupTabs() {
-    contentBlockListDeferred?.uponQueue(.main) { _ in
-      let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
-      let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
-
-      var tabToSelect: Tab?
-
-      if noTabsAdded {
-        // Two scenarios if there are no tabs in tabmanager:
-        // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
-        // 2. We are in private browsing mode and need to add a new private tab.
-        tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs
-      } else {
-        tabToSelect = self.tabManager.tabsForCurrentMode.last
+    assert(contentBlockListCompiled, "Tabs should not be set up until after blocker lists are compiled")
+    let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+    let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
+    
+    var tabToSelect: Tab?
+    
+    if noTabsAdded {
+      // Two scenarios if there are no tabs in tabmanager:
+      // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
+      // 2. We are in private browsing mode and need to add a new private tab.
+      tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs
+    } else {
+      tabToSelect = self.tabManager.tabsForCurrentMode.last
+    }
+    self.tabManager.selectTab(tabToSelect)
+    
+    if !setupTasksCompleted {
+      for task in postSetupTasks {
+        DispatchQueue.main.async {
+          task()
+        }
       }
-      self.tabManager.selectTab(tabToSelect)
-      self.loadQueue.fillIfUnfilled(())
+      setupTasksCompleted = true
     }
   }
 
@@ -949,7 +958,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     if crashedLastSession {
       showRestoreTabsAlert()
     } else {
-      setupTabs()
+      if self.contentBlockListCompiled {
+        setupTabs()
+      }
     }
     return {}
   }()
@@ -961,7 +972,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
     let alert = UIAlertController.restoreTabsAlert(
       okayCallback: { _ in
-        self.setupTabs()
+        if self.contentBlockListCompiled {
+          self.setupTabs()
+        }
       },
       noCallback: { _ in
         TabMO.deleteAll()
@@ -3161,15 +3174,15 @@ extension BrowserViewController: PreferencesObserver {
 
 extension BrowserViewController {
   func openReferralLink(url: URL) {
-    self.loadQueue.uponQueue(.main) {
+    postSetupTasks.append({
       self.openURLInNewTab(url, isPrivileged: false)
-    }
+    })
   }
 
   func handleNavigationPath(path: NavigationPath) {
-    self.loadQueue.uponQueue(.main) {
+    postSetupTasks.append({
       NavigationPath.handle(nav: path, with: self)
-    }
+    })
   }
 }
 

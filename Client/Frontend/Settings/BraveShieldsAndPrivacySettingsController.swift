@@ -241,11 +241,10 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
       let spinner = SpinnerView().then {
         $0.present(on: self.view)
       }
-      self.clearPrivateData(
-        self.toggles.indices.compactMap {
+      Task { @MainActor in
+        await self.clearPrivateData(self.toggles.indices.compactMap {
           self.toggles[$0] ? self.clearables[$0].clearable : nil
-        }
-      ).uponQueue(.main) {
+        })
         spinner.dismiss()
       }
     }
@@ -286,22 +285,21 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
 
             Preferences.Privacy.privateBrowsingOnly.value = value
 
-            DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.1) {
+            Task { @MainActor in
+              try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
               let clearables: [Clearable] = [CookiesAndCacheClearable()]
-              self.clearPrivateData(clearables).uponQueue(.main) { [weak self] in
-                guard let self = self else { return }
-
-                // First remove all tabs so that only a blank tab exists.
-                self.tabManager.removeAll()
-
-                // Reset tab configurations and delete all webviews..
-                self.tabManager.reset()
-
-                // Restore all existing tabs by removing the blank tabs and recreating new ones..
-                self.tabManager.removeAll()
-
-                spinner.dismiss()
-              }
+              await self.clearPrivateData(clearables)
+              
+              // First remove all tabs so that only a blank tab exists.
+              self.tabManager.removeAll()
+              
+              // Reset tab configurations and delete all webviews..
+              self.tabManager.reset()
+              
+              // Restore all existing tabs by removing the blank tabs and recreating new ones..
+              self.tabManager.removeAll()
+              
+              spinner.dismiss()
             }
           }))
 
@@ -311,42 +309,26 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     }
   }
 
-  @discardableResult
-  func clearPrivateData(_ clearables: [Clearable]) -> Deferred<Void> {
-    func _clear(_ clearables: [Clearable], secondAttempt: Bool = false) -> Deferred<Void> {
-      let deferred = Deferred<Void>()
-      clearables.enumerated().map { clearable in
-        log.info("Clearing \(clearable.element).")
-
-        let res = Success()
-        succeed().upon() { _ in  // move off main thread
-          clearable.element.clear().upon() { result in
-            res.fill(result)
+  @MainActor func clearPrivateData(_ clearables: [Clearable]) async {
+    @Sendable func _clear(_ clearables: [Clearable], secondAttempt: Bool = false) async {
+      await withThrowingTaskGroup(of: Void.self) { group in
+        for clearable in clearables {
+          group.addTask {
+            try await clearable.clear()
           }
         }
-        return res
-      }
-      .allSucceed()
-      .upon { result in
-        if !result.isSuccess && !secondAttempt {
-          log.error("Private data NOT cleared successfully")
-          DispatchQueue.main.asyncAfter(
-            deadline: .now() + 0.5,
-            execute: {
-              // For some reason, a second attempt seems to always succeed
-              _clear(clearables, secondAttempt: true).upon() { _ in
-                deferred.fill(())
-              }
-            })
-          return
+        do {
+          for try await _ in group { }
+        } catch {
+          if !secondAttempt {
+            log.error("Private data NOT cleared successfully")
+            try? await Task.sleep(nanoseconds: NSEC_PER_MSEC * 500)
+            await _clear(clearables, secondAttempt: true)
+          } else {
+            log.error("Private data NOT cleared after 2 attempts")
+          }
         }
-
-        if !result.isSuccess {
-          log.error("Private data NOT cleared after 2 attempts")
-        }
-        deferred.fill(())
       }
-      return deferred
     }
 
     let clearAffectsTabs = clearables.contains { item in
@@ -361,9 +343,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
       }
     }
 
-    let deferred = Deferred<Void>()
-
-    func _toggleFolderAccessForBlockCookies(locked: Bool) {
+    @Sendable func _toggleFolderAccessForBlockCookies(locked: Bool) {
       if Preferences.Privacy.blockAllCookies.value, FileManager.default.checkLockedStatus(folder: .cookie) != locked {
         FileManager.default.setFolderAccess([
           (.cookie, locked),
@@ -372,36 +352,29 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
       }
     }
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-      // Reset Webkit configuration to remove data from memory
-      if clearAffectsTabs {
-        self.tabManager.resetConfiguration()
-        // Unlock the folders to allow clearing of data.
-        _toggleFolderAccessForBlockCookies(locked: false)
-      }
-
-      _clear(clearables)
-        .uponQueue(
-          .main,
-          block: {
-            if clearAffectsTabs {
-              self.tabManager.allTabs.forEach({ $0.reload() })
-            }
-
-            if historyCleared {
-              self.tabManager.clearTabHistory()
-
-              /// Donate Clear Browser History for suggestions
-              let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
-              self.userActivity = clearBrowserHistoryActivity
-              clearBrowserHistoryActivity.becomeCurrent()
-            }
-
-            _toggleFolderAccessForBlockCookies(locked: true)
-            deferred.fill(())
-          })
+    try? await Task.sleep(nanoseconds: NSEC_PER_SEC * 1)
+    
+    // Reset Webkit configuration to remove data from memory
+    if clearAffectsTabs {
+      self.tabManager.resetConfiguration()
+      // Unlock the folders to allow clearing of data.
+      _toggleFolderAccessForBlockCookies(locked: false)
     }
-
-    return deferred
+    
+    await _clear(clearables)
+    if clearAffectsTabs {
+      self.tabManager.allTabs.forEach({ $0.reload() })
+    }
+    
+    if historyCleared {
+      self.tabManager.clearTabHistory()
+      
+      /// Donate Clear Browser History for suggestions
+      let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
+      self.userActivity = clearBrowserHistoryActivity
+      clearBrowserHistoryActivity.becomeCurrent()
+    }
+    
+    _toggleFolderAccessForBlockCookies(locked: true)
   }
 }

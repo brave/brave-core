@@ -441,10 +441,11 @@ extension BrowserViewController: WKNavigationDelegate {
     tabManager.selectTab(tab)
 
     let loginsHelper = tab.getContentScript(name: LoginsHelper.name()) as? LoginsHelper
-    Authenticator.handleAuthRequest(self, challenge: challenge, loginsHelper: loginsHelper).uponQueue(.main) { res in
-      if let credentials = res.successValue {
+    Task { @MainActor in
+      do {
+        let credentials = try await Authenticator.handleAuthRequest(self, challenge: challenge, loginsHelper: loginsHelper)
         completionHandler(.useCredential, credentials.credentials)
-      } else {
+      } catch {
         completionHandler(.rejectProtectionSpace, nil)
       }
     }

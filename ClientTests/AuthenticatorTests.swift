@@ -33,7 +33,8 @@ class MockMalformableLogin: LoginData {
   var usernameField: String?
   var passwordField: String?
   var hasMalformedHostname = true
-  var isValid = Maybe(success: ())
+  
+  func validate() throws { }
 
   static func createWithHostname(_ hostname: String, username: String, password: String, formSubmitURL: String) -> MockMalformableLogin {
     return self.init(guid: Bytes.generateGUID(), hostname: hostname, username: username, password: password, formSubmitURL: formSubmitURL)
@@ -76,11 +77,21 @@ class AuthenticatorTests: XCTestCase {
     super.setUp()
     self.db = BrowserDB(filename: "testsqlitelogins.db", schema: LoginsSchema(), files: MockFiles())
     self.logins = SQLiteLogins(db: self.db)
-    self.logins.removeAll().succeeded()
+    let expectation = expectation(description: "setUp")
+    Task { @MainActor in
+      await XCTAssertAsyncNoThrow(try await self.logins.removeAll())
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 10.0)
   }
 
   override func tearDown() {
-    self.logins.removeAll().succeeded()
+    let expectation = expectation(description: "tearDown")
+    Task { @MainActor in
+      await XCTAssertAsyncNoThrow(try await self.logins.removeAll())
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 10.0)
   }
 
   fileprivate func mockChallengeForURL(_ url: URL, username: String, password: String) -> URLAuthenticationChallenge {
@@ -108,7 +119,7 @@ class AuthenticatorTests: XCTestCase {
     return row["hostname"] as! String
   }
 
-  fileprivate func rawQueryForAllLogins() -> Deferred<Maybe<Cursor<String>>> {
+  fileprivate func rawQueryForAllLogins() async throws -> Cursor<String> {
     let projection = MainLoginColumns
     let sql = """
       SELECT \(projection)
@@ -120,61 +131,61 @@ class AuthenticatorTests: XCTestCase {
       WHERE is_overridden = 0
       ORDER BY hostname ASC
       """
-    return db.runQuery(sql, args: nil, factory: hostnameFactory)
+    return try await db.runQuery(sql, args: nil, factory: hostnameFactory)
   }
 
-  func testChallengeMatchesLoginEntry() {
+  func testChallengeMatchesLoginEntry() async throws {
     let login = Login.createWithHostname("https://securesite.com", username: "username", password: "password", formSubmitURL: "https://submit.me")
-    logins.addLogin(login).succeeded()
+    try await logins.addLogin(login)
     let challenge = mockChallengeForURL(URL(string: "https://securesite.com")!, username: "username", password: "password")
-    let result = Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins).value.successValue!
+    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins)
     XCTAssertNotNil(result)
     XCTAssertEqual(result?.user, "username")
     XCTAssertEqual(result?.password, "password")
   }
 
-  func testChallengeMatchesSingleMalformedLoginEntry() {
+  func testChallengeMatchesSingleMalformedLoginEntry() async throws {
     // Since Login has been updated to not store schemeless URL, write directly to simulate a malformed URL
     let malformedLogin = MockMalformableLogin.createWithHostname("malformed.com", username: "username", password: "password", formSubmitURL: "https://submit.me")
-    logins.addLogin(malformedLogin).succeeded()
+    try await logins.addLogin(malformedLogin)
 
     // Pre-condition: Check that the hostname is malformed
-    let oldHostname = rawQueryForAllLogins().value.successValue![0]
+    let oldHostname = try await rawQueryForAllLogins()[0]
     XCTAssertEqual(oldHostname, "malformed.com")
 
     let challenge = mockChallengeForURL(URL(string: "https://malformed.com")!, username: "username", password: "password")
-    let result = Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins).value.successValue!
+    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins)
     XCTAssertNotNil(result)
     XCTAssertEqual(result?.user, "username")
     XCTAssertEqual(result?.password, "password")
 
     // Post-condition: Check that we updated the hostname to be not malformed
-    let newHostname = rawQueryForAllLogins().value.successValue![0]
+    let newHostname = try await rawQueryForAllLogins()[0]
     XCTAssertEqual(newHostname, "https://malformed.com")
   }
 
-  func testChallengeMatchesDuplicateLoginEntries() {
+  func testChallengeMatchesDuplicateLoginEntries() async throws {
     // Since Login has been updated to not store schemeless URL, write directly to simulate a malformed URL
     let malformedLogin = MockMalformableLogin.createWithHostname("malformed.com", username: "malformed_username", password: "malformed_password", formSubmitURL: "https://submit.me")
-    logins.addLogin(malformedLogin).succeeded()
+    try await logins.addLogin(malformedLogin)
 
     let login = Login.createWithHostname("https://malformed.com", username: "good_username", password: "good_password", formSubmitURL: "https://submit.me")
-    logins.addLogin(login).succeeded()
+    try await logins.addLogin(login)
 
     // Pre-condition: Verify that both logins were stored
-    let hostnames = rawQueryForAllLogins().value.successValue!
+    let hostnames = try await rawQueryForAllLogins()
     XCTAssertEqual(hostnames.count, 2)
     XCTAssertEqual(hostnames[0], "https://malformed.com")
     XCTAssertEqual(hostnames[1], "malformed.com")
 
     let challenge = mockChallengeForURL(URL(string: "https://malformed.com")!, username: "username", password: "password")
-    let result = Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins).value.successValue!
+    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins)
     XCTAssertNotNil(result)
     XCTAssertEqual(result?.user, "good_username")
     XCTAssertEqual(result?.password, "good_password")
 
     // Post-condition: Verify that malformed URL was removed
-    let newHostnames = rawQueryForAllLogins().value.successValue!
+    let newHostnames = try await rawQueryForAllLogins()
     XCTAssertEqual(newHostnames.count, 1)
     XCTAssertEqual(newHostnames[0], "https://malformed.com")
   }

@@ -64,7 +64,7 @@ class PlaylistMediaStreamer {
 
   // MARK: - Private
 
-  private func streamingFallback(_ item: PlaylistInfo) -> Combine.Deferred<AnyPublisher<Void, PlaybackError>> {
+  private func streamingFallback(_ item: PlaylistInfo) -> Deferred<AnyPublisher<Void, PlaybackError>> {
     // Fallback to web stream
     return Deferred {
       var cancelled = false
@@ -116,7 +116,7 @@ class PlaylistMediaStreamer {
 
   // Would be nice if AVPlayer could detect the mime-type from the URL for my delegate without a head request..
   // This function only exists because I can't figure out why videos from URLs don't play unless I explicitly specify a mime-type..
-  private func canStreamURL(_ url: URL) -> Combine.Deferred<AnyPublisher<Bool, PlaybackError>> {
+  private func canStreamURL(_ url: URL) -> Deferred<AnyPublisher<Bool, PlaybackError>> {
     return Deferred {
       return Future { resolver in
         PlaylistMediaStreamer.getMimeType(url) { mimeType in

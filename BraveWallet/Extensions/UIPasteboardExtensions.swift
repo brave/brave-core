@@ -11,7 +11,7 @@ extension UIPasteboard {
   /// Copies a string into the pasteboard that is excluded from Handoff and expires at a certain date
   ///
   /// Defaults to expiring a secure string after 60s
-  func setSecureString(
+  public func setSecureString(
     _ string: String,
     expirationDate: Date = Date().addingTimeInterval(60)
   ) {

@@ -97,52 +97,7 @@ open class SQLiteLogins: BrowserLogins {
     NotificationCenter.default.post(name: .dataLoginDidChange, object: nil)
   }
 
-  open func getUsageDataForLoginByGUID(_ guid: GUID) -> Deferred<Maybe<LoginUsageData>> {
-    let projection = SQLiteLogins.loginColumns
-    let sql = """
-      SELECT \(projection)
-      FROM loginsL
-      WHERE is_deleted = 0 AND guid = ?
-      UNION ALL
-      SELECT \(projection)
-      FROM loginsM
-      WHERE is_overridden = 0 AND guid = ?
-      LIMIT 1
-      """
-
-    let args: Args = [guid, guid]
-    return db.runQuery(sql, args: args, factory: SQLiteLogins.loginUsageDataFactory)
-      >>== { value in
-        deferMaybe(value[0]!)
-      }
-  }
-
-  open func getLoginDataForGUID(_ guid: GUID) -> Deferred<Maybe<Login>> {
-    let projection = SQLiteLogins.loginColumns
-    let sql = """
-      SELECT \(projection)
-      FROM loginsL
-      WHERE is_deleted = 0 AND guid = ?
-      UNION ALL
-      SELECT \(projection)
-      FROM loginsM
-      WHERE is_overriden IS NOT 1 AND guid = ?
-      ORDER BY hostname ASC
-      LIMIT 1
-      """
-
-    let args: Args = [guid, guid]
-    return db.runQuery(sql, args: args, factory: SQLiteLogins.loginFactory)
-      >>== { value in
-        if let login = value[0] {
-          return deferMaybe(login)
-        } else {
-          return deferMaybe(LoginDataError(description: "Login not found for GUID \(guid)"))
-        }
-      }
-  }
-
-  open func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace) -> Deferred<Maybe<Cursor<LoginData>>> {
+  open func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace) async throws -> Cursor<LoginData> {
     let projection = SQLiteLogins.mainWithLastUsedColumns
 
     let sql = """
@@ -166,11 +121,11 @@ open class SQLiteLogins: BrowserLogins {
     if Logger.logPII {
       log.debug("Looking for login: \(protectionSpace.urlString()) && \(protectionSpace.host)")
     }
-    return db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
+    return try await db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
   }
 
   // username is really Either<String, NULL>; we explicitly match no username.
-  open func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace, withUsername username: String?) -> Deferred<Maybe<Cursor<LoginData>>> {
+  open func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace, withUsername username: String?) async throws -> Cursor<LoginData> {
     let projection = SQLiteLogins.mainWithLastUsedColumns
 
     let args: Args
@@ -204,52 +159,28 @@ open class SQLiteLogins: BrowserLogins {
       ORDER BY timeLastUsed DESC
       """
 
-    return db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
+    return try await db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
   }
 
-  open func getAllLogins() -> Deferred<Maybe<Cursor<Login>>> {
-    return searchLoginsWithQuery(nil)
-  }
-
-  open func getLoginsForQuery(_ query: String) -> Deferred<Maybe<Cursor<Login>>> {
-    return searchLoginsWithQuery(query)
-  }
-
-  open func searchLoginsWithQuery(_ query: String?) -> Deferred<Maybe<Cursor<Login>>> {
+  open func getAllLogins() async throws -> Cursor<Login> {
     let projection = SQLiteLogins.loginColumns
-    var searchClauses = [String]()
-    var args: Args?
-    if let query = query, !query.isEmpty {
-      // Add wildcards to change query to 'contains in' and add them to args. We need 6 args because
-      // we include the where clause twice: Once for the local table and another for the remote.
-      args = (0..<6).map { _ in
-        return "%\(query)%" as String?
-      }
-
-      searchClauses.append("username LIKE ? ")
-      searchClauses.append(" password LIKE ? ")
-      searchClauses.append(" hostname LIKE ?")
-    }
-
-    let whereSearchClause = searchClauses.count > 0 ? "AND (" + searchClauses.joined(separator: "OR") + ") " : ""
+    
     let sql = """
       SELECT \(projection)
       FROM loginsL
-      WHERE is_deleted = 0 \(whereSearchClause)
+      WHERE is_deleted = 0
       UNION ALL
       SELECT \(projection)
       FROM loginsM
-      WHERE is_overridden = 0 \(whereSearchClause)
+      WHERE is_overridden = 0
       ORDER BY hostname ASC
       """
 
-    return db.runQuery(sql, args: args, factory: SQLiteLogins.loginFactory)
+    return try await db.runQuery(sql, args: nil, factory: SQLiteLogins.loginFactory)
   }
 
-  open func addLogin(_ login: LoginData) -> Success {
-    if let error = login.isValid.failureValue {
-      return deferMaybe(error)
-    }
+  open func addLogin(_ login: LoginData) async throws {
+    try login.validate()
 
     let nowMicro = Date.nowMicroseconds()
     let nowMilli = nowMicro / 1000
@@ -294,54 +225,49 @@ open class SQLiteLogins: BrowserLogins {
       VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, 0, \(LoginsSchema.SyncStatus.new.rawValue))
       """
 
-    return db.run(sql, withArgs: args)
-      >>> effect(self.notifyLoginDidChange)
+    try await db.run(sql, withArgs: args)
+    self.notifyLoginDidChange()
   }
 
-  fileprivate func cloneMirrorToOverlay(whereClause: String?, args: Args?) -> Deferred<Maybe<Int>> {
+  fileprivate func cloneMirrorToOverlay(whereClause: String?, args: Args?) async throws -> Int {
     let shared = "guid, hostname, httpRealm, formSubmitURL, usernameField, passwordField, timeCreated, timeLastUsed, timePasswordChanged, timesUsed, username, password "
     let local = ", local_modified, is_deleted, sync_status "
     let sql = "INSERT OR IGNORE INTO loginsL (\(shared)\(local)) SELECT \(shared), NULL AS local_modified, 0 AS is_deleted, 0 AS sync_status FROM loginsM \(whereClause ?? "")"
-    return self.db.write(sql, withArgs: args)
+    return try await self.db.write(sql, withArgs: args)
   }
 
   /**
      * Returns success if either a local row already existed, or
      * one could be copied from the mirror.
      */
-  fileprivate func ensureLocalOverlayExistsForGUID(_ guid: GUID) -> Success {
+  fileprivate func ensureLocalOverlayExistsForGUID(_ guid: GUID) async throws {
     let sql = "SELECT guid FROM loginsL WHERE guid = ?"
     let args: Args = [guid]
-    let c = db.runQuery(sql, args: args, factory: { _ in 1 })
-
-    return c >>== { rows in
-      if rows.count > 0 {
-        return succeed()
-      }
-      log.debug("No overlay; cloning one for GUID \(guid).")
-      return self.cloneMirrorToOverlay(guid)
-        >>== { count in
-          if count > 0 {
-            return succeed()
-          }
-          log.warning("Failed to create local overlay for GUID \(guid).")
-          return deferMaybe(NoSuchRecordError(guid: guid))
-        }
+    let rows = try await db.runQuery(sql, args: args, factory: { _ in 1 })
+    if rows.count > 0 {
+      return
     }
+    log.debug("No overlay; cloning one for GUID \(guid).")
+    let count = try await self.cloneMirrorToOverlay(guid)
+    if count > 0 {
+      return
+    }
+    log.warning("Failed to create local overlay for GUID \(guid).")
+    throw NoSuchRecordError(guid: guid)
   }
 
-  fileprivate func cloneMirrorToOverlay(_ guid: GUID) -> Deferred<Maybe<Int>> {
+  fileprivate func cloneMirrorToOverlay(_ guid: GUID) async throws -> Int {
     let whereClause = "WHERE guid = ?"
     let args: Args = [guid]
 
-    return self.cloneMirrorToOverlay(whereClause: whereClause, args: args)
+    return try await self.cloneMirrorToOverlay(whereClause: whereClause, args: args)
   }
 
-  fileprivate func markMirrorAsOverridden(_ guid: GUID) -> Success {
+  fileprivate func markMirrorAsOverridden(_ guid: GUID) async throws {
     let args: Args = [guid]
     let sql = "UPDATE loginsM SET is_overridden = 1 WHERE guid = ?"
 
-    return self.db.run(sql, withArgs: args)
+    return try await self.db.run(sql, withArgs: args)
   }
 
   /**
@@ -354,10 +280,8 @@ open class SQLiteLogins: BrowserLogins {
      * This flag allows callers to make minor changes (such as incrementing a usage count)
      * without triggering an upload or a conflict.
      */
-  open func updateLoginByGUID(_ guid: GUID, new: LoginData, significant: Bool) -> Success {
-    if let error = new.isValid.failureValue {
-      return deferMaybe(error)
-    }
+  open func updateLoginByGUID(_ guid: GUID, new: LoginData, significant: Bool) async throws {
+    try new.validate()
 
     // Right now this method is only ever called if the password changes at
     // point of use, so we always set `timePasswordChanged` and `timeLastUsed`.
@@ -394,13 +318,13 @@ open class SQLiteLogins: BrowserLogins {
       WHERE guid = ?
       """
 
-    return self.ensureLocalOverlayExistsForGUID(guid)
-      >>> { self.markMirrorAsOverridden(guid) }
-      >>> { self.db.run(update, withArgs: args) }
-      >>> effect(self.notifyLoginDidChange)
+    try await self.ensureLocalOverlayExistsForGUID(guid)
+    try await self.markMirrorAsOverridden(guid)
+    try await self.db.run(update, withArgs: args)
+    self.notifyLoginDidChange()
   }
 
-  open func addUseOfLoginByGUID(_ guid: GUID) -> Success {
+  open func addUseOfLoginByGUID(_ guid: GUID) async throws {
     let sql = """
       UPDATE loginsL SET
           timesUsed = timesUsed + 1, timeLastUsed = ?, local_modified = ?
@@ -413,13 +337,13 @@ open class SQLiteLogins: BrowserLogins {
     let nowMilli = nowMicro / 1000
     let args: Args = [nowMicro, nowMilli, guid]
 
-    return self.ensureLocalOverlayExistsForGUID(guid)
-      >>> { self.markMirrorAsOverridden(guid) }
-      >>> { self.db.run(sql, withArgs: args) }
+    try await self.ensureLocalOverlayExistsForGUID(guid)
+    try await self.markMirrorAsOverridden(guid)
+    try await self.db.run(sql, withArgs: args)
   }
 
-  open func removeLoginByGUID(_ guid: GUID) -> Success {
-    return removeLoginsWithGUIDs([guid])
+  open func removeLoginByGUID(_ guid: GUID) async throws {
+    return try await removeLoginsWithGUIDs([guid])
   }
 
   fileprivate func getDeletionStatementsForGUIDs(_ guids: ArraySlice<GUID>, nowMillis: Timestamp) -> [(sql: String, args: Args?)] {
@@ -459,15 +383,16 @@ open class SQLiteLogins: BrowserLogins {
     return [(delete, args), (update, args), (markMirrorAsOverridden, args), (insert, args)]
   }
 
-  open func removeLoginsWithGUIDs(_ guids: [GUID]) -> Success {
+  open func removeLoginsWithGUIDs(_ guids: [GUID]) async throws {
     let timestamp = Date.now()
-    return db.run(
+    try await db.run(
       chunk(guids, by: BrowserDB.maxVariableNumber).flatMap {
         self.getDeletionStatementsForGUIDs($0, nowMillis: timestamp)
-      }) >>> effect(self.notifyLoginDidChange)
+      })
+    self.notifyLoginDidChange()
   }
 
-  open func removeAll() -> Success {
+  open func removeAll() async throws {
     // Immediately delete anything that's marked as new -- i.e., it's never reached
     // the server. If Sync isn't set up, this will be everything.
     let delete =
@@ -492,15 +417,15 @@ open class SQLiteLogins: BrowserLogins {
       """
 
     // After that, we mark all of the mirror rows as overridden.
-    return self.db.run(delete)
-      >>> { self.db.run(update) }
-      >>> { self.db.run("UPDATE loginsM SET is_overridden = 1") }
-      >>> { self.db.run(insert) }
-      >>> effect(self.notifyLoginDidChange)
+    try await self.db.run(delete)
+    try await self.db.run(update)
+    try await self.db.run("UPDATE loginsM SET is_overridden = 1")
+    try await self.db.run(insert)
+    self.notifyLoginDidChange()
   }
 }
 
-class NoSuchRecordError: MaybeErrorType {
+class NoSuchRecordError: Error {
   let guid: GUID
   init(guid: GUID) {
     self.guid = guid

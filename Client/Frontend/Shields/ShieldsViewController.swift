@@ -318,9 +318,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   @objc private func tappedSubmitReportingButton() {
     if let url = url {
-      WebcompatReporter.reportIssue(on: url)
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-        guard let self = self, !self.isBeingDismissed else { return }
+      Task { @MainActor in
+        await WebcompatReporter.reportIssue(on: url)
+        try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+        guard !self.isBeingDismissed else { return }
         self.dismiss(animated: true)
       }
     }

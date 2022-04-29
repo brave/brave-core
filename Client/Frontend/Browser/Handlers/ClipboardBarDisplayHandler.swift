@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import UIKit
 
 public struct ClipboardBarToastUX {
   static let toastDelay = DispatchTimeInterval.milliseconds(4000)
@@ -39,17 +40,14 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
     // UIPasteboardChanged gets triggered when calling UIPasteboard.general.
     NotificationCenter.default.removeObserver(self, name: UIPasteboard.changedNotification, object: nil)
 
-    UIPasteboard.general.asyncURL().uponQueue(.main) { res in
+    Task { @MainActor in
+      let res = await UIPasteboard.general.asyncURL()
       defer {
         NotificationCenter.default.addObserver(self, selector: #selector(self.UIPasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
       }
-
-      guard let copiedURL: URL? = res.successValue,
-        let url = copiedURL
-      else {
-        return
+      if let url = res {
+        self.lastDisplayedURL = url.absoluteString
       }
-      self.lastDisplayedURL = url.absoluteString
     }
   }
 
@@ -126,32 +124,29 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
       // user has asked for it in settings.
       return
     }
-    UIPasteboard.general.asyncURL().uponQueue(.main) { res in
-      guard let copiedURL: URL? = res.successValue,
-        let url = copiedURL
-      else {
+    Task { @MainActor in
+      guard let url = await UIPasteboard.general.asyncURL() else {
         return
       }
-
       let absoluteString = url.absoluteString
-
+      
       guard self.shouldDisplayBar(absoluteString) else {
         return
       }
-
+      
       self.lastDisplayedURL = absoluteString
-
+      
       self.clipboardToast =
-        ButtonToast(
-          labelText: Strings.goToCopiedLink,
-          descriptionText: url.absoluteDisplayString,
-          buttonText: Strings.goButtonTittle,
-          completion: { buttonPressed in
-            if buttonPressed {
-              self.delegate?.settingsOpenURLInNewTab(url)
-            }
-          })
-
+      ButtonToast(
+        labelText: Strings.goToCopiedLink,
+        descriptionText: url.absoluteDisplayString,
+        buttonText: Strings.goButtonTittle,
+        completion: { buttonPressed in
+          if buttonPressed {
+            self.delegate?.settingsOpenURLInNewTab(url)
+          }
+        })
+      
       if let toast = self.clipboardToast {
         self.delegate?.shouldDisplay(clipboardBar: toast)
       }

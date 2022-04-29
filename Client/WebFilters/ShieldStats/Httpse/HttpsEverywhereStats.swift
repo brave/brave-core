@@ -68,20 +68,18 @@ class HttpsEverywhereStats: LocalAdblockResourceProtocol {
 
   func unzipAndLoad(_ dir: String, data: Data) {
     httpseDb.close()
-    succeed().upon() { _ in
-
-      let fm = FileManager.default
-      if fm.fileExists(atPath: dir + "/" + HttpsEverywhereStats.levelDbFileName) {
-        do {
-          try FileManager.default.removeItem(atPath: dir + "/" + HttpsEverywhereStats.levelDbFileName)
-        } catch { log.error("failed to remove leveldb file before unzip \(error)") }
-      }
-
-      self.unzipFile(dir: dir, data: data)
-
-      self.loadDbQueue.async {
-        self.loadDb(dir: dir, name: HttpsEverywhereStats.levelDbFileName)
-      }
+    
+    let fm = FileManager.default
+    if fm.fileExists(atPath: dir + "/" + HttpsEverywhereStats.levelDbFileName) {
+      do {
+        try FileManager.default.removeItem(atPath: dir + "/" + HttpsEverywhereStats.levelDbFileName)
+      } catch { log.error("failed to remove leveldb file before unzip \(error)") }
+    }
+    
+    self.unzipFile(dir: dir, data: data)
+    
+    self.loadDbQueue.async {
+      self.loadDb(dir: dir, name: HttpsEverywhereStats.levelDbFileName)
     }
   }
 

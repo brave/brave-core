@@ -5,6 +5,7 @@ import Shared
 import BraveShared
 import BraveCore
 import Data
+import BraveWallet
 
 enum DeviceType {
   case mobile
@@ -61,7 +62,6 @@ class SyncAddDeviceViewController: SyncViewController {
     }
   }
 
-  private var clipboardClearTimer: Timer?
   private let syncAPI: BraveSyncAPI
 
   init(title: String, type: DeviceType, syncAPI: BraveSyncAPI) {
@@ -256,11 +256,10 @@ class SyncAddDeviceViewController: SyncViewController {
   }
 
   @objc func SEL_copy() {
-    UIPasteboard.general.string = self.codewordsView.text
-    didCopy = true
-
-    clipboardClearTimer?.invalidate()
-    clipboardClearTimer = UIPasteboard.general.clear(after: 30)
+    if let words = self.codewordsView.text {
+      UIPasteboard.general.setSecureString(words, expirationDate: Date().addingTimeInterval(30))
+      didCopy = true
+    }
   }
 
   @objc func SEL_changeMode() {

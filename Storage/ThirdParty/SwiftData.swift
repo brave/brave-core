@@ -45,39 +45,9 @@ public protocol Cancellable: AnyObject {
   var running: Bool { get set }
 }
 
-public class DBOperationCancelled: MaybeErrorType {
+public class DBOperationCancelled: Error {
   public var description: String {
     return "Database operation cancelled"
-  }
-}
-
-class DeferredDBOperation<T>: Deferred<T>, Cancellable {
-  fileprivate var dispatchWorkItem: DispatchWorkItem?
-  private var _running = false
-
-  func cancel() {
-    objc_sync_enter(self)
-    defer { objc_sync_exit(self) }
-    dispatchWorkItem?.cancel()
-  }
-
-  var cancelled: Bool {
-    objc_sync_enter(self)
-    defer { objc_sync_exit(self) }
-    return dispatchWorkItem?.isCancelled ?? false
-  }
-
-  var running: Bool {
-    get {
-      objc_sync_enter(self)
-      defer { objc_sync_exit(self) }
-      return _running
-    }
-    set {
-      objc_sync_enter(self)
-      defer { objc_sync_exit(self) }
-      _running = newValue
-    }
   }
 }
 
@@ -143,68 +113,59 @@ open class SwiftData {
     // See https://www.sqlite.org/threadsafe.html
     assert(sqlite3_threadsafe() == 2)
   }
-
+  
   /**
-     * The real meat of all the execute methods. This is used internally to open and
-     * close a database connection and run a block of code inside it.
-     */
-  func withConnection<T>(_ flags: SwiftData.Flags, synchronous: Bool = false, _ callback: @escaping (_ connection: SQLiteDBConnection) throws -> T) -> Deferred<Maybe<T>> {
-    let deferred = DeferredDBOperation<Maybe<T>>()
-
-    let queue = self.sharedConnectionQueue
-
-    func doWork() {
-      if deferred.cancelled {
-        deferred.fill(Maybe(failure: DBOperationCancelled()))
-        return
-      }
-
-      deferred.running = true
-      defer {
-        deferred.running = false
-      }
-
-      if !self.closed && self.sharedConnection == nil {
-        self.sharedConnection = ConcreteSQLiteDBConnection(filename: self.filename, flags: SwiftData.Flags.readWriteCreate.toSQL(), key: self.key, prevKey: self.prevKey, schema: self.schema, files: self.files)
-      }
-
-      guard let connection = SwiftData.reuseConnections ? self.sharedConnection : ConcreteSQLiteDBConnection(filename: self.filename, flags: flags.toSQL(), key: self.key, prevKey: self.prevKey, schema: self.schema, files: self.files) else {
-        do {
-          _ = try callback(FailedSQLiteDBConnection())
-
-          deferred.fill(Maybe(failure: NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not create a connection"])))
-        } catch let err as NSError {
-          deferred.fill(Maybe(failure: DatabaseError(err: err)))
+   * The real meat of all the execute methods. This is used internally to open and
+   * close a database connection and run a block of code inside it.
+   */
+  func withConnection<T>(_ flags: SwiftData.Flags, synchronous: Bool = false, _ callback: @escaping (_ connection: SQLiteDBConnection) throws -> T) async throws -> T {
+    return try await withCheckedThrowingContinuation { continuation in
+      let queue = self.sharedConnectionQueue
+      
+      func doWork() {
+        if Task.isCancelled {
+          continuation.resume(throwing: DBOperationCancelled())
+          return
         }
-        return
+        
+        if !self.closed && self.sharedConnection == nil {
+          self.sharedConnection = ConcreteSQLiteDBConnection(filename: self.filename, flags: SwiftData.Flags.readWriteCreate.toSQL(), key: self.key, prevKey: self.prevKey, schema: self.schema, files: self.files)
+        }
+        
+        guard let connection = SwiftData.reuseConnections ? self.sharedConnection : ConcreteSQLiteDBConnection(filename: self.filename, flags: flags.toSQL(), key: self.key, prevKey: self.prevKey, schema: self.schema, files: self.files) else {
+          do {
+            _ = try callback(FailedSQLiteDBConnection())
+            
+            continuation.resume(throwing: NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not create a connection"]))
+          } catch let err as NSError {
+            continuation.resume(throwing: DatabaseError(err: err))
+          }
+          return
+        }
+        
+        do {
+          let result = try callback(connection)
+          continuation.resume(returning: result)
+        } catch let err as NSError {
+          continuation.resume(throwing: DatabaseError(err: err))
+        }
       }
-
-      do {
-        let result = try callback(connection)
-        deferred.fill(Maybe(success: result))
-      } catch let err as NSError {
-        deferred.fill(Maybe(failure: DatabaseError(err: err)))
+      
+      let work = DispatchWorkItem { doWork() }
+      if synchronous {
+        queue.sync(execute: work)
+      } else {
+        queue.async(execute: work)
       }
     }
-
-    let work = DispatchWorkItem { doWork() }
-    deferred.dispatchWorkItem = work
-
-    if synchronous {
-      queue.sync(execute: work)
-    } else {
-      queue.async(execute: work)
-    }
-
-    return deferred
   }
-
+  
   /**
      * Helper for opening a connection, starting a transaction, and then running a block of code inside it.
      * The code block can return true if the transaction should be committed. False if we should roll back.
      */
-  func transaction<T>(synchronous: Bool = false, _ transactionClosure: @escaping (_ connection: SQLiteDBConnection) throws -> T) -> Deferred<Maybe<T>> {
-    return withConnection(.readWriteCreate, synchronous: synchronous) { connection in
+  func transaction<T>(synchronous: Bool = false, _ transactionClosure: @escaping (_ connection: SQLiteDBConnection) throws -> T) async throws -> T {
+    try await withConnection(.readWriteCreate, synchronous: synchronous) { connection in
       try connection.transaction(transactionClosure)
     }
   }

@@ -36,20 +36,20 @@ open class BrowserDB {
      * The supported mechanism for a read-only query against a WAL-using SQLite database is to use PRAGMA query_only,
      * but this isn't all that useful for us, because we have a mixed read/write workload.
      */
-  @discardableResult func withConnection<T>(flags: SwiftData.Flags = .readWriteCreate, _ callback: @escaping (_ connection: SQLiteDBConnection) throws -> T) -> Deferred<Maybe<T>> {
-    return db.withConnection(flags, callback)
+  @discardableResult func withConnection<T>(flags: SwiftData.Flags = .readWriteCreate, _ callback: @escaping (_ connection: SQLiteDBConnection) throws -> T) async throws -> T {
+    return try await db.withConnection(flags, callback)
   }
 
-  func transaction<T>(_ callback: @escaping (_ connection: SQLiteDBConnection) throws -> T) -> Deferred<Maybe<T>> {
-    return db.transaction(callback)
+  func transaction<T>(_ callback: @escaping (_ connection: SQLiteDBConnection) throws -> T) async throws -> T {
+    return try await db.transaction(callback)
   }
 
   public class func varlist(_ count: Int) -> String {
     return "(" + Array(repeating: "?", count: count).joined(separator: ", ") + ")"
   }
 
-  func write(_ sql: String, withArgs args: Args? = nil) -> Deferred<Maybe<Int>> {
-    return withConnection { connection -> Int in
+  func write(_ sql: String, withArgs args: Args? = nil) async throws -> Int {
+    return try await withConnection { connection -> Int in
       try connection.executeChange(sql, withArgs: args)
 
       let modified = connection.numberOfRowsModified
@@ -66,12 +66,12 @@ open class BrowserDB {
     db.reopenIfClosed()
   }
 
-  public func run(_ sql: String, withArgs args: Args? = nil) -> Success {
-    return run([(sql, args)])
+  public func run(_ sql: String, withArgs args: Args? = nil) async throws {
+    return try await run([(sql, args)])
   }
 
-  func run(_ commands: [String]) -> Success {
-    return run(commands.map { (sql: $0, args: nil) })
+  func run(_ commands: [String]) async throws {
+    return try await run(commands.map { (sql: $0, args: nil) })
   }
 
   /**
@@ -79,20 +79,20 @@ open class BrowserDB {
      * the caller's thread until they've finished. If any of them fail the operation will abort (no more
      * commands will be run) and the transaction will roll back, returning a DatabaseError.
      */
-  func run(_ commands: [(sql: String, args: Args?)]) -> Success {
+  func run(_ commands: [(sql: String, args: Args?)]) async throws {
     if commands.isEmpty {
-      return succeed()
+      return
     }
 
-    return transaction { connection -> Void in
+    return try await transaction { connection -> Void in
       for (sql, args) in commands {
         try connection.executeChange(sql, withArgs: args)
       }
     }
   }
 
-  func runQuery<T>(_ sql: String, args: Args?, factory: @escaping (SDRow) -> T) -> Deferred<Maybe<Cursor<T>>> {
-    return withConnection { connection -> Cursor<T> in
+  func runQuery<T>(_ sql: String, args: Args?, factory: @escaping (SDRow) -> T) async throws -> Cursor<T> {
+    return try await withConnection { connection -> Cursor<T> in
       connection.executeQuery(sql, factory: factory, withArgs: args)
     }
   }

@@ -93,33 +93,34 @@ class LoginsHelper: TabContentScript {
       return
     }
 
-    profile.logins
-      .getLoginsForProtectionSpace(login.protectionSpace, withUsername: login.username)
-      .uponQueue(.main) { res in
-        if let data = res.successValue {
-          log.debug("Found \(data.count) logins.")
-          for saved in data {
-            if let saved = saved {
-              if saved.password == login.password {
-                self.profile.logins.addUseOfLoginByGUID(saved.guid)
-                return
-              }
-
-              self.promptUpdateFromLogin(login: saved, toLogin: login)
-              return
-            }
+    Task { @MainActor in
+      let logins = try await profile.logins.getLoginsForProtectionSpace(
+        login.protectionSpace,
+        withUsername: login.username
+      )
+      log.debug("Found \(logins.count) logins.")
+      for saved in logins {
+        if let saved = saved {
+          if saved.password == login.password {
+            try await self.profile.logins.addUseOfLoginByGUID(saved.guid)
+            return
           }
+          
+          self.promptUpdateFromLogin(login: saved, toLogin: login)
+          return
         }
-
-        self.promptSave(login)
       }
+      self.promptSave(login)
+    }
   }
 
   fileprivate func promptSave(_ login: LoginData) {
-    guard login.isValid.isSuccess else {
+    do {
+      try login.validate()
+    } catch {
       return
     }
-
+    
     let promptMessage: String
     if let username = login.username {
       promptMessage = String(format: Strings.saveLoginUsernamePrompt, username, login.hostname)
@@ -140,7 +141,9 @@ class LoginsHelper: TabContentScript {
     let save = SnackButton(title: Strings.loginsHelperSaveLoginButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.saveLoginButton") { bar in
       self.tab?.removeSnackbar(bar)
       self.snackBar = nil
-      self.profile.logins.addLogin(login)
+      Task { @MainActor in
+        try await self.profile.logins.addLogin(login)
+      }
     }
     snackBar?.addButton(dontSave)
     snackBar?.addButton(save)
@@ -148,10 +151,12 @@ class LoginsHelper: TabContentScript {
   }
 
   private func promptUpdateFromLogin(login old: LoginData, toLogin new: LoginData) {
-    guard new.isValid.isSuccess else {
+    do {
+      try new.validate()
+    } catch {
       return
     }
-
+    
     let guid = old.guid
 
     let formatted: String
@@ -174,7 +179,9 @@ class LoginsHelper: TabContentScript {
     let update = SnackButton(title: Strings.loginsHelperUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.updateButton") { bar in
       self.tab?.removeSnackbar(bar)
       self.snackBar = nil
-      self.profile.logins.updateLoginByGUID(guid, new: new, significant: new.isSignificantlyDifferentFrom(old))
+      Task { @MainActor in
+        try await self.profile.logins.updateLoginByGUID(guid, new: new, significant: new.isSignificantlyDifferentFrom(old))
+      }
     }
     snackBar?.addButton(dontSave)
     snackBar?.addButton(update)

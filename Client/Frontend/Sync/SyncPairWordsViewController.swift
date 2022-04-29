@@ -159,7 +159,7 @@ class SyncPairWordsViewController: SyncViewController {
       // remove linebreaks and whitespace, split into codewords.
       codewordsView.setCodewords(data: contents.separatedBy(" "))
 
-      UIPasteboard.general.clear()
+      UIPasteboard.general.clearPasteboard()
     }
   }
 
