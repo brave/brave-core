@@ -7,6 +7,7 @@ import { Button, Heading } from 'brave-ui/components'
 
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
+import { StyledButtonContainer } from '../styles/styles'
 
 interface Props {
   name?: string | string[]
@@ -41,7 +42,7 @@ export default class TorrentViewerHeader extends React.PureComponent<
     }
     const url = new URL(item.finalUrl || item.url)
     if (!url || !remoteProtocols.includes(url.protocol) ||
-        url.hostname === '127.0.0.1') {
+      url.hostname === '127.0.0.1') {
       // Non-remote files are trusted.
       this.removeDownloadListener()
       return
@@ -107,8 +108,8 @@ export default class TorrentViewerHeader extends React.PureComponent<
     const title = torrent
       ? name
       : name
-      ? `${name}`
-      : 'Loading torrent information...'
+        ? `${name}`
+        : 'Loading torrent information...'
     const mainButtonText = torrent ? 'Stop Torrent' : 'Start Torrent'
     const copyButtonText = this.props.torrentId.startsWith('magnet:')
       ? 'Copy Magnet Link'
@@ -119,7 +120,7 @@ export default class TorrentViewerHeader extends React.PureComponent<
         <div className='__column'>
           <Heading children={title} className='__torrentTitle' />
         </div>
-        <div className='__column'>
+        <StyledButtonContainer>
           <Button
             type='accent'
             level={!torrent ? 'primary' : 'secondary'}
@@ -127,6 +128,8 @@ export default class TorrentViewerHeader extends React.PureComponent<
             onClick={this.onClick}
             className='__button'
           />
+        </StyledButtonContainer>
+        <StyledButtonContainer>
           <Button
             type='accent'
             level='secondary'
@@ -134,7 +137,7 @@ export default class TorrentViewerHeader extends React.PureComponent<
             onClick={this.onCopyClick}
             className='__button'
           />
-        </div>
+        </StyledButtonContainer>
       </div>
     )
   }
