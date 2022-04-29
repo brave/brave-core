@@ -60,6 +60,7 @@ public class BraveWalletPanel implements DialogInterface {
     private final AppCompatActivity mActivity;
     private ViewGroup mPopupView;
     private OnDismissListener mOnDismissListener;
+    private ImageView mExpandWalletImage;
     private Button mBtnConnectedStatus;
     private Button mBtnSelectedNetwork;
     private ImageView mAccountImage;
@@ -272,6 +273,15 @@ public class BraveWalletPanel implements DialogInterface {
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
 
         mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
+
+        mExpandWalletImage = mPopupView.findViewById(R.id.iv_dapp_panel_expand);
+        mExpandWalletImage.setOnClickListener(v -> {
+            dismiss();
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            if (activity != null) {
+                activity.openBraveWallet(false);
+            }
+        });
 
         mBtnSelectedNetwork = mPopupView.findViewById(R.id.btn_dapps_panel_networks);
         mBtnSelectedNetwork.setOnClickListener(v -> {
