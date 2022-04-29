@@ -8,13 +8,14 @@ import {
 
 export interface Props {
   children?: React.ReactNode
-  positionRight?: boolean
+  position?: 'left' | 'right'
   text: string
   isVisible: boolean
+  isAddress?: boolean
 }
 
 function Tooltip (props: Props) {
-  const { children, text, positionRight, isVisible } = props
+  const { children, text, position, isVisible, isAddress } = props
   const [active, setActive] = React.useState(false)
 
   const showTip = () => {
@@ -33,8 +34,11 @@ function Tooltip (props: Props) {
       {children}
       {active && isVisible && (
         <>
-          <Pointer positionRight={positionRight ?? false} />
-          <Tip positionRight={positionRight ?? false}>
+          <Pointer position={position ?? 'center'} />
+          <Tip
+            isAddress={isAddress}
+            position={position ?? 'center'}
+          >
             {text}
           </Tip>
         </>

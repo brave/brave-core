@@ -50,6 +50,7 @@ export const AccountCircle = styled.div<Partial<StyleProps>>`
 `
 
 export const AddressText = styled.span`
+  cursor: default;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;

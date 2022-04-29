@@ -12,7 +12,7 @@ import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
 import { getLocale } from '../../../../common/locale'
-import { withPlaceholderIcon } from '../../shared'
+import { withPlaceholderIcon, Tooltip } from '../../shared'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -297,7 +297,7 @@ function SwapInputComponent (props: Props) {
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <AssetButton isERC721={selectedAsset?.isErc721} onClick={onShowSelection}>
                 <ButtonLeftSide>
-                  <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork}/>
+                  <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
                   <AssetTicker>
                     {selectedAsset?.symbol} {
                       selectedAsset?.isErc721 && selectedAsset?.tokenId
@@ -402,7 +402,12 @@ function SwapInputComponent (props: Props) {
         </WarningRow>
       }
       {componentType === 'toAddress' && toAddress !== toAddressOrUrl && !addressError &&
-        <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
+        <Tooltip
+          text={toAddress ?? ''}
+          isAddress={true}
+        >
+          <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
+        </Tooltip>
       }
     </BubbleContainer >
   )
