@@ -7,13 +7,13 @@
 
 namespace syncer {
 
-std::string StatusController::get_last_server_error_message() const {
-  return last_server_error_message_;
+const std::string& StatusController::get_last_server_error_message() const {
+  return model_neutral_.last_server_error_message;
 }
 
 void StatusController::set_last_server_error_message(
     const std::string& message) {
-  last_server_error_message_ = message;
+  model_neutral_.last_server_error_message = message;
 }
 
 }  // namespace syncer

@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define BRAVE_HANDLE_CONFIGURATION_FAILURE \
-  HandleBraveConfigurationFailure(cycle.status_controller());
+#define BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE \
+  HandleBraveConfigurationFailure(model_neutral_state);
 
 #include "src/components/sync/engine/sync_scheduler_impl.cc"
 
-#undef BRAVE_HANDLE_CONFIGURATION_FAILURE
+#undef BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
 
 namespace syncer {
 
@@ -16,8 +16,8 @@ const char kNigoriFolderNotReadyError[] =
     "nigori root folder entity is not ready yet";
 
 void SyncSchedulerImpl::HandleBraveConfigurationFailure(
-    const StatusController& status_controller) {
-  if (status_controller.get_last_server_error_message() ==
+    const ModelNeutralState& model_neutral_state) {
+  if (model_neutral_state.last_server_error_message ==
       kNigoriFolderNotReadyError) {
     VLOG(1) << "Got nigori root folder error from sync server. Override wait "
                "interval to 3 sec";

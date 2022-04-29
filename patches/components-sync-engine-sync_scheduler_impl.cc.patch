@@ -1,28 +1,12 @@
 diff --git a/components/sync/engine/sync_scheduler_impl.cc b/components/sync/engine/sync_scheduler_impl.cc
-index d1291a21684f65dc7904d42e06718d852c088f08..8503eca3984b454728c09da4d6530433635631b3 100644
+index d1291a21684f65dc7904d42e06718d852c088f08..f4e0e972c8f13d437b4e7eaf798c2b3cb54d1214 100644
 --- a/components/sync/engine/sync_scheduler_impl.cc
 +++ b/components/sync/engine/sync_scheduler_impl.cc
-@@ -445,6 +445,7 @@ void SyncSchedulerImpl::DoNudgeSyncCycleJob(JobPriority priority) {
-     }
-   } else {
-     HandleFailure(cycle.status_controller().model_neutral_state());
-+    BRAVE_HANDLE_CONFIGURATION_FAILURE
+@@ -507,6 +507,7 @@ void SyncSchedulerImpl::HandleFailure(
+     SDVLOG(2) << "Sync cycle failed.  Will back off for "
+               << wait_interval_->length.InMilliseconds() << "ms.";
    }
++  BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
  }
  
-@@ -480,6 +481,7 @@ void SyncSchedulerImpl::DoConfigurationSyncCycleJob(JobPriority priority) {
-     HandleFailure(cycle.status_controller().model_neutral_state());
-     // Sync cycle might receive response from server that causes scheduler to
-     // stop and draws pending_configure_params_ invalid.
-+    BRAVE_HANDLE_CONFIGURATION_FAILURE
-   }
- }
- 
-@@ -522,6 +524,7 @@ void SyncSchedulerImpl::DoPollSyncCycleJob() {
-     HandleSuccess();
-   } else {
-     HandleFailure(cycle.status_controller().model_neutral_state());
-+    BRAVE_HANDLE_CONFIGURATION_FAILURE
-   }
- }
- 
+ void SyncSchedulerImpl::DoPollSyncCycleJob() {

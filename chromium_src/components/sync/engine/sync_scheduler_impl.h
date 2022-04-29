@@ -12,8 +12,9 @@ extern const char kNigoriFolderNotReadyError[];
 
 }  // namespace syncer
 
-#define DoPollSyncCycleJob                                                    \
-  HandleBraveConfigurationFailure(const StatusController& status_controller); \
+#define DoPollSyncCycleJob                           \
+  HandleBraveConfigurationFailure(                   \
+      const ModelNeutralState& model_neutral_state); \
   void DoPollSyncCycleJob
 
 #include "src/components/sync/engine/sync_scheduler_impl.h"
