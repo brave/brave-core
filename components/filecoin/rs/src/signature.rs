@@ -2,8 +2,8 @@ use crate::message::MessageAPI;
 use blake2b_simd::Params;
 use bls_signatures::Serialize;
 use core::{array::TryFromSliceError, num::ParseIntError};
+use fvm_ipld_encoding::Cbor;
 use fvm_shared::address::Protocol;
-use fvm_shared::encoding::Cbor;
 use fvm_shared::message::Message as UnsignedMessage;
 use libsecp256k1::util::{SECRET_KEY_SIZE, SIGNATURE_SIZE};
 use libsecp256k1::{sign, Message};
@@ -81,7 +81,7 @@ pub enum SignerError {
     DecodeError(#[from] base64::DecodeError),
 
     #[error("Marshall error | {0}")]
-    FvmSharedEncodingError(#[from] fvm_shared::encoding::Error),
+    FvmSharedEncodingError(#[from] fvm_ipld_encoding::Error),
 }
 
 const CID_PREFIX: &[u8] = &[0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20];

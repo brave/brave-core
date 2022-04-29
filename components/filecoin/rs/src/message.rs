@@ -1,6 +1,6 @@
+use fvm_ipld_encoding::RawBytes;
 use fvm_shared::address::Address;
 use fvm_shared::econ::TokenAmount;
-use fvm_shared::encoding::RawBytes;
 use fvm_shared::MethodNum;
 use serde::{Deserialize, Serialize};
 
@@ -50,7 +50,7 @@ pub mod tokenamount {
 
 pub mod rawbytes {
     use base64::{decode, encode};
-    use fvm_shared::encoding::RawBytes;
+    use fvm_ipld_encoding::RawBytes;
     use serde::{de, Deserialize, Deserializer, Serializer};
 
     pub fn serialize<S>(raw: &RawBytes, serializer: S) -> Result<S::Ok, S::Error>
