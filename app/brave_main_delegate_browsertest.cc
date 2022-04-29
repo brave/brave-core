@@ -26,6 +26,7 @@
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
+#include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
@@ -121,8 +122,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
+    &features::kNavigationRequestPreconnect,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
+#if BUILDFLAG(IS_WIN)
+    &features::kPrewarmSearchResultsPageFonts,
+#endif
+    &features::kPrivacyGuide2,
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
@@ -134,6 +140,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
     &media::kLiveCaption,
+    &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
@@ -141,10 +148,15 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
+#if !BUILDFLAG(IS_ANDROID)
+    &permissions::features::kPermissionsPostPromptSurvey,
+#endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &reading_list::switches::kReadLater,
+    &shared_highlighting::kSharedHighlightingAmp,
+    &shared_highlighting::kSharedHighlightingV2,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif

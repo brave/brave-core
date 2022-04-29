@@ -818,6 +818,7 @@ if (!is_android) {
       "//components/privacy_sandbox",
       "//components/reading_list/features:flags",
       "//components/security_interstitials/content:security_interstitial_page",
+      "//components/shared_highlighting/core/common",
       "//components/user_prefs",
       "//media:test_support",
       "//testing/gmock",
