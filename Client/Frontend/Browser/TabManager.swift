@@ -864,16 +864,18 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
     if isRestoring { return }
 
-    var savedUUIDs = Set<String>()
-
-    for tab in allTabs {
-      guard let screenshot = tab.screenshot, let screenshotUUID = tab.screenshotUUID else { continue }
-      savedUUIDs.insert(screenshotUUID.uuidString)
-      imageStore?.put(screenshotUUID.uuidString, image: screenshot)
+    Task { @MainActor in
+      var savedUUIDs = Set<String>()
+      
+      for tab in allTabs {
+        guard let screenshot = tab.screenshot, let screenshotUUID = tab.screenshotUUID else { continue }
+        savedUUIDs.insert(screenshotUUID.uuidString)
+        try? await imageStore?.put(screenshotUUID.uuidString, image: screenshot)
+      }
+      
+      // Clean up any screenshots that are no longer associated with a tab.
+      await imageStore?.clearExcluding(savedUUIDs)
     }
-
-    // Clean up any screenshots that are no longer associated with a tab.
-    imageStore?.clearExcluding(savedUUIDs)
   }
 
   fileprivate var restoreTabsInternal: Tab? {
@@ -917,10 +919,9 @@ class TabManager: NSObject {
       // the screenshot in the tab as long as long as a newer one hasn't been taken.
       if let screenshotUUID = savedTab.screenshotUUID, let imageStore = imageStore {
         tab.screenshotUUID = UUID(uuidString: screenshotUUID)
-        imageStore.get(screenshotUUID) >>== { screenshot in
-          if tab.screenshotUUID?.uuidString == screenshotUUID {
-            tab.setScreenshot(screenshot, revUUID: false)
-          }
+        Task { @MainActor in
+          let screenshot = try await imageStore.get(screenshotUUID)
+          tab.setScreenshot(screenshot, revUUID: false)
         }
       }
 

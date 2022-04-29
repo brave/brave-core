@@ -13,11 +13,11 @@ private let log = Logger.browserLogger
 
 // A base protocol for something that can be cleared.
 protocol Clearable {
-  func clear() -> Success
+  @MainActor func clear() async throws
   var label: String { get }
 }
 
-class ClearableError: MaybeErrorType {
+class ClearableError: Error {
   fileprivate let msg: String
   init(msg: String) {
     self.msg = msg
@@ -26,7 +26,7 @@ class ClearableError: MaybeErrorType {
   var description: String { return msg }
 }
 
-struct ClearableErrorType: MaybeErrorType {
+struct ClearableErrorType: Error {
   let err: Error
 
   init(err: Error) {
@@ -46,20 +46,14 @@ class CookiesAndCacheClearable: Clearable {
     return Strings.cookies
   }
 
-  func clear() -> Success {
+  func clear() async throws {
     UserDefaults.standard.synchronize()
-    let result = Deferred<Maybe<()>>()
     // need event loop to run to autorelease UIWebViews fully
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
-        UserDefaults.standard.synchronize()
-        BraveWebView.sharedNonPersistentStore().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
-          UserDefaults.standard.synchronize()
-          result.fill(Maybe<()>(success: ()))
-        }
-      }
-    }
-    return result
+    try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
+    await WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
+    UserDefaults.standard.synchronize()
+    await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
+    UserDefaults.standard.synchronize()
   }
 }
 
@@ -71,30 +65,26 @@ class CacheClearable: Clearable {
     return Strings.cache
   }
 
-  func clear() -> Success {
-    let result = Deferred<Maybe<()>>()
+  func clear() async throws {
     // need event loop to run to autorelease UIWebViews fully
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      let localStorageClearables: Set<String> = [
-        WKWebsiteDataTypeDiskCache,
-        WKWebsiteDataTypeServiceWorkerRegistrations,
-        WKWebsiteDataTypeOfflineWebApplicationCache,
-        WKWebsiteDataTypeMemoryCache,
-        WKWebsiteDataTypeFetchCache,
-      ]
-      WKWebsiteDataStore.default().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
-        WebImageCacheManager.shared.clearDiskCache()
-        WebImageCacheManager.shared.clearMemoryCache()
-        WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
-        WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
-
-        BraveWebView.sharedNonPersistentStore().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
-          result.fill(Maybe<()>(success: ()))
-        }
-      }
-    }
-
-    return result
+    try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
+    let localStorageClearables: Set<String> = [
+      WKWebsiteDataTypeDiskCache,
+      WKWebsiteDataTypeServiceWorkerRegistrations,
+      WKWebsiteDataTypeOfflineWebApplicationCache,
+      WKWebsiteDataTypeMemoryCache,
+      WKWebsiteDataTypeFetchCache,
+    ]
+    await WKWebsiteDataStore.default().removeData(
+      ofTypes: localStorageClearables,
+      modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
+    )
+    WebImageCacheManager.shared.clearDiskCache()
+    WebImageCacheManager.shared.clearMemoryCache()
+    WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
+    WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
+    
+    await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
   }
 }
 
@@ -110,16 +100,13 @@ class HistoryClearable: Clearable {
     return Strings.browsingHistory
   }
 
-  func clear() -> Success {
-    let result = Success()
-
-    DispatchQueue.main.async {
+  func clear() async throws {
+    return await withCheckedContinuation { continuation in
       self.historyAPI.deleteAll() {
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
-        result.fill(Maybe<()>(success: ()))
+        continuation.resume()
       }
     }
-    return result
   }
 }
 
@@ -134,17 +121,15 @@ class PasswordsClearable: Clearable {
     return Strings.savedLogins
   }
 
-  func clear() -> Success {
+  func clear() async throws {
     // Clear our storage
-    return profile.logins.removeAll() >>== { res in
-      let storage = URLCredentialStorage.shared
-      let credentials = storage.allCredentials
-      for (space, credentials) in credentials {
-        for (_, credential) in credentials {
-          storage.remove(credential, for: space)
-        }
+    try await profile.logins.removeAll()
+    let storage = URLCredentialStorage.shared
+    let credentials = storage.allCredentials
+    for (space, credentials) in credentials {
+      for (_, credential) in credentials {
+        storage.remove(credential, for: space)
       }
-      return succeed()
     }
   }
 }
@@ -155,7 +140,7 @@ class DownloadsClearable: Clearable {
     return Strings.downloadedFiles
   }
 
-  func clear() -> Success {
+  func clear() async throws {
     do {
       let fileManager = FileManager.default
       let downloadsLocation = try FileManager.default.downloadsPath()
@@ -170,9 +155,6 @@ class DownloadsClearable: Clearable {
       // Not logging the `error` because downloaded file names can be sensitive to some users.
       log.error("Could not remove downloaded file")
     }
-
-    return succeed()
-
   }
 }
 
@@ -188,9 +170,8 @@ class BraveNewsClearable: Clearable {
     return Strings.BraveNews.braveNews
   }
 
-  func clear() -> Success {
+  func clear() async throws {
     feedDataSource.clearCachedFiles()
-    return succeed()
   }
 }
 
@@ -202,22 +183,17 @@ class PlayListCacheClearable: Clearable {
     return Strings.PlayList.playlistOfflineDataToggleOption
   }
 
-  func clear() -> Success {
-    let result = Deferred<Maybe<Void>>()
-    DispatchQueue.main.async {
-      PlaylistManager.shared.deleteAllItems(cacheOnly: true)
-
-      // Backup in case there is folder corruption, so we delete the cache anyway
-      if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
-        do {
-          try FileManager.default.removeItem(at: playlistDirectory)
-        } catch {
-          log.error("Error Deleting Playlist directory: \(error)")
-        }
+  func clear() async throws {
+    PlaylistManager.shared.deleteAllItems(cacheOnly: true)
+    
+    // Backup in case there is folder corruption, so we delete the cache anyway
+    if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+      do {
+        try FileManager.default.removeItem(at: playlistDirectory)
+      } catch {
+        log.error("Error Deleting Playlist directory: \(error)")
       }
-      result.fill(Maybe(success: Void()))
     }
-    return result
   }
 }
 
@@ -229,22 +205,17 @@ class PlayListDataClearable: Clearable {
     return Strings.PlayList.playlistMediaAndOfflineDataToggleOption
   }
 
-  func clear() -> Success {
-    let result = Deferred<Maybe<Void>>()
-    DispatchQueue.main.async {
-      PlaylistManager.shared.deleteAllItems(cacheOnly: false)
-
-      // Backup in case there is folder corruption, so we delete the cache anyway
-      if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
-        do {
-          try FileManager.default.removeItem(at: playlistDirectory)
-        } catch {
-          log.error("Error Deleting Playlist directory: \(error)")
-        }
+  func clear() async throws {
+    PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+    
+    // Backup in case there is folder corruption, so we delete the cache anyway
+    if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+      do {
+        try FileManager.default.removeItem(at: playlistDirectory)
+      } catch {
+        log.error("Error Deleting Playlist directory: \(error)")
       }
-      result.fill(Maybe(success: Void()))
     }
-    return result
   }
 }
 
@@ -256,12 +227,7 @@ class RecentSearchClearable: Clearable {
     return Strings.recentSearchClearDataToggleOption
   }
 
-  func clear() -> Success {
-    let result = Deferred<Maybe<Void>>()
-    DispatchQueue.main.async {
-      RecentSearch.removeAll()
-      result.fill(Maybe(success: Void()))
-    }
-    return result
+  func clear() async throws {
+    RecentSearch.removeAll()
   }
 }

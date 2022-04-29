@@ -23,8 +23,9 @@ public protocol LoginData: AnyObject {
   var formSubmitURL: String? { get set }
   var usernameField: String? { get set }
   var passwordField: String? { get set }
-  var isValid: Maybe<()> { get }
 
+  func validate() throws
+  
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1238103
   var hasMalformedHostname: Bool { get set }
 
@@ -101,31 +102,28 @@ open class Login: CustomStringConvertible, LoginData, LoginUsageData, Equatable 
     return "Login for \(hostname)"
   }
 
-  open var isValid: Maybe<()> {
+  open func validate() throws {
     // Referenced from https://mxr.mozilla.org/mozilla-central/source/toolkit/components/passwordmgr/nsLoginManager.js?rev=f76692f0fcf8&mark=280-281#271
 
     // Logins with empty hostnames are not valid.
     if hostname.isEmpty {
-      return Maybe(failure: LoginDataError(description: "Can't add a login with an empty hostname."))
+      throw LoginDataError(description: "Can't add a login with an empty hostname.")
     }
 
     // Logins with empty passwords are not valid.
     if password.isEmpty {
-      return Maybe(failure: LoginDataError(description: "Can't add a login with an empty password."))
+      throw LoginDataError(description: "Can't add a login with an empty password.")
     }
 
     // Logins with both a formSubmitURL and httpRealm are not valid.
     if let _ = formSubmitURL, let _ = httpRealm {
-      return Maybe(failure: LoginDataError(description: "Can't add a login with both a httpRealm and formSubmitURL."))
+      throw LoginDataError(description: "Can't add a login with both a httpRealm and formSubmitURL.")
     }
 
     // Login must have at least a formSubmitURL or httpRealm.
     if (formSubmitURL == nil) && (httpRealm == nil) {
-      return Maybe(failure: LoginDataError(description: "Can't add a login without a httpRealm or formSubmitURL."))
+      throw LoginDataError(description: "Can't add a login without a httpRealm or formSubmitURL.")
     }
-
-    // All good.
-    return Maybe(success: ())
   }
 
   open func update(password: String, username: String) {
@@ -258,30 +256,25 @@ public func == (lhs: Login, rhs: Login) -> Bool {
 }
 
 public protocol BrowserLogins {
-  func getUsageDataForLoginByGUID(_ guid: GUID) -> Deferred<Maybe<LoginUsageData>>
-  func getLoginDataForGUID(_ guid: GUID) -> Deferred<Maybe<Login>>
-  func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace) -> Deferred<Maybe<Cursor<LoginData>>>
-  func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace, withUsername username: String?) -> Deferred<Maybe<Cursor<LoginData>>>
-  func getAllLogins() -> Deferred<Maybe<Cursor<Login>>>
-  func getLoginsForQuery(_ query: String) -> Deferred<Maybe<Cursor<Login>>>
-
-  func searchLoginsWithQuery(_ query: String?) -> Deferred<Maybe<Cursor<Login>>>
-
+  func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace) async throws -> Cursor<LoginData>
+  func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace, withUsername username: String?) async throws -> Cursor<LoginData>
+  func getAllLogins() async throws -> Cursor<Login>
+  
   // Add a new login regardless of whether other logins might match some fields. Callers
   // are responsible for querying first if they care.
-  @discardableResult func addLogin(_ login: LoginData) -> Success
+  func addLogin(_ login: LoginData) async throws
 
-  @discardableResult func updateLoginByGUID(_ guid: GUID, new: LoginData, significant: Bool) -> Success
+  func updateLoginByGUID(_ guid: GUID, new: LoginData, significant: Bool) async throws
 
   // Add the use of a login by GUID.
-  @discardableResult func addUseOfLoginByGUID(_ guid: GUID) -> Success
-  func removeLoginByGUID(_ guid: GUID) -> Success
-  func removeLoginsWithGUIDs(_ guids: [GUID]) -> Success
+  func addUseOfLoginByGUID(_ guid: GUID) async throws
+  func removeLoginByGUID(_ guid: GUID) async throws
+  func removeLoginsWithGUIDs(_ guids: [GUID]) async throws
 
-  func removeAll() -> Success
+  func removeAll() async throws
 }
 
-open class LoginDataError: MaybeErrorType {
+open class LoginDataError: Error {
   public let description: String
   public init(description: String) {
     self.description = description

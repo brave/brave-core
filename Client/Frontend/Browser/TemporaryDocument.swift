@@ -16,7 +16,8 @@ class TemporaryDocument: NSObject {
 
   fileprivate var downloadTask: URLSessionDownloadTask?
   private var localFileURL: URL?
-  private var pendingResult: Deferred<URL>?
+  private var pendingContinuation: CheckedContinuation<URL, Never>?
+  private var pendingTask: Task<URL, Never>?
 
   init(preflightResponse: URLResponse, request: URLRequest, tab: Tab) {
     self.request = request
@@ -40,30 +41,32 @@ class TemporaryDocument: NSObject {
 
   /// Get a deferred url to the locally stored file.
   /// - Note: If an error occurs, the original web url will be returned
-  func getURL() -> Deferred<URL> {
+  func getURL() async -> URL {
     if let url = localFileURL {
-      let result = Deferred<URL>()
-      result.fill(url)
-      return result
+      return url
     }
-
-    if let result = pendingResult {
-      return result
+    
+    if let task = pendingTask {
+      return await task.value
     }
-
-    let result = Deferred<URL>()
-    pendingResult = result
-
-    downloadTask = session?.downloadTask(with: request)
-    downloadTask?.resume()
-
-    if let tab = self.tab, let url = request.url {
-      ResourceDownloadManager.downloadResource(for: tab, url: url)
-    } else {
-      onDocumentDownloaded(document: nil, error: nil)
+    
+    let task = Task<URL, Never> {
+      return await withCheckedContinuation { continuation in
+        pendingContinuation = continuation
+        
+        downloadTask = session?.downloadTask(with: request)
+        downloadTask?.resume()
+        
+        if let tab = self.tab, let url = request.url {
+          // Calls `onDocumentDownloaded` on completion
+          ResourceDownloadManager.downloadResource(for: tab, url: url)
+        } else {
+          onDocumentDownloaded(document: nil, error: nil)
+        }
+      }
     }
-
-    return result
+    pendingTask = task
+    return await task.value
   }
 
   /// A callback available when there is a download response
@@ -84,8 +87,8 @@ class TemporaryDocument: NSObject {
         try data.write(to: url, options: [.atomic])
 
         localFileURL = url
-        pendingResult?.fill(url)
-        pendingResult = nil
+        pendingContinuation?.resume(returning: url)
+        pendingContinuation = nil
         return
       } catch {
         // let the error pass through to the below handler..
@@ -95,10 +98,14 @@ class TemporaryDocument: NSObject {
     // If we encounter an error downloading the temp file, just return with the
     // original remote URL so it can still be shared as a web URL.
     if let url = request.url {
-      pendingResult?.fill(url)
+      pendingContinuation?.resume(returning: url)
+      pendingContinuation = nil
+    } else {
+      assertionFailure("No URL found to return which is undefined behaviour")
+      // Continuation must run regardless
+      pendingContinuation?.resume(returning: NSURL() as URL)
+      pendingContinuation = nil
     }
-
-    pendingResult = nil
   }
 }
 
@@ -107,8 +114,8 @@ extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate 
     // If we encounter an error downloading the temp file, just return with the
     // original remote URL so it can still be shared as a web URL.
     if error != nil, let remoteURL = request.url {
-      pendingResult?.fill(remoteURL)
-      pendingResult = nil
+      pendingContinuation?.resume(returning: remoteURL)
+      pendingContinuation = nil
     }
   }
 
@@ -122,14 +129,14 @@ extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate 
     do {
       try FileManager.default.moveItem(at: location, to: url)
       localFileURL = url
-      pendingResult?.fill(url)
-      pendingResult = nil
+      pendingContinuation?.resume(returning: url)
+      pendingContinuation = nil
     } catch {
       // If we encounter an error downloading the temp file, just return with the
       // original remote URL so it can still be shared as a web URL.
       if let remoteURL = request.url {
-        pendingResult?.fill(remoteURL)
-        pendingResult = nil
+        pendingContinuation?.resume(returning: remoteURL)
+        pendingContinuation = nil
       }
     }
   }

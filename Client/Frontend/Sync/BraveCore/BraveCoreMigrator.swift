@@ -383,27 +383,23 @@ extension BraveCoreMigrator {
   }
 
   private func migratePasswords(_ completion: @escaping (_ success: Bool) -> Void) {
-    profile.logins.getAllLogins() >>== { [weak self] results in
-      guard let self = self else { return }
-
-      for login in results.asArray() {
-        if self.migrateChromiumPasswords(login: login) {
-          self.profile.logins.removeLoginByGUID(login.guid).upon { result in
-            DispatchQueue.main.async {
-              if !result.isSuccess {
-                completion(false)
-                log.error("Error while updating a login entry. Error Reason: \(result.failureValue ?? "")")
-              }
-            }
-          }
-        } else {
-          DispatchQueue.main.async {
+    Task { @MainActor in
+      do {
+        let results = try await profile.logins.getAllLogins()
+        for login in results.asArray() {
+          if self.migrateChromiumPasswords(login: login) {
+            try await self.profile.logins.removeLoginByGUID(login.guid)
+          } else {
             completion(false)
+            return
           }
         }
+        
+        completion(true)
+      } catch {
+        log.error("Error while updating a login entry. \(error)")
+        completion(false)
       }
-
-      completion(true)
     }
   }
 

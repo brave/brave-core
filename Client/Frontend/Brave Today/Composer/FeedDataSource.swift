@@ -222,28 +222,43 @@ class FeedDataSource {
   enum BraveNewsError: Error {
     /// The resource data that was loaded was empty after parsing
     case resourceEmpty
+    /// Something went wrong
+    case unknownError
+  }
+  
+  private func on<T>(queue: DispatchQueue, work: @escaping () -> T) async -> T {
+    return await withCheckedContinuation { c in
+      queue.async {
+        c.resume(returning: work())
+      }
+    }
+  }
+  
+  private func onThrowing<T>(queue: DispatchQueue, work: @escaping () throws -> T) async throws -> T {
+    return try await withCheckedThrowingContinuation { c in
+      queue.async {
+        do {
+          c.resume(returning: try work())
+        } catch {
+          c.resume(throwing: error)
+        }
+      }
+    }
   }
 
   /// Get a cached Brave News resource file, optionally allowing expired data to be returned
-  private func cachedResource(_ resource: NewsResource, loadExpiredData: Bool = false) -> Deferred<Data?> {
+  @MainActor private func cachedResource(_ resource: NewsResource, loadExpiredData: Bool = false) async -> Data? {
     let name = resourceFilename(for: resource)
     let fileManager = FileManager.default
-    let deferred = Deferred<Data?>(value: nil, defaultQueue: .main)
     let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(name).path
     if (loadExpiredData || !isResourceExpired(resource)),
-      let cachedPath = cachedPath,
-      fileManager.fileExists(atPath: cachedPath) {
-      todayQueue.async {
-        if let cachedContents = fileManager.contents(atPath: cachedPath) {
-          deferred.fill(cachedContents)
-        } else {
-          deferred.fill(nil)
-        }
+       let cachedPath = cachedPath,
+       fileManager.fileExists(atPath: cachedPath) {
+      return await on(queue: todayQueue) {
+        return fileManager.contents(atPath: cachedPath)
       }
-    } else {
-      deferred.fill(nil)
     }
-    return deferred
+    return nil
   }
 
   /// Load a Brave News resource either from a file cache or the web
@@ -257,58 +272,46 @@ class FeedDataSource {
   private func loadResource<DataType>(
     _ resource: NewsResource,
     decodedTo: DataType.Type
-  ) -> Deferred<Result<DataType, Error>> where DataType: Decodable {
-    let filename = resourceFilename(for: resource)
-    return cachedResource(resource)
-      .bind({ [weak self] data -> Deferred<Result<Data, Error>> in
-        guard let self = self else { return .init() }
-        if let data = data {
-          return .init(value: .success(data), defaultQueue: .main)
-        }
+  ) async throws -> DataType where DataType: Decodable {
+    func data(for resource: NewsResource) async throws -> Data {
+      if let cachedData = await cachedResource(resource) {
+        return cachedData
+      }
+      return try await withCheckedThrowingContinuation { continuation in
         guard let url = self.resourceUrl(for: resource.bucket) else {
           fatalError("Incorrect URL generated for the given resource: \(resource)")
         }
-        let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
-        
         self.session.dataRequest(with: url.appendingPathComponent(filename)) { result in
           switch result {
           case .success(let response):
-            deferred.fill(.success(response.0))
+            continuation.resume(returning: response.0)
           case .failure(let error):
-            deferred.fill(.failure(error))
+            continuation.resume(throwing: error)
           }
-        }
-
-        return deferred
-      })
-      .mapQueue(todayQueue) { result in
-        switch result {
-        case .success(let data):
-          do {
-            let decodedResource = try self.decoder.decode(DataType.self, from: data)
-            if !data.isEmpty {
-              if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
-                logger.error("Failed to write sources to disk")
-              }
-            }
-            return .success(decodedResource)
-          } catch {
-            return .failure(error)
-          }
-        case .failure(let error):
-          return .failure(error)
         }
       }
+    }
+    let filename = resourceFilename(for: resource)
+    let data = try await data(for: resource)
+    let decodedResource = try self.decoder.decode(DataType.self, from: data)
+    if !data.isEmpty {
+      if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
+        logger.error("Failed to write sources to disk")
+      }
+    }
+    return decodedResource
   }
 
   private func restoreCachedSources() {
-    cachedResource(.sources, loadExpiredData: true).uponQueue(todayQueue) { [weak self] data in
-      guard let self = self, let data = data else { return }
+    Task { @MainActor in
+      guard let data = await cachedResource(.sources, loadExpiredData: true) else { return }
       do {
-        let decodedResource = try self.decoder.decode([FailableDecodable<FeedItem.Source>].self, from: data)
-        DispatchQueue.main.async {
-          self.sources = decodedResource.compactMap(\.wrappedValue)
+        let decodedResource = try await onThrowing(queue: todayQueue) {
+          return try self.decoder
+            .decode([FailableDecodable<FeedItem.Source>].self, from: data)
+            .compactMap(\.wrappedValue)
         }
+        self.sources = decodedResource
       } catch {
         // Could be a source type change, so may not be a big issue. If the user goes to download
         // updated lists and it still fails it will show an error on the feed
@@ -317,26 +320,20 @@ class FeedDataSource {
     }
   }
 
-  private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
-    loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.Source>].self).map { result in
-      if case .success(let sources) = result, sources.isEmpty {
-        return .failure(BraveNewsError.resourceEmpty)
-      }
-      return result.map {
-        $0.compactMap(\.wrappedValue)
-      }
+  private func loadSources() async throws -> [FeedItem.Source] {
+    let sources = try await loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.Source>].self)
+    if sources.isEmpty {
+      throw BraveNewsError.resourceEmpty
     }
+    return sources.compactMap(\.wrappedValue)
   }
 
-  private func loadFeed() -> Deferred<Result<[FeedItem.Content], Error>> {
-    loadResource(.feed, decodedTo: [FailableDecodable<FeedItem.Content>].self).map { result in
-      if case .success(let sources) = result, sources.isEmpty {
-        return .failure(BraveNewsError.resourceEmpty)
-      }
-      return result.map {
-        $0.compactMap(\.wrappedValue)
-      }
+  private func loadFeed() async throws -> [FeedItem.Content] {
+    let items = try await loadResource(.feed, decodedTo: [FailableDecodable<FeedItem.Content>].self)
+    if items.isEmpty {
+      throw BraveNewsError.resourceEmpty
     }
+    return items.compactMap(\.wrappedValue)
   }
 
   /// Describes a single RSS feed's loaded data set converted into Brave News based data
@@ -345,49 +342,70 @@ class FeedDataSource {
     var items: [FeedItem.Content]
   }
 
-  private func loadRSSLocation(_ location: RSSFeedLocation) -> Deferred<Result<RSSDataFeed, Error>> {
-    let deferred = Deferred<Result<RSSDataFeed, Error>>(value: nil, defaultQueue: .main)
+  private func loadRSSLocation(_ location: RSSFeedLocation) async throws -> RSSDataFeed {
     let parser = FeedParser(URL: location.url)
-    parser.parseAsync { [weak self] result in
-      switch result {
-      case .success(let feed):
-        if let source = FeedItem.Source(from: feed, location: location) {
-          var content: [FeedItem.Content] = []
-          switch feed {
-          case .atom(let atomFeed):
-            if let feedItems = atomFeed.entries?.compactMap({ entry -> FeedItem.Content? in
-              FeedItem.Content(from: entry, location: location)
-            }) {
-              content = feedItems
+    return try await withCheckedThrowingContinuation { continuation in
+      parser.parseAsync { [weak self] result in
+        switch result {
+        case .success(let feed):
+          if let source = FeedItem.Source(from: feed, location: location) {
+            var content: [FeedItem.Content] = []
+            switch feed {
+            case .atom(let atomFeed):
+              if let feedItems = atomFeed.entries?.compactMap({ entry -> FeedItem.Content? in
+                FeedItem.Content(from: entry, location: location)
+              }) {
+                content = feedItems
+              }
+            case .rss(let rssFeed):
+              if let feedItems = rssFeed.items?.compactMap({ entry -> FeedItem.Content? in
+                FeedItem.Content(from: entry, location: location)
+              }) {
+                content = feedItems
+              }
+            case .json(let jsonFeed):
+              if let feedItems = jsonFeed.items?.compactMap({ entry -> FeedItem.Content? in
+                FeedItem.Content(from: entry, location: location)
+              }) {
+                content = feedItems
+              }
             }
-          case .rss(let rssFeed):
-            if let feedItems = rssFeed.items?.compactMap({ entry -> FeedItem.Content? in
-              FeedItem.Content(from: entry, location: location)
-            }) {
-              content = feedItems
+            guard let self = self else {
+              continuation.resume(throwing: BraveNewsError.unknownError)
+              return
             }
-          case .json(let jsonFeed):
-            if let feedItems = jsonFeed.items?.compactMap({ entry -> FeedItem.Content? in
-              FeedItem.Content(from: entry, location: location)
-            }) {
-              content = feedItems
-            }
+            content = self.scored(rssItems: content)
+            continuation.resume(returning: .init(source: source, items: content))
           }
-          guard let self = self else { return }
-          content = self.scored(rssItems: content)
-          deferred.fill(.success(.init(source: source, items: content)))
+        case .failure(let error):
+          continuation.resume(throwing: error)
         }
-      case .failure(let error):
-        deferred.fill(.failure(error))
       }
     }
-    return deferred
   }
 
   /// Load all RSS feeds that the user has enabled
-  private func loadRSSFeeds() -> Deferred<[Result<RSSDataFeed, Error>]> {
+  private func loadRSSFeeds() async -> [Result<RSSDataFeed, Error>] {
     let locations = rssFeedLocations.filter(isRSSFeedEnabled)
-    return all(locations.map(loadRSSLocation))
+    return await withTaskGroup(
+      of: Result<RSSDataFeed, Error>.self,
+      returning: [Result<RSSDataFeed, Error>].self
+    ) { group in
+      for location in locations {
+        group.addTask {
+          do {
+            return .success(try await self.loadRSSLocation(location))
+          } catch {
+            return .failure(error)
+          }
+        }
+      }
+      var results: [Result<RSSDataFeed, Error>] = []
+      for await result in group {
+        results.append(result)
+      }
+      return results
+    }
   }
 
   /// Scores RSS items similar to how the backend scores regular Brave News sources
@@ -437,31 +455,26 @@ class FeedDataSource {
   /// `loading` initially.
   func load(_ completion: (() -> Void)? = nil) {
     state = .loading(state)
-    loadSources().both(loadFeed()).uponQueue(.main) { [weak self] results in
-      guard let self = self else { return }
-      switch results {
-      case (.failure(let error), _),
-        (_, .failure(let error)):
+    Task { @MainActor in
+      do {
+        async let sources = loadSources()
+        async let items = loadFeed()
+        (self.sources, self.items) = try await (sources, items)
+        for result in await self.loadRSSFeeds() {
+          switch result {
+          case .success(let feed):
+            self.sources.append(feed.source)
+            self.items.append(contentsOf: feed.items)
+          case .failure:
+            // At the moment we dont handle any load errors once the feed has been
+            // added
+            break
+          }
+        }
+        self.reloadCards(from: self.items, sources: self.sources, completion: completion)
+      } catch {
         self.state = .failure(error)
         completion?()
-      case (.success(let sources), .success(let items)):
-        self.sources = sources
-        self.items = items
-        self.loadRSSFeeds().uponQueue(.main) { [weak self] results in
-          guard let self = self else { return }
-          for result in results {
-            switch result {
-            case .success(let feed):
-              self.sources.append(feed.source)
-              self.items.append(contentsOf: feed.items)
-            case .failure:
-              // At the moment we dont handle any load errors once the feed has been
-              // added
-              break
-            }
-          }
-          self.reloadCards(from: self.items, sources: self.sources, completion: completion)
-        }
       }
     }
   }

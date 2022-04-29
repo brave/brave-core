@@ -77,8 +77,10 @@ class SchemePermissionTests: XCTestCase {
     subject = nil
     profile = nil
 
-    imageStore.clearExcluding(Set())
-    imageStore = nil
+    Task { @MainActor in
+      await imageStore.clearExcluding(Set())
+      imageStore = nil
+    }
     tabManager = nil
 
     super.tearDown()

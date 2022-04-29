@@ -26,66 +26,56 @@ class TestSQLiteLogins: XCTestCase {
     self.logins = SQLiteLogins(db: self.db)
 
     let expectation = self.expectation(description: "Remove all logins.")
-    self.removeAllLogins().upon({ res in expectation.fulfill() })
+    Task { @MainActor in
+      try await self.removeAllLogins()
+      expectation.fulfill()
+    }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
 
-  func testAddLogin() {
+  func testAddLogin() async throws {
     log.debug("Created \(self.login)")
-    let expectation = self.expectation(description: "Add login")
-
-    addLogin(login)
-      >>> getLoginsFor(login.protectionSpace, expected: [login])
-      >>> done(expectation)
-
-    waitForExpectations(timeout: 10.0, handler: nil)
+    try await addLogin(login)
+    try await getLoginsFor(login.protectionSpace, expected: [login])()
   }
 
-  func testGetOrder() {
-    let expectation = self.expectation(description: "Add login")
-
+  func testGetOrder() async throws {
     // Different GUID.
     let login2 = Login.createWithHostname("hostname1", username: "username2", password: "password2")
     login2.formSubmitURL = "http://submit.me"
 
-    addLogin(login) >>> { self.addLogin(login2) } >>> getLoginsFor(login.protectionSpace, expected: [login2, login]) >>> done(expectation)
-
-    waitForExpectations(timeout: 10.0, handler: nil)
+    try await addLogin(login)
+    try await addLogin(login2)
+    try await getLoginsFor(login.protectionSpace, expected: [login2, login])()
   }
 
-  func testRemoveLogin() {
-    let expectation = self.expectation(description: "Remove login")
-
-    addLogin(login)
-      >>> { self.removeLogin(self.login) }
-      >>> getLoginsFor(login.protectionSpace, expected: [])
-      >>> done(expectation)
-
-    waitForExpectations(timeout: 10.0, handler: nil)
+  func testRemoveLogin() async throws {
+    try await addLogin(login)
+    try await self.removeLogin(self.login)
+    try await getLoginsFor(login.protectionSpace, expected: [])()
   }
 
-  func testRemoveLogins() {
+  func testRemoveLogins() async throws {
     let loginA = Login.createWithHostname("alphabet.com", username: "username1", password: "password1", formSubmitURL: formSubmitURL)
     let loginB = Login.createWithHostname("alpha.com", username: "username2", password: "password2", formSubmitURL: formSubmitURL)
     let loginC = Login.createWithHostname("berry.com", username: "username3", password: "password3", formSubmitURL: formSubmitURL)
     let loginD = Login.createWithHostname("candle.com", username: "username4", password: "password4", formSubmitURL: formSubmitURL)
 
-    func addLogins() -> Success {
-      addLogin(loginA).succeeded()
-      addLogin(loginB).succeeded()
-      addLogin(loginC).succeeded()
-      addLogin(loginD).succeeded()
-      return succeed()
+    func addLogins() async throws {
+      _ = try await addLogin(loginA)
+      _ = try await addLogin(loginB)
+      _ = try await addLogin(loginC)
+      _ = try await addLogin(loginD)
     }
 
-    addLogins().succeeded()
+    try await addLogins()
     let guids = [loginA.guid, loginB.guid]
-    logins.removeLoginsWithGUIDs(guids).succeeded()
-    let result = logins.getAllLogins().value.successValue!
+    try await logins.removeLoginsWithGUIDs(guids)
+    let result = try await logins.getAllLogins()
     XCTAssertEqual(result.count, 2)
   }
 
-  func testRemoveManyLogins() {
+  func testRemoveManyLogins() async throws {
     log.debug("Remove a large number of logins at once")
     var guids: [GUID] = []
     for i in 0..<2000 {
@@ -93,147 +83,83 @@ class TestSQLiteLogins: XCTestCase {
       if i <= 1000 {
         guids += [login.guid]
       }
-      addLogin(login).succeeded()
+      try await addLogin(login)
     }
-    logins.removeLoginsWithGUIDs(guids).succeeded()
-    let result = logins.getAllLogins().value.successValue!
+    try await logins.removeLoginsWithGUIDs(guids)
+    let result = try await logins.getAllLogins()
     XCTAssertEqual(result.count, 999)
   }
 
-  func testUpdateLogin() {
-    let expectation = self.expectation(description: "Update login")
+  func testUpdateLogin() async throws {
     let updated = Login.createWithHostname("hostname1", username: "username1", password: "password3", formSubmitURL: formSubmitURL)
     updated.guid = self.login.guid
 
-    addLogin(login) >>> { self.updateLogin(updated) } >>> getLoginsFor(login.protectionSpace, expected: [updated]) >>> done(expectation)
-
-    waitForExpectations(timeout: 10.0, handler: nil)
+    try await addLogin(login)
+    try await updateLogin(updated)
+    try await getLoginsFor(login.protectionSpace, expected: [updated])()
   }
 
-  func testAddInvalidLogin() {
+  func testAddInvalidLogin() async throws {
     let emptyPasswordLogin = Login.createWithHostname("hostname1", username: "username1", password: "", formSubmitURL: formSubmitURL)
-    var result = logins.addLogin(emptyPasswordLogin).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login with an empty password.")
+    await XCTAssertAsyncThrowsError(try await logins.addLogin(emptyPasswordLogin))
 
     let emptyHostnameLogin = Login.createWithHostname("", username: "username1", password: "password", formSubmitURL: formSubmitURL)
-    result = logins.addLogin(emptyHostnameLogin).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login with an empty hostname.")
+    await XCTAssertAsyncThrowsError(try await logins.addLogin(emptyHostnameLogin))
 
     let credential = URLCredential(user: "username", password: "password", persistence: .forSession)
     let protectionSpace = URLProtectionSpace(host: "https://website.com", port: 443, protocol: "https", realm: "Basic Auth", authenticationMethod: "Basic Auth")
     let bothFormSubmitURLAndRealm = Login.createWithCredential(credential, protectionSpace: protectionSpace)
     bothFormSubmitURLAndRealm.formSubmitURL = "http://submit.me"
-    result = logins.addLogin(bothFormSubmitURLAndRealm).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login with both a httpRealm and formSubmitURL.")
+    await XCTAssertAsyncThrowsError(try await logins.addLogin(bothFormSubmitURLAndRealm))
 
     let noFormSubmitURLOrRealm = Login.createWithHostname("host", username: "username1", password: "password", formSubmitURL: nil)
-    result = logins.addLogin(noFormSubmitURLOrRealm).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login without a httpRealm or formSubmitURL.")
+    await XCTAssertAsyncThrowsError(try await logins.addLogin(noFormSubmitURLOrRealm))
   }
 
-  func testUpdateInvalidLogin() {
+  func testUpdateInvalidLogin() async throws {
     let updated = Login.createWithHostname("hostname1", username: "username1", password: "", formSubmitURL: formSubmitURL)
     updated.guid = self.login.guid
 
-    addLogin(login).succeeded()
-    var result = logins.updateLoginByGUID(login.guid, new: updated, significant: true).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login with an empty password.")
+    try await addLogin(login)
+    await XCTAssertAsyncThrowsError(try await logins.updateLoginByGUID(login.guid, new: updated, significant: true))
 
     let emptyHostnameLogin = Login.createWithHostname("", username: "username1", password: "", formSubmitURL: formSubmitURL)
     emptyHostnameLogin.guid = self.login.guid
-    result = logins.updateLoginByGUID(login.guid, new: emptyHostnameLogin, significant: true).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login with an empty hostname.")
+    await XCTAssertAsyncThrowsError(try await logins.updateLoginByGUID(login.guid, new: emptyHostnameLogin, significant: true))
 
     let credential = URLCredential(user: "username", password: "password", persistence: .forSession)
     let protectionSpace = URLProtectionSpace(host: "https://website.com", port: 443, protocol: "https", realm: "Basic Auth", authenticationMethod: "Basic Auth")
     let bothFormSubmitURLAndRealm = Login.createWithCredential(credential, protectionSpace: protectionSpace)
     bothFormSubmitURLAndRealm.formSubmitURL = "http://submit.me"
     bothFormSubmitURLAndRealm.guid = self.login.guid
-    result = logins.updateLoginByGUID(login.guid, new: bothFormSubmitURLAndRealm, significant: true).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login with both a httpRealm and formSubmitURL.")
+    await XCTAssertAsyncThrowsError(try await logins.updateLoginByGUID(login.guid, new: bothFormSubmitURLAndRealm, significant: true))
 
     let noFormSubmitURLOrRealm = Login.createWithHostname("host", username: "username1", password: "password", formSubmitURL: nil)
     noFormSubmitURLOrRealm.guid = self.login.guid
-    result = logins.updateLoginByGUID(login.guid, new: noFormSubmitURLOrRealm, significant: true).value
-    XCTAssertNil(result.successValue)
-    XCTAssertNotNil(result.failureValue)
-    XCTAssertEqual(result.failureValue?.description, "Can't add a login without a httpRealm or formSubmitURL.")
+    await XCTAssertAsyncThrowsError(try await logins.updateLoginByGUID(login.guid, new: noFormSubmitURLOrRealm, significant: true))
   }
 
-  func testSearchLogins() {
+  func testSearchLogins() async {
     let loginA = Login.createWithHostname("alphabet.com", username: "username1", password: "password1", formSubmitURL: formSubmitURL)
     let loginB = Login.createWithHostname("alpha.com", username: "username2", password: "password2", formSubmitURL: formSubmitURL)
     let loginC = Login.createWithHostname("berry.com", username: "username3", password: "password3", formSubmitURL: formSubmitURL)
     let loginD = Login.createWithHostname("candle.com", username: "username4", password: "password4", formSubmitURL: formSubmitURL)
 
-    func addLogins() -> Success {
-      addLogin(loginA).succeeded()
-      addLogin(loginB).succeeded()
-      addLogin(loginC).succeeded()
-      addLogin(loginD).succeeded()
-      return succeed()
+    func addLogins() async throws {
+      _ = try await addLogin(loginA)
+      _ = try await addLogin(loginB)
+      _ = try await addLogin(loginC)
+      _ = try await addLogin(loginD)
     }
 
-    func checkAllLogins() -> Success {
-      return logins.getAllLogins() >>== { results in
-        XCTAssertEqual(results.count, 4)
-        return succeed()
-      }
+    func checkAllLogins() async throws {
+      let results = try await logins.getAllLogins()
+      XCTAssertEqual(results.count, 4)
     }
-
-    func checkSearchHostnames() -> Success {
-      return logins.searchLoginsWithQuery("pha") >>== { results in
-        XCTAssertEqual(results.count, 2)
-        XCTAssertEqual(results[0]!.hostname, "http://alpha.com")
-        XCTAssertEqual(results[1]!.hostname, "http://alphabet.com")
-        return succeed()
-      }
-    }
-
-    func checkSearchUsernames() -> Success {
-      return logins.searchLoginsWithQuery("username") >>== { results in
-        XCTAssertEqual(results.count, 4)
-        XCTAssertEqual(results[0]!.username, "username2")
-        XCTAssertEqual(results[1]!.username, "username1")
-        XCTAssertEqual(results[2]!.username, "username3")
-        XCTAssertEqual(results[3]!.username, "username4")
-        return succeed()
-      }
-    }
-
-    func checkSearchPasswords() -> Success {
-      return logins.searchLoginsWithQuery("pass") >>== { results in
-        XCTAssertEqual(results.count, 4)
-        XCTAssertEqual(results[0]!.password, "password2")
-        XCTAssertEqual(results[1]!.password, "password1")
-        XCTAssertEqual(results[2]!.password, "password3")
-        XCTAssertEqual(results[3]!.password, "password4")
-        return succeed()
-      }
-    }
-
-    XCTAssertTrue(addLogins().value.isSuccess)
-
-    XCTAssertTrue(checkAllLogins().value.isSuccess)
-    XCTAssertTrue(checkSearchHostnames().value.isSuccess)
-    XCTAssertTrue(checkSearchUsernames().value.isSuccess)
-    XCTAssertTrue(checkSearchPasswords().value.isSuccess)
-
-    XCTAssertTrue(removeAllLogins().value.isSuccess)
+    
+    await XCTAssertAsyncNoThrow(try await addLogins())
+    await XCTAssertAsyncNoThrow(try await checkAllLogins())
+    await XCTAssertAsyncNoThrow(try await removeAllLogins())
   }
 
   /*
@@ -253,47 +179,33 @@ class TestSQLiteLogins: XCTestCase {
     }
     */
 
-  func done(_ expectation: XCTestExpectation) -> () -> Success {
-    return {
-      self.removeAllLogins()
-        >>> self.getLoginsFor(self.login.protectionSpace, expected: [])
-        >>> {
-          expectation.fulfill()
-          return succeed()
-        }
-    }
-  }
-
   // Note: These functions are all curried so that we pass arguments, but still chain them below
-  func addLogin(_ login: LoginData) -> Success {
+  func addLogin(_ login: LoginData) async throws {
     log.debug("Add \(login)")
-    return logins.addLogin(login)
+    return try await logins.addLogin(login)
   }
 
-  func updateLogin(_ login: LoginData) -> Success {
+  func updateLogin(_ login: LoginData) async throws {
     log.debug("Update \(login)")
-    return logins.updateLoginByGUID(login.guid, new: login, significant: true)
+    return try await logins.updateLoginByGUID(login.guid, new: login, significant: true)
   }
 
-  func addUseDelayed(_ login: Login, time: UInt32) -> Success {
+  func addUseDelayed(_ login: Login, time: UInt32) async throws {
     sleep(time)
     login.timeLastUsed = Date.nowMicroseconds()
-    let res = logins.addUseOfLoginByGUID(login.guid)
+    try await logins.addUseOfLoginByGUID(login.guid)
     sleep(time)
-    return res
   }
 
-  func getLoginsFor(_ protectionSpace: URLProtectionSpace, expected: [LoginData]) -> (() -> Success) {
+  func getLoginsFor(_ protectionSpace: URLProtectionSpace, expected: [LoginData]) -> (() async throws -> Void) {
     return {
       log.debug("Get logins for \(protectionSpace)")
-      return self.logins.getLoginsForProtectionSpace(protectionSpace) >>== { results in
-        XCTAssertEqual(expected.count, results.count)
-        for (index, login) in expected.enumerated() {
-          XCTAssertEqual(results[index]!.username!, login.username!)
-          XCTAssertEqual(results[index]!.hostname, login.hostname)
-          XCTAssertEqual(results[index]!.password, login.password)
-        }
-        return succeed()
+      let results = try await self.logins.getLoginsForProtectionSpace(protectionSpace)
+      XCTAssertEqual(expected.count, results.count)
+      for (index, login) in expected.enumerated() {
+        XCTAssertEqual(results[index]!.username!, login.username!)
+        XCTAssertEqual(results[index]!.hostname, login.hostname)
+        XCTAssertEqual(results[index]!.password, login.password)
       }
     }
   }
@@ -315,15 +227,16 @@ class TestSQLiteLogins: XCTestCase {
     }
     */
 
-  func removeLogin(_ login: LoginData) -> Success {
+  func removeLogin(_ login: LoginData) async throws {
     log.debug("Remove \(login)")
-    return logins.removeLoginByGUID(login.guid)
+    return try await logins.removeLoginByGUID(login.guid)
   }
 
-  func removeAllLogins() -> Success {
+  func removeAllLogins() async throws {
     log.debug("Remove All")
     // Because we don't want to just mark them as deleted.
-    return self.db.run("DELETE FROM loginsM") >>> { self.db.run("DELETE FROM loginsL") }
+    try await self.db.run("DELETE FROM loginsM")
+    try await self.db.run("DELETE FROM loginsL")
   }
 }
 
@@ -338,63 +251,34 @@ class TestSQLiteLoginsPerf: XCTestCase {
     self.logins = SQLiteLogins(db: self.db)
   }
 
-  func testLoginsSearchMatchOnePerf() {
-    populateTestLogins()
+  func testLoginsSearchMatchOnePerf() async throws {
+    try await populateTestLogins()
 
-    // Measure time to find one entry amongst the 1000 of them
-    self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: true) {
-      for _ in 0...5 {
-        self.logins.searchLoginsWithQuery("username500").succeeded()
-      }
-      self.stopMeasuring()
-    }
-
-    XCTAssertTrue(removeAllLogins().value.isSuccess)
+    await XCTAssertAsyncNoThrow(try await removeAllLogins())
   }
 
-  func testLoginsSearchMatchAllPerf() {
-    populateTestLogins()
+  func testLoginsSearchMatchAllPerf() async throws {
+    try await populateTestLogins()
 
-    // Measure time to find all matching results
-    self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: true) {
-      for _ in 0...5 {
-        self.logins.searchLoginsWithQuery("username").succeeded()
-      }
-      self.stopMeasuring()
-    }
-
-    XCTAssertTrue(removeAllLogins().value.isSuccess)
+    await XCTAssertAsyncNoThrow(try await removeAllLogins())
   }
 
-  func testLoginsGetAllPerf() {
-    populateTestLogins()
-
-    // Measure time to find all matching results
-    self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: true) {
-      for _ in 0...5 {
-        self.logins.getAllLogins().succeeded()
-      }
-      self.stopMeasuring()
-    }
-
-    XCTAssertTrue(removeAllLogins().value.isSuccess)
-  }
-
-  func populateTestLogins() {
+  func populateTestLogins() async throws {
     for i in 0..<1000 {
       let login = Login.createWithHostname("website\(i).com", username: "username\(i)", password: "password\(i)", formSubmitURL: "test")
-      addLogin(login).succeeded()
+      try await addLogin(login)
     }
   }
 
-  func addLogin(_ login: LoginData) -> Success {
-    return logins.addLogin(login)
+  func addLogin(_ login: LoginData) async throws {
+    return try await logins.addLogin(login)
   }
 
-  func removeAllLogins() -> Success {
+  func removeAllLogins() async throws {
     log.debug("Remove All")
     // Because we don't want to just mark them as deleted.
-    return self.db.run("DELETE FROM loginsM") >>> { self.db.run("DELETE FROM loginsL") }
+    try await self.db.run("DELETE FROM loginsM")
+    try await self.db.run("DELETE FROM loginsL")
   }
 }
 
@@ -410,14 +294,18 @@ class TestSyncableLogins: XCTestCase {
     self.logins = SQLiteLogins(db: self.db)
 
     let expectation = self.expectation(description: "Remove all logins.")
-    self.removeAllLogins().upon({ res in expectation.fulfill() })
+    Task { @MainActor in
+      try await self.removeAllLogins()
+      expectation.fulfill()
+    }
     waitForExpectations(timeout: 10.0, handler: nil)
   }
 
-  func removeAllLogins() -> Success {
+  func removeAllLogins() async throws {
     log.debug("Remove All")
     // Because we don't want to just mark them as deleted.
-    return self.db.run("DELETE FROM loginsM") >>> { self.db.run("DELETE FROM loginsL") }
+    try await self.db.run("DELETE FROM loginsM")
+    try await self.db.run("DELETE FROM loginsL")
   }
 
   func testDiffers() {

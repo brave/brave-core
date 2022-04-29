@@ -24,8 +24,7 @@ public class WebcompatReporter {
   ///
   /// - Returns: A deferred boolean on whether or not it reported successfully (default queue: main)
   @discardableResult
-  public static func reportIssue(on url: URL) -> Deferred<Bool> {
-    let deferred = Deferred<Bool>(value: nil, defaultQueue: .main)
+  public static func reportIssue(on url: URL) async -> Bool {
     let baseURL = AppConstants.buildChannel == .debug ? BaseURL.staging : BaseURL.prod
     let apiKey = (Bundle.main.infoDictionary?[apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -39,8 +38,7 @@ public class WebcompatReporter {
       let endpoint = components.url
     else {
       log.error("Failed to setup webcompat request")
-      deferred.fill(false)
-      return deferred
+      return false
     }
 
     // We want to ensure that the URL _can_ be normalized, since `domainURL` will return itself
@@ -62,24 +60,26 @@ public class WebcompatReporter {
       }
 
       let session = URLSession(configuration: .ephemeral)
-      let task = session.dataTask(with: request) { data, response, error in
-        var success: Bool = true
-        if let error = error {
-          log.error("Failed to report webcompat issue: \(error)")
-          success = false
+      return await withCheckedContinuation { continuation in
+        let task = session.dataTask(with: request) { data, response, error in
+          var success: Bool = true
+          if let error = error {
+            log.error("Failed to report webcompat issue: \(error)")
+            success = false
+          }
+          if let response = response as? HTTPURLResponse {
+            success = response.statusCode >= 200 && response.statusCode < 300
+            if !success {
+              log.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
+            }
+          }
+          continuation.resume(returning: success)
         }
-        if let response = response as? HTTPURLResponse {
-          success = response.statusCode >= 200 && response.statusCode < 300
-          log.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
-        }
-        deferred.fill(success)
+        task.resume()
       }
-      task.resume()
-      return deferred
     } catch {
       log.error("Failed to setup webcompat request payload: \(error)")
-      deferred.fill(false)
+      return false
     }
-    return deferred
   }
 }

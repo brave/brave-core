@@ -120,7 +120,7 @@ class MediaPlayer: NSObject {
     UIApplication.shared.endReceivingRemoteControlEvents()
   }
 
-  func load(url: URL) -> Combine.Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
+  func load(url: URL) -> Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
     load(asset: AVURLAsset(url: url))
   }
 
@@ -129,7 +129,7 @@ class MediaPlayer: NSObject {
   /// If an existing item is loaded, you should seek to offset zero to restart playback.
   /// If a new item is loaded, you should call play to begin playback.
   /// Returns an error on failure.
-  func load(asset: AVURLAsset) -> Combine.Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
+  func load(asset: AVURLAsset) -> Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
     return Deferred { [weak self] in
       guard let self = self else {
         return Fail<Bool, MediaPlaybackError>(error: .other("MediaPlayer Deallocated"))

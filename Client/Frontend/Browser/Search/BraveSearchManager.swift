@@ -253,27 +253,32 @@ class BraveSearchManager: NSObject {
 extension BraveSearchManager: URLSessionDataDelegate {
 
   private func findLoginsForProtectionSpace(profile: Profile, challenge: URLAuthenticationChallenge, completion: @escaping (URLCredential?) -> Void) {
-    profile.logins.getLoginsForProtectionSpace(challenge.protectionSpace) >>== { cursor in
-      guard cursor.count >= 1 else {
-        completion(nil)
-        return
-      }
-
-      let logins = cursor.asArray()
-      var credentials: URLCredential?
-
-      if logins.count > 1 {
-        credentials =
+    Task { @MainActor in
+      do {
+        let cursor = try await profile.logins.getLoginsForProtectionSpace(challenge.protectionSpace)
+        guard cursor.count >= 1 else {
+          completion(nil)
+          return
+        }
+        
+        let logins = cursor.asArray()
+        var credentials: URLCredential?
+        
+        if logins.count > 1 {
+          credentials =
           (logins.find { login in
             (login.protectionSpace.`protocol` == challenge.protectionSpace.`protocol`) && !login.hasMalformedHostname
           })?.credentials
-      } else if logins.count == 1, logins.first?.protectionSpace.`protocol` != challenge.protectionSpace.`protocol` {
-        credentials = logins.first?.credentials
-      } else {
-        credentials = logins.first?.credentials
+        } else if logins.count == 1, logins.first?.protectionSpace.`protocol` != challenge.protectionSpace.`protocol` {
+          credentials = logins.first?.credentials
+        } else {
+          credentials = logins.first?.credentials
+        }
+        
+        completion(credentials)
+      } catch {
+        completion(nil)
       }
-
-      completion(credentials)
     }
   }
 

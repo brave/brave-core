@@ -8,6 +8,14 @@ import UIKit
 
 import XCTest
 
+extension Sequence {
+  fileprivate func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
+    for element in self {
+      try await operation(element)
+    }
+  }
+}
+
 class DiskImageStoreTests: XCTestCase {
   var files: FileAccessor!
   var store: DiskImageStore!
@@ -16,29 +24,27 @@ class DiskImageStoreTests: XCTestCase {
     files = MockFiles()
     store = try! DiskImageStore(files: files, namespace: "DiskImageStoreTests", quality: 1)
 
-    _ = store.clearExcluding(Set()).value
+    Task { @MainActor in
+      await store.clearExcluding(Set())
+    }
   }
 
-  func testStore() {
-    var success = false
-
+  @MainActor func testStore() async throws {
     // Avoid image comparison and use size of the image for equality
     let redImage = makeImageWithColor(UIColor.red, size: CGSize(width: 100, height: 100))
     let blueImage = makeImageWithColor(UIColor.blue, size: CGSize(width: 17, height: 17))
 
-    [(key: "blue", image: blueImage), (key: "red", image: redImage)].forEach() { (key, image) in
-      XCTAssertNil(getImage(key), "\(key) key is nil")
-      success = putImage(key, image: image)
-      XCTAssert(success, "\(key) image added to store")
-      XCTAssertEqual(getImage(key)!.size.width, image.size.width, "Images are equal")
-
-      success = putImage(key, image: image)
-      XCTAssertFalse(success, "\(key) image not added again")
+    try await [(key: "blue", image: blueImage), (key: "red", image: redImage)].asyncForEach { (key, image) in
+      await XCTAssertAsyncThrowsError(try await store.get(key), "\(key) key is nil")
+      await XCTAssertAsyncNoThrow(try await store.put(key, image: image), "\(key) image added to store")
+      let storedImage = try! await store.get(key)
+      XCTAssertEqual(storedImage.size.width, image.size.width, "Images are equal")
+      await XCTAssertAsyncThrowsError(try await store.put(key, image: image), "\(key) image not added again")
     }
 
-    _ = store.clearExcluding(Set(["red"])).value
-    XCTAssertNotNil(getImage("red"), "Red image still exists")
-    XCTAssertNil(getImage("blue"), "Blue image cleared")
+    await store.clearExcluding(Set(["red"]))
+    await XCTAssertAsyncNoThrow(try await store.get("red"), "Red image still exists")
+    await XCTAssertAsyncThrowsError(try await store.get("blue"), "Blue image cleared")
   }
 
   private func makeImageWithColor(_ color: UIColor, size: CGSize) -> UIImage {
@@ -49,27 +55,5 @@ class DiskImageStoreTests: XCTestCase {
     let image = UIGraphicsGetImageFromCurrentImageContext()!
     UIGraphicsEndImageContext()
     return image
-  }
-
-  private func getImage(_ key: String) -> UIImage? {
-    let expectation = self.expectation(description: "Get succeeded")
-    var image: UIImage?
-    store.get(key).upon {
-      image = $0.successValue
-      expectation.fulfill()
-    }
-    waitForExpectations(timeout: 10, handler: nil)
-    return image
-  }
-
-  private func putImage(_ key: String, image: UIImage) -> Bool {
-    let expectation = self.expectation(description: "Put succeeded")
-    var success = false
-    store.put(key, image: image).upon {
-      success = $0.isSuccess
-      expectation.fulfill()
-    }
-    waitForExpectations(timeout: 10, handler: nil)
-    return success
   }
 }
