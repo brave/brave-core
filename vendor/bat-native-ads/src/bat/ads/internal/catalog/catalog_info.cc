@@ -197,7 +197,7 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_info.payload.title = payload["title"].GetString();
           creative_info.payload.target_url =
               GURL(payload["targetUrl"].GetString());
-          if (!GURL(creative_info.payload.target_url).is_valid()) {
+          if (!creative_info.payload.target_url.is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -222,7 +222,7 @@ bool CatalogInfo::FromJson(const std::string& json,
               payload["description"].GetString();
           creative_info.payload.image_url =
               GURL(payload["imageUrl"].GetString());
-          if (!GURL(creative_info.payload.image_url).is_valid()) {
+          if (!creative_info.payload.image_url.is_valid()) {
             BLOG(1, "Invalid image URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -231,7 +231,7 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_info.payload.cta_text = payload["ctaText"].GetString();
           creative_info.payload.target_url =
               GURL(payload["targetUrl"].GetString());
-          if (!GURL(creative_info.payload.target_url).is_valid()) {
+          if (!creative_info.payload.target_url.is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -259,7 +259,7 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_info.payload.alt = logo["alt"].GetString();
           creative_info.payload.target_url =
               GURL(logo["destinationUrl"].GetString());
-          if (!GURL(creative_info.payload.target_url).is_valid()) {
+          if (!creative_info.payload.target_url.is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
             continue;
@@ -294,7 +294,7 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_info.payload.description =
               payload["description"].GetString();
           creative_info.payload.target_url = GURL(payload["feed"].GetString());
-          if (!GURL(creative_info.payload.target_url).is_valid()) {
+          if (!creative_info.payload.target_url.is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
                         << creative_instance_id);
             continue;

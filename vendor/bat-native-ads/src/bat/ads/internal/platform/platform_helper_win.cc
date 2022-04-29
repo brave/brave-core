@@ -7,6 +7,10 @@
 
 namespace ads {
 
+namespace {
+constexpr char kPlatformName[] = "windows";
+}  // namespace
+
 PlatformHelperWin::PlatformHelperWin() = default;
 
 PlatformHelperWin::~PlatformHelperWin() = default;
@@ -15,11 +19,11 @@ bool PlatformHelperWin::IsMobile() const {
   return false;
 }
 
-std::string PlatformHelperWin::GetPlatformName() const {
-  return "windows";
+std::string PlatformHelperWin::GetName() const {
+  return kPlatformName;
 }
 
-PlatformType PlatformHelperWin::GetPlatform() const {
+PlatformType PlatformHelperWin::GetType() const {
   return PlatformType::kWindows;
 }
 

@@ -381,9 +381,9 @@ void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
 
   ON_CALL(*mock, IsMobile()).WillByDefault(Return(is_mobile));
 
-  ON_CALL(*mock, GetPlatformName()).WillByDefault(Return(platform_name));
+  ON_CALL(*mock, GetName()).WillByDefault(Return(platform_name));
 
-  ON_CALL(*mock, GetPlatform()).WillByDefault(Return(platform_type));
+  ON_CALL(*mock, GetType()).WillByDefault(Return(platform_type));
 }
 
 void MockIsNetworkConnectionAvailable(

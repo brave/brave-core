@@ -34,7 +34,7 @@ std::string BrowserIsActivePermissionRule::GetLastMessage() const {
 }
 
 bool BrowserIsActivePermissionRule::DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->GetPlatform() == PlatformType::kAndroid) {
+  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kAndroid) {
     return true;
   }
 

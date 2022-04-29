@@ -22,8 +22,8 @@ class PlatformHelperMock : public PlatformHelper {
   PlatformHelperMock& operator=(const PlatformHelperMock&) = delete;
 
   MOCK_CONST_METHOD0(IsMobile, bool());
-  MOCK_CONST_METHOD0(GetPlatformName, std::string());
-  MOCK_CONST_METHOD0(GetPlatform, PlatformType());
+  MOCK_CONST_METHOD0(GetName, std::string());
+  MOCK_CONST_METHOD0(GetType, PlatformType());
 };
 
 }  // namespace ads

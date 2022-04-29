@@ -49,8 +49,7 @@ bool DoesOsSupportCreativeSet(const CatalogCreativeSetInfo& creative_set) {
     return true;
   }
 
-  const std::string platform_name =
-      PlatformHelper::GetInstance()->GetPlatformName();
+  const std::string platform_name = PlatformHelper::GetInstance()->GetName();
 
   for (const auto& os : creative_set.oses) {
     if (os.name == platform_name) {
@@ -125,7 +124,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
       for (const auto& creative : creative_set.creative_ad_notifications) {
         if (!DoesOsSupportCreativeSet(creative_set)) {
           const std::string platform_name =
-              PlatformHelper::GetInstance()->GetPlatformName();
+              PlatformHelper::GetInstance()->GetName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
                                      << " does not support " << platform_name);
@@ -197,7 +196,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
       for (const auto& creative : creative_set.creative_inline_content_ads) {
         if (!DoesOsSupportCreativeSet(creative_set)) {
           const std::string platform_name =
-              PlatformHelper::GetInstance()->GetPlatformName();
+              PlatformHelper::GetInstance()->GetName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
                                      << " does not support " << platform_name);
@@ -272,7 +271,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
       for (const auto& creative : creative_set.creative_new_tab_page_ads) {
         if (!DoesOsSupportCreativeSet(creative_set)) {
           const std::string platform_name =
-              PlatformHelper::GetInstance()->GetPlatformName();
+              PlatformHelper::GetInstance()->GetName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
                                      << " does not support " << platform_name);
@@ -358,7 +357,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
       for (const auto& creative : creative_set.creative_promoted_content_ads) {
         if (!DoesOsSupportCreativeSet(creative_set)) {
           const std::string platform_name =
-              PlatformHelper::GetInstance()->GetPlatformName();
+              PlatformHelper::GetInstance()->GetName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
                                      << " does not support " << platform_name);

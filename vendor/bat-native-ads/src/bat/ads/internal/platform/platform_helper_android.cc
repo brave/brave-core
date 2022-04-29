@@ -7,6 +7,10 @@
 
 namespace ads {
 
+namespace {
+constexpr char kPlatformName[] = "android";
+}  // namespace
+
 PlatformHelperAndroid::PlatformHelperAndroid() = default;
 
 PlatformHelperAndroid::~PlatformHelperAndroid() = default;
@@ -15,11 +19,11 @@ bool PlatformHelperAndroid::IsMobile() const {
   return true;
 }
 
-std::string PlatformHelperAndroid::GetPlatformName() const {
-  return "android";
+std::string PlatformHelperAndroid::GetName() const {
+  return kPlatformName;
 }
 
-PlatformType PlatformHelperAndroid::GetPlatform() const {
+PlatformType PlatformHelperAndroid::GetType() const {
   return PlatformType::kAndroid;
 }
 

@@ -6,28 +6,23 @@
 #include "bat/ads/internal/platform/platform_helper.h"
 
 #include "build/build_config.h"
-
 #if BUILDFLAG(IS_ANDROID)
 #include "bat/ads/internal/platform/platform_helper_android.h"
-#endif  // BUILDFLAG(IS_ANDROID)
-
-#if BUILDFLAG(IS_IOS)
+#elif BUILDFLAG(IS_IOS)
 #include "bat/ads/internal/platform/platform_helper_ios.h"
-#endif  // BUILDFLAG(IS_IOS)
-
-#if BUILDFLAG(IS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 #include "bat/ads/internal/platform/platform_helper_linux.h"
-#endif  // BUILDFLAG(IS_LINUX)
-
-#if BUILDFLAG(IS_MAC)
+#elif BUILDFLAG(IS_MAC)
 #include "bat/ads/internal/platform/platform_helper_mac.h"
-#endif  // BUILDFLAG(IS_MAC)
-
-#if BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_WIN)
 #include "bat/ads/internal/platform/platform_helper_win.h"
-#endif  // BUILDFLAG(IS_WIN)
+#endif
 
 namespace ads {
+
+namespace {
+constexpr char kPlatformName[] = "unknown";
+}  // namespace
 
 PlatformHelper* g_platform_helper_for_testing = nullptr;
 
@@ -43,12 +38,12 @@ bool PlatformHelper::IsMobile() const {
   return false;
 }
 
-PlatformType PlatformHelper::GetPlatform() const {
-  return PlatformType::kUnknown;
+std::string PlatformHelper::GetName() const {
+  return kPlatformName;
 }
 
-std::string PlatformHelper::GetPlatformName() const {
-  return "unknown";
+PlatformType PlatformHelper::GetType() const {
+  return PlatformType::kUnknown;
 }
 
 // static

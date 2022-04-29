@@ -7,6 +7,10 @@
 
 namespace ads {
 
+namespace {
+constexpr char kPlatformName[] = "ios";
+}  // namespace
+
 PlatformHelperIos::PlatformHelperIos() = default;
 
 PlatformHelperIos::~PlatformHelperIos() = default;
@@ -15,11 +19,11 @@ bool PlatformHelperIos::IsMobile() const {
   return true;
 }
 
-std::string PlatformHelperIos::GetPlatformName() const {
-  return "ios";
+std::string PlatformHelperIos::GetName() const {
+  return kPlatformName;
 }
 
-PlatformType PlatformHelperIos::GetPlatform() const {
+PlatformType PlatformHelperIos::GetType() const {
   return PlatformType::kIOS;
 }
 
