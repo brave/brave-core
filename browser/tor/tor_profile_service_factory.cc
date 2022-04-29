@@ -5,8 +5,6 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
-#include <memory>
-
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
@@ -54,17 +52,14 @@ TorProfileServiceFactory::TorProfileServiceFactory()
           "TorProfileService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-TorProfileServiceFactory::~TorProfileServiceFactory() {}
+TorProfileServiceFactory::~TorProfileServiceFactory() = default;
 
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  std::unique_ptr<tor::TorProfileService> tor_profile_service(
-      new tor::TorProfileServiceImpl(
-          context, g_brave_browser_process
-                       ? g_brave_browser_process->tor_client_updater()
-                       : nullptr));
-
-  return tor_profile_service.release();
+  return new tor::TorProfileServiceImpl(
+      context, g_brave_browser_process
+                   ? g_brave_browser_process->tor_client_updater()
+                   : nullptr);
 }
 
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
