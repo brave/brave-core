@@ -1069,8 +1069,8 @@
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Carian untuk cadangan";
 
-/* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "Sejarah & Penanda Buku";
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Buka Tab & Penanda Halaman & Sejarah";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Kosongkan Carian";
@@ -1098,6 +1098,9 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Cadangan carian daripada %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Tukar ke tab ini";
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Carian %@";

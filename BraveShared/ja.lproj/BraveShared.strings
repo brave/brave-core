@@ -1069,8 +1069,8 @@
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "候補の検索";
 
-/* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "履歴とブックマーク";
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "タブを開く & ブックマーク & 履歴";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "検索を消去";
@@ -1098,6 +1098,9 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@ からの検索候補";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "このタブに変更";
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@で検索";

@@ -1069,8 +1069,8 @@
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "搜尋建議內容";
 
-/* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "歷史記錄與書籤";
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "開啟分頁及書籤與歷史記錄";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "清除搜尋";
@@ -1098,6 +1098,9 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@ 提供的搜尋建議";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "切換至此分頁";
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@ 搜尋";

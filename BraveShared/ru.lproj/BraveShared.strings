@@ -1069,8 +1069,8 @@
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Поиск по подсказке";
 
-/* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "История и закладки";
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Вкладки, закладки, история";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Очистить поиск";
@@ -1098,6 +1098,9 @@
 
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@: подсказки при поиске";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Перейти на эту вкладку";
 
 /* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Поиск в %@";
