@@ -542,8 +542,10 @@ void JSEthereumProvider::FireEvent(const std::string& event,
       render_frame_->GetWebFrame()->MainWorldScriptContext();
 
   std::vector<v8::Local<v8::Value>> args;
-  args.push_back(
-      content::V8ValueConverter::Create()->ToV8Value(&args_list, context));
+  for (auto const& argument : args_list.GetList()) {
+    args.push_back(
+        content::V8ValueConverter::Create()->ToV8Value(&argument, context));
+  }
   CallMethodOfObject(render_frame_->GetWebFrame(), u"ethereum", u"emit",
                      std::move(args));
 }
