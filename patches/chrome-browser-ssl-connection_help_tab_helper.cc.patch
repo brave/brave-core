@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ssl/connection_help_tab_helper.cc b/chrome/browser/ssl/connection_help_tab_helper.cc
+index 0ee80e3d25631f39d0c71c25cfc3446d3e427dfa..042f5d99a3d8bc2931827a79083dd30c53c2c8c5 100644
+--- a/chrome/browser/ssl/connection_help_tab_helper.cc
++++ b/chrome/browser/ssl/connection_help_tab_helper.cc
+@@ -15,7 +15,10 @@
+ 
+ namespace {
+ const char kHelpCenterConnectionHelpUrl[] =
+-    "https://support.google.com/chrome/answer/6098869";
++#if 0
++    "https://support.google.com/chrome/answer/6098869"
++#endif
++    "https://support.brave.com/hc/articles/360059254971-What-do-the-connection-error-codes-mean-";
+ const char kBundledConnectionHelpUrl[] = "chrome://connection-help";
+ 
+ void RedirectToBundledHelp(content::WebContents* web_contents) {

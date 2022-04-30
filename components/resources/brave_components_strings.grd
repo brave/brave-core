@@ -160,6 +160,18 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <message name="IDS_BRAVE_CONNECTION_HELP_MITM_SOFTWARE_DETAILS" desc="Details for MITM software section in chrome://connection-help. Matches the nineth section in https://support.google.com/chrome/answer/6098869">
+        &lt;p&gt;You'll see this error if you have Superfish software on your Windows computer.&lt;/p&gt;
+        &lt;p&gt;Follow these steps to temporarily disable the software so you can get on the web. You'll need administrator privileges.&lt;/p&gt;
+        &lt;ol&gt;
+        &lt;li&gt;Click &lt;strong&gt;Start&lt;/strong&gt;, then search for and select &lt;strong&gt;"View local services"&lt;/strong&gt;
+        &lt;li&gt;Select &lt;strong&gt;VisualDiscovery&lt;/strong&gt;
+        &lt;li&gt;Under &lt;strong&gt;Startup type&lt;/strong&gt;, select &lt;strong&gt;Disabled&lt;/strong&gt;
+        &lt;li&gt;Under &lt;strong&gt;Service status&lt;/strong&gt;, click &lt;strong&gt;Stop&lt;/strong&gt;
+        &lt;li&gt;Click &lt;strong&gt;Apply&lt;/strong&gt;, then click &lt;strong&gt;OK&lt;/strong&gt;
+        &lt;li&gt;Visit the &lt;a href="https://support.brave.com/hc/articles/360059254971-What-do-the-connection-error-codes-mean-"&gt;Brave help center&lt;/a&gt; to learn how to permanently remove the software from your computer
+        &lt;/ol&gt;
+      </message>
       <!-- WebUI newtab resources -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>

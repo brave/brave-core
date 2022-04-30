@@ -1,0 +1,15 @@
+diff --git a/components/security_interstitials/core/ssl_error_ui.cc b/components/security_interstitials/core/ssl_error_ui.cc
+index 0d7cd203afaab5b2b1674255e3052f9197ce0e49..8caa53c346a5723384194b4cef4d323431b32972 100644
+--- a/components/security_interstitials/core/ssl_error_ui.cc
++++ b/components/security_interstitials/core/ssl_error_ui.cc
+@@ -19,7 +19,10 @@ namespace security_interstitials {
+ namespace {
+ 
+ // Path to the relevant help center page. Used if |support_url_| is invalid.
++#if 0
+ const char kHelpPath[] = "answer/6098869";
++#endif
++const char kHelpPath[] = "hc/articles/360059254971-What-do-the-connection-error-codes-mean-";
+ 
+ bool IsMasked(int options, SSLErrorOptionsMask mask) {
+   return ((options & mask) != 0);

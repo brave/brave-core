@@ -1,0 +1,21 @@
+diff --git a/components/security_interstitials/content/connection_help_ui.cc b/components/security_interstitials/content/connection_help_ui.cc
+index 9a77d57078c2f3e5476cf9dfa9d7babac69bca35..94ecab56fa3ab93f417831bc688f43cde3360e0a 100644
+--- a/components/security_interstitials/content/connection_help_ui.cc
++++ b/components/security_interstitials/content/connection_help_ui.cc
+@@ -5,6 +5,7 @@
+ #include "components/security_interstitials/content/connection_help_ui.h"
+ 
+ #include "build/build_config.h"
++#include "components/grit/brave_components_strings.h"
+ #include "components/grit/components_resources.h"
+ #include "components/security_interstitials/content/urls.h"
+ #include "components/strings/grit/components_strings.h"
+@@ -63,7 +64,7 @@ ConnectionHelpUI::ConnectionHelpUI(content::WebUI* web_ui)
+   html_source->AddLocalizedString("connectionHelpMitmSoftwareTitle",
+                                   IDS_CONNECTION_HELP_MITM_SOFTWARE_TITLE);
+   html_source->AddLocalizedString("connectionHelpMitmSoftwareDetails",
+-                                  IDS_CONNECTION_HELP_MITM_SOFTWARE_DETAILS);
++                                  IDS_BRAVE_CONNECTION_HELP_MITM_SOFTWARE_DETAILS);
+ #else
+   html_source->AddBoolean("isWindows", false);
+   html_source->AddString("connectionHelpMitmSoftwareTitle", "");
