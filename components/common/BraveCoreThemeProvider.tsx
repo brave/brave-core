@@ -20,9 +20,19 @@ export default function LightDarkThemeProvider (props: React.PropsWithChildren<P
     const handleDarkModeChange = (e: MediaQueryListEvent) => {
       setIsDarkMode(e.matches)
     }
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setIsDarkMode(darkModeMediaMatcher.matches)
+      }
+    }
+
     darkModeMediaMatcher.addEventListener('change', handleDarkModeChange)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+
     return () => {
       darkModeMediaMatcher.removeEventListener('change', handleDarkModeChange)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   }, [])
 

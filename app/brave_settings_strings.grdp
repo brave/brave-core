@@ -135,9 +135,6 @@
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave Private Ads — those are controlled in the Brave Rewards (settings)`">
     settings.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_LOOK_AND_FEEL_TITLE" desc="The title the settings section with interface options such as showing the resources blocked badge">
-    Look &amp; feel
-  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
     Show the number of blocked items on the Shields icon
   </message>

@@ -7,6 +7,7 @@ provideStrings({
   braveShieldsDown: 'Shields are DOWN $1for$2',
   braveShieldsBroken: 'If this site seems broken, try Shields down. $1Note: this may reduce Brave\'s privacy protections.$2',
   braveShieldsBlockedNote: 'Trackers, ads, and more blocked $1Learn more$2',
+  braveShieldsNOTBlockedNote: 'Not protected by Brave Shields $1Learn more$2',
   braveShieldsAdvancedCtrls: 'Advanced controls',
   braveShieldSettingsDescription: 'Changing these settings might break sites.',
   braveShieldsGlobalSettingsTitle: 'Global Shield settings',
@@ -29,5 +30,6 @@ provideStrings({
   braveShieldsFingerprintingAllowAll: 'Allow fingerprinting',
   braveShieldsReportSite: 'Report site',
   braveShieldsReportSiteDesc: 'Tell us if the site wasn\'t working properly with Shields up.',
-  braveShieldsDownDesc: 'You are viewing this site without Brave\'s privacy protection'
+  braveShieldsDownDesc: 'You are viewing this site without Brave\'s privacy protection',
+  braveShieldsBlockedScriptsLabel: 'Blocked scripts'
 })

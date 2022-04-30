@@ -49,6 +49,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsDown", IDS_BRAVE_SHIELDS_DOWN},
     {"braveShieldsBroken", IDS_BRAVE_SHIELDS_BROKEN},
     {"braveShieldsBlockedNote", IDS_BRAVE_SHIELDS_BLOCKED_NOTE},
+    {"braveShieldsNOTBlockedNote", IDS_BRAVE_SHIELDS_NOT_BLOCKED_NOTE},
     {"braveShieldsAdvancedCtrls", IDS_BRAVE_SHIELDS_ADVANCED_CTRLS},
     {"braveShieldSettingsDescription", IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION},
     {"braveShieldsGlobalSettingsTitle",
@@ -83,6 +84,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsReportSite", IDS_BRAVE_SHIELDS_REPORT_SITE},
     {"braveShieldsReportSiteDesc", IDS_BRAVE_SHIELDS_REPORT_SITE_DESC},
     {"braveShieldsDownDesc", IDS_BRAVE_SHIELDS_DOWN_DESC},
+    {"braveShieldsBlockedScriptsLabel",
+     IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL},
 };
 
 }  // namespace brave_shields

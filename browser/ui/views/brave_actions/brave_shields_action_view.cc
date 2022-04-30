@@ -211,8 +211,8 @@ void BraveShieldsActionView::ButtonPressed() {
 bool BraveShieldsActionView::SchemeIsLocal(GURL url) {
   return url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
          url.SchemeIs(url::kDataScheme) ||
-         url.SchemeIs(url::kFileSystemScheme) ||
-         url.SchemeIs(content::kChromeUIScheme);
+         url.SchemeIs(url::kFileSystemScheme) || url.SchemeIs(kMagnetScheme) ||
+         url.SchemeIs(kBraveUIScheme) || url.SchemeIs(content::kChromeUIScheme);
 }
 
 std::unique_ptr<views::LabelButtonBorder>
