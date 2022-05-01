@@ -5,9 +5,16 @@
 
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_
+
 #define kMinimumContentsWidthForCloseButtons \
   kMinimumContentsWidthForCloseButtons = 55; \
   static constexpr int kMinimumContentsWidthForCloseButtons_UnUsed
+
+#define GetWidthOfLargestSelectableRegion    \
+  GetWidthOfLargestSelectableRegion() const; \
+  int GetWidthOfLargestSelectableRegion_ChromiumImpl
 #include "src/chrome/browser/ui/views/tabs/tab.h"
+#undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_H_
