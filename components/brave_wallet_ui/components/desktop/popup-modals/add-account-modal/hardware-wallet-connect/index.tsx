@@ -39,8 +39,7 @@ export default function (props: Props) {
   const {
     selectedAccountType,
     selectedNetwork,
-    filecoinNetwork,
-    onChangeFilecoinNetwork
+    filecoinNetwork
   } = props
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
@@ -66,9 +65,24 @@ export default function (props: Props) {
 
     return { error: error.message, userHint: '' }
   }
-
+  const onFilecoinNetworkChanged = (network: FilecoinNetwork) => {
+    props.onChangeFilecoinNetwork(network)
+    props.onConnectHardwareWallet({
+      hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
+      startIndex: 0,
+      stopIndex: DerivationBatch,
+      network: network,
+      coin: BraveWallet.CoinType.FIL
+    }).then((result) => {
+      setAccounts(result)
+    }).catch((error) => {
+      setConnectionError(getErrorMessage(error, selectedAccountType.name))
+      setShowAccountsList(false)
+    }).finally(
+      () => setIsConnecting(false)
+    )
+  }
   const onChangeDerivationScheme = (scheme: HardwareDerivationScheme) => {
-    console.log("onChangeDerivationScheme")
     setSelectedDerivationScheme(scheme)
     setAccounts([])
     props.onConnectHardwareWallet({
@@ -76,7 +90,8 @@ export default function (props: Props) {
       startIndex: 0,
       stopIndex: DerivationBatch,
       scheme: scheme,
-      coin: selectedAccountType.coin
+      coin: selectedAccountType.coin,
+      network: filecoinNetwork
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
@@ -144,7 +159,8 @@ export default function (props: Props) {
       startIndex: accounts.length,
       stopIndex: accounts.length + DerivationBatch,
       scheme: selectedDerivationScheme,
-      coin: selectedAccountType.coin
+      coin: selectedAccountType.coin,
+      network: filecoinNetwork
     }).then((result) => {
       setAccounts([...accounts, ...result])
       setShowAccountsList(true)
@@ -171,7 +187,7 @@ export default function (props: Props) {
         getBalance={getBalance}
         selectedNetwork={selectedNetwork}
         filecoinNetwork={filecoinNetwork}
-        onChangeFilecoinNetwork={onChangeFilecoinNetwork}
+        onChangeFilecoinNetwork={onFilecoinNetworkChanged}
         selectedAccountType={selectedAccountType}
       />
     )

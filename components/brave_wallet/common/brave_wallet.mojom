@@ -204,6 +204,7 @@ interface PanelHandlerFactory {
                      pending_receiver<TxService> tx_service,
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
+                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
@@ -220,6 +221,7 @@ interface PageHandlerFactory {
                     pending_receiver<TxService> tx_service,
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
+                    pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
 };
@@ -909,7 +911,7 @@ interface EthTxManagerProxy {
   GetGasEstimation1559() => (GasEstimation1559? estimation);
 
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
-  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error, string error_message);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error_union, string error_message);
 };
 
 interface SolanaTxManagerProxy {
@@ -936,6 +938,11 @@ interface SolanaTxManagerProxy {
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
   GetEstimatedTxFee(string tx_meta_id) => (uint64 fee, SolanaProviderError error, string error_message);
+};
+
+interface FilTxManagerProxy {
+  // Publishes signed transaction.
+  ProcessFilHardwareSignature(string tx_meta_id, string signed_message) => (bool status, ProviderErrorUnion error, string error_message);
 };
 
 interface BraveWalletServiceObserver {

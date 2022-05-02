@@ -29,6 +29,8 @@ class TxServiceFactory : public BrowserContextKeyedServiceFactory {
   GetEthTxManagerProxyForContext(content::BrowserContext* context);
   static mojo::PendingRemote<mojom::SolanaTxManagerProxy>
   GetSolanaTxManagerProxyForContext(content::BrowserContext* context);
+  mojo::PendingRemote<mojom::FilTxManagerProxy> GetFilTxManagerProxyForContext(
+      content::BrowserContext* context);
   static TxService* GetServiceForContext(content::BrowserContext* context);
   static TxServiceFactory* GetInstance();
   static void BindForContext(content::BrowserContext* context,
@@ -39,6 +41,9 @@ class TxServiceFactory : public BrowserContextKeyedServiceFactory {
   static void BindSolanaTxManagerProxyForContext(
       content::BrowserContext* context,
       mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver);
+  static void BindFilTxManagerProxyForContext(
+      content::BrowserContext* context,
+      mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver);
 
  private:
   friend struct base::DefaultSingletonTraits<TxServiceFactory>;

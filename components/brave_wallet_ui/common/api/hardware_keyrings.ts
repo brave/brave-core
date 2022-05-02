@@ -42,7 +42,7 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
   return keyringService
 }
 
-export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring {
+export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH): LedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     if (coin === BraveWallet.CoinType.ETH) {
       return getLedgerEthereumHardwareKeyring()

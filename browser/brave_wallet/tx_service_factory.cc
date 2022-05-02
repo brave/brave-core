@@ -66,6 +66,19 @@ TxServiceFactory::GetSolanaTxManagerProxyForContext(
 }
 
 // static
+mojo::PendingRemote<mojom::FilTxManagerProxy>
+TxServiceFactory::GetFilTxManagerProxyForContext(
+    content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return mojo::PendingRemote<mojom::FilTxManagerProxy>();
+  }
+
+  return static_cast<TxService*>(
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeFilTxManagerProxyRemote();
+}
+
+// static
 TxService* TxServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
@@ -102,6 +115,16 @@ void TxServiceFactory::BindSolanaTxManagerProxyForContext(
   auto* tx_service = TxServiceFactory::GetServiceForContext(context);
   if (tx_service) {
     tx_service->BindSolanaTxManagerProxy(std::move(receiver));
+  }
+}
+
+// static
+void TxServiceFactory::BindFilTxManagerProxyForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
+  auto* tx_service = TxServiceFactory::GetServiceForContext(context);
+  if (tx_service) {
+    tx_service->BindFilTxManagerProxy(std::move(receiver));
   }
 }
 

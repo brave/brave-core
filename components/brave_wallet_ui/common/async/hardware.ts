@@ -112,7 +112,6 @@ export async function signLedgerEthereumTransaction (
 
 export async function signLedgerFilecoinTransaction (
   apiProxy: WalletApiProxy,
-  path: string,
   txInfo: BraveWallet.TransactionInfo,
   coin: BraveWallet.CoinType,
   deviceKeyring: LedgerFilecoinKeyring = getLedgerFilecoinHardwareKeyring()): Promise<SignHardwareTransactionOperationResult> {
@@ -121,7 +120,7 @@ export async function signLedgerFilecoinTransaction (
     return { success: false, error: getLocale('braveWalletNoMessageToSignError') }
   }
 
-  const signed = await deviceKeyring.signTransaction(path, data.message)
+  const signed = await deviceKeyring.signTransaction(data.message)
   if (!signed || !signed.success || !signed.payload) {
     const error = signed?.error ?? getLocale('braveWalletSignOnDeviceError')
     const code = signed?.code ?? ''

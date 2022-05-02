@@ -36,6 +36,9 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilTxManager(const FilTxManager&) = delete;
   FilTxManager operator=(const FilTxManager&) = delete;
 
+  using ProcessFilHardwareSignatureCallback =
+      mojom::FilTxManagerProxy::ProcessFilHardwareSignatureCallback;
+
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
@@ -56,6 +59,11 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                         RetryTransactionCallback callback) override;
 
   void Reset() override;
+
+  void ProcessFilHardwareSignature(
+      const std::string& tx_meta_id,
+      const std::string& signed_message,
+      ProcessFilHardwareSignatureCallback callback);
 
   void GetEstimatedGas(const std::string& from,
                        const absl::optional<url::Origin>& origin,
