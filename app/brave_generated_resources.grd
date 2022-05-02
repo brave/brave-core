@@ -549,6 +549,25 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting
         </message>
+        <!-- Closing confirm dialog -->
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL" desc="The text for ok button in the dialog">
+          Close all
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_CANCEL_BUTTON_LABEL" desc="The text for cancel button in the dialog">
+          Cancel
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_HEADER_LABEL" desc="The text for header part in the dialog">
+          Close all tabs?
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_CONTENTS_LABEL" desc="The text for content part in the dialog">
+          You have <ph name="NUMBER_OF_TABS">$1<ex>2</ex></ph> tabs open in this browser window.
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_CONTENTS_LABEL_TAB_NUM_PART" desc="This is used for finding 'n tabs' part in above DLG_CONTENTS_LABEL. So both should have same translation.">
+          <ph name="NUMBER_OF_TABS">$1<ex>2</ex></ph> tabs
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_DONT_ASK_AGAIN_LABEL" desc="The text for checkbox in the dialog">
+          Don't ask me again
+        </message>
       </if>
 
       <!-- Brave Ads -->

@@ -3,9 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/lifetime/browser_close_manager.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
@@ -92,6 +98,59 @@ void BraveBrowser::OnTabStripModelChanged(
       selection.active_tab_changed())
     sidebar_controller_->sidebar()->UpdateSidebar();
 #endif
+}
+
+void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
+  // Clear user's choice because user cancelled window closing by some
+  // warning(ex, download is in-progress).
+  if (result == WarnBeforeClosingResult::kDoNotClose)
+    confirmed_to_close_ = false;
+  Browser::FinishWarnBeforeClosing(result);
+}
+
+void BraveBrowser::BeforeUnloadFired(content::WebContents* source,
+                                     bool proceed,
+                                     bool* proceed_to_fire_unload) {
+  // Clear user's choice when user cancelled window closing by beforeunload
+  // handler.
+  if (!proceed)
+    confirmed_to_close_ = false;
+  Browser::BeforeUnloadFired(source, proceed, proceed_to_fire_unload);
+}
+
+bool BraveBrowser::TryToCloseWindow(
+    bool skip_beforeunload,
+    const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
+  // Window closing could be asked directly to browser object by this method.
+  // For example, when user tries to delete profile, this method is called on
+  // all its browser object. After all handlers are done, its all browser window
+  // start to close. In this case, we should not ask to users about this
+  // closing. So, treats like user confirmed closing. If this try blocked by
+  // user, |confirmed_to_close_| is set to false by ResetTryToCloseWindow().
+  confirmed_to_close_ = true;
+  return Browser::TryToCloseWindow(skip_beforeunload,
+                                   std::move(on_close_confirmed));
+}
+
+void BraveBrowser::ResetTryToCloseWindow() {
+  confirmed_to_close_ = false;
+  Browser::ResetTryToCloseWindow();
+}
+
+bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
+  // Don't need to ask when application closing is in-progress.
+  if (BrowserCloseManager::BrowserClosingStarted())
+    return false;
+
+  if (confirmed_to_close_)
+    return false;
+
+  PrefService* prefs = profile()->GetPrefs();
+  if (!prefs->GetBoolean(kEnableWindowClosingConfirm))
+    return false;
+
+  // Only launch confirm dialog while closing when browser has multiple tabs.
+  return tab_strip_model()->count() > 1;
 }
 
 BraveBrowserWindow* BraveBrowser::brave_window() {

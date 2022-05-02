@@ -82,6 +82,16 @@ RegisterPolymerTemplateModifications({
       `)
       }
     }
+
+    // <if expr="is_macosx">
+    const confirmToQuit = templateContent.querySelector('[pref="{{prefs.browser.confirm_to_quit}}"]')
+    if (!confirmToQuit) {
+      console.error(`[Brave Settings Overrides] Couldn't find confirm to quit`)
+    } else {
+      confirmToQuit.remove()
+    }
+    // </if>
+
     // Super referral themes prefs
     const pages = templateContent.getElementById('pages')
     if (!pages) {

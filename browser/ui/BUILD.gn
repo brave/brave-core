@@ -186,6 +186,8 @@ source_set("ui") {
       "views/toolbar/brave_app_menu.h",
       "views/web_discovery_dialog_view.cc",
       "views/web_discovery_dialog_view.h",
+      "views/window_closing_confirm_dialog_view.cc",
+      "views/window_closing_confirm_dialog_view.h",
     ]
 
     if (use_aura) {
@@ -654,12 +656,20 @@ source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "brave_browser_browsertest.cc" ]
+    sources = [
+      "brave_browser_browsertest.cc",
+      "window_closing_confirm_browsertest.cc",
+    ]
 
     deps = [
       "//brave/browser/ui",
+      "//brave/common:pref_names",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
+      "//components/javascript_dialogs",
+      "//components/prefs",
       "//content/test:test_support",
     ]
   }

@@ -110,6 +110,11 @@ const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 const char kSafetynetStatus[] = "safetynet.status";
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+const char kEnableWindowClosingConfirm[] =
+    "brave.enable_window_closing_confirm";
+#endif
+
 const char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
 

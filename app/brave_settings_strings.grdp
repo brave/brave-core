@@ -877,6 +877,9 @@
   <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
     Show Wayback Machine prompt on 404 pages
   </message>
+  <message name="IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL" desc="The text for settings option">
+    Warn me before closing window with multiple tabs
+  </message>
 
   <!-- Avatars. Generated via zsh and node:
         declare -i a=56
