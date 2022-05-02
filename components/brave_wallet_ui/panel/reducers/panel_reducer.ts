@@ -75,7 +75,8 @@ const defaultState: PanelState = {
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  suggestedTokenRequest: undefined
+  suggestedTokenRequest: undefined,
+  selectedTransaction: undefined
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -83,7 +84,6 @@ export const createPanelReducer = (initialState: PanelState) => {
   reducer.on(PanelActions.navigateTo, (state: any, selectedPanel: string) => {
     const foundTitle = PanelTitles().find((title) => selectedPanel === title.id)
     const panelTitle = foundTitle ? foundTitle.title : ''
-
     return {
       ...state,
       selectedPanel,
@@ -152,6 +152,12 @@ export const createPanelReducer = (initialState: PanelState) => {
     return {
       ...state,
       suggestedTokenRequest: payload
+    }
+  })
+  reducer.on(PanelActions.setSelectedTransaction, (state: PanelState, payload: BraveWallet.TransactionInfo | undefined): PanelState => {
+    return {
+      ...state,
+      selectedTransaction: payload
     }
   })
   return reducer
