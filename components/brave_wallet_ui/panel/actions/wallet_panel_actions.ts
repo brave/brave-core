@@ -51,3 +51,4 @@ export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPubl
 export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')
 export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
 export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')
+export const setSelectedTransaction = createAction<BraveWallet.TransactionInfo | undefined>('setSelectedTransaction')
