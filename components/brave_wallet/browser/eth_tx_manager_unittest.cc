@@ -219,7 +219,7 @@ class EthTxManagerUnitTest : public testing::Test {
                   "result": {
                     "baseFeePerGas": [
                       "0x24beaded75",
-                      "0x9852aee39"
+                      "0x80D839776"
                     ],
                     "gasUsedRatio": [
                       0.9054214892490816
