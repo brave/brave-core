@@ -235,6 +235,7 @@ export interface PanelState {
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedToken?: BraveWallet.BlockchainToken
+  selectedTransaction: BraveWallet.TransactionInfo | undefined
 }
 
 export interface PageState {
@@ -374,7 +375,7 @@ interface BaseTransactionParams {
   coin: BraveWallet.CoinType
 }
 
-interface BaseEthTransactionParams extends BaseTransactionParams{
+interface BaseEthTransactionParams extends BaseTransactionParams {
   gas?: string
 
   // Legacy gas pricing
