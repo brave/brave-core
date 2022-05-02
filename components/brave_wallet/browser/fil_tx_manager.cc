@@ -333,4 +333,29 @@ FilBlockTracker* FilTxManager::GetFilBlockTracker() {
   return static_cast<FilBlockTracker*>(block_tracker_.get());
 }
 
+void FilTxManager::ProcessFilHardwareSignature(
+    const std::string& tx_meta_id,
+    const std::string& signed_tx,
+    ProcessFilHardwareSignatureCallback callback) {
+  std::unique_ptr<FilTxMeta> meta =
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
+  if (!meta) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  meta->set_status(mojom::TransactionStatus::Confirmed);
+  meta->set_confirmed_time(base::Time::Now());
+  tx_state_manager_->AddOrUpdateTx(*meta);
+
+  json_rpc_service_->SendFilecoinTransaction(
+      signed_tx, base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
+                                weak_factory_.GetWeakPtr(), meta->id(),
+                                std::move(callback)));
+}
+
 }  // namespace brave_wallet

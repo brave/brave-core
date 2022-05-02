@@ -34,8 +34,7 @@ import HardwareWalletConnect from './hardware-wallet-connect'
 import {
   FilecoinNetwork,
   FilecoinNetworkTypes,
-  FilecoinNetworkLocaleMapping,
-  DerivationBatch
+  FilecoinNetworkLocaleMapping
 } from '../../../../common/hardware/types'
 
 export interface Props {
@@ -91,13 +90,6 @@ const AddAccountModal = (props: Props) => {
 
   const onChangeFilecoinNetwork = (network: FilecoinNetwork) => {
     setFilecoinNetwork(network)
-    props.onConnectHardwareWallet({
-      hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
-      startIndex: 0,
-      stopIndex: DerivationBatch,
-      network: network,
-      coin: BraveWallet.CoinType.FIL
-    })
   }
 
   const importError = React.useMemo(() => {

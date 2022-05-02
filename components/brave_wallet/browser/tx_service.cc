@@ -93,9 +93,21 @@ TxService::MakeSolanaTxManagerProxyRemote() {
   return remote;
 }
 
+mojo::PendingRemote<mojom::FilTxManagerProxy>
+TxService::MakeFilTxManagerProxyRemote() {
+  mojo::PendingRemote<mojom::FilTxManagerProxy> remote;
+  fil_tx_manager_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
 void TxService::BindSolanaTxManagerProxy(
     mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver) {
   solana_tx_manager_receivers_.Add(this, std::move(receiver));
+}
+
+void TxService::BindFilTxManagerProxy(
+    mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
+  fil_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
 void TxService::AddUnapprovedTransaction(
@@ -297,6 +309,14 @@ void TxService::MakeTokenProgramTransferTxData(
 void TxService::GetEstimatedTxFee(const std::string& tx_meta_id,
                                   GetEstimatedTxFeeCallback callback) {
   GetSolanaTxManager()->GetEstimatedTxFee(tx_meta_id, std::move(callback));
+}
+
+void TxService::ProcessFilHardwareSignature(
+    const std::string& tx_meta_id,
+    const std::string& signed_message,
+    ProcessFilHardwareSignatureCallback callback) {
+  GetFilTxManager()->ProcessFilHardwareSignature(tx_meta_id, signed_message,
+                                                 std::move(callback));
 }
 
 }  // namespace brave_wallet

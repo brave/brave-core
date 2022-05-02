@@ -32,8 +32,8 @@ import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 
 export const getERC20Allowance = (
   contractAddress: string,

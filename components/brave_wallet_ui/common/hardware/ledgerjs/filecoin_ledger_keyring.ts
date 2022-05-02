@@ -23,6 +23,7 @@ import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
 export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   private deviceId: string
   private provider?: LedgerProvider
+  private transportWrapper?: TransportWrapper
 
   coin = (): BraveWallet.CoinType => {
     return BraveWallet.CoinType.FIL
@@ -60,10 +61,13 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   }
 
   makeApp = async () => {
-    const transportWrapper = new TransportWrapper()
-    await transportWrapper.connect()
+    if (this.transportWrapper) {
+      await this.transportWrapper.disconnect()
+    }
+    this.transportWrapper = new TransportWrapper()
+    await this.transportWrapper.connect()
     let provider = new LedgerProvider({
-      transport: transportWrapper.transport,
+      transport: this.transportWrapper.transport,
       minLedgerVersion: {
         major: 0,
         minor: 0,
@@ -72,7 +76,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     })
     await provider.ready()
 
-    transportWrapper.transport.on('disconnect', this.onDisconnected)
+    this.transportWrapper.transport.on('disconnect', this.onDisconnected)
     this.provider = provider
   }
 
@@ -98,7 +102,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     throw new Error('Method not implemented.')
   }
 
-  signTransaction = async (path: string, message: string): Promise<SignHardwareTransactionOperationResult> => {
+  signTransaction = async (message: string): Promise<SignHardwareTransactionOperationResult> => {
     const unlocked = await this.unlock()
     if (!unlocked.success || !this.provider) {
       return { success: false, error: unlocked.error }
