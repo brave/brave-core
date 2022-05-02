@@ -242,6 +242,7 @@ export interface PanelState {
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
+  selectedTransaction: BraveWallet.TransactionInfo | undefined
 }
 
 export interface PageState {
