@@ -553,15 +553,7 @@ const util = {
     const buildArgsStr = util.buildArgsToString(gnArgs)
     util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
 
-    if (config.use_goma) {
-      util.run('goma_ctl', ['ensure_start'], options)
-    }
-
-    let ninjaOpts = [
-      '-C', config.nativeRedirectCCDir, 'brave/tools/redirect_cc',
-      ...config.extraNinjaOpts
-    ]
-    util.run('autoninja', ninjaOpts, options)
+    util.buildTarget('brave/tools/redirect_cc', mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
   },
 
   runGnGen: (options) => {
@@ -599,15 +591,15 @@ const util = {
     util.runGnGen(options)
   },
 
-  buildTarget: (options = config.defaultOptions) => {
-    console.log('building ' + config.buildTarget + '...')
+  buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
+    console.log('building ' + target + '...')
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
       num_compile_failure = 0
 
     let ninjaOpts = [
-      '-C', config.outputDir, config.buildTarget,
+      '-C', options.outputDir || config.outputDir, target,
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
