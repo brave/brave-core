@@ -20,7 +20,7 @@ export function GetBuyOrFaucetUrl (networkChainId: string, asset: BraveWallet.Bl
         resolve('https://github.com/kovan-testnet/faucet')
         break
       case BraveWallet.RINKEBY_CHAIN_ID:
-        resolve('https://www.rinkeby.io/#faucet')
+        resolve('https://faucets.chain.link/rinkeby')
         break
       case BraveWallet.GOERLI_CHAIN_ID:
         resolve('https://goerli-faucet.slock.it/')
