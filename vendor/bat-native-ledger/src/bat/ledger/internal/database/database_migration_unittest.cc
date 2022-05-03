@@ -36,7 +36,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
     return client_.database()->GetInternalDatabaseForTesting();
   }
 
-  Ledger* ledger() { return &ledger_; }
+  LedgerImpl* ledger() { return &ledger_; }
 
   std::string GetExpectedSchema() {
     base::FilePath path =
@@ -88,7 +88,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
   void InitializeLedger() {
     base::RunLoop run_loop;
     mojom::Result result;
-    ledger()->Initialize(false, [&result, &run_loop](auto r) {
+    ledger()->database()->Initialize(false, [&result, &run_loop](auto r) {
       result = r;
       run_loop.Quit();
     });
