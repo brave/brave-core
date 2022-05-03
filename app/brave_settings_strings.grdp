@@ -62,6 +62,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL" desc="The label for choosing default images over super referral">
     Brave default images
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
+    Show bookmarks button
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
     Use wide address bar
   </message>
