@@ -18,6 +18,9 @@ branding_replacements = [
     (r'(Google)(?! Play)', r'Brave'),
     (r'Chromium', r'Brave'),
     (r'Chrome', r'Brave'),
+    # Replacements for Google URLs
+    (r'https://support.google.com/chrome/answer/6098869',
+        r'https://support.brave.com/hc/articles/360059254971-What-do-the-connection-error-codes-mean-')
 ]
 
 
