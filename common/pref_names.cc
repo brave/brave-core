@@ -37,6 +37,7 @@ const char kShowAlternativeSearchEngineProviderToggle[] =
     "brave.show_alternate_private_search_engine_toggle";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
+const char kShowBookmarksButton[] = "brave.show_bookmarks_button";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralDownloadID[] = "brave.referral.download_id";
 const char kReferralTimestamp[] = "brave.referral.timestamp";

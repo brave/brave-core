@@ -30,6 +30,7 @@ extern const char kShowAlternativeSearchEngineProviderToggle[];
 extern const char kAlternativeSearchEngineProviderInTor[];
 extern const char kBraveThemeType[];
 extern const char kUseOverriddenBraveThemeType[];
+extern const char kShowBookmarksButton[];
 extern const char kLocationBarIsWide[];
 extern const char kReferralDownloadID[];
 extern const char kReferralTimestamp[];
