@@ -476,23 +476,6 @@ const util = {
         '--private_key_passphrase=' + passwd])
   },
 
-  getVisualStudioInfo: () => {
-    // Determine Visual Studio path and version using Chromium's script.
-    const vsToolchainPath = path.join(config.srcDir, 'build', 'vs_toolchain.py')
-    // Prevent depot_tools from checking for an update.
-    const depotToolsWinToolchain = process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
-    process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
-    const vsInfo = util.run('python', [vsToolchainPath, 'get_toolchain_dir']).stdout.toString()
-    if (depotToolsWinToolchain) {
-      process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = depotToolsWinToolchain
-    } else {
-      delete process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
-    }
-    const vsPath = vsInfo.split('\n', 1)[0].split('=', 2)[1].trim().replace(/"/g, '')
-    const vsVersion = vsInfo.split('\n', 3)[2].split('=', 2)[1].trim().replace(/"/g, '')
-    return { vsPath, vsVersion }
-  },
-
   buildNativeRedirectCC: (options = config.defaultOptions) => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
