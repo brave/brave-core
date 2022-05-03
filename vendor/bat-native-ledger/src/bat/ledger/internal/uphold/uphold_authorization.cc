@@ -61,6 +61,10 @@ void UpholdAuthorization::Authorize(
       ledger_->database()->SaveEventLog(log::kKYCRequired,
                                         constant::kWalletUphold);
       return callback(type::Result::NOT_FOUND, {});
+    } else if (message == "Application not available for user geolocation") {
+      ledger_->database()->SaveEventLog(log::kRegionNotSupported,
+                                        constant::kWalletUphold);
+      return callback(type::Result::REGION_NOT_SUPPORTED, {});
     }
 
     return callback(type::Result::LEDGER_ERROR, {});

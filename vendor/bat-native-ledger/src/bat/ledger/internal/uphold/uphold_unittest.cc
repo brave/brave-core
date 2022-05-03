@@ -144,8 +144,19 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
+    AuthorizeParamType{  // Uphold returned with an error - user's region is not supported. (NOT_CONNECTED)
+      // NOLINTNEXTLINE
+      "03_NOT_CONNECTED_uphold_returned_with_application_not_available_for_user_geolocation",
+      R"({ "status": 0 })",
+      { { "error_description", "Application not available for user geolocation" } },  // NOLINT
+      {},
+      type::Result::REGION_NOT_SUPPORTED,
+      {},
+      type::WalletStatus::NOT_CONNECTED
+    },
+    // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (NOT_CONNECTED)
-      "03_NOT_CONNECTED_uphold_returned_with_an_error",
+      "04_NOT_CONNECTED_uphold_returned_with_an_error",
       R"({ "status": 0 })",
       { { "error_description", "some other reason" } },
       {},
@@ -154,7 +165,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Arguments are empty! (NOT_CONNECTED)
-      "04_NOT_CONNECTED_arguments_are_empty",
+      "05_NOT_CONNECTED_arguments_are_empty",
       R"({ "status": 0 })",
       {},
       {},
@@ -163,7 +174,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // code is empty! (NOT_CONNECTED)
-      "05_NOT_CONNECTED_code_is_empty",
+      "06_NOT_CONNECTED_code_is_empty",
       R"({ "status": 0 })",
       { { "code", "" } },
       {},
@@ -172,7 +183,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // state is empty! (NOT_CONNECTED)
-      "06_NOT_CONNECTED_state_is_empty",
+      "07_NOT_CONNECTED_state_is_empty",
       R"({ "status": 0 })",
       { { "code", "code" }, { "state", "" } },
       {},
@@ -181,7 +192,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // One-time string mismatch! (NOT_CONNECTED)
-      "07_NOT_CONNECTED_one_time_string_mismatch",
+      "08_NOT_CONNECTED_one_time_string_mismatch",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
@@ -191,7 +202,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (NOT_CONNECTED)
-      "08_NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
+      "09_NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -206,7 +217,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Access token is empty! (NOT_CONNECTED)
-      "09_NOT_CONNECTED_access_token_is_empty",
+      "10_NOT_CONNECTED_access_token_is_empty",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -221,7 +232,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Happy path. (NOT_CONNECTED)
-      "10_NOT_CONNECTED_happy_path",
+      "11_NOT_CONNECTED_happy_path",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -238,7 +249,7 @@ INSTANTIATE_TEST_SUITE_P(
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - the user is not KYC'd. (DISCONNECTED_VERIFIED)
       // NOLINTNEXTLINE
-      "11_DISCONNECTED_VERIFIED_uphold_returned_with_user_does_not_meet_minimum_requirements",
+      "12_DISCONNECTED_VERIFIED_uphold_returned_with_user_does_not_meet_minimum_requirements",
       R"({ "status": 4 })",
       { { "error_description", "User does not meet minimum requirements" } },
       {},
@@ -248,7 +259,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (DISCONNECTED_VERIFIED)
-      "12_DISCONNECTED_VERIFIED_uphold_returned_with_an_error",
+      "13_DISCONNECTED_VERIFIED_uphold_returned_with_an_error",
       R"({ "status": 4 })",
       { { "error_description", "some other reason" } },
       {},
@@ -257,7 +268,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Arguments are empty! (DISCONNECTED_VERIFIED)
-      "13_DISCONNECTED_VERIFIED_arguments_are_empty",
+      "14_DISCONNECTED_VERIFIED_arguments_are_empty",
       R"({ "status": 4 })",
       {},
       {},
@@ -266,7 +277,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // code is empty! (DISCONNECTED_VERIFIED)
-      "14_DISCONNECTED_VERIFIED_code_is_empty",
+      "15_DISCONNECTED_VERIFIED_code_is_empty",
       R"({ "status": 4 })",
       { { "code", "" } },
       {},
@@ -275,7 +286,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // state is empty! (DISCONNECTED_VERIFIED)
-      "15_DISCONNECTED_VERIFIED_state_is_empty",
+      "16_DISCONNECTED_VERIFIED_state_is_empty",
       R"({ "status": 4 })",
       { { "code", "code" }, { "state", "" } },
       {},
@@ -284,7 +295,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // One-time string mismatch! (DISCONNECTED_VERIFIED)
-      "16_DISCONNECTED_VERIFIED_one_time_string_mismatch",
+      "17_DISCONNECTED_VERIFIED_one_time_string_mismatch",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
@@ -294,7 +305,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (DISCONNECTED_VERIFIED)
-      "17_DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
+      "18_DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -309,7 +320,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Access token is empty! (DISCONNECTED_VERIFIED)
-      "18_DISCONNECTED_VERIFIED_access_token_is_empty",
+      "19_DISCONNECTED_VERIFIED_access_token_is_empty",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -324,7 +335,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Happy path. (DISCONNECTED_VERIFIED)
-      "19_DISCONNECTED_VERIFIED_happy_path",
+      "20_DISCONNECTED_VERIFIED_happy_path",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
