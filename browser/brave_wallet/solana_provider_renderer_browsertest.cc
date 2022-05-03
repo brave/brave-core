@@ -973,3 +973,22 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(), result2.value);
 }
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
+  GURL url = embedded_test_server()->GetURL("/empty.html");
+  NavigateToURLAndWaitForLoadStop(browser(), url);
+  std::string overwrite =
+      R"(try {
+         Object.defineProperty(window, 'solana', {
+           writable: true,
+         });
+       } catch (e) {}
+       window.solana = 42;
+       typeof window.solana === 'object'
+        )";
+  EXPECT_TRUE(
+      content::EvalJs(web_contents(browser()), overwrite).ExtractBool());
+}

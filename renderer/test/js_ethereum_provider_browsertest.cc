@@ -171,3 +171,21 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
       "window.ethereum.isMetaMask";
   EXPECT_FALSE(content::EvalJs(main_frame(), overwrite).ExtractBool());
 }
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonConfigurable) {
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
+  const GURL url = https_server_.GetURL("/simple.html");
+  NavigateToURLAndWaitForLoadStop(url);
+  std::string overwrite =
+      R"(try {
+         Object.defineProperty(window, 'ethereum', {
+           writable: true,
+         });
+       } catch (e) {}
+       window.ethereum = 42;
+       typeof window.ethereum === 'object'
+    )";
+  EXPECT_TRUE(content::EvalJs(main_frame(), overwrite).ExtractBool());
+}
