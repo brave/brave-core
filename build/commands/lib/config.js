@@ -366,7 +366,7 @@ Config.prototype.buildArgs = function () {
   if (process.platform === 'darwin') {
     args.allow_runtime_configurable_key_storage = true
     // always use hermetic xcode for macos when available
-    if (fs.existsSync(path.join(
+    if (this.targetOS !== 'ios' && fs.existsSync(path.join(
         this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
       args.use_system_xcode = false
     }
