@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index b9a36e2105e508fa149d8761ea767d986af2afd5..1fe592aed29eb50f0add82915299142bd12e177e 100644
+index 46bf21fa4d05c453d7bfd66905e42252f45a9622..632bdd0491252fdf44b74dae1e5ed2501a37fb3c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 @@ -375,6 +375,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
