@@ -185,13 +185,13 @@ const Config = function () {
   this.use_goma = false
 
   if (process.env.GOMA_DIR !== undefined) {
-    this.gomaDir = process.env.GOMA_DIR
+    this.realGomaDir = process.env.GOMA_DIR
   } else {
     const build_goma_dir = path.join(this.srcDir, 'build', 'goma')
     if (fs.existsSync(build_goma_dir)) {
-      this.gomaDir = build_goma_dir
+      this.realGomaDir = build_goma_dir
     } else {
-      this.gomaDir = path.join(this.depotToolsDir, '.cipd_bin')
+      this.realGomaDir = path.join(this.depotToolsDir, '.cipd_bin')
     }
   }
 }
@@ -320,6 +320,7 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
+    use_goma: this.use_goma,
     ...this.extraGnArgs,
   }
 
@@ -368,11 +369,10 @@ Config.prototype.buildArgs = function () {
 
   if (process.platform === 'darwin') {
     args.allow_runtime_configurable_key_storage = true
-    // always use hermetic xcode and disable precompiled headers so we don't
-    // trigger a full rebuild when switching between goma and non-goma
-    if (this.gomaServerHost === 'goma.ba.brave.com') {
+    // always use hermetic xcode for macos when available
+    if (fs.existsSync(path.join(
+        this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
       args.use_system_xcode = false
-      args.enable_precompiled_headers = false
     }
   }
 
@@ -391,8 +391,11 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.use_goma) {
-    // Limit action pool (non-compile actions) to amount of CPU cores.
-    args.action_pool_depth = os.cpus().length
+    // set goma_dir to the redirect cc output dir which then calls gomacc
+    // through env.CC_WRAPPER
+    args.goma_dir = path.join(this.nativeRedirectCCDir)
+  } else {
+    args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
   if (this.targetArch === 'x86' && process.platform === 'linux') {
@@ -537,7 +540,6 @@ Config.prototype.buildArgs = function () {
     delete args.brave_variations_server_url
   }
 
-  args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   return args
 }
 
@@ -918,8 +920,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     }
 
     if (this.use_goma) {
-      env.CC_WRAPPER = path.join(this.gomaDir, 'gomacc')
-      env.GOMA_SERVER_HOST = this.gomaServerHost
+      env.CC_WRAPPER = path.join(this.realGomaDir, 'gomacc')
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))

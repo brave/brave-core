@@ -508,6 +508,7 @@ const util = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_goma: config.use_goma,
     }
+
     const buildArgsStr = util.buildArgsToString(gnArgs)
     util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
 
@@ -562,8 +563,11 @@ const util = {
     ]
 
     if (config.use_goma) {
-      const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
-      assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
+      assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
+      options.env.GOMA_SERVER_HOST = config.gomaServerHost
+
+      const compiler_proxy_binary = path.join(config.realGomaDir, util.appendExeIfWin32('compiler_proxy'))
+      assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.realGomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
 
       // Disable HTTP2 proxy. According to EngFlow this has significant performance impact.
