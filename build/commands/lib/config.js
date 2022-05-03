@@ -182,7 +182,8 @@ const Config = function () {
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
-  this.use_goma = false
+  this.use_goma = getNPMConfig(['brave_use_goma']) || false
+  this.goma_offline = false
 
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
@@ -649,8 +650,14 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
-  if (options.use_goma) {
+  if (options.use_goma && options.use_goma !== false) {
     this.use_goma = true
+  } else {
+    this.use_goma = false
+  }
+
+  if (options.goma_offline) {
+    this.goma_offline = true
   }
 
   if (options.force_gn_gen) {
@@ -874,8 +881,13 @@ Config.prototype.update = function (options) {
   }
 
   if (this.use_goma) {
-    if (!this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
+    if (!this.goma_offline &&
+        !this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
       this.extraNinjaOpts.push('-j', this.defaultGomaJValue)
+    }
+
+    if (this.goma_offline) {
+      this.extraNinjaOpts.push('--offline')
     }
   }
 
