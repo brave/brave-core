@@ -321,6 +321,8 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="chromeos_ash">
         </if>
 
-      </messages>
+      <if expr="is_win">
+        </if>
+    </messages>
   </release>
 </grit>
