@@ -507,6 +507,7 @@ const util = {
     gnArgs = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_goma: config.use_goma,
+      goma_dir: config.realGomaDir,
     }
 
     const buildArgsStr = util.buildArgsToString(gnArgs)
