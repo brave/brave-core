@@ -41,7 +41,7 @@ TEST(EthGasUtilsTest, GetSuggested1559Fees) {
   EXPECT_TRUE(GetSuggested1559Fees(
       base_fee_per_gas, gas_used_ratio, oldest_block, reward, &low_priority_fee,
       &avg_priority_fee, &high_priority_fee, &suggested_base_fee_per_gas));
-  EXPECT_EQ(suggested_base_fee_per_gas, 177545128739ULL);
+  EXPECT_EQ(suggested_base_fee_per_gas, 209897796643ULL);
   EXPECT_EQ(low_priority_fee, 2000000000ULL);
   EXPECT_EQ(avg_priority_fee, 2500000000ULL);
   EXPECT_EQ(high_priority_fee, 3000000000ULL);
@@ -51,7 +51,7 @@ TEST(EthGasUtilsTest, GetSuggested1559Fees) {
       base_fee_per_gas, gas_used_ratio, oldest_block,
       std::vector<std::vector<std::string>>(), &low_priority_fee,
       &avg_priority_fee, &high_priority_fee, &suggested_base_fee_per_gas));
-  EXPECT_EQ(suggested_base_fee_per_gas, 177545128739ULL);
+  EXPECT_EQ(suggested_base_fee_per_gas, 209897796643ULL);
   EXPECT_EQ(low_priority_fee, 2000000000ULL);
   EXPECT_EQ(avg_priority_fee, 2000000000ULL);
   EXPECT_EQ(high_priority_fee, 2000000000ULL);
