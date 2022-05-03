@@ -493,51 +493,11 @@ const util = {
     return { vsPath, vsVersion }
   },
 
-  buildRedirectCCTool: () => {
-    // Expected path to redirect-cc.exe
-    const redirectCCExe = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
-    // Only build if missing
-    if (fs.existsSync(redirectCCExe)) {
-      return
-    }
-
-    console.log('building redirect-cc.exe...')
-    // Path to MSBuild.exe
-    const { vsPath, vsVersion } = util.getVisualStudioInfo()
-    let msBuild = path.join(vsPath, 'MSBuild', 'Current', 'Bin', 'MSBuild.exe')
-    if (vsVersion === '2017') {
-      msBuild = path.join(vsPath, 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
-    }
-
-    // Build redirect-cc.sln
-    const arch = process.arch === 'x32' ? 'x86' : process.arch
-    const toolsetMap = {
-      '2017': 'v141',
-      '2019': 'v142',
-      '2022': 'v143'
-    }
-    const toolset = toolsetMap[vsVersion]
-    if (!toolset) {
-      throw 'Error: unexpected version of Visual Studio: ' + vsVersion
-    }
-    const msBuildArgs = [
-      path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'redirect-cc.sln'),
-      '/p:Configuration=Release',
-      '/p:Platform=' + arch,
-      '/p:PlatformToolset=' + toolset,
-      '/verbosity:quiet'
-    ]
-    util.run(msBuild, msBuildArgs)
-  },
-
   buildNativeRedirectCC: (options = config.defaultOptions) => {
-    if (!config.nativeRedirectCC) {
-      return
-    }
-
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
     // Only build if missing
+
     if (!config.isCI && fs.existsSync(redirectCC)) {
       return
     }
@@ -545,9 +505,7 @@ const util = {
     console.log('building native redirect_cc...')
 
     gnArgs = {
-      imports: [
-        "//brave/tools/redirect_cc/args.gni",
-      ],
+      'import("//brave/tools/redirect_cc/args.gni")': null,
       use_goma: config.use_goma,
     }
     const buildArgsStr = util.buildArgsToString(gnArgs)
@@ -586,7 +544,6 @@ const util = {
 
     if (process.platform === 'win32') {
       util.updateOmahaMidlFiles()
-      util.buildRedirectCCTool()
     }
     util.runGnGen(options)
   },
@@ -747,20 +704,16 @@ const util = {
 
   buildArgsToString: (buildArgs) => {
     let args = ''
-    if (buildArgs.imports !== undefined) {
-      for (const imp of buildArgs.imports) {
-        args += 'import(' + JSON.stringify(imp) + ') '
-      }
-      delete buildArgs.imports
-    }
     for (let arg in buildArgs) {
       let val = buildArgs[arg]
-      if (typeof val === 'string') {
-        val = '"' + val + '"'
-      } else {
-        val = JSON.stringify(val)
+      if (val !== null) {
+        if (typeof val === 'string') {
+          val = '"' + val + '"'
+        } else {
+          val = JSON.stringify(val)
+        }
       }
-      args += arg + '=' + val + ' '
+      args += val ? arg + '=' + val + ' ' : arg + ' '
     }
     return args.replace(/"/g,'\\"')
   },

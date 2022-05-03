@@ -5,11 +5,7 @@
 
 if (current_toolchain == host_toolchain) {
   executable("executable") {
-    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
-    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
-
-    configs -= [ "//build/config/compiler:default_optimization" ]
-    configs += [ "//build/config/compiler:optimize_speed" ]
+    assert(!is_debug)
 
     sources = [ "redirect_cc.cc" ]
 
@@ -17,11 +13,11 @@ if (current_toolchain == host_toolchain) {
 
     output_name = "redirect_cc"
 
-    # Always build release since this is a build tool.
-    if (is_debug) {
-      configs -= [ "//build/config:debug" ]
-      configs += [ "//build/config:release" ]
-    }
+    # Always optimize for speed
+    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_speed" ]
 
     # Disable //brave/chromium_src overrides.
     configs -= [ "//brave/build:compiler" ]
