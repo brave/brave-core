@@ -5,6 +5,12 @@
 
 if (current_toolchain == host_toolchain) {
   executable("executable") {
+    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_speed" ]
+
     sources = [ "redirect_cc.cc" ]
 
     deps = [ "//base" ]
