@@ -187,12 +187,7 @@ const Config = function () {
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
   } else {
-    const build_goma_dir = path.join(this.srcDir, 'build', 'goma')
-    if (fs.existsSync(build_goma_dir)) {
-      this.realGomaDir = build_goma_dir
-    } else {
-      this.realGomaDir = path.join(this.depotToolsDir, '.cipd_bin')
-    }
+    this.realGomaDir = path.join(this.depotToolsDir, '.cipd_bin')
   }
 }
 

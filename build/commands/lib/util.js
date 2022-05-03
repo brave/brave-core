@@ -567,10 +567,6 @@ const util = {
       assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
       options.env.GOMA_SERVER_HOST = config.gomaServerHost
 
-      const compiler_proxy_binary = path.join(config.realGomaDir, util.appendExeIfWin32('compiler_proxy'))
-      assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.realGomaDir)
-      options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
-
       // Disable HTTP2 proxy. According to EngFlow this has significant performance impact.
       options.env.GOMACTL_USE_PROXY = 0
 
