@@ -36,8 +36,3 @@ brave_generated_interface_sources_in_modules = [
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.h",
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.cc",
 ]
-
-brave_generate_bindings_args = []
-if (is_apple) {
-  brave_generate_bindings_args += [ "--single_process" ]
-}
