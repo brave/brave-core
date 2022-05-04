@@ -542,7 +542,10 @@ const util = {
   },
 
   buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
-    console.log('building ' + target + '...')
+    // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
+    // debugging issues (e.g., slowness or remote-failures).
+    options.env.AUTONINJA_BUILD_ID = config.buildId
+    console.log('building ' + target + ' (id=' + config.buildId + ') ...')
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
@@ -555,11 +558,6 @@ const util = {
     ]
 
     if (config.use_goma) {
-      // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
-      // debugging issues (e.g., slowness or remote-failures).
-      options.env.AUTONINJA_BUILD_ID = config.gomaBuildId
-      console.log('Running build with ID ' + config.gomaBuildId)
-
       assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
       options.env.GOMA_SERVER_HOST = config.gomaServerHost
 
