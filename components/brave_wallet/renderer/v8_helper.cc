@@ -103,6 +103,7 @@ void SetProviderNonWritable(blink::WebLocalFrame* web_frame,
       R"(;(function() {
            Object.defineProperty(window, '%s', {
              value: window.%s,
+             configurable: false,
              writable: false
            });
     })();)",
