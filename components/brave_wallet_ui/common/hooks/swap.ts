@@ -251,7 +251,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     if (token) {
       makeTokenVisible(token)
     }
-  }, [])
+  }, [makeTokenVisible])
 
   const fetchSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
     if (!isMounted) {
@@ -504,7 +504,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       overrides: { toOrFrom: 'from', fromAsset: toAsset, toAsset: fromAsset },
       state: { fromAmount, toAmount }
     })
-  }, [toAsset, fromAsset, fromAmount, toAmount, onSwapParamsChange])
+  }, [toAsset, fromAsset, fromAmount, toAmount, onSwapParamsChange, setToAssetAndMakeVisible])
 
   const onSetFromAmount = React.useCallback(async (value: string) => {
     setFromAmount(value)
@@ -612,7 +612,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       state: { fromAmount, toAmount: '0' }
     })
     setIsLoading(false)
-  }, [onSwapParamsChange, fromAmount])
+  }, [onSwapParamsChange, setToAssetAndMakeVisible, fromAmount])
 
   const onSwapInputChange = React.useCallback((value: string, name: 'to' | 'from' | 'rate') => {
     if (name === 'to') {
