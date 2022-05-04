@@ -151,6 +151,7 @@ declare namespace NewTab {
     rewardsEnabled: boolean
     adsSupported?: boolean
     balance: RewardsBalance
+    externalWallet?: RewardsExtension.ExternalWallet
     report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]

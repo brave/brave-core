@@ -132,6 +132,31 @@ export function createHost (): Host {
     })
   }
 
+  function getExternalWalletActionURL (action: ExternalWalletAction) {
+    const verifyURL = 'chrome://rewards#verify'
+
+    const { externalWallet } = stateManager.getState()
+    if (!externalWallet) {
+      return verifyURL
+    }
+
+    const { links } = externalWallet
+    switch (action) {
+      case 'add-funds':
+        return links.addFunds || links.account || ''
+      case 'complete-verification':
+        return links.completeVerification || links.account || ''
+      case 'reconnect':
+        return links.reconnect || ''
+      case 'verify':
+        return verifyURL
+      case 'view-account':
+        return links.account || ''
+      case 'disconnect':
+        return ''
+    }
+  }
+
   function handleExternalWalletAction (action: ExternalWalletAction) {
     const { externalWallet } = stateManager.getState()
 
@@ -143,26 +168,13 @@ export function createHost (): Host {
       return
     }
 
-    Promise.resolve().then(() => {
-      const verifyURL = 'chrome://rewards#verify'
-      if (!externalWallet) {
-        return verifyURL
-      }
+    const url = getExternalWalletActionURL(action)
+    if (!url) {
+      console.error(`Action URL does not exist for '${action}`)
+      return
+    }
 
-      const { links } = externalWallet
-      switch (action) {
-        case 'add-funds':
-          return links.addFunds || links.account
-        case 'complete-verification':
-          return links.completeVerification || links.account
-        case 'reconnect':
-          return apiAdapter.getExternalWalletLoginURL(externalWallet.provider)
-        case 'verify':
-          return verifyURL
-        case 'view-account':
-          return links.account
-      }
-    }).then(openTab, console.error)
+    openTab(url)
   }
 
   function handleStartupParameters () {

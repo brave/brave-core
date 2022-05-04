@@ -4,8 +4,8 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../lib/locale_context'
-import { ExternalWallet } from '../../lib/external_wallet'
+import { LocaleContext, formatMessage } from '../../lib/locale_context'
+import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -15,6 +15,7 @@ import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
 import { PendingRewardsView } from './pending_rewards_view'
 import { PlusIcon } from './icons/plus_icon'
 import { WalletInfoIcon } from './icons/wallet_info_icon'
+import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 
 import * as style from './wallet_card.style'
 
@@ -48,34 +49,68 @@ export function getCurrentMonthRange () {
 
 export function WalletCard (props: Props) {
   const { getString } = React.useContext(LocaleContext)
+  const { externalWallet } = props
+
+  const walletDisconnected =
+    externalWallet && externalWallet.status === 'disconnected'
 
   function onAddFundsClick () {
     props.onExternalWalletAction('add-funds')
   }
 
+  function renderBalance () {
+    if (externalWallet && walletDisconnected) {
+      const onReconnectClick = () => {
+        props.onExternalWalletAction('reconnect')
+      }
+
+      const coverActions = props.showSummary && props.onViewStatement
+
+      return (
+        <style.disconnectedBalance
+          className={coverActions ? 'cover-actions' : ''}
+          onClick={onReconnectClick}
+        >
+          {
+            formatMessage(getString('rewardsLogInToSeeBalance'), {
+              placeholders: {
+                $2: getExternalWalletProviderName(externalWallet.provider)
+              },
+              tags: {
+                $1: (content) => <strong key='1'>{content}</strong>
+              }
+            })
+          }
+          <ArrowCircleIcon />
+        </style.disconnectedBalance>
+      )
+    }
+
+    return (
+      <style.rewardsBalance>
+        <style.balanceHeader>
+          {getString('walletYourBalance')}
+        </style.balanceHeader>
+        <style.batAmount data-test-id='rewards-balance-text'>
+          <TokenAmount amount={props.balance} />
+        </style.batAmount>
+        <style.exchangeAmount>
+          <ExchangeAmount amount={props.balance} rate={props.exchangeRate} />
+        </style.exchangeAmount>
+      </style.rewardsBalance>
+    )
+  }
+
   return (
-    <style.root>
-      <style.overview>
-        <style.balancePanel>
+    <style.root className={props.showSummary ? 'show-summary' : ''}>
+      <style.grid>
+        <style.statusIndicator>
           <ExternalWalletView
             externalWallet={props.externalWallet}
             onExternalWalletAction={props.onExternalWalletAction}
           />
-          <style.rewardsBalance>
-            <style.balanceHeader>
-              {getString('walletYourBalance')}
-            </style.balanceHeader>
-            <style.batAmount data-test-id='rewards-balance-text'>
-              <TokenAmount amount={props.balance} />
-            </style.batAmount>
-            <style.exchangeAmount>
-              <ExchangeAmount
-                amount={props.balance}
-                rate={props.exchangeRate}
-              />
-            </style.exchangeAmount>
-          </style.rewardsBalance>
-        </style.balancePanel>
+        </style.statusIndicator>
+        {renderBalance()}
         <style.earningsPanel>
           <style.dateRange>
             {getCurrentMonthRange()}
@@ -84,39 +119,40 @@ export function WalletCard (props: Props) {
             {getString('walletEstimatedEarnings')}
           </style.earningsHeader>
           <style.batAmount>
-              <TokenAmount amount={props.earningsThisMonth} />
-            </style.batAmount>
-            <style.exchangeAmount>
-              ≈ &nbsp;
-              <ExchangeAmount
-                amount={props.earningsThisMonth}
-                rate={props.exchangeRate}
-                currency={props.exchangeCurrency}
-              />
-            </style.exchangeAmount>
+            <TokenAmount amount={props.earningsThisMonth} />
+          </style.batAmount>
+          <style.exchangeAmount>
+            ≈ &nbsp;
+            <ExchangeAmount
+              amount={props.earningsThisMonth}
+              rate={props.exchangeRate}
+              currency={props.exchangeCurrency}
+            />
+          </style.exchangeAmount>
         </style.earningsPanel>
-      </style.overview>
+        {
+          props.showSummary && !walletDisconnected &&
+            <style.addFunds>
+              <button onClick={onAddFundsClick}>
+                <PlusIcon />{getString('walletAddFunds')}
+              </button>
+            </style.addFunds>
+        }
+        {
+          props.showSummary && props.onViewStatement &&
+            <style.viewStatement>
+              <button
+                onClick={props.onViewStatement}
+                data-test-id='view-statement-button'
+              >
+                <WalletInfoIcon />{getString('walletViewStatement')}
+              </button>
+            </style.viewStatement>
+        }
+      </style.grid>
       {
         props.showSummary
           ? <style.summaryBox>
-              <style.summaryActions>
-                <style.addFunds>
-                  <button onClick={onAddFundsClick}>
-                    <PlusIcon />{getString('walletAddFunds')}
-                  </button>
-                </style.addFunds>
-                {
-                  props.onViewStatement &&
-                    <style.viewStatement>
-                      <button
-                        onClick={props.onViewStatement}
-                        data-test-id='view-statement-button'
-                      >
-                        <WalletInfoIcon />{getString('walletViewStatement')}
-                      </button>
-                    </style.viewStatement>
-                }
-              </style.summaryActions>
               <RewardsSummary
                 data={props.summaryData}
                 autoContributeEnabled={props.autoContributeEnabled}

@@ -20,6 +20,7 @@ export interface ExternalWallet {
     account?: string
     addFunds?: string
     completeVerification?: string
+    reconnect?: string
   }
 }
 
@@ -98,7 +99,8 @@ export function externalWalletFromExtensionData (
     links: {
       account: String(data.accountUrl || ''),
       addFunds: String(data.addUrl || ''),
-      completeVerification: String(data.verifyUrl || '')
+      completeVerification: String(data.verifyUrl || ''),
+      reconnect: String(data.loginUrl || '')
     }
   }
 }

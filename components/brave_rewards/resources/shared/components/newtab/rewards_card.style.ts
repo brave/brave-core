@@ -75,6 +75,31 @@ export const terms = styled.div`
   }
 `
 
+export const disconnected = styled.div`
+  margin-top: 20px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  background: linear-gradient(137.04deg, #346FE1 33.4%, #5844C3 82.8%);
+  border-radius: 8px;
+  cursor: pointer;
+
+  strong {
+    font-weight: 600;
+  }
+`
+
+export const disconnectedArrow = styled.div`
+  text-align: right;
+  line-height: 15px;
+
+  .icon {
+    vertical-align: middle;
+    width: 21px;
+    height: auto;
+  }
+`
+
 export const balance = styled.div`
   margin-top: 16px;
   font-size: 12px;

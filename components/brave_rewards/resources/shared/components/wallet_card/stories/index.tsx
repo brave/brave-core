@@ -44,7 +44,9 @@ export function Wallet () {
 
   const externalWallet: ExternalWallet = {
     provider: 'uphold',
-    status: 'verified',
+    status: knobs.boolean('Wallet disconnected', false)
+      ? 'disconnected'
+      : 'verified',
     username: 'brave123',
     links: {}
   }

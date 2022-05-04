@@ -1,4 +1,5 @@
 export const localeStrings = {
+  rewardsLogInToSeeBalance: '$1Log in to $2$3 to see your balance',
   rewardsPaymentCheckStatus: 'Check status',
   rewardsPaymentCompleted: 'Congrats! Your $1 rewards have arrived!',
   rewardsPaymentPending: 'Your $1 $2 rewards will arrive in $3',
