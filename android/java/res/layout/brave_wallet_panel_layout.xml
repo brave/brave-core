@@ -31,6 +31,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_expand_arrows"
+                android:paddingVertical="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:tint="@color/brave_white" />
 
