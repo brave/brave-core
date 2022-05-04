@@ -6,6 +6,7 @@
 #include "bat/ads/ad_event_history.h"
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/time/time.h"
 
 namespace ads {

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 
-#include <algorithm>
 #include <map>
 
 #include "base/check.h"

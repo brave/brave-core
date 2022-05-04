@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token.h"
 
 #include <memory>
-#include <string>
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"

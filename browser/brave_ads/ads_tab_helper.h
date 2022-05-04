@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 
-#include <cstdint>
-
 #include <vector>
 
 #include "base/memory/raw_ptr.h"

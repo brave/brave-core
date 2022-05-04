@@ -24,17 +24,16 @@ class GURL;
 
 namespace ads {
 struct HistoryInfo;
-}
+}  // namespace ads
 
 namespace base {
 class DictionaryValue;
 class ListValue;
-class Time;
-}
+}  // namespace base
 
 namespace user_prefs {
 class PrefRegistrySyncable;
-}
+}  // namespace user_prefs
 
 namespace brave_ads {
 

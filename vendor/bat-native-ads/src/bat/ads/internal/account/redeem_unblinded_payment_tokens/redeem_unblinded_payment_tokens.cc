@@ -11,7 +11,6 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"

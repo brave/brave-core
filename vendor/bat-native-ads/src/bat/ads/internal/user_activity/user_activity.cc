@@ -14,6 +14,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/page_transition_util.h"
+#include "bat/ads/internal/user_activity/user_activity_constants.h"
 #include "bat/ads/internal/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 #include "bat/ads/internal/user_activity/user_activity_trigger_info_aliases.h"
@@ -82,7 +83,7 @@ void UserActivity::RecordEvent(const UserActivityEventType event_type) {
 
   history_.push_back(user_activity_event);
 
-  if (history_.size() > kMaximumHistoryEntries) {
+  if (history_.size() > kMaximumHistoryItems) {
     history_.pop_front();
   }
 

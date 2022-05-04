@@ -11,7 +11,7 @@
 
 #include "base/bind.h"
 #include "base/check.h"
-#include "base/files/file_util.h"
+#include "base/files/file_path.h"
 #include "base/notreached.h"
 #include "bat/ads/internal/logging.h"
 #include "sql/statement.h"

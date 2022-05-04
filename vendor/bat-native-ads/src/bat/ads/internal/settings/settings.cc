@@ -8,7 +8,6 @@
 #include <cstdint>
 
 #include "base/cxx17_backports.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"

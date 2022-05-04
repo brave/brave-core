@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 
 #include <map>
-#include <string>
 
 #include "base/guid.h"
 #include "base/test/scoped_feature_list.h"

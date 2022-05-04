@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/statement/statement_util.h"
 
 #include "base/time/time.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/statement/ads_received_util.h"
 #include "bat/ads/internal/account/statement/earnings_util.h"
 #include "bat/ads/internal/account/statement/next_payment_date_util.h"

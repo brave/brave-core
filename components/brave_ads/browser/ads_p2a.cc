@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
-#include <map>
-#include <string>
-
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/weekly_storage/weekly_storage.h"

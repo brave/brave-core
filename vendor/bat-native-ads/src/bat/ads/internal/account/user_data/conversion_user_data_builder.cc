@@ -11,7 +11,6 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

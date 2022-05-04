@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"

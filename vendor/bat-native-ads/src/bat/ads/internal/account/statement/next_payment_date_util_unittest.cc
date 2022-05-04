@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/statement/next_payment_date_util.h"
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"

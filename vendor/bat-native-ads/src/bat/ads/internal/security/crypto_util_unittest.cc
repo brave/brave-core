@@ -8,7 +8,6 @@
 #include <cstdint>
 
 #include "base/base64.h"
-#include "base/containers/flat_map.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT

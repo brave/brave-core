@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 
 #include <memory>
-#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"

@@ -8,7 +8,8 @@
 #include <cstdint>
 
 #include "base/check_op.h"
-#include "base/containers/flat_map.h"
+#include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"

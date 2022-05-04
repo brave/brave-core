@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/threading/sequence_bound.h"
-#include "base/time/time.h"
 #include "brave/browser/brave_ads/ads_service_impl.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"

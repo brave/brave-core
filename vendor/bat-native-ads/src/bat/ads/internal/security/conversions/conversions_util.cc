@@ -6,11 +6,11 @@
 #include "bat/ads/internal/security/conversions/conversions_util.h"
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/check_op.h"
-#include "base/rand_util.h"
 #include "bat/ads/internal/base64_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"

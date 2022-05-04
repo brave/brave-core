@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/statement/statement_util.h"
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"

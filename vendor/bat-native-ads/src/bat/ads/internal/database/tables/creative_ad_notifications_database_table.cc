@@ -5,13 +5,13 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
+#include <functional>
 #include <utility>
 #include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"

@@ -7,10 +7,8 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/segments/segments_json_reader.h"
 #include "bat/ads/internal/segments/segments_json_writer.h"

@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/views/brave_ads/ad_notification_view.h"
 
-#include <string>
-
 #include "brave/browser/ui/brave_ads/ad_notification_delegate.h"
 #include "brave/browser/ui/brave_ads/ad_notification_popup_handler.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_popup.h"

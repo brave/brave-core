@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/containers/flat_map.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
 #include "bat/ads/internal/account/issuers/issuer_info_aliases.h"

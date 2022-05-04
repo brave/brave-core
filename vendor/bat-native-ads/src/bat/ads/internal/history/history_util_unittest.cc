@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/history/history_util.h"
 
-#include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_info.h"

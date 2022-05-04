@@ -19,11 +19,11 @@ TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
-  return id == rhs.id && DoubleEquals(created_at, rhs.created_at) &&
+  return id == rhs.id && created_at == rhs.created_at &&
          creative_instance_id == rhs.creative_instance_id &&
          DoubleEquals(value, rhs.value) && ad_type == rhs.ad_type &&
          confirmation_type == rhs.confirmation_type &&
-         DoubleEquals(reconciled_at, rhs.reconciled_at);
+         reconciled_at == rhs.reconciled_at;
 }
 
 bool TransactionInfo::operator!=(const TransactionInfo& rhs) const {

@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BRAVE_ADS_HOST_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BRAVE_ADS_HOST_H_
 
-#include <string>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"

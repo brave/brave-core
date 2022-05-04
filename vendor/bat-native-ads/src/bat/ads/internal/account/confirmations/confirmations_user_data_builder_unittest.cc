@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"

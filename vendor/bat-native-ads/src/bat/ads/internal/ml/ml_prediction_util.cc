@@ -9,8 +9,6 @@
 #include <cmath>
 #include <limits>
 
-#include "base/notreached.h"
-
 namespace ads {
 namespace ml {
 

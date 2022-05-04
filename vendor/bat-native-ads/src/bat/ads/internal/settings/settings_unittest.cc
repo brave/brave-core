@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"

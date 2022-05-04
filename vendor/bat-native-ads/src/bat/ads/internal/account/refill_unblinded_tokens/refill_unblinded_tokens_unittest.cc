@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
 #include <memory>
-#include <utility>
 
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"

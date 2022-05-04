@@ -9,7 +9,6 @@
 #include <cstdint>
 
 #include <string>
-#include <vector>
 
 class PrefService;
 class PrefRegistrySimple;

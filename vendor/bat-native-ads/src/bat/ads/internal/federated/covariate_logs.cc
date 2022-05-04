@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/no_destructor.h"
 #include "base/time/time.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_clicked.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_served_at.h"
@@ -19,7 +18,6 @@
 #include "bat/ads/internal/federated/log_entries/last_ad_notification_was_clicked.h"
 #include "bat/ads/internal/federated/log_entries/number_of_user_activity_events.h"
 #include "bat/ads/internal/federated/log_entries/time_since_last_user_activity_event.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

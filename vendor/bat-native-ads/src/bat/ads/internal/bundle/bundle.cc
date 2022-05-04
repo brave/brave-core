@@ -7,11 +7,11 @@
 
 #include <cstdint>
 #include <functional>
-#include <set>
 #include <string>
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
