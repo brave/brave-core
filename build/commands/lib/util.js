@@ -577,6 +577,11 @@ const util = {
     ]
 
     if (config.use_goma) {
+      // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
+      // debugging issues (e.g., slowness or remote-failures).
+      options.env.AUTONINJA_BUILD_ID = config.gomaBuildId
+      console.log('Running build with ID ' + config.gomaBuildId)
+
       const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
       assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
@@ -604,13 +609,6 @@ const util = {
     if (config.isCI && config.use_goma) {
       util.run('goma_ctl', ['showflags'], options)
       util.run('goma_ctl', ['stat'], options)
-    }
-
-    if (config.use_goma) {
-      // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
-      // debugging issues (e.g., slowness or remote-failures).
-      console.log('Running build with ID ' + config.gomaBuildId)
-      options.env.AUTONINJA_BUILD_ID = config.gomaBuildId
     }
 
     util.run('autoninja', ninjaOpts, options)
