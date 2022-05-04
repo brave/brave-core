@@ -145,11 +145,7 @@ const Config = function () {
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
-  // this.buildProjects()
-
   this.braveVersion = packageConfig(['version']) || '0.0.0'
-
-
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
@@ -185,6 +181,15 @@ const Config = function () {
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
+  this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
+  this.use_goma = getNPMConfig(['brave_use_goma']) || false
+  this.goma_offline = false
+
+  if (process.env.GOMA_DIR !== undefined) {
+    this.realGomaDir = process.env.GOMA_DIR
+  } else {
+    this.realGomaDir = path.join(this.depotToolsDir, '.cipd_bin')
+  }
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -262,10 +267,6 @@ Config.prototype.buildArgs = function () {
     is_debug: this.isDebug(),
     dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
-    // Limit action pool (non-compile actions) to amount of CPU cores.
-    // This prevents machine overload during builds with high -j value (goma for ex.).
-    // We set it for all builds to not regen GN with/without goma.
-    action_pool_depth: os.cpus().length,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
     google_default_client_id: this.googleDefaultClientId,
@@ -293,12 +294,10 @@ Config.prototype.buildArgs = function () {
     uphold_client_secret: this.upholdClientSecret,
     uphold_staging_client_id: this.upholdStagingClientId,
     uphold_staging_client_secret: this.upholdStagingClientSecret,
-    brave_product_name: getNPMConfig(['brave_product_name']) || "brave",
     brave_version_major: version_parts[0],
     brave_version_minor: version_parts[1],
     brave_version_build: version_parts[2],
     chrome_version_string: this.chromeVersion,
-    chrome_version_major: chrome_version_parts[0],
     brave_sync_endpoint: this.braveSyncEndpoint,
     safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,
     brave_variations_server_url: this.braveVariationsServerUrl,
@@ -317,6 +316,7 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
+    use_goma: this.use_goma,
     ...this.extraGnArgs,
   }
 
@@ -365,9 +365,10 @@ Config.prototype.buildArgs = function () {
 
   if (process.platform === 'darwin') {
     args.allow_runtime_configurable_key_storage = true
-    if (this.use_goma && this.gomaServerHost) {
+    // always use hermetic xcode for macos when available
+    if (this.targetOS !== 'ios' && fs.existsSync(path.join(
+        this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
       args.use_system_xcode = false
-      args.enable_precompiled_headers = false
     }
   }
 
@@ -383,6 +384,14 @@ Config.prototype.buildArgs = function () {
       args.use_thin_lto = true
     }
     args.enable_precompiled_headers = false
+  }
+
+  if (this.use_goma) {
+    // set goma_dir to the redirect cc output dir which then calls gomacc
+    // through env.CC_WRAPPER
+    args.goma_dir = path.join(this.nativeRedirectCCDir)
+  } else {
+    args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
   if (this.targetArch === 'x86' && process.platform === 'linux') {
@@ -527,11 +536,6 @@ Config.prototype.buildArgs = function () {
     delete args.brave_variations_server_url
   }
 
-  if (process.platform === 'win32') {
-    args.cc_wrapper = path.join(this.srcDir, 'brave', 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
-  } else {
-    args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
-  }
   return args
 }
 
@@ -646,20 +650,14 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
-  if (options.use_goma) {
+  if (options.use_goma && options.use_goma !== false) {
     this.use_goma = true
-    if (process.env.GOMA_DIR !== undefined) {
-      this.gomaDir = process.env.GOMA_DIR
-    } else {
-      const build_goma_dir = path.join(this.srcDir, 'build', 'goma')
-      if (fs.existsSync(build_goma_dir)) {
-        this.gomaDir = build_goma_dir
-      } else {
-        this.gomaDir = path.join(this.depotToolsDir, '.cipd_bin')
-      }
-    }
   } else {
     this.use_goma = false
+  }
+
+  if (options.goma_offline) {
+    this.goma_offline = true
   }
 
   if (options.force_gn_gen) {
@@ -882,17 +880,19 @@ Config.prototype.update = function (options) {
     })
   }
 
-  if (options.target) {
-    this.buildTarget = options.target
+  if (this.use_goma) {
+    if (!this.goma_offline &&
+        !this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
+      this.extraNinjaOpts.push('-j', this.defaultGomaJValue)
+    }
+
+    if (this.goma_offline) {
+      this.extraNinjaOpts.push('--offline')
+    }
   }
 
-  if (this.use_goma && this.gomaServerHost) {
-    if (!this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
-      this.extraNinjaOpts.push('-j', this.defaultGomaJValue)
-      console.log('using goma with j value of ' + this.defaultGomaJValue + ' at ' + this.gomaServerHost)
-    } else {
-      console.log('using goma with manual j value at ' + this.gomaServerHost)
-    }
+  if (options.target) {
+    this.buildTarget = options.target
   }
 }
 
@@ -926,9 +926,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if (this.use_goma && this.gomaServerHost) {
-      env.CC_WRAPPER = path.join(this.gomaDir, 'gomacc')
-      env.GOMA_SERVER_HOST = this.gomaServerHost
+    if (this.use_goma) {
+      env.CC_WRAPPER = path.join(this.realGomaDir, 'gomacc')
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
