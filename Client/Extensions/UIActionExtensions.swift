@@ -13,7 +13,7 @@ extension UIAction {
   /// This ensures that the user can:
   ///   1. See a change that happens based on their selection
   ///   2. Ensure that if the view which has shown the context menu were to be removed from the view
-  ///      hierarchy as a result of the action, that the context menu does not crash on dismissal.
+  ///      heirarchy as a result of the action, that the context menu does not crash on dismissal.
   static func deferredActionHandler(_ handler: @escaping UIActionHandler) -> UIActionHandler {
     return { action in
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
