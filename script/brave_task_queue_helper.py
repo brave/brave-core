@@ -9,5 +9,5 @@ import sys
 
 def limit_pool_size(task_queue):
     if sys.platform == 'darwin':
-        task_queue._pool_size = min(task_queue._pool_size, 4)
+        task_queue._pool_size = min(task_queue._pool_size, 4) # pylint: disable=protected-access
 
