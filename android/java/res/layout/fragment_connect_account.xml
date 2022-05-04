@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. */ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="start"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/wallet_bg">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="start"
+        android:textColor="@color/brave_wallet_dapp_text_color"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="@string/wallet_site_permissions"
+        tools:text="Site permissions" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/wallet_edittext_outline_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/favicon"
+            android:layout_height="120dp"
+            android:layout_width="120dp"
+            android:padding="16dp"
+            android:contentDescription="@null"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fragment_connect_account_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="4dp"
+                android:padding="2dp"
+                android:gravity="start"
+                android:textColor="@color/brave_wallet_dapp_text_color"
+                android:textSize="14sp"
+                tools:text="Web site" />
+
+            <TextView
+                android:id="@+id/fragment_connect_account_accounts_connected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="4dp"
+                android:padding="2dp"
+                android:gravity="start"
+                android:textColor="@color/brave_wallet_dapp_text_color"
+                android:textSize="14sp"
+                tools:text="Accounts connected" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/fragment_connect_account_new_account_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_connect_account_new_account"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:textColor="@color/modern_blue_300"
+        android:gravity="start"/>
+
+     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="16dp"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/wallet_edittext_outline_color" />
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/accounts_list"
+           android:paddingTop="15dp"
+           android:paddingBottom="25dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+

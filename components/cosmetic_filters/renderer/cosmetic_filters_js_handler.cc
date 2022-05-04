@@ -23,6 +23,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
+#include "third_party/blink/public/web/web_css_origin.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
@@ -41,12 +42,12 @@ const char kObservingScriptletEntryPoint[] =
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = %s;
+          let text = '(function() {\nlet deAmpEnabled = %s;\n' + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
             const textNode = document.createTextNode(text);
-            script.appendChild(textNode);;
+            script.appendChild(textNode);
             (document.head || document.documentElement).appendChild(script);
           } catch (ex) {
             /* Unused catch */
@@ -77,24 +78,30 @@ const char kCosmeticFilteringInitScript[] =
 
 const char kHideSelectorsInjectScript[] =
     R"((function() {
+          let nextIndex =
+              window.content_cosmetic.cosmeticStyleSheet.rules.length;
           const selectors = %s;
           selectors.forEach(selector => {
             if ((typeof selector === 'string') &&
                 (window.content_cosmetic.hide1pContent ||
                 !window.content_cosmetic.allSelectorsToRules.has(selector))) {
               let rule = selector + '{display:none !important;}';
-              let ruleIndex = 0;
+              window.content_cosmetic.cosmeticStyleSheet.insertRule(
+                `${rule}`, nextIndex);
               if (!window.content_cosmetic.hide1pContent) {
-                ruleIndex = window.content_cosmetic.nextRuleIndex;
-                window.content_cosmetic.nextRuleIndex++;
                 window.content_cosmetic.allSelectorsToRules.set(
-                  selector, ruleIndex);
+                  selector, nextIndex);
                 window.content_cosmetic.firstRunQueue.add(selector);
               }
-              window.cf_worker.injectStylesheet(rule, ruleIndex);
+              nextIndex++;
             }
           });
-          window.content_cosmetic.scheduleQueuePump(false, false);
+          if (!document.adoptedStyleSheets.includes(
+              window.content_cosmetic.cosmeticStyleSheet)) {
+            document.adoptedStyleSheets =
+              [window.content_cosmetic.cosmeticStyleSheet,
+                ...document.adoptedStyleSheets];
+          };
         })();)";
 
 std::string LoadDataResource(const int id) {
@@ -173,39 +180,18 @@ void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
   bundle_injected_ = false;
 }
 
-// If `id` is nonzero, then the same number can be later passed to
-// `UninjectStylesheet` to remove the stylesheet from the page.
-void CosmeticFiltersJSHandler::InjectStylesheet(const std::string& stylesheet,
-                                                int id) {
+// Stylesheets injected this way will be able to override `!important` styles
+// from in-page styles, but cannot be reverted.
+// `WebDocument::RemoveInsertedStyleSheet` works, but using a single stylesheet
+// per rule has a significant performance impact and should be avoided.
+void CosmeticFiltersJSHandler::InjectStylesheet(const std::string& stylesheet) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
 
   blink::WebStyleSheetKey* style_sheet_key = nullptr;
-  if (id != 0) {
-    // Prepend a Brave-specific string to avoid collisions with stylesheets
-    // injected from other sources
-    std::string key = "BraveCFRule" + std::to_string(id);
-    inserted_stylesheet_ids.insert({id, std::make_unique<blink::WebString>(
-                                            blink::WebString::FromASCII(key))});
-    style_sheet_key = inserted_stylesheet_ids.at(id).get();
-  }
+  blink::WebString stylesheet_webstring =
+      blink::WebString::FromUTF8(stylesheet);
   web_frame->GetDocument().InsertStyleSheet(
-      blink::WebString::FromUTF8(stylesheet), style_sheet_key,
-      blink::WebDocument::kUserOrigin);
-}
-
-void CosmeticFiltersJSHandler::UninjectStylesheet(int id) {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-
-  DCHECK_NE(id, 0);
-
-  auto i = inserted_stylesheet_ids.find(id);
-  if (i != inserted_stylesheet_ids.end()) {
-    std::unique_ptr<blink::WebStyleSheetKey> key = std::move(i->second);
-    inserted_stylesheet_ids.erase(i);
-
-    web_frame->GetDocument().RemoveInsertedStyleSheet(
-        *key, blink::WebDocument::kUserOrigin);
-  }
+      stylesheet_webstring, style_sheet_key, blink::WebCssOrigin::kUser);
 }
 
 void CosmeticFiltersJSHandler::CreateWorkerObject(
@@ -236,14 +222,6 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, javascript_object, "isFirstPartyUrl",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnIsFirstParty,
-                          base::Unretained(this)));
-  BindFunctionToObject(
-      isolate, javascript_object, "injectStylesheet",
-      base::BindRepeating(&CosmeticFiltersJSHandler::InjectStylesheet,
-                          base::Unretained(this)));
-  BindFunctionToObject(
-      isolate, javascript_object, "uninjectStylesheet",
-      base::BindRepeating(&CosmeticFiltersJSHandler::UninjectStylesheet,
                           base::Unretained(this)));
 }
 
@@ -335,7 +313,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
   std::move(callback).Run();
 }
 
-void CosmeticFiltersJSHandler::ApplyRules() {
+void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (!resources_dict_ || web_frame->IsProvisional())
     return;
@@ -344,8 +322,9 @@ void CosmeticFiltersJSHandler::ApplyRules() {
   base::Value* injected_script = resources_dict_->FindPath("injected_script");
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
-    scriptlet_script =
-        base::StringPrintf(kScriptletInitScript, scriptlet_script.c_str());
+    scriptlet_script = base::StringPrintf(kScriptletInitScript,
+                                          de_amp_enabled ? "true" : "false",
+                                          scriptlet_script.c_str());
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(
@@ -391,38 +370,46 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     hide_selectors_list = nullptr;
   }
 
+  std::string stylesheet = "";
+
   if (hide_selectors_list && hide_selectors_list->GetList().size() != 0) {
-    std::string json_selectors;
-    if (!base::JSONWriter::Write(*hide_selectors_list, &json_selectors) ||
-        json_selectors.empty()) {
-      json_selectors = "[]";
+    // treat `hide_selectors` the same as `force_hide_selectors` if aggressive
+    // mode is enabled.
+    if (enabled_1st_party_cf_) {
+      for (auto& selector : hide_selectors_list->GetList()) {
+        DCHECK(selector.is_string());
+        stylesheet += selector.GetString() + "{display:none !important}";
+      }
+    } else {
+      std::string json_selectors;
+      if (!base::JSONWriter::Write(*hide_selectors_list, &json_selectors) ||
+          json_selectors.empty()) {
+        json_selectors = "[]";
+      }
+      // Building a script for stylesheet modifications
+      std::string new_selectors_script = base::StringPrintf(
+          kHideSelectorsInjectScript, json_selectors.c_str());
+      web_frame->ExecuteScriptInIsolatedWorld(
+          isolated_world_id_,
+          blink::WebScriptSource(
+              blink::WebString::FromUTF8(new_selectors_script)),
+          blink::BackForwardCacheAware::kAllow);
     }
-    // Building a script for stylesheet modifications
-    std::string new_selectors_script =
-        base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
-    web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_,
-        blink::WebScriptSource(
-            blink::WebString::FromUTF8(new_selectors_script)),
-        blink::BackForwardCacheAware::kAllow);
   }
 
   base::Value* force_hide_selectors_list =
       resources_dict->FindListKey("force_hide_selectors");
   if (force_hide_selectors_list &&
       force_hide_selectors_list->GetList().size() != 0) {
-    std::string stylesheet = "";
     for (auto& selector : force_hide_selectors_list->GetList()) {
       DCHECK(selector.is_string());
       stylesheet += selector.GetString() + "{display:none !important}";
     }
-    InjectStylesheet(stylesheet, 0);
   }
 
   base::Value* style_selectors_dictionary =
       resources_dict->FindDictKey("style_selectors");
   if (style_selectors_dictionary) {
-    std::string stylesheet = "";
     for (const auto kv : style_selectors_dictionary->DictItems()) {
       std::string selector = kv.first;
       base::Value& styles = kv.second;
@@ -434,7 +421,10 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       }
       stylesheet += '}';
     }
-    InjectStylesheet(stylesheet, 0);
+  }
+
+  if (!stylesheet.empty()) {
+    InjectStylesheet(stylesheet);
   }
 
   if (!enabled_1st_party_cf_)
@@ -461,7 +451,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
       DCHECK(selector.is_string());
       stylesheet += selector.GetString() + "{display:none !important}";
     }
-    InjectStylesheet(stylesheet, 0);
+    InjectStylesheet(stylesheet);
   }
 
   // If its a vetted engine AND we're not in aggressive
@@ -469,25 +459,34 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
   if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
     return;
 
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  std::string json_selectors;
-  if (!base::JSONWriter::Write(*hide_selectors, &json_selectors) ||
-      json_selectors.empty()) {
-    json_selectors = "[]";
-  }
-  // Building a script for stylesheet modifications
-  std::string new_selectors_script =
-      base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
-  if (hide_selectors->GetList().size() != 0) {
-    web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_,
-        blink::WebScriptSource(
-            blink::WebString::FromUTF8(new_selectors_script)),
-        blink::BackForwardCacheAware::kAllow);
-  }
+  if (enabled_1st_party_cf_) {
+    std::string stylesheet = "";
+    for (auto& selector : hide_selectors->GetList()) {
+      DCHECK(selector.is_string());
+      stylesheet += selector.GetString() + "{display:none !important}";
+    }
+    InjectStylesheet(stylesheet);
+  } else {
+    blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+    std::string json_selectors;
+    if (!base::JSONWriter::Write(*hide_selectors, &json_selectors) ||
+        json_selectors.empty()) {
+      json_selectors = "[]";
+    }
+    // Building a script for stylesheet modifications
+    std::string new_selectors_script =
+        base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
+    if (hide_selectors->GetList().size() != 0) {
+      web_frame->ExecuteScriptInIsolatedWorld(
+          isolated_world_id_,
+          blink::WebScriptSource(
+              blink::WebString::FromUTF8(new_selectors_script)),
+          blink::BackForwardCacheAware::kAllow);
+    }
 
-  if (!enabled_1st_party_cf_)
-    ExecuteObservingBundleEntryPoint();
+    if (!enabled_1st_party_cf_)
+      ExecuteObservingBundleEntryPoint();
+  }
 }
 
 void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {

@@ -1,7 +1,10 @@
 import styled from 'styled-components'
+import { WalletButton } from '../shared/style'
+import WaringTriangle from '../../assets/svg-icons/warning-triangle.svg'
 
 interface StyleProps {
   orb: string
+  warningType: 'warning' | 'danger'
 }
 
 export const StyledWrapper = styled.div`
@@ -47,6 +50,7 @@ export const AccountCircle = styled.div<Partial<StyleProps>>`
 `
 
 export const AddressText = styled.span`
+  cursor: default;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
@@ -133,4 +137,73 @@ export const URLText = styled.span`
   color: ${(p) => p.theme.color.text02};
   max-width: 80%;
   word-break: break-word;
+`
+
+export const WarningBox = styled.div<Partial<StyleProps>>`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 255px;
+  padding: 10px;
+  margin-bottom: 14px;
+  background-color: ${(p) =>
+    p.warningType === 'danger'
+      ? p.theme.color.errorBackground
+      : p.theme.color.warningBackground
+  };
+`
+
+export const WarningTitle = styled.span<Partial<StyleProps>>`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) =>
+    p.warningType === 'danger'
+      ? p.theme.color.errorText
+      : p.theme.color.text01
+  };
+`
+
+export const WarningBoxTitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
+
+export const WarningText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  color: ${(p) => p.theme.color.errorText};
+`
+
+export const WarningBoxIcon = styled.div`
+  mask-size: 100%;
+  background-color: ${(p) => p.theme.color.errorIcon};
+  -webkit-mask-image: url(${WaringTriangle});
+  mask-image: url(${WaringTriangle});
+`
+
+export const LearnMoreButton = styled(WalletButton)`
+  font-family: Poppins;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin: 0px;
+  padding: 0px;
 `

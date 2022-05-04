@@ -86,8 +86,8 @@ export default class WalletApiProxy {
 
   addBraveWalletServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletServiceObserverReceiver({
-      onActiveOriginChanged: function (origin, eTldPlusOne) {
-        store.dispatch(WalletActions.activeOriginChanged({ origin, eTldPlusOne }))
+      onActiveOriginChanged: function (originInfo) {
+        store.dispatch(WalletActions.activeOriginChanged(originInfo))
       },
       onDefaultWalletChanged: function (defaultWallet) {
         store.dispatch(WalletActions.defaultWalletChanged({ defaultWallet }))
@@ -100,9 +100,7 @@ export default class WalletApiProxy {
       },
       onNetworkListChanged: function () {
         store.dispatch(WalletActions.getAllNetworks())
-      },
-      onShowPanel: function () {},
-      onShowWalletOnboarding: function () {}
+      }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }

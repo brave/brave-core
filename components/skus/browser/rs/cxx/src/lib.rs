@@ -192,10 +192,14 @@ pub struct CppSDK {
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
-    tracing_subscriber::fmt()
+    match tracing_subscriber::fmt()
         .event_format(log::CppFormatter::new())
         .with_max_level(tracing::Level::TRACE)
-        .init();
+        .try_init()
+    {
+        Ok(_) => println!("tracing_subscriber - init success"),
+        Err(_) => println!("tracing_subscriber - maybe already initialized"),
+    };
 
     let env = env
         .parse::<skus::Environment>()

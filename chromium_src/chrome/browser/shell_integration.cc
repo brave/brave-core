@@ -5,6 +5,8 @@
 
 #include "build/build_config.h"
 
+#include "brave/components/l10n/common/locale_util.h"
+
 #if !BUILDFLAG(IS_WIN)
 #include "chrome/grit/generated_resources.h"
 
@@ -42,7 +44,7 @@ std::u16string GetAppShortcutsSubdirName() {
       break;
   }
 
-  return l10n_util::GetStringUTF16(id);
+  return brave_l10n::GetLocalizedResourceUTF16String(id);
 }
 }  // namespace shell_integration
 #endif  // !BUILDFLAG(IS_WIN)

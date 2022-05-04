@@ -5,41 +5,16 @@
     <output filename="grit/brave_generated_resources.h" type="rc_header">
       <emit emit_type='prepend'></emit>
     </output>
-    <if expr="is_android">
-      <output filename="brave_generated_resources_af.pak" type="data_package" lang="af" />
-      <output filename="brave_generated_resources_as.pak" type="data_package" lang="as" />
-      <output filename="brave_generated_resources_az.pak" type="data_package" lang="az" />
-      <output filename="brave_generated_resources_be.pak" type="data_package" lang="be" />
-      <output filename="brave_generated_resources_bs.pak" type="data_package" lang="bs" />
-      <output filename="brave_generated_resources_eu.pak" type="data_package" lang="eu" />
-      <output filename="brave_generated_resources_fr-CA.pak" type="data_package" lang="fr-CA" />
-      <output filename="brave_generated_resources_gl.pak" type="data_package" lang="gl" />
-      <output filename="brave_generated_resources_hy.pak" type="data_package" lang="hy" />
-      <output filename="brave_generated_resources_is.pak" type="data_package" lang="is" />
-      <output filename="brave_generated_resources_ka.pak" type="data_package" lang="ka" />
-      <output filename="brave_generated_resources_kk.pak" type="data_package" lang="kk" />
-      <output filename="brave_generated_resources_km.pak" type="data_package" lang="km" />
-      <output filename="brave_generated_resources_ky.pak" type="data_package" lang="ky" />
-      <output filename="brave_generated_resources_lo.pak" type="data_package" lang="lo" />
-      <output filename="brave_generated_resources_mk.pak" type="data_package" lang="mk" />
-      <output filename="brave_generated_resources_mn.pak" type="data_package" lang="mn" />
-      <output filename="brave_generated_resources_my.pak" type="data_package" lang="my" />
-      <output filename="brave_generated_resources_ne.pak" type="data_package" lang="ne" />
-      <output filename="brave_generated_resources_or.pak" type="data_package" lang="or" />
-      <output filename="brave_generated_resources_pa.pak" type="data_package" lang="pa" />
-      <output filename="brave_generated_resources_si.pak" type="data_package" lang="si" />
-      <output filename="brave_generated_resources_sq.pak" type="data_package" lang="sq" />
-      <output filename="brave_generated_resources_sr-Latn.pak" type="data_package" lang="sr-Latn" />
-      <output filename="brave_generated_resources_ur.pak" type="data_package" lang="ur" />
-      <output filename="brave_generated_resources_uz.pak" type="data_package" lang="uz" />
-      <output filename="brave_generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
-      <output filename="brave_generated_resources_zu.pak" type="data_package" lang="zu" />
-    </if>
     <output filename="brave_generated_resources.pak" type="data_package" />
+    <output filename="brave_generated_resources_af.pak" type="data_package" lang="af" />
     <output filename="brave_generated_resources_am.pak" type="data_package" lang="am" />
     <output filename="brave_generated_resources_ar.pak" type="data_package" lang="ar" />
+    <output filename="brave_generated_resources_as.pak" type="data_package" lang="as" />
+    <output filename="brave_generated_resources_az.pak" type="data_package" lang="az" />
+    <output filename="brave_generated_resources_be.pak" type="data_package" lang="be" />
     <output filename="brave_generated_resources_bg.pak" type="data_package" lang="bg" />
     <output filename="brave_generated_resources_bn.pak" type="data_package" lang="bn" />
+    <output filename="brave_generated_resources_bs.pak" type="data_package" lang="bs" />
     <output filename="brave_generated_resources_ca.pak" type="data_package" lang="ca" />
     <output filename="brave_generated_resources_cs.pak" type="data_package" lang="cs" />
     <output filename="brave_generated_resources_da.pak" type="data_package" lang="da" />
@@ -56,37 +31,56 @@
       <output filename="brave_generated_resources_es-419.pak" type="data_package" lang="es-419" />
     </if>
     <output filename="brave_generated_resources_et.pak" type="data_package" lang="et" />
+    <output filename="brave_generated_resources_eu.pak" type="data_package" lang="eu" />
     <output filename="brave_generated_resources_fa.pak" type="data_package" lang="fa" />
     <output filename="brave_generated_resources_fi.pak" type="data_package" lang="fi" />
     <output filename="brave_generated_resources_fil.pak" type="data_package" lang="fil" />
     <output filename="brave_generated_resources_fr.pak" type="data_package" lang="fr" />
+    <output filename="brave_generated_resources_fr-CA.pak" type="data_package" lang="fr-CA" />
+    <output filename="brave_generated_resources_gl.pak" type="data_package" lang="gl" />
     <output filename="brave_generated_resources_gu.pak" type="data_package" lang="gu" />
     <output filename="brave_generated_resources_he.pak" type="data_package" lang="he" />
     <output filename="brave_generated_resources_hi.pak" type="data_package" lang="hi" />
     <output filename="brave_generated_resources_hr.pak" type="data_package" lang="hr" />
     <output filename="brave_generated_resources_hu.pak" type="data_package" lang="hu" />
+    <output filename="brave_generated_resources_hy.pak" type="data_package" lang="hy" />
     <output filename="brave_generated_resources_id.pak" type="data_package" lang="id" />
     <output filename="brave_generated_resources_it.pak" type="data_package" lang="it" />
+    <output filename="brave_generated_resources_is.pak" type="data_package" lang="is" />
     <output filename="brave_generated_resources_ja.pak" type="data_package" lang="ja" />
+    <output filename="brave_generated_resources_ka.pak" type="data_package" lang="ka" />
+    <output filename="brave_generated_resources_kk.pak" type="data_package" lang="kk" />
+    <output filename="brave_generated_resources_km.pak" type="data_package" lang="km" />
     <output filename="brave_generated_resources_kn.pak" type="data_package" lang="kn" />
     <output filename="brave_generated_resources_ko.pak" type="data_package" lang="ko" />
+    <output filename="brave_generated_resources_ky.pak" type="data_package" lang="ky" />
+    <output filename="brave_generated_resources_lo.pak" type="data_package" lang="lo" />
     <output filename="brave_generated_resources_lt.pak" type="data_package" lang="lt" />
     <output filename="brave_generated_resources_lv.pak" type="data_package" lang="lv" />
+    <output filename="brave_generated_resources_mk.pak" type="data_package" lang="mk" />
     <output filename="brave_generated_resources_ml.pak" type="data_package" lang="ml" />
+    <output filename="brave_generated_resources_mn.pak" type="data_package" lang="mn" />
     <output filename="brave_generated_resources_mr.pak" type="data_package" lang="mr" />
     <output filename="brave_generated_resources_ms.pak" type="data_package" lang="ms" />
+    <output filename="brave_generated_resources_my.pak" type="data_package" lang="my" />
+    <output filename="brave_generated_resources_ne.pak" type="data_package" lang="ne" />
     <output filename="brave_generated_resources_nl.pak" type="data_package" lang="nl" />
     <!-- The translation console uses 'no' for Norwegian Bokmål. It should
          be 'nb'. -->
     <output filename="brave_generated_resources_nb.pak" type="data_package" lang="no" />
+    <output filename="brave_generated_resources_or.pak" type="data_package" lang="or" />
+    <output filename="brave_generated_resources_pa.pak" type="data_package" lang="pa" />
     <output filename="brave_generated_resources_pl.pak" type="data_package" lang="pl" />
     <output filename="brave_generated_resources_pt-BR.pak" type="data_package" lang="pt-BR" />
     <output filename="brave_generated_resources_pt-PT.pak" type="data_package" lang="pt-PT" />
     <output filename="brave_generated_resources_ro.pak" type="data_package" lang="ro" />
     <output filename="brave_generated_resources_ru.pak" type="data_package" lang="ru" />
+    <output filename="brave_generated_resources_si.pak" type="data_package" lang="si" />
     <output filename="brave_generated_resources_sk.pak" type="data_package" lang="sk" />
     <output filename="brave_generated_resources_sl.pak" type="data_package" lang="sl" />
+    <output filename="brave_generated_resources_sq.pak" type="data_package" lang="sq" />
     <output filename="brave_generated_resources_sr.pak" type="data_package" lang="sr" />
+    <output filename="brave_generated_resources_sr-Latn.pak" type="data_package" lang="sr-Latn" />
     <output filename="brave_generated_resources_sv.pak" type="data_package" lang="sv" />
     <output filename="brave_generated_resources_sw.pak" type="data_package" lang="sw" />
     <output filename="brave_generated_resources_ta.pak" type="data_package" lang="ta" />
@@ -94,10 +88,13 @@
     <output filename="brave_generated_resources_th.pak" type="data_package" lang="th" />
     <output filename="brave_generated_resources_tr.pak" type="data_package" lang="tr" />
     <output filename="brave_generated_resources_uk.pak" type="data_package" lang="uk" />
+    <output filename="brave_generated_resources_ur.pak" type="data_package" lang="ur" />
+    <output filename="brave_generated_resources_uz.pak" type="data_package" lang="uz" />
     <output filename="brave_generated_resources_vi.pak" type="data_package" lang="vi" />
     <output filename="brave_generated_resources_zh-CN.pak" type="data_package" lang="zh-CN" />
+    <output filename="brave_generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
     <output filename="brave_generated_resources_zh-TW.pak" type="data_package" lang="zh-TW" />
-
+    <output filename="brave_generated_resources_zu.pak" type="data_package" lang="zu" />
     <!-- Pseudolocales -->
     <output filename="brave_generated_resources_ar-XB.pak" type="data_package" lang="ar-XB" />
     <output filename="brave_generated_resources_en-XA.pak" type="data_package" lang="en-XA" />
@@ -160,6 +157,12 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <!-- Brave Settings WebUI strings -->
+      <part file="brave_settings_strings.grdp" />
+
+      <!--Add new items to the appropriate sections below -->
+
+      <!-- App Menu -->
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
       </message>
@@ -205,36 +208,13 @@
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
-      <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
-        <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX" desc="Checkbox for importing extensions list">
-        Extensions
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_PAYMENTS_CHECKBOX" desc="Checkbox for importing payments info">
-        Payment methods
-      </message>
+
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine
       </message>
       <message name="IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox for prevent showing widevine install prompt">
         Don't ask again
-      </message>
-      <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
-        Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.
-      </message>
-      <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
-        Private window with Tor
-      </message>
-      <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
-        Tor hides your IP address from the sites you visit.
-      </message>
-      <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
-        Automatically redirect .onion sites
-      </message>
-      <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-        Brave will open onion service of the website when available or .onion domain in Tor window.
       </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
@@ -260,10 +240,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> is asking you to
       </message>
+
       <!-- Autoplay -->
-      <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY" desc="Label for autoplay site settings.">
-        Autoplay
-      </message>
       <message name="IDS_BLOCKED_AUTOPLAY_TITLE" desc="Tooltip and bubble info header text when a page is not allowed to autoplay media.">
         Autoplay was blocked on this page
       </message>
@@ -273,191 +251,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BLOCKED_AUTOPLAY_NO_ACTION" desc="Radio button choice to continue blocking a site from autoplay media, displayed in bubble when a page tries to autoplay media.">
         Continue blocking autoplay
       </message>
-      <!-- Ethereum -->
-      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM" desc="Label for ethereum site settings.">
-        Ethereum
-      </message>
-      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_ASK" desc="Label for ethereum site settings.">
-        Ask when a site wants to access the Ethereum provider API
-      </message>
-      <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK" desc="Label for ethereum site settings.">
-        Block sites from accessing the Ethereum provider API
-      </message>
+
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.
       </message>
-      <!-- Settings / Diagnostic reports -->
-      <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF" desc="The label of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
-        Automatically send diagnostic reports
+      <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
+        <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
       </message>
-      <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC" desc="The description of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
-        Help improve Brave's product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.
-      </message>
-      <!-- Settings / Get Started -->
-      <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">
-        Profile name and icon
-      </message>
-      <!-- Settings / Cookies and other site data -->
-      <message name="IDS_SETTINGS_COOKIES_USE_EPHEMERAL_STORAGE_EXCEPTIONS" desc="Title of the list containing sites to clear cookies when all windows with the site are closed">
-        Sites that clear cookies when you close them
-      </message>
-      <message name="IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE" desc="Label for sites in site settings enabling cookies cleanup when all windows with the site are clsoed.">
-        Clear on site close
-      </message>
-      <!-- Appearance -->
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
-        Brave colors
-      </message>
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES" desc="The label for opening theme web store">
-        Get more themes
-      </message>
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL" desc="The label for choosing default images over super referral">
-        Brave default images
-      </message>
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
-        Use wide address bar
-      </message>
-      <message name="IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-        Show Brave Rewards icon in address bar
-      </message>
-      <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
-        Always show bookmarks on new tab page
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
-        Cycle through the most recently used tabs with Ctrl-Tab
-      </message>
-      <message name="IDS_SETTINGS_SPEEDREADER_LABEL" desc="The label to activate Speedreader">
-        Speedreader
-      </message>
-      <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
-        Articles automatically load in reader mode, saving you time
-      </message>
-      <message name="IDS_SETTINGS_DE_AMP_LABEL" desc="The label to activate De-AMP feature">
-        Auto-redirect AMP pages
-      </message>
-      <message name="IDS_SETTINGS_DE_AMP_SUB_LABEL" desc="The sub-label describing De-AMP feature">
-        Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions
-      </message>
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
-        Show autocomplete in address bar
-      </message>
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
-        Show top sites in autocomplete suggestions
-      </message>
-      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
-        Show suggested sites in autocomplete suggestions
-      </message>
-      <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
-        Show tab search button
-      </message>
-      <!-- Settings / Safety Check -->
-      <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
-        Standard protection is on.
-      </message>
-      <!-- Settings / Safe Browsing -->
-      <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO" desc="Second bullet point under the safe browsing standard protection mode">
-        Checks URLs with a list of unsafe sites stored in Brave.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC" desc="Description for safe browsing no protection mode">
-        Does not protect you against dangerous websites, downloads, and extensions.
-      </message>
-      <!-- Settings / Search Engine -->
-      <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">
-        Index other search engines
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
-        Automatically indexes websites that follow the OpenSearch spec.
-      </message>
-      <!-- Settings / Rewards -->
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
-        Brave Rewards
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL" desc="The text label for the Rewards disabled state">
-        Brave Rewards are disabled
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL" desc="The text sublabel for the Rewards disabled state">
-        Open Rewards panel to enable and get started
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_DETECTED_ITEM" desc="The menu item for auto-detected settings">
-        Auto-detected
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_DEFAULT_ITEM" desc="The menu item for default settings">
-        Default
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_ITEM" desc="The menu item for disabled settings">
-        Disabled
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_TITLE" desc="The text label for the Rewards Private Ads section">
-        Brave Private Ads
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_PRIVATE_ADS_EARN_TOKENS_LABEL" desc="The text label for the settings switch controlling earning tokens for viewing private ads">
-        Earn tokens by viewing Brave Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_MAX_ADS_TO_DISPLAY_LABEL" desc="The text label for the setting controlling the maximum number of ads to display">
-        Maximum number of ads to display
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL" desc="The text label for the setting that allows Brave to show ads meant specifically for user's region">
-        Regional ad relevance
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL" desc="The text label for the description of subdivision-level ad targeting">
-        This allows Brave to show you ads meant specifically for your region. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE" desc="The text label for the Rewards Auto-Contribute section">
-        Auto-Contribute
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MONTHLY_LIMIT_LABEL" desc="The text label for the setting controlling the monthly auto-contribution limit">
-        Monthly auto-contribution limit
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISIT_TIME_LABEL" desc="The text label for the setting controlling the minimum page time before logging a visit">
-        Minimum page time before logging a visit
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_MIN_VISITS_LABEL" desc="The text label for the setting controlling the minimum page visits for publisher relevancy">
-        Minimum visits for publisher relevancy
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_SHOW_NON_VERIFIED_SITES_LABEL" desc="The text label for the setting controlling showing non-verified sites in the auto-contribution list">
-        Show non-verified sites in list
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_ALLOW_VIDEO_CONTRIBUTIONS_LABEL" desc="The text label for the setting controlling allowing contributions for videos">
-        Allow contributions for videos
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
-        By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_TIP_BUTTONS_TITLE" desc="The text label for the Rewards Tip Buttons section">
-        Tip buttons
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Reddit">
-        Reddit
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_TWITTER_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Twitter">
-        Twitter
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_GITHUB_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on GitHub">
-        GitHub
-      </message>
-      <!-- New Tab Page -->
-      <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
-       New Tab Page
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Brave Rewards show/hide feature toggle">
-        Brave Rewards
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS" desc="The label for New Tab Page shows customization">
-        New tab page shows
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD" desc="The label for dashboard option">
-        Dashboard
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE" desc="The label for homepage option">
-        Homepage
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE" desc="The label for blank page option">
-        Blank page
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS" desc="The label for widget customization">
-        Customize the background image and widgets that appear on the new tab page
-      </message>
+
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
@@ -495,6 +297,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT" desc="The tooltip text of tor button in location bar.">
         Open in Tor
       </message>
+      <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
+        Tor
+      </message>
+
+      <!-- Sync Infobar -->
+      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
+        Brave Sync has been upgraded and requires setup
+      </message>
+      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
+        Begin Setup
+      </message>
+
+      <!-- IPFS -->
       <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
         IPFS
       </message>
@@ -601,561 +416,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           With a Directory
         </message>
       </if>
-      <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
-        Tor
-      </message>
-      <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
-        Bat Ads Service
-      </message>
-      <message name="IDS_UTILITY_PROCESS_LEDGER_NAME" desc="The utility process running ledger">
-        Bat Ledger Service
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
-        Get started
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_ADDITIONAL_SETTINGS" desc="The title for a group of settings which are more advanced">
-        Additional settings
-      </message>
-      <!-- Brave Shields  -->
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
-        Shields
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields Defaults sub-section in settings">
-        Block trackers and ads which follow you across the web.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Brave shields Defaults sub-section in settings">
-        These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The partial description for Brave shields Defaults sub-section in settings. The sentence is completed with `Brave rewards settings`">
-        This will block most ads on websites, not Brave Private Ads — those are controlled in the
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave Private Ads — those are controlled in the Brave Rewards (settings)`">
-        settings.
-      </message>
-      <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
-        Social media blocking
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL" desc="Default Brave view title label">
-        Default view
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL" desc="Default Brave simple view title label">
-        Simple view
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_ADVANCED_VIEW_LABEL" desc="Default Brave advanced view title label">
-        Advanced view
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
-        Trackers &amp; ads blocking
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
-        Block cookies
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
-        Block fingerprinting
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL" desc="Default Brave reduce language control setting label">
-        Prevent sites from fingerprinting me based on my language preferences
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM" desc="Description that shows under main toggle setting for reduce language control setting label">
-        Enabling this setting reduces how much web sites can learn about your language preferences.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
-        Upgrade connections to HTTPS
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
-        Block scripts
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_LOOK_AND_FEEL_TITLE" desc="The title the settings section with interface options such as showing the resources blocked badge">
-        Look &amp; feel
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
-        Show the number of blocked items on the Shields icon
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
-        Allow Google login buttons on third party sites
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows Facebook embedded posts">
-        Allow Facebook logins and embedded posts
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_TWITTER_EMBEDDED_TWEETS_LABEL" desc="Label for a switch control which allows Twitter embedded tweets">
-        Allow Twitter embedded tweets
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows LinkedIn embedded posts">
-        Allow LinkedIn embedded posts
-      </message>
-      <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_AGGRESSIVE" desc="Select value">
-        Aggressive
-      </message>
-      <message name="IDS_SETTINGS_BLOCK_ADS_TRACKERS_STANDARD" desc="Select value">
-        Standard
-      </message>
-      <message name="IDS_SETTINGS_ALLOW_ADS_TRACKERS" desc="Select value">
-        Disabled
-      </message>
-      <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
-        Only cross-site
-      </message>
-      <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
-        Disabled
-      </message>
-      <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
-        All
-      </message>
-      <message name="IDS_SETTINGS_STANDARD_FINGERPRINTING" desc="Select value">
-        Standard
-      </message>
-      <message name="IDS_SETTINGS_ALLOW_ALL_FINGERPRINTING" desc="Select value">
-        Disabled
-      </message>
-      <message name="IDS_SETTINGS_STRICT_FINGERPRINTING" desc="Select value">
-        Strict, may break sites
-      </message>
-      <!-- WebRTC Policy Setting -->
-      <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
-        WebRTC IP handling policy
-      </message>
-      <message name="IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL" desc="WebRTC policy setting sub-label">
-        Learn more
-      </message>
-      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT" desc="Select value">
-        Default
-      </message>
-      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES" desc="Select value">
-        Default public and private interfaces
-      </message>
-      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY" desc="Select value">
-        Default public interface only
-      </message>
-      <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
-        Disable non-proxied UDP
-      </message>
-      <!-- Push Messaging -->
-      <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
-        Use Google services for push messaging
-      </message>
-      <!-- Brave Sync Settings -->
-      <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
-        Sync
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_ACTION_LABEL" desc="Brave Sync setup action label">
-        Start using sync
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE" desc="Title for the Brave Sync settings setup section">
-        Sync Setup
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE" desc="Subtitle for the Brave Sync settings setup section">
-        To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
-        Manage your synced devices
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
-        Sync Manager
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_TITLE" desc="Brave Sync settings title">
-        Sync Settings
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_SETTINGS_SUBTITLE" desc="Brave Sync settings subtitle">
-        Manage what information you would like to sync between devices. These settings only affect this device.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_TITLE" desc="Brave Sync device list title">
-        Device List
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_SUBTITLE" desc="Brave Sync device list subtitle">
-        The device list below includes all devices in your sync chain. Each device can be managed from any other device.
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_COLUMN" desc="Brave Sync device list table column title for device name">
-        Device Name
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_NAME_THIS_DEVICE" desc="Brave Sync device list label for device which is the device the user is currently using">
-        <ph name="DEVICE_NAME">$1<ex>my-computer-1</ex></ph> (This Device)
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_LAST_ACTIVE_COLUMN" desc="Brave Sync device list table column title for last active date">
-        Last Active
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_REMOVE_COLUMN" desc="Brave Sync device list table column title for remove other device buttons">
-        Remove
-      </message>
-      <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Brave Sync title.">
-        Sync Setup
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_WORD_COUNT" desc="Text for Brave Sync word count message.">
-        Word count: <ph name="WORD_COUNT">$1<ex>24</ex></ph>
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT" desc="The success state telling the user that a secret code was copied to the clipboard">
-        Copied!
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_QR_IMAGE_ALT" desc="The description of the QR image, for accessibility and screen readers.">
-        A QR code to be scanned with a mobile device in order to transmit your sync code
-      </message>
-      <message name="IDS_SETTINGS_BRAVE_SYNC_QR_ERROR" desc="The message to be displayed when there is an error generating a QR code of the sync password">
-        There was an error displaying the QR code, please refresh and try again.
-      </message>
-      <message name="IDS_BRAVE_SYNC_SETUP_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">
-        To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.
-      </message>
-      <message name="IDS_BRAVE_SYNC_START_NEW_CHAIN_BUTTON" desc="The Sync button that triggers a modal to start a new sync chian">
-        Start a new Sync Chain
-      </message>
-      <message name="IDS_BRAVE_SYNC_ENTER_CODE_BUTTON" desc="The Sync button that triggers a modal asking for the sync chain code passphrase">
-        I have a Sync Code
-      </message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">
-        View Sync Code
-      </message>
-      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_MOBILE_TITLE" desc="The Sync Phone/tablet word below the phone/tablet image. Appears in the `choose device type` modal">
-        Phone/Tablet
-      </message>
-      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_COMPUTER_TITLE" desc="The Sync Computer word below the computer image. Appears in the `choose device type` modal">
-        Computer
-      </message>
-      <message name="IDS_BRAVE_SYNC_SCAN_CODE_TITLE" desc="The Sync title for the `scan sync code` modal">
-        Sync Chain QR Code
-      </message>
-      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `scan sync code` modal partial phrase (1)">
-        On your mobile device, navigate to Brave Sync in the Settings panel and click the button
-      </message>
-      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `scan sync code` modal partial phrase (2)">
-        “Scan Sync Code”.
-      </message>
-      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `scan sync code` modal partial phrase (3)">
-        Use your camera to scan the QR Code below.
-      </message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_TITLE" desc="The Sync title for the `view sync code` modal">
-        Sync Chain Code
-      </message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `view sync code` modal partial phrase (1)">
-        On your target computer, navigate to Brave Sync in settings and click the button
-      </message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `view sync code` modal partial phrase (2)">
-        “I have a Sync Code”.
-      </message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `view sync code` modal partial phrase (3)">
-        Enter the sync chain code words shown below.
-      </message>
-      <message name="IDS_BRAVE_SYNC_CODE_WARNING" desc="The warning for the user to keep their sync code private and secure.">
-        Treat this code like a password. If someone gets ahold of it, they can read and modify your synced data.
-      </message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE_BUTTON" desc="The Sync description suggesting where to go with the current sync code">
-        View QR Code
-      </message>
-      <message name="IDS_BRAVE_SYNC_ENTER_CODE_TITLE" desc="The Sync modal title for `enter sync code`">
-        Enter a sync code
-      </message>
-      <message name="IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION" desc="The Sync modal text for `enter sync code`">
-        Type your supplied sync chain code words into the form below.
-      </message>
-      <message name="IDS_BRAVE_SYNC_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">
-        Add New Device
-      </message>
-      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_TITLE" desc="The Sync title to sync a new device. Appears in the `choose device type` modal">
-        Choose Device Type
-      </message>
-      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_DESCRIPTION" desc="The Sync title to select which device to sync. Appears in the `choose device type` modal">
-        Which type of device would you like to sync to?
-      </message>
-      <message name="IDS_BRAVE_SYNC_INVALID_SYNC_CODE_TITLE" desc="Error message in dialog for when sync words are invalid (title)">
-        Invalid sync code, please check and try again.
-      </message>
-      <message name="IDS_BRAVE_SYNC_RESET_BUTTON" desc="The Sync button that opens a modal to leave the current sync chain">
-        Leave Sync Chain
-      </message>
-      <message name="IDS_BRAVE_SYNC_RESET_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok with leaving sync">
-        If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
-      </message>
-      <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
-        Are you sure you want to remove the selected device from the sync chain?
-      </message>
-      <message name="IDS_BRAVE_SYNC_FINAL_SECURITY_WARNING_TEXT" desc="Confirmation message prompt to make sure the user aware his data will be shared with other devices in chain">
-Warning: this will share your Brave data, including potentially your passwords, with the device that generated these code words.
 
-Please double check that these code words were generated by a device that you own.
-
-Are you sure you want to do this?
-      </message>
-      <!-- Sync Infobar -->
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Brave Sync has been upgraded and requires setup
-      </message>
-      <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
-        Begin Setup
-      </message>
-      <!-- Help tips Page -->
-      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help tips' section of Brave Settings">
-        Help tips
-      </message>
-      <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
-        Show Wayback Machine prompt on 404 pages
-      </message>
-      <!-- Brave Theme -->
-      <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
-        Light
-      </message>
-      <message name="IDS_BRAVE_THEME_TYPE_DARK" desc="Text for dark theme type">
-        Dark
-      </message>
-      <if expr="is_linux">
-        <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
-          Same as Linux
-        </message>
-      </if>
-      <if expr="is_win">
-        <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
-          Same as Windows
-        </message>
-      </if>
-      <if expr="is_macosx">
-        <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
-          Same as macOS
-        </message>
-      </if>
       <!-- Mac Menubar Menus -->
       <if expr="is_macosx">
         <message name="IDS_REPORT_BROKEN_SITE_MAC" desc="The Mac menu item to report a broken site in the Help menu.">
           Report a Broken Site
         </message>
       </if>
-      <!-- Brave Default Extensions -->
-      <message name="IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE" desc="The title for Brave default extensions in settings">
-        Extensions
-      </message>
-      <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
-        Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
-      </message>
-      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE" desc="Select control value for which web3 provider to use">
-        Brave Wallet
-      </message>
-      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK" desc="Select control value for which web3 provider to use">
-        Ask
-      </message>
-      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE" desc="Select control value for which web3 provider to use">
-        None
-      </message>
-      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED" desc="Select control value for which web3 provider to use">
-        Crypto Wallets (Deprecated)
-      </message>
-      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS" desc="Select control value for which web3 provider to use">
-        Brave Wallet (Prefer extensions)
-      </message>
-      <message name="IDS_SETTINGS_DEFAULT_WALLET_DESC" desc="The default cryptocurrency wallet">
-        Default cryptocurrency wallet
-      </message>
-      <message name="IDS_SETTINGS_DEFAULT_BASE_CURRENCY_DESC" desc="The default base currency to use for the wallet prices">
-        Default base currency
-      </message>
-      <message name="IDS_SETTINGS_DEFAULT_BASE_CRYPTOCURRENCY_DESC" desc="The default base cryptocurrency to use for the wallet prices">
-        Default base cryptocurrency
-      </message>
-      <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
-        Show Brave Wallet icon on toolbar
-      </message>
-      <message name="IDS_SETTINGS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
+
+      <!-- Brave Wallet Extension -->
+      <message name="IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
         Hide Brave Wallet icon on toolbar
       </message>
-      <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
-        Automatically lock Brave Wallet
-      </message>
-      <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC" desc="The description for the amount of minutes it takes for the Brave Wallet to automatically lock">
-        The number of minutes to wait until the Brave Wallet is automatically locked
-      </message>
-      <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
-        Allow Google login for extensions
-      </message>
-      <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC" desc="The description for how to handle Unstoppable Domains">
-        Method to resolve Unstoppable Domains
-      </message>
-      <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC" desc="The sub-description for how to handle Unstoppable Domains">
-        <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about DNS over HTTPS and Ethereum privacy considerations.
-      </message>
-      <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
-        Method to resolve Ethereum Name Service (ENS)
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK" desc="The title of the link to open keys management block in IPFS settings">
-        Set up your IPNS keys
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC" desc="The description for the link to open keys management block in IPFS settings">
-        Sign content by the corresponding private key and publish it to IPNS
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_LIST_TITLE" desc="The title of the keys management list in IPFS settings">
-        Keys available for publishing
-      </message>
-      <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE" desc="The title of the dialog to add new key on IPFS Settings page">
-        Enter a name for the new key
-      </message>
-      <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR" desc="The error message for the add key dialog on IPFS Settings page if key name is invalid">
-        This name cannot be used
-      </message>
-      <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE" desc="The title of the dialog to add new peer on IPFS Settings page">
-        Add new peer connection string
-      </message>
-      <message name="IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE" desc="The title of the dialog to rotate key on IPFS Settings page">
-        Rotate key
-      </message>
-      <message name="IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR" desc="The error message of the dialog when unable to stop ipfs node">
-        Unable to stop Brave local IPFS node
-      </message>
-      <message name="IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR" desc="The error message of the dialog when unable to launch ipfs node">
-        Unable to launch Brave local IPFS node
-      </message>
-      <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART" desc="The message to restart node if peers were chagned on IPFS Settings page">
-        Restart node to apply changes
-      </message>
-      <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON" desc="The button title to restart node if peers were chagned on IPFS Settings page">
-        Restart node
-      </message>
-      <message name="IDS_SETTINGS_IPFS_ROTATE_BUTTON" desc="The button title to rotate key on IPFS Settings page">
-        Rotate
-      </message>
-      <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
-        /ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
-      </message>
-      <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR" desc="The error message for the add peer dialog on IPFS Settings page if the peer name is not valid">
-        This name is not valid
-      </message>
-      <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE" desc="The ipfs peers page link title on IPFS settings page">
-        Modify the peers list
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM" desc="The text for ipfs key export item">
-        Export key
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM" desc="The text for ipfs key remove item">
-        Remove key
-      </message>
-      <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC" desc="The ipfs peers page link description on IPFS settings page">
-        Set up ipfs peers description
-      </message>
-      <message name="IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION" desc="Confirmation text for deleting a peer from IPFS peers manager page">
-        Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomPeerId</ex></ph>?
-      </message>
-      <message name="IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION" desc="Confirmation text for deleting a key from IPFS keys manager page">
-        Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>?
-      </message>
-      <message name="IDS_SETTINGS_IPFS_NODE_NOT_LAUNCHED" desc="The message when node is not running on IPFS keys manager page">
-        Node is not launched
-      </message>
-      <message name="IDS_SETTINGS_IPFS_START_NODE_ERROR" desc="The error message when node was unable to start on IPFS keys manager page">
-        IPFS service launch error, more information is available on the <ph name="BEGIN_LINK">&lt;a target="_blank" style="text-decoration: underline;" href="chrome://ipfs-internals/"&gt;</ph>diagnostic page<ph name="END_LINK">&lt;/a&gt;</ph>
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR" desc="The error text if ipns keys import failed">
-        '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key import failed
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
-        '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
-        Reset Brave Wallet
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO" desc="Reset wallet transactions">
-        Clear wallet transaction and nonce information
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
-        Clearing transactions may be useful for developers or when clearing state on a local server
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
-        Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
-        Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
-        Your wallet was reset.
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
-        Your wallet transaction information was reset.
-      </message>
-      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
-        Yes
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
-        Import
-      </message>
-      <message name="IDS_SETTINGS_IPNS_KEYS_GENERATE_BUTTON_TITLE" desc="The title of the button to generate ipns keys">
-        Generate
-      </message>
-      <message name="IDS_SETTINGS_IPFS_START_NODE" desc="The button text to start node on IPFS keys manager page">
-        Start node
-      </message>
-      <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
-        Method to resolve IPFS resources
-      </message>
-      <message name="IDS_IPFS_RESOLVE_OPTION_ASK" desc="Select control value for which IPFS resolve method to use">
-        Ask
-      </message>
-      <message name="IDS_IPFS_RESOLVE_OPTION_GATEWAY" desc="Select control value for which IPFS resolve method to use">
-        Gateway
-      </message>
-      <message name="IDS_IPFS_RESOLVE_OPTION_LOCAL" desc="Select control value for which IPFS resolve method to use">
-        Brave local IPFS node
-      </message>
-      <message name="IDS_IPFS_RESOLVE_OPTION_DISABLED" desc="Select control value for which IPFS resolve method to use">
-        Disabled
-      </message>
-      <message name="IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC" desc="The description of changing IPFS public gateway">
-        IPFS public gateway address
-      </message>
-      <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about Brave local IPFS node and gateway privacy considerations.
-      </message>
-      <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
-        Change
-      </message>
-      <message name="IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_TITLE" desc="The title of dialog for changing IPFS gateway">
-        Set IPFS gateway
-      </message>
-      <message name="IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL" desc="The text label for IPFS gateway input field">
-        Gateway address
-      </message>
-      <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL" desc="The text label for Maximum IPFS cache size field">
-        Maximum IPFS cache size (GB)
-      </message>
-      <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC" desc="The text label for Maximum IPFS cache size field">
-        A soft upper limit for the size of the IPFS repository's datastore.
-      </message>
-      <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS" desc="The error message used when user input an invalid gateway address">
-        Invalid gateway address
-      </message>
-      <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION" desc="The error message used when user input an invalid gateway address without origin isolation">
-        Only a valid IPFS gateway with Origin isolation enabled can be used in Brave
-      </message>
-      <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL" desc="The text label for IPFS public gateway fallback switch">
-        IPFS public gateway fallback
-      </message>
-      <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
-        Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
-      </message>
-      <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL" desc="The text label for redirecting IPFS resources to the configured gateway">
-        Redirect IPFS resources to the configured IPFS gateway
-      </message>
-      <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC" desc="The description for redirecting IPFS resources to the configured gateway">
-        Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.
-      </message>
-      <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL" desc="The text label for redirecting IPFS resources for DNSLink">
-        Automatically redirect to IPFS pages via DNSLink when possible
-      </message>
-      <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_DESC" desc="The description for redirecting IPFS resources for DNSLink">
-        Automatically uses DNSLink to navigate to an IPFS version of a website when possible
-      </message>
-     <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
-        Uses Hangouts component to enable screen sharing and other features in the browser.
-      </message>
-     <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for media router switch in settings">
-        Media router enables cast feature in the browser.
-      </message>
-     <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
-        Your changes will take effect the next time you relaunch Brave.
-      </message>
-     <message name="IDS_SETTINGS_RELAUNCH_BUTTON_LABEL" desc="Notifies the user that they need to relaunch Brave">
-        Relaunch Now
-      </message>
-     <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
-        Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.
-      </message>
-      <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
-        Manage extensions
-      </message>
-      <message name="IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL" desc="The label of get more extensions link in settings">
-        Get more extensions
-      </message>
+
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
         Web Extensions Store
@@ -1172,10 +445,7 @@ Are you sure you want to do this?
       <message name="IDS_EXTENSIONS_BRAVE_PRIVATE_AND_TOR_WARNING" desc="Displayed in extensions management UI after an extension is selected to be run in private mode and Tor mode.">
         To disable this extension in private mode and Tor mode, unselect this option.
       </message>
-      <!-- Brave Clear Browsing Data On Exit Settings -->
-      <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
-        On exit
-      </message>
+
       <!-- In-page Translation -->
       <message name="IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
         Translate this page? This will send all text on this page to Microsoft for translation.
@@ -1192,6 +462,7 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN" desc="Text to show for the don't ask again button.">
         Don't ask me again
       </message>
+
       <!-- App shortcuts -->
       <if expr="not is_win">
         <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_NIGHTLY" desc="Name for the Brave Apps Start Menu folder name.">
@@ -1210,119 +481,9 @@ Are you sure you want to do this?
           Brave Browser Development Apps
         </message>
       </if>
-      <!-- Avatars. Generated via zsh and node:
-        declare -i a=56
-        for file in $(cat < avatarlist); do node -e "console.log(\`<message name=\"IDS_BRAVE_AVATAR_LABEL_$a\" desc=\"The label for the $file avatar.\">
-    \${\`$file\`.split('_').map(w => w[0].toUpperCase() + w.substr(1)).join(' ').replace('.png', '')}
-</message>\`)"; a=a+1; done | pbcopy
-      -->
-      <message name="IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER" desc="The label for the avatar_edgy_rewards.png avatar.">
-          Avatar Edgy Rewards
-      </message>
+
+      <!-- Brave default browser dialog -->
       <if expr="not is_android">
-        <message name="IDS_BRAVE_AVATAR_LABEL_56" desc="The label for the avatar_edgy_brave.png avatar.">
-            Avatar Edgy Brave
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_57" desc="The label for the avatar_edgy_ocean.png avatar.">
-            Avatar Edgy Ocean
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_58" desc="The label for the avatar_edgy_grass.png avatar.">
-            Avatar Edgy Grass
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_59" desc="The label for the avatar_edgy_corn.png avatar.">
-            Avatar Edgy Corn
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_60" desc="The label for the avatar_edgy_royal.png avatar.">
-            Avatar Edgy Royal
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_61" desc="The label for the avatar_edgy_ninja.png avatar.">
-            Avatar Edgy Ninja
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_62" desc="The label for the avatar_paladin_rewards.png avatar.">
-            Avatar Paladin Rewards
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_63" desc="The label for the avatar_paladin_brave.png avatar.">
-            Avatar Paladin Brave
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_64" desc="The label for the avatar_paladin_ocean.png avatar.">
-            Avatar Paladin Ocean
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_65" desc="The label for the avatar_paladin_grass.png avatar.">
-            Avatar Paladin Grass
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_66" desc="The label for the avatar_paladin_corn.png avatar.">
-            Avatar Paladin Corn
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_67" desc="The label for the avatar_paladin_royal.png avatar.">
-            Avatar Paladin Royal
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_68" desc="The label for the avatar_paladin_ninja.png avatar.">
-            Avatar Paladin Ninja
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_69" desc="The label for the avatar_gleam_rewards.png avatar.">
-            Avatar Gleam Rewards
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_70" desc="The label for the avatar_gleam_brave.png avatar.">
-            Avatar Gleam Brave
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_71" desc="The label for the avatar_gleam_ocean.png avatar.">
-            Avatar Gleam Ocean
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_72" desc="The label for the avatar_gleam_grass.png avatar.">
-            Avatar Gleam Grass
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_73" desc="The label for the avatar_gleam_corn.png avatar.">
-            Avatar Gleam Corn
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_74" desc="The label for the avatar_gleam_royal.png avatar.">
-            Avatar Gleam Royal
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_75" desc="The label for the avatar_gleam_ninja.png avatar.">
-            Avatar Gleam Ninja
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_76" desc="The label for the avatar_oval_rewards.png avatar.">
-            Avatar Oval Rewards
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_77" desc="The label for the avatar_oval_brave.png avatar.">
-            Avatar Oval Brave
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_78" desc="The label for the avatar_oval_ocean.png avatar.">
-            Avatar Oval Ocean
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_79" desc="The label for the avatar_oval_grass.png avatar.">
-            Avatar Oval Grass
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_80" desc="The label for the avatar_oval_corn.png avatar.">
-            Avatar Oval Corn
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_81" desc="The label for the avatar_oval_royal.png avatar.">
-            Avatar Oval Royal
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_82" desc="The label for the avatar_oval_ninja.png avatar.">
-            Avatar Oval Ninja
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_83" desc="The label for the avatar_bonbon_rewards.png avatar.">
-            Avatar Bonbon Rewards
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_84" desc="The label for the avatar_bonbon_brave.png avatar.">
-            Avatar Bonbon Brave
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_85" desc="The label for the avatar_bonbon_ocean.png avatar.">
-            Avatar Bonbon Ocean
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_86" desc="The label for the avatar_bonbon_grass.png avatar.">
-            Avatar Bonbon Grass
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_87" desc="The label for the avatar_bonbon_corn.png avatar.">
-            Avatar Bonbon Corn
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_88" desc="The label for the avatar_bonbon_royal.png avatar.">
-            Avatar Bonbon Royal
-        </message>
-        <message name="IDS_BRAVE_AVATAR_LABEL_89" desc="The label for the avatar_bonbon_ninja.png avatar.">
-            Avatar Bonbon Ninja
-        </message>
-        <!-- Brave default browser dialog -->
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_HEADER_TEXT" desc="The header text for default browser dialog">
           Set Brave as your default browser
         </message>
@@ -1338,7 +499,10 @@ Are you sure you want to do this?
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for default browser dialog cancel button">
           Not now
         </message>
-        <!-- Web Discovery dialog -->
+      </if>
+
+      <!-- Web Discovery dialog -->
+      <if expr="not is_android">
         <message name="IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT" desc="The text for web discovery dialog header">
           Want to make Brave Search even better?
         </message>
@@ -1357,7 +521,10 @@ Are you sure you want to do this?
         <message name="IDS_WEB_DISCOVERY_DIALOG_CANCEL_BUTTON_TEXT" desc="The text for cancel button">
           No thanks
         </message>
-        <!-- Brave crash report permission ask dialog -->
+      </if>
+
+      <!-- Brave crash report permission ask dialog -->
+      <if expr="not is_android">
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL" desc="The text for ok button">
           Allow
         </message>
@@ -1382,9 +549,34 @@ Are you sure you want to do this?
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting
         </message>
+        <!-- Closing confirm dialog -->
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL" desc="The text for ok button in the dialog">
+          Close all
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_CANCEL_BUTTON_LABEL" desc="The text for cancel button in the dialog">
+          Cancel
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_HEADER_LABEL" desc="The text for header part in the dialog">
+          Close all tabs?
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_CONTENTS_LABEL" desc="The text for content part in the dialog">
+          You have <ph name="NUMBER_OF_TABS">$1<ex>2</ex></ph> tabs open in this browser window.
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_CONTENTS_LABEL_TAB_NUM_PART" desc="This is used for finding 'n tabs' part in above DLG_CONTENTS_LABEL. So both should have same translation.">
+          <ph name="NUMBER_OF_TABS">$1<ex>2</ex></ph> tabs
+        </message>
+        <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_DONT_ASK_AGAIN_LABEL" desc="The text for checkbox in the dialog">
+          Don't ask me again
+        </message>
       </if>
 
       <!-- Brave Ads -->
+      <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
+        Bat Ads Service
+      </message>
+      <message name="IDS_UTILITY_PROCESS_LEDGER_NAME" desc="The utility process running ledger">
+        Bat Ledger Service
+      </message>
       <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_CLOSE_BUTTON" desc="Text to be spoken for the ad notification close button">
         Close
       </message>
@@ -1536,6 +728,7 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
       </message>
+
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
         Sorry, that page is missing.
@@ -1552,6 +745,7 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT" desc="Text to show for the don't ask again button.">
         Don't ask me again
       </message>
+
       <!-- Brave's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
         Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
@@ -1567,6 +761,7 @@ Are you sure you want to do this?
           Bookmark All Tabs...
         </message>
       </if>
+
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
@@ -1628,9 +823,8 @@ Are you sure you want to do this?
           </message>
         </if>
       </if>
-      <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
-        To add a bookmark, click the bookmark button next to the address bar
-      </message>
+
+      <!-- Full disk -->
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_TITLE" desc="The label for full disk access dialog title">
         Full Disk Access required
       </message>
@@ -1643,8 +837,10 @@ Are you sure you want to do this?
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT" desc="The label for open privacy panel">
         Open System Preferences
       </message>
-      <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">
-        Site and Shields Settings
+
+      <!-- Bookmarks -->
+      <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
+        To add a bookmark, click the bookmark button next to the address bar
       </message>
       <message name="IDS_BOOKMARK_BAR_IMPORT_LINK" desc="text shown for importing ">
         Import bookmarks now...
@@ -1652,9 +848,7 @@ Are you sure you want to do this?
       <message name="IDS_BOOKMARKS_NO_ITEMS" desc="Text shown when the user has no bookmarks">
         For quick access, place your bookmarks here on the bookmarks bar.
       </message>
-      <message name="IDS_SETTINGS_RESET_REWARDS_DATA" desc="The label for opening rewards manage wallet dialog">
-        Reset Brave Rewards data...
-      </message>
+
       <!--First-run dialog messages -->
       <message name="IDS_FIRSTRUN_DLG_HEADER_TEXT" desc="Text for FirstRun dialog header">
         Ready for the best privacy online?
@@ -1668,87 +862,8 @@ Are you sure you want to do this?
       <message name="IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL" desc="Text for FirstRun dialog cancel button">
         Maybe later
       </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM" desc="The label for opening wallet networks list">
-        Networks
-      </message>
-      <message name="IDS_SETTINGS_WALLET_ADD_NETWORK_TITLE" desc="The title for the wallet network dialog">
-        Add new network
-      </message>
-      <message name="IDS_SETTINGS_WALLET_ADD_NETWORK_INVALID_ADDRESS_ERROR" desc="The error message in the wallet network dialog for invalid addresses">
-        Invalid address
-      </message>
-      <message name="IDS_SETTINGS_WALLET_ADD_NETWORK" desc="The title of button to add a new network">
-        Submit
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORK_LIST_TITLE" desc="The title of the list with wallet networks">
-        Wallet networks
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAIN_ID_TITLE" desc="The title of the chain id input for the wallet network dialog">
-        The id of new chain
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAIN_ID_PLACEHOLDER" desc="The placeholder of the chain id input for the wallet network dialog">
-        A positive decimal number
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAIN_NAME_TITLE" desc="The title of the chain name input for the wallet network dialog">
-        The name of new chain
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAIN_NAME_PLACEHOLDER" desc="The placeholder of the chain name input for the wallet network dialog">
-        Enter chain name
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CURRENCY_NAME_TITLE" desc="The title of the currency name input for the wallet network dialog">
-        Chain's currency name
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CURRENCY_NAME_PLACEHOLDER" desc="The placehodler of the currency name input for the wallet network dialog">
-        Enter currency name
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CURRENCY_SYMBOL_TITLE" desc="The title of the currency symbol input for the wallet network dialog">
-        Chain's currency symbol
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CURRENCY_SYMBOL_PLACEHOLDER" desc="The placeholder of the currency symbol input for the wallet network dialog">
-        Enter currency symbol
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CURRENCY_DECIMALS_TITLE" desc="The title of the currency decimals input for the wallet network dialog">
-        Chain's currency decimals
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CURRENCY_DECIMALS_PLACEHOLDER" desc="The placeholder of the currency decimals input for the wallet network dialog">
-        Enter currency decimals
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_RPC_TITLE" desc="The title of the rpc urls for the wallet network dialog">
-        RPC URLs
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_URL_PLACEHOLDER" desc="The placeholder of the urls for the wallet network dialog">
-        Enter URL
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_ICONS_TITLE" desc="The title of the icons urls for the wallet network dialog">
-        Icon URLs
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_BLOCKS_TITLE" desc="The title of the block urls for the wallet network dialog">
-        Block explorer URLs
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_MANDATORY_ERROR" desc="The error text of the wallet network dialog about empty mandatory fields">
-        This field cannot be blank.
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAID_ID_ERROR" desc="The error text of the wallet network dialog for invalid chain id fields">
-        Invalid format, the chain id is a positive number
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED" desc="The error text of the wallet network dialog for failed submission">
-        Internal Error, unable to add network.
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_NATIVE_CURRENCY_ERROR" desc="The error text of the wallet network dialog for empty currencies">
-         Please fill in all infromation about native currency
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM_DESC" desc="The description of networks item on wallet settings page">
-        Wallet networks customization
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_ERROR" desc="The text of error message on wallet networks page">
-        Unable to add network
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_CONFIRMATION" desc="The text of confirmation to delete wallet network">
-        Do you really want to delete <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
-      </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_REPLACE" desc="The message for the wallet networks page to replace existing network">
-        Do you want to update the existing network?
-      </message>
+
+      <!--Add new items to the appropriate sections above -->
     </messages>
   </release>
 </grit>

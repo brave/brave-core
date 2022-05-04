@@ -32,8 +32,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
 
@@ -145,28 +145,27 @@ void BraveToolbarView::Init() {
         browser, command, ui::DispositionFromEventFlags(event.flags()));
   };
 
-  bookmark_ = new BookmarkButton(
-      base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB));
+  DCHECK(location_bar_);
+  bookmark_ =
+      AddChildViewAt(std::make_unique<BookmarkButton>(base::BindRepeating(
+                         callback, browser_, IDC_BOOKMARK_THIS_TAB)),
+                     GetIndexOf(location_bar_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
-  DCHECK(location_bar_);
-  AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImageAndText();
 
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
-    wallet_ = new WalletButton(GetAppMenuButton(), profile->GetPrefs());
+    wallet_ = AddChildViewAt(
+        std::make_unique<WalletButton>(GetAppMenuButton(), profile->GetPrefs()),
+        GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
-  }
-
-  if (wallet_) {
-    AddChildViewAt(wallet_, GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->UpdateImageAndText();
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (brave_vpn::IsBraveVPNEnabled(profile)) {
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
@@ -182,6 +181,7 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveToolbarView::OnVPNButtonVisibilityChanged() {
+  DCHECK(brave_vpn_);
   brave_vpn_->SetVisible(show_brave_vpn_button_.GetValue());
 }
 #endif

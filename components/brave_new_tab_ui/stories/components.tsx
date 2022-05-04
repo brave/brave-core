@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
-import ThemeProvider from '../../common/StorybookThemeProvider'
+import ThemeProvider from '../../common/BraveCoreThemeProvider'
 // Components
 import LoadingComponent from '../components/loading'
 import OutlineButtonComponent from '../components/outlineButton'

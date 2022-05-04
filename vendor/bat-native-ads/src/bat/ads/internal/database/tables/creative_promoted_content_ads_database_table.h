@@ -12,7 +12,7 @@
 #include "base/check_op.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table_aliases.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -24,10 +24,11 @@ namespace table {
 class Campaigns;
 class CreativeAds;
 class Dayparts;
+class Deposits;
 class GeoTargets;
 class Segments;
 
-class CreativePromotedContentAds final : public Table {
+class CreativePromotedContentAds final : public TableInterface {
  public:
   CreativePromotedContentAds();
   ~CreativePromotedContentAds() override;
@@ -77,13 +78,14 @@ class CreativePromotedContentAds final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativePromotedContentAdsCallback callback);
 
-  void MigrateToV19(mojom::DBTransaction* transaction);
+  void MigrateToV24(mojom::DBTransaction* transaction);
 
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
+  std::unique_ptr<Deposits> deposits_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
   std::unique_ptr<Segments> segments_database_table_;
 };

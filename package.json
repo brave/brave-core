@@ -1,13 +1,13 @@
 {
   "name": "brave-core",
-  "version": "1.39.29",
+  "version": "1.40.32",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "check_security": "node ./build/commands/scripts/checkSecurity.js",
     "cibuild": "node ./build/commands/scripts/commands.js cibuild",
-    "init": "cd ../../ && npm run init --",
+    "init": "cd ../../ && npm run --prefix src/brave sync -- --init",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
     "create_dist": "node ./build/commands/scripts/commands.js create_dist",
     "sync": "node ./build/commands/scripts/sync.js",
@@ -255,7 +255,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "100.0.4896.60",
+        "tag": "101.0.4951.54",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }

@@ -192,19 +192,6 @@
     "message": "Automatski doprinosi",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Idite na $provider$ da biste dovršili verifikaciju",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Dovršite verifikaciju identiteta da biste počeli da dobijate nagrade.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Odjavljeno",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "U toku",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "Trenuto postoji problem u potvrđivanju $provider$. Vaše Brave nagrade će ostati na čekanju i automatski će se ponovo proveravati, ali možete i ponovo pokušati kasnije.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Nagrade od Ads",

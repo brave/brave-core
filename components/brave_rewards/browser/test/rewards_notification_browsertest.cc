@@ -319,13 +319,10 @@ IN_PROC_BROWSER_TEST_F(
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
 
-  if (notifications.empty()) {
-    SUCCEED();
-    return;
-  }
-
-  bool is_showing_notification = IsShowingNotificationForType(
-      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+  bool is_showing_notification =
+      !notifications.empty() &&
+      IsShowingNotificationForType(
+          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_FALSE(is_showing_notification);
 }
@@ -353,13 +350,10 @@ IN_PROC_BROWSER_TEST_F(
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
 
-  if (notifications.empty()) {
-    SUCCEED();
-    return;
-  }
-
-  bool is_showing_notification = IsShowingNotificationForType(
-      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+  bool is_showing_notification =
+      !notifications.empty() &&
+      IsShowingNotificationForType(
+          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_FALSE(is_showing_notification);
 }
@@ -387,13 +381,10 @@ IN_PROC_BROWSER_TEST_F(
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
 
-  if (notifications.empty()) {
-    SUCCEED();
-    return;
-  }
-
-  bool is_showing_notification = IsShowingNotificationForType(
-      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+  bool is_showing_notification =
+      !notifications.empty() &&
+      IsShowingNotificationForType(
+          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_FALSE(is_showing_notification);
 }
@@ -421,13 +412,10 @@ IN_PROC_BROWSER_TEST_F(
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
 
-  if (notifications.empty()) {
-    FAIL() << "Should see Insufficient Funds notification";
-    return;
-  }
-
-  bool is_showing_notification = IsShowingNotificationForType(
-      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+  bool is_showing_notification =
+      !notifications.empty() &&
+      IsShowingNotificationForType(
+          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_TRUE(is_showing_notification);
 }

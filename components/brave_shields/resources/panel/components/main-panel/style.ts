@@ -24,7 +24,7 @@ export const Box = styled.div`
 `
 
 export const HeaderBox = styled.section`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background03};
   padding: 22px 17px 22px 17px;
 `
 
@@ -34,7 +34,6 @@ export const SiteTitleBox = styled.section`
   grid-template-columns: 24px 1fr 10px;
   grid-gap: 10px;
   align-items: center;
-  margin-bottom: 10px;
 `
 
 export const FavIconBox = styled.i`
@@ -69,6 +68,7 @@ export const CountBox = styled.section`
   align-items: center;
   grid-gap: 10px;
   overflow: hidden;
+  margin-top: 10px;
 `
 
 export const BlockCount = styled.span`
@@ -99,7 +99,7 @@ export const ControlBox = styled.div`
 `
 
 export const ShieldsIcon = styled.i<ShieldsIconProps>`
-  --fill-color: ${(p) => p.theme.color.text02};
+  --fill-color: #5E6175;
   width: 100%;
   height: auto;
   grid-column: 1;
@@ -167,12 +167,13 @@ export const ReportSiteBox = styled.div`
 
 export const ReportSiteAction = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 
   span {
-    flex: 1;
+    font-weight: 500;
+    font-size: 14px;
     color: ${(p) => p.theme.color.text03};
+    margin-bottom: 16px;
   }
 `
 
@@ -187,11 +188,13 @@ export const PanelContent = styled.section`
 
 export const AdvancedControlsButton = styled.button`
   --border: 3px solid transparent;
-  --text-color: ${(p) => p.theme.color.text01};
+  --svg-color: ${(p) => p.theme.color.interactive05};
+  --text-color: ${(p) => p.theme.color.interactive06};
 
   background-color: ${(p) => p.theme.color.background03};
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 14px;
+  font-weight: 500;
   color: var(--text-color);
   width: 100%;
   padding: 10px 17px;
@@ -201,6 +204,7 @@ export const AdvancedControlsButton = styled.button`
   grid-gap: 10px;
   align-items: center;
   text-align: left;
+  cursor: pointer;
 
   i { 
     grid-column: 1;
@@ -210,20 +214,21 @@ export const AdvancedControlsButton = styled.button`
     grid-column: 2;
   }
 
-  .icon-globe {
-    path {
-      fill: ${(p) => p.theme.color.interactive05};
-    }
+  svg > path {
+    fill: var(--svg-color);
   }
 
   &:hover {
-    --text-color: ${(p) => p.theme.color.interactive05};
+    --text-color: ${(p) => p.theme.color.interactive07};
+    --svg-color: ${(p) => p.theme.color.interactive08};
   }
 
   &:focus-visible {
     --border: 3px solid ${(p) => p.theme.color.focusBorder};
   }
 `
+
+export const GlobalDefaultsButton = styled(AdvancedControlsButton)``
 
 export const CaratIcon = styled(CaratStrongDownIcon)<CaratIconProps>`
   --rotate: rotate(0deg);

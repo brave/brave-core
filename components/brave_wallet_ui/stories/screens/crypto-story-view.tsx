@@ -10,7 +10,6 @@ import {
   TopTabNavTypes,
   BraveWallet,
   AppsListType,
-  PriceDataObjectType,
   UserAssetInfoType,
   AccountTransactions,
   WalletAccountType,
@@ -31,32 +30,19 @@ import {
 
 export interface Props {
   defaultCurrencies: DefaultCurrencies
-  isFetchingPortfolioPriceHistory: boolean
   selectedNetwork: BraveWallet.NetworkInfo
   showAddModal: boolean
-  isLoading: boolean
   userAssetList: UserAssetInfoType[]
   transactions: AccountTransactions
-  portfolioBalance: string
-  selectedAsset: BraveWallet.BlockchainToken | undefined
-  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
-  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
-  selectedAssetPriceHistory: PriceDataObjectType[]
-  portfolioPriceHistory: PriceDataObjectType[]
-  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  selectedTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
   accounts: WalletAccountType[]
   needsBackup: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  fullAssetList: BraveWallet.BlockchainToken[]
   privateKey: string
   transactionSpotPrices: BraveWallet.AssetPrice[]
   hasImportError: boolean
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
-  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
-  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
@@ -71,13 +57,9 @@ export interface Props {
   onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
   onImportFilecoinAccount: (accountName: string, privateKey: string, network: string) => void
   onCreateAccount: (name: string) => void
-  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
-  onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
   onShowBackup: () => void
   onShowVisibleAssetsModal: (value: boolean) => void
   showVisibleAssetsModal: boolean
-  onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
 }
 
 const CryptoStoryView = (props: Props) => {
@@ -88,31 +70,17 @@ const CryptoStoryView = (props: Props) => {
     transactionSpotPrices,
     privateKey,
     selectedNetwork,
-    fullAssetList,
-    portfolioPriceHistory,
-    userAssetList,
-    selectedTimeline,
-    selectedPortfolioTimeline,
-    selectedAssetPriceHistory,
     needsBackup,
     accounts,
     networkList,
-    selectedAsset,
-    portfolioBalance,
     transactions,
-    selectedAssetFiatPrice,
-    selectedAssetCryptoPrice,
-    isLoading,
     showAddModal,
-    isFetchingPortfolioPriceHistory,
     showVisibleAssetsModal,
     isFilecoinEnabled,
     isSolanaEnabled,
     onShowVisibleAssetsModal,
     onLockWallet,
     onShowBackup,
-    onChangeTimeline,
-    onSelectAsset,
     onCreateAccount,
     onConnectHardwareWallet,
     onAddHardwareAccounts,
@@ -125,11 +93,7 @@ const CryptoStoryView = (props: Props) => {
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
-    onSetImportError,
-    onFindTokenInfoByContractAddress,
-    onUpdateVisibleAssets,
-    onAddCustomAsset,
-    foundTokenInfoByContractAddress
+    onSetImportError
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
@@ -202,21 +166,6 @@ const CryptoStoryView = (props: Props) => {
     alert('Will Nav to brave://settings/wallet')
   }
 
-  const onClickRetryTransaction = () => {
-    // Does nothing in storybook
-    alert('Will retry transaction')
-  }
-
-  const onClickCancelTransaction = () => {
-    // Does nothing in storybook
-    alert('Will cancel transaction')
-  }
-
-  const onClickSpeedupTransaction = () => {
-    // Does nothing in storybook
-    alert('Will speedup transaction')
-  }
-
   const onClickMore = () => {
     setShowMore(true)
   }
@@ -280,40 +229,10 @@ const CryptoStoryView = (props: Props) => {
       }
       {selectedTab === 'portfolio' &&
         <PortfolioView
-          defaultCurrencies={defaultCurrencies}
           toggleNav={toggleNav}
-          accounts={accounts}
-          networkList={networkList}
-          onChangeTimeline={onChangeTimeline}
-          selectedAssetPriceHistory={selectedAssetPriceHistory}
-          selectedTimeline={selectedTimeline}
-          selectedPortfolioTimeline={selectedPortfolioTimeline}
-          onSelectAsset={onSelectAsset}
-          onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
-          addUserAssetError={false}
-          selectedAsset={selectedAsset}
-          portfolioBalance={portfolioBalance}
-          portfolioPriceHistory={portfolioPriceHistory}
-          transactions={transactions}
-          selectedAssetFiatPrice={selectedAssetFiatPrice}
-          selectedAssetCryptoPrice={selectedAssetCryptoPrice}
-          userAssetList={userAssetList}
-          isLoading={isLoading}
-          selectedNetwork={selectedNetwork}
-          fullAssetList={fullAssetList}
-          userVisibleTokensInfo={userVisibleTokensInfo}
-          isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
-          transactionSpotPrices={transactionSpotPrices}
-          onRetryTransaction={onClickRetryTransaction}
-          onSpeedupTransaction={onClickSpeedupTransaction}
-          onCancelTransaction={onClickCancelTransaction}
           onShowVisibleAssetsModal={onShowVisibleAssetsModal}
           showVisibleAssetsModal={showVisibleAssetsModal}
-          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
-          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
-          onUpdateVisibleAssets={onUpdateVisibleAssets}
-          onAddCustomAsset={onAddCustomAsset}
         />
       }
       {selectedTab === 'accounts' &&
@@ -328,16 +247,11 @@ const CryptoStoryView = (props: Props) => {
           onViewPrivateKey={onViewPrivateKey}
           goBack={goBack}
           onSelectAccount={onSelectAccount}
-          onSelectAsset={onSelectAsset}
           privateKey={privateKey}
           transactions={transactions}
-          selectedNetwork={selectedNetwork}
           transactionSpotPrices={transactionSpotPrices}
           userVisibleTokensInfo={userVisibleTokensInfo}
           selectedAccount={selectedAccount}
-          onRetryTransaction={onClickRetryTransaction}
-          onSpeedupTransaction={onClickSpeedupTransaction}
-          onCancelTransaction={onClickCancelTransaction}
           networkList={networkList}
         />
       }

@@ -43,6 +43,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   // TxManager
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
+                                const absl::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
@@ -69,6 +70,8 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::EthTxManagerProxy::MakeERC20ApproveDataCallback;
   using MakeERC721TransferFromDataCallback =
       mojom::EthTxManagerProxy::MakeERC721TransferFromDataCallback;
+  using MakeERC1155TransferFromDataCallback =
+      mojom::EthTxManagerProxy::MakeERC1155TransferFromDataCallback;
   using SetGasPriceAndLimitForUnapprovedTransactionCallback = mojom::
       EthTxManagerProxy::SetGasPriceAndLimitForUnapprovedTransactionCallback;
   using SetGasFeeAndLimitForUnapprovedTransactionCallback = mojom::
@@ -96,6 +99,13 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                   const std::string& token_id,
                                   const std::string& contract_address,
                                   MakeERC721TransferFromDataCallback);
+
+  void MakeERC1155TransferFromData(const std::string& from,
+                                   const std::string& to,
+                                   const std::string& token_id,
+                                   const std::string& value,
+                                   const std::string& contract_address,
+                                   MakeERC1155TransferFromDataCallback);
 
   void SetGasPriceAndLimitForUnapprovedTransaction(
       const std::string& tx_meta_id,
@@ -142,9 +152,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   void AddUnapprovedTransaction(mojom::TxDataPtr tx_data,
                                 const std::string& from,
+                                const url::Origin& origin,
                                 AddUnapprovedTransactionCallback);
   void AddUnapproved1559Transaction(mojom::TxData1559Ptr tx_data,
                                     const std::string& from,
+                                    const url::Origin& origin,
                                     AddUnapprovedTransactionCallback);
 
   void NotifyUnapprovedTxUpdated(TxMeta* meta);
@@ -168,6 +180,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                             mojom::ProviderError error,
                             const std::string& error_message);
   void OnGetGasPrice(const std::string& from,
+                     const url::Origin& origin,
                      const std::string& to,
                      const std::string& value,
                      const std::string& data,
@@ -179,6 +192,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
       const std::string& from,
+      const absl::optional<url::Origin>& origin,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       const std::string& result,
@@ -194,6 +208,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
   void OnGetGasOracleForUnapprovedTransaction(
       const std::string& from,
+      const url::Origin& origin,
       const std::string& to,
       const std::string& value,
       const std::string& data,
@@ -205,6 +220,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   void ContinueSpeedupOrCancelTransaction(
       const std::string& from,
+      const absl::optional<url::Origin>& origin,
       const std::string& gas_limit,
       std::unique_ptr<EthTransaction> tx,
       SpeedupOrCancelTransactionCallback callback,
@@ -213,6 +229,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const std::string& error_message);
   void ContinueSpeedupOrCancel1559Transaction(
       const std::string& from,
+      const absl::optional<url::Origin>& origin,
       const std::string& gas_limit,
       std::unique_ptr<Eip1559Transaction> tx,
       SpeedupOrCancelTransactionCallback callback,

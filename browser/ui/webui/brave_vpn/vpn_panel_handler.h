@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
@@ -18,7 +20,7 @@ namespace content {
 class WebUI;
 }  // namespace content
 
-class BraveVpnServiceDesktop;
+class VPNPanelUI;
 
 class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
  public:
@@ -27,7 +29,8 @@ class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
 
   VPNPanelHandler(
       mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> receiver,
-      ui::MojoBubbleWebUIController* webui_controller);
+      VPNPanelUI* panel_controller,
+      Profile* profile);
 
   VPNPanelHandler(const VPNPanelHandler&) = delete;
   VPNPanelHandler& operator=(const VPNPanelHandler&) = delete;
@@ -39,7 +42,8 @@ class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
 
  private:
   mojo::Receiver<brave_vpn::mojom::PanelHandler> receiver_;
-  ui::MojoBubbleWebUIController* const webui_controller_;
+  raw_ptr<VPNPanelUI> const panel_controller_;
+  raw_ptr<Profile> profile_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_HANDLER_H_

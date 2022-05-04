@@ -33,8 +33,9 @@ DataStoreService::~DataStoreService() {
 }
 
 void DataStoreService::OnInitComplete(bool success) {
-  if (success)
+  if (success) {
     EnforceRetentionPolicies();
+  }
 }
 
 void DataStoreService::Init() {

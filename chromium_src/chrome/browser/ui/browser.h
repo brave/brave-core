@@ -6,8 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 
+#include "chrome/browser/ui/unload_controller.h"
+
+#define FinishWarnBeforeClosing virtual FinishWarnBeforeClosing
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
 #define ShouldDisplayFavicon virtual ShouldDisplayFavicon
+#define TryToCloseWindow virtual TryToCloseWindow
+#define ResetTryToCloseWindow virtual ResetTryToCloseWindow
 #define BRAVE_BROWSER_H              \
  private:                            \
   friend class BookmarkPrefsService; \
@@ -16,7 +21,10 @@
 #include "src/chrome/browser/ui/browser.h"
 
 #undef BRAVE_BROWSER_H
-#undef ScheduleUIUpdate
+#undef ResetTryToCloseWindow
+#undef TryToCloseWindow
 #undef ShouldDisplayFavicon
+#undef ScheduleUIUpdate
+#undef FinishWarnBeforeClosing
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_

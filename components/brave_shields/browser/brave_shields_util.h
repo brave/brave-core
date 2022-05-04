@@ -43,6 +43,8 @@ enum class DomainBlockingType {
   kAggressive,
 };
 
+struct ShieldsSettingCounts;
+
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
@@ -64,7 +66,8 @@ ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url);
 void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      ControlType type,
                                      const GURL& url,
-                                     PrefService* local_state = nullptr);
+                                     PrefService* local_state = nullptr,
+                                     PrefService* profile_state = nullptr);
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
@@ -94,7 +97,8 @@ bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,
                                   const GURL& url,
-                                  PrefService* local_state = nullptr);
+                                  PrefService* local_state = nullptr,
+                                  PrefService* profile_state = nullptr);
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url);
 
@@ -120,6 +124,9 @@ bool MaybeChangeReferrer(bool allow_referrers,
                          const GURL& current_referrer,
                          const GURL& target_url,
                          content::Referrer* output_referrer);
+
+ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
+ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 
 }  // namespace brave_shields
 

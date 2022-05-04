@@ -95,7 +95,6 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
 
   std::unique_ptr<skus::SkusContextImpl> context_;
   ::rust::Box<skus::CppSDK> sdk_;
-  PrefService* prefs_;
   mojo::ReceiverSet<mojom::SkusService> receivers_;
   base::WeakPtrFactory<SkusServiceImpl> weak_factory_{this};
 };

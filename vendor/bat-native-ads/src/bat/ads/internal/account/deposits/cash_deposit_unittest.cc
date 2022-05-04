@@ -26,7 +26,7 @@ class BatAdsCashDepositIntegrationTest : public UnitTestBase {
   ~BatAdsCashDepositIntegrationTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};

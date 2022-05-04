@@ -56,7 +56,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
 <translation id="597020512043916976">Toon topsites in de 
 suggesties voor automatisch aanvullen</translation>
-<translation id="264150068416846820">Toon door Brave voorgestelde sites in de suggesties voor automatisch aanvullen</translation>
+<translation id="301088458323355543">Voorgestelde sites in de suggesties voor automatisch aanvullen tonen</translation>
 <translation id="5529693968082667490">Knop voor het zoeken van tabbladen tonen</translation>
 <translation id="6414370348346025511">Standaardbescherming staat aan.</translation>
 <translation id="814018970995616154">Vergelijkt ULS's met een lijst met onveilige sites die opgeslagen is in Brave.</translation>
@@ -71,8 +71,8 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4851215387785619212">Brave-privéadvertenties</translation>
 <translation id="7808122468353671181">Verdien tokens door Brave-advertenties te bekijken. De gepresenteerde advertenties zijn gebaseerd op jouw interesses, afgeleid uit je browsegedrag. Persoonlijke gegevens en de browsergeschiedenis verlaten nooit je browser.</translation>
 <translation id="1758947220824279023">Maximumaantal advertenties om weer te geven</translation>
-<translation id="8578912649458880781">Advertenties afhankelijk van staat</translation>
-<translation id="3678362265519557511">Dit stelt Brave in staat om advertenties speciaal voor jouw staat te laten zien. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">Regionale advertentierelevantie</translation>
+<translation id="2196950072404588793">Dit stelt Brave in staat om advertenties speciaal voor uw regio te laten zien. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="9132509928968869844">Maandelijkse limiet automatische bijdragen</translation>
 <translation id="7286722244752781970">Minimum tijd op pagina voordat een bezoek wordt geregistreerd</translation>
@@ -145,8 +145,10 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="130615081792797568">Eenvoudig overzicht</translation>
 <translation id="2360360976480535628">Geavanceerde weergave</translation>
 <translation id="2133317862976486547">Trackers &amp; advertenties geblokkeerd</translation>
-<translation id="4385707520896576447">Cookies geblokkeerd</translation>
-<translation id="4978786495456601191">Vingerafdruk blokkeren</translation>
+<translation id="8823559166155093873">Cookies blokkeren</translation>
+<translation id="6531019308847917584">Fingerprinting blokkeren</translation>
+<translation id="7607166182943595829">Voorkom dat sites mij fingerprinten op basis van mijn taalvoorkeuren</translation>
+<translation id="3497934980362703405">Door deze instelling in te schakelen kunnen websites minder over uw taalvoorkeuren te weten komen.</translation>
 <translation id="3570081523466826008">Waardeer verbindingen op naar HTTPS</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
 <translation id="4395160081588457461">Bekijk &amp; voel</translation>
@@ -436,8 +438,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8487693399751278191">Importeer nu bladwijzers...</translation>
 <translation id="2557899542277210112">Voor een snelle toegang kun je hier bladwijzers op de bladwijzerbalk plaatsen.</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
-<translation id="2273851479262317744">Brave instellen als standaardbrowser</translation>
-<translation id="8581710194025054669">Om je privacy online zo goed mogelijk te beschermen, kun je Brave instellen als standaardbrowser op je computer. Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar je op klikt.</translation>
 <translation id="1968543937259008435">Klaar voor de beste privacy online?</translation>
 <translation id="6817415381278637662">Stel Brave in als je standaardbrowser om gebruik te kunnen maken van de privacybescherming van Brave op elke webpagina die je opent.</translation>
 <translation id="8722651357687610395">Stel Brave in als standaard</translation>

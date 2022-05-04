@@ -55,7 +55,7 @@
 <translation id="5197219128592971597">GoogleのAccelerated Mobile Pageバージョンではなく、常にオリジナルの (AMPでない) ページURLにアクセスしてください。</translation>
 <translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
 <translation id="597020512043916976">トップサイトをオートコンプリートでリコメンド</translation>
-<translation id="264150068416846820">Braveの推奨サイトをオートコンプリートで表示</translation>
+<translation id="301088458323355543">推奨サイトをオートコンプリートで表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
 <translation id="6414370348346025511">標準保護がオンになっています。</translation>
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
@@ -70,8 +70,8 @@
 <translation id="4851215387785619212">Braveプライベート広告</translation>
 <translation id="7808122468353671181">Brave Adsを表示することでトークンを獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
 <translation id="1758947220824279023">表示する広告の最大数</translation>
-<translation id="8578912649458880781">地域レベルの広告ターゲティング</translation>
-<translation id="3678362265519557511">これにより、Braveはあなたの地域に特化した広告を表示することができます。<ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
+<translation id="2356652719351432565">地域に特化した広告</translation>
+<translation id="2196950072404588793">これにより、Braveはあなたの地域に特化した広告を表示することができます。<ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="9132509928968869844">毎月の自動支援上限</translation>
 <translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
@@ -144,8 +144,10 @@
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
 <translation id="2133317862976486547">トラッカーと広告をブロック中</translation>
-<translation id="4385707520896576447">クッキーをブロック中</translation>
-<translation id="4978786495456601191">フィンガープリントをブロック中</translation>
+<translation id="8823559166155093873">クッキーをブロック</translation>
+<translation id="6531019308847917584">フィンガープリンティングをブロック</translation>
+<translation id="7607166182943595829">言語設定に基づく、サイトのフィンガープリンティングを禁止</translation>
+<translation id="3497934980362703405">この設定を有効にすると、ウェブサイトに収集される言語設定に関する情報を減らすことができます。</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="4395160081588457461">見て &amp; 感じましょう</translation>
@@ -232,7 +234,7 @@
 <translation id="4718664830805652430">デフォルトのベース通貨</translation>
 <translation id="7992507032049865603">デフォルトのベース暗号資産</translation>
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
-<translation id="4613486011786721686">Brave Walletのアイコンをツールバーで非表示</translation>
+<translation id="4613486011786721686">Braveウォレットのアイコンをツールバーで非表示</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
@@ -436,12 +438,10 @@
 <translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
 <translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
-<translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
-<translation id="8581710194025054669">オンラインでのプライバシーを確保するには、Braveをコンピューターのデフォルトブラウザとして設定しましょう。Braveをデフォルトにすると、クリックしたすべてのウェブリンクがBraveでプライバシー保護されて開きます。</translation>
-<translation id="1968543937259008435">オンラインで最高のプライバシーを確保しましょう</translation>
-<translation id="6817415381278637662">Braveをデフォルトブラウザに設定すると、開いたすべてのWebページでBraveのプライバシー保護機能が利用できます。</translation>
+<translation id="1968543937259008435">オンライン上のプライバシーを確保しましょう</translation>
+<translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
-<translation id="2370739752330685659">今はしない</translation>
+<translation id="2370739752330685659">あとで</translation>
 <translation id="1241283133946520352">ネットワーク</translation>
 <translation id="8205945804087322170">新しいネットワークを追加</translation>
 <translation id="2156993118928861787">アドレスが無効です。</translation>

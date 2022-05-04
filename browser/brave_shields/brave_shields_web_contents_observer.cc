@@ -31,6 +31,7 @@
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
+#include "ipc/ipc_channel_proxy.h"
 #include "ipc/ipc_message_macros.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
@@ -233,12 +234,15 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 #endif
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
-#if !BUILDFLAG(IS_ANDROID)
     if (!web_contents)
       return;
-    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
-        ->HandleItemBlocked(block_type, subresource);
-#endif
+    auto* shields_data_ctrlr =
+        brave_shields::BraveShieldsDataController::FromWebContents(
+            web_contents);
+    DCHECK(shields_data_ctrlr);
+    if (!shields_data_ctrlr)
+      return;
+    shields_data_ctrlr->HandleItemBlocked(block_type, subresource);
   }
 }
 #endif

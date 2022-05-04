@@ -22,8 +22,8 @@ class AdsClientIOS : public ads::AdsClient {
   __unsafe_unretained id<AdsClientBridge> bridge_;
 
   bool IsNetworkConnectionAvailable() const override;
-  bool IsForeground() const override;
-  bool IsFullScreen() const override;
+  bool IsBrowserActive() const override;
+  bool IsBrowserInFullScreenMode() const override;
   bool CanShowBackgroundNotifications() const override;
   void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
@@ -31,8 +31,8 @@ class AdsClientIOS : public ads::AdsClient {
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
-                          const double timestamp) const override;
-  std::vector<double> GetAdEvents(
+                          const base::Time time) const override;
+  std::vector<base::Time> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
   void ResetAdEventsForId(const std::string& id) const override;
@@ -42,13 +42,13 @@ class AdsClientIOS : public ads::AdsClient {
             const std::string& value,
             ads::ResultCallback callback) override;
   void Load(const std::string& name, ads::LoadCallback callback) override;
-  void LoadAdsResource(const std::string& id,
-                       const int version,
-                       ads::LoadCallback callback) override;
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        ads::LoadFileCallback callback) override;
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
-  std::string LoadResourceForId(const std::string& id) override;
+  std::string LoadDataResource(const std::string& name) override;
   void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            ads::GetScheduledCaptchaCallback callback) override;
@@ -79,8 +79,8 @@ class AdsClientIOS : public ads::AdsClient {
   void RecordP2AEvent(const std::string& name,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
-  void LogTrainingCovariates(
-      const ads::mojom::TrainingCovariatesPtr training_covariates) override;
+  void LogTrainingInstance(const brave_federated::mojom::TrainingInstancePtr
+                               training_instance) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

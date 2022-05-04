@@ -14,6 +14,7 @@ import usePreset from './select-preset'
 import useTokenInfo from './token'
 import useExplorer from './explorer'
 import useAssetManagement from './assets-management'
+import { useLib } from './useLib'
 
 export {
   useAssets,
@@ -27,5 +28,6 @@ export {
   usePreset,
   useTokenInfo,
   useExplorer,
-  useAssetManagement
+  useAssetManagement,
+  useLib
 }

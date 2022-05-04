@@ -33,7 +33,7 @@ int BindParameters(mojom::DBCommand* command,
   for (const auto& creative_ad : creative_ads) {
     for (const auto& wallpaper : creative_ad.wallpapers) {
       BindString(command, index++, creative_ad.creative_instance_id);
-      BindString(command, index++, wallpaper.image_url);
+      BindString(command, index++, wallpaper.image_url.spec());
       BindInt(command, index++, wallpaper.focal_point.x);
       BindInt(command, index++, wallpaper.focal_point.y);
     }
@@ -85,8 +85,8 @@ void CreativeNewTabPageAdWallpapers::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 24: {
+      MigrateToV24(transaction);
       break;
     }
 
@@ -115,9 +115,11 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void CreativeNewTabPageAdWallpapers::MigrateToV19(
+void CreativeNewTabPageAdWallpapers::MigrateToV24(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
+
+  util::Drop(transaction, "creative_new_tab_page_ad_wallpapers");
 
   const std::string& query =
       "CREATE TABLE creative_new_tab_page_ad_wallpapers "

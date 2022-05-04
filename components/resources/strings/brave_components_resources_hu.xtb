@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Megoldás</translation>
 <translation id="6991128190741664836">Később</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Pénztárca</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8820817407110198400">Könyvjelzők</translation>
 <translation id="1644574205037202324">Előzmények</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Hiba: a bejelentkezéshez ellenőrzött fiókra van szüksége</translation>
 <translation id="5260522591743022748">Hmm, úgy tűnik, hogy a Brave Rewards jutalmait már egy másik <ph name="PROVIDER"/> fióknál ellenőrizték. Próbálja meg újra ellenőrizni a korábbi fiókjával.</translation>
 <translation id="5111921830714291902">Hiba: eltérő fiók</translation>
+<translation id="6933939911547091461">Sajnos nem sikerült ellenőrizni Brave Jutalmait, mivel régiója jelenleg nem támogatott a Brave Jutalmak-hitelesítés szempontjából.</translation>
+<translation id="8218538368080510976">Hiba: a régió nem támogatott</translation>
 <translation id="5382684862562314222">Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.</translation>
 <translation id="9074594632540931067">Hiba: BAT nem elérhető</translation>
 <translation id="413458922997276130">Uphold-fiókja jelenleg zárolva van.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Összesen kapott</translation>
 <translation id="824449983246282560">Nincs összeg a számláján. A Geminiben szerezhet magának.</translation>
 <translation id="8624961452383848703">Szeretnék átváltani...</translation>
+<translation id="1544192797660353713">Pénztárca</translation>
 <translation id="616639131065447379">Üdvözöl a Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">A Crypto Wallets lehetővé teszi, hogy a Brave-ben kriptovalutával és kapcsolódó eszközökkel dolgozzon. A Crypto Wallets támogatja az Ethereum tokeneket, mint az ETH és a BAT, valamint a gyűjthető tárgyakat, és lehetővé teszi a Ðapps és más intelligens szerződésekkel való munkát. Mindez olyan embereknek szól, akik ismerik az Ethereumot és más blokklánc-rendszereket - vagy lelkesedéssel tanulnak.</translation>
 <translation id="4855440621031541830">Csak akkor használd a Crypto Wallets-et, ha elfogadod, hogy egyedül te felelsz a használattal járó kockázatokért, és a Brave Software nem tartozik felelősséggel vagy kötelezettséggel használat következtében keletkező semmilyen veszteségért, beleértve a véletlen vagy következményes veszteségeket.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750"><ph name="MONTH"/> havi, <ph name="AMOUNT"/> értékű jutalmai úton vannak, nézzen vissza később!</translation>
 <translation id="2659764755126740206">Ugrás az <ph name="PROVIDER"/> fiókomra</translation>
 <translation id="1165667598801520610">Pénz hozzáadása</translation>
-<translation id="2389181429986654814">Ugrás ide: <ph name="PROVIDER"/> az ellenőrzés befejezéséhez</translation>
-<translation id="7793632266654336758">Fejezze be a személyazonossága igazolását, hogy jutalmakban részesülhessen.</translation>
 <translation id="2394961582378297792">Kijelentkezett</translation>
 <translation id="6080167751812750226">Kapcsolat bontása a következővel: <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Becsült bevételek</translation>
 <translation id="4244985009709452836">Jelentkezzen be az <ph name="PROVIDER"/> fiókjába</translation>
 <translation id="2613359062756190460">Egyszeri adományok</translation>
+<translation id="7580329715937096918">Átmeneti hiba lépett fel a következő ellenőrzésénél: <ph name="PROVIDER"/>. Brave Jutalmai függő állapotban maradnak, ezek feldolgozását a rendszer automatikusan ismét megpróbálja majd, de Ön is újrapróbálhatja később.</translation>
 <translation id="590733288489975971">Jutalmak az Ads révén</translation>
 <translation id="6181762795539107980">Nincs hitelesítve</translation>
 <translation id="3026978804849658576">Kimutatás megtekintése</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Tokenadomány elérhető!</translation>
 <translation id="7701466644604753106">Gyorsolvasó bekapcsolása</translation>
 <translation id="763042262431778831">Gyorsolvasó kikapcsolása</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">A felhasználó elutasította a kérelmet.</translation>
 <translation id="2403819048476450281">Érvénytelen paraméterek.</translation>
 <translation id="3955144560853195652">A(z) <ph name="VALUE"/> lánc nem lett hozzáadva</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Üzenet</translation>
 <translation id="3586752056660754651">Aláír</translation>
 <translation id="3484981968509595506">Egy DApp az Ön nyilvános titkosítási kulcsát kéri</translation>
-<translation id="423332628699531400">A(z) <ph name="SITE_ORIGIN"/> a tárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcsa megadásához, a webhely képes lesz titkosított üzeneteket létrehozni Önnek.</translation>
+<translation id="1915212737651531313">A(z) <ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> a tárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcsa megadásához, a webhely képes lesz titkosított üzeneteket létrehozni Önnek.</translation>
 <translation id="3340247553212049934">Megadás</translation>
-<translation id="5883819003576364085">A(z) <ph name="SITE_ORIGIN"/> el szeretné olvasni ezt az üzenetet a kérése végrehajtásához</translation>
+<translation id="1619778919922494944">Ez a DApp el szeretné olvasni az üzenetet a kérelem befejezéséhez</translation>
 <translation id="714506544401754321">Üzenet visszafejtése</translation>
 <translation id="5039804452771397117">Engedélyezés</translation>
 <translation id="9032898664193335413">Engedélyezi az alkalmazás számára, hogy elköltse a következőt: <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Gas ára</translation>
 <translation id="7163997622278957886">Ajánlat</translation>
 <translation id="1074360622426001342">Összeg + gas</translation>
+<translation id="2186011161688824046">Összeg + díj</translation>
 <translation id="7084089311475827950">Nincs adat.</translation>
 <translation id="5821668936183240062">következő</translation>
 <translation id="793994607260936590">első</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave csere-nyereményjáték</translation>
 <translation id="7829441065063984927">Kriptovaluta-nyereményjátékok 7 napon keresztül, összesen nagyjából 500 ezer dollár értékű nyereményekkel.</translation>
 <translation id="8292716346768453265">Nevezzen be most!</translation>
+<translation id="6423985584914773314">Érvénytelen FIL cím</translation>
+<translation id="8528916244724490964">Összes hálózat</translation>
+<translation id="2781668117338732220">Másodlagos hálózatok</translation>
+<translation id="2816106784624007524">A gas határértéke 0-nál nagyobb egész szám legyen</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1180,30 +1186,31 @@
 <translation id="7709075156958117386">Ha a webhely látszólag helytelenül működik, próbálja kikapcsolni a pajzsokat.
     <ph name="LINK_BEFORE"/>Megjegyzés: ez korlátozhatja a Brave adatvédelmi mechanizmusait.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Nyomkövetők, hirdetések és még több blokkolva <ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Haladó beállítások</translation>
+<translation id="650318023204990401">Speciális vezérlők</translation>
 <translation id="5799940914270080805">E beállítások módosításával előfordulhat, hogy egyes webhelyek nem működnek megfelelően.</translation>
 <translation id="9204041448536398473">Globális pajzs beállításai</translation>
 <translation id="2108334320919763866">Globális alapbeállítások</translation>
-<translation id="1928321796986970424">Szűrőlisták</translation>
+<translation id="4516904298421534459">Szűrőlisták</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="131231380815754440">HTTPS engedélyezése</translation>
 <translation id="4824468494729001999">Parancsfájlok letiltása</translation>
 <translation id="3246600097575692802">Letiltott parancsfájlok engedélyezése</translation>
 <translation id="3603525299146223354">Nyomkövetők és hirdetések</translation>
-<translation id="1146309636943354181">Követők és reklámok letiltva (standard)</translation>
-<translation id="5973258875089964805">Követők és reklámok letiltva (agresszív)</translation>
+<translation id="4448697385961650078">Követők és reklámok letiltása</translation>
+<translation id="8593054718053894081">A nyomkövetők és hirdetések agresszív letiltása</translation>
 <translation id="7384778069178817075">Összes követő és reklám engedélyezve</translation>
-<translation id="6203697265754637264">Webhelyközi cookie-k letiltva</translation>
-<translation id="4627427111733173920">Blokkolt sütik</translation>
-<translation id="3972324600756617403">Minden süti engedélyezett</translation>
+<translation id="4941539331405513605">Webhelyközi sütik blokkolása</translation>
+<translation id="6883611015375728278">Összes süti blokkolása</translation>
+<translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="8366221601425141146">Ujjlenyomat-olvasás letiltva</translation>
-<translation id="5582686930349810484">Ujjlenyomat-felismerés letiltva (standard)</translation>
-<translation id="6696441392507885865">Ujjlenyomat-felismerés letiltva (szigorú, a webhelyek összeomolhatnak)</translation>
-<translation id="5882733945883311404">Minden ujjlenyomat-felismerés engedélyezése</translation>
+<translation id="6531019308847917584">Ujjlenyomat-leolvasás letiltása</translation>
+<translation id="1899608006846124237">Ujjlenyomat-leolvasás agresszív letiltása</translation>
+<translation id="8034285923190068220">Ujjlenyomat-leolvasás engedélyezése</translation>
 <translation id="1992750560347846445">Webhely bejelentése kifogásolhatóként</translation>
 <translation id="2387532482048804818">Értesítsen minket, ha a webhely nem működött megfelelően engedélyezett pajzsokkal.</translation>
-<translation id="9167355841012806439">Ezt a webhelyet a Brave adatvédelme nélkül tekinti meg.</translation>
-<translation id="6835073906252142271">Brave pajzsok – <ph name="NUMBER"/> nyomkövető, hirdetés és egyéb blokkolva</translation>
+<translation id="3795015906457257780">Ezt a webhelyet a Brave adatvédelme nélkül tekinti meg.</translation>
+<translation id="7194012750329511146">Brave pajzsok
+<ph name="NUMBER"/> nyomkövető, hirdetés és egyéb blokkolva</translation>
 <translation id="1742469581923031760">Kapcsolódás...</translation>
 <translation id="1287487756047817908">Kapcsolat bontása...</translation>
 <translation id="2325196879156848326">A kapcsolódás sikertelen volt</translation>

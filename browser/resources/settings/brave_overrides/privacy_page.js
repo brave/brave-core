@@ -55,14 +55,44 @@ RegisterPolymerTemplateModifications({
           </settings-subpage>
           </template>
         `)
+        pages.insertAdjacentHTML('beforeend', `
+          <template is="dom-if" route-path="/content/solana" no-search>
+          <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategorySolana')}">
+          <category-default-setting
+          category="[[contentSettingsTypesEnum_.SOLANA]]"
+          toggle-off-label="${I18nBehavior.i18n('siteSettingsSolanaBlock')}"
+          toggle-on-label="${I18nBehavior.i18n('siteSettingsSolanaAsk')}">
+          </category-default-setting>
+          <category-setting-exceptions
+          category="[[contentSettingsTypesEnum_.SOLANA]]"
+          read-only-list
+          block-header="${I18nBehavior.i18n('siteSettingsBlock')}"
+          allow-header="${I18nBehavior.i18n('siteSettingsAllow')}">
+          </category-setting-exceptions>
+          </settings-subpage>
+          </template>
+        `)
       }
     }
 
-    const privacySandboxLinkRow = templateContent.getElementById('privacySandboxLinkRow')
-    if (!privacySandboxLinkRow) {
-      console.error('[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page.')
-    } else {
-      privacySandboxLinkRow.setAttribute('hidden', 'true')
+    if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
+      const privacySandboxTemplate = templateContent.querySelector(`template[if*='isPrivacySandboxRestricted_']`)
+      if (!privacySandboxTemplate) {
+        console.error('[Brave Settings Overrides] Could not find template with if*=isPrivacySandboxRestricted_ on privacy page.')
+      } else {
+        const privacySandboxLinkRow = privacySandboxTemplate.content.getElementById('privacySandboxLinkRow')
+        if (!privacySandboxLinkRow) {
+          console.error('[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page.')
+        } else {
+          privacySandboxLinkRow.setAttribute('hidden', 'true')
+        }
+        const privacySandboxLink = privacySandboxTemplate.content.getElementById('privacySandboxLink')
+        if (!privacySandboxLink) {
+          console.error('[Brave Settings Overrides] Could not find privacySandboxLink id on privacy page.')
+        } else {
+          privacySandboxTemplate.setAttribute('hidden', 'true')
+        }
+      }
     }
   },
 })

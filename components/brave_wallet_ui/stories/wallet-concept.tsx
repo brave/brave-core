@@ -2,7 +2,6 @@ import * as React from 'react'
 import { combineReducers, createStore } from 'redux'
 import { WalletWidgetStandIn } from './style'
 import {
-  // SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
   LockScreen,
@@ -11,34 +10,25 @@ import {
 import {
   NavTypes,
   BraveWallet,
-  PriceDataObjectType,
   RPCResponseType,
   UserAccountType,
-  ToOrFromType,
   AccountTransactions,
   BuySendSwapTypes,
-  WalletAccountType,
-  ImportWalletError
+  WalletAccountType
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
 import CryptoStoryView from './screens/crypto-story-view'
 import './locale'
-// import { NavOptions } from '../options/side-nav-options'
-import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 import BuySendSwap from './screens/buy-send-swap'
-import { recoveryPhrase, mockUserAccounts } from './mock-data/user-accounts'
+import { mockRecoveryPhrase, mockUserAccounts } from './mock-data/user-accounts'
 import { mockRPCResponse } from './mock-data/rpc-response'
-import { CurrentPriceMockData } from './mock-data/current-price-data'
-import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { getLocale } from '../../common/locale'
 import {
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
-import { isStrongPassword } from '../utils/password-utils'
-import Amount from '../utils/amount'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { Provider } from 'react-redux'
 import { createWalletReducer } from '../common/reducers/wallet_reducer'
@@ -47,10 +37,15 @@ import { mockPageState } from './mock-data/mock-page-state'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import * as Lib from '../common/async/__mocks__/lib'
 import { LibContext } from '../common/context/lib.context'
+import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
+import { mockSendCryptoState } from './mock-data/send-crypto-state'
+import { mockOriginInfo } from './mock-data/mock-origin-info'
 
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState)
+  page: createPageReducer(mockPageState),
+  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
 }))
 
 export default {
@@ -92,7 +87,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
       submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
-      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) }
+      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -123,7 +119,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -154,7 +151,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -185,7 +183,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -216,7 +215,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -249,7 +249,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -280,7 +281,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     }
   ]
 }
@@ -293,33 +295,21 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [view] = React.useState<NavTypes>('crypto')
   const [isFilecoinEnabled] = React.useState<boolean>(true)
   const [isSolanaEnabled] = React.useState<boolean>(true)
-  const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
+  const [needsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
   const [showBackup, setShowBackup] = React.useState<boolean>(false)
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [hasRestoreError, setHasRestoreError] = React.useState<boolean>(false)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
-  const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
-  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>()
-  const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
+  const [selectedAsset] = React.useState<BraveWallet.BlockchainToken>()
+  const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
-  const [, setToAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[1])
-  const [exchangeRate] = React.useState('0.0027533')
-  const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
-  const [sendAmount, setSendAmount] = React.useState('')
-  const [fromAmount] = React.useState('')
-  const [, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importAccountError, setImportAccountError] = React.useState<boolean>(false)
-  const [importWalletError, setImportWalletError] = React.useState<ImportWalletError>({ hasError: false })
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
-  const [foundTokenInfo, setFoundTokenInfo] = React.useState<BraveWallet.BlockchainToken | undefined>()
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -331,17 +321,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   //   setView(path)
   // }
 
-  const completeWalletSetup = (recoveryVerified: boolean) => {
-    setNeedsOnboarding(false)
-    setNeedsBackup(recoveryVerified)
-  }
-
   const onWalletBackedUp = () => {
     setNeedsBackup(false)
-  }
-
-  const passwordProvided = (password: string) => {
-    console.log('Password provided')
   }
 
   const unlockWallet = () => {
@@ -372,46 +353,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const onHideBackup = () => {
     setShowBackup(false)
   }
-
-  const onRestore = (phrase: string, password: string, isLegacy: boolean) => {
-    if (JSON.stringify(phrase.split(' ')) === JSON.stringify(recoveryPhrase)) {
-      completeWalletSetup(true)
-    } else {
-      setHasRestoreError(true)
-    }
-  }
-
-  const selectedUSDAssetPrice = React.useMemo(() => {
-    if (selectedAsset) {
-      const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
-      const usdValue = data ? data.usd : '0'
-      const usdTimeframeChange = data ? data.usdTimeframeChange : '0'
-      const response: BraveWallet.AssetPrice = {
-        price: usdValue,
-        assetTimeframeChange: usdTimeframeChange,
-        fromAsset: '',
-        toAsset: ''
-      }
-      return response
-    }
-    return undefined
-  }, [selectedAsset])
-
-  const selectedBTCAssetPrice = React.useMemo(() => {
-    if (selectedAsset) {
-      const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
-      const btcValue = data ? data.btc : '0'
-      const btcTimeframeChange = data ? data.btcTimeframeChange : '0'
-      const response: BraveWallet.AssetPrice = {
-        price: btcValue,
-        assetTimeframeChange: btcTimeframeChange,
-        fromAsset: '',
-        toAsset: ''
-      }
-      return response
-    }
-    return undefined
-  }, [selectedAsset])
 
   // This returns info about a single asset
   const assetInfo = (account: RPCResponseType) => {
@@ -466,17 +407,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     return grandTotal
   }
 
-  // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const scrapedFullAssetFiatBalance = (asset: BraveWallet.BlockchainToken) => {
-    const fullBallance = scrapedFullAssetBalance(asset)
-    const price = Number(CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd)
-    const value = price ? price * fullBallance : 0
-    return value
-  }
-
   const userAssetList = React.useMemo(() => {
     const userList = mockUserWalletPreferences.viewableAssets
-    const newList = NewAssetOptions.filter((asset) => userList.includes(asset.contractAddress))
+    const newList = mockNewAssetOptions.filter((asset) => userList.includes(asset.contractAddress))
     return newList.map((asset) => {
       return {
         asset: asset,
@@ -484,49 +417,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       }
     })
   }, [mockUserWalletPreferences.viewableAssets])
-
-  // This will scrape all of the user's accounts and combine the fiat value for every asset
-  const scrapedFullPortfolioBalance = () => {
-    const amountList = userAssetList.map((item) => {
-      return scrapedFullAssetFiatBalance(item.asset)
-    })
-    const grandTotal = amountList.reduce(function (a, b) {
-      return a + b
-    }, 0)
-    return new Amount(grandTotal)
-      .format(6, true)
-  }
-
-  // This will change once we hit a real api for pricing
-  const timeline = (path: BraveWallet.AssetPriceTimeframe) => {
-    switch (path) {
-      case BraveWallet.AssetPriceTimeframe.Live:
-        return 17
-      case BraveWallet.AssetPriceTimeframe.OneDay:
-        return 15
-      case BraveWallet.AssetPriceTimeframe.OneWeek:
-        return 12
-      case BraveWallet.AssetPriceTimeframe.OneMonth:
-        return 10
-      case BraveWallet.AssetPriceTimeframe.ThreeMonths:
-        return 8
-      case BraveWallet.AssetPriceTimeframe.OneYear:
-        return 4
-      case BraveWallet.AssetPriceTimeframe.All:
-        return 0
-    }
-    return -1
-  }
-
-  // This updates the price chart timeline
-  const onChangeTimeline = (path: BraveWallet.AssetPriceTimeframe) => {
-    setSelectedAssetPriceHistory(PriceHistoryMockData.slice(timeline(path), 20))
-    setSelectedTimeline(path)
-  }
-
-  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => {
-    setSelectedAsset(asset)
-  }
 
   const onCreateAccount = (name: string) => {
     alert(name)
@@ -547,42 +437,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => {
-    setSelectedNetwork(network)
-  }
-
-  const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
-    if (toOrFrom === 'from') {
-      setFromAsset(asset)
-    } else {
-      setToAsset(asset)
-    }
-  }
-
   const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
     alert(`Buy ${asset.symbol} asset`)
-  }
-
-  const onSubmitSend = () => {
-    alert('Submit Send Transaction')
-  }
-
-  const calculateToAmount = (amount: number, market: boolean) => {
-    if (market) {
-      const calculated = Number(amount) / Number(exchangeRate)
-      setToAmount(calculated.toString())
-    } else {
-      const calculated = Number(fromAmount) / Number(amount)
-      setToAmount(calculated.toString())
-    }
-  }
-
-  const fromAssetBalance = '26'
-
-  const onSelectPresetSendAmount = (percent: number) => {
-    const amount = Number(fromAssetBalance) * percent
-    setSendAmount(amount.toString())
-    calculateToAmount(amount, true)
   }
 
   const onSelectAccount = (account: UserAccountType) => {
@@ -591,14 +447,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
-  }
-
-  const onSetSendAmount = (value: string) => {
-    setSendAmount(value)
-  }
-
-  const onSetToAddress = (value: string) => {
-    setToAddress(value)
   }
 
   const onRemoveAccount = () => {
@@ -626,12 +474,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     })
   }
 
-  const onImportWallet = (password: string) => {
-    if (password !== 'password') {
-      setImportWalletError({ hasError: true })
-    }
-  }
-
   const onAddHardwareAccounts = (accounts: BraveWallet.HardwareWalletAccount[]) => {
     console.log(accounts)
   }
@@ -644,42 +486,15 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     // Doesnt do anything in storybook
   }
 
-  const onSetImportAccountError = (hasError: boolean) => {
-    setImportAccountError(hasError)
-  }
-
-  const onSetImportWalletError = (hasError: boolean) => {
-    setImportWalletError({ hasError })
-  }
-
-  const onAddCustomAsset = () => {
-    alert('Will Add a Custom Token')
-  }
-
-  const onUpdateVisibleAssets = () => {
-    alert('Will Update Visible Assets List')
-  }
-
-  const checkIsStrongPassword = async (value: string) => {
-    return isStrongPassword.test(value)
-  }
+  const onSetImportAccountError = (hasError: boolean) => setImportAccountError(hasError)
 
   const defaultCurrencies = {
     fiat: 'USD',
     crypto: 'BTC'
   }
 
-  const onAddNetwork = () => {
-    alert('Will redirect to Wallet Network Settings')
-  }
-
   const onShowVisibleAssetsModal = (value: boolean) => {
     setShowVisibleAssetsModal(value)
-  }
-
-  const onFindTokenInfoByContractAddress = (contractAddress: string) => {
-    const foundToken = NewAssetOptions.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
-    setFoundTokenInfo(foundToken)
   }
 
   return (
@@ -693,29 +508,12 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
           /> */}
           <WalletSubViewLayout>
             {isRestoring ? (
-              <OnboardingRestore
-                checkIsStrongPassword={checkIsStrongPassword}
-                hasRestoreError={hasRestoreError}
-                onRestore={onRestore}
-                toggleShowRestore={onToggleRestore}
-              />
+              <OnboardingRestore />
             ) : (
               <>
                 {needsOnboarding
                   ? (
-                    <Onboarding
-                      checkIsStrongPassword={checkIsStrongPassword}
-                      importError={importWalletError}
-                      recoveryPhrase={recoveryPhrase}
-                      onSubmit={completeWalletSetup}
-                      onPasswordProvided={passwordProvided}
-                      onShowRestore={onToggleRestore}
-                      isCryptoWalletsInitialized={true}
-                      isMetaMaskInitialized={true}
-                      onImportMetaMask={onImportWallet}
-                      onImportCryptoWallets={onImportWallet}
-                      onSetImportError={onSetImportWalletError}
-                    />
+                    <Onboarding />
                   ) : (
                     <>
                       {view === 'crypto' ? (
@@ -735,7 +533,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                                   isOnboarding={false}
                                   onCancel={onHideBackup}
                                   onSubmit={onWalletBackedUp}
-                                  recoveryPhrase={recoveryPhrase}
+                                  recoveryPhrase={mockRecoveryPhrase}
                                 />
                               ) : (
                                 <CryptoStoryView
@@ -744,17 +542,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                                   needsBackup={needsBackup}
                                   onShowBackup={onShowBackup}
                                   accounts={accounts}
-                                  onChangeTimeline={onChangeTimeline}
-                                  selectedAssetPriceHistory={selectedAssetPriceHistory}
-                                  selectedTimeline={selectedTimeline}
-                                  selectedAsset={selectedAsset}
-                                  fullAssetList={NewAssetOptions}
-                                  onSelectAsset={onSelectAsset}
-                                  portfolioPriceHistory={selectedAssetPriceHistory}
-                                  portfolioBalance={scrapedFullPortfolioBalance()}
                                   transactions={transactionDummyData}
-                                  selectedAssetFiatPrice={selectedUSDAssetPrice}
-                                  selectedAssetCryptoPrice={selectedBTCAssetPrice}
                                   userAssetList={userAssetList}
                                   onCreateAccount={onCreateAccount}
                                   onImportAccount={onImportAccount}
@@ -764,13 +552,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                                   onConnectHardwareWallet={onConnectHardwareWallet}
                                   onAddHardwareAccounts={onAddHardwareAccounts}
                                   getBalance={getBalance}
-                                  isLoading={false}
                                   showAddModal={showAddModal}
                                   onToggleAddModal={onToggleAddModal}
                                   onUpdateAccountName={onUpdateAccountName}
                                   selectedNetwork={selectedNetwork}
-                                  isFetchingPortfolioPriceHistory={false}
-                                  selectedPortfolioTimeline={selectedTimeline}
                                   onRemoveAccount={onRemoveAccount}
                                   privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
                                   onDoneViewingPrivateKey={onDoneViewingPrivateKey}
@@ -779,14 +564,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                                   onImportAccountFromJson={onImportAccountFromJson}
                                   hasImportError={importAccountError}
                                   onSetImportError={onSetImportAccountError}
-                                  onAddCustomAsset={onAddCustomAsset}
-                                  onUpdateVisibleAssets={onUpdateVisibleAssets}
                                   transactionSpotPrices={[]}
                                   userVisibleTokensInfo={[]}
                                   onShowVisibleAssetsModal={onShowVisibleAssetsModal}
                                   showVisibleAssetsModal={showVisibleAssetsModal}
-                                  onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
-                                  foundTokenInfoByContractAddress={foundTokenInfo}
                                 />
                               )}
                             </>
@@ -806,33 +587,13 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
           {!needsOnboarding && !walletLocked &&
             <WalletWidgetStandIn>
               <BuySendSwap
-                defaultCurrencies={defaultCurrencies}
-                selectedNetwork={selectedNetwork}
                 selectedTab={selectedWidgetTab}
                 buyAmount={buyAmount}
-                sendAmount={sendAmount}
-                selectedSendAsset={fromAsset}
-                sendAssetBalance={fromAssetBalance}
-                toAddressOrUrl={toAddress}
-                toAddress={toAddress}
-                addressError=''
-                addressWarning=''
                 onSubmitBuy={onSubmitBuy}
                 onSetBuyAmount={onSetBuyAmount}
-                onSetSendAmount={onSetSendAmount}
-                onSetToAddressOrUrl={onSetToAddress}
-                onSubmitSend={onSubmitSend}
-                onSelectNetwork={onSelectNetwork}
                 onSelectAccount={onSelectAccount}
-                onSelectPresetSendAmount={onSelectPresetSendAmount}
                 onSelectTab={setSelectedWidgetTab}
-                buyAssetOptions={AccountAssetOptions}
-                sendAssetOptions={AccountAssetOptions}
-                networkList={mockNetworks}
-                onSelectSendAsset={onSelectTransactAsset}
-                onAddNetwork={onAddNetwork}
-                onAddAsset={onShowVisibleAssetsModal}
-                sendAmountValidationError={undefined}
+                buyAssetOptions={mockAccountAssetOptions}
               />
               <SweepstakesBanner />
             </WalletWidgetStandIn>

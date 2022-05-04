@@ -5,49 +5,143 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class SignMessageFragment extends BottomSheetDialogFragment {
+public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private List<String> mTabTitles;
+    private SignMessageRequest mCurrentSignMessageRequest;
+    private SignMessagePagerAdapter mSignMessagePagerAdapter;
+    private ViewPager2 mViewPager;
+    private TabLayout mTabLayout;
+    private ImageView mAccountImage;
+    private TextView mAccountName;
+    private TextView mNetworkName;
+    private Button mBtCancel;
+    private Button mBtSign;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
         mTabTitles = new ArrayList<>();
         mTabTitles.add(getString(R.string.message));
-        mTabTitles.add(getString(R.string.data_text));
     }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_message, container, false);
-        ViewPager2 viewPager = view.findViewById(R.id.fragment_sign_msg_tv_message_view_pager);
-        TabLayout tabLayout = view.findViewById(R.id.fragment_sign_msg_tv_message_tabs);
-        viewPager.setUserInputEnabled(false);
+        mViewPager = view.findViewById(R.id.fragment_sign_msg_tv_message_view_pager);
+        mTabLayout = view.findViewById(R.id.fragment_sign_msg_tv_message_tabs);
+        mAccountImage = view.findViewById(R.id.fragment_sign_msg_cv_iv_account);
+        mAccountName = view.findViewById(R.id.fragment_sign_msg_tv_account_name);
+        mNetworkName = view.findViewById(R.id.fragment_sign_msg_tv_network_name);
+        mViewPager.setUserInputEnabled(false);
 
-        SignMessagePagerAdapter adapter = new SignMessagePagerAdapter(this, mTabTitles);
+        mBtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
+        mBtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
+        initComponents();
 
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(adapter.getItemCount() - 1);
-        new TabLayoutMediator(
-                tabLayout, viewPager, (tab, position) -> tab.setText(mTabTitles.get(position)))
-                .attach();
         return view;
+    }
+
+    private void notifySignMessageRequestProcessed(boolean approved) {
+        getBraveWalletService().notifySignMessageRequestProcessed(
+                approved, mCurrentSignMessageRequest.id);
+        fillSignMessageInfo(false);
+    }
+
+    private void initComponents() {
+        fillSignMessageInfo(true);
+        updateAccount();
+        updateNetwork();
+    }
+
+    private void fillSignMessageInfo(boolean init) {
+        getBraveWalletService().getPendingSignMessageRequests(requests -> {
+            if (requests == null || requests.length == 0) {
+                Intent intent = new Intent();
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                getActivity().finish();
+
+                return;
+            }
+            mCurrentSignMessageRequest = requests[0];
+            mSignMessagePagerAdapter =
+                    new SignMessagePagerAdapter(this, mTabTitles, mCurrentSignMessageRequest);
+
+            mViewPager.setAdapter(mSignMessagePagerAdapter);
+            new TabLayoutMediator(mTabLayout, mViewPager,
+                    (tab, position) -> tab.setText(mTabTitles.get(position)))
+                    .attach();
+            if (init) {
+                mBtCancel.setOnClickListener(v -> { notifySignMessageRequestProcessed(false); });
+                mBtSign.setOnClickListener(v -> { notifySignMessageRequestProcessed(true); });
+            }
+        });
+    }
+
+    private void updateAccount() {
+        getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
+            getKeyringService().getKeyringInfo(
+                    BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+                        if (keyringInfo == null) {
+                            return;
+                        }
+                        for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                            if (address.equals(accountInfo.address)) {
+                                Utils.setBlockiesBitmapResource(
+                                        mExecutor, mHandler, mAccountImage, address, true);
+                                mAccountName.setText(accountInfo.name);
+                                break;
+                            }
+                        }
+                    });
+        });
+    }
+
+    private void updateNetwork() {
+        getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
+            getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
+                mNetworkName.setText(
+                        Utils.getNetworkText(getActivity(), chainId, customNetworks).toString());
+            });
+        });
     }
 }

@@ -22,7 +22,7 @@ export interface Props {
   isActive: boolean
   hasPermission: boolean
   account: WalletAccountType
-  onDisconnect: (address: string) => void
+  onDisconnect: (account: WalletAccountType) => void
   onConnect: (account: WalletAccountType) => void
   onSwitchAccount: (account: WalletAccountType) => void
 }
@@ -42,7 +42,7 @@ const SitePermissionAccountItem = (props: Props) => {
   }, [account.address])
 
   const onClickDisconnect = () => {
-    onDisconnect(account.address)
+    onDisconnect(account)
   }
 
   const onClickConnect = () => {

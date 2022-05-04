@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -21,7 +22,7 @@ void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
   TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(tab);
   const std::u16string& domain = domain_label_->GetText();
   const std::u16string kChromeUISchemeU16 =
-      base::ASCIIToUTF16(content::kChromeUIScheme);
+      base::ASCIIToUTF16(base::StrCat({content::kChromeUIScheme, "://"}));
   // Replace chrome:// with brave://. Since this is purely in the UI we can
   // just do a sub-string replacement instead of parsing into GURL.
   if (base::StartsWith(domain, kChromeUISchemeU16,
@@ -29,7 +30,7 @@ void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
     std::u16string new_domain = domain;
     base::ReplaceFirstSubstringAfterOffset(
         &new_domain, 0ul, kChromeUISchemeU16,
-        base::ASCIIToUTF16(content::kBraveUIScheme));
+        base::ASCIIToUTF16(base::StrCat({content::kBraveUIScheme, "://"})));
     domain_label_->SetText(new_domain, /*is_filename*/ false);
   }
 }

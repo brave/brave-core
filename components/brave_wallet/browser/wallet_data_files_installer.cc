@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -44,14 +45,15 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
 const char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
 const char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 
-static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
+static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
 
 absl::optional<base::Version> last_installed_wallet_version;
 
 void HandleParseTokenList(base::FilePath absolute_install_dir,
                           const std::string& filename,
-                          TokenListMap* token_list_map) {
+                          TokenListMap* token_list_map,
+                          mojom::CoinType coin_type) {
   const base::FilePath token_list_json_path =
       absolute_install_dir.AppendASCII(filename);
   std::string token_list_json;
@@ -59,7 +61,7 @@ void HandleParseTokenList(base::FilePath absolute_install_dir,
     LOG(ERROR) << "Can't read token list file: " << filename;
   }
 
-  if (!ParseTokenList(token_list_json, token_list_map)) {
+  if (!ParseTokenList(token_list_json, token_list_map, coin_type)) {
     LOG(ERROR) << "Can't parse token list: " << filename;
   }
 }
@@ -79,11 +81,13 @@ TokenListMap TokenListReady(const base::FilePath& install_dir,
   }
 
   // Used for Ethereum mainnet
-  HandleParseTokenList(absolute_install_dir, "contract-map.json", &lists);
+  HandleParseTokenList(absolute_install_dir, "contract-map.json", &lists,
+                       mojom::CoinType::ETH);
   // Used for EVM compatabile networks including testnets
-  HandleParseTokenList(absolute_install_dir, "evm-contract-map.json", &lists);
-  HandleParseTokenList(absolute_install_dir, "solana-contract-map.json",
-                       &lists);
+  HandleParseTokenList(absolute_install_dir, "evm-contract-map.json", &lists,
+                       mojom::CoinType::ETH);
+  HandleParseTokenList(absolute_install_dir, "solana-contract-map.json", &lists,
+                       mojom::CoinType::SOL);
 
   return lists;
 }
@@ -169,7 +173,7 @@ base::FilePath WalletDataFilesInstallerPolicy::GetRelativeInstallDir() const {
 
 void WalletDataFilesInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
   hash->assign(kWalletDataFilesSha2Hash,
-               kWalletDataFilesSha2Hash + base::size(kWalletDataFilesSha2Hash));
+               kWalletDataFilesSha2Hash + std::size(kWalletDataFilesSha2Hash));
 }
 
 std::string WalletDataFilesInstallerPolicy::GetName() const {

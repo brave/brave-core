@@ -26,6 +26,7 @@ TEST_F(BatAdsConversionsResourceTest, Load) {
 
   // Act
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Assert
   const bool is_initialized = resource.IsInitialized();
@@ -36,9 +37,11 @@ TEST_F(BatAdsConversionsResourceTest, Get) {
   // Arrange
   Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
-  ConversionIdPatternMap conversion_id_patterns = resource.get();
+  ConversionIdPatternMap conversion_id_patterns =
+      resource.get()->conversion_id_patterns;
 
   // Assert
   EXPECT_EQ(2u, conversion_id_patterns.size());

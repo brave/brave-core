@@ -21,8 +21,7 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
   version_info::Channel channel = chrome::GetChannel();
   // Enable VPN feature only for nightly/development.
   if (base::LowerCaseEqualsASCII(kBraveVPNFeatureInternalName, internal_name) &&
-      (channel == version_info::Channel::STABLE ||
-       channel == version_info::Channel::BETA)) {
+      channel == version_info::Channel::STABLE) {
     return true;
   }
 #endif

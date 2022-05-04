@@ -73,7 +73,8 @@
       "chrome://tab-strip/*",
       "chrome://wallet-panel.top-chrome/*",
       "chrome://wallet/*",
-      "chrome://brave-shields.top-chrome/*"
+      "chrome://brave-shields.top-chrome/*",
+      "chrome://vpn-panel.top-chrome/*"
     ]
   }, {
     "channel": "stable",
@@ -153,7 +154,6 @@
       "chrome://webcompat/*",
       "chrome://wallet/*",
       "chrome://wallet-panel.top-chrome/*",
-      "chrome://vpn-panel.top-chrome/*",
       "chrome://brave-shields.top-chrome/*"
     ]
   }],

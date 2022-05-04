@@ -11,22 +11,28 @@
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
-#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
-#include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notification_observer.h"
+#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_observer.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_observer.h"
+#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+
+class GURL;
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
@@ -74,7 +80,7 @@ class TokenGeneratorInterface;
 }  // namespace privacy
 
 class Account;
-class AdDiagnostics;
+class Diagnostics;
 class AdNotification;
 class AdNotifications;
 class AdServer;
@@ -89,15 +95,17 @@ class CovariateLogs;
 class InlineContentAd;
 class NewTabPageAd;
 class PromotedContentAd;
+class SearchResultAd;
 class TabManager;
 class UserActivity;
 struct AdInfo;
 struct AdNotificationInfo;
-struct AdsHistoryInfo;
+struct HistoryInfo;
 struct ConversionQueueItemInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
+struct SearchResultAdInfo;
 struct WalletInfo;
 
 class AdsImpl final : public Ads,
@@ -111,7 +119,8 @@ class AdsImpl final : public Ads,
                       public ConversionsObserver,
                       public NewTabPageAdObserver,
                       public NewTabPageAdServingObserver,
-                      public PromotedContentAdObserver {
+                      public PromotedContentAdObserver,
+                      public SearchResultAdObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
   ~AdsImpl() override;
@@ -133,11 +142,11 @@ class AdsImpl final : public Ads,
   void OnPrefChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
 
   void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
   void OnUserGesture(const int32_t page_transition_type) override;
@@ -145,62 +154,64 @@ class AdsImpl final : public Ads,
   void OnIdle() override;
   void OnUnIdle(const int idle_time, const bool was_locked) override;
 
-  void OnForeground() override;
-  void OnBackground() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   void OnMediaPlaying(const int32_t tab_id) override;
   void OnMediaStopped(const int32_t tab_id) override;
 
   void OnTabUpdated(const int32_t tab_id,
-                    const std::string& url,
+                    const GURL& url,
                     const bool is_active,
                     const bool is_browser_active,
                     const bool is_incognito) override;
-
   void OnTabClosed(const int32_t tab_id) override;
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  bool GetAdNotification(const std::string& uuid,
+  bool GetAdNotification(const std::string& placement_id,
                          AdNotificationInfo* ad_notification) override;
-  void OnAdNotificationEvent(
-      const std::string& uuid,
+  void TriggerAdNotificationEvent(
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) override;
 
   void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
-
-  void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
-  void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           GetInlineContentAdCallback callback) override;
-
-  void OnInlineContentAdEvent(
-      const std::string& uuid,
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
+
+  void TriggerSearchResultAdEvent(
+      mojom::SearchResultAdPtr ad_mojom,
+      const mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) override;
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
-                            const AdsHistorySortType sort_type,
-                            const double from_timestamp,
-                            const double to_timestamp) override;
+  HistoryInfo GetHistory(const HistoryFilterType filter_type,
+                         const HistorySortType sort_type,
+                         const base::Time from_time,
+                         const base::Time to_time) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   AdContentLikeActionType ToggleAdThumbUp(const std::string& json) override;
   AdContentLikeActionType ToggleAdThumbDown(const std::string& json) override;
@@ -227,6 +238,7 @@ class AdsImpl final : public Ads,
   void LoadConfirmationsState(InitializeCallback callback);
   void LoadAdNotificationsState(InitializeCallback callback);
   void Initialized(InitializeCallback callback);
+
   void Start();
 
   void CleanupAdEvents();
@@ -261,7 +273,7 @@ class AdsImpl final : public Ads,
   void OnAdNotificationDismissed(const AdNotificationInfo& ad) override;
   void OnAdNotificationTimedOut(const AdNotificationInfo& ad) override;
   void OnAdNotificationEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) override;
 
   // NewTabPageAdServingObserver:
@@ -271,7 +283,7 @@ class AdsImpl final : public Ads,
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
@@ -279,7 +291,7 @@ class AdsImpl final : public Ads,
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) override;
 
@@ -290,9 +302,16 @@ class AdsImpl final : public Ads,
   void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
+
+  // SearchResultAdObserver:
+  void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
+  void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
+  void OnSearchResultAdEventFailed(
+      const SearchResultAdInfo& ad,
+      const mojom::SearchResultAdEventType event_type) override;
 
   // AdTransferObserver:
   void OnWillTransferAd(const AdInfo& ad, const base::Time time) override;
@@ -307,7 +326,9 @@ class AdsImpl final : public Ads,
   bool is_initialized_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
-  std::unique_ptr<AdDiagnostics> ad_diagnostics_;
+  std::unique_ptr<Diagnostics> diagnostics_;
+  std::unique_ptr<BrowserManager> browser_manager_;
+  std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
@@ -338,8 +359,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
+  std::unique_ptr<SearchResultAd> search_result_ad_;
   std::unique_ptr<UserActivity> user_activity_;
   std::unique_ptr<CovariateLogs> covariate_logs_;
 

@@ -7,12 +7,18 @@ source_set("url") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
+    "url_origin_ios.h",
+    "url_origin_ios+private.h",
+    "url_origin_ios.mm",
+    "url_pattern_ios.h",
+    "url_pattern_ios.mm",
     "url_utils.h",
     "url_utils.mm",
   ]
 
   deps = [
     "//base",
+    "//brave/extensions:common",
     "//net",
     "//url",
   ]

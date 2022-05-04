@@ -10,6 +10,7 @@
 
 #include "bat/ads/ad_type.h"
 #include "bat/ads/export.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -24,13 +25,13 @@ struct ADS_EXPORT AdInfo {
   bool IsValid() const;
 
   AdType type = AdType::kUndefined;
-  std::string uuid;
+  std::string placement_id;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
   std::string advertiser_id;
   std::string segment;
-  std::string target_url;
+  GURL target_url;
 };
 
 }  // namespace ads

@@ -180,7 +180,7 @@ bool TopSitesMessageHandler::IsShortcutsVisible() const {
 }
 
 void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -191,7 +191,7 @@ void TopSitesMessageHandler::HandleUpdateMostVisitedInfo(
 }
 
 void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -213,7 +213,7 @@ void TopSitesMessageHandler::HandleDeleteMostVisitedTile(
 }
 
 void TopSitesMessageHandler::HandleReorderMostVisitedTile(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -232,7 +232,7 @@ void TopSitesMessageHandler::HandleReorderMostVisitedTile(
 }
 
 void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -247,7 +247,7 @@ void TopSitesMessageHandler::HandleRestoreMostVisitedDefaults(
 }
 
 void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -263,7 +263,7 @@ void TopSitesMessageHandler::HandleUndoMostVisitedTileAction(
 }
 
 void TopSitesMessageHandler::HandleSetMostVisitedSettings(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -290,8 +290,7 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
   }
 }
 
-void TopSitesMessageHandler::HandleEditTopSite(
-    base::Value::ConstListView args) {
+void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 
@@ -335,7 +334,7 @@ void TopSitesMessageHandler::HandleEditTopSite(
 }
 
 void TopSitesMessageHandler::HandleAddNewTopSite(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (!most_visited_sites_)
     return;
 

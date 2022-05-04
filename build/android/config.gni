@@ -1,3 +1,4 @@
+import("//brave/android/brave_android_wireguard_sources.gni")
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
@@ -26,13 +27,20 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
+  "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
+  "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
+  "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",
+  "//url/mojom:url_mojom_origin_java",
 ]
 
-brave_chrome_all_java_deps = [ "//brave/android/features/tab_ui:java" ]
+brave_chrome_all_java_deps = [
+  "//brave/android/features/tab_ui:java",
+  "//brave/browser/partnercustomizations:delegate_public_impl_java",
+]
 
 # To use our overrided enum in java, put the header file of our overrided enum
 # in brave_android_java_enums_srcjar target and add the chromium header file of

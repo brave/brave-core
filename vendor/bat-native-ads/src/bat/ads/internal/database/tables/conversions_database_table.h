@@ -10,7 +10,7 @@
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/database/tables/conversions_database_table_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -18,7 +18,7 @@ namespace ads {
 namespace database {
 namespace table {
 
-class Conversions final : public Table {
+class Conversions final : public TableInterface {
  public:
   Conversions();
   ~Conversions() override;
@@ -44,9 +44,7 @@ class Conversions final : public Table {
   void OnGetConversions(mojom::DBCommandResponsePtr response,
                         GetConversionsCallback callback);
 
-  void MigrateToV1(mojom::DBTransaction* transaction);
-  void MigrateToV10(mojom::DBTransaction* transaction);
-  void MigrateToV20(mojom::DBTransaction* transaction);
+  void MigrateToV23(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

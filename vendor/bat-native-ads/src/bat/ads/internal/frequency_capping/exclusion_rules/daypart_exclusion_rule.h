@@ -9,11 +9,12 @@
 #include <string>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
 
-class DaypartExclusionRule final : public ExclusionRule<CreativeAdInfo> {
+class DaypartExclusionRule final
+    : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   DaypartExclusionRule();
   ~DaypartExclusionRule() override;

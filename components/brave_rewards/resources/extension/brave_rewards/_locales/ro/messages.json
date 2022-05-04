@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "Plăți lunare",
     "description": ""
   },
   "ok": {
@@ -192,19 +192,6 @@
     "message": "Contribuție automată",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Accesați $provider$ pentru finalizarea verificării",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Finalizați confirmarea identității pentru a începe să primiți recompense.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Deconectat",
     "description": ""
@@ -243,6 +230,15 @@
     "message": "În așteptare",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "$provider$ nu poate fi momentan confirmat, din cauza unei probleme. Recompensele Brave vor rămâne În așteptare și se va reîncerca confirmarea automată, însă puteți încerca și dvs. mai târziu. ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Recompense din reclame",
     "description": ""
@@ -252,7 +248,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "Neverificat",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +376,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "Plățile lunare au eșuat",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +384,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "Plațile dvs. lunare au fost procesate.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

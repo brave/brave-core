@@ -192,19 +192,6 @@
     "message": "Otomatik-Katkı",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Doğrulamayı tamamlamak için $provider$ kısmına gidin",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Ödül almaya başlamak için lütfen kimlik doğrulamasını tamamlayın.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Oturum kapatıldı",
     "description": ""
@@ -242,6 +229,15 @@
   "walletPending": {
     "message": "Beklemede",
     "description": ""
+  },
+  "walletPendingText": {
+    "message": "$provider$ ile doğrulama konusunda geçici bir sorun var. Brave Ödülleriniz Bekleme durumunda kalacak ve otomatik olarak tekrar denenecek fakat siz de daha sonra tekrar deneyebilirsiniz.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "walletRewardsFromAds": {
     "message": "Ads Ödülleri",

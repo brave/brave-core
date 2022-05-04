@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/platform/platform_helper_ios.h"
 
-#include "base/memory/singleton.h"
-
 namespace ads {
 
 PlatformHelperIos::PlatformHelperIos() = default;
@@ -23,14 +21,6 @@ std::string PlatformHelperIos::GetPlatformName() const {
 
 PlatformType PlatformHelperIos::GetPlatform() const {
   return PlatformType::kIOS;
-}
-
-PlatformHelperIos* PlatformHelperIos::GetInstanceImpl() {
-  return base::Singleton<PlatformHelperIos>::get();
-}
-
-PlatformHelper* PlatformHelper::GetInstanceImpl() {
-  return PlatformHelperIos::GetInstanceImpl();
 }
 
 }  // namespace ads

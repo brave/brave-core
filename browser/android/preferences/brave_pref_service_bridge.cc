@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
@@ -97,6 +98,11 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
       g_browser_process->local_state());
 }
 
+void JNI_BravePrefServiceBridge_SetDeAmpEnabled(JNIEnv* env, jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(de_amp::kDeAmpPrefEnabled,
+                                               enabled);
+}
+
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
                                                       jboolean enabled) {
 #if BUILDFLAG(ENABLE_IPFS)
@@ -154,7 +160,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // aggressive
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::BLOCK, GURL(), g_browser_process->local_state());
+          ControlType::BLOCK, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
@@ -163,7 +170,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // standard
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
@@ -172,7 +180,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // allow all
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::ALLOW, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::ALLOW, GURL(), g_browser_process->local_state());
@@ -185,7 +194,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       break;
   }
 }
@@ -240,7 +250,8 @@ void JNI_BravePrefServiceBridge_SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
-      GURL(), g_browser_process->local_state());
+      GURL(), g_browser_process->local_state(),
+      GetOriginalProfile()->GetPrefs());
 }
 
 base::android::ScopedJavaLocalRef<jstring>

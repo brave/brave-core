@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"

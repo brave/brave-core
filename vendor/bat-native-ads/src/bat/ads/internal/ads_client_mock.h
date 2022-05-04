@@ -23,9 +23,9 @@ class AdsClientMock : public AdsClient {
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
-  MOCK_CONST_METHOD0(IsForeground, bool());
+  MOCK_CONST_METHOD0(IsBrowserActive, bool());
 
-  MOCK_CONST_METHOD0(IsFullScreen, bool());
+  MOCK_CONST_METHOD0(IsBrowserInFullScreenMode, bool());
 
   MOCK_METHOD0(ShouldShowNotifications, bool());
 
@@ -40,11 +40,12 @@ class AdsClientMock : public AdsClient {
                      void(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
-                          const double timestamp));
+                          const base::Time time));
 
-  MOCK_CONST_METHOD2(GetAdEvents,
-                     std::vector<double>(const std::string& ad_type,
-                                         const std::string& confirmation_type));
+  MOCK_CONST_METHOD2(
+      GetAdEvents,
+      std::vector<base::Time>(const std::string& ad_type,
+                              const std::string& confirmation_type));
 
   MOCK_CONST_METHOD1(ResetAdEventsForId, void(const std::string& id));
 
@@ -59,17 +60,17 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
 
-  MOCK_METHOD3(LoadAdsResource,
+  MOCK_METHOD3(LoadFileResource,
                void(const std::string& id,
                     const int version,
-                    LoadCallback callback));
+                    LoadFileCallback callback));
 
   MOCK_METHOD3(GetBrowsingHistory,
                void(const int max_count,
                     const int days_ago,
                     GetBrowsingHistoryCallback callback));
 
-  MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
+  MOCK_METHOD1(LoadDataResource, std::string(const std::string& name));
 
   MOCK_METHOD0(ClearScheduledCaptcha, void());
 
@@ -91,8 +92,9 @@ class AdsClientMock : public AdsClient {
                     const mojom::P2AEventType type,
                     const std::string& value));
 
-  MOCK_METHOD1(LogTrainingCovariates,
-               void(const mojom::TrainingCovariatesPtr training_covariates));
+  MOCK_METHOD1(LogTrainingInstance,
+               void(const brave_federated::mojom::TrainingInstancePtr
+                        training_instance));
 
   MOCK_METHOD4(Log,
                void(const char* file,

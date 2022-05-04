@@ -12,8 +12,9 @@
 #include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -21,7 +22,8 @@ namespace privacy {
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
-class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
+class RedeemUnblindedPaymentTokensUrlRequestBuilder final
+    : UrlRequestBuilderInterface {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,
@@ -32,7 +34,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  std::string BuildUrl() const;
+  GURL BuildUrl() const;
 
   std::vector<std::string> BuildHeaders() const;
 

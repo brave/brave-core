@@ -8,12 +8,13 @@
 
 #include <string>
 
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace ads {
 
-class GetCatalogUrlRequestBuilder final : UrlRequestBuilder {
+class GetCatalogUrlRequestBuilder final : UrlRequestBuilderInterface {
  public:
   GetCatalogUrlRequestBuilder();
   ~GetCatalogUrlRequestBuilder() override;
@@ -21,7 +22,7 @@ class GetCatalogUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  std::string BuildUrl() const;
+  GURL BuildUrl() const;
 };
 
 }  // namespace ads

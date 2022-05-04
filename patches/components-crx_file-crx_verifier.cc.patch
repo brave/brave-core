@@ -1,8 +1,8 @@
 diff --git a/components/crx_file/crx_verifier.cc b/components/crx_file/crx_verifier.cc
-index e6e81b0705599ff4aa262e5ebc70ec90bf22af5d..2fdfb68cf4087818b961dcf3dffcf14562c6b2ae 100644
+index c7b80d71373b702aeae32f1b3552c5a66950236c..a6dbaee64cee00edf10b4caf5df08bfac7f0120f 100644
 --- a/components/crx_file/crx_verifier.cc
 +++ b/components/crx_file/crx_verifier.cc
-@@ -183,6 +183,7 @@ VerifierResult VerifyCrx3(
+@@ -181,6 +181,7 @@ VerifierResult VerifyCrx3(
        found_publisher_key =
            found_publisher_key || key_hash == publisher_key ||
            (accept_publisher_test_key && key_hash == *publisher_test_key);

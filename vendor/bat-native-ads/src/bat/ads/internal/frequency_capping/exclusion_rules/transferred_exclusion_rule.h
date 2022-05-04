@@ -10,11 +10,12 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
 
-class TransferredExclusionRule final : public ExclusionRule<CreativeAdInfo> {
+class TransferredExclusionRule final
+    : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
   explicit TransferredExclusionRule(const AdEventList& ad_events);
   ~TransferredExclusionRule() override;

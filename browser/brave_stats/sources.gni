@@ -5,17 +5,6 @@
 
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 
-declare_args() {
-  brave_stats_updater_url = ""
-}
-
-if (is_official_build) {
-  assert(brave_stats_updater_url != "")
-}
-
-brave_browser_brave_stats_updater_defines =
-    [ "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"" ]
-
 brave_browser_brave_stats_updater_sources = [
   "//brave/browser/brave_stats/brave_stats_tab_helper.cc",
   "//brave/browser/brave_stats/brave_stats_tab_helper.h",
@@ -29,6 +18,7 @@ brave_browser_brave_stats_updater_sources = [
 brave_browser_brave_stats_updater_deps = [
   "//base",
   "//brave/browser:browser_process",
+  "//brave/browser/brave_stats:buildflags",
   "//brave/common",
   "//brave/common:network_constants",
   "//brave/common:pref_names",

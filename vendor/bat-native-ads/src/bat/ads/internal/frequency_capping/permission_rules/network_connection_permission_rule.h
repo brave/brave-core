@@ -8,11 +8,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_interface.h"
 
 namespace ads {
 
-class NetworkConnectionPermissionRule final : public PermissionRule {
+class NetworkConnectionPermissionRule final : public PermissionRuleInterface {
  public:
   NetworkConnectionPermissionRule();
   ~NetworkConnectionPermissionRule() override;

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/expectations/lint-suppressions.xml b/chrome/android/expectations/lint-suppressions.xml
-index 92213164e4ccf1f0c3794f61808f51d908b74023..3f9caf49d6043ea3da395554f51707c03922ed22 100644
+index 5572d76f0d852840b4dcb0228a483a0575a34b47..5e08f61c689fadd2da5c5c2169a8826422b23842 100644
 --- a/chrome/android/expectations/lint-suppressions.xml
 +++ b/chrome/android/expectations/lint-suppressions.xml
-@@ -306,4 +306,5 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
+@@ -296,4 +296,5 @@ https://chromium.googlesource.com/chromium/src/+/main/build/android/docs/lint.md
      <!-- Discussed in crbug.com/1069204, ignoring this class of errors since these are Q+ constants. -->
      <ignore regexp="Must be one of: LineBreaker.BREAK_STRATEGY_SIMPLE, LineBreaker.BREAK_STRATEGY_HIGH_QUALITY, LineBreaker.BREAK_STRATEGY_BALANCED"/>
    </issue>

@@ -16,6 +16,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/ntp_background_images/constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,7 +30,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -63,7 +63,7 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("png"));
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("gif"));
   file_types.extension_description_overrides.push_back(
-      l10n_util::GetStringUTF16(IDS_UPLOAD_IMAGE_FORMAT));
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_UPLOAD_IMAGE_FORMAT));
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
       profile_->last_selected_directory(), &file_types, 0,

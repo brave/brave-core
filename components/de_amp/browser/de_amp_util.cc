@@ -5,7 +5,11 @@
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
 
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace de_amp {
@@ -14,13 +18,22 @@ namespace {
 // Check for "amp" or "⚡" in <html> tag
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
 constexpr char kGetHtmlTagPattern[] = "(<\\s*?html\\s.*?>)";
-constexpr char kDetectAmpPattern[] = "(?:<.*\\s.*(amp|⚡)(?:\\s.*>|>|/>))";
+// To see the expected behaviour of this regex, please see unit tests in
+// de_amp_util_unittest.cc
+constexpr char kDetectAmpPattern[] =
+    "(?:<.*?\\s.*?(amp|⚡|⚡=\"\\s*\"|⚡=\'\\s*\'|amp=\"\\s*\"|amp='\\s*')(?:\\s.*"
+    "?>|>|/>))";
 // Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 constexpr char kFindCanonicalLinkTagPattern[] =
-    "(<\\s*link\\s[^>]*rel=(?:\"|')canonical(?:\"|')(?:\\s[^>]*>|>|/>))";
+    "(<\\s*?link\\s[^>]*?rel=(?:\"|')canonical(?:\"|')(?:\\s[^>]*?>|>|/>))";
 constexpr char kFindCanonicalHrefInTagPattern[] = "href=(?:\"|')(.*?)(?:\"|')";
 }  // namespace
+
+bool IsDeAmpEnabled(PrefService* prefs) {
+  return base::FeatureList::IsEnabled(features::kBraveDeAMP) &&
+         prefs->GetBoolean(de_amp::kDeAmpPrefEnabled);
+}
 
 bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
                            const GURL& original_url) {

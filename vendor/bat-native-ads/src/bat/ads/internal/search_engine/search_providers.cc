@@ -15,9 +15,8 @@ SearchProviders::SearchProviders() = default;
 
 SearchProviders::~SearchProviders() = default;
 
-bool SearchProviders::IsSearchEngine(const std::string& url) {
-  const GURL visited_url = GURL(url);
-  if (!visited_url.is_valid()) {
+bool SearchProviders::IsSearchEngine(const GURL& url) {
+  if (!url.is_valid()) {
     return false;
   }
 
@@ -30,14 +29,14 @@ bool SearchProviders::IsSearchEngine(const std::string& url) {
     }
 
     if (search_provider.is_always_classed_as_a_search &&
-        visited_url.DomainIs(search_provider_hostname.host_piece())) {
+        url.DomainIs(search_provider_hostname.host_piece())) {
       is_a_search = true;
       break;
     }
 
     size_t index = search_provider.search_template.find('{');
     std::string substring = search_provider.search_template.substr(0, index);
-    size_t href_index = url.find(substring);
+    size_t href_index = url.spec().find(substring);
 
     if (index != std::string::npos && href_index != std::string::npos) {
       is_a_search = true;
@@ -48,16 +47,14 @@ bool SearchProviders::IsSearchEngine(const std::string& url) {
   return is_a_search;
 }
 
-std::string SearchProviders::ExtractSearchQueryKeywords(
-    const std::string& url) {
+std::string SearchProviders::ExtractSearchQueryKeywords(const GURL& url) {
   std::string search_query_keywords;
 
   if (!IsSearchEngine(url)) {
     return search_query_keywords;
   }
 
-  const GURL visited_url = GURL(url);
-  if (!visited_url.is_valid()) {
+  if (!url.is_valid()) {
     return search_query_keywords;
   }
 
@@ -67,7 +64,7 @@ std::string SearchProviders::ExtractSearchQueryKeywords(
       continue;
     }
 
-    if (!visited_url.DomainIs(search_provider_hostname.host_piece())) {
+    if (!url.DomainIs(search_provider_hostname.host_piece())) {
       continue;
     }
 

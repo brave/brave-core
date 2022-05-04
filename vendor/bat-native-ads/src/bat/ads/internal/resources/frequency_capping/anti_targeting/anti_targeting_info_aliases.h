@@ -10,11 +10,13 @@
 #include <set>
 #include <string>
 
+#include "url/gurl.h"
+
 namespace ads {
 namespace resource {
 
-using AntiTargetingList = std::set<std::string>;
-using AntiTargetingMap = std::map<std::string, AntiTargetingList>;
+using AntiTargetingSiteList = std::set<GURL>;
+using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
 
 }  // namespace resource
 }  // namespace ads

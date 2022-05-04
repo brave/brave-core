@@ -15,12 +15,12 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/bubble_border_with_arrow.h"
 #include "brave/browser/ui/views/sidebar/sidebar_bubble_background.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
@@ -155,7 +155,9 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)};
   auto* header = site_part->AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE), font));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE),
+      font));
   auto* theme_provider =
       BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider();
   if (theme_provider) {

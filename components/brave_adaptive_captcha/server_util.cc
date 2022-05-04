@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/notreached.h"
+#include "bat/ledger/buildflags.h"
 #include "brave/components/brave_ads/common/switches.h"
 
 namespace brave_adaptive_captcha {
@@ -17,13 +18,13 @@ namespace brave_adaptive_captcha {
 std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
-  std::string url = REWARDS_GRANT_PROD_ENDPOINT;
+  std::string url = BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT);
 
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (command_line->HasSwitch(brave_ads::switches::kStaging)) {
-    url = REWARDS_GRANT_STAGING_ENDPOINT;
+    url = BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT);
   } else if (command_line->HasSwitch(brave_ads::switches::kProduction)) {
-    url = REWARDS_GRANT_PROD_ENDPOINT;
+    url = BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT);
   }
 
   return url + path;

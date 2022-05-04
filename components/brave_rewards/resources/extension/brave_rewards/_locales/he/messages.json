@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "טיפ חודשי",
     "description": ""
   },
   "ok": {
@@ -192,19 +192,6 @@
     "message": "תרומה אוטומטית",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "עבור אל $provider$ כדי להשלים את האימות",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "השלם את אימות הזהות על מנת להתחיל לקבל תגמולים.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "התנתק",
     "description": ""
@@ -243,6 +230,15 @@
     "message": "בהמתנה",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "קיימת תקלה זמנית באימות עם $provider$. ה-Brave Rewards שלך ישארו במצב המתנה והאימות יתבצע שנית באופן אוטומטי. כמובן שגם אפשר לנסות שוב מאוחר יותר.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "תגמולים מפרסומות",
     "description": ""
@@ -252,7 +248,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "בלתי מאומת",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +376,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "טיפ חודשי: הפעולה נכשלה ",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +384,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "הטיפ החודשי שלך עבר. ",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

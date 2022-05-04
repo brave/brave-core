@@ -5,7 +5,6 @@
 
 #include "brave/components/speedreader/features.h"
 
-#include "base/feature_list.h"
 #include "brave/components/speedreader/buildflags.h"
 
 namespace speedreader {
@@ -18,5 +17,8 @@ const base::Feature kSpeedreaderFeature {
       base::FEATURE_DISABLED_BY_DEFAULT
 #endif
 };
+
+const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
+    &kSpeedreaderFeature, "min_out_length", 1000};
 
 }  // namespace speedreader

@@ -8,9 +8,9 @@
 
 namespace ads {
 
-class PermissionRule;
+class PermissionRuleInterface;
 
-bool ShouldAllow(PermissionRule* permission_rule);
+bool ShouldAllow(PermissionRuleInterface* permission_rule);
 
 }  // namespace ads
 

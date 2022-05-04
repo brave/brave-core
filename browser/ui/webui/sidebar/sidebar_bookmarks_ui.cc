@@ -12,6 +12,7 @@
 #include "brave/browser/resources/sidebar/grit/sidebar_resources_map.h"
 #include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_page_handler.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
@@ -22,7 +23,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 
 SidebarBookmarksUI::SidebarBookmarksUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui) {
@@ -32,7 +32,8 @@ SidebarBookmarksUI::SidebarBookmarksUI(content::WebUI* web_ui)
       {"bookmarksTitle", IDS_BOOKMARK_MANAGER_TITLE},
   };
   for (const auto& str : kLocalizedStrings) {
-    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
+    std::u16string l10n_str =
+        brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
 

@@ -8,7 +8,6 @@
 
 #include <ios>
 
-#include "base/rand_util.h"
 #include "bat/ads/internal/ad_pacing/ad_pacing_random_util.h"
 #include "bat/ads/internal/logging.h"
 

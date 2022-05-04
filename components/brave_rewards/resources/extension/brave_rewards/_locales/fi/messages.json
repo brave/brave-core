@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "Kuukausittainen tippi",
     "description": ""
   },
   "ok": {
@@ -192,19 +192,6 @@
     "message": "Osallistu automaattisesti",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Siirry palveluntarjoajaan $provider$ viimeistelläksesi vahvistuksen",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Viimeistele henkilöllisyyden vahvistus, jotta voit saada palkintoja.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Kirjautunut ulos",
     "description": ""
@@ -243,6 +230,15 @@
     "message": "Odottaa",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Väliaikainen ongelma vahvistamisessa palveluntarjoajan $provider$ kanssa. Brave-palkintosi pysyvät Odottavassa tilassa, ja ne yritetään vahvistaa uudelleen automaattisesti, mutta voit myös itse yrittää myöhemmin uudelleen.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Palkinnot mainoksista",
     "description": ""
@@ -252,7 +248,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "Ei vahvistettu",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +376,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "Kuukausittainen tippi epäonnistui",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +384,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "Kuukausittaiset tippisi on käsitelty.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

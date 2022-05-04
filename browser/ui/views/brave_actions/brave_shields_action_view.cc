@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -26,6 +27,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/image/image_skia_rep.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -55,23 +57,45 @@ BraveShieldsActionView::BraveShieldsActionView(Profile* profile,
                                                TabStripModel* tab_strip_model)
     : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
                                       base::Unretained(this)),
-                  std::u16string()) {
-  profile_ = profile;
-  tab_strip_model_ = tab_strip_model;
+                  std::u16string()),
+      profile_(profile),
+      tab_strip_model_(tab_strip_model) {
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
+  if (web_contents) {
+    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+        ->AddObserver(this);
+  }
   auto* ink_drop = views::InkDrop::Get(this);
   ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop->SetBaseColorCallback(base::BindRepeating(
       [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
       this));
 
-  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
+  SetAccessibleName(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS));
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
   tab_strip_model_->AddObserver(this);
+
+  // The MenuButtonController makes sure the panel closes when clicked if the
+  // panel is already open.
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
+  SetButtonController(std::move(menu_button_controller));
 }
 
-BraveShieldsActionView::~BraveShieldsActionView() = default;
+BraveShieldsActionView::~BraveShieldsActionView() {
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
+  if (web_contents) {
+    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+        ->RemoveObserver(this);
+  }
+}
 
 void BraveShieldsActionView::Init() {
   UpdateIconState();
@@ -200,7 +224,7 @@ std::u16string BraveShieldsActionView::GetTooltipText(
     }
   }
 
-  return l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS);
+  return brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS);
 }
 
 void BraveShieldsActionView::Update() {
@@ -208,6 +232,10 @@ void BraveShieldsActionView::Update() {
 }
 
 void BraveShieldsActionView::OnResourcesChanged() {
+  UpdateIconState();
+}
+
+void BraveShieldsActionView::OnShieldsEnabledChanged() {
   UpdateIconState();
 }
 
@@ -227,5 +255,6 @@ void BraveShieldsActionView::OnTabStripModelChanged(
           selection.old_contents)
           ->RemoveObserver(this);
     }
+    UpdateIconState();
   }
 }

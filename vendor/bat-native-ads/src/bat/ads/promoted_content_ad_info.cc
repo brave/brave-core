@@ -49,7 +49,7 @@ bool PromotedContentAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
+    placement_id = document["uuid"].GetString();
   }
 
   if (document.HasMember("creative_instance_id")) {
@@ -81,7 +81,7 @@ bool PromotedContentAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("target_url")) {
-    target_url = document["target_url"].GetString();
+    target_url = GURL(document["target_url"].GetString());
   }
 
   return true;
@@ -94,7 +94,7 @@ void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
   writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
-  writer->String(info.uuid.c_str());
+  writer->String(info.placement_id.c_str());
 
   writer->String("creative_instance_id");
   writer->String(info.creative_instance_id.c_str());
@@ -118,7 +118,7 @@ void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
   writer->String(info.description.c_str());
 
   writer->String("target_url");
-  writer->String(info.target_url.c_str());
+  writer->String(info.target_url.spec().c_str());
 
   writer->EndObject();
 }

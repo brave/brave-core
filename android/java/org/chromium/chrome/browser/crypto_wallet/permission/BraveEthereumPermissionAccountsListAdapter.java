@@ -25,6 +25,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,10 +38,25 @@ public class BraveEthereumPermissionAccountsListAdapter
     private ExecutorService mExecutor;
     private Handler mHandler;
     private List<Integer> mCheckedPositions = new ArrayList<>();
+    private boolean mCheckBoxStyle;
+    private BraveEthereumPermissionDelegate mDelegate;
+    private HashSet<AccountInfo> mAccountsWithPermissions;
+    private String mSelectedAccount;
 
-    public BraveEthereumPermissionAccountsListAdapter(AccountInfo[] accountInfo) {
+    public interface BraveEthereumPermissionDelegate {
+        HashSet<AccountInfo> getAccountsWithPermissions();
+        String getSelectedAccount();
+        void connectAccount(AccountInfo account);
+        void disconnectAccount(AccountInfo account);
+        void switchAccount(AccountInfo account);
+    }
+
+    public BraveEthereumPermissionAccountsListAdapter(AccountInfo[] accountInfo,
+            boolean checkBoxStyle, BraveEthereumPermissionDelegate delegate) {
         assert accountInfo != null;
         mAccountInfo = accountInfo;
+        mCheckBoxStyle = checkBoxStyle;
+        mDelegate = delegate;
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
     }
@@ -50,7 +67,24 @@ public class BraveEthereumPermissionAccountsListAdapter
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.brave_wallet_accounts_list_item, parent, false);
+        if (!mCheckBoxStyle && mDelegate != null) {
+            mAccountsWithPermissions = mDelegate.getAccountsWithPermissions();
+            mSelectedAccount = mDelegate.getSelectedAccount();
+        }
+
         return new ViewHolder(view);
+    }
+
+    public void setAccounts(AccountInfo[] accountInfo) {
+        mAccountInfo = accountInfo;
+    }
+
+    public void setAccountsWithPermissions(HashSet<AccountInfo> accountsWithPermissions) {
+        mAccountsWithPermissions = accountsWithPermissions;
+    }
+
+    public void setSelectedAccount(String selectedAccount) {
+        mSelectedAccount = selectedAccount;
     }
 
     @Override
@@ -60,22 +94,73 @@ public class BraveEthereumPermissionAccountsListAdapter
         holder.titleText.setText(mAccountInfo[arrayPosition].name);
         holder.subTitleText.setText(stripAccountAddress(mAccountInfo[arrayPosition].address));
         setBlockiesBitmapResource(holder.iconImg, mAccountInfo[arrayPosition].address);
-        holder.accountCheck.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            mCheckedPositions.add((Integer) arrayPosition);
-                        } else {
-                            mCheckedPositions.remove((Integer) arrayPosition);
+        if (mCheckBoxStyle) {
+            holder.accountCheck.setVisibility(View.VISIBLE);
+            holder.accountCheck.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                mCheckedPositions.add(arrayPosition);
+                            } else {
+                                mCheckedPositions.remove(arrayPosition);
+                            }
                         }
+                    });
+        } else {
+            if (hasPermission(mAccountInfo[arrayPosition].address)) {
+                if (mAccountInfo[arrayPosition].address.equals(mSelectedAccount)) {
+                    holder.accountAction.setText(
+                            holder.accountAction.getContext().getResources().getString(
+                                    R.string.fragment_connect_account_disconnect));
+                } else {
+                    holder.accountAction.setText(
+                            holder.accountAction.getContext().getResources().getString(
+                                    R.string.fragment_connect_account_switch));
+                }
+            } else {
+                holder.accountAction.setText(
+                        holder.accountAction.getContext().getResources().getString(
+                                R.string.fragment_connect_account_connect));
+            }
+            holder.accountAction.setVisibility(View.VISIBLE);
+            holder.accountAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    assert mDelegate != null;
+                    if (holder.accountAction.getText().equals(
+                                holder.accountAction.getContext().getResources().getString(
+                                        R.string.fragment_connect_account_disconnect))) {
+                        mDelegate.disconnectAccount(mAccountInfo[arrayPosition]);
+                    } else if (holder.accountAction.getText().equals(
+                                       holder.accountAction.getContext().getResources().getString(
+                                               R.string.fragment_connect_account_connect))) {
+                        mDelegate.connectAccount(mAccountInfo[arrayPosition]);
+                    } else if (holder.accountAction.getText().equals(
+                                       holder.accountAction.getContext().getResources().getString(
+                                               R.string.fragment_connect_account_switch))) {
+                        mDelegate.switchAccount(mAccountInfo[arrayPosition]);
                     }
-                });
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return mAccountInfo.length;
+    }
+
+    private boolean hasPermission(String address) {
+        assert mAccountsWithPermissions != null;
+        Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
+        while (it.hasNext()) {
+            if (it.next().address.equals(address)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public AccountInfo[] getCheckedAccounts() {
@@ -92,13 +177,15 @@ public class BraveEthereumPermissionAccountsListAdapter
         public TextView titleText;
         public TextView subTitleText;
         public CheckBox accountCheck;
+        public TextView accountAction;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.iconImg = itemView.findViewById(R.id.icon);
             this.titleText = itemView.findViewById(R.id.title);
             this.subTitleText = itemView.findViewById(R.id.sub_title);
-            this.accountCheck = itemView.findViewById(R.id.accountCheck);
+            this.accountCheck = itemView.findViewById(R.id.account_check);
+            this.accountAction = itemView.findViewById(R.id.account_action);
         }
     }
 

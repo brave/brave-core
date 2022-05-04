@@ -7,7 +7,7 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -18,9 +18,9 @@ AdEventViewed::AdEventViewed() = default;
 AdEventViewed::~AdEventViewed() = default;
 
 void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
-  BLOG(3, "Viewed new tab page ad with uuid " << ad.uuid
-                                              << " and creative instance id "
-                                              << ad.creative_instance_id);
+  BLOG(3, "Viewed new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
   LogAdEvent(ad, ConfirmationType::kViewed, [](const bool success) {
     if (!success) {

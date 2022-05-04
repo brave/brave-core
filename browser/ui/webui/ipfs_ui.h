@@ -45,23 +45,23 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
  private:
   FRIEND_TEST_ALL_PREFIXES(TestIPFSDomHandler, AddComponentVersion);
   FRIEND_TEST_ALL_PREFIXES(TestIPFSDomHandler, ComponentNotRegistered);
-  void HandleGetConnectedPeers(base::Value::ConstListView args);
-  void HandleGetAddressesConfig(base::Value::ConstListView args);
+  void HandleGetConnectedPeers(const base::Value::List& args);
+  void HandleGetAddressesConfig(const base::Value::List& args);
   void OnGetAddressesConfig(bool success,
                             const ipfs::AddressesConfig& config);
-  void HandleGetDaemonStatus(base::Value::ConstListView args);
-  void HandleLaunchDaemon(base::Value::ConstListView args);
+  void HandleGetDaemonStatus(const base::Value::List& args);
+  void HandleLaunchDaemon(const base::Value::List& args);
   void LaunchDaemon();
   void OnLaunchDaemon(bool success);
-  void HandleShutdownDaemon(base::Value::ConstListView args);
-  void HandleRestartDaemon(base::Value::ConstListView args);
+  void HandleShutdownDaemon(const base::Value::List& args);
+  void HandleRestartDaemon(const base::Value::List& args);
   void OnShutdownDaemon(bool success);
-  void HandleGetRepoStats(base::Value::ConstListView args);
+  void HandleGetRepoStats(const base::Value::List& args);
   void OnGetRepoStats(bool success, const ipfs::RepoStats& stats);
-  void HandleGetNodeInfo(base::Value::ConstListView args);
+  void HandleGetNodeInfo(const base::Value::List& args);
   void OnGetNodeInfo(bool success, const ipfs::NodeInfo& info);
 
-  void HandleGarbageCollection(base::Value::ConstListView args);
+  void HandleGarbageCollection(const base::Value::List& args);
   void OnGarbageCollection(bool success, const std::string& error);
 
   void SetIpfsClientUpdaterVersionForTesting(const std::string& version) {

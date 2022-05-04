@@ -40,24 +40,21 @@ Polymer({
     },
   },
 
-  /** @override */
-  ready() {
-    this.sidebarShowEnabledLabel_ =
-      this.computeSidebarShowOptionSubLabel_(this.getCurrentSidebarOption_());
-  },
+  observers: [
+    'onShowOptionChanged_(prefs.brave.sidebar.sidebar_show_option.value)',
+  ],
 
   computeSidebarShowOptionSubLabel_(option) {
     return option === 3 ? this.i18n('appearanceSettingsSidebarDisabledDesc')
                         : this.i18n('appearanceSettingsSidebarEnabledDesc');
   },
 
-  onShowOptionChanged_: function() {
+  onShowOptionChanged_() {
     this.sidebarShowEnabledLabel_ =
       this.computeSidebarShowOptionSubLabel_(this.getCurrentSidebarOption_());
   },
 
-  getCurrentSidebarOption_: function() {
+  getCurrentSidebarOption_() {
     return this.get('prefs.brave.sidebar.sidebar_show_option.value');
   },
 });
-

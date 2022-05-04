@@ -8,6 +8,7 @@
 #include <string>
 
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -15,7 +16,7 @@ namespace ads {
 
 TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
   // Arrange
-  const std::string url = "https://www.foo.com/";
+  const GURL url = GURL("https://www.foo.com/");
   const std::string pattern = "https://www.foo.com/";
 
   // Act
@@ -27,7 +28,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
 
 TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
   // Arrange
-  const std::string url = "https://www.foo.com/bar";
+  const GURL url = GURL("https://www.foo.com/bar");
   const std::string pattern = "https://www.foo.com/bar";
 
   // Act
@@ -39,7 +40,7 @@ TEST(BatAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
 
 TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
   // Arrange
-  const std::string url = "https://www.foo.com/";
+  const GURL url = GURL("https://www.foo.com/");
   const std::string pattern = "www.foo.com";
 
   // Act
@@ -51,7 +52,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPattern) {
 
 TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
   // Arrange
-  const std::string url = "https://www.foo.com/";
+  const GURL url = GURL("https://www.foo.com/");
   const std::string pattern = "https://www.foo.com";
 
   // Act
@@ -63,7 +64,7 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
 
 TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
   // Arrange
-  const std::string url = "https://www.foo.com/bar?key=test";
+  const GURL url = GURL("https://www.foo.com/bar?key=test");
   const std::string pattern = "https://www.foo.com/bar*";
 
   // Act
@@ -75,7 +76,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
 
 TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
   // Arrange
-  const std::string url = "https://www.foo.com/woo-bar-hoo";
+  const GURL url = GURL("https://www.foo.com/woo-bar-hoo");
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
@@ -87,7 +88,7 @@ TEST(BatAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
 
 TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
   // Arrange
-  const std::string url = "https://www.foo.com/woo";
+  const GURL url = GURL("https://www.foo.com/woo");
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
@@ -99,8 +100,8 @@ TEST(BatAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
 
 TEST(BatAdsUrlUtilTest, SameDomainOrHost) {
   // Arrange
-  const std::string url1 = "https://foo.com?bar=test";
-  const std::string url2 = "https://subdomain.foo.com/bar";
+  const GURL url1 = GURL("https://foo.com?bar=test");
+  const GURL url2 = GURL("https://subdomain.foo.com/bar");
 
   // Act
   const bool is_same_site = SameDomainOrHost(url1, url2);
@@ -111,8 +112,8 @@ TEST(BatAdsUrlUtilTest, SameDomainOrHost) {
 
 TEST(BatAdsUrlUtilTest, NotSameDomainOrHost) {
   // Arrange
-  const std::string url1 = "https://foo.com?bar=test";
-  const std::string url2 = "https://subdomain.bar.com/foo";
+  const GURL url1 = GURL("https://foo.com?bar=test");
+  const GURL url2 = GURL("https://subdomain.bar.com/foo");
 
   // Act
   const bool is_same_site = SameDomainOrHost(url1, url2);
@@ -123,8 +124,8 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHost) {
 
 TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
-  const std::string url1 = "https://foo.com?bar=test";
-  const std::string url2 = "https://foo.com/bar";
+  const GURL url1 = GURL("https://foo.com?bar=test");
+  const GURL url2 = GURL("https://foo.com/bar");
 
   // Act
   const bool is_same_site = SameDomainOrHost(url1, url2);
@@ -135,8 +136,8 @@ TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithNoSubdomain) {
 
 TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
-  const std::string url1 = "https://foo.com?bar=test";
-  const std::string url2 = "https://bar.com/foo";
+  const GURL url1 = GURL("https://foo.com?bar=test");
+  const GURL url2 = GURL("https://bar.com/foo");
 
   // Act
   const bool is_same_site = SameDomainOrHost(url1, url2);
@@ -147,8 +148,8 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithNoSubdomain) {
 
 TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithRef) {
   // Arrange
-  const std::string url1 = "https://foo.com?bar=test#ref";
-  const std::string url2 = "https://foo.com/bar";
+  const GURL url1 = GURL("https://foo.com?bar=test#ref");
+  const GURL url2 = GURL("https://foo.com/bar");
 
   // Act
   const bool is_same_site = SameDomainOrHost(url1, url2);
@@ -159,8 +160,8 @@ TEST(BatAdsUrlUtilTest, SameDomainOrHostForUrlWithRef) {
 
 TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
   // Arrange
-  const std::string url1 = "https://foo.com?bar=test#ref";
-  const std::string url2 = "https://bar.com/foo";
+  const GURL url1 = GURL("https://foo.com?bar=test#ref");
+  const GURL url2 = GURL("https://bar.com/foo");
 
   // Act
   const bool is_same_site = SameDomainOrHost(url1, url2);
@@ -171,9 +172,10 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
 
 TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
   // Arrange
-  const std::vector<std::string> urls = {"https://foo.com", "https://bar.com"};
+  const std::vector<GURL> urls = {GURL("https://foo.com"),
+                                  GURL("https://bar.com")};
 
-  const std::string url = "https://bar.com/foo";
+  const GURL url = GURL("https://bar.com/foo");
 
   // Act
   const bool does_exist = DomainOrHostExists(urls, url);
@@ -184,9 +186,10 @@ TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
 
 TEST(BatAdsUrlUtilTest, DomainOrHostDoesNotExist) {
   // Arrange
-  const std::vector<std::string> urls = {"https://foo.com", "https://bar.com"};
+  const std::vector<GURL> urls = {GURL("https://foo.com"),
+                                  GURL("https://bar.com")};
 
-  const std::string url = "https://baz.com/qux";
+  const GURL url = GURL("https://baz.com/qux");
 
   // Act
   const bool does_exist = DomainOrHostExists(urls, url);

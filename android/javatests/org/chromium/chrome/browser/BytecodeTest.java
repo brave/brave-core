@@ -11,6 +11,8 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -110,6 +112,7 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testClassesExist() throws Exception {
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeApplicationImpl"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
@@ -220,6 +223,14 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge"));
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent"));
     }
 
     @Test
@@ -351,6 +362,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
                         "get", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
+                "createManageDevicesLink", true, void.class, ListView.class));
     }
 
     @Test
@@ -490,16 +504,16 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ToolbarLayout.class, ToolbarDataProvider.class,
-                ToolbarTabController.class, UserEducationHelper.class, List.class,
-                OneshotSupplier.class, ThemeColorProvider.class, ThemeColorProvider.class,
-                MenuButtonCoordinator.class, MenuButtonCoordinator.class, ObservableSupplier.class,
+                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
+                ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
+                List.class, OneshotSupplier.class, ThemeColorProvider.class,
+                ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
-                Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
-                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class,
-                ObservableSupplier.class, Callback.class));
+                ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
+                Callback.class, Supplier.class, Supplier.class, ObservableSupplier.class,
+                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                HistoryDelegate.class, BooleanSupplier.class, OfflineDownloader.class,
+                boolean.class, ObservableSupplier.class, Callback.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -527,6 +541,14 @@ public class BytecodeTest {
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
                 PropertyModel.class, int.class, FeedActionDelegate.class,
                 FeedOptionsCoordinator.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
+                "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
+                "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
+                Context.class, String.class, String.class, long.class,
+                BottomSheetController.class));
     }
 
     @Test
@@ -680,6 +702,8 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testSuperNames() throws Exception {
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/ChromeApplicationImpl",
+                "org/chromium/chrome/browser/BraveApplicationImplBase"));
         Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/settings/MainSettings",
                 "org/chromium/chrome/browser/settings/BraveMainPreferencesBase"));
         Assert.assertTrue(checkSuperName(

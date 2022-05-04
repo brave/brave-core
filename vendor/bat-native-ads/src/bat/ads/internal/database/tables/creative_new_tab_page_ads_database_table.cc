@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -24,6 +23,7 @@
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
+#include "bat/ads/internal/database/tables/deposits_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
@@ -52,7 +52,7 @@ int BindParameters(mojom::DBCommand* command,
     BindString(command, index++, creative_ad.creative_set_id);
     BindString(command, index++, creative_ad.campaign_id);
     BindString(command, index++, creative_ad.company_name);
-    BindString(command, index++, creative_ad.image_url);
+    BindString(command, index++, creative_ad.image_url.spec());
     BindString(command, index++, creative_ad.alt);
 
     count++;
@@ -82,9 +82,9 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.value = ColumnDouble(record, 13);
   creative_ad.segment = ColumnString(record, 14);
   creative_ad.geo_targets.insert(ColumnString(record, 15));
-  creative_ad.target_url = ColumnString(record, 16);
+  creative_ad.target_url = GURL(ColumnString(record, 16));
   creative_ad.company_name = ColumnString(record, 17);
-  creative_ad.image_url = ColumnString(record, 18);
+  creative_ad.image_url = GURL(ColumnString(record, 18));
   creative_ad.alt = ColumnString(record, 19);
   creative_ad.ptr = ColumnDouble(record, 20);
 
@@ -95,7 +95,7 @@ CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.dayparts.push_back(daypart);
 
   CreativeNewTabPageAdWallpaperInfo wallpaper;
-  wallpaper.image_url = ColumnString(record, 24);
+  wallpaper.image_url = GURL(ColumnString(record, 24));
   wallpaper.focal_point.x = ColumnInt(record, 25);
   wallpaper.focal_point.y = ColumnInt(record, 26);
   creative_ad.wallpapers.push_back(wallpaper);
@@ -201,6 +201,7 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
     creative_new_tab_page_ad_wallpapers_database_table_->InsertOrUpdate(
         transaction.get(), batch);
     dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+    deposits_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(transaction.get(),
                                                 creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
@@ -528,8 +529,8 @@ void CreativeNewTabPageAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 24: {
+      MigrateToV24(transaction);
       break;
     }
 
@@ -636,7 +637,7 @@ void CreativeNewTabPageAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeNewTabPageAds::MigrateToV19(mojom::DBTransaction* transaction) {
+void CreativeNewTabPageAds::MigrateToV24(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "creative_new_tab_page_ads");

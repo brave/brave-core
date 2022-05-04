@@ -19,7 +19,6 @@
 #include "bat/ads/internal/locale/supported_subdivision_codes.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"
-#include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
@@ -43,6 +42,14 @@ constexpr int64_t kDebugFetchSubdivisionTargetingPing =
 SubdivisionTargeting::SubdivisionTargeting() = default;
 
 SubdivisionTargeting::~SubdivisionTargeting() = default;
+
+void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode) {
+    OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged();
+  } else if (path == prefs::kAdsSubdivisionTargetingCode) {
+    OnAdsSubdivisionTargetingCodePrefChanged();
+  }
+}
 
 bool SubdivisionTargeting::ShouldAllowForLocale(
     const std::string& locale) const {
@@ -117,22 +124,21 @@ std::string SubdivisionTargeting::GetSubdivisionCode() const {
   return GetLazySubdivisionCode();
 }
 
-void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode) {
-    auto_detected_subdivision_code_optional_ =
-        AdsClientHelper::Get()->GetStringPref(
-            prefs::kAutoDetectedAdsSubdivisionTargetingCode);
-  }
+///////////////////////////////////////////////////////////////////////////////
 
-  if (path == prefs::kAdsSubdivisionTargetingCode) {
-    subdivision_code_optional_ = AdsClientHelper::Get()->GetStringPref(
-        prefs::kAdsSubdivisionTargetingCode);
-
-    MaybeFetchForCurrentLocale();
-  }
+void SubdivisionTargeting::
+    OnAutoDetectedAdsSubdivisionTargetingCodePrefChanged() {
+  auto_detected_subdivision_code_optional_ =
+      AdsClientHelper::Get()->GetStringPref(
+          prefs::kAutoDetectedAdsSubdivisionTargetingCode);
 }
 
-///////////////////////////////////////////////////////////////////////////////
+void SubdivisionTargeting::OnAdsSubdivisionTargetingCodePrefChanged() {
+  subdivision_code_optional_ = AdsClientHelper::Get()->GetStringPref(
+      prefs::kAdsSubdivisionTargetingCode);
+
+  MaybeFetchForCurrentLocale();
+}
 
 std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
   if (!auto_detected_subdivision_code_optional_) {

@@ -285,6 +285,7 @@ export const WarningText = styled.span<Partial<StyleProps>>`
 `
 
 export const AddressConfirmationText = styled.span`
+  cursor: default;
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;

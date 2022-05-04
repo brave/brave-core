@@ -330,6 +330,7 @@ provideStrings({
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFrist: 'first',
   braveWalletConfirmTransactions: 'transactions',
+  braveWalletConfirmTransactionAccountCreationFee: 'The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.',
   braveWalletAllowSpendCurrentAllowance: 'Current allowance',
   braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
 
@@ -419,6 +420,7 @@ provideStrings({
   braveWalletEditGasSetCustom: 'Set custom',
   braveWalletEditGasSetSuggested: 'Set suggested',
   braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
+  braveWalletEditGasLimitError: 'Gas limit must be an integer greater than 0',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',
@@ -472,6 +474,7 @@ provideStrings({
   braveWalletTransactionStatusSubmitted: 'Submitted',
   braveWalletTransactionStatusConfirmed: 'Confirmed',
   braveWalletTransactionStatusError: 'Error',
+  braveWalletTransactionStatusDropped: 'Dropped',
 
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',

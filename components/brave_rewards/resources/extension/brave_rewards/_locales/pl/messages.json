@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "Miesięczny napiwek",
     "description": ""
   },
   "ok": {
@@ -192,19 +192,6 @@
     "message": "Wspieraj automatycznie",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Przejdź do $provider$, aby zakończyć weryfikację",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Zakończ weryfikację tożsamości, aby rozpocząć otrzymywać nagrody.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Wylogowano",
     "description": ""
@@ -243,6 +230,15 @@
     "message": "Oczekuje",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Wystąpił tymczasowy problem z weryfikacją$provider$. Twoje nagrody Brave pozostaną w stanie Oczekującym, a ponowna próba zostanie podjęta automatycznie, ale możesz również spróbować ponownie później.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Nagrody z reklam",
     "description": ""
@@ -252,7 +248,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "Niezweryfikowane",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +376,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "Nie udało się przetworzyć miesięcznego napiwku",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +384,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "Twoje miesięczne napiwki zostały przekazane.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

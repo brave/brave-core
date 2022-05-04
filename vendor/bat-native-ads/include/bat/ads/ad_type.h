@@ -20,7 +20,8 @@ class AdType final {
     kAdNotification,
     kNewTabPageAd,
     kPromotedContentAd,
-    kInlineContentAd
+    kInlineContentAd,
+    kSearchResultAd
   };
 
   AdType() = default;

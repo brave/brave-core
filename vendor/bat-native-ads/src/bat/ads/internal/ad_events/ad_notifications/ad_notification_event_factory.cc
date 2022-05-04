@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_factory.h"
 
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_clicked.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_dismissed.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_served.h"
@@ -16,7 +15,7 @@
 namespace ads {
 namespace ad_notifications {
 
-std::unique_ptr<AdEvent<AdNotificationInfo>> AdEventFactory::Build(
+std::unique_ptr<AdEventInterface<AdNotificationInfo>> AdEventFactory::Build(
     const mojom::AdNotificationEventType event_type) {
   switch (event_type) {
     case mojom::AdNotificationEventType::kServed: {

@@ -169,7 +169,7 @@ def parse_args():
 
 def get_remote_version(branch_to_compare):
     global config
-    decoded_file = get_file_contents(config.github_token, BRAVE_REPO,
+    decoded_file = get_file_contents(config.github_token, BRAVE_CORE_REPO,
                                      'package.json', branch_to_compare)
     json_file = json.loads(decoded_file)
     return json_file['version']
@@ -205,8 +205,8 @@ def main():
         return result
 
     # get all channel branches (starting at master)
-    brave_browser_version = get_remote_version('master')
-    remote_branches = get_remote_channel_branches(brave_browser_version)
+    brave_core_version = get_remote_version('master')
+    remote_branches = get_remote_channel_branches(brave_core_version)
     top_level_base = 'master'
     issues_fixed = []
 

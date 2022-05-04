@@ -1,6 +1,8 @@
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/PDFExtensionAccessibilityTreeDumpTest.*
 -All/PDFPluginDisabledTest.*
+-All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
+-All/WebAppOfflinePageTest.WebAppOfflineWithEmptyServiceWorker/*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_NoUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_SameUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -12,6 +14,7 @@
 -ChromeFileSystemAccessPermissionContextPrerenderingBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
+-ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
 -ContentAnalysisDialogPlainTests.*
 -CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.*
 -CRLSetBrowserTest.*
@@ -20,6 +23,7 @@
 -DisallowCurrentProfile_DifferentUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -DisallowCurrentProfile_SameUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -DocumentPictureInPictureWindowControllerBrowserTest.*
+-Enabled/NetworkServiceSandboxEnabledTest.IsRespected/0
 -ExtensionInstalledBubbleViewsBrowserTest.*
 -FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
 -FileSystemAccessBrowserSlowLoadTest.*
@@ -48,6 +52,7 @@
 -PictureInPictureWindowControllerPrerenderBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -ProfileShortcutManagerBrowserTest.*
+-PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
 -SaveCardBubbleViewsFullFormBrowserTest.*
 -ScriptingAPITest.*
 -ServiceWorker/ExtensionI18nTest.*

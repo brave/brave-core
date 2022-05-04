@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/media/router/media_router_feature.h"
@@ -23,6 +24,7 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -86,6 +88,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"siteSettingsCategoryEthereum", IDS_SETTINGS_SITE_SETTINGS_ETHEREUM},
     {"siteSettingsEthereumAsk", IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_ASK},
     {"siteSettingsEthereumBlock", IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK},
+    {"siteSettingsSolana", IDS_SETTINGS_SITE_SETTINGS_SOLANA},
+    {"siteSettingsCategorySolana", IDS_SETTINGS_SITE_SETTINGS_SOLANA},
+    {"siteSettingsSolanaAsk", IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK},
+    {"siteSettingsSolanaBlock", IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK},
     {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
     {"braveAdditionalSettingsTitle", IDS_SETTINGS_BRAVE_ADDITIONAL_SETTINGS},
     {"appearanceSettingsBraveTheme",
@@ -248,6 +254,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTips", IDS_SETTINGS_HELP_TIPS},
     {"braveHelpTipsWaybackMachineLabel",
      IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT},
+    {"braveHelpTipsWarnBeforeClosingWindow",
+     IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL},
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
@@ -322,6 +330,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_DEFAULT_BASE_CRYPTOCURRENCY_DESC},
     {"showBravewalletIconOnToolbar",
      IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
+    {"showBravewalletTestNetworks",
+     IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS},
     {"autoLockMinutes", IDS_SETTINGS_AUTO_LOCK_MINUTES},
     {"autoLockMinutesDesc", IDS_SETTINGS_AUTO_LOCK_MINUTES_DESC},
     {"googleLoginForExtensionsDesc", IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS},
@@ -465,8 +475,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
-  auto confirmation_phrase =
-      l10n_util::GetStringUTF16(IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
+  auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
   auto confirmation_text = l10n_util::GetStringFUTF16(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION, confirmation_phrase);

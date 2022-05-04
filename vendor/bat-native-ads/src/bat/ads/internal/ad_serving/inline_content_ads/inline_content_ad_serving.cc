@@ -14,9 +14,9 @@
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ads_features.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
-#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
+#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_factory.h"
 #include "bat/ads/internal/logging.h"
@@ -116,7 +116,7 @@ bool AdServing::ServeAd(const InlineContentAdInfo& ad,
   DCHECK(ad.IsValid());
 
   BLOG(1, "Serving inline content ad:\n"
-              << "  uuid: " << ad.uuid << "\n"
+              << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
               << "  campaignId: " << ad.campaign_id << "\n"

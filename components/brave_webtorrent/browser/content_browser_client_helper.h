@@ -86,6 +86,7 @@ static void LoadOrLaunchMagnetURL(
     content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
+    bool is_in_fenced_frame_tree,
     const absl::optional<url::Origin>& initiating_origin,
     content::WeakDocumentPtr initiator_document) {
   content::WebContents* web_contents = web_contents_getter.Run();
@@ -98,7 +99,8 @@ static void LoadOrLaunchMagnetURL(
   } else {
     ExternalProtocolHandler::LaunchUrl(
         url, web_contents_getter, page_transition, has_user_gesture,
-        initiating_origin, std::move(initiator_document));
+        is_in_fenced_frame_tree, initiating_origin,
+        std::move(initiator_document));
   }
 }
 
@@ -117,14 +119,15 @@ static void HandleMagnetProtocol(
     content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
+    bool is_in_fenced_frame_tree,
     const absl::optional<url::Origin>& initiating_origin,
     content::WeakDocumentPtr initiator_document) {
   DCHECK(url.SchemeIs(kMagnetScheme));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
-                     page_transition, has_user_gesture, initiating_origin,
-                     std::move(initiator_document)));
+                     page_transition, has_user_gesture, is_in_fenced_frame_tree,
+                     initiating_origin, std::move(initiator_document)));
 }
 
 static bool IsMagnetProtocol(const GURL& url) {

@@ -153,10 +153,10 @@ export const createPageReducer = (initialState: PageState) => {
     }
   })
 
-  reducer.on(Actions.setCryptoWalletsInitialized, (state: PageState, payload: boolean) => {
+  reducer.on(Actions.setCryptoWalletsInitialized, (state: PageState, payload: boolean): PageState => {
     return {
       ...state,
-      isCryptoWalletsInstalled: payload
+      isCryptoWalletsInitialized: payload
     }
   })
 

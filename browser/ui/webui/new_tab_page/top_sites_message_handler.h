@@ -51,14 +51,14 @@ class TopSitesMessageHandler : public content::WebUIMessageHandler,
   bool IsShortcutsVisible() const;
 
   // handlers
-  void HandleUpdateMostVisitedInfo(base::Value::ConstListView args);
-  void HandleDeleteMostVisitedTile(base::Value::ConstListView args);
-  void HandleReorderMostVisitedTile(base::Value::ConstListView args);
-  void HandleRestoreMostVisitedDefaults(base::Value::ConstListView args);
-  void HandleUndoMostVisitedTileAction(base::Value::ConstListView args);
-  void HandleSetMostVisitedSettings(base::Value::ConstListView args);
-  void HandleEditTopSite(base::Value::ConstListView args);
-  void HandleAddNewTopSite(base::Value::ConstListView args);
+  void HandleUpdateMostVisitedInfo(const base::Value::List& args);
+  void HandleDeleteMostVisitedTile(const base::Value::List& args);
+  void HandleReorderMostVisitedTile(const base::Value::List& args);
+  void HandleRestoreMostVisitedDefaults(const base::Value::List& args);
+  void HandleUndoMostVisitedTileAction(const base::Value::List& args);
+  void HandleSetMostVisitedSettings(const base::Value::List& args);
+  void HandleEditTopSite(const base::Value::List& args);
+  void HandleAddNewTopSite(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<ntp_tiles::MostVisitedSites> most_visited_sites_;

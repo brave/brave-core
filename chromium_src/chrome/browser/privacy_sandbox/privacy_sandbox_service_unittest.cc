@@ -16,6 +16,8 @@
 #include "chrome/browser/signin/identity_manager_factory.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/browsing_topics/browsing_topics_service.h"
+#include "components/browsing_topics/test_util.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -30,6 +32,7 @@
 #include "components/sync/base/user_selectable_type.h"
 #include "components/sync/driver/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/interest_group_manager.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_task_environment.h"
@@ -72,7 +75,8 @@ class PrivacySandboxServiceTest : public testing::Test {
         CookieSettingsFactory::GetForProfile(profile()).get(),
         profile()->GetPrefs(), policy_service(), sync_service(),
         identity_test_env()->identity_manager(), test_interest_group_manager(),
-        profile_metrics::BrowserProfileType::kRegular);
+        profile_metrics::BrowserProfileType::kRegular, browsing_data_remover(),
+        mock_browsing_topics_service());
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -81,7 +85,7 @@ class PrivacySandboxServiceTest : public testing::Test {
   PrivacySandboxService* privacy_sandbox_service() {
     return privacy_sandbox_service_.get();
   }
-  PrivacySandboxSettings* privacy_sandbox_settings() {
+  privacy_sandbox::PrivacySandboxSettings* privacy_sandbox_settings() {
     return PrivacySandboxSettingsFactory::GetForProfile(profile());
   }
 
@@ -100,6 +104,12 @@ class PrivacySandboxServiceTest : public testing::Test {
   TestInterestGroupManager* test_interest_group_manager() {
     return &test_interest_group_manager_;
   }
+  content::BrowsingDataRemover* browsing_data_remover() {
+    return profile()->GetBrowsingDataRemover();
+  }
+  browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service() {
+    return mock_browsing_topics_service_;
+  }
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -112,84 +122,5 @@ class PrivacySandboxServiceTest : public testing::Test {
   TestInterestGroupManager test_interest_group_manager_;
 
   std::unique_ptr<PrivacySandboxService> privacy_sandbox_service_;
+  browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service_;
 };
-
-TEST_F(PrivacySandboxServiceTest, OnPrivacySandboxPrefChanged) {
-  // When either the main Privacy Sandbox pref, or the FLoC pref, are changed
-  // the FLoC ID should be reset. This will be propagated to the settings
-  // instance, which should then notify observers.
-  privacy_sandbox_test_util::MockPrivacySandboxObserver
-      mock_privacy_sandbox_observer;
-  PrivacySandboxSettingsFactory::GetForProfile(profile())->AddObserver(
-      &mock_privacy_sandbox_observer);
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true));
-
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, false);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true));
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxFlocEnabled, false);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-
-  // OnFlocDataAccessibleSinceUpdated() will be called twice because the attempt
-  // to enable the pref will be immediately followed by setting it to false.
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true))
-      .Times(2);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxFlocEnabled, true);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-
-  // OnFlocDataAccessibleSinceUpdated() will be called twice because the attempt
-  // to enable the pref will be immediately followed by setting it to false.
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true))
-      .Times(2);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, true);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-}
-
-TEST_F(PrivacySandboxServiceTest, OnPrivacySandboxPrefV2Changed) {
-  // When either the main Privacy Sandbox pref, or the FLoC pref, are changed
-  // the FLoC ID should be reset. This will be propagated to the settings
-  // instance, which should then notify observers.
-  privacy_sandbox_test_util::MockPrivacySandboxObserver
-      mock_privacy_sandbox_observer;
-  PrivacySandboxSettingsFactory::GetForProfile(profile())->AddObserver(
-      &mock_privacy_sandbox_observer);
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true));
-
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, false);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true));
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxFlocEnabled, false);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-
-  // OnFlocDataAccessibleSinceUpdated() will be called twice because the attempt
-  // to enable the pref will be immediately followed by setting it to false.
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true))
-      .Times(2);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxFlocEnabled, true);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-
-  // OnFlocDataAccessibleSinceUpdated() will be called twice because the attempt
-  // to enable the pref will be immediately followed by setting it to false.
-  EXPECT_CALL(mock_privacy_sandbox_observer,
-              OnFlocDataAccessibleSinceUpdated(/*reset_compute_timer=*/true))
-      .Times(2);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, true);
-  testing::Mock::VerifyAndClearExpectations(&mock_privacy_sandbox_observer);
-}

@@ -12,7 +12,6 @@
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/account/deposits/deposit_base.h"
 #include "bat/ads/internal/account/deposits/deposits_factory.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers.h"
@@ -63,6 +62,12 @@ void Account::RemoveObserver(AccountObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void Account::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kEnabled) {
+    OnEnabledPrefChanged();
+  }
+}
+
 bool Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo& last_wallet = wallet_->Get();
 
@@ -103,7 +108,7 @@ void Account::Deposit(const std::string& creative_instance_id,
   DCHECK_NE(AdType::kUndefined, ad_type.value());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 
-  std::unique_ptr<DepositBase> deposit =
+  std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(confirmation_type);
   DCHECK(deposit);
 
@@ -135,6 +140,10 @@ void Account::ProcessClearingCycle() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Account::OnEnabledPrefChanged() {
+  MaybeGetIssuers();
+}
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const AdType& ad_type,

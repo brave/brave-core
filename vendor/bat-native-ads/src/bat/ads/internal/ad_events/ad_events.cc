@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 
 #include <string>
-#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
@@ -25,7 +24,7 @@ void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,
                 AdEventCallback callback) {
   AdEventInfo ad_event;
-  ad_event.uuid = ad.uuid;
+  ad_event.uuid = ad.placement_id;
   ad_event.type = ad.type;
   ad_event.confirmation_type = confirmation_type;
   ad_event.campaign_id = ad.campaign_id;
@@ -87,30 +86,15 @@ void RebuildAdEventsFromDatabase() {
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event) {
-  const std::string& id = GetInstanceId();
-
-  const AdType& ad_type = ad_event.type;
-  const ConfirmationType& confirmation_type = ad_event.confirmation_type;
-
-  const double timestamp = ad_event.created_at.ToDoubleT();
-
   AdsClientHelper::Get()->RecordAdEventForId(
-      id, ad_type.ToString(), confirmation_type.ToString(), timestamp);
+      GetInstanceId(), ad_event.type.ToString(),
+      ad_event.confirmation_type.ToString(), ad_event.created_at);
 }
 
-std::deque<base::Time> GetAdEvents(const AdType& ad_type,
-                                   const ConfirmationType& confirmation_type) {
-  const std::vector<double>& history = AdsClientHelper::Get()->GetAdEvents(
-      ad_type.ToString(), confirmation_type.ToString());
-
-  std::deque<base::Time> deque;
-
-  for (const auto& timestamp : history) {
-    const base::Time time = base::Time::FromDoubleT(timestamp);
-    deque.push_back(time);
-  }
-
-  return deque;
+std::vector<base::Time> GetAdEvents(const AdType& ad_type,
+                                    const ConfirmationType& confirmation_type) {
+  return AdsClientHelper::Get()->GetAdEvents(ad_type.ToString(),
+                                             confirmation_type.ToString());
 }
 
 }  // namespace ads

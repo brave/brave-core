@@ -146,7 +146,13 @@ export const mockWalletState: WalletState = {
     mockAccount
   ],
   activeOrigin: {
-    origin: 'https://app.uniswap.org',
+    origin: {
+      scheme: 'https',
+      host: 'app.uniswap.org',
+      port: 443,
+      nonceIfOpaque: undefined
+    },
+    originSpec: 'https://app.uniswap.org',
     eTldPlusOne: 'uniswap.org'
   },
   addUserAssetError: false,
@@ -169,6 +175,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -182,6 +189,7 @@ export const mockWalletState: WalletState = {
       symbol: 'DAI',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     }
   ],
@@ -200,7 +208,7 @@ export const mockWalletState: WalletState = {
   pendingTransactions: [],
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
-  selectedNetwork: mockNetworkList[2],
+  selectedNetwork: mockNetworkList[0],
   selectedPendingTransaction: undefined,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   transactions: {},
@@ -236,6 +244,7 @@ export const mockWalletState: WalletState = {
       symbol: 'ETH',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -249,6 +258,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -262,6 +272,7 @@ export const mockWalletState: WalletState = {
       symbol: 'ETH',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.ROPSTEN_CHAIN_ID
     },
     {
@@ -275,6 +286,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.ROPSTEN_CHAIN_ID
     }
   ],
@@ -282,5 +294,14 @@ export const mockWalletState: WalletState = {
   defaultNetworks: [mockNetwork],
   isTestNetworksEnabled: true,
   selectedCoin: BraveWallet.CoinType.ETH,
-  selectedNetworkFilter: AllNetworksOption
+  selectedNetworkFilter: AllNetworksOption,
+  defaultAccounts: [
+    {
+      address: mockAccount.address,
+      coin: mockAccount.coin,
+      name: mockAccount.name,
+      isImported: false,
+      hardware: undefined
+    }
+  ]
 }

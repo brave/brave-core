@@ -18,11 +18,11 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notification_builder.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notification_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notification_builder.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notification_permission_rules.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_base.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_factory.h"
 #include "bat/ads/internal/logging.h"
@@ -68,6 +68,12 @@ void AdServing::AddObserver(AdNotificationServingObserver* observer) {
 void AdServing::RemoveObserver(AdNotificationServingObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
+}
+
+void AdServing::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAdsPerHour) {
+    OnAdsPerHourPrefChanged();
+  }
 }
 
 void AdServing::StartServingAdsAtRegularIntervals() {
@@ -156,25 +162,23 @@ void AdServing::MaybeServeAd() {
       });
 }
 
-void AdServing::OnPrefChanged(const std::string& path) {
-  if (path == prefs::kAdsPerHour) {
-    const int64_t ads_per_hour = settings::GetAdsPerHour();
-    BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
-
-    if (!ShouldServeAdsAtRegularIntervals()) {
-      return;
-    }
-
-    if (ads_per_hour == 0) {
-      StopServingAdsAtRegularIntervals();
-      return;
-    }
-
-    MaybeServeAdAtNextRegularInterval();
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
+
+void AdServing::OnAdsPerHourPrefChanged() {
+  const int64_t ads_per_hour = settings::GetAdsPerHour();
+  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+
+  if (!ShouldServeAdsAtRegularIntervals()) {
+    return;
+  }
+
+  if (ads_per_hour == 0) {
+    StopServingAdsAtRegularIntervals();
+    return;
+  }
+
+  MaybeServeAdAtNextRegularInterval();
+}
 
 bool AdServing::IsSupported() const {
   if (!eligible_ads_) {
@@ -255,7 +259,7 @@ bool AdServing::ServeAd(const AdNotificationInfo& ad) const {
   DCHECK(ad.IsValid());
 
   BLOG(1, "Serving ad notification:\n"
-              << "  uuid: " << ad.uuid << "\n"
+              << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
               << "  campaignId: " << ad.campaign_id << "\n"

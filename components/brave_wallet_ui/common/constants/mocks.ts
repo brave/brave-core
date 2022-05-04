@@ -40,7 +40,17 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
     txArgs: [],
     createdTime: { microseconds: 0 as unknown as bigint },
     submittedTime: { microseconds: 0 as unknown as bigint },
-    confirmedTime: { microseconds: 0 as unknown as bigint }
+    confirmedTime: { microseconds: 0 as unknown as bigint },
+    originInfo: {
+      origin: {
+        scheme: 'https',
+        host: 'brave.com',
+        port: 443,
+        nonceIfOpaque: undefined
+      },
+      originSpec: 'https://brave.com',
+      eTldPlusOne: 'brave.com'
+    }
   }
 }
 
@@ -68,6 +78,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 

@@ -60,7 +60,17 @@ bool IsFirstPartyAccessAllowed(
   return cookie_settings->IsAllowed(setting);
 }
 
+bool IsSessionOnlyExplicit(
+    const CookieSettingWithBraveMetadata& setting_with_brave_metadata) {
+  return setting_with_brave_metadata.setting == CONTENT_SETTING_SESSION_ONLY &&
+         setting_with_brave_metadata.IsExplicitSetting();
+}
+
 }  // namespace
+
+CookieSettingsBase::CookieSettingsBase() = default;
+
+CookieSettingsBase::~CookieSettingsBase() = default;
 
 CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata() = default;
 CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata(
@@ -72,6 +82,11 @@ CookieSettingWithBraveMetadata& CookieSettingWithBraveMetadata::operator=(
 CookieSettingWithBraveMetadata& CookieSettingWithBraveMetadata::operator=(
     CookieSettingWithBraveMetadata&&) = default;
 CookieSettingWithBraveMetadata::~CookieSettingWithBraveMetadata() = default;
+
+bool CookieSettingWithBraveMetadata::IsExplicitSetting() const {
+  return !primary_pattern_matches_all_hosts ||
+         !secondary_pattern_matches_all_hosts;
+}
 
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
@@ -88,10 +103,14 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 
   // Enable ephemeral storage for a first party URL if SESSION_ONLY cookie
   // setting is set and the feature is enabled.
+  absl::optional<CookieSettingWithBraveMetadata> first_party_setting;
   if (base::FeatureList::IsEnabled(
-          net::features::kBraveFirstPartyEphemeralStorage) &&
-      IsCookieSessionOnly(first_party_url)) {
-    return true;
+          net::features::kBraveFirstPartyEphemeralStorage)) {
+    first_party_setting =
+        GetCookieSettingWithBraveMetadata(first_party_url, first_party_url);
+    if (IsSessionOnlyExplicit(*first_party_setting)) {
+      return true;
+    }
   }
 
   if (net::registry_controlled_domains::SameDomainOrHost(
@@ -101,15 +120,12 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 
   bool allow_3p =
       IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
-  bool allow_1p = IsFirstPartyAccessAllowed(first_party_url, this);
+  bool allow_1p = first_party_setting
+                      ? IsAllowed(first_party_setting->setting)
+                      : IsFirstPartyAccessAllowed(first_party_url, this);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
-}
-
-ScopedEphemeralStorageAwareness
-CookieSettingsBase::CreateScopedEphemeralStorageAwareness() const {
-  return ScopedEphemeralStorageAwareness(&ephemeral_storage_aware_, true);
 }
 
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
@@ -123,9 +139,11 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
-  auto scoped_ephemeral_storage_awareness =
-      CreateScopedEphemeralStorageAwareness();
-  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
+    return true;
+  }
+
+  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
@@ -139,11 +157,6 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
-  if (ephemeral_storage_aware_ &&
-      ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
-    return true;
-  }
-
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
 }
 
@@ -184,7 +197,8 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     CookieSettingWithBraveMetadata setting_with_brave_metadata =
         GetCookieSettingWithBraveMetadata(first_party_url, first_party_url);
 
-    if (setting_with_brave_metadata.setting == CONTENT_SETTING_SESSION_ONLY) {
+    // Ephemeral mode for the main frame can be enabled only via explicit rule.
+    if (IsSessionOnlyExplicit(setting_with_brave_metadata)) {
       main_frame_mode = MainFrameMode::kEphemeral;
     } else {
       // Disabled shields mode allows everything in nested frames. To properly
@@ -247,12 +261,12 @@ CookieSettingsBase::GetCookieSettingWithBraveMetadata(
     const GURL& url,
     const GURL& first_party_url) const {
   CookieSettingWithBraveMetadata setting_brave_metadata;
-  base::AutoReset<CookieSettingWithBraveMetadata*> auto_reset(
-      &cookie_setting_with_brave_metadata_, &setting_brave_metadata);
+  cookie_setting_with_brave_metadata_.Set(&setting_brave_metadata);
   // GetCookieSetting fills metadata structure implicitly (implemented in
   // GetCookieSettingInternal), the setting value is set explicitly here.
   setting_brave_metadata.setting =
       GetCookieSetting(url, first_party_url, nullptr);
+  cookie_setting_with_brave_metadata_.Set(nullptr);
   return setting_brave_metadata;
 }
 

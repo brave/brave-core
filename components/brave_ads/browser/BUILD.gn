@@ -50,3 +50,16 @@ source_set("browser") {
     deps += [ "//brave/components/brave_adaptive_captcha" ]
   }
 }
+
+source_set("test_support") {
+  testonly = true
+
+  public_deps = [ ":browser" ]
+
+  deps = [ "//testing/gmock" ]
+
+  sources = [
+    "mock_ads_service.cc",
+    "mock_ads_service.h",
+  ]
+}

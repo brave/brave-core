@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -113,34 +113,49 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
   }
 }
 
-void BraveWalletServiceDelegateImpl::AddEthereumPermission(
-    const std::string& origin_spec,
+void BraveWalletServiceDelegateImpl::AddPermission(
+    mojom::CoinType coin,
+    const url::Origin& origin,
     const std::string& account,
-    AddEthereumPermissionCallback callback) {
-  bool success =
-      permissions::BraveEthereumPermissionContext::AddEthereumPermission(
-          context_, origin_spec, account);
+    AddPermissionCallback callback) {
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false);
+    return;
+  }
+  bool success = permissions::BraveWalletPermissionContext::AddPermission(
+      *type, context_, origin, account);
   std::move(callback).Run(success);
 }
 
-void BraveWalletServiceDelegateImpl::HasEthereumPermission(
-    const std::string& origin_spec,
+void BraveWalletServiceDelegateImpl::HasPermission(
+    mojom::CoinType coin,
+    const url::Origin& origin,
     const std::string& account,
-    HasEthereumPermissionCallback callback) {
+    HasPermissionCallback callback) {
   bool has_permission = false;
-  bool success =
-      permissions::BraveEthereumPermissionContext::HasEthereumPermission(
-          context_, origin_spec, account, &has_permission);
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false, has_permission);
+    return;
+  }
+  bool success = permissions::BraveWalletPermissionContext::HasPermission(
+      *type, context_, origin, account, &has_permission);
   std::move(callback).Run(success, has_permission);
 }
 
-void BraveWalletServiceDelegateImpl::ResetEthereumPermission(
-    const std::string& origin_spec,
+void BraveWalletServiceDelegateImpl::ResetPermission(
+    mojom::CoinType coin,
+    const url::Origin& origin,
     const std::string& account,
-    ResetEthereumPermissionCallback callback) {
-  bool success =
-      permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
-          context_, origin_spec, account);
+    ResetPermissionCallback callback) {
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false);
+    return;
+  }
+  bool success = permissions::BraveWalletPermissionContext::ResetPermission(
+      *type, context_, origin, account);
   std::move(callback).Run(success);
 }
 
@@ -162,23 +177,20 @@ void BraveWalletServiceDelegateImpl::TabChangedAt(
 }
 
 void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
-  const std::string origin = GetActiveOriginInternal();
-  const std::string etld_plus_one = eTLDPlusOne(GURL(origin));
+  mojom::OriginInfoPtr origin_info = MakeOriginInfo(GetActiveOriginInternal());
   for (auto& observer : observer_list_)
-    observer.OnActiveOriginChanged(origin, etld_plus_one);
+    observer.OnActiveOriginChanged(origin_info);
 }
 
-std::string BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
+url::Origin BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
   content::WebContents* contents = GetActiveWebContents();
-  return contents
-             ? contents->GetMainFrame()->GetLastCommittedOrigin().Serialize()
-             : "";
+  return contents ? contents->GetMainFrame()->GetLastCommittedOrigin()
+                  : url::Origin();
 }
 
 void BraveWalletServiceDelegateImpl::GetActiveOrigin(
     GetActiveOriginCallback callback) {
-  const std::string origin = GetActiveOriginInternal();
-  std::move(callback).Run(origin, eTLDPlusOne(GURL(origin)));
+  std::move(callback).Run(MakeOriginInfo(GetActiveOriginInternal()));
 }
 
 }  // namespace brave_wallet

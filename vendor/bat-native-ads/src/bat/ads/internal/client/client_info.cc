@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/client/client_info.h"
 
+#include <vector>
+
 #include "base/check.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
@@ -50,11 +52,12 @@ bool ClientInfo::FromJson(const std::string& json) {
       if (ad_shown.IsInt64()) {
         continue;
       }
-      AdHistoryInfo ad_history;
+      HistoryItemInfo history_item;
       rapidjson::StringBuffer buffer;
       rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (ad_shown.Accept(writer) && ad_history.FromJson(buffer.GetString())) {
-        ads_shown_history.push_back(ad_history);
+      if (ad_shown.Accept(writer) &&
+          history_item.FromJson(buffer.GetString())) {
+        history.push_back(history_item);
       }
     }
   }
@@ -66,7 +69,7 @@ bool ClientInfo::FromJson(const std::string& json) {
       std::string segment = segment_history.name.GetString();
       DCHECK(!segment.empty());
 
-      std::deque<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
+      std::vector<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
       for (const auto& segment_history_item :
            segment_history.value.GetArray()) {
         ad_targeting::PurchaseIntentSignalHistoryInfo history;
@@ -149,8 +152,8 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
 
   writer->String("adsShownHistory");
   writer->StartArray();
-  for (const auto& ad_shown : info.ads_shown_history) {
-    SaveToJson(writer, ad_shown);
+  for (const auto& item : info.history) {
+    SaveToJson(writer, item);
   }
   writer->EndArray();
 

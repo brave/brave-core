@@ -10,14 +10,14 @@
 
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
-#include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
 namespace table {
 
-class Campaigns final : public Table {
+class Campaigns final : public TableInterface {
  public:
   Campaigns();
   ~Campaigns() override;
@@ -36,7 +36,7 @@ class Campaigns final : public Table {
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void MigrateToV19(mojom::DBTransaction* transaction);
+  void MigrateToV24(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

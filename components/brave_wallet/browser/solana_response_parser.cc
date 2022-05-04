@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
@@ -35,21 +36,11 @@ bool GetUint64FromDictValue(const base::Value& dict_value,
     return true;
   }
 
-  if (!value->is_int() && !value->is_double()) {
+  auto* string_value = value->GetIfString();
+  if (!string_value || string_value->empty())
     return false;
-  }
 
-  // We currently only support number up to kMaxSafeIntegerUint64, because
-  // double-precision floating-point can only precisely represent an integer
-  // up to kMaxSafeIntegerUint64.
-  double double_value = value->GetDouble();
-  if (double_value < 0 || double_value > kMaxSafeIntegerUint64)
-    return false;
-  *ret = static_cast<uint64_t>(double_value);
-
-  // This will be false if double_value is not an integer, which is considered
-  // as an invalid input.
-  return double_value == static_cast<double>(*ret);
+  return base::StringToUint64(*string_value, ret);
 }
 
 }  // namespace
@@ -105,8 +96,10 @@ bool ParseSendTransaction(const std::string& json, std::string* tx_id) {
   return ParseSingleStringResult(json, tx_id);
 }
 
-bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
-  DCHECK(hash);
+bool ParseGetLatestBlockhash(const std::string& json,
+                             std::string* hash,
+                             uint64_t* last_valid_block_height) {
+  DCHECK(hash && last_valid_block_height);
 
   base::Value result;
   if (!ParseResult(json, &result) || !result.is_dict())
@@ -121,7 +114,8 @@ bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
     return false;
   *hash = *hash_ptr;
 
-  return true;
+  return GetUint64FromDictValue(*value, "lastValidBlockHeight", false,
+                                last_valid_block_height);
 }
 
 bool ParseGetSignatureStatuses(
@@ -246,6 +240,19 @@ bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee) {
     return false;
 
   return GetUint64FromDictValue(result, "value", true, fee);
+}
+
+bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
+  DCHECK(block_height);
+
+  std::string block_height_string;
+  if (!brave_wallet::ParseSingleStringResult(json, &block_height_string))
+    return false;
+
+  if (block_height_string.empty())
+    return false;
+
+  return base::StringToUint64(block_height_string, block_height);
 }
 
 }  // namespace solana

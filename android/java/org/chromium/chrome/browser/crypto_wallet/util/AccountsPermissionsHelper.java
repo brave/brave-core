@@ -7,7 +7,9 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,11 +17,11 @@ import java.util.HashSet;
 public class AccountsPermissionsHelper {
     private BraveWalletService mBraveWalletService;
     private AccountInfo[] mAccounts;
-    private String mOrigin;
+    private Origin mOrigin;
     private HashSet<AccountInfo> mAccountsWithPermissions;
 
     public AccountsPermissionsHelper(
-            BraveWalletService braveWalletService, AccountInfo[] accounts, String origin) {
+            BraveWalletService braveWalletService, AccountInfo[] accounts, Origin origin) {
         assert braveWalletService != null;
         assert accounts != null;
         mBraveWalletService = braveWalletService;
@@ -44,8 +46,8 @@ public class AccountsPermissionsHelper {
 
             accountsPermissionsContexts.add(accountPermissionContext);
 
-            mBraveWalletService.hasEthereumPermission(
-                    mOrigin, account.address, accountPermissionContext);
+            mBraveWalletService.hasPermission(
+                    CoinType.ETH, mOrigin, account.address, accountPermissionContext);
         }
 
         accountsPermissionsMultiResponse.setWhenAllCompletedAction(() -> {

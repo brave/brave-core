@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { CaratRightIcon } from 'brave-ui/components/icons'
+import { CaratRightIcon, PlusIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { Publisher } from '../../../../api/brave_news'
 import {
@@ -12,7 +12,7 @@ import {
   SettingsText,
   SettingsSectionTitle
 } from '../../../../components/default'
-import Button from '$web-components/button'
+import Button, { ButtonIconContainer } from '$web-components/button'
 import NavigateBack from '../../../../components/default/settings/navigateBack'
 import DirectFeedItemMenu from './directFeedMenu'
 import { Props } from './'
@@ -117,7 +117,9 @@ export default function Sources (props: SourcesProps) {
     feedInputText,
     onRemoveDirectFeed,
     onChangeFeedInput,
-    onAddSource
+    feedSearchResults,
+    onAddSource,
+    onSearchForSources
   } = useManageDirectFeeds(props.publishers)
   // Set blank category on navigation back
   const onBack = React.useCallback(() => {
@@ -144,24 +146,53 @@ export default function Sources (props: SourcesProps) {
               <DirectFeedItemMenu key={publisher.publisherId} onRemove={onRemoveDirectFeed.bind(undefined, publisher)} />
             </SettingsRow>
           ))}
-          <Styled.FeedInputLabel>
-            Feed URL
-            <Styled.FeedInput type={'text'} value={feedInputText} onChange={onChangeFeedInput} />
-          </Styled.FeedInputLabel>
-          {(feedInputIsValid === FeedInputValidity.NotValid) &&
-            <Styled.FeedUrlError>Sorry, we couldn't find a feed at that address.</Styled.FeedUrlError>
+          <Styled.AddSourceForm onSubmit={e => { e.preventDefault() }}>
+            <Styled.FeedInputLabel>
+              Feed URL
+              <Styled.FeedInput type={'text'} value={feedInputText} onChange={onChangeFeedInput} />
+            </Styled.FeedInputLabel>
+            {(feedInputIsValid === FeedInputValidity.NotValid) &&
+              <Styled.FeedUrlError>Sorry, we couldn't find a feed at that address.</Styled.FeedUrlError>
+            }
+            {(feedInputIsValid === FeedInputValidity.IsDuplicate) &&
+              <Styled.FeedUrlError>Seems like you already subscribe to that feed.</Styled.FeedUrlError>
+            }
+            <Styled.YourSourcesAction>
+              <Button
+                isPrimary
+                scale='small'
+                type='submit'
+                isDisabled={feedInputIsValid !== FeedInputValidity.Valid}
+                isLoading={feedInputIsValid === FeedInputValidity.Pending}
+                onClick={onSearchForSources}
+              >
+                Add source
+              </Button>
+            </Styled.YourSourcesAction>
+          </Styled.AddSourceForm>
+          {(feedInputIsValid === FeedInputValidity.HasResults) &&
+            <Styled.FeedSearchResults>
+              Multiple feeds were found:
+              <Styled.ResultItems>
+              {feedSearchResults.map(result => (
+                <Styled.ResultItem key={result.feedUrl.url}>
+                  <span title={result.feedUrl.url}>{result.feedTitle}</span>
+                  <Button
+                    ariaLabel={`Add the feed at ${result.feedUrl.url}`}
+                    scale={'tiny'}
+                    isDisabled={result.status !== FeedInputValidity.Valid}
+                    isLoading={result.status === FeedInputValidity.Pending}
+                    onClick={onAddSource.bind(undefined, result.feedUrl.url)}
+                  >
+                    <ButtonIconContainer>
+                      <PlusIcon />
+                    </ButtonIconContainer>
+                  </Button>
+                </Styled.ResultItem>
+              ))}
+              </Styled.ResultItems>
+            </Styled.FeedSearchResults>
           }
-          <Styled.YourSourcesAction>
-            <Button
-              isPrimary
-              scale='small'
-              isDisabled={feedInputIsValid !== FeedInputValidity.Valid}
-              isLoading={feedInputIsValid === FeedInputValidity.Pending}
-              onClick={onAddSource}
-            >
-              Add source
-            </Button>
-          </Styled.YourSourcesAction>
         </Styled.YourSources>
         <CategoryList
           categories={[...publishersByCategory.keys()]}

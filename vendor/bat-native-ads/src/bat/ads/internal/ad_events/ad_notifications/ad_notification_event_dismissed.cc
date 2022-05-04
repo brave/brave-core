@@ -7,8 +7,8 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -19,11 +19,11 @@ AdEventDismissed::AdEventDismissed() = default;
 AdEventDismissed::~AdEventDismissed() = default;
 
 void AdEventDismissed::FireEvent(const AdNotificationInfo& ad) {
-  BLOG(3, "Dismissed ad notification with uuid " << ad.uuid
-                                                 << " and creative instance id "
-                                                 << ad.creative_instance_id);
+  BLOG(3, "Dismissed ad notification with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
-  AdNotifications::Get()->Remove(ad.uuid);
+  AdNotifications::Get()->Remove(ad.placement_id);
 
   LogAdEvent(ad, ConfirmationType::kDismissed, [](const bool success) {
     if (!success) {

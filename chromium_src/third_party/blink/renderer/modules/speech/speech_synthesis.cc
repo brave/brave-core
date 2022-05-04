@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/modules/speech/speech_synthesis.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
@@ -36,13 +37,13 @@ void SpeechSynthesis::OnSetVoiceList(
       if (ExecutionContext* context = GetExecutionContext()) {
         fake_voice = mojom_voice.Clone();
         fake_voice->is_default = false;
-        std::mt19937_64 prng = brave::BraveSessionCache::From(*context)
-                                   .MakePseudoRandomGenerator();
+        brave::FarblingPRNG prng = brave::BraveSessionCache::From(*context)
+                                       .MakePseudoRandomGenerator();
         const char* kFakeNames[] = {
             "Hubert", "Vernon", "Rudolph",   "Clayton",    "Irving",
             "Wilson", "Alva",   "Harley",    "Beauregard", "Cleveland",
             "Cecil",  "Reuben", "Sylvester", "Jasper"};
-        const int kFakeNamesCount = base::size(kFakeNames);
+        const int kFakeNamesCount = std::size(kFakeNames);
         fake_voice->name = WTF::String(kFakeNames[prng() % kFakeNamesCount]);
       }
     }

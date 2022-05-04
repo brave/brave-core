@@ -45,7 +45,7 @@ AdEventInfo GenerateAdEvent(const AdType& type,
                             const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
-  ad_event.uuid = ad.uuid;
+  ad_event.uuid = ad.placement_id;
   ad_event.type = type;
   ad_event.confirmation_type = confirmation_type;
   ad_event.campaign_id = ad.campaign_id;
@@ -65,11 +65,11 @@ void RecordAdEvents(const AdType& type,
   const std::string& id = GetInstanceId();
   const std::string& ad_type_as_string = type.ToString();
   const std::string& confirmation_type_as_string = confirmation_type.ToString();
-  const double timestamp = NowAsTimestamp();
+  const base::Time time = Now();
 
   for (int i = 0; i < count; i++) {
     AdsClientHelper::Get()->RecordAdEventForId(
-        id, ad_type_as_string, confirmation_type_as_string, timestamp);
+        id, ad_type_as_string, confirmation_type_as_string, time);
   }
 }
 

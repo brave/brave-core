@@ -287,7 +287,7 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
 }
 
 WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
-  std::mt19937_64 prng = MakePseudoRandomGenerator();
+  FarblingPRNG prng = MakePseudoRandomGenerator();
   WTF::StringBuilder result;
   result.Append(real_user_agent);
   int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
@@ -315,7 +315,7 @@ bool BraveSessionCache::AllowFontFamily(
               family_name.Utf8()))
         return true;
 #endif
-      std::mt19937_64 prng = MakePseudoRandomGenerator();
+      FarblingPRNG prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
       return ((prng() % 2) == 0);
     }
@@ -325,9 +325,9 @@ bool BraveSessionCache::AllowFontFamily(
   return true;
 }
 
-std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {
+FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator() {
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-  return std::mt19937_64(seed);
+  return FarblingPRNG(seed);
 }
 
 }  // namespace brave

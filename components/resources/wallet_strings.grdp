@@ -9,6 +9,7 @@
   <message name="IDS_WALLET_EXPECTED_SINGLE_PARAMETER" desc="The text of the response for wallet_addEthereumChain call with empty parameters">Expected single, object parameter.</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
+  <message name="IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR" desc="The text of response when an RPC method is not supported">This RPC method is not supported.</message>
   <message name="IDS_WALLET_PARSING_ERROR" desc="There was a parsing error">A response parsing error has occurred</message>
   <message name="IDS_WALLET_INVALID_MNEMONIC_ERROR" desc="The text for invalid mnemonic being imported error">The mnemonic being imported is not valid for Brave Wallet</message>
   <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
@@ -19,7 +20,6 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICE_INVALID" desc="Transaction data is not validated">Transaction data 'gasPrice' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_LIMIT_INVALID" desc="Transaction data is not validated">Transaction data 'gas' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_VALUE_INVALID" desc="Transaction data is not validated">Transaction data 'value' is not valid</message>
-  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICING_EXISTS" desc="Transaction data is not validated">Transaction data 'gasPrice' or 'maxFeePerGas' must be specified</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_CHAIN_ID_INVALID" desc="Transaction data is not validated">Transaction data 'chainId' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_MAX_FEE_PER_GAS_INVALID" desc="Transaction data is not validated">Transaction data 'maxFeePerGas' is not valid</message>
@@ -33,8 +33,10 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_ERROR" desc="The text of the response for eth_sendTransaction">Error processing the transaction</message>
   <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
   <message name="IDS_WALLET_ETH_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
-  <message name="IDS_WALLET_ETH_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>
   <message name="IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC" desc="Invalid Chain ID response">Invalid chain ID response from RPC service</message>
+  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>
+  <message name="IDS_WALLET_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>
+  <message name="IDS_WALLET_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
   <message name="IDS_BRAVE_WALLET_DEFI_CATEGORY" desc="Defi apps title">Defi apps</message>
   <message name="IDS_BRAVE_WALLET_NFT_CATEGORY" desc="NFT marketplace title">NFT marketplaces</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CATEGORY" desc="Filter apps placeholder">Search results</message>
@@ -281,6 +283,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_NEXT" desc="Confirm transaction panel next transaction button">next</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_FRIST" desc="Confirm transaction panel first transaction button">first</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTIONS" desc="Confirm transaction panel transactions label">transactions</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.</message>
   <message name="IDS_BRAVE_WALLET_PANEL_TITLE" desc="Brave Wallet panel title">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PANEL_CONNECTED" desc="Brave Wallet panel connected status">Connected</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TITLE" desc="Site Permissions panel title">Site permissions</message>
@@ -337,6 +340,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED" desc="Status label for submitted transaction">Submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED" desc="Status label for confirmed transaction">Confirmed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED" desc="Status label for dropped transaction">Dropped</message>
   <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAILS" desc="Transaction details panel title">Transaction details</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_DATE" desc="Transaction Detail Panel Date of transactions">Date</message>
@@ -441,4 +445,9 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary Networks</message>
+  <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An eroor regarding an incorrect gas limit value">
+    Gas limit must be an integer greater than 0
+  </message>
+  <message name="IDS_WALLET_FIL_SEND_TRANSACTION_TO" desc="Error message if transaction 'to' is empty">Transaction data 'to' must be specified</message>
+  <message name="IDS_WALLET_FIL_SEND_TRANSACTION_FROM_INVALID" desc="Transaction data is not validated">Transaction data 'from' must be a valid Filecoin address</message>
 </grit-part>

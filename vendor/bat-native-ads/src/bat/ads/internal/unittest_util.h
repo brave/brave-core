@@ -93,11 +93,11 @@ void MockIsNetworkConnectionAvailable(
     const std::unique_ptr<AdsClientMock>& mock,
     const bool is_available);
 
-void MockIsForeground(const std::unique_ptr<AdsClientMock>& mock,
-                      const bool is_foreground);
+void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
+                         const bool is_browser_active);
 
-void MockIsFullScreen(const std::unique_ptr<AdsClientMock>& mock,
-                      const bool is_full_screen);
+void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
+                                   const bool is_browser_in_full_screen_mode);
 
 void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
                                  const bool should_show);
@@ -115,8 +115,8 @@ void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
               const base::ScopedTempDir& temp_dir);
 
-void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock);
-void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
                     const URLEndpoints& endpoints);

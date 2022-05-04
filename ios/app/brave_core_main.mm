@@ -15,7 +15,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
+#include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/components/skus/browser/switches.h"
@@ -76,7 +77,8 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
   std::unique_ptr<BraveMainDelegate> _delegate;
   std::unique_ptr<web::WebMain> _webMain;
   ChromeBrowserState* _mainBrowserState;
-  NSString* _walletProviderJS;
+  NSMutableDictionary<NSNumber* /* BraveWalletCoinType */, NSString*>*
+      _providerScripts;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
@@ -110,6 +112,8 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
            selector:@selector(onAppWillTerminate:)
                name:UIApplicationWillTerminateNotification
              object:nil];
+
+    _providerScripts = [[NSMutableDictionary alloc] init];
 
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
@@ -293,9 +297,9 @@ static bool CustomLogHandler(int severity,
       initWithBlockchainRegistry:registry];
 }
 
-- (nullable id<BraveWalletBraveWalletProvider>)
-    walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-             isPrivateBrowsing:(bool)isPrivateBrowsing {
+- (nullable id<BraveWalletEthereumProvider>)
+    ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+               isPrivateBrowsing:(bool)isPrivateBrowsing {
   auto* browserState = _mainBrowserState;
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
@@ -325,33 +329,71 @@ static bool CustomLogHandler(int severity,
     return nil;
   }
 
-  auto* provider = new brave_wallet::BraveWalletProviderImpl(
+  auto* provider = new brave_wallet::EthereumProviderImpl(
       ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
       json_rpc_service, tx_service, keyring_service, brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
       browserState->GetPrefs());
-  return [[BraveWalletBraveWalletProviderImpl alloc]
-      initWithBraveWalletProvider:provider];
+  return [[BraveWalletEthereumProviderImpl alloc]
+      initWithEthereumProvider:provider];
 }
 
-- (NSString*)walletProviderJS {
-  if (!_walletProviderJS) {
-    auto resource_id =
-        IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS;
-    // The resource bundle is not available until after WebMainParts is setup
-    auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-    std::string resource_string = "";
-    if (resource_bundle.IsGzipped(resource_id)) {
-      resource_string =
-          std::string(resource_bundle.LoadDataResourceString(resource_id));
-    } else {
-      resource_string =
-          std::string(resource_bundle.GetRawDataResource(resource_id));
-    }
-    _walletProviderJS = base::SysUTF8ToNSString(resource_string);
+- (nullable id<BraveWalletSolanaProvider>)
+    solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+             isPrivateBrowsing:(bool)isPrivateBrowsing {
+  auto* browserState = _mainBrowserState;
+  if (isPrivateBrowsing) {
+    browserState = browserState->GetOffTheRecordChromeBrowserState();
   }
-  return _walletProviderJS;
+
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForState(browserState);
+  if (!keyring_service) {
+    return nil;
+  }
+
+  auto* provider = new brave_wallet::SolanaProviderImpl(
+      keyring_service,
+      std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
+          delegate));
+  return
+      [[BraveWalletSolanaProviderImpl alloc] initWithSolanaProvider:provider];
+}
+
+- (NSString*)resourceForID:(int)resource_id {
+  // The resource bundle is not available until after WebMainParts is setup
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::string resource_string = "";
+  if (resource_bundle.IsGzipped(resource_id)) {
+    resource_string =
+        std::string(resource_bundle.LoadDataResourceString(resource_id));
+  } else {
+    resource_string =
+        std::string(resource_bundle.GetRawDataResource(resource_id));
+  }
+  return base::SysUTF8ToNSString(resource_string);
+}
+
+- (NSString*)providerScriptForCoinType:(BraveWalletCoinType)coinType {
+  auto cachedScript = _providerScripts[@(coinType)];
+  if (cachedScript) {
+    return cachedScript;
+  }
+  auto resource_id = ^{
+    switch (coinType) {
+      case BraveWalletCoinTypeEth:
+        return IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS;
+      case BraveWalletCoinTypeSol:
+        return IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS;
+      case BraveWalletCoinTypeFil:
+        // Currently not supported
+        return 0;
+    }
+  }();
+  auto script = [self resourceForID:resource_id];
+  _providerScripts[@(coinType)] = script;
+  return script;
 }
 
 - (BraveStats*)braveStats {

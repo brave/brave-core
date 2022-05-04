@@ -99,17 +99,17 @@ public class HighlightView extends FrameLayout {
 
         } else {
             boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
-            int verticalOffset = isTablet ? 35 : 60;
+            int verticalOffset = isTablet ? 35 : 80;
             eraserPaint.setAlpha(0);
             RectF innerRect = new RectF(item.getScreenLeft() + 10,
                     (item.getScreenTop() - verticalOffset) + 10, item.getScreenRight() - 10,
-                    item.getScreenBottom() - (isTablet ? 45 : 10));
+                    item.getScreenBottom() - (isTablet ? 45 : 80));
             overlayCanvas.drawRoundRect(innerRect, 12, 12, eraserPaint);
             overlayCanvas.drawRoundRect(innerRect, 12, 12, innerBorderPaint);
 
             eraserPaint.setAlpha(ALPHA_60_PERCENT);
             RectF outerRect = new RectF(item.getScreenLeft(), item.getScreenTop() - verticalOffset,
-                    item.getScreenRight(), item.getScreenBottom() - (isTablet ? 35 : 0));
+                    item.getScreenRight(), item.getScreenBottom() - (isTablet ? 35 : 70));
             overlayCanvas.drawRoundRect(outerRect, 22, 22, eraserPaint);
             overlayCanvas.drawRoundRect(outerRect, 22, 22, outterBorderPaint);
         }

@@ -40,6 +40,13 @@ export const localeStrings = {
   grantCaptchaErrorTitle: 'Oops, something is wrong.',
   grantCaptchaErrorText: 'Brave Rewards is having an issue. Please try again later.',
 
+  captchaSolvedTitle: 'Solved!',
+  captchaSolvedText: 'Ads and earnings will now resume. Thanks for helping us protect Brave Rewards and privacy-based ads.',
+  captchaDismiss: 'Dismiss',
+  captchaMaxAttemptsExceededTitle: 'Max attempts exceeded',
+  captchaMaxAttemptsExceededText: 'Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.',
+  captchaContactSupport: 'Contact support',
+
   notificationAddFunds: 'Add Funds',
   notificationReconnect: 'Reconnect',
   notificationClaimRewards: 'Claim Rewards',

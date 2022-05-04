@@ -71,6 +71,7 @@ import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
@@ -83,6 +84,7 @@ import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.io.InputStream;
 import java.lang.NumberFormatException;
@@ -117,6 +119,7 @@ public class Utils {
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
     public static final String DEX_AGGREGATOR_URL = "https://0x.org/";
+    public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
@@ -976,14 +979,15 @@ public class Utils {
         }
     }
 
-    public static BlockchainToken createEthereumBlockchainToken() {
+    public static BlockchainToken createEthereumBlockchainToken(String chainId) {
         BlockchainToken eth = new BlockchainToken();
         eth.name = "Ethereum";
         eth.symbol = "ETH";
         eth.contractAddress = "";
         eth.logo = "eth.png";
         eth.decimals = 18;
-        eth.chainId = "";
+        eth.chainId = chainId;
+        eth.coin = CoinType.ETH;
         return eth;
     }
 
@@ -1016,29 +1020,34 @@ public class Utils {
             }
             throw new RuntimeException("Activity must implement ApprovedTxObserver");
         } else {
-            if (txInfo.txHash == null) {
+            if (txInfo.txHash == null || txInfo.txHash.isEmpty()) {
                 return;
             }
-            assert jsonRpcService != null;
-            jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-                jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
-                    for (NetworkInfo network : networks) {
-                        if (!chainId.equals(network.chainId)) {
-                            continue;
-                        }
-                        String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
-                        if (blockExplorerUrl.length() > 2) {
-                            blockExplorerUrl =
-                                    blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
-                                    + "/tx/" + txInfo.txHash;
-                            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-                            TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                            break;
-                        }
-                    }
-                });
-            });
+            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity);
         }
+    }
+
+    public static void openAddress(
+            String toAppend, JsonRpcService jsonRpcService, AppCompatActivity activity) {
+        assert jsonRpcService != null;
+        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
+                for (NetworkInfo network : networks) {
+                    if (!chainId.equals(network.chainId)) {
+                        continue;
+                    }
+                    String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
+                    if (blockExplorerUrl.length() > 2) {
+                        blockExplorerUrl =
+                                blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
+                                + toAppend;
+                        TabUtils.openUrlInNewTab(false, blockExplorerUrl);
+                        TabUtils.bringChromeTabbedActivityToTheTop(activity);
+                        break;
+                    }
+                }
+            });
+        });
     }
 
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
@@ -1471,5 +1480,25 @@ public class Utils {
         if (chromeActivity == null) return Profile.getLastUsedRegularProfile(); // Last resort
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
+    }
+
+    public static org.chromium.url.internal.mojom.Origin getCurrentMojomOrigin() {
+        org.chromium.url.internal.mojom.Origin hostOrigin =
+                new org.chromium.url.internal.mojom.Origin();
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        if (activity == null) {
+            return hostOrigin;
+        }
+
+        org.chromium.url.Origin urlOrigin =
+                activity.getActivityTab().getWebContents().getMainFrame().getLastCommittedOrigin();
+        if (urlOrigin == null) {
+            return hostOrigin;
+        }
+        hostOrigin.scheme = urlOrigin.getScheme();
+        hostOrigin.host = urlOrigin.getHost();
+        hostOrigin.port = (short) urlOrigin.getPort();
+
+        return hostOrigin;
     }
 }

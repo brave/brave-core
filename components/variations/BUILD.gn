@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//build/buildflag_header.gni")
+
 declare_args() {
   brave_variations_server_url = ""
 }
@@ -11,10 +13,11 @@ if (is_official_build) {
   assert(brave_variations_server_url != "")
 }
 
-config("brave_variations_config") {
-  defines = [ "BRAVE_VARIATIONS_SERVER_URL=\"$brave_variations_server_url\"" ]
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_VARIATIONS_SERVER_URL=\"$brave_variations_server_url\"" ]
 }
 
 group("constants") {
-  public_configs = [ ":brave_variations_config" ]
+  public_deps = [ ":buildflags" ]
 }

@@ -39,6 +39,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -86,8 +87,9 @@ void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
     mojom::TransactionType tx_type;
     std::vector<std::string> tx_params;
     std::vector<std::string> tx_args;
-    ASSERT_TRUE(
-        GetTransactionInfoFromData(ToHex(data), &tx_type, nullptr, nullptr));
+    auto tx_info = GetTransactionInfoFromData(data);
+    ASSERT_NE(tx_info, absl::nullopt);
+    std::tie(tx_type, tx_params, tx_args) = *tx_info;
     EXPECT_EQ(expected_type, tx_type);
   }
 
@@ -200,7 +202,7 @@ class EthTxManagerUnitTest : public testing::Test {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-                "\"1\"}");
+                "\"0x1\"}");
           } else if (*method == "eth_feeHistory") {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
@@ -217,7 +219,7 @@ class EthTxManagerUnitTest : public testing::Test {
                   "result": {
                     "baseFeePerGas": [
                       "0x24beaded75",
-                      "0x9852aee39"
+                      "0x80D839776"
                     ],
                     "gasUsedRatio": [
                       0.9054214892490816
@@ -238,7 +240,8 @@ class EthTxManagerUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
-    keyring_service_.reset(new KeyringService(&prefs_));
+    keyring_service_.reset(
+        new KeyringService(json_rpc_service_.get(), &prefs_));
     tx_service_.reset(new TxService(json_rpc_service_.get(),
                                     keyring_service_.get(), &prefs_));
 
@@ -266,6 +269,10 @@ class EthTxManagerUnitTest : public testing::Test {
     return keyring_service_
         ->GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
         ->GetAddress(0);
+  }
+
+  url::Origin GetOrigin() const {
+    return url::Origin::Create(GURL("https://brave.com"));
   }
 
   EthTxManager* eth_tx_manager() { return tx_service_->GetEthTxManager(); }
@@ -369,19 +376,69 @@ class EthTxManagerUnitTest : public testing::Test {
   }
 
   void AddUnapprovedTransaction(
+      mojom::TxDataUnionPtr tx_data,
+      const std::string& from,
+      const absl::optional<url::Origin>& origin,
+      EthTxManager::AddUnapprovedTransactionCallback callback) {
+    eth_tx_manager()->AddUnapprovedTransaction(std::move(tx_data), from, origin,
+                                               std::move(callback));
+  }
+
+  void AddUnapprovedTransaction(
       mojom::TxDataPtr tx_data,
       const std::string& from,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
-    eth_tx_manager()->AddUnapprovedTransaction(std::move(tx_data), from,
-                                               std::move(callback));
+    eth_tx_manager()->AddUnapprovedTransaction(
+        std::move(tx_data), from, GetOrigin(), std::move(callback));
   }
 
   void AddUnapproved1559Transaction(
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
-    eth_tx_manager()->AddUnapproved1559Transaction(std::move(tx_data), from,
-                                                   std::move(callback));
+    eth_tx_manager()->AddUnapproved1559Transaction(
+        std::move(tx_data), from, GetOrigin(), std::move(callback));
+  }
+
+  void TestMakeERC1155TransferFromDataTxType(
+      const std::string& from,
+      const std::string& to,
+      const std::string& token_id,
+      const std::string& value,
+      const std::string& contract_address,
+      bool expected_success,
+      mojom::TransactionType expected_type) {
+    base::RunLoop run_loop;
+    eth_tx_manager()->MakeERC1155TransferFromData(
+        from, to, token_id, value, contract_address,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::vector<uint8_t>& data) {
+              EXPECT_EQ(expected_success, success);
+              if (success) {
+                mojom::TransactionType tx_type;
+                std::vector<std::string> tx_params;
+                std::vector<std::string> tx_args;
+
+                auto tx_info = GetTransactionInfoFromData(data);
+                ASSERT_NE(tx_info, absl::nullopt);
+                std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+                EXPECT_EQ(expected_type, tx_type);
+                EXPECT_EQ(tx_args[0], from);
+                EXPECT_EQ(tx_args[1], to);
+                EXPECT_EQ(tx_args[2], token_id);
+                EXPECT_EQ(tx_args[3], value);
+                EXPECT_EQ(tx_args[4], "0x");  // empty bytes data
+                EXPECT_EQ(tx_params[0], "address");
+                EXPECT_EQ(tx_params[1], "address");
+                EXPECT_EQ(tx_params[2], "uint256");
+                EXPECT_EQ(tx_params[3], "uint256");
+                EXPECT_EQ(tx_params[4], "bytes");
+              }
+              run_loop.Quit();
+            }));
+
+    run_loop.Run();
   }
 
  protected:
@@ -422,6 +479,51 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
   EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+}
+
+TEST_F(EthTxManagerUnitTest, WalletOrigin) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
+      absl::nullopt,
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+}
+
+TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
+      url::Origin::Create(GURL("https://some.site.com")),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(tx_meta->origin(),
+            url::Origin::Create(GURL("https://some.site.com")));
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
@@ -1021,10 +1123,10 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
           [&](const absl::optional<std::string>& result) {
             EXPECT_EQ(
                 result,
-                "0xf873808517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a2"
-                "6051f74c88016345785d8a0000b844095ea7b30000000000000000000000"
-                "00bfb30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000"
-                "0000000000000000000000000000003fffffffffffffff8205398080");
+                "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
+                "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
+                "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
+                "0000000000000000000000003fffffffffffffff8205398080");
             callback_called = true;
           }));
   base::RunLoop().RunUntilIdle();
@@ -1910,11 +2012,51 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
   run_loop.reset(new base::RunLoop());
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1",
-      "0x0d8775f648430679a709e98d2b0cb6250d2887ee",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1", contract_transfer_from,
       base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
                      mojom::TransactionType::Other));
   run_loop->Run();
+}
+
+TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
+  // Valid
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", true,
+      mojom::TransactionType::ERC1155SafeTransferFrom);
+
+  // Invalid from
+  TestMakeERC1155TransferFromDataTxType(
+      "", "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid to
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid token_id
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "1", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid value
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "1", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid contract_address
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "1", "0x1", "", false,
+      mojom::TransactionType::Other);
 }
 
 TEST_F(EthTxManagerUnitTest, Reset) {

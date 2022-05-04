@@ -75,7 +75,7 @@ std::string HeadersToString(
 std::string UrlRequestToString(const mojom::UrlRequestPtr& url_request) {
   std::string log = "URL Request:\n";
 
-  log += base::StringPrintf("  URL: %s\n", url_request->url.c_str());
+  log += base::StringPrintf("  URL: %s\n", url_request->url.spec().c_str());
 
   if (!url_request->content.empty()) {
     log += base::StringPrintf("  Content: %s\n", url_request->content.c_str());
@@ -108,7 +108,7 @@ std::string UrlResponseToString(const mojom::UrlResponse& url_response) {
   return base::StringPrintf(
       "URL Response:\n  URL: %s\n  Response "
       "Status Code: %d\n  Response: %s",
-      url_response.url.c_str(), url_response.status_code,
+      url_response.url.spec().c_str(), url_response.status_code,
       url_response.body.c_str());
 }
 

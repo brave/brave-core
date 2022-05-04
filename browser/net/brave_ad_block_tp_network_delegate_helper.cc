@@ -238,9 +238,8 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
 
   if (cname.has_value() && ctx->request_url.host() != *cname &&
       !cname->empty()) {
-    url::Replacements<char> replacements;
-    replacements.SetHost(cname->c_str(),
-                         url::Component(0, static_cast<int>(cname->length())));
+    GURL::Replacements replacements;
+    replacements.SetHostStr(cname->c_str());
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
     task_runner->PostTaskAndReplyWithResult(

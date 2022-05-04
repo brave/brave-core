@@ -6,30 +6,30 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
+
+class TabStripModel;
 
 namespace ui {
 class MojoBubbleWebUIController;
 }  // namespace ui
 
-using brave_shields::BraveShieldsDataController;
-using brave_shields::mojom::SiteBlockInfo;
-using brave_shields::mojom::SiteSettings;
-using favicon::FaviconDriver;
-
-class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
-                                public BraveShieldsDataController::Observer,
-                                public TabStripModelObserver {
+class ShieldsPanelDataHandler
+    : public brave_shields::mojom::DataHandler,
+      public brave_shields::BraveShieldsDataController::Observer,
+      public TabStripModelObserver {
  public:
   ShieldsPanelDataHandler(
       mojo::PendingReceiver<brave_shields::mojom::DataHandler>
           data_handler_receiver,
-      ui::MojoBubbleWebUIController* webui_controller);
+      ui::MojoBubbleWebUIController* webui_controller,
+      TabStripModel* browser);
 
   ShieldsPanelDataHandler(const ShieldsPanelDataHandler&) = delete;
   ShieldsPanelDataHandler& operator=(const ShieldsPanelDataHandler&) = delete;
@@ -47,9 +47,9 @@ class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;
+  void UpdateFavicon() override;
 
  private:
-  BraveShieldsDataController* GetActiveShieldsDataController();
   void UpdateSiteBlockInfo();
 
   // BraveShieldsDataController::Observer
@@ -64,8 +64,11 @@ class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
 
   mojo::Receiver<brave_shields::mojom::DataHandler> data_handler_receiver_;
   mojo::Remote<brave_shields::mojom::UIHandler> ui_handler_remote_;
-  ui::MojoBubbleWebUIController* const webui_controller_;
-  SiteBlockInfo site_block_info_;
+  raw_ptr<ui::MojoBubbleWebUIController> const webui_controller_ = nullptr;
+  raw_ptr<brave_shields::BraveShieldsDataController>
+      active_shields_data_controller_ = nullptr;
+
+  brave_shields::mojom::SiteBlockInfo site_block_info_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_

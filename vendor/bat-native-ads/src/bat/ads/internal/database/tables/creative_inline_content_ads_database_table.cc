@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -23,6 +22,7 @@
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
+#include "bat/ads/internal/database/tables/deposits_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
@@ -52,7 +52,7 @@ int BindParameters(mojom::DBCommand* command,
     BindString(command, index++, creative_ad.campaign_id);
     BindString(command, index++, creative_ad.title);
     BindString(command, index++, creative_ad.description);
-    BindString(command, index++, creative_ad.image_url);
+    BindString(command, index++, creative_ad.image_url.spec());
     BindString(command, index++, creative_ad.dimensions);
     BindString(command, index++, creative_ad.cta_text);
 
@@ -84,10 +84,10 @@ CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) {
   creative_ad.split_test_group = ColumnString(record, 14);
   creative_ad.segment = ColumnString(record, 15);
   creative_ad.geo_targets.insert(ColumnString(record, 16));
-  creative_ad.target_url = ColumnString(record, 17);
+  creative_ad.target_url = GURL(ColumnString(record, 17));
   creative_ad.title = ColumnString(record, 18);
   creative_ad.description = ColumnString(record, 19);
-  creative_ad.image_url = ColumnString(record, 20);
+  creative_ad.image_url = GURL(ColumnString(record, 20));
   creative_ad.dimensions = ColumnString(record, 21);
   creative_ad.cta_text = ColumnString(record, 22);
   creative_ad.ptr = ColumnDouble(record, 23);
@@ -188,6 +188,7 @@ void CreativeInlineContentAds::Save(
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
                                                  creative_ads);
     dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+    deposits_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(transaction.get(),
                                                 creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
@@ -599,8 +600,8 @@ void CreativeInlineContentAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 24: {
+      MigrateToV24(transaction);
       break;
     }
 
@@ -725,10 +726,10 @@ void CreativeInlineContentAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeInlineContentAds::MigrateToV19(mojom::DBTransaction* transaction) {
+void CreativeInlineContentAds::MigrateToV24(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, GetTableName());
+  util::Drop(transaction, "creative_inline_content_ads");
 
   const std::string& query =
       "CREATE TABLE creative_inline_content_ads "

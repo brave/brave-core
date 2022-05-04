@@ -10,6 +10,7 @@
 
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
@@ -18,7 +19,6 @@
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
 // static
@@ -69,7 +69,8 @@ void BraveConfirmP3AInfoBarDelegate::InfoBarDismissed() {
 }
 
 std::u16string BraveConfirmP3AInfoBarDelegate::GetMessageText() const {
-  return l10n_util::GetStringUTF16(IDS_BRAVE_CONFIRM_P3A_INFO_BAR);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_CONFIRM_P3A_INFO_BAR);
 }
 
 int BraveConfirmP3AInfoBarDelegate::GetButtons() const {
@@ -79,13 +80,15 @@ int BraveConfirmP3AInfoBarDelegate::GetButtons() const {
 std::u16string BraveConfirmP3AInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   if (button == BUTTON_CANCEL) {
-    return l10n_util::GetStringUTF16(IDS_BRAVE_CONFIRM_P3A_INFO_BAR_DISABLE);
+    return brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_BRAVE_CONFIRM_P3A_INFO_BAR_DISABLE);
   }
-  return l10n_util::GetStringUTF16(IDS_BRAVE_CONFIRM_P3A_INFO_BAR_ACKNOWLEDGE);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_CONFIRM_P3A_INFO_BAR_ACKNOWLEDGE);
 }
 
 std::u16string BraveConfirmP3AInfoBarDelegate::GetLinkText() const {
-  return l10n_util::GetStringUTF16(IDS_LEARN_MORE);
+  return brave_l10n::GetLocalizedResourceUTF16String(IDS_LEARN_MORE);
 }
 
 GURL BraveConfirmP3AInfoBarDelegate::GetLinkURL() const {

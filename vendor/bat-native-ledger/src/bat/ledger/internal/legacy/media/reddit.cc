@@ -123,9 +123,8 @@ void Reddit::FetchDataFromUrl(
     // Canonicalize away 'old.reddit.com' and replace with 'www.reddit.com'.
     std::string new_host = reddit_url.host();
     new_host.replace(0, 3, "www");
-    url::Replacements<char> replacements;
-    replacements.SetHost(new_host.c_str(),
-                         url::Component(0, new_host.length()));
+    GURL::Replacements replacements;
+    replacements.SetHostStr(new_host);
     reddit_url = reddit_url.ReplaceComponents(replacements);
   }
 

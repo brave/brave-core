@@ -276,7 +276,7 @@
 <translation id="2927095357213611519">ನೀವು ಟೋಕನ್‌ಗಳೊಂದಿಗೆ ವೆಬ್ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ.\nಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ.</translation>
 <translation id="213787746370741250">ಕಸ್ಟಮ್ ಟ್ಯಾಬ್‌ಗಳು ರಲ್ಲಿ ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="8030169304546394654">ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ</translation>
-<translation id="6181762795539107980">ಪರಿಶೀಲಿಸಿಲ್ಲ</translation>
+<translation id="6181762795539107980">ಪರಿಶೀಲಿಸಿಲ್ಲದವು</translation>
 <translation id="543510923939676996">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
 <translation id="8673913984316081937">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸುವುದು ಐಚ್ಛಿಕವಾಗಿದೆ</translation>
 <translation id="8558636200953226885">ಆದರೆ ನೀವು ದೃಢೀಕರಿಸಿದರೆ, ಹೀಗೆ ಮಾಡಬಹುದು...</translation>
@@ -427,44 +427,33 @@
 <translation id="7559243474426790340">ಸ್ಥಿತಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="8376263745431603066">"ರಾತ್ರಿ ಮೋಡ್" ಸಕ್ರಿಯಗೊಳಿಸಿ (ಪ್ರಾಯೋಗಿಕ)</translation>
 <translation id="1383876407941801731">ಹುಡುಕಿ</translation>
-<translation id="1972589975368876259">ಸ್ಟ್ಯಾಕ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
-<translation id="2490330380242414851">ವಿಜೆಟ್ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="8446884382197647889">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
-<translation id="7384441892795736634">ಡೇಟಾ ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
-<translation id="4804818685124855865">ಡಿಸ್‌ಕನೆಕ್ಟ್ ಮಾಡಿ</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ಲಭ್ಯವಿದೆ</translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> ಖರೀದಿಸಿ</translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ಡೆಪಾಸಿಟ್ ವಿಳಾಸ</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> ಡೆಪಾಸಿಟ್ ಮೆಮೋ</translation>
+<translation id="6755546361496900700">ಪರಿವರ್ತನೆಯನ್ನು ಪೂರ್ವವೀಕ್ಷಣೆ ಮಾಡಿ</translation>
 <translation id="5110244215256675209">ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> ಖರೀದಿಸಿ</translation>
-<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ಲಭ್ಯವಿದೆ</translation>
-<translation id="6755546361496900700">ಪರಿವರ್ತನೆಯನ್ನು ಪೂರ್ವವೀಕ್ಷಣೆ ಮಾಡಿ</translation>
-<translation id="2882813124794301799">ವಿಜೆಟ್ ಸ್ಟ್ಯಾಕ್</translation>
 <translation id="13296465911709339">ನಿಮ್ಮ ಪಠ್ಯವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
 <translation id="2735834606413553397">ಸಾರ್ವಜನಿಕ ವಿಳಾಸವನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</translation>
 <translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="2977461003134694205">ಗೌಪ್ಯತೆ ಅಂಕಿಅಂಶಗಳು</translation>
-<translation id="4643117005422448078">ಟಾಪ್ ಸೈಟ್‌ಗಳು</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">ಟ್ರ್ಯಾಕರ್ಗಳು &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ, ಬ್ಯಾಂಡ್ವಿಡ್ತ್ ಮತ್ತು ಸಮಯ ಉಳಿಸಿದ ಅಂದಾಜುಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ.</translation>
-<translation id="74417429503469271">ನೀವು ಆಗಾಗ್ಗೆ ಭೇಟಿ ನೀಡುವ ಪ್ರಮುಖ ಸೈಟ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ.</translation>
 <translation id="2956070106555335453">ಸಾರಾಂಶ</translation>
 <translation id="1366855498335432549">ಡೆಪಾಸಿಟ್ ಮಾಡಿ</translation>
 <translation id="1301340234286078471">ಪರಿವರ್ತಿಸಿ</translation>
 <translation id="223536150967420869">ಖರೀದಿಸಿ</translation>
-<translation id="1714829281959608206">Binance ಖಾತೆ ಬ್ಯಾಲೆನ್ಸ್ ವೀಕ್ಷಿಸಲು ಮತ್ತು ಕ್ರಿಪ್ಟೋ ವ್ಯಾಪಾರ ಮಾಡಲು Binance ಸಂಪರ್ಕವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</translation>
 <translation id="4584930231524505442">ನಾನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
 <translation id="5749014321384313843">ನಾನು ಖರ್ಚು ಮಾಡಲು ಬಯಸುತ್ತೇನೆ...</translation>
-<translation id="8688672835843460752">ಲಭ್ಯವಿದೆ</translation>
 <translation id="2480674848181564169">ಪರಿವರ್ತಿಸಲು ಸಾಕಷ್ಟು ಬ್ಯಾಲೆನ್ಸ್ ಇಲ್ಲ</translation>
 <translation id="2215334405220411393">ಪರಿವರ್ತಿಸಲು ಕನಿಷ್ಠ ಮೊತ್ತ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
 <translation id="7742417737698031726">ಶುಲ್ಕ</translation>
 <translation id="2122225204180056042">ನೀವು ಇದನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ</translation>
 <translation id="6432284126416751397">ಪರಿವರ್ತನೆಯನ್ನು ದೃಢೀಕರಿಸಿ</translation>
-<translation id="5137723827757859599">ಪ್ರಮುಖ ಸೈಟ್‌ಗಳಲ್ಲಿ ಖರೀದಿಸಲು ಇಲ್ಲಿ ಇನ್ನೂ ಇಲ್ಲ.</translation>
 <translation id="3891414008432200754">ದರ</translation>
 <translation id="3733576242118819803">ದೃಢಪಡಿಸಿ (<ph name="REMAINING_TIME"/>ಗಳು)</translation>
 <translation id="1627064138060308910">ಪರಿವರ್ತನೆ ವಿಫಲಗೊಂಡಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -566,6 +555,8 @@
 <translation id="2759836790106646094">ಇದೀಗ ನಿಮ್ಮ ವಾಲೆಟ್ ಬ್ಯಾಕಪ್ ಮಾಡಿ!</translation>
 <translation id="1078873179929044999">ಮುಂದಿನ ಹಂತದಲ್ಲಿ ನೀವು 12-ಪದದ ರಿಕವರಿ ಫ್ರೇಸ್ ನೋಡುತ್ತೀರಿ, ಅದನ್ನು ನೀವು ನಿಮ್ಮ ಪ್ರಾಥಮಿಕ ಕ್ರಿಪ್ಟೋ ಖಾತೆಗಳನ್ನು ರಿಕವರ್ ಮಾಡಲು ಬಳಸಬಹುದು. ಅದನ್ನು ಯಾವುದಾದರೂ ಸ್ಥಳದಲ್ಲಿ ಸುರಕ್ಷಿತಗೊಳಿಸಿ. ಪಾಸ್‌ವರ್ಡ್ ಮರೆತುಹೋದಲ್ಲಿ, ಸಾಧನ ಕಳೆದುಹೋದಲ್ಲಿ ಅಥವಾ ಕಳ್ಳತನವಾದಲ್ಲಿ ಅಥವಾ ನೀವು ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಬದಲಾಯಿಸಲು ಬಯಸಿದಲ್ಲಿ ಖಾತೆ ಪ್ರವೇಶವನ್ನು ಮರಳಿಪಡೆಯುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ರಿಕವರಿ ಫ್ರೇಸ್ ಏಕೈಕ ಮಾರ್ಗವಾಗಿರುತ್ತದೆ.</translation>
 <translation id="2359808026110333948">ಮುಂದುವರೆಸಿ</translation>
+<translation id="5488357322146334497">ಸಂದೇಶ</translation>
+<translation id="7228169875515099943">ಡೇಟಾ</translation>
 <translation id="1904000155026201268">ನನ್ನ ರಿಕವರಿ ಪದಗಳನ್ನು ಕಳೆದುಕೊಂಡರೆ, ನನ್ನ ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್ ಎಕ್ಸೆಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತೇನೆ.</translation>
 <translation id="3933122286596948824">ನಿಮ್ಮ ರಿಕವರಿ ಫ್ರೇಸ್</translation>
 <translation id="5077747669435508720">ಈ ಪದಗಳನ್ನು ಕೆಳಗೆ ತೋರಿಸಿದ ನಿಖರವಾದ ಕ್ರಮದಲ್ಲಿ ಬರೆಯಿರಿ ಅಥವಾ ನಕಲಿಸಿ ಮತ್ತು ಅವುಗಳನ್ನು ಬೇರೊಂದು ಕಡೆ ಸುರಕ್ಷಿತವಾಗಿ ಉಳಿಸಿ. ಪಾಸ್‌ವರ್ಡ್ ಮರೆತುಹೋದಲ್ಲಿ, ಸಾಧನ ಕಳೆದುಹೋದಲ್ಲಿ ಅಥವಾ ಕಳ್ಳತನವಾದಲ್ಲಿ ಅಥವಾ ನೀವು ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಬದಲಾಯಿಸಲು ಬಯಸಿದಲ್ಲಿ ಖಾತೆ ಪ್ರವೇಶವನ್ನು ಮರಳಿಪಡೆಯುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ರಿಕವರಿ ಫ್ರೇಸ್ ಏಕೈಕ ಮಾರ್ಗವಾಗಿರುತ್ತದೆ.</translation>
@@ -810,6 +801,7 @@
 <translation id="1254969878422524947">ಪ್ರತಿ-ಗ್ಯಾಸ್ ಟಿಪ್ ಮಿತಿ (ಗ್ವೀ)</translation>
 <translation id="7373308452149471621">ಪ್ರತಿ-ಗ್ಯಾಸ್ ದರ ಮಿತಿ (ಗ್ವೀ)</translation>
 <translation id="5891811606602061966">ಖಾತೆಯನ್ನು ಆಮದು ಮಾಡಲು ವಿಫಲಗೊಂಡಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="1822506443689803572">Brave <ph name="DEX_PROVIDER"/> ಅನ್ನು DEX ಅಗ್ರಿಗೇಟರ್ ಆಗಿ ಬಳಸುತ್ತದೆ.</translation>
 <translation id="5061574358754621254">CoinGecko ನಿಂದ ಸಾಮರ್ಥ್ಯಪಡೆದ ದರ ಡೇಟಾ</translation>
 <translation id="4626407663177532837">ಉಲ್ಲೇಖವು 0.875% Brave ಶುಲ್ಕವನ್ನು ಒಳಗೊಂಡಿದೆ.</translation>
 <translation id="8574289650879708853">ಕಸ್ಟಮ್ ಅಸೆಟ್ ಸೇರಿಸಿ</translation>
@@ -863,4 +855,21 @@
 <translation id="4945690646623486292">ನೆಟ್‌ವರ್ಕ್ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="8853725596990766789">ಮೊತ್ತವನ್ನು ಬದಲಾಯಿಸಿ</translation>
 <translation id="5233638681132016545">ಹೊಸ ಟ್ಯಾಬ್</translation>
+<translation id="8006088103295786154">Brave ವ್ಯಾಲೆಟ್ ಎಕ್ಸೆಸ್ ಮಾಡಿ</translation>
+<translation id="5308380583665731573">ಸಂಪರ್ಕಿಸಿ</translation>
+<translation id="3432029672560911238">ಬಳಕೆದಾರ ಖಾತೆ</translation>
+<translation id="5753378322046059140">ಖಾತೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="3897092660631435901">ಮೆನು</translation>
+<translation id="42981349822642051">ವಿಸ್ತರಿಸಿ</translation>
+<translation id="3586752056660754651">ಸಹಿ</translation>
+<translation id="6592721981110586529">Brave ವ್ಯಾಲೆಟ್ ಮೂಲಕ ಸಂಪರ್ಕಿಸಿ</translation>
+<translation id="329813193938846695">ಖಾತೆ(ಗಳನ್ನು) ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="3890989020011724401">ಹೊಸ ಖಾತೆ</translation>
+<translation id="291375746846291973">ನೀವು ನಂಬುವ ಸೈಟ್‌ಗಳೊಂದಿಗೆ ಮಾತ್ರ ಸಂಪರ್ಕ ಸಾಧಿಸಿ.</translation>
+<translation id="385051799172605136">ಹಿಂದೆ</translation>
+<translation id="1060221736464994328">ನೆಟ್‌ವರ್ಕ್ ಬದಲಾಯಿಸಲು ಈ ಸೈಟ್‌ಗೆ ಅನುಮತಿಸುವುದೇ?</translation>
+<translation id="2478788592457735063">ಇದು ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಹಿಂದೆ ಸೇರಿಸಿದ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಬದಲಾಯಿಸುತ್ತದೆ.</translation>
+<translation id="8756686998207163764">ನೆಟ್‌ವರ್ಕ್‌ಗಳನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="394256914628786902">ಟ್ಯಾಬ್ ಗುಂಪು ಸ್ವಯಂ ರಚನೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="8274201358637112807">ಈ ಪುಟವು Brave ವ್ಯಾಲೆಟ್ ಜೊತೆಗೆ ಸಂವಹನ ಮಾಡಲು ಬಯಸುತ್ತದೆ</translation>
 </translationbundle>

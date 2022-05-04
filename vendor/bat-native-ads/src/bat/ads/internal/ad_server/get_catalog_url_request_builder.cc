@@ -6,9 +6,8 @@
 #include "bat/ads/internal/ad_server/get_catalog_url_request_builder.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_constants.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/server_host_util.h"
 
 namespace ads {
 
@@ -28,9 +27,10 @@ mojom::UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::string GetCatalogUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v%d/catalog", server::GetHost().c_str(),
-                            kCatalogVersion);
+GURL GetCatalogUrlRequestBuilder::BuildUrl() const {
+  const std::string spec = base::StringPrintf(
+      "%s/v%d/catalog", server::GetStaticHost().c_str(), kCatalogVersion);
+  return GURL(spec);
 }
 
 }  // namespace ads

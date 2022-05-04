@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -42,10 +43,14 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
+import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -63,13 +68,25 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private Handler mHandler;
     private String mChainSymbol;
     private int mChainDecimals;
+    private TransactionConfirmationListener mTransactionConfirmationListener;
+    private List<TransactionInfo> mTransactionInfos;
+    private Button mRejectAllTx;
+
+    public static ApproveTxBottomSheetDialogFragment newInstance(
+            List<TransactionInfo> transactionInfos, TransactionInfo txInfo, String accountName,
+            TransactionConfirmationListener listener) {
+        return new ApproveTxBottomSheetDialogFragment(
+                transactionInfos, txInfo, accountName, listener);
+    }
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
             TransactionInfo txInfo, String accountName) {
-        return new ApproveTxBottomSheetDialogFragment(txInfo, accountName);
+        List<TransactionInfo> infos = new ArrayList<>();
+        infos.add(txInfo);
+        return newInstance(infos, txInfo, accountName, null);
     }
 
-    ApproveTxBottomSheetDialogFragment(TransactionInfo txInfo, String accountName) {
+    private ApproveTxBottomSheetDialogFragment(TransactionInfo txInfo, String accountName) {
         mTxInfo = txInfo;
         mAccountName = accountName;
         mRejected = false;
@@ -78,6 +95,15 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mHandler = new Handler(Looper.getMainLooper());
         mChainSymbol = "ETH";
         mChainDecimals = 18;
+        mTransactionInfos = Collections.emptyList();
+    }
+
+    ApproveTxBottomSheetDialogFragment(List<TransactionInfo> transactionInfos,
+            TransactionInfo txInfo, String accountName,
+            @Nullable TransactionConfirmationListener transactionConfirmationListener) {
+        this(txInfo, accountName);
+        mTransactionInfos = transactionInfos;
+        mTransactionConfirmationListener = transactionConfirmationListener;
     }
 
     public void setApprovedTxObserver(ApprovedTxObserver approvedTxObserver) {
@@ -105,7 +131,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getJsonRpcService();
         }
-
         return null;
     }
 
@@ -114,7 +139,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (activity instanceof BraveWalletBaseActivity) {
             return ((BraveWalletBaseActivity) activity).getBlockchainRegistry();
         }
-
         return null;
     }
 
@@ -153,16 +177,17 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 mApprovedTxObserver.onTxPending(mAccountName, mTxInfo.id);
             }
         }
+        if (mTransactionConfirmationListener != null) {
+            mTransactionConfirmationListener.onDismiss();
+        }
     }
 
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-
         @SuppressLint("InflateParams")
         final View view =
                 LayoutInflater.from(getContext()).inflate(R.layout.approve_tx_bottom_sheet, null);
-
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -230,7 +255,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mTxInfo.fromAddress, true);
-
         Button reject = view.findViewById(R.id.reject);
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,7 +262,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 rejectTransaction(true);
             }
         });
-
         Button approve = view.findViewById(R.id.approve);
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,6 +269,40 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 approveTransaction();
             }
         });
+        if (mTransactionInfos.size() > 1) {
+            // TODO: next button is not functional. Update next button text based on position in
+            //  mTransactionInfos list.
+            //  Refactor Approve pendingTxHelper code to update the mSelectedPendingRequest Tx
+            //  with the next Transaction.
+            Button next = view.findViewById(R.id.btn_next_tx);
+            next.setVisibility(View.VISIBLE);
+            next.setOnClickListener(v -> {
+                if (mTransactionConfirmationListener != null) {
+                    mTransactionConfirmationListener.onNextTransaction();
+                }
+            });
+            mRejectAllTx = view.findViewById(R.id.btn_reject_transactions);
+            mRejectAllTx.setVisibility(View.VISIBLE);
+            mRejectAllTx.setOnClickListener(v -> {
+                if (mTransactionConfirmationListener != null) {
+                    mTransactionConfirmationListener.onRejectAllTransactions();
+                    dismiss();
+                }
+            });
+            refreshListContentUi();
+        }
+    }
+
+    public void setTxList(List<TransactionInfo> transactionInfos) {
+        mTransactionInfos = transactionInfos;
+        if (isVisible()) {
+            refreshListContentUi();
+        }
+    }
+
+    private void refreshListContentUi() {
+        mRejectAllTx.setText(getString(
+                R.string.brave_wallet_queue_reject_all, String.valueOf(mTransactionInfos.size())));
     }
 
     private void fillAssetDependentControls(String asset, View view, int decimals) {
@@ -268,33 +325,31 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         assert assetRatioService != null;
         String[] assets = {asset.toLowerCase(Locale.getDefault())};
         String[] toCurr = {"usd"};
-        assetRatioService.getPrice(
-                assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-                    String valueFiat = "0";
-                    if (values.length != 0) {
-                        valueFiat = values[0].price;
-                    }
-                    String valueAsset = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
-                    if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
-                            && mTxInfo.txArgs.length > 1) {
-                        valueAsset = mTxInfo.txArgs[1];
-                    }
-                    double value = Utils.fromHexWei(valueAsset, decimals);
-                    double price = Double.valueOf(valueFiat);
-                    mTotalPrice = value * price;
-                    TextView amountFiat = view.findViewById(R.id.amount_fiat);
-                    amountFiat.setText(String.format(
-                            getResources().getString(R.string.crypto_wallet_amount_fiat),
+        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
+            String valueFiat = "0";
+            if (values.length != 0) {
+                valueFiat = values[0].price;
+            }
+            String valueAsset = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
+            if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
+                valueAsset = mTxInfo.txArgs[1];
+            }
+            double value = Utils.fromHexWei(valueAsset, decimals);
+            double price = Double.valueOf(valueFiat);
+            mTotalPrice = value * price;
+            TextView amountFiat = view.findViewById(R.id.amount_fiat);
+            amountFiat.setText(
+                    String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
                             String.format(Locale.getDefault(), "%.2f", mTotalPrice)));
-                    ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
-                    ApproveTxFragmentPageAdapter adapter = new ApproveTxFragmentPageAdapter(
-                            getChildFragmentManager(), mTxInfo, asset, decimals, mChainSymbol,
-                            mChainDecimals, mTotalPrice, getActivity());
-                    viewPager.setAdapter(adapter);
-                    viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
-                    TabLayout tabLayout = view.findViewById(R.id.tabs);
-                    tabLayout.setupWithViewPager(viewPager);
-                });
+            ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
+            ApproveTxFragmentPageAdapter adapter =
+                    new ApproveTxFragmentPageAdapter(getChildFragmentManager(), mTxInfo, asset,
+                            decimals, mChainSymbol, mChainDecimals, mTotalPrice, getActivity());
+            viewPager.setAdapter(adapter);
+            viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+            TabLayout tabLayout = view.findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager);
+        });
     }
 
     private void rejectTransaction(boolean dismiss) {
@@ -308,6 +363,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 return;
             }
             mRejected = true;
+            if (mTransactionConfirmationListener != null) {
+                mTransactionConfirmationListener.onRejectTransaction();
+            }
             dismiss();
         });
     }
@@ -325,7 +383,18 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 return;
             }
             mApproved = true;
+            if (mTransactionConfirmationListener != null) {
+                mTransactionConfirmationListener.onApproveTransaction();
+            }
             dismiss();
         });
+    }
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        if (mTransactionConfirmationListener != null) {
+            mTransactionConfirmationListener.onCancel();
+        }
     }
 }

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
 #include "base/logging.h"
 
@@ -39,24 +38,24 @@ bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
   return is_available;
 }
 
-bool BatAdsClientMojoBridge::IsForeground() const {
+bool BatAdsClientMojoBridge::IsBrowserActive() const {
   if (!connected()) {
     return false;
   }
 
-  bool is_foreground;
-  bat_ads_client_->IsForeground(&is_foreground);
-  return is_foreground;
+  bool is_browser_active;
+  bat_ads_client_->IsBrowserActive(&is_browser_active);
+  return is_browser_active;
 }
 
-bool BatAdsClientMojoBridge::IsFullScreen() const {
+bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
   if (!connected()) {
     return false;
   }
 
-  bool is_full_screen;
-  bat_ads_client_->IsFullScreen(&is_full_screen);
-  return is_full_screen;
+  bool is_browser_in_full_screen_mode;
+  bat_ads_client_->IsBrowserInFullScreenMode(&is_browser_in_full_screen_mode);
+  return is_browser_in_full_screen_mode;
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
@@ -79,37 +78,36 @@ bool BatAdsClientMojoBridge::ShouldShowNotifications() {
 }
 
 void BatAdsClientMojoBridge::CloseNotification(
-    const std::string& uuid) {
+    const std::string& placement_id) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->CloseNotification(uuid);
+  bat_ads_client_->CloseNotification(placement_id);
 }
 
 void BatAdsClientMojoBridge::RecordAdEventForId(
     const std::string& id,
     const std::string& ad_type,
     const std::string& confirmation_type,
-    const double timestamp) const {
+    const base::Time time) const {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type,
-                                      timestamp);
+  bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, time);
 }
 
-std::vector<double> BatAdsClientMojoBridge::GetAdEvents(
+std::vector<base::Time> BatAdsClientMojoBridge::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   if (!connected()) {
     return {};
   }
 
-  std::vector<double> ad_events;
-  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_events);
-  return ad_events;
+  std::vector<base::Time> ad_event_history;
+  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_event_history);
+  return ad_event_history;
 }
 
 void BatAdsClientMojoBridge::ResetAdEventsForId(const std::string& id) const {
@@ -168,26 +166,19 @@ void BatAdsClientMojoBridge::Save(
       std::move(callback)));
 }
 
-void OnLoadAdsResource(const ads::LoadCallback& callback,
-                       const bool success,
-                       const std::string& value) {
-  callback(success, value);
-}
-
-void BatAdsClientMojoBridge::LoadAdsResource(const std::string& id,
-                                             const int version,
-                                             ads::LoadCallback callback) {
+void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
+                                              const int version,
+                                              ads::LoadFileCallback callback) {
   if (!connected()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(base::File());
     return;
   }
 
-  bat_ads_client_->LoadAdsResource(
-      id, version, base::BindOnce(&OnLoadAdsResource, std::move(callback)));
+  bat_ads_client_->LoadFileResource(id, version, std::move(callback));
 }
 
 void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,
-                          const std::vector<std::string>& history) {
+                          const std::vector<GURL>& history) {
   callback(history);
 }
 
@@ -215,13 +206,13 @@ void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
   bat_ads_client_->RecordP2AEvent(name, type, value);
 }
 
-void BatAdsClientMojoBridge::LogTrainingCovariates(
-    ads::mojom::TrainingCovariatesPtr training_covariates) {
+void BatAdsClientMojoBridge::LogTrainingInstance(
+    brave_federated::mojom::TrainingInstancePtr training_instance) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->LogTrainingCovariates(std::move(training_covariates));
+  bat_ads_client_->LogTrainingInstance(std::move(training_instance));
 }
 
 void OnLoad(const ads::LoadCallback& callback,
@@ -241,15 +232,14 @@ void BatAdsClientMojoBridge::Load(
   bat_ads_client_->Load(name, base::BindOnce(&OnLoad, std::move(callback)));
 }
 
-std::string BatAdsClientMojoBridge::LoadResourceForId(
-    const std::string& id) {
+std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
   std::string value;
 
   if (!connected()) {
     return value;
   }
 
-  bat_ads_client_->LoadResourceForId(id, &value);
+  bat_ads_client_->LoadDataResource(name, &value);
   return value;
 }
 

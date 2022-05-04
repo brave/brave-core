@@ -26,7 +26,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
-    Advanced Controls
+    Advanced controls
   </message>
 
   <message name="IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION" desc="A description to explain the various options below will effect web compatibility.">
@@ -114,7 +114,7 @@
   </message>
 
    <message name="IDS_BRAVE_SHIELDS_DOWN_DESC" desc="Tell users the site's Shield is turned off">
-    You are viewing this site without Brave's privacy protection
+    You are viewing this site without Brave's privacy protections.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ICON_TOOLTIP" desc="The message shown on hover of the shields lion icon">

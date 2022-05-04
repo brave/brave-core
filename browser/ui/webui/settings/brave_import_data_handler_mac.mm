@@ -15,6 +15,7 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -25,7 +26,6 @@
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_ui.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/ui_base_types.h"
 #include "url/gurl.h"
 
@@ -67,19 +67,22 @@ FullDiskAccessConfirmDialogDelegate::
     ~FullDiskAccessConfirmDialogDelegate() = default;
 
 std::u16string FullDiskAccessConfirmDialogDelegate::GetTitle() {
-  return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_TITLE);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_TITLE);
 }
 
 std::u16string FullDiskAccessConfirmDialogDelegate::GetDialogMessage() {
-  return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE);
 }
 
 std::u16string FullDiskAccessConfirmDialogDelegate::GetLinkText() const {
-  return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT);
 }
 
 std::u16string FullDiskAccessConfirmDialogDelegate::GetAcceptButtonTitle() {
-  return l10n_util::GetStringUTF16(
+  return brave_l10n::GetLocalizedResourceUTF16String(
       IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT);
 }
 

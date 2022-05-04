@@ -40,6 +40,10 @@ source_set("ui") {
   sources = [
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
+    "webui/brave_federated/federated_internals_page_handler.cc",
+    "webui/brave_federated/federated_internals_page_handler.h",
+    "webui/brave_federated/federated_internals_ui.cc",
+    "webui/brave_federated/federated_internals_ui.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
     "webui/brave_rewards_page_ui.cc",
@@ -182,6 +186,8 @@ source_set("ui") {
       "views/toolbar/brave_app_menu.h",
       "views/web_discovery_dialog_view.cc",
       "views/web_discovery_dialog_view.h",
+      "views/window_closing_confirm_dialog_view.cc",
+      "views/window_closing_confirm_dialog_view.h",
     ]
 
     if (use_aura) {
@@ -259,14 +265,17 @@ source_set("ui") {
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
+    "//brave/browser/resources/federated_internals:resources",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
+    "//brave/browser/ui/webui/brave_federated:mojo_bindings",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_federated",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",
@@ -306,11 +315,13 @@ source_set("ui") {
     "//components/sessions",
     "//content/public/browser",
     "//content/public/common",
+    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
     "//skia",
     "//third_party/abseil-cpp:absl",
     "//ui/accessibility",
     "//ui/base",
+    "//ui/base/mojom",
     "//ui/gfx",
     "//ui/resources",
     "//url",
@@ -367,6 +378,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/resources/sidebar:resources",
       "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/webui/brave_federated:mojo_bindings",
       "//brave/browser/ui/webui/sidebar:mojo_bindings",
       "//brave/components/sidebar",
       "//chrome/app:generated_resources",
@@ -538,7 +550,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/components/brave_vpn",
-      "//brave/components/brave_vpn:mojom",
+      "//brave/components/brave_vpn/mojom",
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",
@@ -577,10 +589,12 @@ source_set("ui") {
 
   if (!is_android && !is_ios) {
     sources += [
-      "views/permission_bubble/ethereum_permission_prompt_impl.cc",
-      "views/permission_bubble/ethereum_permission_prompt_impl.h",
+      "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
+      "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
       "views/toolbar/wallet_button.h",
+      "views/wallet_bubble_focus_observer.cc",
+      "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",
       "wallet_bubble_manager_delegate_impl.h",
       "webui/brave_untrusted_web_ui_controller_factory.cc",
@@ -642,12 +656,20 @@ source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "brave_browser_browsertest.cc" ]
+    sources = [
+      "brave_browser_browsertest.cc",
+      "window_closing_confirm_browsertest.cc",
+    ]
 
     deps = [
       "//brave/browser/ui",
+      "//brave/common:pref_names",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
+      "//components/javascript_dialogs",
+      "//components/prefs",
       "//content/test:test_support",
     ]
   }

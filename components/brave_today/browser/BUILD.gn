@@ -15,6 +15,8 @@ static_library("browser") {
     "feed_controller.h",
     "feed_parsing.cc",
     "feed_parsing.h",
+    "html_parsing.cc",
+    "html_parsing.h",
     "network.cc",
     "network.h",
     "publishers_controller.cc",
@@ -42,6 +44,7 @@ static_library("browser") {
     "//net/traffic_annotation",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
+    "//third_party/re2",
     "//ui/base",
     "//url",
   ]

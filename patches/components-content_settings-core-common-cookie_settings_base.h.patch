@@ -1,0 +1,19 @@
+diff --git a/components/content_settings/core/common/cookie_settings_base.h b/components/content_settings/core/common/cookie_settings_base.h
+index 01786694a1be87448964db3b75448244d0bf0fd1..dc707cf0af0901914d68b7dc75e3038f720f81a2 100644
+--- a/components/content_settings/core/common/cookie_settings_base.h
++++ b/components/content_settings/core/common/cookie_settings_base.h
+@@ -66,12 +66,12 @@ namespace content_settings {
+ // |top_frame_origin|. This is done inconsistently and needs to be fixed.
+ class CookieSettingsBase {
+  public:
+-  CookieSettingsBase() = default;
++  CookieSettingsBase();
+ 
+   CookieSettingsBase(const CookieSettingsBase&) = delete;
+   CookieSettingsBase& operator=(const CookieSettingsBase&) = delete;
+ 
+-  virtual ~CookieSettingsBase() = default;
++  virtual ~CookieSettingsBase();
+ 
+   // Returns true if the cookie associated with |domain| should be deleted
+   // on exit.

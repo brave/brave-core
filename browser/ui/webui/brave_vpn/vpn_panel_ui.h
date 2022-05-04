@@ -9,17 +9,23 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_handler.h"
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
+#include "ui/webui/untrusted_web_ui_controller.h"
+#include "ui/webui/webui_config.h"
 
-class VPNPanelUI : public ui::MojoBubbleWebUIController,
+// In the style of MojoBubbleWebUIController but for UntrustedWebUI instead
+class VPNPanelUI : public ui::UntrustedWebUIController,
                    public brave_vpn::mojom::PanelHandlerFactory {
  public:
+  using Embedder = ui::MojoBubbleWebUIController::Embedder;
+
   explicit VPNPanelUI(content::WebUI* web_ui);
   VPNPanelUI(const VPNPanelUI&) = delete;
   VPNPanelUI& operator=(const VPNPanelUI&) = delete;
@@ -29,6 +35,10 @@ class VPNPanelUI : public ui::MojoBubbleWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::PanelHandlerFactory> receiver);
+
+  // From MojoBubbleWebUIController
+  void set_embedder(base::WeakPtr<Embedder> embedder) { embedder_ = embedder; }
+  base::WeakPtr<Embedder> embedder() { return embedder_; }
 
  private:
   // brave_vpn::mojom::PanelHandlerFactory:
@@ -42,8 +52,21 @@ class VPNPanelUI : public ui::MojoBubbleWebUIController,
 
   mojo::Receiver<brave_vpn::mojom::PanelHandlerFactory> panel_factory_receiver_{
       this};
+  // From MojoBubbleWebUIController
+  base::WeakPtr<Embedder> embedder_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class UntrustedVPNPanelUIConfig : public ui::WebUIConfig {
+ public:
+  UntrustedVPNPanelUIConfig();
+  ~UntrustedVPNPanelUIConfig() override = default;
+
+  std::unique_ptr<content::WebUIController> CreateWebUIController(
+      content::WebUI* web_ui) override;
+
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_UI_H_

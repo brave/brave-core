@@ -120,6 +120,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
   }
 
   std::vector<std::string> classes;
+  classes.reserve(specified_classes->GetList().size());
   for (const base::Value& class_name : specified_classes->GetList()) {
     if (!class_name.is_string()) {
       return absl::nullopt;
@@ -144,9 +145,13 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     if (!this_class) {
       return absl::nullopt;
     }
+
+    // Consume the list to save memory.
+    const auto list = std::move(this_class->GetList());
+
     std::vector<float> class_coef_weights;
-    class_coef_weights.reserve(this_class->GetList().size());
-    for (const base::Value& weight : this_class->GetList()) {
+    class_coef_weights.reserve(list.size());
+    for (const base::Value& weight : list) {
       if (weight.is_double() || weight.is_int()) {
         class_coef_weights.push_back(weight.GetDouble());
       } else {
@@ -183,39 +188,38 @@ absl::optional<model::Linear> ParsePipelineClassifier(
 
 }  // namespace
 
-absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json) {
-  absl::optional<base::Value> root = base::JSONReader::Read(json);
-
-  if (!root) {
+absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
+  if (!resource_value.is_dict()) {
     return absl::nullopt;
   }
 
-  absl::optional<int> version_value = root->FindIntKey("version");
+  absl::optional<int> version_value = resource_value.FindIntKey("version");
   if (!version_value.has_value()) {
     return absl::nullopt;
   }
   int version = version_value.value();
 
-  std::string* timestamp_value = root->FindStringKey("timestamp");
+  std::string* timestamp_value = resource_value.FindStringKey("timestamp");
   if (!timestamp_value) {
     return absl::nullopt;
   }
   std::string timestamp = *timestamp_value;
 
-  std::string* locale_value = root->FindStringKey("locale");
+  std::string* locale_value = resource_value.FindStringKey("locale");
   if (!locale_value) {
     return absl::nullopt;
   }
   std::string locale = *locale_value;
 
   absl::optional<TransformationVector> transformations_optional =
-      ParsePipelineTransformations(root->FindListKey("transformations"));
+      ParsePipelineTransformations(
+          resource_value.FindListKey("transformations"));
   if (!transformations_optional.has_value()) {
     return absl::nullopt;
   }
 
   const absl::optional<model::Linear> linear_model_optional =
-      ParsePipelineClassifier(root->FindKey("classifier"));
+      ParsePipelineClassifier(resource_value.FindKey("classifier"));
   if (!linear_model_optional.has_value()) {
     return absl::nullopt;
   }

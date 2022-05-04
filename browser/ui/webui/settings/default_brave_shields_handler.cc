@@ -70,7 +70,7 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -83,7 +83,7 @@ void DefaultBraveShieldsHandler::IsAdControlEnabled(
 }
 
 void DefaultBraveShieldsHandler::SetAdControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
@@ -95,7 +95,7 @@ void DefaultBraveShieldsHandler::SetAdControlType(
 }
 
 void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -107,18 +107,19 @@ void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
 }
 
 void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
 
   brave_shields::SetCosmeticFilteringControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
+      profile_->GetPrefs());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -131,7 +132,7 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
 }
 
 void DefaultBraveShieldsHandler::SetCookieControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
@@ -142,7 +143,7 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
@@ -155,18 +156,19 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
 }
 
 void DefaultBraveShieldsHandler::SetFingerprintingControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
 
   brave_shields::SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
+      profile_->GetPrefs());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();
@@ -177,7 +179,7 @@ void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool value = args[0].GetBool();

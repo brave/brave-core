@@ -4,24 +4,38 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
-import("//tools/grit/preprocess_if_expr.gni")
 
-preprocess_folder = "preprocessed"
-preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
+assert(enable_brave_vpn)
 
 static_library("brave_vpn") {
   sources = [
+    "brave_vpn_constants.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "brave_vpn_service_observer.cc",
+    "brave_vpn_service_observer.h",
+    "brave_vpn_utils.cc",
+    "brave_vpn_utils.h",
+    "features.cc",
+    "features.h",
   ]
 
   deps = [
+    "mojom",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/resources:strings",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//brave/components/version_info",
     "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/version_info",
+    "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
+    "//ui/base",
     "//url",
   ]
 
@@ -31,20 +45,13 @@ static_library("brave_vpn") {
     sources += [
       "brave_vpn_connection_info.cc",
       "brave_vpn_connection_info.h",
-      "brave_vpn_constants.h",
       "brave_vpn_data_types.h",
       "brave_vpn_os_connection_api.cc",
       "brave_vpn_os_connection_api.h",
       "brave_vpn_os_connection_api_sim.cc",
       "brave_vpn_os_connection_api_sim.h",
-      "brave_vpn_service_desktop.cc",
-      "brave_vpn_service_desktop.h",
-      "brave_vpn_service_observer.cc",
-      "brave_vpn_service_observer.h",
-      "brave_vpn_utils.cc",
-      "brave_vpn_utils.h",
-      "features.cc",
-      "features.h",
+      "brave_vpn_service_helper.cc",
+      "brave_vpn_service_helper.h",
       "pref_names.cc",
       "pref_names.h",
       "switches.h",
@@ -71,14 +78,7 @@ static_library("brave_vpn") {
 
     deps += [
       ":brave_vpn_internal",
-      ":mojom",
-      "//brave/components/resources:strings",
-      "//brave/components/skus/browser",
-      "//brave/components/skus/common",
-      "//brave/components/skus/common:mojom",
-      "//components/prefs",
       "//third_party/icu",
-      "//ui/base",
     ]
   }
 }
@@ -137,21 +137,4 @@ executable("vpntool") {
     sources += [ "winvpntool.cc" ]
     libs = [ "rasapi32.lib" ]
   }
-}
-
-preprocess_if_expr("preprocess_mojo") {
-  deps = [ "//brave/components/brave_vpn:mojom_js" ]
-  in_folder = "$target_gen_dir"
-  out_folder = "$target_gen_dir/$preprocess_folder"
-  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
-  in_files = [ "brave_vpn.mojom-lite.js" ]
-}
-
-mojom("mojom") {
-  sources = [ "brave_vpn.mojom" ]
-
-  deps = [
-    "//mojo/public/mojom/base",
-    "//url/mojom:url_mojom_gurl",
-  ]
 }

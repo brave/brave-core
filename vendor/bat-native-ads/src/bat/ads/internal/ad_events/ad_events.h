@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENTS_H_
 
-#include <deque>
+#include <vector>
 
 #include "bat/ads/internal/ad_events/ad_events_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -36,8 +36,8 @@ void RebuildAdEventsFromDatabase();
 
 void RecordAdEvent(const AdEventInfo& ad_event);
 
-std::deque<base::Time> GetAdEvents(const AdType& ad_type,
-                                   const ConfirmationType& confirmation_type);
+std::vector<base::Time> GetAdEvents(const AdType& ad_type,
+                                    const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

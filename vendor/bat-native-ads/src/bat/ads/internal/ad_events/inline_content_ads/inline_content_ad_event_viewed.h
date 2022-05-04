@@ -7,12 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_VIEWED_H_
 
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/ad_events/ad_event.h"
+#include "bat/ads/internal/ad_events/ad_event_interface.h"
 
 namespace ads {
 namespace inline_content_ads {
 
-class AdEventViewed final : public AdEvent<InlineContentAdInfo> {
+class AdEventViewed final : public AdEventInterface<InlineContentAdInfo> {
  public:
   AdEventViewed();
   ~AdEventViewed() override;

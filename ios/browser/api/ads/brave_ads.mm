@@ -17,17 +17,18 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
-#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_aliases.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/database.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_info.h"
+#include "bat/ads/history_item_info.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/statement_info.h"
@@ -35,6 +36,7 @@
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
 #import "inline_content_ad_ios.h"
+#include "net/base/mac/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -477,14 +479,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnForeground();
+  ads->OnBrowserDidEnterForeground();
 }
 
 - (void)applicationDidBackground {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnBackground();
+  ads->OnBrowserDidEnterBackground();
 }
 
 #pragma mark - History
@@ -493,16 +495,15 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return @[];
   }
-  const double from_timestamp = std::numeric_limits<double>::min();
-  const double to_timestamp = std::numeric_limits<double>::max();
 
-  const auto history = ads->GetHistory(ads::AdsHistoryFilterType::kNone,
-                                       ads::AdsHistorySortType::kNone,
-                                       from_timestamp, to_timestamp);
+  const auto history = ads->GetHistory(ads::HistoryFilterType::kNone,
+                                       ads::HistorySortType::kNone,
+                                       base::Time::Min(), base::Time::Max());
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
-    const auto date = [NSDate dateWithTimeIntervalSince1970:item.timestamp];
+    const auto date =
+        [NSDate dateWithTimeIntervalSince1970:item.time.ToDoubleT()];
     [dates addObject:date];
   }
 
@@ -545,12 +546,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  std::vector<std::string> urls;
+  std::vector<GURL> urls;
   for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(base::SysNSStringToUTF8(redirectURL.absoluteString));
+    urls.push_back(net::GURLWithNSURL(redirectURL));
   }
-  urls.push_back(urlString);
+  urls.push_back(net::GURLWithNSURL(url));
   ads->OnTextLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(text));
   ads->OnHtmlLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
@@ -576,9 +576,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, [self isForeground],
-                    isPrivate);
+  ads->OnTabUpdated((int32_t)tabId, net::GURLWithNSURL(url), isSelected,
+                    [self isBrowserActive], isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
@@ -588,13 +587,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportAdNotificationEvent:(NSString*)uuid
+- (void)reportAdNotificationEvent:(NSString*)placementId
                         eventType:(AdsAdNotificationEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnAdNotificationEvent(
-      base::SysNSStringToUTF8(uuid),
+  ads->TriggerAdNotificationEvent(
+      base::SysNSStringToUTF8(placementId),
       static_cast<ads::mojom::AdNotificationEventType>(eventType));
 }
 
@@ -604,7 +603,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnNewTabPageAdEvent(
+  ads->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<ads::mojom::NewTabPageAdEventType>(eventType));
@@ -627,26 +626,26 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   });
 }
 
-- (void)reportInlineContentAdEvent:(NSString*)uuid
+- (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
                          eventType:(AdsInlineContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnInlineContentAdEvent(
-      base::SysNSStringToUTF8(uuid),
+  ads->TriggerInlineContentAdEvent(
+      base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<ads::mojom::InlineContentAdEventType>(eventType));
 }
 
-- (void)reportPromotedContentAdEvent:(NSString*)uuid
+- (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:(AdsPromotedContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnPromotedContentAdEvent(
-      base::SysNSStringToUTF8(uuid),
+  ads->TriggerPromotedContentAdEvent(
+      base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<ads::mojom::PromotedContentAdEventType>(eventType));
 }
@@ -715,12 +714,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return self.enabled;
 }
 
-- (bool)isForeground {
+- (bool)isBrowserActive {
   return UIApplication.sharedApplication.applicationState ==
          UIApplicationStateActive;
 }
 
-- (bool)isFullScreen {
+- (bool)isBrowserInFullScreenMode {
   return true;
 }
 
@@ -745,11 +744,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       {ads::mojom::UrlRequestMethod::kPost, "POST"},
       {ads::mojom::UrlRequestMethod::kPut, "PUT"}};
 
-  const auto copiedURL = base::SysUTF8ToNSString(url_request->url);
+  const auto copiedURL = url_request->url;
 
   const auto __weak weakSelf = self;
   return [self.commonOps
-      loadURLRequest:url_request->url
+      loadURLRequest:url_request->url.spec()
              headers:url_request->headers
              content:url_request->content
         content_type:url_request->content_type
@@ -763,7 +762,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                 return;
               }
               ads::mojom::UrlResponse url_response;
-              url_response.url = base::SysNSStringToUTF8(copiedURL);
+              url_response.url = copiedURL;
               url_response.status_code = statusCode;
               url_response.body = response;
               url_response.headers = headers;
@@ -1128,23 +1127,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback({});
 }
 
-- (void)loadAdsResource:(const std::string&)id
-                version:(const int)version
-               callback:(ads::LoadCallback)callback {
+- (void)loadFileResource:(const std::string&)id
+                 version:(const int)version
+                callback:(ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
+  NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
 
-  BLOG(1, @"Loading %@ ads resource", bridgedId);
+  BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
 
-  const std::string contents =
-      [self.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
-  if (!contents.empty()) {
-    BLOG(1, @"%@ ads resource is cached", bridgedId);
-    callback(/* success */ true, contents);
-    return;
-  }
-
-  BLOG(1, @"%@ ads resource not found", bridgedId);
-  callback(/* success */ false, "");
+  base::FilePath file_path(nsFilePath.UTF8String);
+  base::File file(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
+  std::move(callback).Run(std::move(file));
 }
 
 - (void)clearScheduledCaptcha {
@@ -1171,9 +1164,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
 }
 
-- (const std::string)loadResourceForId:(const std::string&)id {
+- (const std::string)loadDataResource:(const std::string&)name {
   const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
-  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(id)
+  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
                                      ofType:nil];
   if (!path || path.length == 0) {
     return "";
@@ -1250,16 +1243,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type
           confirmationType:(const std::string&)confirmation_type
-                 timestamp:(const double)timestamp {
+                      time:(const base::Time)time {
   if (!adEventHistory) {
     return;
   }
 
-  adEventHistory->RecordForId(id, ad_type, confirmation_type, timestamp);
+  adEventHistory->RecordForId(id, ad_type, confirmation_type, time);
 }
 
-- (std::vector<double>)getAdEvents:(const std::string&)ad_type
-                  confirmationType:(const std::string&)confirmation_type {
+- (std::vector<base::Time>)getAdEvents:(const std::string&)ad_type
+                      confirmationType:(const std::string&)confirmation_type {
   if (!adEventHistory) {
     return {};
   }
@@ -1862,8 +1855,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   // Not needed on iOS
 }
 
-- (void)logTrainingCovariates:
-    (ads::mojom::TrainingCovariatesPtr)training_covariates {
+- (void)logTrainingInstance:
+    (brave_federated::mojom::TrainingInstancePtr)training_instance {
   // Not needed on iOS
 }
 

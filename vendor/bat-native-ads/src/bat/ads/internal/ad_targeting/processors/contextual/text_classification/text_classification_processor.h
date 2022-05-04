@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/internal/ad_targeting/processors/processor.h"
+#include "bat/ads/internal/ad_targeting/processors/processor_interface.h"
 
 namespace ads {
 
@@ -20,7 +20,7 @@ class TextClassification;
 namespace ad_targeting {
 namespace processor {
 
-class TextClassification final : public Processor<std::string> {
+class TextClassification final : public ProcessorInterface<std::string> {
  public:
   explicit TextClassification(resource::TextClassification* resource);
   ~TextClassification() override;

@@ -11,6 +11,7 @@ extern const char kDefaultBaseCurrency[];
 extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
+extern const char kShowWalletTestNetworks[];
 extern const char kBraveWalletLastUnlockTime[];
 extern const char kBraveWalletPingReportedUnlockTime[];
 extern const char kBraveWalletP3ALastReportTime[];
@@ -40,5 +41,6 @@ extern const char kBraveWalletAccountNames[];
 extern const char kBraveWalletBackupComplete[];
 extern const char kBraveWalletCustomNetworksDeprecated[];
 extern const char kBraveWalletCurrentChainId[];
+extern const char kBraveWalletUserAssetsDeprecated[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

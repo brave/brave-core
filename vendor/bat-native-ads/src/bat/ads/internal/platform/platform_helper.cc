@@ -5,8 +5,27 @@
 
 #include "bat/ads/internal/platform/platform_helper.h"
 
-#include "base/memory/singleton.h"
 #include "build/build_config.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "bat/ads/internal/platform/platform_helper_android.h"
+#endif  // BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(IS_IOS)
+#include "bat/ads/internal/platform/platform_helper_ios.h"
+#endif  // BUILDFLAG(IS_IOS)
+
+#if BUILDFLAG(IS_LINUX)
+#include "bat/ads/internal/platform/platform_helper_linux.h"
+#endif  // BUILDFLAG(IS_LINUX)
+
+#if BUILDFLAG(IS_MAC)
+#include "bat/ads/internal/platform/platform_helper_mac.h"
+#endif  // BUILDFLAG(IS_MAC)
+
+#if BUILDFLAG(IS_WIN)
+#include "bat/ads/internal/platform/platform_helper_win.h"
+#endif  // BUILDFLAG(IS_WIN)
 
 namespace ads {
 
@@ -32,6 +51,7 @@ std::string PlatformHelper::GetPlatformName() const {
   return "unknown";
 }
 
+// static
 PlatformHelper* PlatformHelper::GetInstance() {
   if (g_platform_helper_for_testing) {
     return g_platform_helper_for_testing;
@@ -40,12 +60,24 @@ PlatformHelper* PlatformHelper::GetInstance() {
   return GetInstanceImpl();
 }
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_APPLE) && !BUILDFLAG(IS_LINUX) && \
-    !BUILDFLAG(IS_WIN)
+// static
 PlatformHelper* PlatformHelper::GetInstanceImpl() {
-  // Return a default platform helper for unsupported platforms
-  return base::Singleton<PlatformHelper>::get();
+#if BUILDFLAG(IS_ANDROID)
+  static base::NoDestructor<PlatformHelperAndroid> platform_helper;
+#elif BUILDFLAG(IS_IOS)
+  static base::NoDestructor<PlatformHelperIos> platform_helper;
+#elif BUILDFLAG(IS_LINUX)
+  static base::NoDestructor<PlatformHelperLinux> platform_helper;
+#elif BUILDFLAG(IS_MAC)
+  static base::NoDestructor<PlatformHelperMac> platform_helper;
+#elif BUILDFLAG(IS_WIN)
+  static base::NoDestructor<PlatformHelperWin> platform_helper;
+#else
+  // Default platform helper for unsupported platforms
+  static base::NoDestructor<PlatformHelper> platform_helper;
+#endif  // BUILDFLAG(IS_ANDROID)
+
+  return platform_helper.get();
 }
-#endif
 
 }  // namespace ads

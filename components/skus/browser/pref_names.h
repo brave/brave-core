@@ -10,7 +10,6 @@ namespace skus {
 namespace prefs {
 
 extern const char kSkusState[];
-extern const char kSkusVPNHasCredential[];
 
 }  // namespace prefs
 }  // namespace skus

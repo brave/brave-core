@@ -273,7 +273,7 @@
 <translation id="2927095357213611519">Μπορείτε να υποστηρίξετε δημιουργούς ιστού με μάρκες.\nΚερδίστε μάρκες βλέποντας διαφημίσεις που σέβονται την ιδιωτικότητα.</translation>
 <translation id="213787746370741250">Άνοιγμα καρτελών σε Προσαρμοσμένες Καρτέλες</translation>
 <translation id="8030169304546394654">Αποσυνδέθηκε</translation>
-<translation id="6181762795539107980">Ανεπιβεβαίωτο</translation>
+<translation id="6181762795539107980">Μη επαληθευμένο</translation>
 <translation id="543510923939676996">Πορτοφόλι Επαληθεύτηκε</translation>
 <translation id="8673913984316081937">Η επαλήθευση του πορτοφολιού σας είναι προαιρετική</translation>
 <translation id="8558636200953226885">Αλλά, αν επαληθεύσετε, μπορείτε...</translation>
@@ -424,44 +424,33 @@
 <translation id="7559243474426790340">Ανανέωση Κατάστασης</translation>
 <translation id="8376263745431603066">Ενεργοποίηση "Νυχτερινής λειτουργίας" (Πειραματικό)</translation>
 <translation id="1383876407941801731">Αναζήτηση</translation>
-<translation id="1972589975368876259">Επεξεργασία Στοίβας</translation>
-<translation id="2490330380242414851">Αφαίρεση Γραφικού Στοιχείου</translation>
 <translation id="8446884382197647889">Μάθετε περισσότερα</translation>
-<translation id="7384441892795736634">Ανανέωση Δεδομένων</translation>
-<translation id="4804818685124855865">Αποσύνδεση</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Διαθέσιμα <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Αγορά <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Διεύθυνση Κατάθεσης</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Υπόμνημα Κατάθεσης</translation>
+<translation id="6755546361496900700">Προεπισκόπηση Μετατροπής</translation>
 <translation id="5110244215256675209">Αγορά Crypto</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Αγορά <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Διαθέσιμα <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Προεπισκόπηση Μετατροπής</translation>
-<translation id="2882813124794301799">Στοίβα Γραφικών Στοιχείων</translation>
 <translation id="13296465911709339">Το κείμενό σας αντιγράφηκε στο πρόχειρο.</translation>
 <translation id="2735834606413553397">Η δημόσια διεύθυνση αντιγράφηκε στο πρόχειρο.</translation>
 <translation id="7144878232160441200">Προσπαθήστε Ξανά</translation>
 <translation id="2977461003134694205">Στατιστικά Απορρήτου</translation>
-<translation id="4643117005422448078">Κορυφαίοι Ιστότοποι</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Iχνηλάτες &amp; Διαφημίσεις, Εξοικονομημένο Εύρος Ζώνης, και Εκτιμήσεις Εξοικονόμησης Χρόνου.</translation>
-<translation id="74417429503469271">Άνοιγμα κορυφαίων ιστότοπων που επισκέπτεστε συχνά.</translation>
 <translation id="2956070106555335453">Περίληψη</translation>
 <translation id="1366855498335432549">Κατάθεση</translation>
 <translation id="1301340234286078471">Μετατροπή</translation>
 <translation id="223536150967420869">Αγορά</translation>
-<translation id="1714829281959608206">Ενεργοποίηση σύνδεσης Binance για προβολή του υπολοίπου λογαριασμού Binance και συναλλαγή κρυπτογράφησης.</translation>
 <translation id="4584930231524505442">Θέλω να μετατρέψω...</translation>
 <translation id="5749014321384313843">Θέλω να ξοδέψω...</translation>
-<translation id="8688672835843460752">Διαθέσιμο</translation>
 <translation id="2480674848181564169">Δεν υπάρχει αρκετό υπόλοιπο για μετατροπή</translation>
 <translation id="2215334405220411393">Το ελάχιστο ποσό για μετατροπή είναι: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Αδυναμία σύνδεσης</translation>
 <translation id="7742417737698031726">Αμοιβή</translation>
 <translation id="2122225204180056042">Θα λάβετε</translation>
 <translation id="6432284126416751397">Επιβεβαίωση Μετατροπής</translation>
-<translation id="5137723827757859599">Δεν υπάρχει τίποτα εδώ ακόμα στους κορυφαίους ιστότοπους.</translation>
 <translation id="3891414008432200754">Τιμή</translation>
 <translation id="3733576242118819803">Επιβεβαίωση (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Η Μετατροπή Απέτυχε. Παρακαλούμε δοκιμάστε πάλι.</translation>
@@ -563,6 +552,8 @@
 <translation id="2759836790106646094">Δημιουργήστε τώρα αντίγραφο ασφαλείας για το πορτοφόλι σας!</translation>
 <translation id="1078873179929044999">Στο επόμενο βήμα θα δείτε μια φράση ανάκτησης 12 λέξεων, την οποία μπορείτε να χρησιμοποιήσετε για να ανακτήσετε τους κύριους λογαριασμούς κρυπτονομισμάτων σας. Αποθηκεύστε τη σε ασφαλές σημείο. Η φράση ανάκτησης είναι ο μόνος τρόπος για να ανακτήσετε την πρόσβαση στον λογαριασμό σας σε περίπτωση που ξεχάσετε τον κωδικό πρόσβασης, σε περίπτωση απώλειας ή κλοπής της συσκευής ή σε περίπτωση που θέλετε να αλλάξετε πορτοφόλια.</translation>
 <translation id="2359808026110333948">Συνέχεια</translation>
+<translation id="5488357322146334497">Μήνυμα</translation>
+<translation id="7228169875515099943">ΔΕΔΟΜΕΝΑ</translation>
 <translation id="1904000155026201268">Κατανοώ ότι αν χάσω τη φράση ανάκτησής μου, δεν θα μπορώ να έχω πρόσβαση στο πορτοφόλι κρυπτονομισμάτων μου.</translation>
 <translation id="3933122286596948824">Η φράση ανάκτησής σας</translation>
 <translation id="5077747669435508720">Γράψτε ή αντιγράψτε αυτές τις λέξεις ακριβώς με τη σειρά που εμφανίζονται παρακάτω, αποθηκεύστε και τοποθετήστε τις σε ασφαλές σημείο. Η φράση ανάκτησης είναι ο μόνος τρόπος για να ανακτήσετε την πρόσβαση στον λογαριασμό σας σε περίπτωση που ξεχάσετε τον κωδικό πρόσβασης, σε περίπτωση απώλειας ή κλοπής της συσκευής ή σε περίπτωση που θέλετε να αλλάξετε πορτοφόλια.</translation>
@@ -861,4 +852,21 @@
 <translation id="4945690646623486292">Επιλογή Δικτύου</translation>
 <translation id="8853725596990766789">Αλλαγή ποσού</translation>
 <translation id="5233638681132016545">Νέα καρτέλα</translation>
+<translation id="8006088103295786154">Πρόσβαση στο Πορτοφόλι Brave</translation>
+<translation id="5308380583665731573">Σύνδεση</translation>
+<translation id="3432029672560911238">Λογαριασμός χρήστη</translation>
+<translation id="5753378322046059140">Αλλαγή λογαριασμού</translation>
+<translation id="3897092660631435901">Μενού</translation>
+<translation id="42981349822642051">Ανάπτυξη</translation>
+<translation id="3586752056660754651">Υπογραφή</translation>
+<translation id="6592721981110586529">Σύνδεση με το Πορτοφόλι Brave</translation>
+<translation id="329813193938846695">Επιλογή λογαριασμών</translation>
+<translation id="3890989020011724401">Νέος λογαριασμός</translation>
+<translation id="291375746846291973">Συνδεθείτε μόνο με ιστότοπους που εμπιστεύεστε.</translation>
+<translation id="385051799172605136">Πίσω</translation>
+<translation id="1060221736464994328">Να επιτραπεί σε αυτόν τον ιστότοπο να αλλάξει το δίκτυο;</translation>
+<translation id="2478788592457735063">Η ενέργεια αυτή θα αλλάξει το δίκτυο σε κάποιο δίκτυο που είχε συνδεθεί προηγουμένως.</translation>
+<translation id="8756686998207163764">Αλλαγή δικτύου</translation>
+<translation id="394256914628786902">Ενεργοποίηση αυτόματης δημιουργίας ομάδας καρτελών</translation>
+<translation id="8274201358637112807">Η σελίδα αυτή θέλει να αλληλεπιδράσει με το Πορτοφόλι Brave</translation>
 </translationbundle>

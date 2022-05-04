@@ -12,38 +12,44 @@
 
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_aliases.h"
-#include "bat/ads/ads_history_filter_types.h"
-#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
+#include "bat/ads/history_filter_types.h"
+#include "bat/ads/history_sort_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
 class AdsClient;
-struct AdsHistoryInfo;
+struct HistoryInfo;
 struct AdNotificationInfo;
 
-// |g_environment| indicates that URL requests should use production, staging or
-// development servers but can be overridden via command-line arguments
+// |g_environment| indicates whether URL requests should use the production or
+// staging environment. The "brave-ads-production" or "brave-ads-staging"
+// command-line arguments allow users to override the environment.
 extern mojom::Environment g_environment;
 
-// Returns the reference to the hardware |manufacturer| and |model|
+// Returns system information.
 mojom::SysInfo& SysInfo();
 
-// Returns the reference to the build channel
+// Returns the build channel.
 mojom::BuildChannel& BuildChannel();
 
-// |g_is_debug| indicates that the next catalog download should be reduced from
-// ~1 hour to ~25 seconds. This value should be set to false on production
-// builds and true on debug builds but can be overridden via command-line
-// arguments
+// |g_is_debug| indicates whether to run ads in debug mode or not. The default
+// value should be set to |false| on production builds and |true| on debug
+// builds. The "brave-ads-debug" command-line argument allows users to override
+// this flag.
 extern bool g_is_debug;
 
-// Catalog schema resource id
-extern const char g_catalog_schema_resource_id[];
+// Data resources
+extern const char g_catalog_json_schema_data_resource_name[];
 
-// Returns true if the locale is supported otherwise returns false
+// Returns |true| if the locale is supported otherwise returns |false|.
 bool IsSupportedLocale(const std::string& locale);
 
 class ADS_EXPORT Ads {
@@ -53,184 +59,220 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called to initialize ads when launching the browser or when ads
-  // is enabled by a user. The callback takes one argument - |bool| should be
-  // set to |true| if successful otherwise should be set to |false|
+  // Called to initialize ads. The callback takes one argument - |bool| is set
+  // to |true| if successful otherwise |false|.
   virtual void Initialize(InitializeCallback callback) = 0;
 
-  // Should be called to shutdown ads when a user disables ads. The callback
-  // takes one argument - |bool| should be set to |true| if successful
-  // otherwise should be set to |false|
+  // Called to shutdown ads. The callback takes one argument - |bool| is set to
+  // |true| if successful otherwise |false|.
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
-  // Should be called when the user changes the locale of their operating
-  // system. This call is not required if the operating system restarts the
-  // browser when changing the locale. |locale| should be specified in either
-  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format
+  // Called when the user changes the locale of their operating system. This
+  // call is not required if the operating system restarts the browser when
+  // changing the locale. |locale| should be specified in either
+  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Should be called when a pref changes. |path| contains the pref path
+  // Called when a preference has changed for the specified |path|.
   virtual void OnPrefChanged(const std::string& path) = 0;
 
-  // Should be called when a page has loaded and the content is available for
-  // analysis. |redirect_chain| contains the chain of redirects, including
-  // client-side redirect and the current URL. |html| will contain the page
-  // content as HTML
+  // Called when a page has loaded and the content is available for analysis.
+  // |redirect_chain| containing redirect URLs that occurred for this
+  // navigation. |html| containing the page content as HTML.
   virtual void OnHtmlLoaded(const int32_t tab_id,
-                            const std::vector<std::string>& redirect_chain,
+                            const std::vector<GURL>& redirect_chain,
                             const std::string& html) = 0;
 
-  // Should be called when a page has loaded and the content is available for
-  // analysis. |redirect_chain| contains the chain of redirects, including
-  // client-side redirect and the current URL. |text| will contain the page
-  // content as text
+  // Called when a page has loaded and the content is available for analysis.
+  // |redirect_chain| containing redirect URLs that occurred for this
+  // navigation. |text| containing the page content as text.
   virtual void OnTextLoaded(const int32_t tab_id,
-                            const std::vector<std::string>& redirect_chain,
+                            const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
 
-  // Should be called when the navigation was initiated by a user gesture.
-  // |page_transition_type| contains the page transition type
+  // Called when a page navigation was initiated by a user gesture.
+  // |page_transition_type| containing the page transition type, see enums for
+  // |PageTransitionType|.
   virtual void OnUserGesture(const int32_t page_transition_type) = 0;
 
-  // Should be called when a user is no longer idle. |idle_time| returns the
-  // idle time in seconds. |was_locked| returns true if the screen is locked,
-  // otherwise should be set to false. This should not be called on mobile
-  // devices
+  // Called when a user is no longer idle. |idle_time| is the amount of time in
+  // seconds that the user was idle. |was_locked| should be |true| if the screen
+  // was locked, otherwise |false|. This should not be called on mobile devices.
   virtual void OnUnIdle(const int idle_time, const bool was_locked) = 0;
 
-  // Should be called when a user is idle for the threshold set in
-  // |prefs::kIdleTimeThreshold|. This should not be called on mobile devices
+  // Called when a user has been idle for the threshold set in
+  // |prefs::kIdleTimeThreshold|. This should not be called on mobile devices.
   virtual void OnIdle() = 0;
 
-  // Should be called when the browser becomes active
-  virtual void OnForeground() = 0;
+  // Called when the browser did enter the foreground.
+  virtual void OnBrowserDidEnterForeground() = 0;
 
-  // Should be called when the browser enters the background
-  virtual void OnBackground() = 0;
+  // Called when the browser did enter the background.
+  virtual void OnBrowserDidEnterBackground() = 0;
 
-  // Should be called when media starts playing on a browser tab
+  // Called when media starts playing on a browser tab for the specified
+  // |tab_id|.
   virtual void OnMediaPlaying(const int32_t tab_id) = 0;
 
-  // Should be called when media stops playing on a browser tab
+  // Called when media stops playing on a browser tab for the specified
+  // |tab_id|.
   virtual void OnMediaStopped(const int32_t tab_id) = 0;
 
-  // Should be called when a browser tab is updated. |is_active| should be set
-  // to true if |tab_id| refers to the currently active tab otherwise should be
-  // set to false. |is_browser_active| should be set to true if the current
-  // browser window is active otherwise should be set to false. |is_incognito|
-  // should be set to true if the tab is private otherwise should be set to
-  // false
+  // Called when a browser tab is updated with the specified |url|. |is_active|
+  // is set to |true| if |tab_id| refers to the currently active tab otherwise
+  // is set to |false|. |is_browser_active| is set to |true| if the browser
+  // window is active otherwise |false|. |is_incognito| is set to |true| if the
+  // tab is incognito otherwise |false|.
   virtual void OnTabUpdated(const int32_t tab_id,
-                            const std::string& url,
+                            const GURL& url,
                             const bool is_active,
                             const bool is_browser_active,
                             const bool is_incognito) = 0;
 
-  // Should be called when a browser tab is closed
+  // Called when a browser tab with the specified |tab_id| was closed.
   virtual void OnTabClosed(const int32_t tab_id) = 0;
 
-  // Should be called when the users wallet has been updated
+  // Called when the users wallet has been updated.
   virtual void OnWalletUpdated(const std::string& payment_id,
                                const std::string& seed) = 0;
 
-  // Should be called when a resource component has been updated by
-  // |brave_ads::ResourceComponent|
+  // Called when a resource component has been updated by
+  // |brave_ads::ResourceComponent|.
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
-  // Should be called to get the ad notification specified by |uuid|. Returns
-  // true if the ad notification exists otherwise returns false.
-  // |ad_notification| contains the ad notification for uuid
-  virtual bool GetAdNotification(const std::string& uuid,
+  // Called to get the ad notification specified by |placement_id|. Returns
+  // |true| if the ad notification was found otherwise |false|.
+  // |ad_notification| containing the info of the ad.
+  virtual bool GetAdNotification(const std::string& placement_id,
                                  AdNotificationInfo* ad_notification) = 0;
 
-  // Should be called when a user views, clicks or dismisses an ad notification
-  // or an ad notification times out
-  virtual void OnAdNotificationEvent(
-      const std::string& uuid,
+  // Called when a user views or interacts with an ad notification or the ad
+  // notification times out to trigger an |event_type| event for the specified
+  // |placement_id|. |placement_id| should be a 128-bit random GUID in the form
+  // of version 4. See RFC 4122, section 4.4. The same |placement_id| generated
+  // for the viewed event should be used for all other events for the same ad
+  // placement.
+  virtual void TriggerAdNotificationEvent(
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) = 0;
 
-  // Should be called to get an eligible new tab page ad
+  // Should be called to get a new tab page ad. The callback takes two arguments
+  // - |bool| is set to |true| if successful otherwise |false| and
+  // |NewTabPageAdInfo| containing the info for the ad.
   virtual void GetNewTabPageAd(GetNewTabPageAdCallback callback) = 0;
 
-  // Should be called when a user views or clicks a new tab page ad
-  virtual void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  // Called when a user views or interacts with a new tab page ad to trigger an
+  // |event_type| event for the specified |placement_id| and
+  // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
+  // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
+  // generated for the viewed event should be used for all other events for the
+  // same ad placement.
+  virtual void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) = 0;
 
-  // Should be called when a user views or clicks a promoted content ad
-  virtual void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  // Called when a user views or interacts with a promoted content ad to trigger
+  // an |event_type| event for the specified |placement_id| and
+  // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
+  // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
+  // generated for the viewed event should be used for all other events for the
+  // same ad placement.
+  virtual void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) = 0;
 
-  // Should be called to get an eligible inline content ad for the specified
-  // size
+  // Should be called to get an inline content ad for the specified
+  // |dimensions|. The callback takes three arguments - |bool| is set to |true|
+  // if successful otherwise |false|, |std::string| containing the dimensions
+  // and |InlineContentAdInfo| containing the info for the ad.
   virtual void GetInlineContentAd(const std::string& dimensions,
                                   GetInlineContentAdCallback callback) = 0;
 
-  // Should be called when a user views or clicks an inline content ad
-  virtual void OnInlineContentAdEvent(
-      const std::string& uuid,
+  // Called when a user views or interacts with an inline content ad to trigger
+  // an |event_type| event for the specified |placement_id| and
+  // |creative_instance_id|. |placement_id| should be a 128-bit random GUID in
+  // the form of version 4. See RFC 4122, section 4.4. The same |placement_id|
+  // generated for the viewed event should be used for all other events for the
+  // same ad placement.
+  virtual void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) = 0;
 
-  // Purge orphaned ad events for the specified |ad_type|
+  // Called when a user views or interacts with a search result ad to trigger an
+  // |event_type| event for the ad specified in |ad_mojom|. The callback takes
+  // three arguments - |bool| is set to |true| if successful otherwise |false|,
+  // |std::string| containing the placement id and
+  // |mojom::SearchResultAdEventType| containing the event type. NOTE: You
+  // should wait for the callback before calling another |kViewed| event to
+  // handle frequency capping.
+  virtual void TriggerSearchResultAdEvent(
+      mojom::SearchResultAdPtr ad_mojom,
+      const mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) = 0;
+
+  // Called to purge orphaned served ad events. Should only call before
+  // triggering new ad events for the specified |ad_type|.
   virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 
-  // Should be called to remove all cached history. The callback takes one
-  // argument - |bool| should be set to |true| if successful otherwise should be
-  // set to |false|
+  // Called to remove all history. The callback takes one argument - |bool| is
+  // set to |true| if successful otherwise |false|.
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
-  // Should be called to get history for a specified date range. Returns
-  // |AdsHistoryInfo|
-  virtual AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
-                                    const AdsHistorySortType sort_type,
-                                    const double from_timestamp,
-                                    const double to_timestamp) = 0;
+  // Called to get history filtered by |filter_type| and sorted by |sort_type|
+  // between the |from_time| and |to_time| date range. Returns |HistoryInfo|
+  // containing info of the obtained history.
+  virtual HistoryInfo GetHistory(const HistoryFilterType filter_type,
+                                 const HistorySortType sort_type,
+                                 const base::Time from_time,
+                                 const base::Time to_time) = 0;
 
-  // Should be called to get the statement of accounts. The callback takes one
-  // argument - |StatementInfo| which contains next payment date, ads received
-  // this month, earnings this month, earnings last month, cleared transactions
-  // and uncleared transactions
+  // Called to get the statement of accounts. The callback takes two arguments -
+  // |bool| is set to |true| if successful otherwise |false|. |StatementInfo|
+  // containing info of the obtained statement of accounts.
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  // Should be called to get ad diagnostics for rewards internals page.
-  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
+  // Called to get diagnostics to help identify issues. The callback takes two
+  // arguments - |bool| is set to |true| if successful otherwise |false|.
+  // |std::string| containing info of the obtained diagnostics.
+  virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
-  // Should be called to indicate interest in the specified ad. This is a
-  // toggle, so calling it again returns the setting to the neutral state
+  // Called to like an advertiser. This is a toggle, so calling it again returns
+  // the setting to the neutral state. Returns |AdContentLikeActionType|
+  // containing the current state.
   virtual AdContentLikeActionType ToggleAdThumbUp(const std::string& json) = 0;
 
-  // Should be called to indicate a lack of interest in the specified ad. This
-  // is a toggle, so calling it again returns the setting to the neutral state
+  // Called to dislike an advertiser. This is a toggle, so calling it again
+  // returns the setting to the neutral state. Returns |AdContentLikeActionType|
+  // containing the current state.
   virtual AdContentLikeActionType ToggleAdThumbDown(
       const std::string& json) = 0;
 
-  // Should be called to opt-in to the specified ad category. This is a toggle,
-  // so calling it again neutralizes the ad category. Returns
-  // |CategoryContentOptActionType| with the current status
+  // Called to no longer receive ads for the specified category. This is a
+  // toggle, so calling it again returns the setting to the neutral state.
+  // Returns |CategoryContentOptActionType| containing the current state.
   virtual CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
       const CategoryContentOptActionType& action) = 0;
 
-  // Should be called to opt-out of the specified ad category. This is a toggle,
-  // so calling it again neutralizes the ad category. Returns
-  // |CategoryContentOptActionType| with the current status
+  // Called to receive ads for the specified category. This is a toggle, so
+  // calling it again returns the setting to the neutral state. Returns
+  // |CategoryContentOptActionType| containing the current state.
   virtual CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
       const CategoryContentOptActionType& action) = 0;
 
-  // Should be called to save an ad for later viewing. This is a toggle, so
-  // calling it again removes the ad from the saved list. Returns true if the ad
-  // was saved otherwise should return false
+  // Called to save an ad for later viewing. This is a toggle, so calling it
+  // again removes the ad from the saved list. Returns |true| if the ad was
+  // saved otherwise |false|.
   virtual bool ToggleSavedAd(const std::string& json) = 0;
 
-  // Should be called to flag an ad as inappropriate. This is a toggle, so
-  // calling it again unflags the ad. Returns true if the ad was flagged
-  // otherwise returns false
+  // Called to mark an ad as inappropriate. This is a toggle, so calling it
+  // again unmarks the ad. Returns |true| if the ad was marked otherwise
+  // |false|.
   virtual bool ToggleFlaggedAd(const std::string& json) = 0;
 
  private:

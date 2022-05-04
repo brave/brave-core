@@ -9,22 +9,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
+import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.chrome.R;
 
-public class DAppsMessageFragment extends Fragment {
-    public static DAppsMessageFragment newInstance() {
-        DAppsMessageFragment fragment = new DAppsMessageFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+public class DAppsMessageFragment extends BaseDAppsFragment {
+    private SignMessageRequest mCurrentSignMessageRequest;
+
+    public DAppsMessageFragment(SignMessageRequest currentSignMessageRequest) {
+        mCurrentSignMessageRequest = currentSignMessageRequest;
+        assert mCurrentSignMessageRequest != null;
     }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dapps_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_dapps_message, container, false);
+        TextView signMessageText = view.findViewById(R.id.sign_message_text);
+        signMessageText.setText(mCurrentSignMessageRequest.message);
+
+        return view;
     }
 }

@@ -12,6 +12,7 @@
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -37,6 +38,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
@@ -51,8 +53,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -81,6 +83,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/url_constants.h"
+#include "chrome/grit/chromium_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -173,8 +176,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -190,6 +193,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
+#include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -259,9 +264,9 @@ void BindCosmeticFiltersResources(
                                 std::move(receiver)));
 }
 
-void MaybeBindBraveWalletProvider(
+void MaybeBindEthereumProvider(
     content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
+    mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider> receiver) {
   auto* json_rpc_service =
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
@@ -289,7 +294,7 @@ void MaybeBindBraveWalletProvider(
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::BraveWalletProviderImpl>(
+      std::make_unique<brave_wallet::EthereumProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
           json_rpc_service, tx_service, keyring_service, brave_wallet_service,
@@ -302,8 +307,18 @@ void MaybeBindBraveWalletProvider(
 void MaybeBindSolanaProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          frame_host->GetBrowserContext());
+  if (!keyring_service)
+    return;
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::SolanaProviderImpl>(),
+      std::make_unique<brave_wallet::SolanaProviderImpl>(
+          keyring_service,
+          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
+              web_contents, frame_host)),
       std::move(receiver));
 }
 
@@ -418,6 +433,16 @@ void BraveContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
 }
+void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
+    content::WebUIBrowserInterfaceBrokerRegistry& registry) {
+  ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (brave_vpn::IsBraveVPNEnabled()) {
+    registry.ForWebUI<VPNPanelUI>()
+        .Add<brave_vpn::mojom::PanelHandlerFactory>();
+  }
+#endif
+}
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
@@ -483,8 +508,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
-    map->Add<brave_wallet::mojom::BraveWalletProvider>(
-        base::BindRepeating(&MaybeBindBraveWalletProvider));
+    map->Add<brave_wallet::mojom::EthereumProvider>(
+        base::BindRepeating(&MaybeBindEthereumProvider));
     map->Add<brave_wallet::mojom::SolanaProvider>(
         base::BindRepeating(&MaybeBindSolanaProvider));
   }
@@ -502,11 +527,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   }
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (base::FeatureList::IsEnabled(
+          brave_federated::features::kFederatedLearning)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        brave_vpn::mojom::PanelHandlerFactory, VPNPanelUI>(map);
+        federated_internals::mojom::PageHandlerFactory, FederatedInternalsUI>(
+        map);
   }
 #endif
 
@@ -532,10 +557,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
     content::WebContents::Getter web_contents_getter,
-    int child_id,
     int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
-    bool is_main_frame,
+    bool is_primary_main_frame,
+    bool is_in_fenced_frame_tree,
     network::mojom::WebSandboxFlags sandbox_flags,
     ui::PageTransition page_transition,
     bool has_user_gesture,
@@ -549,7 +574,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
                            : content::WeakDocumentPtr();
 
     webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, initiating_origin,
+                                     has_user_gesture, is_in_fenced_frame_tree,
+                                     initiating_origin,
                                      std::move(weak_initiator_document));
     return true;
   }
@@ -586,9 +612,10 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
-      is_main_frame, sandbox_flags, page_transition, has_user_gesture,
-      initiating_origin, initiator_document, out_factory);
+      url, web_contents_getter, frame_tree_node_id, navigation_data,
+      is_primary_main_frame, is_in_fenced_frame_tree, sandbox_flags,
+      page_transition, has_user_gesture, initiating_origin, initiator_document,
+      out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
@@ -627,7 +654,7 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
         translate::switches::kBraveTranslateUseGoogleEndpoint,
     };
     command_line->CopySwitchesFrom(browser_command_line, kSwitchNames,
-                                   base::size(kSwitchNames));
+                                   std::size(kSwitchNames));
   }
 }
 
@@ -949,4 +976,42 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
+}
+
+blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
+  blink::UserAgentMetadata metadata =
+      ChromeContentBrowserClient::GetUserAgentMetadata();
+  if (metadata.brand_version_list.size() == 2) {
+    // some logic copied from upstream GetUserAgentBrandList and
+    // GenerateBrandVersionList
+    std::string major_version_string = version_info::GetMajorVersionNumber();
+    int seed = 0;
+    DCHECK(base::StringToInt(major_version_string, &seed));
+    DCHECK_GE(seed, 0);
+    blink::UserAgentBrandVersion greasey_bv =
+        metadata.brand_version_list[seed % 2];
+    blink::UserAgentBrandVersion chromium_bv =
+        metadata.brand_version_list[(seed + 1) % 2];
+    blink::UserAgentBrandVersion brave_bv = {
+        l10n_util::GetStringUTF8(IDS_PRODUCT_NAME), chromium_bv.version};
+    const int npermutations = 6;  // 3!
+    int permutation = seed % npermutations;
+    const std::vector<std::vector<int>> orders{{0, 1, 2}, {0, 2, 1}, {1, 0, 2},
+                                               {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
+    const std::vector<int> order = orders[permutation];
+    blink::UserAgentBrandList greased_brand_version_list(3);
+    greased_brand_version_list[order[0]] = greasey_bv;
+    greased_brand_version_list[order[1]] = chromium_bv;
+    greased_brand_version_list[order[2]] = brave_bv;
+    metadata.brand_version_list = greased_brand_version_list;
+    greasey_bv.version = base::StrCat({greasey_bv.version, ".0.0.0"});
+    chromium_bv.version = base::StrCat({chromium_bv.version, ".0.0.0"});
+    brave_bv.version = base::StrCat({brave_bv.version, ".0.0.0"});
+    blink::UserAgentBrandList greased_brand_full_version_list(3);
+    greased_brand_full_version_list[order[0]] = greasey_bv;
+    greased_brand_full_version_list[order[1]] = chromium_bv;
+    greased_brand_full_version_list[order[2]] = brave_bv;
+    metadata.brand_full_version_list = greased_brand_full_version_list;
+  }
+  return metadata;
 }

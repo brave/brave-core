@@ -17,11 +17,13 @@
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="subscription_status"
-        android:title="@string/status"/>
+        android:title="@string/status"
+        android:enabled="false"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="subscription_expires"
-        android:title="@string/expires"/>
+        android:title="@string/expires"
+        android:enabled="false"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="subscription_manage"
@@ -33,7 +35,8 @@
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="server_host"
-        android:title="@string/host"/>
+        android:title="@string/host"
+        android:enabled="false"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences"

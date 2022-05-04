@@ -425,44 +425,33 @@
 <translation id="7559243474426790340">상태 새로 고침</translation>
 <translation id="8376263745431603066">"야간 모드" 활성화 (시험용)</translation>
 <translation id="1383876407941801731">검색</translation>
-<translation id="1972589975368876259">스택 편집</translation>
-<translation id="2490330380242414851">위젯 제거</translation>
 <translation id="8446884382197647889">자세히 알아보기</translation>
-<translation id="7384441892795736634">데이터 새로 고침</translation>
-<translation id="4804818685124855865">연결 해제</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">사용 가능한 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869"><ph name="COIN_NAME"/> 구매</translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 입금 주소</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> 입금 메모</translation>
+<translation id="6755546361496900700">전환 미리보기</translation>
 <translation id="5110244215256675209">암호 화폐 구매</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869"><ph name="COIN_NAME"/> 구매</translation>
-<translation id="558614325644656740">사용 가능한 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">전환 미리보기</translation>
-<translation id="2882813124794301799">위젯 스택</translation>
 <translation id="13296465911709339">텍스트가 클립보드에 복사되었습니다.</translation>
 <translation id="2735834606413553397">공개 주소가 클립보드에 복사되었습니다.</translation>
 <translation id="7144878232160441200">재시도</translation>
 <translation id="2977461003134694205">개인정보 통계</translation>
-<translation id="4643117005422448078">탑 사이트</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">추적기 및 광고 차단, 절감된 데이터량, 시간 절약 추정치.</translation>
-<translation id="74417429503469271">자주 방문하는 탑 사이트를 여세요.</translation>
 <translation id="2956070106555335453">요약</translation>
 <translation id="1366855498335432549">입금</translation>
 <translation id="1301340234286078471">전환</translation>
 <translation id="223536150967420869">구매</translation>
-<translation id="1714829281959608206">Binance 연결을 활성화하여 Binance 계정 잔액을 열람하고 암호 화폐를 거래하세요.</translation>
 <translation id="4584930231524505442">전환하고 싶습니다...</translation>
 <translation id="5749014321384313843">쓰고 싶습니다...</translation>
-<translation id="8688672835843460752">유효</translation>
 <translation id="2480674848181564169">환전용 잔액 부족</translation>
 <translation id="2215334405220411393">환전 최소 금액 : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">연결할 수 없음</translation>
 <translation id="7742417737698031726">수수료</translation>
 <translation id="2122225204180056042">수령하시게 됩니다</translation>
 <translation id="6432284126416751397">전환 확인</translation>
-<translation id="5137723827757859599">탑 사이트에는 아직 아무것도 없습니다.</translation>
 <translation id="3891414008432200754">가격</translation>
 <translation id="3733576242118819803">(<ph name="REMAINING_TIME"/>s) 확인</translation>
 <translation id="1627064138060308910">환전 실패. 다시 시도하세요.</translation>
@@ -564,6 +553,8 @@
 <translation id="2759836790106646094">지금 월렛을 백업하세요!</translation>
 <translation id="1078873179929044999">다음 단계에서는 12단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="2359808026110333948">계속</translation>
+<translation id="5488357322146334497">메시지</translation>
+<translation id="7228169875515099943">데이터</translation>
 <translation id="1904000155026201268">복구 문구를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
 <translation id="3933122286596948824">복구 문구</translation>
 <translation id="5077747669435508720">이들 단어를 표시되는 정확한 순서대로 잘 적어두거나 복사해두었다가 안전한 곳에 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
@@ -808,6 +799,7 @@
 <translation id="1254969878422524947">가스당 팁 한도(Gwei)</translation>
 <translation id="7373308452149471621">가스당 가격 한도(Gwei)</translation>
 <translation id="5891811606602061966">계정 가져오기에 실패했습니다. 다시 시도하세요.</translation>
+<translation id="1822506443689803572">Brave는 DEX 애그리게이터로 <ph name="DEX_PROVIDER"/>를 사용합니다.</translation>
 <translation id="5061574358754621254">CoinGecko에서 제공한 가격 데이터</translation>
 <translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
 <translation id="8574289650879708853">사용자 정의 자산 추가</translation>
@@ -861,4 +853,21 @@
 <translation id="4945690646623486292">네트워크 선택</translation>
 <translation id="8853725596990766789">금액 변경</translation>
 <translation id="5233638681132016545">새 탭</translation>
+<translation id="8006088103295786154">Brave 월렛에 액세스</translation>
+<translation id="5308380583665731573">연결</translation>
+<translation id="3432029672560911238">사용자 계정</translation>
+<translation id="5753378322046059140">계정 전환</translation>
+<translation id="3897092660631435901">메뉴</translation>
+<translation id="42981349822642051">펼치기</translation>
+<translation id="3586752056660754651">서명</translation>
+<translation id="6592721981110586529">Brave 월렛과 연결</translation>
+<translation id="329813193938846695">계정 선택</translation>
+<translation id="3890989020011724401">새 계정</translation>
+<translation id="291375746846291973">신뢰할 수 있는 사이트에만 연결하십시오.</translation>
+<translation id="385051799172605136">뒤로</translation>
+<translation id="1060221736464994328">이 사이트가 네트워크를 전환할 수 있게 허용하시겠습니까?</translation>
+<translation id="2478788592457735063">네트워크가 이전에 추가한 네트워크로 전환됩니다.</translation>
+<translation id="8756686998207163764">네트워크 전환</translation>
+<translation id="394256914628786902">탭 그룹 자동 생성 활성화</translation>
+<translation id="8274201358637112807">이 페이지가 Brave 월렛과 상호작용하려고 합니다.</translation>
 </translationbundle>

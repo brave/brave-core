@@ -11,7 +11,7 @@ namespace ad_targeting {
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo() = default;
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(const SegmentList& segments,
-                                               const std::string& url_netloc,
+                                               const GURL& url_netloc,
                                                const uint16_t weight)
     : segments(segments), url_netloc(url_netloc), weight(weight) {}
 

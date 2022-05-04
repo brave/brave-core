@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
@@ -95,17 +95,21 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   // Only check the first entry because it will not be grouped with other
   // types.
   if (manager->Requests().empty() ||
-      manager->Requests()[0]->request_type() !=
-          permissions::RequestType::kBraveEthereum)
+      (manager->Requests()[0]->request_type() !=
+           permissions::RequestType::kBraveEthereum &&
+       manager->Requests()[0]->request_type() !=
+           permissions::RequestType::kBraveSolana))
     return webui_url;
 
   // Handle ConnectWithSite (ethereum permission) request.
   std::vector<std::string> accounts;
-  std::string requesting_origin;
+  url::Origin requesting_origin;
   for (auto* request : manager->Requests()) {
     std::string account;
     if (!brave_wallet::ParseRequestingOriginFromSubRequest(
-            request->requesting_origin(), &requesting_origin, &account)) {
+            request->request_type(),
+            url::Origin::Create(request->requesting_origin()),
+            &requesting_origin, &account)) {
       continue;
     }
     accounts.push_back(account);
@@ -129,9 +133,9 @@ const std::vector<int32_t>& BraveWalletTabHelper::GetPopupIdsForTesting() {
 
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {
   GURL webui_url = GURL(kBraveUIWalletPanelURL);
-  url::Replacements<char> replacements;
+  GURL::Replacements replacements;
   const std::string ref = "approveTransaction";
-  replacements.SetRef(ref.c_str(), url::Component(0, ref.size()));
+  replacements.SetRefStr(ref);
   return webui_url.ReplaceComponents(replacements);
 }
 

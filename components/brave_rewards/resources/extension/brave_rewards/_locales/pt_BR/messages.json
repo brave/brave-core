@@ -192,19 +192,6 @@
     "message": "Contribuição Automática",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "Acesse $provider$ para concluir a verificação",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "Conclua a verificação de identidade para começar a receber recompensas.",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "Sessão encerrada",
     "description": ""
@@ -243,6 +230,15 @@
     "message": "Pendente",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "Há um problema temporário na verificação do $provider$. Suas Recompensas Brave permanecerão em estado pendente e uma nova tentativa será realizada automaticamente, mas você também pode tentar novamente mais tarde.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "Recompensas de anúncios",
     "description": ""
@@ -252,7 +248,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Não verificado",
+    "message": "Não verificada",
     "description": ""
   },
   "walletVerified": {

@@ -39,6 +39,16 @@ export function GrantCaptchaChallenge (props: Props) {
       x: (rect.width / 2) - (event.clientX - rect.left),
       y: (rect.height / 2) - (event.clientY - rect.top)
     })
+
+    // Work around Linux-specific upstream bug by explicitly setting the drag
+    // image offset when initiating the drag
+    // See https://bugs.chromium.org/p/chromium/issues/detail?id=1297990
+    if (window.navigator.userAgent.includes('Linux') && devicePixelRatio > 1) {
+      event.dataTransfer.setDragImage(
+        target,
+        event.clientX - rect.left,
+        event.clientY - rect.top)
+    }
   }
 
   function onDragOver (event: React.DragEvent) {
@@ -63,7 +73,7 @@ export function GrantCaptchaChallenge (props: Props) {
     })
   }
 
-  if (!grantCaptchaInfo.imageURL) {
+  if (!grantCaptchaInfo.imageURL || grantCaptchaInfo.verifying) {
     return (
       <style.root>
         <style.loading>
@@ -76,11 +86,11 @@ export function GrantCaptchaChallenge (props: Props) {
   return (
     <style.root>
       <style.hint>
-          {
-            formatMessage(getString('grantCaptchaHint'), [
-              <strong key='hint'>{grantCaptchaInfo.hint}</strong>
-            ])
-          }
+        {
+          formatMessage(getString('grantCaptchaHint'), [
+            <strong key='hint'>{grantCaptchaInfo.hint}</strong>
+          ])
+        }
       </style.hint>
       <style.dragObject>
         <style.dragObjectCircle>

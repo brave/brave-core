@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -80,7 +81,10 @@ mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id);
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
 void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result);
+void GetAllKnownFilChains(std::vector<mojom::NetworkInfoPtr>* result);
+std::string GetKnownFilNetworkId(const std::string& chain_id);
 std::string GetKnownSolNetworkId(const std::string& chain_id);
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id);
@@ -93,16 +97,20 @@ void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
+bool GetShowWalletTestNetworks(PrefService* prefs);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 std::vector<std::string> GetAllKnownEthNetworkIds();
+std::vector<std::string> GetAllKnownSolNetworkIds();
+std::vector<std::string> GetAllKnownFilNetworkIds();
 std::string GetKnownEthNetworkId(const std::string& chain_id);
 
+GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 
 // Append chain value to kBraveWalletCustomNetworks dictionary pref.
-void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain);
+void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
 
 void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove);
@@ -122,12 +130,21 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 // Otherwise returns an empty GURL
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 
-absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
+std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 
-/**
- * Given an url, return eTLD + 1 for that URL
- */
-std::string eTLDPlusOne(const GURL& url);
+// Returns a string used for web3_clientVersion in the form of
+// BraveWallet/v[chromium-version]. Note that we expose only the Chromium
+// version and not the Brave version because that way no extra entropy
+// is leaked from what the user agent provides for fingerprinting.
+std::string GetWeb3ClientVersion();
+
+// Given an url, return eTLD + 1 for that Origin
+std::string eTLDPlusOne(const url::Origin& origin);
+
+mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
+
+absl::optional<ContentSettingsType> CoinTypeToContentSettingsType(
+    mojom::CoinType coin_type);
 
 }  // namespace brave_wallet
 

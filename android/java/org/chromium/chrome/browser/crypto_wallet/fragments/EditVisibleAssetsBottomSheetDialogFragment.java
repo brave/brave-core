@@ -41,6 +41,7 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
@@ -251,13 +252,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                             token.symbol = tokenSymbolEdit.getText().toString();
                             token.decimals = 18;
                             token.chainId = mChainId;
+                            token.coin = CoinType.ETH;
                             try {
                                 token.decimals =
                                         Integer.valueOf(tokenDecimalsEdit.getText().toString());
                             } catch (NumberFormatException exc) {
                             }
                             token.visible = true;
-                            braveWalletService.addUserAsset(token, mChainId, success -> {
+                            braveWalletService.addUserAsset(token, success -> {
                                 if (success) {
                                     WalletListItemModel itemModel = new WalletListItemModel(
                                             R.drawable.ic_eth, token.name, token.symbol, "", "");
@@ -389,7 +391,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         if (!Utils.isCustomNetwork(mChainId)) {
             // Add ETH as a first item always
-            BlockchainToken eth = Utils.createEthereumBlockchainToken();
+            BlockchainToken eth = Utils.createEthereumBlockchainToken(mChainId);
             WalletListItemModel itemModelEth =
                     new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
             itemModelEth.setIsUserSelected(
@@ -485,9 +487,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     public void onClick(DialogInterface dialog, int id) {
                         BraveWalletService braveWalletService = getBraveWalletService();
                         assert braveWalletService != null;
-                        assert (mChainId != null && !mChainId.isEmpty());
                         braveWalletService.removeUserAsset(
-                                walletListItemModel.getBlockchainToken(), mChainId, (success) -> {
+                                walletListItemModel.getBlockchainToken(), (success) -> {
                                     if (success) {
                                         walletCoinAdapter.removeItem(walletListItemModel);
                                         mIsAssetsListChanged = true;
@@ -507,20 +508,17 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     walletListItemModel.getBlockchainToken(), getBlockchainRegistry(), isCustom -> {
                         BraveWalletService braveWalletService = getBraveWalletService();
                         assert braveWalletService != null;
-                        assert (mChainId != null && !mChainId.isEmpty());
                         if (!isCustom) {
                             if (isChecked) {
                                 braveWalletService.addUserAsset(
-                                        walletListItemModel.getBlockchainToken(), mChainId,
-                                        (success) -> {
+                                        walletListItemModel.getBlockchainToken(), (success) -> {
                                             if (success) {
                                                 walletListItemModel.setIsUserSelected(true);
                                             }
                                         });
                             } else {
                                 braveWalletService.removeUserAsset(
-                                        walletListItemModel.getBlockchainToken(), mChainId,
-                                        (success) -> {
+                                        walletListItemModel.getBlockchainToken(), (success) -> {
                                             if (success) {
                                                 walletListItemModel.setIsUserSelected(false);
                                             }
@@ -528,7 +526,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                             }
                         } else {
                             braveWalletService.setUserAssetVisible(
-                                    walletListItemModel.getBlockchainToken(), mChainId, isChecked,
+                                    walletListItemModel.getBlockchainToken(), isChecked,
                                     success -> {
                                         if (success) {
                                             walletListItemModel.setIsUserSelected(isChecked);

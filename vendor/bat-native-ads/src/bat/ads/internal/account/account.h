@@ -45,6 +45,8 @@ class Account final : public ConfirmationsDelegate,
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
+  void OnPrefChanged(const std::string& path);
+
   bool SetWallet(const std::string& id, const std::string& seed);
   WalletInfo GetWallet() const;
 
@@ -59,6 +61,8 @@ class Account final : public ConfirmationsDelegate,
   void ProcessClearingCycle();
 
  private:
+  void OnEnabledPrefChanged();
+
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,

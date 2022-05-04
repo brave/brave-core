@@ -54,19 +54,13 @@ export default function useAssetManagement () {
     onlyInLeft(userVisibleTokensInfo, updatedTokensList)
       .forEach(token => dispatch(WalletActions.removeUserAsset(token)))
 
-    // Gets a list of custom tokens returned from updatedTokensList payload
-    // then compares customTokens against userVisibleTokensInfo list and updates the custom tokens visibility if it has changed
+    // Gets a list of custom tokens and native assets returned from updatedTokensList payload
+    // then compares against userVisibleTokensInfo list and updates the tokens visibility if it has changed.
     onlyInLeft(updatedTokensList, fullTokenList)
       .forEach(token => {
         const foundToken = findVisibleTokenInfo(token)
-        // Since a networks native token (example 'ETH') can be removed from the userVisibleTokensInfo list,
-        // when it is re-added we handle it as a custom token since it is not part of the token registry.
-        // This check here will add it only if it's value 'visible' is returned true
-        if (token.contractAddress.toLowerCase() === '' && !foundToken?.visible && token.visible) {
-          onAddUserAsset(token)
-        }
-        // Updates token visibility excluding a networks native token
-        if (foundToken?.visible !== token.visible && token.contractAddress.toLowerCase() !== '') {
+        // Updates token visibility
+        if (foundToken?.visible !== token.visible) {
           dispatch(WalletActions.setUserAssetVisible(
             { token, isVisible: token.visible }
           ))

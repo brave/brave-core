@@ -216,5 +216,37 @@ TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
   histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 2, 1);
 }
 
+TEST_F(BraveNewsP3ATest, TestTotalCardsViewed) {
+  PrefService* prefs = GetPrefs();
+  RecordAtStart(prefs);
+  histogram_tester_.ExpectTotalCount(kTotalCardViewsHistogramName, 1);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 0, 1);
+
+  RecordTotalCardViews(prefs, 0);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 0, 2);
+
+  RecordTotalCardViews(prefs, 1);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 1, 1);
+
+  RecordTotalCardViews(prefs, 15);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 3, 1);
+
+  task_environment_.AdvanceClock(base::Days(4));
+
+  ResetCurrSessionTotalViewsCount(prefs);
+  RecordTotalCardViews(prefs, 15);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 4, 1);
+
+  ResetCurrSessionTotalViewsCount(prefs);
+  RecordTotalCardViews(prefs, 15);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 5, 1);
+
+  task_environment_.AdvanceClock(base::Days(4));
+
+  ResetCurrSessionTotalViewsCount(prefs);
+  RecordTotalCardViews(prefs, 0);
+  histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 4, 2);
+}
+
 }  // namespace p3a
 }  // namespace brave_news

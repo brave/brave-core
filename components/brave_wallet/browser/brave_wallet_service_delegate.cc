@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 
 #include <utility>
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 
@@ -28,30 +29,31 @@ void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
   std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
-void BraveWalletServiceDelegate::AddEthereumPermission(
-    const std::string& origin,
-    const std::string& account,
-    AddEthereumPermissionCallback callback) {
+void BraveWalletServiceDelegate::AddPermission(mojom::CoinType coin,
+                                               const url::Origin& origin,
+                                               const std::string& account,
+                                               AddPermissionCallback callback) {
   std::move(callback).Run(false);
 }
 
-void BraveWalletServiceDelegate::HasEthereumPermission(
-    const std::string& origin,
-    const std::string& account,
-    HasEthereumPermissionCallback callback) {
+void BraveWalletServiceDelegate::HasPermission(mojom::CoinType coin,
+                                               const url::Origin& origin,
+                                               const std::string& account,
+                                               HasPermissionCallback callback) {
   std::move(callback).Run(false, false);
 }
 
-void BraveWalletServiceDelegate::ResetEthereumPermission(
-    const std::string& origin,
+void BraveWalletServiceDelegate::ResetPermission(
+    mojom::CoinType coin,
+    const url::Origin& origin,
     const std::string& account,
-    ResetEthereumPermissionCallback callback) {
+    ResetPermissionCallback callback) {
   std::move(callback).Run(false);
 }
 
 void BraveWalletServiceDelegate::GetActiveOrigin(
     GetActiveOriginCallback callback) {
-  std::move(callback).Run("", "");
+  std::move(callback).Run(MakeOriginInfo(url::Origin()));
 }
 
 }  // namespace brave_wallet

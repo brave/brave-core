@@ -48,16 +48,18 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  void AddEthereumPermission(const std::string& origin,
-                             const std::string& account,
-                             AddEthereumPermissionCallback callback) override;
-  void HasEthereumPermission(const std::string& origin,
-                             const std::string& account,
-                             HasEthereumPermissionCallback callback) override;
-  void ResetEthereumPermission(
-      const std::string& origin,
-      const std::string& account,
-      ResetEthereumPermissionCallback callback) override;
+  void AddPermission(mojom::CoinType coin,
+                     const url::Origin& origin,
+                     const std::string& account,
+                     AddPermissionCallback callback) override;
+  void HasPermission(mojom::CoinType coin,
+                     const url::Origin& origin,
+                     const std::string& account,
+                     HasPermissionCallback callback) override;
+  void ResetPermission(mojom::CoinType coin,
+                       const url::Origin& origin,
+                       const std::string& account,
+                       ResetPermissionCallback callback) override;
 
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
 
@@ -89,7 +91,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
       GetImportInfoCallback callback,
       bool init_success);
 
-  std::string GetActiveOriginInternal();
+  url::Origin GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;

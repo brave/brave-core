@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Resol</translation>
 <translation id="6991128190741664836">Més tard</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Cartera</translation>
+<translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="1644574205037202324">Historial</translation>
 <translation id="6165508094623778733">Saber més</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Error: necessites un compte verificat per iniciar la sessió</translation>
 <translation id="5260522591743022748">Mmm, sembla que el teu compte de Recompenses de Brave ja s'ha verificat amb un altre compte d'<ph name="PROVIDER"/>. Prova de verificar-lo novament utilizant el teu compte anterior.</translation>
 <translation id="5111921830714291902">Error: compte diferent</translation>
+<translation id="6933939911547091461">Malauradament, no s'han pogut verificar els teus Premis de Brave perquè la teva regió no és compatible amb aquesta verificació en aquests moments.</translation>
+<translation id="8218538368080510976">Error: regió no compatible</translation>
 <translation id="5382684862562314222">El BAT a les carteres Uphold encara no s'admet a la teva regió.</translation>
 <translation id="9074594632540931067">Error: BAT no disponible</translation>
 <translation id="413458922997276130">El teu compte a Uphold actualment està bloquejat.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Total Rebut</translation>
 <translation id="824449983246282560">No disposes de saldo al teu compte. Visita Gemini per comprar criptomoneda.</translation>
 <translation id="8624961452383848703">Vull convertir...</translation>
+<translation id="1544192797660353713">Cartera</translation>
 <translation id="616639131065447379">Benvinguts a Crypto Monedes Brave</translation>
 <translation id="1740464057879304704">Les carteres Crypto li permeten treballar amb la criptografia i els actius relacionats a Brave. Les carteres Crypto suporten fitxes d'Ethereum com ETH i BAT, així com col·leccionables, i li permeten treballar amb Dapps i altres contractes intel·ligents. Tot això és per a persones familiaritzades amb l'Ethereum i altres sistemes de cadenes de bloqueig - o són entusiastes per aprendre'n.</translation>
 <translation id="4855440621031541830">Utilitzeu Crypto Moneders només si accepteu que sou l'únic responsable per a tots els riscos associats amb aquest ús, i que el Software de Brave no assumeix cap responsabilitat per a cap pèrdua incloses les accidentals o conseqüents que pugueu patir com a resultat del seu ús.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750">Les recompenses <ph name="AMOUNT"/> <ph name="MONTH"/> estàn de cami. Estigueu atents!</translation>
 <translation id="2659764755126740206">Anar al meu compte <ph name="PROVIDER"/></translation>
 <translation id="1165667598801520610">Afegeix Fons</translation>
-<translation id="2389181429986654814">Ves a <ph name="PROVIDER"/> per completar la verificació</translation>
-<translation id="7793632266654336758">Completa la verificació de la teva identitat per començar a rebre Brave Rewards.</translation>
 <translation id="2394961582378297792">Sessió tancada</translation>
 <translation id="6080167751812750226">Tanqueu la sessió de <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Guanys estimats</translation>
 <translation id="4244985009709452836">Inicieu sessió al vostre compte <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Propines d'una sola vegada</translation>
+<translation id="7580329715937096918">Hi ha un problema temporal amb la verificació de <ph name="PROVIDER"/>. Els teus Premis de Brave es mantindran en l'estat Pendent i es tornarà a provar automàticament, però també pots provar-ho manualment més tard.</translation>
 <translation id="590733288489975971">Brave Rewards de Brave Ads</translation>
 <translation id="6181762795539107980">Sense verificar</translation>
 <translation id="3026978804849658576">Visualitza l'extracte</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Hi ha disponible una fitxa de recompensa!</translation>
 <translation id="7701466644604753106">Activar el lector de velocitat</translation>
 <translation id="763042262431778831">Desactivar el lector de velocitat</translation>
-<translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="1148827340205946630">L'usuari ha rebutjat la sol·licitud.</translation>
 <translation id="2403819048476450281">Paràmetres no vàlids.</translation>
 <translation id="3955144560853195652">No s'ha afegit la cadena <ph name="VALUE"/></translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Missatge</translation>
 <translation id="3586752056660754651">Signar</translation>
 <translation id="3484981968509595506">Una DApp està sol·licitant la vostra clau pública de xifratge</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> està  sol·licitant la clau de xifratge pública de les vostres carteres. Si doneu el consentiment per proporcionar aquesta clau, el lloc podrà compondre missatges xifrats per a vós.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> està sol·licitant la clau de xifratge pública de les teves carteres. Si dones el consentiment per proporcionar aquesta clau, el lloc podrà compondre missatges xifrats per a tu.</translation>
 <translation id="3340247553212049934">Proporcionar</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vol llegir aquest missatge per completar la vostra sol·licitud</translation>
+<translation id="1619778919922494944">Aquesta DApp voldria llegir aquest missatge per poder completar la teva sol·licitud</translation>
 <translation id="714506544401754321">Desencriptar el missatge</translation>
 <translation id="5039804452771397117">Permet</translation>
 <translation id="9032898664193335413">Permetre que aquesta aplicació gasti els teus <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">Tarifa de gas</translation>
 <translation id="7163997622278957886">Oferta</translation>
 <translation id="1074360622426001342">Quantitat + gas</translation>
+<translation id="2186011161688824046">Quantitat + impost</translation>
 <translation id="7084089311475827950">No hi ha dades.</translation>
 <translation id="5821668936183240062">següent</translation>
 <translation id="793994607260936590">primer</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Concurs de permutes del Brave</translation>
 <translation id="7829441065063984927">7 dies de regals de criptomonedes, 500.000 $ en premis.</translation>
 <translation id="8292716346768453265">Entreu ara!</translation>
+<translation id="6423985584914773314">No és una adreça FIL vàlida</translation>
+<translation id="8528916244724490964">Totes les xarxes</translation>
+<translation id="2781668117338732220">Xarxes secundàries</translation>
+<translation id="2816106784624007524">El límit de gas ha de ser un número enter més gran que 0</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -1175,35 +1181,36 @@
 <translation id="1671503397662036257">Estat de la connexió de Tor</translation>
 <translation id="6024292492796847324">Progrés d'inicialització de Tor</translation>
 <translation id="8458987127502506209">Activa els protectors de Brave</translation>
-<translation id="7509914170164691086">Els protectors estan activats <ph name="LINK_BEFORE"/>per a<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Els protectors estan activats <ph name="LINK_BEFORE"/>per a <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Els protectors estan desactivats <ph name="LINK_BEFORE"/>per a<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Si aquest lloc sembla que no funciona, proveu de desactivar els protectors. 
     <ph name="LINK_BEFORE"/>Nota: això pot reduir les proteccions de privadesa del Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Rastrejadors, anuncis i més <ph name="LINK_BEFORE"/>bloquejats. Saber-ne més<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Controls avançats</translation>
+<translation id="650318023204990401">Controls Avançats</translation>
 <translation id="5799940914270080805">Si canvieu aquests paràmetres, es possible que els llocs no funcionin.</translation>
 <translation id="9204041448536398473">Paràmetres de l'escut global</translation>
 <translation id="2108334320919763866">Paràmetres per defecte globals</translation>
-<translation id="1928321796986970424">Filtra les llistes</translation>
+<translation id="4516904298421534459">Filtra les llistes</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
 <translation id="131231380815754440">Activa HTTPS</translation>
 <translation id="4824468494729001999">Bloquejar scripts</translation>
 <translation id="3246600097575692802">Activa les seqüències d'ordres bloquejades</translation>
 <translation id="3603525299146223354">Ratrejadors &amp; anuncis</translation>
-<translation id="1146309636943354181">Rastrejadors &amp; anuncis bloquejats (estàndard)</translation>
-<translation id="5973258875089964805">Rastrejadors &amp; anuncis bloquejats (agressiu)</translation>
+<translation id="4448697385961650078">Bloquegeu els rastrejadors &amp; anuncis</translation>
+<translation id="8593054718053894081">Rastrejadors i anuncis bloquejats</translation>
 <translation id="7384778069178817075">Permeteu tots els rastrejadors &amp; anuncis</translation>
-<translation id="6203697265754637264">Galetes entre llocs bloquejades</translation>
-<translation id="4627427111733173920">Galetes bloquejades</translation>
-<translation id="3972324600756617403">Totes les galetes permeses</translation>
+<translation id="4941539331405513605">Bloquegeu les galetes dels llocs creuats</translation>
+<translation id="6883611015375728278">Bloqueja totes les galetes</translation>
+<translation id="5657156137487675418">Permet totes les galetes</translation>
 <translation id="8366221601425141146">Impremtes digitals bloquejades</translation>
-<translation id="5582686930349810484">Impremtes digitals bloquejades (estàndard)</translation>
-<translation id="6696441392507885865">Empremta digital bloquejada (estrictament, pot trencar llocs)</translation>
-<translation id="5882733945883311404">Permet totes les empremtes digitals</translation>
+<translation id="6531019308847917584">Bloquejar les empremtes digitals</translation>
+<translation id="1899608006846124237">Bloquejar estrictament les empremtes digitals</translation>
+<translation id="8034285923190068220">Permet empremta digital</translation>
 <translation id="1992750560347846445">Informa del lloc</translation>
 <translation id="2387532482048804818">Digueu-nos si el lloc no funcionava correctament amb els protectors activats.</translation>
-<translation id="9167355841012806439">Esteu veient aquest lloc sense la protecció de la privadesa del Brave</translation>
-<translation id="6835073906252142271">Protectors de Brave <ph name="NUMBER"/> rastrejadors, anuncis i més bloquejats</translation>
+<translation id="3795015906457257780">Estàs veient aquest lloc sense les proteccions de privadesa de Brave.</translation>
+<translation id="7194012750329511146">Protectors de Brave
+<ph name="NUMBER"/> rastrejadors, anuncis i més bloquejats</translation>
 <translation id="1742469581923031760">S'està connectant…</translation>
 <translation id="1287487756047817908">S'està desconnectant…</translation>
 <translation id="2325196879156848326">Connexió fallida</translation>

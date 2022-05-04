@@ -9,6 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/catalog/catalog_new_tab_page_ad_wallpaper_info_aliases.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -21,9 +22,9 @@ struct CatalogNewTabPageAdPayloadInfo final {
   bool operator!=(const CatalogNewTabPageAdPayloadInfo& rhs) const;
 
   std::string company_name;
-  std::string image_url;
+  GURL image_url;
   std::string alt;
-  std::string target_url;
+  GURL target_url;
   CatalogNewTabPageAdWallpaperList wallpapers;
 };
 

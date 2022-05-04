@@ -9,6 +9,8 @@
 #include <functional>
 #include <string>
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
+
 namespace ads {
 
 struct InlineContentAdInfo;
@@ -26,10 +28,15 @@ using GetNewTabPageAdCallback =
 using GetInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;
 
+using TriggerSearchResultAdEventCallback =
+    std::function<void(const bool,
+                       const std::string&,
+                       const mojom::SearchResultAdEventType event_type)>;
+
 using GetStatementOfAccountsCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
-using GetAdDiagnosticsCallback =
+using GetDiagnosticsCallback =
     std::function<void(const bool, const std::string&)>;
 
 }  // namespace ads

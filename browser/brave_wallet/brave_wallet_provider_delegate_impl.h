@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents_observer.h"
 
@@ -22,8 +22,6 @@ class WebContents;
 }  // namespace content
 
 namespace brave_wallet {
-
-class KeyringService;
 
 class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
                                         public content::WebContentsObserver {
@@ -38,26 +36,23 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   ~BraveWalletProviderDelegateImpl() override;
 
   void ShowPanel() override;
-  GURL GetOrigin() const override;
-  void RequestEthereumPermissions(
-      RequestEthereumPermissionsCallback callback) override;
-  void GetAllowedAccounts(bool include_accounts_when_locked,
+  void WalletInteractionDetected() override;
+  void ShowWalletOnboarding() override;
+  url::Origin GetOrigin() const override;
+  void GetAllowedAccounts(mojom::CoinType type,
+                          const std::vector<std::string>& accounts,
                           GetAllowedAccountsCallback callback) override;
+  void RequestPermissions(mojom::CoinType type,
+                          const std::vector<std::string>& accounts,
+                          RequestPermissionsCallback callback) override;
+  void IsAccountAllowed(mojom::CoinType type,
+                        const std::string& account,
+                        IsAccountAllowedCallback callback) override;
 
  private:
-  void ContinueRequestEthereumPermissions(
-      RequestEthereumPermissionsCallback callback,
-      const std::vector<std::string>& allowed_accounts,
-      mojom::ProviderError error,
-      const std::string& error_message);
-  void ContinueRequestEthereumPermissionsKeyringInfo(
-      RequestEthereumPermissionsCallback callback,
-      brave_wallet::mojom::KeyringInfoPtr keyring_info);
-
   // content::WebContentsObserver overrides
   void WebContentsDestroyed() override;
 
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   const content::GlobalRenderFrameHostId host_id_;
   base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;

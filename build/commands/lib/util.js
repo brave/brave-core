@@ -476,58 +476,35 @@ const util = {
         '--private_key_passphrase=' + passwd])
   },
 
-  getVisualStudioInfo: () => {
-    // Determine Visual Studio path and version using Chromium's script.
-    const vsToolchainPath = path.join(config.srcDir, 'build', 'vs_toolchain.py')
-    // Prevent depot_tools from checking for an update.
-    const depotToolsWinToolchain = process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
-    process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
-    const vsInfo = util.run('python', [vsToolchainPath, 'get_toolchain_dir']).stdout.toString()
-    if (depotToolsWinToolchain) {
-      process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = depotToolsWinToolchain
-    } else {
-      delete process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
-    }
-    const vsPath = vsInfo.split('\n', 1)[0].split('=', 2)[1].trim().replace(/"/g, '')
-    const vsVersion = vsInfo.split('\n', 3)[2].split('=', 2)[1].trim().replace(/"/g, '')
-    return { vsPath, vsVersion }
-  },
+  buildNativeRedirectCC: (options = config.defaultOptions) => {
+    // Expected path to redirect_cc.
+    const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
 
-  buildRedirectCCTool: () => {
-    // Expected path to redirect-cc.exe
-    const redirectCCExe = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
-    // Only build if missing
-    if (fs.existsSync(redirectCCExe)) {
+    // Only build if the source has changed unless it's CI
+    if (!config.isCI &&
+        fs.existsSync(redirectCC) &&
+        fs.statSync(redirectCC).mtime >=
+        fs.statSync(path.join(config.braveCoreDir, 'tools', 'redirect_cc', 'redirect_cc.cc')).mtime) {
       return
     }
 
-    console.log('building redirect-cc.exe...')
-    // Path to MSBuild.exe
-    const { vsPath, vsVersion } = util.getVisualStudioInfo()
-    let msBuild = path.join(vsPath, 'MSBuild', 'Current', 'Bin', 'MSBuild.exe')
-    if (vsVersion === '2017') {
-      msBuild = path.join(vsPath, 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
+    console.log('building native redirect_cc...')
+
+    gnArgs = {
+      'import("//brave/tools/redirect_cc/args.gni")': null,
+      use_goma: config.use_goma,
+      goma_dir: config.realGomaDir,
+    }
+    // Temprorary workaround for VS2022 lld-link PDB issue. Should be resolved
+    // in May 2022 update.
+    if (process.platform === 'win32') {
+      gnArgs = {...gnArgs, is_component_build: true}
     }
 
-    // Build redirect-cc.sln
-    const arch = process.arch === 'x32' ? 'x86' : process.arch
-    const toolsetMap = {
-      '2017': 'v141',
-      '2019': 'v142',
-      '2022': 'v143'
-    }
-    const toolset = toolsetMap[vsVersion]
-    if (!toolset) {
-      throw 'Error: unexpected version of Visual Studio: ' + vsVersion
-    }
-    const msBuildArgs = [
-      path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'redirect-cc.sln'),
-      '/p:Configuration=Release',
-      '/p:Platform=' + arch,
-      '/p:PlatformToolset=' + toolset,
-      '/verbosity:quiet'
-    ]
-    util.run(msBuild, msBuildArgs)
+    const buildArgsStr = util.buildArgsToString(gnArgs)
+    util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
+
+    util.buildTarget('brave/tools/redirect_cc', mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
   },
 
   runGnGen: (options) => {
@@ -554,24 +531,25 @@ const util = {
   },
 
   generateNinjaFiles: (options = config.defaultOptions) => {
+    util.buildNativeRedirectCC()
+
     console.log('generating ninja files...')
 
     if (process.platform === 'win32') {
       util.updateOmahaMidlFiles()
-      util.buildRedirectCCTool()
     }
     util.runGnGen(options)
   },
 
-  buildTarget: (options = config.defaultOptions) => {
-    console.log('building ' + config.buildTarget + '...')
+  buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
+    console.log('building ' + target + '...')
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
       num_compile_failure = 0
 
     let ninjaOpts = [
-      '-C', config.outputDir, config.buildTarget,
+      '-C', options.outputDir || config.outputDir, target,
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
@@ -582,9 +560,8 @@ const util = {
       options.env.AUTONINJA_BUILD_ID = config.gomaBuildId
       console.log('Running build with ID ' + config.gomaBuildId)
 
-      const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
-      assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
-      options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
+      assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
+      options.env.GOMA_SERVER_HOST = config.gomaServerHost
 
       // Disable HTTP2 proxy. According to EngFlow this has significant performance impact.
       options.env.GOMACTL_USE_PROXY = 0
@@ -603,7 +580,6 @@ const util = {
         }
         util.run('goma_ctl', ['ensure_start'], options)
       }
-      util.run('goma_ctl', ['update_hook'], options)
     }
 
     if (config.isCI && config.use_goma) {
@@ -727,12 +703,14 @@ const util = {
     let args = ''
     for (let arg in buildArgs) {
       let val = buildArgs[arg]
-      if (typeof val === 'string') {
-        val = '"' + val + '"'
-      } else {
-        val = JSON.stringify(val)
+      if (val !== null) {
+        if (typeof val === 'string') {
+          val = '"' + val + '"'
+        } else {
+          val = JSON.stringify(val)
+        }
       }
-      args += arg + '=' + val + ' '
+      args += val ? arg + '=' + val + ' ' : arg + ' '
     }
     return args.replace(/"/g,'\\"')
   },

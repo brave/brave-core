@@ -10,6 +10,7 @@
 #include <vector>
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -43,7 +44,26 @@ bool TransferFromOrSafeTransferFrom(bool is_safe_transfer_from,
 // Find the owner of an NFT.
 bool OwnerOf(uint256_t token_id, std::string* data);
 
+// Get the URI of an NFT.
+bool TokenUri(uint256_t token_id, std::string* data);
+
 }  // namespace erc721
+
+namespace erc1155 {
+
+// Transfer the ownership of token from one address to another address.
+bool SafeTransferFrom(const std::string& from_address,
+                      const std::string& to_address,
+                      uint256_t token_id,
+                      uint256_t value,
+                      std::string* data);
+
+// Return the balance of an address for a token ID.
+bool BalanceOf(const std::string& owner_address,
+               uint256_t token_id,
+               std::string* data);
+
+}  // namespace erc1155
 
 namespace erc165 {
 
@@ -54,12 +74,12 @@ bool SupportsInterface(const std::string& interface_id, std::string* data);
 namespace unstoppable_domains {
 
 // Get mutiple record values mapped with keys of the target domain.
-bool GetMany(const std::vector<std::string>& keys,
-             const std::string& domain,
-             std::string* data);
+absl::optional<std::string> GetMany(const std::vector<std::string>& keys,
+                                    const std::string& domain);
 
 // Get the value of the key for the target domain.
-bool Get(const std::string& key, const std::string& domain, std::string* data);
+absl::optional<std::string> Get(const std::string& key,
+                                const std::string& domain);
 
 }  // namespace unstoppable_domains
 

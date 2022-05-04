@@ -74,6 +74,12 @@ TEST(SolanaRequestsUnitTest, getFeeForMessage) {
       R"({"id":1,"jsonrpc":"2.0","method":"getFeeForMessage","params":["message"]})");
 }
 
+TEST(SolanaRequestsUnitTest, getBlockHeight) {
+  ASSERT_EQ(
+      getBlockHeight(),
+      R"({"id":1,"jsonrpc":"2.0","method":"getBlockHeight","params":[]})");
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

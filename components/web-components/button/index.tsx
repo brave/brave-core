@@ -12,6 +12,7 @@ interface Props {
   isTertiary?: boolean
   isLoading?: boolean
   isDisabled?: boolean
+  isCallToAction?: boolean
   ariaLabel?: string
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type']
   children?: React.ReactNode | React.ReactNode[]
@@ -32,6 +33,12 @@ function scaleToClass (scale: Scale) {
   return null
 }
 
+export function ButtonIconContainer (props: React.PropsWithChildren<{}>) {
+  return (
+    <div className={style.iconContainer}>{props.children}</div>
+  )
+}
+
 export default function Button (props: Props) {
   const { scale = 'regular' } = props
   return (
@@ -42,7 +49,8 @@ export default function Button (props: Props) {
         {
           [style.isPrimary]: props.isPrimary,
           [style.isTertiary]: props.isTertiary && !props.isPrimary,
-          [style.isLoading]: props.isLoading
+          [style.isLoading]: props.isLoading,
+          [style.isCallToAction]: props.isCallToAction
         }
       )}
       disabled={props.isDisabled}

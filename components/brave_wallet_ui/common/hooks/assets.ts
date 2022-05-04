@@ -4,11 +4,12 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // Constants
 import {
   BraveWallet,
-  WalletAccountType
+  WalletState
 } from '../../constants/types'
 
 // Options
@@ -20,13 +21,16 @@ import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 
-export default function useAssets (
-  selectedAccount: WalletAccountType,
-  networkList: BraveWallet.NetworkInfo[],
-  selectedNetwork: BraveWallet.NetworkInfo,
-  userVisibleTokensInfo: BraveWallet.BlockchainToken[],
-  spotPrices: BraveWallet.AssetPrice[]
-) {
+export function useAssets () {
+  // redux
+  const {
+    selectedAccount,
+    networkList,
+    selectedNetwork,
+    userVisibleTokensInfo,
+    transactionSpotPrices: spotPrices
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
   const isMounted = useIsMounted()
   const { getBuyAssets } = useLib()
 
@@ -84,3 +88,5 @@ export default function useAssets (
     panelUserAssetList: assetsByValueAndNetwork
   }
 }
+
+export default useAssets

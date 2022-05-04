@@ -9,13 +9,13 @@
 #include <string>
 
 #include "base/check.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 template <typename T>
-bool ShouldExclude(const T& ad, ExclusionRule<T>* exclusion_rule) {
+bool ShouldExclude(const T& ad, ExclusionRuleInterface<T>* exclusion_rule) {
   DCHECK(exclusion_rule);
 
   if (!exclusion_rule->ShouldExclude(ad)) {

@@ -1,38 +1,57 @@
 import * as React from 'react'
+import { TooltipProps } from 'recharts'
 
 import {
   LabelWrapper,
   ChartLabel
 } from '../style'
 
-function CustomTooltip (props: any) {
+type Props = TooltipProps<number, number> & {
+  onUpdateBalance: (value: number | undefined) => void
+  onUpdatePosition: (value: number) => void
+}
+
+function CustomTooltip ({
+  active,
+  coordinate,
+  label,
+  onUpdateBalance,
+  onUpdatePosition,
+  payload,
+  viewBox
+}: Props) {
   const parseDate = (date: Date) => {
     const formatedDate = new Date(date).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
     const formatedTime = new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
     return `${formatedDate} ${formatedTime}`
   }
 
-  if (props.active && props.payload && props.payload.length) {
-    React.useLayoutEffect(() => {
-      props.onUpdatePosition(props.coordinate.x)
-      props.onUpdateBalance(props.payload[0].value)
-    }, [props])
+  React.useLayoutEffect(() => {
+    if (active && payload && payload.length) {
+      onUpdatePosition(coordinate?.x ?? 0)
+      onUpdateBalance(payload[0].value)
+    }
+  }, [active, payload, coordinate])
 
-    const xLeftCoordinate = Math.trunc(props.coordinate.x)
-    const viewBoxWidth = Math.trunc(props.viewBox.width)
+  if (active && payload && payload.length) {
+    const xLeftCoordinate = Math.trunc(coordinate?.x ?? 0)
+    const viewBoxWidth = Math.trunc(viewBox?.width ?? 0)
     const xRightCoordinate = xLeftCoordinate - viewBoxWidth
     const isEndOrMiddle = xRightCoordinate >= -46 ? 'end' : 'middle'
     const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
     const middleEndTranslate = xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) + 8
 
     return (
-      <LabelWrapper labelTranslate={labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate} labelPosition={labelPosition}>
-        <ChartLabel>{parseDate(props.label)}</ChartLabel>
+      <LabelWrapper
+        labelTranslate={labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate}
+        labelPosition={labelPosition}
+      >
+        <ChartLabel>{parseDate(label)}</ChartLabel>
       </LabelWrapper>
     )
-  } else {
-    return null
   }
+
+  return null
 }
 
 export default CustomTooltip

@@ -17,7 +17,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "mojo/public/cpp/bindings/interface_request.h"
 
 namespace ads {
 class Ads;
@@ -50,11 +49,11 @@ class BatAdsImpl :
   void OnPrefChanged(const std::string& path) override;
 
   void OnHtmlLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& html) override;
 
   void OnTextLoaded(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain,
+                    const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
   void OnUserGesture(const int32_t page_transition_type) override;
@@ -62,47 +61,49 @@ class BatAdsImpl :
   void OnUnIdle(const int idle_time, const bool was_locked) override;
   void OnIdle() override;
 
-  void OnForeground() override;
-  void OnBackground() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   void OnMediaPlaying(
       const int32_t tab_id) override;
   void OnMediaStopped(
       const int32_t tab_id) override;
 
-  void OnTabUpdated(
-      const int32_t tab_id,
-      const std::string& url,
-      const bool is_active,
-      const bool is_browser_active,
-      const bool is_incognito) override;
+  void OnTabUpdated(const int32_t tab_id,
+                    const GURL& url,
+                    const bool is_active,
+                    const bool is_browser_active,
+                    const bool is_incognito) override;
   void OnTabClosed(
       const int32_t tab_id) override;
 
-  void GetAdNotification(
-      const std::string& uuid,
-      GetAdNotificationCallback callback) override;
-  void OnAdNotificationEvent(
-      const std::string& uuid,
+  void GetAdNotification(const std::string& placement_id,
+                         GetAdNotificationCallback callback) override;
+  void TriggerAdNotificationEvent(
+      const std::string& placement_id,
       const ads::mojom::AdNotificationEventType event_type) override;
 
-  void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
 
-  void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           GetInlineContentAdCallback callback) override;
-
-  void OnInlineContentAdEvent(
-      const std::string& uuid,
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) override;
+
+  void TriggerSearchResultAdEvent(
+      ads::mojom::SearchResultAdPtr ad_mojom,
+      const ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
@@ -113,13 +114,13 @@ class BatAdsImpl :
       const std::string& payment_id,
       const std::string& seed) override;
 
-  void GetHistory(const double from_timestamp,
-                  const double to_timestamp,
+  void GetHistory(const base::Time from_time,
+                  const base::Time to_time,
                   GetHistoryCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void ToggleAdThumbUp(const std::string& json,
                        ToggleAdThumbUpCallback callback) override;
@@ -176,6 +177,12 @@ class BatAdsImpl :
         const std::string& dimensions,
         const ads::InlineContentAdInfo& ad);
 
+    static void OnTriggerSearchResultAdEvent(
+        CallbackHolder<TriggerSearchResultAdEventCallback>* holder,
+        const bool success,
+        const std::string& placement_id,
+        const ads::mojom::SearchResultAdEventType event_type);
+
     static void OnRemoveAllHistory(
         CallbackHolder<RemoveAllHistoryCallback>* holder,
         const bool success);
@@ -185,10 +192,9 @@ class BatAdsImpl :
         const bool success,
         const ads::StatementInfo& statement);
 
-    static void OnGetAdDiagnostics(
-        CallbackHolder<GetAdDiagnosticsCallback>* holder,
-        const bool success,
-        const std::string& json);
+    static void OnGetDiagnostics(CallbackHolder<GetDiagnosticsCallback>* holder,
+                                 const bool success,
+                                 const std::string& json);
 
     std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
     std::unique_ptr<ads::Ads> ads_;

@@ -95,9 +95,24 @@ public class BraveVpnNativeWorker {
     }
 
     @CalledByNative
-    public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
+    public void onGetWireguardProfileCredentials(
+            String jsonWireguardProfileCredentials, boolean isSuccess) {
         for (BraveVpnObserver observer : mObservers) {
-            observer.onGetProfileCredentials(jsonProfileCredentials, isSuccess);
+            observer.onGetWireguardProfileCredentials(jsonWireguardProfileCredentials, isSuccess);
+        }
+    }
+
+    @CalledByNative
+    public void onVerifyCredentials(String jsonVerifyCredentials, boolean isSuccess) {
+        for (BraveVpnObserver observer : mObservers) {
+            observer.onVerifyCredentials(jsonVerifyCredentials, isSuccess);
+        }
+    }
+
+    @CalledByNative
+    public void onInvalidateCredentials(String jsonInvalidateCredentials, boolean isSuccess) {
+        for (BraveVpnObserver observer : mObservers) {
+            observer.onInvalidateCredentials(jsonInvalidateCredentials, isSuccess);
         }
     }
 
@@ -127,9 +142,22 @@ public class BraveVpnNativeWorker {
         BraveVpnNativeWorkerJni.get().getHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
     }
 
-    public void getProfileCredentials(String subscriberCredential, String hostname) {
-        BraveVpnNativeWorkerJni.get().getProfileCredentials(
-                mNativeBraveVpnNativeWorker, subscriberCredential, hostname);
+    public void getWireguardProfileCredentials(
+            String subscriberCredential, String publicKey, String hostname) {
+        BraveVpnNativeWorkerJni.get().getWireguardProfileCredentials(
+                mNativeBraveVpnNativeWorker, subscriberCredential, publicKey, hostname);
+    }
+
+    public void verifyCredentials(
+            String hostname, String clientId, String subscriberCredential, String apiAuthToken) {
+        BraveVpnNativeWorkerJni.get().verifyCredentials(mNativeBraveVpnNativeWorker, hostname,
+                clientId, subscriberCredential, apiAuthToken);
+    }
+
+    public void invalidateCredentials(
+            String hostname, String clientId, String subscriberCredential, String apiAuthToken) {
+        BraveVpnNativeWorkerJni.get().invalidateCredentials(mNativeBraveVpnNativeWorker, hostname,
+                clientId, subscriberCredential, apiAuthToken);
     }
 
     public void getSubscriberCredential(String productType, String productId,
@@ -151,8 +179,12 @@ public class BraveVpnNativeWorker {
         void getAllServerRegions(long nativeBraveVpnNativeWorker);
         void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
         void getHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
-        void getProfileCredentials(
-                long nativeBraveVpnNativeWorker, String subscriberCredential, String hostname);
+        void getWireguardProfileCredentials(long nativeBraveVpnNativeWorker,
+                String subscriberCredential, String publicKey, String hostname);
+        void verifyCredentials(long nativeBraveVpnNativeWorker, String hostname, String clientId,
+                String subscriberCredential, String apiAuthToken);
+        void invalidateCredentials(long nativeBraveVpnNativeWorker, String hostname,
+                String clientId, String subscriberCredential, String apiAuthToken);
         void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
                 String productId, String validationMethod, String purchaseToken,
                 String packageName);

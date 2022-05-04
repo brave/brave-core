@@ -128,6 +128,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
                       ConfirmationType::kTransferred);
   ad_events.push_back(ad_event_3);
 
+  const AdEventInfo ad_event_4 = GenerateAdEvent(
+      AdType::kSearchResultAd, creative_ad_2, ConfirmationType::kTransferred);
+  ad_events.push_back(ad_event_3);
+
   task_environment_.FastForwardBy(base::Hours(47));
 
   // Act

@@ -4,7 +4,7 @@
 <translation id="5288293905681750318">İzleyici &amp; reklam engellendi</translation>
 <translation id="2313532038420432247">HTTPS Yükseltmeleri</translation>
 <translation id="788493840831967104">Kazanıldı</translation>
-<translation id="2318592590318590295">Bant genişliği kaydedildi</translation>
+<translation id="2318592590318590295">Bant genişliği kurtarıldı</translation>
 <translation id="5206618227023752085">En iyi site kaldırıldı.</translation>
 <translation id="2079545284768500474">Geri al</translation>
 <translation id="6040143037577758943">Kapat</translation>
@@ -92,7 +92,7 @@
 <translation id="1693773514029371138">Çöz</translation>
 <translation id="6991128190741664836">Sonra</translation>
 <translation id="8112367589167674370">Brave Talk</translation>
-<translation id="1544192797660353713">Cüzdan</translation>
+<translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="8820817407110198400">Yer imleri</translation>
 <translation id="1644574205037202324">Geçmiş</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Hata: Giriş yapabilmek için doğrulanmış bir hesaba ihtiyacınız var</translation>
 <translation id="5260522591743022748">Brave Ödülleriniz halihazırda başka bir <ph name="PROVIDER"/> hesabıyla doğrulanmış gibi görünüyor. Lütfen önceki hesabınızı kullanarak tekrar doğrulamayı deneyin.</translation>
 <translation id="5111921830714291902">Hata: Farklı hesap</translation>
+<translation id="6933939911547091461">Ne yazık ki Brave Ödülleriniz doğrulanamıyor, çünkü bölgeniz Brave Ödülleri doğrulaması için şu anda desteklenmiyor.</translation>
+<translation id="8218538368080510976">Hata: Bölge desteklenmiyor</translation>
 <translation id="5382684862562314222">Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.</translation>
 <translation id="9074594632540931067">Hata: BAT kullanılamıyor</translation>
 <translation id="413458922997276130">Uphold'daki hesabınız şu anda engelli.</translation>
@@ -646,6 +648,7 @@
 <translation id="8851480289992540512">Toplam Alınan</translation>
 <translation id="824449983246282560">Hesabınızda bakiye yok. Satın almak için Gemini'ı ziyaret edin.</translation>
 <translation id="8624961452383848703">Dönüştürmek istiyorum...</translation>
+<translation id="1544192797660353713">Cüzdan</translation>
 <translation id="616639131065447379">Brave Kripto Cüzdan'a Hoşgeldiniz</translation>
 <translation id="1740464057879304704">Kripto Cüzdanlar, Brave'deki kripto para biriminiz ve ilgili varlıklarınızı yönetmenize izin verir. Kripto Cüzdanlar, koleksiyonların yanı sıra ETH ve BAT gibi Ethereum paralarını destekler ve Dapps ile diğer akıllı kontratları yönetmenize imkan sağlar. Bunların hepsi, Ethereum'a ve diğer blok zinciri sistemlerine aşina olanlar — veya öğrenmeye istekli olanlar içindir.</translation>
 <translation id="4855440621031541830">Kripto Cüzdanı, bu kullanımdan doğabilecek tüm risklerden sadece kendinizin sorumlu olduğunu ve Brave Yazılımının, tesadüfen veya sonunda bu kullanımdan yaşayabileceğiniz zararlar dahil, hiçbir sorumluluk ya da yükümlülük taşımadığını kabul ediyorsanız kullanın.</translation>
@@ -761,13 +764,12 @@
 <translation id="5878420576943709750"><ph name="AMOUNT"/> tutarlı <ph name="MONTH"/> ödülleriniz yolda. Gözünüz cüzdanınızda olsun!</translation>
 <translation id="2659764755126740206"><ph name="PROVIDER"/> hesabıma git</translation>
 <translation id="1165667598801520610">Sermaye Ekle</translation>
-<translation id="2389181429986654814">Doğrulamayı tamamlamak için <ph name="PROVIDER"/> kısmına gidin</translation>
-<translation id="7793632266654336758">Ödül almaya başlamak için lütfen kimlik doğrulamasını tamamlayın.</translation>
 <translation id="2394961582378297792">Oturum kapatıldı</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/> konumuyla bağlantıyı kes</translation>
 <translation id="3600355176618429948">Tahmini Kazanç</translation>
 <translation id="4244985009709452836"><ph name="PROVIDER"/> hesabınızda oturum açın</translation>
 <translation id="2613359062756190460">Tek-Seferlik Bahşiş</translation>
+<translation id="7580329715937096918"><ph name="PROVIDER"/> doğrulamasında geçici bir sorun var. Brave Ödülleriniz Beklemede durumunda kalacak ve otomatik olarak tekrar denenecek fakat siz de daha sonra tekrar deneyebilirsiniz.</translation>
 <translation id="590733288489975971">Ads Ödülleri</translation>
 <translation id="6181762795539107980">Doğrulanmamış</translation>
 <translation id="3026978804849658576">Bildirimi görüntüle</translation>
@@ -791,7 +793,6 @@
 <translation id="2221902203895354376">Bir token yardımı kullanılabilir!</translation>
 <translation id="7701466644604753106">Speedreader'ı Aç</translation>
 <translation id="763042262431778831">Speedreader'ı Kapat</translation>
-<translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="1148827340205946630">Kullanıcı isteği reddetti.</translation>
 <translation id="2403819048476450281">Geçersiz parametreler.</translation>
 <translation id="3955144560853195652">Zincir <ph name="VALUE"/> eklenmemiş</translation>
@@ -1004,9 +1005,9 @@
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="3586752056660754651">İmza</translation>
 <translation id="3484981968509595506">Bir DApp, açık şifreleme anahtarınızı istiyor</translation>
-<translation id="423332628699531400"><ph name="SITE_ORIGIN"/>cüzdanlarınızın açık şifreleme anahtarını istiyor. Bu anahtarı sağlamayı kabul ederseniz, web sitesi size şifrelenmiş mesajlar gönderebilecektir.</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> cüzdanlarınızın herkese açık şifreleme anahtarlarını talep ediyor. Eğer bu anahtarların verilmesine rıza verirseniz, site size şifrelenmiş mesajlar gönderebilecektir.</translation>
 <translation id="3340247553212049934">Ver</translation>
-<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> isteğinizi tamamlamak için bu mesajı okumak istiyor.</translation>
+<translation id="1619778919922494944">Bu DApp talebinizi tamamlamak için bu mesajı okumak istiyor</translation>
 <translation id="714506544401754321">Mesajı çöz</translation>
 <translation id="5039804452771397117">İzin ver</translation>
 <translation id="9032898664193335413">Bu uygulamanın size ait <ph name="TOKEN_SYMBOL"/> parasını harcamasına izin vermek istiyor musunuz?</translation>
@@ -1034,6 +1035,7 @@
 <translation id="3948067511324628726">GAS ücreti</translation>
 <translation id="7163997622278957886">Teklif</translation>
 <translation id="1074360622426001342">Tutar + GAS</translation>
+<translation id="2186011161688824046">Tutar + ücret</translation>
 <translation id="7084089311475827950">Veri yok.</translation>
 <translation id="5821668936183240062">sıradaki</translation>
 <translation id="793994607260936590">birinci</translation>
@@ -1166,6 +1168,10 @@
 <translation id="1752214435563414457">Brave Swap-stake</translation>
 <translation id="7829441065063984927">7 günlük kripto çekilişi, yaklaşık 500 bin dolar ödül.</translation>
 <translation id="8292716346768453265">Hemen katılın!</translation>
+<translation id="6423985584914773314">Geçerli bir FIL adresi değil</translation>
+<translation id="8528916244724490964">Tüm Ağlar</translation>
+<translation id="2781668117338732220">İkincil Ağlar</translation>
+<translation id="2816106784624007524">GAS limiti 0'dan daha büyük bir tam sayı olmalıdır</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1175,35 +1181,36 @@
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
-<translation id="7509914170164691086">Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Şunun için Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/>:</translation>
 <translation id="260764436039299868">Kalkanlar <ph name="LINK_BEFORE"/>KAPALI<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Bu web sitesi bozuk görünüyorsa Kalkanları kapatmayı deneyin. 
     <ph name="LINK_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">İzleyiciler, reklamlar ve daha fazlası engellendi <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
-<translation id="5416893287862792505">Gelişmiş Kontroller</translation>
+<translation id="650318023204990401">Gelişmiş kontroller</translation>
 <translation id="5799940914270080805">Bu ayarları değiştirmek web siteleri uyumluluğunu etkiler.</translation>
 <translation id="9204041448536398473">Genel Kalkan ayarları</translation>
 <translation id="2108334320919763866">Genel varsayılan ayarlar</translation>
-<translation id="1928321796986970424">Filtre Listeleri</translation>
+<translation id="4516904298421534459">Listeleri filtrele</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="131231380815754440">HTTPS'yi etkinleştir</translation>
 <translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="3246600097575692802">Engellenen Betikler Bölümünü Etkinleştir</translation>
 <translation id="3603525299146223354">İzleyiciler &amp; reklamlar</translation>
-<translation id="1146309636943354181">İzleyici &amp; reklam engellendi (standart)</translation>
-<translation id="5973258875089964805">İzleyici &amp; reklam engellendi (katı)</translation>
+<translation id="4448697385961650078">İzleyicileri &amp; reklamları engelle</translation>
+<translation id="8593054718053894081">İzleyicileri &amp; reklamları agresif olarak engelle</translation>
 <translation id="7384778069178817075">Tüm izleyicilere &amp; reklamlara izin ver</translation>
-<translation id="6203697265754637264">Siteler arası çerezler engellendi</translation>
-<translation id="4627427111733173920">Çerezler engellendi</translation>
-<translation id="3972324600756617403">Tüm çerezlere izin verildi</translation>
+<translation id="4941539331405513605">Siteler arası çerezleri engelle</translation>
+<translation id="6883611015375728278">Tüm çerezleri engelle</translation>
+<translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
 <translation id="8366221601425141146">Engellenen parmak izleri</translation>
-<translation id="5582686930349810484">Parmak izi engelli (standart)</translation>
-<translation id="6696441392507885865">Parmak izi engelli (katı, siteleri bozabilir)</translation>
-<translation id="5882733945883311404">Tüm Parmak İzlerine izin ver</translation>
+<translation id="6531019308847917584">Parmak izi kontrolünü engelle</translation>
+<translation id="1899608006846124237">Parmak izi kontrolünü agresif olarak engelle</translation>
+<translation id="8034285923190068220">Parmak izine izin ver</translation>
 <translation id="1992750560347846445">Web sitesini raporla</translation>
 <translation id="2387532482048804818">Kalkanlar açık durumdayken web sitesi düzgün çalışmıyorsa bunu bize bildirin.</translation>
-<translation id="9167355841012806439">Bu web sitesini Brave'in gizlilik koruması olmadan görüntülüyorsunuz</translation>
-<translation id="6835073906252142271">Brave Kalkanları <ph name="NUMBER"/> İzleyiciler, reklamlar ve daha fazlası engellendi</translation>
+<translation id="3795015906457257780">Bu siteyi, Brave'in gizlilik korumaları olmaksızın görüntülüyorsunuz.</translation>
+<translation id="7194012750329511146">Brave Kalkanları
+<ph name="NUMBER"/> İzleyici, reklam ve daha fazlası engellendi</translation>
 <translation id="1742469581923031760">Bağlanıyor…</translation>
 <translation id="1287487756047817908">Bağlantı kesiliyor…</translation>
 <translation id="2325196879156848326">Bağlantı Başarısız Oldu</translation>

@@ -61,12 +61,16 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
-  std::string data = "0x0";
+  std::vector<uint8_t> data{0x0};
   if (tx_->data().size() > 0) {
-    data = "0x" + base::HexEncode(tx_->data());
+    data = tx_->data();
   }
-  if (!GetTransactionInfoFromData(data, &tx_type, &tx_params, &tx_args)) {
-    LOG(ERROR) << "Error parsing transaction data: " << data;
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  if (!tx_info) {
+    LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
+  } else {
+    std::tie(tx_type, tx_params, tx_args) = *tx_info;
   }
 
   return mojom::TransactionInfo::New(
@@ -83,7 +87,8 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       status_, tx_type, tx_params, tx_args,
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()));
+      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr);
 }
 
 }  // namespace brave_wallet

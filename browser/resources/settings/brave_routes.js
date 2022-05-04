@@ -47,6 +47,7 @@ export default function addBraveRoutes(r) {
     const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
+      r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
     }
     if (r.SITE_SETTINGS_ADS) {
       delete r.SITE_SETTINGS_ADS

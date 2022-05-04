@@ -200,9 +200,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
                   ->IsShowingBubble());
   GetJsonRpcService()->AddEthereumChainRequestCompleted("0x38", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  url::Origin url_origin = url::Origin::Create(url);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true,
-                                                         url_origin.GetURL());
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      true, url::Origin::Create(url));
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
@@ -328,9 +327,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   // Add Ethereum chain but don't switch
   GetJsonRpcService()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  url::Origin urlB_origin = url::Origin::Create(urlB);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(false,
-                                                         urlB_origin.GetURL());
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      false, url::Origin::Create(urlB));
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
@@ -383,9 +381,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   // Add Ethereum chain and switch
   GetJsonRpcService()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
-  url::Origin urlB_origin = url::Origin::Create(urlB);
-  GetJsonRpcService()->NotifySwitchChainRequestProcessed(true,
-                                                         urlB_origin.GetURL());
+  GetJsonRpcService()->NotifySwitchChainRequestProcessed(
+      true, url::Origin::Create(urlB));
   auto rejected_same_id = EvalJs(web_contentsB, kScriptWaitForEvent,
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);

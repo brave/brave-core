@@ -67,6 +67,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   // Token List States
   const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [updatedTokensList, setUpdatedTokensList] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [tokenDisplayAmount, setTokenDisplayAmount] = React.useState<number>(40)
 
   // Modal UI States
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
@@ -99,6 +100,15 @@ const EditVisibleAssetsModal = (props: Props) => {
       userVisibleTokensInfo[0].contractAddress === '' &&
       !userVisibleTokensInfo[0].visible
   }, [userVisibleTokensInfo])
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const top = event.currentTarget.scrollTop
+    const offset = event.currentTarget.offsetHeight
+    const height = event.currentTarget.scrollHeight
+    if (offset + top + 400 > height) {
+      setTokenDisplayAmount(tokenDisplayAmount + 40)
+    }
+  }
 
   React.useEffect(() => {
     if (isUserVisibleTokensInfoEmpty) {
@@ -180,7 +190,8 @@ const EditVisibleAssetsModal = (props: Props) => {
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    chainId: ''
+    chainId: selectedNetwork.chainId,
+    coin: selectedNetwork.coin
   }
 
   const tokenList = React.useMemo(() => {
@@ -218,6 +229,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     if (search === '') {
       setTimeout(function () {
         setFilteredTokenList(tokenList)
+        setTokenDisplayAmount(40)
       }, 100)
     } else {
       const filteredList = tokenList.filter((item) => {
@@ -262,7 +274,8 @@ const EditVisibleAssetsModal = (props: Props) => {
         logo: iconURL,
         visible: true,
         coingeckoId: coingeckoID,
-        chainId: customAssetsNetwork.chainId
+        chainId: customAssetsNetwork.chainId,
+        coin: customAssetsNetwork.coin
       }
       onAddCustomAsset(newToken)
     }
@@ -270,11 +283,17 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const findUpdatedTokenInfo = (token: BraveWallet.BlockchainToken) => {
-    return updatedTokensList.find((t) => t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
+    return updatedTokensList.find((t) =>
+      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+      t.chainId === token.chainId)
   }
 
   const isUserToken = (token: BraveWallet.BlockchainToken) => {
-    return updatedTokensList.some(e => e.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
+    return updatedTokensList.some(t =>
+    (
+      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+      t.chainId === token.chainId)
+    )
   }
 
   const isAssetSelected = (token: BraveWallet.BlockchainToken): boolean => {
@@ -295,17 +314,17 @@ const EditVisibleAssetsModal = (props: Props) => {
       const addededToList = [...updatedTokensList, token]
       return addededToList
     }
-    const removedFromList = updatedTokensList.filter((t) => t.contractAddress !== token.contractAddress)
+    const removedFromList = updatedTokensList.filter((t) => t !== token)
     return removedFromList
   }
 
   const onCheckWatchlistItem = (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => {
     if (isUserToken(token)) {
-      if (isCustom) {
-        const updatedCustomToken = selected ? { ...token, visible: true } : { ...token, visible: false }
-        const tokenIndex = updatedTokensList.findIndex((t) => t.contractAddress === token.contractAddress)
+      if (isCustom || token.contractAddress === '') {
+        const updatedToken = selected ? { ...token, visible: true } : { ...token, visible: false }
+        const tokenIndex = updatedTokensList.findIndex((t) => t === token)
         let newList = [...updatedTokensList]
-        newList.splice(tokenIndex, 1, updatedCustomToken)
+        newList.splice(tokenIndex, 1, updatedToken)
         setUpdatedTokensList(newList)
       } else {
         setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
@@ -373,8 +392,9 @@ const EditVisibleAssetsModal = (props: Props) => {
       (tokenDecimals === '0' && tokenID === '') ||
       tokenDecimals === '' ||
       tokenContractAddress === '' ||
-      !tokenContractAddress.toLowerCase().startsWith('0x')
-  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress])
+      (customAssetsNetwork.coin !== BraveWallet.CoinType.SOL &&
+        !tokenContractAddress.toLowerCase().startsWith('0x'))
+  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress, customAssetsNetwork])
 
   const onCloseModal = () => {
     resetInputFields()
@@ -400,7 +420,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     }
   }, [showNetworkDropDown])
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
+  const onSelectCustomNetwork = (network: BraveWallet.NetworkInfo) => {
     setCustomAssetsNetwork(network)
     onHideNetworkDropDown()
   }
@@ -427,11 +447,10 @@ const EditVisibleAssetsModal = (props: Props) => {
               <FormWrapper>
                 <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
                 <SelectNetworkDropdown
-                  networkList={networkList}
                   selectedNetwork={customAssetsNetwork}
                   onClick={onShowNetworkDropDown}
-                  onSelectNetwork={onSelectNetwork}
                   showNetworkDropDown={showNetworkDropDown}
+                  onSelectCustomNetwork={onSelectCustomNetwork}
                 />
                 <FormRow>
                   <FormColumn>
@@ -488,13 +507,17 @@ const EditVisibleAssetsModal = (props: Props) => {
                       value={coingeckoID}
                       onChange={handleCoingeckoIDChanged}
                     />
-                    <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
-                    <Input
-                      value={tokenID}
-                      onChange={handleTokenIDChanged}
-                      type='number'
-                      disabled={Number(tokenDecimals) > 0}
-                    />
+                    {customAssetsNetwork.coin !== BraveWallet.CoinType.SOL &&
+                      <>
+                        <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
+                        <Input
+                          value={tokenID}
+                          onChange={handleTokenIDChanged}
+                          type='number'
+                          disabled={Number(tokenDecimals) > 0}
+                        />
+                      </>
+                    }
                     {showTokenIDRequired &&
                       <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
                     }
@@ -532,9 +555,9 @@ const EditVisibleAssetsModal = (props: Props) => {
                     </NoAssetButton>
                   </TopRow>
                 }
-                <WatchlistScrollContainer>
+                <WatchlistScrollContainer onScroll={handleScroll}>
                   <>
-                    {filteredTokenList.map((token) =>
+                    {filteredTokenList.slice(0, tokenDisplayAmount).map((token) =>
                       <AssetWatchlistItem
                         key={`${token.contractAddress}-${token.symbol}-${token.chainId}`}
                         isCustom={isCustomToken(token)}

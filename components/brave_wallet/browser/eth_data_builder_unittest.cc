@@ -87,7 +87,52 @@ TEST(EthCallDataBuilderTest, OwnerOf) {
             "0000000f");
 }
 
+TEST(EthCallDataBuilderTest, TokenUri) {
+  std::string data;
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
+  TokenUri(token_id, &data);
+  ASSERT_EQ(data,
+            "0xc87b56dd00000000000000000000000000000000000000000000000000000000"
+            "0000000f");
+}
+
 }  // namespace erc721
+
+namespace erc1155 {
+
+TEST(EthCallDataBuilderTest, SafeTransferFrom) {
+  std::string data;
+
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0x0", &token_id));
+
+  uint256_t value;
+  ASSERT_TRUE(HexValueToUint256("0x1", &value));
+  SafeTransferFrom("0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+                   "0xe53960ca4712052615a6eb4c635b44514b2b42b6", token_id,
+                   value, &data);
+  ASSERT_EQ(data,
+            "0xf242432a00000000000000000000000016e4476c8fddc552e3b1c4b8b56261d8"
+            "5977fe52000000000000000000000000e53960ca4712052615a6eb4c635b44514b"
+            "2b42b6000000000000000000000000000000000000000000000000000000000000"
+            "000000000000000000000000000000000000000000000000000000000000000000"
+            "0100000000000000000000000000000000000000000000000000000000000000a0"
+            "0000000000000000000000000000000000000000000000000000000000000000");
+}
+
+TEST(EthCallDataBuilderTest, BalanceOf) {
+  std::string data;
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0x1", &token_id));
+  BalanceOf("0xe53960ca4712052615a6eb4c635b44514b2b42b6", token_id, &data);
+  ASSERT_EQ(
+      data,
+      "0x00fdd58e000000000000000000000000e53960ca4712052615a6eb4c635b44514b2b42"
+      "b60000000000000000000000000000000000000000000000000000000000000001");
+}
+
+}  // namespace erc1155
 
 namespace erc165 {
 
@@ -108,9 +153,9 @@ TEST(EthCallDataBuilderTest, SupportsInterface) {
 namespace unstoppable_domains {
 
 TEST(EthCallDataBuilderTest, GetMany) {
-  std::string data;
   std::vector<std::string> keys = {"crypto.ETH.address"};
-  EXPECT_TRUE(GetMany(keys, "brave.crypto", &data));
+  auto data = GetMany(keys, "brave.crypto");
+  EXPECT_TRUE(data);
   EXPECT_EQ(data,
             "0x1bd8cc1a"
             // Offset to the start of keys array.
@@ -128,7 +173,8 @@ TEST(EthCallDataBuilderTest, GetMany) {
 
   keys = {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
           "ipfs.redirect_domain.value"};
-  EXPECT_TRUE(GetMany(keys, "brave.crypto", &data));
+  data = GetMany(keys, "brave.crypto");
+  EXPECT_TRUE(data);
   EXPECT_EQ(data,
             "0x1bd8cc1a"
             // Offset to the start of keys array.
@@ -161,8 +207,8 @@ TEST(EthCallDataBuilderTest, GetMany) {
 }
 
 TEST(EthCallDataBuilderTest, Get) {
-  std::string data;
-  EXPECT_TRUE(Get("crypto.ETH.address", "brave.crypto", &data));
+  auto data = Get("crypto.ETH.address", "brave.crypto");
+  EXPECT_TRUE(data);
   EXPECT_EQ(data,
             "0x1be5e7ed"
             "0000000000000000000000000000000000000000000000000000000000000040"

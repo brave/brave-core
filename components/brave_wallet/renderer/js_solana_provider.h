@@ -40,16 +40,10 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
                            v8::Isolate* isolate) override;
   };
 
-  static std::unique_ptr<JSSolanaProvider> Install(
-      bool use_native_wallet,
-      bool allow_overwrite_window_solana,
-      bool is_main_world,
-      content::RenderFrame* render_frame,
-      v8::Local<v8::Context> context);
-
-  bool Init(v8::Local<v8::Context> context,
-            bool allow_overwrite_window_solana,
-            bool is_main_world);
+  static void Install(bool allow_overwrite_window_solana,
+                      bool is_main_world,
+                      content::RenderFrame* render_frame,
+                      v8::Local<v8::Context> context);
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -60,9 +54,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   void AccountChangedEvent(const absl::optional<std::string>& account) override;
 
  private:
-  JSSolanaProvider(bool use_native_wallet, content::RenderFrame* render_frame);
+  explicit JSSolanaProvider(content::RenderFrame* render_frame);
 
-  void InjectInitScript(bool allow_overwrite_window_solana, bool is_main_world);
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
@@ -171,7 +164,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
 
-  bool use_native_wallet_ = false;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;

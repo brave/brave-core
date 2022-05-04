@@ -1,0 +1,36 @@
+<html>
+
+<script>
+  var connectedAccount = ''
+
+  function solanaConnect() {
+    window.solana.connect().then(result => {
+        connectedAccount = result.publicKey.toString()
+    }).catch(error => {
+        connectedAccount = ''
+    })
+  }
+
+  async function solanaDisconnect() {
+    const result = await window.solana.disconnect()
+    if (result == undefined)
+      window.domAutomationController.send(true)
+    else
+      window.domAutomationController.send(false)
+  }
+
+  function getConnectedAccount() {
+    window.domAutomationController.send(connectedAccount)
+  }
+
+  function isSolanaConnected() {
+    window.domAutomationController.send(window.solana.isConnected)
+  }
+
+</script>
+
+<body>
+</body>
+</html>
+
+

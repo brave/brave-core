@@ -25,6 +25,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -98,6 +99,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.set_tx_receipt(tx_receipt);
   meta.set_tx_hash(
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
+  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
 
   base::Value meta_value = meta.ToValue();
   const std::string* from = meta_value.FindStringKey("from");
@@ -113,6 +115,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->confirmed_time(), meta.confirmed_time());
   EXPECT_EQ(meta_from_value->tx_receipt(), meta.tx_receipt());
   EXPECT_EQ(meta_from_value->tx_hash(), meta.tx_hash());
+  EXPECT_EQ(meta_from_value->origin(), meta.origin());
   ASSERT_EQ(meta_from_value->tx()->type(), 0);
   EXPECT_EQ(*meta_from_value->tx(), *meta.tx());
 

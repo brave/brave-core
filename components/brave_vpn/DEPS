@@ -1,4 +1,5 @@
 include_rules = [
+  "+services/data_decoder/public/cpp",
   "+services/network/public/cpp",
   "+base",
   "+components/keyed_service/core",

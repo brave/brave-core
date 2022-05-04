@@ -11,21 +11,25 @@
 
 #include "base/callback_forward.h"
 #include "base/observer_list.h"
+#include "base/time/time.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace ads {
-struct AdsHistoryInfo;
+struct HistoryInfo;
 }
 
 namespace base {
 class DictionaryValue;
 class ListValue;
+class Time;
 }
 
 namespace user_prefs {
@@ -52,10 +56,15 @@ using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
+using TriggerSearchResultAdEventCallback =
+    base::OnceCallback<void(const bool,
+                            const std::string&,
+                            const ads::mojom::SearchResultAdEventType)>;
+
 using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
 
-using GetAdDiagnosticsCallback =
+using GetDiagnosticsCallback =
     base::OnceCallback<void(const bool, const std::string&)>;
 
 class AdsService : public KeyedService {
@@ -122,35 +131,39 @@ class AdsService : public KeyedService {
 
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
-  virtual void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  virtual void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) = 0;
 
-  virtual void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  virtual void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) = 0;
 
   virtual void GetInlineContentAd(const std::string& dimensions,
                                   OnGetInlineContentAdCallback callback) = 0;
-
-  virtual void OnInlineContentAdEvent(
-      const std::string& uuid,
+  virtual void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) = 0;
+
+  virtual void TriggerSearchResultAdEvent(
+      ads::mojom::SearchResultAdPtr ad_mojom,
+      const ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) = 0;
 
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type) = 0;
 
-  virtual void GetHistory(const double from_timestamp,
-                          const double to_timestamp,
+  virtual void GetHistory(const base::Time from_time,
+                          const base::Time to_time,
                           OnGetHistoryCallback callback) = 0;
 
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
+  virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(const std::string& json,
                                OnToggleAdThumbUpCallback callback) = 0;

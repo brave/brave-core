@@ -32,9 +32,8 @@ std::vector<AcceleratorMapping> GetAcceleratorList() {
       GetAcceleratorList_ChromiumImpl());
 
   accelerator_list.insert(
-      accelerator_list.end(),
-      kBraveAcceleratorMap,
-      kBraveAcceleratorMap + base::size(kBraveAcceleratorMap));
+      accelerator_list.end(), kBraveAcceleratorMap,
+      kBraveAcceleratorMap + std::size(kBraveAcceleratorMap));
 
   return accelerator_list;
 }

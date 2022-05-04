@@ -4,6 +4,8 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module ads.mojom;
 
+import "url/mojom/url.mojom";
+
 enum Environment {
   kStaging = 0,
   kProduction
@@ -23,7 +25,16 @@ enum AdType {
   kAdNotification,
   kNewTabPageAd,
   kPromotedContentAd,
-  kInlineContentAd
+  kInlineContentAd,
+  kSearchResultAd
+};
+
+struct Conversion {
+  string type;
+  string url_pattern;
+  string advertiser_public_key;
+  int32 observation_window;
+  double expire_at;
 };
 
 enum AdNotificationEventType {
@@ -52,6 +63,26 @@ enum InlineContentAdEventType {
   kClicked
 };
 
+struct SearchResultAd {
+  AdType type = kSearchResultAd;
+  string placement_id;
+  string creative_instance_id;
+  string creative_set_id;
+  string campaign_id;
+  string advertiser_id;
+  url.mojom.Url target_url;
+  string headline_text;
+  string description;
+  double value;
+  Conversion conversion;
+};
+
+enum SearchResultAdEventType {
+  kServed = 0,
+  kViewed,
+  kClicked
+};
+
 enum UrlRequestMethod {
   kGet = 0,
   kPut,
@@ -63,7 +94,7 @@ enum P2AEventType {
 };
 
 struct UrlRequest {
-  string url;
+  url.mojom.Url url;
   array<string> headers;
   string content;
   string content_type;
@@ -71,7 +102,7 @@ struct UrlRequest {
 };
 
 struct UrlResponse {
-  string url;
+  url.mojom.Url url;
   int32 status_code;
   string body;
   map<string, string> headers;
@@ -140,28 +171,4 @@ struct DBCommandResponse {
 
   DBCommandResult? result;
   Status status;
-};
-
-enum CovariateType {
-  kAdNotificationWasClicked,
-  kAdNotificationLocaleCountryAtTimeOfServing,
-  kAdNotificationImpressionServedAt,
-  kAdNotificationNumberOfTabsOpenedInPast30Minutes
-};
-
-enum DataType {
-  kBool,
-  kDouble,
-  kInt,
-  kString
-};
-
-struct Covariate {
-  DataType data_type;
-  CovariateType covariate_type;
-  string value;
-};
-
-struct TrainingCovariates {
-  array<Covariate> covariates;
 };

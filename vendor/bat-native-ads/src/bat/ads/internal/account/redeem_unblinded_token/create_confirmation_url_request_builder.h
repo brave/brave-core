@@ -10,12 +10,13 @@
 #include <vector>
 
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 namespace ads {
 
-class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilder {
+class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilderInterface {
  public:
   explicit CreateConfirmationUrlRequestBuilder(
       const ConfirmationInfo& confirmation);
@@ -24,7 +25,7 @@ class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  std::string BuildUrl() const;
+  GURL BuildUrl() const;
 
   std::vector<std::string> BuildHeaders() const;
 

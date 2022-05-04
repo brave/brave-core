@@ -8,7 +8,6 @@
 #include <map>
 #include <string>
 
-#include "base/cxx17_backports.h"
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
@@ -118,7 +117,7 @@ void EmitP2AHistogramAnswer(const std::string& name, uint16_t count_value) {
     }
 
     base::UmaHistogramExactLinear(question_name, bucket,
-                                  base::size(kIntervalBuckets) + 1);
+                                  std::size(kIntervalBuckets) + 1);
   }
 }
 
@@ -127,7 +126,7 @@ void SuspendP2AHistograms() {
   // Matches INT_MAX - 1 for |kSuspendedMetricValue| in |brave_p3a_service.cc|
   for (const char* question_name : kP2AQuestionNameList) {
     base::UmaHistogramExactLinear(question_name, INT_MAX,
-                                  base::size(kIntervalBuckets) + 1);
+                                  std::size(kIntervalBuckets) + 1);
   }
 }
 

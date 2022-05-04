@@ -28,6 +28,7 @@ class KeyringService;
 class TxManager;
 class EthTxManager;
 class SolanaTxManager;
+class FilTxManager;
 
 class TxService : public KeyedService,
                   public mojom::TxService,
@@ -54,6 +55,7 @@ class TxService : public KeyedService,
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
+                                const absl::optional<url::Origin>& origin,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& tx_meta_id,
@@ -106,6 +108,14 @@ class TxService : public KeyedService,
                                   const std::string& token_id,
                                   const std::string& contract_address,
                                   MakeERC721TransferFromDataCallback) override;
+  void MakeERC1155TransferFromData(
+      const std::string& from,
+      const std::string& to,
+      const std::string& token_id,
+      const std::string& value,
+      const std::string& contract_address,
+      MakeERC1155TransferFromDataCallback) override;
+
   void SetGasPriceAndLimitForUnapprovedTransaction(
       const std::string& tx_meta_id,
       const std::string& gas_price,
@@ -155,10 +165,12 @@ class TxService : public KeyedService,
  private:
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
+  friend class FilTxManagerUnitTest;
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();
   SolanaTxManager* GetSolanaTxManager();
+  FilTxManager* GetFilTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;

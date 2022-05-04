@@ -18,7 +18,6 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
-  OriginInfo,
   SolFeeEstimates
 } from '../../constants/types'
 import {
@@ -79,8 +78,14 @@ const defaultState: WalletState = {
   addUserAssetError: false,
   defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
-    origin: '',
-    eTldPlusOne: ''
+    eTldPlusOne: '',
+    originSpec: '',
+    origin: {
+      scheme: '',
+      host: '',
+      port: 0,
+      nonceIfOpaque: undefined
+    }
   },
   gasEstimates: undefined,
   connectedAccounts: [],
@@ -92,6 +97,7 @@ const defaultState: WalletState = {
   },
   transactionProviderErrorRegistry: {},
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
+  defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
   solFeeEstimates: undefined
 }
@@ -350,7 +356,7 @@ export const createWalletReducer = (initialState: WalletState) => {
       return payload[account.address]
     }).flat(1)
 
-    const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
+    const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
 
     const sortedTransactionList = sortTransactionByDate(filteredTransactions)
 
@@ -376,7 +382,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: OriginInfo): WalletState => {
+  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: BraveWallet.OriginInfo): WalletState => {
     return {
       ...state,
       activeOrigin: payload
@@ -499,11 +505,25 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
+  reducer.on(WalletActions.setDefaultAccounts, (state: WalletState, payload: BraveWallet.AccountInfo[]): WalletState => {
+    return {
+      ...state,
+      defaultAccounts: payload
+    }
+  })
+
   reducer.on(WalletActions.setSelectedNetworkFilter, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
     return {
       ...state,
       isFetchingPortfolioPriceHistory: true,
       selectedNetworkFilter: payload
+    }
+  })
+
+  reducer.on(WalletActions.setShowTestNetworks, (state: WalletState, payload: boolean): WalletState => {
+    return {
+      ...state,
+      isTestNetworksEnabled: payload
     }
   })
 

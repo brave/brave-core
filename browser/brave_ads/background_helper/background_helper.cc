@@ -5,13 +5,15 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 
+#include "base/memory/singleton.h"
+#include "brave/browser/brave_ads/background_helper/background_helper_holder.h"
 #include "build/build_config.h"
 
 namespace brave_ads {
 
-BackgroundHelper::BackgroundHelper() {}
+BackgroundHelper::BackgroundHelper() = default;
 
-BackgroundHelper::~BackgroundHelper() {}
+BackgroundHelper::~BackgroundHelper() = default;
 
 bool BackgroundHelper::IsForeground() const {
   return true;
@@ -25,24 +27,22 @@ void BackgroundHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BackgroundHelper::TriggerOnBackground() {
-  for (auto& observer : observers_) {
-    observer.OnBackground();
-  }
-}
-
 void BackgroundHelper::TriggerOnForeground() {
   for (auto& observer : observers_) {
-    observer.OnForeground();
+    observer.OnBrowserDidEnterForeground();
   }
 }
 
-#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_LINUX) && \
-    !BUILDFLAG(IS_ANDROID)
-BackgroundHelper* BackgroundHelper::GetInstance() {
-  // just return a dummy background helper for all other platforms
-  return base::Singleton<BackgroundHelper>::get();
+void BackgroundHelper::TriggerOnBackground() {
+  for (auto& observer : observers_) {
+    observer.OnBrowserDidEnterBackground();
+  }
 }
-#endif
+
+// static
+BackgroundHelper* BackgroundHelper::GetInstance() {
+  BackgroundHelperHolder* holder = BackgroundHelperHolder::GetInstance();
+  return holder->GetBackgroundHelper();
+}
 
 }  // namespace brave_ads

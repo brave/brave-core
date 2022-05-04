@@ -10,7 +10,9 @@
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 #include "bat/ads/internal/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
@@ -22,7 +24,7 @@ namespace ads {
 
 namespace {
 
-UserActivity* g_user_activity = nullptr;
+UserActivity* g_user_activity_instance = nullptr;
 
 void LogEvent(const UserActivityEventType event_type) {
   const UserActivityTriggerList triggers =
@@ -47,24 +49,30 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivity::UserActivity() {
-  DCHECK_EQ(g_user_activity, nullptr);
-  g_user_activity = this;
+  DCHECK(!g_user_activity_instance);
+  g_user_activity_instance = this;
+
+  BrowserManager::Get()->AddObserver(this);
+  TabManager::Get()->AddObserver(this);
 }
 
 UserActivity::~UserActivity() {
-  DCHECK(g_user_activity);
-  g_user_activity = nullptr;
+  BrowserManager::Get()->RemoveObserver(this);
+  TabManager::Get()->RemoveObserver(this);
+
+  DCHECK_EQ(this, g_user_activity_instance);
+  g_user_activity_instance = nullptr;
 }
 
 // static
 UserActivity* UserActivity::Get() {
-  DCHECK(g_user_activity);
-  return g_user_activity;
+  DCHECK(g_user_activity_instance);
+  return g_user_activity_instance;
 }
 
 // static
 bool UserActivity::HasInstance() {
-  return g_user_activity;
+  return !!g_user_activity_instance;
 }
 
 void UserActivity::RecordEvent(const UserActivityEventType event_type) {
@@ -80,6 +88,32 @@ void UserActivity::RecordEvent(const UserActivityEventType event_type) {
 
   LogEvent(event_type);
 }
+
+void UserActivity::RecordEventForPageTransition(const int32_t type) {
+  const PageTransitionType page_transition_type =
+      static_cast<PageTransitionType>(type);
+
+  RecordEventForPageTransition(page_transition_type);
+}
+
+UserActivityEventList UserActivity::GetHistoryForTimeWindow(
+    const base::TimeDelta time_window) const {
+  UserActivityEventList filtered_history = history_;
+
+  const base::Time time = base::Time::Now() - time_window;
+
+  const auto iter =
+      std::remove_if(filtered_history.begin(), filtered_history.end(),
+                     [&time](const UserActivityEventInfo& event) {
+                       return event.created_at < time;
+                     });
+
+  filtered_history.erase(iter, filtered_history.end());
+
+  return filtered_history;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 void UserActivity::RecordEventForPageTransition(const PageTransitionType type) {
   if (IsNewNavigation(type)) {
@@ -111,28 +145,44 @@ void UserActivity::RecordEventForPageTransition(const PageTransitionType type) {
   RecordEvent(event_type.value());
 }
 
-void UserActivity::RecordEventForPageTransitionFromInt(const int32_t type) {
-  const PageTransitionType page_transition_type =
-      static_cast<PageTransitionType>(type);
-
-  RecordEventForPageTransition(page_transition_type);
+void UserActivity::OnBrowserDidBecomeActive() {
+  RecordEvent(UserActivityEventType::kBrowserDidBecomeActive);
 }
 
-UserActivityEventList UserActivity::GetHistoryForTimeWindow(
-    const base::TimeDelta time_window) const {
-  UserActivityEventList filtered_history = history_;
+void UserActivity::OnBrowserDidResignActive() {
+  RecordEvent(UserActivityEventType::kBrowserDidResignActive);
+}
 
-  const base::Time time = base::Time::Now() - time_window;
+void UserActivity::OnBrowserDidEnterForeground() {
+  RecordEvent(UserActivityEventType::kBrowserDidEnterForeground);
+}
 
-  const auto iter =
-      std::remove_if(filtered_history.begin(), filtered_history.end(),
-                     [&time](const UserActivityEventInfo& event) {
-                       return event.created_at < time;
-                     });
+void UserActivity::OnBrowserDidEnterBackground() {
+  RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
+}
 
-  filtered_history.erase(iter, filtered_history.end());
+void UserActivity::OnTabDidChangeFocus(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabChangedFocus);
+}
 
-  return filtered_history;
+void UserActivity::OnTabDidChange(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabUpdated);
+}
+
+void UserActivity::OnDidOpenNewTab(const int32_t id) {
+  RecordEvent(UserActivityEventType::kOpenedNewTab);
+}
+
+void UserActivity::OnDidCloseTab(const int32_t id) {
+  RecordEvent(UserActivityEventType::kClosedTab);
+}
+
+void UserActivity::OnTabDidStartPlayingMedia(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabStartedPlayingMedia);
+}
+
+void UserActivity::OnTabDidStopPlayingMedia(const int32_t id) {
+  RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
 }
 
 }  // namespace ads

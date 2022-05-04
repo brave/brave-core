@@ -11,8 +11,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -20,6 +22,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 3090;
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
   SolanaInstruction instruction(
@@ -30,7 +33,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
        SolanaAccountMeta(to_account, false, true)},
       data);
   auto tx = std::make_unique<SolanaTransaction>(
-      recent_blockhash, from_account,
+      recent_blockhash, last_valid_block_height, from_account,
       std::vector<SolanaInstruction>({instruction}));
   tx->set_to_wallet_address(to_account);
   tx->set_lamports(10000000u);
@@ -52,12 +55,16 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
+  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_EQ(ti->from_address, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
+  EXPECT_EQ(
+      ti->origin_info,
+      MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
 
   EXPECT_EQ(meta.created_time().ToJavaTime(),
             ti->created_time.InMilliseconds());
@@ -84,11 +91,12 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   instructions.push_back(std::move(mojom_instruction));
 
   ASSERT_TRUE(ti->tx_data_union->is_solana_tx_data());
-  EXPECT_EQ(ti->tx_data_union->get_solana_tx_data(),
-            mojom::SolanaTxData::New(
-                recent_blockhash, from_account, to_account, "", 10000000, 0,
-                mojom::TransactionType::SolanaSystemTransfer,
-                std::move(instructions)));
+  EXPECT_EQ(
+      ti->tx_data_union->get_solana_tx_data(),
+      mojom::SolanaTxData::New(recent_blockhash, last_valid_block_height,
+                               from_account, to_account, "", 10000000, 0,
+                               mojom::TransactionType::SolanaSystemTransfer,
+                               std::move(instructions)));
 }
 
 TEST(SolanaTxMetaUnitTest, ToValue) {
@@ -96,6 +104,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+  uint64_t last_valid_block_height = 3090;
 
   SolanaInstruction instruction(
       // Program ID
@@ -105,7 +114,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
        SolanaAccountMeta(to_account, false, true)},
       data);
   auto tx = std::make_unique<SolanaTransaction>(
-      recent_blockhash, from_account,
+      recent_blockhash, last_valid_block_height, from_account,
       std::vector<SolanaInstruction>({instruction}));
   tx->set_to_wallet_address(to_account);
   tx->set_lamports(10000000u);
@@ -127,6 +136,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
+  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
   base::Value value = meta.ToValue();
   auto expect_value = base::JSONReader::Read(R"(
@@ -135,12 +145,14 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       "status": 4,
       "from": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       "tx_hash": "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzrFmBV6UjKdiSZkQUW",
+      "origin": "https://test.brave.com/",
       "confirmed_time": "11996733600000000",
       "created_time": "11996733540000000",
       "submitted_time": "11996733597000000",
       "tx": {
         "message": {
           "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
+          "last_valid_block_height": "3090",
           "fee_payer": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
           "instructions": [
             {

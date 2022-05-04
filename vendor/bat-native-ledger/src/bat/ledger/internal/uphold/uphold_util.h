@@ -20,8 +20,6 @@ const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
 const char kFeeAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
 const char kFeeAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
-const char kACAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
-const char kACAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
 
 std::string GetClientId();
 
@@ -30,8 +28,6 @@ std::string GetClientSecret();
 std::string GetUrl();
 
 std::string GetFeeAddress();
-
-std::string GetACAddress();
 
 std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow);
 
@@ -54,6 +50,8 @@ void OnWalletStatusChange(LedgerImpl* ledger,
                           type::WalletStatus to);
 
 bool ShouldShowNewlyVerifiedWallet();
+
+void CheckWalletState(const type::ExternalWallet* wallet);
 
 }  // namespace uphold
 }  // namespace ledger

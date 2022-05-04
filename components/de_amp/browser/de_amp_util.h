@@ -8,9 +8,11 @@
 
 #include <string>
 
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace de_amp {
+bool IsDeAmpEnabled(PrefService* prefs);
 bool MaybeFindCanonicalAmpUrl(const std::string& body,
                               std::string* canonical_url);
 bool VerifyCanonicalAmpUrl(const GURL& canonical_url, const GURL& original_url);

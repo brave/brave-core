@@ -20,6 +20,7 @@ std::string getLatestBlockhash();
 std::string getSignatureStatuses(const std::vector<std::string>& tx_signatures);
 std::string getAccountInfo(const std::string& pubkey);
 std::string getFeeForMessage(const std::string& message);
+std::string getBlockHeight();
 
 }  // namespace solana
 

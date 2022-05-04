@@ -9,6 +9,7 @@
 #include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/cocoa/key_equivalent_constants.h"
 #include "chrome/grit/chromium_strings.h"
@@ -16,7 +17,6 @@
 #import "third_party/google_toolbox_for_mac/src/AppKit/GTMUILocalizerAndLayoutTweaker.h"
 #include "ui/base/cocoa/controls/button_utils.h"
 #include "ui/base/cocoa/controls/textfield_utils.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 
 @implementation FirstRunDialogViewController {
@@ -44,7 +44,7 @@
   // After calculating all controls' proper height based on |kContentsWidth|,
   // window's height will be calculated.
   std::u16string headerString =
-      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_HEADER_TEXT);
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&headerString);
   NSTextField* headerLabel =
       [TextFieldUtils labelWithString:base::SysUTF16ToNSString(headerString)];
@@ -57,8 +57,8 @@
   [headerLabel
       setFrame:NSMakeRect(0, 0, kContentsWidth, defaultHeight * numOfLines)];
 
-  std::u16string contentsString =
-      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
+  std::u16string contentsString = brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&contentsString);
   NSTextField* contentsLabel =
       [TextFieldUtils labelWithString:base::SysUTF16ToNSString(contentsString)];

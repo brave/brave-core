@@ -34,7 +34,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/features.h"
 #endif
 
@@ -55,9 +55,12 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
-    auto* service = BraveVpnServiceFactory::GetForProfile(browser->profile());
-    auto target_state =
-        purchased ? PurchasedState::PURCHASED : PurchasedState::NOT_PURCHASED;
+    auto* service =
+        brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
+    ASSERT_TRUE(!!service);
+    auto target_state = purchased
+                            ? brave_vpn::mojom::PurchasedState::PURCHASED
+                            : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
     service->SetPurchasedState(target_state);
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
@@ -190,17 +193,17 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
     IDC_MANAGE_EXTENSIONS,
     IDC_SHOW_BRAVE_SYNC,
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-    IDC_SHOW_BRAVE_VPN_PANEL,
-#endif
     IDC_SHOW_BRAVE_ADBLOCK,
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
     IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
   };
   std::vector<int> commands_disabled_for_private_profile = {
-      IDC_NEW_TOR_CONNECTION_FOR_SITE,
-      IDC_RECENT_TABS_MENU,
+    IDC_NEW_TOR_CONNECTION_FOR_SITE,
+    IDC_RECENT_TABS_MENU,
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    IDC_SHOW_BRAVE_VPN_PANEL,
+#endif
   };
   if (!syncer::IsSyncAllowedByFlag()) {
     commands_in_order_for_private_profile.erase(
@@ -223,21 +226,17 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
   std::vector<int> commands_in_order_for_guest_profile = {
-    IDC_NEW_TAB,
-    IDC_NEW_WINDOW,
-    IDC_SHOW_DOWNLOADS,
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-    IDC_SHOW_BRAVE_VPN_PANEL,
-#endif
-    IDC_SHOW_BRAVE_ADBLOCK,
-    IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
-  };
+      IDC_NEW_TAB, IDC_NEW_WINDOW, IDC_SHOW_DOWNLOADS, IDC_SHOW_BRAVE_ADBLOCK,
+      IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER};
   CheckCommandsAreInOrderInMenuModel(guest_browser,
                                      commands_in_order_for_guest_profile);
   std::vector<int> commands_disabled_for_guest_profile = {
     IDC_NEW_INCOGNITO_WINDOW,
 #if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
     IDC_SHOW_BRAVE_REWARDS,
     IDC_RECENT_TABS_MENU,
@@ -258,26 +257,25 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->profile()->IsTor());
   std::vector<int> commands_in_order_for_tor_profile = {
-    IDC_NEW_TAB,
-    IDC_NEW_TOR_CONNECTION_FOR_SITE,
-    IDC_NEW_WINDOW,
-    IDC_NEW_INCOGNITO_WINDOW,
-    IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-    IDC_SHOW_BRAVE_REWARDS,
-    IDC_BOOKMARKS_MENU,
-    IDC_SHOW_DOWNLOADS,
-    IDC_SHOW_BRAVE_WALLET,
-    IDC_SHOW_BRAVE_SYNC,
+      IDC_NEW_TAB,
+      IDC_NEW_TOR_CONNECTION_FOR_SITE,
+      IDC_NEW_WINDOW,
+      IDC_NEW_INCOGNITO_WINDOW,
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      IDC_SHOW_BRAVE_REWARDS,
+      IDC_BOOKMARKS_MENU,
+      IDC_SHOW_DOWNLOADS,
+      IDC_SHOW_BRAVE_WALLET,
+      IDC_SHOW_BRAVE_SYNC,
+      IDC_SHOW_BRAVE_ADBLOCK,
+      IDC_ADD_NEW_PROFILE,
+      IDC_OPEN_GUEST_PROFILE,
+      IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER};
+  std::vector<int> commands_disabled_for_tor_profile = {
+    IDC_RECENT_TABS_MENU,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
-    IDC_SHOW_BRAVE_ADBLOCK,
-    IDC_ADD_NEW_PROFILE,
-    IDC_OPEN_GUEST_PROFILE,
-    IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
-  };
-  std::vector<int> commands_disabled_for_tor_profile = {
-      IDC_RECENT_TABS_MENU,
   };
   if (!syncer::IsSyncAllowedByFlag()) {
     commands_in_order_for_tor_profile.erase(

@@ -6,5 +6,6 @@
 export default interface IThemeVPN {
   color: {
     panelBackground: string
+    warningBackground: string
   }
 }

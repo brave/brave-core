@@ -5,7 +5,6 @@
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 
-#include "base/cxx17_backports.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -44,9 +43,9 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
       BuildHandlerList_ChromiumImpl(chrome_schema);
 
   // TODO(simonhong): Remove this guard when array size is not empty w/o tor.
-  // base::size failed to instantiate with zero-size array.
+  // std::size failed to instantiate with zero-size array.
 #if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(ENABLE_IPFS)
-  for (size_t i = 0; i < base::size(kBraveSimplePolicyMap); ++i) {
+  for (size_t i = 0; i < std::size(kBraveSimplePolicyMap); ++i) {
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
         kBraveSimplePolicyMap[i].policy_name,
         kBraveSimplePolicyMap[i].preference_path,

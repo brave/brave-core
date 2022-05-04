@@ -5,7 +5,7 @@
 
 #include "base/json/json_reader.h"
 
-#include "src/services/data_decoder/public/cpp/data_decoder.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 
 #define JSON_PARSE_RFC JSON_PARSE_RFC | base::JSON_ALLOW_TRAILING_COMMAS
 #include "src/services/data_decoder/public/cpp/data_decoder.cc"

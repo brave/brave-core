@@ -52,6 +52,29 @@ OBJC_EXPORT
 - (bool)brave_hasScheme:(NSString*)scheme NS_SWIFT_NAME(hasScheme(scheme:));
 @end
 
+OBJC_EXPORT
+@interface NSURL (StaticUtilities)
+
+/// Returns the domain registry
+///  google.co.uk -> co.uk
+///  google.com -> com
++ (NSString*)brave_registryFromHost:(NSString*)host
+    NS_SWIFT_NAME(registry(host:));
+
+/// Returns the eTLD+1 including private registries.
++ (NSString*)brave_domainAndRegistryFromHost:(NSString*)host
+    NS_SWIFT_NAME(domainAndRegistry(host:));
+
+/// Returns the eTLD+1 not including private registries.
++ (NSString*)brave_domainAndRegistryExcludingPrivateRegistriesFromHost:
+    (NSString*)host
+    NS_SWIFT_NAME(domainAndRegistryExcludingPrivateRegistries(host:));
+
+/// Returns `true` when the `host` is an IP address.
++ (bool)brave_isHostIPAddressFromHost:(NSString*)host
+    NS_SWIFT_NAME(isHostIPAddress(host:));
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_URL_URL_UTILS_H_

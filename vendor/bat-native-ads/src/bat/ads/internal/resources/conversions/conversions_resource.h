@@ -6,15 +6,19 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 
+#include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
-#include "bat/ads/internal/resources/resource.h"
+#include "bat/ads/internal/resources/conversions/conversions_info.h"
+#include "bat/ads/internal/resources/parsing_result.h"
+#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 namespace resource {
 
-class Conversions final : public Resource<ConversionIdPatternMap> {
+class Conversions final : public ResourceInterface<const ConversionsInfo*> {
  public:
   Conversions();
   ~Conversions() override;
@@ -26,14 +30,16 @@ class Conversions final : public Resource<ConversionIdPatternMap> {
 
   void Load();
 
-  ConversionIdPatternMap get() const override;
+  const ConversionsInfo* get() const override;
 
  private:
-  bool FromJson(const std::string& json);
+  void OnLoadAndParseResource(ParsingResultPtr<ConversionsInfo> result);
 
   bool is_initialized_ = false;
 
-  ConversionIdPatternMap conversion_id_patterns_;
+  std::unique_ptr<ConversionsInfo> conversions_info_;
+
+  base::WeakPtrFactory<Conversions> weak_ptr_factory_{this};
 };
 
 }  // namespace resource

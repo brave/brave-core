@@ -24,15 +24,24 @@ class BatAdsTextClassificationModelTest : public UnitTestBase {
   BatAdsTextClassificationModelTest() = default;
 
   ~BatAdsTextClassificationModelTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_.Load();
+    task_environment()->RunUntilIdle();
+  }
+
+  resource::TextClassification resource_;
 };
 
 TEST_F(BatAdsTextClassificationModelTest,
        DoNotGetSegmentsForUninitializedResource) {
   // Arrange
-  resource::TextClassification resource;
+  resource::TextClassification uninitialized_resource;
 
   const std::string text = "The quick brown fox jumps over the lazy dog";
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&uninitialized_resource);
   processor.Process(text);
 
   // Act
@@ -46,12 +55,8 @@ TEST_F(BatAdsTextClassificationModelTest,
 }
 
 TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   const std::string text = "";
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&resource_);
   processor.Process(text);
 
   // Act
@@ -66,12 +71,8 @@ TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 
 TEST_F(BatAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   const std::string text = "Some content about technology & computing";
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&resource_);
   processor.Process(text);
 
   // Act
@@ -136,15 +137,11 @@ TEST_F(BatAdsTextClassificationModelTest,
 
 TEST_F(BatAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedTexts) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   const std::vector<std::string> texts = {
       "Some content about cooking food", "Some content about finance & banking",
       "Some content about technology & computing"};
 
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&resource_);
   for (const auto& text : texts) {
     processor.Process(text);
   }
@@ -254,10 +251,6 @@ TEST_F(BatAdsTextClassificationModelTest,
 }
 
 TEST_F(BatAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   // Act
   TextClassification model;
   const SegmentList segments = model.GetSegments();

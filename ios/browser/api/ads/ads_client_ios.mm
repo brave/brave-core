@@ -21,12 +21,12 @@ bool AdsClientIOS::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
 }
 
-bool AdsClientIOS::IsForeground() const {
-  return [bridge_ isForeground];
+bool AdsClientIOS::IsBrowserActive() const {
+  return [bridge_ isBrowserActive];
 }
 
-bool AdsClientIOS::IsFullScreen() const {
-  return [bridge_ isFullScreen];
+bool AdsClientIOS::IsBrowserInFullScreenMode() const {
+  return [bridge_ isBrowserInFullScreenMode];
 }
 
 bool AdsClientIOS::CanShowBackgroundNotifications() const {
@@ -48,14 +48,14 @@ void AdsClientIOS::CloseNotification(const std::string& uuid) {
 void AdsClientIOS::RecordAdEventForId(const std::string& id,
                                       const std::string& ad_type,
                                       const std::string& confirmation_type,
-                                      const double timestamp) const {
+                                      const base::Time time) const {
   [bridge_ recordAdEventForId:id
                        adType:ad_type
              confirmationType:confirmation_type
-                    timestamp:timestamp];
+                         time:time];
 }
 
-std::vector<double> AdsClientIOS::GetAdEvents(
+std::vector<base::Time> AdsClientIOS::GetAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
   return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];
@@ -76,10 +76,10 @@ void AdsClientIOS::Save(const std::string& name,
   [bridge_ save:name value:value callback:callback];
 }
 
-void AdsClientIOS::LoadAdsResource(const std::string& id,
-                                   const int version,
-                                   ads::LoadCallback callback) {
-  [bridge_ loadAdsResource:id version:version callback:callback];
+void AdsClientIOS::LoadFileResource(const std::string& id,
+                                    const int version,
+                                    ads::LoadFileCallback callback) {
+  [bridge_ loadFileResource:id version:version callback:std::move(callback)];
 }
 
 void AdsClientIOS::GetBrowsingHistory(
@@ -93,8 +93,8 @@ void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
   [bridge_ load:name callback:callback];
 }
 
-std::string AdsClientIOS::LoadResourceForId(const std::string& id) {
-  return [bridge_ loadResourceForId:id];
+std::string AdsClientIOS::LoadDataResource(const std::string& name) {
+  return [bridge_ loadDataResource:name];
 }
 
 void AdsClientIOS::ClearScheduledCaptcha() {
@@ -193,7 +193,7 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
   [bridge_ recordP2AEvent:name type:type value:value];
 }
 
-void AdsClientIOS::LogTrainingCovariates(
-    ads::mojom::TrainingCovariatesPtr training_covariates) {
-  [bridge_ logTrainingCovariates:std::move(training_covariates)];
+void AdsClientIOS::LogTrainingInstance(
+    brave_federated::mojom::TrainingInstancePtr training_instance) {
+  [bridge_ logTrainingInstance:std::move(training_instance)];
 }

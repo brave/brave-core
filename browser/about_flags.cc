@@ -259,6 +259,10 @@ constexpr char kBraveWalletFilecoinDescription[] =
 constexpr char kBraveWalletSolanaName[] = "Enable Brave Wallet Solana support";
 constexpr char kBraveWalletSolanaDescription[] =
     "Solana support for native Brave Wallet";
+constexpr char kBraveWalletSolanaProviderName[] =
+    "Enable Brave Wallet Solana provider support";
+constexpr char kBraveWalletSolanaProviderDescription[] =
+    "Solana provider support for native Brave Wallet";
 
 constexpr char kBraveNewsName[] = "Enable Brave News";
 constexpr char kBraveNewsDescription[] =
@@ -377,24 +381,30 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
     {"native-brave-wallet",                                                    \
      flag_descriptions::kNativeBraveWalletName,                                \
      flag_descriptions::kNativeBraveWalletDescription,                         \
-     kOsDesktop | flags_ui::kOsAndroid,                                        \
+     kOsDesktop | kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},   \
     {"brave-wallet-filecoin",                                                  \
      flag_descriptions::kBraveWalletFilecoinName,                              \
      flag_descriptions::kBraveWalletFilecoinDescription,                       \
-     kOsDesktop | flags_ui::kOsAndroid,                                        \
+     kOsDesktop | kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletFilecoinFeature)}, \
     {"brave-wallet-solana",                                                    \
      flag_descriptions::kBraveWalletSolanaName,                                \
      flag_descriptions::kBraveWalletSolanaDescription,                         \
-     kOsDesktop | flags_ui::kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSolanaFeature)},
+     kOsDesktop | kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSolanaFeature)},   \
+    {"brave-wallet-solana-provider",                                           \
+     flag_descriptions::kBraveWalletSolanaProviderName,                        \
+     flag_descriptions::kBraveWalletSolanaProviderDescription,                 \
+     kOsDesktop | kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(                                                       \
+      brave_wallet::features::kBraveWalletSolanaProviderFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                  \
     {"brave-news",                                                  \
      flag_descriptions::kBraveNewsName,                             \
      flag_descriptions::kBraveNewsDescription,                      \
-     kOsDesktop | flags_ui::kOsAndroid,                             \
+     kOsDesktop | kOsAndroid,                                       \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

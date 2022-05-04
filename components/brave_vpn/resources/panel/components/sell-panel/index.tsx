@@ -3,7 +3,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 import { useSelector } from '../../state/hooks'
 import * as S from './style'
-import { Button } from 'brave-ui'
+import Button from '$web-components/button'
 
 function SellPanel () {
   const productUrls = useSelector(state => state.productUrls)
@@ -16,10 +16,10 @@ function SellPanel () {
     getLocale('braveVpnFeature5')
   ]), [])
 
-  const handleClick = () => {
+  const handleClick = (intent: string) => {
     if (!productUrls) return
-    const url = new URL('?intent=checkout&product=vpn', productUrls.manage)
-    window.open(url, '_blank')
+    const url = new URL(`?intent=${intent}&product=vpn`, productUrls.manage)
+    chrome.tabs.create({ url: url.href })
   }
 
   return (
@@ -42,13 +42,13 @@ function SellPanel () {
         </S.List>
         <S.ActionArea>
           <Button
-            level='primary'
-            type='default'
-            brand='rewards'
-            text={getLocale('braveVpnBuy')}
-            onClick={handleClick}
-          />
-          <a href={productUrls?.manage} target='_blank'>
+            isPrimary
+            isCallToAction
+            onClick={handleClick.bind(null, 'checkout')}
+          >
+            {getLocale('braveVpnBuy')}
+          </Button>
+          <a href="#" onClick={handleClick.bind(null, 'recover')}>
             {getLocale('braveVpnPurchased')}
           </a>
         </S.ActionArea>

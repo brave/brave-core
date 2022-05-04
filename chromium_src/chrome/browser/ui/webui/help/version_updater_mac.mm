@@ -8,6 +8,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/chromium_strings.h"
@@ -187,7 +188,8 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
         message += u"<br/><br/>";
       }
 
-      message += l10n_util::GetStringUTF16(IDS_UPGRADE_ERROR_DETAILS);
+      message += brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_UPGRADE_ERROR_DETAILS);
       message += u"<br/><pre>";
       message += base::UTF8ToUTF16(net::EscapeForHTML(error_messages));
       message += u"</pre>";

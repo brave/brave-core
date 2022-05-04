@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "ወርሀዊ ጉርሻዎች",
     "description": ""
   },
   "ok": {
@@ -192,19 +192,6 @@
     "message": "የራስ-አስተዋፅዎ",
     "description": ""
   },
-  "walletCompleteVerificationLink": {
-    "message": "ማረጋገጫውን ሞልተው ለማጠናቀቅ ወደ$provider$ ይሂዱ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "walletCompleteVerificationText": {
-    "message": "ሽልማቶችን መቀበል ለመጀመር እባክዎን የማንነት ማረጋገጫውን ሞልተው ያጠናቅቁ።",
-    "description": ""
-  },
   "walletDisconnected": {
     "message": "ወጥቷል",
     "description": ""
@@ -243,6 +230,15 @@
     "message": "በመጠበቅ ላይ",
     "description": ""
   },
+  "walletPendingText": {
+    "message": "በ $provider$ ማረጋገጥ ላይ ጊዜያዊ ችግር አለ። የ Brave ሽልማቶችዎ በመጠባበቅ ላይ እንዳሉ ይቆያሉ፣ እና በራስ-ሰር እንደገና ይሞክሩ ፣ ግን ቆይተው እንደገና መሞከር ይችላሉ።",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
   "walletRewardsFromAds": {
     "message": "ከ Ads ሽልማቶች",
     "description": ""
@@ -252,7 +248,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "ያልተረጋገጠ",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +376,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "ወርሀዊ ጉርሻ አልተሳካም",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +384,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "የእርስዎ ወርሃዊ ጉርሻዎች ተከናውኗል!",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

@@ -51,7 +51,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     ASSERT_TRUE(CopyFileFromTestPathToTempDir(
         "confirmations_with_unblinded_tokens.json", "confirmations.json"));
 
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -116,7 +116,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     creative_ad.value = 1.0;
     creative_ad.segment = "untargeted";
     creative_ad.geo_targets = {"US"};
-    creative_ad.target_url = "https://brave.com/1";
+    creative_ad.target_url = GURL("https://brave.com/1");
     CreativeDaypartInfo daypart;
     creative_ad.dayparts = {daypart};
     creative_ad.title = "Test Ad 1 Title";
@@ -144,7 +144,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     creative_ad.value = 1.0;
     creative_ad.segment = "untargeted";
     creative_ad.geo_targets = {"US"};
-    creative_ad.target_url = "https://brave.com/2";
+    creative_ad.target_url = GURL("https://brave.com/2");
     CreativeDaypartInfo daypart;
     creative_ad.dayparts = {daypart};
     creative_ad.title = "Test Ad 2 Title";

@@ -17,7 +17,7 @@ namespace ads {
 namespace {
 
 constexpr char kExpectedUrl[] =
-    R"(https://ads-serve.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJFdjVKRTQvOVRaSS81VHF5TjlKV2ZKMVRvMEhCd1F3MnJXZUFQY2RqWDNRPVwiXSxcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJwdWJsaWNLZXlcIjpcIlJKMmkvby9wWmtySCtpMGFHRU1ZMUc5Rlh0ZDdRN2dmUmkzWWROUm5ERGs9XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiZzV5R1FhcGNHcVkxeUhjMXV6TUhyT1ZhM2dHRkliTjkwUmlkcnlmakF0dTlyQzMwRmk5K3RVWGFrYmVYYVZKZDZVVkdub2w4ZW5MQWJQd0ZuNGpzc0E9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
+    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJFdjVKRTQvOVRaSS81VHF5TjlKV2ZKMVRvMEhCd1F3MnJXZUFQY2RqWDNRPVwiXSxcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJwdWJsaWNLZXlcIjpcIlJKMmkvby9wWmtySCtpMGFHRU1ZMUc5Rlh0ZDdRN2dmUmkzWWROUm5ERGs9XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiZzV5R1FhcGNHcVkxeUhjMXV6TUhyT1ZhM2dHRkliTjkwUmlkcnlmakF0dTlyQzMwRmk5K3RVWGFrYmVYYVZKZDZVVkdub2w4ZW5MQWJQd0ZuNGpzc0E9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
 constexpr char kExpectedContent[] =
     R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","type":"view"})";
 }  // namespace
@@ -55,7 +55,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -92,7 +92,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -129,7 +129,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -166,7 +166,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -203,7 +203,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -240,7 +240,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -277,7 +277,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -314,7 +314,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -351,7 +351,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -388,7 +388,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -425,7 +425,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -462,7 +462,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   // Assert
   mojom::UrlRequestPtr expected_url_request = mojom::UrlRequest::New();
-  expected_url_request->url = kExpectedUrl;
+  expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};

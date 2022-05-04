@@ -22,6 +22,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave_shields::BraveShieldsDataController;
@@ -30,6 +31,12 @@ using brave_shields::mojom::AdBlockMode;
 
 namespace {
 constexpr char kTestProfileName[] = "TestProfile";
+
+class MockObserver : public BraveShieldsDataController::Observer {
+ public:
+  MOCK_METHOD(void, OnResourcesChanged, (), (override));
+  MOCK_METHOD(void, OnShieldsEnabledChanged, (), (override));
+};
 }  // namespace
 
 class BraveShieldsDataControllerTest : public testing::Test {
@@ -125,7 +132,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
+            CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                                  GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
@@ -145,7 +152,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
+            CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                                  GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
@@ -165,7 +172,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
+            CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                                  GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
@@ -199,7 +206,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
+            CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                                  GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
@@ -263,7 +270,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
-            CONTENT_SETTING_BLOCK);
+            CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                                  GURL("https://firstParty/")),
             CONTENT_SETTING_ALLOW);
@@ -325,4 +332,48 @@ TEST_F(BraveShieldsDataControllerTest, GetAdBlockMode_ForOrigin) {
   SetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
                        CONTENT_SETTING_BLOCK, GURL("https://firstParty/"));
   EXPECT_EQ(controller->GetAdBlockMode(), AdBlockMode::AGGRESSIVE);
+}
+
+TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
+  // Set url for default web contents.
+  SetLastCommittedUrl(GURL("http://brave.com"));
+
+  // Create another web contents for testing whether its
+  // OnShieldsEnabledChanged() callback is called when shields enabled is
+  // changed by another web contents when both loaded same url.
+  MockObserver observer_2;
+  EXPECT_CALL(observer_2, OnShieldsEnabledChanged).Times(1);
+  auto web_contents_2 =
+      content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
+  favicon::ContentFaviconDriver::CreateForWebContents(web_contents_2.get(),
+                                                      nullptr);
+  BraveShieldsDataController::CreateForWebContents(web_contents_2.get());
+  auto* ctrl_2 =
+      BraveShieldsDataController::FromWebContents(web_contents_2.get());
+  ctrl_2->AddObserver(&observer_2);
+  content::WebContentsTester::For(web_contents_2.get())
+      ->SetLastCommittedURL(GURL("http://brave.com"));
+
+  // Create another web contents for testing whether its
+  // OnShieldsEnabledChanged() callback is *not* called when shields enabled is
+  // changed by another web contents when both loaded *different* url.
+  MockObserver observer_3;
+  EXPECT_CALL(observer_3, OnShieldsEnabledChanged).Times(0);
+  auto web_contents_3 =
+      content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
+  favicon::ContentFaviconDriver::CreateForWebContents(web_contents_3.get(),
+                                                      nullptr);
+  BraveShieldsDataController::CreateForWebContents(web_contents_3.get());
+  auto* ctrl_3 =
+      BraveShieldsDataController::FromWebContents(web_contents_3.get());
+  ctrl_3->AddObserver(&observer_3);
+  content::WebContentsTester::For(web_contents_3.get())
+      ->SetLastCommittedURL(GURL("http://github.com"));
+
+  // Change default web contents' shields enabled setting.
+  // And this changes will affect |web_contents_2| as both loaded same url.
+  GetShieldsDataController()->SetBraveShieldsEnabled(false);
+
+  ctrl_2->RemoveObserver(&observer_2);
+  ctrl_3->RemoveObserver(&observer_3);
 }

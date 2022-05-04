@@ -6,6 +6,9 @@
 #ifndef BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_
 #define BRAVE_IOS_BROWSER_API_BRAVE_WALLET_BRAVE_WALLET_PROVIDER_DELEGATE_IOS_PRIVATE_H_
 
+#include <string>
+#include <vector>
+
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 
 @protocol BraveWalletProviderDelegate;
@@ -23,10 +26,17 @@ class BraveWalletProviderDelegateBridge
   __weak id<BraveWalletProviderDelegate> bridge_;
 
   void ShowPanel() override;
-  GURL GetOrigin() const override;
-  void RequestEthereumPermissions(
-      RequestEthereumPermissionsCallback callback) override;
-  void GetAllowedAccounts(bool include_accounts_when_locked,
+  void WalletInteractionDetected() override;
+  url::Origin GetOrigin() const override;
+  void ShowWalletOnboarding() override;
+  void RequestPermissions(mojom::CoinType type,
+                          const std::vector<std::string>& accounts,
+                          RequestPermissionsCallback) override;
+  void IsAccountAllowed(mojom::CoinType type,
+                        const std::string& account,
+                        IsAccountAllowedCallback callback) override;
+  void GetAllowedAccounts(mojom::CoinType type,
+                          const std::vector<std::string>& accounts,
                           GetAllowedAccountsCallback callback) override;
 };
 

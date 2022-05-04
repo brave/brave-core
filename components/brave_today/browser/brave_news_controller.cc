@@ -17,8 +17,8 @@
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/brave_today/browser/brave_news_p3a.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
@@ -65,6 +65,8 @@ BraveNewsController::BraveNewsController(
     : prefs_(prefs),
       ads_service_(ads_service),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
+                                  url_loader_factory),
       publishers_controller_(prefs, &api_request_helper_),
       direct_feed_controller_(url_loader_factory),
       feed_controller_(&publishers_controller_,
@@ -115,6 +117,12 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
+}
+
+void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
+                                    FindFeedsCallback callback) {
+  direct_feed_controller_.FindFeeds(possible_feed_or_site_url,
+                                    std::move(callback));
 }
 
 void BraveNewsController::SubscribeToNewDirectFeed(
@@ -213,38 +221,40 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
     std::move(callback).Run(std::move(args));
     return;
   }
-  // Handler url download response
+  // Use file ending to determine if response
+  // will contain (Brave's PrivateCDN) padding or
+  // be a direct image
   const auto file_name = padded_image_url.path();
   const std::string ending = ".pad";
   const bool is_padded =
       (file_name.compare(file_name.length() - ending.length(), ending.length(),
                          ending) == 0);
   VLOG(3) << "is padded: " << is_padded;
-  auto onPaddedImageResponse = base::BindOnce(
-      [](GetImageDataCallback callback, const bool is_padded, const int status,
-         const std::string& body,
-         const base::flat_map<std::string, std::string>& headers) {
-        // Attempt to remove byte padding if applicable
-        base::StringPiece body_payload(body.data(), body.size());
-        if (status < 200 || status >= 300 ||
-            (is_padded &&
-             !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
-                 &body_payload))) {
-          // Byte padding removal failed
-          absl::optional<std::vector<uint8_t>> args;
-          std::move(callback).Run(std::move(args));
-          return;
-        }
-        // Download (and optional unpadding) was successful,
-        // uint8Array will be easier to move over mojom.
-        std::vector<uint8_t> image_bytes(body_payload.begin(),
-                                         body_payload.end());
-        std::move(callback).Run(image_bytes);
-      },
-      std::move(callback), is_padded);
-  api_request_helper_.Request("GET", padded_image_url, "", "", true,
-                              std::move(onPaddedImageResponse),
-                              brave::private_cdn_headers);
+  // Make the request
+  private_cdn_request_helper_.DownloadToString(
+      padded_image_url,
+      base::BindOnce(
+          [](GetImageDataCallback callback, const bool is_padded,
+             const int response_code, const std::string& body) {
+            // Handle the response
+            VLOG(3) << "getimagedata response code: " << response_code;
+            // Attempt to remove byte padding if applicable
+            base::StringPiece body_payload(body.data(), body.size());
+            if (response_code < 200 || response_code >= 300 ||
+                (is_padded &&
+                 !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
+                     &body_payload))) {
+              // Byte padding removal failed
+              std::move(callback).Run(absl::nullopt);
+              return;
+            }
+            // Download (and optional unpadding) was successful,
+            // uint8Array will be easier to move over mojom.
+            std::vector<uint8_t> image_bytes(body_payload.begin(),
+                                             body_payload.end());
+            std::move(callback).Run(image_bytes);
+          },
+          std::move(callback), is_padded));
 }
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
@@ -342,6 +352,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
 void BraveNewsController::OnInteractionSessionStarted() {
   p3a::RecordEverInteracted();
   p3a::RecordWeeklySessionCount(prefs_, true);
+  p3a::ResetCurrSessionTotalViewsCount(prefs_);
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
@@ -354,7 +365,7 @@ void BraveNewsController::OnPromotedItemView(
     const std::string& item_id,
     const std::string& creative_instance_id) {
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->OnPromotedContentAdEvent(
+    ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
         ads::mojom::PromotedContentAdEventType::kViewed);
   }
@@ -364,7 +375,7 @@ void BraveNewsController::OnPromotedItemVisit(
     const std::string& item_id,
     const std::string& creative_instance_id) {
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->OnPromotedContentAdEvent(
+    ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
         ads::mojom::PromotedContentAdEventType::kClicked);
   }
@@ -373,6 +384,7 @@ void BraveNewsController::OnPromotedItemVisit(
 void BraveNewsController::OnSessionCardViewsCountChanged(
     uint16_t cards_viewed_session_total_count) {
   p3a::RecordWeeklyMaxCardViewsCount(prefs_, cards_viewed_session_total_count);
+  p3a::RecordTotalCardViews(prefs_, cards_viewed_session_total_count);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
@@ -395,7 +407,7 @@ void BraveNewsController::OnDisplayAdVisit(
            "this profile!";
     return;
   }
-  ads_service_->OnInlineContentAdEvent(
+  ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
       ads::mojom::InlineContentAdEventType::kClicked);
 }
@@ -420,7 +432,7 @@ void BraveNewsController::OnDisplayAdView(
            "this profile!";
     return;
   }
-  ads_service_->OnInlineContentAdEvent(
+  ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
       ads::mojom::InlineContentAdEventType::kViewed);
 

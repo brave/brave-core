@@ -42,6 +42,7 @@ using content::TitleWatcher;
 
 namespace {
 const char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
+const uint64_t kTestingSessionToken = 12345;
 }
 
 class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
@@ -74,7 +75,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     browser_content_client_.reset(new BraveContentBrowserClient());
     content::SetBrowserClientForTesting(browser_content_client_.get());
     g_brave_browser_process->brave_farbling_service()
-        ->set_session_tokens_for_testing();
+        ->set_session_tokens_for_testing(kTestingSessionToken,
+                                         kTestingSessionToken);
 
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -249,9 +251,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // Farbling level: default
   // HTTP Accept-Language header should be farbled by domain.
   SetFingerprintingDefault(domain_b);
-  SetExpectedHTTPAcceptLanguage("la;q=0.8");
+  SetExpectedHTTPAcceptLanguage("la;q=0.6");
   NavigateToURLUntilLoadStop(url_b);
-  SetExpectedHTTPAcceptLanguage("la;q=0.9");
+  SetExpectedHTTPAcceptLanguage("la;q=0.5");
   SetFingerprintingDefault(domain_c);
   NavigateToURLUntilLoadStop(url_c);
 

@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
+#include "bat/ledger/internal/promotion/promotion_mock.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
@@ -45,6 +46,7 @@ class UpholdTest : public Test {
   std::unique_ptr<MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<database::MockDatabase> mock_database_;
+  std::unique_ptr<promotion::MockPromotion> mock_promotion_;
   std::unique_ptr<Uphold> uphold_;
 
   UpholdTest()
@@ -53,6 +55,8 @@ class UpholdTest : public Test {
             std::make_unique<MockLedgerImpl>(mock_ledger_client_.get())},
         mock_database_{
             std::make_unique<database::MockDatabase>(mock_ledger_impl_.get())},
+        mock_promotion_{std::make_unique<promotion::MockPromotion>(
+            mock_ledger_impl_.get())},
         uphold_{std::make_unique<Uphold>(mock_ledger_impl_.get())} {}
 };
 
@@ -144,8 +148,19 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     // NOLINTNEXTLINE
+    AuthorizeParamType{  // Uphold returned with an error - user's region is not supported. (NOT_CONNECTED)
+      // NOLINTNEXTLINE
+      "03_NOT_CONNECTED_uphold_returned_with_application_not_available_for_user_geolocation",
+      R"({ "status": 0 })",
+      { { "error_description", "Application not available for user geolocation" } },  // NOLINT
+      {},
+      type::Result::REGION_NOT_SUPPORTED,
+      {},
+      type::WalletStatus::NOT_CONNECTED
+    },
+    // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (NOT_CONNECTED)
-      "03_NOT_CONNECTED_uphold_returned_with_an_error",
+      "04_NOT_CONNECTED_uphold_returned_with_an_error",
       R"({ "status": 0 })",
       { { "error_description", "some other reason" } },
       {},
@@ -154,7 +169,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Arguments are empty! (NOT_CONNECTED)
-      "04_NOT_CONNECTED_arguments_are_empty",
+      "05_NOT_CONNECTED_arguments_are_empty",
       R"({ "status": 0 })",
       {},
       {},
@@ -163,7 +178,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // code is empty! (NOT_CONNECTED)
-      "05_NOT_CONNECTED_code_is_empty",
+      "06_NOT_CONNECTED_code_is_empty",
       R"({ "status": 0 })",
       { { "code", "" } },
       {},
@@ -172,7 +187,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // state is empty! (NOT_CONNECTED)
-      "06_NOT_CONNECTED_state_is_empty",
+      "07_NOT_CONNECTED_state_is_empty",
       R"({ "status": 0 })",
       { { "code", "code" }, { "state", "" } },
       {},
@@ -181,7 +196,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // One-time string mismatch! (NOT_CONNECTED)
-      "07_NOT_CONNECTED_one_time_string_mismatch",
+      "08_NOT_CONNECTED_one_time_string_mismatch",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
@@ -191,7 +206,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (NOT_CONNECTED)
-      "08_NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
+      "09_NOT_CONNECTED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -206,7 +221,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Access token is empty! (NOT_CONNECTED)
-      "09_NOT_CONNECTED_access_token_is_empty",
+      "10_NOT_CONNECTED_access_token_is_empty",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -221,7 +236,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     AuthorizeParamType{  // Happy path. (NOT_CONNECTED)
-      "10_NOT_CONNECTED_happy_path",
+      "11_NOT_CONNECTED_happy_path",
       R"({ "status": 0, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -238,7 +253,7 @@ INSTANTIATE_TEST_SUITE_P(
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - the user is not KYC'd. (DISCONNECTED_VERIFIED)
       // NOLINTNEXTLINE
-      "11_DISCONNECTED_VERIFIED_uphold_returned_with_user_does_not_meet_minimum_requirements",
+      "12_DISCONNECTED_VERIFIED_uphold_returned_with_user_does_not_meet_minimum_requirements",
       R"({ "status": 4 })",
       { { "error_description", "User does not meet minimum requirements" } },
       {},
@@ -248,7 +263,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Uphold returned with an error - theoretically not possible. (DISCONNECTED_VERIFIED)
-      "12_DISCONNECTED_VERIFIED_uphold_returned_with_an_error",
+      "13_DISCONNECTED_VERIFIED_uphold_returned_with_an_error",
       R"({ "status": 4 })",
       { { "error_description", "some other reason" } },
       {},
@@ -257,7 +272,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Arguments are empty! (DISCONNECTED_VERIFIED)
-      "13_DISCONNECTED_VERIFIED_arguments_are_empty",
+      "14_DISCONNECTED_VERIFIED_arguments_are_empty",
       R"({ "status": 4 })",
       {},
       {},
@@ -266,7 +281,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // code is empty! (DISCONNECTED_VERIFIED)
-      "14_DISCONNECTED_VERIFIED_code_is_empty",
+      "15_DISCONNECTED_VERIFIED_code_is_empty",
       R"({ "status": 4 })",
       { { "code", "" } },
       {},
@@ -275,7 +290,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // state is empty! (DISCONNECTED_VERIFIED)
-      "15_DISCONNECTED_VERIFIED_state_is_empty",
+      "16_DISCONNECTED_VERIFIED_state_is_empty",
       R"({ "status": 4 })",
       { { "code", "code" }, { "state", "" } },
       {},
@@ -284,7 +299,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // One-time string mismatch! (DISCONNECTED_VERIFIED)
-      "16_DISCONNECTED_VERIFIED_one_time_string_mismatch",
+      "17_DISCONNECTED_VERIFIED_one_time_string_mismatch",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "mismatch" } },
       {},
@@ -294,7 +309,7 @@ INSTANTIATE_TEST_SUITE_P(
     },
     // NOLINTNEXTLINE
     AuthorizeParamType{  // Couldn't exchange code for the access token! (DISCONNECTED_VERIFIED)
-      "17_DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
+      "18_DISCONNECTED_VERIFIED_couldn_t_exchange_code_for_the_access_token",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -309,7 +324,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Access token is empty! (DISCONNECTED_VERIFIED)
-      "18_DISCONNECTED_VERIFIED_access_token_is_empty",
+      "19_DISCONNECTED_VERIFIED_access_token_is_empty",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -324,7 +339,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     AuthorizeParamType{  // Happy path. (DISCONNECTED_VERIFIED)
-      "19_DISCONNECTED_VERIFIED_happy_path",
+      "20_DISCONNECTED_VERIFIED_happy_path",
       R"({ "status": 4, "one_time_string": "one_time_string" })",
       { { "code", "code" }, { "state", "one_time_string" } },
       type::UrlResponse{
@@ -387,10 +402,11 @@ TEST_P(Authorize, Paths) {
 
 // clang-format off
 using GenerateParamType = std::tuple<
-    std::string,                        // test name suffix
-    std::string,                        // input Uphold wallet
-    type::Result,                       // expected result
-    absl::optional<type::WalletStatus>  // expected status
+    std::string,                         // test name suffix
+    std::string,                         // input Uphold wallet
+    type::Result,                        // expected result
+    absl::optional<type::WalletStatus>,  // expected status
+    bool                                 // expected to call TransferTokens
 >;
 
 struct Generate : UpholdTest,
@@ -404,19 +420,22 @@ INSTANTIATE_TEST_SUITE_P(
       "00_happy_path_no_wallet",
       {},
       type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      type::WalletStatus::NOT_CONNECTED,
+      false
     },
     GenerateParamType{  // Happy path (NOT_CONNECTED).
       "01_happy_path_NOT_CONNECTED",
       R"({ "status": 0 })",
       type::Result::LEDGER_OK,
-      type::WalletStatus::NOT_CONNECTED
+      type::WalletStatus::NOT_CONNECTED,
+      false
     },
     GenerateParamType{  // Happy path (DISCONNECTED_VERIFIED).
       "02_happy_path_DISCONNECTED_VERIFIED",
       R"({ "status": 4 })",
       type::Result::LEDGER_OK,
-      type::WalletStatus::DISCONNECTED_VERIFIED
+      type::WalletStatus::DISCONNECTED_VERIFIED,
+      true
     }),
   NameSuffixGenerator<GenerateParamType>
 );
@@ -427,6 +446,7 @@ TEST_P(Generate, Paths) {
   std::string uphold_wallet = std::get<1>(params);
   const auto expected_result = std::get<2>(params);
   const auto expected_status = std::get<3>(params);
+  const bool expected_to_call_transfer_tokens = std::get<4>(params);
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -440,6 +460,12 @@ TEST_P(Generate, Paths) {
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
+
+  ON_CALL(*mock_ledger_impl_, promotion())
+      .WillByDefault(Return(mock_promotion_.get()));
+
+  EXPECT_CALL(*mock_promotion_, TransferTokens(_))
+      .Times(expected_to_call_transfer_tokens ? 1 : 0);
 
   uphold_->GenerateWallet([&](type::Result result) {
     ASSERT_EQ(result, expected_result);
@@ -695,6 +721,9 @@ TEST_P(GetUser, Paths) {
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
+
+  ON_CALL(*mock_ledger_impl_, promotion())
+      .WillByDefault(Return(mock_promotion_.get()));
 
   uphold_->GenerateWallet(
       [&](type::Result result) { ASSERT_EQ(result, expected_result); });
@@ -1403,6 +1432,9 @@ TEST_P(LinkWallet, Paths) {
 
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
+
+  ON_CALL(*mock_ledger_impl_, promotion())
+      .WillByDefault(Return(mock_promotion_.get()));
 
   ON_CALL(*mock_ledger_client_, GetBooleanState(state::kFetchOldBalance))
       .WillByDefault(Return(fetch_old_balance));

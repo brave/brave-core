@@ -13,6 +13,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
@@ -22,7 +23,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -61,7 +61,7 @@ class WalletButtonMenuModel : public ui::SimpleMenuModel,
 
   void Build() {
     AddItemWithStringId(HideBraveWalletIcon,
-                        IDS_SETTINGS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR);
+                        IDS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR);
   }
 
   raw_ptr<PrefService> prefs_ = nullptr;
@@ -73,7 +73,9 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
     : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
                                         base::Unretained(this)),
                     std::make_unique<WalletButtonMenuModel>(prefs),
-                    nullptr),
+                    nullptr,
+                    false),  // Long-pressing is not intended for something that
+                             // already shows a panel on click
       prefs_(prefs),
       backup_anchor_view_(backup_anchor_view) {
   pref_change_registrar_.Init(prefs_);
@@ -81,6 +83,17 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
       kShowWalletIconOnToolbar,
       base::BindRepeating(&WalletButton::OnPreferenceChanged,
                           base::Unretained(this)));
+
+  // The MenuButtonController makes sure the panel closes when clicked if the
+  // panel is already open.
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&WalletButton::OnWalletPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
+  SetButtonController(std::move(menu_button_controller));
+
   UpdateVisibility();
 }
 
@@ -100,7 +113,8 @@ void WalletButton::UpdateImageAndText() {
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
   SetImage(views::Button::STATE_NORMAL,
            gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color));
-  SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WALLET));
+  SetTooltipText(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_TOOLTIP_WALLET));
 }
 
 void WalletButton::UpdateVisibility() {

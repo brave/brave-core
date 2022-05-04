@@ -73,7 +73,7 @@ TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foobar.com/signup"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foobar.com/signup")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -109,7 +109,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -144,7 +144,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdNotificationWhenAdsAreEnabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -187,7 +187,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -225,7 +225,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedAdNotificationWhenAdsAreEnabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -265,7 +265,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -300,7 +300,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -343,7 +343,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -381,7 +381,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -422,7 +422,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -458,7 +458,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -503,7 +503,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -544,7 +544,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -584,7 +584,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -620,7 +620,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -658,7 +658,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar/baz"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -700,7 +700,163 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   SaveConversions(conversions);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar/baz"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertViewedSearchResultAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event = BuildAdEvent(
+      creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postview";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition,
+      [&conversion](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_EQ(1UL, ad_events.size());
+
+        const AdEventInfo& ad_event = ad_events.front();
+        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
+      });
+}
+
+TEST_F(BatAdsConversionsTest,
+       DoNotConvertClickedSearchResultAdWhenAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kSearchResultAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
+
+  // Assert
+  const std::string& condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const bool success, const AdEventList& ad_events) {
+        ASSERT_TRUE(success);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
+TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
+  // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const CreativeAdInfo& creative_ad = BuildCreativeAd();
+  const AdEventInfo& ad_event_1 = BuildAdEvent(
+      creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
+  FireAdEvent(ad_event_1);
+  const AdEventInfo& ad_event_2 = BuildAdEvent(
+      creative_ad, AdType::kSearchResultAd, ConfirmationType::kClicked, Now());
+  FireAdEvent(ad_event_2);
+
+  ConversionList conversions;
+  ConversionInfo conversion;
+  conversion.creative_set_id = creative_ad.creative_set_id;
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/*";
+  conversion.observation_window = 3;
+  conversion.expire_at = CalculateExpireAtTime(conversion.observation_window);
+  conversions.push_back(conversion);
+  SaveConversions(conversions);
+
+  // Act
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -760,9 +916,9 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
   FireAdEvent(ad_event_3);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/qux"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/qux")}, "", {});
 
-  conversions_->MaybeConvert({"https://www.foo.com/bar/baz"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/baz")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -806,11 +962,11 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_1);
   const AdEventInfo& ad_event_2 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
   FireAdEvent(ad_event_2);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/quxbarbaz"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/quxbarbaz")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -847,20 +1003,26 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
   FireAdEvent(ad_event_1);
   const AdEventInfo& ad_event_2 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kServed);
   FireAdEvent(ad_event_2);
   const AdEventInfo& ad_event_3 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
   FireAdEvent(ad_event_3);
   const AdEventInfo& ad_event_4 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
   FireAdEvent(ad_event_4);
   const AdEventInfo& ad_event_5 =
-      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kSaved);
   FireAdEvent(ad_event_5);
+  const AdEventInfo& ad_event_6 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
+  FireAdEvent(ad_event_6);
+  const AdEventInfo& ad_event_7 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
+  FireAdEvent(ad_event_7);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -894,7 +1056,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   FireAdEvent(ad_event);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -918,7 +1080,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   FireAdEvent(ad_event);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition =
@@ -952,10 +1114,10 @@ TEST_F(BatAdsConversionsTest,
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -994,7 +1156,7 @@ TEST_F(BatAdsConversionsTest,
   FireAdEvent(ad_event);
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/qux"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/qux")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -1030,7 +1192,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
   task_environment_.FastForwardBy(base::Days(3) - base::Minutes(1));
 
   // Act
-  conversions_->MaybeConvert({"https://foo.bar.com/qux"}, "", {});
+  conversions_->MaybeConvert({GURL("https://foo.bar.com/qux")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -1070,7 +1232,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   task_environment_.FastForwardBy(base::Days(3));
 
   // Act
-  conversions_->MaybeConvert({"https://www.foo.com/bar/qux"}, "", {});
+  conversions_->MaybeConvert({GURL("https://www.foo.com/bar/qux")}, "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -1105,8 +1267,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
 
   // Act
   conversions_->MaybeConvert(
-      {"https://foo.com/bar", "https://foo.com/baz", "https://foo.com/qux"}, "",
-      {});
+      {GURL("https://foo.com/bar"), GURL("https://foo.com/baz"),
+       GURL("https://foo.com/qux")},
+      "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -1145,8 +1308,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
 
   // Act
   conversions_->MaybeConvert(
-      {"https://foo.com/bar", "https://foo.com/baz", "https://foo.com/qux"}, "",
-      {});
+      {GURL("https://foo.com/bar"), GURL("https://foo.com/baz"),
+       GURL("https://foo.com/qux")},
+      "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -1185,8 +1349,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
 
   // Act
   conversions_->MaybeConvert(
-      {"https://foo.com/bar", "https://foo.com/baz", "https://foo.com/qux"}, "",
-      {});
+      {GURL("https://foo.com/bar"), GURL("https://foo.com/baz"),
+       GURL("https://foo.com/qux")},
+      "", {});
 
   // Assert
   const std::string& condition = base::StringPrintf(
@@ -1209,6 +1374,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1230,9 +1396,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
 
   // Act
   conversions_->MaybeConvert(
-      {"https://foo.bar/", "https://brave.com/thankyou"},
+      {GURL("https://foo.bar/"), GURL("https://brave.com/thankyou")},
       "<html><meta name=\"ad-conversion-id\" content=\"abc123\"></html>",
-      resource.get());
+      resource.get()->conversion_id_patterns);
 
   // Assert
   conversion_queue_database_table_->GetAll(
@@ -1258,6 +1424,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1281,8 +1448,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   // See associated patterns in the verifiable conversion resource
   // /data/test/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb
   conversions_->MaybeConvert(
-      {"https://foo.bar/", "https://brave.com/foobar"},
-      "<html><div id=\"conversion-id\">abc123</div></html>", resource.get());
+      {GURL("https://foo.bar/"), GURL("https://brave.com/foobar")},
+      "<html><div id=\"conversion-id\">abc123</div></html>",
+      resource.get()->conversion_id_patterns);
 
   // Assert
   conversion_queue_database_table_->GetAll(
@@ -1308,6 +1476,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1331,8 +1500,10 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // See associated patterns in the verifiable conversion resource
   // /data/test/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb
   conversions_->MaybeConvert(
-      {"https://foo.bar/", "https://brave.com/foobar?conversion_id=abc123"},
-      "<html><div id=\"conversion-id\">foobar</div></html>", resource.get());
+      {GURL("https://foo.bar/"),
+       GURL("https://brave.com/foobar?conversion_id=abc123")},
+      "<html><div id=\"conversion-id\">foobar</div></html>",
+      resource.get()->conversion_id_patterns);
 
   // Assert
   conversion_queue_database_table_->GetAll(

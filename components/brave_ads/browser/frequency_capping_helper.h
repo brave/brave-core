@@ -12,6 +12,10 @@
 #include "base/memory/singleton.h"
 #include "bat/ads/ad_event_history.h"
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace brave_ads {
 
 class FrequencyCappingHelper {
@@ -21,10 +25,11 @@ class FrequencyCappingHelper {
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
                           const std::string& confirmation_type,
-                          const double timestamp);
+                          const base::Time time);
 
-  std::vector<double> GetAdEvents(const std::string& ad_type,
-                                  const std::string& confirmation_type) const;
+  std::vector<base::Time> GetAdEvents(
+      const std::string& ad_type,
+      const std::string& confirmation_type) const;
 
   void ResetAdEventsForId(const std::string& id);
 

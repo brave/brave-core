@@ -10,15 +10,16 @@
 #include <vector>
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/internal/server/url_request_builder_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 #include "wrapper.hpp"
 
 namespace ads {
 
 using challenge_bypass_ristretto::BlindedToken;
 
-class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
+class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilderInterface {
  public:
   RequestSignedTokensUrlRequestBuilder(const WalletInfo& wallet,
                                        const std::vector<BlindedToken>& tokens);
@@ -27,7 +28,7 @@ class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  std::string BuildUrl() const;
+  GURL BuildUrl() const;
 
   std::vector<std::string> BuildHeaders(const std::string& body) const;
   std::string BuildDigestHeaderValue(const std::string& body) const;

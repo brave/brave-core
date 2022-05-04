@@ -57,17 +57,17 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
-  void HandleGetPreferences(base::Value::ConstListView args);
-  void HandleGetStats(base::Value::ConstListView args);
-  void HandleGetPrivateProperties(base::Value::ConstListView args);
-  void HandleGetTorProperties(base::Value::ConstListView args);
-  void HandleSaveNewTabPagePref(base::Value::ConstListView args);
+  void HandleGetPreferences(const base::Value::List& args);
+  void HandleGetStats(const base::Value::List& args);
+  void HandleGetPrivateProperties(const base::Value::List& args);
+  void HandleGetTorProperties(const base::Value::List& args);
+  void HandleSaveNewTabPagePref(const base::Value::List& args);
   void HandleToggleAlternativeSearchEngineProvider(
-      base::Value::ConstListView args);
-  void HandleRegisterNewTabPageView(base::Value::ConstListView args);
-  void HandleBrandedWallpaperLogoClicked(base::Value::ConstListView args);
-  void HandleGetWallpaperData(base::Value::ConstListView args);
-  void HandleCustomizeClicked(base::Value::ConstListView args);
+      const base::Value::List& args);
+  void HandleRegisterNewTabPageView(const base::Value::List& args);
+  void HandleBrandedWallpaperLogoClicked(const base::Value::List& args);
+  void HandleGetWallpaperData(const base::Value::List& args);
+  void HandleCustomizeClicked(const base::Value::List& args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();

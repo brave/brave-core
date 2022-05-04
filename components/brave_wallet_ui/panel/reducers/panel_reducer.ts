@@ -11,38 +11,49 @@ import {
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
   ShowConnectToSitePayload,
-  EthereumChainPayload,
   SignMessagePayload
 } from '../constants/action_types'
 import { PanelTitles } from '../../options/panel-titles'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
+const defaultOriginInfo: BraveWallet.OriginInfo = {
+  origin: {
+    scheme: '',
+    host: '',
+    port: 0,
+    nonceIfOpaque: undefined
+  },
+  originSpec: '',
+  eTldPlusOne: ''
+}
+
 const defaultState: PanelState = {
   hasInitialized: false,
-  connectToSiteOrigin: {
-    origin: '',
-    eTldPlusOne: ''
-  },
+  connectToSiteOrigin: defaultOriginInfo,
   selectedPanel: 'main',
   panelTitle: '',
   connectingAccounts: [],
-  networkPayload: {
-    chainId: BraveWallet.MAINNET_CHAIN_ID,
-    chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet-infura.brave.com/'],
-    blockExplorerUrls: [],
-    iconUrls: [],
-    symbol: 'ETH',
-    symbolName: 'Ethereum',
-    decimals: 18,
-    coin: BraveWallet.CoinType.ETH,
-    data: {
-      ethData: {
-        isEip1559: true
+  addChainRequest: {
+    originInfo: defaultOriginInfo,
+    networkInfo: {
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      chainName: 'Ethereum Mainnet',
+      rpcUrls: ['https://mainnet-infura.brave.com/'],
+      blockExplorerUrls: [],
+      iconUrls: [],
+      symbol: 'ETH',
+      symbolName: 'Ethereum',
+      decimals: 18,
+      coin: BraveWallet.CoinType.ETH,
+      data: {
+        ethData: {
+          isEip1559: true
+        }
       }
     }
   },
   signMessageData: [{
+    originInfo: defaultOriginInfo,
     id: -1,
     address: '',
     message: '',
@@ -51,20 +62,21 @@ const defaultState: PanelState = {
     primaryHash: ''
   }],
   getEncryptionPublicKeyRequest: {
+    originInfo: defaultOriginInfo,
+    address: ''
+  },
+  decryptRequest: {
+    originInfo: defaultOriginInfo,
     address: '',
-    message: '',
-    origin: {
-      url: ''
-    }
+    unsafeMessage: ''
   },
   switchChainRequest: {
-    origin: {
-      url: ''
-    },
+    originInfo: defaultOriginInfo,
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  suggestedToken: undefined
+  suggestedTokenRequest: undefined,
+  selectedTransaction: undefined
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
@@ -72,7 +84,6 @@ export const createPanelReducer = (initialState: PanelState) => {
   reducer.on(PanelActions.navigateTo, (state: any, selectedPanel: string) => {
     const foundTitle = PanelTitles().find((title) => selectedPanel === title.id)
     const panelTitle = foundTitle ? foundTitle.title : ''
-
     return {
       ...state,
       selectedPanel,
@@ -83,15 +94,15 @@ export const createPanelReducer = (initialState: PanelState) => {
   reducer.on(PanelActions.showConnectToSite, (state: any, payload: ShowConnectToSitePayload) => {
     return {
       ...state,
-      connectToSiteOrigin: payload.origin,
+      connectToSiteOrigin: payload.originInfo,
       connectingAccounts: payload.accounts
     }
   })
 
-  reducer.on(PanelActions.addEthereumChain, (state: any, networkPayload: EthereumChainPayload) => {
+  reducer.on(PanelActions.addEthereumChain, (state: any, request: BraveWallet.AddChainRequest) => {
     return {
       ...state,
-      networkPayload: networkPayload.chain
+      addChainRequest: request
     }
   })
 
@@ -106,6 +117,13 @@ export const createPanelReducer = (initialState: PanelState) => {
     return {
       ...state,
       getEncryptionPublicKeyRequest: request
+    }
+  })
+
+  reducer.on(PanelActions.decrypt, (state: any, request: BraveWallet.DecryptRequest) => {
+    return {
+      ...state,
+      decryptRequest: request
     }
   })
 
@@ -130,10 +148,16 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.addSuggestToken, (state: any, payload: BraveWallet.AddSuggestTokenRequest) => {
+  reducer.on(PanelActions.addSuggestToken, (state: PanelState, payload: BraveWallet.AddSuggestTokenRequest): PanelState => {
     return {
       ...state,
-      suggestedToken: payload.token
+      suggestedTokenRequest: payload
+    }
+  })
+  reducer.on(PanelActions.setSelectedTransaction, (state: PanelState, payload: BraveWallet.TransactionInfo | undefined): PanelState => {
+    return {
+      ...state,
+      selectedTransaction: payload
     }
   })
   return reducer

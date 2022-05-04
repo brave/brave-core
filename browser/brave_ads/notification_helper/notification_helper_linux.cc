@@ -35,12 +35,4 @@ bool NotificationHelperLinux::ShowMyFirstAdNotification() {
   return false;
 }
 
-NotificationHelperLinux* NotificationHelperLinux::GetInstanceImpl() {
-  return base::Singleton<NotificationHelperLinux>::get();
-}
-
-NotificationHelper* NotificationHelper::GetInstanceImpl() {
-  return NotificationHelperLinux::GetInstanceImpl();
-}
-
 }  // namespace brave_ads

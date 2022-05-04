@@ -6,8 +6,8 @@
 #include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
@@ -38,7 +38,7 @@ class BatAdsNewTabPageAdServingTest : public UnitTestBase {
     ASSERT_TRUE(CopyFileFromTestPathToTempDir(
         "confirmations_with_unblinded_tokens.json", "confirmations.json"));
 
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -110,7 +110,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
         ASSERT_TRUE(success);
 
         NewTabPageAdInfo expected_ad = BuildNewTabPageAd(creative_ad);
-        expected_ad.uuid = ad.uuid;
+        expected_ad.placement_id = ad.placement_id;
 
         EXPECT_EQ(expected_ad, ad);
       });

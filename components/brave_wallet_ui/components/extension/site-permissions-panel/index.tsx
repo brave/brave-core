@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { OriginInfo, WalletAccountType } from '../../../constants/types'
+import { BraveWallet, Origin, WalletAccountType } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Components
@@ -23,12 +23,12 @@ import {
 } from './style'
 
 export interface Props {
-  onDisconnect: (origin: string, address: string, connectedAccounts: WalletAccountType[]) => void
-  onConnect: (origin: string, address: WalletAccountType) => void
+  onDisconnect: (origin: Origin, account: WalletAccountType, connectedAccounts: WalletAccountType[]) => void
+  onConnect: (origin: Origin, account: WalletAccountType) => void
   onSwitchAccount: (account: WalletAccountType) => void
   onAddAccount: () => void
   selectedAccount: WalletAccountType
-  originInfo: OriginInfo
+  originInfo: BraveWallet.OriginInfo
   connectedAccounts: WalletAccountType[]
   accounts: WalletAccountType[]
 }
@@ -45,9 +45,9 @@ const SitePermissions = (props: Props) => {
     onAddAccount
   } = props
 
-  const onDisconnectFromOrigin = (address: string) => {
-    const newConnectedAccounts = connectedAccounts.filter((accounts) => accounts.address.toLowerCase() !== address.toLowerCase())
-    onDisconnect(originInfo.origin, address, newConnectedAccounts)
+  const onDisconnectFromOrigin = (account: WalletAccountType) => {
+    const newConnectedAccounts = connectedAccounts.filter((accounts) => accounts.address.toLowerCase() !== account.address.toLowerCase())
+    onDisconnect(originInfo.origin, account, newConnectedAccounts)
   }
 
   const onConnectToOrigin = (account: WalletAccountType) => {
@@ -69,11 +69,12 @@ const SitePermissions = (props: Props) => {
   return (
     <StyledWrapper>
       <HeaderRow>
-        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.origin}`} />
+        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
         <HeaderColumn>
           <SiteOriginTitle>
             <CreateSiteOrigin
-              originInfo={originInfo}
+              originSpec={originInfo.originSpec}
+              eTldPlusOne={originInfo.eTldPlusOne}
             />
           </SiteOriginTitle>
           <AccountsTitle>{getLocale('braveWalletSitePermissionsAccounts').replace('$1', connectedAccounts.length.toString())}</AccountsTitle>

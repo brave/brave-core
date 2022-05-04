@@ -10,6 +10,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -36,7 +37,6 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 using ::testing::_;
@@ -239,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   // Check that the we see the translation bubble (not about the extension
   // installation).
   ASSERT_EQ(bubble->GetWindowTitle(),
-            l10n_util::GetStringUTF16(
+            brave_l10n::GetLocalizedResourceUTF16String(
                 IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
 
   // Translate the page. Note: the event onTranslateElementLoad() is
@@ -396,7 +396,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
     // The that we see a bubble that suggests Google translate extension
     // installation.
     ASSERT_EQ(bubble->GetWindowTitle(),
-              l10n_util::GetStringUTF16(
+              brave_l10n::GetLocalizedResourceUTF16String(
                   IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE));
 
     // Check the we don't download the translate scripts

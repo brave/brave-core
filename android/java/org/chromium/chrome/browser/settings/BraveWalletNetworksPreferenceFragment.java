@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,10 +53,11 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
 
     @Override
     public void launchAddNetwork(String chainId, boolean activeNetwork) {
+        Bundle fragmentArgs = new Bundle();
+        fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, chainId);
+        fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, activeNetwork);
         Intent intent = mSettingsLauncher.createSettingsActivityIntent(
-                getActivity(), BraveWalletAddNetworksFragment.class.getName());
-        intent.putExtra("chainId", chainId);
-        intent.putExtra("activeNetwork", activeNetwork);
+                getActivity(), BraveWalletAddNetworksFragment.class.getName(), fragmentArgs);
         startActivityForResult(intent, REQUEST_CODE_ADD_NETWORK);
     }
 

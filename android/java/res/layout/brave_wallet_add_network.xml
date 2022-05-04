@@ -217,24 +217,14 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add"
+            style="@style/BraveWalletButton"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="start"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_weight = "1"
-            android:background="@drawable/crypto_wallet_blue_button"
             android:text="@string/brave_wallet_add_network_add"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_marginVertical="12dp" />
 
     </LinearLayout>
 </ScrollView>

@@ -35,7 +35,8 @@ function NetworkFilterSelector () {
   // redux
   const {
     selectedNetworkFilter,
-    networkList
+    networkList,
+    isTestNetworksEnabled
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   const dispatch = useDispatch()
@@ -88,22 +89,24 @@ function NetworkFilterSelector () {
               network={network}
               onSelectNetwork={onSelectAndClose}
               selectedNetwork={selectedNetworkFilter}
-              isSubItem={!SupportedTopLevelChainIds.includes(network.chainId)}
+              isSubItem={isTestNetworksEnabled ? !SupportedTopLevelChainIds.includes(network.chainId) : true}
             >
-              <SubDropDown>
-                {sortedNetworks.filter((n) =>
-                  n.coin === network.coin &&
-                  n.symbol.toLowerCase() === network.symbol.toLowerCase())
-                  .map((subNetwork) =>
-                    <NetworkFilterItem
-                      key={`${subNetwork.chainId + subNetwork.chainName}`}
-                      network={subNetwork}
-                      onSelectNetwork={onSelectAndClose}
-                      selectedNetwork={selectedNetworkFilter}
-                      isSubItem={true}
-                    />
-                  )}
-              </SubDropDown>
+              {isTestNetworksEnabled &&
+                <SubDropDown>
+                  {sortedNetworks.filter((n) =>
+                    n.coin === network.coin &&
+                    n.symbol.toLowerCase() === network.symbol.toLowerCase())
+                    .map((subNetwork) =>
+                      <NetworkFilterItem
+                        key={`${subNetwork.chainId + subNetwork.chainName}`}
+                        network={subNetwork}
+                        onSelectNetwork={onSelectAndClose}
+                        selectedNetwork={selectedNetworkFilter}
+                        isSubItem={true}
+                      />
+                    )}
+                </SubDropDown>
+              }
             </NetworkFilterItem>
           )}
           {secondaryNetworks.length > 0 &&

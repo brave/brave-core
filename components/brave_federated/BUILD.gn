@@ -22,6 +22,8 @@ static_library("brave_federated") {
     "operational_patterns_util.h",
   ]
 
+  public_deps = [ "public/interfaces" ]
+
   deps = [
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:p3a",

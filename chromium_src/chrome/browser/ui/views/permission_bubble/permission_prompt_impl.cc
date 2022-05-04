@@ -9,7 +9,7 @@
 #include "components/permissions/request_type.h"
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-#include "brave/browser/ui/views/permission_bubble/ethereum_permission_prompt_impl.h"
+#include "brave/browser/ui/views/permission_bubble/brave_wallet_permission_prompt_impl.h"
 #endif
 
 #define CreatePermissionPrompt CreatePermissionPrompt_ChromiumImpl
@@ -28,9 +28,11 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (delegate->Requests()[0]->request_type() ==
-      permissions::RequestType::kBraveEthereum) {
-    return std::make_unique<EthereumPermissionPromptImpl>(browser, web_contents,
-                                                          delegate);
+          permissions::RequestType::kBraveEthereum ||
+      delegate->Requests()[0]->request_type() ==
+          permissions::RequestType::kBraveSolana) {
+    return std::make_unique<BraveWalletPermissionPromptImpl>(
+        browser, web_contents, delegate);
   }
 #endif
 

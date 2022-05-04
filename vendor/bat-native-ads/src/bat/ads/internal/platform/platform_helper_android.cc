@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/platform/platform_helper_android.h"
 
-#include "base/memory/singleton.h"
-
 namespace ads {
 
 PlatformHelperAndroid::PlatformHelperAndroid() = default;
@@ -23,14 +21,6 @@ std::string PlatformHelperAndroid::GetPlatformName() const {
 
 PlatformType PlatformHelperAndroid::GetPlatform() const {
   return PlatformType::kAndroid;
-}
-
-PlatformHelperAndroid* PlatformHelperAndroid::GetInstanceImpl() {
-  return base::Singleton<PlatformHelperAndroid>::get();
-}
-
-PlatformHelper* PlatformHelper::GetInstanceImpl() {
-  return PlatformHelperAndroid::GetInstanceImpl();
 }
 
 }  // namespace ads

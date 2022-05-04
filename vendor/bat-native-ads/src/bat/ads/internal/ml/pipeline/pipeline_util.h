@@ -13,13 +13,17 @@ template <typename T>
 class optional;
 }  // namespace absl
 
+namespace base {
+class Value;
+}
+
 namespace ads {
 namespace ml {
 namespace pipeline {
 
 struct PipelineInfo;
 
-absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
+absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value);
 
 }  // namespace pipeline
 }  // namespace ml

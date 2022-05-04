@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/common/random_util.h"
@@ -23,14 +24,14 @@ namespace bitflyer {
 
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? BITFLYER_CLIENT_ID
-             : BITFLYER_STAGING_CLIENT_ID;
+             ? BUILDFLAG(BITFLYER_CLIENT_ID)
+             : BUILDFLAG(BITFLYER_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? BITFLYER_CLIENT_SECRET
-             : BITFLYER_STAGING_CLIENT_SECRET;
+             ? BUILDFLAG(BITFLYER_CLIENT_SECRET)
+             : BUILDFLAG(BITFLYER_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {
@@ -42,12 +43,6 @@ std::string GetFeeAddress() {
   return ledger::_environment == type::Environment::PRODUCTION
              ? kFeeAddressProduction
              : kFeeAddressStaging;
-}
-
-std::string GetACAddress() {
-  return ledger::_environment == type::Environment::PRODUCTION
-             ? kACAddressProduction
-             : kACAddressStaging;
 }
 
 std::string GetAuthorizeUrl(const std::string& state,

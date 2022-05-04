@@ -30,6 +30,25 @@ const char* valid_data =
     "\\\",\\\"iv\\\":\\\"fOHBjjQcsi1KmaeQ7xA7Aw==\\\", "
     "\\\"salt\\\":\\\"z1bTZtBY33d2l6CfiFs5V/eRQLS6Qsq5UtAQOIfaIps=\\\"}\"}}}";
 
+const char* valid_data_with_utf8_mnemonic =
+    "{\"data\": {\"KeyringController\": {\"vault\": "
+    "\"{\\\"data\\\":\\\"Q27H35GCkppku8PtVmiPsNJNfe5wjSWgjD5JGa3jtTlmwaTBffWJL+"
+    "cadVr5X8c0JnPToVUwbJXcIdmKxT8vAWZWQqRoeiTXOl6iF9SaoqhhnOIX1+"
+    "FPEPyHV4bu3GUpUVokgdYA1eryw39sQxFm5gLyl44VfF8hmuG+"
+    "2c4nEmPbK7XBDMSwif4Q1jas4CkhHBKGL3j6x7jpyMBtku4FK5LpFC5+G+A/"
+    "OOOUPFQWUpct5JidweZWFoABHz0WIRGnZXWeFE/BoO+/"
+    "JaHN08k9jQH4TMw6TylVODgqxVk1EqsYOvJfVZIRIjP7no0c94ZlyukcUOmtuFWE2N4swndqUB"
+    "TPBobISrSyBIK/SbgMJRcK/VwYlXRAjDCKJ8WIhVezPm8pZap2e6SM/"
+    "cKs0ScKe7Ngjw25UHKRB1QAoVgCbeJiv+"
+    "UqpuGpcFAbrZ1tYcJyqJkguw8fMMWiehtmYubzFx4plXzcz7h4ZHbnkzR7BNHUCemmFhsXxTpe"
+    "UtvH3kcDKtSu4H0JwUMMh7a8gCp/MYZxMxGo2aSKKLBkpW0l/mt/"
+    "IWgChfXq1h7Ch3hCxGdG+mNx/mZ8xkXakzJzPw20MNdejx5gqF/pUp/"
+    "jRGbSaPCaVhkT2a0rXnj8YFjMJbGuPnOn8hmSanIOOK1ETwkQolA+"
+    "jo8qyNXFtmsCmyrbdSPfEFLZGC0MyUD4viNN2aRoIDa8339YF4C8qkg3U0Zh6z0gmbgnNDMAjn"
+    "BmFl5sCGtRolu9pT+EJAE9XGDh5cvSCA7YMeLQTvLrhDn8o8kXc8J92yjw\\\",\\\"iv\\\":"
+    "\\\"mmSwsbEsytQDfdNBP6WwOw==\\\",\\\"salt\\\":"
+    "\\\"ZNDNQqgIaLswCtSH72AwaaymPQqmO6VCgpbfAmAuw5s=\\\"}\"}}}";
+
 const char* valid_legacy_mnemonic =
     "cushion pitch impact album daring marine much annual budget social "
     "clarify "
@@ -201,6 +220,19 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo) {
   ImportInfo info;
   ImportError error;
   SimulateGetImportInfo("brave4ever", valid_data, &result, &info, &error);
+  EXPECT_TRUE(result);
+  EXPECT_EQ(error, ImportError::kNone);
+  EXPECT_EQ(info.mnemonic, valid_mnemonic);
+  EXPECT_FALSE(info.is_legacy_crypto_wallets);
+  EXPECT_EQ(info.number_of_accounts, 1u);
+}
+
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_UTF8Mnemonic) {
+  bool result = false;
+  ImportInfo info;
+  ImportError error;
+  SimulateGetImportInfo("brave4ever", valid_data_with_utf8_mnemonic, &result,
+                        &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, valid_mnemonic);

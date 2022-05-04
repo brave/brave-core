@@ -8,8 +8,10 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
@@ -26,14 +28,14 @@ bool g_show_newly_verified_wallet = true;
 
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? UPHOLD_CLIENT_ID
-             : UPHOLD_STAGING_CLIENT_ID;
+             ? BUILDFLAG(UPHOLD_CLIENT_ID)
+             : BUILDFLAG(UPHOLD_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? UPHOLD_CLIENT_SECRET
-             : UPHOLD_STAGING_CLIENT_SECRET;
+             ? BUILDFLAG(UPHOLD_CLIENT_SECRET)
+             : BUILDFLAG(UPHOLD_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {
@@ -45,12 +47,6 @@ std::string GetFeeAddress() {
   return ledger::_environment == type::Environment::PRODUCTION
              ? kFeeAddressProduction
              : kFeeAddressStaging;
-}
-
-std::string GetACAddress() {
-  return ledger::_environment == type::Environment::PRODUCTION
-             ? kACAddressProduction
-             : kACAddressStaging;
 }
 
 std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
@@ -127,25 +123,21 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
     return nullptr;
   }
 
+  CheckWalletState(wallet.get());
+
   switch (wallet->status) {
     case type::WalletStatus::VERIFIED: {
-      DCHECK(!wallet->token.empty());
-      DCHECK(!wallet->address.empty());
       wallet->add_url = GetAddUrl(wallet->address);
       wallet->withdraw_url = GetWithdrawUrl(wallet->address);
       break;
     }
     case type::WalletStatus::PENDING: {
-      DCHECK(!wallet->token.empty());
-      DCHECK(wallet->address.empty());
       wallet->add_url = GetSecondStepVerify();
       wallet->withdraw_url = GetSecondStepVerify();
       break;
     }
     case type::WalletStatus::NOT_CONNECTED:
     case type::WalletStatus::DISCONNECTED_VERIFIED: {
-      DCHECK(wallet->token.empty());
-      DCHECK(wallet->address.empty());
       wallet->add_url = "";
       wallet->withdraw_url = "";
       break;
@@ -168,21 +160,17 @@ std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
     return url;
   }
 
+  CheckWalletState(wallet.get());
+
   switch (wallet->status) {
     case type::WalletStatus::VERIFIED:
-      DCHECK(!wallet->token.empty());
-      DCHECK(!wallet->address.empty());
       break;
     case type::WalletStatus::PENDING: {
-      DCHECK(!wallet->token.empty());
-      DCHECK(wallet->address.empty());
       url = GetSecondStepVerify();
       break;
     }
     case type::WalletStatus::NOT_CONNECTED:
     case type::WalletStatus::DISCONNECTED_VERIFIED: {
-      DCHECK(wallet->token.empty());
-      DCHECK(wallet->address.empty());
       url = GetAuthorizeUrl(wallet->one_time_string, true);
       break;
     }
@@ -231,6 +219,32 @@ void OnWalletStatusChange(LedgerImpl* ledger,
 
 bool ShouldShowNewlyVerifiedWallet() {
   return g_show_newly_verified_wallet;
+}
+
+void CheckWalletState(const type::ExternalWallet* wallet) {
+  if (!wallet)
+    return;
+
+  switch (wallet->status) {
+    case type::WalletStatus::NOT_CONNECTED:
+    case type::WalletStatus::DISCONNECTED_VERIFIED: {
+      DCHECK(wallet->token.empty());
+      DCHECK(wallet->address.empty());
+      break;
+    }
+    case type::WalletStatus::PENDING: {
+      DCHECK(!wallet->token.empty());
+      DCHECK(wallet->address.empty());
+      break;
+    }
+    case type::WalletStatus::VERIFIED: {
+      DCHECK(!wallet->token.empty());
+      DCHECK(!wallet->address.empty());
+      break;
+    }
+    default:
+      NOTREACHED() << " Unexpected Uphold wallet status " << wallet->status;
+  }
 }
 
 }  // namespace uphold

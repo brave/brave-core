@@ -89,6 +89,22 @@ class URLMojoTypemap(MojoTypemap):
     def CppToObjC(self, accessor):
         return "net::NSURLWithGURL(%s)" % accessor
 
+class OriginMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'url.mojom.Origin')
+    def ObjCWrappedType(self):
+        return "URLOriginIOS*"
+    def ExpectedCppType(self):
+        return "url::Origin"
+    def DefaultObjCValue(self, default):
+        return "[[URLOriginIOS alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "[%s underlyingOrigin]" % accessor
+    def CppToObjC(self, accessor):
+        return "[[URLOriginIOS alloc] initWithOrigin:%s]" % accessor
+
 _kind_to_c_type = {
     mojom.BOOL: "bool",
     mojom.INT8: "int8_t",
@@ -270,7 +286,8 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
         return (mojom.IsStructKind(kind) and
-                kind.qualified_name == 'mojo_base.mojom.DictionaryValue')
+                (kind.qualified_name ==
+                 'mojo_base.mojom.DeprecatedDictionaryValue'))
     def ObjCWrappedType(self):
         return "NSDictionary<NSString*,MojoBaseValue*>*"
     def ExpectedCppType(self):
@@ -346,6 +363,7 @@ _mojo_typemaps = [
     TimeMojoTypemap,
     TimeDeltaMojoTypemap,
     URLMojoTypemap,
+    OriginMojoTypemap,
     NumberMojoTypemap,
     EnumMojoTypemap,
     BaseValueMojoTypemap,

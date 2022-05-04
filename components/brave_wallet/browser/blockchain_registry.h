@@ -31,21 +31,27 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
 
   void UpdateTokenList(TokenListMap tokens);
 
-  mojom::BlockchainTokenPtr GetTokenByContract(const std::string& chain_id,
-                                               const std::string& contract);
+  mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,
+                                              mojom::CoinType coin,
+                                              const std::string& address);
 
   // BlockchainRegistry interface methods
-  void GetTokenByContract(const std::string& chain_id,
-                          const std::string& contract,
-                          GetTokenByContractCallback callback) override;
+  void GetTokenByAddress(const std::string& chain_id,
+                         mojom::CoinType coin,
+                         const std::string& address,
+                         GetTokenByAddressCallback callback) override;
   void GetTokenBySymbol(const std::string& chain_id,
+                        mojom::CoinType coin,
                         const std::string& symbol,
                         GetTokenBySymbolCallback callback) override;
   void GetAllTokens(const std::string& chain_id,
+                    mojom::CoinType coin,
                     GetAllTokensCallback callback) override;
-  void GetBuyTokens(const std::string& chain_id,
+  void GetBuyTokens(mojom::OnRampProvider provider,
+                    const std::string& chain_id,
                     GetBuyTokensCallback callback) override;
-  void GetBuyUrl(const std::string& chain_id,
+  void GetBuyUrl(mojom::OnRampProvider provider,
+                 const std::string& chain_id,
                  const std::string& address,
                  const std::string& symbol,
                  const std::string& amount,

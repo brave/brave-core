@@ -15,6 +15,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/gtest_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -28,6 +29,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -663,21 +665,19 @@ TEST(BraveWalletUtilsUnitTest, GetAllEthCustomChainsTest) {
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
-  auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, &values);
 
   GetAllEthCustomChains(&prefs, &result);
   ASSERT_FALSE(result.empty());
-  ASSERT_TRUE(chain_ptr1.Equals(result.front()));
-  ASSERT_TRUE(chain_ptr2.Equals(result.back()));
+  ASSERT_TRUE(chain1.Equals(*result.front()));
+  ASSERT_TRUE(chain2.Equals(*result.back()));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
@@ -691,15 +691,13 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
-  auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, &values);
 
   std::vector<mojom::NetworkInfoPtr> expected_chains;
@@ -743,15 +741,13 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
-  auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, &values);
   std::vector<mojom::NetworkInfoPtr> known_chains;
   GetAllKnownEthChains(&prefs, &known_chains);
@@ -784,6 +780,16 @@ TEST(BraveWalletUtilsUnitTest, GetSolanaSubdomainForKnownChainId) {
   GetAllKnownSolChains(&known_chains);
   for (const auto& chain : known_chains) {
     auto subdomain = GetSolanaSubdomainForKnownChainId(chain->chain_id);
+    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
+    ASSERT_EQ(subdomain.empty(), expected);
+  }
+}
+
+TEST(BraveWalletUtilsUnitTest, GetFilecoinSubdomainForKnownChainId) {
+  std::vector<mojom::NetworkInfoPtr> known_chains;
+  GetAllKnownFilChains(&known_chains);
+  for (const auto& chain : known_chains) {
+    auto subdomain = GetFilecoinSubdomainForKnownChainId(chain->chain_id);
     bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
     ASSERT_EQ(subdomain.empty(), expected);
   }
@@ -831,8 +837,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
-  auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain1));
   UpdateCustomNetworks(&prefs, &values);
 
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ETH));
@@ -847,7 +852,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   mojom::NetworkInfo sol_mainnet(
       brave_wallet::mojom::kSolanaMainnet, "Solona Mainnet Beta",
       {"https://explorer.solana.com/"}, {},
-      {"https://api.mainnet-beta.solana.com"}, "SOL", "Solana", 9,
+      {"https://mainnet-beta-solana.brave.com/rpc"}, "SOL", "Solana", 9,
       brave_wallet::mojom::CoinType::SOL, nullptr);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::SOL));
   EXPECT_EQ(GetChain(&prefs, "0x65", mojom::CoinType::SOL),
@@ -887,6 +892,13 @@ TEST(BraveWalletUtilsUnitTest, GetKnownSolNetworkId) {
   EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaDevnet), "devnet");
 }
 
+TEST(BraveWalletUtilsUnitTest, GetKnownFilNetworkId) {
+  EXPECT_EQ(GetKnownFilNetworkId(mojom::kLocalhostChainId),
+            "http://localhost:1234/rpc/v0");
+  EXPECT_EQ(GetKnownFilNetworkId(mojom::kFilecoinMainnet), "mainnet");
+  EXPECT_EQ(GetKnownFilNetworkId(mojom::kFilecoinTestnet), "testnet");
+}
+
 TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -901,15 +913,13 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
                             "symbol_name", "symbol", 11, mojom::CoinType::ETH,
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
-  auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthNetworkInfoToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, &values);
 
   EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId),
@@ -946,25 +956,25 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
       {"https://url2.com"}, "symbol2", "symbol_name2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
 
-  AddCustomNetwork(&prefs, chain1.Clone());
-  AddCustomNetwork(&prefs, chain2.Clone());
+  AddCustomNetwork(&prefs, chain1);
+  AddCustomNetwork(&prefs, chain2);
 
   // kBraveWalletCustomNetworks should be updated with new chains.
   std::vector<mojom::NetworkInfoPtr> result;
   GetAllEthCustomChains(&prefs, &result);
   EXPECT_EQ(result.size(), 2u);
-  EXPECT_EQ(result[0], chain1.Clone());
-  EXPECT_EQ(result[1], chain2.Clone());
+  EXPECT_EQ(*result[0], chain1);
+  EXPECT_EQ(*result[1], chain2);
 
   // Asset list of new custom chains should have native asset in
   // kBraveWalletUserAssets.
   const base::Value* assets_pref = prefs.GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list1 = assets_pref->FindKey("chain_id");
+  const base::Value* list1 = assets_pref->FindPath("ethereum.chain_id");
   ASSERT_TRUE(list1->is_list());
   const base::Value::List& asset_list1 = list1->GetList();
   ASSERT_EQ(asset_list1.size(), 1u);
 
-  EXPECT_EQ(*asset_list1[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list1[0].FindStringKey("address"), "");
   EXPECT_EQ(*asset_list1[0].FindStringKey("name"), "symbol_name");
   EXPECT_EQ(*asset_list1[0].FindStringKey("symbol"), "symbol");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc20"), false);
@@ -973,12 +983,12 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
 
-  const base::Value* list2 = assets_pref->FindKey("chain_id2");
+  const base::Value* list2 = assets_pref->FindPath("ethereum.chain_id2");
   ASSERT_TRUE(list2->is_list());
   const base::Value::List& asset_list2 = list2->GetList();
   ASSERT_EQ(asset_list2.size(), 1u);
 
-  EXPECT_EQ(*asset_list2[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list2[0].FindStringKey("address"), "");
   EXPECT_EQ(*asset_list2[0].FindStringKey("name"), "symbol_name2");
   EXPECT_EQ(*asset_list2[0].FindStringKey("symbol"), "symbol2");
   EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc20"), false);
@@ -1012,16 +1022,14 @@ TEST(BraveWalletUtilsUnitTest, GetFirstValidChainURL) {
 
 TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   auto key = GetPrefKeyForCoinType(mojom::CoinType::ETH);
-  ASSERT_TRUE(key);
-  EXPECT_EQ(*key, kEthereumPrefKey);
+  EXPECT_EQ(key, kEthereumPrefKey);
   key = GetPrefKeyForCoinType(mojom::CoinType::FIL);
-  ASSERT_TRUE(key);
-  EXPECT_EQ(*key, kFilecoinPrefKey);
+  EXPECT_EQ(key, kFilecoinPrefKey);
   key = GetPrefKeyForCoinType(mojom::CoinType::SOL);
-  ASSERT_TRUE(key);
-  EXPECT_EQ(*key, kSolanaPrefKey);
+  EXPECT_EQ(key, kSolanaPrefKey);
 
-  EXPECT_FALSE(GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
+  EXPECT_DCHECK_DEATH(
+      GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetCurrentChainId) {
@@ -1037,13 +1045,32 @@ TEST(BraveWalletUtilsUnitTest, GetCurrentChainId) {
 }
 
 TEST(BraveWalletUtilsUnitTest, eTLDPlusOne) {
-  EXPECT_EQ("", eTLDPlusOne(GURL()));
-  EXPECT_EQ("brave.com", eTLDPlusOne(GURL("https://blog.brave.com")));
-  EXPECT_EQ("brave.com", eTLDPlusOne(GURL("https://...brave.com")));
-  EXPECT_EQ("brave.com", eTLDPlusOne(GURL("https://a.b.c.d.brave.com/1")));
-  EXPECT_EQ("brave.github.io",
-            eTLDPlusOne(GURL("https://a.b.brave.github.io/example")));
-  EXPECT_EQ("", eTLDPlusOne(GURL("https://github.io")));
+  EXPECT_EQ("", eTLDPlusOne(url::Origin()));
+  EXPECT_EQ("brave.com",
+            eTLDPlusOne(url::Origin::Create(GURL("https://blog.brave.com"))));
+  EXPECT_EQ("brave.com",
+            eTLDPlusOne(url::Origin::Create(GURL("https://...brave.com"))));
+  EXPECT_EQ(
+      "brave.com",
+      eTLDPlusOne(url::Origin::Create(GURL("https://a.b.c.d.brave.com/1"))));
+  EXPECT_EQ("brave.github.io", eTLDPlusOne(url::Origin::Create(GURL(
+                                   "https://a.b.brave.github.io/example"))));
+  EXPECT_EQ("", eTLDPlusOne(url::Origin::Create(GURL("https://github.io"))));
+}
+
+TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
+  auto origin_info =
+      MakeOriginInfo(url::Origin::Create(GURL("https://blog.brave.com:443")));
+  EXPECT_EQ(url::Origin::Create(GURL("https://blog.brave.com")),
+            origin_info->origin);
+  EXPECT_EQ("https://blog.brave.com", origin_info->origin_spec);
+  EXPECT_EQ("brave.com", origin_info->e_tld_plus_one);
+
+  url::Origin empty_origin;
+  auto empty_origin_info = MakeOriginInfo(empty_origin);
+  EXPECT_NE(url::Origin(), empty_origin_info->origin);
+  EXPECT_EQ("null", empty_origin_info->origin_spec);
+  EXPECT_EQ("", empty_origin_info->e_tld_plus_one);
 }
 
 }  // namespace brave_wallet

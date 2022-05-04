@@ -39,8 +39,8 @@ class PermissionsContainer {
   T permissions_[N];
 };
 
-constexpr size_t PermissionsTotal = base::size(permissions_to_register) +
-                                    base::size(brave_permissions_to_register);
+constexpr size_t PermissionsTotal = std::size(permissions_to_register) +
+                                    std::size(brave_permissions_to_register);
 
 const PermissionsContainer<APIPermissionInfo::InitInfo, PermissionsTotal>
     final_permissions(base::make_span(permissions_to_register),

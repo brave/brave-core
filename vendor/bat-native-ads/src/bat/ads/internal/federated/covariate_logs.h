@@ -9,7 +9,8 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/internal/federated/covariate_log_entry_interface.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace base {
 class Time;
@@ -17,16 +18,13 @@ class Time;
 
 namespace ads {
 
-class CovariateLogEntry;
-
 // |CovariateLogs| collect training data for federated services such as
 // learning, tuning and evaluation. A row in the training data set is called
 // "instance ". A column is called "feature". To differentiate between
 // Chromium/griffin features and federated services features, we call them
 // covariates instead. Covariate values can be of different data types as
-// defined in |mojom::ads::Covariate|.
-// All covariates are only session based at the moment, i.e no measurements
-// are persistet across sessions
+// defined in |mojom::ads::Covariate|. All covariates are only session based at
+// the moment, i.e no measurements are persisted across sessions.
 class CovariateLogs final {
  public:
   CovariateLogs();
@@ -34,16 +32,20 @@ class CovariateLogs final {
   CovariateLogs& operator=(const CovariateLogs&) = delete;
   ~CovariateLogs();
 
-  void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntry> entry);
-  mojom::TrainingCovariatesPtr GetTrainingCovariates() const;
+  static CovariateLogs* Get();
 
-  void SetAdNotificationImpressionServedAt(
-      const base::Time impression_served_at);
-  void SetAdNotificationWasClicked(bool was_clicked);
-  void LogTrainingCovariates();
+  static bool HasInstance();
+
+  void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntryInterface> entry);
+  brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
+
+  void SetAdNotificationServedAt(const base::Time time);
+  void SetAdNotificationClicked(bool clicked);
+  void LogTrainingInstance();
 
  private:
-  base::flat_map<mojom::CovariateType, std::unique_ptr<CovariateLogEntry>>
+  base::flat_map<brave_federated::mojom::CovariateType,
+                 std::unique_ptr<CovariateLogEntryInterface>>
       covariate_log_entries_;
 };
 

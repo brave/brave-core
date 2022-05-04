@@ -24,6 +24,7 @@
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
+#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
@@ -116,6 +117,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "components/feed/core/common/pref_names.h"
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
@@ -182,6 +184,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kTabsSearchShow, true);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
+
+  brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   brave_vpn::prefs::RegisterProfilePrefs(registry);
@@ -253,10 +257,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
   // Disable NTP suggestions
-  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
-                                base::Value(false));
-  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
-                                base::Value(false));
+  feed::RegisterProfilePrefs(registry);
+  registry->RegisterBooleanPref(feed::prefs::kEnableSnippets, false);
+  registry->RegisterBooleanPref(feed::prefs::kArticlesListVisible, false);
   // Translate is not available on Android
   registry->SetDefaultPrefValue(translate::prefs::kOfferTranslateEnabled,
                                 base::Value(false));
@@ -416,17 +419,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if !BUILDFLAG(IS_ANDROID)
   BraveOmniboxClientImpl::RegisterProfilePrefs(registry);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
   brave_ads::RegisterP2APrefs(registry);
-#endif
 
-#if !BUILDFLAG(IS_ANDROID)
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
+  registry->RegisterBooleanPref(kEnableWindowClosingConfirm, false);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 
@@ -435,8 +434,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, false);
 
   // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
-  registry->SetDefaultPrefValue(policy::policy_prefs::kEnableDirectSockets,
-                                base::Value(false));
+  registry->SetDefaultPrefValue(
+      policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed,
+      base::Value(false));
 
   BraveFarblingService::RegisterProfilePrefs(registry);
 

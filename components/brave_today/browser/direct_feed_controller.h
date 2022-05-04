@@ -14,6 +14,8 @@
 #include "base/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_today/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/rust/lib.rs.h"
 #include "url/gurl.h"
 
@@ -57,6 +59,8 @@ class DirectFeedController {
   void VerifyFeedUrl(const GURL& feed_url, IsValidCallback callback);
   void DownloadAllContent(std::vector<mojom::PublisherPtr> publishers,
                           GetFeedItemsCallback callback);
+  void FindFeeds(const GURL& possible_feed_or_site_url,
+                 mojom::BraveNewsController::FindFeedsCallback callback);
 
  private:
   using SimpleURLLoaderList =

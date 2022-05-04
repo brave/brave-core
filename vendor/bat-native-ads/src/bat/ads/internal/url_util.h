@@ -9,18 +9,14 @@
 #include <string>
 #include <vector>
 
+class GURL;
+
 namespace ads {
 
-bool DoesUrlMatchPattern(const std::string& url, const std::string& pattern);
+bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern);
 
-bool DoesUrlHaveSchemeHTTPOrHTTPS(const std::string& url);
-
-std::string GetHostFromUrl(const std::string& url);
-
-bool SameDomainOrHost(const std::string& lhs, const std::string& rhs);
-
-bool DomainOrHostExists(const std::vector<std::string>& urls,
-                        const std::string& url);
+bool SameDomainOrHost(const GURL& lhs, const GURL& rhs);
+bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url);
 
 }  // namespace ads
 

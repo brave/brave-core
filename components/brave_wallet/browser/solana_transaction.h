@@ -28,19 +28,17 @@ class SolanaTransaction {
  public:
   explicit SolanaTransaction(SolanaMessage&& message);
   SolanaTransaction(const std::string& recent_blockhash,
+                    uint64_t last_valid_block_height,
                     const std::string& fee_payer,
                     std::vector<SolanaInstruction>&& instructions);
   SolanaTransaction(const SolanaTransaction&);
   ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
 
-  // Serialize the message and sign it. latest_blockhash_ will be updated if
-  // non-empty recent_blockhash is passed.
-  std::string GetSignedTransaction(KeyringService* keyring_service,
-                                   const std::string& recent_blockhash);
-  // Serialize and encode the message in Base64, latest_blockhash_ will be
-  // updated if non-empty recent_blockhash is passed.
-  std::string GetBase64EncodedMessage(const std::string& recent_blockhash);
+  // Serialize the message and sign it.
+  std::string GetSignedTransaction(KeyringService* keyring_service) const;
+  // Serialize and encode the message in Base64.
+  std::string GetBase64EncodedMessage() const;
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
   base::Value ToValue() const;
@@ -54,6 +52,7 @@ class SolanaTransaction {
   mojom::TransactionType tx_type() const { return tx_type_; }
   uint64_t lamports() const { return lamports_; }
   uint64_t amount() const { return amount_; }
+  SolanaMessage* message() { return &message_; }
 
   void set_to_wallet_address(const std::string& to_wallet_address) {
     to_wallet_address_ = to_wallet_address;

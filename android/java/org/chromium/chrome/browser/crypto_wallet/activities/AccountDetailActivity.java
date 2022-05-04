@@ -256,6 +256,7 @@ public class AccountDetailActivity
         accountInfo.address = mAddress;
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
+        accountInfo.coin = CoinType.ETH;
         return accountInfo;
     }
 

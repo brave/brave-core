@@ -6,7 +6,9 @@
 #include <memory>
 #include <string>
 
+#include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/gemini/gemini_util.h"
@@ -44,24 +46,24 @@ TEST_F(GeminiUtilTest, GetClientId) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetClientId();
-  ASSERT_EQ(result, GEMINI_WALLET_CLIENT_ID);
+  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_ID));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetClientId();
-  ASSERT_EQ(result, GEMINI_WALLET_STAGING_CLIENT_ID);
+  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID));
 }
 
 TEST_F(GeminiUtilTest, GetClientSecret) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetClientSecret();
-  ASSERT_EQ(result, GEMINI_WALLET_CLIENT_SECRET);
+  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_SECRET));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetClientSecret();
-  ASSERT_EQ(result, GEMINI_WALLET_STAGING_CLIENT_SECRET);
+  ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(GeminiUtilTest, GetFeeAddress) {
@@ -80,72 +82,79 @@ TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetAuthorizeUrl("my-state");
-  ASSERT_EQ(result, GEMINI_OAUTH_URL
-            "/auth"
-            "?client_id=" GEMINI_WALLET_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=my-state"
-            "&response_type=code");
+  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL),
+                                  "/auth"
+                                  "?client_id=",
+                                  BUILDFLAG(GEMINI_WALLET_CLIENT_ID),
+                                  "&scope="
+                                  "balances:read,"
+                                  "history:read,"
+                                  "crypto:send,"
+                                  "account:read,"
+                                  "payments:create,"
+                                  "payments:send,"
+                                  "&redirect_uri=rewards://gemini/authorization"
+                                  "&state=my-state"
+                                  "&response_type=code"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetAuthorizeUrl("my-state");
-  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL
-            "/auth"
-            "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=my-state"
-            "&response_type=code");
+  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                                  "/auth"
+                                  "?client_id=",
+                                  BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                                  "&scope="
+                                  "balances:read,"
+                                  "history:read,"
+                                  "crypto:send,"
+                                  "account:read,"
+                                  "payments:create,"
+                                  "payments:send,"
+                                  "&redirect_uri=rewards://gemini/authorization"
+                                  "&state=my-state"
+                                  "&response_type=code"}));
 }
 
 TEST_F(GeminiUtilTest, GetAddUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetAddUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_URL "/transfer/deposit");
+  ASSERT_EQ(result,
+            base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/transfer/deposit"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetAddUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/transfer/deposit");
+  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                                  "/transfer/deposit"}));
 }
 
 TEST_F(GeminiUtilTest, GetWithdrawUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetWithdrawUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_URL "/transfer/withdraw");
+  ASSERT_EQ(result,
+            base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/transfer/withdraw"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetWithdrawUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/transfer/withdraw");
+  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                                  "/transfer/withdraw"}));
 }
 
 TEST_F(GeminiUtilTest, GetActivityUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = gemini::GetActivityUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_URL "/balances");
+  ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/balances"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = gemini::GetActivityUrl();
-  ASSERT_EQ(result, GEMINI_OAUTH_STAGING_URL "/balances");
+  ASSERT_EQ(result,
+            base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/balances"}));
 }
 
 TEST_F(GeminiUtilTest, GetWallet) {
@@ -206,115 +215,129 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   auto result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
-            "/auth?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=aaabbbccc"
-            "&response_type=code");
-  ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result->verify_url,
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                 "&scope="
+                 "balances:read,"
+                 "history:read,"
+                 "crypto:send,"
+                 "account:read,"
+                 "payments:create,"
+                 "payments:send,"
+                 "&redirect_uri=rewards://gemini/authorization"
+                 "&state=aaabbbccc"
+                 "&response_type=code"}));
+  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Connected
   wallet->status = type::WalletStatus::CONNECTED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
-            "/auth?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=aaabbbccc"
-            "&response_type=code");
-  ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result->verify_url,
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                 "&scope="
+                 "balances:read,"
+                 "history:read,"
+                 "crypto:send,"
+                 "account:read,"
+                 "payments:create,"
+                 "payments:send,"
+                 "&redirect_uri=rewards://gemini/authorization"
+                 "&state=aaabbbccc"
+                 "&response_type=code"}));
+  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, GEMINI_OAUTH_STAGING_URL "/transfer/deposit");
+  ASSERT_EQ(result->add_url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                                           "/transfer/deposit"}));
   ASSERT_EQ(result->withdraw_url,
-            GEMINI_OAUTH_STAGING_URL "/transfer/withdraw");
-  ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
-            "/auth?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=aaabbbccc"
-            "&response_type=code");
-  ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/transfer/withdraw"}));
+  ASSERT_EQ(result->verify_url,
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                 "&scope="
+                 "balances:read,"
+                 "history:read,"
+                 "crypto:send,"
+                 "account:read,"
+                 "payments:create,"
+                 "payments:send,"
+                 "&redirect_uri=rewards://gemini/authorization"
+                 "&state=aaabbbccc"
+                 "&response_type=code"}));
+  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Disconnected Non-Verified
   wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
-            "/auth?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=aaabbbccc"
-            "&response_type=code");
-  ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result->verify_url,
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                 "&scope="
+                 "balances:read,"
+                 "history:read,"
+                 "crypto:send,"
+                 "account:read,"
+                 "payments:create,"
+                 "payments:send,"
+                 "&redirect_uri=rewards://gemini/authorization"
+                 "&state=aaabbbccc"
+                 "&response_type=code"}));
+  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
-            "/auth?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=aaabbbccc"
-            "&response_type=code");
-  ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result->verify_url,
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                 "&scope="
+                 "balances:read,"
+                 "history:read,"
+                 "crypto:send,"
+                 "account:read,"
+                 "payments:create,"
+                 "payments:send,"
+                 "&redirect_uri=rewards://gemini/authorization"
+                 "&state=aaabbbccc"
+                 "&response_type=code"}));
+  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;
   result = gemini::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
-            "/auth?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope="
-            "balances:read,"
-            "history:read,"
-            "crypto:send,"
-            "account:read,"
-            "payments:create,"
-            "payments:send,"
-            "&redirect_uri=rewards://gemini/authorization"
-            "&state=aaabbbccc"
-            "&response_type=code");
-  ASSERT_EQ(result->account_url, GEMINI_OAUTH_STAGING_URL);
+  ASSERT_EQ(result->verify_url,
+            base::StrCat(
+                {BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
+                 "/auth?client_id=", BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID),
+                 "&scope="
+                 "balances:read,"
+                 "history:read,"
+                 "crypto:send,"
+                 "account:read,"
+                 "payments:create,"
+                 "payments:send,"
+                 "&redirect_uri=rewards://gemini/authorization"
+                 "&state=aaabbbccc"
+                 "&response_type=code"}));
+  ASSERT_EQ(result->account_url, BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 }
 
 }  // namespace gemini

@@ -5,20 +5,25 @@
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
 
+#include <memory>
+#include <utility>
+
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 
 BravePrivacySandboxSettings::BravePrivacySandboxSettings(
+    std::unique_ptr<Delegate> delegate,
     HostContentSettingsMap* host_content_settings_map,
     content_settings::CookieSettings* cookie_settings,
     PrefService* pref_service,
     bool incognito_profile)
-    : PrivacySandboxSettings(host_content_settings_map,
-                             cookie_settings,
-                             pref_service,
-                             incognito_profile),
+    : privacy_sandbox::PrivacySandboxSettings(std::move(delegate),
+                                              host_content_settings_map,
+                                              cookie_settings,
+                                              pref_service,
+                                              incognito_profile),
       pref_service_(pref_service) {
   // Register observers for the Privacy Sandbox & FLoC preferences.
   user_prefs_registrar_.Init(pref_service_);

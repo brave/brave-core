@@ -130,15 +130,15 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   // Farbling level: default
   SetFingerprintingDefault(domain1);
   NavigateToURLUntilLoadStop(url1);
-  EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(2048, EvalJs(contents(), kDeviceMemoryScript));
   SetFingerprintingDefault(domain2);
   NavigateToURLUntilLoadStop(url2);
-  EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(4096, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: maximum
   BlockFingerprinting(domain1);
   NavigateToURLUntilLoadStop(url1);
-  EXPECT_EQ(2048, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
   AllowFingerprinting(domain2);
   NavigateToURLUntilLoadStop(url2);
   EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));

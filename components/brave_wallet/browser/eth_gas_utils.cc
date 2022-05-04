@@ -20,7 +20,7 @@ namespace eth {
 // The first for low, the second for avg, and the third for high.
 // The following calculations will be made:
 // - suggested_base_fee_per_gas will be the pending
-//   base_fee_per_gas (last element) * 12.5%
+//   base_fee_per_gas (last element) * 33%
 // - avg_priority_fee will be the 0.4 * length's element of the sorted
 //   reward array.
 // - The same applies to low_prirority_fee, but if it was equal to avg
@@ -61,10 +61,10 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
   double pending_base_fee_per_gas_dbl =
       static_cast<double>(static_cast<uint64_t>(pending_base_fee_per_gas_uint));
   // The base fee is not part of the RLP. We only specify priority fee and max
-  // fee. So the excess will be refunded and it will be at most 12.5% It's best
+  // fee. So the excess will be refunded and it will be at most 33% It's best
   // to assume a larger value here so there's a better chance it will get in the
   // next block and if it's too high it will go back to the user
-  pending_base_fee_per_gas_dbl *= 1.125;
+  pending_base_fee_per_gas_dbl *= 1.33;
   pending_base_fee_per_gas_dbl = std::floor(pending_base_fee_per_gas_dbl);
   // Compiler crashes without these 2 casts :(
   *suggested_base_fee_per_gas =

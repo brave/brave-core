@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_BUBBLE_BORDER_WITH_ARROW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_BUBBLE_BORDER_WITH_ARROW_H_
 
+#include "ui/gfx/geometry/rect_f.h"
 #include "ui/views/bubble/bubble_border.h"
 
 class BubbleBorderWithArrow : public views::BubbleBorder {

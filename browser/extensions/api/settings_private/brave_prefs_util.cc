@@ -243,6 +243,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+  (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Hangouts pref
   (*s_brave_allowlist)[kHangoutsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -260,6 +262,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kDefaultBaseCryptocurrency] =
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kShowWalletTestNetworks] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kBraveWalletAutoLockMinutes] =
       settings_api::PrefType::PREF_TYPE_NUMBER;

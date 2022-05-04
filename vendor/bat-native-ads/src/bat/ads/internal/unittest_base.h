@@ -13,11 +13,12 @@
 #include "base/test/task_environment.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
-#include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/diagnostics/diagnostics.h"
 #include "bat/ads/internal/federated/covariate_logs.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
@@ -44,17 +45,17 @@ class UnitTestBase : public testing::Test {
   bool CopyFileFromTestPathToTempDir(const std::string& source_filename,
                                      const std::string& dest_filename) const;
 
-  // If |integration_test| is set to true test the functionality and performance
-  // under product-like circumstances with data to replicate live settings to
-  // simulate what a real user scenario looks like from start to finish. You
-  // must call |InitializeAds| manually after setting up your mocks
-  void SetUpForTesting(const bool integration_test);
+  // If |is_integration_test| is set to true test the functionality and
+  // performance under product-like circumstances with data to replicate live
+  // settings to simulate what a real user scenario looks like from start to
+  // finish. You must call |InitializeAds| manually after setting up your mocks.
+  void SetUpForTesting(const bool is_integration_test);
 
   void InitializeAds();
 
   AdsImpl* GetAds() const;
 
-  // testing::Test implementation
+  // testing::Test:
   void SetUp() override;
   void TearDown() override;
 
@@ -71,36 +72,38 @@ class UnitTestBase : public testing::Test {
   // thread and thread pool with a remaining delay less than or equal to
   // |time_delta| to be executed in their natural order before this returns. For
   // debugging purposes use |task_environment_.DescribePendingMainThreadTasks()|
-  // to dump information about pending tasks
+  // to dump information about pending tasks.
   void FastForwardClockBy(const base::TimeDelta time_delta);
 
   // Fast-forwards virtual time to |time|, causing all tasks on the main thread
   // and thread pool with a remaining delay less than or equal to |time| to be
   // executed in their natural order before this returns. For debugging purposes
   // use |task_environment_.DescribePendingMainThreadTasks()| to dump
-  // information about pending tasks
+  // information about pending tasks.
   void FastForwardClockTo(const base::Time time);
 
   // Unlike |FastForwardClockBy|, |FastForwardClockTo| and |FastForwardBy|
-  // AdvanceClock does not run tasks
+  // AdvanceClock does not run tasks.
   void AdvanceClockToMidnightUTC();
   void AdvanceClock(const base::Time time);
   void AdvanceClock(const base::TimeDelta time_delta);
 
   // Returns the delay until the next pending task of the main thread's
-  // TaskRunner if there is one, otherwise it returns TimeDelta::Max()
+  // TaskRunner if there is one, otherwise it returns TimeDelta::Max().
   base::TimeDelta NextPendingTaskDelay() const;
 
   // Returns the number of pending tasks of the main thread's TaskRunner. When
   // debugging, you can use |task_environment_.DescribePendingMainThreadTasks()|
-  // to see what those are
+  // to see what those are.
   size_t GetPendingTaskCount() const;
+
+  base::test::TaskEnvironment* task_environment() { return &task_environment_; }
 
  private:
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  bool integration_test_ = false;
+  bool is_integration_test_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<Client> client_;
@@ -108,6 +111,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<database::Initialize> database_initialize_;
   std::unique_ptr<Database> database_;
+  std::unique_ptr<Diagnostics> diagnostics_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;

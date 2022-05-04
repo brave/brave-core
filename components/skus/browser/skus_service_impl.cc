@@ -66,8 +66,7 @@ SkusServiceImpl::SkusServiceImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : context_(
           std::make_unique<skus::SkusContextImpl>(prefs, url_loader_factory)),
-      sdk_(initialize_sdk(std::move(context_), skus::GetEnvironment())),
-      prefs_(prefs) {}
+      sdk_(initialize_sdk(std::move(context_), skus::GetEnvironment())) {}
 
 SkusServiceImpl::~SkusServiceImpl() {}
 
@@ -132,24 +131,6 @@ void SkusServiceImpl::OnCredentialSummary(
     const std::string& domain,
     mojom::SkusService::CredentialSummaryCallback callback,
     const std::string& summary_string) {
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          summary_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                              base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
-  // TODO(bsclifton): pull out to a separate method
-  if (records_v && prefs_) {
-    if (domain == "vpn.brave.com" || domain == "vpn.bravesoftware.com" ||
-        domain == "vpn.brave.software") {
-      const base::Value* active = records_v->FindKey("active");
-      if (active) {
-        bool has_credential = active && active->is_bool() && active->GetBool();
-        prefs_->SetBoolean(skus::prefs::kSkusVPNHasCredential, has_credential);
-      }
-    }
-  }
-
   if (callback) {
     std::move(callback).Run(summary_string);
   }

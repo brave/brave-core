@@ -13,9 +13,9 @@
 #include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ads_features.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 #include "bat/ads/internal/eligible_ads/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "bat/ads/internal/eligible_ads/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "bat/ads/internal/logging.h"
@@ -115,7 +115,7 @@ bool AdServing::ServeAd(const NewTabPageAdInfo& ad,
   // TODO(https://github.com/brave/brave-browser/issues/14015): Add logging for
   // wallpapers
   BLOG(1, "Serving new tab page ad:\n"
-              << "  uuid: " << ad.uuid << "\n"
+              << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
               << "  campaignId: " << ad.campaign_id << "\n"

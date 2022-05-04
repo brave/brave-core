@@ -33,7 +33,7 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
         CopyFileFromTestPathToTempDir(source_filename, "database.sqlite"))
         << "Failed to copy " << source_filename;
 
-    UnitTestBase::SetUpForTesting(/* integration_test */ false);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ false);
   }
 
   int GetSchemaVersion() { return GetParam() + 1; }

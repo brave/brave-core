@@ -49,13 +49,16 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::RenderFrameHost& render_frame_host,
       blink::AssociatedInterfaceRegistry& associated_registry) override;
 
+  void RegisterWebUIInterfaceBrokers(
+      content::WebUIBrowserInterfaceBrokerRegistry& registry) override;
+
   bool HandleExternalProtocol(
       const GURL& url,
       content::WebContents::Getter web_contents_getter,
-      int child_id,
       int frame_tree_node_id,
       content::NavigationUIData* navigation_data,
-      bool is_main_frame,
+      bool is_primary_main_frame,
+      bool is_in_fenced_frame_tree,
       network::mojom::WebSandboxFlags sandbox_flags,
       ui::PageTransition page_transition,
       bool has_user_gesture,
@@ -141,6 +144,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   void OverrideWebkitPrefs(content::WebContents* web_contents,
                            blink::web_pref::WebPreferences* prefs) override;
+  blink::UserAgentMetadata GetUserAgentMetadata() override;
 
  private:
   void OnAllowGoogleAuthChanged();

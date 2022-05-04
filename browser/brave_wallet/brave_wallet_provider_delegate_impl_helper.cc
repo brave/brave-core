@@ -41,6 +41,8 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
   }
 }
 
+void WalletInteractionDetected(content::WebContents* web_contents) {}
+
 void SetCallbackForNewSetupNeededForTesting(
     base::OnceCallback<void()> callback) {
   g_NewSetupNeededForTestingCallback = std::move(callback);

@@ -157,33 +157,38 @@ class AdsServiceImpl : public AdsService,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
 
-  void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           OnGetInlineContentAdCallback callback) override;
 
-  void OnInlineContentAdEvent(
-      const std::string& uuid,
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) override;
 
+  void TriggerSearchResultAdEvent(
+      ads::mojom::SearchResultAdPtr ad_mojom,
+      const ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
+
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
-  void GetHistory(const double from_timestamp,
-                  const double to_timestamp,
+  void GetHistory(const base::Time from_time,
+                  const base::Time to_time,
                   OnGetHistoryCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void ToggleAdThumbUp(const std::string& json,
                        OnToggleAdThumbUpCallback callback) override;
@@ -256,13 +261,13 @@ class AdsServiceImpl : public AdsService,
   bool ShouldShowCustomAdNotifications();
 
   void MaybeOpenNewTabWithAd();
-  void OpenNewTabWithAd(const std::string& uuid);
+  void OpenNewTabWithAd(const std::string& placement_id);
   void OnOpenNewTabWithAd(const std::string& json);
-  void RetryOpeningNewTabWithAd(const std::string& uuid);
+  void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
-  void OpenNewTabWithUrl(const std::string& url);
+  void OpenNewTabWithUrl(const GURL& url);
 
-  void NotificationTimedOut(const std::string& uuid);
+  void NotificationTimedOut(const std::string& placement_id);
 
   void RegisterResourceComponentsForLocale(const std::string& locale);
 
@@ -281,15 +286,21 @@ class AdsServiceImpl : public AdsService,
                             const std::string& dimensions,
                             const std::string& json);
 
+  void OnTriggerSearchResultAdEvent(
+      TriggerSearchResultAdEventCallback callback,
+      const bool success,
+      const std::string& placement_id,
+      const ads::mojom::SearchResultAdEventType event_type);
+
   void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
   void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
                                 const bool success,
                                 const std::string& json);
 
-  void OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
-                          const bool success,
-                          const std::string& json);
+  void OnGetDiagnostics(GetDiagnosticsCallback callback,
+                        const bool success,
+                        const std::string& json);
 
   void OnRemoveAllHistory(const bool success);
 
@@ -312,6 +323,7 @@ class AdsServiceImpl : public AdsService,
                          const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
+  void OnFileLoaded(ads::LoadFileCallback callback, base::File value);
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
@@ -349,8 +361,8 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadDataResourceAndDecompressIfNeeded(const int id) const;
 
-  void StartNotificationTimeoutTimer(const std::string& uuid);
-  bool StopNotificationTimeoutTimer(const std::string& uuid);
+  void StartNotificationTimeoutTimer(const std::string& placement_id);
+  bool StopNotificationTimeoutTimer(const std::string& placement_id);
 
   bool connected();
 
@@ -360,9 +372,9 @@ class AdsServiceImpl : public AdsService,
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;
 
-  bool IsForeground() const override;
+  bool IsBrowserActive() const override;
 
-  bool IsFullScreen() const override;
+  bool IsBrowserInFullScreenMode() const override;
 
   bool ShouldShowNotifications() override;
 
@@ -370,14 +382,14 @@ class AdsServiceImpl : public AdsService,
 
   void ShowNotification(const ads::AdNotificationInfo& info) override;
 
-  void CloseNotification(const std::string& uuid) override;
+  void CloseNotification(const std::string& placement_id) override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
-                          const double timestamp) const override;
+                          const base::Time time) const override;
 
-  std::vector<double> GetAdEvents(
+  std::vector<base::Time> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
 
@@ -391,19 +403,16 @@ class AdsServiceImpl : public AdsService,
             ads::ResultCallback callback) override;
 
   void Load(const std::string& name, ads::LoadCallback callback) override;
-
-  void LoadAdsResource(const std::string& id,
-                       const int version,
-                       ads::LoadCallback callback) override;
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        ads::LoadFileCallback callback) override;
+  std::string LoadDataResource(const std::string& name) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
-
   void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
                                        history::QueryResults results);
-
-  std::string LoadResourceForId(const std::string& id) override;
 
   void ClearScheduledCaptcha() override;
 
@@ -422,9 +431,9 @@ class AdsServiceImpl : public AdsService,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
-  void LogTrainingCovariates(
-      const ads::mojom::TrainingCovariatesPtr training_covariates) override;
-  void OnLogTrainingCovariates(bool success);
+  void LogTrainingInstance(const brave_federated::mojom::TrainingInstancePtr
+                               training_instance) override;
+  void OnLogTrainingInstance(bool success);
 
   void WriteDiagnosticLog(const std::string& file,
                           const int line,
@@ -466,8 +475,8 @@ class AdsServiceImpl : public AdsService,
   bool HasPrefPath(const std::string& path) const override;
 
   // BackgroundHelper::Observer implementation
-  void OnBackground() override;
-  void OnForeground() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 
@@ -496,7 +505,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_timers_;
 
-  std::string retry_opening_new_tab_for_ad_with_uuid_;
+  std::string retry_opening_new_tab_for_ad_with_placement_id_;
 
   base::OneShotTimer onboarding_timer_;
 

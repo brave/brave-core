@@ -64,7 +64,8 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
        AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   // Act

@@ -35,6 +35,12 @@ RegisterPolymerTemplateModifications({
               icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsEthereum')}">
           </site-details-permission>
         `)
+          firstPermissionItem.insertAdjacentHTML('beforebegin', `
+          <site-details-permission
+              category="[[contentSettingsTypesEnum_.SOLANA]]"
+              icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsSolana')}">
+          </site-details-permission>
+        `)
       }
     }
   },

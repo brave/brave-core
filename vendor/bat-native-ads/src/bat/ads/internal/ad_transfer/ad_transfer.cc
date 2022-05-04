@@ -14,6 +14,7 @@
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/url_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -21,9 +22,13 @@ namespace {
 constexpr int64_t kTransferAdAfterSeconds = 10;
 }  // namespace
 
-AdTransfer::AdTransfer() = default;
+AdTransfer::AdTransfer() {
+  TabManager::Get()->AddObserver(this);
+}
 
-AdTransfer::~AdTransfer() = default;
+AdTransfer::~AdTransfer() {
+  TabManager::Get()->RemoveObserver(this);
+}
 
 void AdTransfer::AddObserver(AdTransferObserver* observer) {
   DCHECK(observer);
@@ -35,9 +40,8 @@ void AdTransfer::RemoveObserver(AdTransferObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void AdTransfer::MaybeTransferAd(
-    const int32_t tab_id,
-    const std::vector<std::string>& redirect_chain) {
+void AdTransfer::MaybeTransferAd(const int32_t tab_id,
+                                 const std::vector<GURL>& redirect_chain) {
   if (!last_clicked_ad_.IsValid()) {
     return;
   }
@@ -55,22 +59,10 @@ void AdTransfer::MaybeTransferAd(
   TransferAd(tab_id, redirect_chain);
 }
 
-void AdTransfer::Cancel(const int32_t tab_id) {
-  if (transferring_ad_tab_id_ != tab_id) {
-    return;
-  }
-
-  if (!timer_.Stop()) {
-    return;
-  }
-
-  NotifyCancelledAdTransfer(last_clicked_ad_, tab_id);
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdTransfer::TransferAd(const int32_t tab_id,
-                            const std::vector<std::string>& redirect_chain) {
+                            const std::vector<GURL>& redirect_chain) {
   timer_.Stop();
 
   transferring_ad_tab_id_ = tab_id;
@@ -85,7 +77,7 @@ void AdTransfer::TransferAd(const int32_t tab_id,
 }
 
 void AdTransfer::OnTransferAd(const int32_t tab_id,
-                              const std::vector<std::string>& redirect_chain) {
+                              const std::vector<GURL>& redirect_chain) {
   const AdInfo ad = last_clicked_ad_;
   last_clicked_ad_ = {};
 
@@ -120,6 +112,18 @@ void AdTransfer::OnTransferAd(const int32_t tab_id,
   });
 }
 
+void AdTransfer::Cancel(const int32_t tab_id) {
+  if (transferring_ad_tab_id_ != tab_id) {
+    return;
+  }
+
+  if (!timer_.Stop()) {
+    return;
+  }
+
+  NotifyCancelledAdTransfer(last_clicked_ad_, tab_id);
+}
+
 void AdTransfer::NotifyWillTransferAd(const AdInfo& ad,
                                       const base::Time time) const {
   for (AdTransferObserver& observer : observers_) {
@@ -144,6 +148,10 @@ void AdTransfer::NotifyFailedToTransferAd(const AdInfo& ad) const {
   for (AdTransferObserver& observer : observers_) {
     observer.OnFailedToTransferAd(ad);
   }
+}
+
+void AdTransfer::OnDidCloseTab(const int32_t id) {
+  Cancel(id);
 }
 
 }  // namespace ads

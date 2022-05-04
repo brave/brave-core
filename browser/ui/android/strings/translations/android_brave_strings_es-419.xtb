@@ -426,44 +426,33 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="7559243474426790340">Actualizar estado</translation>
 <translation id="8376263745431603066">Activar Modo noche (experimental)</translation>
 <translation id="1383876407941801731">Buscar</translation>
-<translation id="1972589975368876259">Editar pila</translation>
-<translation id="2490330380242414851">Eliminar widget</translation>
 <translation id="8446884382197647889">Más información</translation>
-<translation id="7384441892795736634">Actualizar datos</translation>
-<translation id="4804818685124855865">Desconectar</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> disponible</translation>
+<translation id="3414885529641505869">Comprar <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Dirección de depósito</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Nota de depósito</translation>
+<translation id="6755546361496900700">Vista previa de la conversión</translation>
 <translation id="5110244215256675209">Comprar criptomonedas</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Comprar <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> disponible</translation>
-<translation id="6755546361496900700">Vista previa de la conversión</translation>
-<translation id="2882813124794301799">Pila de widgets</translation>
 <translation id="13296465911709339">El texto se ha copiado al portapapeles.</translation>
 <translation id="2735834606413553397">La dirección pública se copió al portapapeles.</translation>
 <translation id="7144878232160441200">Volver a intentarlo</translation>
 <translation id="2977461003134694205">Estadísticas de privacidad</translation>
-<translation id="4643117005422448078">Sitios populares</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Cálculo de rastreadores y anuncios bloqueados, y de ancho de banda y tiempo ahorrados.</translation>
-<translation id="74417429503469271">Abrir sitios populares que visitas con frecuencia.</translation>
 <translation id="2956070106555335453">Resumen</translation>
 <translation id="1366855498335432549">Depósito</translation>
 <translation id="1301340234286078471">Convertir</translation>
 <translation id="223536150967420869">Comprar</translation>
-<translation id="1714829281959608206">Habilita la conexión con Binance para ver el saldo de la cuenta de Binance e intercambiar criptomonedas.</translation>
 <translation id="4584930231524505442">Quiero convertir...</translation>
 <translation id="5749014321384313843">Quiero gastar...</translation>
-<translation id="8688672835843460752">Disponible</translation>
 <translation id="2480674848181564169">No hay suficiente saldo para la conversión</translation>
 <translation id="2215334405220411393">El importe mínimo que se puede convertir es <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">No se puede establecer conexión</translation>
 <translation id="7742417737698031726">Tasa</translation>
 <translation id="2122225204180056042">Recibirás</translation>
 <translation id="6432284126416751397">Confirmar conversión</translation>
-<translation id="5137723827757859599">Todavía no hay nada en los sitios populares.</translation>
 <translation id="3891414008432200754">Precio</translation>
 <translation id="3733576242118819803">Confirmar (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">La conversión ha fallado. Vuelve a intentarlo.</translation>
@@ -565,6 +554,8 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
 <translation id="1078873179929044999">En el siguiente paso, verá una frase de recuperación de 12 palabras que puede usar para recuperar sus cuentas de criptoactivos principales. Guárdela en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
 <translation id="2359808026110333948">Continuar</translation>
+<translation id="5488357322146334497">Mensaje</translation>
+<translation id="7228169875515099943">DATOS</translation>
 <translation id="1904000155026201268">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis frase de recuperación.</translation>
 <translation id="3933122286596948824">Tu frase de recuperación</translation>
 <translation id="5077747669435508720">Escriba o copie estas palabras en el orden exacto que se muestra a continuación y guárdelas en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
@@ -809,6 +800,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="1254969878422524947">Límite de propina por gas (Gwei)</translation>
 <translation id="7373308452149471621">Límite de precio por gas (Gwei)</translation>
 <translation id="5891811606602061966">No se pudo importar la cuenta. Inténtelo de nuevo.</translation>
+<translation id="1822506443689803572">Brave utiliza <ph name="DEX_PROVIDER"/> como agregador DEX.</translation>
 <translation id="5061574358754621254">Datos sobre precios con la tecnología de CoinGecko</translation>
 <translation id="4626407663177532837">La cotización incluye una tarifa de Brave del 0,875 %</translation>
 <translation id="8574289650879708853">Agregar activo personalizado</translation>
@@ -862,4 +854,21 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="4945690646623486292">Seleccionar red</translation>
 <translation id="8853725596990766789">Cambiar importe</translation>
 <translation id="5233638681132016545">Nueva pestaña</translation>
+<translation id="8006088103295786154">Acceder a Cartera de Brave</translation>
+<translation id="5308380583665731573">Conectar</translation>
+<translation id="3432029672560911238">Cuenta de usuario</translation>
+<translation id="5753378322046059140">Cambia de cuenta</translation>
+<translation id="3897092660631435901">Menú</translation>
+<translation id="42981349822642051">Expandir</translation>
+<translation id="3586752056660754651">Firmar</translation>
+<translation id="6592721981110586529">Conectar con Cartera de Brave</translation>
+<translation id="329813193938846695">Seleccione la(s) cuenta(s)</translation>
+<translation id="3890989020011724401">Cuenta nueva</translation>
+<translation id="291375746846291973">Sólo conecta con sitios en los que confíes.</translation>
+<translation id="385051799172605136">Volver</translation>
+<translation id="1060221736464994328">¿Permitir que este sitio cambie la red?</translation>
+<translation id="2478788592457735063">Esta acción cambiará la red a una red agregada anteriormente.</translation>
+<translation id="8756686998207163764">Cambiar de red</translation>
+<translation id="394256914628786902">Habilitar la creación automática de grupos de pestañas</translation>
+<translation id="8274201358637112807">Esta página quiere interactuar con Cartera de Brave</translation>
 </translationbundle>

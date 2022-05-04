@@ -8,10 +8,11 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/time/time.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/database.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -54,7 +55,7 @@ void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
 
-  SetUpForTesting(/* integration_test */ false);
+  SetUpForTesting(/* is_integration_test */ false);
 }
 
 void UnitTestBase::TearDown() {
@@ -74,22 +75,20 @@ bool UnitTestBase::CopyFileFromTestPathToTempDir(
          "|SetUpForTesting|";
 
   const base::FilePath from_path = GetTestPath().AppendASCII(source_filename);
-
   const base::FilePath to_path = temp_dir_.GetPath().AppendASCII(dest_filename);
-
   return base::CopyFile(from_path, to_path);
 }
 
-void UnitTestBase::SetUpForTesting(const bool integration_test) {
+void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
   setup_called_ = true;
 
-  integration_test_ = integration_test;
+  is_integration_test_ = is_integration_test;
 
   Initialize();
 }
 
 void UnitTestBase::InitializeAds() {
-  CHECK(integration_test_)
+  CHECK(is_integration_test_)
       << "|InitializeAds| should only be called if "
          "|SetUpForTesting| was initialized for integration testing";
 
@@ -104,6 +103,9 @@ void UnitTestBase::InitializeAds() {
 }
 
 AdsImpl* UnitTestBase::GetAds() const {
+  CHECK(is_integration_test_)
+      << "|GetAds| should only be called if |SetUpForTesting| was initialized "
+         "for integration testing";
   return ads_.get();
 }
 
@@ -163,9 +165,8 @@ void UnitTestBase::Initialize() {
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
-  MockIsForeground(ads_client_mock_, true);
-
-  MockIsFullScreen(ads_client_mock_, false);
+  MockIsBrowserActive(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   MockShouldShowNotifications(ads_client_mock_, true);
   MockShowNotification(ads_client_mock_);
@@ -178,8 +179,8 @@ void UnitTestBase::Initialize() {
   MockGetBrowsingHistory(ads_client_mock_);
 
   MockLoad(ads_client_mock_, temp_dir_);
-  MockLoadAdsResource(ads_client_mock_);
-  MockLoadResourceForId(ads_client_mock_);
+  MockLoadFileResource(ads_client_mock_);
+  MockLoadDataResource(ads_client_mock_);
   MockSave(ads_client_mock_);
 
   MockPrefs(ads_client_mock_);
@@ -189,7 +190,7 @@ void UnitTestBase::Initialize() {
   database_ = std::make_unique<Database>(path);
   MockRunDBTransaction(ads_client_mock_, database_);
 
-  if (integration_test_) {
+  if (is_integration_test_) {
     ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
     return;
   }
@@ -211,6 +212,8 @@ void UnitTestBase::Initialize() {
   database_initialize_ = std::make_unique<database::Initialize>();
   database_initialize_->CreateOrOpen(
       [](const bool success) { ASSERT_TRUE(success); });
+
+  diagnostics_ = std::make_unique<Diagnostics>();
 
   browser_manager_ = std::make_unique<BrowserManager>();
 

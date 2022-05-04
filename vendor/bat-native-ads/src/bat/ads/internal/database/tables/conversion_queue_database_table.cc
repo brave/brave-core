@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
@@ -479,7 +478,7 @@ void ConversionQueue::MigrateToV21(mojom::DBTransaction* transaction) {
       "conversion_id TEXT, "
       "advertiser_public_key TEXT, "
       "timestamp TIMESTAMP NOT NULL, "
-      "was_processed INTEGER NOT NULL DEFAULT 0)";
+      "was_processed INTEGER DEFAULT 0)";
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
@@ -503,7 +502,7 @@ void ConversionQueue::MigrateToV21(mojom::DBTransaction* transaction) {
   const std::string& update_query = base::StringPrintf(
       "UPDATE conversion_queue "
       "SET ad_type = 'ad_notification' "
-      "WHERE ad_type == ''");
+      "WHERE ad_type IS NULL");
 
   mojom::DBCommandPtr update_command = mojom::DBCommand::New();
   update_command->type = mojom::DBCommand::Type::EXECUTE;

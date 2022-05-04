@@ -15,6 +15,7 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -29,7 +30,6 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/color_palette.h"
@@ -138,9 +138,8 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   const views::FlexSpecification label_flex_rule =
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                views::MaximumFlexSizeRule::kPreferred);
-  auto* label = CreateLabel(
-      l10n_util::GetStringUTF16(
-          IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT));
+  auto* label = CreateLabel(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT));
   label->SetFontList(
       label->font_list().DeriveWithWeight(gfx::Font::Weight::BOLD));
   views_visible_before_checking_.push_back(label);
@@ -152,7 +151,7 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                   0));
   AddChildView(label);
 
-  label = CreateLabel(l10n_util::GetStringUTF16(
+  label = CreateLabel(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_ASK_ABOUT_CHECK_TEXT));
   views_visible_before_checking_.push_back(label);
   label->SetProperty(
@@ -175,9 +174,8 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
           .WithOrder(3));
   AddChildView(place_holder_view);
 
-  label = CreateLabel(
-      l10n_util::GetStringUTF16(
-          IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_NOT_AVAILABLE_TEXT));
+  label = CreateLabel(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_NOT_AVAILABLE_TEXT));
   views_visible_after_checking_.push_back(label);
   label->SetProperty(views::kFlexBehaviorKey, label_flex_rule);
   label->SetProperty(
@@ -191,7 +189,7 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
       base::BindRepeating(
           &BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed,
           base::Unretained(this)),
-      l10n_util::GetStringUTF16(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT)));
   views_visible_before_checking_.push_back(dont_ask_button_);
 

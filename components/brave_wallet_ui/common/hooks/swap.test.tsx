@@ -5,9 +5,6 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import { mockAccount } from '../constants/mocks'
 import { BraveWallet } from '../../constants/types'
 
-// Options
-import { AccountAssetOptions, makeNetworkAsset } from '../../options/asset-options'
-
 // Hooks
 import { TextEncoder, TextDecoder } from 'util'
 global.TextDecoder = TextDecoder as any
@@ -25,6 +22,7 @@ import * as MockedLib from '../async/__mocks__/lib'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { LibContext } from '../context/lib.context'
+import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
 jest.useFakeTimers()
 
@@ -36,11 +34,11 @@ const store = createStore(combineReducers({
 function renderHookOptionsWithCustomStore (store: any) {
   return {
     wrapper: ({ children }: { children?: React.ReactChildren }) =>
-    <Provider store={store}>
-      <LibContext.Provider value={MockedLib as any}>
-        {children}
-      </LibContext.Provider>
-    </Provider>
+      <Provider store={store}>
+        <LibContext.Provider value={MockedLib as any}>
+          {children}
+        </LibContext.Provider>
+      </Provider>
   }
 }
 
@@ -71,13 +69,13 @@ describe('useSwap hook', () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
 
     act(() => {
-      result.current.setFromAsset(AccountAssetOptions[0])
-      result.current.setToAsset(AccountAssetOptions[1])
+      result.current.setFromAsset(mockEthToken)
+      result.current.setToAsset(mockBasicAttentionToken)
     })
 
     await waitForNextUpdate()
 
-    expect(result.current.fromAsset).toEqual(makeNetworkAsset(mockWalletState.selectedNetwork))
+    expect(result.current.fromAsset).toEqual(mockEthToken)
 
     expect(result.current.toAsset).toEqual({
       coingeckoId: 'usd-coin',
@@ -90,7 +88,8 @@ describe('useSwap hook', () => {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
-      chainId: BraveWallet.ROPSTEN_CHAIN_ID
+      coin: BraveWallet.CoinType.ETH,
+      chainId: BraveWallet.MAINNET_CHAIN_ID
     })
   })
 
@@ -357,7 +356,7 @@ describe('useSwap hook', () => {
       await waitForValueToChange(() => result.current.isSwapSupported)
 
       await act(async () => {
-        result.current.setFromAsset(AccountAssetOptions[0]) // From asset is ETH
+        result.current.setFromAsset(mockEthToken) // From asset is ETH
         result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
@@ -394,7 +393,7 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptionsWithCustomStore(mockStore))
 
       act(() => {
-        result.current.setFromAsset(AccountAssetOptions[0])
+        result.current.setFromAsset(mockEthToken)
         result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',

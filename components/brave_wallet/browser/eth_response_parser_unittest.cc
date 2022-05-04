@@ -251,16 +251,15 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {
       // Encoded string of 0x8aaD44321A86b170879d7A244c1e8d360c99DdA8
       "3078386161443434333231413836623137303837396437413234346331653864"
       "3336306339394464413800000000000000000000000000000000000000000000\"}";
-  std::string value;
-  EXPECT_TRUE(ParseUnstoppableDomainsProxyReaderGet(json, &value));
+  auto value = ParseUnstoppableDomainsProxyReaderGet(json);
+  EXPECT_TRUE(value);
   EXPECT_EQ(value, "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8");
 
-  value = "";
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x000000000000000000000000000000000000000000000000000000000000002000";
-  EXPECT_FALSE(ParseUnstoppableDomainsProxyReaderGet(json, &value));
-  EXPECT_TRUE(value.empty());
+  value = ParseUnstoppableDomainsProxyReaderGet(json);
+  EXPECT_FALSE(value);
 }
 
 TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
@@ -453,6 +452,122 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
       })";
   EXPECT_FALSE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
                                      &oldest_block, &reward));
+}
+
+TEST(EthResponseParserUnitTest, ParseDataURIAndExtractJSON) {
+  std::string json;
+  std::string url;
+  // Invalid URL
+  EXPECT_FALSE(ParseDataURIAndExtractJSON(GURL(""), &json));
+  // Valid URL, incorrect scheme
+  EXPECT_FALSE(ParseDataURIAndExtractJSON(GURL("https://brave.com"),
+                                          &json));  // Incorrect scheme
+  // Valid URL and scheme, invalid mime_type
+  EXPECT_FALSE(ParseDataURIAndExtractJSON(
+      GURL("data:text/vnd-example+xyz;foo=bar;base64,R0lGODdh"),
+      &json));  // Incorrect mime type
+
+  // All valid
+  std::string expected =
+      R"({"attributes":"","description":"Non fungible lion","image":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIj48cGF0aCBkPSIiLz48L3N2Zz4=","name":"NFL"})";
+  url =
+      "data:application/"
+      "json;base64,"
+      "eyJhdHRyaWJ1dGVzIjoiIiwiZGVzY3JpcHRpb24iOiJOb24gZnVuZ2libGUgbGlvbiIsImlt"
+      "YWdlIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNE"
+      "b3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQTFNREFn"
+      "TlRBd0lqNDhjR0YwYUNCa1BTSWlMejQ4TDNOMlp6ND0iLCJuYW1lIjoiTkZMIn0=";
+  EXPECT_TRUE(ParseDataURIAndExtractJSON(GURL(url), &json));
+  EXPECT_EQ(json, expected);
+}
+
+TEST(EthResponseParserUnitTest, ParseERC721TokenUri) {
+  GURL url;
+
+  // Valid (3 total)
+  // (1/3) Valid IPFS URLs
+  std::string body = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003a697066733a2f2f516d65536a53696e4870506e6d586d73704d6a776958794e367a533445397a63636172694752336a7863615774712f31383137000000000000"
+  })";
+  EXPECT_TRUE(eth::ParseERC721TokenUri(body, &url));
+  EXPECT_EQ(url.spec(),
+            "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1817");
+
+  // (2/3) Data URIs are parsed
+  body = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000135646174613a6170706c69636174696f6e2f6a736f6e3b6261736536342c65794a686448527961574a316447567a496a6f69496977695a47567a59334a7063485270623234694f694a4f623234675a6e56755a326c696247556762476c7662694973496d6c745957646c496a6f695a474630595470706257466e5a53397a646d6372654731734f324a68633255324e43785153453479576e6c434e474a586548566a656a4270595568534d474e4562335a4d4d32517a5a486b314d3031354e585a6a62574e3254577042643031444f58706b62574e7053556861634670595a454e694d326335535770425a3031445154464e5245466e546c524264306c714e44686a5230597759554e436131425453576c4d656a513454444e4f4d6c70364e4430694c434a755957316c496a6f69546b5a4d496e303d0000000000000000000000"
+  })";
+  EXPECT_TRUE(eth::ParseERC721TokenUri(body, &url));
+  EXPECT_EQ(
+      url.spec(),
+      R"(data:application/json;base64,eyJhdHRyaWJ1dGVzIjoiIiwiZGVzY3JpcHRpb24iOiJOb24gZnVuZ2libGUgbGlvbiIsImltYWdlIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQTFNREFnTlRBd0lqNDhjR0YwYUNCa1BTSWlMejQ4TDNOMlp6ND0iLCJuYW1lIjoiTkZMIn0=)");
+
+  // (3/3) HTTP URLs are parsed
+  body = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
+  })";
+  EXPECT_TRUE(eth::ParseERC721TokenUri(body, &url));
+  EXPECT_EQ(url.spec(), "https://invisiblefriends.io/api/1817");
+
+  // Invalid (2 total)
+  // (1/2) Invalid provider response returns false
+  url = GURL();
+  body = R"({
+   "jsonrpc":"2.0",
+   "id":1,
+   "error": {
+     "code":-32005,
+     "message": "Request exceeds defined limit"
+   }
+ })";
+  EXPECT_FALSE(eth::ParseERC721TokenUri(body, &url));
+  EXPECT_EQ(url.spec(), "");
+
+  // (2/2) Invalid URL returns false (https//brave.com)
+  body = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001068747470732f2f62726176652e636f6d00000000000000000000000000000000"
+  })";
+  EXPECT_FALSE(eth::ParseERC721TokenUri(body, &url));
+  EXPECT_EQ(url.spec(), "");
+}
+
+TEST(EthResponseParserUnitTest, ParseStringResult) {
+  std::string value;
+
+  // Valid
+  std::string json = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73000000000000000000000000000000000000000000000000000000"
+  })";
+  EXPECT_TRUE(eth::ParseStringResult(json, &value));
+  EXPECT_EQ(
+      value,
+      "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks");
+
+  // Invalid JSON
+  json = "Invalid JSON";
+  value = "";
+  EXPECT_FALSE(eth::ParseStringResult(json, &value));
+  EXPECT_TRUE(value.empty());
+
+  // Valid JSON, invalid result (too short)
+  value = "";
+  json = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x00000000000000000000000000000007"
+  })";
+  EXPECT_FALSE(eth::ParseStringResult(json, &value));
+  EXPECT_TRUE(value.empty());
 }
 
 }  // namespace eth

@@ -10,12 +10,12 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/page_info/chrome_page_info_ui_delegate.h"
 #include "chrome/browser/ui/views/page_info/page_info_hover_button.h"
 #include "components/grit/brave_components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -29,7 +29,7 @@ std::unique_ptr<PageInfoHoverButton> CreateButton(
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
   const auto& ipfs_logo = *bundle.GetImageSkiaNamed(logo_resource_id);
   const std::u16string& tooltip =
-      l10n_util::GetStringUTF16(tooltip_resource_id);
+      brave_l10n::GetLocalizedResourceUTF16String(tooltip_resource_id);
 
   return std::make_unique<PageInfoHoverButton>(
       std::move(callback), ui::ImageModel::FromImageSkia(ipfs_logo),

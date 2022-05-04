@@ -151,6 +151,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
         Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
+      <message name="IDS_DE_AMP_SWITCH" desc="Switch to activate De-AMP feature">
+        Auto-redirect AMP pages
+      </message>
+      <message name="IDS_DE_AMP_SUMMARY" desc="Summary for De-AMP feature">
+        Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions
+      </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
       </message>
@@ -1822,9 +1828,6 @@ Are you sure you want to do this?
     <message name="IDS_MESSAGE" desc="Brave wallet message title text">
       Message
     </message>
-    <message name="IDS_DATA_TEXT" desc="Brave wallet data title text">
-      DATA
-    </message>
     <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
@@ -2234,8 +2237,8 @@ Are you sure you want to do this?
     <message name="IDS_SUPPORTS_SPEED" desc="Brave VPN plan text">
       Supports speeds of up to 100 Mbps
     </message>
-    <message name="IDS_USE_IKEV2" desc="Brave VPN plan text">
-      Uses IKEv2 secure encrypted VPN tunnel
+    <message name="IDS_USE_WIREGUARD" desc="Brave VPN plan text">
+      Uses Wireguard secure encrypted VPN tunnel
     </message>
     <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
       We never share or sell your info
@@ -2306,7 +2309,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Vpn profile creation failed. Please try again.
     </message>
     <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
-      Purchase Token verification failed. Please try again.
+      Purchase verification failed. Please try again.
     </message>
     <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
       VPN is running in the background
@@ -2344,9 +2347,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VPN_SUPPORT" desc="Brave VPN settings section text">
       VPN Support
     </message>
-    <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
+    <!-- <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
       Vpn profile is not created. Creating a new profile.
-    </message>
+    </message> -->
     <message name="IDS_FAIL_TO_GET_SERVER_LOCATIONS" desc="Brave VPN error text">
       Fail to get server location. Please try again later.
     </message>
@@ -2375,13 +2378,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Continue to Email
     </message>
     <message name="IDS_VPN_SUPPORT_TEXT" desc="Brave Vpn support text">
-      Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your
+      Support provided with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.
     </message>
     <message name="IDS_AUTOMATIC_SERVER_SELECTION_TEXT" desc="Vpn server selection text">
       A server region most proximate to you willl be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.
     </message>
     <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
-      Other Issues
+      Select Issue
     </message>
     <message name="IDS_CANNOT_CONNECT_TO_VPN" desc="Brave Vpn support text">
       Cannot connect to the VPN (Other error)
@@ -2426,7 +2429,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       ERROR!!\nCaused by a user cancelling the purchase flow.
     </message>
     <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
-      ERROR!!\nPurchased failed..
+      ERROR!!\nPurchase failed..
     </message>
     <message name="IDS_REJECT" desc="Brave crypto wallet button reject">
       Reject
@@ -2875,11 +2878,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_WALLET" desc="Content description for the button that allows an access to Brave Wallet.">
       Access Brave Wallet
     </message>
-    <message name="IDS_DAPP_BOTTOM_SHEET_WALLET_CONNECTIVITY_INFO" desc="Brave wallet Dapp wallet connectivity bottom sheet text">
-      Use this panel to securely access web3 and all your crypto assets.
-    </message>
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
-      Not connected...
+      Connect
     </message>
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS_CONNECTED" desc="Brave wallet Dapp wallet connectivity status">
       Connected
@@ -2917,6 +2917,96 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_BACK_BUTTON_TEXT" desc="Back button text for Brave wallet permission dialog.">
       Back
     </message>
-    </messages>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">
+      Allow this site to switch the network?
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">
+      This will switch the network to a previously added network.
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
+      Switch network
+    </message>
+    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
+      Enable Tab Group auto creation
+    </message>
+    <message name="IDS_BRAVE_WALLET_DAPPS_CONNECTION_REQUEST_MSG" desc="A message shown to user when a DApp site request to connect with Brave wallet">
+    This page wants to interact with Brave Wallet
+    </message>
+    <message name="IDS_CONNECTION_ERROR" desc="Always on vpn text">
+      Connection error
+    </message>
+    <message name="IDS_BRAVE_WALLET_NETWORK_SELECTION_ERROR" desc="Network activity toolbar title">
+      Unable to set network to <ph name="NETWORK_NAME">'%1$s'</ph>
+    </message>
+    <message name="IDS_ALWAYS_ON_DIALOG_TEXT" desc="Always on vpn text">
+      It appears you have other VPNs on this device set to “Always on”. To enable Brave Firewall + VPN, first disable this “Always on” setting for other VPNs before connecting again. If the problem persists, try uninstalling other VPNs.
+    </message>
+    <message name="IDS_OPEN_VPN_SETTINGS" desc="Always on vpn text">
+      Open VPN Settings
+    </message>
+    <message name="IDS_RESETTING_CONFIG" desc="Vpn reset config text">
+      Resetting configuration ...
+    </message>
+    <message name="IDS_ALREADY_SELECTED_THE_SERVER" desc="Vpn server selection text">
+      You have already selected the same server.
+    </message>
+    <message name="IDS_PERMISSION_WAS_CANCELLED" desc="Vpn user consent text">
+      Permission was cancelled
+    </message>
+    <message name="IDS_BRAVE_WALLET_QUEUE_REJECT_ALL" desc="Confirm Transaction Queue Reject All Transactions">
+      Reject <ph name="TRANSACTION_LENGTH"><ex>4</ex>%1$s</ph> transactions
+    </message>
+    <message name="IDS_WALLET_SITE_PERMISSIONS" desc="Site Permissions dialog title.">
+      Site permissions
+    </message>
+    <message name="IDS_WALLET_ACCOUNTS_CONNECTED" desc="Site Permissions number of accounts connected.">
+      <ph name="VALUE">%1$s<ex>2</ex></ph> accounts connected
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_NEW_ACCOUNT" desc="Site Permissions new account button.">
+      New account
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_CONNECT" desc="Site Permissions connect account button title.">
+      Connect
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_SWITCH" desc="Site Permissions switch account button title.">
+      Switch
+    </message>
+    <message name="IDS_FRAGMENT_CONNECT_ACCOUNT_DISCONNECT" desc="Site Permissions disconnect account button title.">
+      Disconnect
+    </message>
+    <message name="IDS_FRAGMENT_SIGN_MESSAGE_DESCRIPTION" desc="Sign message dialog description.">
+      Your signature is being requested
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME" desc="Add network panel name label">
+      Network name
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_URL" desc="Add network panel url label">
+      Network URL
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_ID" desc="Add network panel chain id label">
+      Chain ID
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">
+      Currency symbol
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE" desc="Add network panel network tab title">
+      Network
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">
+      This will allow this network to be used within Brave Wallet.
+    </message>
+    <message name="IDS_BRAVE_WALLET" desc="Brave Wallet text for string detection with localization">
+      Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_HEADING" desc="Add network panel title">
+      Allow this site to add a network?
+    </message>
+    <message name="IDS_FRAGMENT_ADD_TOKEN_TITLE" desc="Add token dialog title.">
+      Add suggested token
+    </message>
+    <message name="IDS_FRAGMENT_ADD_TOKEN_DESCRIPTION" desc="Add token dialog description.">
+      Would you like to import this token?
+    </message>
+  </messages>
   </release>
 </grit>

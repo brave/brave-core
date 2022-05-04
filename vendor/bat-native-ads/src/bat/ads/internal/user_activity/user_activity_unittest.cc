@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/user_activity/user_activity.h"
 
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -30,7 +31,7 @@ TEST_F(BatAdsUserActivityTest, HasInstance) {
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
+TEST_F(BatAdsUserActivityTest, RecordInitializedAdsEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kInitializedAds;
@@ -48,13 +49,13 @@ TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterForegroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
-      UserActivityEventType::kBrowserDidBecomeActive;
+      UserActivityEventType::kBrowserDidEnterForeground;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -69,7 +70,7 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterBackgroundEvent) {
@@ -90,7 +91,7 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterBackgroundEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest,
@@ -112,7 +113,7 @@ TEST_F(BatAdsUserActivityTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordClickedBookmarkEvent) {
@@ -133,7 +134,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedBookmarkEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordClickedHomePageButtonEvent) {
@@ -154,7 +155,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedHomePageButtonEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordClickedLinkEvent) {
@@ -174,7 +175,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedLinkEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordClickedReloadButtonEvent) {
@@ -195,7 +196,7 @@ TEST_F(BatAdsUserActivityTest, RecordClickedReloadButtonEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordClosedTabEvent) {
@@ -215,13 +216,13 @@ TEST_F(BatAdsUserActivityTest, RecordClosedTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordFocusedOnExistingTabEvent) {
   // Arrange
   const UserActivityEventType event_type =
-      UserActivityEventType::kFocusedOnExistingTab;
+      UserActivityEventType::kTabChangedFocus;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -236,7 +237,7 @@ TEST_F(BatAdsUserActivityTest, RecordFocusedOnExistingTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordGeneratedKeywordEvent) {
@@ -257,7 +258,7 @@ TEST_F(BatAdsUserActivityTest, RecordGeneratedKeywordEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordNewNavigationEvent) {
@@ -278,7 +279,7 @@ TEST_F(BatAdsUserActivityTest, RecordNewNavigationEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordOpenedLinkFromExternalApplicationEvent) {
@@ -299,7 +300,7 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedLinkFromExternalApplicationEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordOpenedNewTabEvent) {
@@ -319,12 +320,13 @@ TEST_F(BatAdsUserActivityTest, RecordOpenedNewTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
   // Arrange
-  const UserActivityEventType event_type = UserActivityEventType::kPlayedMedia;
+  const UserActivityEventType event_type =
+      UserActivityEventType::kTabStartedPlayingMedia;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -339,13 +341,13 @@ TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordStoppedPlayingMediaEvent) {
   // Arrange
   const UserActivityEventType event_type =
-      UserActivityEventType::kStoppedPlayingMedia;
+      UserActivityEventType::kTabStoppedPlayingMedia;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -360,7 +362,7 @@ TEST_F(BatAdsUserActivityTest, RecordStoppedPlayingMediaEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordSubmittedFormEvent) {
@@ -381,7 +383,7 @@ TEST_F(BatAdsUserActivityTest, RecordSubmittedFormEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordTabUpdatedEvent) {
@@ -401,7 +403,7 @@ TEST_F(BatAdsUserActivityTest, RecordTabUpdatedEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordTypedAndSelectedNonUrlEvent) {
@@ -422,7 +424,7 @@ TEST_F(BatAdsUserActivityTest, RecordTypedAndSelectedNonUrlEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest,
@@ -444,7 +446,7 @@ TEST_F(BatAdsUserActivityTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordTypedUrlEvent) {
@@ -464,7 +466,7 @@ TEST_F(BatAdsUserActivityTest, RecordTypedUrlEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, RecordUsedAddressBarEvent) {
@@ -485,7 +487,49 @@ TEST_F(BatAdsUserActivityTest, RecordUsedAddressBarEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+}
+
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
+  // Arrange
+  const UserActivityEventType event_type =
+      UserActivityEventType::kBrowserDidBecomeActive;
+
+  // Act
+  UserActivity::Get()->RecordEvent(event_type);
+
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+
+  // Assert
+  UserActivityEventList expected_events;
+  UserActivityEventInfo event;
+  event.type = event_type;
+  event.created_at = Now();
+  expected_events.push_back(event);
+
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+}
+
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidResignActiveEvent) {
+  // Arrange
+  const UserActivityEventType event_type =
+      UserActivityEventType::kBrowserDidResignActive;
+
+  // Act
+  UserActivity::Get()->RecordEvent(event_type);
+
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+
+  // Assert
+  UserActivityEventList expected_events;
+  UserActivityEventInfo event;
+  event.type = event_type;
+  event.created_at = Now();
+  expected_events.push_back(event);
+
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
@@ -503,15 +547,16 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kFocusedOnExistingTab);
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kTabChangedFocus);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kGeneratedKeyword);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kNewNavigation);
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedLinkFromExternalApplication);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kStoppedPlayingMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStartedPlayingMedia);
+  UserActivity::Get()->RecordEvent(
+      UserActivityEventType::kTabStoppedPlayingMedia);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kSubmittedForm);
 
   AdvanceClock(base::Hours(1));
@@ -552,7 +597,7 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   event.created_at = time;
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityTest, MaximumHistoryEntries) {
@@ -582,7 +627,7 @@ TEST_F(BatAdsUserActivityTest, MaximumHistoryEntries) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_EQ(expected_events, events);
+  EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
 }  // namespace ads

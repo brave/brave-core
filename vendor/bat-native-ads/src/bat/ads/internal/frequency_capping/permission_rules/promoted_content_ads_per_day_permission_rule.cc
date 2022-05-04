@@ -21,7 +21,7 @@ PromotedContentAdsPerDayPermissionRule::
     ~PromotedContentAdsPerDayPermissionRule() = default;
 
 bool PromotedContentAdsPerDayPermissionRule::ShouldAllow() {
-  const std::deque<base::Time>& history =
+  const std::vector<base::Time>& history =
       GetAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -38,7 +38,7 @@ std::string PromotedContentAdsPerDayPermissionRule::GetLastMessage() const {
 }
 
 bool PromotedContentAdsPerDayPermissionRule::DoesRespectCap(
-    const std::deque<base::Time>& history) {
+    const std::vector<base::Time>& history) {
   const base::TimeDelta time_constraint = base::Days(1);
 
   const int cap = features::GetMaximumPromotedContentAdsPerDay();

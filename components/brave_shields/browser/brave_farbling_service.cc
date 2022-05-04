@@ -30,14 +30,17 @@ uint64_t BraveFarblingService::session_token(bool is_off_the_record) {
   return session_token_;
 }
 
-void BraveFarblingService::set_session_tokens_for_testing() {
-  session_token_ = incognito_session_token_ = 12345;
+void BraveFarblingService::set_session_tokens_for_testing(
+    uint64_t session_token,
+    uint64_t incognito_session_token) {
+  session_token_ = session_token;
+  incognito_session_token_ = incognito_session_token;
 }
 
 bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     bool is_off_the_record,
-    std::mt19937_64* prng) {
+    FarblingPRNG* prng) {
   const std::string domain =
       net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
@@ -50,7 +53,7 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
                sizeof session_key));
   CHECK(h.Sign(domain, domain_key, sizeof domain_key));
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
-  *prng = std::mt19937_64(seed);
+  *prng = FarblingPRNG(seed);
   return true;
 }
 

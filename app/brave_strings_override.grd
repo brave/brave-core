@@ -304,7 +304,7 @@ Permissions you've already given to websites and apps may apply to this account.
          </if>
       <if expr="not is_android">
         </if>
-      <if expr="chromeos">
+      <if expr="enable_extensions and enable_supervised_users">
         </if>
 
       <if expr="not chromeos and not is_android">

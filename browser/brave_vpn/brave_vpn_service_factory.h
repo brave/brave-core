@@ -14,23 +14,13 @@
 
 class Profile;
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-class BraveVpnServiceDesktop;
-#endif
+namespace brave_vpn {
 
-#if BUILDFLAG(IS_ANDROID)
 class BraveVpnService;
-#endif
 
 class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-  static BraveVpnServiceDesktop* GetForProfile(Profile* profile);
-#endif
-
-#if BUILDFLAG(IS_ANDROID)
   static BraveVpnService* GetForProfile(Profile* profile);
-#endif
   static BraveVpnServiceFactory* GetInstance();
 
   BraveVpnServiceFactory(const BraveVpnServiceFactory&) = delete;
@@ -45,8 +35,8 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
 };
+
+}  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_BRAVE_VPN_SERVICE_FACTORY_H_

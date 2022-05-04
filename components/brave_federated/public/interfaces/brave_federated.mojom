@@ -1,0 +1,61 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module brave_federated.mojom;
+
+enum CovariateType {
+  kAdNotificationServedAt,
+  kAdNotificationClicked,
+  kAverageClickthroughRate,
+  kLastAdNotificationWasClicked,
+  kNumberOfBrowserDidBecomeActiveEvents,
+  kNumberOfBrowserWindowIsActiveEvents,
+  kNumberOfBrowserWindowIsInactiveEvents,
+  kNumberOfClickedBackOrForwardNavigationButtonsEvents,
+  kNumberOfClickedLinkEvents,
+  kNumberOfClickedReloadButtonEvents,
+  kNumberOfClosedTabEvents,
+  kNumberOfFocusedOnExistingTabEvents,
+  kNumberOfNewNavigationEvents,
+  kNumberOfOpenedNewTabEvents,
+  kNumberOfPlayedMediaEvents,
+  kNumberOfSubmittedFormEvents,
+  kNumberOfTypedAndSelectedNonUrlEvents,
+  kNumberOfTypedKeywordOtherThanDefaultSearchProviderEvents,
+  kNumberOfTypedUrlEvents,
+  kTimeSinceLastBrowserDidBecomeActiveEvent,
+  kTimeSinceLastBrowserWindowIsActiveEvent,
+  kTimeSinceLastBrowserWindowIsInactiveEvent,
+  kTimeSinceLastClickedBackOrForwardNavigationButtonsEvent,
+  kTimeSinceLastClickedLinkEvent,
+  kTimeSinceLastClickedReloadButtonEvent,
+  kTimeSinceLastClosedTabEvent,
+  kTimeSinceLastFocusedOnExistingTabEvent,
+  kTimeSinceLastNewNavigationEvent,
+  kTimeSinceLastOpenedNewTabEvent,
+  kTimeSinceLastPlayedMediaEvent,
+  kTimeSinceLastSubmittedFormEvent,
+  kTimeSinceLastTypedAndSelectedNonUrlEvent,
+  kTimeSinceLastTypedKeywordOtherThanDefaultSearchProviderEvent,
+  kTimeSinceLastTypedUrlEvent
+};
+
+enum DataType {
+  kBool,
+  kDouble,
+  kInt,
+  kInt64,
+  kString
+};
+
+struct Covariate {
+  DataType data_type;
+  CovariateType covariate_type;
+  string value;
+};
+
+struct TrainingInstance {
+  array<Covariate> covariates;
+};

@@ -15,12 +15,15 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -35,9 +38,15 @@ const char kMnemonic[] =
 
 class SolanaTransactionUnitTest : public testing::Test {
  public:
-  SolanaTransactionUnitTest() {
+  SolanaTransactionUnitTest()
+      : shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    keyring_service_.reset(new KeyringService(&prefs_));
+    json_rpc_service_.reset(
+        new JsonRpcService(shared_url_loader_factory_, &prefs_));
+    keyring_service_.reset(
+        new KeyringService(json_rpc_service_.get(), &prefs_));
   }
 
   ~SolanaTransactionUnitTest() override = default;
@@ -76,6 +85,9 @@ class SolanaTransactionUnitTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
 };
 
@@ -91,6 +103,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 3090;
 
   SolanaInstruction instruction(
       // Program ID
@@ -100,7 +113,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
        SolanaAccountMeta(to_account, false, true)},
       // Data
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
-  SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+  SolanaTransaction transaction(recent_blockhash, last_valid_block_height,
+                                from_account, {instruction});
 
   std::vector<uint8_t> expected_bytes = {
       // Signature compact array
@@ -141,8 +155,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   };
   std::string expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service(), ""),
-            expected_tx);
+  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service()), expected_tx);
 
   // Test two signers.
   instruction = SolanaInstruction(
@@ -153,8 +166,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
        SolanaAccountMeta(to_account, true, true)},
       // Data
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
-  transaction =
-      SolanaTransaction(recent_blockhash, from_account, {instruction});
+  transaction = SolanaTransaction(recent_blockhash, last_valid_block_height,
+                                  from_account, {instruction});
 
   expected_bytes = std::vector<uint8_t>({
       // Signature compact array
@@ -200,11 +213,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   });
   expected_tx = base::Base64Encode(expected_bytes);
-  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service(), ""),
-            expected_tx);
+  EXPECT_EQ(transaction.GetSignedTransaction(keyring_service()), expected_tx);
 
   // Test key_service is nullptr.
-  EXPECT_TRUE(transaction.GetSignedTransaction(nullptr, "").empty());
+  EXPECT_TRUE(transaction.GetSignedTransaction(nullptr).empty());
 
   std::vector<uint8_t> oversized_data(1232, 1);
   instruction = SolanaInstruction(
@@ -214,15 +226,16 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
       oversized_data);
-  transaction =
-      SolanaTransaction(recent_blockhash, from_account, {instruction});
-  EXPECT_TRUE(transaction.GetSignedTransaction(keyring_service(), "").empty());
+  transaction = SolanaTransaction(recent_blockhash, last_valid_block_height,
+                                  from_account, {instruction});
+  EXPECT_TRUE(transaction.GetSignedTransaction(keyring_service()).empty());
 }
 
 TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 3090;
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
   SolanaInstruction instruction(
@@ -232,7 +245,8 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
       data);
-  SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+  SolanaTransaction transaction(recent_blockhash, last_valid_block_height,
+                                from_account, {instruction});
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
@@ -240,6 +254,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   auto solana_tx_data = transaction.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
+  EXPECT_EQ(solana_tx_data->last_valid_block_height, last_valid_block_height);
   EXPECT_EQ(solana_tx_data->fee_payer, from_account);
   EXPECT_EQ(solana_tx_data->to_wallet_address, to_account);
   EXPECT_EQ(solana_tx_data->spl_token_mint_address, "");
@@ -273,6 +288,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 3090;
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
   SolanaInstruction instruction(
@@ -282,7 +298,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
       data);
-  SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+  SolanaTransaction transaction(recent_blockhash, last_valid_block_height,
+                                from_account, {instruction});
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
@@ -292,6 +309,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
       {
         "message": {
           "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
+          "last_valid_block_height": "3090",
           "fee_payer": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
           "instructions": [
             {
@@ -337,8 +355,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
 }
 
 TEST_F(SolanaTransactionUnitTest, SetTxType) {
-  auto tx =
-      SolanaTransaction("", "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
+  auto tx = SolanaTransaction(
+      "", 0, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
   int solana_min = static_cast<int>(mojom::TransactionType::Other);
   int solana_max = static_cast<int>(
       mojom::TransactionType::
@@ -359,6 +377,7 @@ TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 3090;
 
   SolanaInstruction instruction(
       // Program ID
@@ -368,20 +387,22 @@ TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
        SolanaAccountMeta(to_account, false, true)},
       // Data
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
-  SolanaTransaction transaction("", from_account, {instruction});
+  SolanaTransaction transaction("", 0, from_account, {instruction});
 
   // Blockhash not available.
-  EXPECT_TRUE(transaction.GetBase64EncodedMessage("").empty());
+  EXPECT_TRUE(transaction.GetBase64EncodedMessage().empty());
 
-  // Blockhash is passed, will be stored in the message.
-  auto result = transaction.GetBase64EncodedMessage(recent_blockhash);
+  // Blockhash is set.
+  transaction.message()->set_recent_blockhash(recent_blockhash);
+  auto result = transaction.GetBase64EncodedMessage();
   auto serialized_msg = transaction.message_.Serialize(nullptr);
   ASSERT_TRUE(serialized_msg);
   EXPECT_EQ(result, base::Base64Encode(*serialized_msg));
 
   // Blockhash is stored in the message already.
-  SolanaTransaction transaction2(recent_blockhash, from_account, {instruction});
-  result = transaction2.GetBase64EncodedMessage("");
+  SolanaTransaction transaction2(recent_blockhash, last_valid_block_height,
+                                 from_account, {instruction});
+  result = transaction2.GetBase64EncodedMessage();
   serialized_msg = transaction2.message_.Serialize(nullptr);
   ASSERT_TRUE(serialized_msg);
   EXPECT_EQ(result, base::Base64Encode(*serialized_msg));

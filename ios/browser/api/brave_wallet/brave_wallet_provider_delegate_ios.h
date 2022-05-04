@@ -9,21 +9,34 @@
 #import <Foundation/Foundation.h>
 #import "brave_wallet.mojom.objc.h"
 
+@class URLOriginIOS;
+
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^BraveWalletProviderResultsCallback)(
-    NSArray<NSString*>* values,
-    BraveWalletProviderError error,
-    NSString* errorMessage);
+typedef void (^RequestPermissionsCallback)(
+    BraveWalletRequestPermissionsError error,
+    NSArray<NSString*>* _Nullable allowedAccounts);
+
+typedef void (^IsAccountAllowedCallback)(bool allowed);
+
+typedef void (^GetAllowedAccountsCallback)(bool success,
+                                           NSArray<NSString*>* accounts);
 
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (void)showPanel;
-- (NSURL*)getOrigin;
-- (void)requestEthereumPermissions:
-    (BraveWalletProviderResultsCallback)completion;
-- (void)getAllowedAccounts:(BOOL)includeAccountsWhenLocked
-                completion:(BraveWalletProviderResultsCallback)completion;
+- (URLOriginIOS*)getOrigin;
+- (void)walletInteractionDetected;
+- (void)showWalletOnboarding;
+- (void)requestPermissions:(BraveWalletCoinType)type
+                  accounts:(NSArray<NSString*>*)accounts
+                completion:(RequestPermissionsCallback)completion;
+- (void)isAccountAllowed:(BraveWalletCoinType)type
+                 account:(NSString*)account
+              completion:(IsAccountAllowedCallback)completion;
+- (void)getAllowedAccounts:(BraveWalletCoinType)type
+                  accounts:(NSArray<NSString*>*)accounts
+                completion:(GetAllowedAccountsCallback)completion;
 @end
 
 NS_ASSUME_NONNULL_END

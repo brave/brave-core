@@ -66,8 +66,7 @@ void BraveAppearanceHandler::RegisterMessages() {
           base::Unretained(this)));
 }
 
-void BraveAppearanceHandler::SetBraveThemeType(
-    base::Value::ConstListView args) {
+void BraveAppearanceHandler::SetBraveThemeType(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(args[0].is_int());
   AllowJavascript();
@@ -77,8 +76,7 @@ void BraveAppearanceHandler::SetBraveThemeType(
       static_cast<dark_mode::BraveDarkModeType>(int_type));
 }
 
-void BraveAppearanceHandler::GetBraveThemeType(
-    base::Value::ConstListView args) {
+void BraveAppearanceHandler::GetBraveThemeType(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   // GetBraveThemeType() should be used because settings option displays all
@@ -116,7 +114,7 @@ void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
 }
 
 void BraveAppearanceHandler::GetNewTabShowsOptionsList(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
@@ -124,7 +122,7 @@ void BraveAppearanceHandler::GetNewTabShowsOptionsList(
 }
 
 void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(

@@ -22,8 +22,9 @@ GURL BravePermissionManager::GetCanonicalOrigin(
     ContentSettingsType permission,
     const GURL& requesting_origin,
     const GURL& embedding_origin) const {
-  // Use requesting_origin which will have ethereum address info.
-  if (permission == ContentSettingsType::BRAVE_ETHEREUM)
+  // Use requesting_origin which will have ethereum or solana address info.
+  if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
+      permission == ContentSettingsType::BRAVE_SOLANA)
     return requesting_origin;
 
   return PermissionManager::GetCanonicalOrigin(permission, requesting_origin,

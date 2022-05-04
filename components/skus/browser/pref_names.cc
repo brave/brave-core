@@ -12,10 +12,5 @@ namespace prefs {
 // stores SKU key/value pairs in local storage.
 const char kSkusState[] = "skus.state";
 
-// Simple boolean value which is FALSE by default but is TRUE when
-// credential_summary returns back that it has a credential.
-// This value is monitored in the VPN code using a PrefChangeRegistrar.
-const char kSkusVPNHasCredential[] = "skus.credential.has_vpn";
-
 }  // namespace prefs
 }  // namespace skus

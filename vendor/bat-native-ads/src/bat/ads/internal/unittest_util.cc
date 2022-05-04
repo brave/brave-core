@@ -10,7 +10,6 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
-#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
@@ -23,6 +22,7 @@
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 using ::testing::_;
@@ -36,7 +36,7 @@ namespace {
 static base::flat_map<std::string, uint16_t> g_url_endpoint_indexes;
 
 static base::flat_map<std::string,
-                      base::flat_map<std::string, std::vector<double>>>
+                      base::flat_map<std::string, std::vector<base::Time>>>
     g_ad_event_history;
 
 static base::flat_map<std::string, std::string> g_prefs;
@@ -65,14 +65,14 @@ URLEndpointResponses GetUrlEndpointResponsesForPath(
   return iter->second;
 }
 
-bool GetNextUrlEndpointResponse(const std::string& url,
+bool GetNextUrlEndpointResponse(const GURL& url,
                                 const URLEndpoints& endpoints,
                                 URLEndpointResponse* url_endpoint_response) {
-  DCHECK(!url.empty()) << "Empty URL";
+  DCHECK(url.is_valid()) << "Invalid URL: " << url;
   DCHECK(!endpoints.empty()) << "Missing endpoints";
   DCHECK(url_endpoint_response);
 
-  const std::string path = GURL(url).PathForRequest();
+  const std::string path = url.PathForRequest();
 
   const URLEndpointResponses url_endpoint_responses =
       GetUrlEndpointResponsesForPath(endpoints, path);
@@ -93,7 +93,7 @@ bool GetNextUrlEndpointResponse(const std::string& url,
   } else {
     if (url_endpoint_response_indexes_iter->second ==
         url_endpoint_responses.size() - 1) {
-      NOTREACHED() << "Missing MockUrlRequest endpoint response for " << url;
+      DCHECK(false) << "Missing MockUrlRequest endpoint response for " << url;
       return false;
     }
 
@@ -118,9 +118,8 @@ base::flat_map<std::string, std::string> UrlRequestHeadersToMap(
   for (const auto& header : headers) {
     const std::vector<std::string> components = base::SplitString(
         header, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-
     if (components.size() != 2) {
-      NOTREACHED();
+      DCHECK(false) << "Invalid header: " << header;
       continue;
     }
 
@@ -394,14 +393,15 @@ void MockIsNetworkConnectionAvailable(
       .WillByDefault(Return(is_available));
 }
 
-void MockIsForeground(const std::unique_ptr<AdsClientMock>& mock,
-                      const bool is_foreground) {
-  ON_CALL(*mock, IsForeground()).WillByDefault(Return(is_foreground));
+void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
+                         const bool is_browser_active) {
+  ON_CALL(*mock, IsBrowserActive()).WillByDefault(Return(is_browser_active));
 }
 
-void MockIsFullScreen(const std::unique_ptr<AdsClientMock>& mock,
-                      const bool is_full_screen) {
-  ON_CALL(*mock, IsFullScreen()).WillByDefault(Return(is_full_screen));
+void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
+                                   const bool is_browser_in_full_screen_mode) {
+  ON_CALL(*mock, IsBrowserInFullScreenMode())
+      .WillByDefault(Return(is_browser_in_full_screen_mode));
 }
 
 void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
@@ -423,14 +423,14 @@ void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, RecordAdEventForId(_, _, _, _))
       .WillByDefault(Invoke(
           [](const std::string& id, const std::string& ad_type,
-             const std::string& confirmation_type, const double timestamp) {
+             const std::string& confirmation_type, const base::Time time) {
             DCHECK(!id.empty());
             DCHECK(!ad_type.empty());
             DCHECK(!confirmation_type.empty());
 
             const std::string& uuid = GetUuidForCurrentTest(id);
             const std::string& type_id = ad_type + confirmation_type;
-            g_ad_event_history[uuid][type_id].push_back(timestamp);
+            g_ad_event_history[uuid][type_id].push_back(time);
           }));
 }
 
@@ -438,7 +438,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetAdEvents(_, _))
       .WillByDefault(Invoke(
           [](const std::string& ad_type,
-             const std::string& confirmation_type) -> std::vector<double> {
+             const std::string& confirmation_type) -> std::vector<base::Time> {
             DCHECK(!ad_type.empty());
             DCHECK(!confirmation_type.empty());
 
@@ -447,7 +447,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
 
             const std::string& type_id = ad_type + confirmation_type;
 
-            std::vector<double> timestamps;
+            std::vector<base::Time> timestamps;
 
             for (const auto& ad_event_history : g_ad_event_history) {
               const std::string& uuid = ad_event_history.first;
@@ -457,7 +457,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
                 continue;
               }
 
-              const base::flat_map<std::string, std::vector<double>>&
+              const base::flat_map<std::string, std::vector<base::Time>>&
                   ad_events = ad_event_history.second;
 
               for (const auto& ad_event : ad_events) {
@@ -466,7 +466,7 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
                   continue;
                 }
 
-                const std::vector<double>& ad_event_timestamps =
+                const std::vector<base::Time>& ad_event_timestamps =
                     ad_event.second;
 
                 timestamps.insert(timestamps.end(),
@@ -493,11 +493,12 @@ void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, GetBrowsingHistory(_, _, _))
       .WillByDefault(Invoke([](const int max_count, const int days_ago,
                                GetBrowsingHistoryCallback callback) {
-        std::vector<std::string> history;
+        std::vector<GURL> history;
+
         for (int i = 0; i < max_count; i++) {
-          const std::string entry =
+          const std::string spec =
               base::StringPrintf("https://www.brave.com/%d", i);
-          history.push_back(entry);
+          history.push_back(GURL(spec));
         }
 
         callback(history);
@@ -532,34 +533,28 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
           }));
 }
 
-void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadAdsResource(_, _, _))
-      .WillByDefault(Invoke(
-          [](const std::string& id, const int version, LoadCallback callback) {
-            base::FilePath path = GetTestPath();
-            path = path.AppendASCII("resources");
-            path = path.AppendASCII(id);
+void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadFileResource(_, _, _))
+      .WillByDefault(Invoke([](const std::string& id, const int version,
+                               LoadFileCallback callback) {
+        const base::FilePath path = GetFileResourcePath().AppendASCII(id);
 
-            std::string value;
-            if (!base::ReadFileToString(path, &value)) {
-              callback(/* success */ false, value);
-              return;
-            }
-
-            callback(/* success */ true, value);
-          }));
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
 }
 
-void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadResourceForId(_))
-      .WillByDefault(Invoke([](const std::string& id) -> std::string {
-        base::FilePath path = GetResourcesPath();
-        path = path.AppendASCII(id);
+void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadDataResource(_))
+      .WillByDefault(Invoke([](const std::string& name) -> std::string {
+        const absl::optional<std::string>& content_optional =
+            ReadFileFromDataResourcePathToString(name);
+        if (!content_optional.has_value()) {
+          return "";
+        }
 
-        std::string value;
-        base::ReadFileToString(path, &value);
-
-        return value;
+        return content_optional.value();
       }));
 }
 

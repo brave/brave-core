@@ -12,17 +12,18 @@
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
 namespace {
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
-    mojom::TxDataUnionPtr tx_data_union) {
-  if (tx_data_union->is_solana_tx_data())
+    const mojom::TxDataUnion& tx_data_union) {
+  if (tx_data_union.is_solana_tx_data())
     return mojom::CoinType::SOL;
 
-  if (tx_data_union->is_fil_tx_data())
+  if (tx_data_union.is_fil_tx_data())
     return mojom::CoinType::FIL;
 
   return mojom::CoinType::ETH;
@@ -56,6 +57,10 @@ EthTxManager* TxService::GetEthTxManager() {
 
 SolanaTxManager* TxService::GetSolanaTxManager() {
   return static_cast<SolanaTxManager*>(GetTxManager(mojom::CoinType::SOL));
+}
+
+FilTxManager* TxService::GetFilTxManager() {
+  return static_cast<FilTxManager*>(GetTxManager(mojom::CoinType::FIL));
 }
 
 mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
@@ -96,10 +101,12 @@ void TxService::BindSolanaTxManagerProxy(
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& from,
+    const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
-  auto coin_type = GetCoinTypeFromTxDataUnion(tx_data_union->Clone());
-  GetTxManager(coin_type)->AddUnapprovedTransaction(std::move(tx_data_union),
-                                                    from, std::move(callback));
+  auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
+
+  GetTxManager(coin_type)->AddUnapprovedTransaction(
+      std::move(tx_data_union), from, origin, std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,
@@ -197,6 +204,17 @@ void TxService::MakeERC721TransferFromData(
     MakeERC721TransferFromDataCallback callback) {
   GetEthTxManager()->MakeERC721TransferFromData(
       from, to, token_id, contract_address, std::move(callback));
+}
+
+void TxService::MakeERC1155TransferFromData(
+    const std::string& from,
+    const std::string& to,
+    const std::string& token_id,
+    const std::string& value,
+    const std::string& contract_address,
+    MakeERC1155TransferFromDataCallback callback) {
+  GetEthTxManager()->MakeERC1155TransferFromData(
+      from, to, token_id, value, contract_address, std::move(callback));
 }
 
 void TxService::SetGasPriceAndLimitForUnapprovedTransaction(

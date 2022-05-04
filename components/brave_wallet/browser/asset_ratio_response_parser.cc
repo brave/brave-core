@@ -329,7 +329,9 @@ mojom::GasEstimation1559Ptr ParseGasOracle(const std::string& json) {
   return estimation;
 }
 
-mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json) {
+mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
+                                         const std::string& chain_id,
+                                         mojom::CoinType coin) {
   // {
   //   "payload": {
   //     "status": "1",
@@ -417,9 +419,9 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json) {
   if (!is_erc20 && !is_erc721)  // unsupported token
     return nullptr;
 
-  return mojom::BlockchainToken::New(eth_addr.ToChecksumAddress(), *name,
-                                     "" /* logo */, is_erc20, is_erc721,
-                                     *symbol, decimals, true, "", "", "");
+  return mojom::BlockchainToken::New(
+      eth_addr.ToChecksumAddress(), *name, "" /* logo */, is_erc20, is_erc721,
+      *symbol, decimals, true, "", "", chain_id, coin);
 }
 
 }  // namespace brave_wallet

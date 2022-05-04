@@ -21,7 +21,7 @@ InlineContentAdsPerHourPermissionRule::
     ~InlineContentAdsPerHourPermissionRule() = default;
 
 bool InlineContentAdsPerHourPermissionRule::ShouldAllow() {
-  const std::deque<base::Time>& history =
+  const std::vector<base::Time>& history =
       GetAdEvents(AdType::kInlineContentAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
@@ -37,7 +37,7 @@ std::string InlineContentAdsPerHourPermissionRule::GetLastMessage() const {
 }
 
 bool InlineContentAdsPerHourPermissionRule::DoesRespectCap(
-    const std::deque<base::Time>& history) {
+    const std::vector<base::Time>& history) {
   const base::TimeDelta time_constraint = base::Hours(1);
 
   const int cap = features::GetMaximumInlineContentAdsPerHour();

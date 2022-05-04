@@ -425,44 +425,33 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="7559243474426790340">Làm mới Trạng thái</translation>
 <translation id="8376263745431603066">Bật "Chế độ Ban đêm" (Thử nghiệm)</translation>
 <translation id="1383876407941801731">Tìm kiếm</translation>
-<translation id="1972589975368876259">Chỉnh sửa Ngăn xếp</translation>
-<translation id="2490330380242414851">Xóa Tiện ích</translation>
 <translation id="8446884382197647889">Tìm hiểu thêm</translation>
-<translation id="7384441892795736634">Làm mới Dữ liệu</translation>
-<translation id="4804818685124855865">Ngắt kết nối</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="558614325644656740">Có sẵn <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="3414885529641505869">Mua <ph name="COIN_NAME"/></translation>
 <translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Địa chỉ Gửi tiền</translation>
 <translation id="4836242416604533644"><ph name="COIN_MEMO"/> Ghi chú Gửi tiền</translation>
+<translation id="6755546361496900700">Xem trước Quy đổi</translation>
 <translation id="5110244215256675209">Mua Tiền điện tử</translation>
 <translation id="2271556362602437160">.com</translation>
 <translation id="3727077517986954867">.us</translation>
-<translation id="3414885529641505869">Mua <ph name="COIN_NAME"/></translation>
-<translation id="558614325644656740">Có sẵn <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
-<translation id="6755546361496900700">Xem trước Quy đổi</translation>
-<translation id="2882813124794301799">Ngăn xếp Tiện ích</translation>
 <translation id="13296465911709339">Đã sao chép văn bản của bạn vào khay nhớ tạm.</translation>
 <translation id="2735834606413553397">Địa chỉ công cộng đã được sao chép vào khay nhớ tạm.</translation>
 <translation id="7144878232160441200">Thử lại</translation>
 <translation id="2977461003134694205">Thống kê Quyền riêng tư</translation>
-<translation id="4643117005422448078">Các trang Hàng đầu</translation>
 <translation id="6966052266404721769">Binance</translation>
-<translation id="1392658226187691544">Trình theo dõi &amp; Quảng cáo Đã chặn, Băng thông Đã lưu và Thời gian Tiết kiệm Ước tính.</translation>
-<translation id="74417429503469271">Mở các trang hàng đầu bạn thường truy cập.</translation>
 <translation id="2956070106555335453">Tóm tắt</translation>
 <translation id="1366855498335432549">Ký quỹ</translation>
 <translation id="1301340234286078471">Quy đổi</translation>
 <translation id="223536150967420869">Mua</translation>
-<translation id="1714829281959608206">Bật kết nối Binance để xem số dư tài khoản Binance và kinh doanh tiền điện tử.</translation>
 <translation id="4584930231524505442">Tôi muốn quy đổi...</translation>
 <translation id="5749014321384313843">Tôi muốn chi tiêu...</translation>
-<translation id="8688672835843460752">Khả dụng</translation>
 <translation id="2480674848181564169">Không đủ số dư để chuyển đổi</translation>
 <translation id="2215334405220411393">Số lượng tối thiểu để chuyển đổi là : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">Không thể kết nối</translation>
 <translation id="7742417737698031726">Phí</translation>
 <translation id="2122225204180056042">Bạn sẽ nhận được</translation>
 <translation id="6432284126416751397">Xác nhận Quy đổi</translation>
-<translation id="5137723827757859599">Chưa có gì ở các trang hàng đầu.</translation>
 <translation id="3891414008432200754">Giá</translation>
 <translation id="3733576242118819803">Xác nhận (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Chuyển đổi Không thành công. Xin vui lòng thử lại.</translation>
@@ -564,6 +553,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2759836790106646094">Sao lưu ví của bạn ngay bây giờ!</translation>
 <translation id="1078873179929044999">Trong bước tiếp theo, bạn sẽ thấy một cụm từ khôi phục gồm 12 từ, mà bạn có thể sử dụng để khôi phục tài khoản tiền mã hóa chính của mình. Hãy lưu giữ cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn chuyển đổi ví.</translation>
 <translation id="2359808026110333948">Tiếp tục</translation>
+<translation id="5488357322146334497">Tin nhắn</translation>
+<translation id="7228169875515099943">DỮ LIỆU</translation>
 <translation id="1904000155026201268">Tôi hiểu rằng nếu tôi làm mất cụm từ khôi phục, tôi sẽ không thể truy cập ví tiền điện tử của mình.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
 <translation id="5077747669435508720">Ghi lại hoặc sao chép những từ này theo thứ tự chính xác được hiển thị bên dưới và lưu chúng ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn đổi ví.</translation>
@@ -808,6 +799,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1254969878422524947">Giới hạn tiền thưởng trên xăng (Gwei)</translation>
 <translation id="7373308452149471621">Giới hạn giá trên xăng (Gwei)</translation>
 <translation id="5891811606602061966">Không nhập được tài khoản, vui lòng hãy thử lại.</translation>
+<translation id="1822506443689803572">Brave sử dụng <ph name="DEX_PROVIDER"/> làm bộ tổng hợp DEX.</translation>
 <translation id="5061574358754621254">Dữ liệu giá được cung cấp bởi CoinGecko</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
 <translation id="8574289650879708853">Thêm tài sản tùy chỉnh</translation>
@@ -861,4 +853,21 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4945690646623486292">Chọn mạng</translation>
 <translation id="8853725596990766789">Thay đổi số lượng</translation>
 <translation id="5233638681132016545">Tab mới</translation>
+<translation id="8006088103295786154">Truy cập Ví Brave</translation>
+<translation id="5308380583665731573">Kết nối</translation>
+<translation id="3432029672560911238">Tài khoản người dùng</translation>
+<translation id="5753378322046059140">Chuyển đổi tài khoản</translation>
+<translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">Mở rộng</translation>
+<translation id="3586752056660754651">Ký nhận</translation>
+<translation id="6592721981110586529">Kết nối với Ví Brave</translation>
+<translation id="329813193938846695">Chọn (các) tài khoản</translation>
+<translation id="3890989020011724401">Tài khoản mới</translation>
+<translation id="291375746846291973">Chỉ kết nối với các website mà bạn tin tưởng.</translation>
+<translation id="385051799172605136">Quay lại</translation>
+<translation id="1060221736464994328">Cho phép trang này chuyển đổi mạng?</translation>
+<translation id="2478788592457735063">Điều này sẽ chuyển đổi mạng sang một mạng đã thêm trước đó.</translation>
+<translation id="8756686998207163764">Chuyển đổi mạng</translation>
+<translation id="394256914628786902">Bật tự động tạo Nhóm tab</translation>
+<translation id="8274201358637112807">Trang này muốn tương tác với Ví Brave</translation>
 </translationbundle>

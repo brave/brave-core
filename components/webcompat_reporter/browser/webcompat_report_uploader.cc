@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/webcompat_reporter/browser/buildflags.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "net/base/load_flags.h"
 #include "net/base/privacy_mode.h"
@@ -36,7 +37,7 @@ void WebcompatReportUploader::SubmitReport(const GURL& report_url,
                                            const base::Value& contact) {
   std::string api_key = brave_stats::GetAPIKey();
 
-  GURL upload_url(WEBCOMPAT_REPORT_ENDPOINT);
+  const GURL upload_url(BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT));
 
   url::Origin report_url_origin = url::Origin::Create(report_url);
 

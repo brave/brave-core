@@ -6,13 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_ACTIVITY_USER_ACTIVITY_EVENT_INFO_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_ACTIVITY_USER_ACTIVITY_EVENT_INFO_ALIASES_H_
 
-#include <deque>
-
+#include "base/containers/circular_deque.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
 namespace ads {
 
-using UserActivityEventList = std::deque<UserActivityEventInfo>;
+using UserActivityEventList = base::circular_deque<UserActivityEventInfo>;
 
 }  // namespace ads
 

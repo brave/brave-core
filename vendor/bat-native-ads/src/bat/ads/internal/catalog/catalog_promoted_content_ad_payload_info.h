@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "url/gurl.h"
+
 namespace ads {
 
 struct CatalogPromotedContentAdPayloadInfo final {
@@ -21,7 +23,7 @@ struct CatalogPromotedContentAdPayloadInfo final {
 
   std::string title;
   std::string description;
-  std::string target_url;
+  GURL target_url;
 };
 
 }  // namespace ads

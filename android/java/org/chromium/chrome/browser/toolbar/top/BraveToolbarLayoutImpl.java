@@ -921,27 +921,27 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             // Helps Brave News know how to behave on home button action
             BraveActivity.getBraveActivity().setComesFromNewTab(true);
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
-            showWalletPanel(v);
+            maybeShowWalletPanel(v);
         }
     }
 
-    public void showWalletPanel(View v) {
-        // TODO detect somehow do we need to show a permission dialog instead
+    private void maybeShowWalletPanel(View v) {
         BraveActivity activity = BraveActivity.getBraveActivity();
         assert activity != null;
         if (activity == null) {
             return;
         }
+        activity.showWalletPanel();
+    }
+
+    private void showWalletPanelInternal(View v) {
         mDAppsWalletController =
                 new DAppsWalletController(getContext(), v, dialog -> mDAppsWalletController = null);
         mDAppsWalletController.showWalletPanel();
-        //        dappsBottomSheetDialogFragment.show(
-        //                activity.getSupportFragmentManager(),
-        //                DappsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     public void showWalletPanel() {
-        showWalletPanel(this);
+        showWalletPanelInternal(this);
     }
 
     @Override

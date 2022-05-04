@@ -36,9 +36,9 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceDidNotLoad) {
 
   resource::AntiTargeting resource;
 
-  BrowsingHistoryList history = {{"https://www.foo1.org"},
-                                 {"https://www.brave.com"},
-                                 {"https://www.foo2.org"}};
+  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                 GURL("https://www.brave.com"),
+                                 GURL("https://www.foo2.org")};
 
   // Act
   AntiTargetingExclusionRule frequency_cap(&resource, history);
@@ -55,10 +55,11 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
 
   resource::AntiTargeting resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
-  BrowsingHistoryList history = {{"https://www.foo1.org"},
-                                 {"https://www.brave.com"},
-                                 {"https://www.foo2.org"}};
+  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                 GURL("https://www.brave.com"),
+                                 GURL("https://www.foo2.org")};
 
   // Act
   AntiTargetingExclusionRule frequency_cap(&resource, history);
@@ -75,9 +76,10 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
 
   resource::AntiTargeting resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
-  BrowsingHistoryList history = {{"https://www.foo1.org"},
-                                 {"https://www.foo2.org"}};
+  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                 GURL("https://www.foo2.org")};
 
   // Act
   AntiTargetingExclusionRule frequency_cap(&resource, history);
@@ -95,9 +97,10 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest,
 
   resource::AntiTargeting resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
-  BrowsingHistoryList history = {{"https://www.foo1.org"},
-                                 {"https://www.brave.com"}};
+  BrowsingHistoryList history = {GURL("https://www.foo1.org"),
+                                 GURL("https://www.brave.com")};
 
   // Act
   AntiTargetingExclusionRule frequency_cap(&resource, history);

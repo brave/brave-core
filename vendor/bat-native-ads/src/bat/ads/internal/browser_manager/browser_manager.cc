@@ -7,101 +7,116 @@
 
 #include "base/check_op.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
 
 namespace ads {
 
 namespace {
-BrowserManager* g_browser_manager = nullptr;
+BrowserManager* g_browser_manager_instance = nullptr;
 }  // namespace
 
 BrowserManager::BrowserManager() {
-  DCHECK_EQ(g_browser_manager, nullptr);
-  g_browser_manager = this;
+  DCHECK(!g_browser_manager_instance);
+  g_browser_manager_instance = this;
 }
 
 BrowserManager::~BrowserManager() {
-  DCHECK(g_browser_manager);
-  g_browser_manager = nullptr;
+  DCHECK_EQ(this, g_browser_manager_instance);
+  g_browser_manager_instance = nullptr;
 }
 
 // static
 BrowserManager* BrowserManager::Get() {
-  DCHECK(g_browser_manager);
-  return g_browser_manager;
+  DCHECK(g_browser_manager_instance);
+  return g_browser_manager_instance;
 }
 
 // static
 bool BrowserManager::HasInstance() {
-  return g_browser_manager;
+  return !!g_browser_manager_instance;
 }
 
-void BrowserManager::SetActive(const bool is_active) {
-  is_active_ = is_active;
+void BrowserManager::AddObserver(BrowserManagerObserver* observer) {
+  DCHECK(observer);
+  observers_.AddObserver(observer);
 }
 
-bool BrowserManager::IsActive() const {
-  return is_active_ && IsForegrounded();
+void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
+  DCHECK(observer);
+  observers_.RemoveObserver(observer);
 }
 
-void BrowserManager::OnActive() {
+void BrowserManager::OnDidBecomeActive() {
   if (is_active_) {
-    return;
-  }
-
-  BLOG(1, "Browser window is active");
-
-  is_active_ = true;
-
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowIsActive);
-}
-
-void BrowserManager::OnInactive() {
-  if (!is_active_) {
-    return;
-  }
-
-  BLOG(1, "Browser window is inactive");
-
-  is_active_ = false;
-
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowIsInactive);
-}
-
-void BrowserManager::SetForegrounded(const bool is_foregrounded) {
-  is_foregrounded_ = is_foregrounded;
-}
-
-bool BrowserManager::IsForegrounded() const {
-  return is_foregrounded_;
-}
-
-void BrowserManager::OnForegrounded() {
-  if (is_foregrounded_) {
     return;
   }
 
   BLOG(1, "Browser did become active");
 
-  is_foregrounded_ = true;
+  is_active_ = true;
 
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserDidBecomeActive);
+  NotifyBrowserDidBecomeActive();
 }
 
-void BrowserManager::OnBackgrounded() {
-  if (!is_foregrounded_) {
+void BrowserManager::OnDidResignActive() {
+  if (!is_active_) {
+    return;
+  }
+
+  BLOG(1, "Browser did resign active");
+
+  is_active_ = false;
+
+  NotifyBrowserDidResignActive();
+}
+
+void BrowserManager::OnDidEnterForeground() {
+  if (is_foreground_) {
+    return;
+  }
+
+  BLOG(1, "Browser did enter foreground");
+
+  is_foreground_ = true;
+
+  NotifyBrowserDidEnterForeground();
+}
+
+void BrowserManager::OnDidEnterBackground() {
+  if (!is_foreground_) {
     return;
   }
 
   BLOG(1, "Browser did enter background");
 
-  is_foregrounded_ = false;
+  is_foreground_ = false;
 
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserDidEnterBackground);
+  NotifyBrowserDidEnterBackground();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void BrowserManager::NotifyBrowserDidBecomeActive() const {
+  for (BrowserManagerObserver& observer : observers_) {
+    observer.OnBrowserDidBecomeActive();
+  }
+}
+
+void BrowserManager::NotifyBrowserDidResignActive() const {
+  for (BrowserManagerObserver& observer : observers_) {
+    observer.OnBrowserDidResignActive();
+  }
+}
+
+void BrowserManager::NotifyBrowserDidEnterForeground() const {
+  for (BrowserManagerObserver& observer : observers_) {
+    observer.OnBrowserDidEnterForeground();
+  }
+}
+
+void BrowserManager::NotifyBrowserDidEnterBackground() const {
+  for (BrowserManagerObserver& observer : observers_) {
+    observer.OnBrowserDidEnterBackground();
+  }
 }
 
 }  // namespace ads

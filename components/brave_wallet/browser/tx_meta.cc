@@ -12,12 +12,14 @@
 namespace brave_wallet {
 
 TxMeta::TxMeta() = default;
+TxMeta::~TxMeta() = default;
 
 bool TxMeta::operator==(const TxMeta& meta) const {
   return id_ == meta.id_ && status_ == meta.status_ && from_ == meta.from_ &&
          created_time_ == meta.created_time_ &&
          submitted_time_ == meta.submitted_time_ &&
-         confirmed_time_ == meta.confirmed_time_ && tx_hash_ == meta.tx_hash_;
+         confirmed_time_ == meta.confirmed_time_ && tx_hash_ == meta.tx_hash_ &&
+         origin_ == meta.origin_;
 }
 
 base::Value TxMeta::ToValue() const {
@@ -30,6 +32,10 @@ base::Value TxMeta::ToValue() const {
   dict.SetKey("submitted_time", base::TimeToValue(submitted_time_));
   dict.SetKey("confirmed_time", base::TimeToValue(confirmed_time_));
   dict.SetStringKey("tx_hash", tx_hash_);
+  if (origin_.has_value()) {
+    DCHECK(!origin_->opaque());
+    dict.SetStringKey("origin", origin_->GetURL().spec());
+  }
 
   return dict;
 }

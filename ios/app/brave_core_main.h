@@ -16,8 +16,11 @@
 @class BraveStats;
 
 @protocol BraveWalletBlockchainRegistry;
-@protocol BraveWalletBraveWalletProvider;
+@protocol BraveWalletEthereumProvider;
 @protocol BraveWalletProviderDelegate;
+@protocol BraveWalletSolanaProvider;
+
+typedef NS_ENUM(NSInteger, BraveWalletCoinType);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -73,11 +76,15 @@ OBJC_EXPORT
 
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
 
-- (nullable id<BraveWalletBraveWalletProvider>)
-    walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+- (nullable id<BraveWalletEthereumProvider>)
+    ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+               isPrivateBrowsing:(bool)isPrivateBrowsing;
+
+- (nullable id<BraveWalletSolanaProvider>)
+    solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing;
 
-@property(readonly) NSString* walletProviderJS;
+- (NSString*)providerScriptForCoinType:(BraveWalletCoinType)coinType;
 
 @property(readonly) BraveStats* braveStats;
 
