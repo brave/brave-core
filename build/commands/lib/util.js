@@ -495,6 +495,11 @@ const util = {
       use_goma: config.use_goma,
       goma_dir: config.realGomaDir,
     }
+    // Temprorary workaround for VS2022 lld-link PDB issue. Should be resolved
+    // in May 2022 update.
+    if (process.platform === 'win32') {
+      gnArgs = {...gnArgs, is_component_build: true}
+    }
 
     const buildArgsStr = util.buildArgsToString(gnArgs)
     util.run('gn', ['gen', config.nativeRedirectCCDir, '--args="' + buildArgsStr + '"'], options)
