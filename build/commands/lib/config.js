@@ -650,10 +650,8 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
-  if (options.use_goma && options.use_goma !== false) {
-    this.use_goma = true
-  } else {
-    this.use_goma = false
+  if (options.use_goma !== undefined) {
+    this.use_goma = options.use_goma
   }
 
   if (options.goma_offline) {
