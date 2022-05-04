@@ -11,7 +11,7 @@ import glob
 import multiprocessing
 import os
 import re
-import six.moves.queue
+import queue
 import shutil
 import sys
 import subprocess
@@ -101,7 +101,8 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
     components/crash/content/tools/generate_breakpad_symbols.py for each lib
     of lib_paths."""
 
-    queue = six.moves.queue.Queue()
+    q = queue.Queue()
+
     print_lock = threading.Lock()
 
     at_least_one_failed = multiprocessing.Value('b', False)
@@ -112,7 +113,7 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
 
     def _Worker():
         while True:
-            lib_path = queue.get()
+            lib_path = q.get()
 
             try:
                 # Invoke the original Chromium script
@@ -137,17 +138,17 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
                         print(type(e))
                         print(e)
             finally:
-                queue.task_done()
+                q.task_done()
 
     for lib_path in lib_paths:
-        queue.put(lib_path)
+        q.put(lib_path)
 
     for _ in range(args.jobs):
         t = threading.Thread(target=_Worker)
         t.daemon = True
         t.start()
 
-    queue.join()
+    q.join()
 
     if at_least_one_failed.value:
         return 1
