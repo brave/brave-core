@@ -609,8 +609,8 @@ const util = {
     if (config.use_goma) {
       // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
       // debugging issues (e.g., slowness or remote-failures).
-      console.log('Running build with ID ' + config.buildId)
-      options.env.AUTONINJA_BUILD_ID = config.buildId
+      console.log('Running build with ID ' + config.gomaBuildId)
+      options.env.AUTONINJA_BUILD_ID = config.gomaBuildId
     }
 
     util.run('autoninja', ninjaOpts, options)
