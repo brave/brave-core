@@ -154,6 +154,7 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
     const GURL& url = template_url->GenerateSearchURL(search_terms);
     if (url != default_search_url_) {
       RecordSearchEngineP3A(url, template_url->GetEngineType(search_terms));
+      default_search_url_ = url;
     }
     RecordSwitchP3A(url);
   }
