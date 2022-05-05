@@ -1030,23 +1030,10 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
-  // Non-support chain should fail.
-  SetUDENSInterceptor(mojom::kLocalhostChainId);
-
   bool callback_called = false;
-  json_rpc_service_->EnsResolverGetContentHash(
-      mojom::kLocalhostChainId, "brantly.eth",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
   SetUDENSInterceptor(mojom::kMainnetChainId);
   json_rpc_service_->EnsResolverGetContentHash(
-      mojom::kMainnetChainId, "brantly.eth",
+      "brantly.eth",
       base::BindLambdaForTesting([&](const std::string& result,
                                      brave_wallet::mojom::ProviderError error,
                                      const std::string& error_message) {
@@ -1064,7 +1051,7 @@ TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->EnsResolverGetContentHash(
-      mojom::kMainnetChainId, "brantly.eth",
+      "brantly.eth",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -1074,7 +1061,7 @@ TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
   callback_called = false;
   SetInvalidJsonInterceptor();
   json_rpc_service_->EnsResolverGetContentHash(
-      mojom::kMainnetChainId, "brantly.eth",
+      "brantly.eth",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -1084,37 +1071,22 @@ TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
   callback_called = false;
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->EnsResolverGetContentHash(
-      mojom::kMainnetChainId, "brantly.eth",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kLimitExceeded,
-                     "Request exceeds defined limit", ""));
+      "brantly.eth", base::BindOnce(&OnStringResponse, &callback_called,
+                                    mojom::ProviderError::kLimitExceeded,
+                                    "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
-  // Non-support chain (localhost) should fail.
-  SetUDENSInterceptor(json_rpc_service_->GetChainId(mojom::CoinType::ETH));
-  bool callback_called = false;
-  json_rpc_service_->EnsGetEthAddr(
-      "brantly.eth",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
-  EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
   SetUDENSInterceptor(mojom::kMainnetChainId);
-  json_rpc_service_->EnsGetEthAddr(
-      "brantly-test.eth",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kSuccess, "",
-                     "0x983110309620D911731Ac0932219af06091b6744"));
+  EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
+
+  base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
+  EXPECT_CALL(callback, Run("0x983110309620D911731Ac0932219af06091b6744",
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->EnsGetEthAddr("brantly-test.eth", callback.Get());
   base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {

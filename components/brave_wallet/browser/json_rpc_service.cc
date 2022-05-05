@@ -1013,10 +1013,10 @@ void JsonRpcService::OnGetERC20TokenAllowance(
   std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::EnsRegistryGetResolver(const std::string& chain_id,
-                                            const std::string& domain,
+void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,
                                             StringResultCallback callback) {
-  const std::string contract_address = GetEnsRegistryContractAddress(chain_id);
+  const std::string contract_address =
+      GetEnsRegistryContractAddress(brave_wallet::mojom::kMainnetChainId);
   if (contract_address.empty()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
@@ -1032,7 +1032,8 @@ void JsonRpcService::EnsRegistryGetResolver(const std::string& chain_id,
     return;
   }
 
-  GURL network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  GURL network_url = GetNetworkURL(prefs_, brave_wallet::mojom::kMainnetChainId,
+                                   mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
@@ -1074,17 +1075,15 @@ void JsonRpcService::OnEnsRegistryGetResolver(
   std::move(callback).Run(resolver_address, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::EnsResolverGetContentHash(const std::string& chain_id,
-                                               const std::string& domain,
+void JsonRpcService::EnsResolverGetContentHash(const std::string& domain,
                                                StringResultCallback callback) {
   auto internal_callback = base::BindOnce(
       &JsonRpcService::ContinueEnsResolverGetContentHash,
-      weak_ptr_factory_.GetWeakPtr(), chain_id, domain, std::move(callback));
-  EnsRegistryGetResolver(chain_id, domain, std::move(internal_callback));
+      weak_ptr_factory_.GetWeakPtr(), domain, std::move(callback));
+  EnsRegistryGetResolver(domain, std::move(internal_callback));
 }
 
 void JsonRpcService::ContinueEnsResolverGetContentHash(
-    const std::string& chain_id,
     const std::string& domain,
     StringResultCallback callback,
     const std::string& resolver_address,
@@ -1103,7 +1102,8 @@ void JsonRpcService::ContinueEnsResolverGetContentHash(
     return;
   }
 
-  GURL network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  GURL network_url = GetNetworkURL(prefs_, brave_wallet::mojom::kMainnetChainId,
+                                   mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
@@ -1157,8 +1157,7 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
   auto internal_callback = base::BindOnce(
       &JsonRpcService::ContinueEnsGetEthAddr, weak_ptr_factory_.GetWeakPtr(),
       domain, std::move(callback));
-  EnsRegistryGetResolver(chain_ids_[mojom::CoinType::ETH], domain,
-                         std::move(internal_callback));
+  EnsRegistryGetResolver(domain, std::move(internal_callback));
 }
 
 void JsonRpcService::ContinueEnsGetEthAddr(const std::string& domain,

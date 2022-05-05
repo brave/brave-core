@@ -48,7 +48,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (IsENSTLD(ctx->request_url) &&
       IsENSResolveMethodEthereum(g_browser_process->local_state())) {
     json_rpc_service->EnsResolverGetContentHash(
-        brave_wallet::mojom::kMainnetChainId, ctx->request_url.host(),
+        ctx->request_url.host(),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));
 

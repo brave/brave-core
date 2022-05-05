@@ -459,6 +459,7 @@ bool ParseJSON(base::StringPiece json,
       { "name": "ropsten-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mainnet-beta-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "testnet-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "mainnet-polygon.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
       // Rewards
       { "name": "anonymous.ads.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},

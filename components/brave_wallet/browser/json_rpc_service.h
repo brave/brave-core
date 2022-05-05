@@ -156,8 +156,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& domain,
       UnstoppableDomainsGetEthAddrCallback callback) override;
 
-  void EnsResolverGetContentHash(const std::string& chain_id,
-                                 const std::string& domain,
+  void EnsResolverGetContentHash(const std::string& domain,
                                  StringResultCallback callback);
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
@@ -417,8 +416,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void EnsRegistryGetResolver(const std::string& chain_id,
-                              const std::string& domain,
+  void EnsRegistryGetResolver(const std::string& domain,
                               StringResultCallback callback);
 
   void OnEnsRegistryGetResolver(
@@ -427,8 +425,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void ContinueEnsResolverGetContentHash(const std::string& chain_id,
-                                         const std::string& domain,
+  void ContinueEnsResolverGetContentHash(const std::string& domain,
                                          StringResultCallback callback,
                                          const std::string& resolver_address,
                                          mojom::ProviderError error,
