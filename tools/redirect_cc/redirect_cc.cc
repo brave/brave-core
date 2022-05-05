@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/containers/contains.h"
+#include "base/environment.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -34,8 +35,13 @@ class RedirectCC {
 
   bool IsRunningAsGomacc() const {
     auto current_executable = base::FilePath::StringPieceType(argv_[0]);
-    return base::EndsWith(current_executable, FILE_PATH_LITERAL("gomacc")) ||
-           base::EndsWith(current_executable, FILE_PATH_LITERAL("gomacc.exe"));
+    bool is_gomacc =
+        base::EndsWith(current_executable, FILE_PATH_LITERAL("gomacc"));
+#if BUILDFLAG(IS_WIN)
+    is_gomacc |=
+        base::EndsWith(current_executable, FILE_PATH_LITERAL("gomacc.exe"));
+#endif
+    return is_gomacc;
   }
 
   static base::Environment& GetEnv() {
@@ -59,7 +65,7 @@ class RedirectCC {
     }
 
     if (!cc_wrapper.empty()) {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
       executable = base::UTF8ToWide(cc_wrapper);
 #else
       executable = cc_wrapper;
@@ -158,7 +164,7 @@ class RedirectCC {
       launch_argv.push_back(base::FilePath::StringType(arg_piece));
     }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     const auto& to_launch = CreateCmdLine(launch_argv);
 #else
     const auto& to_launch = launch_argv;
@@ -173,7 +179,7 @@ class RedirectCC {
   }
 
  private:
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   // Quote a string as necessary for CommandLineToArgvW compatibility *on
   // Windows*.
   static bool QuoteForCommandLineToArgvW(const base::FilePath::StringType& arg,
@@ -242,7 +248,7 @@ class RedirectCC {
   const base::FilePath::CharType* const* argv_;
 };
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #define main wmain
 #endif
 int main(int argc, base::FilePath::CharType* argv[]) {
