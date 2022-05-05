@@ -12,7 +12,12 @@ if (current_toolchain == host_toolchain) {
 
   buildflag_header("buildflags") {
     header = "buildflags.h"
-    flags = [ "REAL_GOMACC=\"$real_gomacc\"" ]
+    if (is_win) {
+      _real_gomacc = string_replace(real_gomacc, "\\", "/")
+    } else {
+      _real_gomacc = real_gomacc
+    }
+    flags = [ "REAL_GOMACC=\"$_real_gomacc\"" ]
   }
 
   executable("executable") {
