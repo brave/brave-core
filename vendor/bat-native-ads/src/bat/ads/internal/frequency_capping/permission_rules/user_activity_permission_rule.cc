@@ -33,7 +33,7 @@ bool UserActivityPermissionRule::DoesRespectCap() {
     return true;
   }
 
-  if (PlatformHelper::GetInstance()->GetPlatform() == PlatformType::kIOS) {
+  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kIOS) {
     return true;
   }
 

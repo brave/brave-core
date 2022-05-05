@@ -28,8 +28,8 @@ class PlatformHelperMac final : public PlatformHelper {
  private:
   // PlatformHelper impl
   bool IsMobile() const override;
-  std::string GetPlatformName() const override;
-  PlatformType GetPlatform() const override;
+  std::string GetName() const override;
+  PlatformType GetType() const override;
 };
 
 }  // namespace ads

@@ -7,6 +7,10 @@
 
 namespace ads {
 
+namespace {
+constexpr char kPlatformName[] = "macos";
+}  // namespace
+
 PlatformHelperMac::PlatformHelperMac() = default;
 
 PlatformHelperMac::~PlatformHelperMac() = default;
@@ -15,11 +19,11 @@ bool PlatformHelperMac::IsMobile() const {
   return false;
 }
 
-std::string PlatformHelperMac::GetPlatformName() const {
-  return "macos";
+std::string PlatformHelperMac::GetName() const {
+  return kPlatformName;
 }
 
-PlatformType PlatformHelperMac::GetPlatform() const {
+PlatformType PlatformHelperMac::GetType() const {
   return PlatformType::kMacOS;
 }
 

@@ -20,9 +20,9 @@ constexpr char kPlatformKey[] = "platform";
 base::DictionaryValue GetPlatform() {
   base::DictionaryValue user_data;
 
-  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  if (!platform.empty()) {
-    user_data.SetStringKey(kPlatformKey, platform);
+  const std::string platform_name = PlatformHelper::GetInstance()->GetName();
+  if (!platform_name.empty()) {
+    user_data.SetStringKey(kPlatformKey, platform_name);
   }
 
   return user_data;

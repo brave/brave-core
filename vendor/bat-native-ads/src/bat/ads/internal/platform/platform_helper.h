@@ -25,8 +25,8 @@ class PlatformHelper {
   void SetForTesting(PlatformHelper* platform_helper);
 
   virtual bool IsMobile() const;
-  virtual std::string GetPlatformName() const;
-  virtual PlatformType GetPlatform() const;
+  virtual std::string GetName() const;
+  virtual PlatformType GetType() const;
 
  protected:
   friend class base::NoDestructor<PlatformHelper>;

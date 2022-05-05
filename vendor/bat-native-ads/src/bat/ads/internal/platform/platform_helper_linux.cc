@@ -7,6 +7,10 @@
 
 namespace ads {
 
+namespace {
+constexpr char kPlatformName[] = "linux";
+}  // namespace
+
 PlatformHelperLinux::PlatformHelperLinux() = default;
 
 PlatformHelperLinux::~PlatformHelperLinux() = default;
@@ -15,11 +19,11 @@ bool PlatformHelperLinux::IsMobile() const {
   return false;
 }
 
-std::string PlatformHelperLinux::GetPlatformName() const {
-  return "linux";
+std::string PlatformHelperLinux::GetName() const {
+  return kPlatformName;
 }
 
-PlatformType PlatformHelperLinux::GetPlatform() const {
+PlatformType PlatformHelperLinux::GetType() const {
   return PlatformType::kLinux;
 }
 
