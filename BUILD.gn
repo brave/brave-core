@@ -531,7 +531,7 @@ group("storybook") {
   deps = [ "//brave/.storybook:storybook" ]
 }
 
-if (!is_debug) {
+if (is_redirect_cc_build) {
   group("redirect_cc") {
     deps = [ "//brave/tools/redirect_cc" ]
   }

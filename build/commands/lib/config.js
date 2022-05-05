@@ -887,6 +887,9 @@ Config.prototype.update = function (options) {
     if (this.goma_offline) {
       this.extraNinjaOpts.push('--offline')
     }
+  } else {
+    // Always pass '--offline' when use_goma is not set to keep autoninja from ramping up to -j400.
+    this.extraNinjaOpts.push('--offline')
   }
 
   if (options.target) {
@@ -924,9 +927,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if (this.use_goma) {
-      env.CC_WRAPPER = path.join(this.realGomaDir, 'gomacc')
-    } else if (this.sccache) {
+    if (!this.use_goma && this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
       if (path.basename(this.sccache) === 'ccache') {

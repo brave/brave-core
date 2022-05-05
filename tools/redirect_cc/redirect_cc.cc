@@ -16,6 +16,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/tools/redirect_cc/buildflags.h"
 #include "build/build_config.h"
 
 const base::FilePath::StringPieceType kIncludeFlag = FILE_PATH_LITERAL("-I");
@@ -32,6 +33,17 @@ class RedirectCC {
   RedirectCC(int argc, const base::FilePath::CharType* const* argv)
       : argc_(argc), argv_(argv) {}
 
+  bool IsRunningAsGomacc() const {
+    auto current_executable = base::FilePath::StringPieceType(argv_[0]);
+    bool is_gomacc =
+        base::EndsWith(current_executable, FILE_PATH_LITERAL("gomacc"));
+#if BUILDFLAG(IS_WIN)
+    is_gomacc |=
+        base::EndsWith(current_executable, FILE_PATH_LITERAL("gomacc.exe"));
+#endif
+    return is_gomacc;
+  }
+
   static base::Environment& GetEnv() {
     static base::NoDestructor<std::unique_ptr<base::Environment>> env(
         base::Environment::Create());
@@ -45,10 +57,15 @@ class RedirectCC {
     }
 
     base::FilePath::StringType executable;
-    if (GetEnv().HasVar("CC_WRAPPER")) {
-      std::string cc_wrapper;
+    std::string cc_wrapper;
+    if (IsRunningAsGomacc()) {
+      cc_wrapper = BUILDFLAG(REAL_GOMACC);
+    } else if (GetEnv().HasVar("CC_WRAPPER")) {
       CHECK(GetEnv().GetVar("CC_WRAPPER", &cc_wrapper));
-#if defined(OS_WIN)
+    }
+
+    if (!cc_wrapper.empty()) {
+#if BUILDFLAG(IS_WIN)
       executable = base::UTF8ToWide(cc_wrapper);
 #else
       executable = cc_wrapper;
@@ -63,6 +80,8 @@ class RedirectCC {
   }
 
   int Run() {
+    // Get compiler executable. It can be a first arg to redirect_cc, a
+    // REAL_GOMACC buildflag or a CC_WRAPPER env variable.
     int first_compiler_arg_idx = 0;
     const base::FilePath::StringType& compiler_executable =
         GetCompilerExecutable(&first_compiler_arg_idx);
@@ -71,10 +90,12 @@ class RedirectCC {
       return -1;
     }
 
+    // Path to `src/brave/chromium_src`.
     base::FilePath::StringType brave_chromium_src_dir;
+    // Path to `src/`.
     base::FilePath::StringType chromium_src_dir_with_slash;
 
-    // Find directories first.
+    // Find directories to work with first.
     for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
       base::FilePath::StringPieceType arg_piece = argv_[arg_idx];
       if (base::StartsWith(arg_piece, kIncludeFlag) &&
@@ -91,6 +112,7 @@ class RedirectCC {
       return -1;
     }
 
+    // Prepare argv to launch.
     std::vector<base::FilePath::StringType> launch_argv;
     launch_argv.reserve(argc_);
     launch_argv.push_back(compiler_executable);
@@ -105,16 +127,26 @@ class RedirectCC {
           return -1;
         }
 
+        // Trim a file path to look for a similar file in
+        // brave/chromium_src.
         base::FilePath::StringPieceType path_cc = argv_[arg_idx + 1];
+        // Most common case - a file is located directly in src/...
         if (base::StartsWith(path_cc, chromium_src_dir_with_slash)) {
           path_cc.remove_prefix(chromium_src_dir_with_slash.size());
         } else {
+          // Less common case - a file is generated and located in the `out`
+          // directory.
           auto path_cc_parts = base::SplitStringPiece(
               path_cc, base::FilePath::kSeparators, base::KEEP_WHITESPACE,
               base::SPLIT_WANT_ALL);
           if (path_cc_parts.size() > 0 && path_cc_parts[0] == kGen) {
+            // Generated file override, for ex.: gen/base/buildflags.h.
+            // Remove gen/ prefix.
             path_cc.remove_prefix(path_cc_parts[0].size() + 1);
           } else if (path_cc_parts.size() > 1 && path_cc_parts[1] == kGen) {
+            // Generated file override inside of a custom toolchain, for ex:
+            // android_clang_arm64/gen/base/buildflags.h.
+            // Remove android_clang_arm64/gen/ prefix.
             path_cc.remove_prefix(path_cc_parts[0].size() + 1);
             path_cc.remove_prefix(path_cc_parts[1].size() + 1);
           }
@@ -132,7 +164,7 @@ class RedirectCC {
       launch_argv.push_back(base::FilePath::StringType(arg_piece));
     }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     const auto& to_launch = CreateCmdLine(launch_argv);
 #else
     const auto& to_launch = launch_argv;
@@ -147,7 +179,7 @@ class RedirectCC {
   }
 
  private:
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   // Quote a string as necessary for CommandLineToArgvW compatibility *on
   // Windows*.
   static bool QuoteForCommandLineToArgvW(const base::FilePath::StringType& arg,
@@ -216,7 +248,7 @@ class RedirectCC {
   const base::FilePath::CharType* const* argv_;
 };
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #define main wmain
 #endif
 int main(int argc, base::FilePath::CharType* argv[]) {
