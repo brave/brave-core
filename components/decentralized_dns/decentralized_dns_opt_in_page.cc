@@ -69,13 +69,14 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     base::Value* load_time_data) {
   const std::vector<std::u16string> message_params = {
       u"<a "
-      u"href='https://www.cloudflare.com/en-ca/"
-      u"distributed-web-gateway-terms/' target='_blank' "
-      u"rel='noopener noreferrer'>",
-      u"</a>",
-      u"<a href='https://developers.cloudflare.com/"
-      u"1.1.1.1/privacy/public-dns-resolver' "
+      u"href='https://consensys.net/terms-of-use/' "
       u"target='_blank' rel='noopener noreferrer'>",
+
+      u"</a>",
+
+      u"<a href='https://consensys.net/privacy-policy/' "
+      u"target='_blank' rel='noopener noreferrer'>",
+
       u"</a>",
   };
 

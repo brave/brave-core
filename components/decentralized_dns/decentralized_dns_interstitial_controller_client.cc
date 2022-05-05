@@ -44,7 +44,7 @@ DecentralizedDnsInterstitialControllerClient::
       local_state_(local_state) {}
 
 void DecentralizedDnsInterstitialControllerClient::Proceed() {
-  SetResolveMethodAndReload(ResolveMethodTypes::DNS_OVER_HTTPS);
+  SetResolveMethodAndReload(ResolveMethodTypes::ETHEREUM);
 }
 
 void DecentralizedDnsInterstitialControllerClient::DontProceed() {
