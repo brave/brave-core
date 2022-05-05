@@ -887,6 +887,9 @@ Config.prototype.update = function (options) {
     if (this.goma_offline) {
       this.extraNinjaOpts.push('--offline')
     }
+  } else {
+    // Always pass '--offline' when use_goma is not set to keep autoninja from ramping up to -j400.
+    this.extraNinjaOpts.push('--offline')
   }
 
   if (options.target) {
