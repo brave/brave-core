@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/ib_dapp_panel_expand"
+                android:id="@+id/iv_dapp_panel_expand"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="6dp"
@@ -31,6 +31,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_expand_arrows"
+                android:paddingVertical="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:tint="@color/brave_white" />
 
             <TextView
