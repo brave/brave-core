@@ -88,7 +88,6 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const Config = function () {
-  // TODO(yannic): Should the user be able to override this?
   this.buildId = crypto.randomUUID()
 
   this.defaultBuildConfig = 'Component'
