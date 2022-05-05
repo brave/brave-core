@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/check.h"

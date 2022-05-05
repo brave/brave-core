@@ -34,9 +34,9 @@ struct PurchaseIntentSignalHistoryInfo;
 
 class AdType;
 struct AdContentInfo;
-struct HistoryItemInfo;
 struct AdInfo;
 struct ClientInfo;
+struct HistoryItemInfo;
 
 class Client final {
  public:

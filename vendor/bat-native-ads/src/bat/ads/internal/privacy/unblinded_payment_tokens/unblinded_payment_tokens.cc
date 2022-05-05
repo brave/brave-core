@@ -6,6 +6,7 @@
 
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 

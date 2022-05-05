@@ -146,7 +146,7 @@ PurchaseIntentSiteInfo PurchaseIntent::GetSite(const GURL& url) const {
   DCHECK(purchase_intent);
 
   for (const auto& site : purchase_intent->sites) {
-    if (SameDomainOrHost(url, GURL(site.url_netloc))) {
+    if (SameDomainOrHost(url, site.url_netloc)) {
       info = site;
       break;
     }

@@ -16,7 +16,7 @@
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "bat/ads/internal/history/filters/history_date_range_filter.h"
+#include "bat/ads/internal/history/filters/date_range_history_filter.h"
 #include "bat/ads/internal/history/filters/history_filter_factory.h"
 #include "bat/ads/internal/history/history_util.h"
 #include "bat/ads/internal/history/sorts/history_sort_factory.h"
@@ -33,7 +33,7 @@ HistoryInfo Get(const HistoryFilterType filter_type,
   base::circular_deque<HistoryItemInfo> history = Client::Get()->GetHistory();
 
   const auto date_range_filter =
-      std::make_unique<HistoryDateRangeFilter>(from_time, to_time);
+      std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
   if (date_range_filter) {
     history = date_range_filter->Apply(history);
   }

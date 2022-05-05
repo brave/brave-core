@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 
+#include <algorithm>
+
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"

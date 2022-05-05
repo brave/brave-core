@@ -6,6 +6,7 @@
 
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 

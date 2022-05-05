@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/history/filters/history_filter_factory.h"
 
-#include "bat/ads/internal/history/filters/history_confirmation_filter.h"
+#include "bat/ads/internal/history/filters/confirmation_history_filter.h"
 
 namespace ads {
 
@@ -17,7 +17,7 @@ std::unique_ptr<HistoryFilterInterface> HistoryFilterFactory::Build(
     }
 
     case HistoryFilterType::kConfirmationType: {
-      return std::make_unique<HistoryConfirmationFilter>();
+      return std::make_unique<ConfirmationHistoryFilter>();
     }
   }
 }

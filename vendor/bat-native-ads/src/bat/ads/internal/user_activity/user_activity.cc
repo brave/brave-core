@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/user_activity/user_activity.h"
 
+#include <algorithm>
 #include <string>
 
 #include "base/check_op.h"

@@ -46,7 +46,7 @@ TEST_F(BatAdsHistoryUtilTest, BuildAd) {
 
   expected_history_item.time = Now();
   expected_history_item.ad_content.type = ad.type;
-  expected_history_item.ad_content.uuid = ad.placement_id;
+  expected_history_item.ad_content.placement_id = ad.placement_id;
   expected_history_item.ad_content.creative_instance_id =
       ad.creative_instance_id;
   expected_history_item.ad_content.creative_set_id = ad.creative_set_id;

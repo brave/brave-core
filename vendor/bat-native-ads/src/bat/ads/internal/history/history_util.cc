@@ -10,8 +10,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/url_util.h"
-#include "url/gurl.h"
 
 namespace ads {
 
@@ -24,14 +22,14 @@ HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
   history_item.time = base::Time::Now();
 
   history_item.ad_content.type = ad.type;
-  history_item.ad_content.uuid = ad.placement_id;
+  history_item.ad_content.placement_id = ad.placement_id;
   history_item.ad_content.creative_instance_id = ad.creative_instance_id;
   history_item.ad_content.creative_set_id = ad.creative_set_id;
   history_item.ad_content.campaign_id = ad.campaign_id;
   history_item.ad_content.advertiser_id = ad.advertiser_id;
   history_item.ad_content.brand = title;
   history_item.ad_content.brand_info = description;
-  history_item.ad_content.brand_display_url = GURL(ad.target_url).host();
+  history_item.ad_content.brand_display_url = ad.target_url.host();
   history_item.ad_content.brand_url = ad.target_url;
   history_item.ad_content.like_action_type =
       Client::Get()->GetAdContentLikeActionTypeForAdvertiser(ad.advertiser_id);

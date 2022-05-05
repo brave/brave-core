@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
+#include <algorithm>
 #include <functional>
 #include <utility>
 #include <vector>

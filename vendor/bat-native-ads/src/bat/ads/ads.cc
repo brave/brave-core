@@ -5,6 +5,8 @@
 
 #include "bat/ads/ads.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "base/no_destructor.h"
 #include "bat/ads/internal/ads_impl.h"

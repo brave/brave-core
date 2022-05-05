@@ -11,8 +11,8 @@
 namespace ads {
 
 class ConfirmationType;
-struct HistoryItemInfo;
 struct AdInfo;
+struct HistoryItemInfo;
 
 HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
                                  const ConfirmationType& confirmation_type,

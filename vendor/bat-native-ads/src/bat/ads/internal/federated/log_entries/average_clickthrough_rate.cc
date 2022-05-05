@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
 
+#include <algorithm>
+
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
@@ -38,21 +40,23 @@ std::string AverageClickthroughRate::GetValue() const {
     return base::NumberToString(kCovariateMissingValue);
   }
 
-  const int number_of_views = std::count_if(
-      history.items.cbegin(), history.items.cend(),
-      [](const HistoryItemInfo& info) {
-        return info.ad_content.confirmation_type == ConfirmationType::kViewed;
-      });
+  const int number_of_views =
+      std::count_if(history.items.cbegin(), history.items.cend(),
+                    [](const HistoryItemInfo& history_item) {
+                      return history_item.ad_content.confirmation_type ==
+                             ConfirmationType::kViewed;
+                    });
 
   if (number_of_views == 0) {
     return base::NumberToString(kCovariateMissingValue);
   }
 
-  const int number_of_clicks = std::count_if(
-      history.items.cbegin(), history.items.cend(),
-      [](const HistoryItemInfo& info) {
-        return info.ad_content.confirmation_type == ConfirmationType::kClicked;
-      });
+  const int number_of_clicks =
+      std::count_if(history.items.cbegin(), history.items.cend(),
+                    [](const HistoryItemInfo& history_item) {
+                      return history_item.ad_content.confirmation_type ==
+                             ConfirmationType::kClicked;
+                    });
 
   if (number_of_clicks > number_of_views) {
     return base::NumberToString(kCovariateMissingValue);

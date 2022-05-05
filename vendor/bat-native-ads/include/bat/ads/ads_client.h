@@ -122,7 +122,7 @@ class ADS_EXPORT AdsClient {
   virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
                                 RunDBTransactionCallback callback) = 0;
 
-  // Called to notify the UI that the ad rewards have changed.
+  // Called to notify that ad rewards have changed.
   virtual void OnAdRewardsChanged() = 0;
 
   // Record a P2A (Privacy Preserving Anonymous) event with |value| for the

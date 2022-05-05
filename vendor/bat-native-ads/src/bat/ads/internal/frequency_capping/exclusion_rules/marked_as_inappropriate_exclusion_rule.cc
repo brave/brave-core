@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
+#include <algorithm>
+
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info.h"
