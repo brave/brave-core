@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml b/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml
+index 3ebaf22223bb87f0ed1412b0ea4cba30e00b9722..6a8ef50b7036d34fd1b4e84bb9efa83dcdc8c256 100644
+--- a/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml
++++ b/components/browser_ui/widget/android/java/res/drawable/modern_toolbar_tablet_text_box_background.xml
+@@ -4,6 +4,6 @@
+      found in the LICENSE file. -->
+ 
+ <inset xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:drawable="@drawable/modern_toolbar_text_box_background"
++    android:drawable="@drawable/brave_modern_toolbar_text_box_background"
+     android:insetTop="@dimen/modern_toolbar_background_vertical_offset"
+     android:insetBottom="@dimen/modern_toolbar_background_vertical_offset" />
+\ No newline at end of file
