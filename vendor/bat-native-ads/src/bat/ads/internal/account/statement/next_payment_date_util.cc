@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/statement/next_payment_date_util.h"
 
-#include <algorithm>
-
 #include "base/time/time.h"
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/reconciled_transactions_util.h"

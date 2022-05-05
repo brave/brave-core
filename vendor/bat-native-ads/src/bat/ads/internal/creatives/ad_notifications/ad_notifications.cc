@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/ad_type.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"

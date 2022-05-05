@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
-#include <set>
 #include <utility>
 
 #include "bat/ads/internal/logging.h"

@@ -5,7 +5,7 @@
 
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
-#include <utility>
+#include <functional>
 #include <vector>
 
 #include "bat/ads/ad_content_info.h"

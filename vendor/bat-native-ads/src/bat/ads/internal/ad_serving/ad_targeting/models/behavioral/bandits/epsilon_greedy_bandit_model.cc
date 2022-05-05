@@ -6,14 +6,12 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
 #include <algorithm>
-#include <map>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"

@@ -6,9 +6,7 @@
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 
 #include <functional>
-#include <map>
 #include <memory>
-#include <utility>
 
 #include "base/bind.h"
 #include "base/callback.h"

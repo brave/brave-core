@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/ad_notification_popup.h"
 
-#include <utility>
+#include <string>
 
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"

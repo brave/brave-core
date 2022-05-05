@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_permission_rule.h"
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"

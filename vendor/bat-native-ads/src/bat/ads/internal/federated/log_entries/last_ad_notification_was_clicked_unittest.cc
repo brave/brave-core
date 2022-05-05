@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/time/time.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/unittest_base.h"

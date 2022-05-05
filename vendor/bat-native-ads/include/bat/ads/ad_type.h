@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_
 
-#include <iostream>
+#include <ostream>
 #include <string>
 
 #include "bat/ads/public/interfaces/ads.mojom.h"

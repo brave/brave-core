@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_server/get_catalog_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/bundle.h"

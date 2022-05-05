@@ -6,9 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 
-#include <string>
-#include <memory>
-
 #include "base/memory/ref_counted.h"
 #include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"

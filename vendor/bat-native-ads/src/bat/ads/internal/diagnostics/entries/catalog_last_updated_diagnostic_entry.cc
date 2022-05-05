@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/pref_names.h"
 

@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"

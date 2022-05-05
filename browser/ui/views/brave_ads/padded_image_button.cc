@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/brave_ads/padded_image_button.h"
 
 #include <algorithm>
-#include <utility>
 
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"

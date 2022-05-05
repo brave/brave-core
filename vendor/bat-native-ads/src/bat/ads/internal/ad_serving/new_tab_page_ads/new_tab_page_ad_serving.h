@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_SERVING_H_
 
 #include <memory>
-#include <string>
 
 #include "base/observer_list.h"
 #include "bat/ads/ads_aliases.h"

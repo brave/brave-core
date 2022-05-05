@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"

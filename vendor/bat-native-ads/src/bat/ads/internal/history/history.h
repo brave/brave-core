@@ -25,8 +25,6 @@ struct SearchResultAdInfo;
 
 namespace history {
 
-const int kForDays = 30;
-
 HistoryInfo Get(const HistoryFilterType filter_type,
                 const HistorySortType sort_type,
                 const base::Time from_time,

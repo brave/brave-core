@@ -7,7 +7,6 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

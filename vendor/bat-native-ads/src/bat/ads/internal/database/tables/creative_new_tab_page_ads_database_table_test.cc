@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 
-#include <vector>
-
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"

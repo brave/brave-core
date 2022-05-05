@@ -9,6 +9,7 @@
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/user_activity/user_activity_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -600,10 +601,10 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   EXPECT_TRUE(IsEqualContainers(expected_events, events));
 }
 
-TEST_F(BatAdsUserActivityTest, MaximumHistoryEntries) {
+TEST_F(BatAdsUserActivityTest, MaximumHistoryItems) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
-  for (int i = 0; i < kMaximumHistoryEntries; i++) {
+  for (int i = 0; i < kMaximumHistoryItems; i++) {
     UserActivity::Get()->RecordEvent(event_type);
   }
 
@@ -617,7 +618,7 @@ TEST_F(BatAdsUserActivityTest, MaximumHistoryEntries) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
 
-  for (int i = 0; i < kMaximumHistoryEntries - 1; i++) {
+  for (int i = 0; i < kMaximumHistoryItems - 1; i++) {
     event.type = event_type;
     event.created_at = Now();
     expected_events.push_back(event);

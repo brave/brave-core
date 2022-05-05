@@ -14,7 +14,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"

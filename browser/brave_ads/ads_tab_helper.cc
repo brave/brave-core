@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"

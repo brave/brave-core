@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/notreached.h"
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

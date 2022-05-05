@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_
 
 #include <memory>
-#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
-#include <vector>
-
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/unittest_base.h"

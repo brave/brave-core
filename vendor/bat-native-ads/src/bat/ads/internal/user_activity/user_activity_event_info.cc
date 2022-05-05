@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
-#include "bat/ads/internal/number_util.h"
-
 namespace ads {
 
 UserActivityEventInfo::UserActivityEventInfo() = default;
@@ -17,8 +15,7 @@ UserActivityEventInfo::UserActivityEventInfo(
 UserActivityEventInfo::~UserActivityEventInfo() = default;
 
 bool UserActivityEventInfo::operator==(const UserActivityEventInfo& rhs) const {
-  return type == rhs.type &&
-         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT());
+  return type == rhs.type && created_at == rhs.created_at;
 }
 
 bool UserActivityEventInfo::operator!=(const UserActivityEventInfo& rhs) const {

@@ -6,10 +6,10 @@
 #include "bat/ads/internal/eligible_ads/eligible_ads_features_util.h"
 
 #include <numeric>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "bat/ads/internal/number_util.h"
 
 namespace ads {

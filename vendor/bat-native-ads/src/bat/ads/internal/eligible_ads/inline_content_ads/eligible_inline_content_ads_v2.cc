@@ -6,7 +6,6 @@
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_v2.h"
 
 #include "base/check.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"

@@ -20,8 +20,6 @@ class TimeDelta;
 
 namespace ads {
 
-const int kMaximumHistoryEntries = 3600;
-
 class UserActivity final : public BrowserManagerObserver,
                            public TabManagerObserver {
  public:

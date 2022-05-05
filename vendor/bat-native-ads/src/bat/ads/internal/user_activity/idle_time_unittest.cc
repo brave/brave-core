@@ -8,7 +8,6 @@
 #include <limits>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/ads_client_helper.h"

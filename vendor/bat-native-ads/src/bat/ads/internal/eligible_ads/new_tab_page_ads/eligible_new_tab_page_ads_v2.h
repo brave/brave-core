@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_V2_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_V2_H_
 
-#include <string>
-
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"

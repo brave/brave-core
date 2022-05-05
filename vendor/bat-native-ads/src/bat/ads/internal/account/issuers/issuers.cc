@@ -6,12 +6,12 @@
 #include "bat/ads/internal/account/issuers/issuers.h"
 
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/time/time.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_json_reader.h"
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"

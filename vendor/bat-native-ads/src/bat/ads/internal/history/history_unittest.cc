@@ -6,13 +6,13 @@
 #include "bat/ads/internal/history/history.h"
 
 #include "base/containers/circular_deque.h"
-#include "base/time/time.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
@@ -31,7 +31,7 @@ class BatAdsHistoryTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClock(base::Days(history::kForDays));
+    AdvanceClock(base::Days(history::kDays));
   }
 };
 
@@ -195,7 +195,7 @@ TEST_F(BatAdsHistoryTest, AddMultipleAdTypesToHistory) {
   ASSERT_EQ(5UL, history.size());
 }
 
-TEST_F(BatAdsHistoryTest, PurgedHistoryEntriesOnOrAfter30Days) {
+TEST_F(BatAdsHistoryTest, PurgedHistoryItemsOnOrAfter30Days) {
   // Arrange
   NewTabPageAdInfo new_tab_page_ad;
   history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);
@@ -212,7 +212,7 @@ TEST_F(BatAdsHistoryTest, PurgedHistoryEntriesOnOrAfter30Days) {
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsHistoryTest, DoNotPurgedHistoryEntriesBefore30Days) {
+TEST_F(BatAdsHistoryTest, DoNotPurgedHistoryItemsBefore30Days) {
   // Arrange
   NewTabPageAdInfo new_tab_page_ad;
   history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);

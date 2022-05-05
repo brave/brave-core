@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_H_
 
-#include <string>
-
 #include "base/observer_list.h"
 
 namespace brave_ads {

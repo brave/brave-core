@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_PADDED_IMAGE_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_PADDED_IMAGE_BUTTON_H_
 
-#include <memory>
-
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/image_button.h"
 

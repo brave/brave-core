@@ -13,7 +13,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/locale/supported_subdivision_codes.h"

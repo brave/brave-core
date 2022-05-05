@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/conversions/conversion_info.h"
 
-#include "bat/ads/internal/number_util.h"
-
 namespace ads {
 
 ConversionInfo::ConversionInfo() = default;
@@ -20,7 +18,7 @@ bool ConversionInfo::operator==(const ConversionInfo& rhs) const {
          url_pattern == rhs.url_pattern &&
          observation_window == rhs.observation_window &&
          advertiser_public_key == rhs.advertiser_public_key &&
-         DoubleEquals(expire_at.ToDoubleT(), rhs.expire_at.ToDoubleT());
+         expire_at == rhs.expire_at;
 }
 
 bool ConversionInfo::operator!=(const ConversionInfo& rhs) const {

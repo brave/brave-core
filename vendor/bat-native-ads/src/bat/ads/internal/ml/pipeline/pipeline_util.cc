@@ -7,10 +7,10 @@
 
 #include <map>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_aliases.h"

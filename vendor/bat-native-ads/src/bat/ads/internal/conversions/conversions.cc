@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"

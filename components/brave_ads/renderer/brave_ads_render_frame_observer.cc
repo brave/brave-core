@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/renderer/brave_ads_render_frame_observer.h"
 
 #include <string>
-#include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"

@@ -6,7 +6,6 @@
 #include "brave/browser/brave_ads/ads_service_impl.h"
 
 #include <algorithm>
-#include <limits>
 #include <utility>
 
 #include "base/base64.h"

@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"

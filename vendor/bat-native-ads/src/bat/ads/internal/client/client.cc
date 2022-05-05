@@ -13,7 +13,6 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
@@ -21,6 +20,7 @@
 #include "bat/ads/internal/client/client_info.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/history/history.h"
+#include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "build/build_config.h"
@@ -132,7 +132,7 @@ void Client::AppendHistory(const HistoryItemInfo& history_item) {
   client_->history.push_front(history_item);
 
   const base::Time distant_past =
-      base::Time::Now() - base::Days(history::kForDays);
+      base::Time::Now() - base::Days(history::kDays);
 
   const auto iter =
       std::remove_if(client_->history.begin(), client_->history.end(),
