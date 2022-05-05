@@ -494,6 +494,7 @@ const util = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_goma: config.use_goma,
       goma_dir: config.realGomaDir,
+      real_gomacc: path.join(config.realGomaDir, 'gomacc'),
     }
     // Temprorary workaround for VS2022 lld-link PDB issue. Should be resolved
     // in May 2022 update.

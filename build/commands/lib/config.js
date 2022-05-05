@@ -924,9 +924,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if (this.use_goma) {
-      env.CC_WRAPPER = path.join(this.realGomaDir, 'gomacc')
-    } else if (this.sccache) {
+    if (!this.use_goma && this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
       if (path.basename(this.sccache) === 'ccache') {
