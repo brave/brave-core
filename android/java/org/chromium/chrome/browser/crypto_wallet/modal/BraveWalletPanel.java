@@ -6,6 +6,7 @@
  */
 
 package org.chromium.chrome.browser.crypto_wallet.modal;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -21,10 +22,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.view.menu.MenuBuilder;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -46,6 +50,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.url.internal.mojom.Origin;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,6 +66,7 @@ public class BraveWalletPanel implements DialogInterface {
     private ViewGroup mPopupView;
     private OnDismissListener mOnDismissListener;
     private ImageView mExpandWalletImage;
+    private ImageView mOptionsImage;
     private Button mBtnConnectedStatus;
     private Button mBtnSelectedNetwork;
     private ImageView mAccountImage;
@@ -115,6 +121,39 @@ public class BraveWalletPanel implements DialogInterface {
             }
         });
         setUpViews();
+    }
+
+    public void showPopupMenu(){
+       PopupMenu menu = new PopupMenu(mOptionsImage.getContext(), (View) mOptionsImage);
+       menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
+       menu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_lock_wallet) {
+                mBraveWalletPanelServices.getKeyringService().lock();
+                dismiss();
+            } else if (item.getItemId() == R.id.action_connected_sites) {
+                //TODO needs to be implemented in another ticket
+                dismiss();
+            } else if (item.getItemId() == R.id.action_settings) {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (activity != null) {
+                    activity.openBraveWalletSettings();
+                    dismiss();
+                }
+            } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (activity != null) {
+                    mBraveWalletPanelServices.getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
+                        activity.viewOnBlockExplorer(address);
+                        dismiss();
+                    });
+                }
+            }
+            return true;
+        });
+        if (menu.getMenu() instanceof MenuBuilder) {
+            ((MenuBuilder) menu.getMenu()).setOptionalIconsVisible(true);
+        }
+        menu.show();
     }
 
     public void showLikePopDownMenu() {
@@ -282,6 +321,8 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.openBraveWallet(false);
             }
         });
+	    mOptionsImage = mPopupView.findViewById(R.id.iv_dapp_panel_menu);
+	    mOptionsImage.setOnClickListener(v -> { showPopupMenu(); });
 
         mBtnSelectedNetwork = mPopupView.findViewById(R.id.btn_dapps_panel_networks);
         mBtnSelectedNetwork.setOnClickListener(v -> {
