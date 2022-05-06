@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 47b7a1fbeaada1e44c2c63f8c7d20186d9d2a851..75f306f0e6e54668a794a39a4fae7bdce9274443 100644
+index e2faaff9f797587d47350adf11743a6b4fec576d..f064774285cdd848ab5ded146ee1b521fee75ef5 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -212,6 +212,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -214,6 +214,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(kSigninBottomSheetShownCount, 0);
  
    registry->RegisterIntegerPref(kFRETrialGroupPrefName, 0);
@@ -10,11 +10,10 @@ index 47b7a1fbeaada1e44c2c63f8c7d20186d9d2a851..75f306f0e6e54668a794a39a4fae7bdc
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -325,6 +326,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterBooleanPref(kSigninAllowedByPolicy, true);
+@@ -331,6 +332,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref(kOptimizationGuideRemoteFetchingEnabled, true);
  
-   registry->RegisterBooleanPref(kShowReadingListInBookmarkBar, true);
-+
+   registry->RegisterBooleanPref(prefs::kHttpsOnlyModeEnabled, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
