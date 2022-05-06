@@ -116,6 +116,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kShowWalletIconOnToolbar));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kShowWalletTestNetworks));
+  EXPECT_EQ(static_cast<int>(brave_wallet::mojom::CoinType::ETH),
+            chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                kBraveWalletSelectedCoin));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kBraveWalletBackupComplete));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
