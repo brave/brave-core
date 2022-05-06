@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index abbc7115871b623adee5a2e9ef2056b7ab477a8c..a70003ee527bed24eca0092e4031767ea37c4a13 100644
+index 360a3851b1c99db15dfa9e3700e9072ed326d653..31953a41aca7606376ce2aeddd1f94ca4abf1b89 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2982,6 +2982,7 @@ const FeatureEntry::FeatureVariation kDesktopSharePreviewVariations[] = {
+@@ -3116,6 +3116,7 @@ const FeatureEntry::FeatureVariation kDesktopSharePreviewVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
