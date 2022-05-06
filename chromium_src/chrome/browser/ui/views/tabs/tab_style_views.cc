@@ -40,7 +40,8 @@ TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
   const SkColor final_fg_color = (tab_->IsActive() || tab_->mouse_hovered())
                                      ? colors.foreground_color
                                      : inactive_non_hovered_fg_color;
-  return {final_fg_color, colors.background_color};
+  return {final_fg_color, colors.background_color, colors.focus_ring_color,
+          colors.close_button_focus_ring_color};
 }
 
 const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
