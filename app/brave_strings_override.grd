@@ -119,6 +119,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
+      <if expr="is_linux">
+        </if>
       <if expr="is_win">
         </if>
       <if expr="is_win">
@@ -223,7 +225,7 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="chromeos_ash">
         </if>
 
-      <if expr="is_linux or is_macosx">
+      <if expr="is_posix">
         </if>
 
       <if expr="is_macosx">

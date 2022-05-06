@@ -4545,7 +4545,7 @@ are declared in tools/grit/grit_rule.gni.
         Could not load '<ph name="IMAGE_PATH">$1<ex>/path/to/file</ex></ph>' for theme.
       </message>
 
-      <if expr="chromeos_ash">
+      <if expr="chromeos_ash or chromeos_lacros">
         <message name="IDS_EXTENSION_NOTIFICATION_INSTALLED" desc="Toast message shown when an application is successfully installed.">
           <ph name="APP">$1<ex>Brave Keep</ex></ph> installed
         </message>
@@ -4641,12 +4641,12 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site">
           Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
         </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request acces button that appears on the toolbar when an extension requests access to the site">
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           <ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph> is requesting to read and change <ph name="ORIGIN">$2<ex>google.com</ex></ph>
-        </message> 
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request acces button that appears on the toolbar when an extension requests access to the site">
-          Requesting to read and change <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>google.com</ex></ph>:
-        </message> 
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
+          Requesting to read and change <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
+        </message>
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_CANT_ACCESS_PAGE" desc="The label in an extension's context menu indicating the extension cannot access the current page. (sentence case)">
             Can't read or change site's data
@@ -6273,6 +6273,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_RECIPE_TASKS_LOWER_THESE" desc="Name of the recipe tasks module in lowercase shown in various UIs.">
         these recipe ideas
       </message>
+      <message name="IDS_NTP_MODULES_RECIPE_VIEWED_TASKS_SENTENCE" desc="Name of the historical version of the recipe tasks module in sentence case shown in various UIs.">
+        Recently viewed recipes
+      </message>
+      <message name="IDS_NTP_MODULES_RECIPE_VIEWED_TASKS_LOWER" desc="Name of the historical version of the recipe tasks module in lowercase shown in various UIs.">
+        recently viewed recipes
+      </message>
+      <message name="IDS_NTP_MODULES_RECIPE_VIEWED_TASKS_LOWER_THESE" desc="Name of the historical veresion of the recipe tasks module in lowercase shown in various UIs.">
+        these recently viewed recipes
+      </message>
       <message name="IDS_NTP_MODULES_CART_SENTENCE" desc="Name of the chrome cart module in sentence case shown in various UIs.">
         Your carts
       </message>
@@ -6795,6 +6804,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_BOOKMARKS" desc="The accessible name for the Bookmarks toolbar.">
         Bookmarks
       </message>
+      <message name="IDS_ACCNAME_SAVED_TAB_GROUPS" desc="The accessible name for the area in the bookmarks bar for saved tab groups.">
+        Saved Tab Groups
+      </message>
       <message name="IDS_ACCNAME_BOOKMARKS_CHEVRON" desc="The accessible name for the chevron visible if not all the bookmark buttons fit.">
         Menu containing hidden bookmarks
       </message>
@@ -7265,11 +7277,20 @@ Check your passwords anytime in  <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave 
         <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_TITLE" desc="The title of the 'save unsynced credentials' bubble.">
           Passwords not saved
         </message>
+        <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_TITLE_GPM" desc="The title of the 'save unsynced credentials' bubble.">
+          Save passwords?
+        </message>
         <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_DESCRIPTION" desc="The description text of the 'save unsynced credentials' bubble.">
           Brave couldn't save these passwords in your Brave sync chain. You can still save them on this device.
         </message>
+        <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_DESCRIPTION_GPM" desc="The description text of the 'save unsynced credentials' bubble.">
+          Brave Password Manager couldn't save these passwords in your Brave sync chain. You can save them to this device.
+        </message>
         <message name="IDS_PASSWORD_MANAGER_SAVE_UNSYNCED_CREDENTIALS_BUTTON" desc="Button text for the 'save unsynced credentials' bubble's save option.">
           Save
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_SAVE_UNSYNCED_CREDENTIALS_BUTTON_GPM" desc="Button text for the 'save unsynced credentials' bubble's save option.">
+          Save to device
         </message>
         <message name="IDS_PASSWORD_MANAGER_DISCARD_UNSYNCED_CREDENTIALS_BUTTON" desc="Button text for the 'save unsynced credentials' bubble's discard option.">
           No thanks
@@ -12617,19 +12638,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- FedCM Account Selection strings -->
-    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to promp user for sign in consent." translateable="false">
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to promp user for sign in consent.">
       Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
     </message>
-    <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
+    <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
       Continue as <ph name="NAME">$1<ex>Albus (or Albus Dumbledore)</ex></ph>
     </message>
-    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service." translateable="false">
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK">$2</ph>privacy policy<ph name="END_LINK">$3</ph>.
     </message>
-    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">$2</ph>privacy policy<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>terms of service<ph name="END_LINK2">$5</ph>.
     </message>
-    <message name="IDS_VERIFY_SHEET_TITLE" desc="Header shown to the user while signing in happens." translateable="false">
+    <message name="IDS_VERIFY_SHEET_TITLE" desc="Header shown to the user while signing in happens.">
       Verifying…
     </message>
 
