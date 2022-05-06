@@ -9,9 +9,9 @@
 #include <memory>
 
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
-#include "ui/webui/webui_config.h"
 
 namespace trezor {
 
@@ -23,7 +23,7 @@ class UntrustedTrezorUI : public ui::UntrustedWebUIController {
   ~UntrustedTrezorUI() override;
 };
 
-class UntrustedTrezorUIConfig : public ui::WebUIConfig {
+class UntrustedTrezorUIConfig : public content::WebUIConfig {
  public:
   UntrustedTrezorUIConfig();
   ~UntrustedTrezorUIConfig() override = default;
