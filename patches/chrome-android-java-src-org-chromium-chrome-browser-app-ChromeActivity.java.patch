@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 361157dee0ff3e88f671d525bd130fa889395dfc..0456f31dac9d4c7cff7a3a2b4734e73028fe6ddb 100644
+index a7f5f2b1bbc02d70113857fb2069b43f5b493a3d..9717499bd68b5accb98a4de5c04c20ddccd9bc12 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -398,7 +398,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-     private SubscriptionsManager mSubscriptionsManager;
+@@ -400,7 +400,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+     private TextBubbleBackPressHandler mTextBubbleBackPressHandler;
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
