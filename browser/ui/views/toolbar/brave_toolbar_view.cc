@@ -11,9 +11,13 @@
 
 #include "base/bind.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/share_tab_button.h"
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
@@ -27,9 +31,6 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -154,6 +155,13 @@ void BraveToolbarView::Init() {
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
 
+  share_tab_ = AddChildViewAt(
+      std::make_unique<share_tab_button::ShareTabButton>(
+          base::BindRepeating(callback, browser_, IDC_VIEW_MENU)),
+      GetIndexOf(location_bar_));
+  share_tab_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
+  share_tab_->UpdateImageAndText();
+
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
     wallet_ = AddChildViewAt(
@@ -206,6 +214,8 @@ void BraveToolbarView::OnThemeChanged() {
 
   if (display_mode_ == DisplayMode::NORMAL && bookmark_)
     bookmark_->UpdateImageAndText();
+  if (display_mode_ == DisplayMode::NORMAL && share_tab_)
+    share_tab_->UpdateImageAndText();
   if (display_mode_ == DisplayMode::NORMAL && wallet_)
     wallet_->UpdateImageAndText();
 }
