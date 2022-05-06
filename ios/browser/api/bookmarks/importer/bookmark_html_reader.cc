@@ -21,7 +21,6 @@
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "net/base/data_url.h"
-#include "net/base/escape.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 

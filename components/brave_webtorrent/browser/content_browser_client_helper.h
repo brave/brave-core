@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
@@ -22,7 +23,6 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_set.h"
-#include "net/base/escape.h"
 
 namespace webtorrent {
 
@@ -33,15 +33,15 @@ static GURL TranslateMagnetURL(const GURL& url) {
         "/extension/brave_webtorrent.html?%s"}));
   std::string translatedSpec(extension_page_url.spec());
   base::ReplaceFirstSubstringAfterOffset(
-      &translatedSpec, 0, "%s",
-      net::EscapeQueryParamValue(url.spec(), true));
+      &translatedSpec, 0, "%s", base::EscapeQueryParamValue(url.spec(), true));
   return GURL(translatedSpec);
 }
 
 static GURL TranslateTorrentUIURLReversed(const GURL& url) {
-  GURL translatedURL(net::UnescapeURLComponent(
-      url.query(), net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
-                       net::UnescapeRule::PATH_SEPARATORS));
+  GURL translatedURL(base::UnescapeURLComponent(
+      url.query(),
+      base::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+          base::UnescapeRule::PATH_SEPARATORS));
   GURL::Replacements replacements;
   replacements.SetRefStr(url.ref_piece());
   return translatedURL.ReplaceComponents(replacements);
