@@ -32,7 +32,9 @@ function ConnectHardwareWalletPanel (props: Props) {
     onClickInstructions
   } = props
 
-  const isConnected = hardwareWalletCode !== undefined && hardwareWalletCode !== 'deviceNotConnected'
+  const isConnected = React.useMemo((): boolean => {
+    return hardwareWalletCode !== undefined && hardwareWalletCode !== 'deviceNotConnected'
+  }, [hardwareWalletCode])
 
   const title = React.useMemo(() => {
     if (hardwareWalletCode === 'deviceBusy') {
@@ -46,7 +48,7 @@ function ConnectHardwareWalletPanel (props: Props) {
     return getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
   }, [hardwareWalletCode])
 
-  useInterval(retryCallable, 3000)
+  useInterval(retryCallable, 3000, !isConnected ? 5000 : null)
 
   return (
     <StyledWrapper>
