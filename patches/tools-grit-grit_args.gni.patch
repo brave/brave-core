@@ -1,0 +1,15 @@
+diff --git a/tools/grit/grit_args.gni b/tools/grit/grit_args.gni
+index 66b0f6c34aec52f04df109a45cc49f186d1a9907..1b1f681e705810ebd3e47e80b60bcba64a047d31 100644
+--- a/tools/grit/grit_args.gni
++++ b/tools/grit/grit_args.gni
+@@ -54,8 +54,10 @@ _grit_environment_vars = [
+ 
+ if (is_chrome_branded) {
+   _grit_environment_vars += [ "CHROMIUM_BUILD=google_chrome" ]
++  _grit_defines += [ "_chromium=false" ]
+ } else {
+   _grit_environment_vars += [ "CHROMIUM_BUILD=chromium" ]
++  _grit_defines += [ "_chromium=true" ]
+ }
+ 
+ if (is_android) {
