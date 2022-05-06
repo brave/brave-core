@@ -7,7 +7,7 @@ index 430e9efa0ec7b4842ef293f274d72b2d276612f9..80e9e6a989f0a57adde019a44c3a208c
  
  export interface PrivacyPageBrowserProxy {
 -  // <if expr="_google_chrome and not chromeos_ash">
-+  // <if expr="_chromium and not chromeos_ash">
++  // <if expr="True and not chromeos_ash">
    getMetricsReporting(): Promise<MetricsReporting>;
    setMetricsReportingEnabled(enabled: boolean): void;
  
@@ -16,7 +16,7 @@ index 430e9efa0ec7b4842ef293f274d72b2d276612f9..80e9e6a989f0a57adde019a44c3a208c
  
  export class PrivacyPageBrowserProxyImpl implements PrivacyPageBrowserProxy {
 -  // <if expr="_google_chrome and not chromeos_ash">
-+  // <if expr="_chromium and not chromeos_ash">
++  // <if expr="True and not chromeos_ash">
    getMetricsReporting() {
      return sendWithPromise('getMetricsReporting');
    }
