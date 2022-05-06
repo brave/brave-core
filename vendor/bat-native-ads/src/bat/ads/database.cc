@@ -124,13 +124,8 @@ mojom::DBCommandResponse::Status Database::Initialize(
     table_version = meta_table_.GetVersionNumber();
   }
 
-  mojom::DBValuePtr value = mojom::DBValue::New();
-  value->set_int_value(table_version);
-
-  mojom::DBCommandResultPtr result = mojom::DBCommandResult::New();
-  result->set_value(std::move(value));
-
-  command_response->result = std::move(result);
+  command_response->result = mojom::DBCommandResult::NewValue(
+      mojom::DBValue::NewIntValue(table_version));
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
@@ -196,10 +191,8 @@ mojom::DBCommandResponse::Status Database::Read(
     database::Bind(&statement, *binding.get());
   }
 
-  mojom::DBCommandResultPtr result = mojom::DBCommandResult::New();
-  result->set_records(std::vector<mojom::DBRecordPtr>());
-
-  command_response->result = std::move(result);
+  command_response->result =
+      mojom::DBCommandResult::NewRecords(std::vector<mojom::DBRecordPtr>());
 
   while (statement.Step()) {
     command_response->result->get_records().push_back(

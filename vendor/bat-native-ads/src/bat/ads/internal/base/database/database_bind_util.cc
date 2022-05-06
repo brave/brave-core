@@ -42,32 +42,32 @@ void Bind(sql::Statement* statement, const mojom::DBCommandBinding& binding) {
   DCHECK(statement);
 
   switch (binding.value->which()) {
-    case mojom::DBValue::Tag::NULL_VALUE: {
+    case mojom::DBValue::Tag::kNullValue: {
       statement->BindNull(binding.index);
       break;
     }
 
-    case mojom::DBValue::Tag::INT_VALUE: {
+    case mojom::DBValue::Tag::kIntValue: {
       statement->BindInt(binding.index, binding.value->get_int_value());
       break;
     }
 
-    case mojom::DBValue::Tag::INT64_VALUE: {
+    case mojom::DBValue::Tag::kInt64Value: {
       statement->BindInt64(binding.index, binding.value->get_int64_value());
       break;
     }
 
-    case mojom::DBValue::Tag::DOUBLE_VALUE: {
+    case mojom::DBValue::Tag::kDoubleValue: {
       statement->BindDouble(binding.index, binding.value->get_double_value());
       break;
     }
 
-    case mojom::DBValue::Tag::BOOL_VALUE: {
+    case mojom::DBValue::Tag::kBoolValue: {
       statement->BindBool(binding.index, binding.value->get_bool_value());
       break;
     }
 
-    case mojom::DBValue::Tag::STRING_VALUE: {
+    case mojom::DBValue::Tag::kStringValue: {
       statement->BindString(binding.index, binding.value->get_string_value());
       break;
     }
@@ -79,8 +79,7 @@ void BindNull(mojom::DBCommand* command, const int_fast16_t index) {
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_null_value(0);
+  binding->value = mojom::DBValue::NewNullValue(0);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -90,8 +89,7 @@ void BindInt(mojom::DBCommand* command, const int index, const int32_t value) {
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_int_value(value);
+  binding->value = mojom::DBValue::NewIntValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -103,8 +101,7 @@ void BindInt64(mojom::DBCommand* command,
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_int64_value(value);
+  binding->value = mojom::DBValue::NewInt64Value(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -116,8 +113,7 @@ void BindDouble(mojom::DBCommand* command,
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_double_value(value);
+  binding->value = mojom::DBValue::NewDoubleValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -127,8 +123,7 @@ void BindBool(mojom::DBCommand* command, const int index, const bool value) {
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_bool_value(value);
+  binding->value = mojom::DBValue::NewBoolValue(value);
 
   command->bindings.push_back(std::move(binding));
 }
@@ -140,8 +135,7 @@ void BindString(mojom::DBCommand* command,
 
   mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = mojom::DBValue::New();
-  binding->value->set_string_value(value);
+  binding->value = mojom::DBValue::NewStringValue(value);
 
   command->bindings.push_back(std::move(binding));
 }

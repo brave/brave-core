@@ -24,27 +24,27 @@ void HandleBinding(sql::Statement* statement,
   }
 
   switch (binding.value->which()) {
-    case mojom::DBValue::Tag::STRING_VALUE: {
+    case mojom::DBValue::Tag::kStringValue: {
       statement->BindString(binding.index, binding.value->get_string_value());
       return;
     }
-    case mojom::DBValue::Tag::INT_VALUE: {
+    case mojom::DBValue::Tag::kIntValue: {
       statement->BindInt(binding.index, binding.value->get_int_value());
       return;
     }
-    case mojom::DBValue::Tag::INT64_VALUE: {
+    case mojom::DBValue::Tag::kInt64Value: {
       statement->BindInt64(binding.index, binding.value->get_int64_value());
       return;
     }
-    case mojom::DBValue::Tag::DOUBLE_VALUE: {
+    case mojom::DBValue::Tag::kDoubleValue: {
       statement->BindDouble(binding.index, binding.value->get_double_value());
       return;
     }
-    case mojom::DBValue::Tag::BOOL_VALUE: {
+    case mojom::DBValue::Tag::kBoolValue: {
       statement->BindBool(binding.index, binding.value->get_bool_value());
       return;
     }
-    case mojom::DBValue::Tag::NULL_VALUE: {
+    case mojom::DBValue::Tag::kNullValue: {
       statement->BindNull(binding.index);
       return;
     }
@@ -65,26 +65,26 @@ mojom::DBRecordPtr CreateRecord(
   }
 
   for (const auto& binding : bindings) {
-    auto value = mojom::DBValue::New();
+    mojom::DBValuePtr value;
     switch (binding) {
       case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
-        value->set_string_value(statement->ColumnString(column));
+        value = mojom::DBValue::NewStringValue(statement->ColumnString(column));
         break;
       }
       case mojom::DBCommand::RecordBindingType::INT_TYPE: {
-        value->set_int_value(statement->ColumnInt(column));
+        value = mojom::DBValue::NewIntValue(statement->ColumnInt(column));
         break;
       }
       case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
-        value->set_int64_value(statement->ColumnInt64(column));
+        value = mojom::DBValue::NewInt64Value(statement->ColumnInt64(column));
         break;
       }
       case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
-        value->set_double_value(statement->ColumnDouble(column));
+        value = mojom::DBValue::NewDoubleValue(statement->ColumnDouble(column));
         break;
       }
       case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
-        value->set_bool_value(statement->ColumnBool(column));
+        value = mojom::DBValue::NewBoolValue(statement->ColumnBool(column));
         break;
       }
       default: {
@@ -231,10 +231,8 @@ mojom::DBCommandResponse::Status LedgerDatabase::Initialize(
     table_version = meta_table_.GetVersionNumber();
   }
 
-  auto value = mojom::DBValue::New();
-  value->set_int_value(table_version);
-  auto result = mojom::DBCommandResult::New();
-  result->set_value(std::move(value));
+  auto result = mojom::DBCommandResult::NewValue(
+      mojom::DBValue::NewIntValue(table_version));
   command_response->result = std::move(result);
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
@@ -302,9 +300,8 @@ mojom::DBCommandResponse::Status LedgerDatabase::Read(
     HandleBinding(&statement, *binding.get());
   }
 
-  auto result = mojom::DBCommandResult::New();
-  result->set_records(std::vector<mojom::DBRecordPtr>());
-  command_response->result = std::move(result);
+  command_response->result =
+      mojom::DBCommandResult::NewRecords(std::vector<mojom::DBRecordPtr>());
   while (statement.Step()) {
     command_response->result->get_records().push_back(
         CreateRecord(&statement, command->record_bindings));
