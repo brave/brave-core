@@ -1059,6 +1059,9 @@
   <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
     Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
   </message>
+  <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_MAIN_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
+    Signs you out of most sites. You won't be signed out of your Brave sync chain.
+  </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
     Clears history, including in the search box
   </message>
@@ -2386,6 +2389,21 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the device use content setting.">
     Not allowed to know when you're actively using your device
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_DESCRIPTION" desc="Description of the third-party sign-in content setting.">
+    Lets you sign in to websites using the account you have with an identity service
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_ALLOWED" desc="Label for the enabled option of the third-party sign-in content setting.">
+    Sites can show sign-in prompts from identity services
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_BLOCKED" desc="Label for the disabled option of the third-party sign-in content setting.">
+    Block sign-in prompts from identity services
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the third-party sign-in content setting.">
+    Allowed to show third-party sign-in prompts
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FEDERATED_IDENTITY_API_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the third-party sign-in content setting.">
+    Not allowed to show third-party sign-in prompts
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
   </message>
@@ -2608,7 +2626,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the protected content content setting.">
     Media with a copyright might not play
   </message>
-  <if expr="chromeos_ash or is_win">
+  <if expr="chromeos_ash or chromeos_lacros or is_win">
     <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_EXPLANATION" desc="Text that is displayed on the Protected Content section of Content Settings. This text explains that enabling protected content may require using a uniquely identifiable machine identifier.">
       Sites may also need to recognize your device using an identifier
     </message>
@@ -2629,6 +2647,11 @@
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the protected content content setting.">
       Not allowed to use identifiers to play protected content
+    </message>
+  </if>
+  <if expr="is_win and _google_chrome">
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_ALLOWED_SUB_LABEL" desc="A subtitle for the ‘Protected Content IDs’ setting, shown if user chooses to allow Protected Content IDs. This text explains that enabling protected content IDs may result in live captioning not working.">
+      Brave Live Caption might not work
     </message>
   </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the protocol handlers content setting.">
@@ -3532,6 +3555,9 @@
   </message>
   <message name="IDS_SETTINGS_FIXED_WIDTH_FONT_LABEL" desc="Label for the fixed width font dropdown menu in settings.">
     Fixed-width font
+  </message>
+  <message name="IDS_SETTINGS_MATH_FONT_LABEL" desc="Label for the mathematical font dropdown menu in settings.">
+    Mathematical font
   </message>
   <message name="IDS_SETTINGS_MINIMUM_FONT_SIZE_LABEL" desc="Label for the minimum font size slider in settings.">
     Minimum font size

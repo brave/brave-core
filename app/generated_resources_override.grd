@@ -457,7 +457,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not reven">
         </if>
-      <if expr="chromeos_ash">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
       <if expr="enable_extensions">
