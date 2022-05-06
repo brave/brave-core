@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/task/post_task.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
