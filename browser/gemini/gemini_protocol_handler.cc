@@ -11,7 +11,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/gemini/browser/gemini_service.h"
@@ -81,8 +81,8 @@ void HandleGeminiProtocol(const GURL& url,
                           bool has_user_gesture,
                           const absl::optional<url::Origin>& initiator) {
   DCHECK(IsGeminiProtocol(url));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadNewTabURL, url, std::move(web_contents_getter),
                      page_transition, has_user_gesture, initiator));
 }

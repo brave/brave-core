@@ -5,7 +5,6 @@
 
 #include "brave/browser/profiles/brave_profile_impl.h"
 
-#include "base/task/post_task.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"

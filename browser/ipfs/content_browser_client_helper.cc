@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"

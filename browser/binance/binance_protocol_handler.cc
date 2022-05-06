@@ -11,7 +11,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/binance/browser/binance_service.h"
@@ -80,8 +79,8 @@ void HandleBinanceProtocol(const GURL& url,
                            bool has_user_gesture,
                            const absl::optional<url::Origin>& initiator) {
   DCHECK(IsBinanceProtocol(url));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadNewTabURL, url, std::move(web_contents_getter),
                      page_transition, has_user_gesture, initiator));
 }

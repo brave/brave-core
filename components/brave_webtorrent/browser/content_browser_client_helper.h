@@ -11,7 +11,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
@@ -123,8 +122,8 @@ static void HandleMagnetProtocol(
     const absl::optional<url::Origin>& initiating_origin,
     content::WeakDocumentPtr initiator_document) {
   DCHECK(url.SchemeIs(kMagnetScheme));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
       base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
                      page_transition, has_user_gesture, is_in_fenced_frame_tree,
                      initiating_origin, std::move(initiator_document)));

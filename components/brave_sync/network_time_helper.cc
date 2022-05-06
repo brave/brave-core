@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/sequence_checker.h"
-#include "base/task/post_task.h"
 #include "components/network_time/network_time_tracker.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -34,8 +33,8 @@ void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
     std::move(cb).Run(network_time_for_test_);
     return;
   }
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
                                 weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
 }
 
