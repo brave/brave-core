@@ -13,7 +13,7 @@ namespace database {
 int ColumnInt(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::INT_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::kIntValue, record->fields.at(index)->which());
 
   return record->fields.at(index)->get_int_value();
 }
@@ -21,7 +21,7 @@ int ColumnInt(mojom::DBRecord* record, const size_t index) {
 int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::INT64_VALUE,
+  DCHECK_EQ(mojom::DBValue::Tag::kInt64Value,
             record->fields.at(index)->which());
 
   return record->fields.at(index)->get_int64_value();
@@ -30,7 +30,7 @@ int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
 double ColumnDouble(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::DOUBLE_VALUE,
+  DCHECK_EQ(mojom::DBValue::Tag::kDoubleValue,
             record->fields.at(index)->which());
 
   return record->fields.at(index)->get_double_value();
@@ -39,7 +39,7 @@ double ColumnDouble(mojom::DBRecord* record, const size_t index) {
 bool ColumnBool(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::BOOL_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::kBoolValue, record->fields.at(index)->which());
 
   return record->fields.at(index)->get_bool_value();
 }
@@ -47,7 +47,7 @@ bool ColumnBool(mojom::DBRecord* record, const size_t index) {
 std::string ColumnString(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(mojom::DBValue::Tag::STRING_VALUE,
+  DCHECK_EQ(mojom::DBValue::Tag::kStringValue,
             record->fields.at(index)->which());
 
   return record->fields.at(index)->get_string_value();
