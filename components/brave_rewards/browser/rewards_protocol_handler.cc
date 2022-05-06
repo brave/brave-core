@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
@@ -15,7 +16,6 @@
 #include "brave/components/brave_rewards/common/url_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "net/base/escape.h"
 
 namespace {
 
@@ -28,10 +28,7 @@ GURL TranslateUrl(const GURL& url) {
   std::string query;
 
   if (url.has_query()) {
-    query = base::StrCat({
-      "?",
-      net::EscapeExternalHandlerValue(url.query())
-    });
+    query = base::StrCat({"?", base::EscapeExternalHandlerValue(url.query())});
   }
 
   base::ReplaceFirstSubstringAfterOffset(&path, 0, "/", "");

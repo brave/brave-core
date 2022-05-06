@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
+#include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
@@ -22,7 +23,6 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-#include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -69,7 +69,7 @@ void BuildFormEncoding(const std::string& key,
                        std::string* out) {
   if (!out->empty())
     out->append("&");
-  out->append(key + "=" + net::EscapeUrlEncodedData(value, true));
+  out->append(key + "=" + base::EscapeUrlEncodedData(value, true));
 }
 
 }  // namespace
@@ -194,10 +194,11 @@ std::string FTXService::GetOAuthClientUrl() {
   // This particular FTX Url has a strange format. It is parameterized as if
   // it has a query param, except the params are the last path segment.
   auto state = ntp_widget_utils::GetCryptoRandomString(false);
-  std::string path = std::string(oauth_path) + "/response_type=code" +
-      "&client_id=" + net::EscapeQueryParamValue(client_id_, true) +
-      "&state=" + net::EscapeQueryParamValue(state, true) +
-      "&redirect_uri=" + net::EscapeQueryParamValue(oauth_callback, true);
+  std::string path =
+      std::string(oauth_path) + "/response_type=code" +
+      "&client_id=" + base::EscapeQueryParamValue(client_id_, true) +
+      "&state=" + base::EscapeQueryParamValue(state, true) +
+      "&redirect_uri=" + base::EscapeQueryParamValue(oauth_callback, true);
   GURL url = GetOAuthURL(path);
   return url.spec();
 }

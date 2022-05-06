@@ -19,7 +19,6 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
-#include "net/base/escape.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
 
