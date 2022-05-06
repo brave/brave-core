@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index fbeae28ddce170cc62bd298f093aa07225da4ff5..200814a35fb4745314b4f63898beec095017cc48 100644
+index 691e3878a260d6d14f496e20f4621c4bfaa96273..3ccd7b2628ace8290970beb390dcc960e66e5e31 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -169,6 +169,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -170,6 +170,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::AUTO_DARK_WEB_CONTENT, nullptr},
      {ContentSettingsType::REQUEST_DESKTOP_SITE, nullptr},
      {ContentSettingsType::GET_DISPLAY_MEDIA_SET_SELECT_ALL_SCREENS, nullptr},
@@ -10,7 +10,7 @@ index fbeae28ddce170cc62bd298f093aa07225da4ff5..200814a35fb4745314b4f63898beec09
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -393,6 +394,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -394,6 +395,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

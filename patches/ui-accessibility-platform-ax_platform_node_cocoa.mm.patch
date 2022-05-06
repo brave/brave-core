@@ -1,8 +1,8 @@
 diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-index 01f5b17a46d75c4c476ef989a349099685d251ac..4a54f36a810510b55d829468800db38283da1393 100644
+index 7342d7b04422bfae797b14147d8d55a9c266e434..2c5edfc32779fbf28c8976aa8363be724ed56f34 100644
 --- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
 +++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-@@ -1984,6 +1984,7 @@ - (NSAttributedString*)accessibilityAttributedStringForRange:(NSRange)range {
+@@ -2055,6 +2055,7 @@ - (NSAttributedString*)accessibilityAttributedStringForRange:(NSRange)range {
    if (!_node)
      return nil;
  
