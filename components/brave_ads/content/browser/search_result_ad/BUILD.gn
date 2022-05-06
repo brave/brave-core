@@ -5,8 +5,12 @@
 
 source_set("search_result_ad") {
   sources = [
+    "search_result_ad_info.cc",
+    "search_result_ad_info.h",
     "search_result_ad_parsing.cc",
     "search_result_ad_parsing.h",
+    "search_result_ad_redirect_throttle.cc",
+    "search_result_ad_redirect_throttle.h",
     "search_result_ad_service.cc",
     "search_result_ad_service.h",
   ]
@@ -20,8 +24,10 @@ source_set("search_result_ad") {
     "//components/sessions",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
+    "//third_party/blink/public/common",
   ]
 
   public_deps = [

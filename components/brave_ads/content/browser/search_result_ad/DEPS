@@ -1,5 +1,6 @@
 include_rules = [
   "+content/public/browser",
+  "+services/network/public/cpp",
   "+services/service_manager/public/cpp",
-  "+third_party/blink/public/mojom/document_metadata",
+  "+third_party/blink/public",
 ]

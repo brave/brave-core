@@ -167,7 +167,8 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
 }
 
 absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
-    const schema_org::mojom::EntityPtr& entity) {
+    const schema_org::mojom::EntityPtr& entity,
+    SearchResultAdState state) {
   DCHECK(entity);
   DCHECK_EQ(entity->type, kProductType);
 
@@ -242,8 +243,12 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
 
       const std::string creative_instance_id =
           search_result_ad->creative_instance_id;
+
+      SearchResultAdInfo search_result_ad_info;
+      search_result_ad_info.state = state;
+      search_result_ad_info.ad = std::move(search_result_ad);
       search_result_ads.emplace(creative_instance_id,
-                                std::move(search_result_ad));
+                                std::move(search_result_ad_info));
     }
 
     // Creatives has been parsed.
@@ -265,7 +270,7 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
 
   VLOG(1) << "Parsed search result ads list:";
   for (const auto& search_result_ad_pair : search_result_ads) {
-    const auto& search_result_ad = search_result_ad_pair.second;
+    const auto& search_result_ad = search_result_ad_pair.second.ad;
     VLOG(1) << "Ad with \"" << kDataPlacementId
             << "\": " << search_result_ad->placement_id;
     VLOG(1) << "  \"" << kDataCreativeInstanceId
@@ -296,14 +301,15 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
 
 }  // namespace
 
-SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page) {
+SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page,
+                                       SearchResultAdState state) {
   for (const auto& entity : web_page->entities) {
     if (entity->type != kProductType) {
       continue;
     }
 
     absl::optional<SearchResultAdMap> search_result_ads =
-        ParseSearchResultAdMapEntityProperties(entity);
+        ParseSearchResultAdMapEntityProperties(entity, state);
 
     if (search_result_ads) {
       LogSearchResultAdMap(*search_result_ads);

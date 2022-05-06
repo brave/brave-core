@@ -9,14 +9,15 @@
 #include <map>
 #include <string>
 
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_info.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 namespace brave_ads {
 
-using SearchResultAdMap = std::map<std::string, ads::mojom::SearchResultAdPtr>;
+using SearchResultAdMap = std::map<std::string, SearchResultAdInfo>;
 
-SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page);
+SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page,
+                                       SearchResultAdState state);
 
 }  // namespace brave_ads
 

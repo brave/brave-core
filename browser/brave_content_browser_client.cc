@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
+#include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -38,6 +39,8 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_redirect_throttle.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -673,8 +676,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
   content::WebContents* contents = wc_getter.Run();
-  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context));
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile);
 
   if (contents) {
     const bool isMainFrame =
@@ -708,6 +711,13 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
       }
+    }
+
+    if (auto search_result_ad_throttle =
+            brave_ads::SearchResultAdRedirectThrottle::MaybeCreateThrottleFor(
+                brave_ads::SearchResultAdServiceFactory::GetForProfile(profile),
+                request, contents)) {
+      result.push_back(std::move(search_result_ad_throttle));
     }
   }
 

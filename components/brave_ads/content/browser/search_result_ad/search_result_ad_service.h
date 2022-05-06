@@ -13,10 +13,12 @@
 #include "base/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_info.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 namespace content {
@@ -48,6 +50,10 @@ class SearchResultAdService : public KeyedService {
       SessionID tab_id,
       base::OnceCallback<void(bool)> callback);
 
+  absl::optional<GURL> MaybeTriggerSearchResultAdClickedEvent(
+      const std::string& creative_instance_id,
+      SessionID tab_id);
+
   void SetMetadataRequestFinishedCallbackForTesting(base::OnceClosure callback);
 
   AdsService* SetAdsServiceForTesting(AdsService* ads_service);
@@ -68,6 +74,7 @@ class SearchResultAdService : public KeyedService {
   void OnRetrieveSearchResultAdEntities(
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
       SessionID tab_id,
+      bool should_trigger_viewed_event,
       blink::mojom::WebPagePtr web_page);
 
   void RunAdViewedEventPendingCallbacks(SessionID tab_id, bool ads_fetched);
@@ -84,7 +91,7 @@ class SearchResultAdService : public KeyedService {
 
   raw_ptr<AdsService> ads_service_ = nullptr;
 
-  std::map<SessionID, std::map<std::string, ads::mojom::SearchResultAdPtr>>
+  std::map<SessionID, std::map<std::string, SearchResultAdInfo>>
       search_result_ads_;
 
   std::map<SessionID, std::vector<AdViewedEventCallbackInfo>>
