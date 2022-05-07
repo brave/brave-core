@@ -129,9 +129,8 @@ bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
 
   params.initiator_origin = request_.request_initiator;
   params.user_gesture = request_.has_user_gesture;
-
   auto redirect_chain = request_.navigation_redirect_chain;
-  DCHECK(redirect_chain.size());
+  redirect_chain.pop_back();
   params.redirect_chain = std::move(redirect_chain);
   params.extra_headers += base::StringPrintf("%s: true\r\n", kDeAmpHeaderName);
 
