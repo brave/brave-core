@@ -35,6 +35,8 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
       const content::WebContents::Getter& wc_getter);
 
   // Implements blink::URLLoaderThrottle.
+  void WillStartRequest(network::ResourceRequest* request,
+                        bool* defer) override;
   void WillProcessResponse(const GURL& response_url,
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override;
@@ -44,6 +46,7 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   network::ResourceRequest request_;
+  bool is_amp_redirect_;
   content::WebContents::Getter wc_getter_;
   base::WeakPtrFactory<DeAmpThrottle> weak_factory_{this};
 };

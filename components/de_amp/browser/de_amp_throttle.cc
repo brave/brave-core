@@ -37,10 +37,6 @@ std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     const content::WebContents::Getter& wc_getter) {
   auto* contents = wc_getter.Run();
 
-  if (request.headers.HasHeader(kDeAmpHeaderName)) {
-    return nullptr;
-  }
-
   if (!contents)
     return nullptr;
 
@@ -59,14 +55,28 @@ DeAmpThrottle::DeAmpThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     const network::ResourceRequest& request,
     const content::WebContents::Getter& wc_getter)
-    : task_runner_(task_runner), request_(request), wc_getter_(wc_getter) {}
+    : task_runner_(task_runner),
+      request_(request),
+      is_amp_redirect_(false),
+      wc_getter_(wc_getter) {}
 
 DeAmpThrottle::~DeAmpThrottle() = default;
+
+void DeAmpThrottle::WillStartRequest(network::ResourceRequest* request,
+                                     bool* defer) {
+  if (request->headers.HasHeader(kDeAmpHeaderName)) {
+    is_amp_redirect_ = true;
+    request->headers.RemoveHeader(kDeAmpHeaderName);
+  }
+}
 
 void DeAmpThrottle::WillProcessResponse(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
+  if (is_amp_redirect_)
+    return;
+
   VLOG(2) << "deamp throttling: " << response_url;
   *defer = true;
 
