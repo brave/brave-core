@@ -10,6 +10,9 @@
 
 #include "base/environment.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
+#include "chrome/browser/ui/browser_finder.h"
 
 namespace extensions {
 namespace api {
@@ -26,6 +29,10 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveTalkBeginAdvertiseShareDisplayMediaFunction::Run() {
   LOG(ERROR) << "Huh. Made it here";
+  
+  auto* contents = content::WebContents::FromRenderFrameHost(render_frame_host());
+  auto* browser = chrome::FindBrowserWithWebContents(contents);
+  LOG(ERROR) << "Found Browser: " << browser;
   return RespondNow(NoArguments());
 }
 
