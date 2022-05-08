@@ -4,10 +4,18 @@
 
 {
     "braveTalk": {
-        "contexts": "all",
-        "extension_types": "all",
+        "contexts": [
+            "webui",
+            "web_page"
+        ],
         "matches": ["<all_urls>"],
         "channel": "stable",
+        "dependencies": []
+    },
+    "braveTalk.isSupported": {
+        "contexts": ["webui"],
+        "channel": "stable",
+        "matches": ["chrome://newtab/*"],
         "dependencies": []
     }
 }
