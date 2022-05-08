@@ -25,6 +25,17 @@ class BraveTalkIsSupportedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveTalkBeginAdvertiseShareDisplayMediaFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveTalk.beginAdvertiseShareDisplayMedia",
+                             UNKNOWN)
+
+ protected:
+  ~BraveTalkBeginAdvertiseShareDisplayMediaFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

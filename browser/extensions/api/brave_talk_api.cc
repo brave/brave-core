@@ -24,5 +24,10 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
   return RespondNow(OneArgument(base::Value(true)));
 }
 
+ExtensionFunction::ResponseAction BraveTalkBeginAdvertiseShareDisplayMediaFunction::Run() {
+  LOG(ERROR) << "Huh. Made it here";
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions
