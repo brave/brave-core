@@ -142,11 +142,19 @@ void BraveToolbarView::Init() {
 
   const auto callback = [](Browser* browser, int command,
                            const ui::Event& event) {
+                             LOG(ERROR) << "Command: " << command;
     chrome::ExecuteCommandWithDisposition(
         browser, command, ui::DispositionFromEventFlags(event.flags()));
   };
 
   DCHECK(location_bar_);
+
+  share_tab_ = AddChildView(
+      std::make_unique<share_tab_button::ShareTabButton>(
+          base::BindRepeating(callback, browser_, IDC_VIEW_MENU)));
+  share_tab_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
+  share_tab_->UpdateImageAndText();
+
   bookmark_ =
       AddChildViewAt(std::make_unique<BookmarkButton>(base::BindRepeating(
                          callback, browser_, IDC_BOOKMARK_THIS_TAB)),
@@ -154,13 +162,6 @@ void BraveToolbarView::Init() {
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
-
-  share_tab_ = AddChildViewAt(
-      std::make_unique<share_tab_button::ShareTabButton>(
-          base::BindRepeating(callback, browser_, IDC_VIEW_MENU)),
-      GetIndexOf(location_bar_));
-  share_tab_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
-  share_tab_->UpdateImageAndText();
 
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
@@ -235,6 +236,8 @@ void BraveToolbarView::LoadImages() {
     bookmark_->UpdateImageAndText();
   if (wallet_)
     wallet_->UpdateImageAndText();
+  if (share_tab_)
+    share_tab_->UpdateImageAndText();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {

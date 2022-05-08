@@ -17,6 +17,9 @@ class ShareTabButton : public ToolbarButton {
   ~ShareTabButton() override;
 
   void UpdateImageAndText();
+  
+  // ToolbarButton:
+  const char* GetClassName() const override;
 };
 }  // namespace share_tab_button
 
