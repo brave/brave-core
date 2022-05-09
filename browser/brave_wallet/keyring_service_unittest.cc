@@ -3144,7 +3144,7 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
                                message)
                   .empty());
 
-  // create solona keyring
+  // create solana keyring
   ASSERT_TRUE(AddAccount(&service, "Account 1", mojom::CoinType::SOL));
   ASSERT_TRUE(service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
 
