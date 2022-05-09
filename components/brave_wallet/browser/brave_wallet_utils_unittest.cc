@@ -850,7 +850,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   // Solana
 
   mojom::NetworkInfo sol_mainnet(
-      brave_wallet::mojom::kSolanaMainnet, "Solona Mainnet Beta",
+      brave_wallet::mojom::kSolanaMainnet, "Solana Mainnet Beta",
       {"https://explorer.solana.com/"}, {},
       {"https://mainnet-beta-solana.brave.com/rpc"}, "SOL", "Solana", 9,
       brave_wallet::mojom::CoinType::SOL, nullptr);
