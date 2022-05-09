@@ -550,7 +550,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Your wallet
       </message>
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
-          Brave VPN
+        Brave VPN
       </message>
       <message name="IDS_BRAVE_NEWS_TITLE" desc="Title for Brave news settings">
         Brave News
@@ -3006,6 +3006,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_FRAGMENT_ADD_TOKEN_DESCRIPTION" desc="Add token dialog description.">
       Would you like to import this token?
+    </message>
+    <message name="IDS_BRAVE_DB_PROCESSING_EXPORT_ALERT_INFO" desc="Alert dialog description while exporting database" translateable="false">
+      Exporting database, please wait...
+    </message>
+    <message name="IDS_BRAVE_DB_PROCESSING_IMPORT_ALERT_INFO" desc="Alert dialog description while importing database" translateable="false">
+      Importing database, please wait...
+    </message>
+    <message name="IDS_BRAVE_BROWSER" desc="Brave browser title text">
+      Brave Browser
+    </message>
+    <message name="IDS_BRAVE_BROWSER_NOTIFICATION_CHANNEL_DESCRIPTION" desc="Brave broswer notification channel creation information for user">
+      Notification channel for Brave Browser
     </message>
   </messages>
   </release>

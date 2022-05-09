@@ -76,6 +76,8 @@ public class PendingTxHelper implements TxServiceObserver {
 
     public void fetchTransactions(Runnable runWhenDone) {
         isFetchingTx = true;
+        _mTransactionInfos.postValue(Collections.emptyList());
+        _mSelectedPendingRequest.postValue(null);
         AsyncUtils.MultiResponseHandler allTxMultiResponse =
                 new AsyncUtils.MultiResponseHandler(mAccountInfos.length);
         ArrayList<AsyncUtils.GetAllTransactionInfoResponseContext> allTxContexts =
@@ -132,8 +134,15 @@ public class PendingTxHelper implements TxServiceObserver {
             }
             isFetchingTx = false;
             updateTransactionList();
-            runWhenDone.run();
+            if (runWhenDone != null) {
+                runWhenDone.run();
+            }
         });
+    }
+
+    public void setAccountInfos(AccountInfo[] accountInfos) {
+        this.mAccountInfos = accountInfos;
+        fetchTransactions(null);
     }
 
     @Override
@@ -153,6 +162,10 @@ public class PendingTxHelper implements TxServiceObserver {
 
     public List<TransactionInfo> getPendingTransactions() {
         return mTransactionInfos;
+    }
+
+    public void setTxService(TxService txService) {
+        this.mTxService = txService;
     }
 
     private void updateTransactionList() {
@@ -232,11 +245,24 @@ public class PendingTxHelper implements TxServiceObserver {
 
     private void postTxUpdates() {
         if (mTransactionInfos.size() > 0) {
-            _mSelectedPendingRequest.postValue(mTransactionInfos.get(0));
+            _mSelectedPendingRequest.postValue(getFirstUnapprovedTx());
         } else {
             _mSelectedPendingRequest.postValue(null);
             _mHasNoPendingTxAfterProcessing.postValue(true);
         }
+    }
+
+    /*
+     * Make sure to use get the first unapproved transaction as source list may not have one due to
+     * returnAll set to true
+     */
+    private TransactionInfo getFirstUnapprovedTx() {
+        for (TransactionInfo transactionInfo : mTransactionInfos) {
+            if (transactionInfo.txStatus == TransactionStatus.UNAPPROVED) {
+                return transactionInfo;
+            }
+        }
+        return null;
     }
 
     private final Comparator<TransactionInfo> sortByDateComparator =

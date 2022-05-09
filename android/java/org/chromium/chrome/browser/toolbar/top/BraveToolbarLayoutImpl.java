@@ -941,6 +941,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void showWalletPanel() {
+        dismissWalletPanelOrDialog();
         showWalletPanelInternal(this);
     }
 
