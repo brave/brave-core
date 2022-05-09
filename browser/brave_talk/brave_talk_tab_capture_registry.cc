@@ -4,9 +4,8 @@
 #include "chrome\common\extensions\api\tab_capture.h"
 #include "components\sessions\content\session_tab_helper.h"
 #include "content/public/browser/render_process_host.h"
-#include "content\public\browser\web_contents_observer.h"
 #include "content\public\browser\desktop_streams_registry.h"
-
+#include "content\public\browser\web_contents_observer.h"
 
 using extensions::api::tab_capture::TabCaptureState;
 namespace brave_talk {
@@ -69,7 +68,7 @@ class BraveTalkTabCaptureRegistry::LiveRequest
   }
 
   void WebContentsDestroyed() override {
-      registry_->KillRequest(this); // Deletes |this|.
+    registry_->KillRequest(this);  // Deletes |this|.
   }
 
  private:
@@ -101,6 +100,11 @@ BraveTalkTabCaptureRegistry* BraveTalkTabCaptureRegistry::Get(
 static base::LazyInstance<extensions::BrowserContextKeyedAPIFactory<
     BraveTalkTabCaptureRegistry>>::DestructorAtExit
     g_brave_talk_tab_capture_registry_factory = LAZY_INSTANCE_INITIALIZER;
+// static
+extensions::BrowserContextKeyedAPIFactory<BraveTalkTabCaptureRegistry>*
+BraveTalkTabCaptureRegistry::GetFactoryInstance() {
+  return g_brave_talk_tab_capture_registry_factory.Pointer();
+}
 
 std::string BraveTalkTabCaptureRegistry::AddRequest(
     content::WebContents* target_contents,
@@ -111,22 +115,23 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
   LiveRequest* const request = FindRequest(target_contents);
 
   if (request) {
-      if (request->capture_state() == TabCaptureState::TAB_CAPTURE_STATE_PENDING || request->capture_state() == TabCaptureState::TAB_CAPTURE_STATE_ACTIVE) {
-          return device_id;
-      } else {
-          // Delete the request before creating it's replacement.
-          KillRequest(request);
-      }
+    if (request->capture_state() ==
+            TabCaptureState::TAB_CAPTURE_STATE_PENDING ||
+        request->capture_state() == TabCaptureState::TAB_CAPTURE_STATE_ACTIVE) {
+      return device_id;
+    } else {
+      // Delete the request before creating it's replacement.
+      KillRequest(request);
+    }
   }
 
   requests_.push_back(std::make_unique<LiveRequest>(target_contents, this));
   auto* const main_frame = caller_contents->GetMainFrame();
   if (main_frame) {
-      device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
-          main_frame->GetProcess()->GetID(), main_frame->GetRoutingID(),
-          url::Origin::Create(origin), source, "brave_talk",
-          content::kRegistryStreamTypeTab
-      );
+    device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
+        main_frame->GetProcess()->GetID(), main_frame->GetRoutingID(),
+        url::Origin::Create(origin), source, "brave_talk",
+        content::kRegistryStreamTypeTab);
   }
 
   LOG(ERROR) << "Made device id: " << device_id;

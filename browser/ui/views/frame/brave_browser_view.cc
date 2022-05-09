@@ -23,6 +23,8 @@
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
+#include "brave/browser/brave_talk/brave_talk_service_factory.h"
+#include "brave/browser/brave_talk/brave_talk_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -335,6 +337,8 @@ void BraveBrowserView::CloseWalletBubble() {
 
 void BraveBrowserView::ScreenShareActiveTab() {
   LOG(ERROR) << "Should ScreenShareActiveTab now!";
+  auto* service = brave_talk::BraveTalkServiceFactory::GetForContext(browser_->profile());
+  service->ShareTab(browser_->tab_strip_model()->GetActiveWebContents());
 }
 
 void BraveBrowserView::OnTabStripModelChanged(
