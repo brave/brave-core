@@ -21,6 +21,7 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 
 namespace share_tab_button {
 
@@ -35,7 +36,7 @@ void ShareTabButton::UpdateImageAndText() {
   const ui::ThemeProvider* tp = GetThemeProvider();
 
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
-  const gfx::VectorIcon& icon = kVpnIndicatorIcon;
+  const gfx::VectorIcon& icon = kWalletToolbarButtonIcon;
   auto image = gfx::CreateVectorIcon(icon, 48, icon_color);
   SetImage(views::Button::STATE_NORMAL, image);
 
@@ -43,8 +44,8 @@ void ShareTabButton::UpdateImageAndText() {
   SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
 }
 
-const char* ShareTabButton::GetClassName() const {
-  return "ShareTabButton";
-}
+BEGIN_METADATA(ShareTabButton, ToolbarButton)
+END_METADATA
 
 }  // namespace share_tab_button
+

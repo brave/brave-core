@@ -7,9 +7,12 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_SHARE_TAB_BUTTON_H_
 
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 namespace share_tab_button {
 class ShareTabButton : public ToolbarButton {
+  METADATA_HEADER(ShareTabButton);
+
  public:
   explicit ShareTabButton(PressedCallback callback);
   ShareTabButton(const ShareTabButton&) = delete;
@@ -17,9 +20,6 @@ class ShareTabButton : public ToolbarButton {
   ~ShareTabButton() override;
 
   void UpdateImageAndText();
-  
-  // ToolbarButton:
-  const char* GetClassName() const override;
 };
 }  // namespace share_tab_button
 
