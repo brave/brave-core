@@ -13,6 +13,8 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "brave/browser/brave_talk/brave_talk_service.h"
+#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 
 namespace extensions {
 namespace api {
@@ -29,13 +31,12 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveTalkBeginAdvertiseShareDisplayMediaFunction::Run() {
-  LOG(ERROR) << "Huh. Made it here";
-
   auto* contents = GetSenderWebContents();
-  if (contents) {
-    auto* browser = chrome::FindBrowserWithWebContents(contents);
-    LOG(ERROR) << "Found Browser: " << browser;
-  }
+  if (!contents) return RespondNow(NoArguments());
+
+  auto* service = brave_talk::BraveTalkServiceFactory::GetForContext(browser_context());
+  service->StartObserving(contents);  
+
   return RespondNow(NoArguments());
 }
 
