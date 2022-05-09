@@ -434,6 +434,7 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
+    *** mNativeInitialized;
     public <init>(...);
 }
 

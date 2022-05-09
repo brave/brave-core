@@ -697,6 +697,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings", "mSite",
                 true, Website.class));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "mNativeInitialized", true, boolean.class));
     }
 
     @Test
