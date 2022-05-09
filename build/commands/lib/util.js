@@ -559,6 +559,9 @@ const util = {
       assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
       options.env.GOMA_SERVER_HOST = config.gomaServerHost
 
+      // Upload stats about Goma actions to the Goma backend.
+      options.env.GOMA_PROVIDE_INFO = true
+
       // Disable HTTP2 proxy. According to EngFlow this has significant performance impact.
       options.env.GOMACTL_USE_PROXY = 0
 
