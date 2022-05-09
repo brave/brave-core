@@ -34,6 +34,7 @@ class BraveTalkBeginAdvertiseShareDisplayMediaFunction
  protected:
   ~BraveTalkBeginAdvertiseShareDisplayMediaFunction() override {}
   ResponseAction Run() override;
+  
 };
 
 }  // namespace api
