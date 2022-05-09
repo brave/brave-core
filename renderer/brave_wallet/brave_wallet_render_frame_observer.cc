@@ -45,6 +45,11 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     js_ethereum_provider_.reset();
     return;
   }
+  // Wallet provider objects won't be generated for third party iframe
+  if (!render_frame()->IsMainFrame() &&
+      render_frame()->GetWebFrame()->IsCrossOriginToMainFrame()) {
+    return;
+  }
 
   bool is_main_world = world_id == content::ISOLATED_WORLD_ID_GLOBAL;
   if (!js_ethereum_provider_) {
