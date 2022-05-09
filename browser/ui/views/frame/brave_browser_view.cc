@@ -333,6 +333,10 @@ void BraveBrowserView::CloseWalletBubble() {
     GetWalletButton()->CloseWalletBubble();
 }
 
+void BraveBrowserView::ScreenShareActiveTab() {
+  LOG(ERROR) << "Should ScreenShareActiveTab now!";
+}
+
 void BraveBrowserView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,

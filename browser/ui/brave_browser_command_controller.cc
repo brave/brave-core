@@ -74,15 +74,13 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.SupportsCommand(id)
-      : BrowserCommandController::SupportsCommand(id);
+  return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
+                             : BrowserCommandController::SupportsCommand(id);
 }
 
 bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.IsCommandEnabled(id)
-      : BrowserCommandController::IsCommandEnabled(id);
+  return IsBraveCommands(id) ? brave_command_updater_.IsCommandEnabled(id)
+                             : BrowserCommandController::IsCommandEnabled(id);
 }
 
 bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
@@ -96,14 +94,16 @@ bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
 }
 
 void BraveBrowserCommandController::AddCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.AddCommandObserver(id, observer)
       : BrowserCommandController::AddCommandObserver(id, observer);
 }
 
 void BraveBrowserCommandController::RemoveCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.RemoveCommandObserver(id, observer)
       : BrowserCommandController::RemoveCommandObserver(id, observer);
@@ -117,8 +117,8 @@ void BraveBrowserCommandController::RemoveCommandObserver(
 
 bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
   return IsBraveCommands(id)
-      ? brave_command_updater_.UpdateCommandEnabled(id, state)
-      : BrowserCommandController::UpdateCommandEnabled(id, state);
+             ? brave_command_updater_.UpdateCommandEnabled(id, state)
+             : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
@@ -159,6 +159,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
+  UpdateCommandForShareTab();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -227,6 +228,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, true);
   UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandForShareTab() {
+  UpdateCommandEnabled(IDC_SHARE_TAB, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -305,6 +310,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);
+      break;
+    case IDC_SHARE_TAB:
+      brave::ScreenShareActiveTab(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
