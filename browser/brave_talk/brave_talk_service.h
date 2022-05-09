@@ -25,6 +25,8 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   void DidStartNavigation(content::NavigationHandle* handle) override;
 
+  void ShareTab(content::WebContents* target_contents);
+
  private:
   share_tab_button::ShareTabButton* share_tab_button();
   base::WeakPtr<content::WebContents> observing_;

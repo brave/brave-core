@@ -126,8 +126,11 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
           main_frame->GetProcess()->GetID(), main_frame->GetRoutingID(),
           url::Origin::Create(origin), source, "brave_talk",
           content::kRegistryStreamTypeTab
-      )
+      );
   }
+
+  LOG(ERROR) << "Made device id: " << device_id;
+  return device_id;
 }
 
 void BraveTalkTabCaptureRegistry::DispatchStatusChangeEvent(
