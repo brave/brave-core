@@ -8,6 +8,10 @@ namespace content {
 class WebContents;
 }
 
+namespace share_tab_button {
+class ShareTabButton;
+}
+
 namespace brave_talk {
 class BraveTalkService : public KeyedService, content::WebContentsObserver {
  public:
@@ -22,6 +26,7 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
   void DidStartNavigation(content::NavigationHandle* handle) override;
 
  private:
+  share_tab_button::ShareTabButton* share_tab_button();
   base::WeakPtr<content::WebContents> observing_;
 };
 }  // namespace brave_talk

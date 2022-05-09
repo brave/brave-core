@@ -30,6 +30,7 @@ class BraveToolbarView : public ToolbarView,
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
 
+  share_tab_button::ShareTabButton* share_tab_button() const { return share_tab_; }
   BookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
 

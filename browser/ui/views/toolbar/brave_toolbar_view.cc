@@ -154,6 +154,7 @@ void BraveToolbarView::Init() {
           base::BindRepeating(callback, browser_, IDC_VIEW_MENU)));
   share_tab_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
   share_tab_->UpdateImageAndText();
+  share_tab_->SetVisible(false);
 
   bookmark_ =
       AddChildViewAt(std::make_unique<BookmarkButton>(base::BindRepeating(
