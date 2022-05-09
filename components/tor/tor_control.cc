@@ -5,9 +5,17 @@
 
 #include "brave/components/tor/tor_control.h"
 
+#include <vector>
+
+#include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/files/file_path.h"
+#include "base/sequence_checker.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -514,6 +522,74 @@ void TorControl::GetCircuitEstablishedDone(
     return;
   }
   std::move(callback).Run(false, result);
+}
+
+void TorControl::SetupPluggableTransport(
+    const base::FilePath& snowflake,
+    const base::FilePath& obsf4,
+    base::OnceCallback<void(bool error)> callback) {
+  if (owner_task_runner_->RunsTasksInCurrentSequence()) {
+    io_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(&TorControl::SetupPluggableTransport,
+                                  weak_ptr_factory_.GetWeakPtr(), snowflake,
+                                  obsf4, std::move(callback)));
+    return;
+  }
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+
+  constexpr const char kObsf4ConfigCmd[] =
+      "ClientTransportPlugin=\"meek_lite,obfs2,obfs3,obfs4,scramblesuit "
+      "exec %s\"";
+  constexpr const char kSnowflakeConfigCmd[] =
+      "ClientTransportPlugin=\"snowflake exec %s -url "
+      "https://snowflake-broker.torproject.net.global.prod.fastly.net/ "
+      "-front cdn.sstatic.net "
+      "-ice "
+      "stun:stun.l.google.com:19302,stun:stun.voip.blackberry.com:3478,stun:"
+      "stun.altar.com.pl:3478,stun:stun.antisip.com:3478,stun:stun.bluesip.net:"
+      "3478,stun:stun.dus.net:3478,stun:stun.epygi.com:3478,stun:stun.sonetel."
+      "com:3478,stun:stun.sonetel.net:3478,stun:stun.stunprotocol.org:3478,"
+      "stun:stun.uls.co.za:3478,stun:stun.voipgate.com:3478,stun:stun.voys.nl:"
+      "3478\"";
+
+  const std::string snowflake_setup = base::StringPrintf(
+      kSnowflakeConfigCmd,
+      snowflake.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
+          .AsUTF8Unsafe()
+          .c_str());
+  const std::string obsf4_setup = base::StringPrintf(
+      kObsf4ConfigCmd, obsf4.NormalizePathSeparatorsTo(FILE_PATH_LITERAL('/'))
+                           .AsUTF8Unsafe()
+                           .c_str());
+
+  const std::string configure_pluggable_transport =
+      base::StrCat({"SETCONF ", snowflake_setup, " ", obsf4_setup});
+
+  DoCmd(configure_pluggable_transport, base::DoNothing(), base::DoNothing());
+}
+
+void TorControl::SetupBridges(const std::vector<std::string>& bridges,
+                              base::OnceCallback<void(bool error)> callback) {
+  if (owner_task_runner_->RunsTasksInCurrentSequence()) {
+    io_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(&TorControl::SetupBridges,
+                                  weak_ptr_factory_.GetWeakPtr(), bridges,
+                                  std::move(callback)));
+    return;
+  }
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  if (bridges.empty()) {
+    DoCmd("RESETCONF UseBridges", base::DoNothing(), base::DoNothing());
+    DoCmd("RESETCONF Bridge", base::DoNothing(), base::DoNothing());
+  } else {
+    std::string command = "SETCONF ";
+    for (const auto& bridge : bridges) {
+      command += "Bridge=\"" + bridge + "\" ";
+    }
+    command += "UseBridges=1";
+    DoCmd(std::move(command), base::DoNothing(), base::DoNothing());
+  }
+  DoCmd("SAVECONF", base::DoNothing(), base::DoNothing());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

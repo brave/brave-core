@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 namespace tor {
@@ -85,6 +86,11 @@ TestingBraveBrowserProcess::local_data_files_service() {
 
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* TestingBraveBrowserProcess::tor_client_updater() {
+  return nullptr;
+}
+
+tor::BraveTorPluggableTransportUpdater*
+TestingBraveBrowserProcess::tor_pluggable_transport_updater() {
   return nullptr;
 }
 #endif

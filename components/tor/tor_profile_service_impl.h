@@ -12,9 +12,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "net/proxy_resolution/proxy_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -32,12 +34,17 @@ namespace tor {
 using NewTorCircuitCallback =
     base::OnceCallback<void(const absl::optional<net::ProxyInfo>& proxy_info)>;
 
-class TorProfileServiceImpl : public TorProfileService,
-                              public BraveTorClientUpdater::Observer,
-                              public TorLauncherObserver {
+class TorProfileServiceImpl
+    : public TorProfileService,
+      public BraveTorClientUpdater::Observer,
+      public BraveTorPluggableTransportUpdater::Observer,
+      public TorLauncherObserver {
  public:
-  TorProfileServiceImpl(content::BrowserContext* context,
-                        BraveTorClientUpdater* tor_client_updater);
+  TorProfileServiceImpl(
+      content::BrowserContext* context,
+      PrefService* local_state,
+      BraveTorClientUpdater* tor_client_updater,
+      BraveTorPluggableTransportUpdater* to_pluggable_transport_updater);
   TorProfileServiceImpl(const TorProfileServiceImpl&) = delete;
   TorProfileServiceImpl& operator=(const TorProfileServiceImpl&) = delete;
   ~TorProfileServiceImpl() override;
@@ -52,6 +59,7 @@ class TorProfileServiceImpl : public TorProfileService,
   void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) override;
 
   // TorLauncherObserver:
+  void OnTorControlReady() override;
   void OnTorNewProxyURI(const std::string& uri) override;
 
  private:
@@ -65,11 +73,20 @@ class TorProfileServiceImpl : public TorProfileService,
   // BraveTorClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 
-  content::BrowserContext* context_ = nullptr;
-  BraveTorClientUpdater* tor_client_updater_ = nullptr;
+  // BraveTorPluggableTransportUpdater::Observer
+  void OnPluggableTransportReady(bool success) override;
+
+  void OnBridgesConfigChanged();
+
+  raw_ptr<content::BrowserContext> context_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
+  raw_ptr<BraveTorClientUpdater> tor_client_updater_ = nullptr;
+  raw_ptr<BraveTorPluggableTransportUpdater> tor_pluggable_transport_udater_ =
+      nullptr;
   raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;  // Singleton
   raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =
       nullptr;  // NOT OWNED
+  PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
 };
 

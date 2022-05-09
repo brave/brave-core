@@ -27,6 +27,7 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
 #endif
 
@@ -86,6 +87,7 @@ void BraveExtensionManagement::OnTorDisabledChanged() {
   if (TorProfileServiceFactory::IsTorDisabled()) {
     TorProfileManager::GetInstance().CloseAllTorWindows();
     g_brave_browser_process->tor_client_updater()->Cleanup();
+    g_brave_browser_process->tor_pluggable_transport_updater()->Cleanup();
   }
 #endif
 }

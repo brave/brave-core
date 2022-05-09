@@ -5,10 +5,9 @@
 
 #include "brave/components/tor/tor_constants.h"
 
-#define FPL FILE_PATH_LITERAL
-
 namespace tor {
 
-const base::FilePath::CharType kTorProfileDir[] = FPL("Tor Profile");
+const base::FilePath::CharType kTorProfileDir[] =
+    FILE_PATH_LITERAL("Tor Profile");
 
 }  // namespace tor

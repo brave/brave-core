@@ -13,11 +13,11 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/tor/tor_control_event.h"
-
-#include "base/callback.h"
+#include "base/callback_forward.h"
+#include "base/files/file_path.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/tor/tor_control_event.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -93,6 +93,12 @@ class TorControl {
   void GetCircuitEstablished(
       base::OnceCallback<void(bool error, bool established)> callback);
 
+  void SetupPluggableTransport(const base::FilePath& snowflake,
+                               const base::FilePath& obsf4,
+                               base::OnceCallback<void(bool error)> callback);
+  void SetupBridges(const std::vector<std::string>& bridges,
+                    base::OnceCallback<void(bool error)> callback);
+
  protected:
   friend class TorControlTest;
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseQuoted);
@@ -149,6 +155,13 @@ class TorControl {
       bool error,
       const std::string& status,
       const std::string& reply);
+
+  void OnBrigdeAdded(bool error,
+                     const std::string& status,
+                     const std::string& reply);
+  void OnBridgesEnabled(bool error,
+                        const std::string& status,
+                        const std::string& reply);
 
   void DoSubscribe(TorControlEvent event,
                    base::OnceCallback<void(bool error)> callback);

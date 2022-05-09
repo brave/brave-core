@@ -6,6 +6,7 @@
 #include "brave/components/tor/tor_launcher_factory.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/callback_helpers.h"
@@ -144,6 +145,25 @@ void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
   std::move(callback).Run(true, std::string(tor_log_));
 }
 
+void TorLauncherFactory::SetupPluggableTransport(
+    const base::FilePath& snowflake,
+    const base::FilePath& obsf4) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  control_->SetupPluggableTransport(snowflake, obsf4, base::DoNothing());
+}
+
+void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!bridges_config.use_bridges) {
+    control_->SetupBridges({}, base::DoNothing());
+  } else if (bridges_config.use_builtin_bridges) {
+    // TODO(boocmp): Get builtin list
+    control_->SetupBridges({}, base::DoNothing());
+  } else {
+    control_->SetupBridges(bridges_config.bridges, base::DoNothing());
+  }
+}
+
 void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   observers_.AddObserver(observer);
@@ -219,6 +239,10 @@ void TorLauncherFactory::OnTorControlReady() {
   control_->Subscribe(tor::TorControlEvent::NOTICE, base::DoNothing());
   control_->Subscribe(tor::TorControlEvent::WARN, base::DoNothing());
   control_->Subscribe(tor::TorControlEvent::ERR, base::DoNothing());
+
+  for (auto& observer : observers_) {
+    observer.OnTorControlReady();
+  }
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {

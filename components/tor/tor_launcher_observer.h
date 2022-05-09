@@ -17,6 +17,7 @@ class TorLauncherObserver : public base::CheckedObserver {
   virtual void OnTorLauncherCrashed() {}
   virtual void OnTorCrashed(int64_t pid) {}
   virtual void OnTorLaunched(bool result, int64_t pid) {}
+  virtual void OnTorControlReady() {}
   virtual void OnTorNewProxyURI(const std::string& uri) {}
   virtual void OnTorCircuitEstablished(bool result) {}
   virtual void OnTorInitializing(const std::string& percentage) {}

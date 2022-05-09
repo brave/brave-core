@@ -26,19 +26,6 @@ using brave_component_updater::BraveComponent;
 
 namespace tor {
 
-#if BUILDFLAG(IS_WIN)
-extern const char kTorClientComponentName[];
-extern const char kTorClientComponentId[];
-#elif BUILDFLAG(IS_MAC)
-extern const char kTorClientComponentName[];
-extern const char kTorClientComponentId[];
-extern const char kTorClientComponentBase64PublicKey[];
-#elif BUILDFLAG(IS_LINUX)
-extern const char kTorClientComponentName[];
-extern const char kTorClientComponentId[];
-extern const char kTorClientComponentBase64PublicKey[];
-#endif
-
 class BraveTorClientUpdater : public BraveComponent {
  public:
   class Observer : public base::CheckedObserver {

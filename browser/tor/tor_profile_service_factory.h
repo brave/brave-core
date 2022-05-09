@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
+#include "brave/components/tor/tor_utils.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace tor {
@@ -26,6 +27,8 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
 
   static void SetTorDisabled(bool disabled);
   static bool IsTorDisabled();
+  static void SetTorBridgesConfig(const tor::BridgesConfig& config);
+  static tor::BridgesConfig GetTorBridgesConfig();
 
  private:
   friend struct base::DefaultSingletonTraits<TorProfileServiceFactory>;

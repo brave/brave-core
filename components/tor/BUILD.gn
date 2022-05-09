@@ -20,6 +20,8 @@ static_library("tor") {
     sources += [
       "brave_tor_client_updater.cc",
       "brave_tor_client_updater.h",
+      "brave_tor_pluggable_transport_updater.cc",
+      "brave_tor_pluggable_transport_updater.h",
       "onion_location_navigation_throttle.cc",
       "onion_location_navigation_throttle.h",
       "onion_location_tab_helper.cc",
