@@ -36,16 +36,15 @@ ShareTabButton::ShareTabButton(PressedCallback callback)
 }
 
 void ShareTabButton::UpdateImageAndText() {
-  LOG(ERROR) << "Updated sharetabbutton: "
-             << (HasImage(views::Button::STATE_NORMAL));
   const ui::ThemeProvider* tp = GetThemeProvider();
 
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
-  const gfx::VectorIcon& icon = vector_icons::kScreenShareIcon;
+  const gfx::VectorIcon& icon = vector_icons::kScreenShareIcon; // TODO: Get actual icon from UI folks.
   auto image = gfx::CreateVectorIcon(icon, kIconSize, icon_color);
   SetImage(views::Button::STATE_NORMAL, image);
 
   int tooltip_id = IDS_ACCESS_CODE_CAST_CONNECT;
+  // TODO: Proper share tooltip.
   SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
 }
 
