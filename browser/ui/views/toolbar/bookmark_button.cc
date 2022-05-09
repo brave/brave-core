@@ -42,7 +42,6 @@ void BookmarkButton::UpdateImageAndText() {
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
   const gfx::VectorIcon& icon =
       active_ ? omnibox::kStarActiveIcon : omnibox::kStarIcon;
-      LOG(ERROR) << "Bookmark Icon Update";
   SetImage(views::Button::STATE_NORMAL,
            gfx::CreateVectorIcon(icon, icon_color));
 

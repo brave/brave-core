@@ -31,6 +31,7 @@ void BraveTalkService::StartObserving(content::WebContents* contents) {
   if (!button)
     return;
   button->SetVisible(true);
+  button->UpdateImageAndText();
 }
 
 void BraveTalkService::StopObserving(content::WebContents* contents) {
