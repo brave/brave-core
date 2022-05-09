@@ -147,7 +147,7 @@ const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
 
 const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
     {brave_wallet::mojom::kSolanaMainnet,
-     "Solona Mainnet Beta",
+     "Solana Mainnet Beta",
      {"https://explorer.solana.com/"},
      {},
      {"https://mainnet-beta-solana.brave.com/rpc"},
@@ -157,7 +157,7 @@ const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
      brave_wallet::mojom::CoinType::SOL,
      nullptr},
     {brave_wallet::mojom::kSolanaTestnet,
-     "Solona Testnet",
+     "Solana Testnet",
      {"https://explorer.solana.com/?cluster=testnet"},
      {},
      {"https://testnet-solana.brave.com/rpc"},
@@ -167,7 +167,7 @@ const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
      brave_wallet::mojom::CoinType::SOL,
      nullptr},
     {brave_wallet::mojom::kSolanaDevnet,
-     "Solona Devnet",
+     "Solana Devnet",
      {"https://explorer.solana.com/?cluster=devnet"},
      {},
      {"https://api.devnet.solana.com"},
