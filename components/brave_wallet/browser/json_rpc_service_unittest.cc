@@ -767,7 +767,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                   const std::string& expected_cid,
                                   mojom::FilecoinProviderError expected_error,
                                   const std::string& expected_error_message) {
-    bool callback_called = false;
     base::RunLoop run_loop;
     json_rpc_service_->SendFilecoinTransaction(
         signed_tx,
@@ -777,11 +776,10 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(cid, expected_cid);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
-          callback_called = true;
+
           run_loop.Quit();
         }));
     run_loop.Run();
-    EXPECT_TRUE(callback_called);
   }
   void TestGetSPLTokenAccountBalance(
       const std::string& expected_amount,

@@ -30,6 +30,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -155,19 +156,22 @@ class FilTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void ApproveTransaction(const std::string& meta_id) {
+  void ApproveTransaction(const std::string& meta_id,
+                          bool is_error,
+                          mojom::FilecoinProviderError error,
+                          const std::string& expected_err_message) {
     base::RunLoop run_loop;
     fil_tx_manager()->ApproveTransaction(
-        meta_id, base::BindLambdaForTesting(
-                     [&](bool success, mojom::ProviderErrorUnionPtr error_union,
-                         const std::string& err_message) {
-                       ASSERT_TRUE(success);
-                       ASSERT_TRUE(error_union->is_filecoin_provider_error());
-                       ASSERT_EQ(error_union->get_filecoin_provider_error(),
-                                 mojom::FilecoinProviderError::kSuccess);
-                       ASSERT_TRUE(err_message.empty());
-                       run_loop.Quit();
-                     }));
+        meta_id,
+        base::BindLambdaForTesting([&](bool success,
+                                       mojom::ProviderErrorUnionPtr error_union,
+                                       const std::string& err_message) {
+          EXPECT_NE(success, is_error);
+          EXPECT_TRUE(error_union->is_filecoin_provider_error());
+          EXPECT_EQ(error_union->get_filecoin_provider_error(), error);
+          EXPECT_EQ(err_message, expected_err_message);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
@@ -247,36 +251,20 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce",
                  R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
-  AddInterceptorResponse("Filecoin.MpoolPush",
-                         R"({
-            "id": 1,
-            "jsonrpc": "2.0",
-            "result":
-            {
-                "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
-            }
-        })");
   AddInterceptorResponse("Filecoin.StateSearchMsgLimited",
-                         R"({
-            "Message":
-            {
-                "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
-            },
-            "Receipt":
-            {
-                "ExitCode": 0
-            }
-        })");
-  AddInterceptorResponse("Filecoin..ChainHead",
-                         R"({
-      "Blocks":[],
-      "Cids": [{
-            "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
-      }],
-      "Height": 22452
-    })");
+                         R"({ "jsonrpc": "2.0", "id": 1, "result": {
+  }})");
+  AddInterceptorResponse("Filecoin.ChainHead",
+                         R"({ "jsonrpc": "2.0", "id": 1, "result": {
+  }})");
+  AddInterceptorResponse("Filecoin.MpoolPush",
+                         R"({ "id": 1, "jsonrpc": "2.0", "result": {
+        "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+      }
+  })");
 
-  ApproveTransaction(meta_id1);
+  ApproveTransaction(meta_id1, false, mojom::FilecoinProviderError::kSuccess,
+                     std::string());
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
   tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
@@ -286,7 +274,8 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
 
   // Send another tx.
-  ApproveTransaction(meta_id2);
+  ApproveTransaction(meta_id2, false, mojom::FilecoinProviderError::kSuccess,
+                     std::string());
   base::RunLoop().RunUntilIdle();
 
   tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
@@ -294,6 +283,114 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   EXPECT_EQ(tx_meta2->from(), from_account);
   EXPECT_FALSE(tx_meta2->tx_hash().empty());
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
+}
+
+TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
+  std::string from_account = from();
+  std::string to_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+  SetGasEstimateInterceptor(from_account, to_account);
+  auto tx_data = mojom::FilTxData::New(
+      "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
+      "" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+  auto tx = FilTransaction::FromTxData(tx_data.Clone());
+
+  std::string meta_id1;
+  AddUnapprovedTransaction(tx_data.Clone(), from_account, absl::nullopt,
+                           &meta_id1);
+
+  auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
+  EXPECT_TRUE(tx_meta1);
+
+  EXPECT_EQ(tx_meta1->tx()->gas_fee_cap(), "100820");
+  EXPECT_EQ(tx_meta1->tx()->gas_limit(), 598585);
+  EXPECT_EQ(tx_meta1->tx()->gas_premium(), "99766");
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolGetNonce",
+                 R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
+
+  AddInterceptorResponse("Filecoin.StateSearchMsgLimited",
+                         R"({ "jsonrpc": "2.0", "id": 1, "result": {
+    "Message": {
+      "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+    },
+    "Receipt": {
+      "ExitCode": 0
+    }
+  }})");
+  AddInterceptorResponse("Filecoin.MpoolPush",
+                         R"({ "id": 1, "jsonrpc": "2.0", "result":{} })");
+
+  ApproveTransaction(meta_id1, true,
+                     mojom::FilecoinProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  // Wait for tx to be updated.
+  base::RunLoop().RunUntilIdle();
+  tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta1);
+  EXPECT_TRUE(tx_meta1->tx_hash().empty());
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Error);
+}
+
+TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
+  std::string from_account = from();
+  std::string to_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+  SetGasEstimateInterceptor(from_account, to_account);
+  auto tx_data = mojom::FilTxData::New(
+      "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
+      "" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+  auto tx = FilTransaction::FromTxData(tx_data.Clone());
+
+  std::string meta_id1;
+  AddUnapprovedTransaction(tx_data.Clone(), from_account, absl::nullopt,
+                           &meta_id1);
+
+  auto tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
+  EXPECT_TRUE(tx_meta1);
+
+  EXPECT_EQ(tx_meta1->tx()->gas_fee_cap(), "100820");
+  EXPECT_EQ(tx_meta1->tx()->gas_limit(), 598585);
+  EXPECT_EQ(tx_meta1->tx()->gas_premium(), "99766");
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolGetNonce",
+                 R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
+  AddInterceptorResponse("Filecoin.StateSearchMsgLimited",
+                         R"({ "jsonrpc": "2.0", "id": 1, "result": {
+    "Message": {
+      "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+    },
+    "Receipt": {
+      "ExitCode": 0
+    }
+  }})");
+  AddInterceptorResponse("Filecoin.ChainHead",
+                         R"({ "jsonrpc": "2.0", "id": 1, "result": {
+    "Blocks":[],
+    "Cids": [{
+          "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+    }],
+    "Height": 22452
+  }})");
+  AddInterceptorResponse("Filecoin.MpoolPush",
+                         R"({ "id": 1, "jsonrpc": "2.0", "result": {
+        "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+      }
+  })");
+  ApproveTransaction(meta_id1, false, mojom::FilecoinProviderError::kSuccess,
+                     std::string());
+  // Wait for tx to be updated.
+  base::RunLoop().RunUntilIdle();
+  tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta1);
+  EXPECT_FALSE(tx_meta1->tx_hash().empty());
+  EXPECT_EQ(tx_meta1->from(), from_account);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Confirmed);
 }
 
 TEST_F(FilTxManagerUnitTest, WalletOrigin) {
