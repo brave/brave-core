@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.util;
 
 public final class BraveConstants {
-
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
