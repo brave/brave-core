@@ -2361,9 +2361,7 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    if selected?.type != previous?.type {
-      updateToolbarUsingTabManager(tabManager)
-    }
+    updateToolbarUsingTabManager(tabManager)
 
     removeAllBars()
     if let bars = selected?.bars {
@@ -2500,10 +2498,23 @@ extension BrowserViewController: TabManagerDelegate {
     addTabMenuChildren.append(openNewTab)
 
     var bookmarkMenuChildren: [UIAction] = []
+    
+    let containsWebPage = tabManager.selectedTab?.containsWebPage == true
 
-    if tabManager.openedWebsitesCount > 0 {
+    if tabManager.openedWebsitesCount > 0, containsWebPage {
+      let bookmarkActiveTab = UIAction(
+        title: Strings.addToMenuItem,
+        image: UIImage(systemName: "book"),
+        handler: UIAction.deferredActionHandler { [unowned self] _ in
+          self.openAddBookmark()
+        })
+
+      bookmarkMenuChildren.append(bookmarkActiveTab)
+    }
+    
+    if tabManager.tabsForCurrentMode.count > 1 {
       let bookmarkAllTabs = UIAction(
-        title: Strings.bookmarkAllTabsTitle,
+        title: String.localizedStringWithFormat(Strings.bookmarkAllTabsTitle, tabManager.tabsForCurrentMode.count),
         image: UIImage(systemName: "book"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           let mode = BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: tabManager.tabsForCurrentMode)
@@ -2513,6 +2524,23 @@ extension BrowserViewController: TabManagerDelegate {
         })
 
       bookmarkMenuChildren.append(bookmarkAllTabs)
+    }
+    
+    var duplicateTabMenuChildren: [UIAction] = []
+
+    if containsWebPage, let selectedTab = tabManager.selectedTab, let url = selectedTab.fetchedURL {
+      let duplicateActiveTab = UIAction(
+        title: Strings.duplicateActiveTab,
+        image: UIImage(systemName: "plus.square.on.square"),
+        handler: UIAction.deferredActionHandler { [unowned self] _ in
+          tabManager.addTabAndSelect(
+               URLRequest(url: url),
+               afterTab: selectedTab,
+               isPrivate: selectedTab.isPrivate
+           )
+        })
+
+      duplicateTabMenuChildren.append(duplicateActiveTab)
     }
 
     var closeTabMenuChildren: [UIAction] = []
@@ -2565,10 +2593,11 @@ extension BrowserViewController: TabManagerDelegate {
     let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
     let addTabMenu = UIMenu(title: "", options: .displayInline, children: addTabMenuChildren)
     let bookmarkMenu = UIMenu(title: "", options: .displayInline, children: bookmarkMenuChildren)
+    let duplicateTabMenu = UIMenu(title: "", options: .displayInline, children: duplicateTabMenuChildren)
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
 
-    toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, bookmarkMenu, newTabMenu])
-    topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, bookmarkMenu, newTabMenu])
+    toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
+    topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
 
     // Update Actions for Add-Tab Button
     toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: [addTabMenu])
