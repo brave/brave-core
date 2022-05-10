@@ -358,15 +358,11 @@ function Container (props: Props) {
     }
   }
 
-  const retryHardwareOperation = () => {
-    // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
-    if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
-      onSignData()
-    }
-    if (selectedPendingTransaction) {
-      onConfirmTransaction()
-    }
+  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletPanelActions.setSelectedTransaction(transaction)
+    props.walletPanelActions.navigateTo('transactionDetails')
   }
+
   const onConfirmTransaction = () => {
     if (!selectedPendingTransaction) {
       return
@@ -376,6 +372,16 @@ function Container (props: Props) {
     } else {
       props.walletActions.approveTransaction(selectedPendingTransaction)
       onSelectTransaction(selectedPendingTransaction)
+    }
+  }
+
+  const retryHardwareOperation = () => {
+    // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
+    if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
+      onSignData()
+    }
+    if (selectedPendingTransaction) {
+      onConfirmTransaction()
     }
   }
 
@@ -440,11 +446,6 @@ function Container (props: Props) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-  }
-
-  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    props.walletPanelActions.setSelectedTransaction(transaction)
-    props.walletPanelActions.navigateTo('transactionDetails')
   }
 
   const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
