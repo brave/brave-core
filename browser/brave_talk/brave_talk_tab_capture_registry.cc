@@ -174,4 +174,9 @@ void BraveTalkTabCaptureRegistry::KillRequest(LiveRequest* request) {
   NOTREACHED();
 }
 
+bool BraveTalkTabCaptureRegistry::VerifyRequest(int target_render_process_id, int target_render_frame_id, int source_render_process_id, int source_render_frame_id) {
+  // TODO: This is probably where we check if it's allowed.
+  return true;
+}
+
 }  // namespace brave_talk
