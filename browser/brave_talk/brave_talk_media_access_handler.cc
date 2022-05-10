@@ -30,18 +30,18 @@ std::unique_ptr<content::MediaStreamUI> GetMediaStreamUI(
           web_contents->GetMainFrame()->GetProcess()->GetID(),
           web_contents->GetMainFrame()->GetRoutingID()));
   if (request.audio_type ==
-      blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE) {
+      blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
-        blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE,
+        blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE,
         /*id=*/media_id.ToString(),
         /*name=*/media_id.ToString()));
   }
 
   LOG(ERROR) << "VideoType: " << request.video_type;
   if (request.video_type ==
-      blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE) {
+      blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
-        blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE,
+        blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE,
         /*id=*/media_id.ToString(),
         /*name=*/media_id.ToString()));
   }
@@ -61,8 +61,8 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
     const blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
   LOG(ERROR) << "Asked if we support: " << type;
-  return type == blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE ||
-         type == blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE;
+  return type == blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE ||
+         type == blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE;
 }
 
 bool BraveTalkMediaAccessHandler::CheckMediaAccessPermission(
@@ -118,14 +118,14 @@ void BraveTalkMediaAccessHandler::HandleRequest(
   }
 
   // TODO: Decide how this should work.
-  if (!registry->VerifyRequest(request.render_frame_id,
-                               request.render_process_id, 0, 0)) {
-    LOG(ERROR) << "Unverified";
-    std::move(callback).Run(
-        blink::MediaStreamDevices(),
-        blink::mojom::MediaStreamRequestResult::INVALID_STATE, /*ui=*/nullptr);
-    return;
-  }
+  // if (!registry->VerifyRequest(request.render_frame_id,
+  //                              request.render_process_id, 0, 0)) {
+  //   LOG(ERROR) << "Unverified";
+  //   std::move(callback).Run(
+  //       blink::MediaStreamDevices(),
+  //       blink::mojom::MediaStreamRequestResult::INVALID_STATE, /*ui=*/nullptr);
+  //   return;
+  // }
 
   AcceptRequest(target_web_contents, request, std::move(callback));
 }
