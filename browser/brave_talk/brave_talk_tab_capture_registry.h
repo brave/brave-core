@@ -22,6 +22,12 @@ class BraveTalkTabCaptureRegistry
   static extensions::BrowserContextKeyedAPIFactory<BraveTalkTabCaptureRegistry>*
   GetFactoryInstance();
 
+  
+  void OnRequestUpdate(int target_render_process_id,
+                       int target_render_frame_id,
+                       blink::mojom::MediaStreamType stream_type,
+                       const content::MediaRequestState state) override;
+
   std::string AddRequest(content::WebContents* target_contents,
                          const GURL& origin,
                          content::DesktopMediaID source,

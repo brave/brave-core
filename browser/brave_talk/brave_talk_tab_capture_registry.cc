@@ -3,11 +3,14 @@
 #include "base/lazy_instance.h"
 #include "chrome\common\extensions\api\tab_capture.h"
 #include "components\sessions\content\session_tab_helper.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content\public\browser\desktop_streams_registry.h"
 #include "content\public\browser\web_contents_observer.h"
 
-using extensions::api::tab_capture::TabCaptureState;
+namespace tab_capture = extensions::api::tab_capture;
+using tab_capture::TabCaptureState;
+
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry::LiveRequest
@@ -138,9 +141,59 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
   return device_id;
 }
 
+void BraveTalkTabCaptureRegistry::OnRequestUpdate(
+    int render_process_id,
+    int render_frame_id,
+    blink::mojom::MediaStreamType stream_type,
+    const content::MediaRequestState new_state) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (stream_type != blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE &&
+      stream_type != blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE) {
+    return;
+  }
+  auto* request = FindRequest(render_process_id, render_frame_id);
+  if (!request)
+    return;
+
+  TabCaptureState next_state =
+      extensions::api::tab_capture::TAB_CAPTURE_STATE_NONE;
+  switch (new_state) {
+    case content::MEDIA_REQUEST_STATE_PENDING_APPROVAL:
+      next_state = tab_capture::TAB_CAPTURE_STATE_PENDING;
+      break;
+    case content::MEDIA_REQUEST_STATE_DONE:
+      next_state = tab_capture::TAB_CAPTURE_STATE_ACTIVE;
+      break;
+    case content::MEDIA_REQUEST_STATE_CLOSING:
+      next_state = tab_capture::TAB_CAPTURE_STATE_STOPPED;
+      break;
+    case content::MEDIA_REQUEST_STATE_ERROR:
+      next_state = tab_capture::TAB_CAPTURE_STATE_ERROR;
+      break;
+    case content::MEDIA_REQUEST_STATE_OPENING:
+      return;
+    case content::MEDIA_REQUEST_STATE_REQUESTED:
+    case content::MEDIA_REQUEST_STATE_NOT_REQUESTED:
+      NOTREACHED();
+      return;
+  }
+
+  if (next_state == tab_capture::TAB_CAPTURE_STATE_PENDING
+    && request->capture_state() != tab_capture::TAB_CAPTURE_STATE_PENDING
+    && request->capture_state() != tab_capture::TAB_CAPTURE_STATE_NONE
+    && request->capture_state() != tab_capture::TAB_CAPTURE_STATE_STOPPED) {
+      NOTREACHED() << "Trying to capture tab with existing capture";
+      return;
+    }
+
+    request->UpdateCaptureState(next_state);
+}
+
 void BraveTalkTabCaptureRegistry::DispatchStatusChangeEvent(
     const LiveRequest* request) const {
   // TODO: If we have a streamId, dispatch it to the content process.
+  // NOt this.
+
 }
 
 BraveTalkTabCaptureRegistry::LiveRequest*
@@ -174,8 +227,26 @@ void BraveTalkTabCaptureRegistry::KillRequest(LiveRequest* request) {
   NOTREACHED();
 }
 
-bool BraveTalkTabCaptureRegistry::VerifyRequest(int target_render_process_id, int target_render_frame_id, int source_render_process_id, int source_render_frame_id) {
-  // TODO: This is probably where we check if it's allowed.
+bool BraveTalkTabCaptureRegistry::VerifyRequest(int target_render_process_id,
+                                                int target_render_frame_id,
+                                                int source_render_process_id,
+                                                int source_render_frame_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  LiveRequest* const request =
+      FindRequest(target_render_frame_id, target_render_frame_id);
+  if (!request) {
+    return false;  // Unknown RenderFrameHost ID, or frame has gone away.
+  }
+
+  if (request->is_verified() ||
+      (request->capture_state() !=
+           extensions::api::tab_capture::TAB_CAPTURE_STATE_NONE &&
+       request->capture_state() !=
+           extensions::api::tab_capture::TAB_CAPTURE_STATE_PENDING))
+    return false;
+
+  request->SetIsVerified();
   return true;
 }
 

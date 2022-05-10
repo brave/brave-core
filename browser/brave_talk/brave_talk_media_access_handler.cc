@@ -5,11 +5,14 @@
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "chrome/browser/media/webrtc/media_stream_capture_indicator.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_media_capture_id.h"
 #include "chrome\browser\media\webrtc\capture_policy_utils.h"
 #include "chrome\browser\media\webrtc\desktop_media_list.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_process_host.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_media_capture_id.h"
+#include "content/public/browser/browser_thread.h"
+
 
 namespace brave_talk {
 
@@ -20,20 +23,27 @@ std::unique_ptr<content::MediaStreamUI> GetMediaStreamUI(
     const content::MediaStreamRequest& request,
     content::WebContents* web_contents,
     blink::MediaStreamDevices* out_devices) {
+  content::DesktopMediaID media_id(
+      content::DesktopMediaID::TYPE_WEB_CONTENTS,
+      content::DesktopMediaID::kNullId,
+      content::WebContentsMediaCaptureId(
+          web_contents->GetMainFrame()->GetProcess()->GetID(),
+          web_contents->GetMainFrame()->GetRoutingID()));
   if (request.audio_type ==
       blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
         blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE,
-        /*id=*/std::string(),
-        /*name=*/std::string()));
+        /*id=*/media_id.ToString(),
+        /*name=*/media_id.ToString()));
   }
 
+  LOG(ERROR) << "VideoType: " << request.video_type;
   if (request.video_type ==
       blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
         blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE,
-        /*id=*/std::string(),
-        /*name=*/std::string()));
+        /*id=*/media_id.ToString(),
+        /*name=*/media_id.ToString()));
   }
 
   return MediaCaptureDevicesDispatcher::GetInstance()
@@ -50,8 +60,9 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
     content::WebContents* web_contents,
     const blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
-  return type == blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE ||
-         type == blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE;
+  LOG(ERROR) << "Asked if we support: " << type;
+  return type == blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE ||
+         type == blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE;
 }
 
 bool BraveTalkMediaAccessHandler::CheckMediaAccessPermission(
@@ -59,7 +70,8 @@ bool BraveTalkMediaAccessHandler::CheckMediaAccessPermission(
     const GURL& security_origin,
     blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
-  return false;
+  LOG(ERROR) << "Check support";
+  return true;
 }
 
 void BraveTalkMediaAccessHandler::HandleRequest(
@@ -68,7 +80,12 @@ void BraveTalkMediaAccessHandler::HandleRequest(
     content::MediaResponseCallback callback,
     const extensions::Extension* extension) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  LOG(ERROR) << "WOW. Tried to handle a request :O";
+  LOG(ERROR) << "WOW. Tried to handle a request :O. DeviceID: "
+             << request.requested_video_device_id
+             << " AudioId: " << request.requested_audio_device_id
+             << " Page Request: " << request.page_request_id
+             << " Type: " << request.request_type
+             << " Origin: " << request.security_origin;
 
   auto* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
@@ -87,10 +104,12 @@ void BraveTalkMediaAccessHandler::HandleRequest(
   DesktopMediaList::WebContentsFilter can_show_web_contents =
       capture_policy::GetIncludableWebContentsFilter(request.security_origin,
                                                      capture_level);
+
   auto* target_web_contents = content::WebContents::FromRenderFrameHost(
       content::RenderFrameHost::FromID(request.render_process_id,
-                                       request.render_process_id));
+                                       request.render_frame_id));
   if (!can_show_web_contents.Run(target_web_contents)) {
+    LOG(ERROR) << "Can't show";
     std::move(callback).Run(
         blink::MediaStreamDevices(),
         blink::mojom::MediaStreamRequestResult::PERMISSION_DENIED,
@@ -101,12 +120,12 @@ void BraveTalkMediaAccessHandler::HandleRequest(
   // TODO: Decide how this should work.
   if (!registry->VerifyRequest(request.render_frame_id,
                                request.render_process_id, 0, 0)) {
+    LOG(ERROR) << "Unverified";
     std::move(callback).Run(
         blink::MediaStreamDevices(),
         blink::mojom::MediaStreamRequestResult::INVALID_STATE, /*ui=*/nullptr);
     return;
   }
-
 
   AcceptRequest(target_web_contents, request, std::move(callback));
 }
@@ -119,10 +138,13 @@ void BraveTalkMediaAccessHandler::AcceptRequest(
   DCHECK(web_contents);
 
   blink::MediaStreamDevices devices;
-  std::unique_ptr<content::MediaStreamUI> ui = GetMediaStreamUI(request, web_contents, &devices);
+  std::unique_ptr<content::MediaStreamUI> ui =
+      GetMediaStreamUI(request, web_contents, &devices);
   DCHECK(!devices.empty());
 
-  std::move(callback).Run(devices, blink::mojom::MediaStreamRequestResult::OK, std::move(ui));
+  LOG(ERROR) << "Accepted!";
+  std::move(callback).Run(devices, blink::mojom::MediaStreamRequestResult::OK,
+                          std::move(ui));
 }
 
 }  // namespace brave_talk
