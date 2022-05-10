@@ -264,6 +264,7 @@
 		2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2729E7D226F502AC00200648 /* AccountPicker.swift */; };
 		272B862B270BD96F005ED304 /* SandboxInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272B862A270BD96F005ED304 /* SandboxInspectorView.swift */; };
 		273EB3A72422AB24002A8AAF /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9616E6A240EE43F00667C2D /* PaymentRequest.swift */; };
+		273F981A281884A400C7E7D4 /* ForcePasteHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 273F980F281884A400C7E7D4 /* ForcePasteHelper.js */; };
 		273F9857281AE3D100C7E7D4 /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift */; };
 		274398E224E4827800E79605 /* FeedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E124E4827800E79605 /* FeedCard.swift */; };
@@ -1981,6 +1982,7 @@
 		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
 		2729E7D226F502AC00200648 /* AccountPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPicker.swift; sourceTree = "<group>"; };
 		272B862A270BD96F005ED304 /* SandboxInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxInspectorView.swift; sourceTree = "<group>"; };
+		273F980F281884A400C7E7D4 /* ForcePasteHelper.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ForcePasteHelper.js; sourceTree = "<group>"; };
 		273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsDebugSettingsView.swift; sourceTree = "<group>"; };
 		274398E124E4827800E79605 /* FeedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCard.swift; sourceTree = "<group>"; };
 		274398E424E4829900E79605 /* FeedFillStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategy.swift; sourceTree = "<group>"; };
@@ -6897,6 +6899,7 @@
 				CA225DEF2795CDFD0024C104 /* __firefox__.js */,
 				2755AB7C23107BC600F0721F /* AdsReporting.js */,
 				D0C95DF5200EADD500E4E51C /* LoginsHelper.js */,
+				273F980F281884A400C7E7D4 /* ForcePasteHelper.js */,
 			);
 			path = AtDocumentStart;
 			sourceTree = "<group>";
@@ -8001,6 +8004,7 @@
 				4481F23526CBD27B00658EAC /* GlobalSignRootCA_R5.cer in Resources */,
 				F9E0F38B25772E57003A6A30 /* ReaderMode.js in Resources */,
 				E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */,
+				273F981A281884A400C7E7D4 /* ForcePasteHelper.js in Resources */,
 				F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */,
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
 				2F676FAD260BA4860048A1DB /* blocking-summary.json in Resources */,

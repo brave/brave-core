@@ -789,7 +789,21 @@ class TabWebView: BraveWebView, MenuHelperInterface {
   fileprivate weak var delegate: TabWebViewDelegate?
 
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    if action == MenuHelper.selectorForcePaste {
+      // If paste is allowed, show force paste as well
+      return super.canPerformAction(#selector(paste(_:)), withSender: sender)
+    }
     return super.canPerformAction(action, withSender: sender) || action == MenuHelper.selectorFindInPage
+  }
+  
+  @objc func menuHelperForcePaste() {
+    if let string = UIPasteboard.general.string {
+      evaluateSafeJavaScript(
+        functionName: "window.__firefox__.forcePaste",
+        args: [string, UserScriptManager.messageHandlerTokenString],
+        contentWorld: .defaultClient
+      ) { _, _ in }
+    }
   }
 
   @objc func menuHelperFindInPage() {
