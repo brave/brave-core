@@ -7,8 +7,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -24,15 +24,15 @@ schema_org::mojom::ValuesPtr CreateVectorValuesPtr(int64_t value) {
   return schema_org::mojom::Values::NewLongValues({value});
 }
 
-class WebPageConstructor final {
+class TestWebPageConstructor final {
  public:
-  explicit WebPageConstructor(int attribute_index_to_skip = -1)
+  explicit TestWebPageConstructor(int attribute_index_to_skip = -1)
       : attribute_index_to_skip_(attribute_index_to_skip) {
     web_page_ = CreateWebPage();
   }
-  ~WebPageConstructor() = default;
-  WebPageConstructor(const WebPageConstructor&) = delete;
-  WebPageConstructor& operator=(const WebPageConstructor&) = delete;
+  ~TestWebPageConstructor() = default;
+  TestWebPageConstructor(const TestWebPageConstructor&) = delete;
+  TestWebPageConstructor& operator=(const TestWebPageConstructor&) = delete;
 
   blink::mojom::WebPagePtr GetWebPage() { return std::move(web_page_); }
 
@@ -57,10 +57,9 @@ class WebPageConstructor final {
   }
 
   template <typename T>
-  void AddStringProperty(
-      std::vector<schema_org::mojom::PropertyPtr>* properties,
-      base::StringPiece name,
-      T value) {
+  void AddProperty(std::vector<schema_org::mojom::PropertyPtr>* properties,
+                   base::StringPiece name,
+                   T value) {
     int index = current_attribute_index_++;
     if (index == attribute_index_to_skip_) {
       return;
@@ -89,17 +88,16 @@ class WebPageConstructor final {
     schema_org::mojom::EntityPtr entity = schema_org::mojom::Entity::New();
     entity->type = "SearchResultAd";
 
-    AddStringProperty<std::string>(&entity->properties, "data-landing-page",
-                                   "https://target.url");
-    AddStringProperty<std::string>(&entity->properties, "data-rewards-value",
-                                   "0.5");
-    AddStringProperty<int64_t>(&entity->properties,
-                               "data-conversion-observation-window-value", 1);
+    AddProperty<std::string>(&entity->properties, "data-landing-page",
+                             "https://target.url");
+    AddProperty<std::string>(&entity->properties, "data-rewards-value", "0.5");
+    AddProperty<int64_t>(&entity->properties,
+                         "data-conversion-observation-window-value", 1);
 
     int index = 0;
     for (const auto** it = std::begin(kSearchResultAdStringAttributes);
          it != std::end(kSearchResultAdStringAttributes); ++it, ++index) {
-      AddStringProperty<std::string>(
+      AddProperty<std::string>(
           &entity->properties, *it,
           std::string("value") + base::NumberToString(index));
     }
@@ -113,7 +111,7 @@ class WebPageConstructor final {
 };
 
 TEST(SearchResultAdParsingTest, ValidWebPage) {
-  WebPageConstructor constructor;
+  TestWebPageConstructor constructor;
   blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
   SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
   EXPECT_EQ(ads.size(), 1u);
@@ -146,7 +144,7 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
   }
 
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     web_page->entities[0]->type = "Not-Product";
     SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
@@ -154,7 +152,7 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
   }
 
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     web_page->entities[0]->properties.clear();
     SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
@@ -162,7 +160,7 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
   }
 
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     property->name = "not-creatives";
@@ -171,7 +169,7 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
   }
 
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewEntityValues({});
@@ -180,7 +178,7 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
   }
 
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewStringValues({"creative"});
@@ -191,7 +189,7 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
 
 TEST(SearchResultAdParsingTest, NotValidAdEntityExtraProperty) {
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
@@ -201,7 +199,7 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityExtraProperty) {
   }
 
   {
-    WebPageConstructor constructor;
+    TestWebPageConstructor constructor;
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
@@ -221,7 +219,7 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityExtraProperty) {
 TEST(SearchResultAdParsingTest, NotValidAdEntityPropertySkipped) {
   constexpr int kSearchResultAdAttributesCount = 12;
   for (int index = 0; index < kSearchResultAdAttributesCount; ++index) {
-    WebPageConstructor constructor(index);
+    TestWebPageConstructor constructor(index);
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
     EXPECT_TRUE(ads.empty());
@@ -231,7 +229,7 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityPropertySkipped) {
 TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
   {
     // Skip "data-landing-page".
-    WebPageConstructor constructor(0);
+    TestWebPageConstructor constructor(0);
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
@@ -249,7 +247,7 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
 
   {
     // Skip "data-rewards-value".
-    WebPageConstructor constructor(1);
+    TestWebPageConstructor constructor(1);
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
@@ -267,7 +265,7 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
 
   {
     // Skip "data-conversion-observation-window-value".
-    WebPageConstructor constructor(2);
+    TestWebPageConstructor constructor(2);
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
@@ -284,7 +282,7 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
 
   {
     // Skip "data-creative-instance-id".
-    WebPageConstructor constructor(3);
+    TestWebPageConstructor constructor(3);
     blink::mojom::WebPagePtr web_page = constructor.GetWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];

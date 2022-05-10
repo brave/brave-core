@@ -12,9 +12,14 @@ static_library("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
+    "search_result_ad_util.cc",
+    "search_result_ad_util.h",
     "switches.cc",
     "switches.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//url",
+  ]
 }
