@@ -73,7 +73,7 @@ bool BraveTalkMediaAccessHandler::CheckMediaAccessPermission(
     blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
   LOG(ERROR) << "Check support";
-  return true;
+  return false;
 }
 
 void BraveTalkMediaAccessHandler::HandleRequest(
