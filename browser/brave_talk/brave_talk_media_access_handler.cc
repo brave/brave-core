@@ -39,7 +39,6 @@ std::unique_ptr<content::MediaStreamUI> GetMediaStreamUI(
         /*name=*/media_id.ToString()));
   }
 
-  LOG(ERROR) << "VideoType: " << request.video_type;
   if (request.video_type ==
       blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
@@ -62,10 +61,8 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
     content::WebContents* web_contents,
     const blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
-  LOG(ERROR) << "Asked if we support: " << type;
-  return true;
-  return type == blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE ||
-         type == blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE;
+  return type == blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE ||
+         type == blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE;
 }
 
 bool BraveTalkMediaAccessHandler::CheckMediaAccessPermission(
@@ -73,7 +70,6 @@ bool BraveTalkMediaAccessHandler::CheckMediaAccessPermission(
     const GURL& security_origin,
     blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
-  LOG(ERROR) << "Check support";
   return false;
 }
 
