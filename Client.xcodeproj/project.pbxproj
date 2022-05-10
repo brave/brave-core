@@ -1214,6 +1214,7 @@
 		D506715C27E2AAB700560631 /* TransactionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506715B27E2AAB700560631 /* TransactionHeader.swift */; };
 		D511314B2800C16100C81683 /* TransactionConfirmationStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511314A2800C16100C81683 /* TransactionConfirmationStoreTests.swift */; };
 		D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */; };
+		D552E6922807231F00A847F3 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1DC51320AC9AF900905E5A /* Data.framework */; };
 		D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */; };
 		D5ACA7CE27FB7D08002443CE /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		D5ACA7D927FB7D0E002443CE /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
@@ -1592,6 +1593,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = CA0391B1271E1023000EB13C;
 			remoteInfo = BraveWidgetsExtension;
+		};
+		D552E6862807231A00A847F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D1DC51220AC9AF900905E5A;
+			remoteInfo = Data;
 		};
 		E63CD1B11B31B66400A63AFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3348,6 +3356,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D552E6922807231F00A847F3 /* Data.framework in Frameworks */,
 				271F68DE26EBD50400AA2A50 /* BraveCore.xcframework in Frameworks */,
 				271F68D526EBD4F900AA2A50 /* BraveShared.framework in Frameworks */,
 				271F68E026EBD51100AA2A50 /* BraveUI.framework in Frameworks */,
@@ -7105,6 +7114,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D552E6872807231A00A847F3 /* PBXTargetDependency */,
 				271F68D826EBD4F900AA2A50 /* PBXTargetDependency */,
 				271F68E326EBD51100AA2A50 /* PBXTargetDependency */,
 			);
@@ -9334,6 +9344,11 @@
 			isa = PBXTargetDependency;
 			target = CA0391B1271E1023000EB13C /* BraveWidgetsExtension */;
 			targetProxy = CA8B4AE3276A830F002120F7 /* PBXContainerItemProxy */;
+		};
+		D552E6872807231A00A847F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D1DC51220AC9AF900905E5A /* Data */;
+			targetProxy = D552E6862807231A00A847F3 /* PBXContainerItemProxy */;
 		};
 		E6F965141B2F1CF20034B023 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

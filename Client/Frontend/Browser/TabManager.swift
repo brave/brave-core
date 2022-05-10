@@ -444,6 +444,10 @@ class TabManager: NSObject {
       tab.walletProvider?.`init`(tab)
       tab.walletProviderJS = js
     }
+    if let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate) {
+      tab.walletKeyringService = keyringService
+      keyringService.add(tab)
+    }
     
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
 
