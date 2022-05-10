@@ -98,6 +98,8 @@ std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
 bool GetShowWalletTestNetworks(PrefService* prefs);
+void SetSelectedCoin(PrefService* prefs, mojom::CoinType coin);
+mojom::CoinType GetSelectedCoin(PrefService* prefs);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 std::vector<std::string> GetAllKnownEthNetworkIds();
 std::vector<std::string> GetAllKnownSolNetworkIds();
