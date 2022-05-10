@@ -12,6 +12,7 @@
 #include "base/barrier_closure.h"
 #include "base/callback.h"
 #include "base/callback_helpers.h"
+#include "base/cpu.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 
@@ -70,6 +71,14 @@ void OnHardwareInfoReady(DeviceInfo* device_info_ptr,
 }  // namespace
 
 void DetectUncertainFuture(IsUncertainFutureCallback callback) {
+  // See https://github.com/brave/internal/issues/875
+
+  const base::CPU& instance = base::CPU::GetInstanceNoAllocation();
+  if (instance.is_running_in_vm()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
   std::unique_ptr<DeviceInfo> device_info = std::make_unique<DeviceInfo>();
   DeviceInfo* device_info_ptr = device_info.get();
 
