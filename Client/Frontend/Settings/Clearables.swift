@@ -39,7 +39,7 @@ struct ClearableErrorType: Error {
 }
 
 // Remove all cookies and website data stored by the site.
-// This includes localStorage, sessionStorage, and WebSQL/IndexedDB and web cache.
+// This includes localStorage, sessionStorage, WebSQL/IndexedDB, web cache and wallet eth permissions.
 class CookiesAndCacheClearable: Clearable {
 
   var label: String {
@@ -54,6 +54,7 @@ class CookiesAndCacheClearable: Clearable {
     UserDefaults.standard.synchronize()
     await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
     UserDefaults.standard.synchronize()
+    try await Domain.clearAllEthereumPermissions()
   }
 }
 

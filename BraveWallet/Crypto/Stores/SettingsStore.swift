@@ -6,6 +6,7 @@
 import Foundation
 import LocalAuthentication
 import BraveCore
+import Data
 
 public class SettingsStore: ObservableObject {
   /// The number of minutes to wait until the Brave Wallet is automatically locked
@@ -46,6 +47,7 @@ public class SettingsStore: ObservableObject {
   func reset() {
     walletService.reset()
     KeyringStore.resetKeychainStoredPassword()
+    Domain.clearAllEthereumPermissions()
   }
 
   func resetTransaction() {

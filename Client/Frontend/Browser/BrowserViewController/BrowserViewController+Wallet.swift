@@ -268,3 +268,33 @@ extension Tab: BraveWalletEventsListener {
     }
   }
 }
+
+extension Tab: BraveWalletKeyringServiceObserver {
+  func keyringCreated(_ keyringId: String) {
+  }
+  
+  func keyringRestored(_ keyringId: String) {
+  }
+  
+  func keyringReset() {
+    reload()
+  }
+  
+  func locked() {
+  }
+  
+  func unlocked() {
+  }
+  
+  func backedUp() {
+  }
+  
+  func accountsChanged() {
+  }
+  
+  func autoLockMinutesChanged() {
+  }
+  
+  func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+  }
+}

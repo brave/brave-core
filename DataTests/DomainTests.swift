@@ -142,4 +142,26 @@ class DomainTests: CoreDataTestCase {
 
     XCTAssertNil(polygonDomain.wallet_permittedAccounts)
   }
+  
+  func testClearAllEthereumPermissions() {
+    let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
+    let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
+    
+    // add permissions for `compound` Domain
+    backgroundSaveAndWaitForExpectation {
+      Domain.setEthereumPermissions(forUrl: compound, account: walletAccount, grant: true)
+    }
+    XCTAssertTrue(compondDomain.ethereumPermissions(for: walletAccount))
+    // add permissions for `polygon` Domain
+    backgroundSaveAndWaitForExpectation {
+      Domain.setEthereumPermissions(forUrl: polygon, account: walletAccount, grant: true)
+    }
+    XCTAssertTrue(polygonDomain.ethereumPermissions(for: walletAccount))
+    // Remove all permissions
+    backgroundSaveAndWaitForExpectation {
+      Domain.clearAllEthereumPermissions()
+    }
+    XCTAssertFalse(compondDomain.ethereumPermissions(for: walletAccount))
+    XCTAssertFalse(polygonDomain.ethereumPermissions(for: walletAccount))
+  }
 }
