@@ -31,7 +31,7 @@ export default function getTodayState (): BraveTodayState {
   const hasDataError = boolean('Today data fetch error?', false)
   return {
     isFetching: boolean('Today is fetching?', false),
-    hasInteracted: boolean('Today has interacted?', true),
+    hasInteracted: boolean('Today has interacted?', false),
     isUpdateAvailable: boolean('Is Today update available?', false),
     currentPageIndex: 10,
     cardsViewed: 0,
@@ -146,7 +146,7 @@ export default function getTodayState (): BraveTodayState {
           data: {
             categoryName: 'Top News',
             description: 'Here\'s everything you need to know about the Haunted Hallows event, including how to unlock the Batmobile.',
-            image: { imageUrl: undefined, paddedImageUrl: { url: 'https://pcdn.brave.com/brave-today/cache/fe949032ae151bb1257fd5301c5af8c1822982876b26739f92a5e71c5f06a2ec.jpg.pad' } },
+            image: { imageUrl: { url: 'https://placekitten.com/1360/912' }, paddedImageUrl: undefined },
             publishTime: { internalValue: BigInt('13278618001000000') },
             publisherId: 'd75d65f0f747650ef1ea11adb0029f9d577c629a080b5f60ec80d125b2bf205b',
             publisherName: 'Newsweek',

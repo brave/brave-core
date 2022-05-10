@@ -78,4 +78,7 @@ export const isUpdateAvailable = createAction<IsUpdateAvailablePayload>('isUpdat
 
 export const resetTodayPrefsToDefault = createAction('resetTodayPrefsToDefault')
 
-export const refresh = createAction('refresh')
+export type RefreshPayload = {
+  isFirstInteraction: boolean
+} | void
+export const refresh = createAction<RefreshPayload>('refresh')

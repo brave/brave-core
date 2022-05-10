@@ -4,6 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import * as TodayActions from '../../../actions/today_actions'
 import { Feed } from '../../../api/brave_news'
 import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
@@ -22,6 +24,8 @@ let pageRequestPending = false
 
 export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
+
+  const dispatch = useDispatch()
 
   const previousYAxis = React.useRef(0)
   const [showOptions, setShowOptions] = React.useState(false)
@@ -49,24 +53,37 @@ export default function BraveTodayContent (props: Props) {
   }, [previousYAxis])
 
   // Show the options buttons when we enter the viewport
-  const optionsTriggerRef = React.useRef<HTMLElement>()
-  const onOptionsTriggerElement = React.useCallback((element) => {
-    if (!element) {
-      return
-    }
-    optionsTriggerRef.current = element
+  const hasMarkedInteractionBegin = React.useRef(false)
+  const interactionTriggerElement = React.useRef<HTMLDivElement>(null)
+  const interactionObserver = React.useMemo<IntersectionObserver>(() => {
     const observer = new IntersectionObserver((entries) => {
-      console.debug('Intersection Observer trigger show options', [...entries])
       // Show if target article is inside or above viewport.
-      const shouldShowOptions = entries.some(
+      const isInteracting = entries.some(
         entry => entry.isIntersecting ||
                   entry.boundingClientRect.top < 0
       )
-      console.debug('Intersection Observer trigger show options, changing', shouldShowOptions)
-      setShowOptions(shouldShowOptions)
+      console.debug('Brave News: Intersection Observer trigger show options, changing', isInteracting)
+      setShowOptions(isInteracting)
+      // When in "prompting" mode, scrolling past the first card
+      // is indication that the user is interacting with the feature.
+      if (isInteracting && props.isPrompting && !hasMarkedInteractionBegin.current) {
+        dispatch(TodayActions.interactionBegin())
+        hasMarkedInteractionBegin.current = true
+      }
     })
-    observer.observe(element)
-  }, [setShowOptions])
+    return observer
+  }, [props.isPrompting])
+
+  React.useEffect(() => {
+    if (!interactionTriggerElement.current) {
+      return
+    }
+    const target = interactionTriggerElement.current
+    interactionObserver.observe(target)
+    return () => {
+      interactionObserver.unobserve(target)
+    }
+  }, [interactionObserver, interactionTriggerElement.current])
 
   // When the feed is refreshed, scroll to the top
   const prevFeedHashRef = React.useRef(getFeedHashForCache(props.feed))
@@ -74,8 +91,8 @@ export default function BraveTodayContent (props: Props) {
     const currentFeedHash = getFeedHashForCache(props.feed)
     if (prevFeedHashRef.current && prevFeedHashRef.current !== currentFeedHash) {
       // Feed hash changed, make sure we scroll to top
-      if (optionsTriggerRef.current) {
-        optionsTriggerRef.current.scrollIntoView({
+      if (interactionTriggerElement.current) {
+        interactionTriggerElement.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center'
         })
@@ -141,13 +158,14 @@ export default function BraveTodayContent (props: Props) {
     console.error('Brave Today: should have shown error or loading state, but ran in to an unintended code path.')
     return null
   }
+
+  const isOnlyDisplayingPeekingCard = !props.hasInteracted && props.isPrompting
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
   const introCount = feed.featuredItem ? 2 : 1
   let runningCardCount = introCount
   return (
     <>
     {/* featured item */}
-      <div ref={onOptionsTriggerElement} />
       { feed.featuredItem && <CardLarge
         content={[feed.featuredItem]}
         publishers={publishers}
@@ -156,51 +174,56 @@ export default function BraveTodayContent (props: Props) {
         onReadFeedItem={props.onReadFeedItem}
       />
       }
+      <div ref={interactionTriggerElement} />
       <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
+      { !isOnlyDisplayingPeekingCard &&
       <>
-        <CardDisplayAd
-          onVisitDisplayAd={props.onVisitDisplayAd}
-          onViewedDisplayAd={props.onViewedDisplayAd}
-          getContent={props.getDisplayAd}
+        <>
+          <CardDisplayAd
+            onVisitDisplayAd={props.onVisitDisplayAd}
+            onViewedDisplayAd={props.onViewedDisplayAd}
+            getContent={props.getDisplayAd}
+          />
+          <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
+        </>
+        {
+          /* Infinitely repeating collections of content. */
+          Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
+            const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
+            let startingDisplayIndex = runningCardCount
+            runningCardCount += feed.pages[index].items.length
+            return (
+              <CardsGroup
+                key={index}
+                itemStartingDisplayIndex={startingDisplayIndex}
+                content={feed.pages[index]}
+                publishers={publishers}
+                articleToScrollTo={props.articleToScrollTo}
+                shouldScrollToDisplayAd={shouldScrollToDisplayAd}
+                onReadFeedItem={props.onReadFeedItem}
+                onPeriodicCardViews={registerCardCountTriggerElement}
+                onSetPublisherPref={props.onSetPublisherPref}
+                onPromotedItemViewed={props.onPromotedItemViewed}
+                onVisitDisplayAd={props.onVisitDisplayAd}
+                onViewedDisplayAd={props.onViewedDisplayAd}
+                getDisplayAdContent={props.getDisplayAd}
+              />
+            )
+          })
+        }
+        <Customize onCustomizeBraveToday={props.onCustomizeBraveToday} show={showOptions} />
+        <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
+        <div
+          ref={setScrollTriggerRef}
+          style={{
+            width: '1px',
+            height: '1px',
+            position: 'absolute',
+            bottom: '900px'
+          }}
         />
-        <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
       </>
-      {
-        /* Infinitely repeating collections of content. */
-        Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
-          const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
-          let startingDisplayIndex = runningCardCount
-          runningCardCount += feed.pages[index].items.length
-          return (
-            <CardsGroup
-              key={index}
-              itemStartingDisplayIndex={startingDisplayIndex}
-              content={feed.pages[index]}
-              publishers={publishers}
-              articleToScrollTo={props.articleToScrollTo}
-              shouldScrollToDisplayAd={shouldScrollToDisplayAd}
-              onReadFeedItem={props.onReadFeedItem}
-              onPeriodicCardViews={registerCardCountTriggerElement}
-              onSetPublisherPref={props.onSetPublisherPref}
-              onPromotedItemViewed={props.onPromotedItemViewed}
-              onVisitDisplayAd={props.onVisitDisplayAd}
-              onViewedDisplayAd={props.onViewedDisplayAd}
-              getDisplayAdContent={props.getDisplayAd}
-            />
-          )
-        })
       }
-      <Customize onCustomizeBraveToday={props.onCustomizeBraveToday} show={showOptions} />
-      <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
-      <div
-        ref={setScrollTriggerRef}
-        style={{
-          width: '1px',
-          height: '1px',
-          position: 'absolute',
-          bottom: '900px'
-        }}
-      />
     </>
   )
 }

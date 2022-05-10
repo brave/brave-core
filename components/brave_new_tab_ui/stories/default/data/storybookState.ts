@@ -67,6 +67,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   ),
   customLinksEnabled: boolean('CustomLinks Enabled?', false),
   featureFlagBraveNewsEnabled: true,
+  featureFlagBraveNewsPromptEnabled: true,
   forceSettingsTab: select('Open settings tab?', [undefined, ...Object.keys(SettingsTabType)], undefined),
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),

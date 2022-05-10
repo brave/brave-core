@@ -269,6 +269,12 @@ constexpr char kBraveNewsDescription[] =
     "Brave News is completely private and includes anonymized ads matched on "
     "your device.";
 
+constexpr char kBraveNewsCardPeekFeatureName[] =
+    "Brave News prompts on New Tab Page";
+constexpr char kBraveNewsCardPeekFeatureDescription[] =
+    "Prompt Brave News via the top featured article peeking up from the bottom "
+    "of the New Tab Page, after a short delay.";
+
 constexpr char kCryptoWalletsForNewInstallsName[] =
     "Enable Crypto Wallets option in settings";
 constexpr char kCryptoWalletsForNewInstallsDescription[] =
@@ -400,12 +406,17 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      FEATURE_VALUE_TYPE(                                                       \
       brave_wallet::features::kBraveWalletSolanaProviderFeature)},
 
-#define BRAVE_NEWS_FEATURE_ENTRIES                                  \
-    {"brave-news",                                                  \
-     flag_descriptions::kBraveNewsName,                             \
-     flag_descriptions::kBraveNewsDescription,                      \
-     kOsDesktop | kOsAndroid,                                       \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},
+#define BRAVE_NEWS_FEATURE_ENTRIES                                         \
+    {"brave-news",                                                         \
+     flag_descriptions::kBraveNewsName,                                    \
+     flag_descriptions::kBraveNewsDescription,                             \
+     kOsDesktop | kOsAndroid,                                              \
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},        \
+    {"brave-news-peek",                                                    \
+     flag_descriptions::kBraveNewsCardPeekFeatureName,                     \
+     flag_descriptions::kBraveNewsCardPeekFeatureDescription,              \
+     kOsDesktop,                                                           \
+     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)},
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #define CRYPTO_WALLETS_FEATURE_ENTRIES                                       \

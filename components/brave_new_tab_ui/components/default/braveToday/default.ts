@@ -24,6 +24,10 @@ export const Section = styled('section')`
   display: flex;
   align-items: center;
   flex-direction: column;
+  transition: margin 2s ease-out;
+  [data-show-news-prompt] & {
+    margin-top: -100px;
+  }
 `
 
 export const ArticlesGroup = styled('section')`

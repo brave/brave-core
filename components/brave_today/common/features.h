@@ -14,6 +14,7 @@ namespace brave_today {
 namespace features {
 
 extern const base::Feature kBraveNewsFeature;
+extern const base::Feature kBraveNewsCardPeekFeature;
 
 }  // namespace features
 }  // namespace brave_today

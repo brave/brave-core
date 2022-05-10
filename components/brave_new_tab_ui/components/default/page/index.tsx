@@ -67,7 +67,7 @@ const StyledPage = styled('div')<PageProps>`
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   position: relative;
-  z-index: 3;
+  z-index: 6;
   width: 100%;
   display: grid;
   grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
@@ -85,6 +85,7 @@ const StyledPage = styled('div')<PageProps>`
   NTP items remain in the same place, and still allows NTP
   Page to scroll to the bottom before that starts happening. */
   .${CLASSNAME_PAGE_STUCK} & {
+    z-index: 3;
     position: fixed;
     bottom: 0;
     /* Blur out the content when Brave Today is interacted
@@ -255,6 +256,10 @@ export const GridItemNavigationBraveToday = styled('div')<{}>`
   left: 50%;
   transform: translate(-50%, 0);
   margin: 0 auto;
+  transition: bottom 2s ease-out;
+  [data-show-news-prompt] & {
+    bottom: 120px;
+  }
 `
 
 export const Footer = styled('footer')<{}>`
