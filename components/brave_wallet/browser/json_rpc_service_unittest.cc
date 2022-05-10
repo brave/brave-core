@@ -2025,6 +2025,17 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   SetEthResponse(DnsIpfsResponse());
   SetPolygonResponse(DnsEmptyResponse());
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  EXPECT_CALL(callback, Run(GURL("https://brave.com"),
+                            mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
+                                                  callback.Get());
+  SetEthResponse(DnsBraveResponse());
+  SetPolygonResponse(
+      MakeJsonRpcStringArrayResponse({"", "", "", "", "", "invalid url"}));
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
@@ -2037,6 +2048,16 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   SetEthResponse("");
   SetPolygonResponse(DnsEmptyResponse());
   base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  EXPECT_CALL(callback, Run(GURL(), mojom::ProviderError::kSuccess, ""));
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
+                                                  callback.Get());
+  SetEthResponse(
+      MakeJsonRpcStringArrayResponse({"", "", "", "", "", "invalid url"}));
+  SetPolygonResponse(DnsEmptyResponse());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
