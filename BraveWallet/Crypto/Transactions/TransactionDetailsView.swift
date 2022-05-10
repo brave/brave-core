@@ -22,14 +22,29 @@ struct TransactionDetailsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
   
+  init(
+    info: BraveWallet.TransactionInfo,
+    networkStore: NetworkStore,
+    keyringStore: KeyringStore,
+    visibleTokens: [BraveWallet.BlockchainToken],
+    allTokens: [BraveWallet.BlockchainToken],
+    assetRatios: [String: Double],
+    currencyCode: String
+  ) {
+    self.info = info
+    self.networkStore = networkStore
+    self.keyringStore = keyringStore
+    self.visibleTokens = visibleTokens
+    self.allTokens = allTokens
+    self.assetRatios = assetRatios
+    self.currencyFormatter.currencyCode = currencyCode
+  }
+  
   private let dateFormatter = DateFormatter().then {
     $0.dateFormat = "h:mm a - MMM d, yyyy"
   }
   
-  private let numberFormatter = NumberFormatter().then {
-    $0.numberStyle = .currency
-    $0.currencyCode = "USD"
-  }
+  private let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
   
   private func token(for contractAddress: String) -> BraveWallet.BlockchainToken? {
     let findToken: (BraveWallet.BlockchainToken) -> Bool = { $0.contractAddress.caseInsensitiveCompare(contractAddress) == .orderedSame }
@@ -81,12 +96,12 @@ struct TransactionDetailsView: View {
       return nil
     case .ethSend, .other:
       let amount = formatter.decimalString(for: info.ethTxValue.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) ?? ""
-      let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[networkStore.selectedChain.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
+      let fiat = currencyFormatter.string(from: NSNumber(value: assetRatios[networkStore.selectedChain.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
       return fiat
     case .erc20Transfer:
       if let value = info.txArgs[safe: 1], let token = token(for: info.ethTxToAddress) {
         let amount = formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
-        let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
+        let fiat = currencyFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
         return fiat
       } else {
         return "$0.00"
@@ -107,7 +122,7 @@ struct TransactionDetailsView: View {
         guard let doubleValue = Double(value), let assetRatio = assetRatios[networkStore.selectedChain.symbol.lowercased()] else {
           return "$0.00"
         }
-        return numberFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00"
+        return currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00"
       }())
     }
     return nil
@@ -125,7 +140,7 @@ struct TransactionDetailsView: View {
   /// The market price for the asset
   private var marketPrice: String {
     let symbol = networkStore.selectedChain.symbol
-    let marketPrice = numberFormatter.string(from: NSNumber(value: assetRatios[symbol.lowercased(), default: 0])) ?? "$0.00"
+    let marketPrice = currencyFormatter.string(from: NSNumber(value: assetRatios[symbol.lowercased(), default: 0])) ?? "$0.00"
     return marketPrice
   }
 
@@ -256,7 +271,8 @@ struct TransactionDetailsView_Previews: PreviewProvider {
         keyringStore: .previewStore,
         visibleTokens: [.previewToken],
         allTokens: [],
-        assetRatios: ["eth": 4576.36]
+        assetRatios: ["eth": 4576.36],
+        currencyCode: CurrencyCode.usd.code
       )
         .previewColorSchemes()
       TransactionDetailsView(
@@ -265,7 +281,8 @@ struct TransactionDetailsView_Previews: PreviewProvider {
         keyringStore: .previewStore,
         visibleTokens: [.previewToken],
         allTokens: [],
-        assetRatios: ["eth": 4576.36]
+        assetRatios: ["eth": 4576.36],
+        currencyCode: CurrencyCode.usd.code
       )
         .previewColorSchemes()
       TransactionDetailsView(
@@ -274,7 +291,8 @@ struct TransactionDetailsView_Previews: PreviewProvider {
         keyringStore: .previewStore,
         visibleTokens: [.previewToken],
         allTokens: [],
-        assetRatios: ["eth": 4576.36]
+        assetRatios: ["eth": 4576.36],
+        currencyCode: CurrencyCode.usd.code
       )
         .previewColorSchemes()
     }

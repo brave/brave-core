@@ -1860,7 +1860,7 @@ extension Strings {
       "wallet.settingsResetTransactionTitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Clear transaction & nonce info",
+      value: "Clear Transaction & Nonce Info",
       comment: "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
     )
     public static let settingsResetTransactionFooter = NSLocalizedString(
@@ -2093,6 +2093,13 @@ extension Strings {
       bundle: .braveWallet,
       value: "View the addresses of your permitted accounts (required)",
       comment: "A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with."
+    )
+    public static let settingsDefaultBaseCurrencyTitle = NSLocalizedString(
+      "wallet.settingsDefaultBaseCurrencyTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Default Base Currency",
+      comment: "The title that appears before the current default base currency code. Example: \"Default base currency: USD\""
     )
   }
 }

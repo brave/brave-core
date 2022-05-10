@@ -19,15 +19,32 @@ struct TransactionView: View {
   var displayAccountCreator: Bool
   var assetRatios: [String: Double]
 
+  init(
+    info: BraveWallet.TransactionInfo,
+    keyringStore: KeyringStore,
+    networkStore: NetworkStore,
+    visibleTokens: [BraveWallet.BlockchainToken],
+    allTokens: [BraveWallet.BlockchainToken],
+    displayAccountCreator: Bool,
+    assetRatios: [String: Double],
+    currencyCode: String
+  ) {
+    self.info = info
+    self.keyringStore = keyringStore
+    self.networkStore = networkStore
+    self.visibleTokens = visibleTokens
+    self.allTokens = allTokens
+    self.displayAccountCreator = displayAccountCreator
+    self.assetRatios = assetRatios
+    self.currencyFormatter.currencyCode = currencyCode
+  }
+
   private let timeFormatter = RelativeDateTimeFormatter().then {
     $0.unitsStyle = .full
     $0.dateTimeStyle = .numeric
   }
-
-  private let numberFormatter = NumberFormatter().then {
-    $0.numberStyle = .currency
-    $0.currencyCode = "USD"
-  }
+  
+  private let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   private func namedAddress(for address: String) -> String {
     NamedAddresses.name(for: address, accounts: keyringStore.keyring.accountInfos)
@@ -52,7 +69,7 @@ struct TransactionView: View {
           guard let doubleValue = Double(value), let assetRatio = assetRatios[networkStore.selectedChain.symbol.lowercased()] else {
             return "$0.00"
           }
-          return numberFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00"
+          return currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00"
         }()
       )
     }
@@ -76,7 +93,7 @@ struct TransactionView: View {
       }
     case .ethSend, .other:
       let amount = formatter.decimalString(for: info.ethTxValue.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) ?? ""
-      let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[networkStore.selectedChain.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
+      let fiat = currencyFormatter.string(from: NSNumber(value: assetRatios[networkStore.selectedChain.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
       if info.isSwap {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSwapTitle, amount, networkStore.selectedChain.symbol, fiat))
       } else {
@@ -85,7 +102,7 @@ struct TransactionView: View {
     case .erc20Transfer:
       if let value = info.txArgs[safe: 1], let token = token(for: info.ethTxToAddress) {
         let amount = formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
-        let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
+        let fiat = currencyFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, token.symbol, fiat))
       } else {
         Text(Strings.Wallet.send)
@@ -219,7 +236,8 @@ struct Transaction_Previews: PreviewProvider {
         visibleTokens: [.previewToken],
         allTokens: [],
         displayAccountCreator: false,
-        assetRatios: ["eth": 4576.36]
+        assetRatios: ["eth": 4576.36],
+        currencyCode: CurrencyCode.usd.code
       )
       TransactionView(
         info: .previewConfirmedSwap,
@@ -228,7 +246,8 @@ struct Transaction_Previews: PreviewProvider {
         visibleTokens: [.previewToken],
         allTokens: [],
         displayAccountCreator: true,
-        assetRatios: ["eth": 4576.36]
+        assetRatios: ["eth": 4576.36],
+        currencyCode: CurrencyCode.usd.code
       )
       TransactionView(
         info: .previewConfirmedERC20Approve,
@@ -237,7 +256,8 @@ struct Transaction_Previews: PreviewProvider {
         visibleTokens: [.previewToken],
         allTokens: [],
         displayAccountCreator: false,
-        assetRatios: ["eth": 4576.36]
+        assetRatios: ["eth": 4576.36],
+        currencyCode: CurrencyCode.usd.code
       )
     }
     .padding(12)

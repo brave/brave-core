@@ -11,6 +11,14 @@ class AccountActivityStore: ObservableObject {
   @Published private(set) var assets: [AssetViewModel] = []
   @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
   @Published private(set) var allTokens: [BraveWallet.BlockchainToken] = []
+  @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
+    didSet {
+      currencyFormatter.currencyCode = currencyCode
+      update()
+    }
+  }
+
+  let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
@@ -35,6 +43,11 @@ class AccountActivityStore: ObservableObject {
     
     self.rpcService.add(self)
     self.txService.add(self)
+    self.walletService.add(self)
+    
+    walletService.defaultBaseCurrency { [self] currencyCode in
+      self.currencyCode = currencyCode
+    }
   }
 
   func update() {
@@ -58,7 +71,7 @@ class AccountActivityStore: ObservableObject {
         dispatchGroup.enter()
         assetRatioService.price(
           updatedTokens.map { $0.symbol.lowercased() },
-          toAssets: ["usd"],
+          toAssets: [currencyFormatter.currencyCode],
           timeframe: .oneDay) { success, prices in
             defer { dispatchGroup.leave() }
             for price in prices {
@@ -116,5 +129,23 @@ extension AccountActivityStore: BraveWalletTxServiceObserver {
     fetchTransactions()
   }
   func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+  }
+}
+
+extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+
+  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+    currencyCode = currency
+  }
+
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+
+  public func onNetworkListChanged() {
   }
 }

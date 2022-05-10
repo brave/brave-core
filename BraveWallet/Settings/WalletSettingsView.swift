@@ -56,6 +56,20 @@ public struct WalletSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Section {
+        Picker(selection: $settingsStore.currencyCode) {
+          ForEach(CurrencyCode.allCurrencyCodes) { currencyCode in
+            Text(currencyCode.code)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .tag(currencyCode)
+          }
+        } label: {
+          Text(Strings.Wallet.settingsDefaultBaseCurrencyTitle)
+            .foregroundColor(Color(.braveLabel))
+            .padding(.vertical, 4)
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       if settingsStore.isBiometricsAvailable, keyringStore.keyring.isKeyringCreated {
         Section(
           footer: Text(Strings.Wallet.settingsEnableBiometricsFooter)

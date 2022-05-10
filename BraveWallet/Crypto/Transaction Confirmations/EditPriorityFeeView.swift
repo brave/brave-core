@@ -125,7 +125,7 @@ struct EditPriorityFeeView: View {
     }
     let proposedGasValue = formatter.decimalString(for: gasFeeInWei.removingHexPrefix, radix: .hex, decimals: 18) ?? ""
     let proposedGasFiat =
-      confirmationStore.numberFormatter.string(
+      confirmationStore.currencyFormatter.string(
         from: NSNumber(value: confirmationStore.state.gasAssetRatio * (Double(proposedGasValue) ?? 0.0))
       ) ?? "–"
     return "\(proposedGasFiat) (\(proposedGasValue) \(confirmationStore.state.gasSymbol))"
