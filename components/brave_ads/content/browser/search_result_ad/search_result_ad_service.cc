@@ -42,6 +42,7 @@ void SearchResultAdService::MaybeRetrieveSearchResultAd(
     bool should_trigger_viewed_event) {
   DCHECK(ads_service_);
   DCHECK(render_frame_host);
+  DCHECK(tab_id.is_valid());
 
   if (!should_trigger_viewed_event || !ads_service_->IsEnabled() ||
       !base::FeatureList::IsEnabled(

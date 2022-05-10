@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -22,35 +23,6 @@
 #include "url/gurl.h"
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kSearchAdsConfirmationHost[] =
-    "search-ads-confirmation.brave.com";
-constexpr char kSearchAdsConfirmationPath[] = "/v10/view";
-constexpr char kCreativeInstanceIdParameterName[] = "creativeInstanceId";
-
-std::string GetCreativeInstanceIdFromUrl(const GURL& url) {
-  if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
-      url.host_piece() != kSearchAdsConfirmationHost ||
-      url.path_piece() != kSearchAdsConfirmationPath || !url.has_query()) {
-    return std::string();
-  }
-
-  base::StringPiece query_str = url.query_piece();
-  url::Component query(0, static_cast<int>(query_str.length())), key, value;
-  while (url::ExtractQueryKeyValue(query_str.data(), &query, &key, &value)) {
-    base::StringPiece key_str = query_str.substr(key.begin, key.len);
-    if (key_str == kCreativeInstanceIdParameterName) {
-      base::StringPiece value_str = query_str.substr(value.begin, value.len);
-      return static_cast<std::string>(value_str);
-    }
-  }
-
-  return std::string();
-}
-
-}  // namespace
 
 std::unique_ptr<blink::URLLoaderThrottle>
 SearchResultAdRendererThrottle::MaybeCreateThrottle(
@@ -79,7 +51,8 @@ SearchResultAdRendererThrottle::MaybeCreateThrottle(
   }
 
   const GURL url = static_cast<GURL>(request.Url());
-  std::string creative_instance_id = GetCreativeInstanceIdFromUrl(url);
+  std::string creative_instance_id =
+      GetCreativeInstanceIdFromSearchAdsViewedUrl(url);
   if (creative_instance_id.empty()) {
     return nullptr;
   }
@@ -119,7 +92,8 @@ void SearchResultAdRendererThrottle::WillStartRequest(
     bool* defer) {
   DCHECK(request);
   DCHECK(request->request_initiator);
-  DCHECK_EQ(creative_instance_id_, GetCreativeInstanceIdFromUrl(request->url));
+  DCHECK_EQ(creative_instance_id_,
+            GetCreativeInstanceIdFromSearchAdsViewedUrl(request->url));
   DCHECK(brave_search::IsAllowedHost(request->request_initiator->GetURL()));
   DCHECK_EQ(request->resource_type,
             static_cast<int>(blink::mojom::ResourceType::kXhr));
