@@ -8,7 +8,6 @@ import Combine
 import SnapKit
 import SwiftUI
 import BraveUI
-import SPMLibraries
 
 struct WalletListHeaderView<Title: View, Subtitle: View>: View {
   var title: Title
