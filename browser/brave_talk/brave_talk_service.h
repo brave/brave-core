@@ -27,9 +27,12 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   void ShareTab(content::WebContents* target_contents);
 
+  content::WebContents* target() { return target_.get(); }
+
  private:
   share_tab_button::ShareTabButton* share_tab_button();
   base::WeakPtr<content::WebContents> observing_;
+  base::WeakPtr<content::WebContents> target_;
 };
 }  // namespace brave_talk
 

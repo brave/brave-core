@@ -3,6 +3,8 @@
 #include <memory>
 
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
+#include "brave/browser/brave_talk/brave_talk_service.h"
+#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "chrome/browser/media/webrtc/media_stream_capture_indicator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome\browser\media\webrtc\capture_policy_utils.h"
@@ -105,9 +107,10 @@ void BraveTalkMediaAccessHandler::HandleRequest(
       capture_policy::GetIncludableWebContentsFilter(request.security_origin,
                                                      capture_level);
 
-  auto* target_web_contents = content::WebContents::FromRenderFrameHost(
-      content::RenderFrameHost::FromID(request.render_process_id,
-                                       request.render_frame_id));
+  auto* target_web_contents = BraveTalkServiceFactory::GetForContext(web_contents->GetBrowserContext())->target();
+  // content::WebContents::FromRenderFrameHost(
+  //     content::RenderFrameHost::FromID(request.render_process_id,
+  //                                      request.render_frame_id));
   if (!can_show_web_contents.Run(target_web_contents)) {
     LOG(ERROR) << "Can't show";
     std::move(callback).Run(

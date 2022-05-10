@@ -45,6 +45,7 @@ void BraveTalkService::StopObserving(content::WebContents* contents) {
   share_tab_button()->SetVisible(false);
 
   observing_ = nullptr;
+  target_ = nullptr;
   Observe(nullptr);
 }
 
@@ -70,6 +71,8 @@ share_tab_button::ShareTabButton* BraveTalkService::share_tab_button() {
 }
 
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
+  target_ = target_contents->GetWeakPtr();
+
   if (!observing_)
     return;
   auto* registry =
