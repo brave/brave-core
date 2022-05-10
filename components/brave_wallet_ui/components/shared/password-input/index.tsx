@@ -4,6 +4,7 @@ import {
   StyledWrapper,
   InputWrapper,
   ToggleVisibilityButton,
+  ToggleVisibilityIcon,
   Input,
   ErrorText,
   ErrorRow,
@@ -47,10 +48,9 @@ function PasswordInput (props: Props) {
           autoComplete='off'
         />
         {showToggleButton &&
-          <ToggleVisibilityButton
-            showPassword={showPassword}
-            onClick={onTogglePasswordVisibility}
-          />
+          <ToggleVisibilityButton onClick={onTogglePasswordVisibility}>
+            <ToggleVisibilityIcon showPassword={showPassword} />
+          </ToggleVisibilityButton>
         }
       </InputWrapper>
       {hasError &&

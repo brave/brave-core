@@ -105,6 +105,11 @@ export const ToggleVisibilityButton = styled(WalletButton)<Partial<StyleProps>>`
   padding: 0px;
   width: 18px;
   height: 18px;
+`
+
+export const ToggleVisibilityIcon = styled.div<Partial<StyleProps>>`
+  width: 18px;
+  height: 18px;
   background-color: ${(p) => p.theme.color.text02};
   -webkit-mask-image: url(${(p) => p.showPassword ? EyeOffIcon : EyeOnIcon});
   mask-image: url(${(p) => p.showPassword ? EyeOffIcon : EyeOnIcon});
