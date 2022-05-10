@@ -89,8 +89,11 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
       return false;
     }
     VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
+    if (!de_amp_throttle_->OpenCanonicalURL(canonical_url, response_url_)) {
+      return false;
+    }
+    // Only abort if we know we're successfully going to the canonical URL
     Abort();
-    de_amp_throttle_->Redirect(canonical_url, response_url_);
     return true;
   } else {
     // Did not find AMP page and/or canonical link, load original
