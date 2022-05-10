@@ -104,7 +104,7 @@ extension Preferences {
     /// Disables JavaScript execution in the browser
     public static let blockScripts = Option<Bool>(key: "shields.block-scripts", default: false)
     /// Enforces fingerprinting protection on the users session
-    public static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: false)
+    public static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: true)
     /// Disables image loading in the browser
     public static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
     /// In addition to global adblocking rules, adds custom country based rules.
