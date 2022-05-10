@@ -5,6 +5,7 @@
 
 #include "brave/components/tor/tor_control.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/bind.h"
@@ -565,7 +566,9 @@ void TorControl::SetupPluggableTransport(
   const std::string configure_pluggable_transport =
       base::StrCat({"SETCONF ", snowflake_setup, " ", obsf4_setup});
 
-  DoCmd(configure_pluggable_transport, base::DoNothing(), base::DoNothing());
+  DoCmd(configure_pluggable_transport, base::DoNothing(),
+        base::BindOnce(&TorControl::OnPluggableTransportsConfigured,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TorControl::SetupBridges(const std::vector<std::string>& bridges,
@@ -579,17 +582,29 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
   }
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (bridges.empty()) {
-    DoCmd("RESETCONF UseBridges", base::DoNothing(), base::DoNothing());
-    DoCmd("RESETCONF Bridge", base::DoNothing(), base::DoNothing());
+    DoCmd("RESETCONF UseBridges Bridge", base::DoNothing(),
+          base::BindOnce(&TorControl::OnBrigdesConfigured,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   } else {
     std::string command = "SETCONF ";
     for (const auto& bridge : bridges) {
       command += "Bridge=\"" + bridge + "\" ";
     }
     command += "UseBridges=1";
-    DoCmd(std::move(command), base::DoNothing(), base::DoNothing());
+    DoCmd(std::move(command), base::DoNothing(),
+          base::BindOnce(&TorControl::OnBrigdesConfigured,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
-  DoCmd("SAVECONF", base::DoNothing(), base::DoNothing());
+}
+
+void TorControl::OnBrigdesConfigured(
+    base::OnceCallback<void(bool error)> callback,
+    bool error,
+    const std::string& status,
+    const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  VLOG(1) << __func__ << " " << reply;
+  std::move(callback).Run(error || status != "250" || reply != "OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////

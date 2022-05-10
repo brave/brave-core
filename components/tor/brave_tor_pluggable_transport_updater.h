@@ -20,6 +20,8 @@ using brave_component_updater::BraveComponent;
 
 namespace tor {
 
+extern const char kTorPluggableTransportComponentId[];
+
 class BraveTorPluggableTransportUpdater : public BraveComponent {
  public:
   class Observer : public base::CheckedObserver {

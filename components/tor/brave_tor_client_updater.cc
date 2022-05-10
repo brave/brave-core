@@ -105,11 +105,6 @@ const char kTorClientComponentBase64PublicKey[] =
     "2QIDAQAB";
 #endif
 
-std::string BraveTorClientUpdater::g_tor_client_component_id_(
-    kTorClientComponentId);
-std::string BraveTorClientUpdater::g_tor_client_component_base64_public_key_(
-    kTorClientComponentBase64PublicKey);
-
 BraveTorClientUpdater::BraveTorClientUpdater(
     BraveComponent::Delegate* component_delegate,
     PrefService* local_state,
@@ -135,8 +130,8 @@ void BraveTorClientUpdater::Register() {
     return;
   }
 
-  BraveComponent::Register(kTorClientComponentName, g_tor_client_component_id_,
-                           g_tor_client_component_base64_public_key_);
+  BraveComponent::Register(kTorClientComponentName, kTorClientComponentId,
+                           kTorClientComponentBase64PublicKey);
   registered_ = true;
 }
 
@@ -218,14 +213,6 @@ void BraveTorClientUpdater::AddObserver(Observer* observer) {
 
 void BraveTorClientUpdater::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
-}
-
-// static
-void BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_tor_client_component_id_ = component_id;
-  g_tor_client_component_base64_public_key_ = component_base64_public_key;
 }
 
 }  // namespace tor

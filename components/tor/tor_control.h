@@ -156,13 +156,6 @@ class TorControl {
       const std::string& status,
       const std::string& reply);
 
-  void OnBrigdeAdded(bool error,
-                     const std::string& status,
-                     const std::string& reply);
-  void OnBridgesEnabled(bool error,
-                        const std::string& status,
-                        const std::string& reply);
-
   void DoSubscribe(TorControlEvent event,
                    base::OnceCallback<void(bool error)> callback);
   void Subscribed(TorControlEvent event,
@@ -178,6 +171,16 @@ class TorControl {
                     const std::string& status,
                     const std::string& reply);
   std::string SetEventsCmd();
+
+  void OnPluggableTransportsConfigured(
+      base::OnceCallback<void(bool error)> callback,
+      bool error,
+      const std::string& status,
+      const std::string& reply);
+  void OnBrigdesConfigured(base::OnceCallback<void(bool error)> callback,
+                           bool error,
+                           const std::string& status,
+                           const std::string& reply);
 
   // Notify delegate on UI thread
   void NotifyTorControlReady();

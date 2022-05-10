@@ -32,18 +32,6 @@ constexpr const char kObfs4[] = "tor-obsf4-linux-brave";
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Linux)";
 #endif
 
-constexpr const char kComponentId[] = "hajklemofkhfcgodegbighbamaclcfgo";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA1f30bAR70KT2EJKNxP3O"
-    "5lXckE6+Io67Hydjmiou6R5iwkHkrCbelRqLmDpR1i9lR1uLxgc1ZVLKoy0bWeX4"
-    "CFu/qwyrWvQ3fnzZ6+AZPk7r2sI56pcj94/RrrVkhvsWwOC6NordeJSLvjlYt+wQ"
-    "44UDjobpEaW3p7mz1eXJDNIARL/aI4ARYqWTV2/xtACh1uubSVEo9h7R1TGLTI4A"
-    "67X5qtp9FRvgB2O/QHDbdlVXZkhFA3/Bf7k+JonXzpHAbvOXA/QnS8zILYpoOf7d"
-    "ySPcI0VBeiH2lM/CX+ZKv+nfOTdBRnWDoE9MxE1eUNWVxdrn/7BsVZh56xnLKO8D"
-    "IVkVkE2/e9CNLqSfcAazU672Ro3oA/8XjcyYbLjzbmV3FM85KgEEq6OMlGbSroBi"
-    "5KHW/4YhYoRKljhePtuOKmaNNMcZ13iBtiXjZByce+FKfVDw7Lw1wzB7mF4YBfeO"
-    "I0AI8JYknZEB8AkrOEMvPvokwXISqRQjkIr7DH3SV4WxAgMBAAE=";
-
 bool Initialize(const base::FilePath& install_dir) {
   const auto executables = {install_dir.AppendASCII(kSnowflake),
                             install_dir.AppendASCII(kObfs4)};
@@ -66,6 +54,19 @@ bool Initialize(const base::FilePath& install_dir) {
 
 namespace tor {
 
+constexpr const char kTorPluggableTransportComponentId[] =
+    "hajklemofkhfcgodegbighbamaclcfgo";
+constexpr const char kComponentBase64PublicKey[] =
+    "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA1f30bAR70KT2EJKNxP3O"
+    "5lXckE6+Io67Hydjmiou6R5iwkHkrCbelRqLmDpR1i9lR1uLxgc1ZVLKoy0bWeX4"
+    "CFu/qwyrWvQ3fnzZ6+AZPk7r2sI56pcj94/RrrVkhvsWwOC6NordeJSLvjlYt+wQ"
+    "44UDjobpEaW3p7mz1eXJDNIARL/aI4ARYqWTV2/xtACh1uubSVEo9h7R1TGLTI4A"
+    "67X5qtp9FRvgB2O/QHDbdlVXZkhFA3/Bf7k+JonXzpHAbvOXA/QnS8zILYpoOf7d"
+    "ySPcI0VBeiH2lM/CX+ZKv+nfOTdBRnWDoE9MxE1eUNWVxdrn/7BsVZh56xnLKO8D"
+    "IVkVkE2/e9CNLqSfcAazU672Ro3oA/8XjcyYbLjzbmV3FM85KgEEq6OMlGbSroBi"
+    "5KHW/4YhYoRKljhePtuOKmaNNMcZ13iBtiXjZByce+FKfVDw7Lw1wzB7mF4YBfeO"
+    "I0AI8JYknZEB8AkrOEMvPvokwXISqRQjkIr7DH3SV4WxAgMBAAE=";
+
 BraveTorPluggableTransportUpdater::BraveTorPluggableTransportUpdater(
     BraveComponent::Delegate* component_delegate,
     PrefService* local_state,
@@ -83,7 +84,7 @@ void BraveTorPluggableTransportUpdater::Register() {
   if (registered_)
     return;
 
-  BraveComponent::Register(kComponentName, kComponentId,
+  BraveComponent::Register(kComponentName, kTorPluggableTransportComponentId,
                            kComponentBase64PublicKey);
   registered_ = true;
   is_ready_ = false;
@@ -95,7 +96,8 @@ void BraveTorPluggableTransportUpdater::Unregister() {
 }
 
 void BraveTorPluggableTransportUpdater::Cleanup() {
-  const base::FilePath component_dir = user_data_dir_.AppendASCII(kComponentId);
+  const base::FilePath component_dir =
+      user_data_dir_.AppendASCII(kTorPluggableTransportComponentId);
   GetTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(base::GetDeletePathRecursivelyCallback(), component_dir));
