@@ -15,7 +15,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     BraveWallet.MainnetChainId: [.previewToken],
     BraveWallet.RopstenChainId: [.previewToken],
   ]
-  private var defaultCurrency = "usd"
+  private var defaultCurrency = CurrencyCode.usd
   private var defaultCryptocurrency = "eth"
 
   func userAssets(_ chainId: String, coin: BraveWallet.CoinType, completion: @escaping ([BraveWallet.BlockchainToken]) -> Void) {
@@ -66,11 +66,11 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func defaultBaseCurrency(_ completion: @escaping (String) -> Void) {
-    completion(defaultCurrency)
+    completion(defaultCurrency.code)
   }
 
   func setDefaultBaseCurrency(_ currency: String) {
-    defaultCurrency = currency.lowercased()
+    defaultCurrency = CurrencyCode(code: currency)
   }
 
   func defaultBaseCryptocurrency(_ completion: @escaping (String) -> Void) {

@@ -45,6 +45,13 @@ public class PortfolioStore: ObservableObject {
   @Published private(set) var historicalBalances: [BalanceTimePrice] = []
   /// Whether or not balances are still currently loading
   @Published private(set) var isLoadingBalances: Bool = false
+  /// The current default base currency code
+  @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
+    didSet {
+      currencyFormatter.currencyCode = currencyCode
+      update()
+    }
+  }
 
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
@@ -52,6 +59,8 @@ public class PortfolioStore: ObservableObject {
     rpcService: self.rpcService,
     assetRatioService: self.assetRatioService
   )
+  
+  let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -74,17 +83,16 @@ public class PortfolioStore: ObservableObject {
 
     self.rpcService.add(self)
     self.keyringService.add(self)
+    self.walletService.add(self)
 
     keyringService.isLocked { [self] isLocked in
       if !isLocked {
         update()
       }
     }
-  }
-
-  private let numberFormatter = NumberFormatter().then {
-    $0.numberStyle = .currency
-    $0.currencyCode = "USD"
+    walletService.defaultBaseCurrency { [self] currencyCode in
+      self.currencyCode = currencyCode
+    }
   }
 
   /// Fetches the balances for a given list of tokens for each of the given accounts, giving a dictionary with a balance for each token symbol.
@@ -115,7 +123,7 @@ public class PortfolioStore: ObservableObject {
   private func fetchPrices(for symbols: [String], completion: @escaping ([String: String]) -> Void) {
     assetRatioService.price(
       symbols.map { $0.lowercased() },
-      toAssets: ["usd"],
+      toAssets: [currencyFormatter.currencyCode],
       timeframe: timeframe
     ) { success, assetPrices in
       // `success` only refers to finding _all_ prices and if even 1 of N prices
@@ -134,7 +142,7 @@ public class PortfolioStore: ObservableObject {
       group.enter()
       assetRatioService.priceHistory(
         symbol,
-        vsAsset: "usd",
+        vsAsset: currencyFormatter.currencyCode,
         timeframe: timeframe
       ) { success, history in
         defer { group.leave() }
@@ -199,7 +207,7 @@ public class PortfolioStore: ObservableObject {
               return nil
             }
             .reduce(0.0, +)
-          balance = numberFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
+          balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
           // Compute historical balances based on historical prices and current balances
           let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
           let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
@@ -210,7 +218,7 @@ public class PortfolioStore: ObservableObject {
             return .init(
               date: assets.map { $0.history[index].date }.max() ?? .init(),
               price: value,
-              formattedPrice: numberFormatter.string(from: NSNumber(value: value)) ?? "0.00"
+              formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
             )
           }
           isLoadingBalances = false
@@ -255,5 +263,23 @@ extension PortfolioStore: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
   }
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
+  }
+}
+
+extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+
+  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+    currencyCode = currency
+  }
+
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+
+  public func onNetworkListChanged() {
   }
 }

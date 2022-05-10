@@ -90,7 +90,8 @@ struct AssetDetailView: View {
                 visibleTokens: [assetDetailStore.token],
                 allTokens: [], // AssetDetailView is specific to a single token
                 displayAccountCreator: true,
-                assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
+                assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue],
+                currencyCode: assetDetailStore.currencyCode
               )
             }
             .contextMenu {
@@ -146,9 +147,10 @@ struct AssetDetailView: View {
             info: tx,
             networkStore: networkStore,
             keyringStore: keyringStore,
-            visibleTokens: [],
-            allTokens: [],
-            assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
+            visibleTokens: [assetDetailStore.token],
+            allTokens: [], // AssetDetailView is specific to a single token
+            assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue],
+            currencyCode: assetDetailStore.currencyCode
           )
         }
     )

@@ -1215,6 +1215,7 @@
 		D511314B2800C16100C81683 /* TransactionConfirmationStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511314A2800C16100C81683 /* TransactionConfirmationStoreTests.swift */; };
 		D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */; };
 		D552E6922807231F00A847F3 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1DC51320AC9AF900905E5A /* Data.framework */; };
+		D5412B452819F24000463106 /* WalletNumberFormatterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */; };
 		D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */; };
 		D5ACA7CE27FB7D08002443CE /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		D5ACA7D927FB7D0E002443CE /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
@@ -3216,6 +3217,7 @@
 		D506715B27E2AAB700560631 /* TransactionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHeader.swift; sourceTree = "<group>"; };
 		D511314A2800C16100C81683 /* TransactionConfirmationStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionConfirmationStoreTests.swift; sourceTree = "<group>"; };
 		D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStoreTests.swift; sourceTree = "<group>"; };
+		D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletNumberFormatterExtensions.swift; sourceTree = "<group>"; };
 		D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsView.swift; sourceTree = "<group>"; };
 		D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPasscodeEntryView.swift; sourceTree = "<group>"; };
 		D5EFCB3827FF81AA00BD151D /* EditPermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPermissionsView.swift; sourceTree = "<group>"; };
@@ -3892,6 +3894,7 @@
 				2792CBC7275951B10055151E /* UIPasteboardExtensions.swift */,
 				7DC054C127A9CCA400BBA042 /* KeyringServiceExtensions.swift */,
 				27117A5427DBDD6D002CF57B /* LegacyCoinTypeExtensions.swift */,
+				D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -8247,6 +8250,7 @@
 				271F68B426EBD27E00AA2A50 /* CreateWalletView.swift in Sources */,
 				2774303427332DAF00183725 /* BlockieGroup.swift in Sources */,
 				271F689F26EBD27E00AA2A50 /* AccountActivityView.swift in Sources */,
+				D5412B452819F24000463106 /* WalletNumberFormatterExtensions.swift in Sources */,
 				27E17B812744067A00F3C282 /* AccountActivityStore.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
 				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,

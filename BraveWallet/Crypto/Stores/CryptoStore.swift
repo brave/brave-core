@@ -145,6 +145,7 @@ public class CryptoStore: ObservableObject {
       assetRatioService: assetRatioService,
       keyringService: keyringService,
       rpcService: rpcService,
+      walletService: walletService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       token: token

@@ -36,11 +36,6 @@ struct AccountActivityView: View {
     return info
   }
 
-  private let currencyFormatter = NumberFormatter().then {
-    $0.numberStyle = .currency
-    $0.currencyCode = "USD"
-  }
-
   private func emptyTextView(_ message: String) -> some View {
     Text(message)
       .font(.footnote.weight(.medium))
@@ -74,7 +69,7 @@ struct AccountActivityView: View {
               image: AssetIconView(token: asset.token),
               title: asset.token.name,
               symbol: asset.token.symbol,
-              amount: currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
+              amount: activityStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
               quantity: String(format: "%.04f", asset.decimalBalance)
             )
           }
@@ -96,7 +91,8 @@ struct AccountActivityView: View {
                 visibleTokens: activityStore.assets.map(\.token),
                 allTokens: activityStore.allTokens,
                 displayAccountCreator: false,
-                assetRatios: assetRatios
+                assetRatios: assetRatios,
+                currencyCode: activityStore.currencyCode
               )
             }
             .contextMenu {
@@ -136,7 +132,8 @@ struct AccountActivityView: View {
             keyringStore: keyringStore,
             visibleTokens: activityStore.assets.map(\.token),
             allTokens: activityStore.allTokens,
-            assetRatios: assetRatios
+            assetRatios: assetRatios,
+            currencyCode: activityStore.currencyCode
           )
         }
     )

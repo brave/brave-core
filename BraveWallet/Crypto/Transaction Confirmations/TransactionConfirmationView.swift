@@ -30,46 +30,24 @@ struct TransactionConfirmationView: View {
 
   @State private var viewMode: ViewMode = .transaction
 
-  private var activeTransaction: BraveWallet.TransactionInfo {
-    confirmationStore.transactions.first(where: { $0.id == confirmationStore.activeTransactionId }) ?? (confirmationStore.transactions.first ?? .init())
-  }
-
-  private func next() {
-    if let index = confirmationStore.transactions.firstIndex(where: { $0.id == confirmationStore.activeTransactionId }) {
-      var nextIndex = confirmationStore.transactions.index(after: index)
-      if nextIndex == confirmationStore.transactions.endIndex {
-        nextIndex = 0
-      }
-      confirmationStore.activeTransactionId = confirmationStore.transactions[nextIndex].id
-    } else {
-      confirmationStore.activeTransactionId = confirmationStore.transactions.first!.id
-    }
-  }
-
-  private func rejectAll() {
-    for transaction in confirmationStore.transactions {
-      confirmationStore.reject(transaction: transaction)
-    }
-  }
-
   private var fromAccountName: String {
-    NamedAddresses.name(for: activeTransaction.fromAddress, accounts: keyringStore.keyring.accountInfos)
+    NamedAddresses.name(for: confirmationStore.activeTransaction.fromAddress, accounts: keyringStore.keyring.accountInfos)
   }
 
   private var toAccountName: String {
-    return NamedAddresses.name(for: activeTransaction.ethTxToAddress, accounts: keyringStore.keyring.accountInfos)
+    return NamedAddresses.name(for: confirmationStore.activeTransaction.ethTxToAddress, accounts: keyringStore.keyring.accountInfos)
   }
 
   private var transactionType: String {
-    if activeTransaction.txType == .erc20Approve {
+    if confirmationStore.activeTransaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
     }
-    return activeTransaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
+    return confirmationStore.activeTransaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
   }
 
   private var transactionDetails: String {
-    if activeTransaction.txArgs.isEmpty {
-      let data = activeTransaction.ethTxData
+    if confirmationStore.activeTransaction.txArgs.isEmpty {
+      let data = confirmationStore.activeTransaction.ethTxData
         .map { byte in
           String(format: "%02X", byte.uint8Value)
         }
@@ -79,7 +57,7 @@ struct TransactionConfirmationView: View {
       }
       return "0x\(data)"
     } else {
-      return zip(activeTransaction.txParams, activeTransaction.txArgs)
+      return zip(confirmationStore.activeTransaction.txParams, confirmationStore.activeTransaction.txArgs)
         .map { (param, arg) in
           "\(param): \(arg)"
         }
@@ -100,11 +78,11 @@ struct TransactionConfirmationView: View {
   /// The view for changing between available pending transactions. ex. '1 of 4 Next'
   @ViewBuilder private var transactionsButton: some View {
     if confirmationStore.transactions.count > 1 {
-      let index = confirmationStore.transactions.firstIndex(of: activeTransaction) ?? 0
+      let index = confirmationStore.transactions.firstIndex(of: confirmationStore.activeTransaction) ?? 0
       HStack {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.transactions.count))
           .fontWeight(.semibold)
-        Button(action: next) {
+        Button(action: confirmationStore.next) {
           Text(Strings.Wallet.next)
             .fontWeight(.semibold)
             .foregroundColor(Color(.braveBlurpleTint))
@@ -150,7 +128,7 @@ struct TransactionConfirmationView: View {
       }
       NavigationLink(
         destination: EditPermissionsView(
-          proposedAllowance: activeTransaction.txArgs[safe: 1] ?? "",
+          proposedAllowance: confirmationStore.activeTransaction.txArgs[safe: 1] ?? "",
           confirmationStore: confirmationStore,
           keyringStore: keyringStore,
           networkStore: networkStore
@@ -169,11 +147,11 @@ struct TransactionConfirmationView: View {
       .fontWeight(.semibold)
       .foregroundColor(Color(.braveBlurpleTint))
     Group {
-      if activeTransaction.isEIP1559Transaction {
-        if let gasEstimation = activeTransaction.txDataUnion.ethTxData1559?.gasEstimation {
+      if confirmationStore.activeTransaction.isEIP1559Transaction {
+        if let gasEstimation = confirmationStore.activeTransaction.txDataUnion.ethTxData1559?.gasEstimation {
           NavigationLink(
             destination: EditPriorityFeeView(
-              transaction: activeTransaction,
+              transaction: confirmationStore.activeTransaction,
               gasEstimation: gasEstimation,
               confirmationStore: confirmationStore
             )
@@ -184,7 +162,7 @@ struct TransactionConfirmationView: View {
       } else {
         NavigationLink(
           destination: EditGasFeeView(
-            transaction: activeTransaction,
+            transaction: confirmationStore.activeTransaction,
             confirmationStore: confirmationStore
           )
         ) {
@@ -205,20 +183,20 @@ struct TransactionConfirmationView: View {
             Spacer()
             VStack(alignment: .trailing) {
               transactionsButton
-              if activeTransaction.txType == .erc20Approve {
+              if confirmationStore.activeTransaction.txType == .erc20Approve {
                 accountView // for other txTypes, account is shown in `TransactionHeader`
               }
             }
           }
           .font(.callout)
           // Summary
-          if activeTransaction.txType == .erc20Approve {
+          if confirmationStore.activeTransaction.txType == .erc20Approve {
             erc20ApproveHeader
           } else {
             TransactionHeader(
-              fromAccountAddress: activeTransaction.fromAddress,
+              fromAccountAddress: confirmationStore.activeTransaction.fromAddress,
               fromAccountName: fromAccountName,
-              toAccountAddress: activeTransaction.ethTxToAddress,
+              toAccountAddress: confirmationStore.activeTransaction.ethTxToAddress,
               toAccountName: toAccountName,
               transactionType: transactionType,
               value: "\(confirmationStore.state.value) \(confirmationStore.state.symbol)",
@@ -256,7 +234,7 @@ struct TransactionConfirmationView: View {
                   .accessibilityElement(children: .contain)
                   Divider()
                     .padding(.leading)
-                  if activeTransaction.txType == .erc20Approve {
+                  if confirmationStore.activeTransaction.txType == .erc20Approve {
                     Group {
                       HStack {
                         Text(Strings.Wallet.confirmationViewCurrentAllowance)
@@ -313,7 +291,7 @@ struct TransactionConfirmationView: View {
                   NavigationLink(
                     destination: EditNonceView(
                       confirmationStore: confirmationStore,
-                      transaction: activeTransaction
+                      transaction: confirmationStore.activeTransaction
                     )
                   ) {
                     HStack {
@@ -347,7 +325,7 @@ struct TransactionConfirmationView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           }
           if confirmationStore.transactions.count > 1 {
-            Button(action: rejectAll) {
+            Button(action: confirmationStore.rejectAll) {
               Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.transactions.count))
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Color(.braveBlurpleTint))
@@ -417,13 +395,13 @@ struct TransactionConfirmationView: View {
 
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button(action: {
-      confirmationStore.reject(transaction: activeTransaction)
+      confirmationStore.reject(transaction: confirmationStore.activeTransaction)
     }) {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button(action: {
-      confirmationStore.confirm(transaction: activeTransaction)
+      confirmationStore.confirm(transaction: confirmationStore.activeTransaction)
     }) {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
