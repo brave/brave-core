@@ -153,6 +153,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     additional_list = list(additional_paths)
     additional_list += [
         os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
+        os.path.join('brave', 'components', 'filecoin'),
     ]
     additional_paths = tuple(additional_list)
 
