@@ -266,8 +266,8 @@ const EditVisibleAssetsModal = (props: Props) => {
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
-        isErc20: !tokenID,
-        isErc721: !!tokenID,
+        isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
+        isErc721: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID,
         name: tokenName,
         symbol: tokenSymbol,
         tokenId: tokenID ? new Amount(tokenID).toHex() : '',
