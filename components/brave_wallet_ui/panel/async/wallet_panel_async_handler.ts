@@ -222,6 +222,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       refreshTransactionHistory(coin, txInfo.fromAddress)
       await store.dispatch(PanelActions.setSelectedTransaction(txInfo))
       await store.dispatch(PanelActions.navigateTo('transactionDetails'))
+      apiProxy.panelHandler.setCloseOnDeactivate(true)
       return
     }
 
@@ -248,6 +249,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       refreshTransactionHistory(coin, txInfo.fromAddress)
       await store.dispatch(PanelActions.setSelectedTransaction(txInfo))
       await store.dispatch(PanelActions.navigateTo('transactionDetails'))
+      apiProxy.panelHandler.setCloseOnDeactivate(true)
       return
     }
 
