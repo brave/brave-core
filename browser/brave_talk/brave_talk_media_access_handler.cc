@@ -32,18 +32,18 @@ std::unique_ptr<content::MediaStreamUI> GetMediaStreamUI(
           web_contents->GetMainFrame()->GetProcess()->GetID(),
           web_contents->GetMainFrame()->GetRoutingID()));
   if (request.audio_type ==
-      blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE) {
+      blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
-        blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE,
+        blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE,
         /*id=*/media_id.ToString(),
         /*name=*/media_id.ToString()));
   }
 
   LOG(ERROR) << "VideoType: " << request.video_type;
   if (request.video_type ==
-      blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE) {
+      blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE) {
     out_devices->emplace_back(blink::MediaStreamDevice(
-        blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE,
+        blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE,
         /*id=*/media_id.ToString(),
         /*name=*/media_id.ToString()));
   }
@@ -63,6 +63,7 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
     const blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
   LOG(ERROR) << "Asked if we support: " << type;
+  return true;
   return type == blink::mojom::MediaStreamType::DISPLAY_VIDEO_CAPTURE ||
          type == blink::mojom::MediaStreamType::DISPLAY_AUDIO_CAPTURE;
 }

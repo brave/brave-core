@@ -73,7 +73,19 @@ share_tab_button::ShareTabButton* BraveTalkService::share_tab_button() {
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
   target_ = target_contents->GetWeakPtr();
 
-  // TODO: Register in BraveTalkTabCaptureRegistry
+  if (!observing_)
+    return;
+  auto* registry =
+      BraveTalkTabCaptureRegistry::Get(target_contents->GetBrowserContext());
+
+  content::DesktopMediaID media_id(
+      content::DesktopMediaID::TYPE_WEB_CONTENTS,
+      content::DesktopMediaID::kNullId,
+      content::WebContentsMediaCaptureId(
+          target_contents->GetMainFrame()->GetProcess()->GetID(),
+          target_contents->GetMainFrame()->GetRoutingID()));
+  registry->AddRequest(target_contents, observing_->GetURL(), media_id,
+                       observing_.get());
 }
 
 }  // namespace brave_talk
