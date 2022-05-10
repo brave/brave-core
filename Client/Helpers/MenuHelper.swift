@@ -10,6 +10,8 @@ import Shared
   @objc optional func menuHelperCopy()
   /// Triggered when "Open website" menu item is selected
   @objc optional func menuHelperOpenWebsite()
+  /// Triggered when "Force Paste" menu item is selected"
+  @objc optional func menuHelperForcePaste()
   /// Triggered when "Reveal" menu item is selected
   @objc optional func menuHelperReveal()
   /// Triggered when "Hide" menu item is selected
@@ -25,6 +27,8 @@ open class MenuHelper: NSObject {
   public static let selectorCopy: Selector = #selector(MenuHelperInterface.menuHelperCopy)
   /// Selector for the "Hide" menu item
   public static let selectorHide: Selector = #selector(MenuHelperInterface.menuHelperSecure)
+  /// Selector for the "Force Paste" menu item
+  public static let selectorForcePaste: Selector = #selector(MenuHelperInterface.menuHelperForcePaste)
   /// Selector for the "Open website" menu item
   public static let selectorOpenWebsite: Selector = #selector(MenuHelperInterface.menuHelperOpenWebsite)
   /// Selector for the "Reveal" menu item
@@ -49,7 +53,8 @@ open class MenuHelper: NSObject {
     let openWebsiteItem = UIMenuItem(title: Strings.menuItemOpenWebsiteTitle, action: MenuHelper.selectorOpenWebsite)
     let findInPageItem = UIMenuItem(title: Strings.findInPage, action: MenuHelper.selectorFindInPage)
     let searchWithBraveItem = UIMenuItem(title: Strings.searchWithBrave, action: MenuHelper.selectorSearchWithBrave)
+    let forcePaste = UIMenuItem(title: Strings.forcePaste, action: MenuHelper.selectorForcePaste)
 
-    UIMenuController.shared.menuItems = [copyItem, revealPasswordItem, hidePasswordItem, openWebsiteItem, findInPageItem, searchWithBraveItem]
+    UIMenuController.shared.menuItems = [copyItem, forcePaste, revealPasswordItem, hidePasswordItem, openWebsiteItem, findInPageItem, searchWithBraveItem]
   }
 }
