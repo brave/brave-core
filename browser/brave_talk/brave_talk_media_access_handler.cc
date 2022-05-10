@@ -82,12 +82,6 @@ void BraveTalkMediaAccessHandler::HandleRequest(
     content::MediaResponseCallback callback,
     const extensions::Extension* extension) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  LOG(ERROR) << "WOW. Tried to handle a request :O. DeviceID: "
-             << request.requested_video_device_id
-             << " AudioId: " << request.requested_audio_device_id
-             << " Page Request: " << request.page_request_id
-             << " Type: " << request.request_type
-             << " Origin: " << request.security_origin;
 
   auto* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
@@ -108,11 +102,7 @@ void BraveTalkMediaAccessHandler::HandleRequest(
                                                      capture_level);
 
   auto* target_web_contents = BraveTalkServiceFactory::GetForContext(web_contents->GetBrowserContext())->target();
-  // content::WebContents::FromRenderFrameHost(
-  //     content::RenderFrameHost::FromID(request.render_process_id,
-  //                                      request.render_frame_id));
   if (!can_show_web_contents.Run(target_web_contents)) {
-    LOG(ERROR) << "Can't show";
     std::move(callback).Run(
         blink::MediaStreamDevices(),
         blink::mojom::MediaStreamRequestResult::PERMISSION_DENIED,
@@ -145,7 +135,6 @@ void BraveTalkMediaAccessHandler::AcceptRequest(
       GetMediaStreamUI(request, web_contents, &devices);
   DCHECK(!devices.empty());
 
-  LOG(ERROR) << "Accepted!";
   std::move(callback).Run(devices, blink::mojom::MediaStreamRequestResult::OK,
                           std::move(ui));
 }
