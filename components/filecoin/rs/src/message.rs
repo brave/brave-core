@@ -6,7 +6,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 #[serde(remote = "fvm_shared::message::Message", rename_all = "PascalCase")]
+// https://github.com/Zondax/filecoin-signing-tools/blob/2e7b005b4733761de11d4a252cb481ca5aedb029/extras/src/message.rs#L15
 pub struct MessageAPI {
+    #[serde(skip)]
     pub version: i64,
     #[serde(with = "address")]
     pub from: Address,

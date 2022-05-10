@@ -19,6 +19,9 @@
 namespace brave_wallet {
 
 namespace {
+// https://github.com/filecoin-project/go-state-types/blob/95828685f9df463f052a5d42b8f6c2502f873ceb/crypto/signature.go#L17
+// https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
+enum SigType { ECDSASigType = 1, BLSSigType = 2 };
 
 bool IsNumericString(const std::string& value) {
   return std::all_of(value.begin(), value.end(),
@@ -69,7 +72,7 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
     const mojom::FilTxDataPtr& tx_data) {
   FilTransaction tx;
   uint64_t nonce = 0;
-  if (tx_data->nonce.empty() || base::StringToUint64(tx_data->nonce, &nonce)) {
+  if (!tx_data->nonce.empty() && base::StringToUint64(tx_data->nonce, &nonce)) {
     tx.nonce_ = nonce;
   }
 
@@ -112,7 +115,7 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
 base::Value FilTransaction::ToValue() const {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("Nonce",
-                    nonce_ ? base::NumberToString(nonce_.value()) : "0");
+                    nonce_ ? base::NumberToString(nonce_.value()) : "");
   dict.SetStringKey("GasPremium", gas_premium_);
   dict.SetStringKey("GasFeeCap", gas_fee_cap_);
   dict.SetStringKey("MaxFee", max_fee_);
@@ -196,22 +199,27 @@ absl::optional<std::string> FilTransaction::GetMessageToSign() const {
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
 absl::optional<std::string> FilTransaction::GetSignedTransaction(
-    const std::string& private_key_base64) const {
+    const std::vector<uint8_t>& private_key) const {
   auto message = GetMessageToSign();
   if (!message)
     return absl::nullopt;
-  std::string data(filecoin::transaction_sign(*message, private_key_base64));
-  if (data.empty())
-    return absl::nullopt;
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("Message", "{message}");
   base::Value signature(base::Value::Type::DICTIONARY);
-  signature.SetStringKey("Data", data);
+  {
+    std::string data(filecoin::transaction_sign(
+        *message,
+        rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
+    if (data.empty())
+      return absl::nullopt;
+    signature.SetStringKey("Data", data);
+  }
   // Set signature type based on protocol.
   // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
-  auto protocol =
-      from().protocol() == mojom::FilecoinAddressProtocol::SECP256K1 ? 1 : 2;
-  signature.SetIntKey("Type", protocol);
+  auto sig_type = from().protocol() == mojom::FilecoinAddressProtocol::SECP256K1
+                      ? SigType::ECDSASigType
+                      : SigType::BLSSigType;
+  signature.SetIntKey("Type", sig_type);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("Message", "{message}");
   dict.SetKey("Signature", std::move(signature));
   std::string json;
   if (!base::JSONWriter::Write(dict, &json))

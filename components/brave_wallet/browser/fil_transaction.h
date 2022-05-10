@@ -57,7 +57,7 @@ class FilTransaction {
   base::Value ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
   absl::optional<std::string> GetSignedTransaction(
-      const std::string& private_key_base64) const;
+      const std::vector<uint8_t>& private_key) const;
   static absl::optional<FilTransaction> FromValue(const base::Value& value);
 
  private:
