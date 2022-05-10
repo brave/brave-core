@@ -248,6 +248,21 @@ window.braveFarble = (args) => {
     }
   }
 
+  // 4. Farble hardwareConcurrency
+  // Adds a random value between 2 and the original hardware concurrency
+  // using the provided `randomHardwareIndexScale` which must be a random value between 0 and 1.
+  const farbleHardwareConcurrency = (randomHardwareIndexScale) => {
+    const hardwareConcurrency = window.navigator.hardwareConcurrency
+    // We only farble amounts greater than 2
+    if (hardwareConcurrency <= 2) { return }
+    const remaining = hardwareConcurrency - 2
+    const newRemaining = Math.round(remaining * randomHardwareIndexScale)
+
+    Reflect.defineProperty(window.navigator, 'hardwareConcurrency', {
+      value: newRemaining + 2
+    })
+  }
+
   // A value between 0.99 and 1 to fudge the audio data
   // A value between 0.99 to 1 means the values in the destination will 
   // always be within the expected range of -1 and 1.
@@ -267,6 +282,12 @@ window.braveFarble = (args) => {
   // array bounds
   const randomVoiceIndexScale = args['randomVoiceIndexScale']
   farbleVoices(fakeVoiceName, randomVoiceIndexScale)
+
+  // This value lets us pick a value between 2 and window.navigator.hardwareConcurrency
+  // It is a value between 0 and 1. For example 0.5 will give us 3 and 
+  // thus return 2 + 3 = 5 for hardware concurrency
+  const randomHardwareIndexScale = args['randomHardwareIndexScale']
+  farbleHardwareConcurrency(randomHardwareIndexScale)
 }
 
 // Invoke window.braveFarble then delete the function

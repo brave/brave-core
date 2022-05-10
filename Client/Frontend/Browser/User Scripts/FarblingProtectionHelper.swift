@@ -39,6 +39,10 @@ class FarblingProtectionHelper {
     ///
     /// It's important to have a value between 0 - 1 in order to be within the array bounds
     let randomVoiceIndexScale: Float
+    /// This value is used to get a random value between 2 and window.navigator.hardwareConcurrency
+    ///
+    /// Must be a value between 0 and 1
+    let randomHardwareIndexScale: Float
   }
 
   /// Variables representing the prefix of a randomly generated strings used as the plugin name
@@ -75,7 +79,8 @@ class FarblingProtectionHelper {
       fudgeFactor: Float.seededRandom(in: 0.99...1),
       fakeVoiceName: fakeVoiceNames.seededRandom() ?? "",
       fakePluginData: FarblingProtectionHelper.makeFakePluginData(),
-      randomVoiceIndexScale: Float(drand48())
+      randomVoiceIndexScale: Float(drand48()),
+      randomHardwareIndexScale: Float(drand48())
     )
 
     let encoder = JSONEncoder()
