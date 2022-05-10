@@ -25,8 +25,6 @@ namespace brave_ads {
 
 class AdsService;
 
-using SearchResultAdsList = std::vector<ads::mojom::SearchResultAdPtr>;
-
 class SearchResultAdService : public KeyedService {
  public:
   explicit SearchResultAdService(AdsService* ads_service);
@@ -46,10 +44,11 @@ class SearchResultAdService : public KeyedService {
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
       blink::mojom::WebPagePtr web_page);
 
-  void TriggerSearchResultAdViewedEvents(SearchResultAdsList search_result_ads);
+  void TriggerSearchResultAdViewedEvents(
+      std::vector<ads::mojom::SearchResultAdPtr> search_result_ads);
 
   void OnTriggerSearchResultAdViewedEvents(
-      SearchResultAdsList search_result_ads,
+      std::vector<ads::mojom::SearchResultAdPtr> search_result_ads,
       bool success,
       const std::string& placement_id,
       ads::mojom::SearchResultAdEventType ad_event_type);
