@@ -44,9 +44,6 @@ function NetworkFilterItem (props: Props) {
   }
 
   const onClickSelectNetwork = () => {
-    if (!isSubItem) {
-      return
-    }
     setShowSubMenu(false)
     onSelectNetwork(network)
   }
