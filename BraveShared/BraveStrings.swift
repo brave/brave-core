@@ -128,7 +128,14 @@ extension Strings {
       value: "Are you sure you want to close all open tabs?",
       comment: "We ask users this prompt before attempting to close multiple tabs via context menu")
   public static let savedTabsFolderTitle = NSLocalizedString("SavedTabsFolderTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Saved Tabs", comment: "The title for the folder created when all bookmarks are being ")
-  public static let bookmarkAllTabsTitle = NSLocalizedString("BookmarkAllTabsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Bookmark All Tabs", comment: "Action item title of long press for Adding Bookmark for All Tabs in Tab List")
+  public static let bookmarkAllTabsTitle = NSLocalizedString("BookmarkAllTabsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Add Bookmark for %lld Tabs", comment: "Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs")
+  public static let duplicateActiveTab =
+    NSLocalizedString(
+      "DuplicateActiveTab",
+      tableName: "BraveShared",
+      bundle: Bundle.braveShared,
+      value: "Duplicate Active Tab",
+      comment: "Action item title of long press for Opening the existing - active Tab url in a new Tab")
   public static let suppressAlertsActionTitle = NSLocalizedString("SuppressAlertsActionTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Suppress Alerts", comment: "Title of alert that seeks permission from user to suppress future JS alerts")
   public static let suppressAlertsActionMessage = NSLocalizedString("SuppressAlertsActionMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Prevent this page from creating additional alerts", comment: "Message body of alert that seeks permission from user to suppress future JS alerts")
   public static let openDownloadsFolderErrorDescription =
