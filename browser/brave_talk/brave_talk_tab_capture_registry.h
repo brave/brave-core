@@ -21,13 +21,7 @@ class BraveTalkTabCaptureRegistry
   // Used by BrowserContextKeyedAPI.
   static extensions::BrowserContextKeyedAPIFactory<BraveTalkTabCaptureRegistry>*
   GetFactoryInstance();
-
   
-  void OnRequestUpdate(int target_render_process_id,
-                       int target_render_frame_id,
-                       blink::mojom::MediaStreamType stream_type,
-                       const content::MediaRequestState state) override;
-
   std::string AddRequest(content::WebContents* target_contents,
                          const GURL& origin,
                          content::DesktopMediaID source,
@@ -46,8 +40,6 @@ class BraveTalkTabCaptureRegistry
 
   explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
   ~BraveTalkTabCaptureRegistry() override;
-
-  void DispatchStatusChangeEvent(const LiveRequest* request) const;
 
   LiveRequest* FindRequest(const content::WebContents* target_contents) const;
   LiveRequest* FindRequest(int target_render_process_id,
