@@ -208,12 +208,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_dapps_panel_amount_asset"
                     tools:text="$872.48" />
 
+                <!-- For MVP we don't need these buttons, So hiding it from UI-->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="60dp"
                     android:layout_marginEnd="12dp"
+                    android:visibility="gone"
                     android:padding="32dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="16dp"
