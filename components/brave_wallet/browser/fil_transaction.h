@@ -62,7 +62,6 @@ class FilTransaction {
 
  private:
   bool IsEqual(const FilTransaction& tx) const;
-  base::Value GetMessageToSignAsValue() const;
 
   absl::optional<uint64_t> nonce_;
   std::string gas_premium_;
