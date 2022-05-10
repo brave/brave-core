@@ -24,6 +24,7 @@
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -440,22 +441,37 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
         {});
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     content::SetBrowserClientForTesting(&test_content_browser_client_);
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-
-    embedded_test_server()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
 
     ASSERT_TRUE(test_server_handle_ =
                     embedded_test_server()->StartAndReturnHandle());
 
     // This is intentional to trigger
     // TestBraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame
-    NavigateToURLAndWaitForLoadStop(browser(), GURL("brave://settings"));
+    ASSERT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("brave://settings")));
 
     GURL url = embedded_test_server()->GetURL("/empty.html");
-    NavigateToURLAndWaitForLoadStop(browser(), url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
     ASSERT_TRUE(base::FeatureList::IsEnabled(
         brave_wallet::features::kNativeBraveWalletFeature));
@@ -463,11 +479,6 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
   content::WebContents* web_contents(Browser* browser) const {
     return browser->tab_strip_model()->GetActiveWebContents();
-  }
-
-  void NavigateToURLAndWaitForLoadStop(Browser* browser, const GURL& url) {
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url)) << ":" << url;
-    ASSERT_TRUE(WaitForLoadStop(web_contents(browser))) << ":" << url;
   }
 
   void ReloadAndWaitForLoadStop(Browser* browser) {
@@ -480,6 +491,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
 };
 
@@ -501,7 +513,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Incognito) {
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
   GURL url = embedded_test_server()->GetURL("/empty.html");
-  NavigateToURLAndWaitForLoadStop(private_browser, url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, url));
 
   auto result = EvalJs(web_contents(private_browser), CheckSolanaProviderScript,
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
@@ -979,7 +991,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   GURL url = embedded_test_server()->GetURL("/empty.html");
-  NavigateToURLAndWaitForLoadStop(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string overwrite =
       R"(try {
          Object.defineProperty(window, 'solana', {
@@ -991,4 +1003,29 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
         )";
   EXPECT_TRUE(
       content::EvalJs(web_contents(browser()), overwrite).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Block3PIframe) {
+  GURL top_url(embedded_test_server()->GetURL("a.com", "/iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
+  // third party
+  GURL iframe_url_3p(embedded_test_server()->GetURL("b.com", "/"));
+  EXPECT_TRUE(
+      NavigateIframeToURL(web_contents(browser()), "test", iframe_url_3p));
+
+  constexpr char kEvalSolana[] = R"(typeof window.solana === 'undefined')";
+
+  content::RenderFrameHost* main_frame =
+      web_contents(browser())->GetMainFrame();
+  auto* iframe_rfh = ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(iframe_rfh);
+  EXPECT_TRUE(content::EvalJs(iframe_rfh, kEvalSolana).ExtractBool());
+
+  // same party
+  GURL iframe_url_1p(embedded_test_server()->GetURL("a.com", "/"));
+  EXPECT_TRUE(
+      NavigateIframeToURL(web_contents(browser()), "test", iframe_url_1p));
+  iframe_rfh = ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(iframe_rfh);
+  EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalSolana).ExtractBool());
 }
