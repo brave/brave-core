@@ -903,6 +903,15 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
   prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
 }
 
+mojom::CoinType GetSelectedCoin(PrefService* prefs) {
+  return static_cast<brave_wallet::mojom::CoinType>(
+      prefs->GetInteger(kBraveWalletSelectedCoin));
+}
+
+void SetSelectedCoin(PrefService* prefs, mojom::CoinType coin) {
+  prefs->SetInteger(kBraveWalletSelectedCoin, static_cast<int>(coin));
+}
+
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCryptocurrency);
 }

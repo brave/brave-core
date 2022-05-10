@@ -101,6 +101,8 @@ class BraveWalletService : public KeyedService,
   void GetDefaultBaseCryptocurrency(
       GetDefaultBaseCryptocurrencyCallback callback) override;
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
+  void GetSelectedCoin(GetSelectedCoinCallback callback) override;
+  void SetSelectedCoin(mojom::CoinType coin) override;
   void AddEthereumPermission(const url::Origin& origin,
                              const std::string& account,
                              AddEthereumPermissionCallback callback) override;

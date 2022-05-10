@@ -1028,6 +1028,10 @@ interface BraveWalletService {
   // Checks if the Ethereum permission is allowed for the origin on the account
   HasEthereumPermission(url.mojom.Origin origin, string account) => (bool success, bool has_permission);
 
+  // Controls last selected coin pref.
+  GetSelectedCoin() => (CoinType coin);
+  SetSelectedCoin(CoinType coin);
+
   // Resets the Ethereum permission for the account
   ResetEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
 
