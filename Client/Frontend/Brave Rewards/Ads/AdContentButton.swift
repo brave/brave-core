@@ -4,7 +4,6 @@
 
 import UIKit
 import BraveCore
-import pop
 import Shared
 
 /// The main ads view. Mimics a system notification in that it shows an icon, "app name" (always will be "Brave Rewards"), title and body.
@@ -93,12 +92,15 @@ class AdContentButton: UIControl {
 
   public override var isHighlighted: Bool {
     didSet {
+      setNeedsLayout()
       let scale: CGFloat = self.isHighlighted ? 1.025 : 1
-      self.layer.springAnimate(property: kPOPLayerScaleXY, key: "isHighlighted") { animation, _ in
-        animation.springSpeed = 16
-        animation.springBounciness = 16
-        animation.toValue = CGSize(width: scale, height: scale)
+      UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) { [self] in
+        // Only adjust scale since tx/ty could be altered
+        transform.a = scale
+        transform.d = scale
+        layoutIfNeeded()
       }
+      .startAnimation()
     }
   }
 }

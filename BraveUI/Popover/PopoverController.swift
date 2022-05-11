@@ -5,7 +5,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import pop
 
 extension UILayoutPriority {
   /// The priority used for the container view's width & height when using ContentSizeBehavior.preferredContentSize
@@ -240,20 +239,12 @@ public class PopoverController: UIViewController {
           vc.view.frame = frame
         }
       }
-      self.containerViewHeightConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in
-        animation.toValue = size.height + PopoverUX.arrowSize.height
-        animation.animationDidApplyBlock = { _ in
-          if let nc = self.contentController as? UINavigationController {
-            nc.viewControllers.filter { $0.isViewLoaded }.forEach { $0.view.frame = nc.view.bounds }
-          }
-          if let nc = self.contentController as? PopoverNavigationController {
-            nc.lastPoppedController?.view.frame = nc.view.bounds
-          }
-        }
-      }
-      self.containerViewWidthConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in
-        animation.toValue = size.width
-      }
+      containerViewHeightConstraint?.constant = size.height + PopoverUX.arrowSize.height
+      containerViewWidthConstraint?.constant = size.width
+      view.setNeedsLayout()
+      UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.9) { [self] in
+        view.layoutIfNeeded()
+      }.startAnimation()
     }
   }
 
@@ -384,15 +375,12 @@ extension PopoverController {
     guard let context = presentationContext else { return }
 
     var scale: CGFloat
-    let rotationPercent: CGFloat
 
     switch containerView.arrowDirection {
     case .up:
       scale = 1.0 - (-pan.translation(in: pan.view).y / containerView.bounds.height)
-      rotationPercent = -pan.translation(in: pan.view).x / containerView.bounds.width
     case .down:
       scale = 1.0 - pan.translation(in: pan.view).y / containerView.bounds.height
-      rotationPercent = pan.translation(in: pan.view).x / containerView.bounds.width
     }
 
     scale = max(0.0, scale)
@@ -406,18 +394,11 @@ extension PopoverController {
         )
     }
 
-    let rotation = _computedOffsetBasedOnRubberBandingResistance(
-      distance: rotationPercent * (CGFloat.pi / 2.0),
-      constant: 0.4,
-      dimension: containerView.bounds.width
-    )
-
     containerView.transform = .identity  // Reset to get unaltered frame
     let translationDelta = anchorPointDelta(from: context, popoverRect: containerView.frame)
 
     containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
       .scaledBy(x: scale, y: scale)
-//            .rotated(by: rotation)
       .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
 
     if pan.state == .ended {
@@ -498,19 +479,17 @@ extension PopoverController: BasicAnimationControllerDelegate {
     }
 
     backgroundOverlayView.alpha = 0.0
-    backgroundOverlayView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
-      animation.toValue = 1.0
-      animation.duration = 0.3
+    UIViewPropertyAnimator(duration: 0.2, curve: .linear) { [self] in
+      backgroundOverlayView.alpha = 1.0
     }
-
+    .startAnimation()
+    
     containerView.alpha = 0.0
-    containerView.springAnimate(property: kPOPViewAlpha, key: "alpha") { animation, inProgress in
-      animation.toValue = 1.0
-      animation.springSpeed = 16.0
-      animation.springBounciness = 6.0
-      animation.clampMode = POPAnimationClampFlags.end.rawValue
+    UIViewPropertyAnimator(duration: 0.2, dampingRatio: 1.0) { [self] in
+      containerView.alpha = 1.0
     }
-
+    .startAnimation()
+    
     view.layoutIfNeeded()
     let translationDelta = anchorPointDelta(from: popoverContext, popoverRect: containerView.frame)
 
@@ -534,20 +513,17 @@ extension PopoverController: BasicAnimationControllerDelegate {
       return
     }
 
-    backgroundOverlayView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
-      animation.toValue = 0.0
-      animation.duration = 0.15
+    UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
+      self.backgroundOverlayView.alpha = 0.0
     }
+    .startAnimation()
 
-    containerView.springAnimate(property: kPOPViewAlpha, key: "alpha") { animation, inProgress in
-      animation.toValue = 0.0
-      animation.springSpeed = 16.0
-      animation.springBounciness = 6.0
-      animation.clampMode = POPAnimationClampFlags.end.rawValue
+    UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
+      self.containerView.alpha = 0.0
     }
-
+    .startAnimation()
+    
     let oldTransform = containerView.transform
-    let rotationAngle = atan2(oldTransform.b, oldTransform.a)
 
     containerView.transform = .identity  // Reset to get unaltered frame
     let translationDelta = anchorPointDelta(from: popoverContext, popoverRect: containerView.frame)
@@ -558,7 +534,6 @@ extension PopoverController: BasicAnimationControllerDelegate {
       animations: {
         self.containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
           .scaledBy(x: 0.001, y: 0.001)
-//                .rotated(by: rotationAngle)
           .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
       }
     ) { finished in

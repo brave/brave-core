@@ -71,7 +71,7 @@ class RewardsNotification: NSObject, BraveNotification {
   @objc private func tappedAdView(_ sender: AdContentButton) {
     guard let adView = sender.superview as? AdView else { return }
     if sender.transform.tx != 0 {
-      adView.setSwipeTranslation(0)
+      adView.setSwipeTranslation(0, animated: true)
       return
     }
     dismissAction?()
@@ -146,8 +146,11 @@ extension RewardsNotification: UIGestureRecognizerDelegate {
 
 extension RewardsNotification {
   /// Display a "My First Ad" on a presenting controller and be notified if they tap it
-  static func displayFirstAd(on presentingController: UIViewController, completion: @escaping (RewardsNotification.Action, URL) -> Void) {
-    let notificationPresenter = BraveNotificationsPresenter()
+  static func displayFirstAd(
+    with presenter: BraveNotificationsPresenter,
+    on presentingController: UIViewController,
+    completion: @escaping (RewardsNotification.Action, URL) -> Void
+  ) {
     let notification = AdNotification.customAd(
       title: Strings.Ads.myFirstAdTitle,
       body: Strings.Ads.myFirstAdBody,
@@ -162,6 +165,6 @@ extension RewardsNotification {
     let rewardsNotification = RewardsNotification(ad: notification) { action in
       completion(action, targetURL)
     }
-    notificationPresenter.display(notification: rewardsNotification, from: presentingController)
+    presenter.display(notification: rewardsNotification, from: presentingController)
   }
 }

@@ -3,7 +3,6 @@
 import UIKit
 import Shared
 import SnapKit
-import pop
 import Data
 import BraveShared
 
@@ -26,17 +25,11 @@ class SyncDeviceTypeButton: UIControl {
       pressedReversedColor = label.textColor
       label.textColor = newColor
 
-      if pressed {
-        if let anim = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY) {
-          anim.toValue = NSValue(cgSize: CGSize(width: 0.9, height: 0.9))
-          layer.pop_add(anim, forKey: "size")
-        }
-      } else {
-        if let anim = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY) {
-          anim.toValue = NSValue(cgSize: CGSize(width: 1.0, height: 1.0))
-          layer.pop_add(anim, forKey: "size")
-        }
+      UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) { [pressed] in
+        let scale = pressed ? 0.9 : 1.0
+        self.transform = CGAffineTransform(scaleX: scale, y: scale)
       }
+      .startAnimation()
     }
   }
 
