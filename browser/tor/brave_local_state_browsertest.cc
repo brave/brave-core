@@ -7,7 +7,6 @@
 #include "brave/components/tor/tor_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
-#include "gtest/gtest.h"
 
 using BraveLocalStateBrowserTest = InProcessBrowserTest;
 

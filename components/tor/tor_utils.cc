@@ -9,8 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/optional.h"
-#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/values.h"
@@ -18,6 +16,7 @@
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 constexpr const char kUseBridgesKey[] = "use_bridges";

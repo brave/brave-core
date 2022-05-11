@@ -9,7 +9,6 @@
 
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 namespace tor {
