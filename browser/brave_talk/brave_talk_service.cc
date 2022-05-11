@@ -9,6 +9,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content\public\browser\render_process_host.h"
+#include "base/callback.h"
 
 namespace brave_talk {
 
@@ -17,6 +18,11 @@ BraveTalkService::~BraveTalkService() {
   // TODO: Remove self from all observers.
   StopObserving(observing_.get());
   Shutdown();
+}
+
+void BraveTalkService::GetDeviceID(content::WebContents *contents, base::OnceCallback<void(std::string)> callback) {
+  on_received_device_id_ = std::move(callback);
+  StartObserving(contents);
 }
 
 void BraveTalkService::StartObserving(content::WebContents* contents) {
@@ -84,8 +90,10 @@ void BraveTalkService::ShareTab(content::WebContents* target_contents) {
       content::WebContentsMediaCaptureId(
           target_contents->GetMainFrame()->GetProcess()->GetID(),
           target_contents->GetMainFrame()->GetRoutingID()));
-  registry->AddRequest(target_contents, observing_->GetURL(), media_id,
+  std::string device_id = registry->AddRequest(target_contents, observing_->GetURL(), media_id,
                        observing_.get());
+  if (on_received_device_id_)
+    std::move(on_received_device_id_).Run(device_id);
 }
 
 }  // namespace brave_talk

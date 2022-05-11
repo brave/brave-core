@@ -35,9 +35,13 @@ BraveTalkBeginAdvertiseShareDisplayMediaFunction::Run() {
   if (!contents) return RespondNow(NoArguments());
 
   auto* service = brave_talk::BraveTalkServiceFactory::GetForContext(browser_context());
-  service->StartObserving(contents);  
+  service->GetDeviceID(contents, base::BindOnce(&BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived, this));
 
-  return RespondNow(NoArguments());
+  return RespondLater();
+}
+
+void BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived(std::string device_id) {
+  Respond(OneArgument(base::Value(device_id)));
 }
 
 }  // namespace api

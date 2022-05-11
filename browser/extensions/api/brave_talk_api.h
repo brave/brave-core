@@ -34,7 +34,9 @@ class BraveTalkBeginAdvertiseShareDisplayMediaFunction
  protected:
   ~BraveTalkBeginAdvertiseShareDisplayMediaFunction() override {}
   ResponseAction Run() override;
-  
+
+ private:
+  void OnDeviceIDReceived(std::string device_id);
 };
 
 }  // namespace api
