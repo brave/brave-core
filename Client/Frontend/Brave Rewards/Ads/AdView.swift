@@ -3,7 +3,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import pop
 import BraveUI
 import Shared
 
@@ -57,20 +56,17 @@ public class AdView: UIView {
   /// Set the horizontal swipe translation
   func setSwipeTranslation(_ tx: CGFloat, animated: Bool = false, panVelocity: CGFloat? = nil, completionBlock: (() -> Void)? = nil) {
     if animated {
-      adContentButton.layer.springAnimate(property: kPOPLayerTranslationX, key: "translation.x") { animation, _ in
-        animation.toValue = tx
-        if let velocity = panVelocity {
-          animation.velocity = velocity
-        }
-        animation.animationDidApplyBlock = { _ in
-          self.setNeedsLayout()
-        }
-        if let completionBlock = completionBlock {
-          animation.completionBlock = { _, _ in
-            completionBlock()
-          }
-        }
+      let springTiming = UISpringTimingParameters(dampingRatio: 0.9)
+      let animator = UIViewPropertyAnimator(duration: 0.3, timingParameters: springTiming)
+      animator.addAnimations { [self] in
+        adContentButton.transform.tx = tx
+        setNeedsLayout()
+        layoutIfNeeded()
       }
+      animator.addCompletion { _ in
+        completionBlock?()
+      }
+      animator.startAnimation()
     } else {
       adContentButton.transform.tx = tx
       setNeedsLayout()

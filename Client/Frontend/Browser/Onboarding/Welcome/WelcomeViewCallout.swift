@@ -9,7 +9,6 @@ import SnapKit
 import BraveUI
 import Shared
 import BraveShared
-import pop
 
 enum WelcomeViewCalloutState {
   struct WelcomeViewDefaultBrowserDetails {
@@ -195,21 +194,6 @@ class WelcomeViewCallout: UIView {
 
     backgroundView.snp.makeConstraints {
       $0.edges.equalTo(contentView.snp.edges)
-    }
-  }
-
-  func animateFromCopy(view: WelcomeViewCallout, duration: TimeInterval, delay: TimeInterval) {
-    let views = [backgroundView, contentView, arrowView]
-    let otherViews = [view.backgroundView, view.contentView, view.arrowView]
-
-    for e in views.enumerated() {
-      POPBasicAnimation(propertyNamed: kPOPViewFrame)?.do {
-        $0.fromValue = e.element.frame
-        $0.toValue = otherViews[e.offset].frame
-        $0.duration = duration
-        $0.beginTime = CACurrentMediaTime() + delay
-        e.element.layer.pop_add($0, forKey: "frame")
-      }
     }
   }
 

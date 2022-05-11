@@ -6,7 +6,6 @@
 import UIKit
 import Shared
 import BraveShared
-import pop
 import BraveUI
 
 extension BuyVPNViewController {
@@ -493,10 +492,10 @@ extension BuyVPNViewController {
 
     override var isHighlighted: Bool {
       didSet {
-        basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
-          animation.toValue = self.isHighlighted ? 0.5 : 1.0
-          animation.duration = 0.1
+        UIViewPropertyAnimator(duration: 0.1, curve: .linear) { [self] in
+          alpha = isHighlighted ? 0.5 : 1.0
         }
+        .startAnimation()
       }
     }
   }

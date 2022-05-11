@@ -8,7 +8,6 @@ import UIKit
 import SnapKit
 import BraveShared
 import Shared
-import pop
 
 private enum WelcomeViewID: Int {
   case background = 1
@@ -734,30 +733,12 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
           toView.alpha = toAlpha
         }
       } else {
-        POPBasicAnimation(propertyNamed: kPOPViewFrame)?.do {
-          $0.fromValue = fromView.frame
-          $0.toValue = toView.frame
-          $0.duration = totalAnimationTime
-          $0.beginTime = CACurrentMediaTime()
-          fromView.layer.pop_add($0, forKey: "frame")
-        }
-
-        UIView.animate(
-          withDuration: totalAnimationTime,
-          delay: 0.0,
-          options: [.curveEaseInOut]
-        ) {
-          fromView.alpha = 0.0
+        UIViewPropertyAnimator(duration: totalAnimationTime, curve: .easeInOut) {
+          fromView.alpha = 0
           toView.alpha = toAlpha
-        } completion: { finished in
-
         }
+        .startAnimation()
       }
-    }
-
-    if let fromCallout = fromWelcomeView.calloutView as? WelcomeViewCallout,
-      let toCallout = toWelcomeView.calloutView as? WelcomeViewCallout {
-      fromCallout.animateFromCopy(view: toCallout, duration: totalAnimationTime, delay: 0.0)
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + totalAnimationTime) {

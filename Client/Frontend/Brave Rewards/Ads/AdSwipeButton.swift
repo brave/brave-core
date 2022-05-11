@@ -3,7 +3,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import pop
 
 class AdSwipeButton: UIControl {
 
@@ -75,10 +74,10 @@ class AdSwipeButton: UIControl {
 
   override var isHighlighted: Bool {
     didSet {
-      highlightView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
-        animation.toValue = self.isHighlighted ? 1.0 : 0.0
-        animation.duration = 0.1
+      UIViewPropertyAnimator(duration: 0.1, curve: .linear) { [self] in
+        highlightView.alpha = isHighlighted ? 1.0 : 0.0
       }
+      .startAnimation()
     }
   }
 }

@@ -3,7 +3,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import pop
 import BraveUI
 import Shared
 
@@ -30,19 +29,20 @@ class ShieldsSwitch: UIControl {
         gradientView.isHidden = false
         gradientView.alpha = 0.0
       }
-      gradientView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
-        animation.toValue = on ? 1.0 : 0.0
-        animation.completionBlock = { [weak self] _, _ in
-          guard let self = self else { return }
-          if on {
-            self.beginGradientAnimations()
-          } else {
-            self.gradientView.isHidden = true
-            self.gradientView.alpha = 1.0
-            self.endGradientAnimations()
-          }
+      let animator = UIViewPropertyAnimator(duration: 0.4, curve: .linear) {
+        self.gradientView.alpha = on ? 1.0 : 0.0
+      }
+      animator.addCompletion { [weak self] _ in
+        guard let self = self else { return }
+        if on {
+          self.beginGradientAnimations()
+        } else {
+          self.gradientView.isHidden = true
+          self.gradientView.alpha = 1.0
+          self.endGradientAnimations()
         }
       }
+      animator.startAnimation()
       animateThumbViewFrameUpdate()
     } else {
       thumbView.frame = self.thumbViewFrame
@@ -174,11 +174,10 @@ class ShieldsSwitch: UIControl {
 
   private func animateThumbViewFrameUpdate() {
     let nextFrame = thumbViewFrame
-    thumbView.springAnimate(property: kPOPViewFrame, key: "frame") { animation, _ in
-      animation.springSpeed = 14
-      animation.springBounciness = 6
-      animation.toValue = nextFrame
+    UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.85) {
+      self.thumbView.frame = nextFrame
     }
+    .startAnimation()
   }
 
   override var isHighlighted: Bool {

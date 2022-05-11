@@ -5,7 +5,6 @@
 import Foundation
 import UIKit
 import BraveCore
-import pop
 import SnapKit
 import BraveShared
 

@@ -6,7 +6,6 @@ import UIKit
 import BraveCore
 import BraveShared
 import Shared
-import pop
 
 private class BraveNotificationGesture: UIGestureRecognizer {
   var onBegan: () -> Void
@@ -243,9 +242,10 @@ class BraveNotificationsPresenter: UIViewController {
       if case .automatic(let interval) = notification.dismissPolicy {
         setupTimeoutTimer(for: notification, interval: interval)
       }
-      notificationView.layer.springAnimate(property: kPOPLayerTranslationY, key: "translation.y") { animation, _ in
-        animation.toValue = 0
+      UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.9) {
+        notificationView.transform = CGAffineTransform(translationX: 0, y: 0)
       }
+      .startAnimation()
     default:
       break
     }
@@ -257,24 +257,23 @@ class BraveNotificationsPresenter: UIViewController {
     adView.layoutIfNeeded()
     adView.layer.transform = CATransform3DMakeTranslation(0, -adView.bounds.size.height, 0)
     
-    adView.layer.springAnimate(property: kPOPLayerTranslationY, key: "translation.y") { animation, _ in
-      animation.toValue = 0
+    UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.9) {
+      adView.transform = CGAffineTransform(translationX: 0, y: 0)
     }
+    .startAnimation()
   }
   
   private func animateOut(adView: UIView, velocity: CGFloat? = nil, completion: @escaping () -> Void) {
     adView.layoutIfNeeded()
-    let y = adView.frame.minY - view.safeAreaInsets.top - adView.transform.ty
-    
-    adView.layer.springAnimate(property: kPOPLayerTranslationY, key: "translation.y") { animation, _ in
-      animation.toValue = -(view.safeAreaInsets.top + y + adView.bounds.size.height)
-      if let velocity = velocity {
-        animation.velocity = velocity
-      }
-      animation.completionBlock = { _, _ in
-        completion()
-      }
+    let springTiming = UISpringTimingParameters(dampingRatio: 0.9, initialVelocity: velocity.map { CGVector(dx: 0, dy: $0) } ?? .zero)
+    let animator = UIViewPropertyAnimator(duration: 0.3, timingParameters: springTiming)
+    animator.addAnimations { [self] in
+      adView.transform = CGAffineTransform(translationX: 0, y: -(view.frame.origin.y + adView.bounds.size.height))
     }
+    animator.addCompletion { _ in
+      completion()
+    }
+    animator.startAnimation()
   }
 }
 
