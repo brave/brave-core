@@ -96,10 +96,7 @@ void BraveTalkMediaAccessHandler::HandleRequest(
       capture_policy::GetIncludableWebContentsFilter(request.security_origin,
                                                      capture_level);
 
-  auto* target_web_contents =
-      BraveTalkServiceFactory::GetForContext(web_contents->GetBrowserContext())
-          ->target();
-  if (!can_show_web_contents.Run(target_web_contents)) {
+  if (!can_show_web_contents.Run(web_contents)) {
     std::move(callback).Run(
         blink::MediaStreamDevices(),
         blink::mojom::MediaStreamRequestResult::PERMISSION_DENIED,
@@ -108,27 +105,21 @@ void BraveTalkMediaAccessHandler::HandleRequest(
   }
 
   // TODO: Decide how this should work.
-  auto* requester = content::WebContents::FromRenderFrameHost(
-      content::RenderFrameHost::FromID(request.render_process_id,
-                                       request.render_frame_id));
-  LOG(ERROR) << "Requester: " << requester->GetLastCommittedURL()
-             << " Target: " << target_web_contents->GetLastCommittedURL()
-             << " WebContents: " << web_contents->GetLastCommittedURL();
   url::Origin requester_origin =
-      url::Origin::Create(requester->GetLastCommittedURL());
+      url::Origin::Create(web_contents->GetLastCommittedURL());
   if (!registry->VerifyRequest(
-          target_web_contents->GetMainFrame()->GetProcess()->GetID(),
-          target_web_contents->GetMainFrame()->GetRoutingID(),
+          web_contents->GetMainFrame()->GetProcess()->GetID(),
+          web_contents->GetMainFrame()->GetRoutingID(),
           requester_origin)) {
     LOG(ERROR) << "Unverified";
-    // std::move(callback).Run(
-    //     blink::MediaStreamDevices(),
-    //     blink::mojom::MediaStreamRequestResult::INVALID_STATE,
-    //     /*ui=*/nullptr);
-    // return;
+    std::move(callback).Run(
+        blink::MediaStreamDevices(),
+        blink::mojom::MediaStreamRequestResult::INVALID_STATE,
+        /*ui=*/nullptr);
+    return;
   }
 
-  AcceptRequest(target_web_contents, request, std::move(callback));
+  AcceptRequest(web_contents, request, std::move(callback));
 }
 
 void BraveTalkMediaAccessHandler::AcceptRequest(
