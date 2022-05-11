@@ -46,7 +46,6 @@ void BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived(std::s
     return;
   }
 
-  // set_user_gesture(true);
   Respond(OneArgument(base::Value(device_id)));
 }
 
