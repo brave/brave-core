@@ -17,9 +17,11 @@ class BraveTalkTabCaptureRegistry::LiveRequest
     : public content::WebContentsObserver {
  public:
   LiveRequest(content::WebContents* target_contents,
-              BraveTalkTabCaptureRegistry* registry)
+              BraveTalkTabCaptureRegistry* registry,
+              const url::Origin& origin)
       : content::WebContentsObserver(target_contents),
         registry_(registry),
+        origin_(origin),
         render_process_id_(
             target_contents->GetMainFrame()->GetProcess()->GetID()),
         render_frame_id_(target_contents->GetMainFrame()->GetRoutingID()) {
@@ -38,6 +40,8 @@ class BraveTalkTabCaptureRegistry::LiveRequest
            render_frame_id_ == render_frame_id;
   }
 
+  url::Origin origin() const { return origin_; }
+
  protected:
   void WebContentsDestroyed() override {
     registry_->KillRequest(this);  // Deletes |this|.
@@ -45,7 +49,7 @@ class BraveTalkTabCaptureRegistry::LiveRequest
 
  private:
   const raw_ptr<BraveTalkTabCaptureRegistry> registry_;
-
+  url::Origin origin_;
   int render_process_id_;
   int render_frame_id_;
 };
@@ -88,7 +92,8 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
     KillRequest(request);
   }
 
-  requests_.push_back(std::make_unique<LiveRequest>(target_contents, this));
+  requests_.push_back(std::make_unique<LiveRequest>(
+      target_contents, this, url::Origin::Create(origin)));
   auto* const main_frame = caller_contents->GetMainFrame();
   if (main_frame) {
     device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
@@ -134,12 +139,13 @@ void BraveTalkTabCaptureRegistry::KillRequest(LiveRequest* request) {
 
 bool BraveTalkTabCaptureRegistry::VerifyRequest(int target_render_process_id,
                                                 int target_render_frame_id,
-                                                int source_render_process_id,
-                                                int source_render_frame_id) {
+                                                const url::Origin& requester_origin) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   LiveRequest* const request =
-      FindRequest(target_render_frame_id, target_render_frame_id);
+      FindRequest(target_render_process_id, target_render_frame_id);
+  LOG(ERROR) << "Verified Origin: " << request->origin();
+  LOG(ERROR) << "Requester Origin: " << requester_origin;
   if (!request) {
     return false;  // Unknown RenderFrameHost ID, or frame has gone away.
   }

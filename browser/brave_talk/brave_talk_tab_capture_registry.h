@@ -21,7 +21,7 @@ class BraveTalkTabCaptureRegistry
   // Used by BrowserContextKeyedAPI.
   static extensions::BrowserContextKeyedAPIFactory<BraveTalkTabCaptureRegistry>*
   GetFactoryInstance();
-  
+
   std::string AddRequest(content::WebContents* target_contents,
                          const GURL& origin,
                          content::DesktopMediaID source,
@@ -29,9 +29,7 @@ class BraveTalkTabCaptureRegistry
 
   bool VerifyRequest(int target_render_process_id,
                      int target_render_frame_id,
-                     int source_render_process_id,
-                     int source_render_frame_id);
-
+                     const url::Origin& requester_origin);
 
  private:
   friend class extensions::BrowserContextKeyedAPIFactory<
@@ -55,4 +53,4 @@ class BraveTalkTabCaptureRegistry
 
 }  // namespace brave_talk
 
-#endif  // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_H_
+#endif // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_H_
