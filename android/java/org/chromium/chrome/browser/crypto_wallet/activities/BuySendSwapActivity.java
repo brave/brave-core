@@ -474,7 +474,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             }
                             // We most likely have a custom token
                             TokenUtils.getAllTokensFiltered(mBraveWalletService,
-                                    mBlockchainRegistry, mCurrentChainId, tokens -> {
+                                    mBlockchainRegistry, mCurrentChainId,
+                                    TokenUtils.TokenType.ERC20, tokens -> {
                                         for (BlockchainToken filteredToken : tokens) {
                                             if (swapFromAssetSymbol.equals(filteredToken.symbol)) {
                                                 updateBuySendSwapAsset(
@@ -730,6 +731,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mSendToAddrText.setHint(getText(R.string.to_address_edit));
             mSendToAddrText.addTextChangedListener(new FilterTextWatcherSendToAddr());
             mSendToAddrText.setOnFocusChangeListener(new OnFocusChangeListenerToSend());
+            mFromValueText.setText("");
             mFromValueText.addTextChangedListener(new FilterTextWatcherFromSendValue());
 
             mBtnBuySendSwap.setText(getText(R.string.send));
@@ -884,10 +886,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     TxData data =
                             Utils.getTxData("", "", "", to, Utils.toHexWei(value, 18), new byte[0]);
                     sendTransaction(data, from, "", "");
-                } else {
+                } else if (mCurrentBlockchainToken.isErc20) {
                     addUnapprovedTransactionERC20(to,
                             Utils.toHexWei(value, mCurrentBlockchainToken.decimals), from,
                             mCurrentBlockchainToken.contractAddress);
+                } else if (mCurrentBlockchainToken.isErc721) {
+                    // TODO tokenId text field
+                    //                     addUnapprovedTransactionERC721(from, to, tokenId,
+                    //                         mCurrentBlockchainToken.contractAddress);
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
@@ -1321,6 +1327,22 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         });
     }
 
+    private void addUnapprovedTransactionERC721(
+            String from, String to, String tokenId, String contractAddress) {
+        assert mEthTxManagerProxy != null;
+        if (mEthTxManagerProxy == null) {
+            return;
+        }
+        mEthTxManagerProxy.makeErc721TransferFromData(
+                from, to, tokenId, contractAddress, (success, data) -> {
+                    if (!success) {
+                        return;
+                    }
+                    TxData txData = Utils.getTxData("", "", "", contractAddress, "0x0", data);
+                    sendTransaction(txData, from, "", "");
+                });
+    }
+
     public void showApproveTransactionDialog(TransactionInfo txInfo) {
         String accountName =
                 mCustomAccountAdapter.getNameAtPosition(mAccountSpinner.getSelectedItemPosition());
@@ -1388,6 +1410,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, token.contractAddress,
                     token.symbol, getResources().getDisplayMetrics().density, assetText, this, true,
                     (float) 0.5);
+        }
+        if (buySend && token.isErc721) {
+            mFromValueText.setText("1");
+        } else {
+            mFromValueText.setText("");
         }
         if (buySend && mActivityType == ActivityType.SWAP || !buySend) {
             enableDisableSwapButton();

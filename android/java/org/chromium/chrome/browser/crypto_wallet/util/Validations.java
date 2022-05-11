@@ -66,8 +66,8 @@ public class Validations {
                 assert blockchainRegistry != null;
                 assert chainId != null && !chainId.isEmpty();
 
-                TokenUtils.getAllTokensFiltered(
-                        braveWalletService, blockchainRegistry, chainId, (tokens) -> {
+                TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId,
+                        TokenUtils.TokenType.ALL, (tokens) -> {
                             tokens = Utils.fixupTokensRegistry(tokens, chainId);
                             fillKnowContracts(tokens);
                             checkForKnowContracts(receiverAccountAddressLower, callback, resources);
@@ -104,7 +104,7 @@ public class Validations {
             }
         }
 
-        void fillKnowContracts(BlockchainToken[] tokens) {
+        private void fillKnowContracts(BlockchainToken[] tokens) {
             mKnownContractAddresses = new HashSet<String>();
             for (BlockchainToken token : tokens) {
                 if (token.contractAddress != null && !token.contractAddress.isEmpty()) {
