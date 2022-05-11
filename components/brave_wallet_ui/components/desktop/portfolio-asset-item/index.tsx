@@ -78,8 +78,8 @@ const PortfolioAssetItem = (props: Props) => {
   }, [fiatBalance])
 
   const isLoading = React.useMemo(() => {
-    return formattedAssetBalance === '' && !token.isErc721
-  }, [formattedAssetBalance, token])
+    return formattedAssetBalance === ''
+  }, [formattedAssetBalance])
 
   const tokensNetwork = React.useMemo(() => {
     return getTokensNetwork(networks, token)
@@ -111,7 +111,7 @@ const PortfolioAssetItem = (props: Props) => {
       {token.visible &&
         // Selecting an erc721 token is temp disabled until UI is ready for viewing NFTs
         // or when showing loading skeleton
-        <StyledWrapper disabled={isLoading} onClick={action}>
+        <StyledWrapper disabled={token.isErc721 || isLoading} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
               {isLoading
