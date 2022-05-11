@@ -8,12 +8,17 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/process/process.h"
+#include "base/process/process_iterator.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/thread_test_helper.h"
+#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
@@ -87,6 +92,11 @@ bool CheckComponentExists(const std::string& component_id) {
 
 class BraveTorTest : public InProcessBrowserTest {
  public:
+  struct TorInfo {
+    Profile* tor_profile = nullptr;
+    int tor_pid = 0;
+  };
+
   BraveTorTest() = default;
   ~BraveTorTest() override = default;
 
@@ -115,8 +125,43 @@ class BraveTorTest : public InProcessBrowserTest {
     return tor_profile;
   }
 
+  TorInfo WaitForTorLaunched() {
+    MockTorLauncherObserver observer;
+    TorLauncherFactory::GetInstance()->AddObserver(&observer);
+
+    base::RunLoop loop;
+    EXPECT_CALL(observer, OnTorLaunched(testing::_, testing::_))
+        .WillOnce(testing::Invoke(&loop, &base::RunLoop::Quit));
+
+    Profile* tor_profile = OpenTorWindow();
+
+    loop.Run();
+
+    int tor_pid = TorLauncherFactory::GetInstance()->GetTorPid();
+
+    TorLauncherFactory::GetInstance()->RemoveObserver(&observer);
+
+    return {tor_profile, tor_pid};
+  }
+
   void CloseTorWindow(Profile* tor_profile) {
     TorProfileManager::CloseTorProfileWindows(tor_profile);
+  }
+
+  void WaitForUpdaterThread(brave_component_updater::BraveComponent* updater) {
+    scoped_refptr<base::ThreadTestHelper> io_helper(
+        new base::ThreadTestHelper(updater->GetTaskRunner()));
+    ASSERT_TRUE(io_helper->Run());
+  }
+
+  void WaitForProcess(const std::string& name) {
+    while (!base::GetProcessCount(base::FilePath::FromASCII(name).value(),
+                                  nullptr)) {
+      auto loop = std::make_unique<base::RunLoop>();
+      base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+          FROM_HERE, loop->QuitClosure(), base::Milliseconds(10));
+      loop->Run();
+    }
   }
 };
 
@@ -124,47 +169,101 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
   DownloadTorClient();
 
-  MockTorLauncherObserver observer;
-  Profile* tor_profile = nullptr;
-  int tor_pid = 0;
-
   // Open Tor window, wait for the Tor process to start.
-  {
-    TorLauncherFactory::GetInstance()->AddObserver(&observer);
-
-    base::RunLoop loop;
-    EXPECT_CALL(observer, OnTorLaunched(testing::_, testing::_))
-        .WillOnce(testing::Invoke(&loop, &base::RunLoop::Quit));
-
-    tor_profile = OpenTorWindow();
-    ASSERT_TRUE(tor_profile);
-
-    loop.Run();
-
-    tor_pid = TorLauncherFactory::GetInstance()->GetTorPid();
-    EXPECT_TRUE(base::Process::Open(tor_pid).IsValid());
-
-    TorLauncherFactory::GetInstance()->RemoveObserver(&observer);
-  }
+  auto tor = WaitForTorLaunched();
+  EXPECT_TRUE(base::Process::Open(tor.tor_pid).IsValid());
+  ASSERT_TRUE(tor.tor_profile);
 
   // Close Tor window, expect the Tor process to die.
   {
-    Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
-    CloseTorWindow(tor_profile);
+    Browser* tor_browser = chrome::FindBrowserWithProfile(tor.tor_profile);
+    CloseTorWindow(tor.tor_profile);
     ui_test_utils::BrowserChangeObserver(
         tor_browser, ui_test_utils::BrowserChangeObserver::ChangeType::kRemoved)
         .Wait();
 
-    EXPECT_FALSE(base::Process::Open(tor_pid).IsValid());
+    EXPECT_FALSE(base::Process::Open(tor.tor_pid).IsValid());
   }
 
-  // Disable tor, expect executables removed.
+  // Disable tor, expect executables are removed.
   {
     TorProfileServiceFactory::SetTorDisabled(true);
     EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
 
-    content::RunAllTasksUntilIdle();
+    WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
 
     EXPECT_FALSE(CheckComponentExists(tor::kTorClientComponentId));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  DownloadTorClient();
+
+  // No bridges by default.
+  auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
+  EXPECT_FALSE(bridges_config.use_bridges);
+  EXPECT_FALSE(bridges_config.use_builtin_bridges);
+  EXPECT_TRUE(bridges_config.bridges.empty());
+
+  // Open Tor window, wait for the Tor process to start.
+  auto tor = WaitForTorLaunched();
+  EXPECT_TRUE(tor.tor_profile);
+
+  // Pluggable transport component isn't installed.
+  EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  EXPECT_EQ(
+      0, base::GetProcessCount(
+             base::FilePath::FromASCII(tor::kSnowflakeExecutableName).value(),
+             nullptr));
+  EXPECT_EQ(0, base::GetProcessCount(
+                   base::FilePath::FromASCII(tor::kObfs4ExecutableName).value(),
+                   nullptr));
+
+  // Enable bridges
+  DownloadTorPluggableTransports();
+
+  bridges_config.use_bridges = true;
+  bridges_config.bridges.push_back(
+      "snowflake 192.0.2.3:1 2B280B23E1107BB62ABFC40DDCC8824814F80A72");
+  TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+
+  // Wait Snowflake executable is launched.
+  EXPECT_TRUE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  WaitForProcess(tor::kSnowflakeExecutableName);
+
+  EXPECT_TRUE(
+      g_brave_browser_process->tor_pluggable_transport_updater()->IsReady());
+
+  // Add obfs config.
+  bridges_config.bridges.push_back(
+      "obfs4 144.217.20.138:80 FB70B257C162BF1038CA669D568D76F5B7F0BABB "
+      "cert=vYIV5MgrghGQvZPIi1tJwnzorMgqgmlKaB77Y3Z9Q/"
+      "v94wZBOAXkW+fdx4aSxLVnKO+xNw iat-mode=0");
+  TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+
+  // Obfs4 executable is launched.
+  WaitForProcess(tor::kSnowflakeExecutableName);
+  WaitForProcess(tor::kObfs4ExecutableName);
+
+  // Disable tor.
+  TorProfileServiceFactory::SetTorDisabled(true);
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
+  WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
+  WaitForUpdaterThread(
+      g_brave_browser_process->tor_pluggable_transport_updater());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTorTest, SetupBridges) {
+  // Tor is disabled in PRE, check pluggable transport are removed.
+  EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+
+  // Pluggable transport processes was terminated at exit.
+  EXPECT_EQ(
+      0, base::GetProcessCount(
+             base::FilePath::FromASCII(tor::kSnowflakeExecutableName).value(),
+             nullptr));
+  EXPECT_EQ(0, base::GetProcessCount(
+                   base::FilePath::FromASCII(tor::kObfs4ExecutableName).value(),
+                   nullptr));
 }

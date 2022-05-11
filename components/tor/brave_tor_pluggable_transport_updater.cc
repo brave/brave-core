@@ -16,25 +16,22 @@
 #include "base/task/task_traits.h"
 #include "build/build_config.h"
 
-namespace {
+namespace tor {
 
 #if BUILDFLAG(IS_WIN)
-constexpr const char kSnowflake[] = "tor-snowflake-win32-brave";
-constexpr const char kObfs4[] = "tor-obsf4-win32-brave";
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Windows)";
 #elif BUILDFLAG(IS_MAC)
-constexpr const char kSnowflake[] = "tor-snowflake-darwin-brave";
-constexpr const char kObfs4[] = "tor-obsf4-darwin-brave";
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Mac)";
 #elif BUILDFLAG(IS_LINUX)
-constexpr const char kSnowflake[] = "tor-snowflake-linux-brave";
-constexpr const char kObfs4[] = "tor-obsf4-linux-brave";
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Linux)";
 #endif
 
+constexpr const char kSnowflakeExecutableName[] = "tor-snowflake-brave";
+constexpr const char kObfs4ExecutableName[] = "tor-obsf4-brave";
+
 bool Initialize(const base::FilePath& install_dir) {
-  const auto executables = {install_dir.AppendASCII(kSnowflake),
-                            install_dir.AppendASCII(kObfs4)};
+  const auto executables = {install_dir.AppendASCII(kSnowflakeExecutableName),
+                            install_dir.AppendASCII(kObfs4ExecutableName)};
 
   for (const auto& executable : executables) {
     if (!base::PathExists(executable)) {
@@ -50,9 +47,6 @@ bool Initialize(const base::FilePath& install_dir) {
   }
   return true;
 }
-}  // namespace
-
-namespace tor {
 
 constexpr const char kTorPluggableTransportComponentId[] =
     "hajklemofkhfcgodegbighbamaclcfgo";
@@ -139,8 +133,8 @@ void BraveTorPluggableTransportUpdater::OnInitialized(
     const base::FilePath& install_dir,
     bool success) {
   if (success) {
-    snowflake_path_ = install_dir.AppendASCII(kSnowflake);
-    obsf4_path_ = install_dir.AppendASCII(kObfs4);
+    snowflake_path_ = install_dir.AppendASCII(kSnowflakeExecutableName);
+    obsf4_path_ = install_dir.AppendASCII(kObfs4ExecutableName);
   } else {
     snowflake_path_.clear();
     obsf4_path_.clear();

@@ -21,6 +21,8 @@ using brave_component_updater::BraveComponent;
 namespace tor {
 
 extern const char kTorPluggableTransportComponentId[];
+extern const char kSnowflakeExecutableName[];
+extern const char kObfs4ExecutableName[];
 
 class BraveTorPluggableTransportUpdater : public BraveComponent {
  public:

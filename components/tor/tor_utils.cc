@@ -35,8 +35,6 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   if (!v || !v->is_dict())
     return absl::nullopt;
 
-  LOG(ERROR) << v->DebugString();
-
   const auto& dict = v->GetDict();
 
   BridgesConfig result;
