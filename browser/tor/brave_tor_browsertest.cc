@@ -24,6 +24,7 @@
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "brave/components/tor/tor_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -86,6 +87,13 @@ bool CheckComponentExists(const std::string& component_id) {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   return base::PathExists(user_data_dir.AppendASCII(component_id));
+}
+
+void NonBlockingDelay(const base::TimeDelta& delay) {
+  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
+  run_loop.Run();
 }
 
 }  // namespace
@@ -157,10 +165,14 @@ class BraveTorTest : public InProcessBrowserTest {
   void WaitForProcess(const std::string& name) {
     while (!base::GetProcessCount(base::FilePath::FromASCII(name).value(),
                                   nullptr)) {
-      auto loop = std::make_unique<base::RunLoop>();
-      base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-          FROM_HERE, loop->QuitClosure(), base::Milliseconds(10));
-      loop->Run();
+      NonBlockingDelay(base::Milliseconds(25));
+    }
+  }
+
+  void WaitProcessExit(const std::string& name) {
+    while (base::GetProcessCount(base::FilePath::FromASCII(name).value(),
+                                 nullptr)) {
+      NonBlockingDelay(base::Milliseconds(25));
     }
   }
 };
@@ -191,6 +203,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
     EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
 
     WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
+    content::RunAllTasksUntilIdle();
 
     EXPECT_FALSE(CheckComponentExists(tor::kTorClientComponentId));
   }
@@ -266,4 +279,29 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, SetupBridges) {
   EXPECT_EQ(0, base::GetProcessCount(
                    base::FilePath::FromASCII(tor::kObfs4ExecutableName).value(),
                    nullptr));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  DownloadTorClient();
+  DownloadTorPluggableTransports();
+
+  auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
+  bridges_config.use_bridges = true;
+  bridges_config.bridges.push_back(
+      "snowflake 192.0.2.3:1 2B280B23E1107BB62ABFC40DDCC8824814F80A72");
+  TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+
+  // Open Tor window, wait for the Tor process to start.
+  auto tor = WaitForTorLaunched();
+  EXPECT_TRUE(tor.tor_profile);
+
+  // Wait Snowflake executable is launched.
+  EXPECT_TRUE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  WaitForProcess(tor::kSnowflakeExecutableName);
+
+  // Reset bridges
+  bridges_config.use_bridges = false;
+  TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+  WaitProcessExit(tor::kSnowflakeExecutableName);
 }

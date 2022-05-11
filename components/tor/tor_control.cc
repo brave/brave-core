@@ -582,7 +582,8 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
   }
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (bridges.empty()) {
-    DoCmd("RESETCONF UseBridges Bridge", base::DoNothing(),
+    DoCmd("RESETCONF UseBridges Bridge ClientTransportPlugin",
+          base::DoNothing(),
           base::BindOnce(&TorControl::OnBrigdesConfigured,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   } else {
