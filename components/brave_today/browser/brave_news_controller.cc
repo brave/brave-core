@@ -439,6 +439,17 @@ void BraveNewsController::OnDisplayAdView(
   p3a::RecordWeeklyDisplayAdsViewedCount(prefs_, true);
 }
 
+void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
+  if (!ads_service_) {
+    VLOG(1) << "News: Asked to purge orphaned ad events but there is no ads "
+               "service for"
+               "this profile!";
+    return;
+  }
+  ads_service_->PurgeOrphanedAdEventsForType(
+      ads::mojom::AdType::kInlineContentAd);
+}
+
 void BraveNewsController::CheckForPublishersUpdate() {
   publishers_controller_.EnsurePublishersIsUpdating();
 }

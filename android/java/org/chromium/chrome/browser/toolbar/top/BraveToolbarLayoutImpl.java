@@ -425,6 +425,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onDestroyed(Tab tab) {
+                // Remove references for the ads from the Database. Tab is destroyed, they are not
+                // needed anymore.
+                new Thread() {
+                    @Override
+                    public void run() {
+                        mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
+                    }
+                }.start();
                 mBraveShieldsHandler.removeStat(tab.getId());
                 mTabsWithWalletIcon.remove(tab.getId());
             }

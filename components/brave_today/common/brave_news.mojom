@@ -164,4 +164,5 @@ interface BraveNewsController {
   OnPromotedItemVisit(string item_id, string creative_instance_id);
   OnDisplayAdVisit(string item_id, string creative_instance_id);
   OnDisplayAdView(string item_id, string creative_instance_id);
+  OnDisplayAdPurgeOrphanedEvents();
 };
