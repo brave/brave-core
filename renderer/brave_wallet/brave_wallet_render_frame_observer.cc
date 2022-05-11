@@ -47,7 +47,7 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   }
   // Wallet provider objects won't be generated for third party iframe
   if (!render_frame()->IsMainFrame() &&
-      render_frame()->GetWebFrame()->IsCrossOriginToMainFrame()) {
+      render_frame()->GetWebFrame()->IsCrossOriginToOutermostMainFrame()) {
     return;
   }
 
