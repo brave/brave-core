@@ -99,7 +99,15 @@ TEST_F(BraveSyncPrefsTest, FailedToDecryptBraveSeedValue) {
 }
 
 using BraveSyncPrefsDeathTest = BraveSyncPrefsTest;
-TEST_F(BraveSyncPrefsDeathTest, GetSeedOutNullptrCHECK) {
+
+// Some tests are failing for Windows x86 CI,
+// See https://github.com/brave/brave-browser/issues/22767
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_GetSeedOutNullptrCHECK DISABLED_GetSeedOutNullptrCHECK
+#else
+#define MAYBE_GetSeedOutNullptrCHECK GetSeedOutNullptrCHECK
+#endif
+TEST_F(BraveSyncPrefsDeathTest, MAYBE_GetSeedOutNullptrCHECK) {
   EXPECT_CHECK_DEATH(brave_sync_prefs()->GetSeed(nullptr));
 }
 

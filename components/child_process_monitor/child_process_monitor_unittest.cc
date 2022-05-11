@@ -125,7 +125,14 @@ MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
   return 1;
 }
 
-TEST_F(ChildProcessMonitorTest, ChildCrash) {
+// Some tests are failing for Windows x86 CI,
+// See https://github.com/brave/brave-browser/issues/22767
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_ChildCrash DISABLED_ChildCrash
+#else
+#define MAYBE_ChildCrash ChildCrash
+#endif
+TEST_F(ChildProcessMonitorTest, MAYBE_ChildCrash) {
   std::unique_ptr<ChildProcessMonitor> monitor =
       std::make_unique<ChildProcessMonitor>();
 

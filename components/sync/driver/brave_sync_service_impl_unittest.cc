@@ -168,7 +168,15 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
 // for test suite
 using BraveSyncServiceImplDeathTest = BraveSyncServiceImplTest;
 
-TEST_F(BraveSyncServiceImplDeathTest, EmulateGetOrCreateSyncCodeCHECK) {
+// Some tests are failing for Windows x86 CI,
+// See https://github.com/brave/brave-browser/issues/22767
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_EmulateGetOrCreateSyncCodeCHECK \
+  DISABLED_EmulateGetOrCreateSyncCodeCHECK
+#else
+#define MAYBE_EmulateGetOrCreateSyncCodeCHECK EmulateGetOrCreateSyncCodeCHECK
+#endif
+TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   OSCryptMocker::SetUp();
 
   CreateSyncService(SyncServiceImpl::MANUAL_START);
