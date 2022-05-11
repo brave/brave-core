@@ -14,6 +14,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
+#include "brave/components/tor/tor_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -156,9 +157,10 @@ void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!bridges_config.use_bridges) {
     control_->SetupBridges({}, base::DoNothing());
-  } else if (bridges_config.use_builtin_bridges) {
-    // TODO(boocmp): Get builtin list
-    control_->SetupBridges({}, base::DoNothing());
+  } else if (bridges_config.use_builtin !=
+             tor::BridgesConfig::BuiltinType::kNone) {
+    control_->SetupBridges(bridges_config.GetBuiltinBridges(),
+                           base::DoNothing());
   } else {
     control_->SetupBridges(bridges_config.bridges, base::DoNothing());
   }

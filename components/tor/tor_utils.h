@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 #define BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 
+#include <array>
 #include <vector>
 
 #include "base/values.h"
@@ -15,6 +16,13 @@ class PrefService;
 namespace tor {
 
 struct BridgesConfig {
+  enum class BuiltinType {
+    kNone,
+    kSnowflake,
+    kObfs4,
+    kMeekAzure,
+  };
+
   BridgesConfig();
   BridgesConfig(BridgesConfig&&) noexcept;
   BridgesConfig(const BridgesConfig&) = delete;
@@ -23,12 +31,14 @@ struct BridgesConfig {
   BridgesConfig& operator=(BridgesConfig&&) noexcept;
   BridgesConfig& operator=(const BridgesConfig&) = delete;
 
+  const std::vector<std::string>& GetBuiltinBridges() const;
+
   static absl::optional<BridgesConfig> FromValue(const base::Value* v);
   base::Value::Dict ToDict() const;
   base::Value ToValue() const;
-
+  
   bool use_bridges = false;
-  bool use_builtin_bridges = false;
+  BuiltinType use_builtin = BuiltinType::kNone;  
   std::vector<std::string> bridges;
 };
 

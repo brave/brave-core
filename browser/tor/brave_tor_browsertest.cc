@@ -216,7 +216,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
   // No bridges by default.
   auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
   EXPECT_FALSE(bridges_config.use_bridges);
-  EXPECT_FALSE(bridges_config.use_builtin_bridges);
+  EXPECT_EQ(tor::BridgesConfig::BuiltinType::kNone, bridges_config.use_builtin);
   EXPECT_TRUE(bridges_config.bridges.empty());
 
   // Open Tor window, wait for the Tor process to start.
