@@ -1,9 +1,6 @@
 import { BraveWallet, PageState } from '../../constants/types'
-import { mockNFTMetadata } from './mock-nft-metadata'
 
 export const mockPageState: PageState = {
-  isFetchingNFTMetadata: false,
-  nftMetadata: mockNFTMetadata[0],
   hasInitialized: false,
   importAccountError: false,
   importWalletError: {
