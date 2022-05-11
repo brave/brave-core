@@ -85,6 +85,7 @@ share_tab_button::ShareTabButton* BraveTalkService::share_tab_button() {
 
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
   target_ = target_contents->GetWeakPtr();
+  share_tab_button()->SetVisible(false);
 
   if (!observing_)
     return;
