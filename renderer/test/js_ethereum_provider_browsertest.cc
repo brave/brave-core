@@ -17,6 +17,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
@@ -41,18 +42,33 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_.ServeFilesFromDirectory(test_data_dir);
   }
 
   ~JSEthereumProviderBrowserTest() override = default;
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    EXPECT_TRUE(https_server_.Start());
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     // Map all hosts to localhost.
     host_resolver()->AddRule("*", "127.0.0.1");
+    EXPECT_TRUE(https_server_.Start());
   }
 
   content::WebContents* web_contents() {
@@ -74,6 +90,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_;
 };
 
@@ -81,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                  brave_wallet::mojom::DefaultWallet::None);
   const GURL url = https_server_.GetURL("/simple.html");
-  NavigateToURLAndWaitForLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   std::string command = "window.ethereum.isMetaMask";
   EXPECT_TRUE(content::EvalJs(main_frame(), command)
@@ -112,7 +129,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachToChromePages) {
   brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                  brave_wallet::mojom::DefaultWallet::None);
-  NavigateToURLAndWaitForLoadStop(GURL("chrome://newtab/"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
 
   std::string command = "window.ethereum.isMetaMask";
   EXPECT_TRUE(content::EvalJs(main_frame(), command,
@@ -135,7 +153,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
   const GURL url = https_server_.GetURL("/simple.html");
-  NavigateToURLAndWaitForLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // window.ethereum.*
   auto result =
@@ -164,10 +182,31 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
 // See https://github.com/brave/brave-browser/issues/22213 for details
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
   const GURL url = https_server_.GetURL("/simple.html");
-  NavigateToURLAndWaitForLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   std::string overwrite =
       "window.ethereum.isMetaMask = false;"
       "window.ethereum.isMetaMask";
   EXPECT_FALSE(content::EvalJs(main_frame(), overwrite).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Block3PIframe) {
+  GURL top_url(https_server_.GetURL("a.com", "/iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
+  // third party
+  GURL iframe_url_3p(https_server_.GetURL("b.com", "/"));
+  EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url_3p));
+
+  constexpr char kEvalEthereum[] = R"(typeof window.ethereum === 'undefined')";
+
+  auto* iframe_rfh = ChildFrameAt(main_frame(), 0);
+  ASSERT_TRUE(iframe_rfh);
+  EXPECT_TRUE(content::EvalJs(iframe_rfh, kEvalEthereum).ExtractBool());
+
+  // same party
+  GURL iframe_url_1p(https_server_.GetURL("a.com", "/"));
+  EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url_1p));
+  iframe_rfh = ChildFrameAt(main_frame(), 0);
+  ASSERT_TRUE(iframe_rfh);
+  EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalEthereum).ExtractBool());
 }
