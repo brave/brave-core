@@ -22,6 +22,7 @@ struct NetworkTextField: View {
       TextField(placeholder, text: $item.input)
         .autocapitalization(.none)
         .disableAutocorrection(true)
+        .foregroundColor(.black)
       if let error = item.error {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
           Image(systemName: "exclamationmark.circle.fill")
@@ -44,9 +45,18 @@ struct NetworkTextField: View {
 }
 
 class CustomNetworkModel: ObservableObject, Identifiable {
-  var isEditMode: Bool = false
+  enum Mode {
+    case add
+    case edit
+    case view
+    
+    var isEditMode: Bool { self == .edit }
+    var isViewMode: Bool { self == .view }
+  }
+  
+  var mode: Mode = .add
   var id: String {
-    "\(isEditMode)"
+    "\(mode.isEditMode)"
   }
 
   @Published var networkId = NetworkInputItem(input: "") {
@@ -124,8 +134,8 @@ class CustomNetworkModel: ObservableObject, Identifiable {
             }
           }
         }
-        // Only insert a new entry when all existed entries pass validation
-        if rpcUrls.compactMap({ $0.error }).isEmpty && !hasNewEntry {
+        // Only insert a new entry when all existed entries pass validation and we are not in view mode
+        if rpcUrls.compactMap({ $0.error }).isEmpty && !hasNewEntry && !mode.isViewMode {
           rpcUrls.append(NetworkInputItem(input: ""))
         }
       }
@@ -148,8 +158,8 @@ class CustomNetworkModel: ObservableObject, Identifiable {
             }
           }
         }
-        // Only insert a new entry when all existed entries pass validation and there is no new entry
-        if iconUrls.compactMap({ $0.error }).isEmpty && !hasNewEntry {
+        // Only insert a new entry when all existed entries pass validation and there is no new entry and we are not in view mode
+        if iconUrls.compactMap({ $0.error }).isEmpty && !hasNewEntry && !mode.isViewMode {
           iconUrls.append(NetworkInputItem(input: ""))
         }
       }
@@ -172,17 +182,22 @@ class CustomNetworkModel: ObservableObject, Identifiable {
             }
           }
         }
-        // Only insert a new entry when all existed entries pass validation and there is no new entry
-        if blockUrls.compactMap({ $0.error }).isEmpty && !hasNewEntry {
+        // Only insert a new entry when all existed entries pass validation and there is no new entry and we are not in view mode
+        if blockUrls.compactMap({ $0.error }).isEmpty && !hasNewEntry && !mode.isViewMode {
           blockUrls.append(NetworkInputItem(input: ""))
         }
       }
     }
   }
+  
+  /// Creates model for adding a new custom network
+  init() {
+    self.mode = .add
+  }
 
-  /// Updates the details of this class based on a custom network
-  func populateDetails(from network: BraveWallet.NetworkInfo) {
-    self.isEditMode = true
+  /// Creates model and populates the details based on a custom network and mode
+  init(from network: BraveWallet.NetworkInfo, mode: Mode = .edit) {
+    self.mode = mode
 
     let chainIdInDecimal: String
     if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) { // BraveWallet.NetworkInfo.chainId should always in hex
@@ -197,12 +212,45 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     self.networkDecimals.input = String(network.decimals)
     if !network.rpcUrls.isEmpty {
       self.rpcUrls = network.rpcUrls.compactMap({ NetworkInputItem(input: $0) })
+    } else if mode.isViewMode {
+      self.rpcUrls = []
     }
     if !network.iconUrls.isEmpty {
       self.iconUrls = network.iconUrls.compactMap({ NetworkInputItem(input: $0) })
+    } else if mode.isViewMode {
+      self.iconUrls = []
     }
     if !network.blockExplorerUrls.isEmpty {
       self.blockUrls = network.blockExplorerUrls.compactMap({ NetworkInputItem(input: $0) })
+    } else if mode.isViewMode {
+      self.blockUrls = []
+    }
+  }
+}
+
+enum CustomNetworkError: LocalizedError, Identifiable {
+  case failed(errorMessage: String)
+  case duplicateId
+
+  var id: String {
+    errorTitle + errorDescription
+  }
+
+  var errorTitle: String {
+    switch self {
+    case .failed:
+      return Strings.Wallet.failedToAddCustomNetworkErrorTitle
+    case .duplicateId:
+      return ""
+    }
+  }
+
+  var errorDescription: String {
+    switch self {
+    case .failed(let errorMessage):
+      return errorMessage
+    case .duplicateId:
+      return Strings.Wallet.networkIdDuplicationErrMsg
     }
   }
 }
@@ -215,39 +263,20 @@ struct CustomNetworkDetailsView: View {
 
   @State private var customNetworkError: CustomNetworkError?
 
-  enum CustomNetworkError: LocalizedError, Identifiable {
-    case failed(errMsg: String)
-    case duplicateId
-
-    var id: String {
-      errorDescription
-    }
-
-    var errorTitle: String {
-      switch self {
-      case .failed:
-        return Strings.Wallet.failedToAddCustomNetworkErrorTitle
-      case .duplicateId:
-        return ""
-      }
-    }
-
-    var errorDescription: String {
-      switch self {
-      case .failed(let errMsg):
-        return errMsg
-      case .duplicateId:
-        return Strings.Wallet.networkIdDuplicationErrMsg
-      }
-    }
-  }
-
   init(
     networkStore: NetworkStore,
     model: CustomNetworkModel
   ) {
     self.networkStore = networkStore
     self.model = model
+  }
+  
+  private var navigationTitle: String {
+    switch model.mode {
+    case .add: return Strings.Wallet.customNetworkDetailsTitle
+    case .edit: return Strings.Wallet.editfCustomNetworkTitle
+    case .view: return Strings.Wallet.viewNetworkDetailsTitle
+    }
   }
 
   var body: some View {
@@ -262,18 +291,18 @@ struct CustomNetworkDetailsView: View {
             }
           }
       ) {
-        NetworkTextField(
+        networkTextField(
           placeholder: Strings.Wallet.customNetworkChainIdPlaceholder,
           item: $model.networkId
         )
         .keyboardType(.numberPad)
-        .disabled(model.isEditMode)
+        .disabled(model.mode.isEditMode)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkChainNameTitle))
       ) {
-        NetworkTextField(
+        networkTextField(
           placeholder: Strings.Wallet.customNetworkChainNamePlaceholder,
           item: $model.networkName
         )
@@ -282,7 +311,7 @@ struct CustomNetworkDetailsView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolNameTitle))
       ) {
-        NetworkTextField(
+        networkTextField(
           placeholder: Strings.Wallet.customNetworkSymbolNamePlaceholder,
           item: $model.networkSymbolName
         )
@@ -291,7 +320,7 @@ struct CustomNetworkDetailsView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkSymbolTitle))
       ) {
-        NetworkTextField(
+        networkTextField(
           placeholder: Strings.Wallet.customNetworkSymbolPlaceholder,
           item: $model.networkSymbol
         )
@@ -300,59 +329,67 @@ struct CustomNetworkDetailsView: View {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkCurrencyDecimalTitle))
       ) {
-        NetworkTextField(
+        networkTextField(
           placeholder: Strings.Wallet.customNetworkCurrencyDecimalPlaceholder,
           item: $model.networkDecimals
         )
         .keyboardType(.numberPad)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkRpcUrlsTitle))
-      ) {
-        ForEach($model.rpcUrls) { $url in
-          NetworkTextField(
-            placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
-            item: $url
-          )
+      if !model.rpcUrls.isEmpty {
+        Section(
+          header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkRpcUrlsTitle))
+        ) {
+          ForEach($model.rpcUrls) { $url in
+            networkTextField(
+              placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
+              item: $url
+            )
+          }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkIconUrlsTitle))
-      ) {
-        ForEach($model.iconUrls) { $url in
-          NetworkTextField(
-            placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
-            item: $url
-          )
+      if !model.iconUrls.isEmpty {
+        Section(
+          header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkIconUrlsTitle))
+        ) {
+          ForEach($model.iconUrls) { $url in
+            networkTextField(
+              placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
+              item: $url
+            )
+          }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkBlockExplorerUrlsTitle))
-      ) {
-        ForEach($model.blockUrls) { $url in
-          NetworkTextField(
-            placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
-            item: $url
-          )
+      if !model.blockUrls.isEmpty {
+        Section(
+          header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkBlockExplorerUrlsTitle))
+        ) {
+          ForEach($model.blockUrls) { $url in
+            networkTextField(
+              placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
+              item: $url
+            )
+          }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .navigationBarTitle(model.isEditMode ? Strings.Wallet.editfCustomNetworkTitle : Strings.Wallet.customNetworkDetailsTitle)
+    .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
-        if networkStore.isAddingNewNetwork {
-          ProgressView()
-        } else {
-          Button(action: {
-            addCustomNetwork()
-          }) {
-            Text(Strings.Wallet.saveButtonTitle)
-              .foregroundColor(Color(.braveOrange))
+        if !model.mode.isViewMode { // don't show confirmation action in view mode
+          if networkStore.isAddingNewNetwork {
+            ProgressView()
+          } else {
+            Button(action: {
+              addCustomNetwork()
+            }) {
+              Text(Strings.Wallet.saveButtonTitle)
+                .foregroundColor(Color(.braveOrange))
+            }
           }
         }
       }
@@ -377,6 +414,22 @@ struct CustomNetworkDetailsView: View {
             )
           })
     )
+  }
+  
+  @ViewBuilder private func networkTextField(placeholder: String, item: Binding<NetworkInputItem>) -> some View {
+    if model.mode.isViewMode {
+      Text(item.wrappedValue.input)
+        .contextMenu {
+          Button(action: { UIPasteboard.general.string = item.wrappedValue.input }) {
+            Label(Strings.Wallet.copyToPasteboard, image: "brave.clipboard")
+          }
+        }
+    } else {
+      NetworkTextField(
+        placeholder: placeholder,
+        item: item
+      )
+    }
   }
 
   private func validateAllFields() -> Bool {
@@ -415,7 +468,7 @@ struct CustomNetworkDetailsView: View {
       chainIdInHex = "0x\(String(format: "%02x", idValue))"
     }
     // Check if input chain id already existed for non-edit mode
-    if !model.isEditMode,
+    if !model.mode.isEditMode,
       networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex }) {
       customNetworkError = .duplicateId
       return
@@ -456,7 +509,7 @@ struct CustomNetworkDetailsView: View {
     )
     networkStore.addCustomNetwork(network) { accepted, errMsg in
       guard accepted else {
-        customNetworkError = .failed(errMsg: errMsg)
+        customNetworkError = .failed(errorMessage: errMsg)
         return
       }
 

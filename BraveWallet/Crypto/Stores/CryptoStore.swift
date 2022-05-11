@@ -13,7 +13,7 @@ enum PendingWebpageRequest: Equatable {
 }
 
 enum WebpageRequestResponse: Equatable {
-  case switchChain(approved: Bool, origin: URL)
+  case switchChain(approved: Bool, originInfo: BraveWallet.OriginInfo)
   case addNetwork(approved: Bool, chainId: String)
   case addSuggestedToken(approved: Bool, contractAddresses: [String])
   case signMessage(approved: Bool, id: Int32)
@@ -250,8 +250,8 @@ public class CryptoStore: ObservableObject {
 
   func handleWebpageRequestResponse(_ response: WebpageRequestResponse) {
     switch response {
-    case let .switchChain(approved, origin):
-      rpcService.notifySwitchChainRequestProcessed(approved, origin: origin.origin)
+    case let .switchChain(approved, originInfo):
+      rpcService.notifySwitchChainRequestProcessed(approved, origin: originInfo.origin)
       pendingWebpageRequest = nil
     case let .addNetwork(approved, chainId):
       rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)

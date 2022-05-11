@@ -14,11 +14,33 @@ extension BraveWallet.NetworkInfo {
 }
 
 struct NetworkPicker: View {
+  
+  struct Style: Equatable {
+    let textColor: UIColor
+    let borderColor: UIColor
+    
+    static let `default` = Style(
+      textColor: .bravePrimary,
+      borderColor: .secondaryButtonTint
+    )
+  }
+  
+  let style: Style
   @ObservedObject var networkStore: NetworkStore
   @Binding var selectedNetwork: BraveWallet.NetworkInfo
   @State private var isPresentingAddNetwork: Bool = false
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.buySendSwapDestination) @Binding private var buySendSwapDestination
+  
+  init(
+    style: Style = .`default`,
+    networkStore: NetworkStore,
+    selectedNetwork: Binding<BraveWallet.NetworkInfo>
+  ) {
+    self.style = style
+    self.networkStore = networkStore
+    self._selectedNetwork = selectedNetwork
+  }
   
   private var availableChains: [BraveWallet.NetworkInfo] {
     networkStore.ethereumChains.filter({
@@ -51,11 +73,11 @@ struct NetworkPicker: View {
           .fontWeight(.bold)
         Image(systemName: "chevron.down.circle")
       }
-      .foregroundColor(Color(.bravePrimary))
+      .foregroundColor(Color(style.textColor))
       .font(.caption.weight(.semibold))
       .padding(.init(top: 6, leading: 12, bottom: 6, trailing: 12))
       .background(
-        Color(.secondaryButtonTint)
+        Color(style.borderColor)
           .clipShape(Capsule().inset(by: 0.5).stroke())
       )
       .clipShape(Capsule())

@@ -29,6 +29,24 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )
+          case .switchChain(let request):
+            SuggestedNetworkView(
+              mode: .switchNetworks(chainId: request.chainId),
+              originInfo: request.originInfo,
+              cryptoStore: cryptoStore,
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              onDismiss: onDismiss
+            )
+          case .addChain(let request):
+            SuggestedNetworkView(
+              mode: .addNetwork(request.networkInfo),
+              originInfo: request.originInfo,
+              cryptoStore: cryptoStore,
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              onDismiss: onDismiss
+            )
           default:
             EmptyView()
           }

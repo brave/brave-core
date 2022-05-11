@@ -500,7 +500,7 @@
 		27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */; };
 		27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
 		27F2BD9627B6C86300FBBA01 /* AddSuggestedTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F2BD9527B6C86300FBBA01 /* AddSuggestedTokenView.swift */; };
-		27F2BD9A27B6CCE700FBBA01 /* AddSuggestedNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F2BD9927B6CCE700FBBA01 /* AddSuggestedNetworkView.swift */; };
+		27F2BD9A27B6CCE700FBBA01 /* SuggestedNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F2BD9927B6CCE700FBBA01 /* SuggestedNetworkView.swift */; };
 		27F3AEF4271DDE0C00F75B7F /* OpenWalletURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
@@ -2091,7 +2091,7 @@
 		27EEEDB72507D51E00024038 /* Release (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Release (AppStore).entitlements"; sourceTree = "<group>"; };
 		27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceListViewController.swift; sourceTree = "<group>"; };
 		27F2BD9527B6C86300FBBA01 /* AddSuggestedTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSuggestedTokenView.swift; sourceTree = "<group>"; };
-		27F2BD9927B6CCE700FBBA01 /* AddSuggestedNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSuggestedNetworkView.swift; sourceTree = "<group>"; };
+		27F2BD9927B6CCE700FBBA01 /* SuggestedNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedNetworkView.swift; sourceTree = "<group>"; };
 		27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWalletURLAction.swift; sourceTree = "<group>"; };
 		27F443952135E11200296C58 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F4439C2135E11200296C58 /* ShareExtension.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ShareExtension.plist; sourceTree = "<group>"; };
@@ -4458,7 +4458,7 @@
 		27F2BD9827B6CB8F00FBBA01 /* Add Suggested Network */ = {
 			isa = PBXGroup;
 			children = (
-				27F2BD9927B6CCE700FBBA01 /* AddSuggestedNetworkView.swift */,
+				27F2BD9927B6CCE700FBBA01 /* SuggestedNetworkView.swift */,
 			);
 			path = "Add Suggested Network";
 			sourceTree = "<group>";
@@ -7676,7 +7676,7 @@
 				7D758919271A184D00B643C3 /* BuyTokenSearchView.swift in Sources */,
 				271F689C26EBD27E00AA2A50 /* NetworkPicker.swift in Sources */,
 				271F68A626EBD27E00AA2A50 /* PortfolioAssetView.swift in Sources */,
-				27F2BD9A27B6CCE700FBBA01 /* AddSuggestedNetworkView.swift in Sources */,
+				27F2BD9A27B6CCE700FBBA01 /* SuggestedNetworkView.swift in Sources */,
 				271F68A226EBD27E00AA2A50 /* AddAccountView.swift in Sources */,
 				271F68A126EBD27E00AA2A50 /* AccountsHeaderView.swift in Sources */,
 				D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */,
