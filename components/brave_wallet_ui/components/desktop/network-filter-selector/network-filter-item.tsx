@@ -8,7 +8,6 @@ import { CreateNetworkIcon } from '../../shared'
 
 // Utils
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
-import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // Styled Components
 import {
@@ -55,9 +54,7 @@ function NetworkFilterItem (props: Props) {
     >
       <NetworkItemButton onClick={onClickSelectNetwork}>
         <LeftSide>
-          {network.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={network} marginRight={14} size='big' />
-          }
+          <CreateNetworkIcon network={network} marginRight={14} size='big' />
           <NetworkName>{isSubItem ? network.chainName : reduceNetworkDisplayName(network.chainName)}</NetworkName>
         </LeftSide>
         {network.chainId === selectedNetwork.chainId &&
