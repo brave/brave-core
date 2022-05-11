@@ -6,6 +6,7 @@
 #include "brave/components/tor/tor_utils.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "absl/types/optional.h"

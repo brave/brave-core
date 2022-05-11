@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 #define BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
 
-#include <array>
+#include <string>
 #include <vector>
 
 #include "base/values.h"
@@ -36,9 +36,9 @@ struct BridgesConfig {
   static absl::optional<BridgesConfig> FromValue(const base::Value* v);
   base::Value::Dict ToDict() const;
   base::Value ToValue() const;
-  
+
   bool use_bridges = false;
-  BuiltinType use_builtin = BuiltinType::kNone;  
+  BuiltinType use_builtin = BuiltinType::kNone;
   std::vector<std::string> bridges;
 };
 

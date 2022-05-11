@@ -12,4 +12,4 @@ const char kTorDisabled[] = "tor.tor_disabled";
 const char kAutoOnionRedirect[] = "tor.auto_onion_location";
 const char kBridgesConfig[] = "tor.bridges";
 
-}  // namespace tor
+}  // namespace tor::prefs

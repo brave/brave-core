@@ -138,7 +138,7 @@ TorProfileServiceImpl::TorProfileServiceImpl(
     tor_pluggable_transport_udater_->AddObserver(this);
   }
 
-  pref_change_registrar_.Init(local_state_.get());  
+  pref_change_registrar_.Init(local_state_.get());
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
@@ -222,7 +222,7 @@ void TorProfileServiceImpl::RegisterTorClientUpdater() {
         tor::prefs::kBridgesConfig,
         base::BindRepeating(&TorProfileServiceImpl::OnBridgesConfigChanged,
                             base::Unretained(this)));
-    OnBridgesConfigChanged();                            
+    OnBridgesConfigChanged();
   }
 }
 

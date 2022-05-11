@@ -51,7 +51,8 @@ bool TorProfileServiceFactory::IsTorDisabled() {
 }
 
 // static
-void TorProfileServiceFactory::SetTorBridgesConfig(const tor::BridgesConfig& config) {
+void TorProfileServiceFactory::SetTorBridgesConfig(
+    const tor::BridgesConfig& config) {
   if (g_browser_process) {
     g_browser_process->local_state()->SetDict(tor::prefs::kBridgesConfig,
                                               config.ToDict());

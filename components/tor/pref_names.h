@@ -15,6 +15,6 @@ extern const char kBridgesEnabledCount[];
 extern const char kAutoOnionRedirect[];
 extern const char kBridgesConfig[];
 
-}  // namespace tor
+}  // namespace tor::prefs
 
 #endif  // BRAVE_COMPONENTS_TOR_PREF_NAMES_H_

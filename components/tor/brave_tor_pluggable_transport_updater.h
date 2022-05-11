@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_TOR_BRAVE_TOR_PLUGGABLE_TRANSPORT_UPDATER_H_
 #define BRAVE_COMPONENTS_TOR_BRAVE_TOR_PLUGGABLE_TRANSPORT_UPDATER_H_
 
+#include <string>
+
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"

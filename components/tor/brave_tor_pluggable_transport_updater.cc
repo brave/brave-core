@@ -5,6 +5,8 @@
 
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 
+#include <string>
+
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
