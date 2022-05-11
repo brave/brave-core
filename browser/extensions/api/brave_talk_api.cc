@@ -41,6 +41,11 @@ BraveTalkBeginAdvertiseShareDisplayMediaFunction::Run() {
 }
 
 void BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived(std::string device_id) {
+  if (device_id.empty()) {
+    RespondWithError("No deviceId provided");
+    return;
+  }
+
   Respond(OneArgument(base::Value(device_id)));
 }
 
