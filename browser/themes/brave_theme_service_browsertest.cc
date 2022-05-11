@@ -188,13 +188,20 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, OmniboxColorTest) {
       tp->GetColor(ThemeProperties::COLOR_OMNIBOX_RESULTS_BG));
 }
 
+// Some tests are failing for Windows x86 CI,
+// See https://github.com/brave/brave-browser/issues/22767
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_DarkModeChangeByRegTest DISABLED_DarkModeChangeByRegTest
+#else
+#define MAYBE_DarkModeChangeByRegTest DarkModeChangeByRegTest
+#endif
 #if BUILDFLAG(IS_WIN)
-// Test native theme notification is called properly by changing reg value.
-// This simulates dark mode setting from Windows settings.
-// And Toggle it twice from initial value to go back to initial value  because
-// reg value changes system value. Otherwise, dark mode config could be changed
-// after running this test.
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, DarkModeChangeByRegTest) {
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
+  // Test native theme notification is called properly by changing reg value.
+  // This simulates dark mode setting from Windows settings.
+  // And Toggle it twice from initial value to go back to initial value  because
+  // reg value changes system value. Otherwise, dark mode config could be
+  // changed after running this test.
   if (!ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported())
     return;
 
