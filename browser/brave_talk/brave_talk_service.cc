@@ -12,7 +12,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content\public\browser\render_process_host.h"
 
-
 namespace brave_talk {
 
 BraveTalkService::BraveTalkService() = default;
@@ -33,11 +32,9 @@ void BraveTalkService::GetDeviceID(
 }
 
 void BraveTalkService::StartObserving(content::WebContents* contents) {
-  if (observing_) {
+  if (observing_)
     StopObserving(observing_.get());
-  }
 
-  LOG(ERROR) << "Started watching: " << contents;
   // TODO: We should be able to observe multiple web contents.
   observing_ = contents->GetWeakPtr();
   Observe(contents);
@@ -50,8 +47,6 @@ void BraveTalkService::StartObserving(content::WebContents* contents) {
 }
 
 void BraveTalkService::StopObserving(content::WebContents* contents) {
-  LOG(ERROR) << "Stopped watching: " << contents;
-
   auto* button = share_tab_button();
   if (!button)
     return;
