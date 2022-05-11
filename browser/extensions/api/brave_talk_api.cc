@@ -16,8 +16,7 @@
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "brave/browser/brave_talk/brave_talk_service_factory.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -49,5 +48,4 @@ void BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived(std::s
   Respond(OneArgument(base::Value(device_id)));
 }
 
-}  // namespace api
 }  // namespace extensions
