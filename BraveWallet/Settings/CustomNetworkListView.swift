@@ -31,8 +31,7 @@ struct CustomNetworkListView: View {
         let customNetworks = networkStore.ethereumChains.filter({ $0.isCustom })
         ForEach(customNetworks) { network in
           Button(action: {
-            isPresentingNetworkDetails = .init()
-            isPresentingNetworkDetails?.populateDetails(from: network)
+            isPresentingNetworkDetails = .init(from: network)
           }) {
             HStack {
               VStack(alignment: .leading, spacing: 2) {

@@ -165,25 +165,11 @@ struct WalletPanelView: View {
   }
   
   private var networkPickerButton: some View {
-    Button {
-      
-    } label: {
-      HStack {
-        Text(networkStore.selectedChain.shortChainName)
-          .fontWeight(.bold)
-          .lineLimit(1)
-        Image(systemName: "chevron.down.circle")
-      }
-      .foregroundColor(.white)
-      .font(.caption.weight(.semibold))
-      .padding(.init(top: 6, leading: 12, bottom: 6, trailing: 12))
-      .background(
-        Color.white.opacity(0.5)
-          .clipShape(Capsule().inset(by: 0.5).stroke())
-      )
-      .clipShape(Capsule())
-      .contentShape(Capsule())
-    }
+    NetworkPicker(
+      style: .init(textColor: .white, borderColor: .white),
+      networkStore: networkStore,
+      selectedNetwork: networkStore.selectedChainBinding
+    )
   }
   
   var body: some View {

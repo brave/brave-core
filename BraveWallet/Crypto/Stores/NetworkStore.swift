@@ -133,8 +133,9 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
+    updateChainList()
   }
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    self.selectedChainId = chainId
+    setSelectedChain(chainId: chainId)
   }
 }
