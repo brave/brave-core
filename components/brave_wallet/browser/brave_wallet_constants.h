@@ -623,6 +623,8 @@ const char kAffiliateAddress[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 
 const int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 
+const char kPolygonMainnetEndpoint[] = "https://mainnet-polygon.brave.com/";
+
 // Unstoppable domains record key for ethereum address.
 constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 

@@ -46,9 +46,9 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
   // omnibox, it will be parsed as OmniboxInputType::URL input type instead of
   // OmniboxInputType::UNKNOWN, The first entry in the autocomplete list will be
   // URL instead of search.
-  for (auto* unstoppabe_domain : decentralized_dns::kUnstoppableDomains) {
-    if (base::EndsWith(host, unstoppabe_domain)) {
-      *suffix_length = strlen(unstoppabe_domain) - 1;
+  for (auto* unstoppable_domain : decentralized_dns::kUnstoppableDomains) {
+    if (base::EndsWith(host, unstoppable_domain)) {
+      *suffix_length = strlen(unstoppable_domain) - 1;
       return kDafsaFound;
     }
   }

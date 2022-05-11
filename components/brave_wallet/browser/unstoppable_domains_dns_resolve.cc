@@ -61,4 +61,5 @@ const std::vector<std::string>& GetRecordKeys() {
       std::begin(kRecordKeys), std::end(kRecordKeys));
   return *keys;
 }
+
 }  // namespace brave_wallet::unstoppable_domains

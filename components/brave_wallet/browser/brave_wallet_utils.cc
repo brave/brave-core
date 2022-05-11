@@ -918,7 +918,7 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
   if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    return GURL("https://mainnet-polygon.brave.com/" + GetInfuraProjectID());
+    return GURL(kPolygonMainnetEndpoint + GetInfuraProjectID());
   }
 
   if (chain_id == brave_wallet::mojom::kMainnetChainId) {

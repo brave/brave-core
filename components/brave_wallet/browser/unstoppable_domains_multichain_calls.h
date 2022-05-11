@@ -76,6 +76,7 @@ class MultichainCalls {
   // domain -> call
   base::flat_map<std::string, MultichainCall<ResultType>> calls_;
 };
+
 }  // namespace brave_wallet::unstoppable_domains
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_MULTICHAIN_CALLS_H_
