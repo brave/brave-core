@@ -209,7 +209,7 @@ extension BrowserViewController {
       ethTxManagerProxy: ethTxManagerProxy
     )
 
-    let vc = WalletHostingViewController(walletStore: walletStore)
+    let vc = WalletHostingViewController(walletStore: walletStore, faviconRenderer: FavIconImageRenderer())
     vc.delegate = self
     self.dismiss(animated: true) {
       self.present(vc, animated: true)

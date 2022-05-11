@@ -34,18 +34,28 @@ public struct NewSiteConnectionView: View {
   @State private var selectedAccounts: Set<BraveWallet.AccountInfo.ID> = []
   @State private var isConfirmationViewVisible: Bool = false
   
+  @ViewBuilder private func originAndFavicon(url: URL) -> some View {
+    FaviconReader(url: url) { image in
+      if let image = image {
+        Image(uiImage: image)
+          .resizable()
+          .scaledToFit()
+          .frame(width: faviconSize, height: faviconSize)
+          .background(Color(.braveDisabled))
+          .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+      } else {
+        ProgressView()
+      }
+    }
+    Text(verbatim: url.absoluteString)
+      .font(.subheadline)
+      .foregroundColor(Color(.braveLabel))
+      .multilineTextAlignment(.center)
+  }
+  
   private var headerView: some View {
     VStack(spacing: 8) {
-      Image(systemName: "globe")
-        .frame(width: faviconSize, height: faviconSize)
-        .background(Color(.braveDisabled))
-        .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-      origin.url.map { url in
-        Text(verbatim: url.absoluteString)
-          .font(.subheadline)
-          .foregroundColor(Color(.braveLabel))
-          .multilineTextAlignment(.center)
-      }
+      origin.url.map(originAndFavicon(url:))
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
         .foregroundColor(Color(.bravePrimary))

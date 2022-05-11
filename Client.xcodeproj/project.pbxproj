@@ -979,6 +979,7 @@
 		7D49CDDF271FB359008AB67E /* SendTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D49CDDE271FB359008AB67E /* SendTokenStore.swift */; };
 		7D4C4914278E31E40073C37E /* WebImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C4913278E31E40073C37E /* WebImageReader.swift */; };
 		7D4C49512791D2450073C37E /* CustomNetworkDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C49502791D2450073C37E /* CustomNetworkDetailsView.swift */; };
+		7D70F10D281C2B6C00BCBF2D /* FaviconReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D70F101281BA47A00BCBF2D /* FaviconReader.swift */; };
 		7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758907271A172C00B643C3 /* BuyTokenView.swift */; };
 		7D758915271A17AF00B643C3 /* BuyTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758914271A17AF00B643C3 /* BuyTokenStore.swift */; };
 		7D758917271A182800B643C3 /* TokenList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758916271A182800B643C3 /* TokenList.swift */; };
@@ -1216,6 +1217,7 @@
 		D5412B452819F24000463106 /* WalletNumberFormatterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */; };
 		D59CA2B7282AE54500D02BEF /* OriginText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59CA2B6282AE54500D02BEF /* OriginText.swift */; };
 		D552E6922807231F00A847F3 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1DC51320AC9AF900905E5A /* Data.framework */; };
+		D59CA29F282AE0FB00D02BEF /* FavIconImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59CA29E282AE0FB00D02BEF /* FavIconImageRenderer.swift */; };
 		D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */; };
 		D5ACA7CE27FB7D08002443CE /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		D5ACA7D927FB7D0E002443CE /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
@@ -2930,6 +2932,7 @@
 		7D49CDDE271FB359008AB67E /* SendTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenStore.swift; sourceTree = "<group>"; };
 		7D4C4913278E31E40073C37E /* WebImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageReader.swift; sourceTree = "<group>"; };
 		7D4C49502791D2450073C37E /* CustomNetworkDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNetworkDetailsView.swift; sourceTree = "<group>"; };
+		7D70F101281BA47A00BCBF2D /* FaviconReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconReader.swift; sourceTree = "<group>"; };
 		7D758907271A172C00B643C3 /* BuyTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenView.swift; sourceTree = "<group>"; };
 		7D758914271A17AF00B643C3 /* BuyTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenStore.swift; sourceTree = "<group>"; };
 		7D758916271A182800B643C3 /* TokenList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenList.swift; sourceTree = "<group>"; };
@@ -3173,6 +3176,7 @@
 		D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStoreTests.swift; sourceTree = "<group>"; };
 		D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletNumberFormatterExtensions.swift; sourceTree = "<group>"; };
 		D59CA2B6282AE54500D02BEF /* OriginText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginText.swift; sourceTree = "<group>"; };
+		D59CA29E282AE0FB00D02BEF /* FavIconImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavIconImageRenderer.swift; sourceTree = "<group>"; };
 		D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsView.swift; sourceTree = "<group>"; };
 		D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPasscodeEntryView.swift; sourceTree = "<group>"; };
 		D5EFCB3827FF81AA00BD151D /* EditPermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPermissionsView.swift; sourceTree = "<group>"; };
@@ -3898,6 +3902,7 @@
 				6185F9402763E3AA00D135E9 /* BraveWallet.strings */,
 				7D4C4913278E31E40073C37E /* WebImageReader.swift */,
 				2778964A27FCA852002F4402 /* WalletPreferences.swift */,
+				7D70F101281BA47A00BCBF2D /* FaviconReader.swift */,
 			);
 			path = BraveWallet;
 			sourceTree = "<group>";
@@ -4250,6 +4255,7 @@
 			children = (
 				277223712469B4FB0059A7EB /* FaviconFetcher.swift */,
 				277223752469E7290059A7EB /* LargeFaviconView.swift */,
+				D59CA29E282AE0FB00D02BEF /* FavIconImageRenderer.swift */,
 			);
 			path = Favicons;
 			sourceTree = "<group>";
@@ -8121,6 +8127,7 @@
 				27E17B812744067A00F3C282 /* AccountActivityStore.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
 				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,
+				7D70F10D281C2B6C00BCBF2D /* FaviconReader.swift in Sources */,
 				2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */,
 				7D3393EA2744200B00265F1A /* AddCustomAssetView.swift in Sources */,
 			);
@@ -8844,6 +8851,7 @@
 				CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */,
 				277E94F225F834240001926E /* VPNMenuButton.swift in Sources */,
 				2755EABD255323C60033C43F /* PublisherInfoExtensions.swift in Sources */,
+				D59CA29F282AE0FB00D02BEF /* FavIconImageRenderer.swift in Sources */,
 				2746D28324A4FB7400E38852 /* RewardsInternalsSharable.swift in Sources */,
 				44331DDA22552313007E3E93 /* LocationContainerView.swift in Sources */,
 				5E5E6E4625BA041E0035B6A0 /* PlaylistParticleEmitter.swift in Sources */,

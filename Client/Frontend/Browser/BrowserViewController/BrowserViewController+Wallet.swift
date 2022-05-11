@@ -49,7 +49,11 @@ extension BrowserViewController {
     guard let walletStore = WalletStore.from(privateMode: privateMode) else {
       return
     }
-    let controller = WalletPanelHostingController(walletStore: walletStore, origin: getOrigin())
+    let controller = WalletPanelHostingController(
+      walletStore: walletStore,
+      origin: getOrigin(),
+      faviconRenderer: FavIconImageRenderer()
+    )
     controller.delegate = self
     let popover = PopoverController(contentController: controller, contentSizeBehavior: .autoLayout)
     popover.present(from: topToolbar.locationView.walletButton, on: self, completion: nil)
@@ -132,10 +136,10 @@ extension BrowserViewController: BraveWalletProviderDelegate {
           completion([], .userRejectedRequest, "User rejected request")
         }
       })
-
       let permissions = WalletHostingViewController(
         walletStore: walletStore,
         presentingContext: .requestEthererumPermissions(request),
+        faviconRenderer: FavIconImageRenderer(),
         onUnlock: {
           Task { @MainActor in
             // If the user unlocks their wallet and we already have permissions setup they do not
@@ -296,5 +300,11 @@ extension Tab: BraveWalletKeyringServiceObserver {
   }
   
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
+  }
+}
+
+extension FavIconImageRenderer: WalletFaviconRenderer {
+  func loadIcon(siteURL: URL, persistent: Bool, completion: ((UIImage?) -> Void)?) {
+    loadIcon(siteURL: siteURL, kind: .largeIcon, persistent: persistent, completion: completion)
   }
 }
