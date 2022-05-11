@@ -2,7 +2,7 @@ diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibil
 index e36eedc550ec25052b5d574c0137ee634ef4260b..ece5397ce7fd37c29e59dfffd78a3e87aa64389f 100644
 --- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
 +++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-@@ -1985,6 +1985,7 @@ - (NSAttributedString*)accessibilityAttributedStringForRange:(NSRange)range {
+@@ -1985,6 +1985,7 @@ bool IsAXSetter(SEL selector) {
    if (!_node)
      return nil;
  
