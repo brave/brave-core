@@ -23,8 +23,7 @@ public class NetworkStore: ObservableObject {
     .init(
       get: { self.ethereumChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init() },
       set: {
-        self.selectedChainId = $0.chainId
-        self.rpcService.setNetwork($0.chainId) { _ in }
+        self.setSelectedChain(chainId: $0.chainId)
       }
     )
   }
@@ -35,9 +34,7 @@ public class NetworkStore: ObservableObject {
     self.rpcService = rpcService
     self.updateChainList()
     rpcService.chainId { chainId in
-      let id = chainId.isEmpty ? BraveWallet.MainnetChainId : chainId
-      self.selectedChainId = id
-      self.rpcService.setNetwork(id) { _ in }
+      self.selectedChainId = chainId.isEmpty ? BraveWallet.MainnetChainId : chainId
     }
     rpcService.add(self)
   }
@@ -48,6 +45,12 @@ public class NetworkStore: ObservableObject {
         $0.chainId != BraveWallet.LocalhostChainId
       }
     }
+  }
+
+  private func setSelectedChain(chainId: String) {
+    guard self.selectedChainId != chainId else { return }
+    self.selectedChainId = chainId
+    self.rpcService.setNetwork(chainId) { _ in }
   }
 
   // MARK: - Custom Networks

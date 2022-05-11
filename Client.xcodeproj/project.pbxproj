@@ -1216,6 +1216,7 @@
 		D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */; };
 		D552E6922807231F00A847F3 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1DC51320AC9AF900905E5A /* Data.framework */; };
 		D5412B452819F24000463106 /* WalletNumberFormatterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */; };
+		D59CA2B7282AE54500D02BEF /* OriginText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59CA2B6282AE54500D02BEF /* OriginText.swift */; };
 		D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */; };
 		D5ACA7CE27FB7D08002443CE /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
 		D5ACA7D927FB7D0E002443CE /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
@@ -3218,6 +3219,7 @@
 		D511314A2800C16100C81683 /* TransactionConfirmationStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionConfirmationStoreTests.swift; sourceTree = "<group>"; };
 		D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStoreTests.swift; sourceTree = "<group>"; };
 		D5412B442819F24000463106 /* WalletNumberFormatterExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletNumberFormatterExtensions.swift; sourceTree = "<group>"; };
+		D59CA2B6282AE54500D02BEF /* OriginText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginText.swift; sourceTree = "<group>"; };
 		D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsView.swift; sourceTree = "<group>"; };
 		D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPasscodeEntryView.swift; sourceTree = "<group>"; };
 		D5EFCB3827FF81AA00BD151D /* EditPermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPermissionsView.swift; sourceTree = "<group>"; };
@@ -3984,6 +3986,7 @@
 				271F687726EBD27D00AA2A50 /* Onboarding */,
 				2762FF2F271A054A001EF41D /* AssetIconView.swift */,
 				277C0A99273DC0890059AB0A /* NamedAddresses.swift */,
+				D59CA2B6282AE54500D02BEF /* OriginText.swift */,
 			);
 			path = Crypto;
 			sourceTree = "<group>";
@@ -8168,6 +8171,7 @@
 				271F689E26EBD27E00AA2A50 /* MockBlockchainRegistry.swift in Sources */,
 				27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */,
 				271F68B126EBD27E00AA2A50 /* EnableBiometricsView.swift in Sources */,
+				D59CA2B7282AE54500D02BEF /* OriginText.swift in Sources */,
 				271F68BF26EBD27E00AA2A50 /* DateRangeView.swift in Sources */,
 				7D4C49512791D2450073C37E /* CustomNetworkDetailsView.swift in Sources */,
 				7DC52B12273D99E70067E237 /* WalletArrayExtension.swift in Sources */,

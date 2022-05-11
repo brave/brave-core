@@ -13,12 +13,25 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   var toolbarDismissContent: DismissContent
-  
+
+  @available(iOS, introduced: 14.0, deprecated: 15.0, message: "Use PresentationMode on iOS 15")
+  var onDismiss: () -> Void
+
   var body: some View {
     UIKitNavigationView {
       Group {
         if let pendingRequest = cryptoStore.pendingWebpageRequest {
-
+          switch pendingRequest {
+          case .addSuggestedToken(let request):
+            AddSuggestedTokenView(
+              token: request.token,
+              originInfo: request.origin,
+              cryptoStore: cryptoStore,
+              onDismiss: onDismiss
+            )
+          default:
+            EmptyView()
+          }
         }
       }
       .toolbar {

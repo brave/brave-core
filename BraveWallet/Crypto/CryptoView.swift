@@ -81,7 +81,10 @@ public struct CryptoView: View {
               WebpageRequestContainerView(
                 keyringStore: keyringStore,
                 cryptoStore: store,
-                toolbarDismissContent: dismissButtonToolbarContents
+                toolbarDismissContent: dismissButtonToolbarContents,
+                onDismiss: {
+                  dismissAction?()
+                }
               )
             case .requestEthererumPermissions(let request):
               NewSiteConnectionView(
