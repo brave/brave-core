@@ -15,6 +15,8 @@ export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
 
 export const isSelectedAssetInAssetOptions = (selectedAsset: BraveWallet.BlockchainToken, assetOptions: BraveWallet.BlockchainToken[]) => {
   return assetOptions.findIndex(asset => {
-    return asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() && asset.chainId === selectedAsset.chainId
+    return asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
+      asset.chainId === selectedAsset.chainId &&
+      asset.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase()
   }) !== -1
 }
