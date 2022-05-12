@@ -50,3 +50,4 @@ export const setHardwareWalletInteractionError = createAction<HardwareWalletResp
 export const cancelConnectHardwareWallet = createAction<BraveWallet.TransactionInfo>('cancelConnectHardwareWallet')
 export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>('addSuggestToken')
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
+export const setSelectedTransaction = createAction<BraveWallet.TransactionInfo | undefined>('setSelectedTransaction')

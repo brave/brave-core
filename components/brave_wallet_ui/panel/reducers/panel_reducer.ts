@@ -35,9 +35,9 @@ const defaultState: PanelState = {
     decimals: 18,
     coin: BraveWallet.CoinType.ETH,
     data: {
-       ethData: {
+      ethData: {
         isEip1559: true
-       }
+      }
     }
   },
   swapQuote: undefined,
@@ -62,7 +62,8 @@ const defaultState: PanelState = {
     chainId: ''
   },
   hardwareWalletCode: undefined,
-  suggestedToken: undefined
+  suggestedToken: undefined,
+  selectedTransaction: undefined
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -132,6 +133,13 @@ reducer.on(PanelActions.addSuggestToken, (state: any, payload: BraveWallet.AddSu
   return {
     ...state,
     suggestedToken: payload.token
+  }
+})
+
+reducer.on(PanelActions.setSelectedTransaction, (state: PanelState, payload: BraveWallet.TransactionInfo | undefined): PanelState => {
+  return {
+    ...state,
+    selectedTransaction: payload
   }
 })
 

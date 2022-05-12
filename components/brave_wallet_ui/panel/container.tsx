@@ -127,7 +127,8 @@ function Container (props: Props) {
     signMessageData,
     switchChainRequest,
     suggestedToken,
-    publicEncryptionKeyData
+    publicEncryptionKeyData,
+    selectedTransaction
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -136,7 +137,6 @@ function Container (props: Props) {
   // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
-  const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>()
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
 
@@ -461,15 +461,12 @@ function Container (props: Props) {
   const onQueueNextTransaction = () => {
     props.walletActions.queueNextTransaction()
   }
-  const retryHardwareOperation = () => {
-    // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
-    if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
-      onSignData()
-    }
-    if (selectedPendingTransaction) {
-      onConfirmTransaction()
-    }
+
+  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+    props.walletPanelActions.setSelectedTransaction(transaction)
+    props.walletPanelActions.navigateTo('transactionDetails')
   }
+
   const onConfirmTransaction = () => {
     if (!selectedPendingTransaction) {
       return
@@ -478,9 +475,18 @@ function Container (props: Props) {
       props.walletPanelActions.approveHardwareTransaction(selectedPendingTransaction)
     } else {
       props.walletActions.approveTransaction(selectedPendingTransaction)
+      onSelectTransaction(selectedPendingTransaction)
     }
+  }
 
-    onSelectTransaction(selectedPendingTransaction)
+  const retryHardwareOperation = () => {
+    // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
+    if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
+      onSignData()
+    }
+    if (selectedPendingTransaction) {
+      onConfirmTransaction()
+    }
   }
 
   const onOpenSettings = () => {
@@ -544,11 +550,6 @@ function Container (props: Props) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-  }
-
-  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
-    setSelectedTransaction(transaction)
-    props.walletPanelActions.navigateTo('transactionDetails')
   }
 
   const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
