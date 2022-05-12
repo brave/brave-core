@@ -86,6 +86,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorImpl;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -397,7 +398,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                     Intent intent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
                     intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, currentTabId);
-                    mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+                    mActivity.startActivityForResult(
+                            intent, BraveConstants.SITE_BANNER_REQUEST_CODE);
 
                     //BraveRewardsPanelPopup is not an Activity and onActivityResult is not available
                     //to dismiss mTippingInProgress. Post a delayed task to flip a mTippingInProgress flag.
@@ -1830,10 +1832,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
-                        int requestCode =
-                            (status == BraveRewardsExternalWallet.NOT_CONNECTED) ?
-                            BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE :
-                            BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
+                        int requestCode = (status == BraveRewardsExternalWallet.NOT_CONNECTED)
+                                ? BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
+                                : BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE;
                         Intent intent = BuildVerifyWalletActivityIntent(status);
                         mActivity.startActivityForResult(intent, requestCode);
                     }

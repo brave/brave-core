@@ -136,6 +136,7 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -175,10 +176,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity
         implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
                    OnBraveSetDefaultBrowserListener, ConnectionErrorHandler {
-    public static final int SITE_BANNER_REQUEST_CODE = 33;
-    public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
-    public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
-    public static final int MONTHLY_CONTRIBUTION_REQUEST_CODE = 36;
     public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
@@ -1294,9 +1291,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK
-                && (requestCode == VERIFY_WALLET_ACTIVITY_REQUEST_CODE
-                        || requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE
-                        || requestCode == SITE_BANNER_REQUEST_CODE)) {
+                && (requestCode == BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
+                        || requestCode == BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE
+                        || requestCode == BraveConstants.SITE_BANNER_REQUEST_CODE)) {
             dismissRewardsPanel();
             if (data != null) {
                 String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
@@ -1304,11 +1301,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     openNewOrSelectExistingTab(open_url);
                 }
             }
-        } else if (resultCode == RESULT_OK && requestCode == MONTHLY_CONTRIBUTION_REQUEST_CODE) {
+        } else if (resultCode == RESULT_OK
+                && requestCode == BraveConstants.MONTHLY_CONTRIBUTION_REQUEST_CODE) {
             dismissRewardsPanel();
 
         } else if (resultCode == RESULT_OK
-                && requestCode == BraveSetDefaultBrowserUtils.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
+                && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
             BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
         }
         super.onActivityResult(requestCode, resultCode, data);

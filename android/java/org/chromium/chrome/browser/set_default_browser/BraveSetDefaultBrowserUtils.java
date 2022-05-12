@@ -29,11 +29,11 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
 
 public class BraveSetDefaultBrowserUtils {
-    public static final int DEFAULT_BROWSER_ROLE_REQUEST_CODE = 36;
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "https://brave.com/privacy-features/";
@@ -138,7 +138,7 @@ public class BraveSetDefaultBrowserUtils {
 
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
-                            DEFAULT_BROWSER_ROLE_REQUEST_CODE);
+                            BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
                 }
             } else {
                 openDefaultAppsSettings(activity);

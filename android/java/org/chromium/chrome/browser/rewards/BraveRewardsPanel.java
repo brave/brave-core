@@ -93,6 +93,7 @@ import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -294,7 +295,7 @@ public class BraveRewardsPanel
             Intent intent = new Intent(
                     ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
             intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
-            mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+            mActivity.startActivityForResult(intent, BraveConstants.SITE_BANNER_REQUEST_CODE);
         });
 
         mBtnAddFunds = mPopupView.findViewById(R.id.btn_add_funds);
@@ -1277,8 +1278,8 @@ public class BraveRewardsPanel
                             dismiss();
                         } else {
                             int requestCode = (status == BraveRewardsExternalWallet.NOT_CONNECTED)
-                                    ? BraveActivity.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
-                                    : BraveActivity.USER_WALLET_ACTIVITY_REQUEST_CODE;
+                                    ? BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
+                                    : BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE;
                             Intent intent = BuildVerifyWalletActivityIntent(status);
                             if (intent != null) {
                                 mActivity.startActivityForResult(intent, requestCode);
@@ -1424,7 +1425,7 @@ public class BraveRewardsPanel
                 ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
         intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
         intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
-        mActivity.startActivityForResult(intent, BraveActivity.MONTHLY_CONTRIBUTION_REQUEST_CODE);
+        mActivity.startActivityForResult(intent, BraveConstants.MONTHLY_CONTRIBUTION_REQUEST_CODE);
     }
 
     private void updatePublisherStatus(int pubStatus) {
