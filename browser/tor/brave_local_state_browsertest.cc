@@ -22,7 +22,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, ChangeTest) {
-  TorProfileServiceFactory::SetTorDisabled(false);
+  TorProfileServiceFactory::SetTorDisabled(true);
   EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
 
   tor::BridgesConfig bridges_config;

@@ -169,6 +169,13 @@ class BraveTorTest : public InProcessBrowserTest {
     }
   }
 
+  void WaitProcessExit(int pid) {
+    base::Process p = base::Process::Open(pid);
+    if (p.IsValid()) {
+      p.WaitForExit(nullptr);
+    }
+  }
+
   void WaitProcessExit(const std::string& name) {
     while (base::GetProcessCount(base::FilePath::FromASCII(name).value(),
                                  nullptr)) {
@@ -194,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, OpenCloseDisableTorWindow) {
         tor_browser, ui_test_utils::BrowserChangeObserver::ChangeType::kRemoved)
         .Wait();
 
-    EXPECT_FALSE(base::Process::Open(tor.tor_pid).IsValid());
+    WaitProcessExit(tor.tor_pid);
   }
 
   // Disable tor, expect executables are removed.

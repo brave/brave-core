@@ -29,7 +29,7 @@ constexpr const char kComponentName[] = "Brave Pluggable Transports (Linux)";
 #endif
 
 constexpr const char kSnowflakeExecutableName[] = "tor-snowflake-brave";
-constexpr const char kObfs4ExecutableName[] = "tor-obsf4-brave";
+constexpr const char kObfs4ExecutableName[] = "tor-obfs4-brave";
 
 bool Initialize(const base::FilePath& install_dir) {
   const auto executables = {install_dir.AppendASCII(kSnowflakeExecutableName),
