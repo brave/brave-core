@@ -7,6 +7,9 @@
 
 package org.chromium.chrome.browser.firstrun;
 
+import static org.chromium.chrome.browser.app.BraveActivity.BRAVE_BETA_PACKAGE_NAME;
+import static org.chromium.chrome.browser.app.BraveActivity.BRAVE_NIGHTLY_PACKAGE_NAME;
+
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,6 +32,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -149,6 +153,8 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
                     }
                 });
 
+        enableCrashReportingOnBetaOrNightly();
+
         mBtnContinue.setEnabled(true);
     }
 
@@ -195,5 +201,15 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
                 ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
         FirstRunUtils.setEulaAccepted();
         completeOnboardingExperience();
+    }
+
+    private void enableCrashReportingOnBetaOrNightly() {
+        if (PackageUtils.isFirstInstall(this)
+                && (getPackageName().equals(BRAVE_NIGHTLY_PACKAGE_NAME)
+                        || getPackageName().equals(BRAVE_BETA_PACKAGE_NAME))
+
+        ) {
+            UmaSessionStats.changeMetricsReportingConsent(true);
+        }
     }
 }
