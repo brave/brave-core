@@ -143,4 +143,7 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/federated_internals/federated_internals_resources.grd": {
     "includes": [58750]
   },
+  "<(ROOT_GEN_DIR)/brave/web-ui-nft_display/nft_display.grd": {
+    "includes": [59000]
+  },
 }
