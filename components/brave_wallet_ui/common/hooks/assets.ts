@@ -12,14 +12,18 @@ import {
   WalletState
 } from '../../constants/types'
 
-// Options
-import { makeNetworkAsset } from '../../options/asset-options'
-
 // Hooks
 import usePricing from './pricing'
 import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
+
+const assetsLogo = (assets: BraveWallet.BlockchainToken[]) => {
+  return assets.map(token => ({
+    ...token,
+    logo: `chrome://erc-token-images/${token.logo}`
+  }) as BraveWallet.BlockchainToken)
+}
 
 export function useAssets () {
   // redux
@@ -36,10 +40,6 @@ export function useAssets () {
 
   const { computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(networkList)
-  const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(selectedNetwork),
-    [selectedNetwork]
-  )
 
   const assetsByNetwork = React.useMemo(() => {
     if (!userVisibleTokensInfo) {
@@ -49,18 +49,25 @@ export function useAssets () {
     return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetwork.chainId)
   }, [userVisibleTokensInfo, selectedNetwork])
 
-  const [buyAssetOptions, setBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([nativeAsset])
-
+  const [wyreAssetOptions, setWyreAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [rampAssetOptions, setRampAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([])
   React.useEffect(() => {
-    isMounted && getBuyAssets().then(tokens => {
+    const fetchTokens = async () => {
+      const wyreRegistryTokens = await getBuyAssets(BraveWallet.OnRampProvider.kWyre, selectedNetwork.chainId)
+      const rampRegistryTokens = await getBuyAssets(BraveWallet.OnRampProvider.kRamp, selectedNetwork.chainId)
+      const wyreAssetOptions = assetsLogo(wyreRegistryTokens)
+      const rampAssetOptions = assetsLogo(rampRegistryTokens)
       if (isMounted) {
-        setBuyAssetOptions(tokens.map(token => ({
-          ...token,
-          logo: `chrome://erc-token-images/${token.logo}`
-        }) as BraveWallet.BlockchainToken))
+        setWyreAssetOptions(wyreAssetOptions)
+        setRampAssetOptions(rampAssetOptions)
       }
-    }).catch(e => console.error(e))
-  }, [])
+    }
+
+    fetchTokens()
+      .catch(e => {
+        console.error(e)
+      })
+  }, [selectedNetwork])
 
   const assetsByValueAndNetwork = React.useMemo(() => {
     if (!assetsByNetwork) {
@@ -82,9 +89,15 @@ export function useAssets () {
     })
   }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
+  const buyAssetOptions = React.useMemo(() => {
+    return [...rampAssetOptions, ...wyreAssetOptions].filter(asset => asset.chainId === selectedNetwork.chainId)
+  }, [rampAssetOptions, wyreAssetOptions, selectedNetwork])
+
   return {
     sendAssetOptions: assetsByNetwork,
     buyAssetOptions,
+    rampAssetOptions,
+    wyreAssetOptions,
     panelUserAssetList: assetsByValueAndNetwork
   }
 }

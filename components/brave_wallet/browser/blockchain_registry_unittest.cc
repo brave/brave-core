@@ -419,8 +419,9 @@ TEST(BlockchainRegistryUnitTest, GetBuyUrlRamp) {
                                      const absl::optional<std::string>& error) {
         EXPECT_EQ(url,
                   "https://buy.ramp.network/"
-                  "?userAddress=0xdeadbeef&swapAsset=USDC&swapAmount=55000000"
-                  "&hostApiKey=8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf");
+                  "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
+                  "&fiatCurrency=USD&hostApiKey="
+                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf");
         EXPECT_FALSE(error);
 
         run_loop.Quit();

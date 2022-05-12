@@ -214,6 +214,14 @@ function SwapInputComponent (props: Props) {
     setSpin(0)
   }
 
+  const getAssetSymbol = (symbol?: string) => {
+    // Ramp assets have the format: ChainNativeTokenSymbol_AssetSymbol e.g MATIC_BSC
+    // This returns just the AssetSymbol
+    return symbol && symbol.includes('_')
+      ? symbol.split('_')[1]
+      : symbol
+  }
+
   const fromAmountHasErrors = validationError && [
     'insufficientBalance',
     'insufficientFundsForGas',
@@ -299,7 +307,7 @@ function SwapInputComponent (props: Props) {
                 <ButtonLeftSide>
                   <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork}/>
                   <AssetTicker>
-                    {selectedAsset?.symbol} {
+                    {getAssetSymbol(selectedAsset?.symbol)} {
                       selectedAsset?.isErc721 && selectedAsset?.tokenId
                         ? '#' + new Amount(selectedAsset.tokenId).toNumber()
                         : ''
