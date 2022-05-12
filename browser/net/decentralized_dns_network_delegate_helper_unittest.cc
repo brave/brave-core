@@ -153,6 +153,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       {"https://brave", false},
       {"https://brave.com", false},
       {"https://brave.zil", false},
+      {"", false},
   };
 
   for (const auto& test_case : test_cases) {
