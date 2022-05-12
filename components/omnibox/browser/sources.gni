@@ -9,6 +9,10 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_omnibox_client.h",
   "//brave/components/omnibox/browser/constants.cc",
   "//brave/components/omnibox/browser/constants.h",
+  "//brave/components/omnibox/browser/promotion_provider.cc",
+  "//brave/components/omnibox/browser/promotion_provider.h",
+  "//brave/components/omnibox/browser/promotion_utils.cc",
+  "//brave/components/omnibox/browser/promotion_utils.h",
   "//brave/components/omnibox/browser/suggested_sites_match.cc",
   "//brave/components/omnibox/browser/suggested_sites_match.h",
   "//brave/components/omnibox/browser/suggested_sites_provider.cc",
@@ -22,6 +26,7 @@ brave_components_omnibox_browser_sources = [
 brave_components_omnibox_browser_deps = [
   "//base",
   "//brave/components/binance/browser/buildflags",
+  "//brave/components/brave_search_conversion",
   "//brave/components/constants",
   "//url",
 ]
