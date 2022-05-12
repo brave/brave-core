@@ -235,6 +235,7 @@ interface PanelHandler {
   ConnectToSite(array<string> accounts);
   CancelConnectToSite();
   SetCloseOnDeactivate(bool close);
+  Focus();
 };
 
 // Browser-side handler for requests from WebUI page.

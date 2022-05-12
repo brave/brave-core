@@ -37,6 +37,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   void SetCloseOnDeactivate(bool close) override;
   void ConnectToSite(const std::vector<std::string>& accounts) override;
   void CancelConnectToSite() override;
+  void Focus() override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
