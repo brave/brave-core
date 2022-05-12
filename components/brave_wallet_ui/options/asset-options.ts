@@ -15,6 +15,7 @@ import {
   FantomIcon,
   OptimismIcon
 } from '../assets/network-icons'
+import { AllNetworksOption } from './network-filter-options'
 
 export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
   let logo
@@ -41,6 +42,10 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
 
     case network.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
       logo = CeloIcon
+      break
+
+    case network.chainId === AllNetworksOption.chainId:
+      logo = AllNetworksOption.iconUrls[0]
       break
 
     case network.symbol.toUpperCase() === 'SOL':
