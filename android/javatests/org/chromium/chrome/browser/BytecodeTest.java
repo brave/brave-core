@@ -504,7 +504,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
+                ToolbarControlContainer.class, ViewStub.class, ViewStub.class, ToolbarLayout.class,
                 ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
@@ -656,7 +656,7 @@ public class BytecodeTest {
                         "mOptionalButtonController"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
-                        "mTabSwitcherModeToolbar"));
+                        "mActiveTabSwitcherToolbar"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mNewTabViewButton"));
