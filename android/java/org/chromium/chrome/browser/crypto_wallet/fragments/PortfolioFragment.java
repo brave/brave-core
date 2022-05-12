@@ -153,16 +153,12 @@ public class PortfolioFragment
         jsonRpcService.getChainId(CoinType.ETH, chain_id -> {
             jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainId = Utils.getNetworkConst(
-                        getActivity(), mSelectedChainNetworkName, customNetworks);
-                if (chainId.equals(chain_id) && !mSelectedChainNetworkName.isEmpty()) {
-                    return;
-                }
                 mSelectedChainNetworkName =
                         Utils.getNetworkText(requireActivity(), chain_id, customNetworks)
                                 .toString();
                 String strNetworkShort =
-                        Utils.getNetworkShortText(requireActivity(), chain_id).toString();
+                        Utils.getNetworkShortText(requireActivity(), chain_id, customNetworks)
+                                .toString();
                 updateAccount(strNetworkShort);
             });
         });
