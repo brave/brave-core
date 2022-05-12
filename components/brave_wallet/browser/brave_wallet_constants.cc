@@ -114,7 +114,10 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
         mojom::CoinType::ETH},
        {"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", "USD Coin", "usdc.png",
         true, false, "USDC", 6, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH}});
+        mojom::CoinType::ETH},
+       {"0x0d8775f648430679a709e98d2b0cb6250d2887ef", "Basic Attention Token",
+        "bat.png", true, false, "ETH_BAT", 18, true, "", "",
+        mojom::kMainnetChainId, mojom::CoinType::ETH}});
   return *tokens;
 }
 

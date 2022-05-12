@@ -524,7 +524,12 @@ export const BuySupportedChains = [
   BraveWallet.ROPSTEN_CHAIN_ID,
   BraveWallet.GOERLI_CHAIN_ID,
   BraveWallet.KOVAN_CHAIN_ID,
-  BraveWallet.LOCALHOST_CHAIN_ID
+  BraveWallet.LOCALHOST_CHAIN_ID,
+  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
+  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.SOLANA_MAINNET
 ]
 
 export interface GetAllNetworksList {
@@ -640,4 +645,14 @@ export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
   SOL = BraveWallet.CoinType.SOL
+}
+
+export type BuyOption = {
+  id: BraveWallet.OnRampProvider
+  label: string
+}
+
+export type OriginInfo = {
+  origin: string
+  eTldPlusOne: string
 }
