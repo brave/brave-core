@@ -140,8 +140,14 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
   }
 
   void SetSelectedAccount(const std::string& address) {
+    base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        address, brave_wallet::mojom::CoinType::ETH, base::DoNothing());
+        address, brave_wallet::mojom::CoinType::ETH,
+        base::BindLambdaForTesting([&](bool success) {
+          ASSERT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
  private:
@@ -157,7 +163,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_connect_event"),
@@ -172,7 +177,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
   auto service = GetJsonRpcService();
   service->SetNetwork(brave_wallet::mojom::kGoerliChainId,
                       brave_wallet::mojom::CoinType::ETH, base::DoNothing());
@@ -191,7 +195,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
   std::string address;
   GetAddress(&address);
 
