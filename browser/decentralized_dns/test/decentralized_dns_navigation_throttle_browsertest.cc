@@ -108,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   SendInterstitialCommandSync(
       browser(),
       security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
-  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS),
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ETHEREUM),
             local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
 }
 
@@ -149,7 +149,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   SendInterstitialCommandSync(
       browser(),
       security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
-  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS),
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ETHEREUM),
             local_state()->GetInteger(kENSResolveMethod));
 }
 
