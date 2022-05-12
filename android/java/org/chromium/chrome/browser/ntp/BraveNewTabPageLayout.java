@@ -738,7 +738,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
 
     private void keepPosition(int prevScrollPosition, int prevRecyclerViewPosition,
             int prevRecyclerViewItemPosition) {
-        if ((mIsNewsOn != mIsShowNewsOn) || (mIsNewsOn && mIsShowOptin)) {
+        if (!mIsNewsOn || !mIsShowNewsOn || (mIsNewsOn && mIsShowOptin)) {
             return;
         }
         processFeed();
@@ -1175,25 +1175,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                         int scrollY = mParentScrollView.getScrollY();
 
                         if (BraveActivity.getBraveActivity() != null
-                                && BraveActivity.getBraveActivity().getActivityTab() != null) {
+                                && BraveActivity.getBraveActivity().getActivityTab() != null
+                                && mRecyclerView.getChildCount() > 0) {
                             View firstChild = mRecyclerView.getChildAt(0);
-                            int firstVisiblePosition =
-                                    mRecyclerView.getChildAdapterPosition(firstChild);
-                            int verticalOffset = firstChild.getTop();
+                            if (firstChild != null) {
+                                int firstVisiblePosition =
+                                        mRecyclerView.getChildAdapterPosition(firstChild);
+                                int verticalOffset = firstChild.getTop();
 
-                            SharedPreferencesManager.getInstance().writeInt(
-                                    BRAVE_RECYCLERVIEW_OFFSET_POSITION
-                                            + BraveActivity.getBraveActivity()
-                                                      .getActivityTab()
-                                                      .getId(),
-                                    verticalOffset);
+                                SharedPreferencesManager.getInstance().writeInt(
+                                        BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                + BraveActivity.getBraveActivity()
+                                                          .getActivityTab()
+                                                          .getId(),
+                                        verticalOffset);
 
-                            SharedPreferencesManager.getInstance().writeInt(
-                                    BRAVE_RECYCLERVIEW_POSITION
-                                            + BraveActivity.getBraveActivity()
-                                                      .getActivityTab()
-                                                      .getId(),
-                                    firstVisiblePosition);
+                                SharedPreferencesManager.getInstance().writeInt(
+                                        BRAVE_RECYCLERVIEW_POSITION
+                                                + BraveActivity.getBraveActivity()
+                                                          .getActivityTab()
+                                                          .getId(),
+                                        firstVisiblePosition);
+                            }
                         }
                         mFeedHash = SharedPreferencesManager.getInstance().readString(
                                 BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, "");
