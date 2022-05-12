@@ -10,7 +10,6 @@
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/constants.h"
-#include "bat/ledger/internal/core/bat_ledger_context.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/static_values.h"
@@ -24,7 +23,6 @@ namespace ledger {
 
 LedgerImpl::LedgerImpl(LedgerClient* client)
     : ledger_client_(client),
-      context_(std::make_unique<BATLedgerContext>(this)),
       promotion_(std::make_unique<promotion::Promotion>(this)),
       publisher_(std::make_unique<publisher::Publisher>(this)),
       media_(std::make_unique<braveledger_media::Media>(this)),
@@ -44,10 +42,6 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
 }
 
 LedgerImpl::~LedgerImpl() = default;
-
-BATLedgerContext& LedgerImpl::context() {
-  return *context_;
-}
 
 LedgerClient* LedgerImpl::ledger_client() const {
   return ledger_client_;
@@ -153,10 +147,8 @@ void LedgerImpl::InitializeDatabase(bool execute_create_script,
   ResultCallback finish_callback =
       std::bind(&LedgerImpl::OnInitialized, this, _1, std::move(callback));
 
-  auto database_callback = std::bind(&LedgerImpl::OnDatabaseInitialized,
-      this,
-      _1,
-      finish_callback);
+  auto database_callback =
+      std::bind(&LedgerImpl::OnDatabaseInitialized, this, _1, finish_callback);
   database()->Initialize(execute_create_script, database_callback);
 }
 
@@ -190,10 +182,8 @@ void LedgerImpl::OnDatabaseInitialized(type::Result result,
     return;
   }
 
-  auto state_callback = std::bind(&LedgerImpl::OnStateInitialized,
-      this,
-      _1,
-      callback);
+  auto state_callback =
+      std::bind(&LedgerImpl::OnStateInitialized, this, _1, callback);
 
   state()->Initialize(state_callback);
 }

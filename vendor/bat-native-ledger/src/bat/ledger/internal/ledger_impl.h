@@ -40,8 +40,6 @@ class SequencedTaskRunner;
 
 namespace ledger {
 
-class BATLedgerContext;
-
 class LedgerImpl : public Ledger {
  public:
   explicit LedgerImpl(LedgerClient* client);
@@ -49,8 +47,6 @@ class LedgerImpl : public Ledger {
 
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
-
-  BATLedgerContext& context();
 
   LedgerClient* ledger_client() const;
 
@@ -337,7 +333,6 @@ class LedgerImpl : public Ledger {
 
   LedgerClient* ledger_client_;
 
-  std::unique_ptr<BATLedgerContext> context_;
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;
