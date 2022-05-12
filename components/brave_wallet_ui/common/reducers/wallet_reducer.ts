@@ -40,7 +40,7 @@ const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
   isSolanaEnabled: false,
-  isTestNetworksEnabled: true,
+  isTestNetworksEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
