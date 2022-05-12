@@ -22,8 +22,6 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   void GetDeviceID(content::WebContents* contents,
                    base::OnceCallback<void(std::string)> callback);
-  void StartObserving(content::WebContents* contents);
-  void StopObserving(content::WebContents* contents);
 
   void DidStartNavigation(content::NavigationHandle* handle) override;
 
@@ -32,6 +30,9 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
   content::WebContents* target() { return target_.get(); }
 
  private:
+  void StartObserving(content::WebContents* contents);
+  void StopObserving(content::WebContents* contents);
+
   base::OnceCallback<void(std::string)> on_received_device_id_;
   share_tab_button::ShareTabButton* share_tab_button();
   base::WeakPtr<content::WebContents> observing_;
