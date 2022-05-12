@@ -129,6 +129,20 @@ extension BraveWallet.NetworkInfo: Identifiable {
   }
 }
 
+extension BraveWallet.SignMessageRequest {
+  static var previewRequest: BraveWallet.SignMessageRequest {
+    .init(
+      originInfo: .init(origin: .init(url: URL(string: "https://app.uniswap.org")!), originSpec: "", eTldPlusOne: "uniswap.org"),
+      id: 1,
+      address: "",
+      message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
+      isEip712: false,
+      domainHash: "",
+      primaryHash: ""
+    )
+  }
+}
+
 extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
     symbol.lowercased()

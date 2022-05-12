@@ -13,12 +13,11 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   var toolbarDismissContent: DismissContent
-
-  @available(iOS, introduced: 14.0, deprecated: 15.0, message: "Use PresentationMode on iOS 15")
+  
   var onDismiss: () -> Void
 
   var body: some View {
-    UIKitNavigationView {
+    NavigationView {
       Group {
         if let pendingRequest = cryptoStore.pendingWebpageRequest {
           switch pendingRequest {
@@ -47,6 +46,13 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
+          case let .signMessage(requests):
+            SignatureRequestView(
+              requests: requests,
+              keyringStore: keyringStore,
+              cryptoStore: cryptoStore,
+              onDismiss: onDismiss
+            )
           default:
             EmptyView()
           }
@@ -56,6 +62,7 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
         toolbarDismissContent
       }
     }
+    .navigationViewStyle(.stack)
     .onAppear {
       // TODO: Fetch pending requests
     }

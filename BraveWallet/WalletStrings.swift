@@ -2206,5 +2206,26 @@ extension Strings {
       value: "View Details",
       comment: "The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add."
     )
+    public static let signatureRequestTitle = NSLocalizedString(
+      "wallet.signatureRequestTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Signature Requested",
+      comment: "A title of the view shown over a dapps website that requests the user sign a message."
+    )
+    public static let signatureRequestSubtitle = NSLocalizedString(
+      "wallet.signatureRequestSubtitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Your signature is being requested",
+      comment: "A subtitle of the view shown over a dapps website that requests the user sign a message."
+    )
+    public static let sign = NSLocalizedString(
+      "wallet.sign",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Sign",
+      comment: "The title of the button used to sign a message request on the signature request view."
+    )
   }
 }
