@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
+#include "bat/ads/internal/number_util.h"
+
 namespace ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
@@ -22,7 +24,8 @@ bool ConversionQueueItemInfo::operator==(
          advertiser_id == rhs.advertiser_id &&
          conversion_id == rhs.conversion_id &&
          advertiser_public_key == rhs.advertiser_public_key &&
-         ad_type == rhs.ad_type && process_at == rhs.process_at &&
+         ad_type == rhs.ad_type &&
+         DoubleEquals(process_at.ToDoubleT(), rhs.process_at.ToDoubleT()) &&
          was_processed == rhs.was_processed;
 }
 

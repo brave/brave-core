@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/number_util.h"
 
 namespace ads {
 
@@ -17,7 +18,8 @@ HistoryItemInfo::HistoryItemInfo(const HistoryItemInfo& info) = default;
 HistoryItemInfo::~HistoryItemInfo() = default;
 
 bool HistoryItemInfo::operator==(const HistoryItemInfo& rhs) const {
-  return time == rhs.time && ad_content == rhs.ad_content &&
+  return DoubleEquals(time.ToDoubleT(), rhs.time.ToDoubleT()) &&
+         ad_content == rhs.ad_content &&
          category_content == rhs.category_content;
 }
 
