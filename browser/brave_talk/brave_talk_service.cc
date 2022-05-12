@@ -16,7 +16,6 @@ namespace brave_talk {
 
 BraveTalkService::BraveTalkService() = default;
 BraveTalkService::~BraveTalkService() {
-  // TODO: Remove self from all observers.
   StopObserving();
   Shutdown();
 }

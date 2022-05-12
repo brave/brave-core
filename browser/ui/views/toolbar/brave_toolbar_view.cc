@@ -151,7 +151,7 @@ void BraveToolbarView::Init() {
 
   share_tab_ = AddChildView(
       std::make_unique<share_tab_button::ShareTabButton>(
-          base::BindRepeating(callback, browser_, IDC_SHARE_TAB)));
+          base::BindRepeating(callback, browser_, IDC_BRAVE_TALK_SHARE_TAB)));
   share_tab_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
   share_tab_->UpdateImageAndText();
   share_tab_->SetVisible(false);

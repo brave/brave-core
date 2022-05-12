@@ -231,7 +231,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForShareTab() {
-  UpdateCommandEnabled(IDC_SHARE_TAB, true);
+  UpdateCommandEnabled(IDC_BRAVE_TALK_SHARE_TAB, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -311,7 +311,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);
       break;
-    case IDC_SHARE_TAB:
+    case IDC_BRAVE_TALK_SHARE_TAB:
       brave::ScreenShareActiveTab(browser_);
       break;
     default:
