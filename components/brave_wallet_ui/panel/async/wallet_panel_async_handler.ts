@@ -250,6 +250,15 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
       await store.dispatch(PanelActions.setSelectedTransaction(txInfo))
       await store.dispatch(PanelActions.navigateTo('transactionDetails'))
       apiProxy.panelHandler.setCloseOnDeactivate(true)
+      // By default the focus is moved to the browser window automatically when
+      // Trezor popup closed which triggers an OnDeactivate event that would
+      // close the wallet panel because of the above API call. However, there
+      // could be times that the above call happens after OnDeactivate event, so
+      // the wallet panel would stay open after Trezor popup closed.
+      // As a workaround, we manually set the focus back to wallet panel here so
+      // it would trigger another OnDeactivate event when user clicks outside
+      // of the wallet panel.
+      apiProxy.panelHandler.focus()
       return
     }
 
