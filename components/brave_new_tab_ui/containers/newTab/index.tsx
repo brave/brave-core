@@ -141,6 +141,7 @@ class NewTabPage extends React.Component<Props, State> {
     // Only prompt for brave today if we're not scrolling down.
     const shouldPromptBraveToday =
       this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
+      this.props.newTabData.showToday &&
       !this.props.todayData.articleScrollTo
     if (shouldPromptBraveToday) {
       this.braveNewsPromptTimerId = window.setTimeout(() => {
