@@ -9,6 +9,7 @@
 
 #include "base/callback.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "content/public/browser/web_contents.h"
 
 // It's safe to bind the active webcontents when panel is created because
 // the panel will not be shared across tabs.
@@ -53,4 +54,7 @@ void WalletPanelHandler::CancelConnectToSite() {
 void WalletPanelHandler::SetCloseOnDeactivate(bool close) {
   if (close_on_deactivation_)
     close_on_deactivation_.Run(close);
+}
+void WalletPanelHandler::Focus() {
+  webui_controller_->web_ui()->GetWebContents()->Focus();
 }
