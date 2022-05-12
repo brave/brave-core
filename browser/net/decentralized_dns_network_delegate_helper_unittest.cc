@@ -137,32 +137,31 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
        DecentralizedDnsPreRedirectTLDs) {
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ETHEREUM));
-  const char* valid_urls[] = {
-      "https://brave.crypto", "https://brave.x",
-      "https://brave.coin",   "https://brave.nft",
-      "https://brave.dao",    "https://brave.wallet",
-      "https://brave.888",    "https://brave.blockchain",
-      "https://brave.bitcoin"};
-  for (auto* url : valid_urls) {
+  struct TestCase {
+    const char* url;
+    bool is_valid;
+  } test_cases[] = {
+      {"https://brave.crypto", true},
+      {"https://brave.x", true},
+      {"https://brave.coin", true},
+      {"https://brave.nft", true},
+      {"https://brave.dao", true},
+      {"https://brave.wallet", true},
+      {"https://brave.888", true},
+      {"https://brave.blockchain", true},
+      {"https://brave.bitcoin", true},
+      {"https://brave", false},
+      {"https://brave.com", false},
+      {"https://brave.zil", false},
+  };
+
+  for (const auto& test_case : test_cases) {
     auto brave_request_info =
-        std::make_shared<brave::BraveRequestInfo>(GURL(url));
+        std::make_shared<brave::BraveRequestInfo>(GURL(test_case.url));
     brave_request_info->browser_context = profile();
-    EXPECT_EQ(net::ERR_IO_PENDING,
+    EXPECT_EQ(test_case.is_valid ? net::ERR_IO_PENDING : net::OK,
               OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
                   ResponseCallback(), brave_request_info));
-  }
-
-  const char* invalid_urls[] = {
-      "https://brave",
-      "https://brave.com",
-      "https://brave.zil",
-  };
-  for (auto* url : invalid_urls) {
-    auto brave_request_info =
-        std::make_shared<brave::BraveRequestInfo>(GURL(url));
-    brave_request_info->browser_context = profile();
-    EXPECT_EQ(net::OK, OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
-                           ResponseCallback(), brave_request_info));
   }
 }
 

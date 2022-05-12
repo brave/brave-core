@@ -11,23 +11,25 @@ namespace brave_wallet::unstoppable_domains {
 
 namespace {
 enum RecordKeys {
-  DWEB_IPFS_HASH,
-  IPFS_HTML_VALUE,
-  DNS_A,
-  DNS_AAAA,
-  BROWSER_REDIRECT_URL,
-  IPFS_REDIRECT_DOMAIN_VALUE,
-  RECORD_KEY_COUNT,
+  kDwebIpfsHash,
+  kIpfsHtmlValue,
+  kDnsA,
+  kDnsAAAA,
+  kBrowserRedirectUrl,
+  kIpfsRedirectValue,
+  kKeyCount,
 };
 
 // See
 // https://docs.unstoppabledomains.com/developer-toolkit/resolve-domains-browser/browser-resolution-algorithm/
 // for more details.
-const constexpr char* const kRecordKeys[] = {
+constexpr const char* kRecordKeys[] = {
     "dweb.ipfs.hash", "ipfs.html.value",      "dns.A",
-    "dns.AAAA",       "browser.redirect_url", "ipfs.redirect_domain.value"};
-static_assert(static_cast<size_t>(RecordKeys::RECORD_KEY_COUNT) ==
-                  sizeof(kRecordKeys) / sizeof(kRecordKeys[0]),
+    "dns.AAAA",       "browser.redirect_url", "ipfs.redirect_domain.value",
+};
+
+static_assert(std::size(kRecordKeys) ==
+                  static_cast<size_t>(RecordKeys::kKeyCount),
               "Size should match between RecordKeys and kRecordKeys.");
 }  // namespace
 
@@ -37,17 +39,17 @@ GURL ResolveUrl(const std::vector<std::string>& response) {
 
   // TODO(jocelyn): Do not fallback to the set redirect URL if dns.A or
   // dns.AAAA is not empty once we support the classical DNS records case.
-  std::string ipfs_uri = response[RecordKeys::DWEB_IPFS_HASH];
+  std::string ipfs_uri = response[RecordKeys::kDwebIpfsHash];
   if (ipfs_uri.empty()) {  // Try legacy value.
-    ipfs_uri = response[RecordKeys::IPFS_HTML_VALUE];
+    ipfs_uri = response[RecordKeys::kIpfsHtmlValue];
   }
   if (!ipfs_uri.empty()) {
     return GURL("ipfs://" + ipfs_uri);
   }
 
-  std::string fallback_url = response[RecordKeys::BROWSER_REDIRECT_URL];
+  std::string fallback_url = response[RecordKeys::kBrowserRedirectUrl];
   if (fallback_url.empty()) {  // Try legacy value.
-    fallback_url = response[RecordKeys::IPFS_REDIRECT_DOMAIN_VALUE];
+    fallback_url = response[RecordKeys::kIpfsRedirectValue];
   }
   if (!fallback_url.empty()) {
     return GURL(fallback_url);
