@@ -74,9 +74,7 @@ function NetworkFilterSelector () {
     <StyledWrapper>
       <DropDownButton onClick={toggleShowNetworkFilter}>
         <LeftSide>
-          {selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />
-          }
+          <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />
           {selectedNetworkFilter.chainId !== AllNetworksOption.chainId ? reduceNetworkDisplayName(selectedNetworkFilter.chainName) : selectedNetworkFilter.chainName}
         </LeftSide>
         <DropDownIcon />
