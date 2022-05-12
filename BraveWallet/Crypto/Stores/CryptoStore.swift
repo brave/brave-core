@@ -9,7 +9,7 @@ enum PendingWebpageRequest: Equatable {
   case addChain(BraveWallet.AddChainRequest)
   case switchChain(BraveWallet.SwitchChainRequest)
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
-  case signMessage(BraveWallet.SignMessageRequest)
+  case signMessage([BraveWallet.SignMessageRequest])
 }
 
 enum WebpageRequestResponse: Equatable {
@@ -238,8 +238,8 @@ public class CryptoStore: ObservableObject {
       // TODO: Add check for eth permissions… get first eth request 
       if let chainRequest = await rpcService.pendingAddChainRequests().first {
         pendingWebpageRequest = .addChain(chainRequest)
-      } else if let signMessageRequest = await walletService.pendingSignMessageRequests().first {
-        pendingWebpageRequest = .signMessage(signMessageRequest)
+      } else if case let signMessageRequests = await walletService.pendingSignMessageRequests(), !signMessageRequests.isEmpty {
+        pendingWebpageRequest = .signMessage(signMessageRequests)
       } else if let switchRequest = await rpcService.pendingSwitchChainRequests().first {
         pendingWebpageRequest = .switchChain(switchRequest)
       } else if let addTokenRequest = await walletService.pendingAddSuggestTokenRequests().first {

@@ -5,112 +5,134 @@
 
 import SwiftUI
 import struct Shared.Strings
+import BraveCore
 import BraveShared
 import BraveUI
 
 struct SignatureRequestView: View {
+  var requests: [BraveWallet.SignMessageRequest]
   @ObservedObject var keyringStore: KeyringStore
+  var cryptoStore: CryptoStore
   
+  var onDismiss: () -> Void
+
+  @State private var requestIndex: Int = 0
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.presentationMode) @Binding private var presentationMode
   @ScaledMetric private var blockieSize = 54
+  private let maxBlockieSize: CGFloat = 108
   
-  private enum ViewMode: Int {
-    case message
-    case data
+  private var currentRequest: BraveWallet.SignMessageRequest {
+    requests[requestIndex]
   }
   
-  @State private var viewMode: ViewMode = .message
+  private var account: BraveWallet.AccountInfo {
+    keyringStore.keyring.accountInfos.first(where: { $0.address == currentRequest.address }) ?? keyringStore.selectedAccount
+  }
+  
+  init(
+    requests: [BraveWallet.SignMessageRequest],
+    keyringStore: KeyringStore,
+    cryptoStore: CryptoStore,
+    onDismiss: @escaping () -> Void
+  ) {
+    assert(!requests.isEmpty)
+    self.requests = requests
+    self.keyringStore = keyringStore
+    self.cryptoStore = cryptoStore
+    self.onDismiss = onDismiss
+  }
   
   var body: some View {
-    NavigationView {
-      ScrollView(.vertical) {
-        VStack {
+    ScrollView(.vertical) {
+      VStack {
+        if requests.count > 1 {
+          HStack {
+            Spacer()
+            Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, requestIndex + 1, requests.count))
+              .fontWeight(.semibold)
+            Button(action: next) {
+              Text(Strings.Wallet.next)
+                .fontWeight(.semibold)
+                .foregroundColor(Color(.braveBlurpleTint))
+            }
+          }
+        }
+        VStack(spacing: 12) {
           VStack(spacing: 8) {
-            Blockie(address: keyringStore.selectedAccount.address)
-              .frame(width: blockieSize, height: blockieSize)
-            Text(keyringStore.selectedAccount.name)
+            Blockie(address: account.address)
+              .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
+            Text(account.name)
               .font(.subheadline.weight(.semibold))
               .foregroundColor(Color(.secondaryBraveLabel))
-            Text("Your signature is being requested")
-              .font(.headline)
+            OriginText(urlOrigin: currentRequest.originInfo.origin)
+              .font(.caption)
+              .foregroundColor(Color(.braveLabel))
+              .multilineTextAlignment(.center)
           }
-          .padding(.vertical, 32)
-          VStack(spacing: 12) {
-            Picker("", selection: $viewMode) {
-              Text("Message").tag(ViewMode.message)
-              Text("Data").tag(ViewMode.data)
-            }
-            .pickerStyle(.segmented)
-            Group {
-              switch viewMode {
-              case .message:
-                StaticTextView(text: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.", isMonospaced: false)
-                  .frame(maxWidth: .infinity)
-                  .frame(height: 200)
-                  .background(Color(.tertiaryBraveGroupedBackground))
-                  .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-                  .padding()
-              case .data:
-                StaticTextView(text: "0x546F2061766F6964206469676974616C2063617420627572676C6172732C207369676E2062656C6F7720746F2061757468656E74696361746520776974682043727970746F4B6974746965732E")
-                  .frame(maxWidth: .infinity)
-                  .frame(height: 200)
-                  .background(Color(.tertiaryBraveGroupedBackground))
-                  .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-                  .padding()
-              }
-            }
-            .frame(maxWidth: .infinity)
-            .background(
-              Color(.secondaryBraveGroupedBackground)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-          }
-          buttonsContainer
-            .padding(.top)
-            .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
-            .accessibility(hidden: sizeCategory.isAccessibilityCategory)
+          .accessibilityElement(children: .combine)
+          Text(Strings.Wallet.signatureRequestSubtitle)
+            .font(.headline)
+            .foregroundColor(Color(.bravePrimary))
         }
-        .padding()
+        .padding(.vertical, 32)
+        StaticTextView(text: currentRequest.message, isMonospaced: false)
+          .frame(maxWidth: .infinity)
+          .frame(height: 200)
+          .background(Color(.tertiaryBraveGroupedBackground))
+          .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+          .padding()
+        .background(
+          Color(.secondaryBraveGroupedBackground)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        buttonsContainer
+          .padding(.top)
+          .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
+          .accessibility(hidden: sizeCategory.isAccessibilityCategory)
       }
-      .overlay(
-        Group {
-          if sizeCategory.isAccessibilityCategory {
-            buttonsContainer
-              .frame(maxWidth: .infinity)
-              .padding(.top)
-              .background(
-                LinearGradient(
-                  stops: [
-                    .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                    .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                    .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
-                  ],
-                  startPoint: .top,
-                  endPoint: .bottom
-                )
-                  .ignoresSafeArea()
-                  .allowsHitTesting(false)
+      .padding()
+    }
+    .overlay(
+      Group {
+        if sizeCategory.isAccessibilityCategory {
+          buttonsContainer
+            .frame(maxWidth: .infinity)
+            .padding(.top)
+            .background(
+              LinearGradient(
+                stops: [
+                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
               )
-          }
-        },
-        alignment: .bottom
-      )
-      .frame(maxWidth: .infinity)
-      .navigationTitle("Signature Requested")
-      .navigationBarTitleDisplayMode(.inline)
-      .foregroundColor(Color(.braveLabel))
-      .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
-      .toolbar {
-        ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { presentationMode.dismiss() }) {
-            Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
-          }
+              .ignoresSafeArea()
+              .allowsHitTesting(false)
+            )
+        }
+      },
+      alignment: .bottom
+    )
+    .frame(maxWidth: .infinity)
+    .navigationTitle(Strings.Wallet.signatureRequestTitle)
+    .navigationBarTitleDisplayMode(.inline)
+    .foregroundColor(Color(.braveLabel))
+    .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
+    .toolbar {
+      ToolbarItemGroup(placement: .cancellationAction) {
+        Button(action: { presentationMode.dismiss() }) {
+          Text(Strings.cancelButtonTitle)
+            .foregroundColor(Color(.braveOrange))
         }
       }
     }
-    .navigationViewStyle(.stack)
+  }
+  
+  private var isButtonsDisabled: Bool {
+    requestIndex != 0
   }
   
   @ViewBuilder private var buttonsContainer: some View {
@@ -126,26 +148,48 @@ struct SignatureRequestView: View {
   }
   
   @ViewBuilder private var buttons: some View {
-//    Button(action: {
-//
-//    }) {
-//      Text(Strings.cancelButtonTitle)
-//    }
-//    .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: {
-      
+    Button(action: { // cancel
+      cryptoStore.handleWebpageRequestResponse(.signMessage(approved: false, id: currentRequest.id))
+      if requests.count == 1 {
+        onDismiss()
+      }
     }) {
-      Label("Sign", image: "brave.key")
+      Label(Strings.cancelButtonTitle, systemImage: "xmark")
+        .imageScale(.large)
+    }
+    .buttonStyle(BraveOutlineButtonStyle(size: .large))
+    .disabled(isButtonsDisabled)
+    Button(action: { // approve
+      cryptoStore.handleWebpageRequestResponse(.signMessage(approved: true, id: currentRequest.id))
+      if requests.count == 1 {
+        onDismiss()
+      }
+    }) {
+      Label(Strings.Wallet.sign, image: "brave.key")
         .imageScale(.large)
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
+    .disabled(isButtonsDisabled)
+  }
+  
+  private func next() {
+    if requestIndex + 1 < requests.count {
+      requestIndex += 1
+    } else {
+      requestIndex = 0
+    }
   }
 }
 
 #if DEBUG
 struct SignatureRequestView_Previews: PreviewProvider {
   static var previews: some View {
-    SignatureRequestView(keyringStore: .previewStoreWithWalletCreated)
+    SignatureRequestView(
+      requests: [.previewRequest],
+      keyringStore: .previewStoreWithWalletCreated,
+      cryptoStore: .previewStore,
+      onDismiss: { }
+    )
   }
 }
 #endif
