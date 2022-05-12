@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_lock_wallet"
+        android:icon="@drawable/ic_wallet_lock"
+        android:title="@string/dapps_menu_lock_wallet"></item>
+        
+    <item
+        android:id="@+id/action_connected_sites"
+        android:icon="@drawable/ic_web"
+        android:title="@string/dapps_menu_connected_sites"></item>
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_dapps"
+        android:title="@string/dapps_menu_settings"></item>
+
+    <item
+        android:id="@+id/action_view_on_block_explorer"
+        android:icon="@drawable/ic_open_in_new"
+        android:title="@string/dapps_menu_view_on_block_explorer"></item>
+
+</menu>

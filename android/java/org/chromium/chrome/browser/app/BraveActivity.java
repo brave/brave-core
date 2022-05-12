@@ -124,6 +124,7 @@ import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUti
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
+import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -970,11 +971,20 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         settingsLauncher.launchSettingsActivity(this, BraveNewsPreferences.class);
     }
 
+    public void openBraveWalletSettings() {
+        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);   
+    }
+
     public void openBraveWallet(boolean fromDapp) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
         braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
+    }
+
+    public void viewOnBlockExplorer(String address) {
+        Utils.openAddress("/address/"+address, mJsonRpcService, this);
     }
 
     // should only be called if the wallet is setup and unlocked

@@ -2935,6 +2935,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
       Enable Tab Group auto creation
     </message>
+    <message name="IDS_DAPPS_MENU_LOCK_WALLET" desc="Menu item Lock Wallet on DApps Panel">
+      Lock Wallet
+    </message>
+    <message name="IDS_DAPPS_MENU_CONNECTED_SITES" desc="Menu item Connected site on DApps Panel">
+      Connected sites
+    </message>
+    <message name="IDS_DAPPS_MENU_SETTINGS" desc="Menu item settings on DApps Panel">
+      Settings
+    </message>
+    <message name="IDS_DAPPS_MENU_VIEW_ON_BLOCK_EXPLORER" desc="Menu item view on block explorer on DApps Panel">
+      View on block explorer
+    </message>
     <message name="IDS_BRAVE_WALLET_DAPPS_CONNECTION_REQUEST_MSG" desc="A message shown to user when a DApp site request to connect with Brave wallet">
     This page wants to interact with Brave Wallet
     </message>
