@@ -4401,7 +4401,7 @@ extension Strings {
     public static let riskiestWebsiteTitle = NSLocalizedString(
       "privacyHub.riskiestWebsiteTitle",
       bundle: .braveShared,
-      value: "Riskiest website you visited",
+      value: "Site with the most trackers",
       comment: "Title of a website that contained the most trackers per visit."
     )
     
