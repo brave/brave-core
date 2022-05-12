@@ -104,14 +104,9 @@ void BraveTalkMediaAccessHandler::HandleRequest(
     return;
   }
 
-  // TODO: Decide how this should work.
-  url::Origin requester_origin =
-      url::Origin::Create(web_contents->GetLastCommittedURL());
   if (!registry->VerifyRequest(
           web_contents->GetMainFrame()->GetProcess()->GetID(),
-          web_contents->GetMainFrame()->GetRoutingID(),
-          requester_origin)) {
-    LOG(ERROR) << "Unverified";
+          web_contents->GetMainFrame()->GetRoutingID())) {
     std::move(callback).Run(
         blink::MediaStreamDevices(),
         blink::mojom::MediaStreamRequestResult::INVALID_STATE,

@@ -17,7 +17,7 @@ namespace brave_talk {
 BraveTalkService::BraveTalkService() = default;
 BraveTalkService::~BraveTalkService() {
   // TODO: Remove self from all observers.
-  StopObserving(observing_.get());
+  StopObserving();
   Shutdown();
 }
 
@@ -32,11 +32,9 @@ void BraveTalkService::GetDeviceID(
 }
 
 void BraveTalkService::StartObserving(content::WebContents* contents) {
-  if (observing_)
-    StopObserving(observing_.get());
+  if (web_contents())
+    StopObserving();
 
-  // TODO: We should be able to observe multiple web contents.
-  observing_ = contents->GetWeakPtr();
   Observe(contents);
 
   auto* button = share_tab_button();
@@ -46,14 +44,12 @@ void BraveTalkService::StartObserving(content::WebContents* contents) {
   button->UpdateImageAndText();
 }
 
-void BraveTalkService::StopObserving(content::WebContents* contents) {
+void BraveTalkService::StopObserving() {
   auto* button = share_tab_button();
   if (!button)
     return;
   share_tab_button()->SetVisible(false);
 
-  observing_ = nullptr;
-  target_ = nullptr;
   Observe(nullptr);
 }
 
@@ -62,14 +58,14 @@ void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
     return;
 
   // On any navigation of the main frame stop observing the web contents.
-  StopObserving(handle->GetWebContents());
+  StopObserving();
 }
 
 share_tab_button::ShareTabButton* BraveTalkService::share_tab_button() {
-  if (!observing_)
+  if (!web_contents())
     return nullptr;
 
-  auto* browser = chrome::FindBrowserWithWebContents(observing_.get());
+  auto* browser = chrome::FindBrowserWithWebContents(web_contents());
   if (!browser)
     return nullptr;
 
@@ -79,10 +75,9 @@ share_tab_button::ShareTabButton* BraveTalkService::share_tab_button() {
 }
 
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
-  target_ = target_contents->GetWeakPtr();
   share_tab_button()->SetVisible(false);
 
-  if (!observing_)
+  if (!web_contents())
     return;
   auto* registry =
       BraveTalkTabCaptureRegistry::Get(target_contents->GetBrowserContext());
@@ -93,8 +88,8 @@ void BraveTalkService::ShareTab(content::WebContents* target_contents) {
       content::WebContentsMediaCaptureId(
           target_contents->GetMainFrame()->GetProcess()->GetID(),
           target_contents->GetMainFrame()->GetRoutingID()));
-  std::string device_id = registry->AddRequest(
-      target_contents, observing_->GetURL(), media_id, observing_.get());
+  std::string device_id =
+      registry->AddRequest(target_contents, media_id, web_contents());
   if (on_received_device_id_)
     std::move(on_received_device_id_).Run(device_id);
 }

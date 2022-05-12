@@ -23,13 +23,11 @@ class BraveTalkTabCaptureRegistry
   GetFactoryInstance();
 
   std::string AddRequest(content::WebContents* target_contents,
-                         const GURL& origin,
                          content::DesktopMediaID source,
                          content::WebContents* caller_contents);
 
   bool VerifyRequest(int target_render_process_id,
-                     int target_render_frame_id,
-                     const url::Origin& requester_origin);
+                     int target_render_frame_id);
 
  private:
   friend class extensions::BrowserContextKeyedAPIFactory<
