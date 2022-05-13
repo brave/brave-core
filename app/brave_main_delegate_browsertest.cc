@@ -25,7 +25,6 @@
 #include "components/permissions/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
-#include "components/security_state/core/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
@@ -168,7 +167,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
     &net::features::kSplitHostCacheByNetworkIsolationKey,
     &password_manager::features::kPasswordImport,
-    &security_state::features::kSafetyTipUI,
   };
 
   for (const auto* feature : enabled_features)
