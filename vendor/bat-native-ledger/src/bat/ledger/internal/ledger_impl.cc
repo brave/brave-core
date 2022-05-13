@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 
 using std::placeholders::_1;
 
@@ -732,45 +733,25 @@ void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
       return;
     }
 
-    if (wallet_type == constant::kWalletUphold) {
-      uphold()->GenerateWallet([this, callback](type::Result result) {
-        if (result != type::Result::LEDGER_OK &&
-            result != type::Result::CONTINUE) {
-          callback(result, nullptr);
-          return;
-        }
+    auto on_generated = [this, wallet_type, callback](type::Result result) {
+      if (result == type::Result::CONTINUE) {
+        result = type::Result::LEDGER_OK;
+      }
+      callback(result, wallet::GetWallet(this, wallet_type));
+    };
 
-        auto wallet = uphold()->GetWallet();
-        callback(type::Result::LEDGER_OK, std::move(wallet));
-      });
+    if (wallet_type == constant::kWalletUphold) {
+      uphold()->GenerateWallet(on_generated);
       return;
     }
 
     if (wallet_type == constant::kWalletBitflyer) {
-      bitflyer()->GenerateWallet([this, callback](type::Result result) {
-        if (result != type::Result::LEDGER_OK &&
-            result != type::Result::CONTINUE) {
-          callback(result, nullptr);
-          return;
-        }
-
-        auto wallet = bitflyer()->GetWallet();
-        callback(type::Result::LEDGER_OK, std::move(wallet));
-      });
+      bitflyer()->GenerateWallet(on_generated);
       return;
     }
 
     if (wallet_type == constant::kWalletGemini) {
-      gemini()->GenerateWallet([this, callback](type::Result result) {
-        if (result != type::Result::LEDGER_OK &&
-            result != type::Result::CONTINUE) {
-          callback(result, nullptr);
-          return;
-        }
-
-        auto wallet = gemini()->GetWallet();
-        callback(type::Result::LEDGER_OK, std::move(wallet));
-      });
+      gemini()->GenerateWallet(on_generated);
       return;
     }
 

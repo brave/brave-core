@@ -10,10 +10,9 @@ import { RewardsSummaryData } from '../../shared/components/wallet_card'
 import { mapNotification } from './notification_adapter'
 
 import {
-  ExternalWallet,
   ExternalWalletProvider,
-  ExternalWalletStatus,
-  externalWalletProviderFromString
+  externalWalletProviderFromString,
+  externalWalletFromExtensionData
 } from '../../shared/lib/external_wallet'
 
 import {
@@ -43,17 +42,6 @@ export function getSettings () {
         autoContributeEnabled: prefs.autoContributeEnabled,
         autoContributeAmount: prefs.autoContributeAmount
       })
-    })
-  })
-}
-
-export function getExternalWalletProviders () {
-  return new Promise<ExternalWalletProvider[]>((resolve) => {
-    // The extension API currently does not support retrieving a list of
-    // external wallet providers.
-    chrome.braveRewards.getExternalWallet((_, wallet) => {
-      const provider = externalWalletProviderFromString(wallet.type)
-      resolve(provider ? [provider] : [])
     })
   })
 }
@@ -103,44 +91,26 @@ export function getExternalWalletLoginURL (provider: ExternalWalletProvider) {
   })
 }
 
-export function getExternalWallet () {
-  function mapStatus (status: number): ExternalWalletStatus | null {
-    switch (status) {
-      case 1: // CONNECTED
-      case 2: // VERIFIED
-        return 'verified'
-      case 3: // DISCONNECTED_NOT_VERIFIED
-      case 4: // DISCONNECTED_VERIFIED
-        return 'disconnected'
-      case 5: // PENDING
-        return 'pending'
-    }
-    return null
-  }
-
-  return new Promise<ExternalWallet | null>((resolve) => {
+export function getExternalWalletProviders () {
+  return new Promise<ExternalWalletProvider[]>((resolve) => {
+    // The extension API currently does not support retrieving a list of
+    // external wallet providers. Instead, use the `getExternalWallet` function
+    // to retrieve the "currently selected" provider and save the OAuth URL for
+    // that provider.
     chrome.braveRewards.getExternalWallet((_, wallet) => {
-      const provider = externalWalletProviderFromString(wallet.type)
-      const status = mapStatus(wallet.status)
-
-      if (!provider || !status) {
-        resolve(null)
-      } else {
+      const provider = wallet && externalWalletProviderFromString(wallet.type)
+      if (provider && wallet && wallet.loginUrl) {
         externalWalletLoginURLs.set(provider, wallet.loginUrl)
-
-        resolve({
-          provider,
-          status,
-          username: wallet.userName,
-          links: {
-            account: wallet.accountUrl,
-            addFunds: wallet.addUrl,
-            completeVerification: wallet.verifyUrl
-          }
-        })
       }
+      resolve(provider ? [provider] : [])
     })
   })
+}
+
+export function getExternalWallet () {
+  return new Promise((resolve) => {
+    chrome.braveRewards.getExternalWallet((_, wallet) => { resolve(wallet) })
+  }).then(externalWalletFromExtensionData)
 }
 
 export function getRewardsSummaryData () {
