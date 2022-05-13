@@ -9,9 +9,14 @@
 // In case this fails compilation in the future, simply apply to any
 // other private member, more obscure name is better so it doesn't
 // affect other included header files from this header file.
-#define devtools_global_overrides_origin_ \
-  devtools_global_overrides_origin_;      \
-  friend class BravePermissionManager
+#define devtools_global_overrides_origin_                                  \
+  devtools_global_overrides_origin_;                                       \
+  friend class BravePermissionManager;                                     \
+  GURL GetEmbeddingOriginInternal(                                         \
+      content::RenderFrameHost* const render_frame_host,                   \
+      const GURL& requesting_origin);                                      \
+  blink::mojom::PermissionStatus ContentSettingToPermissionStatusInternal( \
+      ContentSetting setting)
 
 #define GetCanonicalOrigin virtual GetCanonicalOrigin
 #include "src/components/permissions/permission_manager.h"

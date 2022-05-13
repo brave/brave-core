@@ -16,7 +16,7 @@ class PermissionUtil : public PermissionUtil_ChromiumImpl {
  public:
   static std::string GetPermissionString(ContentSettingsType);
   static bool GetPermissionType(ContentSettingsType type,
-                                content::PermissionType* out);
+                                blink::PermissionType* out);
   static bool IsPermission(ContentSettingsType type);
 };
 
