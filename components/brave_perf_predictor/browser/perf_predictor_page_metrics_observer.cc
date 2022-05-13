@@ -73,4 +73,14 @@ void PerfPredictorPageMetricsObserver::OnLoadEventStart(
   }
 }
 
+page_load_metrics::PageLoadMetricsObserver::ObservePolicy
+PerfPredictorPageMetricsObserver::OnFencedFramesStart(
+    content::NavigationHandle* navigation_handle,
+    const GURL& currently_committed_url) {
+  // Observe all MIME types. We still only use actual data usage, so strange
+  // cases (e.g., data:// URLs) will still record the right amount of data
+  // usage.
+  return CONTINUE_OBSERVING;
+}
+
 }  // namespace brave_perf_predictor
