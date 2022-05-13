@@ -92,16 +92,26 @@
   std::string serial_number_string =
       extended_cert_->tbs().serial_number.AsString();
 
+  net::der::BitString subject_unique_id;
+  if (extended_cert_->tbs().subject_unique_id) {
+    subject_unique_id = extended_cert_->tbs().subject_unique_id.value();
+  }
+
+  net::der::BitString issuer_unique_id;
+  if (extended_cert_->tbs().issuer_unique_id) {
+    issuer_unique_id = extended_cert_->tbs().issuer_unique_id.value();
+  }
+
   _isRootCertificate = [self is_root_certificate];
   _isCertificateAuthority = [self is_certificate_authority];
   _isSelfSigned = [self is_self_signed];
   _isSelfIssued = [self is_self_issued];
   _subjectName = [[BraveCertificateRDNSequence alloc]
       initWithBERName:extended_cert_->tbs().subject_tlv
-             uniqueId:extended_cert_->tbs().subject_unique_id];
+             uniqueId:subject_unique_id];
   _issuerName = [[BraveCertificateRDNSequence alloc]
       initWithBERName:extended_cert_->tbs().issuer_tlv
-             uniqueId:extended_cert_->tbs().issuer_unique_id];
+             uniqueId:issuer_unique_id];
   _serialNumber = base::SysUTF8ToNSString(base::HexEncode(
       serial_number_string.data(), serial_number_string.size()));
   _version = static_cast<std::int32_t>(extended_cert_->tbs().version) +
