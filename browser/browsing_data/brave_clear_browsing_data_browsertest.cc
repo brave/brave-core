@@ -160,7 +160,7 @@ class BraveClearDataOnExitTest
                             true);
   }
 
-  int GetRemoveMaskAll() {
+  uint64_t GetRemoveMaskAll() {
     return chrome_browsing_data_remover::DATA_TYPE_HISTORY |
            content::BrowsingDataRemover::DATA_TYPE_DOWNLOADS |
            content::BrowsingDataRemover::DATA_TYPE_CACHE |
@@ -177,8 +177,8 @@ class BraveClearDataOnExitTest
 
   // BraveClearBrowsingData::OnExitTestingCallback implementation.
   void BeforeClearOnExitRemoveData(content::BrowsingDataRemover* remover,
-                                   int remove_mask,
-                                   int origin_mask) override {
+                                   uint64_t remove_mask,
+                                   uint64_t origin_mask) override {
     remove_data_call_count_++;
 
     if (expected_remove_mask_ != -1)
