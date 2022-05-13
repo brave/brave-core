@@ -5,12 +5,11 @@
 
 #include "bat/ledger/internal/ledger_database_impl.h"
 
-#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/bind.h"
-#include "base/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -59,70 +58,41 @@ mojom::DBRecordPtr CreateRecord(
     sql::Statement* statement,
     const std::vector<mojom::DBCommand::RecordBindingType>& bindings) {
   auto record = mojom::DBRecord::New();
+  int column = 0;
+
   if (!statement) {
     return record;
   }
 
-  // NOTE: The |record_bindings| member of DBCommand is deprecated but still
-  // supported for existing commands.
-  if (bindings.size() > 0) {
-    int column = 0;
-    for (const auto& binding : bindings) {
-      auto value = mojom::DBValue::New();
-      switch (binding) {
-        case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
-          value->set_string_value(statement->ColumnString(column));
-          break;
-        }
-        case mojom::DBCommand::RecordBindingType::INT_TYPE: {
-          value->set_int_value(statement->ColumnInt(column));
-          break;
-        }
-        case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
-          value->set_int64_value(statement->ColumnInt64(column));
-          break;
-        }
-        case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
-          value->set_double_value(statement->ColumnDouble(column));
-          break;
-        }
-        case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
-          value->set_bool_value(statement->ColumnBool(column));
-          break;
-        }
-        default: {
-          NOTREACHED();
-        }
-      }
-      record->fields.push_back(std::move(value));
-      column++;
-    }
-    return record;
-  }
-
-  for (int column = 0; column < statement->ColumnCount(); ++column) {
+  for (const auto& binding : bindings) {
     auto value = mojom::DBValue::New();
-    switch (statement->GetColumnType(column)) {
-      case sql::ColumnType::kInteger:
-        value->set_int64_value(statement->ColumnInt64(column));
-        break;
-      case sql::ColumnType::kFloat:
-        value->set_double_value(statement->ColumnDouble(column));
-        break;
-      case sql::ColumnType::kText:
+    switch (binding) {
+      case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
         value->set_string_value(statement->ColumnString(column));
         break;
-      case sql::ColumnType::kBlob: {
-        std::string blob_string;
-        statement->ColumnBlobAsString(column, &blob_string);
-        value->set_string_value(blob_string);
+      }
+      case mojom::DBCommand::RecordBindingType::INT_TYPE: {
+        value->set_int_value(statement->ColumnInt(column));
         break;
       }
-      case sql::ColumnType::kNull:
-        value->set_null_value(0);
+      case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
+        value->set_int64_value(statement->ColumnInt64(column));
         break;
+      }
+      case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
+        value->set_double_value(statement->ColumnDouble(column));
+        break;
+      }
+      case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
+        value->set_bool_value(statement->ColumnBool(column));
+        break;
+      }
+      default: {
+        NOTREACHED();
+      }
     }
     record->fields.push_back(std::move(value));
+    column++;
   }
 
   return record;
@@ -156,7 +126,6 @@ void LedgerDatabaseImpl::RunTransaction(
   if (transaction->commands.size() == 1 &&
       transaction->commands[0]->type == mojom::DBCommand::Type::CLOSE) {
     db_.Close();
-    meta_table_.Reset();
     initialized_ = false;
     command_response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
     return;
@@ -174,6 +143,8 @@ void LedgerDatabaseImpl::RunTransaction(
   for (auto const& command : transaction->commands) {
     mojom::DBCommandResponse::Status status;
 
+    BLOG(8, "Query: " << command->command);
+
     switch (command->type) {
       case mojom::DBCommand::Type::INITIALIZE: {
         status = Initialize(transaction->version,
@@ -185,11 +156,11 @@ void LedgerDatabaseImpl::RunTransaction(
         break;
       }
       case mojom::DBCommand::Type::EXECUTE: {
-        status = Execute(command.get(), command_response);
+        status = Execute(command.get());
         break;
       }
       case mojom::DBCommand::Type::RUN: {
-        status = Run(command.get(), command_response);
+        status = Run(command.get());
         break;
       }
       case mojom::DBCommand::Type::MIGRATE: {
@@ -222,23 +193,18 @@ void LedgerDatabaseImpl::RunTransaction(
   }
 
   if (vacuum_requested) {
+    BLOG(8, "Performing database vacuum");
     if (!db_.Execute("VACUUM")) {
       // If vacuum was not successful, log an error but do not
       // prevent forward progress.
-      LOG(ERROR) << "Error executing VACUUM: " << db_.GetErrorMessage();
+      BLOG(0, "Error executing VACUUM: " << db_.GetErrorMessage());
     }
   }
 }
 
-void LedgerDatabaseImpl::OpenInMemoryForTesting() {
-  if (!db_.is_open()) {
-    CHECK(db_.OpenInMemory());
-  }
-}
-
 mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
-    int32_t version,
-    int32_t compatible_version,
+    const int32_t version,
+    const int32_t compatible_version,
     mojom::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -253,10 +219,6 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
       table_exists = true;
     }
 
-    // NOTE: For a new database, the meta table will be initialized with the
-    // current DB version. The current version will be immediately overwritten
-    // by the first migration, but it is not atomic: there will be a time when a
-    // new, empty database has the current version in its meta table.
     if (!meta_table_.Init(&db_, version, compatible_version)) {
       return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
     }
@@ -283,42 +245,33 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
 }
 
 mojom::DBCommandResponse::Status LedgerDatabaseImpl::Execute(
-    mojom::DBCommand* command,
-    mojom::DBCommandResponse* command_response) {
-  DCHECK(command);
-  DCHECK(command_response);
-
+    mojom::DBCommand* command) {
   if (!initialized_) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+  }
+
+  if (!command) {
+    return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
   bool result = db_.Execute(command->command.c_str());
 
   if (!result) {
-    // Ideally database errors should be logged to the Rewards log file, but
-    // since this class runs in the browser process it cannot use the BLOG
-    // logging macro.
-    LOG(ERROR) << "DB Execute error: " << db_.GetErrorMessage();
+    BLOG(0, "DB Execute error: " << db_.GetErrorMessage());
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
-
-  auto db_value = mojom::DBValue::New();
-  db_value->set_int_value(db_.GetLastChangeCount());
-  auto db_result = mojom::DBCommandResult::New();
-  db_result->set_value(std::move(db_value));
-  command_response->result = std::move(db_result);
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
 mojom::DBCommandResponse::Status LedgerDatabaseImpl::Run(
-    mojom::DBCommand* command,
-    mojom::DBCommandResponse* command_response) {
-  DCHECK(command);
-  DCHECK(command_response);
-
+    mojom::DBCommand* command) {
   if (!initialized_) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
+  }
+
+  if (!command) {
+    return mojom::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
   sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
@@ -328,16 +281,10 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Run(
   }
 
   if (!statement.Run()) {
-    LOG(ERROR) << "DB Run error: " << db_.GetErrorMessage() << " ("
-               << db_.GetErrorCode() << ")";
+    BLOG(0, "DB Run error: " << db_.GetErrorMessage() << " ("
+                             << db_.GetErrorCode() << ")");
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
-
-  auto db_value = mojom::DBValue::New();
-  db_value->set_int_value(db_.GetLastChangeCount());
-  auto db_result = mojom::DBCommandResult::New();
-  db_result->set_value(std::move(db_value));
-  command_response->result = std::move(db_result);
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }

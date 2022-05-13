@@ -36,7 +36,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
     return client_.database()->GetInternalDatabaseForTesting();
   }
 
-  LedgerImpl* ledger() { return &ledger_; }
+  Ledger* ledger() { return &ledger_; }
 
   std::string GetExpectedSchema() {
     base::FilePath path =
@@ -69,21 +69,26 @@ class LedgerDatabaseMigrationTest : public testing::Test {
     return data;
   }
 
+  void InitializeDatabaseWithScript(const std::string& script_path) {
+    base::FilePath path = GetTestDataPath().AppendASCII(script_path);
+    std::string init_script;
+    ASSERT_TRUE(base::ReadFileToString(path, &init_script));
+    ASSERT_TRUE(GetDB()->Execute(init_script.c_str()));
+  }
+
   void InitializeDatabaseAtVersion(int version) {
     base::FilePath path = GetTestDataPath().AppendASCII(
         base::StringPrintf("publisher_info_db_v%d.sql", version));
 
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
-
-    client_.database()->OpenInMemoryForTesting();
     ASSERT_TRUE(GetDB()->Execute(init_script.c_str()));
   }
 
   void InitializeLedger() {
     base::RunLoop run_loop;
     mojom::Result result;
-    ledger()->database()->Initialize(false, [&result, &run_loop](auto r) {
+    ledger()->Initialize(false, [&result, &run_loop](auto r) {
       result = r;
       run_loop.Quit();
     });

@@ -7,21 +7,17 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CORE_BAT_LEDGER_TEST_H_
 
 #include <string>
-#include <utility>
 
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "bat/ledger/internal/core/bat_ledger_context.h"
-#include "bat/ledger/internal/core/future.h"
 #include "bat/ledger/internal/core/test_ledger_client.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ledger {
 
-// Base class for unit tests. |BATLedgerTest| provides a task environment,
-// access to a |BATLedgerContext|, and a test implementation of |LedgerClient|.
+// Base class for unit tests. |BATLedgerTest| provides a task environment and a
+// test implementation of |LedgerClient|.
 class BATLedgerTest : public testing::Test {
  public:
   BATLedgerTest();
@@ -30,9 +26,6 @@ class BATLedgerTest : public testing::Test {
  protected:
   // Returns the |TaskEnvironment| for this test.
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
-
-  // Returns the |BATLedgerContext| for this test.
-  BATLedgerContext& context() { return context_; }
 
   // Returns the |TestLedgerClient| instance for this test.
   TestLedgerClient* GetTestLedgerClient() { return &client_; }
@@ -48,28 +41,10 @@ class BATLedgerTest : public testing::Test {
   // Sets a callback that is executed when a message is logged to the client.
   void SetLogCallbackForTesting(TestLedgerClient::LogCallback callback);
 
-  // Executes a nested run loop until the specified future value is available
-  // and returns the future value.
-  template <typename T>
-  T WaitFor(Future<T> future) {
-    base::RunLoop run_loop;
-    absl::optional<T> result;
-
-    future.Then(base::BindLambdaForTesting([&run_loop, &result](T value) {
-      result = std::move(value);
-      run_loop.Quit();
-    }));
-
-    run_loop.Run();
-    CHECK(result);
-    return std::move(*result);
-  }
-
  private:
   base::test::TaskEnvironment task_environment_;
   TestLedgerClient client_;
   LedgerImpl ledger_{&client_};
-  BATLedgerContext context_{&ledger_};
 };
 
 }  // namespace ledger

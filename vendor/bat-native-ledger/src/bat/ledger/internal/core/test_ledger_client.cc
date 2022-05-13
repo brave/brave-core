@@ -23,9 +23,8 @@ namespace {
 
 mojom::DBCommandResponsePtr RunDBTransactionInTask(
     mojom::DBTransactionPtr transaction,
-    LedgerDatabaseImpl* database) {
+    LedgerDatabase* database) {
   DCHECK(database);
-  database->OpenInMemoryForTesting();
   auto response = mojom::DBCommandResponse::New();
   database->RunTransaction(std::move(transaction), response.get());
   return response;
@@ -86,7 +85,9 @@ TestLedgerClient::TestLedgerClient()
     : task_runner_(base::SequencedTaskRunnerHandle::Get()),
       ledger_database_(new LedgerDatabaseImpl(base::FilePath())),
       state_store_(base::Value::Type::DICTIONARY),
-      option_store_(base::Value::Type::DICTIONARY) {}
+      option_store_(base::Value::Type::DICTIONARY) {
+  CHECK(ledger_database_->GetInternalDatabaseForTesting()->OpenInMemory());
+}
 
 TestLedgerClient::~TestLedgerClient() {
   task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());

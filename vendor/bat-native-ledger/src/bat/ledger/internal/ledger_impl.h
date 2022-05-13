@@ -19,7 +19,6 @@
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/internal/contribution/contribution.h"
-#include "bat/ledger/internal/core/callback_adapter.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/gemini/gemini.h"
 #include "bat/ledger/internal/legacy/media/media.h"
@@ -41,8 +40,6 @@ class SequencedTaskRunner;
 
 namespace ledger {
 
-class BATLedgerContext;
-
 class LedgerImpl : public Ledger {
  public:
   explicit LedgerImpl(LedgerClient* client);
@@ -50,8 +47,6 @@ class LedgerImpl : public Ledger {
 
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
-
-  BATLedgerContext& context();
 
   LedgerClient* ledger_client() const;
 
@@ -72,8 +67,6 @@ class LedgerImpl : public Ledger {
   sku::SKU* sku() const;
 
   api::API* api() const;
-
-  recovery::Recovery* recovery() const;
 
   bitflyer::Bitflyer* bitflyer() const;
 
@@ -323,7 +316,15 @@ class LedgerImpl : public Ledger {
 
   bool IsReady() const;
 
-  void OnInitialized(ResultCallback callback, bool success);
+  void OnInitialized(type::Result result, ResultCallback callback);
+
+  void StartServices();
+
+  void OnStateInitialized(type::Result result, ResultCallback callback);
+
+  void InitializeDatabase(bool execute_create_script, ResultCallback callback);
+
+  void OnDatabaseInitialized(type::Result result, ResultCallback callback);
 
   void OnAllDone(type::Result result, ResultCallback callback);
 
@@ -332,7 +333,6 @@ class LedgerImpl : public Ledger {
 
   LedgerClient* ledger_client_;
 
-  std::unique_ptr<BATLedgerContext> context_;
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;
@@ -353,7 +353,6 @@ class LedgerImpl : public Ledger {
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
-  CallbackAdapter callback_adapter_;
 };
 
 }  // namespace ledger

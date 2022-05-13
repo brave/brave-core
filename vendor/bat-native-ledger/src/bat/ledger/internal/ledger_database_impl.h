@@ -31,21 +31,15 @@ class LedgerDatabaseImpl : public LedgerDatabase {
 
   sql::Database* GetInternalDatabaseForTesting() { return &db_; }
 
-  void OpenInMemoryForTesting();
-
  private:
   mojom::DBCommandResponse::Status Initialize(
       int32_t version,
       int32_t compatible_version,
       mojom::DBCommandResponse* command_response);
 
-  mojom::DBCommandResponse::Status Execute(
-      mojom::DBCommand* command,
-      mojom::DBCommandResponse* command_response);
+  mojom::DBCommandResponse::Status Execute(mojom::DBCommand* command);
 
-  mojom::DBCommandResponse::Status Run(
-      mojom::DBCommand* command,
-      mojom::DBCommandResponse* command_response);
+  mojom::DBCommandResponse::Status Run(mojom::DBCommand* command);
 
   mojom::DBCommandResponse::Status Read(
       mojom::DBCommand* command,
@@ -61,6 +55,7 @@ class LedgerDatabaseImpl : public LedgerDatabase {
   sql::Database db_;
   sql::MetaTable meta_table_;
   bool initialized_ = false;
+
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 
   SEQUENCE_CHECKER(sequence_checker_);
