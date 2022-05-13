@@ -62,10 +62,11 @@ import {
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useSwap, useSend } from '../common/hooks'
+import { getUniqueAssets } from '../utils/asset-utils'
+import { getBuyAssetUrl } from '../common/async/lib'
 
 type Props = {
   panel: PanelState
@@ -131,14 +132,17 @@ function Container (props: Props) {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
+  const [selectedBuyOption, setSelectedBuyOption] = React.useState<BraveWallet.OnRampProvider>(BraveWallet.OnRampProvider.kRamp)
 
   const {
     sendAssetOptions,
     buyAssetOptions,
+    wyreAssetOptions,
+    rampAssetOptions,
     panelUserAssetList
   } = useAssets()
 
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
+  const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
   const swap = useSwap()
   const {
@@ -175,8 +179,14 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = () => {
-    GetBuyOrFaucetUrl(selectedNetwork.chainId, selectedWyreAsset, selectedAccount, buyAmount)
-      .then(url => {
+    getBuyAssetUrl({
+      asset: selectedBuyAsset,
+      onRampProvider: selectedBuyOption,
+      chainId: selectedNetwork.chainId,
+      address: selectedAccount.address,
+      amount: buyAmount
+    })
+      .then((url: string) => {
         chrome.tabs.create({ url }, () => {
           if (chrome.runtime.lastError) {
             console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
@@ -208,7 +218,7 @@ function Container (props: Props) {
 
   const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
     if (selectedPanel === 'buy') {
-      setSelectedWyreAsset(asset)
+      setSelectedBuyAsset(asset)
     } else if (selectedPanel === 'swap') {
       onSelectTransactAsset(asset, swapToOrFrom)
     } else {
@@ -480,6 +490,16 @@ function Container (props: Props) {
     props.walletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin })
   }
 
+  React.useEffect(() => {
+    if (buyAssetOptions.length > 0) {
+      setSelectedBuyAsset(buyAssetOptions[0])
+    }
+  }, [buyAssetOptions])
+
+  const filteredAssetOptions = React.useMemo(() => {
+    return getUniqueAssets(buyAssetOptions)
+  }, [buyAssetOptions])
+
   const isConnectedToSite = React.useMemo((): boolean => {
     if (activeOrigin.originSpec === WalletOrigin) {
       return true
@@ -656,7 +676,7 @@ function Container (props: Props) {
   if (showSelectAsset) {
     let assets: BraveWallet.BlockchainToken[]
     if (selectedPanel === 'buy') {
-      assets = buyAssetOptions
+      assets = filteredAssetOptions
     } else if (selectedPanel === 'send') {
       assets = sendAssetOptions
     } else { // swap
@@ -788,10 +808,14 @@ function Container (props: Props) {
                 onChangeBuyView={onChangeSendView}
                 onInputChange={onSetBuyAmount}
                 onSubmit={onSubmitBuy}
-                selectedAsset={selectedWyreAsset}
+                selectedAsset={selectedBuyAsset}
                 buyAmount={buyAmount}
                 selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
                 networkList={networkList}
+                selectedBuyOption={selectedBuyOption}
+                onSelectBuyOption={setSelectedBuyOption}
+                rampAssetOptions={rampAssetOptions}
+                wyreAssetOptions={wyreAssetOptions}
               />
             </SendWrapper>
           </Panel>
