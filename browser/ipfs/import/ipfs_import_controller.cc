@@ -223,8 +223,7 @@ void IpfsImportController::OnDownloadFinished(
     case download::DownloadItem::CANCELLED:
       base::ThreadPool::PostTask(
           FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-          base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                         path.DirName()));
+          base::GetDeletePathRecursivelyCallback(path.DirName()));
       break;
     default:
       NOTREACHED();
@@ -289,8 +288,7 @@ void IpfsImportController::OnWebPageImportCompleted(
     const ipfs::ImportedData& data) {
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                     imported_direcory.DirName()));
+      GetDeletePathRecursivelyCallback(imported_direcory.DirName()));
   OnImportCompleted(data);
 }
 

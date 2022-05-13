@@ -26,8 +26,8 @@ void DeleteFileMetrics() {
         FROM_HERE,
         {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-        base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                       std::move(browser_metrics_upload_dir)));
+        GetDeletePathRecursivelyCallback(
+            std::move(browser_metrics_upload_dir)));
   }
 }
 

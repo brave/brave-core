@@ -169,9 +169,9 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
 }
 
 void BraveNewTabPageHandler::DeleteSanitizedImageFile() {
-  base::ThreadPool::PostTask(FROM_HERE, {base::MayBlock()},
-                             base::BindOnce(base::GetDeleteFileCallback(),
-                                            GetSanitizedImageFilePath()));
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock()},
+      base::GetDeleteFileCallback(GetSanitizedImageFilePath()));
 }
 
 base::FilePath BraveNewTabPageHandler::GetSanitizedImageFilePath() const {
