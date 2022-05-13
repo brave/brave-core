@@ -13,6 +13,8 @@
 #include "content/public/test/browser_task_environment.h"
 #include "net/cookies/site_for_cookies.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "net/url_request/url_request_context.h"
+#include "net/url_request/url_request_context_builder.h"
 #include "net/url_request/url_request_test_util.h"
 
 namespace {
@@ -20,18 +22,16 @@ namespace {
 class BraveHTTPSENetworkDelegateHelperTest: public testing::Test {
  public:
   BraveHTTPSENetworkDelegateHelperTest()
-      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {
-  }
+      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP) {}
   ~BraveHTTPSENetworkDelegateHelperTest() override {}
   void SetUp() override {
-    context_->Init();
+    context_ = net::CreateTestURLRequestContextBuilder()->Build();
   }
-  net::TestURLRequestContext* context() { return context_.get(); }
+  net::URLRequestContext* context() { return context_.get(); }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<net::TestURLRequestContext> context_;
+  std::unique_ptr<net::URLRequestContext> context_;
 };
 
 

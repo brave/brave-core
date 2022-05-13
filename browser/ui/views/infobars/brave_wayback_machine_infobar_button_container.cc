@@ -73,7 +73,7 @@ void BraveWaybackMachineInfoBarButtonContainer::StopThrobber() {
 void BraveWaybackMachineInfoBarButtonContainer::AdjustButtonInsets(
     bool add_insets) {
   const gfx::Insets insets_offset =
-      gfx::Insets(0, 0, 0, kInsetOffsetsForThrobber);
+      gfx::Insets::TLBR(0, 0, 0, kInsetOffsetsForThrobber);
   const gfx::Insets button_insets =
       add_insets ? button_->GetInsets() + insets_offset
                  : button_->GetInsets() - insets_offset;

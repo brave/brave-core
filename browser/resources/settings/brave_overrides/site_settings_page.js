@@ -64,8 +64,8 @@ RegisterPolymerComponentReplacement(
               id: 'autoplay',
               label: 'siteSettingsAutoplay',
               icon: 'cr:extension',
-              enabledLabel: 'siteSettingsAllowed',
-              disabledLabel: 'siteSettingsBlocked'
+              enabledLabel: 'siteSettingsAutoplayAllow',
+              disabledLabel: 'siteSettingsAutoplayBlock'
             }
             lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
             let indexForEthereum = indexForAutoplay + 1

@@ -5,7 +5,7 @@
 
 #define BRAVE_ICON_LABEL_BUBBLE_VIEW_GET_HIGHLIGHT_PATH                    \
   if (!ShouldShowSeparator())                                              \
-    highlight_bounds.Inset(0, 0, 1, 0);                                    \
+    highlight_bounds.Inset(gfx::Insets::TLBR(0, 0, 1, 0));                 \
   const auto* layout_provider = GetLayoutProvider();                       \
   auto layout_radius = corner_radius;                                      \
   if (layout_provider) {                                                   \

@@ -15,6 +15,13 @@
     Open Private tab button, press Enter to open a new Private tab to browse privately
   </message>
 
+  <message name="IDS_IOS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="In Title Case: The button text contents to suggest pedal action, LAUNCH_INCOGNITO">
+    Open Private Tab
+  </message>
+  <message name="IDS_IOS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe pedal action, LAUNCH_INCOGNITO">
+    Open a new Private tab to browse privately
+  </message>
+
   <if expr="use_titlecase">
     </if>
   <if expr="not use_titlecase">

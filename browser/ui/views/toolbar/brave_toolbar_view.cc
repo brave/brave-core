@@ -91,7 +91,7 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
       location_bar_margin_h - location_bar_center_offset;
   const int location_bar_margin_r =
       location_bar_margin_h + location_bar_center_offset;
-  return {0, location_bar_margin_l, 0, location_bar_margin_r};
+  return gfx::Insets::TLBR(0, location_bar_margin_l, 0, location_bar_margin_r);
 }
 
 bool HasMultipleUserProfiles() {

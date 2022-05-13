@@ -49,18 +49,18 @@
       </if>
     <if expr="not use_titlecase">
       </if>
-    <if expr="chromeos">
+    <if expr="chromeos_ash">
       </if>
   </if>
 
-  <if expr="not chromeos and not is_android">
+  <if expr="not chromeos_ash and not is_android">
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the Private button in profile card menu">
       Private
     </message>
-    <if expr="not lacros">
+    <if expr="not chromeos_lacros">
       </if>
 
-    <if expr="lacros">
+    <if expr="chromeos_lacros">
       </if>
 
   </if>

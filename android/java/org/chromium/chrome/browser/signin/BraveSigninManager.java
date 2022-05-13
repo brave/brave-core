@@ -116,4 +116,8 @@ public class BraveSigninManager implements SigninManager {
     public boolean isSyncOptInAllowed() {
         return false;
     }
+
+    @Override
+    public void revokeSyncConsent(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
+            boolean forceWipeUserData) {}
 }

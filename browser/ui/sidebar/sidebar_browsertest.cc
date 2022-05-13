@@ -78,13 +78,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
 
-  // If current active tab is not NTP, we can add current url to sidebar.
-  EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
-
-  // If current active tab is NTP, we can't add current url to sidebar.
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
-  EXPECT_FALSE(CanAddCurrentActiveTabToSidebar(browser()));
-
   // Currently we have 3 default items.
   EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
@@ -120,6 +113,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);
   EXPECT_EQ(2UL, model()->GetAllSidebarItems().size());
   EXPECT_EQ(1, model()->active_index());
+
+  // If current active tab is not NTP, we can add current url to sidebar.
+  EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
+
+  // If current active tab is NTP, we can't add current url to sidebar.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
+  EXPECT_FALSE(CanAddCurrentActiveTabToSidebar(browser()));
 
   // Check |BrowserView::find_bar_host_view_| is the last child view.
   // If not, findbar dialog is not positioned properly.

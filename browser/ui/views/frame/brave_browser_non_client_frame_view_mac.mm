@@ -30,8 +30,8 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
   if (!IsFrameCondensed()) {
     // Native frame has 1px border outline.
     constexpr int kFrameBorderOutlineThickness = 1;
-    bounds_to_frame_graphic.Inset(kFrameBorderOutlineThickness,
-                                  kFrameBorderOutlineThickness);
+    bounds_to_frame_graphic.Inset(gfx::Insets::VH(
+        kFrameBorderOutlineThickness, kFrameBorderOutlineThickness));
     canvas->ClipRect(bounds_to_frame_graphic);
   }
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);

@@ -76,7 +76,7 @@ class SidebarItemsArrowView : public views::ImageButton {
         flags.setStyle(cc::PaintFlags::kFill_Style);
         // Use smaller area for hover rounded rect.
         constexpr int kInset = 2, kRadius = 34;
-        bounds.Inset(kInset, 0);
+        bounds.Inset(gfx::Insets::VH(kInset, 0));
         canvas->DrawRoundRect(bounds, kRadius, flags);
       }
     }
@@ -416,22 +416,10 @@ int SidebarItemsScrollView::OnDragUpdated(const ui::DropTargetEvent& event) {
   return ret;
 }
 
-void SidebarItemsScrollView::OnDragExited() {
-  contents_view_->ClearDragIndicator();
-  drag_context_->set_drag_indicator_index(-1);
-}
-
 views::View::DropCallback SidebarItemsScrollView::GetDropCallback(
     const ui::DropTargetEvent& event) {
   return base::BindOnce(&SidebarItemsScrollView::PerformDrop,
                         weak_ptr_.GetWeakPtr());
-}
-
-ui::mojom::DragOperation SidebarItemsScrollView::OnPerformDrop(
-    const ui::DropTargetEvent& event) {
-  ui::mojom::DragOperation drag_op;
-  PerformDrop(event, drag_op);
-  return drag_op;
 }
 
 void SidebarItemsScrollView::PerformDrop(

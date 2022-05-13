@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 3ba07a022f4d3cd9cd19616548e4d74e0788f1d0..0928e9452535331196ca1b3c60fea7c3b4f3e261 100644
+index 9515376e628370c83e99000dd85b275d459074ce..db8675378618cc9e723e38fe61aaac6a30382cb3 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 @@ -158,6 +158,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {

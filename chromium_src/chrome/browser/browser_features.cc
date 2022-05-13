@@ -14,6 +14,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCopyLinkToText, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
+#if BUILDFLAG(IS_WIN)
+    {kPrewarmSearchResultsPageFonts, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 }});
 
 }  // namespace features

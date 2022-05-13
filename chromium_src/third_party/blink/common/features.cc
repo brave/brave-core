@@ -24,8 +24,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kHandwritingRecognitionWebPlatformApiFinch,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},

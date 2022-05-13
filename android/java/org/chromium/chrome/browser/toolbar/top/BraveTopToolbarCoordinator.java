@@ -44,7 +44,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private boolean mIsBottomToolbarVisible;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
-            ViewStub toolbarStub, ToolbarLayout toolbarLayout,
+            ViewStub toolbarStub, ViewStub fullscreenToolbarStub, ToolbarLayout toolbarLayout,
             ToolbarDataProvider toolbarDataProvider, ToolbarTabController tabController,
             UserEducationHelper userEducationHelper, List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
@@ -62,20 +62,21 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Supplier<ResourceManager> resourceManagerSupplier,
             ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
-            boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
-            boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
-            boolean initializeWithIncognitoColors, ObservableSupplier<Profile> profileSupplier,
+            boolean isTabletGtsPolishEnabled, boolean isTabToGtsAnimationEnabled,
+            boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled,
+            HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
+            OfflineDownloader offlineDownloader, boolean initializeWithIncognitoColors,
+            ObservableSupplier<Profile> profileSupplier,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback) {
-        super(controlContainer, toolbarStub, toolbarLayout, toolbarDataProvider, tabController,
-                userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
-                normalThemeColorProvider, overviewThemeColorProvider,
+        super(controlContainer, toolbarStub, fullscreenToolbarStub, toolbarLayout,
+                toolbarDataProvider, tabController, userEducationHelper, buttonDataProviders,
+                layoutStateProviderSupplier, normalThemeColorProvider, overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
                 startSurfaceAsHomepageSupplier, homepageManagedByPolicySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
                 resourceManagerSupplier, isProgressBarVisibleSupplier,
-                isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
+                isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled, isTabletGtsPolishEnabled,
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
@@ -88,7 +89,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             if (!isStartSurfaceEnabled) {
                 mTabSwitcherModeCoordinator = new BraveTabSwitcherModeTTCoordinator(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
-                        overviewModeMenuButtonCoordinator, isGridTabSwitcherEnabled,
+                        fullscreenToolbarStub, overviewModeMenuButtonCoordinator,
+                        isGridTabSwitcherEnabled, isTabletGtsPolishEnabled,
                         isTabToGtsAnimationEnabled, isIncognitoModeEnabledSupplier);
             }
         }

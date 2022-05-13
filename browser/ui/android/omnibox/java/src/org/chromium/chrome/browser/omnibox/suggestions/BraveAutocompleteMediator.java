@@ -30,6 +30,8 @@ import org.chromium.ui.modelutil.PropertyModel;
 class BraveAutocompleteMediator extends AutocompleteMediator {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
 
+    private boolean mNativeInitialized;
+
     public BraveAutocompleteMediator(@NonNull Context context,
             @NonNull AutocompleteDelegate delegate,
             @NonNull UrlBarEditingTextStateProvider textProvider,
@@ -58,5 +60,12 @@ class BraveAutocompleteMediator extends AutocompleteMediator {
         }
 
         super.onTextChanged(textWithoutAutocomplete, textWithAutocomplete);
+    }
+
+    @Override
+    public void onUrlFocusChange(boolean hasFocus) {
+        if (!mNativeInitialized) return;
+
+        super.onUrlFocusChange(hasFocus);
     }
 }

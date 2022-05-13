@@ -30,7 +30,8 @@ void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
   if (!IsFrameCondensed()) {
     // Native frame has 1px top border outline.
     constexpr int kFrameBorderOutlineThickness = 1;
-    bounds_to_frame_graphic.Inset(0, kFrameBorderOutlineThickness);
+    bounds_to_frame_graphic.Inset(
+        gfx::Insets::VH(0, kFrameBorderOutlineThickness));
     canvas->ClipRect(bounds_to_frame_graphic);
   }
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);

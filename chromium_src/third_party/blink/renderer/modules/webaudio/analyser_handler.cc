@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
-
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -22,6 +20,6 @@
     }                                                                        \
   }
 
-#include "src/third_party/blink/renderer/modules/webaudio/analyser_node.cc"
+#include "src/third_party/blink/renderer/modules/webaudio/analyser_handler.cc"
 
 #undef BRAVE_ANALYSERNODE_CONSTRUCTOR

@@ -47,7 +47,7 @@ class SidebarAddItemButton : public views::LabelButton {
   // Get theme provider to use browser's theme color in this dialog.
   SidebarAddItemButton(bool bold, const ui::ThemeProvider* theme_provider)
       : theme_provider_(theme_provider) {
-    constexpr gfx::Insets kDefaultAddItemInsets{10, 34, 4, 8};
+    constexpr auto kDefaultAddItemInsets = gfx::Insets::TLBR(10, 34, 4, 8);
     SetBorder(views::CreateEmptyBorder(kDefaultAddItemInsets));
     if (theme_provider_) {
       SetTextColor(
@@ -109,8 +109,8 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
       browser_(browser) {
   DCHECK(browser_);
   // Give margin and arrow at there.
-  set_margins(
-      gfx::Insets(0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+  set_margins(gfx::Insets::TLBR(
+      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
@@ -147,7 +147,8 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
   // |site_part| includes Add item header and current tab url.
   views::View* site_part = AddChildView(std::make_unique<views::View>());
   site_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical, gfx::Insets(4, 4, 6, 4), 6));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets::TLBR(4, 4, 6, 4),
+      6));
   // Use 13px font size.
   const int size_diff = 13 - views::Label::GetDefaultFontList().GetFontSize();
   views::Label::CustomFont font = {
@@ -165,7 +166,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));
   }
   header->SetAutoColorReadabilityEnabled(false);
-  constexpr gfx::Insets kHeaderInsets{10, 34, 4, 8};
+  constexpr auto kHeaderInsets = gfx::Insets::TLBR(10, 34, 4, 8);
   header->SetBorder(views::CreateEmptyBorder(kHeaderInsets));
   header->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
@@ -194,7 +195,8 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
   // |default_part| includes hidden default items.
   views::View* default_part = AddChildView(std::make_unique<views::View>());
   default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical, gfx::Insets(6, 4, 8, 4), 8));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets::TLBR(6, 4, 8, 4),
+      8));
 
   for (const auto& item : hidden_default_items) {
     auto* button = default_part->AddChildView(

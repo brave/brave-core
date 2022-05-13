@@ -8,8 +8,10 @@
 
 #define SelectRelativeTab virtual SelectRelativeTab
 #define TAB_STRIP_MODEL_H_ friend class BraveTabStripModel;
+#define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
 
 #include "src/chrome/browser/ui/tabs/tab_strip_model.h"
+#undef IsReadLaterSupportedForAny
 #undef SelectRelativeTab
 #undef TAB_STRIP_MODEL_H_
 

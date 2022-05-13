@@ -11,7 +11,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/toolbar_background_primary"
+    android:background="@color/default_bg_color_baseline"
     android:layout_gravity="top|center_horizontal"
     android:paddingStart="@dimen/bottom_toolbar_padding"
     android:paddingEnd="@dimen/bottom_toolbar_padding" >

@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index d64eccd2c64d0bca3e49585121715df7daf48139..c3e1efdde51e4d95970467c1636fe4a5e85f9b2f 100755
+index b083d3509433aa97aa85c59a4269def5ef5a5359..018830f339721d590b9b7cc3bd71312d3ace59d8 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
@@ -10,15 +10,15 @@ index d64eccd2c64d0bca3e49585121715df7daf48139..c3e1efdde51e4d95970467c1636fe4a5
  
  
  # Paths from the root of the tree to directories to skip.
-@@ -328,6 +329,7 @@ SPECIAL_CASES = {
-         "License File": "/third_party/swiftshader/LICENSE.txt",
+@@ -341,6 +342,7 @@ SPECIAL_CASES = {
+         "/third_party/swiftshader/third_party/SPIRV-Tools/LICENSE",
      },
  }
 +(PRUNE_DIRS, ADDITIONAL_PATHS) = AddBraveCredits(PRUNE_PATHS, SPECIAL_CASES, PRUNE_DIRS, ADDITIONAL_PATHS)
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -522,7 +524,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -534,7 +536,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index d64eccd2c64d0bca3e49585121715df7daf48139..c3e1efdde51e4d95970467c1636fe4a5
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -726,7 +729,8 @@ def GenerateCredits(file_template_file,
+@@ -738,7 +741,8 @@ def GenerateCredits(file_template_file,
    for path in third_party_dirs:
      try:
        metadata = ParseDir(path, _REPOSITORY_ROOT)

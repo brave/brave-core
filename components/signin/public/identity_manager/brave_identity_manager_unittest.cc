@@ -24,7 +24,6 @@
 #include "components/signin/internal/identity_manager/gaia_cookie_manager_service.h"
 #include "components/signin/internal/identity_manager/primary_account_manager.h"
 #include "components/signin/internal/identity_manager/primary_account_mutator_impl.h"
-#include "components/signin/internal/identity_manager/primary_account_policy_manager_impl.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #include "components/signin/public/base/list_accounts_test_utils.h"
 #include "components/signin/public/base/signin_switches.h"
@@ -113,10 +112,8 @@ class BraveIdentityManagerTest : public testing::Test {
         std::make_unique<image_fetcher::FakeImageDecoder>(),
         std::make_unique<FakeAccountCapabilitiesFetcherFactory>());
 
-    std::unique_ptr<PrimaryAccountPolicyManager> policy_manager;
     auto primary_account_manager = std::make_unique<PrimaryAccountManager>(
-        &signin_client_, token_service.get(), account_tracker_service.get(),
-        std::move(policy_manager));
+        &signin_client_, token_service.get(), account_tracker_service.get());
 
     // Passing this switch ensures that the new PrimaryAccountManager starts
     // with a clean slate. Otherwise PrimaryAccountManager::Initialize will use

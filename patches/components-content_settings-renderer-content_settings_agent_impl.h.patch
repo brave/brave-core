@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.h b/components/content_settings/renderer/content_settings_agent_impl.h
-index cb89dbd42d80b51287994a4ab8ef22a2e3dc2e31..5859305de2be43d511214c0d4177252be4e87876 100644
+index d53c20d431942f6e69206a78272ea60f2a2d0037..3ffdb96dc0038e3857421525cbff82015207336a 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.h
 +++ b/components/content_settings/renderer/content_settings_agent_impl.h
-@@ -121,6 +121,7 @@ class ContentSettingsAgentImpl
-     content_settings_manager_ = std::move(manager);
-   }
+@@ -107,6 +107,7 @@ class ContentSettingsAgentImpl
+   void SetRendererContentSettingRulesForTest(
+       const RendererContentSettingRules& rules);
  
 +  BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
   protected:

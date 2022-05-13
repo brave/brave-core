@@ -1,13 +1,13 @@
 diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
-index 62e7682380a3b017be3d1d71157f7c94df56e987..8f88e0217e88733ddd20dcfbc8a81a864767cd7b 100644
+index 3b74affb06d98b909965b47295bae44f2a5c7faf..a86df2ef600faf59c6ca057b70df7b67e36ab6d1 100644
 --- a/components/browser_ui/widget/android/java/res/values/dimens.xml
 +++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
-@@ -73,7 +73,7 @@
-     <dimen name="modern_toolbar_background_size">40dp</dimen>
+@@ -74,7 +74,7 @@
+     <dimen name="modern_toolbar_tablet_background_size">48dp</dimen>
      <!-- Sometimes the modern toolbar is shown at 48dp so a corner radius of
           24dp is needed to completely round the corners. -->
 -    <dimen name="modern_toolbar_background_corner_radius">24dp</dimen>
 +    <dimen name="modern_toolbar_background_corner_radius">8dp</dimen>
-     <dimen name="toolbar_text_box_elevation">@dimen/default_elevation_2</dimen>
- 
-     <!-- Promo cards dimensions -->
+     <!-- The offset is required for the background drawable used by the
+          location bar on tablets. -->
+     <dimen name="modern_toolbar_background_vertical_offset">4dp</dimen>

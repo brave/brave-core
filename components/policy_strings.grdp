@@ -265,7 +265,7 @@
   <message name="IDS_POLICY_USER_IS_NOT_AFFILIATED_ERROR" desc="The text displayed in the status column when a user cloud policy is ignored due to user is not affiliated to the machine management.">
     Ignored because user is not affiliated to the machine management or the machine is not managed.
   </message>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     <message name="IDS_POLICY_NETWORK_CONFIG_PARSE_FAILED" desc="The text displayed in the status column when the corresponding network configuration policy failed to parse.">
       Network configuration failed to be parsed (invalid JSON).
     </message>
@@ -478,12 +478,12 @@ Additional details:
   <message name="IDS_POLICY_SCOPE_USER" desc="Text displayed in the Applies to column when a policy applies to the current user only.">
     Current user
   </message>
-  <if expr="not is_android and not chromeos">
+  <if expr="not is_android and not chromeos_ash">
     <message name="IDS_POLICY_SCOPE_DEVICE" desc="Text displayed in the Applies to column when a policy applies to everyone on the machine.">
       Machine
     </message>
   </if>
-  <if expr="chromeos or is_android">
+  <if expr="chromeos_ash or is_android">
     <message name="IDS_POLICY_SCOPE_DEVICE" desc="Mobile: Text displayed in the Applies To column when a policy applies to everyone on the device.">
       Device
     </message>
@@ -494,7 +494,7 @@ Additional details:
   <message name="IDS_POLICY_LEVEL_MANDATORY" desc="Text displayed in the Level column when a policy is mandatory.">
     Mandatory
   </message>
-  <message name="IDS_POLICY_SOURCE_ENTERPRISE_DEFAULT" desc="Indicates that a policy is set by default in an enterprise environment and can be overridden (for Chrome OS only).">
+  <message name="IDS_POLICY_SOURCE_ENTERPRISE_DEFAULT" desc="Indicates that a policy is set by default in an enterprise environment and can be overridden (for ChromeOS only).">
     Enterprise default
   </message>
   <message name="IDS_POLICY_SOURCE_DEFAULT" desc="Indicates that a policy is set by default and can be overridden.">
@@ -521,7 +521,7 @@ Additional details:
   <message name="IDS_POLICY_SOURCE_PLATFORM" desc="Indicates that the policy is obtained from the local OS.">
     Platform
   </message>
-  <message name="IDS_POLICY_SOURCE_DEVICE_LOCAL_ACCOUNT_OVERRIDE" desc="Indicates that the policy is set programmatically because of an active device-local account session: managed session or Kiosk app (both for Chrome OS only). It could have overridden other sources that set this policy.">
+  <message name="IDS_POLICY_SOURCE_DEVICE_LOCAL_ACCOUNT_OVERRIDE" desc="Indicates that the policy is set programmatically because of an active device-local account session: managed session or Kiosk app (both for ChromeOS only). It could have overridden other sources that set this policy.">
     Device local account override
   </message>
   <message name="IDS_POLICY_RISK_TAG_FULL_ADMIN_ACCESS" desc="Title of a group/tag whose policies potentially allow the administrator to access all of a user's data.">

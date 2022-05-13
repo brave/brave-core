@@ -166,7 +166,7 @@ void SidebarContainerView::UpdateBackgroundAndBorder() {
         theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
     if (sidebar_panel_webview_ && sidebar_panel_webview_->GetVisible()) {
       SetBorder(views::CreateSolidSidedBorder(
-          0, 0, 0, kBorderThickness,
+          gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
           theme_provider->GetColor(
               ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
     } else {

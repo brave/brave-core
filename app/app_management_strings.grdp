@@ -121,8 +121,8 @@
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_SYSTEM" desc="Text for System app type">
     System App
   </message>
-  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CROS_SYSTEM" desc="Text for Chrome OS System app type">
-    Chrome OS System App
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CROS_SYSTEM" desc="Text for ChromeOS System app type">
+    ChromeOS System App
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_WEB_STORE" desc="Text for Web Store installation source">
     Web Store
@@ -134,12 +134,15 @@
     Brave browser
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_AND_SOURCE_COMBINED" desc="Full text for installation source and app type line">
-    <ph name="APP_TYPE">$1<ex>Web App</ex></ph> installed from <ph name="INSTALL_SOURCE">$2<ex>Brave browser</ex></ph>
+    <ph name="APP_TYPE">$1<ex>Web App</ex></ph> installed from <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph><ph name="INSTALL_SOURCE">$2<ex>Google Play Store</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_VERSION" desc="Text for application version">
+    Version: <ph name="APP_VERSION">$1<ex>17.2</ex></ph>
   </message>
 
   <!-- File Handling -->
   <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_HEADER" desc="Main text for toggling a web app's ability to use the File Handling API. This controls whether the app can appear in an 'Open With' list in a file's context menu.">
-    Suggest app when opening files on your computer
+    Include this app as an option when opening files
   </message>
 
   <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_OVERFLOW_DIALOG_TITLE" desc="Title for a dialog that shows all the supported file types (file extensions) that are handled by an app. Only shown when there are 5 or more file types.">
@@ -151,8 +154,8 @@
       You can open and edit supported files with this app from the File Explorer or other apps. To control which files open in this app by default, go to <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Windows settings<ph name="END_LINK">&lt;/a&gt;</ph>.
     </message>
   </if>
-  <if expr="chromeos">
-    <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing the Chrome OS Files app) and a link to a learn more link for default filetype associations.">
+  <if expr="chromeos_ash">
+    <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing the ChromeOS Files app) and a link to a learn more link for default filetype associations.">
       You can open and edit supported files with this app from the Files app or other apps. To control which files open this app by default, <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>learn how to set default apps on your device<ph name="END_LINK">&lt;/a&gt;</ph>.
     </message>
   </if>
@@ -161,7 +164,8 @@
       You can open and edit supported files with this app from Finder or other apps. To control which files open this app by default, <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>learn how to set default apps on your device<ph name="END_LINK">&lt;/a&gt;</ph>.
     </message>
   </if>
-  <if expr="is_fuchsia or desktop_linux">
+  <!-- TODO(crbug.com/1307455): Remove ` and not chromeos_ash` once fixed. -->
+  <if expr="is_fuchsia or is_linux and not chromeos_ash">
     <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing a generic Linux file browser app) and a link to a learn more link for default filetype associations.">
       You can open and edit supported files with this app from your file browser or other apps. To control which files open this app by default, <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>learn how to set default apps on your device<ph name="END_LINK">&lt;/a&gt;</ph>.
     </message>

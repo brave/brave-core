@@ -504,7 +504,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
+                ToolbarControlContainer.class, ViewStub.class, ViewStub.class, ToolbarLayout.class,
                 ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
@@ -512,8 +512,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 Callback.class, Supplier.class, Supplier.class, ObservableSupplier.class,
                 BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
-                HistoryDelegate.class, BooleanSupplier.class, OfflineDownloader.class,
-                boolean.class, ObservableSupplier.class, Callback.class));
+                boolean.class, HistoryDelegate.class, BooleanSupplier.class,
+                OfflineDownloader.class, boolean.class, ObservableSupplier.class, Callback.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -656,7 +656,7 @@ public class BytecodeTest {
                         "mOptionalButtonController"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
-                        "mTabSwitcherModeToolbar"));
+                        "mActiveTabSwitcherToolbar"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mNewTabViewButton"));
@@ -697,6 +697,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings", "mSite",
                 true, Website.class));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
+                        "mNativeInitialized", true, boolean.class));
     }
 
     @Test

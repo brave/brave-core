@@ -90,7 +90,7 @@ else
 fi
 
 if [[ "${NOTARIZE}" = "False" ]]; then
-  PARAMS="$PARAMS --no-notarize"
+  PARAMS="$PARAMS --notarize=none"
 else
   PARAMS="$PARAMS ${NOTARIZE_ARGS}"
 fi

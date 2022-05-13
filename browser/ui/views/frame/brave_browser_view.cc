@@ -347,6 +347,10 @@ void BraveBrowserView::OnTabStripModelChanged(
   }
 }
 
+void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
+  // Do nothing.
+}
+
 void BraveBrowserView::StartTabCycling() {
   tab_cycling_event_handler_ = std::make_unique<TabCyclingEventHandler>(this);
 }

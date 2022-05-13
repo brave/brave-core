@@ -41,12 +41,6 @@ int GetIconIndexForFileType() {
 
 #define BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS BRAVE_IPFS, BRAVE_IPNS,
 
-#define BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS                         \
-  if (base::EqualsCaseInsensitiveASCII(protocol, BRAVE_IPFS))             \
-    return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"IPFS"); \
-  if (base::EqualsCaseInsensitiveASCII(protocol, BRAVE_IPNS))             \
-    return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"IPNS");
-
 #if defined(OFFICIAL_BUILD)
 // Add BraveFile prog id in registry with proper icon.
 // This prog id will be referenced from serveral file association reg entry.
@@ -84,7 +78,6 @@ int GetIconIndexForFileType() {
 #undef BRAVE_GET_SHELL_INTEGRATION_ENTRIES
 #undef BRAVE_GET_APP_EXT_REGISTRATION_ENTRIES
 #undef BRAVE_GET_CHROME_PROG_ID_ENTRIES
-#undef BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS
 #undef BRAVE_IPFS
 #undef BRAVE_IPNS
 #undef BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS
