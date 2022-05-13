@@ -86,7 +86,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Websites you visit may request your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This lets you take and upload videos.</string>
+	<string>This allows use of your microphone when using Brave.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This lets you save photos.</string>
 	<key>NSUserActivityTypes</key>
@@ -102,10 +102,10 @@
 	<string>$(BRAVE_SERVICES_KEY)</string>
 	<key>UIAppFonts</key>
 	<array>
-        <string>NewYorkMedium-Bold.otf</string>
-        <string>NewYorkMedium-BoldItalic.otf</string>
-        <string>NewYorkMedium-Regular.otf</string>
-        <string>NewYorkMedium-RegularItalic.otf</string>
+		<string>NewYorkMedium-Bold.otf</string>
+		<string>NewYorkMedium-BoldItalic.otf</string>
+		<string>NewYorkMedium-Regular.otf</string>
+		<string>NewYorkMedium-RegularItalic.otf</string>
 		<string>FiraSans-Bold.ttf</string>
 		<string>FiraSans-BoldItalic.ttf</string>
 		<string>FiraSans-Book.ttf</string>
