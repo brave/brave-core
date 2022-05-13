@@ -383,10 +383,9 @@ BraveContentBrowserClient::BraveContentBrowserClient() {}
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
 std::unique_ptr<content::BrowserMainParts>
-BraveContentBrowserClient::CreateBrowserMainParts(
-    content::MainFunctionParams parameters) {
+BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   std::unique_ptr<content::BrowserMainParts> main_parts =
-      ChromeContentBrowserClient::CreateBrowserMainParts(std::move(parameters));
+      ChromeContentBrowserClient::CreateBrowserMainParts(is_integration_test);
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
