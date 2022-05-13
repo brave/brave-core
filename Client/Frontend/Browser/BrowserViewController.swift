@@ -3038,12 +3038,23 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     case .copy:
       UIPasteboard.general.url = url
     case .share:
-      presentActivityViewController(
-        url,
-        sourceView: view,
-        sourceRect: view.convert(topToolbar.shareButton.frame, from: topToolbar.shareButton.superview),
-        arrowDirection: [.up]
-      )
+      if presentedViewController != nil {
+        dismiss(animated: true) {
+          self.presentActivityViewController(
+            url,
+            sourceView: self.view,
+            sourceRect: self.view.convert(self.topToolbar.shareButton.frame, from: self.topToolbar.shareButton.superview),
+            arrowDirection: [.up]
+          )
+        }
+      } else {
+        presentActivityViewController(
+          url,
+          sourceView: view,
+          sourceRect: view.convert(topToolbar.shareButton.frame, from: topToolbar.shareButton.superview),
+          arrowDirection: [.up]
+        )
+      }
     }
   }
 }
