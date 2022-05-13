@@ -63,6 +63,9 @@ bool BalanceOf(const std::string& owner_address,
                uint256_t token_id,
                std::string* data);
 
+// Get the URI of a token
+bool Uri(uint256_t token_id, std::string* data);
+
 }  // namespace erc1155
 
 namespace erc165 {

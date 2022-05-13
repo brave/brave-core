@@ -259,10 +259,26 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
+  using GetTokenMetadataCallback =
+      base::OnceCallback<void(const std::string& result,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
+
+  void GetTokenMetadata(const std::string& contract_address,
+                        const std::string& token_id,
+                        const std::string& chain_id,
+                        const std::string& interface_id,
+                        GetTokenMetadataCallback callback);
+
   void GetERC721Metadata(const std::string& contract_address,
                          const std::string& token_id,
                          const std::string& chain_id,
-                         GetERC721MetadataCallback callback) override;
+                         GetTokenMetadataCallback callback) override;
+
+  void GetERC1155Metadata(const std::string& contract_address,
+                          const std::string& token_id,
+                          const std::string& chain_id,
+                          GetTokenMetadataCallback callback) override;
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased
@@ -504,33 +520,32 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnGetSupportsInterfaceERC721Metadata(const std::string& contract_address,
-                                            const std::string& signature,
-                                            const GURL& network_url,
-                                            GetERC721MetadataCallback callback,
-                                            bool is_supported,
-                                            mojom::ProviderError error,
-                                            const std::string& error_message);
+  void OnGetSupportsInterfaceTokenMetadata(const std::string& contract_address,
+                                           const std::string& signature,
+                                           const GURL& network_url,
+                                           GetTokenMetadataCallback callback,
+                                           bool is_supported,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message);
 
   void ContinueGetERC721TokenBalance(const std::string& account_address,
                                      GetERC721TokenBalanceCallback callback,
                                      const std::string& owner_address,
                                      mojom::ProviderError error,
                                      const std::string& error_message);
-  void OnGetERC721TokenUri(
-      GetERC721MetadataCallback callback,
+  void OnGetTokenUri(GetTokenMetadataCallback callback,
+                     const int status,
+                     const std::string& body,
+                     const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetTokenMetadataPayload(
+      GetTokenMetadataCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnGetERC721MetadataPayload(
-      GetERC721MetadataCallback callback,
-      const int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
-  void OnSanitizeERC721Metadata(GetERC721MetadataCallback callback,
-                                data_decoder::JsonSanitizer::Result result);
+  void OnSanitizeTokenMetadata(GetTokenMetadataCallback callback,
+                               data_decoder::JsonSanitizer::Result result);
 
   void OnGetSupportsInterface(
       GetSupportsInterfaceCallback callback,

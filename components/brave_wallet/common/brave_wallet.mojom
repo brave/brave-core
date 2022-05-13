@@ -746,6 +746,9 @@ interface JsonRpcService {
   // Obtains the metadata JSON for a token ID of an ERC721 contract
   GetERC721Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
 
+  // Obtains the metadata JSON for a token ID of an ERC1155 contract
+  GetERC1155Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
+
   // ENS lookups
   EnsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
 

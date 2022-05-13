@@ -210,6 +210,16 @@ bool BalanceOf(const std::string& owner_address,
   return ConcatHexStrings(hex_strings, data);
 }
 
+bool Uri(uint256_t token_id, std::string* data) {
+  const std::string function_hash = GetFunctionHash("uri(uint256)");
+  std::string padded_token_id;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
+    return false;
+  }
+
+  return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
+}
+
 }  // namespace erc1155
 
 namespace erc165 {

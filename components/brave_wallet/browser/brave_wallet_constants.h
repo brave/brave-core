@@ -631,6 +631,7 @@ constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 
 // ERC-165 identifier for ERC721 interface.
 constexpr char kERC1155InterfaceId[] = "0xd9b67a26";
+constexpr char kERC1155MetadataInterfaceId[] = "0x0e89341c";
 constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 
