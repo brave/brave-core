@@ -1,7 +1,7 @@
 import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
-import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
 assert(enable_extensions)
@@ -46,13 +46,8 @@ action("web_discovery_project_resources") {
   ]
 }
 
-grit("static_resources") {
+brave_grit("static_resources") {
   source = "extension/resources.grd"
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
 
   outputs = [
     "grit/brave_extension.h",
@@ -65,9 +60,6 @@ grit("static_resources") {
     ":web_discovery_project_resources",
     "extension/brave_extension",
   ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
-  output_dir = "$root_gen_dir/brave/components/brave_extension"
 }
 
 repack("resources") {

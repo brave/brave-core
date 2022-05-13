@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grit base_dir="../" latest_public_release="0" current_release="1" output_all_resource_defines="true">
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="true">
   <outputs>
     <output filename="grit/brave_webtorrent_resources.h" type="rc_header">
       <emit emit_type='prepend'></emit>
@@ -9,10 +9,10 @@
     <output filename="grit/brave_webtorrent_resources_map.h" type="resource_map_header" />
   </outputs>
   <release seq="1">
-    <includes first_id="45000">
-      <include name="IDR_BRAVE_WEBTORRENT" file="brave_webtorrent/extension/manifest.json" type="BINDATA" />
-      <include name="IDR_BRAVE_WEBTORRENT_HTML" file="brave_webtorrent/extension/brave_webtorrent.html" type="BINDATA" />
-      <include name="IDR_BRAVE_WEBTORRENT2_HTML" file="brave_webtorrent/extension/brave_webtorrent2.html" type="BINDATA" />
+    <includes>
+      <include name="IDR_BRAVE_WEBTORRENT" file="extension/manifest.json" resource_path="brave_webtorrent/extension/manifest.json" type="BINDATA" />
+      <include name="IDR_BRAVE_WEBTORRENT_HTML" file="extension/brave_webtorrent.html" resource_path="brave_webtorrent/extension/brave_webtorrent.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WEBTORRENT2_HTML" file="extension/brave_webtorrent2.html" resource_path="brave_webtorrent/extension/brave_webtorrent2.html" type="BINDATA" />
     </includes>
   </release>
 </grit>

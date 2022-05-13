@@ -1,28 +1,21 @@
-import("//tools/grit/grit_rule.gni")
+import("//brave/resources/brave_grit.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/webui_features.gni")
 
-grit("resources") {
+brave_grit("resources") {
   defines = [ "optimize_webui=$optimize_webui" ]
   source = "brave_webui_resources.grd"
 
   deps = [ ":modulize" ]
 
   # The .grd contains references to generated files.
-  enable_input_discovery_for_gn_analyze = true
+  enable_input_discovery_for_gn_analyze = false
 
   outputs = [
     "grit/brave_webui_resources.h",
     "grit/brave_webui_resources_map.cc",
     "grit/brave_webui_resources_map.h",
     "brave_webui_resources.pak",
-  ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
   ]
 }
 

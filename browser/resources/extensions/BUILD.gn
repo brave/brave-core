@@ -1,6 +1,6 @@
+import("//brave/resources/brave_grit.gni")
 import("//chrome/browser/resources/tools/optimize_webui.gni")
 import("//chrome/common/features.gni")
-import("//tools/grit/grit_rule.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
@@ -9,21 +9,11 @@ preprocess_folder = "preprocessed"
 preprocess_manifest = "brave_preprocessed_manifest.json"
 preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 
-grit("resources") {
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-    "-E",
-    "root_src_dir=" + rebase_path("//", root_build_dir),
-  ]
-
+brave_grit("resources") {
   defines = chrome_grit_defines
 
   enable_input_discovery_for_gn_analyze = false
-  defines +=
-      [ "SHARED_INTERMEDIATE_DIR=" + rebase_path(root_gen_dir, root_build_dir) ]
-  extensions_gen_dir = "$root_gen_dir/brave/browser/resources/extensions"
-  source = "$extensions_gen_dir/brave_extensions_resources.grd"
+  source = "$target_gen_dir/brave_extensions_resources.grd"
   deps = [ ":build_grd" ]
 
   outputs = [
@@ -32,9 +22,6 @@ grit("resources") {
     "grit/brave_extensions_resources_map.h",
     "brave_extensions_resources.pak",
   ]
-
-  output_dir = "$root_gen_dir/brave/browser/resources/extensions"
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
 generate_grd("build_grd") {
