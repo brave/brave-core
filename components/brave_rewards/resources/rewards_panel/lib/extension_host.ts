@@ -283,6 +283,12 @@ export function createHost (): Host {
 
     addListeners()
 
+    // Set a maximum time to display the loading indicator. Several calls to
+    // the `braveRewards` extension API can block on network requests. If the
+    // network is unavailable or an endpoint is unresponsive, we want to display
+    // the data that we have, rather than a stalled loading indicator.
+    setTimeout(() => { stateManager.update({ loading: false }) }, 3000)
+
     await Promise.all([
       apiAdapter.getGrants().then((list) => {
         updateGrants(list)
