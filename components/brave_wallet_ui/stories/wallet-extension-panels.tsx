@@ -25,7 +25,8 @@ import {
   Buy,
   SelectAsset,
   SelectNetworkWithHeader,
-  SelectAccount
+  SelectAccount,
+  CreateAccountTab
 } from '../components/buy-send-swap'
 import {
   BraveWallet,
@@ -44,7 +45,8 @@ import {
   StyledExtensionWrapper,
   ScrollContainer,
   SelectContainer,
-  StyledWelcomPanel
+  StyledWelcomPanel,
+  StyledCreateAccountPanel
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { PanelTitles } from '../options/panel-titles'
@@ -617,7 +619,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           selectedBuyOption={selectedBuyOption}
                           onSelectBuyOption={setSelectedBuyOption}
                           rampAssetOptions={mockAccountAssetOptions}
-                          wyreAssetOptions={mockAccountAssetOptions}/>
+                          wyreAssetOptions={mockAccountAssetOptions} />
                       }
                       {selectedPanel === 'sitePermissions' &&
                         <SitePermissions
@@ -825,4 +827,18 @@ export const _RecentTransaction = () => {
 
 _RecentTransaction.story = {
   name: 'Recent Transactions'
+}
+
+export const _CreateAccount = () => {
+  return (
+    <StyledCreateAccountPanel>
+      <CreateAccountTab
+        prevNetwork={mockNetworks[0]}
+      />
+    </StyledCreateAccountPanel>
+  )
+}
+
+_CreateAccount.story = {
+  name: 'Create Account Tab'
 }

@@ -28,7 +28,8 @@ import {
   SelectAsset,
   SelectAccount,
   SelectNetworkWithHeader,
-  Swap
+  Swap,
+  CreateAccountTab
 } from '../components/buy-send-swap/'
 import { AppList } from '../components/shared'
 import { filterAppList } from '../utils/filter-app-list'
@@ -64,7 +65,7 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useSwap, useSend } from '../common/hooks'
+import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
 import { getUniqueAssets } from '../utils/asset-utils'
 import { getBuyAssetUrl } from '../common/async/lib'
 
@@ -156,6 +157,10 @@ function Container (props: Props) {
   const {
     selectSendAsset: onSelectSendAsset
   } = useSend()
+
+  const { needsAccount } = useHasAccount()
+
+  const { prevNetwork } = usePrevNetwork()
 
   React.useEffect(() => {
     if (selectedPanel === 'connectWithSite') {
@@ -489,6 +494,12 @@ function Container (props: Props) {
   const onCancelAllowReadingEncryptedMessage = () => {
     props.walletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin })
   }
+
+  React.useEffect(() => {
+    if (needsAccount) {
+      props.walletPanelActions.navigateTo('createAccount')
+    }
+  }, [needsAccount])
 
   React.useEffect(() => {
     if (buyAssetOptions.length > 0) {
@@ -940,6 +951,19 @@ function Container (props: Props) {
           </Panel>
         </LongWrapper>
       </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'createAccount') {
+    return (
+      <WelcomePanelWrapper>
+        <LongWrapper>
+          <CreateAccountTab
+            prevNetwork={prevNetwork}
+            isPanel={true}
+          />
+        </LongWrapper>
+      </WelcomePanelWrapper>
     )
   }
 
