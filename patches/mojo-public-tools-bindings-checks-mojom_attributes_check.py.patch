@@ -1,0 +1,36 @@
+diff --git a/mojo/public/tools/bindings/checks/mojom_attributes_check.py b/mojo/public/tools/bindings/checks/mojom_attributes_check.py
+index ed22fab3a40948e570e407362458dfceaf87efd5..451e8ebc9b7ec29ff63078fc3faabd6d50af8406 100644
+--- a/mojo/public/tools/bindings/checks/mojom_attributes_check.py
++++ b/mojo/public/tools/bindings/checks/mojom_attributes_check.py
+@@ -20,6 +20,7 @@ _COMMON_FIELD_ATTRIBUTES = _COMMON_ATTRIBUTES | {
+ # Note: `Default`` goes on the default _value_, not on the enum.
+ # Note: [Stable] without [Extensible] is not allowed.
+ _ENUM_ATTRIBUTES = _COMMON_ATTRIBUTES | {
++    'BraveAdd',
+     'Extensible',
+     'Native',
+     'Stable',
+@@ -34,6 +35,7 @@ _ENUMVAL_ATTRIBUTES = _COMMON_ATTRIBUTES | {
+ }
+ 
+ _INTERFACE_ATTRIBUTES = _COMMON_ATTRIBUTES | {
++    'BraveAdd',
+     'RenamedFrom',
+     'RequireContext',
+     'ServiceSandbox',
+@@ -57,6 +59,7 @@ _MODULE_ATTRIBUTES = _COMMON_ATTRIBUTES | {
+ _PARAMETER_ATTRIBUTES = _COMMON_FIELD_ATTRIBUTES
+ 
+ _STRUCT_ATTRIBUTES = _COMMON_ATTRIBUTES | {
++    'BraveAdd',
+     'CustomSerializer',
+     'JavaClassName',
+     'Native',
+@@ -68,6 +71,7 @@ _STRUCT_ATTRIBUTES = _COMMON_ATTRIBUTES | {
+ _STRUCT_FIELD_ATTRIBUTES = _COMMON_FIELD_ATTRIBUTES
+ 
+ _UNION_ATTRIBUTES = _COMMON_ATTRIBUTES | {
++    'BraveAdd',
+     'Extensible',
+     'Stable',
+     'RenamedFrom',
