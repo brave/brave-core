@@ -17,6 +17,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
