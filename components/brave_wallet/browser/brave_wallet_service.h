@@ -140,6 +140,10 @@ class BraveWalletService : public KeyedService,
   void NotifyDecryptRequestProcessed(bool approved,
                                      const url::Origin& origin) override;
 
+  void IsBase58EncodedSolanaPubkey(
+      const std::string& key,
+      IsBase58EncodedSolanaPubkeyCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 

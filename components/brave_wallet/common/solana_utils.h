@@ -17,11 +17,13 @@ namespace brave_wallet {
 void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16);
 
 // A bridge function to call DecodeBase58 in bitcoin-core.
-bool Base58Decode(const std::string& str,
-                  std::vector<uint8_t>* ret,
-                  int max_ret_len);
+// It will return false if length of decoded byte array does not match len
+// param.
+bool Base58Decode(const std::string& str, std::vector<uint8_t>* ret, int len);
 // A bridge function to call EncodeBase58 in bitcoin-core.
 std::string Base58Encode(const std::vector<uint8_t>& bytes);
+
+bool IsBase58EncodedSolanaPubkey(const std::string& key);
 
 }  // namespace brave_wallet
 

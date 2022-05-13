@@ -61,7 +61,31 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
                                   240, 137, 142, 185, 169, 6,   17,  87,
                                   123, 6,   42,  55,  162, 64,  120, 91}));
 
+  // Only exact length should return true.
+  std::string two_bytes_encoded = Base58Encode({0, 0});
+  std::vector<uint8_t> bytes;
+  EXPECT_TRUE(Base58Decode(two_bytes_encoded, &bytes, 2));
+  EXPECT_FALSE(Base58Decode(two_bytes_encoded, &bytes, 1));
+  EXPECT_FALSE(Base58Decode(two_bytes_encoded, &bytes, 3));
+
   EXPECT_DCHECK_DEATH(Base58Decode(program, nullptr, kSolanaPubkeySize));
+}
+
+TEST(SolanaUtilsUnitTest, IsBase58EncodedSolanaPubkey) {
+  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(
+      "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"));
+  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(kSolanaSystemProgramId));
+  EXPECT_TRUE(IsBase58EncodedSolanaPubkey(
+      Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize, 0))));
+
+  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(""));
+  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(
+      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8"));
+  // Incorrect sizes.
+  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(
+      Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize + 1, 0))));
+  EXPECT_FALSE(IsBase58EncodedSolanaPubkey(
+      Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize - 1, 0))));
 }
 
 }  // namespace brave_wallet

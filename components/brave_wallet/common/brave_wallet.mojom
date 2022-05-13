@@ -1075,6 +1075,8 @@ interface BraveWalletService {
   NotifyDecryptRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
+  IsBase58EncodedSolanaPubkey(string key) => (bool result);
+
   // Resets the keyring and the related preferences
   Reset();
 };
