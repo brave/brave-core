@@ -1,8 +1,8 @@
 diff --git a/chrome/tools/build/mac/BUILD.gn b/chrome/tools/build/mac/BUILD.gn
-index cd080aee2da3ecdb86738a457d31c70305c83150..f3139fe1f223fdffa0f8a1183f86178988d4ad3b 100644
+index 4666937778bd0e25c90a47057080a5d98a697450..429bff98822e46c7a5ffcafebe2209b527d6ff47 100644
 --- a/chrome/tools/build/mac/BUILD.gn
 +++ b/chrome/tools/build/mac/BUILD.gn
-@@ -4,6 +4,7 @@
+@@ -17,6 +17,7 @@ if (current_toolchain != default_toolchain) {
  
  executable("infoplist_strings_util") {
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
