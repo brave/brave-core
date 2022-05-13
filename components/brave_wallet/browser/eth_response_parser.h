@@ -37,9 +37,8 @@ bool ParseEthGasPrice(const std::string& json, std::string* result);
 
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::string* content_hash);
-bool ParseUnstoppableDomainsProxyReaderGetMany(
-    const std::string& json,
-    std::vector<std::string>* values);
+absl::optional<std::vector<std::string>>
+ParseUnstoppableDomainsProxyReaderGetMany(const std::string& json);
 
 absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
     const std::string& json);

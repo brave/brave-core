@@ -245,15 +245,8 @@ const base::flat_map<std::string, std::string>
         {brave_wallet::mojom::kPolygonMainnetChainId,
          "0xA3f32c8cd786dc089Bd1fC175F2707223aeE5d00"}};
 
-const base::flat_map<std::string, std::string> kEnsRegistryContractAddressMap =
-    {{brave_wallet::mojom::kMainnetChainId,
-      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
-     {brave_wallet::mojom::kRopstenChainId,
-      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
-     {brave_wallet::mojom::kRinkebyChainId,
-      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
-     {brave_wallet::mojom::kGoerliChainId,
-      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"}};
+constexpr const char kEnsRegistryContractAddress[] =
+    "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
@@ -924,11 +917,13 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 }
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
-  if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId)
-    return GURL("https://polygon-rpc.com");
+  if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+    return GURL(kPolygonMainnetEndpoint + GetInfuraProjectID());
+  }
 
-  if (chain_id == brave_wallet::mojom::kMainnetChainId)
+  if (chain_id == brave_wallet::mojom::kMainnetChainId) {
     return GURL(GetInfuraURLForKnownChainId(chain_id));
+  }
 
   NOTREACHED();
   return GURL();
@@ -942,9 +937,8 @@ std::string GetUnstoppableDomainsProxyReaderContractAddress(
 }
 
 std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
-  if (kEnsRegistryContractAddressMap.contains(chain_id))
-    return kEnsRegistryContractAddressMap.at(chain_id);
-  return "";
+  DCHECK_EQ(chain_id, brave_wallet::mojom::kMainnetChainId);
+  return kEnsRegistryContractAddress;
 }
 
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {

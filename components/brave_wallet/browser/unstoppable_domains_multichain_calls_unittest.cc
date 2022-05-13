@@ -13,25 +13,22 @@
 
 using testing::_;
 
-namespace brave_wallet {
+namespace brave_wallet::unstoppable_domains {
 
-class UnstoppableDomainsMultichainCallsUnitTest : public testing::Test {
+class MultichainCallsUnitTest : public testing::Test {
  public:
-  using CallbackType =
-      UnstoppableDomainsMultichainCalls<std::string>::CallbackType;
+  using CallbackType = MultichainCalls<std::string>::CallbackType;
 
   std::string domain() const { return "brave.com"; }
 
-  UnstoppableDomainsMultichainCalls<std::string>& chain_calls() {
-    return chain_calls_;
-  }
+  MultichainCalls<std::string>& chain_calls() { return chain_calls_; }
 
  private:
-  UnstoppableDomainsMultichainCalls<std::string> chain_calls_;
+  MultichainCalls<std::string> chain_calls_;
   base::test::TaskEnvironment task_environment_;
 };
 
-TEST_F(UnstoppableDomainsMultichainCallsUnitTest, ManyCallbacks) {
+TEST_F(MultichainCallsUnitTest, ManyCallbacks) {
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::MockCallback<CallbackType> cb1;
@@ -56,7 +53,7 @@ TEST_F(UnstoppableDomainsMultichainCallsUnitTest, ManyCallbacks) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsMultichainCallsUnitTest, PolygonResult) {
+TEST_F(MultichainCallsUnitTest, PolygonResult) {
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::MockCallback<CallbackType> cb1;
@@ -70,7 +67,7 @@ TEST_F(UnstoppableDomainsMultichainCallsUnitTest, PolygonResult) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsMultichainCallsUnitTest, PolygonError) {
+TEST_F(MultichainCallsUnitTest, PolygonError) {
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::MockCallback<CallbackType> cb1;
@@ -85,7 +82,7 @@ TEST_F(UnstoppableDomainsMultichainCallsUnitTest, PolygonError) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsMultichainCallsUnitTest, MainnetResult) {
+TEST_F(MultichainCallsUnitTest, MainnetResult) {
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::MockCallback<CallbackType> cb1;
@@ -99,7 +96,7 @@ TEST_F(UnstoppableDomainsMultichainCallsUnitTest, MainnetResult) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsMultichainCallsUnitTest, MainnetError) {
+TEST_F(MultichainCallsUnitTest, MainnetError) {
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::MockCallback<CallbackType> cb1;
@@ -114,7 +111,7 @@ TEST_F(UnstoppableDomainsMultichainCallsUnitTest, MainnetError) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsMultichainCallsUnitTest, NoResult) {
+TEST_F(MultichainCallsUnitTest, NoResult) {
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::MockCallback<CallbackType> cb1;
@@ -128,4 +125,4 @@ TEST_F(UnstoppableDomainsMultichainCallsUnitTest, NoResult) {
   base::RunLoop().RunUntilIdle();
 }
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::unstoppable_domains

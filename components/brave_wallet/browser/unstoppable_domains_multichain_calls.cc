@@ -6,12 +6,14 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 
 #include <utility>
+#include <vector>
 
-namespace brave_wallet {
+#include "url/gurl.h"
+
+namespace brave_wallet::unstoppable_domains {
 
 template <class ResultType>
-bool UnstoppableDomainsMultichainCall<ResultType>::SetNoResult(
-    const std::string& chain_id) {
+bool MultichainCall<ResultType>::SetNoResult(const std::string& chain_id) {
   DCHECK(!responses_.count(chain_id));
   responses_[chain_id] = {};
 
@@ -19,9 +21,8 @@ bool UnstoppableDomainsMultichainCall<ResultType>::SetNoResult(
 }
 
 template <class ResultType>
-bool UnstoppableDomainsMultichainCall<ResultType>::SetResult(
-    const std::string& chain_id,
-    ResultType result) {
+bool MultichainCall<ResultType>::SetResult(const std::string& chain_id,
+                                           ResultType result) {
   DCHECK(!responses_.count(chain_id));
   responses_[chain_id].result = std::move(result);
 
@@ -29,10 +30,9 @@ bool UnstoppableDomainsMultichainCall<ResultType>::SetResult(
 }
 
 template <class ResultType>
-bool UnstoppableDomainsMultichainCall<ResultType>::SetError(
-    const std::string& chain_id,
-    mojom::ProviderError error,
-    std::string error_message) {
+bool MultichainCall<ResultType>::SetError(const std::string& chain_id,
+                                          mojom::ProviderError error,
+                                          std::string error_message) {
   DCHECK(!responses_.count(chain_id));
   responses_[chain_id].error = std::move(error);
   responses_[chain_id].error_message = std::move(error_message);
@@ -41,14 +41,13 @@ bool UnstoppableDomainsMultichainCall<ResultType>::SetError(
 }
 
 template <class ResultType>
-void UnstoppableDomainsMultichainCall<ResultType>::AddCallback(
-    CallbackType cb) {
+void MultichainCall<ResultType>::AddCallback(CallbackType cb) {
   callbacks_.push_back(std::move(cb));
 }
 
 template <class ResultType>
-typename UnstoppableDomainsMultichainCall<ResultType>::Response*
-UnstoppableDomainsMultichainCall<ResultType>::GetEffectiveResponse() {
+typename MultichainCall<ResultType>::Response*
+MultichainCall<ResultType>::GetEffectiveResponse() {
   auto polygon_result = responses_.find(mojom::kPolygonMainnetChainId);
   if (polygon_result == responses_.end()) {
     return nullptr;
@@ -66,14 +65,14 @@ UnstoppableDomainsMultichainCall<ResultType>::GetEffectiveResponse() {
 }
 
 template <class ResultType>
-bool UnstoppableDomainsMultichainCall<ResultType>::MaybeResolveCallbacks() {
+bool MultichainCall<ResultType>::MaybeResolveCallbacks() {
   auto* response = GetEffectiveResponse();
   if (!response)
     return false;
 
   for (auto& callback : callbacks_) {
     std::move(callback).Run(
-        response->result.value_or(""),
+        response->result.value_or(ResultType()),
         response->error.value_or(mojom::ProviderError::kSuccess),
         response->error_message.value_or(""));
   }
@@ -82,28 +81,24 @@ bool UnstoppableDomainsMultichainCall<ResultType>::MaybeResolveCallbacks() {
 }
 
 template <class ResultType>
-std::vector<std::string>
-UnstoppableDomainsMultichainCalls<ResultType>::GetChains() const {
+std::vector<std::string> MultichainCalls<ResultType>::GetChains() const {
   return {mojom::kPolygonMainnetChainId, mojom::kMainnetChainId};
 }
 
 template <class ResultType>
-bool UnstoppableDomainsMultichainCalls<ResultType>::HasCall(
-    const std::string& domain) {
+bool MultichainCalls<ResultType>::HasCall(const std::string& domain) {
   return calls_.count(domain) > 0;
 }
 
 template <class ResultType>
-void UnstoppableDomainsMultichainCalls<ResultType>::AddCallback(
-    const std::string& domain,
-    CallbackType callback) {
+void MultichainCalls<ResultType>::AddCallback(const std::string& domain,
+                                              CallbackType callback) {
   calls_[domain].AddCallback(std::move(callback));
 }
 
 template <class ResultType>
-void UnstoppableDomainsMultichainCalls<ResultType>::SetNoResult(
-    const std::string& domain,
-    const std::string& chain_id) {
+void MultichainCalls<ResultType>::SetNoResult(const std::string& domain,
+                                              const std::string& chain_id) {
   auto call = calls_.find(domain);
   if (call == calls_.end())
     return;
@@ -114,10 +109,9 @@ void UnstoppableDomainsMultichainCalls<ResultType>::SetNoResult(
 }
 
 template <class ResultType>
-void UnstoppableDomainsMultichainCalls<ResultType>::SetResult(
-    const std::string& domain,
-    const std::string& chain_id,
-    ResultType result) {
+void MultichainCalls<ResultType>::SetResult(const std::string& domain,
+                                            const std::string& chain_id,
+                                            ResultType result) {
   auto call = calls_.find(domain);
   if (call == calls_.end())
     return;
@@ -128,11 +122,10 @@ void UnstoppableDomainsMultichainCalls<ResultType>::SetResult(
 }
 
 template <class ResultType>
-void UnstoppableDomainsMultichainCalls<ResultType>::SetError(
-    const std::string& domain,
-    const std::string& chain_id,
-    mojom::ProviderError error,
-    std::string error_message) {
+void MultichainCalls<ResultType>::SetError(const std::string& domain,
+                                           const std::string& chain_id,
+                                           mojom::ProviderError error,
+                                           std::string error_message) {
   auto call = calls_.find(domain);
   if (call == calls_.end())
     return;
@@ -143,6 +136,7 @@ void UnstoppableDomainsMultichainCalls<ResultType>::SetError(
   }
 }
 
-template class UnstoppableDomainsMultichainCalls<std::string>;
+template class MultichainCalls<std::string>;
+template class MultichainCalls<GURL>;
 
-}  // namespace brave_wallet
+}  // namespace brave_wallet::unstoppable_domains

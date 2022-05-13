@@ -22,27 +22,6 @@ enum class ResolveMethodTypes {
   MAX_VALUE = ETHEREUM,
 };
 
-enum class RecordKeys {
-  DWEB_IPFS_HASH,
-  IPFS_HTML_VALUE,
-  DNS_A,
-  DNS_AAAA,
-  BROWSER_REDIRECT_URL,
-  IPFS_REDIRECT_DOMAIN_VALUE,
-  MAX_RECORD_KEY = IPFS_REDIRECT_DOMAIN_VALUE,
-};
-
-// Need to match RecordKeys above. See
-// https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm#browser-resolution-records
-// for more details.
-const constexpr char* const kRecordKeys[] = {
-    "dweb.ipfs.hash", "ipfs.html.value",      "dns.A",
-    "dns.AAAA",       "browser.redirect_url", "ipfs.redirect_domain.value"};
-
-static_assert(static_cast<size_t>(RecordKeys::MAX_RECORD_KEY) + 1u ==
-                  sizeof(kRecordKeys) / sizeof(kRecordKeys[0]),
-              "Size should match between RecordKeys and kRecordKeys.");
-
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CONSTANTS_H_

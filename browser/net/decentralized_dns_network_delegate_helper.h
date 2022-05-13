@@ -25,7 +25,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    const std::vector<std::string>& values,
+    const GURL& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message);
 

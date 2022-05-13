@@ -236,20 +236,21 @@ bool ParseEnsResolverContentHash(const std::string& json,
   return ParseStringResult(json, content_hash);
 }
 
-bool ParseUnstoppableDomainsProxyReaderGetMany(
-    const std::string& json,
-    std::vector<std::string>* values) {
-  DCHECK(values);
-
+absl::optional<std::vector<std::string>>
+ParseUnstoppableDomainsProxyReaderGetMany(const std::string& json) {
   std::string result;
   if (!ParseSingleStringResult(json, &result))
-    return false;
+    return absl::nullopt;
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
   if (offset > result.size())
-    return false;
+    return absl::nullopt;
 
-  return brave_wallet::DecodeStringArray(result.substr(offset), values);
+  std::vector<std::string> values;
+  if (!brave_wallet::DecodeStringArray(result.substr(offset), &values))
+    return absl::nullopt;
+
+  return values;
 }
 
 absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(

@@ -16,7 +16,7 @@
 
 namespace brave_wallet {
 
-extern const char kAssetRatioBaseURL[];
+constexpr char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
 
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
 constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;
@@ -26,16 +26,16 @@ constexpr uint256_t kDefaultERC20ApproveGasLimit = 300000;
 constexpr int32_t kAutoLockMinutesMin = 1;
 constexpr int32_t kAutoLockMinutesMax = 10080;
 
-const char kWalletBaseDirectory[] = "BraveWallet";
-const char kImageSourceHost[] = "erc-token-images";
-const char kWyreID[] = "AC_MGNVBGHPA9T";
-const char kWyreBuyUrl[] =
+constexpr char kWalletBaseDirectory[] = "BraveWallet";
+constexpr char kImageSourceHost[] = "erc-token-images";
+constexpr char kWyreID[] = "AC_MGNVBGHPA9T";
+constexpr char kWyreBuyUrl[] =
     "https://pay.sendwyre.com/?dest=ethereum:%s"
     "&destCurrency=%s&amount=%s&accountId=%s&paymentMethod=debit-card";
-const char kRampBuyUrl[] =
+constexpr char kRampBuyUrl[] =
     "https://buy.ramp.network/"
     "?userAddress=%s&swapAsset=%s&fiatValue=%s&fiatCurrency=USD&hostApiKey=%s";
-const char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
+constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWallet", IDS_BRAVE_WALLET},
@@ -606,22 +606,25 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY}};
 
 // Swap constants
-const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
+constexpr char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 // As of 22-02-2022, this address is controlled by @onyb.
-const char kRopstenFeeRecipient[] =
+constexpr char kRopstenFeeRecipient[] =
     "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
-const char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
-const char kBinanceSmartChainSwapBaseAPIURL[] = "https://bsc.api.0x.org/";
-const char kAvalancheSwapBaseAPIURL[] = "https://avalanche.api.0x.org/";
-const char kFantomSwapBaseAPIURL[] = "https://fantom.api.0x.org/";
-const char kCeloSwapBaseAPIURL[] = "https://celo.api.0x.org/";
-const char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
-const char kSwapBaseAPIURL[] = "https://api.0x.org/";
-const char kBuyTokenPercentageFee[] = "0.00875";
-const char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
-const char kAffiliateAddress[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+constexpr char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
+constexpr char kBinanceSmartChainSwapBaseAPIURL[] = "https://bsc.api.0x.org/";
+constexpr char kAvalancheSwapBaseAPIURL[] = "https://avalanche.api.0x.org/";
+constexpr char kFantomSwapBaseAPIURL[] = "https://fantom.api.0x.org/";
+constexpr char kCeloSwapBaseAPIURL[] = "https://celo.api.0x.org/";
+constexpr char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
+constexpr char kSwapBaseAPIURL[] = "https://api.0x.org/";
+constexpr char kBuyTokenPercentageFee[] = "0.00875";
+constexpr char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+constexpr char kAffiliateAddress[] =
+    "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 
-const int64_t kBlockTrackerDefaultTimeInSeconds = 20;
+constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
+
+constexpr char kPolygonMainnetEndpoint[] = "https://mainnet-polygon.brave.com/";
 
 // Unstoppable domains record key for ethereum address.
 constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";

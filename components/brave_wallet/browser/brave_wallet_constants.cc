@@ -7,8 +7,6 @@
 
 namespace brave_wallet {
 
-const char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
-
 const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
   static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
       {{"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
