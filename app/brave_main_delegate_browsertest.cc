@@ -143,7 +143,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &privacy_sandbox::kPrivacySandboxSettings3,
     &reading_list::switches::kReadLater,
     &shared_highlighting::kSharedHighlightingAmp,
-    &shared_highlighting::kSharedHighlightingV2,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif
