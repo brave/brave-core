@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-index a9f419a537410e767cbd05532841ec247b143d76..b4f0b9bb4575c25f3d9419fca238cc8c55f2193c 100644
+index 2b7a0c04c0e4582a27e20d04dea1da416c16baee..beddda5b42cec3719d58aee88bad3afb40c281fe 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-@@ -853,6 +853,7 @@ void BookmarkBarView::Layout() {
+@@ -846,6 +846,7 @@ void BookmarkBarView::Layout() {
        x = next_x;
      }
    }
 +  BRAVE_LAYOUT
  
-   // Only render the tab group separtor if there are groups and bookmarks
-   // visible. Must done after the bookmark buttons are rendered.
+   // Set the visibility of the tab group separator if there are groups and
+   // bookmarks.
