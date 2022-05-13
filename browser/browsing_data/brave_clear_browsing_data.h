@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BROWSING_DATA_BRAVE_CLEAR_BROWSING_DATA_H_
 #define BRAVE_BROWSER_BROWSING_DATA_BRAVE_CLEAR_BROWSING_DATA_H_
 
+#include <cstdint>
+
 namespace content {
 class BrowsingDataRemover;
 }
@@ -30,8 +32,8 @@ class BraveClearBrowsingData {
     // to remove data.
     virtual void BeforeClearOnExitRemoveData(
         content::BrowsingDataRemover* remover,
-        int remove_mask,
-        int origin_mask) = 0;
+        uint64_t remove_mask,
+        uint64_t origin_mask) = 0;
   };
 
  protected:
