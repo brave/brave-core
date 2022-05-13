@@ -91,7 +91,7 @@ export const WarningIcon = styled.div`
   background: url(${WarningCircle});
 `
 
-export const ToggleVisibilityButton = styled(WalletButton)<Partial<StyleProps>>`
+export const ToggleVisibilityButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,6 +103,11 @@ export const ToggleVisibilityButton = styled(WalletButton)<Partial<StyleProps>>`
   background: none;
   border: none;
   padding: 0px;
+  width: 18px;
+  height: 18px;
+`
+
+export const ToggleVisibilityIcon = styled.div<Partial<StyleProps>>`
   width: 18px;
   height: 18px;
   background-color: ${(p) => p.theme.color.text02};
