@@ -11,11 +11,11 @@
 #include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/constants/network_constants.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
@@ -63,10 +63,8 @@ bool IsActive(const Rule& cookie_rule,
   for (const auto& shield_rule : shield_rules) {
     auto primary_compare =
         shield_rule.primary_pattern.Compare(cookie_rule.secondary_pattern);
-    // TODO(bridiver) - verify that SUCCESSOR is correct and not PREDECESSOR
     if (primary_compare == ContentSettingsPattern::IDENTITY ||
         primary_compare == ContentSettingsPattern::SUCCESSOR) {
-      // TODO(bridiver) - move this logic into shields_util for allow/block
       return ValueToContentSetting(shield_rule.value) != CONTENT_SETTING_BLOCK;
     }
   }
@@ -328,13 +326,8 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
     new_rule.primary_pattern = old_rule.secondary_pattern;
     // Replace first party placeholder with actual pattern
     if (new_rule.primary_pattern == first_party) {
-      new_rule
-          .primary_pattern = ContentSettingsPattern::FromString(base::StrCat(
-          {"*://[*.]",
-           net::registry_controlled_domains::GetDomainAndRegistry(
-               new_rule.secondary_pattern.GetHost(),
-               net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES),
-           "/*"}));
+      new_rule.primary_pattern =
+          brave_shields::CreatePrimaryPattern(new_rule.secondary_pattern);
     }
     new_rules.push_back(std::move(new_rule));
   }
@@ -408,7 +401,7 @@ bool BravePrefProvider::SetWebsiteSetting(
       };
   const auto cookie_is_found_in =
       [&rule_matcher](const std::vector<Rule>& rules) {
-        return rules.cend() != base::ranges::find_if(rules, rule_matcher);
+        return base::ranges::any_of(rules, rule_matcher);
       };
 
   if (content_type == ContentSettingsType::COOKIES) {
@@ -604,7 +597,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     for (auto&& r : rules) {
       cookie_rules_[incognito].SetValue(
           r.primary_pattern, r.secondary_pattern, ContentSettingsType::COOKIES,
-          base::Time(), std::move(r.value), {r.expiration, r.session_model});
+          store_last_modified_ ? base::Time::Now() : base::Time(),
+          std::move(r.value), {r.expiration, r.session_model});
     }
   }
 
