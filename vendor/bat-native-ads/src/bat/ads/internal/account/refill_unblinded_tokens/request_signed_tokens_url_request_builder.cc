@@ -21,7 +21,7 @@ namespace ads {
 
 RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
     const WalletInfo& wallet,
-    const std::vector<BlindedToken>& blinded_tokens)
+    const privacy::cbr::BlindedTokenList& blinded_tokens)
     : wallet_(wallet), blinded_tokens_(blinded_tokens) {
   DCHECK(wallet_.IsValid());
   DCHECK(!blinded_tokens_.empty());

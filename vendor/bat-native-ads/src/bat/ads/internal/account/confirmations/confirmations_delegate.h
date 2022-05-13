@@ -19,6 +19,9 @@ class ConfirmationsDelegate {
 
   // Invoked when a confirmation failed to send
   virtual void OnFailedToConfirm(const ConfirmationInfo& confirmation) {}
+
+  // Invoked when issuers are out of date
+  virtual void OnIssuersOutOfDate() {}
 };
 
 }  // namespace ads

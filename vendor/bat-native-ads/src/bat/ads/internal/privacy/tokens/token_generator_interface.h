@@ -6,22 +6,20 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_INTERFACE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_INTERFACE_H_
 
-#include <vector>
-
-#include "wrapper.hpp"
+#include "bat/ads/internal/privacy/tokens/token_aliases.h"
 
 namespace ads {
 namespace privacy {
-
-using challenge_bypass_ristretto::Token;
+namespace cbr {
 
 class TokenGeneratorInterface {
  public:
   virtual ~TokenGeneratorInterface() = default;
 
-  virtual std::vector<Token> Generate(const int count) const = 0;
+  virtual TokenList Generate(const int count) const = 0;
 };
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads
 

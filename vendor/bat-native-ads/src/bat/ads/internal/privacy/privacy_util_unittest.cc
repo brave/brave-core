@@ -12,18 +12,20 @@
 
 namespace ads {
 namespace privacy {
+namespace cbr {
 
 TEST(BatAdsSecurityUtilsTest, BlindTokens) {
   // Arrange
   TokenGenerator token_generator;
-  const std::vector<Token> tokens = token_generator.Generate(7);
+  const TokenList& tokens = token_generator.Generate(7);
 
   // Act
-  const std::vector<BlindedToken> blinded_tokens = BlindTokens(tokens);
+  const BlindedTokenList& blinded_tokens = BlindTokens(tokens);
 
   // Assert
   EXPECT_EQ(tokens.size(), blinded_tokens.size());
 }
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads

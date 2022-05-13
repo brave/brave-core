@@ -43,11 +43,11 @@ ConfirmationInfo BuildConfirmation(const std::string& id,
     confirmation.unblinded_token = unblinded_token;
     unblinded_tokens->RemoveToken(unblinded_token);
 
-    confirmation.payment_token = Token::decode_base64(
-        R"(aXZNwft34oG2JAVBnpYh/ktTOzr2gi0lKosYNczUUz6ZS9gaDTJmU2FHFps9dIq+QoDwjSjctR5v0rRn+dYo+AHScVqFAgJ5t2s4KtSyawW10gk6hfWPQw16Q0+8u5AG)");
+    confirmation.tokens = {Token::decode_base64(
+        R"(aXZNwft34oG2JAVBnpYh/ktTOzr2gi0lKosYNczUUz6ZS9gaDTJmU2FHFps9dIq+QoDwjSjctR5v0rRn+dYo+AHScVqFAgJ5t2s4KtSyawW10gk6hfWPQw16Q0+8u5AG)")};
 
-    confirmation.blinded_payment_token = BlindedToken::decode_base64(
-        "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=");
+    confirmation.blinded_tokens = {BlindedToken::decode_base64(
+        "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=")};
 
     const std::string payload = CreateConfirmationRequestDTO(confirmation);
     confirmation.credential = CreateCredential(unblinded_token, payload);

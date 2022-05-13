@@ -88,7 +88,7 @@ namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
-      token_generator_(std::make_unique<privacy::TokenGenerator>()) {
+      token_generator_(std::make_unique<privacy::cbr::TokenGenerator>()) {
   set(token_generator_.get());
 }
 
@@ -107,7 +107,8 @@ AdsImpl::~AdsImpl() {
   search_result_ad_->RemoveObserver(this);
 }
 
-void AdsImpl::SetForTesting(privacy::TokenGeneratorInterface* token_generator) {
+void AdsImpl::SetForTesting(
+    privacy::cbr::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
   token_generator_.release();
@@ -527,7 +528,7 @@ bool AdsImpl::ToggleFlaggedAd(const std::string& json) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
+void AdsImpl::set(privacy::cbr::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
   diagnostics_ = std::make_unique<Diagnostics>();

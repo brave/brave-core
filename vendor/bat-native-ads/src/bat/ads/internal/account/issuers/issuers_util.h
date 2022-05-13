@@ -35,6 +35,9 @@ absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
 bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
                                   const std::string& public_key);
 
+absl::optional<double> GetSmallestNonZeroDenominationForIssuerType(
+    const IssuerType issuer_type);
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_UTIL_H_

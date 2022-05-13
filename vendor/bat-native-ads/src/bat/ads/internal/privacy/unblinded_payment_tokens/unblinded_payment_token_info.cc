@@ -18,10 +18,9 @@ UnblindedPaymentTokenInfo::~UnblindedPaymentTokenInfo() = default;
 
 bool UnblindedPaymentTokenInfo::operator==(
     const UnblindedPaymentTokenInfo& rhs) const {
-  return transaction_id == rhs.transaction_id &&
-         public_key.encode_base64() == rhs.public_key.encode_base64() &&
-         value.encode_base64() == rhs.value.encode_base64() &&
-         confirmation_type == rhs.confirmation_type && ad_type == rhs.ad_type;
+  return transaction_id == rhs.transaction_id && public_key == rhs.public_key &&
+         value == rhs.value && confirmation_type == rhs.confirmation_type &&
+         ad_type == rhs.ad_type;
 }
 
 bool UnblindedPaymentTokenInfo::operator!=(

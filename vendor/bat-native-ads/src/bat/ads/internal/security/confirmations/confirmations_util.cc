@@ -15,6 +15,7 @@
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "wrapper.hpp"
 
 namespace ads {
 namespace security {
@@ -44,14 +45,14 @@ bool Verify(const ConfirmationInfo& confirmation) {
 
   VerificationSignature verification_signature =
       VerificationSignature::decode_base64(*signature);
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     NOTREACHED();
     return false;
   }
 
   UnblindedToken unblinded_token = confirmation.unblinded_token.value;
   VerificationKey verification_key = unblinded_token.derive_verification_key();
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     NOTREACHED();
     return false;
   }

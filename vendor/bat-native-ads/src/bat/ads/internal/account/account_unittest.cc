@@ -46,7 +46,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
   BatAdsAccountTest()
       : token_generator_mock_(
-            std::make_unique<NiceMock<privacy::TokenGeneratorMock>>()),
+            std::make_unique<NiceMock<privacy::cbr::TokenGeneratorMock>>()),
         account_(std::make_unique<Account>(token_generator_mock_.get())) {
     account_->AddObserver(this);
   }
@@ -85,7 +85,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     statement_of_accounts_did_change_ = true;
   }
 
-  std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
+  std::unique_ptr<privacy::cbr::TokenGeneratorMock> token_generator_mock_;
   std::unique_ptr<Account> account_;
 
   bool wallet_did_update_ = false;

@@ -10,10 +10,13 @@
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "wrapper.hpp"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+
+using challenge_bypass_ristretto::Token;
 
 class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
  protected:
@@ -21,8 +24,8 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
 
   ~BatAdsRequestSignedTokensUrlRequestBuilderTest() override = default;
 
-  std::vector<Token> GetTokens(const int count) {
-    const std::vector<std::string> tokens_base64 = {
+  privacy::cbr::TokenList GetTokens(const int count) {
+    const std::vector<std::string>& tokens_base64 = {
         "B2CbFJJ1gKJy9qs8NMburYj12VAqnVfFrQ2K2u0QwcBi1YoMMHQfRQeDbOQ62Z+W"
         "rCOTYLbZrBY7+j9hz2jLFL74KSQig7/PDbqIpmNYs6PpNUK3MpVc4dm5R9lkySQF",
         "MHbZ2XgFtno4g7yq/tmFCr1sFuFrkE7D6JjVAmM70ZJrwH/EqYNaWL1qANSKXX9g"
@@ -60,11 +63,10 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
 
     const int modulo = tokens_base64.size();
 
-    std::vector<Token> tokens;
+    privacy::cbr::TokenList tokens;
     for (int i = 0; i < count; i++) {
-      const std::string token_base64 = tokens_base64.at(i % modulo);
-      const Token token = Token::decode_base64(token_base64);
-
+      const std::string& token_base64 = tokens_base64.at(i % modulo);
+      const Token& token = Token::decode_base64(token_base64);
       tokens.push_back(token);
     }
 
@@ -84,8 +86,9 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
       "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
       "33cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";
 
-  const std::vector<Token> tokens = GetTokens(3);
-  const std::vector<BlindedToken> blinded_tokens = privacy::BlindTokens(tokens);
+  const privacy::cbr::TokenList& tokens = GetTokens(3);
+  const privacy::cbr::BlindedTokenList& blinded_tokens =
+      privacy::cbr::BlindTokens(tokens);
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet,
                                                            blinded_tokens);
@@ -123,8 +126,9 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
       "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
       "33cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";
 
-  const std::vector<Token> tokens = GetTokens(3);
-  const std::vector<BlindedToken> blinded_tokens = privacy::BlindTokens(tokens);
+  const privacy::cbr::TokenList& tokens = GetTokens(3);
+  const privacy::cbr::BlindedTokenList& blinded_tokens =
+      privacy::cbr::BlindTokens(tokens);
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet,
                                                            blinded_tokens);

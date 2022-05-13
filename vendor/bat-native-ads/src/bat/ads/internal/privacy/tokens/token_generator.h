@@ -6,21 +6,22 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_H_
 
-#include <vector>
-
+#include "bat/ads/internal/privacy/tokens/token_aliases.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 
 namespace ads {
 namespace privacy {
+namespace cbr {
 
 class TokenGenerator : public TokenGeneratorInterface {
  public:
   TokenGenerator();
   ~TokenGenerator() override;
 
-  std::vector<Token> Generate(const int count) const override;
+  TokenList Generate(const int count) const override;
 };
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads
 

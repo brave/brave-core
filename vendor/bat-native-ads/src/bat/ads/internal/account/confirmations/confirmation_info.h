@@ -11,13 +11,10 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/privacy/tokens/token_aliases.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
-#include "wrapper.hpp"
 
 namespace ads {
-
-using challenge_bypass_ristretto::BlindedToken;
-using challenge_bypass_ristretto::Token;
 
 struct ConfirmationInfo final {
   ConfirmationInfo();
@@ -34,9 +31,10 @@ struct ConfirmationInfo final {
   std::string creative_instance_id;
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
+  double value = 0.0;
   privacy::UnblindedTokenInfo unblinded_token;
-  Token payment_token;
-  BlindedToken blinded_payment_token;
+  privacy::cbr::TokenList tokens;
+  privacy::cbr::BlindedTokenList blinded_tokens;
   std::string credential;
   std::string user_data;
   base::Time created_at;

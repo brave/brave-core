@@ -9,6 +9,7 @@
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -250,6 +251,32 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuerInvalid) {
 
   // Assert
   EXPECT_FALSE(is_valid);
+}
+
+TEST_F(BatAdsIssuersUtilTest, GetSmallestNonZeroDenominationForIssuerType) {
+  // Arrange
+  BuildAndSetIssuers();
+
+  // Act
+  const absl::optional<double> smallest_denomination_optional =
+      GetSmallestNonZeroDenominationForIssuerType(IssuerType::kPayments);
+  ASSERT_TRUE(smallest_denomination_optional);
+
+  const double smallest_denomination = smallest_denomination_optional.value();
+
+  // Assert
+  EXPECT_EQ(0.1, smallest_denomination);
+}
+
+TEST_F(BatAdsIssuersUtilTest, GetSmallestDenominationForMissingIssuerType) {
+  // Arrange
+
+  // Act
+  const absl::optional<double> smallest_denomination_optional =
+      GetSmallestNonZeroDenominationForIssuerType(IssuerType::kPayments);
+
+  // Assert
+  EXPECT_FALSE(smallest_denomination_optional);
 }
 
 }  // namespace ads

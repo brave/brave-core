@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
+#include "bat/ads/internal/privacy/tokens/token_aliases.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
@@ -36,11 +37,11 @@ UnblindedTokenInfo CreateUnblindedToken(
   UnblindedTokenInfo unblinded_token;
 
   unblinded_token.value = UnblindedToken::decode_base64(unblinded_token_base64);
-  DCHECK(!ExceptionOccurred());
+  DCHECK(!cbr::ExceptionOccurred());
 
   unblinded_token.public_key =
       PublicKey::decode_base64("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
-  DCHECK(!ExceptionOccurred());
+  DCHECK(!cbr::ExceptionOccurred());
 
   return unblinded_token;
 }
@@ -91,8 +92,8 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
 UnblindedTokenList GetRandomUnblindedTokens(const int count) {
   UnblindedTokenList unblinded_tokens;
 
-  TokenGenerator token_generator;
-  const std::vector<Token>& tokens = token_generator.Generate(count);
+  cbr::TokenGenerator token_generator;
+  const cbr::TokenList& tokens = token_generator.Generate(count);
   for (const auto& token : tokens) {
     const std::string& token_base64 = token.encode_base64();
     const UnblindedTokenInfo& unblinded_token =

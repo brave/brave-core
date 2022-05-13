@@ -11,13 +11,14 @@
 
 namespace ads {
 namespace privacy {
+namespace cbr {
 
 TEST(BatAdsTokensTest, Generate) {
   // Arrange
   TokenGenerator token_generator;
 
   // Act
-  const std::vector<Token> tokens = token_generator.Generate(5);
+  const TokenList& tokens = token_generator.Generate(5);
 
   // Assert
   const size_t count = tokens.size();
@@ -29,11 +30,12 @@ TEST(BatAdsTokensTest, GenerateZero) {
   TokenGenerator token_generator;
 
   // Act
-  const std::vector<Token> tokens = token_generator.Generate(0);
+  const TokenList& tokens = token_generator.Generate(0);
 
   // Assert
   EXPECT_TRUE(tokens.empty());
 }
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads

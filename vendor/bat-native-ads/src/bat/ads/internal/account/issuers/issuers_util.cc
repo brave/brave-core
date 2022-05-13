@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 
 #include <algorithm>
+#include <limits>
 
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
@@ -109,6 +110,34 @@ bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
   const IssuerInfo& issuer = issuer_optional.value();
 
   return PublicKeyExists(issuer, public_key);
+}
+
+absl::optional<double> GetSmallestNonZeroDenominationForIssuerType(
+    const IssuerType issuer_type) {
+  const IssuersInfo& issuers = GetIssuers();
+
+  const absl::optional<IssuerInfo>& issuer_optional =
+      GetIssuerForType(issuers, issuer_type);
+  if (!issuer_optional) {
+    return absl::nullopt;
+  }
+  const IssuerInfo& issuer = issuer_optional.value();
+
+  bool has_min_value = false;
+  double min_value = std::numeric_limits<double>::infinity();
+  for (const auto& public_key : issuer.public_keys) {
+    const double value = public_key.second;
+    if (value > 0.0 && value < min_value) {
+      has_min_value = true;
+      min_value = value;
+    }
+  }
+
+  if (!has_min_value) {
+    return absl::nullopt;
+  }
+
+  return min_value;
 }
 
 }  // namespace ads

@@ -5,23 +5,29 @@
 
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 
+#include "wrapper.hpp"
+
 namespace ads {
 namespace privacy {
+namespace cbr {
+
+using challenge_bypass_ristretto::Token;
 
 TokenGenerator::TokenGenerator() = default;
 
 TokenGenerator::~TokenGenerator() = default;
 
-std::vector<Token> TokenGenerator::Generate(const int count) const {
-  std::vector<Token> tokens;
+TokenList TokenGenerator::Generate(const int count) const {
+  TokenList tokens;
 
   for (int i = 0; i < count; i++) {
-    Token token = Token::random();
+    const Token& token = Token::random();
     tokens.push_back(token);
   }
 
   return tokens;
 }
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads

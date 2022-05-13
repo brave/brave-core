@@ -7,10 +7,12 @@
 
 namespace ads {
 namespace privacy {
+namespace cbr {
 
 TokenGeneratorMock::TokenGeneratorMock() = default;
 
 TokenGeneratorMock::~TokenGeneratorMock() = default;
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads

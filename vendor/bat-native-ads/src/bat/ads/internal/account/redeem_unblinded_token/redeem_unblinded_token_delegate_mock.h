@@ -38,6 +38,8 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
   MOCK_METHOD(void,
               OnFailedToRedeemUnblindedToken,
               (const ConfirmationInfo& confirmation, const bool should_retry));
+
+  MOCK_METHOD(void, OnIssuersOutOfDate, ());
 };
 
 }  // namespace ads

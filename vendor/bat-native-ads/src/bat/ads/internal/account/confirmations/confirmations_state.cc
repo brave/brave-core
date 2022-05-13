@@ -26,7 +26,9 @@
 
 namespace ads {
 
+using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::PublicKey;
+using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
@@ -244,6 +246,9 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     confirmation_dictionary.SetStringKey("ad_type",
                                          confirmation.ad_type.ToString());
 
+    std::string value = base::NumberToString(confirmation.value);
+    confirmation_dictionary.SetStringKey("value", value);
+
     base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
     const std::string unblinded_token_base64 =
         confirmation.unblinded_token.value.encode_base64();
@@ -255,14 +260,29 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     confirmation_dictionary.SetKey("token_info",
                                    std::move(token_info_dictionary));
 
-    const std::string payment_token_base64 =
-        confirmation.payment_token.encode_base64();
-    confirmation_dictionary.SetStringKey("payment_token", payment_token_base64);
+    base::Value tokens_list(base::Value::Type::LIST);
+    for (const auto& token : confirmation.tokens) {
+      const std::string& token_base64 = token.encode_base64();
+      if (token_base64.empty()) {
+        continue;
+      }
 
-    const std::string blinded_payment_token_base64 =
-        confirmation.blinded_payment_token.encode_base64();
-    confirmation_dictionary.SetStringKey("blinded_payment_token",
-                                         blinded_payment_token_base64);
+      tokens_list.Append(token_base64);
+    }
+    confirmation_dictionary.SetKey("tokens",
+                                   base::Value(std::move(tokens_list)));
+
+    base::Value blinded_tokens_list(base::Value::Type::LIST);
+    for (const auto& blinded_token : confirmation.blinded_tokens) {
+      const std::string& blinded_token_base64 = blinded_token.encode_base64();
+      if (blinded_token_base64.empty()) {
+        continue;
+      }
+
+      blinded_tokens_list.Append(blinded_token_base64);
+    }
+    confirmation_dictionary.SetKey("blinded_tokens",
+                                   base::Value(std::move(blinded_tokens_list)));
 
     confirmation_dictionary.SetStringKey("credential", confirmation.credential);
 
@@ -297,18 +317,19 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
   DCHECK(confirmations);
 
   // Confirmations
-  const base::Value* failed_confirmations =
+  const base::Value* failed_confirmations_value =
       dictionary->FindListKey("failed_confirmations");
-  if (!failed_confirmations) {
+  if (!failed_confirmations_value) {
     BLOG(0, "Failed confirmations dictionary missing failed confirmations");
     return false;
   }
 
   ConfirmationList new_failed_confirmations;
 
-  for (const auto& value : failed_confirmations->GetList()) {
+  for (const auto& failed_confirmation_value :
+       failed_confirmations_value->GetList()) {
     const base::DictionaryValue* confirmation_dictionary = nullptr;
-    if (!value.GetAsDictionary(&confirmation_dictionary)) {
+    if (!failed_confirmation_value.GetAsDictionary(&confirmation_dictionary)) {
       BLOG(0, "Confirmation should be a dictionary");
       continue;
     }
@@ -366,6 +387,12 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       confirmation.ad_type = AdType::kAdNotification;
     }
 
+    // Value
+    const std::string* value = confirmation_dictionary->FindStringKey("value");
+    if (value) {
+      base::StringToDouble(*value, &confirmation.value);
+    }
+
     // Token info
     const base::Value* token_info_dictionary =
         confirmation_dictionary->FindDictKey("token_info");
@@ -385,10 +412,9 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     if (!unblinded_token_base64->empty()) {
       confirmation.unblinded_token.value =
           UnblindedToken::decode_base64(*unblinded_token_base64);
-      if (privacy::ExceptionOccurred()) {
+      if (privacy::cbr::ExceptionOccurred()) {
         BLOG(0, "Invalid unblinded token");
         NOTREACHED();
-        continue;
       }
     }
 
@@ -402,45 +428,55 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     if (!public_key_base64->empty()) {
       confirmation.unblinded_token.public_key =
           PublicKey::decode_base64(*public_key_base64);
-      if (privacy::ExceptionOccurred()) {
+      if (privacy::cbr::ExceptionOccurred()) {
         BLOG(0, "Invalid public key");
         NOTREACHED();
         continue;
       }
     }
 
-    // Payment token
-    const std::string* payment_token_base64 =
-        confirmation_dictionary->FindStringKey("payment_token");
-    if (!payment_token_base64) {
-      // Payment token missing, skip confirmation
-      BLOG(0, "Confirmation missing payment_token");
-      continue;
-    }
-    if (!payment_token_base64->empty()) {
-      confirmation.payment_token = Token::decode_base64(*payment_token_base64);
-      if (privacy::ExceptionOccurred()) {
-        BLOG(0, "Invalid payment token");
-        NOTREACHED();
-        continue;
+    const base::Value* const tokens_value =
+        confirmation_dictionary->FindListKey("tokens");
+    if (tokens_value) {
+      for (const auto& token_value : tokens_value->GetList()) {
+        DCHECK(token_value.is_string());
+
+        const std::string& token_base64 = token_value.GetString();
+        const Token& token = Token::decode_base64(token_base64);
+        confirmation.tokens.push_back(token);
       }
     }
 
-    // Blinded payment token
-    const std::string* blinded_payment_token_base64 =
+    // Blinded tokens
+    const std::string* blinded_token_base64 =
         confirmation_dictionary->FindStringKey("blinded_payment_token");
-    if (!blinded_payment_token_base64) {
-      // Blinded payment token missing, skip confirmation
-      BLOG(0, "Confirmation missing blinded_payment_token");
-      continue;
-    }
-    if (!blinded_payment_token_base64->empty()) {
-      confirmation.blinded_payment_token =
-          BlindedToken::decode_base64(*blinded_payment_token_base64);
-      if (privacy::ExceptionOccurred()) {
-        BLOG(0, "Invalid blinded payment token");
+    if (blinded_token_base64) {
+      // Migrate legacy blinded payment tokens
+      const BlindedToken& blinded_token =
+          BlindedToken::decode_base64(*blinded_token_base64);
+      if (privacy::cbr::ExceptionOccurred()) {
+        BLOG(0, "Invalid blinded token");
         NOTREACHED();
-        continue;
+      }
+
+      confirmation.blinded_tokens.push_back(blinded_token);
+    }
+
+    const base::Value* const blinded_tokens_value =
+        confirmation_dictionary->FindListKey("blinded_tokens");
+    if (blinded_tokens_value) {
+      for (const auto& blinded_token_value : blinded_tokens_value->GetList()) {
+        DCHECK(blinded_token_value.is_string());
+
+        const BlindedToken& blinded_token =
+            BlindedToken::decode_base64(blinded_token_value.GetString());
+        if (privacy::cbr::ExceptionOccurred()) {
+          BLOG(0, "Invalid blinded token");
+          NOTREACHED();
+          continue;
+        }
+
+        confirmation.blinded_tokens.push_back(blinded_token);
       }
     }
 

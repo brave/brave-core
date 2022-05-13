@@ -13,6 +13,7 @@
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/backoff_timer.h"
+#include "bat/ads/internal/privacy/tokens/token_aliases.h"
 
 namespace base {
 class Time;
@@ -27,13 +28,16 @@ class RedeemUnblindedToken;
 struct TransactionInfo;
 
 namespace privacy {
+namespace cbr {
 class TokenGeneratorInterface;
+}  // namespace cbr
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
 class Confirmations final : public RedeemUnblindedTokenDelegate {
  public:
-  explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
+  explicit Confirmations(
+      privacy::cbr::TokenGeneratorInterface* token_generator);
   ~Confirmations() override;
 
   void set_delegate(ConfirmationsDelegate* delegate) {
@@ -51,11 +55,14 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,
                                       const AdType& ad_type,
+                                      const double value,
                                       const base::Value& user_data) const;
 
   void Retry();
   void OnRetry();
   void StopRetrying();
+
+  privacy::cbr::TokenList GenerateTokensForValue(const double value) const;
 
   void CreateNewConfirmationAndAppendToRetryQueue(
       const ConfirmationInfo& confirmation);
@@ -71,10 +78,11 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
                                      unblinded_payment_token) override;
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                       const bool should_retry) override;
+  void OnIssuersOutOfDate() override;
 
   raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+  raw_ptr<privacy::cbr::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;

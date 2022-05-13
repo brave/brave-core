@@ -8,9 +8,11 @@
 
 namespace ads {
 namespace privacy {
+namespace cbr {
 
 bool ExceptionOccurred();
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads
 

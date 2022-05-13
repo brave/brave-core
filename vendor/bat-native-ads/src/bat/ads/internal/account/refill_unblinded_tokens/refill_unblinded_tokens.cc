@@ -50,7 +50,7 @@ constexpr int kMaximumUnblindedTokens = 50;
 }  // namespace
 
 RefillUnblindedTokens::RefillUnblindedTokens(
-    privacy::TokenGeneratorInterface* token_generator)
+    privacy::cbr::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
   DCHECK(token_generator_);
 }
@@ -118,7 +118,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
   const int count = CalculateAmountOfTokensToRefill();
   tokens_ = token_generator_->Generate(count);
 
-  blinded_tokens_ = privacy::BlindTokens(tokens_);
+  blinded_tokens_ = privacy::cbr::BlindTokens(tokens_);
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet_,
                                                            blinded_tokens_);
@@ -227,7 +227,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     return;
   }
   PublicKey public_key = PublicKey::decode_base64(*public_key_base64);
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     BLOG(0, "Invalid public key");
     NOTREACHED();
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -255,7 +255,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   BatchDLEQProof batch_dleq_proof =
       BatchDLEQProof::decode_base64(*batch_proof_base64);
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     BLOG(0, "Invalid batch DLEQ proof");
     NOTREACHED();
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
@@ -271,13 +271,13 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     return;
   }
 
-  std::vector<SignedToken> signed_tokens;
+  privacy::cbr::SignedTokenList signed_tokens;
   for (const auto& value : signed_tokens_list->GetList()) {
     DCHECK(value.is_string());
 
     const std::string signed_token_base64 = value.GetString();
     SignedToken signed_token = SignedToken::decode_base64(signed_token_base64);
-    if (privacy::ExceptionOccurred()) {
+    if (privacy::cbr::ExceptionOccurred()) {
       NOTREACHED();
       continue;
     }
@@ -286,10 +286,10 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   // Verify and unblind tokens
-  const std::vector<UnblindedToken> batch_dleq_proof_unblinded_tokens =
+  const privacy::cbr::UnblindedTokenList& batch_dleq_proof_unblinded_tokens =
       batch_dleq_proof.verify_and_unblind(tokens_, blinded_tokens_,
                                           signed_tokens, public_key);
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch proof: " << *batch_proof_base64);
     BLOG(1, "  Public key: " << public_key.encode_base64());

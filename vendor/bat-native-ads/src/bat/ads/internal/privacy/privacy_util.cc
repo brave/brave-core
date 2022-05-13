@@ -6,23 +6,28 @@
 #include "bat/ads/internal/privacy/privacy_util.h"
 
 #include "base/check.h"
+#include "wrapper.hpp"
 
 namespace ads {
-namespace privacy {
 
-std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
+using challenge_bypass_ristretto::BlindedToken;
+using challenge_bypass_ristretto::Token;
+
+namespace privacy {
+namespace cbr {
+
+BlindedTokenList BlindTokens(const TokenList& tokens) {
   DCHECK(!tokens.empty());
 
-  std::vector<BlindedToken> blinded_tokens;
-  for (unsigned int i = 0; i < tokens.size(); i++) {
-    Token token = tokens.at(i);
-    const BlindedToken blinded_token = token.blind();
-
+  BlindedTokenList blinded_tokens;
+  for (Token token : tokens) {
+    const BlindedToken& blinded_token = token.blind();
     blinded_tokens.push_back(blinded_token);
   }
 
   return blinded_tokens;
 }
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads

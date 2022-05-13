@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
+#include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -17,9 +18,9 @@ namespace ads {
 namespace {
 
 constexpr char kExpectedUrl[] =
-    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJFdjVKRTQvOVRaSS81VHF5TjlKV2ZKMVRvMEhCd1F3MnJXZUFQY2RqWDNRPVwiXSxcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJwdWJsaWNLZXlcIjpcIlJKMmkvby9wWmtySCtpMGFHRU1ZMUc5Rlh0ZDdRN2dmUmkzWWROUm5ERGs9XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiZzV5R1FhcGNHcVkxeUhjMXV6TUhyT1ZhM2dHRkliTjkwUmlkcnlmakF0dTlyQzMwRmk5K3RVWGFrYmVYYVZKZDZVVkdub2w4ZW5MQWJQd0ZuNGpzc0E9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
+    R"(https://anonymous.ads.bravesoftware.com/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJFdjVKRTQvOVRaSS81VHF5TjlKV2ZKMVRvMEhCd1F3MnJXZUFQY2RqWDNRPVwiXSxcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJsb3dlc3RWYWx1ZVwiOlwiMC4xXCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiUWE0cDhBWGFNb2ZqcDVFN2VCZysrNEtaQ1kxcjZsOEhwckQvZHdOS0pOSXdWdzI0a1hDdEh6L2w1SlhVN2pOcUJUa2pac2RVNytzYzRtS0IyOVM3WlE9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=)";
 constexpr char kExpectedContent[] =
-    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","type":"view"})";
+    R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","lowestValue":"0.1","payload":{},"type":"view"})";
 }  // namespace
 
 class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
@@ -35,6 +36,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
+
+  BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
 
@@ -73,6 +76,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
+  BuildAndSetIssuers();
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -109,6 +114,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
+
+  BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
 
@@ -147,6 +154,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
+  BuildAndSetIssuers();
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -183,6 +192,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
+
+  BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
 
@@ -221,6 +232,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
+  BuildAndSetIssuers();
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -257,6 +270,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
+
+  BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
 
@@ -295,6 +310,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
+  BuildAndSetIssuers();
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -331,6 +348,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
+
+  BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
 
@@ -369,6 +388,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
+  BuildAndSetIssuers();
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -406,6 +427,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
+  BuildAndSetIssuers();
+
   privacy::SetUnblindedTokens(1);
 
   const ConfirmationInfo& confirmation =
@@ -442,6 +465,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
+
+  BuildAndSetIssuers();
 
   privacy::SetUnblindedTokens(1);
 

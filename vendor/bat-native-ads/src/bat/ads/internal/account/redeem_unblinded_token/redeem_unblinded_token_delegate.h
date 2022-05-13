@@ -36,6 +36,9 @@ class RedeemUnblindedTokenDelegate {
   virtual void OnFailedToRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const bool should_retry) {}
+
+  // Invoked to tell the delegate the issuers are out of date
+  virtual void OnIssuersOutOfDate() {}
 };
 
 }  // namespace ads

@@ -17,8 +17,7 @@ UnblindedTokenInfo::UnblindedTokenInfo(
 UnblindedTokenInfo::~UnblindedTokenInfo() = default;
 
 bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& rhs) const {
-  return public_key.encode_base64() == rhs.public_key.encode_base64() &&
-         value.encode_base64() == rhs.value.encode_base64();
+  return public_key == rhs.public_key && value == rhs.value;
 }
 
 bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& rhs) const {

@@ -36,7 +36,7 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
     return absl::nullopt;
   }
   unblinded_payment_token.public_key = PublicKey::decode_base64(*public_key);
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     return absl::nullopt;
   }
 
@@ -47,7 +47,7 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
   }
   unblinded_payment_token.value =
       UnblindedToken::decode_base64(*unblinded_token);
-  if (privacy::ExceptionOccurred()) {
+  if (privacy::cbr::ExceptionOccurred()) {
     return absl::nullopt;
   }
 

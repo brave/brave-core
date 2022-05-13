@@ -10,6 +10,7 @@
 
 namespace ads {
 namespace privacy {
+namespace cbr {
 
 using challenge_bypass_ristretto::TokenException;
 
@@ -23,5 +24,6 @@ bool ExceptionOccurred() {
   return false;
 }
 
+}  // namespace cbr
 }  // namespace privacy
 }  // namespace ads
