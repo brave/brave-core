@@ -6,29 +6,16 @@
 import("//build/buildflag_header.gni")
 
 if (current_toolchain == host_toolchain) {
+  assert(!is_debug)
+
   declare_args() {
     real_gomacc = ""
   }
 
-  buildflag_header("buildflags") {
-    header = "buildflags.h"
-    if (is_win) {
-      _real_gomacc = string_replace(real_gomacc, "\\", "/")
-    } else {
-      _real_gomacc = real_gomacc
-    }
-    flags = [ "REAL_GOMACC=\"$_real_gomacc\"" ]
-  }
-
-  executable("executable") {
-    assert(!is_debug)
-
+  executable("redirect_cc_executable") {
     sources = [ "redirect_cc.cc" ]
 
-    deps = [
-      ":buildflags",
-      "//base",
-    ]
+    deps = [ "//base" ]
 
     output_name = "redirect_cc"
 
@@ -39,24 +26,41 @@ if (current_toolchain == host_toolchain) {
     configs += [ "//build/config/compiler:optimize_speed" ]
   }
 
-  copy("copy_redirect_cc_to_gomacc") {
+  buildflag_header("gomacc_buildflags") {
+    header = "gomacc_buildflags.h"
     if (is_win) {
-      sources = [ "$root_out_dir/redirect_cc.exe" ]
-      outputs = [ "$root_out_dir/gomacc.exe" ]
+      _real_gomacc = string_replace(real_gomacc, "\\", "/")
     } else {
-      sources = [ "$root_out_dir/redirect_cc" ]
-      outputs = [ "$root_out_dir/gomacc" ]
+      _real_gomacc = real_gomacc
     }
+    flags = [ "REAL_GOMACC=\"$_real_gomacc\"" ]
+  }
 
-    deps = [ ":executable" ]
+  executable("gomacc_executable") {
+    sources = [ "redirect_cc.cc" ]
+
+    deps = [
+      ":gomacc_buildflags",
+      "//base",
+    ]
+
+    defines = [ "REDIRECT_CC_AS_GOMACC" ]
+
+    output_name = "gomacc"
+
+    # Always optimize for speed
+    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_speed" ]
   }
 }
 
 group("redirect_cc") {
   if (current_toolchain == host_toolchain) {
     deps = [
-      ":copy_redirect_cc_to_gomacc",
-      ":executable",
+      ":gomacc_executable",
+      ":redirect_cc_executable",
     ]
   }
 }
