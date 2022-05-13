@@ -51,6 +51,10 @@ class PerfPredictorPageMetricsObserver
   ObservePolicy ShouldObserveMimeType(
       const std::string& mime_type) const override;
 
+  ObservePolicy OnFencedFramesStart(
+      content::NavigationHandle* navigation_handle,
+      const GURL& currently_committed_url) override;
+
   int64_t navigation_id_ = 0;
 
   // The browser context this navigation is operating in.
