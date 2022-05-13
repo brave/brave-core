@@ -11,15 +11,6 @@
   <message name="IDS_HISTORY_CLUSTERS_JOURNEYS_TAB_LABEL" desc="A label for the section in Brave History (chrome://history) where Journeys are collected and shown to the user. See glossary entry for meaning of 'Journeys'." formatter_data="android_java">
     Journeys
   </message>
-  <message name="IDS_HISTORY_CLUSTERS_JOURNEYS_HALF_HEIGHT" desc="Accessibility string read when the Journeys bottom sheet (showing a cluster of related visits) is opened at half height." formatter_data="android_java" is_accessibility_with_no_ui="true">
-    Journeys opened at half height
-  </message>
-  <message name="IDS_HISTORY_CLUSTERS_JOURNEYS_FULL_HEIGHT" desc="Accessibility string read when the Journeys bottom sheet (showing a cluster of related visits) is opened at full height." formatter_data="android_java" is_accessibility_with_no_ui="true">
-    Journeys opened at full height
-  </message>
-  <message name="IDS_HISTORY_CLUSTERS_JOURNEYS_CLOSED" desc="Accessibility string read when the Journeys bottom sheet (showing a cluster of related visits) is closed." formatter_data="android_java" is_accessibility_with_no_ui="true">
-    Journeys closed
-  </message>
   <message name="IDS_HISTORY_CLUSTERS_LIST_TAB_LABEL" desc="A label for the section in Brave History (chrome://history) where a list of history items are shown to the user.">
     List
   </message>
@@ -52,5 +43,8 @@
   </message>
   <message name="IDS_HISTORY_CLUSTERS_SHOW_MORE_BUTTON_LABEL" desc="A label for the button that expands the view showing more history items.">
     Show more
+  </message>
+  <message name="IDS_HISTORY_CLUSTERS_SEARCH_YOUR_JOURNEYS" desc="A label for the hint text for the search box in Brave Journeys." formatter_data="android_java">
+    Search your Journeys
   </message>
 </grit-part>
