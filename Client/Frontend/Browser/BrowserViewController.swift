@@ -1896,11 +1896,11 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
           } else {
             braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
           }
-        }
-        
-        // Saving Tab. Private Mode - not supported yet.
-        if !tab.isPrivate {
-          tabManager.saveTab(tab)
+          
+          // Saving Tab. Private Mode - not supported yet.
+          if !tab.isPrivate {
+            tabManager.saveTab(tab)
+          }
         }
       }
 
