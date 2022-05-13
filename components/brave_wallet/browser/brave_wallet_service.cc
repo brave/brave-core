@@ -221,7 +221,7 @@ absl::optional<std::string> BraveWalletService::GetUserAssetAddress(
 
   if (coin == mojom::CoinType::SOL) {
     std::vector<uint8_t> bytes;
-    if (!Base58Decode(address, &bytes, kSolanaPubkeySize))
+    if (!::brave_wallet::IsBase58EncodedSolanaPubkey(address))
       return absl::nullopt;
     return address;
   }
@@ -1166,6 +1166,12 @@ void BraveWalletService::NotifyDecryptRequestProcessed(
     std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
                             "", false);
   }
+}
+
+void BraveWalletService::IsBase58EncodedSolanaPubkey(
+    const std::string& key,
+    IsBase58EncodedSolanaPubkeyCallback callback) {
+  std::move(callback).Run(::brave_wallet::IsBase58EncodedSolanaPubkey(key));
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
