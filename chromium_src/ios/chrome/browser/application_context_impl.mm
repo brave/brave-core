@@ -43,7 +43,7 @@
 #include "ios/chrome/browser/pref_names.h"
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
-#import "ios/chrome/browser/safe_browsing/safe_browsing_service.h"
+#import "ios/components/security_interstitials/safe_browsing/safe_browsing_service.h"
 #include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
 #include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
