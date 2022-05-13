@@ -128,11 +128,10 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
       qrcode_generator::mojom::GenerateQRCodeRequest::New();
   request->data = qr_code_string;
   request->should_render = true;
-  request->render_dino = false;
-  request->render_module_style =
-      qrcode_generator::mojom::ModuleStyle::DEFAULT_SQUARES;
+  request->render_dino = true;
+  request->render_module_style = qrcode_generator::mojom::ModuleStyle::CIRCLES;
   request->render_locator_style =
-      qrcode_generator::mojom::LocatorStyle::DEFAULT_SQUARE;
+      qrcode_generator::mojom::LocatorStyle::ROUNDED;
 
   generator->GenerateQRCode(
       std::move(request),
