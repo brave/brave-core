@@ -91,7 +91,7 @@ export const WarningIcon = styled.div`
   background: url(${WarningCircle});
 `
 
-export const ToggleVisibilityButton = styled(WalletButton)<Partial<StyleProps>>`
+export const ToggleVisibilityButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
