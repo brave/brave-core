@@ -59,8 +59,11 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   private var privateModeCancellable: AnyCancellable?
   private func updateColors(_ isPrivateBrowsing: Bool) {
     if isPrivateBrowsing {
+      overrideUserInterfaceStyle = .dark
       backgroundColor = .privateModeBackground
     } else {
+      overrideUserInterfaceStyle = DefaultTheme(
+        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
       backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     }
   }

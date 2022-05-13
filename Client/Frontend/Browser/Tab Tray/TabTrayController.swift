@@ -6,6 +6,7 @@
 import UIKit
 import Shared
 import BraveShared
+import Combine
 
 protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
@@ -57,6 +58,16 @@ class TabTrayController: LoadingViewController {
   private var searchBarView: TabTraySearchBar?
 
   private lazy var emptyStateOverlayView: UIView = EmptyStateOverlayView(description: Strings.noSearchResultsfound)
+
+  private var privateModeCancellable: AnyCancellable?
+
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+      return .lightContent
+    }
+    
+    return view.overrideUserInterfaceStyle == .light ? .darkContent : .lightContent
+  }
 
   init(tabManager: TabManager) {
     self.tabManager = tabManager
@@ -128,7 +139,26 @@ class TabTrayController: LoadingViewController {
       UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
       UIBarButtonItem(customView: tabTrayView.doneButton),
     ]
+    
+    privateModeCancellable = PrivateBrowsingManager.shared
+      .$isPrivateBrowsing
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] isPrivateBrowsing in
+        self?.updateColors(isPrivateBrowsing)
+      })
   }
+  
+  private func updateColors(_ isPrivateBrowsing: Bool) {
+    if isPrivateBrowsing {
+      overrideUserInterfaceStyle = .dark
+    } else {
+      overrideUserInterfaceStyle = DefaultTheme(
+        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
+    }
+    
+    setNeedsStatusBarAppearanceUpdate()
+  }
+
 
   private var initialScrollCompleted = false
 

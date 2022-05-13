@@ -7,6 +7,7 @@ import Shared
 import SnapKit
 import XCGLogger
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -43,6 +44,7 @@ class TabLocationView: UIView {
   var tapRecognizer: UITapGestureRecognizer!
   var contentView: UIStackView!
   private var tabObservers: TabObservers!
+  private var privateModeCancellable: AnyCancellable?
 
   var url: URL? {
     didSet {
@@ -273,10 +275,27 @@ class TabLocationView: UIView {
     let dragInteraction = UIDragInteraction(delegate: self)
     dragInteraction.allowsSimultaneousRecognitionDuringLift = true
     self.addInteraction(dragInteraction)
+    
+    privateModeCancellable = PrivateBrowsingManager.shared.$isPrivateBrowsing
+      .removeDuplicates()
+      .sink(receiveValue: { [weak self] isPrivateBrowsing in
+        self?.updateColors(isPrivateBrowsing)
+      })
   }
 
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func updateColors(_ isPrivateBrowsing: Bool) {
+    if isPrivateBrowsing {
+      overrideUserInterfaceStyle = .dark
+      backgroundColor = .braveBackground.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    } else {
+      overrideUserInterfaceStyle = DefaultTheme(
+        rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride ?? .unspecified
+      backgroundColor = .braveBackground
+    }
   }
 
   override var accessibilityElements: [Any]? {
