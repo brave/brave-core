@@ -11,7 +11,6 @@ namespace shared_highlighting {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSharedHighlightingAmp, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSharedHighlightingV2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace shared_highlighting
