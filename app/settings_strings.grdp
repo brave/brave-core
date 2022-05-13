@@ -12,7 +12,7 @@
     More actions
   </message>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY" desc="The body of the modal dialog that we show when users click on relaunch and they have open Private windows. The dialog serves to warn the users about losing their Private windows if they proceed with the relaunch.">
       {COUNT, plural,
       =1 {Your Private window won't open after you relaunch}
@@ -24,7 +24,7 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_BROWSER_VERSION" desc="The text label describing the version of the browser, example: Version 57.0.2937.0 (Developer Build) unknown (64-bit)">
     Version <ph name="PRODUCT_VERSION">$1<ex>15.0.865.0</ex></ph> (<ph name="PRODUCT_CHANNEL">$2<ex>Developer Build</ex></ph>) <ph name="PRODUCT_MODIFIER">$3</ph> <ph name="PRODUCT_VERSION_BITS">$4</ph>
   </message>
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
       Relaunch
     </message>
@@ -65,7 +65,7 @@
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
     Live Caption
   </message>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE_ENGLISH_ONLY" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Only works in Brave browser initially. Currently only works for English media.">
       Automatically creates captions for media in Brave browser (currently available in English). Audio and captions are processed locally and never leave the device.
     </message>
@@ -73,7 +73,7 @@
       Automatically creates captions for media in Brave browser. Audio and captions are processed locally and never leave the device.
     </message>
   </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE_ENGLISH_ONLY" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Currently only works for English media.">
       Automatically creates captions for English audio and video. Audio and captions never leave your device.
     </message>
@@ -93,17 +93,17 @@
   <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_TITLE" desc="Name of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
     Navigate pages with a text cursor
   </message>
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_SUBTITLE" desc="Subtitle of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
       To turn caret browsing on or off, use the shortcut F7
     </message>
   </if>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_SUBTITLE" desc="Subtitle of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
       To turn caret browsing on or off, use the shortcut Ctrl+Search+7
     </message>
   </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_ACCESSIBILITY_FOCUS_HIGHLIGHT_DESCRIPTION" desc="In the settings tab, the text next to the checkbox to highlight the focused object to make it easier to see.">
       Show a quick highlight on the focused object
     </message>
@@ -127,12 +127,12 @@
       Browser themes
     </message>
   </if>
-  <if expr="not chromeos and not lacros">
+  <if expr="not chromeos_ash and not chromeos_lacros">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
       Theme
     </message>
   </if>
-  <if expr="is_linux and not chromeos and not lacros">
+  <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
     <message name="IDS_SETTINGS_SYSTEM_THEME" desc="Text of the label describing the system (GTK+) browser theme on Linux">
       GTK+
     </message>
@@ -212,12 +212,12 @@
   <message name="IDS_SETTINGS_SUBPAGE_BUTTON" desc="Accessibility description for a button navigating the user from a settings page to one of the settings subpages.">
     Subpage button
   </message>
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart Brave.">
       Relaunch
     </message>
   </if>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart ChromeOS.">
       Restart
     </message>
@@ -391,6 +391,12 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS" desc="Name for the password section and settings entry used for managing passwords.">
     Passwords
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MANAGER" desc="Name for the Password Manager section and settings entry used for managing passwords.">
+    Password Manager
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MANAGER_DESCRIPTION" desc="Description for the password section and settings entry used for managing passwords.">
+    Create, save, and manage your passwords so you can easily sign in to sites and apps.
   </message>
   <message name="IDS_SETTINGS_DEVICE_PASSWORDS" desc="Name for the passwords section used for managing passwords/exceptions stored on the device.">
     Passwords
@@ -789,7 +795,7 @@
   </message>
 
   <!-- Default Browser Page -->
-  <if expr="not chromeos and not lacros">
+  <if expr="not chromeos_ash and not chromeos_lacros">
     <message name="IDS_SETTINGS_DEFAULT_BROWSER" desc="Name of the Default Browser page, which allows users to set which browser will open .html files within the OS.">
       Default browser
     </message>
@@ -979,7 +985,7 @@
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_WRITE_ERROR_FORMAT" desc="The text in the error dialog for PKCS #12 file write errors.">
       There was an error while trying to write the file: <ph name="ERROR_TEXT">$1<ex>Permission denied.</ex></ph>.
     </message>
-    <if expr="chromeos">
+    <if expr="chromeos_ash">
       <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LIST_HEADER" desc="Header that lists the certificate provisioning processes.">
         Certificates are being provisioned for these certificate profiles
       </message>
@@ -1226,7 +1232,7 @@
   <message name="IDS_SETTINGS_LANGUAGES_MANAGE_LANGUAGES_TITLE" desc="Name of the settings dialog which allows enabling additional languages.">
     Add languages
   </message>
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_TITLE" desc="Title for the currently used language in the header for the collapsible list of languages.">
       Language
     </message>
@@ -1314,15 +1320,15 @@
       </message>
     </if>
   </if>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     <if expr="reven">
       <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in ChromeOS Flex.">
         Manage languages in ChromeOS Flex settings
       </message>
     </if>
     <if expr="not reven">
-      <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in Chrome OS.">
-        Manage languages in Chrome OS settings
+      <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in ChromeOS.">
+        Manage languages in ChromeOS settings
       </message>
     </if>
     <message name="IDS_SETTINGS_LANGUAGES_KEYBOARD_APPS" desc="Title for the list of keyboard apps installed via Play Store by the user.">
@@ -1347,8 +1353,8 @@
       </message>
     </if>
     <if expr="not reven">
-      <message name="IDS_SETTINGS_SECURE_DNS_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open Secure DNS settings in Chrome OS.">
-        Manage secure DNS in Chrome OS settings
+      <message name="IDS_SETTINGS_SECURE_DNS_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open Secure DNS settings in ChromeOS.">
+        Manage secure DNS in ChromeOS settings
       </message>
     </if>
   </if>
@@ -1531,6 +1537,12 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_PROMO_START_BUTTON" desc="Text of a button on a card in the settings page that starts the 'Privacy Guide'.">
     Get started
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_TO_SETTINGS_ARIA_LABEL" desc="Text read by screen readers when focusing on the back-to-settings button that is shown in the 'Privacy Guide'. If this button is activated, it will navigate to Settings. This text is only announced by screen readers and is not visible in the UI. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
+    Privacy Guide back button
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_TO_SETTINGS_ARIA_ROLE_DESC" desc="Description read by screen readers when focusing on back-to-settings button that is shown in the 'Privacy Guide'. It indicates to the user that activating the this button will cause 'Privacy Guide' to navigate away from 'Privacy Guide' and to Brave Settings. This text is only announced by screen readers and is not visible in the UI. 'Privacy Guide' is a term, see go/glossarymanager/termset?gid=27517723&amp;tsid=28b420b3.">
+    Click to navigate away from Privacy Guide.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_BUTTON" desc="Text of a button in the privacy guide that reverses to the previous step in the 'Privacy Guide'.">
     Back
@@ -2189,7 +2201,7 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_SPACE_OR_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
     Space or Tab
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space" meaning="Describes the tab key or button on the user’s keyboard.">
     Tab
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_SITES" desc="Label for button that expands the Site Search list of search engines to show all entries">
@@ -2596,7 +2608,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the protected content content setting.">
     Media with a copyright might not play
   </message>
-  <if expr="chromeos or is_win">
+  <if expr="chromeos_ash or is_win">
     <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_EXPLANATION" desc="Text that is displayed on the Protected Content section of Content Settings. This text explains that enabling protected content may require using a uniquely identifiable machine identifier.">
       Sites may also need to recognize your device using an identifier
     </message>
@@ -2799,74 +2811,32 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_BLOCK" desc="Label explaining that insecure content is blocked by default in secure sites. Insecure content refers to content served over HTTP, secure sites refers to sites served over HTTPS.">
     Insecure content is blocked by default on secure sites
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER_ALLOW" desc="The allow label for payment handler installation in site settings.">
-    Allow sites to install payment handlers
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER_ALLOW_RECOMMENDED" desc="The allow label for payment handler installation in site settings (with the 'recommended' suffix).">
     Allow sites to install payment handlers (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER_BLOCK" desc="The block label for payment handler installation access in site settings.">
-    Do not allow any site to install payment handlers
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOWNLOAD_PDFS" desc="Label for downloading PDF documents instead of automatically opening them in Brave.">
     Download PDF files instead of automatically opening them in Brave
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_ASK" desc="The ask label for the VR feature in site settings.">
-    Ask when a site wants to use your virtual reality devices and data
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_VR_ASK_RECOMMENDED" desc="The ask label for the VR feature in site settings (with the 'recommended' suffix).">
     Ask when a site wants to use your virtual reality devices and data (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_BLOCK" desc="The block label for the VR feature in site settings.">
-    Do not allow sites to use your virtual reality devices and data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_RECENT_ACTIVITY" desc="Label for the section which contains the user's recent permissions changes">
     Recent activity
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES_ASK" desc="The ask label for MIDI devices in site settings.">
-    Ask when a site wants to use system exclusive messages to access MIDI devices
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES_ASK_RECOMMENDED" desc="The ask label for MIDI devices in site settings (with the 'recommended' suffix).">
     Ask when a site wants to use system exclusive messages to access MIDI devices (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES_BLOCK" desc="The block label for MIDI devices in site settings.">
-    Do not allow any sites to use system exclusive messages to access MIDI devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_ASK" desc="The ask label for Bluetooth devices in site settings.">
-    Ask when a site wants to access Bluetooth devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_ASK_RECOMMENDED" desc="The ask label for Bluetooth devices in site settings (with the 'recommended' suffix).">
     Ask when a site wants to access Bluetooth devices (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_BLOCK" desc="The block label for Bluetooth devices in site settings.">
-    Do not allow any sites to access Bluetooth devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_ASK" desc="The ask label for USB devices in site settings.">
-    Ask when a site wants to access USB devices
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_ASK_RECOMMENDED" desc="The ask label for USB devices in site settings (with the 'recommended' suffix).">
     Ask when a site wants to access USB devices (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_BLOCK" desc="The block label for USB devices in site settings.">
-    Do not allow any sites to access USB devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ASK" desc="The ask label for serial ports in site settings.">
-    Ask when a site wants to access serial ports
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ASK_RECOMMENDED" desc="The ask label for serial ports in site settings (with the 'recommended' suffix).">
     Ask when a site wants to access serial ports (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_BLOCK" desc="The block label for serial ports in site settings.">
-    Do not allow any sites to access serial ports
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_ACCESS_WRITE_ASK" desc="The ask label for File System Access write permission in site settings.">
-    Ask when a site wants to edit files or folders on your device
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_ACCESS_WRITE_ASK_RECOMMENDED" desc="The ask label for File System Access write permission in site settings (with the 'recommended' suffix).">
     Ask when a site wants to edit files or folders on your device (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_ACCESS_WRITE_BLOCK" desc="The block label for File System Access write permission in site settings.">
-    Do not allow any sites to edit files or folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_ZOOM_LEVEL" desc="Title tooltip and accessibility text for the button to remove zoom levels in site settings">
     Remove zoom level
@@ -2879,9 +2849,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ASK_FIRST_RECOMMENDED" desc="The 'ask first' label in site settings -- a recommended setting for some categories, such as when sites want to use Geolocation.">
     Ask first (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ASK_BEFORE_ACCESSING" desc="The 'ask before accessing' label in site settings.">
-    Ask before accessing
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ASK_BEFORE_ACCESSING_RECOMMENDED" desc="The 'ask before accessing' label in site settings -- a recommended setting for some categories, such as when sites want to access geolocation information.">
     Ask before accessing (recommended)
@@ -2910,12 +2877,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_ASK" desc="Label text shown in the Settings page when the default setting for Web Notifications is that new sites can prompt the user to ask if they want to receive notifications.">
     Sites can ask to send notifications
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_DONT_SHOW_IMAGES" desc="Label for the global 'Do not show any images' toggle (category default) in site settings.">
-    Do not show any images
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SHOW_ALL" desc="Label for the global 'Show all' toggle (category default) in site settings.">
-    Show all
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHOW_ALL_RECOMMENDED" desc="Label for the global 'Show all' toggle (category default) in site settings -- a recommended setting for some categories, such as when sites want to show images.">
     Show all (recommended)
   </message>
@@ -2943,17 +2904,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW_SITES_RECOMMENDED" desc="The 'allow cookies' label in site settings -- the recommended setting for when sites want to read/write cookie information.">
     Allow sites to save and read cookie data (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_RECENTLY_CLOSED_SITES" desc="The allow label for background sync in site settings.">
-    Allow recently closed sites to finish sending and receiving data
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_RECENTLY_CLOSED_SITES_RECOMMENDED" desc="The allow label for background sync in site settings (with the 'recommended' suffix).">
     Allow recently closed sites to finish sending and receiving data (recommended)
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCK" desc="The block label for background sync in site settings.">
     Do not allow recently closed sites to finish sending and receiving data
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLERS_ASK" desc="The allow label for protocol handlers in site settings.">
-    Allow sites to ask to become default handlers for protocols
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLERS_ASK_RECOMMENDED" desc="The allow label for protocol handlers in site settings (with the 'recommended' suffix).">
     Allow sites to ask to become default handlers for protocols (recommended)
@@ -2961,41 +2916,14 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLERS_BLOCKED" desc="The block label for protocol handlers in site settings.">
     Do not allow any site to handle protocols
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCK" desc="A subtitle for the ‘Ads’ setting. ‘Blocked’ refers to ads being blocked.">
-    Blocked on sites that show intrusive or misleading ads
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCK_RECOMMENDED" desc="A label for the ‘Ads’ setting toggle. ‘Blocked’ refers to ads being blocked.">
     Blocked on sites that show intrusive or misleading ads (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOW" desc="The allow label for sound in site settings.">
-    Allow sites to play sound
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOW_RECOMMENDED" desc="The allow label for sound in site settings (with the 'recommended' suffix).">
     Allow sites to play sound (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCK" desc="The block label for sound in site settings.">
-    Mute sites that play sound
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS_ALLOW" desc="The allow label for sensors feature in site settings.">
-    Allow sites to use motion and light sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_ALLOW" desc="The allow label for motion sensors (accelerometer, gyroscope, magnetometer) feature in site settings.">
-    Allow sites to use motion sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS_BLOCK" desc="The block label for sensors feature in site settings.">
-    Block sites from using motion and light sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_BLOCK" desc="The block label for motion sensors (accelerometer, gyroscope, magnetometer) feature in site settings.">
-    Block sites from using motion sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_ASK" desc="The allow label for automatic download in site settings.">
-    Ask when a site tries to download files automatically after the first file
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_ASK_RECOMMENDED" desc="The allow label for automatic download in site settings (with the 'recommended' suffix).">
     Ask when a site tries to download files automatically after the first file (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_BLOCK" desc="The block label for automatic download in site settings.">
-    Do not allow any site to download multiple files automatically
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_DESCRIPTION" desc="Description of the window placement site setting.">
     Sites usually open and place windows to show additional documents or fullscreen content on your screens
@@ -3012,20 +2940,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the window placement site setting.">
     Not allowed to use info about your screens to open and place windows
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_ASK" desc="The ask label for the local font access site settings.">
-    Ask when a site wants to use fonts installed on your device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_BLOCK" desc="The block label for the local font access site settings.">
-    Block sites from using fonts installed on your device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_ASK" desc="The ask label for the idle detection site settings.">
-    Ask when a site wants to know when you're actively using this device
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_BLOCK" desc="The block label for the idle detection site settings.">
     Block sites from knowing when you're actively using this device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED" desc="A generic Allowed label to show in Site Settings when Allow is NOT the recommended option.">
-    Allowed
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED_RECOMMENDED" desc="A generic Allowed label to show in Site Settings when Allow is the recommended option.">
     Allowed (recommended)
@@ -3353,7 +3269,7 @@
   <message name="IDS_SETTINGS_ADD_SITE" desc="The label for the input box for adding a site">
     Site
   </message>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     <message name="IDS_SETTINGS_ANDROID_SMS_NOTE" desc="Special note shown below Messages for Android entry in notification permissions to indicate use in ChromeOS Multidevice features.">
       Allows Android Messages to relay texts from your phone to your Chromebook
     </message>
@@ -3446,6 +3362,9 @@
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
     Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
+  <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync.">
+    Turn off sync?
+  </message>
   <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync and sign out.">
     Turn off sync and personalization?
   </message>
@@ -3459,7 +3378,7 @@
     Settings saved. Sync started.
   </message>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_PROFILE_NAME_INPUT_LABEL" desc="Aria label of the input field where the user can edit the name associated with the profile." meaning="Name of a person">
       Name
     </message>
@@ -3485,6 +3404,9 @@
 
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
     Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_MAIN_PROFILE_EXPLANATION" desc="The text to display in the Turn off sync dialog to stop syncing for the main profile in Lacros.">
+    Your bookmarks, history, passwords, and more will no longer be synced.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles.">
     This will sign you out of your Brave sync chains. Your bookmarks, history, passwords, and more will no longer be synced.
@@ -3526,7 +3448,7 @@
     Control how your browsing history is used to personalize Search and more
   </message>
 
-  <if expr="not chromeos and not lacros">
+  <if expr="not chromeos_ash and not chromeos_lacros">
     <!-- Import Settings Dialog -->
     <message name="IDS_SETTINGS_IMPORT_SETTINGS_TITLE" desc="Dialog title for import dialog.">
       Import bookmarks and settings
@@ -3625,12 +3547,12 @@
   </message>
 
   <!-- System Page -->
-  <if expr="not chromeos">
+  <if expr="not chromeos_ash">
     <message name="IDS_SETTINGS_SYSTEM" desc="Title of the system settings.">
       System
     </message>
   </if>
-  <if expr="not chromeos and not lacros">
+  <if expr="not chromeos_ash and not chromeos_lacros">
     <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Brave to render via hardware acceleration (GPU) when available.">
       Use hardware acceleration when available
     </message>
@@ -3644,12 +3566,12 @@
       <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> is using proxy settings from your administrator
     </message>
   </if>
-  <if expr="lacros">
+  <if expr="chromeos_lacros">
     <message name="IDS_SETTINGS_SYSTEM_USE_ASH_PROXY_LABEL" desc="Label for the checkbox that enables using the ash proxy for the Lacros browser.">
-      Use Chrome OS proxy settings for this profile.
+      Use ChromeOS proxy settings for this profile.
     </message>
     <message name="IDS_SETTINGS_SYSTEM_USES_ASH_PROXY_LABEL" desc="Non-interactive label that describes that the primary profile uses the computer's proxy settings.">
-      This profile uses Chrome OS proxy settings.
+      This profile uses ChromeOS proxy settings.
     </message>
   </if>
 

@@ -56,6 +56,18 @@ int ContentSettingTypeToHistogramValue(ContentSettingsType content_setting,
 RendererContentSettingRules::RendererContentSettingRules() = default;
 RendererContentSettingRules::~RendererContentSettingRules() = default;
 
+RendererContentSettingRules::RendererContentSettingRules(
+    const RendererContentSettingRules&) = default;
+
+RendererContentSettingRules::RendererContentSettingRules(
+    RendererContentSettingRules&& rules) = default;
+
+RendererContentSettingRules& RendererContentSettingRules::operator=(
+    const RendererContentSettingRules& rules) = default;
+
+RendererContentSettingRules& RendererContentSettingRules::operator=(
+    RendererContentSettingRules&& rules) = default;
+
 // static
 bool RendererContentSettingRules::IsRendererContentSetting(
     ContentSettingsType content_type) {

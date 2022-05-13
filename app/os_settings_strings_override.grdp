@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Settings-specific strings (included from generated_resources.grd). -->
 <grit-part>
-<if expr="chromeos">
+<if expr="chromeos_ash">
 
   <if expr="reven">
     </if>

@@ -24,7 +24,7 @@ void AdjustInsetsForFontList(gfx::Insets* insets,
   // text and everything else to stop aligning correctly, so we account for it
   // by shrinking the top padding by 1
   if (font_list.GetHeight() != 15) {
-    *insets -= gfx::Insets(/* top */ 1, 0, 0, 0);
+    *insets -= gfx::Insets::TLBR(/* top */ 1, 0, 0, 0);
   }
 #endif
 }

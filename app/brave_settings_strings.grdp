@@ -353,6 +353,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY" desc="Label for autoplay site settings.">
     Autoplay
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ALLOW" desc="Label for autoplay site settings.">
+    Allow sites to autoplay videos
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_BLOCK" desc="Label for autoplay site settings.">
+    Block sites from autoplaying videos
+  </message>
   <!-- Ethereum -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM" desc="Label for ethereum site settings.">
     Ethereum

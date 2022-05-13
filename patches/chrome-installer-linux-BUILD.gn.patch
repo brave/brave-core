@@ -1,16 +1,16 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index d364d2d6039e43e8a688ed56fcc54cd80ad65140..d0b8adfe57eedaa5c0136313831e340e9c3104fa 100644
+index 3f0414a3ee4011541275bf93662c5b889d2ae0c4..62226eb6bc4c4af0ce08e3d94a78b1424db167c1 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -85,6 +85,7 @@ if (build_with_internal_optimization_guide) {
+@@ -88,6 +88,7 @@ if (build_with_internal_optimization_guide) {
        [ "$root_out_dir/liboptimization_guide_internal.so" ]
  }
  
 +packaging_files_executables -= excluded_packaging_files_executables packaging_files_executables += brave_packaging_files_executables
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
- copy("swiftshader_libs") {
-@@ -185,6 +186,7 @@ action("merge_rpm_dependencies") {
+ # TODO(mmoss) Any convenient way to get all the relevant build files?
+@@ -176,6 +177,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -18,7 +18,7 @@ index d364d2d6039e43e8a688ed56fcc54cd80ad65140..d0b8adfe57eedaa5c0136313831e340e
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -195,6 +197,7 @@ strip_binary("strip_chrome_crashpad_handler") {
+@@ -191,6 +193,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -26,7 +26,7 @@ index d364d2d6039e43e8a688ed56fcc54cd80ad65140..d0b8adfe57eedaa5c0136313831e340e
  }
  
  strip_binary("strip_libEGL_shlib") {
-@@ -295,6 +298,7 @@ copy("common_packaging_files") {
+@@ -281,6 +284,7 @@ copy("common_packaging_files") {
    }
  
    sources += [ "//buildtools/third_party/eu-strip/bin/eu-strip" ]
@@ -34,7 +34,7 @@ index d364d2d6039e43e8a688ed56fcc54cd80ad65140..d0b8adfe57eedaa5c0136313831e340e
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -393,6 +397,7 @@ group("installer_deps") {
+@@ -381,6 +385,7 @@ group("installer_deps") {
      "//components/crash/core/app:chrome_crashpad_handler",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -42,7 +42,7 @@ index d364d2d6039e43e8a688ed56fcc54cd80ad65140..d0b8adfe57eedaa5c0136313831e340e
    if (enable_nacl) {
      public_deps += [
        ":strip_nacl_helper",
-@@ -450,6 +455,9 @@ group("installer_deps") {
+@@ -435,6 +440,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -52,7 +52,7 @@ index d364d2d6039e43e8a688ed56fcc54cd80ad65140..d0b8adfe57eedaa5c0136313831e340e
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -613,3 +621,6 @@ linux_package("beta") {
+@@ -598,3 +606,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

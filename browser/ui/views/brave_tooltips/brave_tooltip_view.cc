@@ -78,7 +78,7 @@ constexpr gfx::VerticalAlignment kBodyVerticalAlignment = gfx::ALIGN_TOP;
 constexpr gfx::ElideBehavior kTitleElideBehavior = gfx::ELIDE_TAIL;
 constexpr gfx::ElideBehavior kBodyElideBehavior = gfx::ELIDE_TAIL;
 
-constexpr gfx::Insets kTooltipViewInsets(10, 20, 10, 10);
+constexpr auto kTooltipViewInsets = gfx::Insets::TLBR(10, 20, 10, 10);
 
 }  // namespace
 

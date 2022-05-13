@@ -71,6 +71,9 @@
   <message name="IDS_EXTENSIONS_DISABLED_UPDATE_REQUIRED_BY_POLICY" desc="Text shown in the extensions settings for extensions disabled due to minimum version requirement from enterprise policy">
     This extension is outdated and disabled by enterprise policy. It might become enabled automatically when a newer version is available.
   </message>
+  <message name="IDS_EXTENSIONS_MATCHING_RESTRICTED_SITES_WARNING" desc="The warning shown on the runtime host permissions dialog if the site to be added/edited matches one or more user restricted sites.">
+    You previously chose not to allow any extensions on <ph name="SITE">$1<ex>https://www.example.com</ex></ph>. If you add this site here, other extensions can also request to read and change your site data on <ph name="SITE">$1<ex>https://www.example.com</ex></ph>.
+  </message>
   <message name="IDS_EXTENSIONS_MENU_BUTTON_LABEL" desc="Tooltips for the sidebar menu button.">
     Main menu
   </message>
@@ -496,17 +499,17 @@
     Include Ctrl, Alt, or ⌘
   </message>
 </if>
-<if expr="chromeos">
+<if expr="chromeos_ash">
   <message name="IDS_EXTENSIONS_INCLUDE_START_MODIFIER" desc="Error message explaining that shortcuts must start with either the Control, Alt, or Search key.">
     Include Ctrl, Alt, or Search
   </message>
 </if>
-<if expr="is_macosx or chromeos">
+<if expr="is_macosx or chromeos_ash">
   <message name="IDS_EXTENSIONS_TOO_MANY_MODIFIERS" desc="Error message explaining not to use so many modifiers in a shortcut.">
     Invalid combination
   </message>
 </if>
-<if expr="not is_macosx and not chromeos">
+<if expr="not is_macosx and not chromeos_ash">
   <message name="IDS_EXTENSIONS_INCLUDE_START_MODIFIER" desc="Error message explaining that shortcuts must start with either the Control key or the Alt key.">
     Include either Ctrl or Alt
   </message>
@@ -518,7 +521,7 @@
   Type a letter
 </message>
 
-<if expr="chromeos">
+<if expr="chromeos_ash">
   <!-- Extensions Kiosk apps -->
   <message name="IDS_EXTENSIONS_MANAGE_KIOSK_APP" desc="Label of the button to bring up kiosk management overlay on chrome extensions page.">
     Manage kiosk applications
@@ -548,7 +551,7 @@
     Are you sure you want to permanently keep this device in kiosk mode?
   </message>
   <message name="IDS_EXTENSIONS_KIOSK_DISABLE_BAILOUT_SHORTCUT_WARNING_BODY" desc="Warning text of disabling kiosk application launch bail out shortcut.">
-    The only way to undo this is to re-install <ph name="IDS_SHORT_PRODUCT_OS_NAME">$1<ex>Chrome OS</ex></ph>
+    The only way to undo this is to re-install <ph name="IDS_SHORT_PRODUCT_OS_NAME">$1<ex>ChromeOS</ex></ph>
   </message>
 </if>
 </grit-part>

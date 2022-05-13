@@ -23,7 +23,6 @@ class SpeedreaderRewriterTest
       public ::testing::WithParamInterface<const char*> {
  public:
   SpeedreaderRewriterTest() {
-    brave::RegisterPathProvider();
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     test_data_dir_ = test_data_dir_.AppendASCII("speedreader/rewriter");
   }

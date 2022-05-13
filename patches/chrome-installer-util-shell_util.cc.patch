@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 2775fabe7a2722cf7d6662579c556c717f2763b0..756bd662d106840e5f840af87efdf662af7f1191 100644
+index d3bd7875eb554a2cd591c7b181d4e0c92f262017..775e12b8006ea34c493be59bdede22542453379f 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -361,6 +361,7 @@ void GetChromeProgIdEntries(
+@@ -360,6 +360,7 @@ void GetChromeProgIdEntries(
    app_info.delegate_clsid = install_static::GetLegacyCommandExecuteImplClsid();
  
    GetProgIdEntries(app_info, entries);
@@ -10,7 +10,7 @@ index 2775fabe7a2722cf7d6662579c556c717f2763b0..756bd662d106840e5f840af87efdf662
  
    if (!app_info.delegate_clsid.empty()) {
      auto delegate_execute_entries =
-@@ -457,6 +458,7 @@ void GetShellIntegrationEntries(
+@@ -456,6 +457,7 @@ void GetShellIntegrationEntries(
  
    const std::wstring html_prog_id(GetBrowserProgId(suffix));
    for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
@@ -18,7 +18,7 @@ index 2775fabe7a2722cf7d6662579c556c717f2763b0..756bd662d106840e5f840af87efdf662
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations",
          ShellUtil::kPotentialFileAssociations[i], html_prog_id));
-@@ -481,6 +483,7 @@ void GetAppExtRegistrationEntries(
+@@ -480,6 +482,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});
@@ -26,15 +26,7 @@ index 2775fabe7a2722cf7d6662579c556c717f2763b0..756bd662d106840e5f840af87efdf662
    entries->push_back(
        std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
  }
-@@ -720,6 +723,7 @@ std::wstring GetTargetForDefaultAppsSettings(const std::wstring& protocol) {
-     return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Browser");
-   if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
-     return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Email");
-+  BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS
-   return L"SettingsPageAppsDefaultsProtocolView";
- }
- 
-@@ -1683,8 +1687,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1668,8 +1671,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",

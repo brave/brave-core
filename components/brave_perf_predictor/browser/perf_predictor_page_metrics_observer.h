@@ -46,8 +46,7 @@ class PerfPredictorPageMetricsObserver
       const page_load_metrics::mojom::PageLoadTiming& timing) override;
 
  private:
-  ObservePolicy OnCommit(content::NavigationHandle* navigation_handle,
-                         ukm::SourceId source_id) override;
+  ObservePolicy OnCommit(content::NavigationHandle* navigation_handle) override;
 
   ObservePolicy ShouldObserveMimeType(
       const std::string& mime_type) const override;

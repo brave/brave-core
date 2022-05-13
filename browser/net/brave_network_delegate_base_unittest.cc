@@ -11,6 +11,8 @@
 #include "content/public/test/browser_task_environment.h"
 #include "net/http/http_util.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "net/url_request/url_request_context.h"
+#include "net/url_request/url_request_context_builder.h"
 #include "net/url_request/url_request_test_util.h"
 #include "url/gurl.h"
 
@@ -44,14 +46,15 @@ const char kRawHeaders[] =
 class BraveNetworkDelegateBaseTest : public testing::Test {
  public:
   BraveNetworkDelegateBaseTest()
-      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {}
+      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP) {}
   ~BraveNetworkDelegateBaseTest() override {}
-  void SetUp() override { context_->Init(); }
+  void SetUp() override {
+    context_ = net::CreateTestURLRequestContextBuilder()->Build();
+  }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<net::TestURLRequestContext> context_;
+  std::unique_ptr<net::URLRequestContext> context_;
 };
 
 TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeaders) {

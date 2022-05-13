@@ -64,8 +64,8 @@ RegisterPolymerComponentReplacement(
               id: 'autoplay',
               label: 'siteSettingsAutoplay',
               icon: 'cr:extension',
-              enabledLabel: 'siteSettingsAllowed',
-              disabledLabel: 'siteSettingsBlocked'
+              enabledLabel: 'siteSettingsAutoplayAllow',
+              disabledLabel: 'siteSettingsAutoplayBlock'
             }
             lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
             const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')

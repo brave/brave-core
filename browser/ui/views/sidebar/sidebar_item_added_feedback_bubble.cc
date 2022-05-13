@@ -36,8 +36,8 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
   set_color(kBubbleBackground);
   // Give margin and arrow at there.
-  set_margins(
-      gfx::Insets(0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+  set_margins(gfx::Insets::TLBR(
+      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
@@ -63,7 +63,7 @@ std::unique_ptr<views::NonClientFrameView>
 SidebarItemAddedFeedbackBubble::CreateNonClientFrameView(
     views::Widget* widget) {
   std::unique_ptr<views::BubbleFrameView> frame(
-      new views::BubbleFrameView(gfx::Insets(), gfx::Insets(10, 18)));
+      new views::BubbleFrameView(gfx::Insets(), gfx::Insets::VH(10, 18)));
   std::unique_ptr<BubbleBorderWithArrow> border =
       std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kFeedbackBubbleRadius = 6;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/pdf/manifest.json b/chrome/browser/resources/pdf/manifest.json
-index dbe8dd5bfef358c099a9b7e214be014f57171ceb..ba5fe4153e0e1edc985f65192623a513b377e9f3 100644
+index dbc6ccd604abb64b62fe7533d1da5ca3e05cc1e1..32394e3106b641c1f14a4f26a0b1a21346184f0d 100644
 --- a/chrome/browser/resources/pdf/manifest.json
 +++ b/chrome/browser/resources/pdf/manifest.json
 @@ -8,6 +8,7 @@
@@ -8,13 +8,13 @@ index dbe8dd5bfef358c099a9b7e214be014f57171ceb..ba5fe4153e0e1edc985f65192623a513
    "permissions": [
 +    "chrome://brave-resources/",
      "chrome://resources/",
+     "chrome://webui-test/",
      "contentSettings",
-     "metricsPrivate",
-@@ -18,6 +19,6 @@
+@@ -19,6 +20,6 @@
    "mime_types": [
      "application/pdf"
    ],
--  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://resources; object-src * blob: externalfile: file: filesystem: data:",
-+  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://brave-resources chrome://resources; object-src * blob: externalfile: file: filesystem: data:",
+-  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
++  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://brave-resources chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
    "mime_types_handler": "index.html"
  }

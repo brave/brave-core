@@ -17,4 +17,12 @@ friend class BraveContentSettingsAgentImpl;
 #include "src/components/content_settings/renderer/content_settings_agent_impl.h"
 #undef IsAllowlistedForContentSettings
 
+namespace content_settings {
+
+ContentSetting GetContentSettingFromRulesImpl(
+    const ContentSettingsForOneType& rules,
+    const GURL& secondary_url);
+
+}  // namespace content_settings
+
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_

@@ -18,8 +18,7 @@ PerfPredictorPageMetricsObserver::~PerfPredictorPageMetricsObserver() = default;
 
 page_load_metrics::PageLoadMetricsObserver::ObservePolicy
 PerfPredictorPageMetricsObserver::OnCommit(
-    content::NavigationHandle* navigation_handle,
-    ukm::SourceId source_id) {
+    content::NavigationHandle* navigation_handle) {
   // Skip if off the record
   if (navigation_handle->GetWebContents()
           ->GetBrowserContext()

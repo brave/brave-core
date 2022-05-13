@@ -37,6 +37,7 @@
 #include "net/base/url_util.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/models/image_model.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
@@ -119,8 +120,8 @@ std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
   // since we're using that to get the notification_id to OpenSettings
   notification_data.context_message = u" ";
   auto notification = std::make_unique<message_center::Notification>(
-      message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body, gfx::Image(),
-      std::u16string(), link,
+      message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body,
+      ui::ImageModel(), std::u16string(), link,
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
                                  kNotifierId),
       notification_data, nullptr);

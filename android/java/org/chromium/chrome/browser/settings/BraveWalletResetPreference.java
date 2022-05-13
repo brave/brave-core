@@ -101,7 +101,7 @@ public class BraveWalletResetPreference
         };
 
         AlertDialog.Builder alert =
-                new AlertDialog.Builder(getContext(), R.style.Theme_Chromium_AlertDialog);
+                new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
         AlertDialog alertDialog =
                 alert.setTitle(R.string.brave_wallet_reset_settings_option)
                         .setView(view)

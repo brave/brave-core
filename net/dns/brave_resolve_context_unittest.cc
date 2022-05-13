@@ -17,9 +17,10 @@
 #include "net/dns/dns_config.h"
 #include "net/dns/dns_server_iterator.h"
 #include "net/dns/dns_session.h"
-#include "net/dns/dns_socket_allocator.h"
 #include "net/dns/public/dns_over_https_server_config.h"
 #include "net/url_request/url_request_context.h"
+#include "net/url_request/url_request_context_builder.h"
+#include "net/url_request/url_request_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace net {
@@ -47,9 +48,8 @@ class BraveResolveContextTest : public testing::Test {
     auto null_random_callback =
         base::BindRepeating([](int, int) -> int { IMMEDIATE_CRASH(); });
 
-    return base::MakeRefCounted<DnsSession>(
-        config, nullptr /* socket_allocator */, null_random_callback,
-        nullptr /* netlog */);
+    return base::MakeRefCounted<DnsSession>(config, null_random_callback,
+                                            nullptr /* netlog */);
   }
 
  private:
@@ -60,8 +60,8 @@ TEST_F(BraveResolveContextTest, DohServerAvailability_InitialAvailability) {
   DnsConfig config = CreateDnsConfig();
   scoped_refptr<DnsSession> session = CreateDnsSession(config);
 
-  URLRequestContext request_context;
-  BraveResolveContext context(&request_context, true /* enable_caching */);
+  auto request_context = CreateTestURLRequestContextBuilder()->Build();
+  BraveResolveContext context(request_context.get(), true /* enable_caching */);
   context.InvalidateCachesAndPerSessionData(session.get(),
                                             false /* network_change */);
 
@@ -77,8 +77,8 @@ TEST_F(BraveResolveContextTest, DohServerAvailability_InitialAvailability) {
 TEST_F(BraveResolveContextTest, DohServerAvailability_RecordServerFailure) {
   scoped_refptr<DnsSession> session = CreateDnsSession(CreateDnsConfig());
 
-  URLRequestContext request_context;
-  BraveResolveContext context(&request_context, true /* enable_caching */);
+  auto request_context = CreateTestURLRequestContextBuilder()->Build();
+  BraveResolveContext context(request_context.get(), true /* enable_caching */);
   context.InvalidateCachesAndPerSessionData(session.get(),
                                             false /* network_change */);
 
@@ -103,8 +103,8 @@ TEST_F(BraveResolveContextTest, DohServerAvailability_RecordServerFailure) {
 TEST_F(BraveResolveContextTest, DohServerAvailability_RecordServerSuccess) {
   scoped_refptr<DnsSession> session = CreateDnsSession(CreateDnsConfig());
 
-  URLRequestContext request_context;
-  BraveResolveContext context(&request_context, true /* enable_caching */);
+  auto request_context = CreateTestURLRequestContextBuilder()->Build();
+  BraveResolveContext context(request_context.get(), true /* enable_caching */);
   context.InvalidateCachesAndPerSessionData(session.get(),
                                             false /* network_change */);
 

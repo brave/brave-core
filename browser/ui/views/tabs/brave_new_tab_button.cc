@@ -64,5 +64,5 @@ gfx::Insets BraveNewTabButton::GetInsets() const {
   // Give an additional left margin to make more space from tab.
   // TabStripRegionView::UpdateNewTabButtonBorder() gives this button's inset.
   // So, adding more insets here is easy solution.
-  return NewTabButton::GetInsets() + gfx::Insets(0, 6, 0, 0);
+  return NewTabButton::GetInsets() + gfx::Insets::TLBR(0, 6, 0, 0);
 }

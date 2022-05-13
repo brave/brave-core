@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/repo.cron b/chrome/installer/linux/common/repo.cron
-index 2750e4924da6d0a723c1d649781637e7d08b3562..fbe7797e37633de174f4a83d7b11bf04b8813c1a 100755
+index 594040185a8c1793f9e2634f301c93a79cde1e80..ad500fabe554ab9df1f2cfdc76dcc8a8fe407411 100755
 --- a/chrome/installer/linux/common/repo.cron
 +++ b/chrome/installer/linux/common/repo.cron
 @@ -17,6 +17,9 @@
@@ -9,6 +9,6 @@ index 2750e4924da6d0a723c1d649781637e7d08b3562..fbe7797e37633de174f4a83d7b11bf04
 +# Don't add the Chrome repo (brave/brave-browser#1084)
 +exit 0
 +
- @@include@@apt.include
+ @@include@@../common/variables.include
  
- ## MAIN ##
+ @@include@@apt.include

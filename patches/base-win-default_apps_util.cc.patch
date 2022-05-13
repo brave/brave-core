@@ -1,0 +1,12 @@
+diff --git a/base/win/default_apps_util.cc b/base/win/default_apps_util.cc
+index 0f5f86ce6b7c4c63c32b85be9a0945693d7b97b0..66014fa08692e2fb4f64e9b2ae3650cbac4f307d 100644
+--- a/base/win/default_apps_util.cc
++++ b/base/win/default_apps_util.cc
+@@ -24,6 +24,7 @@ std::wstring GetTargetForDefaultAppsSettings(base::WStringPiece protocol) {
+     return base::StrCat({kSystemSettingsDefaultAppsPrefix, L"Browser"});
+   if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
+     return base::StrCat({kSystemSettingsDefaultAppsPrefix, L"Email"});
++  BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS
+   return L"SettingsPageAppsDefaultsProtocolView";
+ }
+ 

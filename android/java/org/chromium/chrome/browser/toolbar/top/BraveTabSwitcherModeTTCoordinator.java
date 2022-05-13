@@ -11,16 +11,19 @@ import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 
 class BraveTabSwitcherModeTTCoordinator extends TabSwitcherModeTTCoordinator {
-    private TabSwitcherModeTopToolbar mTabSwitcherModeToolbar;
+    private TabSwitcherModeTopToolbar mActiveTabSwitcherToolbar;
 
     private boolean mIsBottomToolbarVisible;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
 
     BraveTabSwitcherModeTTCoordinator(ViewStub tabSwitcherToolbarStub,
-            MenuButtonCoordinator menuButtonCoordinator, boolean isGridTabSwitcherEnabled,
+            ViewStub tabSwitcherFullscreenToolbarStub, MenuButtonCoordinator menuButtonCoordinator,
+            boolean isGridTabSwitcherEnabled, boolean isTabletGtsPolishEnabled,
             boolean isTabToGtsAnimationEnabled, BooleanSupplier isIncognitoModeEnabledSupplier) {
-        super(tabSwitcherToolbarStub, menuButtonCoordinator, isGridTabSwitcherEnabled,
-                isTabToGtsAnimationEnabled, isIncognitoModeEnabledSupplier);
+        super(tabSwitcherToolbarStub, tabSwitcherFullscreenToolbarStub, menuButtonCoordinator,
+                isGridTabSwitcherEnabled, isTabletGtsPolishEnabled, isTabToGtsAnimationEnabled,
+                isIncognitoModeEnabledSupplier);
+
         mBraveMenuButtonCoordinator = menuButtonCoordinator;
     }
 
@@ -28,8 +31,8 @@ class BraveTabSwitcherModeTTCoordinator extends TabSwitcherModeTTCoordinator {
     public void setTabSwitcherMode(boolean inTabSwitcherMode) {
         super.setTabSwitcherMode(inTabSwitcherMode);
         if (inTabSwitcherMode
-                && (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTopToolbar)) {
-            ((BraveTabSwitcherModeTopToolbar) mTabSwitcherModeToolbar)
+                && (mActiveTabSwitcherToolbar instanceof BraveTabSwitcherModeTopToolbar)) {
+            ((BraveTabSwitcherModeTopToolbar) mActiveTabSwitcherToolbar)
                     .onBottomToolbarVisibilityChanged(mIsBottomToolbarVisible);
         }
         if (mBraveMenuButtonCoordinator != null && mIsBottomToolbarVisible) {
@@ -42,8 +45,8 @@ class BraveTabSwitcherModeTTCoordinator extends TabSwitcherModeTTCoordinator {
             return;
         }
         mIsBottomToolbarVisible = isVisible;
-        if (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTopToolbar) {
-            ((BraveTabSwitcherModeTopToolbar) mTabSwitcherModeToolbar)
+        if (mActiveTabSwitcherToolbar instanceof BraveTabSwitcherModeTopToolbar) {
+            ((BraveTabSwitcherModeTopToolbar) mActiveTabSwitcherToolbar)
                     .onBottomToolbarVisibilityChanged(isVisible);
         }
     }

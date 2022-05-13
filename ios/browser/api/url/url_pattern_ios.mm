@@ -52,9 +52,6 @@ URLPatternIOSScheme IOSSchemeForSchemeMask(
   if (masks & URLPattern::SchemeMasks::SCHEME_DATA) {
     scheme |= URLPatternIOSSchemeData;
   }
-  if (masks & URLPattern::SchemeMasks::SCHEME_URN) {
-    scheme |= URLPatternIOSSchemeUrn;
-  }
   if (masks & URLPattern::SchemeMasks::SCHEME_UUID_IN_PACKAGE) {
     scheme |= URLPatternIOSSchemeUUIDInPackage;
   }
@@ -99,9 +96,6 @@ int /* URLPattern::SchemeMasks */ SchemeMasksForIOSScheme(
   }
   if (masks & URLPatternIOSSchemeData) {
     scheme |= URLPattern::SchemeMasks::SCHEME_DATA;
-  }
-  if (masks & URLPatternIOSSchemeUrn) {
-    scheme |= URLPattern::SchemeMasks::SCHEME_URN;
   }
   if (masks & URLPatternIOSSchemeUUIDInPackage) {
     scheme |= URLPattern::SchemeMasks::SCHEME_UUID_IN_PACKAGE;

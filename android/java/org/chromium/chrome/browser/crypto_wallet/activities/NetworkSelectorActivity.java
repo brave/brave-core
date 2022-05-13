@@ -5,11 +5,11 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
-
-import android.widget.Toast;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -82,7 +82,12 @@ public class NetworkSelectorActivity
                                 this, networkSelectorItem.getNetworkName(), customNetworks),
                         CoinType.ETH, (success) -> {
                             if (!success) {
-                                Toast.makeText(this, getString(R.string.brave_wallet_network_selection_error, networkSelectorItem.getNetworkShortName()), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this,
+                                             getString(
+                                                     R.string.brave_wallet_network_selection_error,
+                                                     networkSelectorItem.getNetworkShortName()),
+                                             Toast.LENGTH_SHORT)
+                                        .show();
                                 networkSelectorAdapter.setSelectedNetwork(mSelectedNetwork);
                                 Log.e(TAG, "Could not set network");
                             } else {

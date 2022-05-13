@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/postinst b/chrome/installer/linux/debian/postinst
-index b284f042a0bdcc9964037ad636bd5e5fa49e7daa..d8fdc27608b754b1fa8e6d2a73d8925424c3c3ca 100755
+index 34c6c20a8e959dfcbcb9cd0b81a3dc7cd1e546ae..f26dda795f7acb1fe2fd225ffcf5421cf52935b0 100755
 --- a/chrome/installer/linux/debian/postinst
 +++ b/chrome/installer/linux/debian/postinst
-@@ -43,6 +43,7 @@ case $CHANNEL in
+@@ -45,6 +45,7 @@ case $CHANNEL in
      PRIORITY=0
      ;;
  esac

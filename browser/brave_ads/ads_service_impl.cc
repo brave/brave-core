@@ -97,6 +97,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
@@ -1905,7 +1906,7 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
     std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
             message_center::NOTIFICATION_TYPE_SIMPLE, info.placement_id, title,
-            body, gfx::Image(), std::u16string(), url,
+            body, ui::ImageModel(), std::u16string(), url,
             message_center::NotifierId(
                 message_center::NotifierType::SYSTEM_COMPONENT,
                 "service.ads_service"),

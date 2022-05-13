@@ -597,8 +597,6 @@ source_set("ui") {
       "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",
       "wallet_bubble_manager_delegate_impl.h",
-      "webui/brave_untrusted_web_ui_controller_factory.cc",
-      "webui/brave_untrusted_web_ui_controller_factory.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
       "webui/brave_wallet/trezor/trezor_ui.cc",

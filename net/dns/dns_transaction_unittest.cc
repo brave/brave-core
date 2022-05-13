@@ -36,7 +36,6 @@
 #include "net/dns/dns_response.h"
 #include "net/dns/dns_server_iterator.h"
 #include "net/dns/dns_session.h"
-#include "net/dns/dns_socket_allocator.h"
 #include "net/dns/dns_test_util.h"
 #include "net/dns/dns_util.h"
 #include "net/dns/public/dns_over_https_config.h"
@@ -53,6 +52,8 @@
 #include "net/test/test_with_task_environment.h"
 #include "net/test/url_request/url_request_failed_job.h"
 #include "net/third_party/uri_template/uri_template.h"
+#include "net/url_request/url_request_context.h"
+#include "net/url_request/url_request_context_builder.h"
 #include "net/url_request/url_request_filter.h"
 #include "net/url_request/url_request_interceptor.h"
 #include "net/url_request/url_request_test_util.h"
@@ -316,7 +317,7 @@ class TransactionHelper {
                         bool secure,
                         ResolveContext* context) {
     std::unique_ptr<DnsTransaction> transaction = factory->CreateTransaction(
-        hostname, qtype, CompletionCallback(),
+        hostname, qtype,
         NetLogWithSource::Make(net::NetLog::Get(), net::NetLogSourceType::NONE),
         secure, factory->GetSecureDnsModeForTest(), context,
         true /* fast_timeout */);
@@ -329,7 +330,8 @@ class TransactionHelper {
     EXPECT_FALSE(transaction_);
     transaction_ = std::move(transaction);
     qtype_ = transaction_->GetType();
-    transaction_->Start();
+    transaction_->Start(base::BindOnce(
+        &TransactionHelper::OnTransactionComplete, base::Unretained(this)));
   }
 
   void Cancel() {
@@ -337,17 +339,10 @@ class TransactionHelper {
     transaction_.reset(nullptr);
   }
 
-  DnsTransactionFactory::CallbackType CompletionCallback() {
-    return base::BindOnce(&TransactionHelper::OnTransactionComplete,
-                          base::Unretained(this));
-  }
-
-  void OnTransactionComplete(DnsTransaction* t,
-                             int rv,
+  void OnTransactionComplete(int rv,
                              const DnsResponse* response,
                              absl::optional<std::string> doh_provider_id) {
     EXPECT_FALSE(completed_);
-    EXPECT_EQ(transaction_.get(), t);
 
     completed_ = true;
     response_ = response;
@@ -629,13 +624,11 @@ class DnsTransactionTestBase : public testing::Test {
   // Called after fully configuring |config|.
   void ConfigureFactory() {
     socket_factory_.reset(new TestSocketFactory());
-    session_ = new DnsSession(
-        config_,
-        std::make_unique<DnsSocketAllocator>(
-            socket_factory_.get(), config_.nameservers, nullptr /* net_log */),
-        base::BindRepeating(&DnsTransactionTestBase::GetNextId,
-                            base::Unretained(this)),
-        nullptr /* NetLog */);
+    session_ =
+        new DnsSession(config_,
+                       base::BindRepeating(&DnsTransactionTestBase::GetNextId,
+                                           base::Unretained(this)),
+                       nullptr /* NetLog */);
     resolve_context_->InvalidateCachesAndPerSessionData(
         session_.get(), false /* network_change */);
     transaction_factory_ = DnsTransactionFactory::CreateFactory(session_.get());
@@ -877,7 +870,7 @@ class DnsTransactionTestBase : public testing::Test {
     // and an arbitrary fallback period.
     config_.fallback_period = kFallbackPeriod;
 
-    request_context_ = std::make_unique<TestURLRequestContext>();
+    request_context_ = net::CreateTestURLRequestContextBuilder()->Build();
     resolve_context_ = std::make_unique<ResolveContext>(
         request_context_.get(), false /* enable_caching */);
 
@@ -915,7 +908,7 @@ class DnsTransactionTestBase : public testing::Test {
 
   base::circular_deque<int> transaction_ids_;
   std::unique_ptr<TestSocketFactory> socket_factory_;
-  std::unique_ptr<TestURLRequestContext> request_context_;
+  std::unique_ptr<net::URLRequestContext> request_context_;
   std::unique_ptr<ResolveContext> resolve_context_;
   scoped_refptr<DnsSession> session_;
   std::unique_ptr<DnsTransactionFactory> transaction_factory_;

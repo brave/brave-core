@@ -22,6 +22,7 @@ are declared in tools/grit/grit_rule.gni.
     <output filename="generated_resources_bs.pak" type="data_package" lang="bs" />
     <output filename="generated_resources_ca.pak" type="data_package" lang="ca" />
     <output filename="generated_resources_cs.pak" type="data_package" lang="cs" />
+    <output filename="generated_resources_cy.pak" type="data_package" lang="cy" />
     <output filename="generated_resources_da.pak" type="data_package" lang="da" />
     <output filename="generated_resources_de.pak" type="data_package" lang="de" />
     <output filename="generated_resources_el.pak" type="data_package" lang="el" />
@@ -199,6 +200,7 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_bs.xtb" lang="bs" />
     <file path="resources/generated_resources_ca.xtb" lang="ca" />
     <file path="resources/generated_resources_cs.xtb" lang="cs" />
+    <file path="resources/generated_resources_cy.xtb" lang="cy" />
     <file path="resources/generated_resources_da.xtb" lang="da" />
     <file path="resources/generated_resources_de.xtb" lang="de" />
     <file path="resources/generated_resources_el.xtb" lang="el" />
@@ -290,16 +292,11 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
 
-      <!-- Web app intent picker strings -->
-      <if expr="is_win or is_macosx or is_linux">
-        <part file="url_handler_intent_picker_strings.grdp" />
-      </if>
-
       <!-- Brave-OS-specific strings -->
       <if expr="chromeos_ash or chromeos_lacros">
         <part file="chromeos_shared_strings.grdp" />
       </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <part file="chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
         <part file="os_settings_search_tag_strings.grdp" />
@@ -323,7 +320,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Welcome strings -->
-      <if expr="not chromeos and not is_android">
+      <if expr="not chromeos_ash and not is_android">
         <part file="welcome_strings.grdp" />
       </if>
 
@@ -347,7 +344,7 @@ are declared in tools/grit/grit_rule.gni.
         <part file="supervised_user_error_page_strings.grdp" />
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <part file="web_time_limit_error_page_strings.grdp" />
       </if>
 
@@ -384,7 +381,7 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on ChromeOS when permission is requested to inform users of how to focus the permission UI.">
           Permission requested, press Ctrl + Forward to respond
         </message>
@@ -394,7 +391,7 @@ are declared in tools/grit/grit_rule.gni.
           Permission requested, press ⌘ + Option + Down arrow to respond
         </message>
       </if>
-      <if expr="is_win or desktop_linux or is_fuchsia">
+      <if expr="not chromeos_ash and not is_macosx and toolkit_views">
         <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows, Linux or Fuchsia when permission is requested to inform users of how to focus the permission UI.">
           Permission requested, press F6 to respond
         </message>
@@ -523,10 +520,14 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </if>
         <message name="IDS_FOCUS_HELP_BUBBLE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when a general help bubble is shown.">
-          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus this help bubble.
+          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus this bubble.
         </message>
         <message name="IDS_FOCUS_HELP_BUBBLE_TOGGLE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader when a help bubble pointing to a specific element is shown.">
-          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to toggle focus between this help bubble and the element it is pointing to.
+          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus this bubble, then again to focus the element it is pointing to.
+        </message>
+        <message name="IDS_FOCUS_HELP_BUBBLE_TUTORIAL_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader when a help bubble that can start a tutorial is shown.">
+          A series of tutorial bubbles with instructions will be displayed.
+          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus a bubble, then again to focus the element it is pointing to.
         </message>
       </if>
 
@@ -568,6 +569,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_INSPECTBACKGROUNDPAGE" desc="The name of the Inspect Background Page command in the packaged app content area context menu">
             Inspect &amp;background page
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
+           Open in Reader
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -816,6 +820,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_INSPECTBACKGROUNDPAGE" desc="In Title Case: The name of the Inspect Background Page command in the packaged app content area context menu">
             Inspect &amp;Background Page
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
+           Open in Reader
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -1175,8 +1182,11 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_MOVE_TAB_TO_NEW_WINDOW" desc="The text label of the Move Tab to Window menu item.">
             Move tab to new window
           </message>
-          <message name="IDS_TOGGLE_COMMANDER" desc="The text label of the Toggle Quick Commands menu item">
-          Toggle Quick Commands
+          <message name="IDS_TOGGLE_QUICK_COMMANDS" desc="The text label of the Toggle Quick Commands menu item">
+          Quick commands
+          </message>
+          <message name="IDS_SEARCH_TABS" desc="The text label of the Search Tabs... menu item">
+          Search tabs...
           </message>
         </if>
         <if expr="use_titlecase">
@@ -1258,13 +1268,16 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_MOVE_TAB_TO_NEW_WINDOW" desc="In Title Case: The text label of the Move Tab to New Window menu item.">
             Move Tab to New Window
           </message>
-          <message name="IDS_TOGGLE_COMMANDER" desc="In Title Case:The text label of the Toggle Quick Commands menu item">
-          Toggle Quick Commands
+          <message name="IDS_TOGGLE_QUICK_COMMANDS" desc="In Title Case:The text label of the Toggle Quick Commands menu item">
+          Quick Commands
+          </message>
+          <message name="IDS_SEARCH_TABS" desc="In Title Case:The text label of the Search Tabs... menu item">
+          Search Tabs...
           </message>
         </if>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
           Move window to <ph name="USER_NAME">$1<ex>User name</ex></ph> (<ph name="USER_EMAIL">$2<ex>john@google.com</ex></ph>)
         </message>
@@ -2298,13 +2311,13 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="not is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit Private mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit guest mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, ChromeOS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit
         </message>
       </if>
@@ -2333,11 +2346,134 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SYMBOL" desc="A symbol for active downloads, in this case downward arrow ↓. If the downward arrow ↓ resembles another symbol in the language, please translate the downward arrow ↓ as a symbol that indicates a downward arrow">
         '''↓ '''
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_RESUMING" desc="When resuming a download, let the user know we're resuming the download.">
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_RESUMING" desc="When resuming a download, let the user know we're resuming the download.">
         Resuming...
       </message>
-      <message name="IDS_DOWNLOAD_STATUS_DONE" desc="When a download is finished, let the user know.">
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DONE" desc="When a download is finished, let the user know.">
         Done
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_BLOCKED" desc="When a download is blocked because of warnings, let the user know.">
+        Blocked
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_MALWARE" desc="Malware warning for the user.">
+        Malware
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_CHECKBOX_BYPASS" desc="The label on the checkbox with which the user chooses to bypass blocked download.">
+        I understand this download will harm my computer
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_CONTINUE" desc="Label for the Continue button on the blocked download bubble subpage.">
+        Continue download
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_DELETE" desc="Label for the Delete button on the blocked download bubble subpage.">
+        Delete
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SCAN" desc="Label for the button prompting for Deep Scanning">
+        Scan
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN" desc="Label for the button prompting to bypass Deep Scanning">
+        Open
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_NOW" desc="Label for the button prompting to open a download while deep scanning is in progress">
+        Open Now
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_DISK_FULL" desc="Status text for a download item that was interrupted because there is not enough room on the disk to download this file.">
+        Out of storage space
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_DISK_FULL" desc="Subpage summary text for a download item that was interrupted because there is not enough room on the disk to download this file.">
+        Free up space on your device. Then, try to download again
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_PATH_TOO_LONG" desc="Status text for a download item that was interrupted because the file path name is too long.">
+        File name or location is too long
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_PATH_TOO_LONG" desc="Subpage summary text for a download item that was interrupted because the file path name is too long.">
+        Try using a shorter file name or saving to a different folder
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_NEEDS_PERMISSION" desc="Status text for a download item that was interrupted because of insufficient permissions.">
+        Needs permission to download
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_FILE_TOO_LARGE" desc="Status text for a download item that was interrupted because the file is too large for the file system.">
+        File is too big for this device
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_FILE_TOO_LARGE" desc="Subpage summary text for a download item that was interrupted because the file is too large for the file system.">
+        This file is too big for your device to manage. Try to download it on another device
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_UNFINISHED" desc="Status text for a download item that was interrupted and could not finish.">
+        Couldn’t finish download
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_BLOCKED_ORGANIZATION" desc="Status text for a download item that was blocked by the organization.">
+        Blocked by your organization
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_BLOCKED_ORGANIZATION" desc="Subpage summary text for a download item that was blocked by the organization.">
+        Your organization blocked this file because it didn't meet a security policy
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_SUMMARY_BLOCKED_ORGANIZATION" desc="Subpage summary text of warning for download item that was blocked by the organization.">
+        Your organization blocked this file because it has sensitive content
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_WRONG" desc="Status text for a download item that had something go wrong.">
+        Something went wrong
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_NETWORK_ERROR" desc="Status text for a download item with a network error.">
+        Check internet connection
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_SITE_UNAVAILABLE" desc="Status text for a download item when the site has a problem.">
+        Site wasn’t available
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_FILE_UNAVAILABLE" desc="Status text for a download item when the file could not be fetched.">
+        File wasn’t available on site
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_SUBPAGE_SUMMARY_FILE_UNAVAILABLE" desc="Subpage summary text for a download item when the file could not be fetched.">
+        Try to sign in to the site. Then, download again
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_INTERRUPTED_STATUS_FILE_UNFINISHED" desc="Status text for a download item when the file could not be finished.">
+        Couldn’t finish download
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_STATUS_INSECURE" desc="Status text for a download item when the download is insecure.">
+        Insecure download
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_SUMMARY_INSECURE" desc="Subpage summary text for a download item when the download is insecure.">
+        This file may have been read or edited because this site isn't using a secure connection
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_ACCOUNT_COMPROMISE" desc="Subpage summary text for a download item when the download might cause compromise.">
+        This file may let attackers steal your personal information
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DANGEROUS" desc="Dangerous warning for the user.">
+        Dangerous
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ENCRYPTED" desc="Dangerous warning for an encrypted file.">
+        Encrypted
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_TOO_BIG" desc="Dangerous warning for a file blocked for being too large.">
+        Too big
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ADVANCED_PROTECTION" desc="Dangerous warning for a file blocked by Advanced Protection.">
+        Blocked by Advanced Protection
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_ADVANCED_PROTECTION" desc="Subpage summary of warning for a file blocked by Advanced Protection.">
+        This file is not commonly downloaded and has been blocked by Advanced Protection
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_UNCOMMON_FILE" desc="Dangerous warning for a file with uncommon content.">
+        Uncommon file
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNCOMMON_FILE" desc="Subpage summary for warning for a file with uncommon content.">
+        This file is not commonly downloaded and may be dangerous
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_UNKNOWN_SOURCE" desc="Dangerous warning for a file (like an extension) from an unknown source.">
+        Unknown source
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_SENSITIVE_CONTENT" desc="Dangerous warning for a file with sensitive content">
+        Sensitive content
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_SENSITIVE_CONTENT" desc="Subpage summary of dangerous warning for a file with sensitive content">
+        Your organization recommends deleting this file because it has sensitive content
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_TRY_AGAIN" desc="Retry button when a download is failed">
+        Try again
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DEEP_SCANNING_PROMPT" desc="Prompt for Deep Scanning of a download">
+        Scan before opening
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING" desc="Status text for a download item that is being scanned.">
+        Scanning...
       </message>
 
       <!-- Desktop omnibox PWA install icon -->
@@ -3211,6 +3347,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_CERT_X509_KEY_USAGE_ENCIPHER_ONLY" desc="description of certificate usage Encipher Only">
           Encipher Only
         </message>
+        <message name="IDS_CERT_X509_KEY_USAGE_DECIPHER_ONLY" desc="description of certificate usage Decipher Only">
+          Decipher Only
+        </message>
         <message name="IDS_CERT_X509_BASIC_CONSTRAINT_IS_CA" desc="description of certificate constraint Is a Certification Authority">
           Is a Certification Authority
         </message>
@@ -3300,6 +3439,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_CERT_EXT_MS_NTDS_REPLICATION" desc="description of extension Microsoft Domain GUID">
           Microsoft Domain GUID
+        </message>
+        <message name="IDS_CERT_EKU_ANY_EKU" desc="description of extended key usage anyExtendedKeyUsage">
+          Any Extended Key Usage
         </message>
         <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage TLS WWW Server Authentication">
           TLS WWW Server Authentication
@@ -3735,7 +3877,7 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_UTILITY_PROCESS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
           IPP Parser
         </message>
@@ -3763,8 +3905,8 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </if>
         <if expr="not reven">
-          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
-            Chrome OS System Image Writer
+          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing ChromeOS system images.">
+            ChromeOS System Image Writer
           </message>
         </if>
       </if>
@@ -4327,13 +4469,13 @@ are declared in tools/grit/grit_rule.gni.
         </if>
         <if expr="not reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-            Run Chrome OS diagnostic tests.
+            Run ChromeOS diagnostic tests.
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-            Read Chrome OS device information and device data.
+            Read ChromeOS device information and device data.
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-            Read Chrome OS device and component serial numbers.
+            Read ChromeOS device and component serial numbers.
           </message>
         </if>
       </if>
@@ -4345,7 +4487,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_APP_CANT_DOWNGRADE_VERSION" desc="Error message when a user tries to install an app with a lower version than a version that it already installed.">
         Attempted to downgrade app.
       </message>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_EXTENSION_CANT_INSTALL_IN_DEVICE_LOCAL_ACCOUNT" desc="Error message when a user tries to install or the administrator tries to force-install through policy an extension that is not allowed in a device-local account.">
           <ph name="EXTENSION_NAME">$1<ex>Brave Talk</ex></ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>nckgahadagoaajjgafhacjanaoiihapd</ex></ph>") is not allowed in this type of session.
         </message>
@@ -4392,8 +4534,8 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="not reven">
-        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
-          App with 'kiosk_only' manifest attribute must be installed in Chrome OS kiosk mode
+        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in ChromeOS kiosk mode.">
+          App with 'kiosk_only' manifest attribute must be installed in ChromeOS kiosk mode
         </message>
       </if>
       <message name="IDS_EXTENSION_OVERLAPPING_WEB_EXTENT" desc="Error message when a user tries to install an app with a web extent that overlaps another installed app.">
@@ -4403,7 +4545,7 @@ are declared in tools/grit/grit_rule.gni.
         Could not load '<ph name="IMAGE_PATH">$1<ex>/path/to/file</ex></ph>' for theme.
       </message>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_EXTENSION_NOTIFICATION_INSTALLED" desc="Toast message shown when an application is successfully installed.">
           <ph name="APP">$1<ex>Brave Keep</ex></ph> installed
         </message>
@@ -4432,13 +4574,13 @@ are declared in tools/grit/grit_rule.gni.
           To use this extension, type "<ph name="EXTENSION_KEYWORD">$1<ex>search</ex></ph>", then TAB, then your command or search.
         </message>
 
-        <if expr="not chromeos and not is_macosx">
+        <if expr="not chromeos_ash and not is_macosx">
           <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page">
             Manage your extensions by clicking Extensions in the Tools menu.
           </message>
         </if>
-        <if expr="chromeos">
-          <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page on Chrome OS">
+        <if expr="chromeos_ash">
+          <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page on ChromeOS">
             Manage your extensions by clicking Extensions in the "More tools" menu.
           </message>
         </if>
@@ -4496,12 +4638,21 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
           Has access to this site
         </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site">
+          Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
+        </message>
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_CANT_ACCESS_PAGE" desc="The label in an extension's context menu indicating the extension cannot access the current page. (sentence case)">
             Can't read or change site's data
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (sentence case).">
             This can read and change site data
+          </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_ALL_EXTENSIONS_GRANTED" desc="The label in an extension's page access submenu when the user allowed all extensions on the current page (sentence case).">
+            You previously chose to allow all extensions on <ph name="ORIGIN">$1<ex>google.com</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_ALL_EXTENSIONS_BLOCKED" desc="The label in an extension's page access submenu when the user blocked any extensions on the current page (sentence case).">
+            You previously chose to not allow any extensions on <ph name="ORIGIN">$1<ex>google.com</ex></ph>
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (sentence case).">
             When you click the extension
@@ -4558,6 +4709,12 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (title case).">
             This Can Read and Change Site Data
+          </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_ALL_EXTENSIONS_GRANTED" desc="The label in an extension's page access submenu when the user allowed all extensions on the current page (title case).">
+            You Previously Chose To Allow All Extensions On <ph name="ORIGIN">$1<ex>google.com</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_ALL_EXTENSIONS_BLOCKED" desc="The label in an extension's page access submenu when the user blocked any extensions on the current page (title case).">
+            You Previously Chose To Not Allow Any Extensions On <ph name="ORIGIN">$1<ex>google.com</ex></ph>
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (title case).">
             When You Click the Extension
@@ -4871,7 +5028,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
         The "<ph name="EXTENSION_NAME">$2<ex>Some New Search</ex></ph>" extension changed search to use <ph name="SEARCH_PROVIDER_DOMAIN">$1<ex>google.com</ex></ph>
       </message>
       <!-- End Extension Settings Overridden Dialog strings. -->
-
+      <!-- Force Installed Deprecated Apps Deletion Dialog strings. -->
+      <message name="IDS_FORCE_INSTALLED_DEPRECATED_APPS_CONTENT" desc="Content of the force installed deprecated app dialog">
+        Your administrator installed "<ph name="EXTENSION_NAME">$1<ex>Google Docs</ex></ph>" but this Brave App is no longer supported. Contact your administrator to remove it.
+      </message>
+      <message name="IDS_FORCE_INSTALLED_PREINSTALLED_DEPRECATED_APPS_TITLE" desc="Title of the force installed and pre-installed deprecated app dialog">
+        <ph name="EXTENSION_NAME">$1<ex>Google Docs</ex></ph> needs to be updated
+      </message>
+      <message name="IDS_FORCE_INSTALLED_PREINSTALLED_DEPRECATED_APPS_CONTENT" desc="Content of the force installed and pre-installed deprecated app dialog">
+        Contact your administrator for the newest version.
+      </message>
+      <message name="IDS_FORCE_INSTALLED_DEPRECATED_APPS_LEARN_MORE_AX_LABEL" desc="Accessibility label text for IDS_DEPRECATED_APPS_LEARN_MORE link">
+        Learn more about unsupported Brave Apps
+      </message>
+      <!-- End Force Installed Deprecated Apps Deletion Dialog strings. -->
       <!-- Deprecated Apps Deletion Dialog strings. -->
       <message name="IDS_DEPRECATED_APPS_RENDERER_TITLE" desc="The title of the deprecated app dialog">
         {NUM_APPS, plural,
@@ -4880,11 +5050,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_DEPRECATED_APPS_MONITOR_RENDERER" desc="States how many deprecated apps are present, with a link to a help article">
         {NUM_APPS, plural,
-        =1 {1 of your apps is no longer supported. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>}
-        other {# of your apps are no longer supported. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>}}
+        =1 {1 of your apps is no longer supported.}
+        other {# of your apps are no longer supported.}}
       </message>
       <message name="IDS_DEPRECATED_APPS_LEARN_MORE" desc="Redirects to a link with more information on chrome apps deprecation">
         Learn more
+      </message>
+      <message name="IDS_DEPRECATED_APPS_DELETION_LINK" desc="Contains link to trigger the deprecated apps deletion dialog from chrome://apps">
+        {NUM_APPS, plural,
+        =1 {Delete 1 unsupported app}
+        other {Delete # unsupported apps}}
       </message>
       <if expr="use_titlecase">
         <message name="IDS_DEPRECATED_APPS_OK_LABEL" desc="Label for OK button on deprecated apps dialog">
@@ -4947,6 +5122,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_REQUESTS_ACCESS_SECTION_TITLE" desc="Header for section of extensions that request access to the current site's data. $1 is replaced with the current site.">
         Requested to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_BLOCK_ALL_EXTENSIONS_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        To allow an extension, change your default setting below.
       </message>
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_NO_EXTENSIONS_HAVE_ACCESS_TEXT" desc="Text on the site access tab when no extensions have requested access to the current site's data. $1 is replaced with the current site.">
         No extensions have requested to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
@@ -5118,7 +5296,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Checking for status...
       </message>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_COMPONENTS_OS_TEXT1_LABEL" desc="Begin label text on the os://components page from ChromeOS which directs a user to a dialog showing Brave browser specific components - enclosing url link.">
           Looking for browser components? Visit
         </message>
@@ -5129,7 +5307,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           chrome://components
         </message>
       </if>
-      <if expr="lacros">
+      <if expr="chromeos_lacros">
         <message name="IDS_COMPONENTS_OS_TEXT1_LABEL" desc="Begin label text on the chrome://components page from ChromeOS which directs a user to a dialog showing OS specific components - enclosing url link.">
           Looking for system components? Visit
         </message>
@@ -5241,20 +5419,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
       </message>
+      <message name="IDS_PASSWORD_BUBBLES_PASSWORD_MANAGER_LINK_TEXT_SYNCED_TO_ACCOUNT" desc="The text of the Brave Password Manager links displayed on Password Manager bubbles footer when the credentials are synced to the Brave account.">
+        Brave Password Manager
+      </message>
+      <message name="IDS_PASSWORD_BUBBLES_FOOTER_SYNCED_TO_ACCOUNT" desc="The footer text of the bubbles that offers users to save, update or manage stored passwords in Brave and synced to their Brave account.">
+        You can use saved passwords on any device. They're saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_PASSWORD_BUBBLES_FOOTER_SAVING_ON_DEVICE" desc="The footer text of the bubbles that offers users to save, update or manage stored passwords only locally in Brave.">
+        Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> on this device
+      </message>
+      <message name="IDS_PASSWORD_MANAGEMENT_BUBBLE_FOOTER_ACCOUNT_STORE_USERS" desc="The footer text of the managment bubble the lists saved password for this website. This is used only for account store users.">
+        Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>
+      </message>
       <message name="IDS_PASSWORD_MANAGER_GENERATED_PASSWORD_SAVED_MESSAGE_DESCRIPTION" desc="The description in the Brave Password Manager's message that appears after saving a password that was autogenerated for the user.">
         You can view and manage saved passwords in Brave Password Manager
       </message>
       <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's save password message when the user is signed in.">
         To Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
       </message>
-      <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's save password message when the user is signed out.">
-        To Brave Password Manager on this device
-      </message>
       <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's update password message when the user is signed in.">
         In Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's update password message when the user is signed out.">
-        In Brave Password Manager on this device
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_SIGN_IN" desc="In Title Case: The title of the Sign in button in the account chooser when there is one account.">
@@ -5376,7 +5560,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PLUGIN_BLOCKED_NO_LOADING" desc="The placeholder text for a blocked plugin that cannot be manually loaded by the user.">
         <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> is blocked
       </message>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_NACL_PLUGIN_BLOCKED" desc="The placeholder text for a blocked plugin.">
           This plugin is not supported on this device
         </message>
@@ -5515,7 +5699,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- chrome://browser-switch strings -->
-      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
+      <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
         <message name="IDS_ABOUT_BROWSER_SWITCH_TITLE" desc="about:browser-switch page title">
           Legacy Browser Support
         </message>
@@ -5546,9 +5730,101 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ABOUT_BROWSER_SWITCH_PROTOCOL_ERROR" desc="Specific error message when we failed to open the alternative browser, because the URL is not one of http://, https:// or file://">
           Only http, https and file protocols are supported for browser redirects.
         </message>
+
+        <!-- chrome://browser-switch/internals strings -->
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_DESC" desc="about:browser-switch/internals page description">
+          Legacy Browser Support (LBS) allows specific URLs patterns to be opened in an alternative browser that supports legacy features required to properly run those sites.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_TITLE" desc="about:browser-switch/internals page title">
+          Legacy Browser Support (LBS) - Internals
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_NOTHING_SHOWN" desc="nothing to show on chrome://browser-switch/internals, because the policy BrowserSwitcherEnabled is disabled">
+          Nothing to show
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_LBS_DISABLED" desc="about:browser-switch/internals text shown when the policy BrowserSwitcherEnabled is disabled">
+          LBS is currently disabled. You can enable LBS by setting the <ph name="BEGIN_LINK">&lt;a href="https://chromeenterprise.google/policies/#BrowserSwitcherEnabled" class="policy-prop"&gt;</ph>{BrowserSwitcherEnabled}<ph name="END_LINK">&lt;/a&gt;</ph> policy.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_URL_CHECKER_TITLE" desc="about:browser-switch/internals, section URL Checker, title of the section">
+          URL Checker
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_URL_CHECKER_DESC" desc="about:browser-switch/internals, section URL Checker, description of the section. It allows the user to enter a URL to see what LBS would do with it">
+          Enter a URL to see what LBS would do with it.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_OPEN_BROWSER" desc="about:browser-switch/internals, section URL Checker, the text shows in which browser will open the URL">
+          Opens in: <ph name="OPEN_BROWSER">$1</ph>
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_INVALID_URL" desc="about:browser-switch/internals, section URL Checker, specific error message when the url is invalid">
+          Invalid URL. Make sure it is formatted properly.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_TITLE" desc="about:browser-switch/internals, section XML configuration, title of the section">
+          XML configuration source
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_DESC" desc="about:browser-switch/internals, section XML configuration, description of the section. XML files are used to set the policies">
+          XML files that are being used to set the policies.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_SOURCE" desc="about:browser-switch/internals, section XML configuration, first column of the table. List all policies handled by XML files">
+          Source policy
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_NOT_CONFIGURED" desc="about:browser-switch/internals, section XML configuration, Label when Source policy is not configured">
+          (not configured)
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_SITELIST_NOT_FETCHED" desc="about:browser-switch/internals, section XML configuration, Label when XML sitelists have not been fetched yet">
+          XML sitelists have not been fetched yet.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_SITELIST_DOWNLOAD_BUTTON" desc="about:browser-switch/internals, section XML configuration, Download Button of XML Sitelists">
+          Download now
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_SITELIST_LAST_DOWNLOAD_DATE" desc="about:browser-switch/internals, section XML configuration, Shows information about the last time XML sitelists were downloaded">
+          XML sitelists were last downloaded at <ph name="LAST_DATE_DOWNLOAD">$1</ph>.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_XML_SITELIST_NEXT_DOWNLOAD_DATE" desc="about:browser-switch/internals, section XML configuration, Shows information about the next download time of XML sitelists">
+          Next download is at <ph name="NEXT_DATE_DOWNLOAD">$1</ph>.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_IN_TITLE" desc="about:browser-switch/internals, section Force Open In. Title of the section">
+          Force open in
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_IN_DESCRIPTION" desc="about:browser-switch/internals, section Force Open In. Description of the section. It contains the list of all websites that will be redirected to alternative browsers">
+          The list of websites that redirect to alternative browser.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_IN_FIRST_PARAGRAPH" desc="about:browser-switch/internals, section Force Open In. 1 of 2 parapgraphs. This text shows that URLs that will be opened in an alternative browser are affected by the BrowserSwitcherUrlList, BrowserSwitcherExternalSitelistUrl and BrowserSwitcherUseIeSitelist policies">
+          This list is affected by <ph name="BEGIN_LINK1">&lt;a href="https://chromeenterprise.google/policies/#BrowserSwitcherUrlList" class="policy-prop"&gt;</ph>{BrowserSwitcherUrlList}<ph name="END_LINK1">&lt;/a&gt;</ph>
+          , <ph name="BEGIN_LINK2">&lt;a href="https://chromeenterprise.google/policies/#BrowserSwitcherExternalSitelistUrl" class="policy-prop"&gt;</ph>{BrowserSwitcherExternalSitelistUrl}<ph name="END_LINK2">&lt;/a&gt;</ph>
+           and <ph name="BEGIN_LINK3">&lt;a href="https://chromeenterprise.google/policies/#BrowserSwitcherUseIeSitelist" class="policy-prop"&gt;</ph>{BrowserSwitcherUseIeSitelist}<ph name="END_LINK3">&lt;/a&gt;</ph>
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_IN_SECOND_PARAGRAPH" desc="about:browser-switch/internals, section Force Open In. 2 of 2 parapgraphs. this text describes that the URLs in the table below will be forced to open in a specific browser">
+          URLs matching these rules will be forced to open in a specific browser.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_TABLE_COLUMN_RULE" desc="about:browser-switch/internals description of the column Rule in the table of the section Force Open In">
+          Rule
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_TABLE_COLUMN_OPENS_IN" desc="about:browser-switch/internals description of the column Opens In in the table of the section Force Open In">
+          Opens in
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_FORCE_OPEN_TABLE_COLUMN_SOURCE" desc="about:browser-switch/internals description of the column Source in the table of the section Force Open In">
+          Source
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_TITLE" desc="about:browser-switch/internals, section Ignore, title of the section">
+          Ignore
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_DESCRIPTION" desc="about:browser-switch/internals, section Ignore, description of the section. Label shows that the following lists of websites can be opened in either browser">
+          The list of websites that can open in either browser.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_FIRST_PARAGRAPH" desc="about:browser-switch/internals, section Ignore, 1 of 2 paragraph. This text mentions that the list of URLs that can be opened in either browser are given by the BrowserSwitcherExternalGreylistUrl and BrowserSwitcherUrlGreylist policies">
+          This list is affected by <ph name="BEGIN_LINK1">&lt;a href="https://chromeenterprise.google/policies/#BrowserSwitcherExternalGreylistUrl" class="policy-prop"&gt;</ph>{BrowserSwitcherExternalGreylistUrl}<ph name="END_LINK1">&lt;/a&gt;</ph>
+          and <ph name="BEGIN_LINK2">&lt;a href="https://chromeenterprise.google/policies/#BrowserSwitcherUrlGreylist" class="policy-prop"&gt;</ph>{BrowserSwitcherUrlGreylist}<ph name="END_LINK2">&lt;/a&gt;</ph>
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_SECOND_PARAGRAPH" desc="about:browser-switch/internals, section Ignore, 2 of 2 paragraph. This text shows that URLs matching these rules won't trigger in a specific browser">
+          URLs matching these rules won't trigger a browser switch and can be open in either <ph name="BROWSER_NAME">$1</ph> or <ph name="ALTERNATIVE_BROWSER_NAME">$2</ph>.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_TABLE_COLUMN_RULE" desc="about:browser-switch/internals description of the column Rule in the table of the section Ignore">
+          Rule
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_TABLE_COLUMN_SOURCE" desc="about:browser-switch/internals description of the column Source in the table of the section Ignore">
+          Source
+        </message>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_ABOUT_OS_TEXT1_LABEL" desc="Begin label text on the os://about page from ChromeOS which directs a user to a dialog showing Brave browser specific about page - enclosing url link.">
           Looking for the browser about page? Visit
         </message>
@@ -5559,7 +5835,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           chrome://about
         </message>
       </if>
-      <if expr="lacros">
+      <if expr="chromeos_lacros">
         <message name="IDS_ABOUT_OS_TEXT1_LABEL" desc="Begin label text on the chrome://about page from ChromeOS which directs a user to a dialog showing system specific about page - enclosing url link.">
           Looking for the system about page? Visit
         </message>
@@ -6199,13 +6475,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Pick cards that keep you updated on things that matter to you
       </message>
       <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_BODY_LINE_2" desc="Line 2 of Modular NTP Desktop v1 First Run Experience's body.">
-        See all card options in Customize Brave
+        See all card options in <ph name="BEGIN_LINK">&lt;a is="action-link" id="customizeBraveLink" tabIndex=0 on-click="onCustomizeModuleFre_"&gt;</ph>Customize Brave<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
-      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_IN_BUTTON" desc="Opt in button for Modular NTP Desktop v1 First Run Experience.">
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_IN" desc="Opt in button for Modular NTP Desktop v1 First Run Experience.">
         Got it
       </message>
-      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_OUT_BUTTON" desc="Opt out button for Modular NTP Desktop v1 First Run Experience.">
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_OUT" desc="Opt out button for Modular NTP Desktop v1 First Run Experience.">
        Don't show
+      </message>
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_OUT_TOAST" desc="Opt out toast for Modular NTP Desktop v1 First Run Experience.">
+       You won't see cards on this page again
       </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
@@ -6322,8 +6601,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
         Side Panel
       </message>
-      <message name="IDS_READER_MODE_TITLE" desc="Title of the Reader Mode feature, which gives users an accessible reading experience.">
-        Reader Mode
+
+      <!-- Read Anything strings -->
+      <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
+      <message name="IDS_READ_ANYTHING_TITLE" desc="Title of the Read Anything feature, which gives users an accessible reading experience." translateable="false">
+        Read anything
+      </message>
+
+      <!-- User note strings -->
+      <message name="IDS_USER_NOTE_TITLE" desc="Title of the User note feature, which gives users access to private user notes.">
+        Notes
       </message>
 
       <!--Tooltip strings -->
@@ -6446,8 +6733,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_CHIP_LABEL" desc="The label of a button to open the current webpage in an installed app.">
           Open in app
         </message>
+        <message name="IDS_INTENT_CHIP_IPH" desc="The text for the In-Product Help bubble for the Intent Chip.">
+          Open websites in apps installed on your device
+        </message>
 
-        <if expr="chromeos_ash">
+        <if expr="chromeos_ash or chromeos_lacros">
           <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
             Always use the <ph name="APP">$1<ex>YouTube</ex></ph> app to open supported web links?
           </message>
@@ -6687,11 +6977,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TUTORIAL_CLOSE_TUTORIAL" desc="The text shown on the button for closing a tutorial">
         Close
       </message>
-      <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
-        Right-Click on a Tab and select "Add Tab To New Group"
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
+          Right-click on a tab and select "Add Tab To New Group"
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
+          Right-click on a tab and select "Add tab to new group"
+        </message>
+      </if>
       <message name="IDS_TUTORIAL_TAB_GROUP_EDIT_BUBBLE" desc="The description of the editor bubble step in the tab group tutorial">
-        Name your group, choose a color, and tap Enter
+        Name your group, choose a color, then press Esc
       </message>
       <message name="IDS_TUTORIAL_TAB_GROUP_DRAG_TAB" desc="The description of the drag step in the tab group tutorial">
         Try dragging other open tabs to your group
@@ -6972,11 +7269,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_ALL_PASSWORDS_LINK" desc="The text of the link in the password sheet that opens the password management section.">
           Manage passwords
         </message>
-        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved passwords from any origin if the user is about to fill a password field.">
-          Use other password
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_USERNAME" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved usernames from any origin if the user is about to fill a username field.">
-          Use other username
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_SELECT_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved credentials from any origin if the user is about to fill a password or username field. Allows user to pick one of the saved passwords to be filled in.">
+          Select password
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
@@ -6984,11 +7278,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain.">
           Password will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>. You won’t have to remember it.
         </message>
+        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION_UPM_BRANDED" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain. Unified Password Manager branded variant.">
+          You won’t need to remember this password. It will be saved to Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>.
+        </message>
         <message name="IDS_CONFIRM_USERNAME_DIALOG_TITLE" desc="The title of the confirm username dialog." formatter_data="android_java">
           Confirm your username
         </message>
         <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in." formatter_data="android_java">
           Passwords are saved in your Brave sync chain (<ph name="ACCOUNT">%1$s<ex>user@gmail.com</ex></ph>) so you can use them on any device
+        </message>
+        <message name="IDS_PASSWORD_MESSAGE_NEVER_SAVE_MENU_ITEM" desc="Mobile: Label for 'Save Password' prompt cogwheel menu button via which users can tell the password manager to never offer to save passwords for the current site[CHAR_LIMIT=32]">
+          Never for this site
         </message>
       </if>
 
@@ -7111,7 +7411,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           This information helps us better understand your Assistant issue. It's stored for up to 90 days and access is restricted to appropriate engineering and feedback teams.
         </message>
         <message name="IDS_FEEDBACK_BLUETOOTH_LOGS_MESSAGE" desc="Message shown after user clicks on the bluetooth logs hyperlink">
-          To better diagnose Bluetooth issues, Bravers can include additional Bluetooth logs with their feedback reports. When this option is checked, your report will include btsnoop and HCI logs from your current session, sanitized to remove as much PII as possible. Access to these logs will be restricted to managers of the Chrome OS product group in Listnr. Logs will be purged after 90 days.
+          To better diagnose Bluetooth issues, Bravers can include additional Bluetooth logs with their feedback reports. When this option is checked, your report will include btsnoop and HCI logs from your current session, sanitized to remove as much PII as possible. Access to these logs will be restricted to managers of the ChromeOS product group in Listnr. Logs will be purged after 90 days.
         </message>
         <message name="IDS_FEEDBACK_OFFLINE_DIALOG_TITLE" desc="The title of the message box displayed when the user attempts to send a report while offline">
           Feedback Report
@@ -7119,12 +7419,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_FEEDBACK_OFFLINE_DIALOG_TEXT" desc="The content of the message box displayed when the user attempts to send a report while offline">
           Thank you for your feedback. You are offline now, and your report will be sent later.
         </message>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_CHKBOX" desc="Checkbox for including system information on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph>
           </message>
         </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_AND_METRICS_CHKBOX" desc="Checkbox for including system information and metrics on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK2">&lt;a href="#" id="histograms-url"&gt;</ph>metrics<ph name="END_LINK2">&lt;/a&gt;</ph>
           </message>
@@ -7237,7 +7537,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Error details:
         </message>
       </if>
-      <if expr="is_win or chromeos">
+      <if expr="is_win or chromeos_ash">
         <message name="IDS_UPGRADE_DISABLED_BY_POLICY" desc="Status label: Upgrades disabled by policy">
           Updates are disabled by your administrator.
         </message>
@@ -7487,6 +7787,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_FOLLOW_SITE" desc="The label of the tab context menu item  for following a site.">
           Follow site
         </message>
+        <message name="IDS_TAB_CXMENU_UNFOLLOW_SITE" desc="The label of the tab context menu item  for unfollowing a site.">
+          Unfollow site
+        </message>
         <if expr="chromeos_ash or chromeos_lacros">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
             <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
@@ -7578,6 +7881,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_FOLLOW_SITE" desc="In Title Case: The label of the tab context menu item for following a site.">
           Follow Site
+        </message>
+        <message name="IDS_TAB_CXMENU_UNFOLLOW_SITE" desc="In Title Case: The label of the tab context menu item for unfollowing a site.">
+          Unfollow Site
         </message>
       </if>
 
@@ -7929,36 +8235,36 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- chrome://help -->
       <if expr="not is_android">
-        <if expr="not chromeos and use_titlecase">
+        <if expr="not chromeos_ash and use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="Titlecase: The label for the relaunch button that relaunches the browser once update is complete">
             Relaunch
           </message>
         </if>
-        <if expr="not chromeos and not use_titlecase">
+        <if expr="not chromeos_ash and not use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="The label for the relaunch button that relaunches the browser once update is complete">
             Relaunch
           </message>
         </if>
-        <if expr="chromeos and use_titlecase">
+        <if expr="chromeos_ash and use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="Titlecase: The label for the relaunch button that relaunches the browser once update is complete">
             Restart
           </message>
         </if>
-        <if expr="chromeos and not use_titlecase">
+        <if expr="chromeos_ash and not use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="The label for the relaunch button that relaunches the browser once update is complete">
             Restart
           </message>
         </if>
       </if> <!-- not is_android -->
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_ARC_LABEL" desc="Label for ARC">
           ARC
         </message>
         <message name="IDS_PLATFORM_LABEL" desc="Label for Platform">
           Platform
         </message>
-      </if> <!-- chromeos -->
+      </if> <!-- chromeos_ash -->
 
       <!-- Settings related strings not specific to chrome://settings.
            (Settings specific strings are in settings_strings.grdp).
@@ -8103,7 +8409,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Google Pay
       </message>
 
-      <if expr="is_linux and not chromeos and not lacros">
+      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
         <message name="IDS_SHOW_WINDOW_DECORATIONS" desc="The label of a radio button in the options dialog for using the system title bar and borders.">
           Use system title bar and borders
         </message>
@@ -8125,9 +8431,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_DAYS_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
         Active <ph name="DEVICE_LAST_ACTIVATED_TIME">$1<ex>- 3 days ago</ex></ph> days ago
       </message>
-      <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the different context menu items for sharing this tab to the single other valid target device.">
-        Send to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
-      </message>
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_FROM_DEVICE" desc="The label for the device a received tab was sent from. Shown in the toolbar bubble.">
         Shared from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
       </message>
@@ -8143,27 +8446,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_HINT_TEXT" desc="The hint text shown on received tab dialog shown from the toolbar button. Where 'THERE' is the device the user selected.">
         Choose a device. Then, to see the page, open Brave there.
       </message>
-      <if expr="not use_titlecase">
-        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
-          Send to your devices
-        </message>
-        <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in content area link right click menu.">
-          Send link to your devices
-        </message>
-        <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the link context menu item for sharing this tab to the single other valid target device">
-          Send link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
-        </message>
-      </if>
       <if expr="use_titlecase">
-        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of item for share this tab to other devices in different context menus.">
-          Send to Your Devices
-        </message>
-        <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of item for share this tab to other devices in content area link right click menu.">
-          Send Link to Your Devices
-        </message>
-        <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the link context menu item for sharing this tab to the single other valid target device">
-          Send Link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
-        </message>
+        <then>
+          <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of item for share this tab to other devices in different context menus.">
+            Send to Your Devices
+          </message>
+        </then>
+        <else>
+          <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
+            Send to your devices
+          </message>
+        </else>
       </if>
       <if expr="is_android">
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE" desc="Text for a message indicating that the tab was shared from a syncing device.">
@@ -8214,6 +8507,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_TITLE" desc="Title for the QR Generator dialog.">
         Scan QR Code
       </message>
+      <message name="IDS_SHARING_HUB_GENERATE_QR_CODE_LABEL" desc="The label for the Create QR Code option in the sharing hub menu.">
+        Create QR Code
+      </message>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_URL_TEXTFIELD_ACCESSIBLE_NAME" desc="Text to be spoken for the QR Code Generator's URL Textfield.">
         URL
       </message>
@@ -8254,6 +8550,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SHARING_HUB_SHARE_LABEL_ACCESSIBILITY" desc="The acccessibility label spoken by screen readers when the label for a Third Party Sharing Target gets focus but not visually rendered.">
         Share link to <ph name="SHARE_TARGET">$1<ex>Facebook</ex></ph>
+      </message>
+      <message name="IDS_SHARING_HUB_FOLLOW_LABEL" desc="The text label for the follow button in the Sharing Hub dialog and app menu.">
+        Follow
+      </message>
+      <message name="IDS_SHARING_HUB_FOLLOWING_LABEL" desc="The text label for the following button in the Sharing Hub dialog and app menu.">
+        Following
       </message>
 
       <!-- Desktop Screenshots feature within the share hub; desktop-only. -->
@@ -8542,7 +8844,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Managed UI on pages like chrome://settings and chrome://downloads -->
       <if expr="not is_android">
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (ChromeOS)">
             Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
           </message>
@@ -8666,12 +8968,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a profile enters Guest Session">
           You're browsing as a Guest
         </message>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a profile enters Guest Session">
             Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you sign out. Files you download and bookmarks you create won't be preserved.
           </message>
         </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a profile enters Guest Session">
             Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.
           </message>
@@ -8783,7 +9085,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB" desc="Text for the button that opens the app in a tab. (In sentence case.)">
           Open in a tab
         </message>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC" desc="Text for the button that activates Android App. (In sentence case.)">
             Open
           </message>
@@ -8843,7 +9145,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB" desc="Text for the button that opens the app in a tab. (In title case.)">
           Open in a Tab
         </message>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC" desc="Text for the button that activates Android App. (In title case.)">
             Open
           </message>
@@ -8888,7 +9190,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SYNC_CONFIRMATION_REFRESHED_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation screen to open sync settings">
         Sync settings
       </message>
-      <if expr="lacros">
+      <if expr="chromeos_lacros">
         <message name="IDS_SYNC_CONFIRMATION_TITLE_LACROS" desc="Title of the sync confirmation dialog/screen on lacros.">
           Brave browser sync is on
         </message>
@@ -8917,7 +9219,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Dice Web Signin Interception Bubble-->
-      <if expr="not chromeos and not is_android and not lacros">
+      <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
           Ok
         </message>
@@ -8947,7 +9249,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <if expr="not chromeos and not is_android">
+      <if expr="not chromeos_ash and not is_android">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
         </message>
@@ -9061,7 +9363,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTERNAL_PROTOCOL_CHECKBOX_PER_ORIGIN_TEXT" desc="The External Protocol Dialog is shown when a navigation is started from a webpage, such as https://google.com, to a URL where the protocol indicates that a different software application on the machine should be opened, external to the browser. For example, 'skype:' may indicate that the Skype application be opened. This string describes a checkbox that allows the user to opt out of seeing this confirmation dialog in the future from pages with the same origin as the current page, when trying to launch the same protocol currently being launched">
         Always allow <ph name="ORIGIN">$1<ex>https://google.com</ex></ph> to open links of this type in the associated app
       </message>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_EXTERNAL_PROTOCOL_CLOSE_BUTTON_TEXT" desc="Button in External Protocol Dialog that closes the dialog">
           Close
         </message>
@@ -9176,7 +9478,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEFAULT_DOWNLOAD_FILENAME" desc="Default name for downloaded files when we have no idea what they could be.">
         download
       </message>
-      <if expr="is_macosx or chromeos">
+      <if expr="is_macosx or chromeos_ash">
         <message name="IDS_BROWSER_WINDOW_MAC_TAB_UNTITLED" desc="Tabs and windows on MacOS with no title use this string.">
           Untitled
         </message>
@@ -9186,7 +9488,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Set as default
       </message>
 
-      <if expr="is_linux and not chromeos and not lacros">
+      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
         <message name="IDS_MINIMIZE_WINDOW_MENU" desc="The Linux browser window menu item text for minimizing the window.">
           Minimize
         </message>
@@ -9280,7 +9582,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Open settings
       </message>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error bubble view when the user needs to enter their sync passphrase.">
           To start sync, enter your passphrase
         </message>
@@ -9302,15 +9604,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when sync is not available for their domain.">
           OK...
         </message>
-        <if expr="chromeos">
-          <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view/notification when the user needs to sign out and sign in again to Chrome OS.">
+        <if expr="chromeos_ash">
+          <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view/notification when the user needs to sign out and sign in again to ChromeOS.">
             Sign out then sign in again...
           </message>
-          <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign out and sign in again to Chrome OS.">
+          <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign out and sign in again to ChromeOS.">
             Sign out then sign in again...
           </message>
         </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when the user needs to sign in again.">
             Sign in again...
           </message>
@@ -9334,7 +9636,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- Android uses native UI to handle Sync settings -->
       <if expr="not is_android">
         <!-- Sync options dialog strings -->
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_SYNC_OVERVIEW" desc="The message that appears in the options dialog when sync has not been set up by the user.">
             Sign in to get your bookmarks, history, passwords and other settings on all your devices. You'll also automatically be signed in to your Brave services.
           </message>
@@ -9357,7 +9659,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR" desc="Message shown on the personal options page when there is an unrecoverable error.">
           Sync isn't working. Try signing in again.
         </message>
-        <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR_NEEDS_SIGNOUT" desc="Message shown on the personal options page when there is an unrecoverable error in Chrome OS as well as for managed accounts.">
+        <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR_NEEDS_SIGNOUT" desc="Message shown on the personal options page when there is an unrecoverable error in ChromeOS as well as for managed accounts.">
           Sync isn't working. Try signing out and back in again.
         </message>
         <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD" desc="Message indicating user must re-enter their sync password.">
@@ -9373,23 +9675,23 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_SERVER_IS_UNREACHABLE" desc="The message to display in the New Tab Page and Settings Page sync section when the server is unreachable.">
           Couldn't connect to the sync server. Retrying...
         </message>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign in again to use sync.">
             Sign in again to resume sync
           </message>
         </if>
-        <if expr="chromeos">
-          <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign out and sign in again to use sync on Chrome OS.">
+        <if expr="chromeos_ash">
+          <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign out and sign in again to use sync on ChromeOS.">
             Sign out then sign in again to start sync
           </message>
         </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign in again to use sync.">
             Sign in again
           </message>
         </if>
-        <if expr="chromeos">
-          <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign out and sign in again to use sync on Chrome OS.">
+        <if expr="chromeos_ash">
+          <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign out and sign in again to use sync on ChromeOS.">
             Sign out
           </message>
           <message name="IDS_SYNC_TOKEN_HANDLE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when the user's token handle is invalid.">
@@ -9409,7 +9711,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Advanced settings
         </message>
 
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           <!-- Spinner dialog for waiting sync backend to start up -->
           <message name="IDS_SYNC_SETUP_SPINNER_TITLE" desc="The title of the sync setup dialog showing spinner.">
             Please wait...
@@ -9575,13 +9877,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
         Send message
       </message>
-      <if expr="not chromeos">
-        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="Not on Chrome OS.">
+      <if expr="not chromeos_ash">
+        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="Not on ChromeOS.">
           Details are hidden while you share your screen
         </message>
       </if>
-      <if expr="chromeos">
-        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="On Chrome OS only.">
+      <if expr="chromeos_ash">
+        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="On ChromeOS only.">
           Details are hidden while you share your screen
         </message>
       </if>
@@ -10390,11 +10692,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Press |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to show your cursor
       </message>
 
-      <!-- Media Capture messages -->
-      <message name="IDS_MEDIA_CAPTURE_SCREEN_INFOBAR_TEXT" desc="Text requesting permission for a site to access the device's screen.">
-        <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to share your screen
-      </message>
-
       <!-- Sensor messages -->
       <message name="IDS_SENSORS_ALLOWED_TOOLTIP" desc="Location bar icon tooltip text when a page is allowed to use device's sensors.">
         This site is using motion or light sensors.
@@ -10440,7 +10737,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Shelf strings -->
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_SHELF_CONTEXT_MENU_CLOSE" desc="Title text for the 'close' context menu item of the shelf">
           Close
         </message>
@@ -10470,12 +10767,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Caret browsing. -->
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         <message name="IDS_ENABLE_CARET_BROWSING_INFO" desc="Information in the confirmation dialog for enabling caret browsing">
           You can navigate pages with a text cursor. Press F7 to turn off.
         </message>
       </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_ENABLE_CARET_BROWSING_INFO" desc="Information in the confirmation dialog for enabling caret browsing">
           You can navigate pages with a text cursor. Press Ctrl+Search+7 to turn off.
         </message>
@@ -10551,7 +10848,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- App List. -->
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_APP_ACTION_SHORTCUT_ACCESSIBILITY_NAME" desc="Hint text for the search result that performs a specific action with an app.">
           <ph name="ACTION_NAME">$1<ex>Compose</ex></ph> with <ph name="APP_NAME">$2<ex>GMail</ex></ph> App
         </message>
@@ -10582,13 +10879,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_APP_LIST_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app list item">
           Pinned by administrator
         </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
           Sort by
         </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
           Name
         </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_COLOR" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their icon colors in the app list. This option is under the 'Reorder by' submenu">
+        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_COLOR" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items by their icon colors in the app list. This option is under the 'Reorder by' submenu">
           Color
         </message>
         <message name="IDS_APP_LIST_UNINSTALL_ITEM" desc="Title text for the 'uninstall' context menu item of an app list item.">
@@ -10773,7 +11070,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_NAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has been named by the user. Example: 'Brave Search - Part of group MyGroupName'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of group <ph name="GROUP_NAME">$2</ph>
       </message>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for ChromeOS, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
           <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press Ctrl + Forward to respond
         </message>
@@ -10783,7 +11080,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press ⌘ + Option + Up arrow to respond
         </message>
       </if>
-      <if expr="is_win or desktop_linux or is_fuchsia">
+      <if expr="not chromeos_ash and not is_macosx and toolkit_views">
         <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for Windows, Linux or Fuchsia, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
           <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press F6 to respond
         </message>
@@ -10837,7 +11134,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Accessibility alerts -->
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_A11Y_ALERT_CAPS_OFF" desc="Alert sent to the accessibility api when caps lock is turned off.">
           caps lock off
         </message>
@@ -10974,7 +11271,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> detected
     </message>
 
-    <if expr="chromeos">
+    <if expr="chromeos_ash">
       <!-- CrOSUsb Notification -->
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
           Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to <ph name="USB_VM_NAME">$2<ex>Linux</ex></ph>
@@ -11485,12 +11782,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Relaunch notification bubble and dialog. -->
     <if expr="not is_android">
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         <message name="IDS_RELAUNCH_ACCEPT_BUTTON" desc="The text in the accept button of a dialog that causes the browser to be relaunched immediately.">
           Relaunch now
         </message>
       </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_RELAUNCH_ACCEPT_BUTTON" desc="The text in the accept button of a dialog that causes the device to be restarted immediately.">
           Restart now
         </message>
@@ -11501,7 +11798,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
-    <if expr="is_win or is_macosx or desktop_linux or chromeos or is_fuchsia">
+    <if expr="toolkit_views">
       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
       </message>
@@ -11771,15 +12068,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
    </if>
 
    <!-- WebAuthn strings that are used on both Android and Desktop -->
-   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android or is_fuchsia">
-      <message name="IDS_CABLEV2_MAKE_CREDENTIAL_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to register their phone for signing into that website." formatter_data="android_java">
-        Verify with this phone
-      </message>
-
-      <message name="IDS_CABLEV2_GET_ASSERTION_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to use their phone to sign them in on another computer." formatter_data="android_java">
-        Verify your identity
-      </message>
-   </if>
+   <message name="IDS_CABLEV2_MAKE_CREDENTIAL_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to register their phone for signing into that website." formatter_data="android_java">
+     Verify with this phone
+   </message>
+   <message name="IDS_CABLEV2_GET_ASSERTION_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to use their phone to sign them in on another computer." formatter_data="android_java">
+     Verify your identity
+   </message>
 
    <!-- Private Profile Menu bubble. -->
     <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
@@ -11790,9 +12084,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         =1 {# open window}
         other {# open windows}
       }
-    </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CREATE_SHORTCUT_BUTTON" desc="Label of the button to create a desktop shortcut for Private mode.">
-      Create shortcut
     </message>
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Private windows.">
       Exit Private
@@ -12154,8 +12445,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_NAME_WINDOW_PROMPT_TITLE" desc="Title of the prompt to choose a new name for a window.">
       Name this window
     </message>
-    <message name="IDS_COMMANDER_LABEL" desc="Label to identify the Commander feature in Task Manager">
-      Commander
+    <message name="IDS_QUICK_COMMANDS_LABEL" desc="Label to identify the Quick Commands feature in Task Manager">
+      Quick Commands
+    </message>
+    <message name="IDS_QUICK_COMMANDS_PLACEHOLDER" desc="Placeholder text for the Quick Commands text input">
+      Enter a keyword like "tabs" or "windows" to find an action
+    </message>
+    <message name="IDS_QUICK_COMMANDS_NO_RESULTS" desc="Shown when there are no results in Quick Commands">
+      No commands found
     </message>
 
     <!-- BraveLabs bubble -->
@@ -12193,7 +12490,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- BraveLabs Tab Search Media Tabs -->
     <message name="IDS_TAB_SEARCH_MEDIA_TABS_EXPERIMENT_NAME" desc="Name for the Tab Search Media Tabs experiment">
-      Tab Search Media Tabs
+      Media Tabs Section in Tab Search
     </message>
     <message name="IDS_TAB_SEARCH_MEDIA_TABS_EXPERIMENT_DESCRIPTION" desc="Description for the Tab Search Media Tabs experiment">
        Adds a new section in 'Search Tabs' to easily find your tabs playing audio or video. Access through the button on the top corner of your browser.
@@ -12276,6 +12573,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
+    <!-- FedCM Account Selection strings -->
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to promp user for sign in consent." translateable="false">
+      Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
+      Continue as <ph name="NAME">$1<ex>Albus (or Albus Dumbledore)</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service." translateable="false">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK">$2</ph>privacy policy<ph name="END_LINK">$3</ph>.
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">$2</ph>privacy policy<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>terms of service<ph name="END_LINK2">$5</ph>.
+    </message>
+
     <!-- Input overlay strings -->
     <if expr="chromeos_ash">
       <message name="IDS_INPUT_OVERLAY_MENU_ENTRY_BUTTON" desc="Button to access Input Overlay's settings menu.">
@@ -12307,6 +12618,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_INPUT_OVERLAY_EDIT_MENU_RESET" desc="Entry point to reset the action binding to original binding.">
         Reset
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MODE_RESET" desc="Restore key-bindings to a preset status.">
+        Reset to defaults
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MODE_SAVE" desc="Apply and store the newly set key-bindings.">
+        Save
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MODE_CANCEL" desc="Discard all the newly assigned key-bindings in this session.">
+        Cancel
       </message>
     </if>
 

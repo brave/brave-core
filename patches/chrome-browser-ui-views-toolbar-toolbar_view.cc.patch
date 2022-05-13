@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 9f76962e79146b6ca856fb211c1812c6ffdc1cf7..2a274f6da49956ff8731b3aedb779c8443fd2b24 100644
+index 1ab19d8ef449316a4be072d3ed8f88a42a4e8eb6..eea63acd4417a93c084581f4a918a333e81c24fb 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -372,6 +372,7 @@ void ToolbarView::Init() {
+@@ -302,6 +302,7 @@ void ToolbarView::Init() {
+   }
+ 
+   std::unique_ptr<SidePanelToolbarButton> side_panel_button;
++  BRAVE_TOOLBAR_VIEW_DEACTIVATE_SIDE_PANEL
+   if (browser_view_->right_aligned_side_panel()) {
+     side_panel_button = std::make_unique<SidePanelToolbarButton>(browser_);
+   }
+@@ -370,6 +371,7 @@ void ToolbarView::Init() {
    } else {
      // TODO(crbug.com/932818): Remove this once the
      // |kAutofillEnableToolbarStatusChip| is fully launched.

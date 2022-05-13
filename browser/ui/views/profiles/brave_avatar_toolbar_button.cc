@@ -113,7 +113,7 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     gfx::Insets target_insets =
         ::GetLayoutInsets(TOOLBAR_BUTTON) +
         *GetProperty(views::kInternalPaddingKey) +
-        gfx::Insets(0, kBraveAvatarButtonHorizontalSpacing);
+        gfx::Insets::VH(0, kBraveAvatarButtonHorizontalSpacing);
     SetBorder(views::CreateEmptyBorder(target_insets));
 
     constexpr int kBraveAvatarImageLabelSpacing = 8;

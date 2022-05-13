@@ -147,7 +147,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinator {
-    *** mTabSwitcherModeToolbar;
+    *** mActiveTabSwitcherToolbar;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
@@ -434,6 +434,7 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
+    *** mNativeInitialized;
     public <init>(...);
 }
 
