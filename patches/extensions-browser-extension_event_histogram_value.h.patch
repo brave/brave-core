@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index b9e19bf8c83fede8f0255d91a3582d34f82d75ad..866f3b6a7c86560602f2612a5dd8db5ed513f12f 100644
+index 7e2bc5aa5bd4b1b2438ec5ff13d787216b9de187..e33f638adf88edcc091b15d798afa05973484fe9 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
 @@ -513,6 +513,20 @@ enum HistogramValue {

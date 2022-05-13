@@ -1,8 +1,8 @@
 diff --git a/tools/grit/grit_args.gni b/tools/grit/grit_args.gni
-index 66b0f6c34aec52f04df109a45cc49f186d1a9907..1b1f681e705810ebd3e47e80b60bcba64a047d31 100644
+index 92be15a41a034e28d50e87fdcebbc37faf966436..45c19a5fe0ee4b58210b528bceadd2cb8bd2ccc8 100644
 --- a/tools/grit/grit_args.gni
 +++ b/tools/grit/grit_args.gni
-@@ -54,8 +54,10 @@ _grit_environment_vars = [
+@@ -51,8 +51,10 @@ _grit_environment_vars = [
  
  if (is_chrome_branded) {
    _grit_environment_vars += [ "CHROMIUM_BUILD=google_chrome" ]
