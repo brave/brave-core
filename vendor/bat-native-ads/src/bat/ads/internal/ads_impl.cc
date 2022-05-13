@@ -212,7 +212,7 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
       TabManager::Get()->GetLastVisible();
   if (!SameDomainOrHost(url,
                         last_visible_tab ? last_visible_tab->url : GURL())) {
-    purchase_intent_processor_->Process(GURL(url));
+    purchase_intent_processor_->Process(url);
   }
 
   if (SearchProviders::IsSearchEngine(url)) {

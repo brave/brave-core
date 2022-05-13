@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
 
+#include <algorithm>
 #include <functional>
 #include <utility>
 

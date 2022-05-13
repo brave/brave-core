@@ -19,7 +19,7 @@ AdContentInfo::AdContentInfo(const AdContentInfo& info) = default;
 AdContentInfo::~AdContentInfo() = default;
 
 bool AdContentInfo::operator==(const AdContentInfo& rhs) const {
-  return type == rhs.type && uuid == rhs.uuid &&
+  return type == rhs.type && placement_id == rhs.placement_id &&
          creative_instance_id == rhs.creative_instance_id &&
          creative_set_id == rhs.creative_set_id &&
          campaign_id == rhs.campaign_id && advertiser_id == rhs.advertiser_id &&
@@ -55,7 +55,7 @@ base::DictionaryValue AdContentInfo::ToValue() const {
   base::DictionaryValue dictionary;
 
   dictionary.SetIntKey("adType", static_cast<int>(type.value()));
-  dictionary.SetStringKey("uuid", uuid);
+  dictionary.SetStringKey("uuid", placement_id);
   dictionary.SetStringKey("creativeInstanceId", creative_instance_id);
   dictionary.SetStringKey("creativeSetId", creative_set_id);
   dictionary.SetStringKey("campaignId", campaign_id);
@@ -83,9 +83,9 @@ bool AdContentInfo::FromValue(const base::Value& value) {
     type = AdType(static_cast<AdType::Value>(type_optional.value()));
   }
 
-  const std::string* uuid_value = dictionary->FindStringKey("uuid");
-  if (uuid_value) {
-    uuid = *uuid_value;
+  const std::string* placement_id_value = dictionary->FindStringKey("uuid");
+  if (placement_id_value) {
+    placement_id = *placement_id_value;
   }
 
   const std::string* creative_instance_id_value =
@@ -183,7 +183,7 @@ bool AdContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
+    placement_id = document["uuid"].GetString();
   }
 
   if (document.HasMember("creative_instance_id")) {
@@ -245,7 +245,7 @@ void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
   writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
-  writer->String(info.uuid.c_str());
+  writer->String(info.placement_id.c_str());
 
   writer->String("creative_instance_id");
   writer->String(info.creative_instance_id.c_str());

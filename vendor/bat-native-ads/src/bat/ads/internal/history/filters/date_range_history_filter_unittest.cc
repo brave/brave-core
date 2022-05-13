@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/history/filters/history_date_range_filter.h"
+#include "bat/ads/internal/history/filters/date_range_history_filter.h"
 
 #include "base/containers/circular_deque.h"
 #include "base/time/time.h"
@@ -40,7 +40,7 @@ base::circular_deque<HistoryItemInfo> GetHistory() {
 
 }  // namespace
 
-TEST(BatAdsHistoryDateRangeFilterTest,
+TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromTimestamp44444444444ToDistantFuture) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history = GetHistory();
@@ -49,7 +49,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   const base::Time to_time = MaxTime();
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -66,7 +66,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest,
+TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromTimestamp77777777777ToDistantFuture) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history = GetHistory();
@@ -75,7 +75,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   const base::Time to_time = MaxTime();
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -84,7 +84,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest,
+TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantPastToTimestamp44444444444) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history = GetHistory();
@@ -93,7 +93,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   const base::Time to_time = TimestampToTime(44444444444);
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -109,7 +109,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest,
+TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistancePastToTimestamp11111111111) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history = GetHistory();
@@ -118,7 +118,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   const base::Time to_time = TimestampToTime(11111111111);
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -127,7 +127,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest,
+TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantPastToDistantFuture) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history = GetHistory();
@@ -136,7 +136,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   const base::Time to_time = MaxTime();
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -156,7 +156,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest,
+TEST(BatAdsDateRangeHistoryFilterTest,
      FilterHistoryFromDistantFutureToDistantPast) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history = GetHistory();
@@ -165,7 +165,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   const base::Time to_time = MinTime();
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert
@@ -174,7 +174,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest, FilterEmptyHistory) {
+TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   // Arrange
   base::circular_deque<HistoryItemInfo> history;
 
@@ -182,7 +182,7 @@ TEST(BatAdsHistoryDateRangeFilterTest, FilterEmptyHistory) {
   const base::Time to_time = MaxTime();
 
   // Act
-  HistoryDateRangeFilter filter(from_time, to_time);
+  DateRangeHistoryFilter filter(from_time, to_time);
   history = filter.Apply(history);
 
   // Assert

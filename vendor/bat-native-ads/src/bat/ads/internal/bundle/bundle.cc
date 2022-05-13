@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/bundle/bundle.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <functional>
 #include <string>

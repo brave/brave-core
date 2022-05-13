@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/history/sorts/history_sort_factory.h"
 
-#include "bat/ads/internal/history/sorts/history_ascending_sort.h"
-#include "bat/ads/internal/history/sorts/history_descending_sort.h"
+#include "bat/ads/internal/history/sorts/ascending_history_sort.h"
+#include "bat/ads/internal/history/sorts/descending_history_sort.h"
 
 namespace ads {
 
@@ -18,11 +18,11 @@ std::unique_ptr<HistorySortInterface> HistorySortFactory::Build(
     }
 
     case HistorySortType::kAscendingOrder: {
-      return std::make_unique<HistoryAscendingSort>();
+      return std::make_unique<AscendingHistorySort>();
     }
 
     case HistorySortType::kDescendingOrder: {
-      return std::make_unique<HistoryDescendingSort>();
+      return std::make_unique<DescendingHistorySort>();
     }
   }
 }

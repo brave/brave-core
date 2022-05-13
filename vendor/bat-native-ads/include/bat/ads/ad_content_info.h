@@ -39,7 +39,7 @@ struct ADS_EXPORT AdContentInfo final {
   bool FromJson(const std::string& json);
 
   AdType type = AdType::kUndefined;
-  std::string uuid;
+  std::string placement_id;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;

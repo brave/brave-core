@@ -5,6 +5,8 @@
 
 #include "bat/ads/ad_event_history.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"

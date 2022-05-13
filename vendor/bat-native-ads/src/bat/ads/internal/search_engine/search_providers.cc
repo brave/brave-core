@@ -77,7 +77,7 @@ std::string SearchProviders::ExtractSearchQueryKeywords(const GURL& url) {
       return search_query_keywords;
     }
 
-    net::GetValueForKeyInQuery(GURL(url), key, &search_query_keywords);
+    net::GetValueForKeyInQuery(url, key, &search_query_keywords);
     break;
   }
 

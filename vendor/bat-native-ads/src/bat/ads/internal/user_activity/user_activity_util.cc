@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/user_activity/user_activity_util.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"

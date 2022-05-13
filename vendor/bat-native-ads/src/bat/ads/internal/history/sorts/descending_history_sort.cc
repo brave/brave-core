@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/history/sorts/history_descending_sort.h"
+#include "bat/ads/internal/history/sorts/descending_history_sort.h"
 
 #include <algorithm>
 
@@ -11,13 +11,13 @@
 
 namespace ads {
 
-HistoryDescendingSort::HistoryDescendingSort() = default;
+DescendingHistorySort::DescendingHistorySort() = default;
 
-HistoryDescendingSort::~HistoryDescendingSort() = default;
+DescendingHistorySort::~DescendingHistorySort() = default;
 
-base::circular_deque<HistoryItemInfo> HistoryDescendingSort::Apply(
+base::circular_deque<HistoryItemInfo> DescendingHistorySort::Apply(
     const base::circular_deque<HistoryItemInfo>& history) const {
-  auto sorted_history = history;
+  base::circular_deque<HistoryItemInfo> sorted_history = history;
 
   std::sort(sorted_history.begin(), sorted_history.end(),
             [](const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {

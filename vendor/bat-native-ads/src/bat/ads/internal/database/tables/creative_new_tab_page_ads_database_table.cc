@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 

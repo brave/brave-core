@@ -3,19 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/history/filters/history_date_range_filter.h"
+#include "bat/ads/internal/history/filters/date_range_history_filter.h"
+
+#include <algorithm>
 
 #include "bat/ads/history_item_info.h"
 
 namespace ads {
 
-HistoryDateRangeFilter::HistoryDateRangeFilter(const base::Time from_time,
+DateRangeHistoryFilter::DateRangeHistoryFilter(const base::Time from_time,
                                                const base::Time to_time)
     : from_time_(from_time), to_time_(to_time) {}
 
-HistoryDateRangeFilter::~HistoryDateRangeFilter() = default;
+DateRangeHistoryFilter::~DateRangeHistoryFilter() = default;
 
-base::circular_deque<HistoryItemInfo> HistoryDateRangeFilter::Apply(
+base::circular_deque<HistoryItemInfo> DateRangeHistoryFilter::Apply(
     const base::circular_deque<HistoryItemInfo>& history) const {
   base::circular_deque<HistoryItemInfo> filtered_history = history;
 

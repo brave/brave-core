@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/check_op.h"

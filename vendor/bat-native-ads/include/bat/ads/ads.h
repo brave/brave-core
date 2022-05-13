@@ -77,14 +77,14 @@ class ADS_EXPORT Ads {
   virtual void OnPrefChanged(const std::string& path) = 0;
 
   // Called when a page has loaded and the content is available for analysis.
-  // |redirect_chain| containing redirect URLs that occurred for this
+  // |redirect_chain| containing a chain of redirect URLs that occurred for this
   // navigation. |html| containing the page content as HTML.
   virtual void OnHtmlLoaded(const int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
                             const std::string& html) = 0;
 
   // Called when a page has loaded and the content is available for analysis.
-  // |redirect_chain| containing redirect URLs that occurred for this
+  // |redirect_chain| containing a chain of redirect URLs that occurred for this
   // navigation. |text| containing the page content as text.
   virtual void OnTextLoaded(const int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
@@ -97,11 +97,13 @@ class ADS_EXPORT Ads {
 
   // Called when a user is no longer idle. |idle_time| is the amount of time in
   // seconds that the user was idle. |was_locked| should be |true| if the screen
-  // was locked, otherwise |false|. This should not be called on mobile devices.
+  // was locked, otherwise |false|. NOTE: This should not be called on mobile
+  // devices.
   virtual void OnUnIdle(const int idle_time, const bool was_locked) = 0;
 
   // Called when a user has been idle for the threshold set in
-  // |prefs::kIdleTimeThreshold|. This should not be called on mobile devices.
+  // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
+  // devices.
   virtual void OnIdle() = 0;
 
   // Called when the browser did enter the foreground.
@@ -213,7 +215,7 @@ class ADS_EXPORT Ads {
       const mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) = 0;
 
-  // Called to purge orphaned served ad events. Should only call before
+  // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|.
   virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 

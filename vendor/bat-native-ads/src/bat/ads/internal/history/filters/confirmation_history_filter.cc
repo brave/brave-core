@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/history/filters/history_confirmation_filter.h"
+#include "bat/ads/internal/history/filters/confirmation_history_filter.h"
 
 #include <map>
 #include <string>
@@ -40,40 +40,47 @@ bool ShouldFilterConfirmationType(const ConfirmationType& confirmation_type) {
   }
 }
 
-}  // namespace
+std::map<std::string, HistoryItemInfo> BuildBuckets(
+    const base::circular_deque<HistoryItemInfo>& history) {
+  std::map<std::string, HistoryItemInfo> buckets;
 
-HistoryConfirmationFilter::HistoryConfirmationFilter() = default;
-
-HistoryConfirmationFilter::~HistoryConfirmationFilter() = default;
-
-base::circular_deque<HistoryItemInfo> HistoryConfirmationFilter::Apply(
-    const base::circular_deque<HistoryItemInfo>& history) const {
-  std::map<std::string, HistoryItemInfo> filtered_history_map;
-
-  for (const auto& ad : history) {
-    const ConfirmationType confirmation_type = ad.ad_content.confirmation_type;
+  for (const auto& item : history) {
+    const ConfirmationType& confirmation_type =
+        item.ad_content.confirmation_type;
     if (ShouldFilterConfirmationType(confirmation_type)) {
       continue;
     }
 
-    const std::string uuid = ad.ad_content.uuid;
-
-    const auto it = filtered_history_map.find(uuid);
-    if (it == filtered_history_map.end()) {
-      filtered_history_map.insert({uuid, ad});
+    const std::string& placement_id = item.ad_content.placement_id;
+    const auto iter = buckets.find(placement_id);
+    if (iter == buckets.end()) {
+      buckets.insert({placement_id, item});
     } else {
-      const HistoryItemInfo filtered_ad = it->second;
-      if (filtered_ad.ad_content.confirmation_type.value() >
+      const HistoryItemInfo& current_history_item = iter->second;
+      if (current_history_item.ad_content.confirmation_type.value() >
           confirmation_type.value()) {
-        filtered_history_map[uuid] = ad;
+        buckets[placement_id] = item;
       }
     }
   }
 
+  return buckets;
+}
+
+}  // namespace
+
+ConfirmationHistoryFilter::ConfirmationHistoryFilter() = default;
+
+ConfirmationHistoryFilter::~ConfirmationHistoryFilter() = default;
+
+base::circular_deque<HistoryItemInfo> ConfirmationHistoryFilter::Apply(
+    const base::circular_deque<HistoryItemInfo>& history) const {
+  const std::map<std::string, HistoryItemInfo> buckets = BuildBuckets(history);
+
   base::circular_deque<HistoryItemInfo> filtered_history;
-  for (const auto& filtered_ad : filtered_history_map) {
-    const HistoryItemInfo ad = filtered_ad.second;
-    filtered_history.push_back(ad);
+  for (const auto& bucket : buckets) {
+    const HistoryItemInfo& history_item = bucket.second;
+    filtered_history.push_back(history_item);
   }
 
   return filtered_history;

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
