@@ -3173,6 +3173,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with notification access disabled by their phones' administrator cannot opt into this feature.">
     Notification syncing is disabled by your phone's administrator
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_APPS_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub apps streaming feature. The tooltip describes how users with apps access disabled by their phones' administrator cannot opt into this feature.">
+    Apps streaming is disabled by your phone's administrator.
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_GET_STARTED_BUTTON_LABEL" desc="The label to a button in the Phone Hub notification opt-in flow that appears when the dialog first opens. Clicking the button will allow the user to try enabling the feature.">
     Get started
   </message>
@@ -3214,6 +3217,21 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_OPERATION_INSTRUCTIONS" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that to enable notifications and apps permissionss on the phone.">
     Go to your phone to review a few more permissions. Make sure your phone's Bluetooth and Wi-Fi are turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow when the device is unable to establish a connection to the phone.">
+    Can't establish connection
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that the device is unable to establish a connection to the phone.">
+    Something went wrong. Make sure your phone is close by, unlocked, and Bluetooth and Wi-Fi are turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_CONNECTION_LOST_WITH_PHONE_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow when the device loses its connection to the phone.">
+    Can't maintain a connection with your phone. Make sure your phone is close by, unlocked, and Bluetooth and Wi-Fi are turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ACCESS_PROHIBITED_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow when the phone's account notification streaming is prohibited.">
+    Can't use this account
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ACCESS_PROHIBITED_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow when the phone's account notification streaming is prohibited.">
+    You can't view your phone's notifications on this managed account. Try again with a different account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title shown in the dialog containing the phone permissions opt-in flow when the feature is successfully turned on.">
     Your phone and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> are connected
@@ -4152,11 +4170,8 @@ Press an assigned switch or key to remove assignment.
       Help improve ChromeOS features and performance
     </message>
   </if>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_OWNER_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for the owner of the device.">
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
     Automatically sends crash reports as well as diagnostic and usage data to Brave
-  </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_USER_DESC" desc="The description of the checkbox to enable/disable user metrics logging in ChromeOS for non-owners of the device.">
-    Automatically sends diagnostic and usage data to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_TITLE" desc="The label of the checkbox to enable/disable Suggested Content in ChromeOS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
     Suggest new content to explore

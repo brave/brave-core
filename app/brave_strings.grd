@@ -627,6 +627,9 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Download Bubble Items -->
+      <message name="IDS_DOWNLOAD_BUBBLE_DANGEROUS_FILE" desc="Message shown to the user to validate the download of a dangerous file.">
+        Brave blocked this file because this type of file is dangerous
+      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_MALICIOUS_URL_BLOCKED" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
         Brave blocked this file because it is dangerous
       </message>
@@ -666,10 +669,6 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
         This file may be dangerous, so Brave has blocked it.
-      </message>
-
-      <message name="IDS_PROMPT_CONFIRM_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE_BODY" desc="Body prompt text for the confirmation dialog asking whether the user really meant to keep a download deemed to be associated with account compromise by safebrowsing">
-        Brave recommends that you don't download or open this file
       </message>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
@@ -903,17 +902,6 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Sync/sign-in error messages -->
-      <if expr="not chromeos_ash">
-        <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when the user's sign-in credentials are out of date.">
-          Brave could not sync your data because your account sign-in details are out of date.
-        </message>
-        <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when sync is not available for their domain.">
-          Brave could not sync your data because Sync is not available for your domain.
-        </message>
-        <message name="IDS_SYNC_OTHER_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when there's an error signing in.">
-          Brave could not sync your data due to an error signing in.
-        </message>
-      </if>
       <if expr="chromeos_ash">
         <message name="IDS_SIGNIN_ERROR_SECONDARY_ACCOUNT_DISPLAY_SOURCE" desc="Context title shown in the notification header of sign-in error notification for ChromeOS Secondary Accounts.">
           ChromeOS System
@@ -1451,7 +1439,7 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
         You can learn more about these features in Brave settings.
       </message>
-      
+
       <!-- BraveUpdater Strings -->
       <if expr="is_win">
         <message name="IDS_FRIENDLY_COMPANY_NAME" desc="Company name">

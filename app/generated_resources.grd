@@ -1814,9 +1814,6 @@ are declared in tools/grit/grit_rule.gni.
           Extensions, apps, and themes can harm your computer. Are you sure you want to continue?
         </message>
       </if>
-      <message name="IDS_PROMPT_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE" desc="Message shown to the user to validate the download when the download content is deteremined to be associated with account compromise by safebrowsing.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> could let attackers steal your personal information.
-      </message>
       <message name="IDS_PROMPT_UNCOMMON_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified as uncommon by safebrowsing.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is not commonly downloaded and may be dangerous.
       </message>
@@ -1934,9 +1931,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_KEEP_UNCOMMON_DOWNLOAD_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep an uncommon download">
         Keep file?
-      </message>
-      <message name="IDS_CONFIRM_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep an uncommon download">
-        This file is dangerous
       </message>
       <message name="IDS_PROMPT_CONFIRM_KEEP_DANGEROUS_DOWNLOAD" desc="Prompt text for the confirmation dialog asking whether the user really meant to keep a dangerous download">
         This file may be harmful for your computer.
@@ -2432,9 +2426,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_SUMMARY_INSECURE" desc="Subpage summary text for a download item when the download is insecure.">
         This file may have been read or edited because this site isn't using a secure connection
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_WARNING_SUBPAGE_ACCOUNT_COMPROMISE" desc="Subpage summary text for a download item when the download might cause compromise.">
-        This file may let attackers steal your personal information
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DANGEROUS" desc="Dangerous warning for the user.">
         Dangerous
@@ -4360,9 +4351,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_PRIVACY" desc="Permission string for access to privacy settings.">
           Change your privacy-related settings
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_SIGNED_IN_DEVICES" desc="Permission string for access to privacy settings.">
-          Read the list of your signed-in devices
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_DOWNLOADS" desc="Permission string for access to downloads.">
           Manage your downloads
         </message>
@@ -5398,6 +5386,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORD_GENERATION_SUGGESTION" desc="Text shown next to a generated password describing it as a suggestion.">
         Use suggested password
       </message>
+
+      <if expr="not use_titlecase">
+        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM" desc="Text shown next to a generated password describing it as a suggestion.">
+        Use strong password
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM" desc="In Title Case: Text shown next to a generated password describing it as a suggestion.">
+          Use Strong Password
+        </message>
+      </if>
+      
        <message name="IDS_PASSWORD_GENERATION_EDITING_SUGGESTION" desc="Notification text next to the generated password assuring the user that the password has been saved.">
         Saved password
       </message>
@@ -6916,12 +6916,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_CHROME_TIP" desc="Accessible name used by a screen reader for the in-product-help or tutorial bubble icon." is_accessibility_with_no_ui="true">
         Brave tip
       </message>
-      <message name="IDS_CLOSE_TUTORIAL" desc="Accessible name used by a screen reader for the tutorial bubble close button." is_accessibility_with_no_ui="true">
-        Close tutorial
-      </message>
-      <message name="IDS_CLOSE_PROMO" desc="Accessible name used by a screen reader for the in-product-help bubble close button." is_accessibility_with_no_ui="true">
-        Close help bubble
-      </message>
       <message name="IDS_GLOBAL_MEDIA_CONTROLS_PROMO" desc="Text shown on promotional UI appearing next to the global media controls toolbar button.">
         New! Control your music, videos, and more.
       </message>
@@ -6979,39 +6973,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_AUDIO_MUTING_PROMO" desc="Text shown on the promotional UI appearing next to the tab alert indicator.">
         Click the speaker icon to mute this tab
       </message>
-      <if expr="use_titlecase">
-        <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
-          Got It
-        </message>
-        <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
-          Remind Me Later
-        </message>
-        <message name="IDS_PROMO_SHOW_TUTORIAL_BUTTON" desc="Text shown on a promo bubble button for the user to initiate a tutorial after being asked if they want to learn more.">
-          Show Me How
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
-          Got it
-        </message>
-        <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
-          Remind me later
-        </message>
-        <message name="IDS_PROMO_SHOW_TUTORIAL_BUTTON" desc="Text shown on a promo bubble button for the user to initiate a tutorial after being asked if they want to learn more.">
-          Show me how
-        </message>
-      </if>
       <message name="IDS_SHARED_HIGHLIGHTING_PROMO" desc="The title of in-product-help message encouraging users to interact with the highlight">
         To create a highlight like this one, select any text and right-click.
       </message>
 
       <!-- User Education Tutorial Strings -->
-      <message name="IDS_TUTORIAL_RESTART_TUTORIAL" desc="The text shown on the button for restarting a tutorial">
-        Restart tutorial
-      </message>
-      <message name="IDS_TUTORIAL_CLOSE_TUTORIAL" desc="The text shown on the button for closing a tutorial">
-        Close
-      </message>
       <if expr="use_titlecase">
         <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
           Right-click on a tab and select "Add Tab To New Group"
@@ -7971,40 +7937,6 @@ Check your passwords anytime in  <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave 
         </if>
       </if>
 
-      <!-- Side Search -->
-      <if expr="enable_side_search">
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOL" desc="The accessible name for the side search tool.">
-          Side Search
-        </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The accessible name for the side search toolbar button when the button is active and the side panel is open.">
-          Close search in side panel. Search is open in the side panel.
-        </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The accessible name for the side search toolbar button when the button is not active and the side panel is not open.">
-          Open search in side panel. Search is not open in the side panel.
-        </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_CLOSE_BUTTON" desc="The accessible name for the side search header close button.">
-          Close search in side panel
-        </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The accessible name for the side search header feedback button.">
-          Submit Feedback
-        </message>
-        <message name="IDS_SIDE_SEARCH_PROMO" desc="Promo UI shown next to the side search button to encourage its use.">
-          See more search results in side panel
-        </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The tooltip for the side search toolbar button when the button is active and the side panel is open.">
-          Close search in side panel
-        </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The tooltip for the side search toolbar button when the button is not active and the side panel is not open.">
-          Open search in side panel
-        </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_CLOSE_BUTTON" desc="The tooltip for the side search header close button.">
-          Close search in side panel
-        </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The tooltip for the side search header feedback button.">
-          Submit Feedback
-        </message>
-      </if>
-
       <!-- Tab Search -->
       <message name="IDS_TAB_SEARCH_PROMO" desc="Promo UI shown next to the tab search button to encourage it's use.">
         To search your tabs, click here
@@ -8529,6 +8461,9 @@ Check your passwords anytime in  <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave 
       </message>
        <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
         <ph name="BEGIN_LINK">$1</ph>Your devices<ph name="END_LINK">$2</ph> · <ph name="EMAIL">$3<ex>foo@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_PROMO_LABEL" desc="Text in UI promoting send tab to self. Signed out users see this text and a sign-in button. Signed in users with no valid target device see just the text.">
+        You can send tabs between devices that are signed in with the same Brave sync chain
       </message>
 
       <!-- Share via QR Code strings -->
@@ -9655,39 +9590,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_SYNC_RECOVERABILITY_DEGRADED_FOR_PASSWORDS_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to add recovery options, affecting passwords only.">
           To make sure you can always access your saved passwords, verify it's you
-        </message>
-      </if>
-
-      <if expr="not use_titlecase">
-        <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when sync is not available for their domain.">
-          OK...
-        </message>
-        <if expr="chromeos_ash">
-          <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view/notification when the user needs to sign out and sign in again to ChromeOS.">
-            Sign out then sign in again...
-          </message>
-          <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign out and sign in again to ChromeOS.">
-            Sign out then sign in again...
-          </message>
-        </if>
-        <if expr="not chromeos_ash">
-          <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when the user needs to sign in again.">
-            Sign in again...
-          </message>
-          <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign in again.">
-              Sign in again...
-          </message>
-        </if>
-      </if>
-      <if expr="use_titlecase">
-        <message name="IDS_SYNC_UNAVAILABLE_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when sync is not available for their domain.">
-          OK...
-        </message>
-        <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_ACCEPT" desc="The accept button in the sync error bubble view when the user needs to sign in again.">
-          Sign in Again...
-        </message>
-        <message name="IDS_SYNC_SIGN_IN_ERROR_WRENCH_MENU_ITEM" desc="The sync error wrench menu item when the user needs to sign in again.">
-          Sign in Again...
         </message>
       </if>
 
@@ -11602,6 +11504,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UTILITY_PROCESS_QUARANTINE_SERVICE_NAME" desc="The name of the utility process used to handle file quarantine.">
         Quarantine Service
     </message>
+      <message name="IDS_UTILITY_PROCESS_SYSTEM_SIGNALS_NAME" desc="The name of the utility process used to collect system signals. Only spawned on Windows.">
+        System Signals Utilities
+      </message>
     </if>
 
     <!-- Framebust / Blocked Redirection intervention message -->
@@ -12128,6 +12033,38 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_MANAGE_DEVICES" desc="The text of a button that appear at the bottom of a dialog that lists options for signing into a website. If that list contains phones then a button with this label appears to let the user manage their list of phones/tablets. Clicking it opens a settings page that lists the known phones and lets the user delete or rename them.">
          Manage devices
+      </message>
+
+      <!-- Side Search -->
+      <message name="IDS_ACCNAME_SIDE_SEARCH_TOOL" desc="The accessible name for the side search tool.">
+        Side Search
+      </message>
+      <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The accessible name for the side search toolbar button when the button is active and the side panel is open.">
+        Close search in side panel. Search is open in the side panel.
+      </message>
+      <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The accessible name for the side search toolbar button when the button is not active and the side panel is not open.">
+        Open search in side panel. Search is not open in the side panel.
+      </message>
+      <message name="IDS_ACCNAME_SIDE_SEARCH_CLOSE_BUTTON" desc="The accessible name for the side search header close button.">
+        Close search in side panel
+      </message>
+      <message name="IDS_ACCNAME_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The accessible name for the side search header feedback button.">
+        Submit Feedback
+      </message>
+      <message name="IDS_SIDE_SEARCH_PROMO" desc="Promo UI shown next to the side search button to encourage its use.">
+        See more search results in side panel
+      </message>
+      <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The tooltip for the side search toolbar button when the button is active and the side panel is open.">
+        Close search in side panel
+      </message>
+      <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The tooltip for the side search toolbar button when the button is not active and the side panel is not open.">
+        Open search in side panel
+      </message>
+      <message name="IDS_TOOLTIP_SIDE_SEARCH_CLOSE_BUTTON" desc="The tooltip for the side search header close button.">
+        Close search in side panel
+      </message>
+      <message name="IDS_TOOLTIP_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The tooltip for the side search header feedback button.">
+        Submit Feedback
       </message>
    </if>
 
@@ -12695,14 +12632,35 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_INPUT_OVERLAY_EDIT_MODE_CANCEL" desc="Discard all the newly assigned key-bindings in this session.">
         Cancel
       </message>
+      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_TITLE" desc="Educational dialog's title, this is a friendly name for the feature.">
+        Game Control
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_DESCRIPTION" desc="Text on the educational dialog describing the funcionality introduced by this feature.">
+        You’ve been invited to try out keyboard control for this game.
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_ACCEPT_BUTTON" desc="Educational dialog's accept button text.">
+        Got it
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_BETA" desc="Label marking the feature as 'Beta', this has to be removed after the feature is fully approved.">
+        Beta
+      </message>
     </if>
 
     <!-- Privacy Sandbox Dialog strings -->
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_TITLE" desc="CONTEXT: there are updates to the Brave browser each month. Just after the user accepts the latest update, this message will appear. The user must make a choice, and this page can’t be dismissed until they do. The title of the page. * The title needs to be framed so that clicking the accept button makes sense * “Help us” is intended to convey a sense of collaboration. Privacy Sandbox is an ongoing multi-year effort. There are sites participating to help us and we also need users to agree to these trials so that we can measure the effectiveness of the features we're building. * “build” is intended to convey that this is a process. The user is agreeing to an effort rather than a stable set of features. Something like “make” doesn't have the same nuance.* “private web” is the promise of privacy sandbox.">
       Help us build a more private web
     </message>
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_TITLE" translateable="false">
+      Help us build a better web
+    </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_HEADER_1" desc="1 of 2 subtitles on the page. We want to write for users who skim the page. That means that the page title, the sub titles, and the button label all work well together as a mini story: 1) Help us build a more private web How? 2) Limit sharing between sites 3) More control over the ads you see 4) Yes, I’ll try it">
       Limited sharing between sites
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION" translateable="false">
+      During trials, Brave is exploring ways to limit spam, fraud, and sharing between sites. Brave also <ph name="ESTIMATE_INTERESTS_LINK">$1<ex>estimates your interests</ex></ph> that sites can use to show you ads. You can manage your interests in settings.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION_ESTIMATES_INTERESTS_LINK" translateable="false">
+      estimates your interests
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_1" desc="* “restrict” means to lessen. We don’t want to suggest that we’re “eliminating” cross-site tracking. * “cross-site tracking”: An example: a user visits site A and then site B. Based on how third-party cookies work today, when that user later visits site C, site C can be aware that the user visited sites A and B, and can even have some sense for what they did on those sites. * “stop ad spam and fraud”:  This feature isn’t really related to restricting cross-site tracking but we combined these features in the same sentence / section for structural reasons.">
       We’re exploring ways to restrict cross-site tracking while enabling sites to stop ad spam and fraud.

@@ -211,8 +211,6 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="is_win">
         </if>
 
-      <if expr="not chromeos_ash">
-        </if>
       <if expr="chromeos_ash">
         </if>
 
