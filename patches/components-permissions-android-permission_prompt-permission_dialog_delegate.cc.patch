@@ -1,7 +1,7 @@
-diff --git a/components/permissions/android/permission_dialog_delegate.cc b/components/permissions/android/permission_dialog_delegate.cc
-index c76378df51a497a9cc53015893e33fa2ae19f1d4..214402321ed8b9f57963832578e636fafee51c9b 100644
---- a/components/permissions/android/permission_dialog_delegate.cc
-+++ b/components/permissions/android/permission_dialog_delegate.cc
+diff --git a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
+index a39e62bf9e4345bb402f4da342bee552eb6c45e4..93c21c96553c3bc42e4e7e68cc38e938df70b6ee 100644
+--- a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
++++ b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
 @@ -95,12 +95,14 @@ PermissionDialogDelegate* PermissionDialogDelegate::CreateForTesting(
  void PermissionDialogDelegate::Accept(JNIEnv* env,
                                        const JavaParamRef<jobject>& obj) {
