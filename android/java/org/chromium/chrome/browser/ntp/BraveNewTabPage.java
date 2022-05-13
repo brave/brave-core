@@ -16,10 +16,9 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedFeatures;
-import org.chromium.chrome.browser.feed.FeedLaunchReliabilityLoggingState;
+import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
@@ -60,6 +59,7 @@ public class BraveNewTabPage extends NewTabPage {
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTab(tab);
+            ((BraveNewTabPageLayout) mNewTabPageLayout).setTabProvider(activityTabProvider);
         }
     }
 
@@ -75,18 +75,20 @@ public class BraveNewTabPage extends NewTabPage {
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
         assert !FeedFeatures.isFeedEnabled();
-        mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
-                windowAndroid, new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout),
-                mNewTabPageLayout, mBrowserControlsStateProvider.getTopControlsHeight(),
-                isInNightMode, this, profile,
+        FeedSurfaceCoordinator feedSurfaceCoordinator = new FeedSurfaceCoordinator(activity,
+                snackbarManager, windowAndroid,
+                new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
+                mBrowserControlsStateProvider.getTopControlsHeight(), isInNightMode, this, profile,
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,
-                new FeedLaunchReliabilityLoggingState(SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs),
+                SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs,
                 FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                 /* overScrollDisabled= */ false, /* viewportView= */ null,
                 /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance());
+
+        mFeedSurfaceProvider = feedSurfaceCoordinator;
     }
 
     public void updateSearchProviderHasLogo() {

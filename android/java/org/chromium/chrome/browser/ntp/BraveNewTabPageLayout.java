@@ -360,19 +360,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         }
     }
 
+    private ViewGroup inflateSiteSection(ViewGroup parent) {
+        return (ViewGroup) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.mv_tiles_grid, parent, false);
+    }
+
     @SuppressLint("VisibleForTests")
     protected void insertSiteSectionView() {
         mainLayout = findViewById(R.id.ntp_main_layout);
 
-        mSiteSectionView = NewTabPageLayout.inflateSiteSection(mainLayout);
+        mSiteSectionView = inflateSiteSection(mainLayout);
         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         // If the explore sites section exists as its own section, then space it more closely.
         int variation = ExploreSitesBridge.getVariation();
         if (ExploreSitesBridge.isEnabled(variation)) {
             ((MarginLayoutParams) layoutParams).bottomMargin =
-                getResources().getDimensionPixelOffset(
-                    R.dimen.tile_grid_layout_vertical_spacing);
+                    getResources().getDimensionPixelOffset(
+                            R.dimen.tile_grid_layout_vertical_spacing);
         }
         mSiteSectionView.setLayoutParams(layoutParams);
     }
@@ -1410,18 +1415,20 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     public void initialize(NewTabPageManager manager, Activity activity,
             TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
             boolean searchProviderIsGoogle, FeedSurfaceScrollDelegate scrollDelegate,
-            ContextMenuManager contextMenuManager, TouchEnabledDelegate touchEnabledDelegate,
-            UiConfig uiConfig, Supplier<Tab> tabProvider,
+            TouchEnabledDelegate touchEnabledDelegate, UiConfig uiConfig,
             ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma, boolean isIncognito,
             WindowAndroid windowAndroid) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                searchProviderIsGoogle, scrollDelegate, contextMenuManager, touchEnabledDelegate,
-                uiConfig, tabProvider, lifecycleDispatcher, uma, isIncognito, windowAndroid);
+                searchProviderIsGoogle, scrollDelegate, touchEnabledDelegate, uiConfig,
+                lifecycleDispatcher, uma, isIncognito, windowAndroid);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
-        mTabProvider = tabProvider;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
+    }
+
+    public void setTabProvider(Supplier<Tab> tabProvider) {
+        mTabProvider = tabProvider;
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -1794,7 +1801,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         return (TabImpl) getTab();
     }
 
-    @Override
+    /*@Override
     public void onTileCountChanged() {
         new Handler().postDelayed(() -> {
             if (mTileGroup != null && mTileGroup.isEmpty()) {
@@ -1813,7 +1820,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         } else {
             mTopsiteErrorMessage.setVisibility(View.VISIBLE);
         }
-    }
+    }*/
 
     @Override
     public void onConnectionError(MojoException e) {
