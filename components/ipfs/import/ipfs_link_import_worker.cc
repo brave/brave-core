@@ -90,7 +90,7 @@ void IpfsLinkImportWorker::RemoveDownloadedFile() {
   if (!temp_file_path_.empty()) {
     base::ThreadPool::PostTask(
         FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-        base::BindOnce(base::GetDeleteFileCallback(), temp_file_path_));
+        base::GetDeleteFileCallback(temp_file_path_));
     temp_file_path_ = base::FilePath();
   }
 }
