@@ -555,7 +555,8 @@ const util = {
       ...config.extraNinjaOpts
     ]
 
-    if (config.use_goma) {
+    const use_goma_online = config.use_goma && !config.goma_offline
+    if (use_goma_online) {
       assert(config.gomaServerHost !== undefined && config.gomaServerHost != null, 'goma server host must be set')
       options.env.GOMA_SERVER_HOST = config.gomaServerHost
 
@@ -581,14 +582,14 @@ const util = {
       }
     }
 
-    if (config.isCI && config.use_goma) {
+    if (config.isCI && use_goma_online) {
       util.run('goma_ctl', ['showflags'], options)
       util.run('goma_ctl', ['stat'], options)
     }
 
     util.run('autoninja', ninjaOpts, options)
 
-    if (config.isCI && config.use_goma) {
+    if (config.isCI && use_goma_online) {
       util.run('goma_ctl', ['stat'], options)
     }
   },
