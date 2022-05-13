@@ -226,6 +226,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, SampleSearchAdMetadata) {
   LoadTestDataUrl(kAllowedDomain, "/brave_ads/search_result_ad_sample.html");
   run_loop->Run();
   Mock::VerifyAndClearExpectations(&ads_service);
+  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
   run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _))
@@ -244,6 +245,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, SampleSearchAdMetadata) {
            ads::mojom::SearchResultAdEventType::kViewed);
   run_loop->Run();
   Mock::VerifyAndClearExpectations(&ads_service);
+  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
   EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _, _)).Times(0);
   std::move(trigger_callback)
@@ -341,5 +343,23 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
   LoadTestDataUrl(kAllowedDomain, "/brave_ads/search_result_ad_broken.html");
 
   run_loop.Run();
+  sent_viewed_events_waiter.WaitForViewedEvents();
+}
+
+IN_PROC_BROWSER_TEST_F(SearchResultAdTest, IncognitoBrowser) {
+  SentViewedEventsWaiter sent_viewed_events_waiter(
+      {"data-creative-instance-id-1", "data-creative-instance-id-1",
+       "data-creative-instance-id-2", "not-existant"});
+
+  GURL url = https_server()->GetURL(kAllowedDomain,
+                                    "/brave_ads/search_result_ad_sample.html");
+  Browser* incognito_browser = OpenURLOffTheRecord(browser()->profile(), url);
+  EXPECT_FALSE(GetSearchResultAdService(incognito_browser->profile()));
+
+  content::WebContents* web_contents =
+      incognito_browser->tab_strip_model()->GetActiveWebContents();
+  EXPECT_TRUE(content::NavigateToURL(web_contents, url));
+  EXPECT_EQ(url, web_contents->GetVisibleURL());
+
   sent_viewed_events_waiter.WaitForViewedEvents();
 }

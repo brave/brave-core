@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "components/sessions/core/session_id.h"
 
 class Profile;
 
@@ -52,7 +53,7 @@ class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost,
   void RunCallbacksAndReset(bool ads_enabled);
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
+  SessionID tab_id_;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
   std::vector<RequestAdsEnabledCallback> callbacks_;
   base::ScopedObservation<brave_rewards::RewardsService,

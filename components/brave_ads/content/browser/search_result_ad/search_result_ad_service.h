@@ -27,6 +27,7 @@ namespace brave_ads {
 
 class AdsService;
 
+// Retrieves search result ads from page and handles viewed/clicked events.
 class SearchResultAdService : public KeyedService {
  public:
   explicit SearchResultAdService(AdsService* ads_service);
@@ -35,14 +36,20 @@ class SearchResultAdService : public KeyedService {
   SearchResultAdService(const SearchResultAdService&) = delete;
   SearchResultAdService& operator=(const SearchResultAdService&) = delete;
 
+  // Retrieves search result ads from the render frame.
+  // If should_trigger_viewed_event value is false, then viewed
+  // events shouldn't be sent to the ads library.
   void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host,
                                    SessionID tab_id,
                                    bool should_trigger_viewed_event);
 
+  // Removes search result ads from the previous page load.
   void OnDidFinishNavigation(SessionID tab_id);
 
+  // Removes search result ads when closing the tab.
   void OnTabClosed(SessionID tab_id);
 
+  // Triggers a search result ad viewed event on a specific tab.
   void MaybeTriggerSearchResultAdViewedEvent(
       const std::string& creative_instance_id,
       SessionID tab_id,

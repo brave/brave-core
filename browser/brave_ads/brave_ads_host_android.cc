@@ -26,9 +26,9 @@ namespace brave_ads {
 
 BraveAdsHostAndroid::BraveAdsHostAndroid(Profile* profile,
                                          content::WebContents* web_contents)
-    : profile_(profile), web_contents_(web_contents) {
+    : profile_(profile),
+      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   DCHECK(profile_);
-  DCHECK(web_contents_);
 
   java_object_.Reset(Java_BraveAdsHostAndroid_create(
       AttachCurrentThread(), reinterpret_cast<intptr_t>(this)));
@@ -44,6 +44,11 @@ void BraveAdsHostAndroid::MaybeTriggerAdViewedEvent(
   DCHECK(callback);
   DCHECK(!creative_instance_id.empty());
 
+  if (!tab_id_.is_valid()) {
+    std::move(callback).Run(/* event_triggered */ false);
+    return;
+  }
+
   SearchResultAdService* search_result_ad_service =
       SearchResultAdServiceFactory::GetForProfile(profile_);
 
@@ -52,14 +57,8 @@ void BraveAdsHostAndroid::MaybeTriggerAdViewedEvent(
     return;
   }
 
-  SessionID tab_id = sessions::SessionTabHelper::IdForTab(web_contents_);
-  if (!tab_id.is_valid()) {
-    std::move(callback).Run(/* event_triggered */ false);
-    return;
-  }
-
   search_result_ad_service->MaybeTriggerSearchResultAdViewedEvent(
-      creative_instance_id, tab_id, std::move(callback));
+      creative_instance_id, tab_id_, std::move(callback));
 }
 
 void BraveAdsHostAndroid::RequestAdsEnabled(

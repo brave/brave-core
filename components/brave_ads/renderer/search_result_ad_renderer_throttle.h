@@ -21,6 +21,8 @@ class WebURLRequest;
 
 namespace brave_ads {
 
+// Monitors fetch ad viewed confirmation requests and cancels the request
+// if the ad viewed event should be processed by the ads library.
 class SearchResultAdRendererThrottle : public blink::URLLoaderThrottle {
  public:
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottle(

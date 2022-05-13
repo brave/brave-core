@@ -72,6 +72,10 @@ void SearchResultAdService::MaybeRetrieveSearchResultAd(
 void SearchResultAdService::OnDidFinishNavigation(SessionID tab_id) {
   // Clear the tab state from the previous load.
   ResetState(tab_id);
+  // Now ad viewed events callbacks will be cached before search result JSON-ld
+  // is loaded and processed.
+  ad_viewed_event_pending_callbacks_[tab_id] =
+      std::vector<AdViewedEventCallbackInfo>();
 }
 
 void SearchResultAdService::OnTabClosed(SessionID tab_id) {
@@ -94,6 +98,12 @@ void SearchResultAdService::MaybeTriggerSearchResultAdViewedEvent(
 
   // Check if search result ad JSON-LD wasn't processed yet.
   if (!base::Contains(search_result_ads_, tab_id)) {
+    // Check if OnDidFinishNavigation was called for tab_id.
+    if (!base::Contains(ad_viewed_event_pending_callbacks_, tab_id)) {
+      std::move(callback).Run(/* event_triggered */ false);
+      return;
+    }
+
     AdViewedEventCallbackInfo callback_info;
     callback_info.creative_instance_id = creative_instance_id;
     callback_info.callback = std::move(callback);
@@ -122,6 +132,9 @@ AdsService* SearchResultAdService::SetAdsServiceForTesting(
 void SearchResultAdService::ResetState(SessionID tab_id) {
   DCHECK(tab_id.is_valid());
 
+  for (auto& callback_info : ad_viewed_event_pending_callbacks_[tab_id]) {
+    std::move(callback_info.callback).Run(false);
+  }
   ad_viewed_event_pending_callbacks_.erase(tab_id);
   search_result_ads_.erase(tab_id);
 }

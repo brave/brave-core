@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/common/search_result_ad_util.h"
 
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_piece.h"
 #include "url/gurl.h"
 #include "url/third_party/mozilla/url_parse.h"
@@ -13,17 +15,21 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSearchAdsConfirmationHost[] =
-    "search-ads-confirmation.brave.com";
+constexpr auto kSearchAdsConfirmationVettedHosts =
+    base::MakeFixedFlatSet<base::StringPiece>(
+        {"search.anonymous.brave.com", "search.anonymous.bravesoftware.com"});
 constexpr char kSearchAdsViewedPath[] = "/v10/view";
 constexpr char kCreativeInstanceIdParameterName[] = "creativeInstanceId";
 
-std::string GetCreativeInstanceIdFromUrl(const GURL& url,
-                                         base::StringPiece host,
-                                         base::StringPiece path) {
+}  // namespace
+
+std::string GetCreativeInstanceIdFromSearchAdsViewedUrl(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
-      url.host_piece() != host || url.path_piece() != path ||
-      !url.has_query()) {
+      url.path_piece() != kSearchAdsViewedPath || !url.has_query()) {
+    return std::string();
+  }
+
+  if (!base::Contains(kSearchAdsConfirmationVettedHosts, url.host_piece())) {
     return std::string();
   }
 
@@ -38,13 +44,6 @@ std::string GetCreativeInstanceIdFromUrl(const GURL& url,
   }
 
   return std::string();
-}
-
-}  // namespace
-
-std::string GetCreativeInstanceIdFromSearchAdsViewedUrl(const GURL& url) {
-  return GetCreativeInstanceIdFromUrl(url, kSearchAdsConfirmationHost,
-                                      kSearchAdsViewedPath);
 }
 
 }  // namespace brave_ads
