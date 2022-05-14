@@ -5,9 +5,6 @@
   <!--Add new items to the appropriate sections below -->
 
   <!-- Strings not associated with a particular section-->
-  <message name="IDS_SETTINGS_BRAVE_ADDITIONAL_SETTINGS" desc="The title for a group of settings which are more advanced">
-    Additional settings
-  </message>
   <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
     Your changes will take effect the next time you relaunch Brave.
   </message>
