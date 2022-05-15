@@ -1,0 +1,7 @@
+module brave_talk.mojom;
+
+import "mojo/public/mojom/base/values.mojom";
+
+interface BraveTalkAdvertise {
+  BeginAdvertiseShareDisplayMedia() => (string deviceId);
+};

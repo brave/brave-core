@@ -59,6 +59,8 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
     content::WebContents* web_contents,
     const blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
+
+  // TOOD: Is |web_contents| sharer or shared?
   return type == blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE ||
          type == blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE;
 }

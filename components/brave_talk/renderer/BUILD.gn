@@ -1,0 +1,21 @@
+source_set("renderer") {
+  sources = [
+    "brave_talk_render_frame_observer.cc",
+    "brave_talk_render_frame_observer.h",
+    "brave_talk_render_frame_js_handler.cc",
+    "brave_talk_render_frame_js_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_talk/common",
+    "//brave/components/brave_talk/common:mojom",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/strings",
+    "//v8",
+  ]
+}
