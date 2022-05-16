@@ -96,7 +96,7 @@ export default class Amount {
     }
 
     if (amount === '') {
-      return true
+      return false
     }
 
     return this.value.gt(amount)
@@ -116,7 +116,7 @@ export default class Amount {
     }
 
     if (this.value === undefined) {
-      return true
+      return false
     }
 
     return this.value.lt(amount)
