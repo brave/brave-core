@@ -459,6 +459,18 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return default_cryptocurrency;
   }
 
+  mojom::CoinType GetSelectedCoin() {
+    base::RunLoop run_loop;
+    mojom::CoinType selected_coin;
+    service_->GetSelectedCoin(
+        base::BindLambdaForTesting([&](mojom::CoinType coin_type) {
+          selected_coin = coin_type;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return selected_coin;
+  }
+
   void SimulateOnGetImportInfo(const std::string& new_password,
                                bool result,
                                const ImportInfo& info,
@@ -1079,6 +1091,17 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCryptocurrency) {
   // SetDefaultBaseCryptocurrency will check that the observer is not fired.
   SetDefaultBaseCryptocurrency("ETH");
   EXPECT_EQ(GetDefaultBaseCryptocurrency(), "ETH");
+}
+
+TEST_F(BraveWalletServiceUnitTest, SelectedCoin) {
+  EXPECT_EQ(static_cast<int>(mojom::CoinType::ETH),
+            GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
+  EXPECT_EQ(mojom::CoinType::ETH, GetSelectedCoin());
+
+  service_->SetSelectedCoin(mojom::CoinType::SOL);
+  EXPECT_EQ(static_cast<int>(mojom::CoinType::SOL),
+            GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
+  EXPECT_EQ(mojom::CoinType::SOL, GetSelectedCoin());
 }
 
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
