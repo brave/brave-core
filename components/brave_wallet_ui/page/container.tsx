@@ -169,7 +169,7 @@ function Container (props: Props) {
   }
 
   const onCreateAccount = (name: string, coin: BraveWallet.CoinType) => {
-    const created = props.walletPageActions.addAccount({ accountName: name, coin: coin })
+    const created = props.walletActions.addAccount({ accountName: name, coin: coin })
     if (walletLocation.includes(WalletRoutes.Accounts)) {
       history.push(WalletRoutes.Accounts)
     }
@@ -186,8 +186,8 @@ function Container (props: Props) {
       address: selectedAccount.address,
       amount: buyAmount
     })
-    .then(url => window.open(url, '_blank'))
-    .catch(e => console.error(e))
+      .then(url => window.open(url, '_blank'))
+      .catch(e => console.error(e))
   }
 
   const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {

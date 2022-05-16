@@ -15,7 +15,6 @@ import {
   CreateWalletPayloadType,
   RestoreWalletPayloadType,
   UpdateSelectedAssetType,
-  AddAccountPayloadType,
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   RemoveHardwareAccountPayloadType,
@@ -60,12 +59,6 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
   keyringService.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
-})
-
-handler.on(WalletPageActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
-  const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.addAccount(payload.accountName, payload.coin)
-  return result.success
 })
 
 handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, payload: boolean) => {

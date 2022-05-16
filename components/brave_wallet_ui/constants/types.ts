@@ -106,6 +106,7 @@ export type PanelTypes =
   | 'assets'
   | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
   | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
+  | 'createAccount'
 
 export type NavTypes =
   | 'crypto'

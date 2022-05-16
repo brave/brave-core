@@ -15,32 +15,13 @@ function SelectNetwork ({
 }: Props) {
   // redux
   const {
-    accounts,
     networkList: networks,
     selectedNetwork: reduxSelectedNetwork
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
-  const hasSolAccount = React.useMemo(() => { return accounts.some(account => account.coin === BraveWallet.CoinType.SOL) }, [accounts])
-  const hasFilAccount = React.useMemo(() => { return accounts.some(account => account.coin === BraveWallet.CoinType.FIL) }, [accounts])
-
-  const networkList = React.useMemo(() => {
-    if (!hasSolAccount && !hasFilAccount) {
-      return networks.filter((network) =>
-        network.coin !== BraveWallet.CoinType.FIL &&
-        network.coin !== BraveWallet.CoinType.SOL)
-    }
-    if (hasSolAccount && !hasFilAccount) {
-      return networks.filter((network) => network.coin !== BraveWallet.CoinType.FIL)
-    }
-    if (!hasSolAccount && hasFilAccount) {
-      return networks.filter((network) => network.coin !== BraveWallet.CoinType.SOL)
-    }
-    return networks
-  }, [networks, hasSolAccount, hasFilAccount])
-
   return (
     <>
-      {networkList.map((network) =>
+      {networks.map((network) =>
         <SelectNetworkItem
           selectedNetwork={selectedNetwork || reduxSelectedNetwork}
           key={`${network.chainId}-${network.coin}`}

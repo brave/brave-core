@@ -7,6 +7,7 @@ import Header from './header'
 import Swap from './swap'
 import Send from './send'
 import Buy from './buy'
+import CreateAccountTab from './create-account'
 
 export {
   AccountsAssetsNetworks,
@@ -17,5 +18,6 @@ export {
   Layout,
   Swap,
   Send,
-  Buy
+  Buy,
+  CreateAccountTab
 }

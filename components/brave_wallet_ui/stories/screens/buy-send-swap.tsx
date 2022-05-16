@@ -11,9 +11,10 @@ import SwapTab from '../../components/buy-send-swap/tabs/swap-tab'
 import SendTab from '../../components/buy-send-swap/tabs/send-tab'
 import Buy from '../../components/buy-send-swap/tabs/buy-tab'
 import {
-  Layout
+  Layout,
+  CreateAccountTab
 } from '../../components/buy-send-swap'
-import { useSwap } from '../../common/hooks'
+import { useSwap, useHasAccount, usePrevNetwork } from '../../common/hooks'
 
 export interface Props {
   selectedTab: BuySendSwapTypes
@@ -52,6 +53,8 @@ function BuySendSwap (props: Props) {
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const { isSwapSupported } = useSwap({})
+  const { needsAccount } = useHasAccount()
+  const { prevNetwork } = usePrevNetwork()
 
   // Switched this to useLayoutEffect to fix bad setState call error
   // that was accouring when you would switch to a network that doesn't
@@ -81,31 +84,39 @@ function BuySendSwap (props: Props) {
       selectedTab={selectedTab}
       onChangeTab={changeTab}
     >
-      {selectedTab === 'swap' &&
-        <SwapTab />
-      }
-      {selectedTab === 'send' &&
-        <SendTab
-          showHeader={true}
+      {needsAccount ? (
+        <CreateAccountTab
+          prevNetwork={prevNetwork}
         />
-      }
-      {selectedTab === 'buy' &&
-        <Buy
-          defaultCurrencies={defaultCurrencies}
-          networkList={networkList}
-          buyAmount={buyAmount}
-          onSelectAccount={onSelectAccount}
-          onSubmit={onSubmitBuy}
-          onSetBuyAmount={onSetBuyAmount}
-          selectedNetwork={selectedNetwork}
-          showHeader={true}
-          assetOptions={buyAssetOptions}
-          wyreAssetOptions={wyreAssetOptions}
-          rampAssetOptions={rampAssetOptions}
-          selectedBuyOption={selectedBuyOption}
-          onSelectBuyOption={onSelectBuyOption}
-        />
-      }
+      ) : (
+        <>
+          {selectedTab === 'swap' &&
+            <SwapTab />
+          }
+          {selectedTab === 'send' &&
+            <SendTab
+              showHeader={true}
+            />
+          }
+          {selectedTab === 'buy' &&
+            <Buy
+              defaultCurrencies={defaultCurrencies}
+              networkList={networkList}
+              buyAmount={buyAmount}
+              onSelectAccount={onSelectAccount}
+              onSubmit={onSubmitBuy}
+              onSetBuyAmount={onSetBuyAmount}
+              selectedNetwork={selectedNetwork}
+              showHeader={true}
+              assetOptions={buyAssetOptions}
+              wyreAssetOptions={wyreAssetOptions}
+              rampAssetOptions={rampAssetOptions}
+              selectedBuyOption={selectedBuyOption}
+              onSelectBuyOption={onSelectBuyOption}
+            />
+          }
+        </>
+      )}
     </Layout>
   )
 }

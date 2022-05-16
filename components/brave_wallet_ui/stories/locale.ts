@@ -85,6 +85,11 @@ provideStrings({
   braveWalletSwapFeesNotice: 'Quote includes a 0.875% Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
 
+  // Create Account Tab
+  braveWalletCreateAccountDescription: 'You don’t yet have a $1 account. Create one now?',
+  braveWalletCreateAccountYes: 'Yes',
+  braveWalletCreateAccountNo: 'No',
+
   // Buttons
   braveWalletButtonContinue: 'Continue',
   braveWalletButtonCopy: 'Copy',

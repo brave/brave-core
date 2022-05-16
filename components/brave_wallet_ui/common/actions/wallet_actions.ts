@@ -42,6 +42,8 @@ import {
   SPLTransferFromParams
 } from '../../constants/types'
 
+import { AddAccountPayloadType } from '../../page/constants/action_types'
+
 export const initialize = createAction('initialize')
 export const initialized = createAction<WalletInfo>('initialized')
 export const lockWallet = createAction('lockWallet')
@@ -121,3 +123,4 @@ export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDe
 export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')
 export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')
 export const setShowTestNetworks = createAction<boolean>('setShowTestNetworks')
+export const addAccount = createAction<AddAccountPayloadType>('addAccount')
