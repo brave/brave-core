@@ -59,10 +59,13 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
     content::WebContents* web_contents,
     const blink::mojom::MediaStreamType type,
     const extensions::Extension* extension) {
-  auto* registry = GetRegistry(web_contents);
-  if (!registry->VerifyRequest(
-          web_contents->GetMainFrame()->GetProcess()->GetID(),
-          web_contents->GetMainFrame()->GetRoutingID())) {
+  if (!web_contents)
+    return false;
+
+  auto* registry = brave_talk::BraveTalkTabCaptureRegistry::Get(web_contents->GetBrowserContext());
+  if (!registry || !registry->VerifyRequest(
+                       web_contents->GetMainFrame()->GetProcess()->GetID(),
+                       web_contents->GetMainFrame()->GetRoutingID())) {
     return false;
   }
 
@@ -85,7 +88,7 @@ void BraveTalkMediaAccessHandler::HandleRequest(
     const extensions::Extension* extension) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  auto* registry = GetRegistry(web_contents);
+  auto* registry = brave_talk::BraveTalkTabCaptureRegistry::Get(web_contents->GetBrowserContext());
   if (!registry) {
     NOTREACHED();
     std::move(callback).Run(
@@ -136,12 +139,6 @@ void BraveTalkMediaAccessHandler::AcceptRequest(
 
   std::move(callback).Run(devices, blink::mojom::MediaStreamRequestResult::OK,
                           std::move(ui));
-}
-
-BraveTalkTabCaptureRegistry* BraveTalkMediaAccessHandler::GetRegistry(
-    content::WebContents* contents) {
-  auto* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
-  return brave_talk::BraveTalkTabCaptureRegistry::Get(profile);
 }
 
 }  // namespace brave_talk
