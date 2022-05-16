@@ -53,7 +53,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-  registry->RegisterBooleanPref(kShowWalletTestNetworks, false);
   registry->RegisterIntegerPref(
       kBraveWalletSelectedCoin,
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
