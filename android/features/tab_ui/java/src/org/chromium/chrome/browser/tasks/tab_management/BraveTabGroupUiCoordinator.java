@@ -18,8 +18,8 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -54,13 +54,13 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull Supplier<DynamicResourceLoader> dynamicResourceLoaderSupplier,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull Supplier<ShareDelegate> shareDelegateSupplier,
-            @NonNull OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull SnackbarManager snackbarManager) {
         super(activity, parentView, incognitoStateProvider, scrimCoordinator,
                 omniboxFocusStateSupplier, bottomSheetController, activityLifecycleDispatcher,
                 isWarmOnResumeSupplier, tabModelSelector, tabContentManager, rootView,
                 dynamicResourceLoaderSupplier, tabCreatorManager, shareDelegateSupplier,
-                overviewModeBehaviorSupplier, snackbarManager);
+                layoutStateProviderSupplier, snackbarManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
 

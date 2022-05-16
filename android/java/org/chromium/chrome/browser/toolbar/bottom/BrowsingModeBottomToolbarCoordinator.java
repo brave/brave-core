@@ -18,7 +18,6 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -26,7 +25,6 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
-import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.BraveHomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
@@ -51,9 +49,6 @@ public class BrowsingModeBottomToolbarCoordinator {
 
     /** The home button that lives in the bottom toolbar. */
     private final BraveHomeButton mBraveHomeButton;
-
-    /** The share button that lives in the bottom toolbar. */
-    private final ShareButton mShareButton;
 
     /** The new tab button that lives in the bottom toolbar. */
     private final BottomToolbarNewTabButton mNewTabButton;
@@ -87,15 +82,6 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final MenuButton mMenuButton;
     private ThemeColorProvider mThemeColorProvider;
 
-    /**
-     * Build the coordinator that manages the browsing mode bottom toolbar.
-     * @param root The root {@link View} for locating the views to inflate.
-     * @param tabProvider The {@link ActivityTabProvider} used for making the IPH.
-     * @param homeButtonListener The {@link OnClickListener} for the home button.
-     * @param searchAcceleratorListener The {@link OnClickListener} for the search accelerator.
-     * @param shareButtonListener The {@link OnClickListener} for the share button.
-     * @param overviewModeBehaviorSupplier Supplier for the overview mode manager.
-     */
     BrowsingModeBottomToolbarCoordinator(View root, ActivityTabProvider tabProvider,
             OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
@@ -114,8 +100,6 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mNewTabButton = mToolbarRoot.findViewById(R.id.bottom_new_tab_button);
 
-        mShareButton = mToolbarRoot.findViewById(R.id.bottom_share_button);
-
         mSearchAccelerator = mToolbarRoot.findViewById(R.id.search_accelerator);
         mSearchAccelerator.setOnClickListener(searchAcceleratorListener);
 
@@ -133,15 +117,6 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
             mTabSwitcherButtonView.setVisibility(View.VISIBLE);
-        }
-        if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-            mShareButton.setVisibility(View.VISIBLE);
-            mShareButtonListenerSupplierCallback = shareButtonListener -> {
-                mShareButton.setOnClickListener(shareButtonListener);
-            };
-            mShareButtonListenerSupplier = shareButtonListenerSupplier;
-            mShareButton.setActivityTabProvider(mTabProvider);
-            mShareButtonListenerSupplier.addObserver(mShareButtonListenerSupplierCallback);
         }
 
         mBookmarkButton = mToolbarRoot.findViewById(R.id.bottom_bookmark_button);
@@ -201,10 +176,6 @@ public class BrowsingModeBottomToolbarCoordinator {
             mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
         }
 
-        if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-            mShareButton.setThemeColorProvider(themeColorProvider);
-        }
-
         if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
             mBraveHomeButton.setThemeColorProvider(themeColorProvider);
         }
@@ -248,13 +219,6 @@ public class BrowsingModeBottomToolbarCoordinator {
     }
 
     /**
-     * @return The browsing mode bottom toolbar's share button.
-     */
-    ShareButton getShareButton() {
-        return mShareButton;
-    }
-
-    /**
      * @return The browsing mode bottom toolbar's tab switcher button.
      */
     TabSwitcherButtonView getTabSwitcherButtonView() {
@@ -284,7 +248,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         }
         mMediator.destroy();
         mBraveHomeButton.destroy();
-        mShareButton.destroy();
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
         mBookmarkButton.destroy();

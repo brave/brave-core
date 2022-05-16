@@ -37,7 +37,7 @@ import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
-import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
+import org.chromium.chrome.browser.tasks.ReturnToChromeUtil;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
@@ -166,7 +166,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         ChromeActivity activity = BraveActivity.getBraveActivity();
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
         // customized.
-        if (!ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage(
+        if (!ReturnToChromeUtil.shouldShowStartSurfaceAsTheHomePage(
                     activity != null ? activity : mContext)
                 && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
             mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
@@ -177,9 +177,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                             (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                     browsingModeCoordinator.getSearchAccelerator().setVisibility(View.GONE);
-                    if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-                        browsingModeCoordinator.getShareButton().setVisibility(View.GONE);
-                    }
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
                         browsingModeCoordinator.getHomeButton().setVisibility(View.INVISIBLE);
                     }
@@ -205,11 +202,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                             (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                     browsingModeCoordinator.getSearchAccelerator().setVisibility(View.VISIBLE);
-                    if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-                        browsingModeCoordinator.getShareButton().setVisibility(View.VISIBLE);
-                        browsingModeCoordinator.getShareButton().updateButtonEnabledState(
-                                mTabProvider.get());
-                    }
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
                         browsingModeCoordinator.getHomeButton().setVisibility(View.VISIBLE);
                     }

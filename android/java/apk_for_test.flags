@@ -129,7 +129,6 @@
     *** mIsWarmOnResumeSupplier;
     *** mTabContentManager;
     *** mTabCreatorManager;
-    *** mOverviewModeBehaviorSupplier;
     *** mSnackbarManager;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);

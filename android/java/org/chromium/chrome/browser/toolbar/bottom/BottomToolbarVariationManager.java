@@ -26,14 +26,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class BottomToolbarVariationManager {
     /**
-     * @return Whether or not share button should be visible on the top toolbar in portrait mode
-     *         in the current variation.
-     */
-    public static boolean isShareButtonOnBottom() {
-        return false;
-    }
-
-    /**
      * @return Whether or not new tab button should be visible on the bottom toolbar
      *         in portrait mode in the current variation.
      */
