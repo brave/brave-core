@@ -21,7 +21,7 @@ import {
 // Custom types
 import { HardwareWalletConnectOpts, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 import HardwareWalletAccountsList from './accounts-list'
-import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatch } from '../../../../../common/hardware/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 
 export interface Props {
@@ -70,7 +70,7 @@ export default function (props: Props) {
     props.onConnectHardwareWallet({
       hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
       startIndex: 0,
-      stopIndex: DerivationBatch,
+      stopIndex: DerivationBatchSize,
       network: network,
       coin: BraveWallet.CoinType.FIL
     }).then((result) => {
@@ -88,7 +88,7 @@ export default function (props: Props) {
     props.onConnectHardwareWallet({
       hardware: selectedHardwareWallet,
       startIndex: 0,
-      stopIndex: DerivationBatch,
+      stopIndex: DerivationBatchSize,
       scheme: scheme,
       coin: selectedAccountType.coin,
       network: filecoinNetwork
@@ -157,7 +157,7 @@ export default function (props: Props) {
     props.onConnectHardwareWallet({
       hardware: selectedHardwareWallet,
       startIndex: accounts.length,
-      stopIndex: accounts.length + DerivationBatch,
+      stopIndex: accounts.length + DerivationBatchSize,
       scheme: selectedDerivationScheme,
       coin: selectedAccountType.coin,
       network: filecoinNetwork

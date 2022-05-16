@@ -60,7 +60,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     return this.provider !== undefined
   }
 
-  makeApp = async () => {
+  makeApp = async (): Promise<Boolean> => {
     if (this.transportWrapper) {
       await this.transportWrapper.disconnect()
     }
@@ -74,10 +74,13 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
         patch: 1
       }
     })
-    await provider.ready()
+    if (!await provider.ready()) {
+      return false
+    }
 
     this.transportWrapper.transport.on('disconnect', this.onDisconnected)
     this.provider = provider
+    return true
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {
@@ -85,8 +88,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
       return { success: true }
     }
     try {
-      await this.makeApp()
-      if (!this.provider) {
+      if (!await this.makeApp() || !this.provider) {
         return { success: false }
       }
       const app: LedgerProvider = this.provider
@@ -109,7 +111,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     }
     try {
       const parsed = JSON.parse(message)
-      let lotusMessage: LotusMessage = {
+      const lotusMessage: LotusMessage = {
         To: parsed.To,
         From: parsed.From,
         Nonce: parsed.Nonce,
@@ -128,7 +130,8 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   }
 
   private readonly getPathForIndex = (index: number, type: CoinType): string => {
-    // For TEST coin type use 1 instead of 461.
+    // According to SLIP-0044 For TEST networks coin type use 1 always.
+    // https://github.com/satoshilabs/slips/blob/5f85bc4854adc84ca2dc5a3ab7f4b9e74cb9c8ab/slip-0044.md
     // https://github.com/glifio/modules/blob/primary/packages/filecoin-wallet-provider/src/utils/createPath/index.ts
     return type === CoinType.MAIN ? `m/44'/461'/0'/0/${index}` : `m/44'/1'/0'/0/${index}`
   }

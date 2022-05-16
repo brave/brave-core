@@ -69,4 +69,5 @@ export const FilecoinNetworkLocaleMapping = {
   [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
 }
 
-export const DerivationBatch = 4
+// Batch size of accounts imported from the device in one step.
+export const DerivationBatchSize = 4

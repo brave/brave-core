@@ -348,8 +348,7 @@ void FilTxManager::ProcessFilHardwareSignature(
     return;
   }
 
-  meta->set_status(mojom::TransactionStatus::Confirmed);
-  meta->set_confirmed_time(base::Time::Now());
+  meta->set_status(mojom::TransactionStatus::Approved);
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   json_rpc_service_->SendFilecoinTransaction(
