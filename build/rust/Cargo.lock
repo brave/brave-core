@@ -816,7 +816,6 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror",
- "zx-bip44",
 ]
 
 [[package]]
@@ -2986,14 +2985,4 @@ dependencies = [
  "quote",
  "syn",
  "synstructure",
-]
-
-[[package]]
-name = "zx-bip44"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ed17b569d1ea6903d5dc061602c6dc45f816cd0171d67d3b40fc1f6caf1ade0"
-dependencies = [
- "byteorder",
- "thiserror",
 ]
