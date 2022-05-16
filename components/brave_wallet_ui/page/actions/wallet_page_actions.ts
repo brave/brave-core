@@ -12,7 +12,6 @@ import {
   RestoreWalletPayloadType,
   SelectAssetPayloadType,
   UpdateSelectedAssetType,
-  AddAccountPayloadType,
   ImportAccountPayloadType,
   RemoveImportedAccountPayloadType,
   RemoveHardwareAccountPayloadType,
@@ -29,7 +28,6 @@ import {
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
-export const addAccount = createAction<AddAccountPayloadType>('addAccount')
 export const importAccount = createAction<ImportAccountPayloadType>('importAccount')
 export const importFilecoinAccount = createAction<ImportFilecoinAccountPayloadType>('importFilecoinAccount')
 export const importAccountFromJson = createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson')

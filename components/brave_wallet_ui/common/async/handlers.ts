@@ -31,6 +31,7 @@ import {
   SendSolTransactionParams,
   SPLTransferFromParams
 } from '../../constants/types'
+import { AddAccountPayloadType } from '../../page/constants/action_types'
 
 // Utils
 
@@ -625,6 +626,30 @@ handler.on(WalletActions.setSelectedNetworkFilter.getType(), async (store: Store
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
+})
+
+handler.on(WalletActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
+  const { keyringService, walletHandler } = getAPIProxy()
+  const { accounts } = getWalletState(store)
+
+  // Creates a new account by the payloads coinType
+  const result = await keyringService.addAccount(payload.accountName, payload.coin)
+
+  // Looks to see if an account exist for the payloads coinType
+  const hasCoinTypeAccount = accounts.some(account => account.coin === payload.coin)
+
+  // If this is the first time creating an account for a coinType
+  // we set it as the defualt account for that coinType.
+  if (result.success && !hasCoinTypeAccount) {
+    // Get updated accountInfo
+    const walletInfo = await walletHandler.getWalletInfo()
+    const updatedAccounts = walletInfo.accountInfos
+
+    // Finds the new account and sets it as default
+    const foundAccount = updatedAccounts.find((account) => account.coin === payload.coin)
+    await keyringService.setSelectedAccount(foundAccount?.address ?? updatedAccounts[0].address, foundAccount?.coin ?? updatedAccounts[0].coin)
+  }
+  return result.success
 })
 
 export default handler.middleware
