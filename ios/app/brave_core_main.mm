@@ -37,6 +37,7 @@
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_switches.h"
+#include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store.h"
@@ -80,6 +81,7 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */, NSString*>*
       _providerScripts;
 }
+@property(nonatomic) bool appIsTerminating;
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BravePasswordAPI* passwordAPI;
@@ -113,6 +115,7 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
                name:UIApplicationWillTerminateNotification
              object:nil];
 
+    _appIsTerminating = false;
     _providerScripts = [[NSMutableDictionary alloc] init];
 
     // Register all providers before calling any Chromium code.
@@ -178,11 +181,33 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
+  VLOG(1) << "Terminating Brave-Core";
+
+  if (_appIsTerminating) {
+    // Previous handling of this method spun the runloop, resulting in
+    // recursive calls; this does not appear to happen with the new shutdown
+    // flow, but this is here to ensure that if it can happen, it gets noticed
+    // and fixed.
+    DCHECK(false);
+    VLOG(0) << "Brave-Core AppWillTerminate called more than once!";
+  }
+  _appIsTerminating = true;
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+  _bookmarksAPI = nil;
+  _historyAPI = nil;
+  _passwordAPI = nil;
+  _syncProfileService = nil;
+  _syncAPI = nil;
+
   _mainBrowserState = nullptr;
   _webMain.reset();
   _delegate.reset();
   _webClient.reset();
+  _appIsTerminating = false;
+
+  VLOG(1) << "Terminated Brave-Core";
 }
 
 - (void)scheduleLowPriorityStartupTasks {
@@ -198,15 +223,12 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
       GetApplicationContext()->GetComponentUpdateService();
   DCHECK(cus);
 
+  RegisterSafetyTipsComponent(cus);
   brave_wallet::RegisterWalletDataFilesComponent(cus);
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  _mainBrowserState = nullptr;
-  _webMain.reset();
-  _delegate.reset();
-  _webClient.reset();
+  [self onAppWillTerminate:nil];
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {

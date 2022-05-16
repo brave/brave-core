@@ -7,11 +7,15 @@ source_set("url") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
+    "url_formatter.h",
+    "url_formatter.mm",
     "url_origin_ios+private.h",
     "url_origin_ios.h",
     "url_origin_ios.mm",
     "url_pattern_ios.h",
     "url_pattern_ios.mm",
+    "url_spoof_checker.h",
+    "url_spoof_checker.mm",
     "url_utils.h",
     "url_utils.mm",
   ]
@@ -19,6 +23,13 @@ source_set("url") {
   deps = [
     "//base",
     "//brave/extensions:common",
+    "//components/lookalikes/core:core",
+    "//components/lookalikes/core:features",
+    "//components/reputation/core",
+    "//components/url_formatter",
+    "//components/url_formatter/spoof_checks/top_domains:common",
+    "//components/url_formatter/spoof_checks/top_domains:generate_top_domains_trie",
+    "//components/url_formatter/spoof_checks/top_domains:top500_domains",
     "//net",
     "//url",
   ]
