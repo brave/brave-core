@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
+import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
@@ -158,6 +159,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
+            Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
@@ -172,7 +174,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
                 snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
                 tabReparentingControllerSupplier, omniboxPedalDelegate,
-                initializeWithIncognitoColors);
+                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
