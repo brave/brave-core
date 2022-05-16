@@ -283,6 +283,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:tip_generated_resources",
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_talk/common",
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",

@@ -2,8 +2,8 @@ source_set("renderer") {
   sources = [
     "brave_talk_render_frame_observer.cc",
     "brave_talk_render_frame_observer.h",
-    "brave_talk_render_frame_js_handler.cc",
-    "brave_talk_render_frame_js_handler.h",
+    "brave_talk_frame_js_handler.cc",
+    "brave_talk_frame_js_handler.h",
   ]
 
   deps = [

@@ -11,6 +11,8 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_talk/common/brave_talk_utils.h"
+#include "brave/components/brave_talk/renderer/brave_talk_render_frame_observer.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
@@ -18,6 +20,7 @@
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
@@ -80,6 +83,11 @@ void BraveContentRendererClient::RenderFrameCreated(
 
   if (brave_search::IsDefaultAPIEnabled()) {
     new brave_search::BraveSearchRenderFrameObserver(
+        render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
+  }
+
+  if (brave_talk::IsDefaultAPIEnabled()) {
+    new brave_talk::BraveTalkRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 

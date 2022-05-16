@@ -41,14 +41,14 @@ class BraveTalkFrameJSHandler {
   v8::Local<v8::Promise> GetCanSetDefaultSearchProvider(v8::Isolate* isolate);
   void SetIsDefaultSearchProvider(v8::Isolate* isolate);
 
-  void OnCanSetDefaultSearchProvider(
+  void OnDeviceIdReceived(
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       v8::Isolate* isolate,
       std::unique_ptr<v8::Global<v8::Context>> context_old,
-      const bool response);
+      const std::string& result);
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
-  mojo::Remote<brave_talk::mojom::BraveTalkAdvertise> brave_talk_advertise;
+  mojo::Remote<brave_talk::mojom::BraveTalkAdvertise> brave_talk_advertise_;
 };
 
 }  // namespace brave_search

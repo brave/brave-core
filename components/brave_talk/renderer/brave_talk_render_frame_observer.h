@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_talk/renderer/brave_talk_frame_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
@@ -29,7 +30,7 @@ class BraveTalkRenderFrameObserver : public content::RenderFrameObserver {
   void OnDestruct() override;
 
   // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<BraveTalkRenderFrameObserver> native_javascript_handle_;
+  std::unique_ptr<BraveTalkFrameJSHandler> native_javascript_handle_;
   int32_t world_id_;
 };
 

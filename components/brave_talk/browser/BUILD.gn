@@ -1,0 +1,20 @@
+import("//build/config/features.gni")
+
+static_library("browser") {
+  sources = [
+      "brave_talk_advertise_host.cc",
+      "brave_talk_advertise_host.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_search/common",
+    "//brave/components/brave_search/common:mojom",
+    "//brave/components/weekly_storage",
+    "//components/prefs",
+    "//components/search_engines",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
