@@ -148,6 +148,7 @@ export const usePendingTransactions = () => {
     return (
       !!transactionDetails?.sameAddressError ||
       !!transactionDetails?.contractAddressError ||
+      transactionDetails?.insufficientFundsForGasError ||
       transactionDetails?.insufficientFundsError ||
       !!transactionDetails?.missingGasLimitError
     )
