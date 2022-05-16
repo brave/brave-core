@@ -1,9 +1,9 @@
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
-import("//tools/grit/grit_rule.gni")
 
-grit("brave_theme_resources") {
+brave_grit("brave_theme_resources") {
   source = "brave_theme_resources.grd"
   defines = chrome_grit_defines
   defines += [
@@ -19,20 +19,16 @@ grit("brave_theme_resources") {
     "brave_theme_resources_300_percent.pak",
   ]
 
-  resource_ids = "//brave/browser/resources/resource_ids"
-
   output_dir = "$root_gen_dir/brave"
 }
 
-grit("brave_unscaled_resources") {
+brave_grit("brave_unscaled_resources") {
   source = "brave_unscaled_resources.grd"
   defines = chrome_grit_defines
   outputs = [
     "grit/brave_unscaled_resources.h",
     "brave_unscaled_resources.pak",
   ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
 
   output_dir = "$root_gen_dir/brave"
 }

@@ -1,8 +1,8 @@
 import("//brave/components/common/typescript.gni")
-import("//tools/grit/grit_rule.gni")
+import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
 
-grit("static_resources") {
+brave_grit("static_resources") {
   source = "resources.grd"
   outputs = [
     "grit/brave_webtorrent_resources_map.cc",
@@ -10,30 +10,26 @@ grit("static_resources") {
     "grit/brave_webtorrent_resources.h",
     "brave_webtorrent_static.pak",
   ]
-
-  deps = [ ]
-
-  resource_ids = ""
 }
 
 pack_web_resources("generated_resources") {
   resource_name = "brave_webtorrent"
   output_dir = "$root_gen_dir/brave/components/brave_webtorrent"
+
   # Need wepack and GRD generation first
-  deps = [
-    "extension:generate_brave_webtorrent"
-  ]
+  deps = [ "extension:generate_brave_webtorrent" ]
 }
 
 repack("resources") {
   deps = [
-    ":static_resources",
     ":generated_resources",
+    ":static_resources",
   ]
   sources = [
-    "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_static.pak",
     "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_generated.pak",
+    "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_static.pak",
   ]
+
   # This output repacked by brave_paks.gni
   output = "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak"
 }

@@ -1,0 +1,21 @@
+# Copyright 2022 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//tools/grit/grit_rule.gni")
+
+brave_grit_resource_id_target = "//brave/resources:brave_resource_ids"
+brave_grit_resource_id_file =
+    get_label_info(brave_grit_resource_id_target, "target_gen_dir") +
+    "/brave_resource_ids"
+
+template("brave_grit") {
+  grit(target_name) {
+    forward_variables_from(invoker, "*")
+    resource_ids = brave_grit_resource_id_file
+    if (!defined(deps)) {
+      deps = []
+    }
+    deps += [ brave_grit_resource_id_target ]
+  }
+}

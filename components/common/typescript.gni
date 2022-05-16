@@ -1,4 +1,4 @@
-import("//tools/grit/grit_rule.gni")
+import("//brave/resources/brave_grit.gni")
 
 # JS / TS imports via `require` or `import` will be added to a list and
 # provided to GN so it knows which projects to re-build when you modify a file
@@ -199,7 +199,7 @@ template("transpile_web_ui") {
 #     Optional custom path for compiled output
 #
 template("pack_web_resources") {
-  grit(target_name) {
+  brave_grit(target_name) {
     resource_name = invoker.resource_name
 
     if (defined(invoker.generated_dir)) {
@@ -208,7 +208,9 @@ template("pack_web_resources") {
       generated_dir = "$root_gen_dir/brave/web-ui-$resource_name"
     }
     source = "$generated_dir/$resource_name.grd"
-    enable_input_discovery_for_gn_analyze = true
+
+    # The target contains references to generated files.
+    enable_input_discovery_for_gn_analyze = false
 
     outputs = [
       "grit/$resource_name" + "_generated.h",
@@ -217,16 +219,7 @@ template("pack_web_resources") {
       resource_name + "_generated.pak",
     ]
 
-    grit_flags = [
-      "-E",
-      "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-    ]
-
-    defines = [ "ROOT_GEN_DIR=" + rebase_path(root_gen_dir, root_build_dir) ]
-
     output_dir = invoker.output_dir
-
-    resource_ids = "//brave/browser/resources/resource_ids"
 
     forward_variables_from(invoker,
                            [

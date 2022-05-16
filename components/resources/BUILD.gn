@@ -7,12 +7,12 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/resources/brave_grit.gni")
 import("//build/config/locales.gni")
 import("//extensions/buildflags/buildflags.gni")
-import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
-grit("static_resources") {
+brave_grit("static_resources") {
   source = "brave_components_resources.grd"
 
   output_name = "brave_components_resources_new"
@@ -46,13 +46,7 @@ grit("static_resources") {
     "enable_brave_vpn=$enable_brave_vpn",
   ]
 
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-
   output_dir = "$root_gen_dir/components"
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
 repack("resources") {
@@ -121,7 +115,7 @@ repack("resources") {
   output = "$root_gen_dir/components/brave_components_resources.pak"
 }
 
-grit("strings") {
+brave_grit("strings") {
   source = "brave_components_strings.grd"
 
   outputs = [ "grit/brave_components_strings.h" ]
@@ -143,7 +137,6 @@ grit("strings") {
   }
 
   output_dir = "$root_gen_dir/components"
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
 action("about_credits") {
