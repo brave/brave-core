@@ -20,7 +20,6 @@ export default function useCloseWhenUnfocused (ref: React.RefObject<HTMLUListEle
       }
       const isFocusWithinMenu = (document.activeElement === ref.current) ||
         ref.current.contains(document.activeElement)
-      console.log('is?', isFocusWithinMenu, document.activeElement)
       if (!isFocusWithinMenu) {
         onClose()
       }

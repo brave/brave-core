@@ -72,7 +72,6 @@ export default function BraveTodaySection (props: Props) {
       }
     }
     // Setup intersection observer params
-    console.log('setting today viewport observer, should only happen once')
     return new IntersectionObserver(handleHits, intersectionOptions)
   }, [props.isPrompting])
 
@@ -98,7 +97,6 @@ export default function BraveTodaySection (props: Props) {
   // anyway.
   const shouldDisplayContent = props.isOptedIn &&
     (props.hasInteracted || props.isPrompting)
-  console.log('Brave News', { hasInteracted: props.hasInteracted, isPrompt: props.isPrompting })
 
   return (
     <BraveTodayElement.Section>
