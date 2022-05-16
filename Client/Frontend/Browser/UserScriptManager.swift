@@ -72,6 +72,14 @@ class UserScriptManager {
       reloadUserScripts()
     }
   }
+  
+  /// Whether deamp is enabled for webview
+  var isDeAMPEnabled: Bool {
+    didSet {
+      guard oldValue != isDeAMPEnabled else { return }
+      reloadUserScripts()
+    }
+  }
 
   // TODO: @JS Add other scripts to this list to avoid uneccesary calls to `reloadUserScripts()`
   /// Domain script types that are currently injected into the web-view. Will reloaded scripts if this set changes.
@@ -100,6 +108,7 @@ class UserScriptManager {
     isWebCompatibilityMediaSourceAPIEnabled: Bool,
     isMediaBackgroundPlaybackEnabled: Bool,
     isNightModeEnabled: Bool,
+    isDeAMPEnabled: Bool,
     walletProviderJS: String?
   ) {
     self.tab = tab
@@ -109,6 +118,7 @@ class UserScriptManager {
     self.isPlaylistEnabled = true
     self.isMediaBackgroundPlaybackEnabled = isMediaBackgroundPlaybackEnabled
     self.isNightModeEnabled = isNightModeEnabled
+    self.isDeAMPEnabled = isDeAMPEnabled
     self.userScriptTypes = []
     self.walletProviderJS = walletProviderJS
     
@@ -155,6 +165,24 @@ class UserScriptManager {
       injectionTime: .atDocumentStart,
       forMainFrameOnly: false,
       in: .page)
+  }()
+  
+  /// A script that detects if we're at an amp page and redirects the user to the original (canonical) version if available.
+  ///
+  /// - Note: This script is only a smaller part (2 of 3) of de-amping.
+  /// The first part is handled by an ad-block rule and enabled via a `deAmpEnabled` boolean in `AdBlockStats`
+  /// The third part is handled by debouncing amp links and handled by debouncing logic in `DebouncingResourceDownloader`
+  private let deAMPUserScript: WKUserScript? = {
+    guard let path = Bundle.main.path(forResource: "DeAMP", ofType: "js"), let source: String = try? String(contentsOfFile: path) else {
+      log.error("Failed to load cookie control user script")
+      return nil
+    }
+
+    return WKUserScript.create(
+      source: source,
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: true,
+      in: .defaultClient)
   }()
 
   // PaymentRequestUserScript is injected at document start to handle
@@ -409,6 +437,10 @@ class UserScriptManager {
       }
 
       if isNightModeEnabled, let script = NightModeScript {
+        $0.addUserScript(script)
+      }
+      
+      if isDeAMPEnabled, let script = deAMPUserScript {
         $0.addUserScript(script)
       }
       
