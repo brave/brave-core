@@ -37,9 +37,6 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** insertSiteSectionView(...);
-    *** mSiteSectionView;
-    *** mTileGroup;
-    *** updateTileGridPlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
@@ -194,8 +191,7 @@
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
-    *** showBookmarkBottomSheet(...);
-    *** addBookmarkAndShowSnackbar(...);
+    *** addOrEditBookmark(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
@@ -325,14 +321,12 @@
     *** mActivity;
     *** mNtpHeader;
     *** mRootView;
-    *** isReliabilityLoggingEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator {
     *** mScrollViewForPolicy;
     *** mNtpHeader;
     *** mRootView;
-    *** isReliabilityLoggingEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
