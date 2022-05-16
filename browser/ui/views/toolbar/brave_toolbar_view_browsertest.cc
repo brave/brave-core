@@ -7,6 +7,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/skus/common/features.h"
@@ -66,7 +67,10 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   void Init(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
-    ASSERT_NE(browser_view->toolbar(), nullptr);
+
+    toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
+    ASSERT_NE(toolbar_view_, nullptr);
+
     toolbar_button_provider_ = browser_view->toolbar_button_provider();
     ASSERT_NE(toolbar_button_provider_, nullptr);
   }
@@ -78,8 +82,15 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     return button->GetVisible();
   }
 
+  bool is_bookmark_button_shown() {
+    BookmarkButton* bookmark_button = toolbar_view_->bookmark_button();
+    DCHECK(bookmark_button);
+    return bookmark_button->GetVisible();
+  }
+
  private:
   raw_ptr<ToolbarButtonProvider> toolbar_button_provider_ = nullptr;
+  raw_ptr<BraveToolbarView> toolbar_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -169,4 +180,21 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       BookmarkButtonCanBeToggledWithPref) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // By default, the button should be shown.
+  EXPECT_TRUE(prefs->GetBoolean(kShowBookmarksButton));
+  EXPECT_TRUE(is_bookmark_button_shown());
+
+  // Hide button.
+  prefs->SetBoolean(kShowBookmarksButton, false);
+  EXPECT_FALSE(is_bookmark_button_shown());
+
+  // Reshowing the button should also work.
+  prefs->SetBoolean(kShowBookmarksButton, true);
+  EXPECT_TRUE(is_bookmark_button_shown());
 }

@@ -40,6 +40,7 @@ class BraveToolbarView : public ToolbarView,
   void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
+  void OnShowBookmarksButtonChanged();
   void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
@@ -48,6 +49,7 @@ class BraveToolbarView : public ToolbarView,
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetButtonBounds();
+  void UpdateBookmarkVisibility();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -64,6 +66,8 @@ class BraveToolbarView : public ToolbarView,
   raw_ptr<BraveVPNButton> brave_vpn_ = nullptr;
   BooleanPrefMember show_brave_vpn_button_;
 #endif
+
+  BooleanPrefMember show_bookmarks_button_;
 
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
