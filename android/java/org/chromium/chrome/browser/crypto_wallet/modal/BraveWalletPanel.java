@@ -283,25 +283,38 @@ public class BraveWalletPanel implements DialogInterface {
             return;
         }
         mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
-            SingleTokenBalanceHelper singleTokenBalanceHelper =
-                    new SingleTokenBalanceHelper(mBraveWalletPanelServices.getAssetRatioService(),
-                            mBraveWalletPanelServices.getJsonRpcService());
-            singleTokenBalanceHelper.getPerAccountBalances(
-                    chainId, "", "eth", 18, selectedAccount, () -> {
-                        Double thisAccountFiatBalance = Utils.getOrDefault(
-                                singleTokenBalanceHelper.getPerAccountFiatBalance(),
-                                selectedAccount[0].address, 0.0d);
-                        String fiatBalanceString = String.format(
-                                Locale.getDefault(), "$%,.2f", thisAccountFiatBalance);
+            mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
+                SingleTokenBalanceHelper singleTokenBalanceHelper = new SingleTokenBalanceHelper(
+                        mBraveWalletPanelServices.getAssetRatioService(),
+                        mBraveWalletPanelServices.getJsonRpcService());
+                String chainSymbol = "ETH";
+                int chainDecimals = 18;
+                for (NetworkInfo chain : chains) {
+                    if (chainId.equals(chain.chainId) && Utils.isCustomNetwork(chainId)) {
+                        chainSymbol = chain.symbol;
+                        chainDecimals = chain.decimals;
+                        break;
+                    }
+                }
+                final String chainSymbolFinal = chainSymbol;
+                singleTokenBalanceHelper.getPerAccountBalances(chainId, "",
+                        chainSymbol.toLowerCase(Locale.getDefault()), chainDecimals,
+                        selectedAccount, () -> {
+                            Double thisAccountFiatBalance = Utils.getOrDefault(
+                                    singleTokenBalanceHelper.getPerAccountFiatBalance(),
+                                    selectedAccount[0].address, 0.0d);
+                            String fiatBalanceString = String.format(
+                                    Locale.getDefault(), "$%,.2f", thisAccountFiatBalance);
 
-                        Double thisAccountCryptoBalance = Utils.getOrDefault(
-                                singleTokenBalanceHelper.getPerAccountCryptoBalance(),
-                                selectedAccount[0].address, 0.0d);
-                        String cryptoBalanceString = String.format(
-                                Locale.getDefault(), "%.4f %s", thisAccountCryptoBalance, "ETH");
-                        mAmountAsset.setText(cryptoBalanceString);
-                        mAmountFiat.setText(fiatBalanceString);
-                    });
+                            Double thisAccountCryptoBalance = Utils.getOrDefault(
+                                    singleTokenBalanceHelper.getPerAccountCryptoBalance(),
+                                    selectedAccount[0].address, 0.0d);
+                            String cryptoBalanceString = String.format(Locale.getDefault(),
+                                    "%.4f %s", thisAccountCryptoBalance, chainSymbolFinal);
+                            mAmountAsset.setText(cryptoBalanceString);
+                            mAmountFiat.setText(fiatBalanceString);
+                        });
+            });
         });
     }
 
