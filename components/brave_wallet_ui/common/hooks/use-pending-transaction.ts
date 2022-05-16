@@ -145,9 +145,15 @@ export const usePendingTransactions = () => {
     , [transactionDetails])
 
   const isConfirmButtonDisabled = React.useMemo(() => {
+    if (!transactionDetails) {
+      return true
+    }
+
     return (
       !!transactionDetails?.sameAddressError ||
       !!transactionDetails?.contractAddressError ||
+      transactionDetails?.insufficientFundsForGasError === undefined ||
+      transactionDetails?.insufficientFundsError === undefined ||
       transactionDetails?.insufficientFundsForGasError ||
       transactionDetails?.insufficientFundsError ||
       !!transactionDetails?.missingGasLimitError
