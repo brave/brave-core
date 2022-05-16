@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface NSURL (Utilities)
 
++ (nullable NSURL*)URLFromIDNString:(NSString*)idnString
+    NS_SWIFT_NAME(init(idnString:));
+
 /// Returns the domain registry
 ///  google.co.uk -> co.uk
 ///  google.com -> com
