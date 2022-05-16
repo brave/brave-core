@@ -71,6 +71,7 @@ source_set("solana_utils") {
   ]
 
   deps = [
+    ":common_constants",
     "//base",
     "//brave/third_party/bitcoin-core",  # for base58
   ]
