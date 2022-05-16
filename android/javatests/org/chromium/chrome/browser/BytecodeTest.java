@@ -449,8 +449,8 @@ public class BytecodeTest {
                 StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class,
-                OneshotSupplier.class, OmniboxPedalDelegate.class, boolean.class));
+                SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
+                OmniboxPedalDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -644,8 +644,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabContentManager"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mOverviewModeBehaviorSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
         Assert.assertTrue(

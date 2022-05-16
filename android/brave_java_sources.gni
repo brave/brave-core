@@ -304,7 +304,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarViewBinder.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/SearchAccelerator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/ShareButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarModel.java",

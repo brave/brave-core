@@ -32,7 +32,6 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -111,7 +110,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private Supplier<Boolean> mIsWarmOnResumeSupplier;
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
-    private OneshotSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
     private SnackbarManager mSnackbarManager;
 
     // Own members.
@@ -154,9 +152,8 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull BottomSheetController bottomSheetController,
             @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabContentManager tabContentManager,
-            @NonNull TabCreatorManager tabCreatorManager,
-            @NonNull OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            @NonNull SnackbarManager snackbarManager, JankTracker jankTracker,
+            @NonNull TabCreatorManager tabCreatorManager, @NonNull SnackbarManager snackbarManager,
+            JankTracker jankTracker,
             @NonNull Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
@@ -173,9 +170,9 @@ public class BraveToolbarManager extends ToolbarManager {
                 isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
                 appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
-                overviewModeBehaviorSupplier, snackbarManager, jankTracker,
-                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
-                omniboxPedalDelegate, initializeWithIncognitoColors);
+                snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
+                tabReparentingControllerSupplier, omniboxPedalDelegate,
+                initializeWithIncognitoColors);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -222,7 +219,7 @@ public class BraveToolbarManager extends ToolbarManager {
                         mBottomSheetController, mActivityLifecycleDispatcher,
                         mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,
                         mCompositorViewHolder, mCompositorViewHolder::getDynamicResourceLoader,
-                        mTabCreatorManager, mShareDelegateSupplier, mOverviewModeBehaviorSupplier,
+                        mTabCreatorManager, mShareDelegateSupplier, mLayoutStateProviderSupplier,
                         mSnackbarManager);
             }
             mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
