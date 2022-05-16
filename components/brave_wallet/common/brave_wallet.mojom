@@ -911,7 +911,7 @@ interface EthTxManagerProxy {
   GetGasEstimation1559() => (GasEstimation1559? estimation);
 
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
-  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error_union, string error_message);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error, string error_message);
 };
 
 interface SolanaTxManagerProxy {
@@ -942,7 +942,7 @@ interface SolanaTxManagerProxy {
 
 interface FilTxManagerProxy {
   // Publishes signed transaction.
-  ProcessFilHardwareSignature(string tx_meta_id, string signed_message) => (bool status, ProviderErrorUnion error, string error_message);
+  ProcessFilHardwareSignature(string tx_meta_id, string signed_message) => (bool status, ProviderErrorUnion error_union, string error_message);
 };
 
 interface BraveWalletServiceObserver {

@@ -69,7 +69,11 @@ export async function signTrezorTransaction (
     }
     return { success: false, error: error }
   }
-  const { v, r, s } = signed.payload as EthereumSignedTx
+  const ethereumSignedTx = signed.payload as EthereumSignedTx
+  if (!ethereumSignedTx) {
+    return { success: false }
+  }
+  const { v, r, s } = ethereumSignedTx
   const result =
     await apiProxy.ethTxManagerProxy.processHardwareSignature(txInfo.id, v, r, s)
   if (!result.status) {
@@ -129,8 +133,11 @@ export async function signLedgerFilecoinTransaction (
     }
     return { success: false, error: error, code: code }
   }
-
   const signedMessage = signed.payload as SignedLotusMessage
+  if (!signedMessage) {
+    return { success: false }
+  }
+
   const result = await apiProxy.filTxManagerProxy.processFilHardwareSignature(txInfo.id, JSON.stringify(signedMessage))
   if (!result || !result.status) {
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
