@@ -11,12 +11,13 @@
 #include "base/auto_reset.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_piece.h"
+#include "net/base/net_export.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace net {
 
 // Implements partitioning support for structures in TransportSecurityState.
-class PartitionedHostStateMapBase {
+class NET_EXPORT PartitionedHostStateMapBase {
  public:
   PartitionedHostStateMapBase();
   ~PartitionedHostStateMapBase();
@@ -26,7 +27,7 @@ class PartitionedHostStateMapBase {
       delete;
 
   // Stores scoped partition hash for use in subsequent calls.
-  base::AutoReset<absl::optional<std::string>> SetPartitionHash(
+  base::AutoReset<absl::optional<std::string>> SetScopedPartitionHash(
       absl::optional<std::string> partition_hash);
   // Returns true if |partition_hash_| is set. The value may be empty.
   bool HasPartitionHash() const;
@@ -52,7 +53,7 @@ class PartitionedHostStateMapBase {
 // std::map interface just enough to replace unpartitioned maps in
 // TransportSecurityState.
 template <typename T>
-class PartitionedHostStateMap : public PartitionedHostStateMapBase {
+class NET_EXPORT PartitionedHostStateMap : public PartitionedHostStateMapBase {
  public:
   using iterator = typename T::iterator;
   using const_iterator = typename T::const_iterator;

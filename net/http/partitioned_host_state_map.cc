@@ -17,7 +17,7 @@ PartitionedHostStateMapBase::PartitionedHostStateMapBase() = default;
 PartitionedHostStateMapBase::~PartitionedHostStateMapBase() = default;
 
 base::AutoReset<absl::optional<std::string>>
-PartitionedHostStateMapBase::SetPartitionHash(
+PartitionedHostStateMapBase::SetScopedPartitionHash(
     absl::optional<std::string> partition_hash) {
   CHECK(!partition_hash || partition_hash->empty() ||
         partition_hash->size() == crypto::kSHA256Length);
@@ -36,6 +36,9 @@ bool PartitionedHostStateMapBase::IsPartitionHashValid() const {
 std::string PartitionedHostStateMapBase::GetKeyWithPartitionHash(
     const std::string& k) const {
   CHECK(IsPartitionHashValid());
+  if (k == *partition_hash_) {
+    return k;
+  }
   return base::StrCat({GetHalfKey(k), GetHalfKey(*partition_hash_)});
 }
 

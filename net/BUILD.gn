@@ -1,0 +1,28 @@
+import("//brave/components/tor/buildflags/buildflags.gni")
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "http/partitioned_host_state_map_unittest.cc",
+    "http/transport_security_state_unittest.cc",
+  ]
+
+  if (enable_tor) {
+    sources += [
+      "proxy_resolution/configured_proxy_resolution_service_unittest.cc",
+      "proxy_resolution/proxy_config_service_tor_unittest.cc",
+    ]
+  }
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//net/http:transport_security_state_unittest_data",
+    "//net/http:transport_security_state_unittest_data_default",
+    "//net/tools/huffman_trie:huffman_trie_generator_sources",
+    "//testing/gtest",
+    "//url",
+  ]
+}

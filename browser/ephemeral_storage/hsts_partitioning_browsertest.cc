@@ -7,6 +7,7 @@
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -14,6 +15,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -22,6 +24,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -133,6 +136,60 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     }
   }
 
+  void NetworkContextAddHSTS(const std::string& host) {
+    content::StoragePartition* partition =
+        browser()->profile()->GetDefaultStoragePartition();
+    base::RunLoop run_loop;
+    partition->GetNetworkContext()->AddHSTS(
+        host, base::Time::Now() + base::Days(1), false, run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  bool NetworkContextIsHSTSActiveForHost(const std::string& host) {
+    content::StoragePartition* partition =
+        browser()->profile()->GetDefaultStoragePartition();
+    base::RunLoop run_loop;
+    bool result = false;
+    partition->GetNetworkContext()->IsHSTSActiveForHost(
+        host,
+        base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
+          result = is_hsts_active;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result;
+  }
+
+  base::Value NetworkContextGetHSTSState(const std::string& host) {
+    content::StoragePartition* partition =
+        browser()->profile()->GetDefaultStoragePartition();
+    base::RunLoop run_loop;
+    base::Value result;
+    partition->GetNetworkContext()->GetHSTSState(
+        host,
+        base::BindLambdaForTesting([&run_loop, &result](base::Value sts_state) {
+          result = std::move(sts_state);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result;
+  }
+
+  bool NetworkContextDeleteDynamicDataForHost(const std::string& host) {
+    content::StoragePartition* partition =
+        browser()->profile()->GetDefaultStoragePartition();
+    base::RunLoop run_loop;
+    bool result = false;
+    partition->GetNetworkContext()->DeleteDynamicDataForHost(
+        host,
+        base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
+          result = is_hsts_active;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result;
+  }
+
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
@@ -225,6 +282,11 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSIsPartitioned) {
     ExpectHSTSState(c_com_inside_b_com_rfh, "b.com", false);
     ExpectHSTSState(c_com_inside_b_com_rfh, "c.com", false);
   }
+
+  // No data should be available via unpartitioned API.
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("a.com"));
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("b.com"));
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("c.com"));
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
@@ -246,6 +308,9 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
   ASSERT_TRUE(sub_a_com_rfh);
 
   ExpectHSTSState(sub_a_com_rfh, "b.com", true);
+
+  // No data should be available via unpartitioned API.
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("b.com"));
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
@@ -265,6 +330,9 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh2);
   EXPECT_TRUE(a_com_rfh2->GetLastCommittedURL().SchemeIsCryptographic());
+
+  // Unpartitioned API should see a.com HSTS state.
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("a.com"));
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSIsCleared) {
@@ -329,7 +397,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
-                       HSTSIsIgnoredInSandbox) {
+                       HSTSIsStoredInSandbox) {
   GURL a_com_url(
       "http://a.com/set-header?"
       "Content-Security-Policy: sandbox allow-scripts");
@@ -338,11 +406,18 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   ExpectHSTSState(a_com_rfh, "a.com", false);
   SetHSTS(a_com_rfh, "a.com");
-  ExpectHSTSState(a_com_rfh, "a.com", false);
+  ExpectHSTSState(a_com_rfh, "a.com", true);
 
   ExpectHSTSState(a_com_rfh, "b.com", false);
   SetHSTS(a_com_rfh, "b.com");
-  ExpectHSTSState(a_com_rfh, "b.com", false);
+  ExpectHSTSState(a_com_rfh, "b.com", true);
+
+  // Load a.com in another tab, expect HSTS is applied.
+  auto* a_com_rfh2 = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_TRUE(a_com_rfh2);
+  EXPECT_TRUE(a_com_rfh2->GetLastCommittedURL().SchemeIsCryptographic());
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
@@ -365,6 +440,11 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   // Expect c.com HSTS state is also available in the main frame.
   ExpectHSTSState(a_com_rfh, "c.com", true);
+
+  // No data should be available via unpartitioned API.
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("a.com"));
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("b.com"));
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("c.com"));
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
@@ -382,10 +462,141 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh);
   EXPECT_TRUE(a_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
+
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("a.com"));
 }
 
 IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSPreloadWorks) {
   ExpectPreloadWorks();
+}
+
+IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, NetworkContextAPI) {
+  // Load a.com and set b.com, c.bom HSTS inside a.com.
+  GURL a_com_url("http://a.com/iframe.html");
+  auto* a_com_rfh = ui_test_utils::NavigateToURL(browser(), a_com_url);
+  ASSERT_TRUE(a_com_rfh);
+  EXPECT_EQ(a_com_rfh->GetLastCommittedURL(), a_com_url);
+
+  SetHSTS(a_com_rfh, "a.com");
+  ExpectHSTSState(a_com_rfh, "a.com", true);
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("a.com"));
+  EXPECT_TRUE(
+      NetworkContextGetHSTSState("a.com").FindIntKey("dynamic_upgrade_mode"));
+
+  SetHSTS(a_com_rfh, "b.com");
+  ExpectHSTSState(a_com_rfh, "b.com", true);
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("b.com"));
+  EXPECT_FALSE(
+      NetworkContextGetHSTSState("b.com").FindIntKey("dynamic_upgrade_mode"));
+
+  GURL b_com_url("http://b.com/iframe.html");
+  auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_TRUE(b_com_rfh);
+  EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
+
+  SetHSTS(b_com_rfh, "a.com");
+  ExpectHSTSState(b_com_rfh, "a.com", true);
+  SetHSTS(b_com_rfh, "b.com");
+  ExpectHSTSState(b_com_rfh, "b.com", true);
+
+  EXPECT_TRUE(NetworkContextDeleteDynamicDataForHost("a.com"));
+  ExpectHSTSState(a_com_rfh, "a.com", false);
+  ExpectHSTSState(b_com_rfh, "a.com", false);
+  ExpectHSTSState(b_com_rfh, "b.com", true);
+}
+
+IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
+                       NetworkContextAddHSTS) {
+  NetworkContextAddHSTS("sub.a.com");
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("sub.a.com"));
+  EXPECT_TRUE(NetworkContextGetHSTSState("sub.a.com")
+                  .FindIntKey("dynamic_upgrade_mode"));
+
+  GURL a_com_url("http://sub.a.com/iframe.html");
+  auto* a_com_rfh = ui_test_utils::NavigateToURL(browser(), a_com_url);
+  ASSERT_TRUE(a_com_rfh);
+  EXPECT_TRUE(a_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
+}
+
+// Test fixture to ensure a.com domain partitioned inside a.com will reuse old
+// format HSTS data.
+class HSTSSameDomainPartitionUsesOldFormatBrowserTest
+    : public HSTSPartitioningBrowserTestBase {
+ public:
+  HSTSSameDomainPartitionUsesOldFormatBrowserTest() {
+    if (IsPreTest()) {
+      scoped_feature_list_.InitAndDisableFeature(
+          net::features::kBravePartitionHSTS);
+    } else {
+      scoped_feature_list_.InitAndEnableFeature(
+          net::features::kBravePartitionHSTS);
+    }
+  }
+
+  static bool IsPreTest() {
+    const ::testing::TestInfo* const test_info =
+        ::testing::UnitTest::GetInstance()->current_test_info();
+    return base::StartsWith(test_info->name(), "PRE_");
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(HSTSSameDomainPartitionUsesOldFormatBrowserTest,
+                       PRE_UnpartitionedHSTSIsUsed) {
+  GURL a_com_url("http://a.com/simple.html");
+  auto* a_com_rfh = ui_test_utils::NavigateToURL(browser(), a_com_url);
+  ASSERT_TRUE(a_com_rfh);
+  EXPECT_EQ(a_com_rfh->GetLastCommittedURL(), a_com_url);
+
+  ExpectHSTSState(a_com_rfh, "a.com", false);
+  // This will be stored without partitioning, becase the feature is disabled.
+  // key = hash(a.com).
+  SetHSTS(a_com_rfh, "a.com");
+  ExpectHSTSState(a_com_rfh, "a.com", true);
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("a.com"));
+
+  ExpectHSTSState(a_com_rfh, "sub.b.com", false);
+  // This will be stored without partitioning, becase the feature is disabled.
+  // key = hash(sub.b.com).
+  SetHSTS(a_com_rfh, "sub.b.com");
+  ExpectHSTSState(a_com_rfh, "sub.b.com", true);
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("sub.b.com"));
+}
+
+IN_PROC_BROWSER_TEST_F(HSTSSameDomainPartitionUsesOldFormatBrowserTest,
+                       UnpartitionedHSTSIsUsed) {
+  // a.com should be HSTS-enabled, because it was stored in the old format for
+  // a.com host: key = hash(a.com). When partitioning is enabled and
+  // hashes for the domain and for the partition are same, we use domain hash
+  // directly without appending partition hash.
+  // This will try to look for key = hash(a.com).
+  GURL a_com_url("http://a.com/simple.html");
+  auto* a_com_rfh = ui_test_utils::NavigateToURL(browser(), a_com_url);
+  ASSERT_TRUE(a_com_rfh);
+  EXPECT_TRUE(a_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("a.com"));
+
+  // This will try to look for key = hash(b.com).
+  // It should not have HSTS enabled, because no data was stored for the key.
+  GURL b_com_url("http://b.com/simple.html");
+  auto* b_com_rfh = ui_test_utils::NavigateToURL(browser(), b_com_url);
+  ASSERT_TRUE(b_com_rfh);
+  EXPECT_FALSE(b_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("b.com"));
+
+  // This will try to look for key = hash(sub.b.com)/2 + hash(b.com)/2.
+  // It should not have HSTS enabled, because no data was stored for the key.
+  GURL sub_b_com_url("http://sub.b.com/simple.html");
+  auto* sub_b_com_rfh = ui_test_utils::NavigateToURL(browser(), sub_b_com_url);
+  ASSERT_TRUE(sub_b_com_rfh);
+  EXPECT_FALSE(sub_b_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
+  // This should return false, because new format looks into etldp1("sub.b.com")
+  // partition, which is equal to "b.com", but no such data was stored.
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("sub.b.com"));
 }
 
 class HSTSPartitioningDisabledBrowserTest
@@ -409,14 +620,17 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest,
   EXPECT_EQ(a_com_rfh->GetLastCommittedURL(), a_com_url);
 
   ExpectHSTSState(a_com_rfh, "a.com", false);
+  EXPECT_FALSE(NetworkContextIsHSTSActiveForHost("a.com"));
 
   ExpectHSTSState(a_com_rfh, "b.com", false);
   SetHSTS(a_com_rfh, "b.com");
   ExpectHSTSState(a_com_rfh, "b.com", true);
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("b.com"));
 
   ExpectHSTSState(a_com_rfh, "c.com", false);
   SetHSTS(a_com_rfh, "c.com");
   ExpectHSTSState(a_com_rfh, "c.com", true);
+  EXPECT_TRUE(NetworkContextIsHSTSActiveForHost("c.com"));
 
   // Load b.com in another tab and expect HSTS is applied.
   GURL b_com_url("http://b.com/simple.html");
