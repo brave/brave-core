@@ -1,0 +1,11 @@
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SHARING_HUB_SHARING_HUB_MODEL_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SHARING_HUB_SHARING_HUB_MODEL_H_
+
+#define PopulateFirstPartyActions PopulateFirstPartyActions(); \
+void PopulateFirstPartyActions_Chromium \
+
+#include "src/chrome/browser/sharing_hub/sharing_hub_model.h"
+
+#undef PopulateFirstPartyActions
+
+#endif // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SHARING_HUB_SHARING_HUB_MODEL_H_
