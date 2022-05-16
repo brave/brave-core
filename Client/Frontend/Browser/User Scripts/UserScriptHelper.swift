@@ -6,6 +6,9 @@
 import Foundation
 import WebKit
 import Data
+import BraveShared
+import BraveCore
+import Shared
 
 /// A class that helps in handling user scripts.
 class UserScriptHelper {

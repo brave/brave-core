@@ -314,6 +314,7 @@ class Tab: NSObject {
         isWebCompatibilityMediaSourceAPIEnabled: Preferences.Playlist.webMediaSourceCompatibility.value,
         isMediaBackgroundPlaybackEnabled: Preferences.General.mediaAutoBackgrounding.value,
         isNightModeEnabled: Preferences.General.nightModeEnabled.value,
+        isDeAMPEnabled: Preferences.Shields.autoRedirectAMPPages.value,
         walletProviderJS: walletProviderJS
       )
       tabDelegate?.tab?(self, didCreateWebView: webView)

@@ -999,6 +999,7 @@
 		7DF911DF27726E5E00EF0D8B /* BuyTokenStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */; };
 		8C99379028031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C99378F28031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift */; };
 		8C99379328031BF7001CD6E9 /* debouncing.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C99379228031BF7001CD6E9 /* debouncing.json */; };
+		8C2A08AF281321DA0070BA3F /* DeAMP.js in Resources */ = {isa = PBXBuildFile; fileRef = 8C2A08AE281321DA0070BA3F /* DeAMP.js */; };
 		8CB0FD9A27DAB06E00707490 /* FarblingProtection.js in Resources */ = {isa = PBXBuildFile; fileRef = 8CB0FD9927DAB06E00707490 /* FarblingProtection.js */; };
 		8CB0FDA827DB9D5400707490 /* ScriptFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FDA727DB9D5300707490 /* ScriptFactory.swift */; };
 		8CB0FDBA27E0EC1C00707490 /* UserScriptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0FDB927E0EC1B00707490 /* UserScriptHelper.swift */; };
@@ -2807,6 +2808,7 @@
 		7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenStoreTest.swift; sourceTree = "<group>"; };
 		8C99378F28031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncingResourceDownloaderTests.swift; sourceTree = "<group>"; };
 		8C99379228031BF7001CD6E9 /* debouncing.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = debouncing.json; sourceTree = "<group>"; };
+		8C2A08AE281321DA0070BA3F /* DeAMP.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = DeAMP.js; sourceTree = "<group>"; };
 		8CB0FD9927DAB06E00707490 /* FarblingProtection.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FarblingProtection.js; sourceTree = "<group>"; tabWidth = 2; };
 		8CB0FDA727DB9D5300707490 /* ScriptFactory.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ScriptFactory.swift; sourceTree = "<group>"; tabWidth = 2; };
 		8CB0FDB927E0EC1B00707490 /* UserScriptHelper.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = UserScriptHelper.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -5894,6 +5896,7 @@
 				8CB0FDD727E652B500707490 /* nacl.min.js */,
 				8CB0FD9927DAB06E00707490 /* FarblingProtection.js */,
 				271FD0F027C7E2FF0037DCC5 /* WalletEthereumProvider.js */,
+				8C2A08AE281321DA0070BA3F /* DeAMP.js */,
 			);
 			path = UserScripts;
 			sourceTree = "<group>";
@@ -7420,6 +7423,7 @@
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */,
 				5DE5250D218CE92C000DFAA6 /* block-ads.json in Resources */,
+				8C2A08AF281321DA0070BA3F /* DeAMP.js in Resources */,
 				F35B8D2B1D6380EA008E3D61 /* SessionRestore.html in Resources */,
 				5E4845C022DE381200372022 /* WindowRenderHelper.js in Resources */,
 				3BC659591E5BA505006D560F /* top_sites.json in Resources */,

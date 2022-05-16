@@ -198,6 +198,20 @@ extension AdBlockStats {
       
       cssRules += "\(key){" + subRules + " !important}\n"
     }
+
+    var injectedScript = model.injectedScript
+
+    if !injectedScript.isEmpty, Preferences.Shields.autoRedirectAMPPages.value {
+      injectedScript = [
+        /// This boolean is used by a script injected by cosmetic filters and enables that script via this boolean
+        /// The script is found here: https://github.com/brave/adblock-resources/blob/master/resources/de-amp.js
+        /// - Note: This script is only a smaller part (1 of 3) of de-amping:
+        /// The second part is handled by an inected script that redirects amp pages to their canonical links
+        /// The third part is handled by debouncing amp links and handled by debouncing rules
+        "const deAmpEnabled = true;",
+        injectedScript
+      ].joined(separator: "\n")
+    }
     
     return """
     (function() {
@@ -220,7 +234,7 @@ extension AdBlockStats {
       head.appendChild(style);
       
       (function(){
-        \(model.injectedScript)
+        \(injectedScript)
       })();
     })();
     """
