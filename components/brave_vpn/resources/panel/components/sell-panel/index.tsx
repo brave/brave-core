@@ -4,6 +4,7 @@ import { getLocale } from '../../../../../common/locale'
 import { useSelector } from '../../state/hooks'
 import * as S from './style'
 import Button from '$web-components/button'
+import getPanelBrowserAPI from '../../api/panel_browser_api'
 
 function SellPanel () {
   const productUrls = useSelector(state => state.productUrls)
@@ -18,8 +19,7 @@ function SellPanel () {
 
   const handleClick = (intent: string) => {
     if (!productUrls) return
-    const url = new URL(`?intent=${intent}&product=vpn`, productUrls.manage)
-    chrome.tabs.create({ url: url.href })
+    getPanelBrowserAPI().panelHandler.openVpnUI(intent)
   }
 
   return (

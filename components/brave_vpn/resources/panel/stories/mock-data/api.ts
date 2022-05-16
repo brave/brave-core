@@ -8,7 +8,8 @@ BraveVPN.setPanelBrowserApiForTesting({
   },
   panelHandler: {
     showUI: doNothing,
-    closeUI: doNothing
+    closeUI: doNothing,
+    openVpnUI: doNothing
   },
   serviceHandler: {
     addObserver: doNothing,

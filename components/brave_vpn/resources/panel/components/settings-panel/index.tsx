@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 import { getLocale } from '../../../../../common/locale'
-import { useSelector } from '../../state/hooks'
 import * as S from './style'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import getPanelBrowserAPI from '../../api/panel_browser_api'
 
 interface Props {
   closeSettingsPanel: React.MouseEventHandler<HTMLButtonElement>
@@ -11,11 +11,8 @@ interface Props {
 }
 
 function SettingsPanel (props: Props) {
-  const productUrls = useSelector(state => state.productUrls)
-
   const handleClick = (entry: string) => {
-    if (!productUrls) return
-    chrome.tabs.create({ url: productUrls?.[entry] })
+    getPanelBrowserAPI().panelHandler.openVpnUI(entry)
   }
 
   return (

@@ -114,7 +114,7 @@ function ContactSupport (props: Props) {
   }
 
   const handlePrivacyPolicyClick = () => {
-    chrome.tabs.create({ url: 'https://brave.com/privacy/browser/#vpn' })
+    getPanelBrowserAPI().panelHandler.openVpnUI('privacy')
   }
 
   return (

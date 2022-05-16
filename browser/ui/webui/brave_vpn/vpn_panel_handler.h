@@ -39,6 +39,7 @@ class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
   // brave_vpn::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void OpenVpnUI(const std::string& type) override;
 
  private:
   mojo::Receiver<brave_vpn::mojom::PanelHandler> receiver_;

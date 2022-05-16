@@ -4,15 +4,14 @@ import Button from '$web-components/button'
 import * as S from './style'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
-import { useSelector } from '../../state/hooks'
 import ContactSupport from '../contact-support'
+import getPanelBrowserAPI from '../../api/panel_browser_api'
 
 function ErrorSubscriptionFailed () {
-  const productUrls = useSelector(state => state.productUrls)
   const [isContactSupportVisible, setContactSupportVisible] = React.useState(false)
 
   const handleEditPayment = () => {
-    chrome.tabs.create({ url: productUrls?.manage })
+    getPanelBrowserAPI().panelHandler.openVpnUI('manage')
   }
 
   const handleContactSupport = () => setContactSupportVisible(true)
