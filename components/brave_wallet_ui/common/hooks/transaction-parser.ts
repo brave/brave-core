@@ -54,6 +54,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   valueExact: string
   symbol: string
   decimals: number
+  insufficientFundsForGasError: boolean
   insufficientFundsError: boolean
   contractAddressError?: string
   sameAddressError?: string
@@ -256,7 +257,8 @@ export function useTransactionParser (
             .format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
-          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(address),
           sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
@@ -297,7 +299,8 @@ export function useTransactionParser (
           valueExact: '1',
           symbol: token?.symbol ?? '',
           decimals: 0,
-          insufficientFundsError: insufficientNativeFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
+          insufficientFundsError: false,
           erc721BlockchainToken: token,
           erc721TokenId: tokenID && `#${Amount.normalize(tokenID)}`,
           contractAddressError: checkForContractAddressError(toAddress),
@@ -341,7 +344,8 @@ export function useTransactionParser (
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
           isApprovalUnlimited: amountWrapped.eq(MAX_UINT256),
-          insufficientFundsError: insufficientNativeFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
+          insufficientFundsError: false,
           sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
         } as ParsedTransaction
@@ -386,7 +390,8 @@ export function useTransactionParser (
             .format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 9,
-          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
           sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
           ...feeDetails
@@ -430,6 +435,8 @@ export function useTransactionParser (
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: new Amount(value)
             .plus(gasFee)
+            .gt(accountNativeBalance),
+          insufficientFundsForGasError: new Amount(gasFee)
             .gt(accountNativeBalance),
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           ...feeDetails
