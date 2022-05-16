@@ -10,13 +10,9 @@
 
 #include "base/environment.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/web_contents.h"
-#include "brave/browser/brave_talk/brave_talk_service.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 
-namespace extensions::api {
+namespace extensions {
+namespace api {
 
 ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -28,24 +24,5 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
   return RespondNow(OneArgument(base::Value(true)));
 }
 
-ExtensionFunction::ResponseAction
-BraveTalkBeginAdvertiseShareDisplayMediaFunction::Run() {
-  auto* contents = GetSenderWebContents();
-  if (!contents) return RespondNow(NoArguments());
-
-  auto* service = brave_talk::BraveTalkServiceFactory::GetForContext(browser_context());
-  service->GetDeviceID(contents, base::BindOnce(&BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived, this));
-
-  return RespondLater();
-}
-
-void BraveTalkBeginAdvertiseShareDisplayMediaFunction::OnDeviceIDReceived(const std::string& device_id) {
-  if (device_id.empty()) {
-    RespondWithError("No deviceId provided");
-    return;
-  }
-
-  Respond(OneArgument(base::Value(device_id)));
-}
-
+}  // namespace api
 }  // namespace extensions

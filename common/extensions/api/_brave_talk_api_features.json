@@ -3,19 +3,12 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 {
-    "braveTalk": {
-        "contexts": [
-            "webui",
-            "web_page"
-        ],
-        "matches": ["<all_urls>"],
-        "channel": "stable",
-        "dependencies": []
-    },
-    "braveTalk.isSupported": {
-        "contexts": ["webui"],
-        "channel": "stable",
-        "matches": ["chrome://newtab/*"],
-        "dependencies": []
-    }
+  "braveTalk": {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "dependencies": [],
+    "matches": [
+      "chrome://newtab/*"
+    ]
+ }
 }
