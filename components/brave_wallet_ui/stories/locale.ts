@@ -443,6 +443,7 @@ provideStrings({
   // Send Input Errors
   braveWalletNotValidFilAddress: 'Not a valid FIL address',
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
+  braveWalletNotValidSolAddress: 'Not a valid SOL address',
   braveWalletNotValidAddress: 'Not a valid address',
   braveWalletNotDomain: 'Domain is not registered',
   braveWalletSameAddressError: 'The receiving address is your own address',

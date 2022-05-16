@@ -9,6 +9,7 @@ import {
   BraveWallet,
   GetEthAddrReturnInfo,
   GetChecksumEthAddressReturnInfo,
+  IsBase58EncodedSolanaPubkeyReturnInfo,
   AmountValidationErrorType,
   WalletState,
   SendFilTransactionParams
@@ -57,7 +58,8 @@ export default function useSend () {
   const {
     findENSAddress,
     findUnstoppableDomainAddress,
-    getChecksumEthAddress
+    getChecksumEthAddress,
+    isBase58EncodedSolanaPubkey
   } = useLib()
   const { sendAssetOptions } = useAssets()
 
@@ -194,15 +196,46 @@ export default function useSend () {
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     setToAddress(toAddressOrUrl)
 
-    if (toAddressOrUrl.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+    // Do nothing if value is an empty string
+    if (toAddressOrUrl === '') {
       setAddressWarning('')
-      setAddressError(getLocale('braveWalletSameAddressError'))
+      setAddressError('')
       return
     }
 
-    setAddressWarning('')
-    setAddressError('')
-  }, [selectedAccount])
+    // Check if value is the same as the sending address
+    if (toAddressOrUrl.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+      setAddressError(getLocale('braveWalletSameAddressError'))
+      setAddressWarning('')
+      return
+    }
+
+    // Check if value is a Tokens Contract Address
+    if (fullTokenList.some(token => token.contractAddress.toLowerCase() === toAddressOrUrl.toLowerCase())) {
+      setAddressError(getLocale('braveWalletContractAddressError'))
+      setAddressWarning('')
+      return
+    }
+
+    // Check if value is a Base58 Encoded Solana Pubkey
+    isBase58EncodedSolanaPubkey(toAddressOrUrl).then((value: IsBase58EncodedSolanaPubkeyReturnInfo) => {
+      const { result } = value
+
+      // If result is false we show address error
+      if (!result) {
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletNotValidSolAddress'))
+        return
+      }
+      setAddressWarning('')
+      setAddressError('')
+    }).catch(e => {
+      console.log(e)
+      // Reset state back to normal
+      setAddressWarning('')
+      setAddressError('')
+    })
+  }, [selectedAccount, fullTokenList])
 
   const submitSend = React.useCallback(() => {
     if (!selectedSendAsset) {
@@ -252,7 +285,7 @@ export default function useSend () {
         from: selectedAccount.address,
         to: toAddress,
         value: new Amount(sendAmount)
-        .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
+          .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
         coin: selectedAccount.coin
       } as SendFilTransactionParams))
       return
