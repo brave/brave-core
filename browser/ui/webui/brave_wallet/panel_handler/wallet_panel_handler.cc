@@ -9,6 +9,7 @@
 
 #include "base/callback.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "content/public/browser/web_contents.h"
 
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
@@ -57,4 +58,7 @@ void WalletPanelHandler::CancelConnectToSite() {
 void WalletPanelHandler::SetCloseOnDeactivate(bool close) {
   if (close_on_deactivation_)
     close_on_deactivation_.Run(close);
+}
+void WalletPanelHandler::Focus() {
+  webui_controller_->web_ui()->GetWebContents()->Focus();
 }
