@@ -22,7 +22,7 @@ BraveTalkService::~BraveTalkService() {
 
 void BraveTalkService::GetDeviceID(
     content::WebContents* contents,
-    base::OnceCallback<void(std::string)> callback) {
+    base::OnceCallback<void(const std::string&)> callback) {
   if (on_received_device_id_)
     std::move(on_received_device_id_).Run("");
 

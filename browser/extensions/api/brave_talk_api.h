@@ -36,7 +36,7 @@ class BraveTalkBeginAdvertiseShareDisplayMediaFunction
   ResponseAction Run() override;
 
  private:
-  void OnDeviceIDReceived(std::string device_id);
+  void OnDeviceIDReceived(const std::string& device_id);
 };
 
 }  // namespace api

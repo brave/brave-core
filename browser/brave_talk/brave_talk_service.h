@@ -21,7 +21,7 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
   ~BraveTalkService() override;
 
   void GetDeviceID(content::WebContents* contents,
-                   base::OnceCallback<void(std::string)> callback);
+                   base::OnceCallback<void(const std::string&)> callback);
 
   void DidStartNavigation(content::NavigationHandle* handle) override;
 
@@ -33,7 +33,7 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   share_tab_button::ShareTabButton* share_tab_button();
 
-  base::OnceCallback<void(std::string)> on_received_device_id_;
+  base::OnceCallback<void(const std::string&)> on_received_device_id_;
 };
 }  // namespace brave_talk
 
