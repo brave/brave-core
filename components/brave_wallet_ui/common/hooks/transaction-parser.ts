@@ -422,10 +422,8 @@ export function useTransactionParser (
           ? nativeAsset
           : fillTokens[0]
         const sellAmountWeiBN = new Amount(sellAmountArg || value)
-        const sellAmountBN = sellAmountWeiBN
-          .divideByDecimals(sellToken.decimals)
         const sellAmountFiat = computeFiatAmount(
-          sellAmountBN.format(),
+          sellAmountWeiBN.format(),
           sellToken.symbol,
           sellToken.decimals
         )
@@ -442,8 +440,11 @@ export function useTransactionParser (
 
         const insufficientNativeFunds = new Amount(gasFee)
           .gt(accountNativeBalance)
-        const insufficientTokenFunds = sellAmountBN
+        const insufficientTokenFunds = sellAmountWeiBN
           .gt(getBalance(account, token))
+
+        const sellAmountBN = sellAmountWeiBN
+          .divideByDecimals(sellToken.decimals)
 
         return {
           hash: transactionInfo.txHash,
