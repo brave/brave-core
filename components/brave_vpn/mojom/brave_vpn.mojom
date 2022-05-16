@@ -20,6 +20,9 @@ interface PanelHandler {
 
   // Notify the backend that the dialog should be closed.
   CloseUI();
+
+  // Run purchase action.
+  OpenVpnUI(string type);
 };
 
 interface ServiceObserver {
