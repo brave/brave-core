@@ -485,25 +485,20 @@ void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args[0],
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-      base::Value(decentralized_dns::IsDecentralizedDnsEnabled()));
+  ResolveJavascriptCallback(args[0], base::Value(true));
 #else
-      base::Value(false));
+  ResolveJavascriptCallback(args[0], base::Value(false));
 #endif
 }
 
 void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
     const base::Value::List& args) {
-  CHECK_EQ(args.size(), 2U);
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-  decentralized_dns::Provider provider =
-      static_cast<decentralized_dns::Provider>(args[1].GetInt());
-  ResolveJavascriptCallback(args[0],
-                            decentralized_dns::GetResolveMethodList(provider));
+  ResolveJavascriptCallback(args[0], decentralized_dns::GetResolveMethodList());
 #else
   ResolveJavascriptCallback(args[0], base::Value(base::Value::Type::LIST));
 #endif

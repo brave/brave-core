@@ -45,11 +45,6 @@
 #include "brave/components/ipfs/features.h"
 #endif
 
-
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/features.h"
-#endif
-
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
@@ -430,17 +425,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
 #define CRYPTO_WALLETS_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                           \
-    {"brave-decentralized-dns",                                           \
-     flag_descriptions::kBraveDecentralizedDnsName,                       \
-     flag_descriptions::kBraveDecentralizedDnsDescription,                \
-     kOsDesktop | kOsAndroid,                                             \
-     FEATURE_VALUE_TYPE(decentralized_dns::features::kDecentralizedDns)},
-#else
-#define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                           \
     {"brave-translate-go",                                           \
@@ -583,7 +567,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
       flag_descriptions::kRestrictWebSocketsPoolName,                       \
       flag_descriptions::kRestrictWebSocketsPoolDescription, kOsAll,        \
       FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool)},        \
-    BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

@@ -30,7 +30,7 @@ DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
     const std::string& locale) {
   content::BrowserContext* context =
       navigation_handle->GetWebContents()->GetBrowserContext();
-  if (!IsDecentralizedDnsEnabled() || context->IsOffTheRecord())
+  if (context->IsOffTheRecord())
     return nullptr;
 
   return std::make_unique<DecentralizedDnsNavigationThrottle>(

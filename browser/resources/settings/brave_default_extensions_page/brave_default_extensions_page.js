@@ -80,12 +80,10 @@ Polymer({
     this.browserProxy_.isDecentralizedDnsEnabled().then(enabled => {
       this.decentralizedDnsEnabled_ = enabled
     })
-    this.browserProxy_.getDecentralizedDnsResolveMethodList(
-      this.Provider.UNSTOPPABLE_DOMAINS).then(list => {
+    this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
         this.unstoppableDomainsResolveMethod_ = list
     })
-    this.browserProxy_.getDecentralizedDnsResolveMethodList(
-      this.Provider.ENS).then(list => {
+    this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
       this.ensResolveMethod_ = list
     })
 

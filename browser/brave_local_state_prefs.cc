@@ -46,8 +46,8 @@
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/decentralized_dns_service.h"
-#endif
+#include "brave/components/decentralized_dns/utils.h"
+#endif  // BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 
 namespace brave {
 
@@ -69,7 +69,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_MAC)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
-      base::Value(false));
+                                base::Value(false));
 #endif
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
@@ -109,7 +109,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-  decentralized_dns::DecentralizedDnsService::RegisterLocalStatePrefs(registry);
+  decentralized_dns::RegisterLocalStatePrefs(registry);
 #endif
 
   RegisterLocalStatePrefsForMigration(registry);

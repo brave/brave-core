@@ -23,7 +23,7 @@ cr.define('settings', function () {
     wasSignInEnabledAtStartup () {}
     isMediaRouterEnabled () {}
     isDecentralizedDnsEnabled() {}
-    getDecentralizedDnsResolveMethodList(provider) {}
+    getDecentralizedDnsResolveMethodList() {}
   }
 
   /**
@@ -79,8 +79,8 @@ cr.define('settings', function () {
       return cr.sendWithPromise('isDecentralizedDnsEnabled')
     }
 
-    getDecentralizedDnsResolveMethodList (provider) {
-      return cr.sendWithPromise('getDecentralizedDnsResolveMethodList', provider)
+    getDecentralizedDnsResolveMethodList () {
+      return cr.sendWithPromise('getDecentralizedDnsResolveMethodList')
     }
   }
 

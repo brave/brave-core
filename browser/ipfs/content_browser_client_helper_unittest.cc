@@ -327,8 +327,6 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   ASSERT_TRUE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
-  ASSERT_FALSE(ResolveUnstoppableURL(
-      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 
@@ -337,8 +335,6 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
-  ASSERT_FALSE(ResolveUnstoppableURL(
-      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 
@@ -347,8 +343,6 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
-  ASSERT_FALSE(ResolveUnstoppableURL(
-      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
   ASSERT_FALSE(
       ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 }

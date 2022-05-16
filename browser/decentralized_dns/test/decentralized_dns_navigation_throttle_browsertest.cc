@@ -6,7 +6,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/decentralized_dns_opt_in_page.h"
-#include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
@@ -75,10 +74,7 @@ namespace decentralized_dns {
 class DecentralizedDnsNavigationThrottleBrowserTest
     : public InProcessBrowserTest {
  public:
-  DecentralizedDnsNavigationThrottleBrowserTest() {
-    feature_list_.InitAndEnableFeature(features::kDecentralizedDns);
-  }
-
+  DecentralizedDnsNavigationThrottleBrowserTest() = default;
   ~DecentralizedDnsNavigationThrottleBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -86,9 +82,6 @@ class DecentralizedDnsNavigationThrottleBrowserTest
   }
 
   PrefService* local_state() { return g_browser_process->local_state(); }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,

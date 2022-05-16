@@ -17,7 +17,6 @@ import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/debounce/sources.gni")
-import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
@@ -146,7 +145,6 @@ brave_chrome_browser_deps = [
   "//brave/components/crypto_dot_com/browser/buildflags",
   "//brave/components/de_amp/browser",
   "//brave/components/de_amp/common",
-  "//brave/components/decentralized_dns/buildflags",
   "//brave/components/gemini/browser/buildflags",
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/ipfs/buildflags",
@@ -397,7 +395,6 @@ brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
-brave_chrome_browser_sources += brave_browser_decentralized_dns_sources
 brave_chrome_browser_sources += brave_browser_download_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
 brave_chrome_browser_sources += brave_browser_gemini_sources
@@ -426,7 +423,6 @@ brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
-brave_chrome_browser_deps += brave_browser_decentralized_dns_deps
 brave_chrome_browser_deps += brave_browser_download_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
 brave_chrome_browser_deps += brave_browser_gemini_deps
