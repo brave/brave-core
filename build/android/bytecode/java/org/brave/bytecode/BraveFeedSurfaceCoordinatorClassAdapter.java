@@ -16,10 +16,6 @@ public class BraveFeedSurfaceCoordinatorClassAdapter extends BraveClassVisitor {
     public BraveFeedSurfaceCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        makePublicMethod(sFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled");
-        addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled",
-                "Ljava/lang/Override;");
-
         deleteField(sBraveFeedSurfaceCoordinatorClassName, "mNtpHeader");
         makeProtectedField(sFeedSurfaceCoordinatorClassName, "mNtpHeader");
 

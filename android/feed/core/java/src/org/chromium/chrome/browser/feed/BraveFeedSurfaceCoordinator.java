@@ -98,8 +98,4 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     public NestedScrollView getScrollViewForPolicy() {
         return mScrollViewForPolicy;
     }
-
-    public boolean isReliabilityLoggingEnabled() {
-        return false;
-    }
 }
