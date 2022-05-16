@@ -52,6 +52,9 @@
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_talk/browser/brave_talk_advertise_host.h"
+#include "brave/components/brave_talk/common/brave_talk_utils.h"
+#include "brave/components/brave_talk/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
@@ -359,6 +362,16 @@ void BindBraveSearchDefaultHost(
   }
 }
 
+void BindBraveTalkAdvertiseHost(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_talk::mojom::BraveTalkAdvertise> receiver) {
+  const std::string host = frame_host->GetLastCommittedURL().host();
+
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_talk::BraveTalkAdvertiseHost>(host),
+      std::move(receiver));
+}
+
 void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
@@ -498,6 +511,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (brave_search::IsDefaultAPIEnabled()) {
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
+  }
+
+  if (brave_talk::IsDefaultAPIEnabled()) {
+    map->Add<brave_talk::mojom::BraveTalkAdvertise>(
+        base::BindRepeating(&BindBraveTalkAdvertiseHost));
   }
 
   if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {

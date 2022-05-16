@@ -21,14 +21,10 @@ namespace brave_talk {
 class BraveTalkAdvertiseHost final
     : public brave_talk::mojom::BraveTalkAdvertise {
  public:
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-
   BraveTalkAdvertiseHost(const BraveTalkAdvertiseHost&) = delete;
   BraveTalkAdvertiseHost& operator=(const BraveTalkAdvertiseHost&) = delete;
 
-  BraveTalkAdvertiseHost(const std::string& host,
-                         TemplateURLService* template_url_service,
-                         PrefService* prefs);
+  explicit BraveTalkAdvertiseHost(const std::string& host);
   ~BraveTalkAdvertiseHost() override;
 
   // brave_talk::mojom::BraveTalkAdvertise:
