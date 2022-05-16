@@ -30,7 +30,7 @@
 
 namespace {
 
-const int kWebSocketsPoolLimit = 10;
+const int kWebSocketsPoolLimit = 30;
 
 constexpr char kWsOpenScript[] = R"(
   if (typeof sockets == 'undefined') {

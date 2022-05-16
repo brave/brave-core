@@ -49,7 +49,7 @@ String GetResourceIdInUse(const SecurityOrigin* origin,
 int GetResourceLimit(ResourcePoolLimiter::ResourceType resource_type) {
   switch (resource_type) {
     case ResourcePoolLimiter::ResourceType::kWebSocket:
-      return 10;
+      return 30;
   }
   NOTREACHED();
   return 0;
