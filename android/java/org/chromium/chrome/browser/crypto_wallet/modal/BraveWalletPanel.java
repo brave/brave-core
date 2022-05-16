@@ -156,7 +156,8 @@ public class BraveWalletPanel implements DialogInterface {
         mBraveWalletPanelServices.getJsonRpcService().getChainId(CoinType.ETH, chainId -> {
             mBraveWalletPanelServices.getJsonRpcService().getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                String strNetwork = Utils.getNetworkShortText(mActivity, chainId).toString();
+                String strNetwork =
+                        Utils.getNetworkShortText(mActivity, chainId, customNetworks).toString();
                 mBtnSelectedNetwork.setText(strNetwork);
             });
         });

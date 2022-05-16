@@ -360,6 +360,17 @@ public class Utils {
         return strNetwork;
     }
 
+    public static CharSequence getNetworkShortText(
+            Activity activity, String chainId, NetworkInfo[] customNetworks) {
+        for (NetworkInfo chain : customNetworks) {
+            if (chainId.equals(chain.chainId)) {
+                return chain.chainName;
+            }
+        }
+
+        return Utils.getNetworkShortText(activity, chainId);
+    }
+
     public static String getBuyUrlForTestChain(String chainId) {
         switch (chainId) {
             case BraveWalletConstants.RINKEBY_CHAIN_ID:
