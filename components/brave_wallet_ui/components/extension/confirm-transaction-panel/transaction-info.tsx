@@ -122,7 +122,7 @@ export const TransactionInfo = ({
       </TransactionText>
     }
 
-    {!transactionDetails.insufficientFundsForGasError &&
+    {transactionDetails.insufficientFundsForGasError === false &&
       transactionDetails.insufficientFundsError &&
         <TransactionText hasError={true}>
           {getLocale('braveWalletSwapInsufficientBalance')}

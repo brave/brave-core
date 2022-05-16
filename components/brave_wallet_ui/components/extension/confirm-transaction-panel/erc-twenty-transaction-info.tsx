@@ -55,7 +55,7 @@ export const Erc20ApproveTransactionInfo = ({ onToggleEditGas }: Erc20Transactio
       </TransactionText>
     }
 
-    {!transactionDetails.insufficientFundsForGasError &&
+    {transactionDetails.insufficientFundsForGasError === false &&
       transactionDetails.insufficientFundsError &&
         <TransactionText hasError={true}>
           {getLocale('braveWalletSwapInsufficientBalance')}
