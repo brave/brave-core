@@ -1,7 +1,7 @@
 import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
 import("//build/config/locales.gni")
 import("//extensions/buildflags/buildflags.gni")
-import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
 assert(enable_extensions)
@@ -13,7 +13,7 @@ pack_web_resources("extension_generated_resources") {
   deps = [ "brave_rewards:brave_rewards_panel" ]
 }
 
-grit("static_resources") {
+brave_grit("static_resources") {
   source = "extension_static_resources.grd"
   outputs = [
     "grit/brave_rewards_extension_resources_map.cc",
@@ -21,13 +21,6 @@ grit("static_resources") {
     "grit/brave_rewards_extension_resources.h",
     "brave_rewards_extension_static.pak",
   ]
-
-  deps = []
-
-  resource_ids = "//brave/browser/resources/resource_ids"
-
-  output_dir =
-      "$root_gen_dir/brave/components/brave_rewards/resources/extension"
 }
 
 repack("resources") {

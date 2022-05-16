@@ -1,5 +1,5 @@
 import("//brave/components/common/typescript.gni")
-import("//tools/grit/grit_rule.gni")
+import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
 
 pack_web_resources("internals_generated_resources") {
@@ -10,22 +10,13 @@ pack_web_resources("internals_generated_resources") {
   deps = [ "internals" ]
 }
 
-grit("static_resources") {
+brave_grit("static_resources") {
   source = "tor_static_resources.grd"
 
   outputs = [
     "grit/tor_resources.h",
     "tor_static.pak",
   ]
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
-
-  output_dir = "$root_gen_dir/brave/components/tor/resources"
 }
 
 repack("resources") {

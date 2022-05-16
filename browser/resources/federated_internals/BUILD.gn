@@ -2,9 +2,9 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
 import("//third_party/closure_compiler/compile_js.gni")
-import("//tools/grit/grit_rule.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 import("//ui/webui/webui_features.gni")
@@ -15,7 +15,7 @@ preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 generate_grd("build_grd") {
   grd_prefix = "federated_internals"
-  out_grd = "$target_gen_dir/federated_internals_resources.grd"
+  out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
   input_files = [
     "federated_internals.html",
     "federated_internals.css",
@@ -37,12 +37,9 @@ preprocess_if_expr("preprocess_mojo") {
   in_files = [ "federated_internals.mojom-webui.js" ]
 }
 
-grit("resources") {
+brave_grit("resources") {
   defines = chrome_grit_defines
-  defines +=
-      [ "SHARED_INTERMEDIATE_DIR=" + rebase_path(root_gen_dir, root_build_dir) ]
 
-  # These arguments are needed since the grd is generated at build time.
   enable_input_discovery_for_gn_analyze = false
   source = "$target_gen_dir/federated_internals_resources.grd"
   deps = [ ":build_grd" ]
@@ -53,9 +50,6 @@ grit("resources") {
     "grit/federated_internals_resources_map.h",
     "federated_internals_resources.pak",
   ]
-
-  output_dir = "$root_gen_dir/brave/browser/resources/federated_internals"
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
 js_type_check("closure_compile") {

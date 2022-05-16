@@ -1,6 +1,6 @@
 import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
 import("//extensions/buildflags/buildflags.gni")
-import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
 pack_web_resources("page_generated_resources") {
@@ -31,24 +31,13 @@ pack_web_resources("tip_generated_resources") {
   deps = [ "tip" ]
 }
 
-grit("static_resources") {
+brave_grit("static_resources") {
   source = "brave_rewards_static_resources.grd"
 
   outputs = [
     "grit/brave_rewards_resources.h",
     "brave_rewards_static.pak",
   ]
-
-  deps = []
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
-
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
 }
 
 repack("resources") {
