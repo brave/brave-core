@@ -166,6 +166,12 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       return 'toAmountDecimalsOverflow'
     }
 
+    // No balance-based validations to perform when FROM/native balances
+    // have not been fetched yet.
+    if (!fromAssetBalance || !nativeAssetBalance) {
+      return
+    }
+
     const fromAmountWeiWrapped = new Amount(fromAmount)
       .multiplyByDecimals(fromAsset.decimals)
 
@@ -216,24 +222,48 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
   const isSwapButtonDisabled = React.useMemo(() => {
     return (
+      // Prevent creating a swap transaction with stale parameters if fetching
+      // of a new quote is in progress.
       isLoading ||
+
+      // If swap quote is empty, there's nothing to create the swap transaction
+      // with, so Swap button must be disabled.
       swapQuote === undefined ||
+
+      // FROM/TO assets may be undefined during initialization of the swap
+      // assets list.
       fromAsset === undefined ||
       toAsset === undefined ||
-      (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
+
+      // Amounts must be defined by the user, or populated from the swap quote,
+      // for creating a transaction.
       new Amount(toAmount).isUndefined() ||
       new Amount(toAmount).isZero() ||
       new Amount(fromAmount).isUndefined() ||
-      new Amount(fromAmount).isZero()
+      new Amount(fromAmount).isZero() ||
+
+      // Disable Swap button if native asset balance has not been fetched yet,
+      // to ensure insufficientFundsForGas error (if applicable) is accurate.
+      new Amount(nativeAssetBalance).isUndefined() ||
+
+      // Disable Swap button if FROM asset balance has not been fetched yet,
+      // to ensure insufficientBalance error (if applicable) is accurate.
+      new Amount(fromAssetBalance).isUndefined() ||
+
+      // Unless the validation error is insufficientAllowance, in which case
+      // the transaction is an ERC20Approve, Swap button must be disabled.
+      (swapValidationError && swapValidationError !== 'insufficientAllowance')
     )
   }, [
-    toAmount,
-    fromAmount,
-    swapQuote,
-    swapValidationError,
     isLoading,
+    swapQuote,
     fromAsset,
-    toAsset
+    toAsset,
+    fromAmount,
+    toAmount,
+    nativeAssetBalance,
+    fromAssetBalance,
+    swapValidationError
   ])
 
   // Callbacks / methods
