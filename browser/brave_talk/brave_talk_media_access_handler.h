@@ -16,6 +16,8 @@ class Extensions;
 }
 namespace brave_talk {
 
+class BraveTalkTabCaptureRegistry;
+
 class BraveTalkMediaAccessHandler : public CaptureAccessHandlerBase {
  public:
   BraveTalkMediaAccessHandler();
@@ -42,6 +44,8 @@ class BraveTalkMediaAccessHandler : public CaptureAccessHandlerBase {
   void AcceptRequest(content::WebContents* web_contents,
                      const content::MediaStreamRequest& request,
                      content::MediaResponseCallback callback);
+
+   BraveTalkTabCaptureRegistry* GetRegistry(content::WebContents* contents);
 };
 
 }  // namespace brave_talk
