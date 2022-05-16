@@ -9,7 +9,7 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/p2a/p2a_ad_impressions/p2a_ad_impression.h"
+#include "bat/ads/internal/privacy/p2a/p2a_ad_impressions/p2a_ad_impression.h"
 
 namespace ads {
 namespace ad_notifications {
@@ -34,7 +34,7 @@ void AdEventViewed::FireEvent(const AdNotificationInfo& ad) {
 
   history::AddAdNotification(ad, ConfirmationType::kViewed);
 
-  p2a::RecordAdImpression(ad);
+  privacy::p2a::RecordAdImpression(ad);
 }
 
 }  // namespace ad_notifications

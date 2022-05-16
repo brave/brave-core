@@ -5,17 +5,16 @@
 
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
-
-using challenge_bypass_ristretto::PublicKey;
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
 
@@ -51,10 +50,12 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
     const std::string unblinded_payment_token_base64 =
         unblinded_payment_tokens_base64.at(i % modulo);
     unblinded_payment_token.value =
-        UnblindedToken::decode_base64(unblinded_payment_token_base64);
+        privacy::cbr::UnblindedToken(unblinded_payment_token_base64);
+    DCHECK(unblinded_payment_token.value.has_value());
 
-    unblinded_payment_token.public_key = PublicKey::decode_base64(
-        "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
+    unblinded_payment_token.public_key =
+        privacy::cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
+    DCHECK(unblinded_payment_token.public_key.has_value());
 
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
 

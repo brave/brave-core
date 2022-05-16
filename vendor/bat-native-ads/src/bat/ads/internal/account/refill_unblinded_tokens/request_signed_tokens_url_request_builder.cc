@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/server/server_host_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
@@ -21,7 +22,7 @@ namespace ads {
 
 RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
     const WalletInfo& wallet,
-    const std::vector<BlindedToken>& blinded_tokens)
+    const std::vector<privacy::cbr::BlindedToken>& blinded_tokens)
     : wallet_(wallet), blinded_tokens_(blinded_tokens) {
   DCHECK(wallet_.IsValid());
   DCHECK(!blinded_tokens_.empty());
@@ -103,8 +104,13 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& blinded_token : blinded_tokens_) {
-    const std::string blinded_token_base64 = blinded_token.encode_base64();
-    base::Value blinded_token_base64_value = base::Value(blinded_token_base64);
+    const absl::optional<std::string> blinded_token_base64_optional =
+        blinded_token.EncodeBase64();
+    if (!blinded_token_base64_optional) {
+      continue;
+    }
+    base::Value blinded_token_base64_value =
+        base::Value(blinded_token_base64_optional.value());
     list.Append(std::move(blinded_token_base64_value));
   }
 

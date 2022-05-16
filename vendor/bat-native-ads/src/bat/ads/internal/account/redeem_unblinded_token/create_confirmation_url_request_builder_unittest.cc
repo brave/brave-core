@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

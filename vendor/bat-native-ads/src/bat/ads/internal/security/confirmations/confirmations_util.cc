@@ -13,15 +13,13 @@
 #include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace security {
-
-using challenge_bypass_ristretto::UnblindedToken;
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
 
 bool Verify(const ConfirmationInfo& confirmation) {
   std::string credential;
@@ -42,23 +40,27 @@ bool Verify(const ConfirmationInfo& confirmation) {
     return false;
   }
 
-  VerificationSignature verification_signature =
-      VerificationSignature::decode_base64(*signature);
-  if (privacy::ExceptionOccurred()) {
+  const privacy::cbr::VerificationSignature verification_signature =
+      privacy::cbr::VerificationSignature(*signature);
+  if (!verification_signature.has_value()) {
     NOTREACHED();
     return false;
   }
 
-  UnblindedToken unblinded_token = confirmation.unblinded_token.value;
-  VerificationKey verification_key = unblinded_token.derive_verification_key();
-  if (privacy::ExceptionOccurred()) {
+  const privacy::cbr::UnblindedToken& unblinded_token =
+      confirmation.unblinded_token.value;
+  const absl::optional<privacy::cbr::VerificationKey>
+      verification_key_optional = unblinded_token.DeriveVerificationKey();
+  if (!verification_key_optional) {
     NOTREACHED();
     return false;
   }
+  privacy::cbr::VerificationKey verification_key =
+      verification_key_optional.value();
 
   const std::string payload = CreateConfirmationRequestDTO(confirmation);
 
-  return verification_key.verify(verification_signature, payload);
+  return verification_key.Verify(verification_signature, payload);
 }
 
 }  // namespace security

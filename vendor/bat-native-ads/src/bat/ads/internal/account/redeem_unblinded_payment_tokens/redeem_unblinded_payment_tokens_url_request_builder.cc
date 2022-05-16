@@ -12,17 +12,14 @@
 #include "base/notreached.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/server/server_host_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
-#include "wrapper.hpp"
 
 namespace ads {
-
-using challenge_bypass_ristretto::TokenPreimage;
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
 
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
@@ -122,8 +119,14 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
         "confirmationType",
         unblinded_payment_token.confirmation_type.ToString());
 
-    payment_credential.SetStringKey(
-        "publicKey", unblinded_payment_token.public_key.encode_base64());
+    const absl::optional<std::string> public_key_base64_optional =
+        unblinded_payment_token.public_key.EncodeBase64();
+    if (!public_key_base64_optional) {
+      NOTREACHED();
+    } else {
+      payment_credential.SetStringKey("publicKey",
+                                      public_key_base64_optional.value());
+    }
 
     payment_request_dto.Append(std::move(payment_credential));
   }
@@ -138,35 +141,51 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
 
   base::Value credential(base::Value::Type::DICTIONARY);
 
-  VerificationKey verification_key =
-      unblinded_payment_token.value.derive_verification_key();
-  VerificationSignature verification_signature = verification_key.sign(payload);
-  if (privacy::ExceptionOccurred()) {
+  const absl::optional<privacy::cbr::VerificationKey>
+      verification_key_optional =
+          unblinded_payment_token.value.DeriveVerificationKey();
+  if (!verification_key_optional) {
+    NOTREACHED();
+    return credential;
+  }
+  privacy::cbr::VerificationKey verification_key =
+      verification_key_optional.value();
+
+  const absl::optional<privacy::cbr::VerificationSignature>
+      verification_signature_optional = verification_key.Sign(payload);
+  if (!verification_signature_optional) {
+    NOTREACHED();
+    return credential;
+  }
+  const privacy::cbr::VerificationSignature& verification_signature =
+      verification_signature_optional.value();
+
+  const absl::optional<std::string> verification_signature_base64_optional =
+      verification_signature.EncodeBase64();
+  if (!verification_signature_base64_optional) {
     NOTREACHED();
     return credential;
   }
 
-  const std::string verification_signature_base64 =
-      verification_signature.encode_base64();
-  if (privacy::ExceptionOccurred()) {
+  const absl::optional<privacy::cbr::TokenPreimage> token_preimage_optional =
+      unblinded_payment_token.value.GetTokenPreimage();
+  if (!token_preimage_optional) {
+    NOTREACHED();
+    return credential;
+  }
+  const privacy::cbr::TokenPreimage& token_preimage =
+      token_preimage_optional.value();
+
+  const absl::optional<std::string> token_preimage_base64_optional =
+      token_preimage.EncodeBase64();
+  if (!token_preimage_base64_optional) {
     NOTREACHED();
     return credential;
   }
 
-  TokenPreimage token_preimage = unblinded_payment_token.value.preimage();
-  if (privacy::ExceptionOccurred()) {
-    NOTREACHED();
-    return credential;
-  }
-
-  const std::string token_preimage_base64 = token_preimage.encode_base64();
-  if (privacy::ExceptionOccurred()) {
-    NOTREACHED();
-    return credential;
-  }
-
-  credential.SetStringKey("signature", verification_signature_base64);
-  credential.SetStringKey("t", token_preimage_base64);
+  credential.SetStringKey("signature",
+                          verification_signature_base64_optional.value());
+  credential.SetStringKey("t", token_preimage_base64_optional.value());
 
   return credential;
 }

@@ -18,16 +18,15 @@
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "wrapper.hpp"
 
 namespace ads {
-
-using challenge_bypass_ristretto::PublicKey;
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
 
@@ -245,24 +244,42 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
                                          confirmation.ad_type.ToString());
 
     base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
-    const std::string unblinded_token_base64 =
-        confirmation.unblinded_token.value.encode_base64();
+    const absl::optional<std::string> unblinded_token_base64_optional =
+        confirmation.unblinded_token.value.EncodeBase64();
+    if (!unblinded_token_base64_optional) {
+      NOTREACHED();
+      continue;
+    }
     token_info_dictionary.SetStringKey("unblinded_token",
-                                       unblinded_token_base64);
-    const std::string public_key_base64 =
-        confirmation.unblinded_token.public_key.encode_base64();
-    token_info_dictionary.SetStringKey("public_key", public_key_base64);
+                                       unblinded_token_base64_optional.value());
+    const absl::optional<std::string> public_key_base64_optional =
+        confirmation.unblinded_token.public_key.EncodeBase64();
+    if (!public_key_base64_optional) {
+      NOTREACHED();
+      continue;
+    }
+    token_info_dictionary.SetStringKey("public_key",
+                                       public_key_base64_optional.value());
     confirmation_dictionary.SetKey("token_info",
                                    std::move(token_info_dictionary));
 
-    const std::string payment_token_base64 =
-        confirmation.payment_token.encode_base64();
-    confirmation_dictionary.SetStringKey("payment_token", payment_token_base64);
+    const absl::optional<std::string> payment_token_base64_optional =
+        confirmation.payment_token.EncodeBase64();
+    if (!payment_token_base64_optional) {
+      NOTREACHED();
+      continue;
+    }
+    confirmation_dictionary.SetStringKey("payment_token",
+                                         payment_token_base64_optional.value());
 
-    const std::string blinded_payment_token_base64 =
-        confirmation.blinded_payment_token.encode_base64();
-    confirmation_dictionary.SetStringKey("blinded_payment_token",
-                                         blinded_payment_token_base64);
+    const absl::optional<std::string> blinded_payment_token_base64_optional =
+        confirmation.blinded_payment_token.EncodeBase64();
+    if (!blinded_payment_token_base64_optional) {
+      NOTREACHED();
+      continue;
+    }
+    confirmation_dictionary.SetStringKey(
+        "blinded_payment_token", blinded_payment_token_base64_optional.value());
 
     confirmation_dictionary.SetStringKey("credential", confirmation.credential);
 
@@ -382,14 +399,12 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Token info missing unblinded_token");
       continue;
     }
-    if (!unblinded_token_base64->empty()) {
-      confirmation.unblinded_token.value =
-          UnblindedToken::decode_base64(*unblinded_token_base64);
-      if (privacy::ExceptionOccurred()) {
-        BLOG(0, "Invalid unblinded token");
-        NOTREACHED();
-        continue;
-      }
+    confirmation.unblinded_token.value =
+        privacy::cbr::UnblindedToken(*unblinded_token_base64);
+    if (!confirmation.unblinded_token.value.has_value()) {
+      BLOG(0, "Invalid unblinded token");
+      NOTREACHED();
+      continue;
     }
 
     const std::string* public_key_base64 =
@@ -399,14 +414,12 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Token info missing public_key");
       continue;
     }
-    if (!public_key_base64->empty()) {
-      confirmation.unblinded_token.public_key =
-          PublicKey::decode_base64(*public_key_base64);
-      if (privacy::ExceptionOccurred()) {
-        BLOG(0, "Invalid public key");
-        NOTREACHED();
-        continue;
-      }
+    confirmation.unblinded_token.public_key =
+        privacy::cbr::PublicKey(*public_key_base64);
+    if (!confirmation.unblinded_token.public_key.has_value()) {
+      BLOG(0, "Invalid public key");
+      NOTREACHED();
+      continue;
     }
 
     // Payment token
@@ -417,13 +430,11 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Confirmation missing payment_token");
       continue;
     }
-    if (!payment_token_base64->empty()) {
-      confirmation.payment_token = Token::decode_base64(*payment_token_base64);
-      if (privacy::ExceptionOccurred()) {
-        BLOG(0, "Invalid payment token");
-        NOTREACHED();
-        continue;
-      }
+    confirmation.payment_token = privacy::cbr::Token(*payment_token_base64);
+    if (!confirmation.payment_token.has_value()) {
+      BLOG(0, "Invalid payment token");
+      NOTREACHED();
+      continue;
     }
 
     // Blinded payment token
@@ -434,14 +445,12 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Confirmation missing blinded_payment_token");
       continue;
     }
-    if (!blinded_payment_token_base64->empty()) {
-      confirmation.blinded_payment_token =
-          BlindedToken::decode_base64(*blinded_payment_token_base64);
-      if (privacy::ExceptionOccurred()) {
-        BLOG(0, "Invalid blinded payment token");
-        NOTREACHED();
-        continue;
-      }
+    confirmation.blinded_payment_token =
+        privacy::cbr::BlindedToken(*blinded_payment_token_base64);
+    if (!confirmation.blinded_payment_token.has_value()) {
+      BLOG(0, "Invalid blinded payment token");
+      NOTREACHED();
+      continue;
     }
 
     // Credential

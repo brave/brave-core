@@ -9,8 +9,7 @@
 
 namespace ads {
 
-ConfirmationInfo::ConfirmationInfo()
-    : payment_token(nullptr), blinded_payment_token(nullptr) {}
+ConfirmationInfo::ConfirmationInfo() = default;
 
 ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
 
@@ -20,9 +19,8 @@ bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
   return id == rhs.id && transaction_id == rhs.transaction_id &&
          creative_instance_id == rhs.creative_instance_id && type == rhs.type &&
          ad_type == rhs.ad_type && unblinded_token == rhs.unblinded_token &&
-         payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
-         blinded_payment_token.encode_base64() ==
-             rhs.blinded_payment_token.encode_base64() &&
+         payment_token == rhs.payment_token &&
+         blinded_payment_token == rhs.blinded_payment_token &&
          credential == rhs.credential && user_data == rhs.user_data &&
          DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
          was_created == rhs.was_created;

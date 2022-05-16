@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads {
 

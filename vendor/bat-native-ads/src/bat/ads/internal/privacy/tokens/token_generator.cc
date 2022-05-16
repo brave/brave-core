@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 
+#include "base/check.h"
+
 namespace ads {
 namespace privacy {
 
@@ -12,11 +14,12 @@ TokenGenerator::TokenGenerator() = default;
 
 TokenGenerator::~TokenGenerator() = default;
 
-std::vector<Token> TokenGenerator::Generate(const int count) const {
-  std::vector<Token> tokens;
+std::vector<cbr::Token> TokenGenerator::Generate(const int count) const {
+  std::vector<cbr::Token> tokens;
 
   for (int i = 0; i < count; i++) {
-    Token token = Token::random();
+    cbr::Token token;
+    DCHECK(token.has_value());
     tokens.push_back(token);
   }
 

@@ -26,8 +26,8 @@
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_base.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_factory.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/p2a/p2a_ad_opportunities/p2a_ad_opportunity.h"
 #include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/privacy/p2a/p2a_ad_opportunities/p2a_ad_opportunity.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/settings/settings.h"
@@ -135,8 +135,8 @@ void AdServing::MaybeServeAd() {
         if (had_opportunity) {
           const SegmentList& segments =
               ad_targeting::GetTopChildSegments(user_model);
-          p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
-                                              segments);
+          privacy::p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
+                                                       segments);
         }
 
         if (creative_ads.empty()) {

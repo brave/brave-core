@@ -8,18 +8,16 @@
 
 #include <vector>
 
-#include "wrapper.hpp"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 
 namespace ads {
 namespace privacy {
-
-using challenge_bypass_ristretto::Token;
 
 class TokenGeneratorInterface {
  public:
   virtual ~TokenGeneratorInterface() = default;
 
-  virtual std::vector<Token> Generate(const int count) const = 0;
+  virtual std::vector<cbr::Token> Generate(const int count) const = 0;
 };
 
 }  // namespace privacy

@@ -16,7 +16,6 @@
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "bat/ads/internal/string_util.h"
 #include "tweetnacl.h"  // NOLINT
-#include "wrapper.hpp"
 
 namespace ads {
 namespace security {
