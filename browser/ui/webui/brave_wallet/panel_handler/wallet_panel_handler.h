@@ -40,6 +40,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   void ConnectToSite(const std::vector<std::string>& accounts,
                      const std::string& origin) override;
   void CancelConnectToSite(const std::string& origin) override;
+  void Focus() override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
