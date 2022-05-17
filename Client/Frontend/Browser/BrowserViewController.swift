@@ -2028,13 +2028,18 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
     // The actions are carried to menu actions for Tab-Tray Button
   }
   
-  func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool) {
-    if topToolbar.locationView.readerModeState == .active {
+  func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool = true) {
+    switch topToolbar.locationView.readerModeState {
+    case .active:
       if isHidden {
         hideReaderModeBar(animated: false)
       } else {
         showReaderModeBar(animated: false)
       }
+    case .unavailable:
+      hideReaderModeBar(animated: false)
+    default:
+      break
     }
   }
 }
