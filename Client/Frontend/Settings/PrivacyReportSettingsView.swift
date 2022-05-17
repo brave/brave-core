@@ -12,7 +12,7 @@ struct PrivacyReportSettingsView: View {
   @ObservedObject private var shieldsDataEnabled = Preferences.PrivacyReports.captureShieldsData
   @ObservedObject private var vpnAlertsEnabled = Preferences.PrivacyReports.captureVPNAlerts
   
-  @State private var clearButtonEnabled: Bool = true
+  @State private var showClearDataPrompt: Bool = false
   
   var body: some View {
     List {
@@ -31,15 +31,26 @@ struct PrivacyReportSettingsView: View {
       Section(footer: Text(Strings.PrivacyHub.settingsSlearDataFooter)) {
         HStack() {
           Button(action: {
-            PrivacyReportsManager.clearAllData()
-            clearButtonEnabled = false
+            showClearDataPrompt = true
           },
                  label: {
             Text(Strings.PrivacyHub.settingsSlearDataTitle)
               .frame(maxWidth: .infinity, alignment: .leading)
               .foregroundColor(Color.red)
           })
-            .disabled(!clearButtonEnabled)
+            .actionSheet(isPresented: $showClearDataPrompt) {
+              // Currently .actionSheet does not allow you leave empty title for the sheet.
+              // This could get converted to .confirmationPrompt or Menu with destructive buttons
+              // once iOS 15 is minimum supported version
+              .init(title: Text(Strings.PrivacyHub.clearAllDataPrompt),
+                    buttons: [
+                      .destructive(Text(Strings.yes), action: {
+                        PrivacyReportsManager.clearAllData()
+                      }),
+                      .cancel()
+                    ])
+            }
+          
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
