@@ -20,6 +20,10 @@ export type ChainChangedEventPayloadType = {
   coin: BraveWallet.CoinType
 }
 
+export type SelectedAccountChangedPayloadType = {
+  coin: BraveWallet.CoinType
+}
+
 export type IsEip1559Changed = {
   chainId: string
   isEip1559: boolean

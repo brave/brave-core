@@ -62,8 +62,8 @@ export default class WalletApiProxy {
       autoLockMinutesChanged: function () {
         store.dispatch(WalletActions.autoLockMinutesChanged())
       },
-      selectedAccountChanged: function () {
-        store.dispatch(WalletActions.selectedAccountChanged())
+      selectedAccountChanged: function (coin: BraveWallet.CoinType) {
+        store.dispatch(WalletActions.selectedAccountChanged({ coin }))
       }
     })
     this.keyringService.addObserver(keyringServiceObserverReceiver.$.bindNewPipeAndPassRemote())
