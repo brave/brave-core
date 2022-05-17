@@ -142,5 +142,14 @@
     ],
     "action": "redirect",
     "param": "url"
+  },
+  {
+    "include": [
+      "http://*.blogspot.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
   }
 ]

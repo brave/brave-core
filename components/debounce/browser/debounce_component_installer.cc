@@ -67,7 +67,7 @@ void DebounceComponentInstaller::OnDATFileDataReady(
             net::registry_controlled_domains::GetDomainAndRegistry(
                 pattern.host(),
                 net::registry_controlled_domains::PrivateRegistryFilter::
-                    INCLUDE_PRIVATE_REGISTRIES);
+                    EXCLUDE_PRIVATE_REGISTRIES);
         hosts.push_back(std::move(etldp1));
       }
     }

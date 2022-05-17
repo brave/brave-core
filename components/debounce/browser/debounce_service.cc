@@ -33,7 +33,7 @@ bool DebounceService::Debounce(const GURL& original_url,
   const std::string etldp1 =
       net::registry_controlled_domains::GetDomainAndRegistry(
           original_url, net::registry_controlled_domains::
-                            PrivateRegistryFilter::INCLUDE_PRIVATE_REGISTRIES);
+                            PrivateRegistryFilter::EXCLUDE_PRIVATE_REGISTRIES);
   if (!base::Contains(host_cache, etldp1))
     return false;
 
