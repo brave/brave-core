@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.url.GURL;
 import org.chromium.brave_wallet.mojom.AddChainRequest;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -129,6 +130,11 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                 processNextSwitchChainRequest();
             }
         });
+        TextView siteTv = view.findViewById(R.id.fragment_add_token_tv_site);
+        GURL siteUrl = Utils.getCurentTabUrl();
+        if (siteUrl != null) {
+            siteTv.setText(Utils.geteTLDFromGRUL(siteUrl));
+        }
         return view;
     }
 
