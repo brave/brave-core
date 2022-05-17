@@ -115,9 +115,9 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
       &new_resource_starter_pack_version, nullptr);
 
   // Verify count and order.
-  EXPECT_EQ(local_turls.size(), template_urls.size());
-  TestDefaultOrder(template_urls, {":g", ":d", ":q", ":b", ":sp", ":ya",
-                                   "random1", "random2"});
+  TestDefaultOrder(template_urls,
+                   {":g", ":d", ":q", ":b", ":sp", ":ya", "random1", "random2",
+                    "@bookmarks", "@history"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -145,6 +145,6 @@ TEST_F(BraveTemplateURLServiceUtilTest,
       &new_resource_starter_pack_version, nullptr);
 
   // Verify count and order.
-  EXPECT_EQ(local_turls.size(), template_urls.size());
-  TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya"});
+  TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya",
+                                   "@bookmarks", "@history"});
 }
