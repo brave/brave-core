@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 #include "base/check.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
@@ -27,15 +28,19 @@ void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16) {
   }
 }
 
-bool Base58Decode(const std::string& str,
-                  std::vector<uint8_t>* ret,
-                  int max_ret_len) {
+bool Base58Decode(const std::string& str, std::vector<uint8_t>* ret, int len) {
   DCHECK(ret);
-  return DecodeBase58(str, *ret, max_ret_len);
+  ret->clear();
+  return DecodeBase58(str, *ret, len) && static_cast<int>(ret->size()) == len;
 }
 
 std::string Base58Encode(const std::vector<uint8_t>& bytes) {
   return EncodeBase58(bytes);
+}
+
+bool IsBase58EncodedSolanaPubkey(const std::string& key) {
+  std::vector<uint8_t> bytes;
+  return Base58Decode(key, &bytes, kSolanaPubkeySize);
 }
 
 }  // namespace brave_wallet
