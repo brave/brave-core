@@ -59,7 +59,7 @@ constexpr inline auto kCollectedHistograms =
     "Brave.SpeedReader.ToggleCount",
     "Brave.Today.DirectFeedsTotal",
     "Brave.Today.HasEverInteracted",
-    "Brave.Today.TotalCardViewsCount",
+    "Brave.Today.WeeklyTotalCardViews",
     "Brave.Today.WeeklyDisplayAdsViewedCount",
     "Brave.Today.WeeklyMaxCardViewsCount",
     "Brave.Today.WeeklyMaxCardVisitsCount",
