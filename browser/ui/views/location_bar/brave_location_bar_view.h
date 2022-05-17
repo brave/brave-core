@@ -61,6 +61,9 @@ class BraveLocationBarView : public LocationBarView {
   SkPath GetFocusRingHighlightPath() const;
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
   bool ShouldShowIPFSLocationView() const;
+  BraveActionsContainer* brave_actions_contatiner_view() {
+    return brave_actions_;
+  }
 
  private:
   friend class ::BraveActionsContainerTest;

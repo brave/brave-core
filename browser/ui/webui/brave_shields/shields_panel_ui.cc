@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -27,8 +28,7 @@
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
-  tab_strip_model_ = browser->tab_strip_model();
+  browser_ = chrome::FindLastActiveWithProfile(profile_);
 
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kShieldsPanelHost);
@@ -69,8 +69,9 @@ void ShieldsPanelUI::CreatePanelHandler(
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
 
-  panel_handler_ =
-      std::make_unique<ShieldsPanelHandler>(std::move(panel_receiver), this);
+  panel_handler_ = std::make_unique<ShieldsPanelHandler>(
+      std::move(panel_receiver), this,
+      static_cast<BraveBrowserWindow*>(browser_->window()));
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-      std::move(data_handler_receiver), this, tab_strip_model_);
+      std::move(data_handler_receiver), this, browser_->tab_strip_model());
 }

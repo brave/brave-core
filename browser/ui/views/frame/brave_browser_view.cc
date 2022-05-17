@@ -10,6 +10,9 @@
 #include "base/bind.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
@@ -249,6 +252,25 @@ views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 #else
   return nullptr;
 #endif
+}
+
+gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
+  auto* brave_location_bar_view =
+      static_cast<BraveLocationBarView*>(GetLocationBarView());
+  if (!brave_location_bar_view)
+    return gfx::Rect();
+
+  auto* shields_action_view =
+      brave_location_bar_view->brave_actions_contatiner_view()
+          ->GetShieldsActionView();
+  if (!shields_action_view)
+    return gfx::Rect();
+
+  auto* bubble_widget = shields_action_view->GetBubbleWidget();
+  if (!bubble_widget)
+    return gfx::Rect();
+
+  return bubble_widget->GetClientAreaBoundsInScreen();
 }
 
 void BraveBrowserView::SetStarredState(bool is_starred) {

@@ -3,6 +3,7 @@ import * as React from 'react'
 import * as S from './style'
 import Toggle from '../../../../../web-components/toggle'
 import AdvancedControlsContent from '../advanced-controls-content'
+import AdvancedControlsContentScroller from '../advanced-controls-scroller'
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
 import DataContext from '../../state/context'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
@@ -140,7 +141,11 @@ function MainPanel () {
       {advancedControlButtonElement}
       { isExpanded &&
         siteBlockInfo?.isShieldsEnabled &&
-        <AdvancedControlsContent />
+        <AdvancedControlsContentScroller
+          isExpanded={isExpanded}
+        >
+          <AdvancedControlsContent />
+        </AdvancedControlsContentScroller>
       }
     </S.Box>
   )

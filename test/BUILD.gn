@@ -358,7 +358,6 @@ test("brave_unit_tests") {
       "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
-      "//brave/components/ipfs",
       "//components/favicon/content",
     ]
   }
