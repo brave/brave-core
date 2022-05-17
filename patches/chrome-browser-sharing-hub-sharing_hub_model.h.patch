@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sharing_hub/sharing_hub_model.h b/chrome/browser/sharing_hub/sharing_hub_model.h
+index 2bf8710c4f7c0..f47a13f6f4452 100644
+--- a/chrome/browser/sharing_hub/sharing_hub_model.h
++++ b/chrome/browser/sharing_hub/sharing_hub_model.h
+@@ -88,6 +88,7 @@ class SharingHubModel : public sharing::ShareTargetsObserver {
+   void OnShareTargetsUpdated(
+       std::unique_ptr<sharing::mojom::ShareTargets> ShareTarget) override;
+ 
++  BRAVE_SHARING_HUB_MODEL_H
+  private:
+   void PopulateFirstPartyActions();
+   void PopulateThirdPartyActions();
