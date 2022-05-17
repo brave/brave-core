@@ -27,6 +27,8 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   void ShareTab(content::WebContents* target_contents);
 
+  bool is_requesting_tab() { return !on_received_device_id_.is_null(); }
+
  private:
   void StartObserving(content::WebContents* contents);
   void StopObserving();
