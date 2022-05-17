@@ -63,7 +63,6 @@ bool ChromeMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableClientSidePhishingDetection);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kEnableDomDistiller);
-  command_line.AppendSwitch(switches::kNoPings);
 
   std::string update_url = GetUpdateURLHost();
   if (!update_url.empty()) {
