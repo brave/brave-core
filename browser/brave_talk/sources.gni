@@ -23,4 +23,5 @@ brave_browser_brave_talk_deps = [
     "//components/keyed_service/content",
     "//chrome/browser/ui",
     "//chrome/browser:browser_process",
+    "//extensions/browser"
 ]

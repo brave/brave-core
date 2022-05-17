@@ -7,12 +7,13 @@
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "chrome/browser/media/webrtc/media_stream_capture_indicator.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome\browser\media\webrtc\capture_policy_utils.h"
-#include "chrome\browser\media\webrtc\desktop_media_list.h"
+#include "chrome/browser/media/webrtc/capture_policy_utils.h"
+#include "chrome/browser/media/webrtc/desktop_media_list.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_media_capture_id.h"
+#include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
 namespace brave_talk {
 

@@ -2,8 +2,8 @@
 #define BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_MEDIA_ACCESS_HANDLER_H_
 
 #include <memory>
-#include "chrome\browser\media\capture_access_handler_base.h"
-#include "content\public\browser\media_stream_request.h"
+#include "chrome/browser/media/capture_access_handler_base.h"
+#include "content/public/browser/media_stream_request.h"
 
 class MediaStreamUI;
 

@@ -3,8 +3,9 @@
 
 #include <memory>
 #include <vector>
-#include "chrome\browser\media\webrtc\media_capture_devices_dispatcher.h"
-#include "extensions\browser\browser_context_keyed_api_factory.h"
+#include "extensions/browser/browser_context_keyed_api_factory.h"
+#include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
+
 
 namespace brave_talk {
 
@@ -26,8 +27,7 @@ class BraveTalkTabCaptureRegistry
                          content::DesktopMediaID source,
                          content::WebContents* caller_contents);
 
-  bool VerifyRequest(int target_render_process_id,
-                     int target_render_frame_id);
+  bool VerifyRequest(int target_render_process_id, int target_render_frame_id);
 
  private:
   friend class extensions::BrowserContextKeyedAPIFactory<
@@ -51,4 +51,4 @@ class BraveTalkTabCaptureRegistry
 
 }  // namespace brave_talk
 
-#endif // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_H_
+#endif  // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_H_
