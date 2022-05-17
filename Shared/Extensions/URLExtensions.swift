@@ -443,6 +443,21 @@ extension URL {
 
     return siteList.contains(where: host.contains)
   }
+  
+  // Check if the website is search engine
+  public var isSearchEngineURL: Bool {
+    guard let host = self.normalizedHostAndPath else {
+      return false
+    }
+
+    /// Site domains that is considered as search engine
+    let siteList = ["google", "bing", "duckduckgo",
+                    "ecosia", "qwant", "startpage",
+                    "yandex", "search.brave"]
+    
+    return siteList.contains(where: host.contains)
+  }
+
 
   // Check if the website is supporting showing Add To playlist toast
   public var isPlaylistSupportedSiteURL: Bool {

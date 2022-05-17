@@ -50,23 +50,12 @@ class SimpleShieldsView: UIView {
       static let buttonEdgeInsets = UIEdgeInsets(top: -3, left: 4, bottom: -3, right: 4)
     }
 
-    let stackView = UIStackView().then {
-      $0.spacing = 12
-      $0.alignment = .center
-      $0.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
-      $0.isLayoutMarginsRelativeArrangement = true
-    }
-
     let contentStackView = UIStackView().then {
       $0.spacing = 2
     }
 
     let descriptionStackView = ShieldsStackView(edgeInsets: UX.descriptionEdgeInset).then {
       $0.spacing = 16
-    }
-
-    let descriptionStackView2 = ShieldsStackView(edgeInsets: UX.descriptionEdgeInset).then {
-      $0.spacing = 24
     }
 
     let infoStackView = ShieldsStackView(edgeInsets: UX.iconEdgeInset)

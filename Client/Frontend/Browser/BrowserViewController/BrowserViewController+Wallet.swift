@@ -55,7 +55,7 @@ extension BrowserViewController {
       faviconRenderer: FavIconImageRenderer()
     )
     controller.delegate = self
-    let popover = PopoverController(contentController: controller, contentSizeBehavior: .autoLayout)
+    let popover = PopoverController(contentController: controller)
     popover.present(from: topToolbar.locationView.walletButton, on: self, completion: nil)
     scrollController.showToolbars(animated: true)
   }

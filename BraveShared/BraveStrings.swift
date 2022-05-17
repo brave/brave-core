@@ -204,19 +204,19 @@ extension Strings {
       NSLocalizedString(
         "callout.defaultBrowserTitle",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Make Brave your default browser",
+        value: "Privacy. Made Simple.",
         comment: "Title for Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutDescription =
       NSLocalizedString(
         "callout.defaultBrowserCalloutDescription",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "With Brave as default, every link you click opens with Brave's privacy protections.",
+        value: "With Brave as default, every link you tap opens with Brave's privacy protections.",
         comment: "Subtitle - Description for Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutPrimaryButtonTitle =
       NSLocalizedString(
         "callout.defaultBrowserCalloutPrimaryButtonTitle",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Set as default",
+        value: "Set as default browser",
         comment: "Title for main button in Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutSecondaryButtonTitle =
       NSLocalizedString(
@@ -277,92 +277,62 @@ extension Strings {
       NSLocalizedString(
         "onboarding.welcomeScreenTitle",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Welcome to Brave!",
+        value: "Welcome to Brave",
         comment: "Title for Welcome Screen in Onboarding")
-    public static let privacyScreenTitle =
-      NSLocalizedString(
-        "onboarding.privacyScreenTitle",
-        tableName: "BraveShared", bundle: .braveShared,
-        value: "Privacy made easy",
-        comment: "Title for Privacy Screen in Onboarding")
-    public static let privacyScreenDescription =
-      NSLocalizedString(
-        "onboarding.privacyScreenDescription",
-        tableName: "BraveShared", bundle: .braveShared,
-        value: "You're just a step away from the best privacy online. Ready?",
-        comment: "Description for Privacy Screen in Onboarding")
-    public static let privacyScreenButtonTitle =
-      NSLocalizedString(
-        "onboarding.privacyScreenButtonTitle",
-        tableName: "BraveShared", bundle: .braveShared,
-        value: "Let's go",
-        comment: "Button Title for Privacy Screen in Onboarding")
-    public static let readyScreenTitle =
-      NSLocalizedString(
-        "onboarding.readyScreenTitle",
-        tableName: "BraveShared", bundle: .braveShared,
-        value: "You're ready to browse!",
-        comment: "Title for Ready Screen in Onboarding")
-    public static let readyScreenDescription =
-      NSLocalizedString(
-        "onboarding.readyScreenDescription",
-        tableName: "BraveShared", bundle: .braveShared,
-        value: "Select a popular site below or enter your own...",
-        comment: "Description for Ready Screen in Onboarding")
-    public static let readyScreenAdditionalDescription =
-      NSLocalizedString(
-        "onboarding.readyScreenAdditionalDescription",
-        tableName: "BraveShared", bundle: .braveShared,
-        value: "...and watch those trackers & ads disappear.",
-        comment: "Additional Description for Ready Screen in Onboarding")
     public static let ntpOnboardingPopOverTrackerDescription =
       NSLocalizedString(
         "onboarding.ntpOnboardingPopOverTrackerDescription",
         tableName: "BraveShared", bundle: .braveShared,
         value: "By blocking trackers & ads, websites use less data and load way faster.",
         comment: "Description for the NTP pop-over that describes the tracking information on NTP")
-    public static let ntpOnboardingPopoverDoneTitle =
+    public static let blockedAdsOnboardingInstructionsText =
       NSLocalizedString(
-        "onboarding.ntpOnboardingPopoverDoneTitle",
+        "onboarding.blockedAdsOnboardingInstructionsText",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "All set!",
-        comment: "Title for the NTP pop-over that describes the onboarding is done")
-    public static let ntpOnboardingPopoverDoneDescription =
+        value: "Tap to view Brave Shields",
+        comment: "The text describing user where they should press in order to open Shield panel")
+    public static let blockedAdsOnboardingFootnoteText =
       NSLocalizedString(
-        "onboarding.ntpOnboardingPopoverDoneDescription",
+        "onboarding.blockedAdsOnboardingFootnoteText",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Check the menu for settings and more great privacy features!",
-        comment: "DEscription for the NTP pop-over that describes the onboarding is done")
-    public static let searchViewEnterWebsiteRowTitle =
+        value: "See all the bad stuff Brave blocked, on every page, with Shields.",
+        comment: "The footnote indicating what Brave shields is blocking")
+    public static let blockedAdsOnboardingNoBigTechInformationText =
       NSLocalizedString(
-        "onboarding.searchViewEnterWebsiteRowTitle",
+        "onboarding.blockedAdsOnboardingNoBigTechInformationText",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Enter a website",
-        comment: "The title of the row asking user to enter a website url")
-    public static let blockedAdsOnboardingPopoverSingleTrackerDescription =
+        value: "Ads & trackers blocked",
+        comment: "The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation.")
+    public static let blockedAdsOnboardingBigTechInformationText =
       NSLocalizedString(
-        "onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription",
+        "onboarding.blockedAdsOnboardingBigTechInformationText",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Brave blocked %@ and %d other tracker on: %@.",
-        comment: "The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")
-    public static let blockedAdsOnboardingPopoverMultipleTrackerDescription =
+        value: "%@ and %lld other ads & trackers blocked",
+        comment: "The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked")
+    public static let navigateSettingsOnboardingScreenTitle =
       NSLocalizedString(
-        "onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription",
+        "onboarding.navigateSettingsOnboardingScreenTitle",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Brave blocked %@ and %d other trackers on: %@.",
-        comment: "The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")
-    public static let blockedAdsOnboardingPopoverDescriptionTwo =
+        value: "Taking you to Settings...",
+        comment: "Title for Navigate Settings Screen in Onboarding")
+    public static let navigateSettingsOnboardingScreenDescription =
       NSLocalizedString(
-        "onboarding.blockedAdsOnboardingPopoverDescriptionTwo",
+        "onboarding.navigateSettingsOnboardingScreenDescription",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Brave blocked %@ on: %@.",
-        comment: "The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count.")
-    public static let blockedAdsOnboardingPopoverDescriptionThree =
+        value: "Look for 'Default Browser App'",
+        comment: "Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language.")
+    public static let omniboxOnboardingPopOverTitle =
       NSLocalizedString(
-        "onboarding.blockedAdsOnboardingPopoverDescriptionThree",
+        "onboarding.omniboxOnboardingPopOverTitle",
         tableName: "BraveShared", bundle: .braveShared,
-        value: "Tap the Shield from any site to see all the stuff we blocked.",
-        comment: "The description of the popover showing trackers that were blocked.")
+        value: "Type a website name or URL",
+        comment: "Title for the Omnibox (URL Bar) pop-over that describes faster load times.")
+    public static let omniboxOnboardingPopOverDescription =
+      NSLocalizedString(
+        "onboarding.omniboxOnboardingPopOverDescription",
+        tableName: "BraveShared", bundle: .braveShared,
+        value: "See the Brave difference:\nNo ads. No trackers. Way faster page load.",
+        comment: "Description for the Omnibox (URL Bar) pop-over that describes faster load times.")
   }
 }
 

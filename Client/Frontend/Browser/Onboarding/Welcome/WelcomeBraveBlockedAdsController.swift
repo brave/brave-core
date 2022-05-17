@@ -11,69 +11,184 @@ import BraveShared
 import Shared
 
 class WelcomeBraveBlockedAdsController: UIViewController, PopoverContentComponent {
-  private let label = UILabel().then {
-    $0.numberOfLines = 0
-    $0.textColor = .braveLabel
-    $0.font = .preferredFont(forTextStyle: .body)
+  
+  private struct UX {
+    static let detailsViewEdgeInset = UIEdgeInsets(equalInset: 15)
+    static let contentViewEdgeInset = UIEdgeInsets(top: 25, left: 15, bottom: 15, right: 15.0)
+    static let instructionsEdgeInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15.0)
   }
+  
+  let contentStackView = BlockedAdsStackView(edgeInsets: UX.contentViewEdgeInset, spacing: 15.0).then {
+    $0.axis = .vertical
+    $0.alignment = .fill
+  }
+  
+  private let footNoteStackView =  BlockedAdsStackView(edgeInsets: UX.detailsViewEdgeInset, spacing: 10.0)
+  private let informationStackView =  BlockedAdsStackView(edgeInsets: UX.detailsViewEdgeInset, spacing: 15.0)
+  private let instructionStackView =  BlockedAdsStackView(edgeInsets: UX.instructionsEdgeInset)
+
+  private let braveIconView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
+    $0.image = #imageLiteral(resourceName: "welcome-view-ntp-logo")
+    $0.snp.makeConstraints {
+      $0.size.equalTo(40)
+    }
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+  }
+  
+  private let shieldIconView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
+    $0.image = #imageLiteral(resourceName: "shield-information")
+    $0.snp.makeConstraints {
+      $0.size.equalTo(80)
+    }
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+  }
+
+  private let footNoteTextLabel = UILabel().then {
+    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.numberOfLines = 0
+    $0.text = Strings.Onboarding.blockedAdsOnboardingFootnoteText
+    $0.font = .preferredFont(forTextStyle: .footnote)
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+
+  private let informationTextLabel = UILabel().then {
+    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.numberOfLines = 0
+    $0.font = .preferredFont(forTextStyle: .title1)
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+  
+  private let instructionsTextLabel = UILabel().then {
+    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.text = Strings.Onboarding.blockedAdsOnboardingInstructionsText
+    $0.numberOfLines = 0
+    $0.textAlignment = .right
+    $0.font = .preferredFont(forTextStyle: .body)
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+  
+  private let numberOfTrackersTextLabel = UILabel().then {
+    $0.text = Strings.Onboarding.blockedAdsOnboardingInstructionsText
+    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.numberOfLines = 1
+    $0.textAlignment = .left
+    $0.font = UIFontMetrics(forTextStyle: .headline).scaledFont(for: .systemFont(ofSize: 96.0))
+    $0.adjustsFontForContentSizeCategory = true
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+  
+  private var gradientView = BraveGradientView.gradient01
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.addSubview(label)
-    label.snp.makeConstraints {
-      $0.leading.trailing.top.bottom.equalToSuperview().inset(32.0)
+    informationStackView.addBackground(color: .black.withAlphaComponent(0.1), cornerRadius: 6.0)
+    footNoteStackView.addBackground(color: .black.withAlphaComponent(0.1), cornerRadius: 6.0)
+
+    view.addSubview(gradientView)
+    gradientView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
+    
+    gradientView.addSubview(contentStackView)
+    contentStackView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    contentStackView.addStackViewItems(
+      .view(instructionStackView),
+      .customSpace(15.0),
+      .view(informationStackView),
+      .customSpace(15.0),
+      .view(footNoteStackView)
+    )
   }
-
-  func setData(domain: String, trackerBlocked: String, trackerCount: Int) {
-    var defaultText: String
-    let uuid = UUID().uuidString.replacingOccurrences(of: "-", with: "")
-
-    if trackerCount > 0 {
-      defaultText = trackerCount == 1 ? String(format: Strings.Onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription, "[\(uuid)]", trackerCount, domain) : String(format: Strings.Onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription, "[\(uuid)]", trackerCount, domain)
+  
+  func setData(displayTrackers: [String], trackerCount: Int) {
+    if displayTrackers.isEmpty {
+      numberOfTrackersTextLabel.text = "\(trackerCount)"
+      informationTextLabel.text = Strings.Onboarding.blockedAdsOnboardingNoBigTechInformationText
+  
+      informationStackView.addStackViewItems(
+        .view(numberOfTrackersTextLabel),
+        .view(informationTextLabel)
+      )
     } else {
-      defaultText = String(format: Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionTwo, "[\(uuid)]", domain)
+      let numBigTechTrackers = trackerCount - displayTrackers.count
+      var bigTechTrackerNameList = displayTrackers.first?.capitalizeFirstLetter ?? ""
+      for (index, tracker) in displayTrackers.enumerated() where (displayTrackers.count > 1 && index > 0) {
+        bigTechTrackerNameList += ", \(tracker.capitalizeFirstLetter)"
+      }
+      
+      informationTextLabel.text = String.localizedStringWithFormat(
+        Strings.Onboarding.blockedAdsOnboardingBigTechInformationText, bigTechTrackerNameList, numBigTechTrackers)
+      informationStackView.addStackViewItems(
+        .view(shieldIconView),
+        .view(informationTextLabel)
+      )
     }
-
-    if let attributedText = createBlockedDescription(trackerBlocked: trackerBlocked, uuid: uuid, defaultText: defaultText) {
-      label.attributedText = attributedText
-    }
+    
+    footNoteStackView.addStackViewItems(
+      .view(braveIconView),
+      .view(footNoteTextLabel)
+    )
+    
+    instructionStackView.addStackViewItems(
+      .view(instructionsTextLabel)
+    )
   }
+}
 
-  private func createBlockedDescription(trackerBlocked: String, uuid: String, defaultText: String) -> NSAttributedString? {
-    let attributedText = NSMutableAttributedString()
+// MARK: - BlockedAdsStackView
 
-    let defaultTextChunks = defaultText.separatedBy("[\(uuid)]")
-    guard defaultTextChunks.count == 2 else {
-      label.text = defaultText
-      return nil
+extension WelcomeBraveBlockedAdsController {
+
+  class BlockedAdsStackView: UIStackView {
+
+    init(edgeInsets: UIEdgeInsets, spacing: CGFloat? = 0) {
+      super.init(frame: .zero)
+      if let spacing = spacing {
+        self.spacing = spacing
+      }
+      
+      alignment = .center
+      layoutMargins = edgeInsets
+      isLayoutMarginsRelativeArrangement = true
     }
 
-    attributedText.append(
-      NSAttributedString(
-        string: defaultTextChunks[0],
-        attributes: [
-          .foregroundColor: UIColor.braveLabel,
-          .font: UIFont.preferredFont(forTextStyle: .body),
-        ]))
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+      fatalError()
+    }
 
-    attributedText.append(
-      NSAttributedString(
-        string: " \(trackerBlocked) ",
-        attributes: [
-          .foregroundColor: UIColor.braveLabel,
-          .font: UIFont.preferredFont(for: .body, weight: .bold),
-        ]))
+    /// Adds Background to StackView with Color and Corner Radius
+    public func addBackground(color: UIColor, cornerRadius: CGFloat? = nil) {
+      let backgroundView = UIView(frame: bounds).then {
+        $0.backgroundColor = color
+        $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      }
 
-    attributedText.append(
-      NSAttributedString(
-        string: "\(defaultTextChunks[1])\n\n\(Strings.Onboarding.blockedAdsOnboardingPopoverDescriptionThree)",
-        attributes: [
-          .foregroundColor: UIColor.braveLabel,
-          .font: UIFont.preferredFont(forTextStyle: .body),
-        ]))
+      if let radius = cornerRadius {
+        backgroundView.layer.cornerRadius = radius
+        backgroundView.layer.cornerCurve = .continuous
+      }
 
-    return attributedText
+      insertSubview(backgroundView, at: 0)
+    }
   }
 }

@@ -124,3 +124,59 @@ class WelcomeNTPOnboardingController: UIViewController & PopoverContentComponent
     return view
   }
 }
+
+class WelcomeOmniBoxOnboardingController: UIViewController & PopoverContentComponent {
+  
+  private let stackView = UIStackView().then {
+    $0.spacing = 20.0
+    $0.axis = .vertical
+    $0.alignment = .top
+    $0.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 32, right: 20)
+    $0.isLayoutMarginsRelativeArrangement = true
+  }
+  
+  private let titleLabel = UILabel().then {
+    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.numberOfLines = 0
+    $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+
+  private let textLabel = UILabel().then {
+    $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+    $0.numberOfLines = 0
+    $0.font = UIFont.preferredFont(forTextStyle: .title2)
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+    $0.setContentCompressionResistancePriority(.required, for: .vertical)
+  }
+  
+  private let gradientView = BraveGradientView.gradient01
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    view.addSubview(gradientView)
+
+    gradientView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    gradientView.addSubview(stackView)
+    stackView.addArrangedSubview(titleLabel)
+    stackView.addArrangedSubview(textLabel)
+    
+    stackView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+  }
+
+  func setText(title: String, details: String) {
+    titleLabel.text = title
+    textLabel.text = details
+  }
+}
