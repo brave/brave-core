@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import { ToggleVisibilityButton } from '../../shared/style'
+
 // svgs
 import WarningCircle from '../../../assets/svg-icons/warning-circle-icon.svg'
 import CheckmarkSvg from '../../../assets/svg-icons/big-checkmark.svg'
@@ -30,6 +32,12 @@ export const InputWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  & > ${ToggleVisibilityButton} {
+    position: absolute;
+    right: 8px;
+    z-index: 100;
+  }
 `
 
 export const Input = styled.input<StyleProps>`
