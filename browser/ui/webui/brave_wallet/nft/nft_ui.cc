@@ -34,6 +34,9 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  untrusted_source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::ImgSrc,
+        std::string("img-src 'self' https: data:;"));
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
   content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
