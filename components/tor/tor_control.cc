@@ -53,11 +53,6 @@ constexpr char kGetCircuitEstablishedCmd[] =
     "GETINFO status/circuit-established";
 constexpr char kGetCircuitEstablishedReply[] = "status/circuit-established=";
 
-template <size_t Sz>
-constexpr size_t length(const char (&)[Sz]) noexcept {
-  return Sz - 1;
-}
-
 static std::string escapify(const char* buf, int len) {
   std::ostringstream s;
   for (int i = 0; i < len; i++) {
@@ -410,7 +405,7 @@ void TorControl::GetVersionLine(std::string* version,
     VLOG(0) << "tor: unexpected " << kGetVersionCmd << " reply";
     return;
   }
-  *version = reply.substr(length(kGetVersionReply));
+  *version = reply.substr(strlen(kGetVersionReply));
 }
 
 void TorControl::GetVersionDone(
@@ -455,7 +450,7 @@ void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
     VLOG(0) << "tor: unexpected " << kGetSOCKSListenersCmd << " reply";
     return;
   }
-  listeners->push_back(reply.substr(length(kGetSOCKSListenersReply)));
+  listeners->push_back(reply.substr(strlen(kGetSOCKSListenersReply)));
 }
 
 void TorControl::GetSOCKSListenersDone(
@@ -501,7 +496,7 @@ void TorControl::GetCircuitEstablishedLine(std::string* established,
     VLOG(0) << "tor: unexpected " << kGetCircuitEstablishedCmd << " reply";
     return;
   }
-  *established = reply.substr(length(kGetCircuitEstablishedReply));
+  *established = reply.substr(strlen(kGetCircuitEstablishedReply));
 }
 
 void TorControl::GetCircuitEstablishedDone(
@@ -589,9 +584,9 @@ void TorControl::SetupBridges(const std::vector<std::string>& bridges,
   } else {
     std::string command = "SETCONF ";
     for (const auto& bridge : bridges) {
-      command += "Bridge=\"" + bridge + "\" ";
+      base::StrAppend(&command, {"Bridge=\"", bridge, "\""});
     }
-    command += "UseBridges=1";
+    base::StrAppend(&command, {"UseBridges=1"});
     DoCmd(std::move(command), base::DoNothing(),
           base::BindOnce(&TorControl::OnBrigdesConfigured,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

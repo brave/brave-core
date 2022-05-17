@@ -275,7 +275,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTorTest, SetupBridges) {
-  // Tor is disabled in PRE, check pluggable transport are removed.
+  // Tor is disabled in PRE, check pluggable transports are removed.
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 
   // Pluggable transport processes was terminated at exit.

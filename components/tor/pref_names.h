@@ -9,7 +9,6 @@
 namespace tor::prefs {
 
 extern const char kTorDisabled[];
-extern const char kBridgesEnabledCount[];
 
 // Automatically open onion available site or .onion domain in Tor window
 extern const char kAutoOnionRedirect[];

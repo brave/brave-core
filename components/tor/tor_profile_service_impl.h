@@ -81,7 +81,7 @@ class TorProfileServiceImpl
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<BraveTorClientUpdater> tor_client_updater_ = nullptr;
-  raw_ptr<BraveTorPluggableTransportUpdater> tor_pluggable_transport_udater_ =
+  raw_ptr<BraveTorPluggableTransportUpdater> tor_pluggable_transport_updater_ =
       nullptr;
   raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;  // Singleton
   raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =

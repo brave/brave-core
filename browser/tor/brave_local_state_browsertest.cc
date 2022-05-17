@@ -21,10 +21,15 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
   EXPECT_TRUE(bridges_config.bridges.empty());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, ChangeTest) {
+IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorEnableDisable) {
   TorProfileServiceFactory::SetTorDisabled(true);
   EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled());
 
+  TorProfileServiceFactory::SetTorDisabled(false);
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, ChangeBridges) {
   tor::BridgesConfig bridges_config;
   bridges_config.use_bridges = true;
   EXPECT_EQ(tor::BridgesConfig::BuiltinType::kNone, bridges_config.use_builtin);
