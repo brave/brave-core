@@ -96,5 +96,7 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   background-color: ${(p) => p.theme.color.text02};
   -webkit-mask-image: url(${(p) => p.isVisible ? EyeOffIcon : EyeOnIcon});
   mask-image: url(${(p) => p.isVisible ? EyeOffIcon : EyeOnIcon});
-  mask-size: cover;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
 `
