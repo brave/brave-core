@@ -67,6 +67,24 @@ extension Angle {
 }
 
 extension BraveGradient {
+  public static var lightGradient01: BraveGradient {
+    .init(
+      stops: [
+        .init(color: DesignSystemColor.gradient01_step0.color, position: 0),
+        .init(color: DesignSystemColor.gradient01_step1.color, position: 1.0),
+      ],
+      angle: .figmaDegrees(126)
+    )
+  }
+  public static var darkGradient01: BraveGradient {
+    .init(
+      stops: [
+        .init(color: DesignSystemColor.gradient01_step0.color, position: 0),
+        .init(color: DesignSystemColor.gradient01_step1.color, position: 1.0),
+      ],
+      angle: .figmaDegrees(130)
+    )
+  }
   public static var lightGradient02: BraveGradient {
     .init(
       stops: [
@@ -128,6 +146,14 @@ extension BraveGradient {
 }
 
 extension BraveGradientView {
+  public static var gradient01: BraveGradientView {
+    .init { traitCollection in
+      if traitCollection.userInterfaceStyle == .dark {
+        return .darkGradient01
+      }
+      return .lightGradient01
+    }
+  }
   public static var gradient02: BraveGradientView {
     .init { traitCollection in
       if traitCollection.userInterfaceStyle == .dark {

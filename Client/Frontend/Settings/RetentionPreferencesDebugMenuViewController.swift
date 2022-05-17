@@ -55,12 +55,6 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               profile: nil,
               rewards: nil)
             onboardingController.modalPresentationStyle = .fullScreen
-            onboardingController.onAdsWebsiteSelected = { [weak self] url in
-              self?.dismiss(animated: true)
-            }
-            onboardingController.onSkipSelected = { [weak self] in
-              self?.dismiss(animated: true)
-            }
 
             present(onboardingController, animated: false)
           }, cellClass: MultilineButtonCell.self)

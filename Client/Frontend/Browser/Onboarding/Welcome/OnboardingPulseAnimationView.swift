@@ -23,7 +23,7 @@ class RadialPulsingAnimation: UIView {
       let width = cos(20.0 * Double(i)) - sin(2.0 * Double(i)) + idealThicc
 
       let layer = CAShapeLayer()
-      layer.strokeColor = UIColor.white.cgColor
+      layer.strokeColor = UIColor.braveLighterBlurple.cgColor
       layer.lineWidth = width
       layer.fillColor = UIColor.clear.cgColor
       layer.lineCap = .round

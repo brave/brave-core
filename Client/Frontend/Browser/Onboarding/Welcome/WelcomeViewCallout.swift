@@ -20,11 +20,11 @@ enum WelcomeViewCalloutState {
     var secondaryAction: (() -> Void)
   }
 
+  case loading
   case welcome(title: String)
-  case privacy(title: String, details: String, primaryButtonTitle: String, primaryAction: () -> Void)
   case defaultBrowser(info: WelcomeViewDefaultBrowserDetails)
+  case settings(title: String, details: String)
   case defaultBrowserCallout(info: WelcomeViewDefaultBrowserDetails)
-  case ready(title: String, details: String, moreDetails: String)
 }
 
 class WelcomeViewCallout: UIView {
@@ -107,9 +107,9 @@ class WelcomeViewCallout: UIView {
   // MARK: - State
   private(set) var state: WelcomeViewCalloutState?
 
-  init(pointsUp: Bool) {
+  init() {
     super.init(frame: .zero)
-    doLayout(pointsUp: pointsUp)
+    doLayout()
 
     [titleLabel, detailsLabel, primaryButton, secondaryButtonContentView].forEach {
       contentView.addArrangedSubview($0)
@@ -119,7 +119,7 @@ class WelcomeViewCallout: UIView {
     }
 
     [primaryButton, secondaryButton].forEach {
-      $0.contentMode = pointsUp ? .bottom : .top
+      $0.contentMode = .top
       $0.snp.makeConstraints {
         $0.height.equalTo(44.0)
       }
@@ -130,7 +130,7 @@ class WelcomeViewCallout: UIView {
     }
 
     [titleLabel, detailsLabel].forEach {
-      $0.contentMode = pointsUp ? .bottom : .top
+      $0.contentMode = .top
     }
   }
 
@@ -138,35 +138,10 @@ class WelcomeViewCallout: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  private func doLayout(pointsUp: Bool) {
+  private func doLayout() {
     arrowView.removeFromSuperview()
     contentView.removeFromSuperview()
-
-    if pointsUp {
-      addSubview(backgroundView)
-      addSubview(arrowView)
-      addSubview(contentView)
-      arrowView.transform = .identity
-
-      arrowView.snp.makeConstraints {
-        $0.centerX.equalToSuperview()
-        $0.top.equalToSuperview().inset(8)
-        $0.width.equalTo(20.0)
-        $0.height.equalTo(13.0)
-      }
-
-      contentView.snp.makeConstraints {
-        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-          $0.leading.trailing.equalToSuperview().inset(DesignUX.padding)
-        } else {
-          $0.centerX.equalToSuperview()
-          $0.leading.trailing.equalToSuperview().priority(.high)
-          $0.width.lessThanOrEqualTo(BraveUX.baseDimensionValue)
-        }
-        $0.top.equalTo(arrowView.snp.bottom)
-        $0.bottom.equalToSuperview()
-      }
-    } else {
+   
       addSubview(backgroundView)
       addSubview(contentView)
       addSubview(arrowView)
@@ -190,7 +165,6 @@ class WelcomeViewCallout: UIView {
         $0.width.equalTo(20.0)
         $0.height.equalTo(13.0)
       }
-    }
 
     backgroundView.snp.makeConstraints {
       $0.edges.equalTo(contentView.snp.edges)
@@ -200,19 +174,54 @@ class WelcomeViewCallout: UIView {
   func setState(state: WelcomeViewCalloutState) {
     self.state = state
 
-    if case .ready = state {
-      doLayout(pointsUp: true)
-    }
-
     primaryButton.removeAction(identifiedBy: .init(rawValue: "primary.action"), for: .primaryActionTriggered)
     secondaryButton.removeAction(identifiedBy: .init(rawValue: "secondary.action"), for: .primaryActionTriggered)
 
     switch state {
+    case .loading:
+      backgroundView.isHidden = true
+      arrowView.isHidden = true
+      
+      titleLabel.do {
+        $0.isHidden = true
+      }
+
+      detailsLabel.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      primaryButton.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      secondaryLabel.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      secondaryButton.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      secondaryButtonContentView.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
     case .welcome(let title):
+      contentView.do {
+        $0.layoutMargins = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: -15)
+      }
+      backgroundView.isHidden = true
+      arrowView.isHidden = true
+        
       titleLabel.do {
         $0.text = title
         $0.textAlignment = .center
-        $0.font = .preferredFont(for: .title1, weight: .semibold)
+        $0.font = .preferredFont(for: .largeTitle, weight: .semibold)
+        $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
         $0.alpha = 1.0
         $0.isHidden = false
       }
@@ -241,56 +250,6 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 0.0
         $0.isHidden = true
       }
-
-    case .privacy(let title, let details, let buttonTitle, let action):
-      titleLabel.do {
-        $0.text = title
-        $0.textAlignment = .left
-        $0.font = .preferredFont(for: .title3, weight: .bold)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      detailsLabel.do {
-        $0.text = details
-        // Calling .preferredFont(forTextStyle: .body) will freeze the app, and crash!
-        // It creates an Out of Memory exception if the font is not .scaledFont!
-        // This is an OS bug. Fortunately our extension creates a scaled font properly.
-        $0.font = .preferredFont(for: .body, weight: .regular)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      primaryButton.do {
-        $0.setTitle(buttonTitle, for: .normal)
-        $0.titleLabel?.font = .preferredFont(for: .body, weight: .regular)
-        $0.addAction(
-          UIAction(
-            identifier: .init(rawValue: "primary.action"),
-            handler: { _ in
-              action()
-            }), for: .touchUpInside)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      secondaryLabel.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      secondaryButton.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      secondaryButtonContentView.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      contentView.setCustomSpacing(8.0, after: titleLabel)
-      contentView.setCustomSpacing(24.0, after: detailsLabel)
     case .defaultBrowser(let info):
       contentView.do {
         $0.layoutMargins = UIEdgeInsets(top: 30, left: 30, bottom: 15, right: 30)
@@ -298,6 +257,7 @@ class WelcomeViewCallout: UIView {
       titleLabel.do {
         $0.text = info.title
         $0.textAlignment = .left
+        $0.textColor = .bravePrimary
         $0.font = .preferredFont(for: .title3, weight: .bold)
         $0.alpha = 1.0
         $0.isHidden = false
@@ -349,6 +309,53 @@ class WelcomeViewCallout: UIView {
       contentView.setCustomSpacing(8.0, after: titleLabel)
       contentView.setCustomSpacing(24.0, after: detailsLabel)
       contentView.setCustomSpacing(10.0, after: primaryButton)
+    case .settings(let title, let details):
+      contentView.do {
+        $0.layoutMargins = UIEdgeInsets(top: 120, left: -30, bottom: -20, right: -30)
+      }
+      
+      backgroundView.isHidden = true
+      arrowView.isHidden = true
+        
+      titleLabel.do {
+        $0.text = title
+        $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+        $0.textAlignment = .center
+        $0.font = .preferredFont(for: .title1, weight: .semibold)
+        $0.alpha = 1.0
+        $0.isHidden = false
+      }
+
+      detailsLabel.do {
+        $0.text = details
+        $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
+        $0.textAlignment = .center
+        $0.font = .preferredFont(for: .title3, weight: .regular)
+        $0.alpha = 0.0
+        $0.isHidden = false
+      }
+
+      primaryButton.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      secondaryLabel.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      secondaryButton.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+
+      secondaryButtonContentView.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
+      
+      contentView.setCustomSpacing(20.0, after: titleLabel)
     case .defaultBrowserCallout(let info):
       contentView.do {
         $0.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
@@ -414,45 +421,12 @@ class WelcomeViewCallout: UIView {
       contentView.setCustomSpacing(8.0, after: titleLabel)
       contentView.setCustomSpacing(24.0, after: detailsLabel)
       contentView.setCustomSpacing(10.0, after: primaryButton)
-    case .ready(let title, let details, let moreDetails):
-      titleLabel.do {
-        $0.text = title
-        $0.textAlignment = .left
-        $0.font = .preferredFont(for: .title3, weight: .bold)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      detailsLabel.do {
-        $0.text = "\(details)\n\(moreDetails)"
-        $0.font = .preferredFont(for: .body, weight: .regular)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      primaryButton.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      secondaryLabel.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      secondaryButton.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      secondaryButtonContentView.do {
-        $0.alpha = 0.0
-        $0.isHidden = true
-      }
-
-      contentView.setCustomSpacing(8.0, after: titleLabel)
-      contentView.setCustomSpacing(0.0, after: detailsLabel)
-      contentView.setCustomSpacing(0.0, after: primaryButton)
+    }
+  }
+  
+  func animateTitleViewVisibility(alpha: CGFloat, duration: TimeInterval) {
+    UIView.animate(withDuration: duration) {
+      self.detailsLabel.alpha = alpha
     }
   }
 }

@@ -23,7 +23,6 @@ public class PopoverController: UIViewController {
   /// The preferred popover width when using `ContentSizeBehavior.preferredContentSize` or
   /// `ContentSizeBehavior.fixedSize`
   public static let preferredPopoverWidth: CGFloat = 320.0
-
   /// Defines the behavior of the arrow direction and how the popover presents itself
   public enum ArrowDirectionBehavior {
     /// Determines the direction of the popover based on the origin of the popover
@@ -39,11 +38,39 @@ public class PopoverController: UIViewController {
   /// Defines the behavior of how the popover sizes itself to fit the content
   public enum ContentSizeBehavior {
     /// The popover content view's size will be tied to the content controller view's size
-    case autoLayout
+    case autoLayout(_ configuration: ContentSizeConfiguration? = nil)
     /// The popover will size itself based on `UIViewController.preferredContentSize`
     case preferredContentSize
     /// The popover content view will be fixed to a given size
     case fixedSize(CGSize)
+  }
+  
+  /// Defines configuration details of `ContentSizeBehavior.autoLayout`
+  /// The popover will resize itself according to size configuration type chosen
+  public struct ContentSizeConfiguration {
+    /// The custom width determined by configuration type
+    var preferredWidth: CGFloat?
+    ///The custom height determined by configuration type
+    var preferredHeight: CGFloat?
+    /// The configuration which sets popover width to phone width under max amount
+    public static var phoneWidth: Self {
+      return .init(
+        preferredWidth: min(440, UIScreen.main.bounds.width)
+      )
+    }
+    /// The configuration which sets popover height to phone width under max amount
+    public static var phoneHeight: Self {
+      return .init(
+        preferredHeight: min(750, UIScreen.main.bounds.height)
+      )
+    }
+    /// The configuration which sets popover height / width to phone width under max amount
+    public static var phoneBounds: Self {
+      return .init(
+        preferredWidth: min(440, UIScreen.main.bounds.width),
+        preferredHeight: min(750, UIScreen.main.bounds.height)
+      )
+    }
   }
 
   /// Outer margins around the presented popover to the edge of the screen (or safe area)
@@ -85,7 +112,7 @@ public class PopoverController: UIViewController {
   private var containerViewWidthConstraint: NSLayoutConstraint?
 
   /// Create a popover displaying a content controller
-  public init(contentController: UIViewController & PopoverContentComponent, contentSizeBehavior: ContentSizeBehavior = .autoLayout) {
+  public init(contentController: UIViewController & PopoverContentComponent, contentSizeBehavior: ContentSizeBehavior = .autoLayout()) {
     self.contentController = contentController
     self.contentSizeBehavior = contentSizeBehavior
 
@@ -143,7 +170,7 @@ public class PopoverController: UIViewController {
     contentController.didMove(toParent: self)
 
     switch contentSizeBehavior {
-    case .autoLayout:
+    case .autoLayout(let configuration):
       contentController.view.snp.makeConstraints { make in
         autoLayoutTopConstraint =
           make.top.equalTo(self.containerView.contentView)
@@ -152,6 +179,18 @@ public class PopoverController: UIViewController {
           make.bottom.equalTo(self.containerView.contentView)
           .constraint.layoutConstraints.first
         make.leading.trailing.equalTo(self.containerView.contentView)
+      }
+      
+      if let preferredWidth = configuration?.preferredWidth {
+        containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: preferredWidth)
+        containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
+        containerViewWidthConstraint?.isActive = true
+      }
+      
+      if let preferredHeight = configuration?.preferredHeight {
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: preferredHeight + PopoverUX.arrowSize.height)
+        containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
+        containerViewHeightConstraint?.isActive = true
       }
     case .preferredContentSize:
       containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
@@ -307,12 +346,14 @@ public class PopoverController: UIViewController {
       outerMargins.bottom = convenientDismissalMargin
     }
 
-    let constrainedWidth = viewController.view.bounds.width - outerMargins.left - outerMargins.right
     let contentSize: CGSize
 
     switch contentSizeBehavior {
     case .autoLayout:
-      contentSize = contentController.view.systemLayoutSizeFitting(CGSize(width: constrainedWidth, height: viewController.view.bounds.height - outerMargins.top - outerMargins.bottom))
+      let constrainedWidth = viewController.view.bounds.width
+      let constrainedHeight = viewController.view.bounds.height
+
+      contentSize = contentController.view.systemLayoutSizeFitting(CGSize(width: constrainedWidth - outerMargins.left - outerMargins.right, height: constrainedHeight - outerMargins.top - outerMargins.bottom))
     case .preferredContentSize:
       contentSize = contentController.preferredContentSize
     case .fixedSize(let size):

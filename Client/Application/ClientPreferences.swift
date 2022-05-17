@@ -136,6 +136,10 @@ extension Preferences {
     /// Whether the ntp callout is shown.
     static let ntpCalloutCompleted =
       Option<Bool>(key: "fullScreenCallout.full-screen-ntp-callout-completed", default: false)
+    
+    /// Whether the omnibox callout is shown.
+    static let omniboxCalloutCompleted =
+      Option<Bool>(key: "fullScreenCallout.full-screen-omnibox-callout-completed", default: false)
   }
 
   final class DefaultBrowserIntro {

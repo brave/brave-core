@@ -78,7 +78,7 @@ extension BrowserViewController {
       }
     }
 
-    let popover = PopoverController(contentController: braveRewardsPanel, contentSizeBehavior: .autoLayout)
+    let popover = PopoverController(contentController: braveRewardsPanel)
     popover.addsConvenientDismissalMargins = false
     popover.present(from: topToolbar.locationView.rewardsButton, on: self)
     popover.popoverDidDismiss = { [weak self] _ in
@@ -97,7 +97,7 @@ extension BrowserViewController {
   func showWalletTransferExpiryPanelIfNeeded() {
     func _show() {
       let controller = WalletTransferExpiredViewController()
-      let popover = PopoverController(contentController: controller, contentSizeBehavior: .autoLayout)
+      let popover = PopoverController(contentController: controller)
       popover.popoverDidDismiss = { _ in
         Preferences.Rewards.transferUnavailableLastSeen.value = Date().timeIntervalSince1970
       }
