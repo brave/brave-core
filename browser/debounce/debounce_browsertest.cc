@@ -304,7 +304,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, IgnoreExtraKeys) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
-// Test that URLs in private registries are treated the same as other URLs.
+// Test that URLs in private registries are treated the same as all other URLs.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ExcludePrivateRegistries) {
   ASSERT_TRUE(InstallMockExtension());
   GURL base_url = embedded_test_server()->GetURL("example.blogspot.com", "/");
