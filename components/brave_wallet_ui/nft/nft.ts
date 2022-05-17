@@ -3,4 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// TODO(nvonpentz) fetch NFT metadata?
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => {
+    if (typeof prop === 'string') {
+      return searchParams.get(prop)
+    }
+    return null
+  }
+})
+/* eslint-disable  @typescript-eslint/dot-notation */
+const imageUrl = params['imageUrl']
+/* eslint-enable  @typescript-eslint/dot-notation */
+const imageEl = <HTMLImageElement>document.getElementById('image')
+if (imageUrl && imageEl) {
+  imageEl.src = imageUrl
+}
