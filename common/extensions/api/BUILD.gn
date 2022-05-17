@@ -4,9 +4,10 @@ import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//tools/grit/grit_rule.gni")
+import("//brave/resources/brave_grit.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
+
 json_features("api_features") {
   feature_type = "APIFeature"
   method_name = "AddBraveAPIFeatures"
@@ -117,13 +118,12 @@ brave_extensions_api_deps = [
   "//skia",
 ]
 
-grit("resources") {
+brave_grit("resources") {
   source = "brave_api_resources.grd"
   outputs = [
     "grit/brave_api_resources.h",
     "brave_api_resources.pak",
   ]
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
 function_registration("generated_api_registration") {

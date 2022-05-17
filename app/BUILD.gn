@@ -1,15 +1,15 @@
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
+import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
-import("//tools/grit/grit_rule.gni")
 
 source_set("command_ids") {
   sources = [ "brave_command_ids.h" ]
 }
 
-grit("brave_generated_resources_grit") {
+brave_grit("brave_generated_resources_grit") {
   defines = [
     "enable_sidebar=$enable_sidebar",
     "enable_speedreader=$enable_speedreader",
@@ -27,13 +27,6 @@ grit("brave_generated_resources_grit") {
   foreach(locale, all_chrome_locales) {
     outputs += [ "brave_generated_resources_$locale.pak" ]
   }
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-
-  resource_ids = "//brave/browser/resources/resource_ids"
 }
 
 group("app") {
