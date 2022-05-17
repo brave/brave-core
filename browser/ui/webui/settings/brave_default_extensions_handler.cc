@@ -21,6 +21,8 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/constants.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
@@ -56,11 +58,6 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
-#endif
-
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
@@ -163,11 +160,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "isWidevineEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsWidevineEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "isDecentralizedDnsEnabled",
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled,
-          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getDecentralizedDnsResolveMethodList",
       base::BindRepeating(
@@ -481,27 +473,12 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
 }
 #endif
 
-void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-  ResolveJavascriptCallback(args[0], base::Value(true));
-#else
-  ResolveJavascriptCallback(args[0], base::Value(false));
-#endif
-}
-
 void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   ResolveJavascriptCallback(args[0], decentralized_dns::GetResolveMethodList());
-#else
-  ResolveJavascriptCallback(args[0], base::Value(base::Value::Type::LIST));
-#endif
 }
 
 #if BUILDFLAG(ENABLE_IPFS)

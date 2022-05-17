@@ -16,6 +16,7 @@
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -57,10 +58,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
-#endif
-
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_FTX)
@@ -301,12 +298,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   (*s_brave_allowlist)[decentralized_dns::kUnstoppableDomainsResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[decentralized_dns::kENSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-#endif
 
   // Media router pref
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =

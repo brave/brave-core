@@ -22,7 +22,6 @@ cr.define('settings', function () {
     getRestartNeeded () {}
     wasSignInEnabledAtStartup () {}
     isMediaRouterEnabled () {}
-    isDecentralizedDnsEnabled() {}
     getDecentralizedDnsResolveMethodList() {}
   }
 
@@ -73,10 +72,6 @@ cr.define('settings', function () {
 
     isMediaRouterEnabled () {
       return loadTimeData.getBoolean('isMediaRouterEnabled')
-    }
-
-    isDecentralizedDnsEnabled () {
-      return cr.sendWithPromise('isDecentralizedDnsEnabled')
     }
 
     getDecentralizedDnsResolveMethodList () {

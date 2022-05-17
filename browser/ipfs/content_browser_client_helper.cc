@@ -15,6 +15,7 @@
 #include "brave/common/url_constants.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -31,10 +32,6 @@
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/utils.h"
-#endif
-
 namespace {
 
 constexpr char kIpfsLocalhost[] = ".ipfs.localhost";
@@ -50,9 +47,7 @@ bool IsIPFSLocalGateway(PrefService* prefs) {
 
 namespace ipfs {
 
-bool HandleIPFSURLRewrite(
-    GURL* url,
-    content::BrowserContext* browser_context) {
+bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
   // This is needed for triggering ReverseRewrite later.
   if (url->SchemeIs("http") &&
       (base::EndsWith(url->host_piece(), kIpfsLocalhost) ||
@@ -84,7 +79,6 @@ bool HandleIPFSURLRewrite(
     }
   }
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   bool resolve_ens = decentralized_dns::IsENSTLD(*url) &&
                      decentralized_dns::IsENSResolveMethodEthereum(
                          g_browser_process->local_state());
@@ -95,13 +89,11 @@ bool HandleIPFSURLRewrite(
   if ((resolve_ens || resolve_ud) && IsLocalGatewayConfigured(prefs)) {
     return true;
   }
-#endif
   return false;
 }
 
-bool HandleIPFSURLReverseRewrite(
-    GURL* url,
-    content::BrowserContext* browser_context) {
+bool HandleIPFSURLReverseRewrite(GURL* url,
+                                 content::BrowserContext* browser_context) {
   if (url->SchemeIs(content::kChromeUIScheme) &&
       url->DomainIs(kIPFSWebUIHost)) {
     return true;

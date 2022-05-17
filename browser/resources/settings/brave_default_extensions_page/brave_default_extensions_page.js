@@ -28,7 +28,6 @@ Polymer({
   properties: {
     showRestartToast_: Boolean,
     disableTorOption_: Boolean,
-    decentralizedDnsEnabled_: Boolean,
     unstoppableDomainsResolveMethod_: Array,
     ensResolveMethod_: Array,
     torEnabledPref_: {
@@ -76,9 +75,6 @@ Polymer({
     });
     this.browserProxy_.isTorManaged().then(managed => {
       this.disableTorOption_ = managed
-    })
-    this.browserProxy_.isDecentralizedDnsEnabled().then(enabled => {
-      this.decentralizedDnsEnabled_ = enabled
     })
     this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
         this.unstoppableDomainsResolveMethod_ = list

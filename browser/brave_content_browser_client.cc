@@ -63,6 +63,7 @@
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_throttle.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -140,10 +141,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
-#endif
-
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -915,7 +912,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   std::unique_ptr<content::NavigationThrottle>
       decentralized_dns_navigation_throttle =
           decentralized_dns::DecentralizedDnsNavigationThrottle::
@@ -923,7 +919,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                                      g_browser_process->GetApplicationLocale());
   if (decentralized_dns_navigation_throttle)
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
-#endif
 
   if (std::unique_ptr<
           content::NavigationThrottle> domain_block_navigation_throttle =

@@ -29,7 +29,7 @@ class BraveWalletTabHelper
   explicit BraveWalletTabHelper(content::WebContents* web_contents);
   ~BraveWalletTabHelper() override;
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_ANDROID)
   void ShowBubble();
   void ShowApproveWalletBubble();
   void CloseBubble();
@@ -52,7 +52,7 @@ class BraveWalletTabHelper
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletTabHelperUnitTest, GetApproveBubbleURL);
   friend class content::WebContentsUserData<BraveWalletTabHelper>;
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_ANDROID)
   GURL GetBubbleURL();
   base::OnceClosure show_bubble_callback_for_testing_;
   bool close_on_deactivate_for_testing_ = true;
