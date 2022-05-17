@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc b/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc
+index 8730f24be495b..21410f8c4b4d3 100644
+--- a/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc
++++ b/chrome/browser/media/webrtc/media_capture_devices_dispatcher.cc
+@@ -84,6 +84,8 @@ MediaCaptureDevicesDispatcher::MediaCaptureDevicesDispatcher()
+       media_stream_capture_indicator_(new MediaStreamCaptureIndicator()) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
++  BRAVE_MEDIA_CAPTURE_DEVICES_DISPATCHER
++
+ #if !BUILDFLAG(IS_ANDROID)
+   media_access_handlers_.push_back(
+       std::make_unique<DisplayMediaAccessHandler>());
