@@ -7,6 +7,7 @@ import styled from 'styled-components'
 
 import { WalletButton } from '../../../../components/shared/style'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
+import DownloadIcon from '../../../../assets/svg-icons/download-icon.svg'
 
 export const LinkText = styled.a`
   font-family: 'Poppins';
@@ -39,12 +40,7 @@ export const PhraseCardTopRow = styled.div`
 
 export const PhraseCardBody = styled.div`
   flex: 1;
-  min-height: 180px;
   width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 16px;
-  padding-bottom: 10px;
   border-style: solid;
   border-width: 1px;
   border-color: ${(p) => p.theme.color.divider01};
@@ -54,6 +50,7 @@ export const PhraseCardBody = styled.div`
 export const PhraseCardBottomRow = styled(PhraseCardTopRow)`
   justify-content: flex-start;
   height: 40px;
+  gap: 14px;
 `
 
 // buttons
@@ -62,6 +59,19 @@ export const CopyButton = styled(WalletButton)`
   outline: none;
   border: none;
   mask-image: url(${ClipboardIcon});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color.text01};
+  height: 14px;
+  width: 14px;
+`
+
+export const DownloadButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${DownloadIcon});
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: 14px;

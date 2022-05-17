@@ -9,6 +9,7 @@ import { useHistory } from 'react-router'
 
 import {
   CopyButton,
+  DownloadButton,
   LinkText,
   PhraseCard,
   PhraseCardBody,
@@ -81,6 +82,13 @@ export const OnboardingRecoveryPhrase = () => {
     return (mnemonic || '').split(' ')
   }, [mnemonic])
 
+  const phraseDownloadUri = React.useMemo(
+    () => `data:text/plain;charset=utf-8,${
+      encodeURI(recoveryPhrase.join(' '))
+    }`,
+    [recoveryPhrase]
+  )
+
   // render
   return (
     <WalletPageLayout>
@@ -116,7 +124,15 @@ export const OnboardingRecoveryPhrase = () => {
             </PhraseCardBody>
 
             <PhraseCardBottomRow>
-            <CopyButton onClick={onCopyPhrase} />
+              <CopyButton
+                onClick={onCopyPhrase}
+              />
+              <a
+                href={phraseDownloadUri}
+                download='brave-wallet-private-key-backup.txt'
+              >
+                <DownloadButton />
+              </a>
             </PhraseCardBottomRow>
           </PhraseCard>
 
