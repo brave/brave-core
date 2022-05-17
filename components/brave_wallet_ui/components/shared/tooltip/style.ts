@@ -39,12 +39,13 @@ export const TipWrapper = styled.div<StyleProps>`
         ? '0px'
         : '-105%'
     });
+
+    z-index: 100;
 `
 
 export const Tip = styled.div<StyleProps>`
   border-radius: 4px;
   padding: 6px;
-  z-index: 100;
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;

@@ -61,7 +61,7 @@ export const PasswordStrengthTooltip: React.FC<React.PropsWithChildren<Props>> =
     <Tooltip
       disableHoverEvents
       position='left'
-      verticalPosition='above'
+      verticalPosition='below'
       isVisible={isVisible}
       pointerPosition={'center'}
       horizontalMarginPx={10}
