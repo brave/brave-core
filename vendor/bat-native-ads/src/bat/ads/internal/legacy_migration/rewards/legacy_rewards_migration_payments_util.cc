@@ -12,8 +12,8 @@
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/base/time_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
-#include "bat/ads/internal/time_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

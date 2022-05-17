@@ -9,13 +9,13 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_util.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/container_util.h"
+#include "bat/ads/internal/base/container_util.h"
 #include "bat/ads/internal/eligible_ads/ad_predictor_info.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/targeting/targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 namespace ads {
 
@@ -54,30 +54,30 @@ CreativeAdPredictorMap<T> GroupCreativeAdsByCreativeInstanceId(
 template <typename T>
 AdPredictorInfo<T> ComputePredictorFeatures(
     const AdPredictorInfo<T>& ad_predictor,
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events) {
   AdPredictorInfo<T> mutable_ad_predictor = ad_predictor;
 
-  const SegmentList intent_child_segments_intersection = SetIntersection(
-      ad_targeting::GetTopChildPurchaseIntentSegments(user_model),
-      ad_predictor.segments);
+  const SegmentList intent_child_segments_intersection =
+      SetIntersection(targeting::GetTopChildPurchaseIntentSegments(user_model),
+                      ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_child_segments =
       intent_child_segments_intersection.empty() ? false : true;
 
-  const SegmentList intent_parent_segments_intersection = SetIntersection(
-      ad_targeting::GetTopParentPurchaseIntenSegments(user_model),
-      ad_predictor.segments);
+  const SegmentList intent_parent_segments_intersection =
+      SetIntersection(targeting::GetTopParentPurchaseIntenSegments(user_model),
+                      ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_parent_segments =
       intent_parent_segments_intersection.empty() ? false : true;
 
   const SegmentList interest_child_segments_intersection =
-      SetIntersection(ad_targeting::GetTopChildInterestSegments(user_model),
+      SetIntersection(targeting::GetTopChildInterestSegments(user_model),
                       ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_child_segments =
       interest_child_segments_intersection.empty() ? false : true;
 
   const SegmentList interest_parent_segments_intersection =
-      SetIntersection(ad_targeting::GetTopParentInterestSegments(user_model),
+      SetIntersection(targeting::GetTopParentInterestSegments(user_model),
                       ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_parent_segments =
       interest_parent_segments_intersection.empty() ? false : true;
@@ -143,7 +143,7 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
 template <typename T>
 CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
     const CreativeAdPredictorMap<T>& creative_ad_predictors,
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events) {
   CreativeAdPredictorMap<T> creative_ad_predictors_with_features;
 

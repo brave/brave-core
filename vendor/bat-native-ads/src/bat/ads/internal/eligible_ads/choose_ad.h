@@ -8,9 +8,9 @@
 
 #include <vector>
 
-#include "bat/ads/internal/ad_pacing/ad_pacing.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_predictor_util.h"
+#include "bat/ads/internal/eligible_ads/pacing.h"
 #include "bat/ads/internal/eligible_ads/sample_ads.h"
 
 namespace absl {
@@ -21,7 +21,7 @@ class optional;
 namespace ads {
 
 template <typename T>
-absl::optional<T> ChooseAd(const ad_targeting::UserModelInfo& user_model,
+absl::optional<T> ChooseAd(const targeting::UserModelInfo& user_model,
                            const AdEventList& ad_events,
                            const std::vector<T>& creative_ads) {
   DCHECK(!creative_ads.empty());

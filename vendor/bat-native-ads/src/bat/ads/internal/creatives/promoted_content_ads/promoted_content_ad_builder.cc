@@ -6,7 +6,7 @@
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 
 #include "base/guid.h"
-#include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {

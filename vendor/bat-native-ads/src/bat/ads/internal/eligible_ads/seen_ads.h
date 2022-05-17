@@ -9,10 +9,10 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/eligible_ads/round_robin_ads.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

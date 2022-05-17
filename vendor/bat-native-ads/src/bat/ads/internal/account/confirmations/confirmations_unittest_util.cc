@@ -10,13 +10,13 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
-#include "bat/ads/internal/unittest_time_util.h"
 
 namespace ads {
 

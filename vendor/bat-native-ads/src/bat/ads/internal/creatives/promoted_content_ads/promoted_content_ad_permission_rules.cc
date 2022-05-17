@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_permission_rules.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/catalog_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/catalog_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
+#include "bat/ads/internal/serving/permission_rules/promoted_content_ads_per_day_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/promoted_content_ads_per_hour_permission_rule.h"
 
 namespace ads {
 namespace promoted_content_ads {

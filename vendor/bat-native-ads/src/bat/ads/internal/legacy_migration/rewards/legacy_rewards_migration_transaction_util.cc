@@ -9,10 +9,10 @@
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_util.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/time_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

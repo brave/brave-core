@@ -5,18 +5,18 @@
 
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_factory.h"
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_v1.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_v2.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
 
 namespace ads {
 namespace inline_content_ads {
 
 std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
     const int version,
-    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource) {
   switch (version) {
     case 1: {

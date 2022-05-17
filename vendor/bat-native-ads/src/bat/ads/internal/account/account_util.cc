@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 

@@ -17,7 +17,6 @@
 #include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

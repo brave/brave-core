@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 
+#include <string>
+
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/server_host_util.h"
+#include "bat/ads/internal/server/hosts/server_host_util.h"
 
 namespace ads {
 

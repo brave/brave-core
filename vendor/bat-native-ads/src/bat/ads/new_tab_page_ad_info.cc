@@ -5,8 +5,8 @@
 
 #include "bat/ads/new_tab_page_ad_info.h"
 
-#include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/json_helper.h"
 
 namespace ads {
 

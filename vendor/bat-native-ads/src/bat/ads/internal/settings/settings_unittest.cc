@@ -9,11 +9,10 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/serving/serving_features.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -32,7 +31,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
-  enabled_features.push_back({features::kAdServing, kParameters});
+  enabled_features.push_back({features::kServing, kParameters});
 
   const std::vector<base::Feature> disabled_features;
 
@@ -56,7 +55,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
-  enabled_features.push_back({features::kAdServing, kParameters});
+  enabled_features.push_back({features::kServing, kParameters});
 
   const std::vector<base::Feature> disabled_features;
 
@@ -78,7 +77,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "-1";
-  enabled_features.push_back({features::kAdServing, kParameters});
+  enabled_features.push_back({features::kServing, kParameters});
 
   const std::vector<base::Feature> disabled_features;
 
@@ -100,7 +99,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "11";
-  enabled_features.push_back({features::kAdServing, kParameters});
+  enabled_features.push_back({features::kServing, kParameters});
 
   const std::vector<base::Feature> disabled_features;
 

@@ -1,0 +1,304 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "bat/ads/internal/targeting/targeting.h"
+
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_features.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_features.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_features.h"
+#include "bat/ads/internal/targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
+#include "bat/ads/internal/targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
+#include "bat/ads/internal/targeting/processors/contextual/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/targeting/targeting_user_model_builder.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
+
+// npm run test -- brave_unit_tests --filter=BatAds*
+
+namespace ads {
+namespace targeting {
+
+namespace {
+
+constexpr char kTextClassificationFeatureName[] = "TextClassification";
+constexpr char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
+
+struct ModelCombinationsParamInfo final {
+  bool epsilon_greedy_bandits_enabled;
+  bool purchase_intent_enabled;
+  bool text_classification_enabled;
+  bool previously_processed;
+  size_t number_of_segments;
+};
+
+// Expected number of segments for all possible model combinations for both,
+// never processed and previously processed state
+const ModelCombinationsParamInfo kTests[] = {
+    // Never processed
+    {false, false, false, false, 0},
+    {false, false, true, false, 0},
+    {false, true, false, false, 0},
+    {false, true, true, false, 0},
+    {true, false, false, false, 3},
+    {true, false, true, false, 3},
+    {true, true, false, false, 3},
+    {true, true, true, false, 3},
+    // Previously processed
+    {false, false, false, true, 0},
+    {false, false, true, true, 3},
+    {false, true, false, true, 2},
+    {false, true, true, true, 5},
+    {true, false, false, true, 3},
+    {true, false, true, true, 6},
+    {true, true, false, true, 5},
+    {true, true, true, true, 8},
+};
+
+}  // namespace
+
+class BatAdsTargetingTest
+    : public UnitTestBase,
+      public ::testing::WithParamInterface<ModelCombinationsParamInfo> {
+ protected:
+  BatAdsTargetingTest() = default;
+
+  ~BatAdsTargetingTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    // We always instantitate processors even if features are disabled
+    bandit_processor_ = std::make_unique<processor::EpsilonGreedyBandit>();
+
+    purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
+    purchase_intent_resource_->Load();
+    purchase_intent_processor_ = std::make_unique<processor::PurchaseIntent>(
+        purchase_intent_resource_.get());
+
+    text_classification_resource_ =
+        std::make_unique<resource::TextClassification>();
+    text_classification_resource_->Load();
+    task_environment()->RunUntilIdle();
+    text_classification_processor_ =
+        std::make_unique<processor::TextClassification>(
+            text_classification_resource_.get());
+  }
+
+  void ProcessBandit() {
+    const std::vector<processor::BanditFeedbackInfo> feedbacks = {
+        {"science", mojom::AdNotificationEventType::kClicked},
+        {"science", mojom::AdNotificationEventType::kClicked},
+        {"science", mojom::AdNotificationEventType::kClicked},
+        {"travel", mojom::AdNotificationEventType::kDismissed},
+        {"travel", mojom::AdNotificationEventType::kClicked},
+        {"travel", mojom::AdNotificationEventType::kClicked},
+        {"technology & computing", mojom::AdNotificationEventType::kDismissed},
+        {"technology & computing", mojom::AdNotificationEventType::kDismissed},
+        {"technology & computing", mojom::AdNotificationEventType::kClicked}};
+
+    for (const auto& segment : kSegments) {
+      bandit_processor_->Process(
+          {segment, mojom::AdNotificationEventType::kDismissed});
+    }
+
+    for (const auto& feedback : feedbacks) {
+      bandit_processor_->Process(feedback);
+    }
+  }
+
+  void ProcessTextClassification() {
+    const std::vector<std::string> texts = {
+        "Some content about cooking food",
+        "Some content about finance & banking",
+        "Some content about technology & computing"};
+
+    for (const auto& text : texts) {
+      text_classification_processor_->Process(text);
+    }
+  }
+
+  void ProcessPurchaseIntent() {
+    const std::vector<GURL> urls = {
+        GURL("https://www.brave.com/test?foo=bar"),
+        GURL("https://www.basicattentiontoken.org/test?bar=foo"),
+        GURL("https://www.brave.com/test?foo=bar")};
+
+    for (const auto& url : urls) {
+      purchase_intent_processor_->Process(url);
+    }
+  }
+
+  std::unique_ptr<processor::EpsilonGreedyBandit> bandit_processor_;
+  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
+  std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
+  std::unique_ptr<resource::TextClassification> text_classification_resource_;
+  std::unique_ptr<processor::TextClassification> text_classification_processor_;
+};
+
+TEST_P(BatAdsTargetingTest, GetSegments) {
+  // Arrange
+  model::SaveAllSegments();
+
+  ModelCombinationsParamInfo param(GetParam());
+  if (param.previously_processed) {
+    ProcessBandit();
+    ProcessTextClassification();
+    ProcessPurchaseIntent();
+  }
+
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::Feature> disabled_features;
+
+  if (param.epsilon_greedy_bandits_enabled) {
+    const char kEpsilonValue[] = "epsilon_value";
+    base::FieldTrialParams kEpsilonGreedyBanditParameters;
+    // Set bandit to always exploit for deterministic execution
+    kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
+    enabled_features.push_back(
+        {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters});
+  } else {
+    disabled_features.push_back(features::kEpsilonGreedyBandit);
+  }
+
+  if (param.purchase_intent_enabled) {
+    enabled_features.push_back({features::kPurchaseIntent, {}});
+  } else {
+    disabled_features.push_back(features::kPurchaseIntent);
+  }
+
+  if (param.text_classification_enabled) {
+    enabled_features.push_back({features::kTextClassification, {}});
+  } else {
+    disabled_features.push_back(features::kTextClassification);
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const UserModelInfo user_model = BuildUserModel();
+  const SegmentList segments = GetTopChildSegments(user_model);
+
+  // Assert
+  EXPECT_EQ(param.number_of_segments, segments.size());
+}
+
+static std::string GetTestCaseName(
+    ::testing::TestParamInfo<ModelCombinationsParamInfo> param_info) {
+  const std::string epsilon_greedy_bandits_enabled =
+      param_info.param.epsilon_greedy_bandits_enabled
+          ? "EpsilonGreedyBanditEnabledAnd"
+          : "";
+
+  const std::string purchase_intent_enabled =
+      param_info.param.purchase_intent_enabled ? "PurchaseIntentEnabledAnd"
+                                               : "";
+
+  const std::string text_classification_enabled =
+      param_info.param.text_classification_enabled
+          ? "TextClassificationEnabledAnd"
+          : "";
+
+  const std::string previously_processed = param_info.param.previously_processed
+                                               ? "PreviouslyProcessed"
+                                               : "NeverProcessed";
+
+  return base::StringPrintf(
+      "For%s%s%s%s", epsilon_greedy_bandits_enabled.c_str(),
+      purchase_intent_enabled.c_str(), text_classification_enabled.c_str(),
+      previously_processed.c_str());
+}
+
+INSTANTIATE_TEST_SUITE_P(BatAdsTargetingTest,
+                         BatAdsTargetingTest,
+                         ::testing::ValuesIn(kTests),
+                         GetTestCaseName);
+
+TEST_F(BatAdsTargetingTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
+  // Arrange
+  model::SaveAllSegments();
+
+  ProcessBandit();
+  ProcessTextClassification();
+  ProcessPurchaseIntent();
+
+  const char kEpsilonValue[] = "epsilon_value";
+  std::map<std::string, std::string> kEpsilonGreedyBanditParameters;
+  // Set bandit to always exploit for deterministic execution
+  kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kPurchaseIntent, /* default params */ {}},
+       {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters},
+       {features::kTextClassification, /* default params */ {}}},
+      {});
+
+  // Act
+  const UserModelInfo user_model = BuildUserModel();
+  const SegmentList segments = GetTopChildSegments(user_model);
+
+  // Assert
+  const SegmentList expected_segments = {
+      "technology & computing-technology & computing",
+      "personal finance-banking",
+      "food & drink-cooking",
+      "science",
+      "travel",
+      "technology & computing",
+      "segment 3",
+      "segment 2"};
+
+  EXPECT_EQ(expected_segments, segments);
+}
+
+TEST_F(BatAdsTargetingTest, GetSegmentsForFieldTrialParticipationPath) {
+  // Arrange
+  model::SaveAllSegments();
+
+  ProcessBandit();
+  ProcessTextClassification();
+  ProcessPurchaseIntent();
+
+  auto feature_list = std::make_unique<base::FeatureList>();
+  feature_list->RegisterFieldTrialOverride(
+      kEpsilonGreedyBanditFeatureName,
+      base::FeatureList::OVERRIDE_ENABLE_FEATURE,
+      base::FieldTrialList::CreateFieldTrial("EpsilonGreedyBanditStudy", "A"));
+  feature_list->RegisterFieldTrialOverride(
+      kTextClassificationFeatureName,
+      base::FeatureList::OVERRIDE_DISABLE_FEATURE,
+      base::FieldTrialList::CreateFieldTrial("EpsilonGreedyBanditStudy", "A"));
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatureList(std::move(feature_list));
+
+  // Act
+  const UserModelInfo user_model = BuildUserModel();
+  const SegmentList segments = GetTopChildSegments(user_model);
+
+  // Assert
+  // Even though text classification has been processed we don't expect
+  // winning segments from it since the trial disabled the model
+  EXPECT_EQ(5U, segments.size());
+}
+
+}  // namespace targeting
+}  // namespace ads

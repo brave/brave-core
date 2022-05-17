@@ -26,15 +26,23 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
                          const base::Time created_at);
+
 AdEventInfo BuildAdEvent(const AdInfo& ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
                          const base::Time created_at);
+
 AdEventInfo BuildAdEvent(const std::string& uuid,
                          const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type);
 AdEventInfo BuildAdEvent(const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type);
+
+void RecordAdEvent(const AdType& type,
+                   const ConfirmationType& confirmation_type);
+void RecordAdEvents(const AdType& type,
+                    const ConfirmationType& confirmation_type,
+                    const int count);
 
 void FireAdEvent(const AdEventInfo& ad_event);
 void FireAdEvents(const AdEventInfo& ad_event, const int count);

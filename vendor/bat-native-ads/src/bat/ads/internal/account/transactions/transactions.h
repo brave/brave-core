@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/account/transactions/transactions_aliases.h"
-#include "bat/ads/internal/database/tables/transactions_database_table_aliases.h"
+#include "bat/ads/internal/account/transactions/transactions_database_table_aliases.h"
 
 namespace base {
 class Time;

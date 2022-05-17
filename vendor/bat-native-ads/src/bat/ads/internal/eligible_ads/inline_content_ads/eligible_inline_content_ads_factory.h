@@ -10,11 +10,11 @@
 
 namespace ads {
 
-namespace ad_targeting {
+namespace targeting {
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
-}  // namespace ad_targeting
+}  // namespace targeting
 
 namespace resource {
 class AntiTargeting;
@@ -28,7 +28,7 @@ class EligibleAdsFactory final {
  public:
   static std::unique_ptr<EligibleAdsBase> Build(
       const int version,
-      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+      targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
 };
 

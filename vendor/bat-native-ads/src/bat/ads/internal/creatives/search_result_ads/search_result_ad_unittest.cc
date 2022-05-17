@@ -8,18 +8,18 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/ad_serving/ad_serving_features.h"
+#include "bat/ads/internal/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
+#include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/permission_rules_unittest_util.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/database/tables/conversions_database_table.h"
-#include "bat/ads/internal/database/tables/deposits_database_table.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/serving/serving_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

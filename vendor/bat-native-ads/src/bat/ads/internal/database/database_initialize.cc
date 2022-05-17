@@ -10,8 +10,8 @@
 
 #include "base/check.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/database/database_migration.h"
-#include "bat/ads/internal/database/database_version.h"
+#include "bat/ads/internal/legacy_migration/database/database_migration.h"
+#include "bat/ads/internal/legacy_migration/database/database_version.h"
 
 namespace ads {
 namespace database {

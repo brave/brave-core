@@ -12,7 +12,7 @@
 namespace ads {
 
 namespace {
-constexpr unsigned int kNumberOfAdServingFeatures = 7u;
+constexpr unsigned int kNumberOfServingFeatures = 7u;
 }  // namespace
 
 TEST(BatAdsEligibleAdsFeaturesTest, EligibleAdsEnabled) {
@@ -32,7 +32,7 @@ TEST(BatAdsEligibleAdsFeaturesTest, AdFeatureWeightLength) {
   const AdPredictorWeights weights = features::GetAdPredictorWeights();
 
   // Assert
-  EXPECT_EQ(kNumberOfAdServingFeatures, weights.size());
+  EXPECT_EQ(kNumberOfServingFeatures, weights.size());
 }
 
 TEST(BatAdsEligibleAdsFeaturesTest, DefaultAdFeatureWeights) {

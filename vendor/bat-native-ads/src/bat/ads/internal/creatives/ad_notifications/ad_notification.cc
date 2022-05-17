@@ -8,8 +8,8 @@
 #include "base/check.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_factory.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 

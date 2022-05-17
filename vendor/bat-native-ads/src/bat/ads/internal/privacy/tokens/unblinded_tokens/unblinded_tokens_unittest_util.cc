@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"

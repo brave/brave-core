@@ -11,10 +11,10 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/base/timer.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
-#include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info_aliases.h"
 
 class GURL;
 

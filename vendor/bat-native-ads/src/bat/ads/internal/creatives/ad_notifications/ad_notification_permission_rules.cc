@@ -5,18 +5,18 @@
 
 #include "bat/ads/internal/creatives/ad_notifications/ad_notification_permission_rules.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/allow_notifications_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/browser_is_active_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/catalog_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/media_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/network_connection_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/ads_per_day_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/allow_notifications_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/browser_is_active_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/catalog_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/full_screen_mode_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/media_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/network_connection_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
+#include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule.h"
 
 namespace ads {
 namespace ad_notifications {

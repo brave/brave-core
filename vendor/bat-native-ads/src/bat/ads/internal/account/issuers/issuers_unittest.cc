@@ -7,13 +7,13 @@
 
 #include <memory>
 
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate_mock.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

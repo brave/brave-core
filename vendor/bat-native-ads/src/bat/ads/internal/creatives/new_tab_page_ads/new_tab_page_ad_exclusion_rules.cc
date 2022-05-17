@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
 
 namespace ads {
 namespace new_tab_page_ads {
@@ -14,7 +14,7 @@ namespace frequency_capping {
 
 ExclusionRules::ExclusionRules(
     const AdEventList& ad_events,
-    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource,
     const BrowsingHistoryList& browsing_history)
     : ExclusionRulesBase(ad_events,

@@ -9,7 +9,7 @@
 
 #include "base/values.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/locale/country_code_util.h"
+#include "bat/ads/internal/privacy/locale/country_code_util.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 
@@ -31,11 +31,11 @@ base::DictionaryValue GetLocale() {
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 
-  if (locale::IsMemberOfAnonymitySet(locale)) {
+  if (privacy::locale::IsMemberOfAnonymitySet(locale)) {
     const std::string country_code = brave_l10n::GetCountryCode(locale);
     user_data.SetStringKey(kCountryCodeKey, country_code);
   } else {
-    if (locale::ShouldClassifyAsOther(locale)) {
+    if (privacy::locale::ShouldClassifyAsOther(locale)) {
       user_data.SetStringKey(kCountryCodeKey, kOtherCountryCode);
     }
   }

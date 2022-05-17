@@ -6,8 +6,8 @@
 #include "bat/ads/ad_content_info.h"
 
 #include "base/values.h"
-#include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/json_helper.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/eligible_ads/ad_predictor_info.h"
 
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ad_info.h"
 
 namespace ads {
 

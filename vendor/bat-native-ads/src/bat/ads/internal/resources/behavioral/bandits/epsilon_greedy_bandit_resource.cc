@@ -7,9 +7,9 @@
 
 #include <string>
 
+#include "bat/ads/internal/ad_server/catalog/catalog.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/segments/segments_json_reader.h"
 #include "bat/ads/internal/segments/segments_json_writer.h"
 #include "bat/ads/internal/segments/segments_util.h"

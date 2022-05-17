@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/base/time_util.h"
 
 namespace ads {
 namespace user_data {

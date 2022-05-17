@@ -6,7 +6,7 @@
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 
 #include "base/check_op.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
 

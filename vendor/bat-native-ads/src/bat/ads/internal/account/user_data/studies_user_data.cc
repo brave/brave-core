@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/values.h"
-#include "bat/ads/internal/features/features.h"
+#include "bat/ads/internal/studies/studies_util.h"
 
 namespace ads {
 namespace user_data {
@@ -24,7 +24,7 @@ constexpr char kGroupKey[] = "group";
 base::DictionaryValue GetStudies() {
   base::ListValue list;
 
-  base::FieldTrial::ActiveGroups studies = features::GetStudies();
+  base::FieldTrial::ActiveGroups studies = GetActiveStudies();
   for (const auto& study : studies) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 

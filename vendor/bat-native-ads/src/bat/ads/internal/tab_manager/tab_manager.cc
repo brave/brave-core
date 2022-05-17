@@ -6,7 +6,7 @@
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 
 #include "base/check_op.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

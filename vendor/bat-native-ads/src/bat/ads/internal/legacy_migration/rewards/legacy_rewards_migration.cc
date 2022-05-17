@@ -7,10 +7,10 @@
 
 #include <string>
 
+#include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/database/tables/transactions_database_table.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/transaction_info_aliases.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

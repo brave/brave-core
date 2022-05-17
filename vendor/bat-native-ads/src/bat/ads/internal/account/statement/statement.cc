@@ -8,8 +8,8 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/account/statement/statement_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/time_util.h"
 #include "bat/ads/statement_info.h"
 
 namespace ads {

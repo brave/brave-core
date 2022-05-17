@@ -11,7 +11,7 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
 
 namespace ads {
 

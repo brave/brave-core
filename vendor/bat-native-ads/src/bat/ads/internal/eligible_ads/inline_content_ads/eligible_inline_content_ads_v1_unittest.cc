@@ -7,15 +7,15 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_unittest_util.h"
-#include "bat/ads/internal/container_util.h"
-#include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_inline_content_ad_unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_inline_content_ads_database_table.h"
+#include "bat/ads/internal/base/container_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_builder_unittest_util.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -60,7 +60,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
+      targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
       "200x100",
       [&expected_creative_ads](
           const bool success, const CreativeInlineContentAdList& creative_ads) {
@@ -81,7 +81,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -89,7 +89,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
+      targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
       "200x100",
       [&expected_creative_ads](
           const bool success, const CreativeInlineContentAdList& creative_ads) {
@@ -110,7 +110,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -118,7 +118,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"finance-banking"}, {}, {}), "200x100",
+      targeting::BuildUserModel({"finance-banking"}, {}, {}), "200x100",
       [&expected_creative_ads](
           const bool success, const CreativeInlineContentAdList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);
@@ -146,7 +146,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -155,8 +155,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
                                                              creative_ad_3};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                   {}, {}),
+      targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
+                                {}),
       "200x100",
       [&expected_creative_ads](
           const bool success, const CreativeInlineContentAdList& creative_ads) {
@@ -177,7 +177,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -205,7 +205,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedSegments) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -213,7 +213,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedSegments) {
   const CreativeInlineContentAdList expected_creative_ads = {};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"UNMATCHED"}, {}, {}), "200x100",
+      targeting::BuildUserModel({"UNMATCHED"}, {}, {}), "200x100",
       [&expected_creative_ads](
           const bool success, const CreativeInlineContentAdList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);
@@ -233,7 +233,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedDimensions) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   inline_content_ads::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                  &anti_targeting_resource);
@@ -241,7 +241,7 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedDimensions) {
   const CreativeInlineContentAdList expected_creative_ads = {};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing"}, {}, {}), "?x?",
+      targeting::BuildUserModel({"technology & computing"}, {}, {}), "?x?",
       [&expected_creative_ads](
           const bool success, const CreativeInlineContentAdList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);

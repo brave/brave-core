@@ -9,7 +9,7 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/deprecated/client/client.h"
 
 namespace ads {
 

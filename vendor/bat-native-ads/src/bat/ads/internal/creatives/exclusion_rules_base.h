@@ -12,17 +12,17 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_interface.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/exclusion_rule_aliases.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
 namespace ads {
 
-namespace ad_targeting {
+namespace targeting {
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
-}  // namespace ad_targeting
+}  // namespace targeting
 
 namespace resource {
 class AntiTargeting;
@@ -48,7 +48,7 @@ class ExclusionRulesBase {
  public:
   ExclusionRulesBase(
       const AdEventList& ad_events,
-      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+      targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource,
       const BrowsingHistoryList& browsing_history);
   virtual ~ExclusionRulesBase();

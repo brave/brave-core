@@ -7,8 +7,8 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/history/history.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace new_tab_page_ads {

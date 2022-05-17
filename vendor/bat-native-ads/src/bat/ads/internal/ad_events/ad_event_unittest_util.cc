@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/check_op.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
@@ -14,9 +15,11 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/unittest_time_util.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/instance_id_util.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ads {
 
@@ -37,6 +40,12 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   return ad_event;
 }
 
+AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type) {
+  return BuildAdEvent(creative_ad, ad_type, confirmation_type, Now());
+}
+
 AdEventInfo BuildAdEvent(const AdInfo& ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
@@ -52,6 +61,12 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   ad_event.created_at = created_at;
 
   return ad_event;
+}
+
+AdEventInfo BuildAdEvent(const AdInfo& ad,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type) {
+  return BuildAdEvent(ad, ad_type, confirmation_type, Now());
 }
 
 AdEventInfo BuildAdEvent(const std::string& uuid,
@@ -75,6 +90,27 @@ AdEventInfo BuildAdEvent(const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type) {
   const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
   return BuildAdEvent(uuid, creative_set_id, confirmation_type);
+}
+
+void RecordAdEvent(const AdType& type,
+                   const ConfirmationType& confirmation_type) {
+  RecordAdEvents(type, confirmation_type, 1);
+}
+
+void RecordAdEvents(const AdType& type,
+                    const ConfirmationType& confirmation_type,
+                    const int count) {
+  DCHECK_GT(count, 0);
+
+  const std::string& id = GetInstanceId();
+  const std::string& ad_type_as_string = type.ToString();
+  const std::string& confirmation_type_as_string = confirmation_type.ToString();
+  const base::Time time = Now();
+
+  for (int i = 0; i < count; i++) {
+    AdsClientHelper::Get()->RecordAdEventForId(
+        id, ad_type_as_string, confirmation_type_as_string, time);
+  }
 }
 
 void FireAdEvent(const AdEventInfo& ad_event) {

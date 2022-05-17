@@ -7,12 +7,12 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
-#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
-#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_unittest_util.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
+#include "bat/ads/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

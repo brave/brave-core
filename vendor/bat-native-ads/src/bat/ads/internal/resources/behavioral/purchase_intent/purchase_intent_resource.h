@@ -14,14 +14,14 @@
 
 namespace ads {
 
-namespace ad_targeting {
+namespace targeting {
 struct PurchaseIntentInfo;
-}  // namespace ad_targeting
+}  // namespace targeting
 
 namespace resource {
 
 class PurchaseIntent final
-    : public ResourceInterface<const ad_targeting::PurchaseIntentInfo*> {
+    : public ResourceInterface<const targeting::PurchaseIntentInfo*> {
  public:
   PurchaseIntent();
   ~PurchaseIntent() override;
@@ -33,15 +33,15 @@ class PurchaseIntent final
 
   void Load();
 
-  const ad_targeting::PurchaseIntentInfo* get() const override;
+  const targeting::PurchaseIntentInfo* get() const override;
 
  private:
   void OnLoadAndParseResource(
-      ParsingResultPtr<ad_targeting::PurchaseIntentInfo> result);
+      ParsingResultPtr<targeting::PurchaseIntentInfo> result);
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<ad_targeting::PurchaseIntentInfo> purchase_intent_;
+  std::unique_ptr<targeting::PurchaseIntentInfo> purchase_intent_;
 
   base::WeakPtrFactory<PurchaseIntent> weak_ptr_factory_{this};
 };

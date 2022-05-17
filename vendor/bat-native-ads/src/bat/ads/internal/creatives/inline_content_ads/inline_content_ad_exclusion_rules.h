@@ -10,11 +10,11 @@
 
 namespace ads {
 
-namespace ad_targeting {
+namespace targeting {
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
-}  // namespace ad_targeting
+}  // namespace targeting
 
 namespace resource {
 class AntiTargeting;
@@ -27,7 +27,7 @@ class ExclusionRules final : public ExclusionRulesBase {
  public:
   ExclusionRules(
       const AdEventList& ad_events,
-      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+      targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource,
       const BrowsingHistoryList& browsing_history);
   ~ExclusionRules() override;

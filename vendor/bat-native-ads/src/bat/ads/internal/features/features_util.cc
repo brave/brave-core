@@ -5,53 +5,47 @@
 
 #include "bat/ads/internal/features/features_util.h"
 
-#include "base/feature_list.h"
-#include "base/metrics/field_trial_params.h"
-#include "base/time/time.h"
-#include "base/time/time_delta_from_string.h"
-#include "bat/ads/internal/logging.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include <string>
+
+#include "bat/ads/internal/account/statement/ad_rewards_features.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_features.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_features.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_features.h"
+#include "bat/ads/internal/user_activity/browsing/user_activity_features.h"
 
 namespace ads {
 
-std::string GetFieldTrialParamByFeatureAsString(
-    const base::Feature& feature,
-    const std::string& param_name,
-    const std::string& default_value) {
-  const std::string value_as_string =
-      GetFieldTrialParamValueByFeature(feature, param_name);
+namespace {
 
-  if (value_as_string.empty()) {
-    return default_value;
-  }
-
-  return value_as_string;
+std::string GetStatus(const bool status) {
+  return status ? "enabled" : "disabled";
 }
 
-base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
-    const base::Feature& feature,
-    const std::string& param_name,
-    const base::TimeDelta default_value) {
-  const std::string value_as_string =
-      GetFieldTrialParamValueByFeature(feature, param_name);
+}  // namespace
 
-  if (value_as_string.empty()) {
-    return default_value;
-  }
+void LogFeatures() {
+  BLOG(1,
+       "Ad rewards feature is " << GetStatus(features::IsAdRewardsEnabled()));
 
-  absl::optional<base::TimeDelta> time_delta =
-      base::TimeDeltaFromString(value_as_string);
-  if (!time_delta.has_value()) {
-    BLOG(1, "Failed to parse field trial param "
-                << param_name << " with string value " << value_as_string
-                << " under feature " << feature.name
-                << " into a base::TimeDelta. Falling back to default value of "
-                << default_value);
+  BLOG(1, "Ad serving feature is " << GetStatus(features::IsServingEnabled()));
 
-    return default_value;
-  }
+  BLOG(1, "Epsilon greedy bandit feature is "
+              << GetStatus(features::IsEpsilonGreedyBanditEnabled()));
 
-  return time_delta.value();
+  BLOG(1, "Frequency capping feature is "
+              << GetStatus(features::frequency_capping::IsEnabled()));
+
+  BLOG(1, "Purchase intent feature is "
+              << GetStatus(features::IsPurchaseIntentEnabled()));
+
+  BLOG(1, "Text classification feature is "
+              << GetStatus(features::IsTextClassificationEnabled()));
+
+  BLOG(1, "User activity feature is "
+              << GetStatus(features::user_activity::IsEnabled()));
 }
 
 }  // namespace ads

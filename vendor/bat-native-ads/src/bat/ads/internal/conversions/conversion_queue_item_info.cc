@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
-#include "bat/ads/internal/number_util.h"
+#include "bat/ads/internal/base/number_util.h"
 
 namespace ads {
 

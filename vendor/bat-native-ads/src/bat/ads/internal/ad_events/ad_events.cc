@@ -12,10 +12,10 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/instance_id_util.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/instance_id_util.h"
+#include "bat/ads/internal/base/logging_util.h"
 
 namespace ads {
 

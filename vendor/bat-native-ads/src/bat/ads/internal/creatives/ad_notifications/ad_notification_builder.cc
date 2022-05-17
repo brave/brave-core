@@ -7,7 +7,7 @@
 
 #include "base/guid.h"
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_info.h"
 
 namespace ads {
 

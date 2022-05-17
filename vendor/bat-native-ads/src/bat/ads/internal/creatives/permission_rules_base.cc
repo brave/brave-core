@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/creatives/permission_rules_base.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/issuers_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/issuers_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
+#include "bat/ads/internal/serving/permission_rules/unblinded_tokens_permission_rule.h"
 
 namespace ads {
 

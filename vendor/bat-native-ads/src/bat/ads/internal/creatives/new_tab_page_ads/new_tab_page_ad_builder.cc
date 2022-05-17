@@ -6,7 +6,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 
 #include "base/guid.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {

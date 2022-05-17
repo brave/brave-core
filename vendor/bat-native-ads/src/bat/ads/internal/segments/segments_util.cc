@@ -11,11 +11,11 @@
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
-#include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_campaign_info.h"
-#include "bat/ads/internal/catalog/catalog_creative_set_info_aliases.h"
-#include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/client/preferences/filtered_category_info.h"
+#include "bat/ads/internal/ad_server/catalog/catalog.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_campaign_info.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_creative_set_info_aliases.h"
+#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 
 namespace ads {
 
