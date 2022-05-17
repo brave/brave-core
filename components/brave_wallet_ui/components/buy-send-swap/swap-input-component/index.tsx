@@ -250,6 +250,14 @@ function SwapInputComponent (props: Props) {
     })
   }
 
+  const placeholderText = React.useMemo((): string => {
+    return componentType === 'toAddress'
+      ? selectedNetwork?.coin === BraveWallet.CoinType.ETH
+        ? getLocale('braveWalletSendPlaceholder')
+        : getLocale('braveWalletSendNoURLPlaceholder')
+      : '0'
+  }, [selectedNetwork, componentType])
+
   return (
     <BubbleContainer>
       {componentType !== 'selector' &&
@@ -281,7 +289,7 @@ function SwapInputComponent (props: Props) {
               <Input
                 componentType={componentType}
                 type={componentType === 'toAddress' ? 'text' : 'number'}
-                placeholder={componentType === 'toAddress' ? getLocale('braveWalletSendPlaceholder') : '0'}
+                placeholder={placeholderText}
                 value={componentType === 'toAddress' ? toAddressOrUrl : selectedAssetInputAmount}
                 name={inputName}
                 onChange={onInputChanged}
