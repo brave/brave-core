@@ -82,7 +82,11 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
             rfh->GetBrowserContext());
 
         RendererContentSettingRules rules;
-        GetRendererContentSettingRules(map, &rules);
+        content_settings::GetRendererContentSettingRules(map, &rules);
+        const GURL& primary_url =
+            rfh->GetMainFrame() ? rfh->GetMainFrame()->GetLastCommittedURL()
+                                : rfh->GetLastCommittedURL();
+        rules.FilterRulesByOutermostMainFrameURL(primary_url);
 
         agent->SendRendererContentSettingRules(std::move(rules));
       }));
