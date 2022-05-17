@@ -299,11 +299,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func switchToTabForIntentURL(intentURL: String?) {
-      guard let siteURL = intentURL, let url = URL(string: siteURL) else {
-        return
-      }
-
       if let browserViewController = scene.browserViewController {
+        guard let siteURL = intentURL, let url = URL(string: siteURL) else {
+          browserViewController.openBlankNewTab(
+            attemptLocationFieldFocus: false,
+            isPrivate: Preferences.Privacy.privateBrowsingOnly.value)
+          return
+        }
+      
         browserViewController.switchToTabForURLOrOpen(
           url,
           isPrivate: Preferences.Privacy.privateBrowsingOnly.value,

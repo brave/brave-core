@@ -198,7 +198,9 @@ class ActivityShortcutManager: NSObject {
   // MARK: Intent Donation Methods
 
   public func donateCustomIntent(for type: IntentType, with urlString: String) {
-    guard !PrivateBrowsingManager.shared.isPrivateBrowsing else {
+    guard !PrivateBrowsingManager.shared.isPrivateBrowsing,
+          !urlString.isEmpty,
+          URL(string: urlString) != nil else {
       return
     }
 
