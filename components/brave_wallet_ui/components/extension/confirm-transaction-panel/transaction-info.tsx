@@ -112,14 +112,21 @@ export const TransactionInfo = ({
         .formatAsAsset(6, transactionsNetwork.symbol)}
     </TransactionTypeText>
 
-    <TransactionText
-      hasError={transactionDetails.insufficientFundsError}
-    >
-      {transactionDetails.insufficientFundsError
-        ? `${getLocale('braveWalletSwapInsufficientBalance')} `
-        : ''}
-      {transactionDetails.fiatTotal
-        .formatAsFiat(defaultCurrencies.fiat)}
+    <TransactionText hasError={false}>
+      {transactionDetails.fiatTotal.formatAsFiat(defaultCurrencies.fiat)}
     </TransactionText>
+
+    {transactionDetails.insufficientFundsForGasError &&
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientFundsForGas')}
+      </TransactionText>
+    }
+
+    {transactionDetails.insufficientFundsForGasError === false &&
+      transactionDetails.insufficientFundsError &&
+        <TransactionText hasError={true}>
+          {getLocale('braveWalletSwapInsufficientBalance')}
+        </TransactionText>
+    }
   </>
 }

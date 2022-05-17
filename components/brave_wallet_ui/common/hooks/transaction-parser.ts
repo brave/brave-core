@@ -54,7 +54,8 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   valueExact: string
   symbol: string
   decimals: number
-  insufficientFundsError: boolean
+  insufficientFundsForGasError?: boolean
+  insufficientFundsError?: boolean
   contractAddressError?: string
   sameAddressError?: string
   erc721BlockchainToken?: BraveWallet.BlockchainToken
@@ -236,10 +237,12 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
 
-        const insufficientNativeFunds = new Amount(gasFee)
-          .gt(accountNativeBalance)
-        const insufficientTokenFunds = new Amount(amount)
-          .gt(accountTokenBalance)
+        const insufficientNativeFunds = accountNativeBalance !== ''
+          ? new Amount(gasFee).gt(accountNativeBalance)
+          : undefined
+        const insufficientTokenFunds = accountTokenBalance !== ''
+          ? new Amount(amount).gt(accountTokenBalance)
+          : undefined
 
         return {
           hash: transactionInfo.txHash,
@@ -263,7 +266,8 @@ export function useTransactionParser (
             .format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
-          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(address),
           sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
@@ -283,8 +287,9 @@ export function useTransactionParser (
         const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = gasFeeFiat
 
-        const insufficientNativeFunds = new Amount(gasFee)
-          .gt(accountNativeBalance)
+        const insufficientNativeFunds = accountNativeBalance !== ''
+          ? new Amount(gasFee).gt(accountNativeBalance)
+          : undefined
 
         return {
           hash: transactionInfo.txHash,
@@ -304,7 +309,8 @@ export function useTransactionParser (
           valueExact: '1',
           symbol: token?.symbol ?? '',
           decimals: 0,
-          insufficientFundsError: insufficientNativeFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
+          insufficientFundsError: false,
           erc721BlockchainToken: token,
           erc721TokenId: tokenID && `#${Amount.normalize(tokenID)}`,
           contractAddressError: checkForContractAddressError(toAddress),
@@ -319,8 +325,9 @@ export function useTransactionParser (
         const feeDetails = parseTransactionFees(transactionInfo)
         const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = new Amount(gasFeeFiat)
-        const insufficientNativeFunds = new Amount(gasFee)
-          .gt(accountNativeBalance)
+        const insufficientNativeFunds = accountNativeBalance !== ''
+          ? new Amount(gasFee).gt(accountNativeBalance)
+          : undefined
 
         const amountWrapped = new Amount(amount)
 
@@ -348,7 +355,8 @@ export function useTransactionParser (
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
           isApprovalUnlimited: amountWrapped.eq(MAX_UINT256),
-          insufficientFundsError: insufficientNativeFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
+          insufficientFundsError: false,
           sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
         } as ParsedTransaction
@@ -366,10 +374,12 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sendAmountFiat)
 
-        const insufficientNativeFunds = new Amount(gasFee)
-          .gt(accountNativeBalance)
-        const insufficientTokenFunds = new Amount(value)
-          .gt(accountTokenBalance)
+        const insufficientNativeFunds = accountNativeBalance !== ''
+          ? new Amount(gasFee).gt(accountNativeBalance)
+          : undefined
+        const insufficientTokenFunds = accountTokenBalance !== ''
+          ? new Amount(value).gt(accountTokenBalance)
+          : undefined
 
         return {
           hash: transactionInfo.txHash,
@@ -393,7 +403,8 @@ export function useTransactionParser (
             .format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 9,
-          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
           contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
           sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
           ...feeDetails
@@ -417,10 +428,8 @@ export function useTransactionParser (
           ? nativeAsset
           : fillTokens[0]
         const sellAmountWeiBN = new Amount(sellAmountArg || value)
-        const sellAmountBN = sellAmountWeiBN
-          .divideByDecimals(sellToken.decimals)
         const sellAmountFiat = computeFiatAmount(
-          sellAmountBN.format(),
+          sellAmountWeiBN.format(),
           sellToken.symbol,
           sellToken.decimals
         )
@@ -435,10 +444,17 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
           .plus(sellAmountFiat)
 
-        const insufficientNativeFunds = new Amount(gasFee)
-          .gt(accountNativeBalance)
-        const insufficientTokenFunds = sellAmountBN
-          .gt(getBalance(account, token))
+        const insufficientNativeFunds = accountNativeBalance !== ''
+          ? new Amount(gasFee).gt(accountNativeBalance)
+          : undefined
+
+        const tokenBalance = getBalance(account, token)
+        const insufficientTokenFunds = tokenBalance !== ''
+          ? sellAmountWeiBN.gt(tokenBalance)
+          : undefined
+
+        const sellAmountBN = sellAmountWeiBN
+          .divideByDecimals(sellToken.decimals)
 
         return {
           hash: transactionInfo.txHash,
@@ -458,7 +474,8 @@ export function useTransactionParser (
           valueExact: sellAmountBN.format(),
           symbol: sellToken.symbol,
           decimals: sellToken.decimals,
-          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          insufficientFundsError: insufficientTokenFunds,
+          insufficientFundsForGasError: insufficientNativeFunds,
 
           // Set isSwap=false to differentiate ETHSwap from SwapExchangeProxy
           // case.
@@ -506,13 +523,24 @@ export function useTransactionParser (
             .format(),
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
-          insufficientFundsError: new Amount(value)
-            .plus(gasFee)
-            .gt(accountNativeBalance),
+          insufficientFundsError: accountNativeBalance !== ''
+            ? new Amount(value)
+              .plus(gasFee)
+              .gt(accountNativeBalance)
+            : undefined,
+          insufficientFundsForGasError: accountNativeBalance !== ''
+            ? new Amount(gasFee).gt(accountNativeBalance)
+            : undefined,
           isSwap: to.toLowerCase() === SwapExchangeProxy,
           ...feeDetails
         } as ParsedTransaction
       }
     }
-  }, [selectedNetwork, accounts, spotPrices, findToken])
+  }, [
+    selectedNetwork,
+    accounts,
+    spotPrices,
+    findToken,
+    getBalance
+  ])
 }
