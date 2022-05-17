@@ -100,6 +100,11 @@ export async function getChecksumEthAddress (value: string) {
   return (await keyringService.getChecksumEthAddress(value))
 }
 
+export async function isBase58EncodedSolanaPubkey (value: string) {
+  const { braveWalletService } = getAPIProxy()
+  return braveWalletService.isBase58EncodedSolanaPubkey(value)
+}
+
 export async function isStrongPassword (value: string) {
   const apiProxy = getAPIProxy()
   return (await apiProxy.keyringService.isStrongPassword(value)).result
