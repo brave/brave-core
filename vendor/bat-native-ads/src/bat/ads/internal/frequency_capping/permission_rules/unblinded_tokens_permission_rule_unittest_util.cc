@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_permission_rule_unittest_util.h"
 
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
 namespace ads {
 

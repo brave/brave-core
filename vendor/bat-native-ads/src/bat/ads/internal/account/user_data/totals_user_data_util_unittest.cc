@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/user_data/totals_user_data_util.h"
 
 #include "base/json/json_writer.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

@@ -12,7 +12,7 @@
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate_mock.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"

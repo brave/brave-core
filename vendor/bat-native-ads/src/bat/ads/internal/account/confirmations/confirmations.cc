@@ -22,12 +22,14 @@
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/privacy/privacy_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/transaction_info.h"
@@ -141,13 +143,15 @@ ConfirmationInfo Confirmations::CreateConfirmation(
 
     confirmation.unblinded_token = unblinded_token;
 
-    const std::vector<Token>& tokens = token_generator_->Generate(1);
+    const std::vector<privacy::cbr::Token> tokens =
+        token_generator_->Generate(1);
+    DCHECK(!tokens.empty());
     confirmation.payment_token = tokens.front();
 
-    const std::vector<BlindedToken>& blinded_tokens =
-        privacy::BlindTokens(tokens);
-    const BlindedToken blinded_token = blinded_tokens.front();
-    confirmation.blinded_payment_token = blinded_token;
+    const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
+        privacy::cbr::BlindTokens(tokens);
+    DCHECK(!blinded_tokens.empty());
+    confirmation.blinded_payment_token = blinded_tokens.front();
 
     std::string json;
     base::JSONWriter::Write(user_data, &json);

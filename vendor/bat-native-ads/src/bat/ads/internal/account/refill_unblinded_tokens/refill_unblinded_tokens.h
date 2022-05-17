@@ -16,15 +16,15 @@
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "wrapper.hpp"
 
 namespace ads {
 
-using challenge_bypass_ristretto::BlindedToken;
-using challenge_bypass_ristretto::Token;
-
 namespace privacy {
 class TokenGeneratorInterface;
+namespace cbr {
+class BlindedToken;
+class Token;
+}  // namespace cbr
 }  // namespace privacy
 
 class RefillUnblindedTokens final {
@@ -69,8 +69,8 @@ class RefillUnblindedTokens final {
 
   std::string nonce_;
 
-  std::vector<Token> tokens_;
-  std::vector<BlindedToken> blinded_tokens_;
+  std::vector<privacy::cbr::Token> tokens_;
+  std::vector<privacy::cbr::BlindedToken> blinded_tokens_;
 
   bool is_processing_ = false;
 

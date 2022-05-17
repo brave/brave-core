@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 
 namespace absl {
 template <typename T>

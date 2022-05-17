@@ -13,16 +13,13 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "wrapper.hpp"
 
 namespace ads {
-
-using challenge_bypass_ristretto::TokenPreimage;
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
 
 std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   base::Value dto(base::Value::Type::DICTIONARY);
@@ -31,21 +28,22 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
 
   dto.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
 
-  const std::string blinded_payment_token_base64 =
-      confirmation.blinded_payment_token.encode_base64();
-  if (!blinded_payment_token_base64.empty()) {
-    base::Value list(base::Value::Type::LIST);
-
-    list.Append(blinded_payment_token_base64);
-
-    dto.SetKey("blindedPaymentTokens", std::move(list));
+  base::Value blinded_payment_tokens(base::Value::Type::LIST);
+  const absl::optional<std::string> blinded_payment_token_base64_optional =
+      confirmation.blinded_payment_token.EncodeBase64();
+  if (blinded_payment_token_base64_optional) {
+    blinded_payment_tokens.Append(
+        blinded_payment_token_base64_optional.value());
   }
+  dto.SetKey("blindedPaymentTokens", std::move(blinded_payment_tokens));
 
   dto.SetStringKey("type", confirmation.type.ToString());
 
-  const std::string public_key =
-      confirmation.unblinded_token.public_key.encode_base64();
-  dto.SetStringKey("publicKey", public_key);
+  const absl::optional<std::string> public_key_base64_optional =
+      confirmation.unblinded_token.public_key.EncodeBase64();
+  if (public_key_base64_optional) {
+    dto.SetStringKey("publicKey", public_key_base64_optional.value());
+  }
 
   absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);
@@ -66,34 +64,43 @@ std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
                              const std::string& payload) {
   DCHECK(!payload.empty());
 
-  VerificationKey verification_key =
-      unblinded_token.value.derive_verification_key();
-  if (privacy::ExceptionOccurred()) {
+  const absl::optional<privacy::cbr::VerificationKey>
+      verification_key_optional = unblinded_token.value.DeriveVerificationKey();
+  if (!verification_key_optional) {
+    NOTREACHED();
+    return "";
+  }
+  privacy::cbr::VerificationKey verification_key =
+      verification_key_optional.value();
+
+  const absl::optional<privacy::cbr::VerificationSignature>
+      verification_signature_optional = verification_key.Sign(payload);
+  if (!verification_signature_optional) {
+    NOTREACHED();
+    return "";
+  }
+  const privacy::cbr::VerificationSignature& verification_signature =
+      verification_signature_optional.value();
+
+  const absl::optional<std::string> verification_signature_base64_optional =
+      verification_signature.EncodeBase64();
+  if (!verification_signature_base64_optional) {
     NOTREACHED();
     return "";
   }
 
-  VerificationSignature verification_signature = verification_key.sign(payload);
-  if (privacy::ExceptionOccurred()) {
+  const absl::optional<privacy::cbr::TokenPreimage> token_preimage_optional =
+      unblinded_token.value.GetTokenPreimage();
+  if (!token_preimage_optional) {
     NOTREACHED();
     return "";
   }
+  const privacy::cbr::TokenPreimage& token_preimage =
+      token_preimage_optional.value();
 
-  const std::string verification_signature_base64 =
-      verification_signature.encode_base64();
-  if (privacy::ExceptionOccurred()) {
-    NOTREACHED();
-    return "";
-  }
-
-  TokenPreimage token_preimage = unblinded_token.value.preimage();
-  if (privacy::ExceptionOccurred()) {
-    NOTREACHED();
-    return "";
-  }
-
-  const std::string token_preimage_base64 = token_preimage.encode_base64();
-  if (privacy::ExceptionOccurred()) {
+  const absl::optional<std::string> token_preimage_base64_optional =
+      token_preimage.EncodeBase64();
+  if (!token_preimage_base64_optional) {
     NOTREACHED();
     return "";
   }
@@ -101,8 +108,9 @@ std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   dictionary.SetStringKey("payload", payload);
-  dictionary.SetStringKey("signature", verification_signature_base64);
-  dictionary.SetStringKey("t", token_preimage_base64);
+  dictionary.SetStringKey("signature",
+                          verification_signature_base64_optional.value());
+  dictionary.SetStringKey("t", token_preimage_base64_optional.value());
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);

@@ -17,7 +17,7 @@ TEST(BatAdsTokensTest, Generate) {
   TokenGenerator token_generator;
 
   // Act
-  const std::vector<Token> tokens = token_generator.Generate(5);
+  const std::vector<cbr::Token> tokens = token_generator.Generate(5);
 
   // Assert
   const size_t count = tokens.size();
@@ -29,7 +29,7 @@ TEST(BatAdsTokensTest, GenerateZero) {
   TokenGenerator token_generator;
 
   // Act
-  const std::vector<Token> tokens = token_generator.Generate(0);
+  const std::vector<privacy::cbr::Token> tokens = token_generator.Generate(0);
 
   // Assert
   EXPECT_TRUE(tokens.empty());

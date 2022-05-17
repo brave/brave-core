@@ -11,7 +11,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_unblinded_payment_tokens_json_reader.h"
 #include "bat/ads/internal/legacy_migration/rewards/payment_info_aliases.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

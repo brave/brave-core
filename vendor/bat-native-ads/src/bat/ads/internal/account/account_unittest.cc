@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/account.h"
 
+#include <vector>
+
 #include "bat/ads/ad_type.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
@@ -18,6 +20,7 @@
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -29,7 +32,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
+using ::testing::_;
 using ::testing::NiceMock;
+using ::testing::Return;
 
 namespace ads {
 
@@ -403,6 +408,56 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
+  const URLEndpoints& endpoints = {
+      {// Create confirmation request
+       R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       {{net::HTTP_CREATED, R"(
+            {
+              "id" : "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+              "payload" : {},
+              "createdAt" : "2020-04-20T10:27:11.717Z",
+              "type" : "view",
+              "modifiedAt" : "2020-04-20T10:27:11.717Z",
+              "creativeInstanceId" : "70829d71-ce2e-4483-a4c0-e1e2bee96520"
+            }
+          )"}}},
+      {// Fetch payment token request
+       R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
+       {{net::HTTP_OK, R"(
+            {
+              "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
+              "createdAt" : "2020-04-20T10:27:11.717Z",
+              "type" : "view",
+              "modifiedAt" : "2020-04-20T10:27:11.736Z",
+              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+              "paymentToken" : {
+                "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==",
+                "signedTokens" : [
+                  "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
+                ]
+              }
+            }
+          )"}}}};
+
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  BuildAndSetIssuers();
+
+  const std::vector<std::string> tokens_base64 = {
+      R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)"};
+  std::vector<privacy::cbr::Token> tokens;
+  for (const auto& token_base64 : tokens_base64) {
+    const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
+    ASSERT_TRUE(token.has_value());
+    tokens.push_back(token);
+  }
+  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+
+  privacy::SetUnblindedTokens(1);
+
   CreativeAdNotificationList creative_ads;
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info;
@@ -460,6 +515,17 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
 TEST_F(BatAdsAccountTest, DepositForNonCash) {
   // Arrange
+  const std::vector<std::string> tokens_base64 = {
+      R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)"};
+  std::vector<privacy::cbr::Token> tokens;
+  for (const auto& token_base64 : tokens_base64) {
+    const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
+    ASSERT_TRUE(token.has_value());
+    tokens.push_back(token);
+  }
+  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+
+  privacy::SetUnblindedTokens(1);
 
   // Act
   account_->Deposit("3519f52c-46a4-4c48-9c2b-c264c0067f04",
@@ -492,6 +558,16 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 
 TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
+  const std::vector<std::string> tokens_base64 = {
+      R"(nDM8XFo2GzY/ekTtHm3MYTK9Rs80rot3eS1n+WAuzmRvf64rHFMAcMUydrqKi2pUhgjthd8SM9BW3ituHudFNC5fS1c1Z+pe1oW2P5UxNOb8KurYGGQj/OHsG8jWhGMD)"};
+  std::vector<privacy::cbr::Token> tokens;
+  for (const auto& token_base64 : tokens_base64) {
+    const privacy::cbr::Token token = privacy::cbr::Token(token_base64);
+    ASSERT_TRUE(token.has_value());
+    tokens.push_back(token);
+  }
+  ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
+
   CreativeAdNotificationList creative_ads;
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info;

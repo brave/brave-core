@@ -8,17 +8,14 @@
 #include <string>
 
 #include "base/values.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "wrapper.hpp"
 
 namespace ads {
 namespace rewards {
 namespace JSONReader {
-
-using challenge_bypass_ristretto::PublicKey;
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
 
@@ -35,8 +32,8 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
   if (!public_key) {
     return absl::nullopt;
   }
-  unblinded_payment_token.public_key = PublicKey::decode_base64(*public_key);
-  if (privacy::ExceptionOccurred()) {
+  unblinded_payment_token.public_key = privacy::cbr::PublicKey(*public_key);
+  if (!unblinded_payment_token.public_key.has_value()) {
     return absl::nullopt;
   }
 
@@ -46,8 +43,8 @@ absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
     return absl::nullopt;
   }
   unblinded_payment_token.value =
-      UnblindedToken::decode_base64(*unblinded_token);
-  if (privacy::ExceptionOccurred()) {
+      privacy::cbr::UnblindedToken(*unblinded_token);
+  if (!unblinded_payment_token.value.has_value()) {
     return absl::nullopt;
   }
 
