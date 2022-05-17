@@ -151,6 +151,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                         finish();
                                     }
                                 });
+                        final AccountInfo[] accounts = accountInfosTemp;
                         mPendingTxHelper.mSelectedPendingRequest.observe(this, transactionInfo -> {
                             if (transactionInfo == null
                                     || mPendingTxHelper.getPendingTransactions().size() == 0) {
@@ -162,10 +163,17 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                 //  onNextTransaction implementation is done
                                 approveTxBottomSheetDialogFragment.dismiss();
                             }
+                            String accountName = "";
+                            for (AccountInfo accountInfo : accounts) {
+                                if (accountInfo.address.equals(transactionInfo.fromAddress)) {
+                                    accountName = accountInfo.name;
+                                    break;
+                                }
+                            }
                             approveTxBottomSheetDialogFragment =
                                     ApproveTxBottomSheetDialogFragment.newInstance(
                                             mPendingTxHelper.getPendingTransactions(),
-                                            transactionInfo, "", this);
+                                            transactionInfo, accountName, this);
                             approveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
                                     ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
                             mPendingTxHelper.mTransactionInfoLd.observe(this, transactionInfos -> {

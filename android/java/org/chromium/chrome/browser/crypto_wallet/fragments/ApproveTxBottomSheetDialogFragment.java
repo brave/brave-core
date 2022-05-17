@@ -220,6 +220,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     assert blockchainRegistry != null;
                     TokenUtils.getAllTokensFiltered(getBraveWalletService(), blockchainRegistry,
                             chainId, TokenUtils.TokenType.ERC20, tokens -> {
+                                boolean foundToken = false;
                                 for (BlockchainToken token : tokens) {
                                     // Replace USDC and DAI contract addresses for Ropsten network
                                     token.contractAddress = Utils.getContractAddress(
@@ -238,8 +239,14 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                                                     .baseData.to.toLowerCase(
                                                                             Locale.getDefault()))) {
                                         fillAssetDependentControls(symbol, view, decimals);
+                                        foundToken = true;
                                         break;
                                     }
+                                }
+                                // Most likely we have a native asset transfer on a custom EVM
+                                // compatible network
+                                if (!foundToken) {
+                                    fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
                                 }
                             });
                 } else if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
