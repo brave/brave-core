@@ -37,6 +37,7 @@ import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modaldialog.ModalDialogProperties.ButtonType;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -87,7 +88,7 @@ public class BraveEthereumPermissionPromptDialog
         GURL visibleUrl = mWebContents.getVisibleUrl();
         if (visibleUrl != null) {
             TextView domain = customView.findViewById(R.id.domain);
-            domain.setText(visibleUrl.getOrigin().getSpec());
+            domain.setText(Utils.geteTLDFromGRUL(visibleUrl));
         }
 
         mPropertyModel =

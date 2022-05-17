@@ -112,7 +112,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        mWebSite.setText(getCurrentHostHttpAddress().getSpec());
+        mWebSite.setText(Utils.geteTLDFromGRUL(getCurrentHostHttpAddress()));
         initComponents();
 
         return view;
