@@ -35,10 +35,7 @@ export const mockRecoveryPhrase = [
   'parent',
   'stop',
   'bowl',
-  'exercise',
-  'order',
-  'glasses',
-  'sound'
+  'exercise'
 ]
 
 export const mockedMnemonic = mockRecoveryPhrase.join(' ')
