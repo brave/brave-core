@@ -426,6 +426,7 @@ extension TabsBarViewController: TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?) {
     assert(Thread.current.isMainThread)
     updateData()
+    delegate?.tabsBarDidChangeReaderModeVisibility(false)
   }
 
   func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
