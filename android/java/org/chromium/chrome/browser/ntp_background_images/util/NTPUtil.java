@@ -33,7 +33,6 @@ import androidx.cardview.widget.CardView;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.brave_news.mojom.DisplayAd;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -71,15 +70,6 @@ import java.util.Set;
 public class NTPUtil {
     private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
     private static final String REMOVED_SITES = "removed_sites";
-    private static DisplayAd sCurrentDisplayAd;
-
-    public static void setsCurrentDisplayAd(DisplayAd displayAd) {
-        sCurrentDisplayAd = displayAd;
-    }
-
-    public static DisplayAd getsCurrentDisplayAd() {
-        return sCurrentDisplayAd;
-    }
 
     public static HashMap<String, SoftReference<Bitmap>> imageCache =
         new HashMap<String, SoftReference<Bitmap>>();

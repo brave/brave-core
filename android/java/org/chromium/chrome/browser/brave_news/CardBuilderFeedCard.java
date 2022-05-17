@@ -20,6 +20,8 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -72,6 +74,8 @@ import org.chromium.chrome.browser.brave_news.BraveNewsBottomSheetDialogFragment
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.local_database.DisplayAdsTable;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -81,6 +85,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.url.mojom.Url;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CardBuilderFeedCard {
     private final int CARD_LAYOUT = 7;
@@ -108,6 +114,7 @@ public class CardBuilderFeedCard {
     private String mCreativeInstanceId;
     private String mOffersCategory;
     private RequestManager mGlide;
+    private DisplayAdsTable mPosTabAd;
 
     private final String TAG = "BN";
     private final int MARGIN_VERTICAL = 10;
@@ -124,6 +131,7 @@ public class CardBuilderFeedCard {
         mBraveNewsController = braveNewsController;
         mDeviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
         mGlide = glide;
+        mPosTabAd = new DisplayAdsTable();
 
         mIsPromo = false;
         mCreativeInstanceId = "";
@@ -169,6 +177,195 @@ public class CardBuilderFeedCard {
         return shape;
     }
 
+    private void createAdFromTable(DisplayAdsTable adDataTable) {
+        DisplayAd displayAd = new DisplayAd();
+        displayAd.uuid = adDataTable.getUuid();
+        displayAd.creativeInstanceId = adDataTable.getCreativeInstanceId();
+        displayAd.title = adDataTable.getAdTitle();
+        displayAd.description = adDataTable.getAdDescription();
+        displayAd.ctaText = adDataTable.getAdCtaText();
+
+        org.chromium.url.mojom.Url adUrl = new org.chromium.url.mojom.Url();
+        adUrl.url = adDataTable.getAdCtaLink();
+        displayAd.targetUrl = adUrl;
+
+        Image adImage = new Image();
+        org.chromium.url.mojom.Url imagePaddedUrl = new org.chromium.url.mojom.Url();
+        imagePaddedUrl.url = adDataTable.getAdImage();
+        adImage.setPaddedImageUrl(imagePaddedUrl);
+
+        displayAd.image = adImage;
+
+        createdDisplayAdCard(displayAd);
+    }
+
+    private void createdDisplayAdCard(DisplayAd adData) {
+        RecyclerView.LayoutParams linearLayoutParams =
+                (RecyclerView.LayoutParams) mLinearLayout.getLayoutParams();
+
+        TableLayout.LayoutParams tableParamsTopNews = new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        TableLayout.LayoutParams tableParamsRow1 = new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        TableLayout.LayoutParams rowTableParams = new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        FrameLayout adLayoutUp = new FrameLayout(mActivity);
+        ImageView adImage = new ImageView(mActivity);
+        TextView adLogo = new TextView(mActivity);
+
+        LinearLayout adLayoutDown = new LinearLayout(mActivity);
+        TextView adTitle = new TextView(mActivity);
+        TextView adDesc = new TextView(mActivity);
+        Button adButton = new Button(mActivity);
+        TableLayout tableLayoutTopNews = new TableLayout(mActivity);
+
+        TableRow rowTop = new TableRow(mActivity);
+
+        TableRow row1 = new TableRow(mActivity);
+        TableRow row2 = new TableRow(mActivity);
+
+        TableRow.LayoutParams adLayoutParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams adLayoutDownParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+
+        FrameLayout.LayoutParams adImageParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+
+        TableRow.LayoutParams adButtonParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+
+        tableLayoutTopNews.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        mLinearLayout.addView(tableLayoutTopNews);
+
+        linearLayoutParams.height = 0;
+        linearLayoutParams.setMargins(mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
+        mLinearLayout.setLayoutParams(linearLayoutParams);
+
+        mLinearLayout.setBackground(roundedBackground());
+
+        if (adData != null) {
+            linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
+            mLinearLayout.setLayoutParams(linearLayoutParams);
+            FrameLayout.LayoutParams adLogoParams = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            TableRow.LayoutParams adItemsParams = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+            rowTableParams.setMargins(50, 0, 50, 0);
+            rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
+            rowTableParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
+            rowTableParams.gravity = Gravity.CENTER_HORIZONTAL;
+            rowTop.setGravity(Gravity.CENTER_HORIZONTAL);
+            rowTop.setLayoutParams(rowTableParams);
+            tableLayoutTopNews.addView(rowTop);
+
+            adLayoutParams.width = TableRow.LayoutParams.MATCH_PARENT;
+            adLayoutParams.height = ConfigurationUtils.isTablet(mActivity)
+                    ? (int) (mDeviceWidth * 0.45)
+                    : (int) (mDeviceWidth * 0.6);
+            adLayoutParams.bottomMargin = 2 * MARGIN_VERTICAL;
+            adLayoutUp.setLayoutParams(adLayoutParams);
+            rowTop.addView(adLayoutUp);
+
+            adImageParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
+            adImageParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
+
+            LinearLayout.LayoutParams adImageLinearParams =
+                    (LinearLayout.LayoutParams) adLayoutUp.getLayoutParams();
+            adImageLinearParams.weight = 1.0f;
+            adImage.setLayoutParams(adImageLinearParams);
+
+            setDisplayAdImage(adImage, adData.image, 1);
+            adLayoutUp.addView(adImage);
+            adLayoutUp.addView(adLogo);
+
+            adLogoParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
+            adLogoParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
+            adLogoParams.topMargin = 30;
+            adLogoParams.rightMargin = 0;
+            adLogoParams.gravity = Gravity.END;
+            adLogo.setGravity(Gravity.END);
+            adLogo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_rewards, 0, 0, 0);
+            adLogo.setText(R.string.brave_news_ad);
+            adLogo.setTextColor(mActivity.getResources().getColor(R.color.blurple));
+            GradientDrawable gd = new GradientDrawable();
+            gd.setColor(mActivity.getResources().getColor(R.color.news_text_color));
+            gd.setCornerRadius(15);
+
+            adLogo.setBackground(gd);
+            adLogo.setPadding(5, 5, 10, 5);
+            adLogo.setLayoutParams(adLogoParams);
+            adLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openUrlInSameTabAndSavePosition(BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                }
+            });
+
+            rowTableParams.setMargins(50, 0, 50, 0);
+            rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
+            rowTableParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
+            row1.setLayoutParams(rowTableParams);
+            rowTableParams.bottomMargin = 3 * MARGIN_VERTICAL;
+            row2.setLayoutParams(rowTableParams);
+            tableLayoutTopNews.addView(row1);
+            tableLayoutTopNews.addView(row2);
+
+            row1.addView(adTitle);
+            row2.addView(adDesc);
+            row2.addView(adButton);
+
+            adItemsParams = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            adTitle.setTextSize(17);
+            adItemsParams.bottomMargin = 2 * MARGIN_VERTICAL;
+            adTitle.setTypeface(null, Typeface.BOLD);
+            adTitle.setMaxLines(3);
+            adTitle.setTextColor(mActivity.getResources().getColor(R.color.news_text_color));
+            adTitle.setEllipsize(TextUtils.TruncateAt.END);
+            adTitle.setLayoutParams(adItemsParams);
+            adTitle.setText(adData.title);
+
+            adItemsParams = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
+            adItemsParams.gravity = Gravity.CENTER_VERTICAL;
+            adDesc.setGravity(Gravity.CENTER_VERTICAL);
+            adItemsParams.weight = 1;
+            adItemsParams.width = 0;
+            adDesc.setLayoutParams(adItemsParams);
+
+            adDesc.setTextColor(mActivity.getResources().getColor(R.color.news_time_color));
+            adDesc.setTextSize(12);
+            adDesc.setText(adData.description);
+
+            adButtonParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+            adButtonParams.height = 80; // TableRow.LayoutParams.WRAP_CONTENT;
+            adButton.setPadding(30, 0, 30, 0);
+            adButton.setTextSize(13);
+            adButton.setAllCaps(false);
+            GradientDrawable adButtonBG = new GradientDrawable();
+            adButtonBG.setColor(mActivity.getResources().getColor(android.R.color.transparent));
+            adButtonBG.setCornerRadius(55);
+            adButtonBG.setStroke(1, mActivity.getResources().getColor(R.color.news_text_color));
+            adButton.setBackground(adButtonBG);
+            adButton.setText(adData.ctaText);
+            adButton.setTextColor(mActivity.getResources().getColor(R.color.news_text_color));
+            adButton.setLayoutParams(adButtonParams);
+
+            View.OnClickListener listener = v -> {
+                openUrlAndSaveEvent(adData);
+            };
+
+            adButton.setOnClickListener(listener);
+            adImage.setOnClickListener(listener);
+            adTitle.setOnClickListener(listener);
+            adDesc.setOnClickListener(listener);
+        }
+    }
+
     public LinearLayout createCard(int type, int position) {
         TableLayout tableLayoutTopNews = new TableLayout(mActivity);
 
@@ -201,199 +398,24 @@ public class CardBuilderFeedCard {
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
                     break;
                 case CardType.DISPLAY_AD:
-                    FrameLayout adLayoutUp = new FrameLayout(mActivity);
-                    ImageView adImage = new ImageView(mActivity);
-                    TextView adLogo = new TextView(mActivity);
-
-                    LinearLayout adLayoutDown = new LinearLayout(mActivity);
-                    TextView adTitle = new TextView(mActivity);
-                    TextView adDesc = new TextView(mActivity);
-                    Button adButton = new Button(mActivity);
-
-                    TableRow.LayoutParams adLayoutParams = new TableRow.LayoutParams(
-                            TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-                    TableRow.LayoutParams adLayoutDownParams = new TableRow.LayoutParams(
-                            TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-
-                    FrameLayout.LayoutParams adImageParams =
-                            new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                                    FrameLayout.LayoutParams.WRAP_CONTENT);
-
-                    TableRow.LayoutParams adButtonParams = new TableRow.LayoutParams(
-                            TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-
-                    tableLayoutTopNews.setLayoutParams(
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT));
-                    mLinearLayout.addView(tableLayoutTopNews);
-
-                    linearLayoutParams.height = 0;
-                    linearLayoutParams.setMargins(
-                            mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
-                    mLinearLayout.setLayoutParams(linearLayoutParams);
-
-                    mLinearLayout.setBackground(roundedBackground());
                     try {
-                        /*mBraveNewsController.getDisplayAd(adData -> {
-                            if (adData != null) {
-                                NTPUtil.setsCurrentDisplayAd(adData);
-                                linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
-                                mLinearLayout.setLayoutParams(linearLayoutParams);
-                                FrameLayout.LayoutParams adLogoParams =
-                                        new FrameLayout.LayoutParams(
-                                                FrameLayout.LayoutParams.MATCH_PARENT,
-                                                FrameLayout.LayoutParams.WRAP_CONTENT);
-                                TableRow.LayoutParams adItemsParams = new TableRow.LayoutParams(
-                                        TableRow.LayoutParams.MATCH_PARENT,
-                                        TableRow.LayoutParams.WRAP_CONTENT);
-
-                                rowTableParams.setMargins(50, 0, 50, 0);
-                                rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
-                                rowTableParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
-                                rowTableParams.gravity = Gravity.CENTER_HORIZONTAL;
-                                rowTop.setGravity(Gravity.CENTER_HORIZONTAL);
-                                rowTop.setLayoutParams(rowTableParams);
-                                tableLayoutTopNews.addView(rowTop);
-
-                                adLayoutParams.width = TableRow.LayoutParams.MATCH_PARENT;
-                                adLayoutParams.height = ConfigurationUtils.isTablet(mActivity)
-                                        ? (int) (mDeviceWidth * 0.45)
-                                        : (int) (mDeviceWidth * 0.6);
-                                adLayoutParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                                adLayoutUp.setLayoutParams(adLayoutParams);
-                                rowTop.addView(adLayoutUp);
-
-                                adImageParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
-                                adImageParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
-
-                                LinearLayout.LayoutParams adImageLinearParams =
-                                        (LinearLayout.LayoutParams) adLayoutUp.getLayoutParams();
-                                adImageLinearParams.weight = 1.0f;
-                                adImage.setLayoutParams(adImageLinearParams);
-
-                                setDisplayAdImage(adImage, adData.image, 1);
-                                adLayoutUp.addView(adImage);
-                                adLayoutUp.addView(adLogo);
-
-                                adLogoParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
-                                adLogoParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-                                adLogoParams.topMargin = 30;
-                                adLogoParams.rightMargin = 0;
-                                adLogoParams.gravity = Gravity.END;
-                                adLogo.setGravity(Gravity.END);
-                                adLogo.setCompoundDrawablesWithIntrinsicBounds(
-                                        R.drawable.ic_rewards, 0, 0, 0);
-                                adLogo.setText(R.string.brave_news_ad);
-                                adLogo.setTextColor(
-                                        mActivity.getResources().getColor(R.color.blurple));
-                                GradientDrawable gd = new GradientDrawable();
-                                gd.setColor(
-                                        mActivity.getResources().getColor(R.color.news_text_color));
-                                gd.setCornerRadius(15);
-
-                                adLogo.setBackground(gd);
-                                adLogo.setPadding(5, 5, 10, 5);
-                                adLogo.setLayoutParams(adLogoParams);
-                                adLogo.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        openUrlInSameTabAndSavePosition(
-                                                BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
-                                    }
-                                });
-
-                                rowTableParams.setMargins(50, 0, 50, 0);
-                                rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
-                                rowTableParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
-                                row1.setLayoutParams(rowTableParams);
-                                rowTableParams.bottomMargin = 3 * MARGIN_VERTICAL;
-                                row2.setLayoutParams(rowTableParams);
-                                tableLayoutTopNews.addView(row1);
-                                tableLayoutTopNews.addView(row2);
-
-                                row1.addView(adTitle);
-                                row2.addView(adDesc);
-                                row2.addView(adButton);
-
-                                adItemsParams = new TableRow.LayoutParams(
-                                        TableRow.LayoutParams.MATCH_PARENT,
-                                        TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
-                                adTitle.setTextSize(17);
-                                adItemsParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                                adTitle.setTypeface(null, Typeface.BOLD);
-                                adTitle.setMaxLines(3);
-                                adTitle.setTextColor(
-                                        mActivity.getResources().getColor(R.color.news_text_color));
-                                adTitle.setEllipsize(TextUtils.TruncateAt.END);
-                                adTitle.setLayoutParams(adItemsParams);
-                                adTitle.setText(adData.title);
-
-                                adItemsParams = new TableRow.LayoutParams(
-                                        TableRow.LayoutParams.WRAP_CONTENT,
-                                        TableRow.LayoutParams.MATCH_PARENT);
-                                adItemsParams.gravity = Gravity.CENTER_VERTICAL;
-                                adDesc.setGravity(Gravity.CENTER_VERTICAL);
-                                adItemsParams.weight = 1;
-                                adItemsParams.width = 0;
-                                adDesc.setLayoutParams(adItemsParams);
-
-                                adDesc.setTextColor(
-                                        mActivity.getResources().getColor(R.color.news_time_color));
-                                adDesc.setTextSize(12);
-                                adDesc.setText(adData.description);
-
-                                adButtonParams.width = TableRow.LayoutParams.WRAP_CONTENT;
-                                adButtonParams.height = 80; // TableRow.LayoutParams.WRAP_CONTENT;
-                                adButton.setPadding(30, 0, 30, 0);
-                                adButton.setTextSize(13);
-                                adButton.setAllCaps(false);
-                                GradientDrawable adButtonBG = new GradientDrawable();
-                                adButtonBG.setColor(mActivity.getResources().getColor(
-                                        android.R.color.transparent));
-                                adButtonBG.setCornerRadius(55);
-                                adButtonBG.setStroke(1,
-                                        mActivity.getResources().getColor(R.color.news_text_color));
-                                adButton.setBackground(adButtonBG);
-                                adButton.setText(adData.ctaText);
-                                adButton.setTextColor(
-                                        mActivity.getResources().getColor(R.color.news_text_color));
-                                adButton.setLayoutParams(adButtonParams);
-                                adButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mBraveNewsController.onDisplayAdVisit(
-                                                adData.uuid, adData.creativeInstanceId);
-                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
-                                    }
-                                });
-                                adImage.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mBraveNewsController.onDisplayAdVisit(
-                                                adData.uuid, adData.creativeInstanceId);
-                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
-                                    }
-                                });
-                                adTitle.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mBraveNewsController.onDisplayAdVisit(
-                                                adData.uuid, adData.creativeInstanceId);
-                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
-                                    }
-                                });
-                                adDesc.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mBraveNewsController.onDisplayAdVisit(
-                                                adData.uuid, adData.creativeInstanceId);
-                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
-                                    }
-                                });
-                            }
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        executor.execute(() -> {
+                            int tabId = BraveActivity.getBraveActivity().getActivityTab().getId();
+                            DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                            DisplayAdsTable posTabAd = dbHelper.getDisplayAd(position, tabId);
+                            handler.post(() -> {
+                                if (posTabAd != null) {
+                                    createAdFromTable(posTabAd);
+                                } else {
+                                    mBraveNewsController.getDisplayAd(adData -> {
+                                        BraveNewsUtils.putToDisplayAdsMap(position, adData);
+                                        createdDisplayAdCard(adData);
+                                    });
+                                }
+                            });
                         });
-                        */
-
                     } catch (Exception e) {
                         Log.e(TAG, "displayad Exception" + e.getMessage());
                     }
@@ -677,6 +699,11 @@ public class CardBuilderFeedCard {
                 Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
                 mPosition);
         TabUtils.openUrlInSameTab(myUrl);
+    }
+
+    private void openUrlAndSaveEvent(DisplayAd adData) {
+        mBraveNewsController.onDisplayAdVisit(adData.uuid, adData.creativeInstanceId);
+        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
     }
 
     private void addElementsToSingleLayout(ViewGroup view, int index, int itemType) {
@@ -1308,6 +1335,7 @@ public class CardBuilderFeedCard {
         }
 
         final Url adImageUrl = imageUrlTemp;
+
         mBraveNewsController.getImageData(adImageUrl, imageData -> {
             if (imageData != null) {
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
