@@ -205,11 +205,16 @@ export const Container = () => {
             <Onboarding />
           </ProtectedRoute>
 
-          <Route path={WalletRoutes.Restore} exact={true}>
+          <ProtectedRoute
+            path={WalletRoutes.Restore}
+            requirement={isWalletLocked}
+            redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Unlock}
+            exact={true}
+          >
             <OnboardingWrapper>
               <OnboardingRestore />
             </OnboardingWrapper>
-          </Route>
+          </ProtectedRoute>
 
           <ProtectedRoute
             path={WalletRoutes.Unlock}

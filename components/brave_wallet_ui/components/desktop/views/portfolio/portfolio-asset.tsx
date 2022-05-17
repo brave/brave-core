@@ -272,9 +272,6 @@ export const PortfolioAsset = () => {
   }, [selectedAsset])
 
   const goBack = React.useCallback(() => {
-    // if (nftMetadata) {
-    //   dispatch(WalletPageActions.updateNFTMetadata(undefined))
-    // }
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
     history.push(WalletRoutes.Portfolio)
     setfilteredAssetList(userAssetList)
@@ -337,6 +334,7 @@ export const PortfolioAsset = () => {
 
       {!isNftAsset &&
         <InfoColumn>
+
           <AssetRow>
             <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
             <AssetColumn>
@@ -344,7 +342,7 @@ export const PortfolioAsset = () => {
               <NetworkDescription>{selectedAssetFromParams.symbol} on {selectedAssetsNetwork?.chainName ?? ''}</NetworkDescription>
             </AssetColumn>
           </AssetRow>
-          {/* <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText> */}
+
           <PriceRow>
             <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
             <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
@@ -352,6 +350,7 @@ export const PortfolioAsset = () => {
               <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
             </PercentBubble>
           </PriceRow>
+
           <DetailText>
             {
               selectedAssetCryptoPrice
@@ -360,6 +359,7 @@ export const PortfolioAsset = () => {
                 : ''
             }
           </DetailText>
+
         </InfoColumn>
       }
 
