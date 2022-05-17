@@ -11,10 +11,10 @@ import org.chromium.chrome.browser.base.SplitCompatService;
 /** See {@link WireguardServiceImpl}. */
 public class WireguardService extends SplitCompatService {
     @IdentifierNameString
-    private static final String IMPL_CLASS_NAME =
+    private static String sImplClassName =
             "org.chromium.chrome.browser.vpn.wireguard.WireguardServiceImpl";
 
     public WireguardService() {
-        super(IMPL_CLASS_NAME);
+        super(sImplClassName);
     }
 }
