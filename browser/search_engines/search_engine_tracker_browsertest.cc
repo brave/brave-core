@@ -68,13 +68,22 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   histogram_tester_->ExpectBucketCount(kDefaultSearchEngineMetric,
                                        SearchEngineP3A::kDuckDuckGo, 1);
 
+  // Check switching back to original engine.
+  auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  TemplateURL brave_url(*brave_data);
+  service->SetUserSelectedDefaultSearchProvider(&brave_url);
+  histogram_tester_->ExpectBucketCount(kDefaultSearchEngineMetric,
+                                       SearchEngineP3A::kBrave, 2);
+
   // Check that incognito or TOR profiles do not emit the metric.
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
-  histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 2);
+  histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 3);
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
@@ -120,12 +129,17 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
                                        SearchEngineSwitchP3A::kBraveToOther, 1);
 
+  // Check switching back to original engine.
+  service->SetUserSelectedDefaultSearchProvider(&brave_url);
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kOtherToBrave, 1);
+
   // Check that incognito or TOR profiles do not emit the metric.
-  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 6);
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
-  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 6);
 }
