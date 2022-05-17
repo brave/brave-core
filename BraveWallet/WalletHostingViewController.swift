@@ -21,8 +21,8 @@ public protocol BraveWalletDelegate: AnyObject {
 public enum PresentingContext {
   /// The default context shows the main wallet view which includes portfolio, buy/send/swap, etc.
   case `default`
-  /// Shows the user any pending requests made by webpages such as new adding networks, tokens, etc.
-  case webpageRequests
+  /// Shows the user any pending requests made by webpages such as transaction confirmations, adding networks, switch networks, add tokens, sign message, etc.
+  case pendingRequests
   /// Shows when a webpage wants to connect with the users wallet
   case requestEthererumPermissions(_ request: WebpagePermissionRequest)
   /// Shows the user only the unlock/setup screen then dismisses to view an unlocked panel
