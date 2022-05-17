@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+import { WalletButton } from '../../../../components/shared/style'
+import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
+
 export const LinkText = styled.a`
   font-family: 'Poppins';
   font-style: normal;
@@ -21,7 +24,6 @@ export const PhraseCard = styled.div`
   flex: 1;
   flex-direction: column;
   width: 376px;
-  background-color: red;
   align-items: center;
 `
 
@@ -35,8 +37,35 @@ export const PhraseCardTopRow = styled.div`
   padding: 14px 8px;
 `
 
+export const PhraseCardBody = styled.div`
+  flex: 1;
+  min-height: 180px;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 16px;
+  padding-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${(p) => p.theme.color.divider01};
+  border-radius: 4px;
+`
+
 export const PhraseCardBottomRow = styled(PhraseCardTopRow)`
   justify-content: flex-start;
   height: 40px;
-  background-color: blueviolet;
+`
+
+// buttons
+export const CopyButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  mask-image: url(${ClipboardIcon});
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 14px;
+  background-color: ${(p) => p.theme.color.text01};
+  height: 14px;
+  width: 14px;
 `

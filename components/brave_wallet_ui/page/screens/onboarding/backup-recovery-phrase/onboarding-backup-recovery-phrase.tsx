@@ -4,11 +4,14 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import {
+  CopyButton,
   LinkText,
   PhraseCard,
+  PhraseCardBody,
   PhraseCardBottomRow,
   PhraseCardTopRow
 } from './onboarding-backup-recovery-phrase.style'
@@ -26,20 +29,32 @@ import {
 import { getLocale } from '../../../../../common/locale'
 
 // routes
-import { WalletRoutes } from '../../../../constants/types'
+import { PageState, WalletRoutes } from '../../../../constants/types'
+
+// hooks
+import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-temporary-copy-to-clipboard'
 
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { OnboardingSteps, OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ToggleVisibilityButton } from '../../../../components/shared/style'
+import { RecoveryPhrase } from './components/recovery-phrase'
 
 export const OnboardingRecoveryPhrase = () => {
   // routing
   const history = useHistory()
 
+  // redux
+  const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
+
   // state
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
+
+  // custom hooks
+  const tempCopyToClipboard = useTemporaryCopyToClipboard()
+
+  // methods
 
   // const revealPhrase = React.useCallback(() => {
   //   setIsPhraseShown(true)
@@ -56,6 +71,15 @@ export const OnboardingRecoveryPhrase = () => {
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
   }, [])
+
+  const onCopyPhrase = React.useCallback(async () => {
+    await tempCopyToClipboard(mnemonic || '')
+  }, [mnemonic])
+
+  // memos
+  const recoveryPhrase = React.useMemo(() => {
+    return (mnemonic || '').split(' ')
+  }, [mnemonic])
 
   // render
   return (
@@ -83,24 +107,16 @@ export const OnboardingRecoveryPhrase = () => {
                 onClick={toggleShowPhrase}
               />
             </PhraseCardTopRow>
-            <p>
-              Example
-            </p>
-            <p>
-              Example
-            </p>
-            <p>
-              Example
-            </p>
-            <p>
-              Example
-            </p>
-            <p>
-              Example
-            </p>
+
+            <PhraseCardBody>
+              <RecoveryPhrase
+                hidden={!isPhraseShown}
+                recoveryPhrase={recoveryPhrase}
+              />
+            </PhraseCardBody>
 
             <PhraseCardBottomRow>
-              Bottom
+            <CopyButton onClick={onCopyPhrase} />
             </PhraseCardBottomRow>
           </PhraseCard>
 
