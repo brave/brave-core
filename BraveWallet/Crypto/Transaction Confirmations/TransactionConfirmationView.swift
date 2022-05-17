@@ -15,6 +15,8 @@ struct TransactionConfirmationView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
 
+  var onDismiss: () -> Void
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -82,7 +84,7 @@ struct TransactionConfirmationView: View {
       HStack {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.transactions.count))
           .fontWeight(.semibold)
-        Button(action: confirmationStore.next) {
+        Button(action: confirmationStore.nextTransaction) {
           Text(Strings.Wallet.next)
             .fontWeight(.semibold)
             .foregroundColor(Color(.braveBlurpleTint))
@@ -174,7 +176,6 @@ struct TransactionConfirmationView: View {
   }
 
   var body: some View {
-    NavigationView {
       ScrollView(.vertical) {
         VStack {
           // Header
@@ -325,7 +326,7 @@ struct TransactionConfirmationView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           }
           if confirmationStore.transactions.count > 1 {
-            Button(action: confirmationStore.rejectAll) {
+            Button(action: confirmationStore.rejectAllTransactions) {
               Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.transactions.count))
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Color(.braveBlurpleTint))
@@ -374,8 +375,6 @@ struct TransactionConfirmationView: View {
           }
         }
       }
-    }
-    .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
       confirmationStore.prepare()
     }
@@ -395,13 +394,21 @@ struct TransactionConfirmationView: View {
 
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button(action: {
-      confirmationStore.reject(transaction: confirmationStore.activeTransaction)
+      confirmationStore.reject(transaction: confirmationStore.activeTransaction) { success in
+        if confirmationStore.transactions.count == 1 {
+          onDismiss()
+        }
+      }
     }) {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button(action: {
-      confirmationStore.confirm(transaction: confirmationStore.activeTransaction)
+      confirmationStore.confirm(transaction: confirmationStore.activeTransaction) { error in
+        if confirmationStore.transactions.count == 1 {
+          onDismiss()
+        }
+      }
     }) {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
@@ -444,7 +451,8 @@ struct TransactionConfirmationView_Previews: PreviewProvider {
     TransactionConfirmationView(
       confirmationStore: .previewStore,
       networkStore: .previewStore,
-      keyringStore: .previewStoreWithWalletCreated
+      keyringStore: .previewStoreWithWalletCreated,
+      onDismiss: { }
     )
     .previewLayout(.sizeThatFits)
   }

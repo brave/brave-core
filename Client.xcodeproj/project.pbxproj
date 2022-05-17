@@ -474,7 +474,7 @@
 		27C647832550AF34006D72FC /* WalletTransferCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C647822550AF34006D72FC /* WalletTransferCompleteView.swift */; };
 		27C6478F2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C6478E2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift */; };
 		27C647A62551F082006D72FC /* RewardsDebugSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C647A52551F082006D72FC /* RewardsDebugSettingsViewController.swift */; };
-		27C8C40227D2C9A100051226 /* WebpageRequestContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C8C40127D2C9A100051226 /* WebpageRequestContainerView.swift */; };
+		27C8C40227D2C9A100051226 /* RequestContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C8C40127D2C9A100051226 /* RequestContainerView.swift */; };
 		27CD682527F5014F00D30B5D /* WalletProviderConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CD682427F5014F00D30B5D /* WalletProviderConstants.swift */; };
 		27CFB71424E1F67B008DFC8C /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CFB71324E1F67B008DFC8C /* Observable.swift */; };
 		27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */; };
@@ -2066,7 +2066,7 @@
 		27C647822550AF34006D72FC /* WalletTransferCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferCompleteView.swift; sourceTree = "<group>"; };
 		27C6478E2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsDebugViewController.swift; sourceTree = "<group>"; };
 		27C647A52551F082006D72FC /* RewardsDebugSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsDebugSettingsViewController.swift; sourceTree = "<group>"; };
-		27C8C40127D2C9A100051226 /* WebpageRequestContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebpageRequestContainerView.swift; sourceTree = "<group>"; };
+		27C8C40127D2C9A100051226 /* RequestContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestContainerView.swift; sourceTree = "<group>"; };
 		27CD682427F5014F00D30B5D /* WalletProviderConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletProviderConstants.swift; sourceTree = "<group>"; };
 		27CFB71324E1F67B008DFC8C /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
@@ -4365,7 +4365,7 @@
 		27BC117F27A9A5430097ADCD /* Panels */ = {
 			isa = PBXGroup;
 			children = (
-				27C8C40127D2C9A100051226 /* WebpageRequestContainerView.swift */,
+				27C8C40127D2C9A100051226 /* RequestContainerView.swift */,
 				27BC119227A9C90E0097ADCD /* WalletPanelView.swift */,
 				27842B4C27AC8803002B3EDA /* Connect */,
 				2761CA1427B1C7400077D52A /* Signature Request */,
@@ -7736,7 +7736,7 @@
 				7D2D6F162735BCDB000650EA /* TokenView.swift in Sources */,
 				7D49CDDD271FA8B5008AB67E /* SendTokenSearchView.swift in Sources */,
 				2761CA2027B1C74F0077D52A /* SignatureRequestView.swift in Sources */,
-				27C8C40227D2C9A100051226 /* WebpageRequestContainerView.swift in Sources */,
+				27C8C40227D2C9A100051226 /* RequestContainerView.swift in Sources */,
 				271F689226EBD27E00AA2A50 /* MockKeyringService.swift in Sources */,
 				271F68BE26EBD27E00AA2A50 /* LineChartView.swift in Sources */,
 				2762FF30271A054A001EF41D /* AssetIconView.swift in Sources */,

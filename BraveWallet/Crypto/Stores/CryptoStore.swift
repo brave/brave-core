@@ -5,11 +5,24 @@
 
 import BraveCore
 
-enum PendingWebpageRequest: Equatable {
+enum PendingRequest: Equatable {
+  case transactions
   case addChain(BraveWallet.AddChainRequest)
   case switchChain(BraveWallet.SwitchChainRequest)
   case addSuggestedToken(BraveWallet.AddSuggestTokenRequest)
   case signMessage([BraveWallet.SignMessageRequest])
+}
+
+extension PendingRequest: Identifiable {
+  var id: String {
+    switch self {
+    case .transactions: return "transactions"
+    case let .addChain(request): return "addChain-\(request.networkInfo.chainId)"
+    case let .switchChain(chainRequest): return "switchChain-\(chainRequest.chainId)"
+    case let .addSuggestedToken(tokenRequest): return "addSuggestedToken-\(tokenRequest.token.id)"
+    case let .signMessage(signRequests): return "signMessage-\(signRequests.map(\.id))"
+    }
+  }
 }
 
 enum WebpageRequestResponse: Equatable {
@@ -33,15 +46,14 @@ public class CryptoStore: ObservableObject {
     }
   }
   @Published var isPresentingAssetSearch: Bool = false
-  @Published var isPresentingTransactionConfirmations: Bool = false {
+  @Published var isPresentingPendingRequest: Bool = false {
     didSet {
-      if !isPresentingTransactionConfirmations {
+      if !isPresentingPendingRequest {
         confirmationStore = nil
       }
     }
   }
-  @Published private(set) var hasUnapprovedTransactions: Bool = false
-  @Published private(set) var pendingWebpageRequest: PendingWebpageRequest?
+  @Published private(set) var pendingRequest: PendingRequest?
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -207,44 +219,52 @@ public class CryptoStore: ObservableObject {
     txService: txService
   )
   
-  func fetchUnapprovedTransactions() {
-    keyringService.defaultKeyringInfo { [self] keyring in
-      var pendingTransactions: [BraveWallet.TransactionInfo] = []
-      let group = DispatchGroup()
-      for info in keyring.accountInfos {
-        group.enter()
-        txService.allTransactionInfo(.eth, from: info.address) { tx in
-          defer { group.leave() }
-          pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
-        }
-      }
-      group.notify(queue: .main) { [self] in
-        if !pendingTransactions.isEmpty && buySendSwapDestination != nil {
+  func prepare() {
+    Task { @MainActor in
+      let pendingTransactions = await fetchPendingTransactions()
+      if !pendingTransactions.isEmpty {
+        if self.buySendSwapDestination != nil {
           // Dismiss any buy send swap open to show the unapproved transactions
           self.buySendSwapDestination = nil
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-          // On iPad if we set these before the send or swap screens disappear for some reason it crashes
-          // within the SwiftUI runtime. Delaying it to give time for the animation to complete fixes it.
-          self.hasUnapprovedTransactions = !pendingTransactions.isEmpty
-          self.isPresentingTransactionConfirmations = !pendingTransactions.isEmpty
-        }
+        self.pendingRequest = .transactions
+      } else { // no pending transactions, check for webpage requests
+        let pendingWebpageRequest = await fetchPendingWebpageRequest()
+        self.pendingRequest = pendingWebpageRequest
+      }
+      // If we set these before the send or swap screens disappear for some reason it may crash
+      // within the SwiftUI runtime or fail to dismiss. Delaying it to give time for the
+      // animation to complete fixes it.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        self.isPresentingPendingRequest = self.pendingRequest != nil
       }
     }
   }
-  
-  func fetchPendingRequests() {
-    Task { @MainActor in
-      // TODO: Add check for eth permissions… get first eth request 
-      if let chainRequest = await rpcService.pendingAddChainRequests().first {
-        pendingWebpageRequest = .addChain(chainRequest)
-      } else if case let signMessageRequests = await walletService.pendingSignMessageRequests(), !signMessageRequests.isEmpty {
-        pendingWebpageRequest = .signMessage(signMessageRequests)
-      } else if let switchRequest = await rpcService.pendingSwitchChainRequests().first {
-        pendingWebpageRequest = .switchChain(switchRequest)
-      } else if let addTokenRequest = await walletService.pendingAddSuggestTokenRequests().first {
-        pendingWebpageRequest = .addSuggestedToken(addTokenRequest)
-      }
+
+  @MainActor
+  func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
+    let keyring = await keyringService.keyringInfo(BraveWallet.DefaultKeyringId)
+    var pendingTransactions: [BraveWallet.TransactionInfo] = []
+    for info in keyring.accountInfos {
+      let allTransactionInfo = await txService.allTransactionInfo(.eth, from: info.address)
+      pendingTransactions.append(contentsOf: allTransactionInfo.filter { $0.txStatus == .unapproved })
+    }
+    return pendingTransactions
+  }
+
+  @MainActor
+  func fetchPendingWebpageRequest() async -> PendingRequest? {
+    // TODO: Add check for eth permissions… get first eth request
+    if let chainRequest = await rpcService.pendingAddChainRequests().first {
+      return .addChain(chainRequest)
+    } else if case let signMessageRequests = await walletService.pendingSignMessageRequests(), !signMessageRequests.isEmpty {
+      return .signMessage(signMessageRequests)
+    } else if let switchRequest = await rpcService.pendingSwitchChainRequests().first {
+      return .switchChain(switchRequest)
+    } else if let addTokenRequest = await walletService.pendingAddSuggestTokenRequests().first {
+      return .addSuggestedToken(addTokenRequest)
+    } else {
+      return nil
     }
   }
 
@@ -252,30 +272,27 @@ public class CryptoStore: ObservableObject {
     switch response {
     case let .switchChain(approved, originInfo):
       rpcService.notifySwitchChainRequestProcessed(approved, origin: originInfo.origin)
-      pendingWebpageRequest = nil
     case let .addNetwork(approved, chainId):
       rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
-      pendingWebpageRequest = nil
     case let .addSuggestedToken(approved, contractAddresses):
       walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: contractAddresses)
-      pendingWebpageRequest = nil
     case let .signMessage(approved, id):
       walletService.notifySignMessageRequestProcessed(approved, id: id)
-      pendingWebpageRequest = nil
     }
-    fetchPendingRequests()
+    pendingRequest = nil
+    prepare()
   }
 }
 
 extension CryptoStore: BraveWalletTxServiceObserver {
   public func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
-    fetchUnapprovedTransactions()
+    prepare()
   }
   public func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
-    fetchUnapprovedTransactions()
+    prepare()
   }
   public func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    fetchUnapprovedTransactions()
+    prepare()
   }
 }
 
@@ -287,7 +304,7 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
   public func keyringRestored(_ keyringId: String) {
   }
   public func locked() {
-    isPresentingTransactionConfirmations = false
+    isPresentingPendingRequest = false
   }
   public func unlocked() {
   }

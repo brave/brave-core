@@ -7,9 +7,9 @@ import Foundation
 import SwiftUI
 import BraveUI
 
-/// A container to present when a webpage wants to present some request to the user such as adding a suggested
-/// token, change networks, authorize a transaction, etc.
-struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
+/// A container to present when a webpage wants to present some request to the user such as transaction
+/// confirmations, adding networks, switch networks, add tokens, sign message, etc.
+struct RequestContainerView<DismissContent: ToolbarContent>: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   var toolbarDismissContent: DismissContent
@@ -19,8 +19,15 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
   var body: some View {
     NavigationView {
       Group {
-        if let pendingRequest = cryptoStore.pendingWebpageRequest {
+        if let pendingRequest = cryptoStore.pendingRequest {
           switch pendingRequest {
+          case .transactions:
+            TransactionConfirmationView(
+              confirmationStore: cryptoStore.openConfirmationStore(),
+              networkStore: cryptoStore.networkStore,
+              keyringStore: keyringStore,
+              onDismiss: onDismiss
+            )
           case .addSuggestedToken(let request):
             AddSuggestedTokenView(
               token: request.token,
@@ -53,8 +60,6 @@ struct WebpageRequestContainerView<DismissContent: ToolbarContent>: View {
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )
-          default:
-            EmptyView()
           }
         }
       }

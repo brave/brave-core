@@ -175,8 +175,18 @@ struct WalletPanelView: View {
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 0) {
-        Text("Brave Wallet")
-          .font(.headline)
+        HStack {
+          Spacer()
+          Text("Brave Wallet")
+            .font(.headline)
+          Spacer()
+          if cryptoStore.pendingRequest != nil {
+            Button(action: { presentWalletWithContext(.pendingRequests) }) {
+              Image(uiImage: UIImage(imageLiteralResourceName: "brave.bell.badge").template)
+                .foregroundColor(.white)
+            }
+          }
+        }
           .padding(16)
           .frame(maxWidth: .infinity)
           .overlay(
@@ -263,9 +273,9 @@ struct WalletPanelView: View {
       )
       .ignoresSafeArea()
     )
-    .onChange(of: cryptoStore.pendingWebpageRequest) { newValue in
+    .onChange(of: cryptoStore.pendingRequest) { newValue in
       if newValue != nil {
-        presentWalletWithContext(.webpageRequests)
+        presentWalletWithContext(.pendingRequests)
       }
     }
     .onAppear {
@@ -273,7 +283,7 @@ struct WalletPanelView: View {
       if let request = permissionRequestManager.pendingRequests(for: origin).first {
         presentWalletWithContext(.requestEthererumPermissions(request))
       } else {
-        cryptoStore.fetchPendingRequests()
+        cryptoStore.prepare()
       }
     }
   }

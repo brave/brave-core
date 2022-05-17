@@ -17,23 +17,23 @@ struct CryptoPagesView: View {
 
   @State private var isShowingSettings: Bool = false
   @State private var isShowingSearch: Bool = false
-  @State private var fetchedUnapprovedTransactionsThisSession: Bool = false
+  @State private var fetchedPendingRequestsThisSession: Bool = false
 
   var body: some View {
     _CryptoPagesView(
       keyringStore: keyringStore,
       cryptoStore: cryptoStore,
-      isShowingTransactions: $cryptoStore.isPresentingTransactionConfirmations,
-      isConfirmationsButtonVisible: cryptoStore.hasUnapprovedTransactions
+      isShowingPendingRequest: $cryptoStore.isPresentingPendingRequest,
+      isConfirmationsButtonVisible: cryptoStore.pendingRequest != nil
     )
     .onAppear {
-      // If a user chooses not to confirm/reject their transactions we shouldn't
+      // If a user chooses not to confirm/reject their requests we shouldn't
       // do it again until they close and re-open wallet
-      if !fetchedUnapprovedTransactionsThisSession {
+      if !fetchedPendingRequestsThisSession {
         // Give the animation time
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-          self.fetchedUnapprovedTransactionsThisSession = true
-          self.cryptoStore.fetchUnapprovedTransactions()
+          self.fetchedPendingRequestsThisSession = true
+          self.cryptoStore.prepare()
         }
       }
     }
@@ -122,7 +122,7 @@ struct CryptoPagesView: View {
   private struct _CryptoPagesView: UIViewControllerRepresentable {
     var keyringStore: KeyringStore
     var cryptoStore: CryptoStore
-    var isShowingTransactions: Binding<Bool>
+    var isShowingPendingRequest: Binding<Bool>
     var isConfirmationsButtonVisible: Bool
 
     func makeUIViewController(context: Context) -> CryptoPagesViewController {
@@ -130,11 +130,11 @@ struct CryptoPagesView: View {
         keyringStore: keyringStore,
         cryptoStore: cryptoStore,
         buySendSwapDestination: context.environment.buySendSwapDestination,
-        isShowingTransactions: isShowingTransactions
+        isShowingPendingRequest: isShowingPendingRequest
       )
     }
     func updateUIViewController(_ uiViewController: CryptoPagesViewController, context: Context) {
-      uiViewController.confirmationsButton.isHidden = !isConfirmationsButtonVisible
+      uiViewController.pendingRequestsButton.isHidden = !isConfirmationsButtonVisible
     }
   }
 }
@@ -143,21 +143,21 @@ private class CryptoPagesViewController: TabbedPageViewController {
   private let keyringStore: KeyringStore
   private let cryptoStore: CryptoStore
   private let swapButton = SwapButton()
-  let confirmationsButton = ConfirmationsButton()
+  let pendingRequestsButton = ConfirmationsButton()
 
   @Binding private var buySendSwapDestination: BuySendSwapDestination?
-  @Binding private var isShowingTransactions: Bool
+  @Binding private var isShowingPendingRequest: Bool
 
   init(
     keyringStore: KeyringStore,
     cryptoStore: CryptoStore,
     buySendSwapDestination: Binding<BuySendSwapDestination?>,
-    isShowingTransactions: Binding<Bool>
+    isShowingPendingRequest: Binding<Bool>
   ) {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
     self._buySendSwapDestination = buySendSwapDestination
-    self._isShowingTransactions = isShowingTransactions
+    self._isShowingPendingRequest = isShowingPendingRequest
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -207,17 +207,17 @@ private class CryptoPagesViewController: TabbedPageViewController {
 
     swapButton.addTarget(self, action: #selector(tappedSwapButton), for: .touchUpInside)
 
-    view.addSubview(confirmationsButton)
-    confirmationsButton.snp.makeConstraints {
+    view.addSubview(pendingRequestsButton)
+    pendingRequestsButton.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(16)
       $0.centerY.equalTo(swapButton)
       $0.bottom.lessThanOrEqualTo(view).inset(8)
     }
-    confirmationsButton.addTarget(self, action: #selector(tappedConfirmationsButton), for: .touchUpInside)
+    pendingRequestsButton.addTarget(self, action: #selector(tappedPendingRequestsButton), for: .touchUpInside)
   }
 
-  @objc private func tappedConfirmationsButton() {
-    isShowingTransactions = true
+  @objc private func tappedPendingRequestsButton() {
+    isShowingPendingRequest = true
   }
 
   @objc private func tappedSwapButton() {
