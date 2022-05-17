@@ -6,7 +6,6 @@
  */
 
 package org.chromium.chrome.browser.crypto_wallet.modal;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -22,13 +21,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.view.menu.MenuBuilder;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.PopupMenu;
 
-import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -38,10 +36,9 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
@@ -49,8 +46,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.url.internal.mojom.Origin;
-import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -79,6 +74,7 @@ public class BraveWalletPanel implements DialogInterface {
     private ExecutorService mExecutor;
     private Handler mHandler;
     private BraveWalletPanelServices mBraveWalletPanelServices;
+    private ImageView mAccountChangeAnchor;
 
     public interface BraveWalletPanelServices {
         AssetRatioService getAssetRatioService();
@@ -124,9 +120,9 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     public void showPopupMenu(){
-       PopupMenu menu = new PopupMenu(mOptionsImage.getContext(), (View) mOptionsImage);
-       menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
-       menu.setOnMenuItemClickListener(item -> {
+        PopupMenu menu = new PopupMenu(mOptionsImage.getContext(), (View) mOptionsImage);
+        menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
+        menu.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_lock_wallet) {
                 mBraveWalletPanelServices.getKeyringService().lock();
                 dismiss();
@@ -335,8 +331,8 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.openBraveWallet(false);
             }
         });
-	    mOptionsImage = mPopupView.findViewById(R.id.iv_dapp_panel_menu);
-	    mOptionsImage.setOnClickListener(v -> { showPopupMenu(); });
+        mOptionsImage = mPopupView.findViewById(R.id.iv_dapp_panel_menu);
+        mOptionsImage.setOnClickListener(v -> { showPopupMenu(); });
 
         mBtnSelectedNetwork = mPopupView.findViewById(R.id.btn_dapps_panel_networks);
         mBtnSelectedNetwork.setOnClickListener(v -> {
@@ -357,6 +353,13 @@ public class BraveWalletPanel implements DialogInterface {
         mAccountAddress = mPopupView.findViewById(R.id.tv_dapps_panel_account_address);
         mAmountAsset = mPopupView.findViewById(R.id.tv_dapps_panel_amount_asset);
         mAmountFiat = mPopupView.findViewById(R.id.tv_dapps_panel_amount_fiat);
+        mAccountChangeAnchor = mPopupView.findViewById(R.id.iv_dapps_panel_down_arrow_anchor);
+        mAccountChangeAnchor.setOnClickListener(v -> {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            if (activity != null) {
+                activity.startActivity(new Intent(activity, AccountSelectorActivity.class));
+            }
+        });
         updateState();
         updateStatus();
     }

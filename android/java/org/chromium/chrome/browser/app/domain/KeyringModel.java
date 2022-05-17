@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.app.domain;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
@@ -18,29 +19,55 @@ public class KeyringModel implements KeyringServiceObserver {
     private KeyringService mKeyringService;
     private MutableLiveData<KeyringInfo> _mKeyringInfoLiveData;
     public LiveData<KeyringInfo> mKeyringInfoLiveData;
+    private final MutableLiveData<AccountInfo> _mSelectedAccount;
+    public LiveData<AccountInfo> mSelectedAccount;
+    private CryptoSharedData mSharedData;
     // Todo: create method to interact with keyring
 
-    public KeyringModel(KeyringService mKeyringService) {
+    public KeyringModel(KeyringService mKeyringService, CryptoSharedData sharedData) {
         this.mKeyringService = mKeyringService;
+        mSharedData = sharedData;
         _mKeyringInfoLiveData = new MutableLiveData<>(null);
         mKeyringInfoLiveData = _mKeyringInfoLiveData;
-        init();
+        _mSelectedAccount = new MutableLiveData<>();
+        mSelectedAccount = _mSelectedAccount;
     }
 
-    private void init() {
+    public void init() {
         mKeyringService.addObserver(this);
     }
 
     private void update() {
-        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
-                keyringInfo -> { _mKeyringInfoLiveData.postValue(keyringInfo); });
+        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+            _mKeyringInfoLiveData.postValue(keyringInfo);
+            Integer coinType = mSharedData.getCoinType();
+            mKeyringService.getSelectedAccount(coinType, accountAddress -> {
+                if (keyringInfo.accountInfos.length > 0) {
+                    AccountInfo selectedAccount = keyringInfo.accountInfos[0];
+                    for (AccountInfo accountInfo : keyringInfo.accountInfos) {
+                        if (accountInfo.address.equals(accountAddress)) {
+                            selectedAccount = accountInfo;
+                            break;
+                        }
+                    }
+                    _mSelectedAccount.postValue(selectedAccount);
+                }
+            });
+        });
+    }
+
+    public void setSelectedAccount(String accountAddress, int coin) {
+        mKeyringService.setSelectedAccount(accountAddress, coin, isAccountSelected -> {});
     }
 
     public KeyringInfo getKeyringInfo() {
         return _mKeyringInfoLiveData.getValue();
     }
 
-    public void setKeyringService(KeyringService keyringService) {
+    public void resetService(KeyringService keyringService) {
+        if (mKeyringService == keyringService) {
+            return;
+        }
         this.mKeyringService = keyringService;
         init();
     }
