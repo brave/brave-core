@@ -75,7 +75,7 @@ public class BraveNewTabPage extends NewTabPage {
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
         assert !FeedFeatures.isFeedEnabled();
-        FeedSurfaceCoordinator feedSurfaceCoordinator = new FeedSurfaceCoordinator(activity,
+        FeedSurfaceCoordinator feedSurfaceCoordinator = new BraveFeedSurfaceCoordinator(activity,
                 snackbarManager, windowAndroid,
                 new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
                 mBrowserControlsStateProvider.getTopControlsHeight(), isInNightMode, this, profile,
