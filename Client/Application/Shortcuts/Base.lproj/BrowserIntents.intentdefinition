@@ -47,19 +47,6 @@
 			<string>OpenWebsite</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
-				<key></key>
-				<dict>
-					<key>INIntentParameterCombinationSubtitle</key>
-					<string>using website</string>
-					<key>INIntentParameterCombinationSubtitleID</key>
-					<string>xgP5Po</string>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationTitle</key>
-					<string>Open a website in a new Tab</string>
-					<key>INIntentParameterCombinationTitleID</key>
-					<string>qkzovY</string>
-				</dict>
 				<key>websiteURL</key>
 				<dict>
 					<key>INIntentParameterCombinationSubtitle</key>
@@ -69,7 +56,7 @@
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
-					<string>Open a Website</string>
+					<string>Open a website in a new Tab</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>1QT5y6</string>
 				</dict>
