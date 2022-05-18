@@ -30,7 +30,8 @@ const getDefaultOptions = () => {
 const runPylint = (args, continueOnFail = true) => {
   let cmd_options = getDefaultOptions()
   cmd_options.continueOnFail = continueOnFail
-  const prog = util.run(path.join(config.depotToolsDir, 'pylint'), args, cmd_options)
+  const pylint = process.platform === 'win32' ? 'pylint-2.7.bat' : 'pylint-2.7'
+  const prog = util.run(path.join(config.depotToolsDir, pylint), args, cmd_options)
   return (prog.status === 0)
 }
 
