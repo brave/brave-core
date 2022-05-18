@@ -9,6 +9,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "components/grit/brave_components_strings.h"
 #include "url/gurl.h"
 
 BraveVPNPanelController::BraveVPNPanelController(BraveBrowserView* browser_view)
@@ -26,7 +27,7 @@ void BraveVPNPanelController::ShowBraveVPNPanel() {
   if (!webui_bubble_manager_) {
     auto* profile = browser_view_->browser()->profile();
     webui_bubble_manager_ = std::make_unique<WebUIBubbleManagerT<VPNPanelUI>>(
-        anchor_view, profile, GURL(kVPNPanelURL), 1);
+        anchor_view, profile, GURL(kVPNPanelURL), IDS_BRAVE_VPN_PANEL_NAME);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {

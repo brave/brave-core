@@ -4,6 +4,10 @@
     Brave Firewall + VPN
   </message>
 
+  <message name="IDS_BRAVE_VPN_PANEL_NAME" desc="The name of VPN panel">
+    Brave VPN Panel UI
+  </message>
+
   <message name="IDS_BRAVE_VPN_CONNECT" desc="Button title to perform connect to a region">
     Connect
   </message>
