@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <sstream>
+#include <unordered_set>
 #include <utility>
 
 #include "base/environment.h"
@@ -332,6 +333,30 @@ GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
     return GetFirstValidChainURL(it->rpc_urls);
   }
   return GURL();
+}
+
+std::vector<mojom::NetworkInfoPtr> MergeEthChains(
+    std::vector<mojom::NetworkInfoPtr> custom_chains,
+    std::vector<mojom::NetworkInfoPtr> known_chains) {
+  std::unordered_set<std::string> ids;
+  for (const auto& chain : custom_chains) {
+    ids.insert(chain->chain_id);
+  }
+
+  std::vector<mojom::NetworkInfoPtr> result;
+  // Put all known chains to result, but skip any custom chain_ids.
+  for (auto& chain : known_chains) {
+    if (ids.count(chain->chain_id))
+      continue;
+    result.push_back(std::move(chain));
+  }
+
+  // Put all custom chains to result.
+  for (auto& chain : custom_chains) {
+    result.push_back(std::move(chain));
+  }
+
+  return result;
 }
 
 }  // namespace
@@ -770,11 +795,12 @@ GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
-    mojom::NetworkInfoPtr known_network = GetKnownEthChain(prefs, chain_id);
-    if (!known_network)
-      return GetCustomChainURL(prefs, chain_id);
+    GURL custom_chain_url = GetCustomChainURL(prefs, chain_id);
+    if (custom_chain_url.is_valid())
+      return custom_chain_url;
 
-    if (known_network->rpc_urls.size())
+    mojom::NetworkInfoPtr known_network = GetKnownEthChain(prefs, chain_id);
+    if (known_network && known_network->rpc_urls.size())
       return GURL(known_network->rpc_urls.front());
   } else if (coin == mojom::CoinType::SOL) {
     for (const auto& network : kKnownSolNetworks) {
@@ -795,9 +821,13 @@ GURL GetNetworkURL(PrefService* prefs,
 void GetAllChains(PrefService* prefs,
                   mojom::CoinType coin,
                   std::vector<mojom::NetworkInfoPtr>* result) {
+  CHECK(result);
   if (coin == mojom::CoinType::ETH) {
-    GetAllKnownEthChains(prefs, result);
-    GetAllEthCustomChains(prefs, result);
+    std::vector<mojom::NetworkInfoPtr> custom_chains;
+    GetAllEthCustomChains(prefs, &custom_chains);
+    std::vector<mojom::NetworkInfoPtr> known_chains;
+    GetAllKnownEthChains(prefs, &known_chains);
+    *result = MergeEthChains(std::move(custom_chains), std::move(known_chains));
   } else if (coin == mojom::CoinType::SOL) {
     GetAllKnownSolChains(result);
   } else if (coin == mojom::CoinType::FIL) {
@@ -806,6 +836,7 @@ void GetAllChains(PrefService* prefs,
     }
   }
 }
+
 void GetAllKnownFilChains(std::vector<mojom::NetworkInfoPtr>* result) {
   DCHECK(result);
   for (const auto& network : kKnownFilNetworks)

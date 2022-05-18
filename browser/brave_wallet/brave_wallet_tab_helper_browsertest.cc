@@ -129,7 +129,7 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_code(net::HTTP_OK);
     http_response->set_content(
-        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x38\"}");
+        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xabcde\"}");
     return http_response;
   }
   GURL GetWalletEthereumChainPageURL() {
