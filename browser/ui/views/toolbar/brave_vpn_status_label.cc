@@ -19,6 +19,43 @@
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
 
+namespace {
+
+int GetStringIdForConnectionState(ConnectionState state) {
+  switch (state) {
+    case ConnectionState::CONNECTING:
+      return IDS_BRAVE_VPN_STATUS_LABEL_CONNECTING;
+      break;
+    case ConnectionState::CONNECTED:
+      return IDS_BRAVE_VPN_STATUS_LABEL_CONNECTED;
+      break;
+    case ConnectionState::DISCONNECTING:
+      return IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTING;
+      break;
+    default:
+      break;
+  }
+  return IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTED;
+}
+
+int GetLongestStringIdForConnectionState() {
+  size_t max = 0;
+  int longest_string_id =
+      GetStringIdForConnectionState(ConnectionState::DISCONNECTED);
+  for (auto state :
+       {ConnectionState::CONNECTING, ConnectionState::CONNECTED,
+        ConnectionState::DISCONNECTING, ConnectionState::DISCONNECTED}) {
+    auto id = GetStringIdForConnectionState(state);
+    auto text = brave_l10n::GetLocalizedResourceUTF16String(id);
+    if (text.length() > max) {
+      max = text.length();
+      longest_string_id = id;
+    }
+  }
+  return longest_string_id;
+}
+}  // namespace
+
 BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
     : browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
@@ -34,6 +71,7 @@ BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
     SetEnabledColor(provider->GetColor(
         BraveThemeProperties::COLOR_MENU_ITEM_SUB_TEXT_COLOR));
   }
+  longest_state_string_id_ = GetLongestStringIdForConnectionState();
 }
 
 BraveVPNStatusLabel::~BraveVPNStatusLabel() = default;
@@ -42,22 +80,23 @@ void BraveVPNStatusLabel::OnConnectionStateChanged(ConnectionState state) {
   UpdateState();
 }
 
+gfx::Size BraveVPNStatusLabel::CalculatePreferredSize() const {
+  auto size = views::Label::CalculatePreferredSize();
+  if (longest_state_string_id_ == -1)
+    return size;
+  auto text =
+      brave_l10n::GetLocalizedResourceUTF16String(longest_state_string_id_);
+  if (text == GetText())
+    return size;
+  size.set_width(font_list().GetExpectedTextWidth(text.length()) +
+                 GetInsets().width());
+  size.set_height(GetHeightForWidth(size.width()));
+  return size;
+}
+
 void BraveVPNStatusLabel::UpdateState() {
   const auto state = service_->connection_state();
-  int string_id = IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTED;
-  switch (state) {
-    case ConnectionState::CONNECTING:
-      string_id = IDS_BRAVE_VPN_STATUS_LABEL_CONNECTING;
-      break;
-    case ConnectionState::CONNECTED:
-      string_id = IDS_BRAVE_VPN_STATUS_LABEL_CONNECTED;
-      break;
-    case ConnectionState::DISCONNECTING:
-      string_id = IDS_BRAVE_VPN_STATUS_LABEL_DISCONNECTING;
-      break;
-    default:
-      break;
-  }
 
-  SetText(brave_l10n::GetLocalizedResourceUTF16String(string_id));
+  SetText(brave_l10n::GetLocalizedResourceUTF16String(
+      GetStringIdForConnectionState(state)));
 }
