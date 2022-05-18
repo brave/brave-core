@@ -38,12 +38,28 @@ constexpr int brave_value(int incr) {
   ContentSettingTypeToHistogramValue_ChromiumImpl
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
+#define FilterRulesForType FilterRulesForType_ChromiumImpl
 
 #include "src/components/content_settings/core/common/content_settings.cc"
 
+#undef FilterRulesForType
 #undef RendererContentSettingRules
 #undef ContentSettingTypeToHistogramValue
 #undef BRAVE_HISTOGRAM_VALUE_LIST
+
+namespace {
+
+// Override FilterRulesForType for Brave rules to get around Chromium's
+// DCHECK for at least one rule remaining after filtering.
+void FilterRulesForType(ContentSettingsForOneType& settings,  // NOLINT
+                        const GURL& primary_url) {
+  base::EraseIf(settings,
+                [&primary_url](const ContentSettingPatternSource& source) {
+                  return !source.primary_pattern.Matches(primary_url);
+                });
+}
+
+}  // namespace
 
 int ContentSettingTypeToHistogramValue(ContentSettingsType content_setting,
                                        size_t* num_values) {
@@ -76,6 +92,16 @@ bool RendererContentSettingRules::IsRendererContentSetting(
          content_type == ContentSettingsType::BRAVE_COSMETIC_FILTERING ||
          content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 ||
          content_type == ContentSettingsType::BRAVE_SHIELDS;
+}
+
+void RendererContentSettingRules::FilterRulesByOutermostMainFrameURL(
+    const GURL& outermost_main_frame_url) {
+  RendererContentSettingRules_ChromiumImpl::FilterRulesByOutermostMainFrameURL(
+      outermost_main_frame_url);
+  FilterRulesForType(autoplay_rules, outermost_main_frame_url);
+  FilterRulesForType(fingerprinting_rules, outermost_main_frame_url);
+  FilterRulesForType(brave_shields_rules, outermost_main_frame_url);
+  FilterRulesForType(cosmetic_filtering_rules, outermost_main_frame_url);
 }
 
 namespace content_settings {

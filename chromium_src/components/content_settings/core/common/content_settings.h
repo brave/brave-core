@@ -24,6 +24,8 @@ struct RendererContentSettingRules
 
   static bool IsRendererContentSetting(ContentSettingsType content_type);
 
+  void FilterRulesByOutermostMainFrameURL(const GURL& outermost_main_frame_url);
+
   ContentSettingsForOneType autoplay_rules;
   ContentSettingsForOneType fingerprinting_rules;
   ContentSettingsForOneType brave_shields_rules;
