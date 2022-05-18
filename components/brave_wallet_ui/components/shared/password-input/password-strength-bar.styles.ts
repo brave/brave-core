@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'styled-components'
+import styled, { DefaultTheme, ThemedStyledProps } from 'styled-components'
 
 export const BarAndMessageContainer = styled.div`
   width: 100%;
@@ -45,7 +45,9 @@ export const BarProgress = styled.div<{ criteria: boolean[] }>`
   border-radius: 100px;
   
   width: ${(p) => (p.criteria.filter(c => !!c).length / p.criteria.length) * 100}%;
-  background-color: ${(p) => p.criteria.filter(c => !!c).length === p.criteria.length ? p.theme.color.successBorder : p.theme.color.errorIcon};
+  background-color: ${(p) => {
+    return getCriteriaPercentColor(p)
+  }};
 `
 
 // floating tooltip positioner
@@ -63,7 +65,7 @@ export const BarProgressTooltipContainer = styled.div<{
 `
 
 export const BarMessage = styled.p<{ criteria: boolean[] }>`
-  color: ${(p) => p.criteria.filter(c => !!c).length === p.criteria.length ? p.theme.color.successBorder : p.theme.color.errorIcon};
+  color: ${(p) => getCriteriaPercentColor(p)};
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
@@ -74,3 +76,13 @@ export const BarMessage = styled.p<{ criteria: boolean[] }>`
   text-align: right;
   letter-spacing: 0.01em;
 `
+const getCriteriaPercentColor = (p: ThemedStyledProps<{
+  criteria: boolean[]
+}, DefaultTheme>) => {
+  const percentComplete = (p.criteria.filter(c => !!c).length / p.criteria.length) * 100
+  return percentComplete === 100
+    ? p.theme.color.successBorder
+    : percentComplete < 50
+      ? p.theme.color.errorIcon
+      : p.theme.color.warningIcon
+}

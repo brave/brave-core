@@ -67,7 +67,6 @@ export const OnboardingRecoveryPhrase = () => {
   } = useTemporaryCopyToClipboard()
 
   // methods
-
   const revealPhrase = React.useCallback(() => {
     setIsPhraseShown(true)
   }, [])

@@ -149,6 +149,7 @@ provideStrings({
   braveWalletConfirmPasswordError: 'Passwords do not match',
   braveWalletPasswordMatch: 'Match!',
   braveWalletPasswordIsStrong: 'Strong!',
+  braveWalletPasswordIsMediumStrength: 'Medium',
   braveWalletPasswordIsWeak: 'Weak',
 
   // Create Password - Stength Tooltip
