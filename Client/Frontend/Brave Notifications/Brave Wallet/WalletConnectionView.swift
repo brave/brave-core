@@ -12,7 +12,7 @@ class WalletConnectionView: UIControl {
   private let stackView: UIStackView = {
     let result = UIStackView()
     result.axis = .horizontal
-    result.spacing = 15
+    result.spacing = 20
     result.alignment = .center
     result.isUserInteractionEnabled = false
     return result
@@ -21,6 +21,8 @@ class WalletConnectionView: UIControl {
   private let iconImageView: UIImageView = {
     let result = UIImageView(image: UIImage(imageLiteralResourceName: "brave.unlock"))
     result.tintColor = .white
+    result.setContentHuggingPriority(.required, for: .horizontal)
+    result.setContentCompressionResistancePriority(.required, for: .horizontal)
     return result
   }()
 
@@ -31,6 +33,7 @@ class WalletConnectionView: UIControl {
     result.adjustsFontForContentSizeCategory = true
     result.numberOfLines = 0
     result.text = Strings.Wallet.dappsConnectionNotificationTitle
+    result.setContentCompressionResistancePriority(.required, for: .horizontal)
     return result
   }()
 
@@ -39,7 +42,7 @@ class WalletConnectionView: UIControl {
 
     addSubview(stackView)
     stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview().inset(20)
+      $0.edges.equalToSuperview().inset(24)
     }
     stackView.addArrangedSubview(iconImageView)
     stackView.addArrangedSubview(titleLabel)
