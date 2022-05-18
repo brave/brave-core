@@ -156,7 +156,7 @@ export const OnboardingRecoveryPhrase = () => {
               {isCopied &&
                 <CopiedToClipboardContainer>
                   <GreenCheckmark />
-                  <p>Copied to clipboard</p>
+                  <p>{getLocale('braveWalletCopiedToClipboard')}</p>
                 </CopiedToClipboardContainer>
               }
 
