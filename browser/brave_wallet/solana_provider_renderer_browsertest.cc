@@ -321,10 +321,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       ClearError();
     }
   }
-  void SignMessage(const std::string& encoded_msg,
+  void SignMessage(const std::vector<uint8_t>& blob_msg,
                    const absl::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override {
-    EXPECT_EQ(encoded_msg, brave_wallet::Base58Encode(kMessageToSign));
+    EXPECT_EQ(blob_msg, kMessageToSign);
     base::Value result(base::Value::Type::DICTIONARY);
     if (error_ == SolanaProviderError::kSuccess) {
       result.SetStringKey("publicKey", kTestPublicKey);

@@ -125,7 +125,7 @@ void SolanaProviderImpl::SignAndSendTransaction(
 }
 
 void SolanaProviderImpl::SignMessage(
-    const std::string& encoded_msg,
+    const std::vector<uint8_t>& blob_msg,
     const absl::optional<std::string>& display_encoding,
     SignMessageCallback callback) {
   base::Value result(base::Value::Type::DICTIONARY);
