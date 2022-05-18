@@ -52,7 +52,7 @@ namespace {
 
 // Override FilterRulesForType for Brave rules to get around Chromium's
 // DCHECK for at least one rule remaining after filtering.
-void FilterRulesForType(ContentSettingsForOneType& settings,
+void FilterRulesForType(ContentSettingsForOneType& settings,  // NOLINT
                         const GURL& primary_url) {
   base::EraseIf(settings,
                 [&primary_url](const ContentSettingPatternSource& source) {
