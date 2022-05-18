@@ -25,6 +25,8 @@ class BraveVPNStatusLabel : public views::Label,
   BraveVPNStatusLabel(const BraveVPNStatusLabel&) = delete;
   BraveVPNStatusLabel& operator=(const BraveVPNStatusLabel&) = delete;
 
+  gfx::Size CalculatePreferredSize() const override;
+
  private:
   // brave_vpn::BraveVPNServiceObserver overrides:
   void OnConnectionStateChanged(
@@ -32,6 +34,7 @@ class BraveVPNStatusLabel : public views::Label,
 
   void UpdateState();
 
+  int longest_state_string_id_ = -1;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
