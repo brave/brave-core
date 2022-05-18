@@ -139,3 +139,13 @@ export const OnboardingWrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
 `
+
+export const StyledCreateAccountPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 320px;
+  height: 200px;
+  background-color: ${(p) => p.theme.color.background01};
+`

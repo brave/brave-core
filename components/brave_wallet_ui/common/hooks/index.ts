@@ -14,6 +14,8 @@ import usePreset from './select-preset'
 import useTokenInfo from './token'
 import useExplorer from './explorer'
 import useAssetManagement from './assets-management'
+import useHasAccount from './has-account'
+import usePrevNetwork from './previous-network'
 import { useLib } from './useLib'
 
 export {
@@ -29,5 +31,7 @@ export {
   useTokenInfo,
   useExplorer,
   useAssetManagement,
-  useLib
+  useLib,
+  useHasAccount,
+  usePrevNetwork
 }
