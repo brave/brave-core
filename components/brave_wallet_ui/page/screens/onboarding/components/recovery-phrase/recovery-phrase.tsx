@@ -22,6 +22,7 @@ interface Props {
   hidden: boolean
   recoveryPhrase: string[]
   onClickReveal: () => void
+  verificationModeEnabled?: boolean
 }
 
 const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
