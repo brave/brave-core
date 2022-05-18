@@ -79,6 +79,16 @@ bool RendererContentSettingRules::IsRendererContentSetting(
          content_type == ContentSettingsType::BRAVE_SHIELDS;
 }
 
+void RendererContentSettingRules::FilterRulesByOutermostMainFrameURL(
+    const GURL& outermost_main_frame_url) {
+  RendererContentSettingRules_ChromiumImpl::FilterRulesByOutermostMainFrameURL(
+      outermost_main_frame_url);
+  FilterRulesForType(autoplay_rules, outermost_main_frame_url);
+  FilterRulesForType(fingerprinting_rules, outermost_main_frame_url);
+  FilterRulesForType(brave_shields_rules, outermost_main_frame_url);
+  FilterRulesForType(cosmetic_filtering_rules, outermost_main_frame_url);
+}
+
 namespace content_settings {
 namespace {
 
