@@ -37,6 +37,7 @@ import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modaldialog.ModalDialogProperties.ButtonType;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
+
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import android.app.Activity;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -95,7 +96,6 @@ public class BraveEthereumPermissionPromptDialog
         mBraveWalletService.geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(), origin -> {
             domain.setText(Utils.geteTLDFromGRUL(origin.eTldPlusOne));
         });
-                
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
