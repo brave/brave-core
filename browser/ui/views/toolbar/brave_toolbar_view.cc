@@ -141,7 +141,6 @@ void BraveToolbarView::Init() {
 
   const auto callback = [](Browser* browser, int command,
                            const ui::Event& event) {
-                             LOG(ERROR) << "Command: " << command;
     chrome::ExecuteCommandWithDisposition(
         browser, command, ui::DispositionFromEventFlags(event.flags()));
   };
