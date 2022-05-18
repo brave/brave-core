@@ -59,3 +59,46 @@ export function lookupExternalWalletProviderName (providerKey: string) {
   const provider = externalWalletProviderFromString(providerKey)
   return provider ? getExternalWalletProviderName(provider) : ''
 }
+
+// Converts external wallet information returned from the `chrome.braveRewards`
+// extension API into an |ExternalWallet| object, or |null| if the specified
+// object cannot be converted.
+export function externalWalletFromExtensionData (
+  data: any
+): ExternalWallet | null {
+  function mapStatus (status: number): ExternalWalletStatus | null {
+    switch (status) {
+      case 1: // CONNECTED
+      case 2: // VERIFIED
+        return 'verified'
+      case 3: // DISCONNECTED_NOT_VERIFIED
+      case 4: // DISCONNECTED_VERIFIED
+        return 'disconnected'
+      case 5: // PENDING
+        return 'pending'
+    }
+    return null
+  }
+
+  if (!data || typeof data !== 'object') {
+    return null
+  }
+
+  const provider = externalWalletProviderFromString(String(data.type || ''))
+  const status = mapStatus(Number(data.status || 0))
+
+  if (!provider || !status) {
+    return null
+  }
+
+  return {
+    provider,
+    status,
+    username: String(data.userName || ''),
+    links: {
+      account: String(data.accountUrl || ''),
+      addFunds: String(data.addUrl || ''),
+      completeVerification: String(data.verifyUrl || '')
+    }
+  }
+}
