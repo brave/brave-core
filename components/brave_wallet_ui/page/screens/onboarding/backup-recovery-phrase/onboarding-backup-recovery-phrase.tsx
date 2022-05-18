@@ -7,6 +7,28 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
+// utils
+import { getLocale } from '../../../../../common/locale'
+
+// routes
+import { PageState, WalletRoutes } from '../../../../constants/types'
+
+// hooks
+import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-temporary-copy-to-clipboard'
+
+// styles
+import {
+  ToggleVisibilityButton,
+  GreenCheckmark
+} from '../../../../components/shared/style'
+import {
+  Description,
+  MainWrapper,
+  NextButtonRow,
+  StyledWrapper,
+  Title,
+  TitleAndDescriptionContainer
+} from '../onboarding.style'
 import {
   CopiedToClipboardContainer,
   CopyButton,
@@ -18,31 +40,14 @@ import {
   PhraseCardTopRow
 } from './onboarding-backup-recovery-phrase.style'
 
-import {
-  Description,
-  MainWrapper,
-  NextButtonRow,
-  StyledWrapper,
-  Title,
-  TitleAndDescriptionContainer
-} from '../onboarding.style'
-
-// utils
-import { getLocale } from '../../../../../common/locale'
-
-// routes
-import { PageState, WalletRoutes } from '../../../../constants/types'
-
-// hooks
-import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-temporary-copy-to-clipboard'
-
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
-import { GreenCheckmark } from '../../../../components/shared/tooltip/password-strength-tooltip.style'
 import { NavButton } from '../../../../components/extension'
-import { OnboardingSteps, OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
-import { ToggleVisibilityButton } from '../../../../components/shared/style'
 import { RecoveryPhrase } from './components/recovery-phrase'
+import {
+  OnboardingSteps,
+  OnboardingStepsNavigation
+} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // storybook compiler thinks `randomUUID` doesnt exist
 const randomUUID = () => (

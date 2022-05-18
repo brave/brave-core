@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 
 // types
@@ -10,6 +15,7 @@ import { stripERC20TokenImageURL } from '../../utils/string-utils'
 import transparent40x40Image from '../../assets/png-icons/transparent40x40.png'
 import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
+import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 
 export interface AssetIconProps {
   icon?: string
@@ -99,4 +105,15 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
+`
+
+export const GreenCheckmark = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  background-color: ${(p) => p.theme.color.successBorder};
+  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
+  mask-size: contain;
+  vertical-align: middle;
 `
