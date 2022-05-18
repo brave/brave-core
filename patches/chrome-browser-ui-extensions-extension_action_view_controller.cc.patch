@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.cc b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-index 30dc2734a16aef9fe08493f82a1c18b27fe813f6..a0c8b03787192cdfc0bf9830c238a6939712fc35 100644
+index c9cdf4a5e323194f7b56556004ed0dd886cb0eab..634409c5627e8d538accd42c52894e899304daff 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.cc
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-@@ -63,7 +63,6 @@ ExtensionActionViewController::Create(
+@@ -64,7 +64,6 @@ ExtensionActionViewController::Create(
      Browser* browser,
      ExtensionsContainer* extensions_container) {
    DCHECK(browser);
