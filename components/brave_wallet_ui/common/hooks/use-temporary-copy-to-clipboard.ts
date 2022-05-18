@@ -29,8 +29,8 @@ export const useTemporaryCopyToClipboard = () => {
 
     // clear the clipboard after a set time
     const timer = setTimeout(async () => {
-      setIsCopied(false)
       await copyToClipboard('')
+      setIsCopied(false)
     }, temporaryCopyTimeout)
 
     // clean-up on unmount if timer was set

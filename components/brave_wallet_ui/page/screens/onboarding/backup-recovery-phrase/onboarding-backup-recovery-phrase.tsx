@@ -44,6 +44,11 @@ import { OnboardingSteps, OnboardingStepsNavigation } from '../components/onboar
 import { ToggleVisibilityButton } from '../../../../components/shared/style'
 import { RecoveryPhrase } from './components/recovery-phrase'
 
+// storybook compiler thinks `randomUUID` doesnt exist
+const randomUUID = () => (
+  window.crypto as Crypto & { randomUUID: () => string }
+).randomUUID()
+
 export const OnboardingRecoveryPhrase = () => {
   // routing
   const history = useHistory()
@@ -53,6 +58,7 @@ export const OnboardingRecoveryPhrase = () => {
 
   // state
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
+  const [fileGUID, setFileGUID] = React.useState(randomUUID())
 
   // custom hooks
   const {
@@ -93,6 +99,10 @@ export const OnboardingRecoveryPhrase = () => {
     }`,
     [recoveryPhrase]
   )
+
+  const onDownloadPhraseFile = React.useCallback(() => {
+    setFileGUID(randomUUID())
+  }, [])
 
   // render
   return (
@@ -137,7 +147,8 @@ export const OnboardingRecoveryPhrase = () => {
 
               <a
                 href={phraseDownloadUri}
-                download='brave-wallet-backup.txt'
+                download={`brave-wallet-private-key-${fileGUID}.txt`}
+                onClick={onDownloadPhraseFile}
               >
                 <DownloadButton />
               </a>
