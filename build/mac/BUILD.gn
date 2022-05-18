@@ -94,8 +94,7 @@ group("brave") {
   # to incompatible base systems. Save the minimum version to a file
   # here, so it can be uploaded to S3, and then in the release step read
   # back when uploading to the server.
-  write_file("$root_out_dir/mac_min_system_version",
-             [ mac_min_system_version ])
+  write_file("$root_out_dir/mac_min_system_version", [ mac_min_system_version ])
 }
 
 ds_store_file_name = "DS_Store"
