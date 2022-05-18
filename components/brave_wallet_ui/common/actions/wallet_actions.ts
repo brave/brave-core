@@ -21,7 +21,8 @@ import {
   AddSitePermissionPayloadType,
   UpdateUnapprovedTransactionSpendAllowanceType,
   UpdateUnapprovedTransactionNonceType,
-  SetTransactionProviderErrorType
+  SetTransactionProviderErrorType,
+  SelectedAccountChangedPayloadType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -70,7 +71,7 @@ export const locked = createAction('locked')
 export const unlocked = createAction('unlocked')
 export const backedUp = createAction('backedUp')
 export const accountsChanged = createAction('accountsChanged')
-export const selectedAccountChanged = createAction('selectedAccountChanged')
+export const selectedAccountChanged = createAction<SelectedAccountChangedPayloadType>('selectedAccountChanged')
 export const setAllTokensList = createAction<BraveWallet.BlockchainToken[]>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
 export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesPayload>('nativeAssetBalancesUpdated')
