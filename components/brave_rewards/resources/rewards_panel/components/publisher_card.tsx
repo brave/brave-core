@@ -152,7 +152,7 @@ export function PublisherCard () {
   }
 
   return (
-    <style.root>
+    <style.root data-test-id='publisher-card'>
       <style.heading>
         {
           publisherInfo.icon &&
@@ -168,7 +168,10 @@ export function PublisherCard () {
               {
                 publisherRefreshing || showPublisherLoading
                   ? <LoadingIcon />
-                  : <button onClick={onRefreshClick}>
+                  : <button
+                      data-test-id='refresh-publisher-button'
+                      onClick={onRefreshClick}
+                    >
                       {getString('refreshStatus')}
                     </button>
               }
