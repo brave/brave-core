@@ -118,20 +118,23 @@ class BraveShieldStatsView: SpringButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    let image = UIImageView(image: #imageLiteral(resourceName: "privacy_reports_3dots").template)
-    image.tintColor = .white
-    
-    let background = UIView()
-    background.backgroundColor = .init(white: 0, alpha: 0.25)
-    background.layer.cornerRadius = 12
-    background.layer.cornerCurve = .continuous
-    background.isUserInteractionEnabled = false
-    insertSubview(background, at: 0)
-    background.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      let background = UIView()
+      background.backgroundColor = .init(white: 0, alpha: 0.25)
+      background.layer.cornerRadius = 12
+      background.layer.cornerCurve = .continuous
+      background.isUserInteractionEnabled = false
+      insertSubview(background, at: 0)
+      background.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      
+      let image = UIImageView(image: #imageLiteral(resourceName: "privacy_reports_3dots").template)
+      image.tintColor = .white
+      topStackView.addStackViewItems(.view(privacyReportLabel), .view(image))
     }
     
-    topStackView.addStackViewItems(.view(privacyReportLabel), .view(image))
+    isEnabled = !PrivateBrowsingManager.shared.isPrivateBrowsing
     statsStackView.addStackViewItems(.view(adsStatView), .view(dataSavedStatView), .view(timeStatView))
     contentStackView.addStackViewItems(.view(topStackView), .view(statsStackView))
     addSubview(contentStackView)
