@@ -175,6 +175,10 @@ public class BraveSyncWorker {
         BraveSyncWorkerJni.get().resetSync(mNativeBraveSyncWorker);
     }
 
+    public void DbgOnStateChanged() {
+        BraveSyncWorkerJni.get().dbgOnStateChanged(mNativeBraveSyncWorker);
+    }
+
     public boolean getSyncV1WasEnabled() {
         return BraveSyncWorkerJni.get().getSyncV1WasEnabled(mNativeBraveSyncWorker);
     }
@@ -211,6 +215,7 @@ public class BraveSyncWorker {
         boolean isFirstSetupComplete(long nativeBraveSyncWorker);
 
         void resetSync(long nativeBraveSyncWorker);
+        void dbgOnStateChanged(long nativeBraveSyncWorker);
 
         boolean getSyncV1WasEnabled(long nativeBraveSyncWorker);
         boolean getSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker);

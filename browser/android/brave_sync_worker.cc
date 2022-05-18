@@ -270,6 +270,16 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   }
 }
 
+void BraveSyncWorker::DbgOnStateChanged(JNIEnv* env) {
+  auto* sync_service = GetSyncService();
+
+  if (this->passphrase_.empty()) {
+    this->passphrase_ = sync_service->GetOrCreateSyncCode();
+  }
+
+  OnStateChanged(sync_service);
+}
+
 static void JNI_BraveSyncWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {

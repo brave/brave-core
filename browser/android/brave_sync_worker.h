@@ -45,6 +45,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool IsFirstSetupComplete(JNIEnv* env);
 
   void ResetSync(JNIEnv* env);
+  void DbgOnStateChanged(JNIEnv* env);
 
   bool GetSyncV1WasEnabled(JNIEnv* env);
 
