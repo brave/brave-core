@@ -16,12 +16,12 @@ class BraveSharingHubModel : public sharing_hub::SharingHubModel {
   BraveSharingHubModel(const SharingHubModel&) = delete;
   BraveSharingHubModel& operator=(const SharingHubModel&) = delete;
   ~BraveSharingHubModel() override;
-
-private:
-  SharingHubAction brave_talk_share_tab_action_;
   
   void GetFirstPartyActionList(content::WebContents* web_contents,
                                std::vector<SharingHubAction>* list) override;
+
+private:
+  SharingHubAction brave_talk_share_tab_action_;
 };
 }  // namespace sharing_hub
 
