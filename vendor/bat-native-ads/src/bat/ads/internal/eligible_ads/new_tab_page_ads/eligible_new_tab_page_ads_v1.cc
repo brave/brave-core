@@ -5,35 +5,35 @@
 
 #include "bat/ads/internal/eligible_ads/new_tab_page_ads/eligible_new_tab_page_ads_v1.h"
 
-#include "bat/ads/internal/ad_pacing/ad_pacing.h"
-#include "bat/ads/internal/ad_priority/ad_priority.h"
-#include "bat/ads/internal/ad_serving/ad_serving_features.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
+#include "bat/ads/internal/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
-#include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_constants.h"
 #include "bat/ads/internal/eligible_ads/frequency_capping.h"
+#include "bat/ads/internal/eligible_ads/pacing.h"
+#include "bat/ads/internal/eligible_ads/priority.h"
 #include "bat/ads/internal/eligible_ads/seen_ads.h"
 #include "bat/ads/internal/eligible_ads/seen_advertisers.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/targeting/targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 namespace ads {
 namespace new_tab_page_ads {
 
 EligibleAdsV1::EligibleAdsV1(
-    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 EligibleAdsV1::~EligibleAdsV1() = default;
 
 void EligibleAdsV1::GetForUserModel(
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads:");
 
@@ -60,7 +60,7 @@ void EligibleAdsV1::GetForUserModel(
 ///////////////////////////////////////////////////////////////////////////////
 
 void EligibleAdsV1::GetEligibleAds(
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
@@ -68,11 +68,11 @@ void EligibleAdsV1::GetEligibleAds(
 }
 
 void EligibleAdsV1::GetForChildSegments(
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
-  const SegmentList& segments = ad_targeting::GetTopChildSegments(user_model);
+  const SegmentList& segments = targeting::GetTopChildSegments(user_model);
   if (segments.empty()) {
     GetForParentSegments(user_model, ad_events, browsing_history, callback);
     return;
@@ -112,11 +112,11 @@ void EligibleAdsV1::GetForChildSegments(
 }
 
 void EligibleAdsV1::GetForParentSegments(
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
-  const SegmentList& segments = ad_targeting::GetTopParentSegments(user_model);
+  const SegmentList& segments = targeting::GetTopParentSegments(user_model);
   if (segments.empty()) {
     GetForUntargeted(ad_events, browsing_history, callback);
     return;

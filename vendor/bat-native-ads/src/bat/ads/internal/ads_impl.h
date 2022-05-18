@@ -16,16 +16,16 @@
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
-#include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
-#include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving_observer.h"
-#include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
-#include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/creatives/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_observer.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_observer.h"
+#include "bat/ads/internal/serving/ad_notifications/ad_notification_serving_observer.h"
+#include "bat/ads/internal/serving/inline_content_ads/inline_content_ad_serving_observer.h"
+#include "bat/ads/internal/serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
+#include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 class GURL;
@@ -37,18 +37,18 @@ class Time;
 namespace ads {
 
 namespace ad_notifications {
-class AdServing;
+class Serving;
 }  // namespace ad_notifications
 
 namespace inline_content_ads {
-class AdServing;
+class Serving;
 }  // namespace inline_content_ads
 
 namespace new_tab_page_ads {
-class AdServing;
+class Serving;
 }  // namespace new_tab_page_ads
 
-namespace ad_targeting {
+namespace targeting {
 
 namespace processor {
 class EpsilonGreedyBandit;
@@ -60,7 +60,7 @@ namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
 
-}  // namespace ad_targeting
+}  // namespace targeting
 
 namespace resource {
 class AntiTargeting;
@@ -84,7 +84,7 @@ class Diagnostics;
 class AdNotification;
 class AdNotifications;
 class AdServer;
-class AdTransfer;
+class Transfer;
 class AdsClientHelper;
 class BrowserManager;
 class Catalog;
@@ -113,12 +113,12 @@ class AdsImpl final : public Ads,
                       public AdNotificationObserver,
                       public AdNotificationServingObserver,
                       public AdServerObserver,
-                      public AdTransferObserver,
+                      public TransferObserver,
                       public InlineContentAdObserver,
-                      public InlineContentAdServingObserver,
+                      public InlineContentServingObserver,
                       public ConversionsObserver,
                       public NewTabPageAdObserver,
-                      public NewTabPageAdServingObserver,
+                      public NewTabPageServingObserver,
                       public PromotedContentAdObserver,
                       public SearchResultAdObserver {
  public:
@@ -276,7 +276,7 @@ class AdsImpl final : public Ads,
       const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) override;
 
-  // NewTabPageAdServingObserver:
+  // NewTabPageServingObserver:
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
   // NewTabPageAdObserver:
@@ -295,7 +295,7 @@ class AdsImpl final : public Ads,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) override;
 
-  // InlineContentAdServingObserver:
+  // InlineContentServingObserver:
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
   // InlineContentAdObserver:
@@ -313,10 +313,10 @@ class AdsImpl final : public Ads,
       const SearchResultAdInfo& ad,
       const mojom::SearchResultAdEventType event_type) override;
 
-  // AdTransferObserver:
+  // TransferObserver:
   void OnWillTransferAd(const AdInfo& ad, const base::Time time) override;
   void OnDidTransferAd(const AdInfo& ad) override;
-  void OnCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) override;
+  void OnCancelledTransfer(const AdInfo& ad, const int32_t tab_id) override;
   void OnFailedToTransferAd(const AdInfo& ad) override;
 
   // ConversionsObserver:
@@ -331,32 +331,32 @@ class AdsImpl final : public Ads,
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;
-  std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
+  std::unique_ptr<targeting::processor::EpsilonGreedyBandit>
       epsilon_greedy_bandit_processor_;
   std::unique_ptr<resource::EpsilonGreedyBandit>
       epsilon_greedy_bandit_resource_;
   std::unique_ptr<resource::TextClassification> text_classification_resource_;
-  std::unique_ptr<ad_targeting::processor::TextClassification>
+  std::unique_ptr<targeting::processor::TextClassification>
       text_classification_processor_;
   std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
-  std::unique_ptr<ad_targeting::processor::PurchaseIntent>
+  std::unique_ptr<targeting::processor::PurchaseIntent>
       purchase_intent_processor_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<resource::Conversions> conversions_resource_;
-  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
+  std::unique_ptr<targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
-  std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
+  std::unique_ptr<ad_notifications::Serving> ad_notification_serving_;
   std::unique_ptr<AdNotification> ad_notification_;
   std::unique_ptr<AdNotifications> ad_notifications_;
   std::unique_ptr<AdServer> ad_server_;
-  std::unique_ptr<AdTransfer> ad_transfer_;
-  std::unique_ptr<inline_content_ads::AdServing> inline_content_ad_serving_;
+  std::unique_ptr<Transfer> transfer_;
+  std::unique_ptr<inline_content_ads::Serving> inline_content_ad_serving_;
   std::unique_ptr<InlineContentAd> inline_content_ad_;
   std::unique_ptr<Client> client_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::Initialize> database_;
-  std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
+  std::unique_ptr<new_tab_page_ads::Serving> new_tab_page_ad_serving_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<SearchResultAd> search_result_ad_;

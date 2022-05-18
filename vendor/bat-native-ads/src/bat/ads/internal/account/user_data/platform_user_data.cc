@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/base/platform_helper.h"
 
 namespace ads {
 namespace user_data {

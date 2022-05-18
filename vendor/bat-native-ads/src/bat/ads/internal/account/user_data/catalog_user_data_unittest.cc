@@ -9,10 +9,10 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/catalog/catalog_util.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

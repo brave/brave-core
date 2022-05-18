@@ -7,14 +7,14 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
-#include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ad_unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ads_database_table.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_builder_unittest_util.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -55,14 +55,14 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAds) {
   const SegmentList& purchase_intent_segments = {"foo-bar1", "foo-bar2"};
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   new_tab_page_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel(interest_segments, latent_interest_segments,
-                                   purchase_intent_segments),
+      targeting::BuildUserModel(interest_segments, latent_interest_segments,
+                                purchase_intent_segments),
       [](const bool had_opportunity,
          const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_TRUE(!creative_ads.empty());
@@ -90,14 +90,14 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
   const SegmentList purchase_intent_segments;
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   new_tab_page_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel(interest_segments, latent_interest_segments,
-                                   purchase_intent_segments),
+      targeting::BuildUserModel(interest_segments, latent_interest_segments,
+                                purchase_intent_segments),
       [](const bool had_opportunity,
          const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_TRUE(!creative_ads.empty());
@@ -113,7 +113,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetIfNoEligibleAds) {
   const SegmentList& purchase_intent_segments = {"intent-foo", "intent-bar"};
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   new_tab_page_ads::EligibleAdsV2 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -121,8 +121,8 @@ TEST_F(BatAdsEligibleNewTabPageAdsV2Test, GetIfNoEligibleAds) {
   const CreativeNewTabPageAdList expected_creative_ads;
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel(interest_segments, latent_interest_segments,
-                                   purchase_intent_segments),
+      targeting::BuildUserModel(interest_segments, latent_interest_segments,
+                                purchase_intent_segments),
       [&expected_creative_ads](const bool had_opportunity,
                                const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);

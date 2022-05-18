@@ -9,7 +9,7 @@
 #include <iterator>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/base/time_util.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {

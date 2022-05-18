@@ -6,8 +6,8 @@
 #include "bat/ads/ad_notification_info.h"
 
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/deprecated/json_helper.h"
 
 namespace ads {
 

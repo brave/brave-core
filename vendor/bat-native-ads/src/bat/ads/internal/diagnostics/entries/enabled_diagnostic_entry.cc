@@ -6,7 +6,7 @@
 #include "bat/ads/internal/diagnostics/entries/enabled_diagnostic_entry.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/string_util.h"
+#include "bat/ads/internal/base/string_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

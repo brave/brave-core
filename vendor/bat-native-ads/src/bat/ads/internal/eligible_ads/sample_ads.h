@@ -10,9 +10,9 @@
 
 #include "base/notreached.h"
 #include "base/rand_util.h"
+#include "bat/ads/internal/base/number_util.h"
 #include "bat/ads/internal/eligible_ads/ad_predictor_info.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
-#include "bat/ads/internal/number_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

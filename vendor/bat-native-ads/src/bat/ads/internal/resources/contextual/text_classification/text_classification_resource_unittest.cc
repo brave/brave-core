@@ -5,11 +5,12 @@
 
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
+#include <string>
 #include <utility>
 
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_file_util.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_file_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

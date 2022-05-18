@@ -6,9 +6,9 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data_util.h"
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
+#include "bat/ads/internal/conversions/conversions_util.h"
+#include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
-#include "bat/ads/internal/security/conversions/conversions_util.h"
-#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

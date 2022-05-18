@@ -7,9 +7,9 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/history/history.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/privacy/p2a/p2a_ad_impressions/p2a_ad_impression.h"
+#include "bat/ads/internal/privacy/p2a/impressions/p2a_impression.h"
 
 namespace ads {
 namespace inline_content_ads {

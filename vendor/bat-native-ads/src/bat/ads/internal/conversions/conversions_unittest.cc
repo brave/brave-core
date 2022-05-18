@@ -8,18 +8,17 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
+#include "bat/ads/internal/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/bundle/creative_ad_unittest_util.h"
-#include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
-#include "bat/ads/internal/database/tables/conversions_database_table.h"
-#include "bat/ads/internal/resources/conversions/conversions_resource.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/conversions/conversion_queue_database_table.h"
+#include "bat/ads/internal/conversions/conversions_database_table.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

@@ -11,33 +11,28 @@
 #include "base/hash/hash.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/account_util.h"
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
-#include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
-#include "bat/ads/internal/ad_serving/new_tab_page_ads/new_tab_page_ad_serving.h"
-#include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
-#include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
-#include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
-#include "bat/ads/internal/ad_transfer/ad_transfer.h"
+#include "bat/ads/internal/ad_server/catalog/catalog.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/platform_helper.h"
+#include "bat/ads/internal/base/search_engine_util.h"
+#include "bat/ads/internal/base/string_util.h"
+#include "bat/ads/internal/base/time_formatting_util.h"
+#include "bat/ads/internal/base/url_util.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
-#include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_util.h"
-#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
+#include "bat/ads/internal/covariates/covariate_logs.h"
 #include "bat/ads/internal/creatives/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad.h"
@@ -46,34 +41,39 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/internal/diagnostics/diagnostics.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "bat/ads/internal/features/features.h"
-#include "bat/ads/internal/federated/covariate_logs.h"
+#include "bat/ads/internal/features/features_util.h"
 #include "bat/ads/internal/history/history.h"
-#include "bat/ads/internal/legacy_migration/conversions/legacy_conversion_migration.h"
+#include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "bat/ads/internal/resources/conversions/conversions_info.h"
-#include "bat/ads/internal/resources/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
-#include "bat/ads/internal/search_engine/search_providers.h"
+#include "bat/ads/internal/serving/ad_notifications/ad_notification_serving.h"
+#include "bat/ads/internal/serving/inline_content_ads/inline_content_ad_serving.h"
+#include "bat/ads/internal/serving/new_tab_page_ads/new_tab_page_ad_serving.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/settings/settings.h"
-#include "bat/ads/internal/string_util.h"
+#include "bat/ads/internal/studies/studies_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
-#include "bat/ads/internal/time_formatting_util.h"
-#include "bat/ads/internal/url_util.h"
-#include "bat/ads/internal/user_activity/idle_time.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
+#include "bat/ads/internal/targeting/processors/behavioral/bandits/bandit_feedback_info.h"
+#include "bat/ads/internal/targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
+#include "bat/ads/internal/targeting/processors/contextual/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/transfer/transfer.h"
+#include "bat/ads/internal/user_activity/browsing/user_activity.h"
+#include "bat/ads/internal/user_activity/idle_detection/idle_time.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
@@ -97,7 +97,7 @@ AdsImpl::~AdsImpl() {
   ad_notification_->RemoveObserver(this);
   ad_notification_serving_->RemoveObserver(this);
   ad_server_->RemoveObserver(this);
-  ad_transfer_->RemoveObserver(this);
+  transfer_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   inline_content_ad_->RemoveObserver(this);
   inline_content_ad_serving_->RemoveObserver(this);
@@ -179,7 +179,7 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
   }
   last_html_loaded_hash_ = hash;
 
-  ad_transfer_->MaybeTransferAd(tab_id, redirect_chain);
+  transfer_->MaybeTransferAd(tab_id, redirect_chain);
   conversions_->MaybeConvert(
       redirect_chain, html,
       conversions_resource_->get()->conversion_id_patterns);
@@ -215,7 +215,7 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
     purchase_intent_processor_->Process(url);
   }
 
-  if (SearchProviders::IsSearchEngine(url)) {
+  if (IsSearchEngine(url)) {
     BLOG(1, "Search engine pages are not supported for text classification");
   } else {
     const std::string stripped_text = StripNonAlphaCharacters(text);
@@ -542,17 +542,17 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   epsilon_greedy_bandit_resource_ =
       std::make_unique<resource::EpsilonGreedyBandit>();
   epsilon_greedy_bandit_processor_ =
-      std::make_unique<ad_targeting::processor::EpsilonGreedyBandit>();
+      std::make_unique<targeting::processor::EpsilonGreedyBandit>();
 
   text_classification_resource_ =
       std::make_unique<resource::TextClassification>();
   text_classification_processor_ =
-      std::make_unique<ad_targeting::processor::TextClassification>(
+      std::make_unique<targeting::processor::TextClassification>(
           text_classification_resource_.get());
 
   purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
   purchase_intent_processor_ =
-      std::make_unique<ad_targeting::processor::PurchaseIntent>(
+      std::make_unique<targeting::processor::PurchaseIntent>(
           purchase_intent_resource_.get());
 
   anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
@@ -560,9 +560,9 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   conversions_resource_ = std::make_unique<resource::Conversions>();
 
   subdivision_targeting_ =
-      std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
+      std::make_unique<targeting::geographic::SubdivisionTargeting>();
 
-  ad_notification_serving_ = std::make_unique<ad_notifications::AdServing>(
+  ad_notification_serving_ = std::make_unique<ad_notifications::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   ad_notification_serving_->AddObserver(this);
   ad_notification_ = std::make_unique<AdNotification>();
@@ -572,10 +572,10 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   ad_server_ = std::make_unique<AdServer>();
   ad_server_->AddObserver(this);
 
-  ad_transfer_ = std::make_unique<AdTransfer>();
-  ad_transfer_->AddObserver(this);
+  transfer_ = std::make_unique<Transfer>();
+  transfer_->AddObserver(this);
 
-  inline_content_ad_serving_ = std::make_unique<inline_content_ads::AdServing>(
+  inline_content_ad_serving_ = std::make_unique<inline_content_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   inline_content_ad_serving_->AddObserver(this);
   inline_content_ad_ = std::make_unique<InlineContentAd>();
@@ -596,7 +596,7 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   database_ = std::make_unique<database::Initialize>();
 
-  new_tab_page_ad_serving_ = std::make_unique<new_tab_page_ads::AdServing>(
+  new_tab_page_ad_serving_ = std::make_unique<new_tab_page_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   new_tab_page_ad_serving_->AddObserver(this);
   new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
@@ -699,6 +699,10 @@ void AdsImpl::Initialized(InitializeCallback callback) {
 }
 
 void AdsImpl::Start() {
+  LogFeatures();
+
+  LogActiveStudies();
+
 #if BUILDFLAG(IS_ANDROID)
   // Ad notifications do not sustain a reboot or update, so we should remove
   // orphaned ad notifications
@@ -718,8 +722,6 @@ void AdsImpl::Start() {
   conversions_->StartTimerIfReady();
 
   ad_server_->MaybeFetch();
-
-  features::Log();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -828,7 +830,7 @@ void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
 }
 
 void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
-  ad_transfer_->set_last_clicked_ad(ad);
+  transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -881,7 +883,7 @@ void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
 }
 
 void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
-  ad_transfer_->set_last_clicked_ad(ad);
+  transfer_->set_last_clicked_ad(ad);
 
   if (!ShouldRewardUser()) {
     return;
@@ -906,7 +908,7 @@ void AdsImpl::OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {
 }
 
 void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
-  ad_transfer_->set_last_clicked_ad(ad);
+  transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -932,7 +934,7 @@ void AdsImpl::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
 }
 
 void AdsImpl::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
-  ad_transfer_->set_last_clicked_ad(ad);
+  transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -953,7 +955,7 @@ void AdsImpl::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
 }
 
 void AdsImpl::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
-  ad_transfer_->set_last_clicked_ad(ad);
+  transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
@@ -979,7 +981,7 @@ void AdsImpl::OnDidTransferAd(const AdInfo& ad) {
                     ConfirmationType::kTransferred);
 }
 
-void AdsImpl::OnCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) {
+void AdsImpl::OnCancelledTransfer(const AdInfo& ad, const int32_t tab_id) {
   BLOG(1, "Cancelled ad transfer for creative instance id "
               << ad.creative_instance_id << " with tab id " << tab_id);
 }

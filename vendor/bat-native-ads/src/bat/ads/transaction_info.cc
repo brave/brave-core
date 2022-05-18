@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ads/internal/number_util.h"
+#include "bat/ads/internal/base/number_util.h"
 
 namespace ads {
 

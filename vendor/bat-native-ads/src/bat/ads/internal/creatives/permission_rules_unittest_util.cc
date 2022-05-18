@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/creatives/permission_rules_unittest_util.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/catalog_permission_rule_unittest_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/issuers_permission_rule_unittest_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_permission_rule_unittest_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule_unittest_util.h"
+#include "bat/ads/internal/serving/permission_rules/catalog_permission_rule_unittest_util.h"
+#include "bat/ads/internal/serving/permission_rules/issuers_permission_rule_unittest_util.h"
+#include "bat/ads/internal/serving/permission_rules/unblinded_tokens_permission_rule_unittest_util.h"
+#include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 
 namespace ads {
 

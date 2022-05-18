@@ -7,12 +7,11 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
-#include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*

@@ -8,13 +8,13 @@
 #include "base/check.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_util.h"
+#include "bat/ads/internal/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_new_tab_page_ads_database_table.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
-#include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
@@ -55,7 +55,7 @@ void NewTabPageAd::FireEvent(const std::string& placement_id,
 
   // TODO(https://github.com/brave/brave-browser/issues/14015): Refactor this
   // logic to only apply frequency capping if the new tab page ad was not served
-  // by the library. |AdServing::MaybeServeAd| is responsible for applying
+  // by the library. |Serving::MaybeServeAd| is responsible for applying
   // frequency caps for new tab page ads served by the library
   new_tab_page_ads::frequency_capping::PermissionRules permission_rules;
   if (event_type == mojom::NewTabPageAdEventType::kViewed &&

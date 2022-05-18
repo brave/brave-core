@@ -10,17 +10,17 @@
 
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 
 namespace ads {
 
-namespace ad_targeting {
+namespace targeting {
 struct UserModelInfo;
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
-}  // namespace ad_targeting
+}  // namespace targeting
 
 namespace resource {
 class AntiTargeting;
@@ -31,20 +31,20 @@ namespace inline_content_ads {
 class EligibleAdsBase {
  public:
   EligibleAdsBase(
-      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+      targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
   virtual ~EligibleAdsBase();
 
   virtual void GetForUserModel(
-      const ad_targeting::UserModelInfo& user_model,
+      const targeting::UserModelInfo& user_model,
       const std::string& dimensions,
       GetEligibleAdsCallback<CreativeInlineContentAdList> callback) = 0;
 
   void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  raw_ptr<ad_targeting::geographic::SubdivisionTargeting>
-      subdivision_targeting_ = nullptr;  // NOT OWNED
+  raw_ptr<targeting::geographic::SubdivisionTargeting> subdivision_targeting_ =
+      nullptr;  // NOT OWNED
 
   raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
       nullptr;  // NOT OWNED

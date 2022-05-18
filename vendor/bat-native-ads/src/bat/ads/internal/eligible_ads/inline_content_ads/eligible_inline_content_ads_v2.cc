@@ -7,32 +7,32 @@
 
 #include "base/check.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/ad_serving/ad_serving_features.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
+#include "bat/ads/internal/ad_events/ad_events_database_table.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_exclusion_rules.h"
-#include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/eligible_ads/choose_ad.h"
 #include "bat/ads/internal/eligible_ads/frequency_capping.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 namespace ads {
 namespace inline_content_ads {
 
 EligibleAdsV2::EligibleAdsV2(
-    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 EligibleAdsV2::~EligibleAdsV2() = default;
 
 void EligibleAdsV2::GetForUserModel(
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const std::string& dimensions,
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads:");
@@ -61,7 +61,7 @@ void EligibleAdsV2::GetForUserModel(
 ///////////////////////////////////////////////////////////////////////////////
 
 void EligibleAdsV2::GetEligibleAds(
-    const ad_targeting::UserModelInfo& user_model,
+    const targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     const std::string& dimensions,

@@ -9,8 +9,8 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate.h"
-#include "bat/ads/internal/backoff_timer.h"
-#include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/base/backoff_timer.h"
+#include "bat/ads/internal/base/timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {

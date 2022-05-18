@@ -5,13 +5,13 @@
 
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_v1.h"
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_builder_unittest_util.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -39,14 +39,13 @@ TEST_F(BatAdsEligibleAdNotificationsV1Issue17199Test, GetEligibleAds) {
   AdvanceClock(TimeFromString("4 July 2021", /* is_local */ false));
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing-computing"}, {},
-                                   {}),
+      targeting::BuildUserModel({"technology & computing-computing"}, {}, {}),
       [](const bool success, const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_FALSE(creative_ads.empty());

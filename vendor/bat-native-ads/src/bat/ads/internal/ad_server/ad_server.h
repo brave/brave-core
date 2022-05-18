@@ -8,8 +8,8 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
-#include "bat/ads/internal/backoff_timer.h"
-#include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/base/backoff_timer.h"
+#include "bat/ads/internal/base/timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {

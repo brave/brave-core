@@ -7,15 +7,15 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_unittest_util.h"
-#include "bat/ads/internal/container_util.h"
-#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/base/container_util.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/targeting/targeting_user_model_builder_unittest_util.h"
+#include "bat/ads/internal/targeting/targeting_user_model_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -52,7 +52,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForChildSegment) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -60,7 +60,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForChildSegment) {
   const CreativeAdNotificationList expected_creative_ads = {creative_ad_2};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
+      targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
       [&expected_creative_ads](const bool success,
                                const CreativeAdNotificationList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);
@@ -80,7 +80,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForParentSegment) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -88,7 +88,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForParentSegment) {
   const CreativeAdNotificationList expected_creative_ads = {creative_ad};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
+      targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
       [&expected_creative_ads](const bool success,
                                const CreativeAdNotificationList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);
@@ -108,7 +108,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForUntargetedSegment) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -116,7 +116,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForUntargetedSegment) {
   const CreativeAdNotificationList expected_creative_ads = {creative_ad};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"finance-banking"}, {}, {}),
+      targeting::BuildUserModel({"finance-banking"}, {}, {}),
       [&expected_creative_ads](const bool success,
                                const CreativeAdNotificationList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);
@@ -144,7 +144,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForMultipleSegments) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -153,8 +153,8 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForMultipleSegments) {
                                                             creative_ad_3};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                   {}, {}),
+      targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
+                                {}),
       [&expected_creative_ads](const bool success,
                                const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
@@ -174,7 +174,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForNoSegments) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -202,7 +202,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForUnmatchedSegments) {
   Save(creative_ads);
 
   // Act
-  ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+  targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
   ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
@@ -210,7 +210,7 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForUnmatchedSegments) {
   const CreativeAdNotificationList expected_creative_ads = {};
 
   eligible_ads.GetForUserModel(
-      ad_targeting::BuildUserModel({"UNMATCHED"}, {}, {}),
+      targeting::BuildUserModel({"UNMATCHED"}, {}, {}),
       [&expected_creative_ads](const bool success,
                                const CreativeAdNotificationList& creative_ads) {
         EXPECT_EQ(expected_creative_ads, creative_ads);

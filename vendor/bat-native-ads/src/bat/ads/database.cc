@@ -13,7 +13,7 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/notreached.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 #include "third_party/sqlite/sqlite3.h"

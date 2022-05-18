@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
-#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
+#include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/values.h"
-#include "bat/ads/internal/catalog/catalog_util.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_util.h"
 
 namespace ads {
 namespace user_data {

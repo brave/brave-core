@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
-#include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/deprecated/json_helper.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

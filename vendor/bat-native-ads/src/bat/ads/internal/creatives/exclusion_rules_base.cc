@@ -5,31 +5,31 @@
 
 #include "bat/ads/internal/creatives/exclusion_rules_base.h"
 
-#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/anti_targeting_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_month_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_week_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_exclusion_rule.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/transferred_exclusion_rule.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/daily_cap_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/exclusion_rule_util.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/per_month_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
+#include "bat/ads/internal/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
+#include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
 
 namespace ads {
 
 ExclusionRulesBase::ExclusionRulesBase(
     const AdEventList& ad_events,
-    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     resource::AntiTargeting* anti_targeting_resource,
     const BrowsingHistoryList& browsing_history) {
   DCHECK(subdivision_targeting);

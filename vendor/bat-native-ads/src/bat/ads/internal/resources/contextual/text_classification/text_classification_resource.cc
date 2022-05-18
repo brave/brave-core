@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "bat/ads/internal/features/text_classification/text_classification_features.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_features.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {

@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "base/metrics/field_trial.h"
 #include "base/values.h"
-#include "bat/ads/internal/features/features.h"
+#include "bat/ads/internal/studies/studies_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

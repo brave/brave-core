@@ -9,8 +9,8 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/database/tables/transactions_database_table.h"
-#include "bat/ads/internal/unittest_time_util.h"
+#include "bat/ads/internal/account/transactions/transactions_database_table.h"
+#include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/transaction_info.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 

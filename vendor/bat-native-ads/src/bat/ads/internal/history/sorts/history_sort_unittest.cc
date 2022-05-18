@@ -9,7 +9,7 @@
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
-#include "bat/ads/internal/container_util.h"
+#include "bat/ads/internal/base/container_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

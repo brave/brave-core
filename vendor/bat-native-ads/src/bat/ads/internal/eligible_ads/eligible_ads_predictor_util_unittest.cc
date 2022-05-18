@@ -5,13 +5,16 @@
 
 #include "bat/ads/internal/eligible_ads/eligible_ads_predictor_util.h"
 
+#include <map>
+#include <string>
+
 #include "base/guid.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_info_aliases.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_unittest_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_features.h"
-#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

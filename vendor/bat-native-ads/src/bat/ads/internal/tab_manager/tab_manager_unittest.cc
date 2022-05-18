@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -5,9 +5,11 @@
 
 #include "bat/ads/internal/ad_server/get_catalog_url_request_builder.h"
 
+#include <string>
+
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/catalog/catalog_constants.h"
-#include "bat/ads/internal/server/server_host_util.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_constants.h"
+#include "bat/ads/internal/server/hosts/server_host_util.h"
 
 namespace ads {
 

@@ -7,10 +7,10 @@
 
 #include <string>
 
-#include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_file_util.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/catalog.h"
+#include "bat/ads/internal/base/unittest_base.h"
+#include "bat/ads/internal/base/unittest_file_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

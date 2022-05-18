@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_permission_rules.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/search_result_ads_per_day_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/search_result_ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
+#include "bat/ads/internal/serving/permission_rules/search_result_ads_per_day_permission_rule.h"
+#include "bat/ads/internal/serving/permission_rules/search_result_ads_per_hour_permission_rule.h"
 
 namespace ads {
 namespace search_result_ads {

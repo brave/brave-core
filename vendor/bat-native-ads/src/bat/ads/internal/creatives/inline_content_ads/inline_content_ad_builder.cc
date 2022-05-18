@@ -7,7 +7,7 @@
 
 #include "base/guid.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/bundle/creative_inline_content_ad_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_inline_content_ad_info.h"
 
 namespace ads {
 

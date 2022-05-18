@@ -6,10 +6,10 @@
 #include "bat/ads/internal/eligible_ads/sample_ads.h"
 
 #include "base/guid.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_unittest_util.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_notification_unittest_util.h"
+#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
-#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
