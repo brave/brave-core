@@ -39,10 +39,27 @@ export const BarBackground = styled.div`
 // inner
 export const BarProgress = styled.div<{ criteria: boolean[] }>`
   position: absolute;
+  display: flex;
+  flex-direction: row;
   height: 8px;
-  width: ${(p) => (p.criteria.filter(c => !!c).length / p.criteria.length) * 100}%;
   border-radius: 100px;
+  
+  width: ${(p) => (p.criteria.filter(c => !!c).length / p.criteria.length) * 100}%;
   background-color: ${(p) => p.criteria.filter(c => !!c).length === p.criteria.length ? p.theme.color.successBorder : p.theme.color.errorIcon};
+`
+
+// floating tooltip positioner
+export const BarProgressTooltipContainer = styled.div<{
+  criteria: boolean[]
+}>`
+  width: 100%;
+  margin-left: -75px;
+  z-index: 200;
+
+  transform:
+    translateX(${(p) => (
+      ((p.criteria.filter(c => !!c).length / p.criteria.length) * 100) - 5
+    )}%);
 `
 
 export const BarMessage = styled.p<{ criteria: boolean[] }>`

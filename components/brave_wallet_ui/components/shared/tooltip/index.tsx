@@ -18,15 +18,15 @@ export interface Props {
   disableHoverEvents?: boolean
   text: React.ReactNode
   verticalPosition?: 'above' | 'below'
-  horizontalMarginPx?: number
+  horizontalMargin?: string
   pointerPosition?: 'left' | 'right' | 'center'
 }
 
-function Tooltip ({
+export const Tooltip = ({
   actionText,
   children,
   disableHoverEvents,
-  horizontalMarginPx,
+  horizontalMargin,
   isActionVisible,
   isAddress,
   isVisible,
@@ -34,7 +34,7 @@ function Tooltip ({
   position,
   text,
   verticalPosition = 'below'
-}: Props) {
+}: Props) => {
   const [active, setActive] = React.useState(!!disableHoverEvents)
 
   const showTip = () => {
@@ -47,7 +47,7 @@ function Tooltip ({
 
   const toolTipPointer = React.useMemo(() => (
     <Pointer
-      position={pointerPosition ?? position ?? 'center'}
+      position={pointerPosition ?? 'center'}
       verticalPosition={verticalPosition ?? 'below'}
     />
   ), [position, verticalPosition, pointerPosition])
@@ -56,27 +56,20 @@ function Tooltip ({
     <TipWrapper
       position={position ?? 'center'}
       verticalPosition={verticalPosition ?? 'below'}
-      horizontalMarginPx={horizontalMarginPx}
+      horizontalMargin={horizontalMargin}
     >
 
       {!isActionVisible && verticalPosition === 'below' && toolTipPointer}
 
       {isActionVisible
-        ? <ActionNotification
-            verticalPosition={verticalPosition ?? 'below'}
-            position={position ?? 'center'}
-          >
+        ? <ActionNotification>
             {actionText}
           </ActionNotification>
-        : <Tip
-            isAddress={isAddress}
-            position={position ?? 'center'}
-            verticalPosition={verticalPosition ?? 'below'}
-          >
+
+        : <Tip isAddress={isAddress}>
             {text}
           </Tip>
-        }
-
+      }
       {!isActionVisible && verticalPosition === 'above' && toolTipPointer}
     </TipWrapper>
   ), [
@@ -86,8 +79,8 @@ function Tooltip ({
     verticalPosition,
     isAddress,
     text,
-    horizontalMarginPx,
-    isActionVisible
+    isActionVisible,
+    horizontalMargin
   ])
 
   return (

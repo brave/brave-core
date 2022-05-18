@@ -16,6 +16,7 @@ import { getLocale } from '$web-common/locale'
 interface Props {
   isVisible: boolean
   passwordStrength: PasswordStrengthResults
+  criteria: boolean[]
 }
 
 const PasswordStrengthDetails = ({
@@ -55,16 +56,16 @@ const PasswordStrengthDetails = ({
 export const PasswordStrengthTooltip: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   isVisible,
-  passwordStrength
+  passwordStrength,
+  criteria
 }) => {
   return (
     <Tooltip
       disableHoverEvents
-      position='left'
       verticalPosition='below'
       isVisible={isVisible}
+      position='right'
       pointerPosition={'center'}
-      horizontalMarginPx={10}
       text={<PasswordStrengthDetails passwordStrength={passwordStrength} />}
     >
       {children}

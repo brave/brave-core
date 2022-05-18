@@ -10,10 +10,9 @@ import { getLocale } from '../../../../common/locale'
 
 // hooks
 import { usePasswordStrength } from '../../../common/hooks'
-import PasswordStrengthTooltip from '../tooltip/password-strength-tooltip'
 
 // components
-import PasswordStrengthBar from './password-strength-bar'
+import { PasswordStrengthBar } from './password-strength-bar'
 
 // style
 import {
@@ -118,39 +117,38 @@ export const NewPasswordInput = ({
       <StyledWrapper>
         <InputLabel>{getLocale('braveWalletCreatePasswordInput')}</InputLabel>
 
-        <PasswordStrengthTooltip
-          passwordStrength={passwordStrength}
-          isVisible={isPasswordFieldFocused}
-        >
-          <InputWrapper>
-            <Input
-              hasError={!!passwordError}
-              type={(showToggleButton && showPassword) ? 'text' : 'password'}
-              placeholder={getLocale('braveWalletCreatePasswordInput')}
-              value={password}
-              onChange={handlePasswordChanged}
-              onKeyDown={handleKeyDown}
-              autoFocus={autoFocus}
-              onFocus={() => setIsPasswordFieldFocused(true)}
-              onBlur={() => setIsPasswordFieldFocused(false)}
-              autoComplete='off'
+        <InputWrapper>
+          <Input
+            hasError={!!passwordError}
+            type={(showToggleButton && showPassword) ? 'text' : 'password'}
+            placeholder={getLocale('braveWalletCreatePasswordInput')}
+            value={password}
+            onChange={handlePasswordChanged}
+            onKeyDown={handleKeyDown}
+            autoFocus={autoFocus}
+            onFocus={() => setIsPasswordFieldFocused(true)}
+            onBlur={() => setIsPasswordFieldFocused(false)}
+            autoComplete='off'
+          />
+          {showToggleButton &&
+            <ToggleVisibilityButton
+              isVisible={showPassword}
+              onClick={onTogglePasswordVisibility}
             />
-            {showToggleButton &&
-              <ToggleVisibilityButton
-                isVisible={showPassword}
-                onClick={onTogglePasswordVisibility}
-              />
-            }
-          </InputWrapper>
-        </PasswordStrengthTooltip>
+          }
+        </InputWrapper>
 
-        {password && <PasswordStrengthBar
-          criteria={[
-            passwordStrength.containsNumber,
-            passwordStrength.containsSpecialChar,
-            passwordStrength.isLongEnough
-          ]}
-        />}
+        {password &&
+          <PasswordStrengthBar
+            isVisible={isPasswordFieldFocused}
+            passwordStrength={passwordStrength}
+            criteria={[
+              passwordStrength.containsNumber,
+              passwordStrength.containsSpecialChar,
+              passwordStrength.isLongEnough
+            ]}
+          />
+        }
 
         {!!passwordError &&
           <ErrorRow>
