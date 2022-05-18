@@ -123,6 +123,8 @@ provideStrings({
   // Recovery Phrase Backup (v2)
   braveWalletRecoveryPhraseBackupTitle: 'Next, let\'s back up your wallet.',
   braveWalletRecoveryPhraseBackupWarning: 'Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.',
+  braveWalletCopiedToClipboard: 'Copied to clipboard',
+  braveWalletClickToSeeRecoveryPhrase: 'Click here to see phrase',
 
   // Recovery Phrase Backup (v1)
   braveWalletRecoveryTitle: 'Your recovery phrase',

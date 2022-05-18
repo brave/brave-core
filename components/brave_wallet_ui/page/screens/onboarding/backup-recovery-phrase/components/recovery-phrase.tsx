@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// utils
+import { getLocale } from '$web-common/locale'
+
 // styles
 import {
   RecoveryPhraseContainer,
@@ -32,7 +35,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
     return <HiddenPhraseContainer onClick={onClickReveal}>
       <FrostedGlass>
         <EyeOffIcon />
-        <p>Click here to see phrase</p>
+        <p>{getLocale('braveWalletClickToSeeRecoveryPhrase')}</p>
       </FrostedGlass>
       <RecoveryPhraseContainer>
         {FAKE_PHRASE_WORDS.map((word, index) =>

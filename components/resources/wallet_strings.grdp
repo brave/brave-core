@@ -532,4 +532,6 @@
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING" desc="A warning regarding recovery phrase safety">Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety"><ph name="TAG_BEFORE">$1</ph>Important: <ph name="TAG_AFTER">$2</ph>Brave cannot recover your secret recovery phrase. Keep it safe, never share this phrase with anyone.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE" desc="Title to recovery phrase backup screen">Next, let's back up your wallet.</message>
+  <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
+  <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click here to see phrase</message>
 </grit-part>
