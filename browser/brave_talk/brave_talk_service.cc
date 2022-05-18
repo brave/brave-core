@@ -57,7 +57,7 @@ void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
 }
 
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
-  if (!web_contents())
+  if (!web_contents() || !target_contents || !is_requesting_tab())
     return;
   auto* registry = BraveTalkTabCaptureRegistryFactory::GetForContext(
       target_contents->GetBrowserContext());
