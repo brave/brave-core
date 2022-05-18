@@ -39,12 +39,28 @@ constexpr int brave_value(int incr) {
   ContentSettingTypeToHistogramValue_ChromiumImpl
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
+#define FilterRulesForType FilterRulesForType_ChromiumImpl
 
 #include "src/components/content_settings/core/common/content_settings.cc"
 
+#undef FilterRulesForType
 #undef RendererContentSettingRules
 #undef ContentSettingTypeToHistogramValue
 #undef BRAVE_HISTOGRAM_VALUE_LIST
+
+namespace {
+
+// Override FilterRulesForType for Brave rules to get around Chromium's
+// DCHECK for at least one rule remaining after filtering.
+void FilterRulesForType(ContentSettingsForOneType& settings,
+                        const GURL& primary_url) {
+  base::EraseIf(settings,
+                [&primary_url](const ContentSettingPatternSource& source) {
+                  return !source.primary_pattern.Matches(primary_url);
+                });
+}
+
+}  // namespace
 
 int ContentSettingTypeToHistogramValue(ContentSettingsType content_setting,
                                        size_t* num_values) {
