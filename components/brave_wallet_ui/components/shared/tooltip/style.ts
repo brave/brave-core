@@ -1,10 +1,10 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface StyleProps {
   position: 'left' | 'right' | 'center'
   verticalPosition: 'above' | 'below'
   isAddress?: boolean
-  horizontalMarginPx?: number
+  horizontalMargin?: string
 }
 
 export const TipAndChildrenWrapper = styled.div`
@@ -14,24 +14,15 @@ export const TipAndChildrenWrapper = styled.div`
 
 export const TipWrapper = styled.div<StyleProps>`
   position: absolute;
-  left: ${(p) =>
-    p.position === 'right'
-      ? 'unset'
-      : p.position === 'left'
-        ? `${p?.horizontalMarginPx || 0}px`
-        : '50%'
-  };
-
-  right: ${(p) =>
-    p.position === 'right'
-      ? `${p?.horizontalMarginPx || 0}px`
-      : 'unset'
-  };
-
+  
   transform: 
     translateX(${
       (p) => p.position === 'center'
-        ? '-50%'
+        ? '0%'
+        : p?.horizontalMargin
+          ? p.position === 'left'
+            ? '-' + p.horizontalMargin
+            : '' + p.horizontalMargin
         : '0'
     })
     translateY(${
@@ -43,7 +34,7 @@ export const TipWrapper = styled.div<StyleProps>`
     z-index: 100;
 `
 
-export const Tip = styled.div<StyleProps>`
+export const Tip = styled.div<{ isAddress?: boolean }>`
   border-radius: 4px;
   padding: 6px;
   font-family: Poppins;
@@ -65,35 +56,21 @@ export const Pointer = styled.div<StyleProps>`
   border-width: 0 7px 8px 7px;
 
   border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+  
+  ${(p) => p.position === 'center' && css`
+    margin: 0 auto;
+  `}
 
-  margin-top: ${(p) => p.verticalPosition === 'below'
-    ? 'unset'
-    : '-1px'
-  };
-  
-  margin-bottom: ${(p) => p.verticalPosition === 'above'
-    ? '0px'
-    : '-1px'
-  };
-  
-  margin-left: ${(p) =>
-    p.position === 'right'
-      ? 'unset'
-      : p.position === 'left'
-        ? '25px'
-        : '50%'
-  };
-  
-  margin-right: ${(p) =>
-    p.position === 'right'
-      ? '25px'
-      : 'unset'
-  };
-  
   transform: 
     translateX(${(p) => p.position === 'center'
-      ? '-50%'
-      : '0'
+      ? '0'
+      : p.position === 'right'
+        ? '-25px'
+        : '25px'
+    })
+    translateY(${(p) => p.verticalPosition === 'above'
+      ? '-1px'
+      : '1px'
     })
     rotate(${(p) => p.verticalPosition === 'below'
       ? '0deg'

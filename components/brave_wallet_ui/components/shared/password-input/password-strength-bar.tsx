@@ -14,20 +14,42 @@ import {
   BarAndMessageContainer,
   BarBackground,
   BarMessage,
-  BarProgress
+  BarProgress,
+  BarProgressTooltipContainer
 } from './password-strength-bar.styles'
+
+// components
+import { PasswordStrengthTooltip } from '../tooltip/password-strength-tooltip'
+import { PasswordStrengthResults } from '../../../common/hooks/use-password-strength'
 
 interface Props {
   criteria: boolean[]
+  isVisible: boolean
+  passwordStrength: PasswordStrengthResults
 }
 
-export const PasswordStrengthBar: React.FC<Props> = ({ criteria }) => {
+export const PasswordStrengthBar: React.FC<Props> = ({
+  criteria,
+  isVisible,
+  passwordStrength
+}) => {
   return (
     <BarAndMessageContainer>
       <Bar>
         <BarBackground />
-        <BarProgress criteria={criteria} />
+        <BarProgress criteria={criteria}>
+          <BarProgressTooltipContainer
+            criteria={criteria}
+          >
+            <PasswordStrengthTooltip
+              criteria={criteria}
+              passwordStrength={passwordStrength}
+              isVisible={isVisible}
+            />
+          </BarProgressTooltipContainer>
+        </BarProgress>
       </Bar>
+
       <BarMessage criteria={criteria}>
         {criteria.length === criteria.filter(c => !!c).length
           ? getLocale('braveWalletPasswordIsStrong')
