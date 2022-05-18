@@ -23,7 +23,7 @@
 namespace brave_talk {
 
 BraveTalkFrameHost::BraveTalkFrameHost(content::WebContents* contents,
-                                               const std::string& host)
+                                       const std::string& host)
     : contents_(contents), host_(host) {}
 
 BraveTalkFrameHost::~BraveTalkFrameHost() = default;

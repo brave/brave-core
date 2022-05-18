@@ -19,14 +19,13 @@ class WebContents;
 
 namespace brave_talk {
 
-class BraveTalkFrameHost final
-    : public brave_talk::mojom::BraveTalkFrame {
+class BraveTalkFrameHost final : public brave_talk::mojom::BraveTalkFrame {
  public:
   BraveTalkFrameHost(const BraveTalkFrameHost&) = delete;
   BraveTalkFrameHost& operator=(const BraveTalkFrameHost&) = delete;
 
   explicit BraveTalkFrameHost(content::WebContents* contents,
-                                  const std::string& host);
+                              const std::string& host);
   ~BraveTalkFrameHost() override;
 
   // brave_talk::mojom::BraveTalkAdvertise:

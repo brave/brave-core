@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_talk/renderer/brave_talk_frame_js_handler.h"
 
+#include <memory>
 #include <tuple>
 #include <utility>
 
@@ -20,6 +21,10 @@
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "v8-function.h"
+#include "v8-local-handle.h"
+#include "v8-primitive.h"
+#include "v8-value.h"
 
 namespace brave_talk {
 
@@ -93,31 +98,24 @@ void BraveTalkFrameJSHandler::BindFunctionToObject(
       .Check();
 }
 
-v8::Local<v8::Promise> BraveTalkFrameJSHandler::BeginAdvertiseShareDisplayMedia(
-    v8::Isolate* isolate) {
+void BraveTalkFrameJSHandler::BeginAdvertiseShareDisplayMedia(
+    v8::Isolate* isolate,
+    v8::Local<v8::Function> callback) {
   if (!EnsureConnected())
-    return v8::Local<v8::Promise>();
+    return;
 
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (!resolver.IsEmpty()) {
-    auto promise_resolver =
-        std::make_unique<v8::Global<v8::Promise::Resolver>>();
-    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
-    auto context_old = std::make_unique<v8::Global<v8::Context>>(
-        isolate, isolate->GetCurrentContext());
-    brave_talk_frame_->BeginAdvertiseShareDisplayMedia(base::BindOnce(
-        &BraveTalkFrameJSHandler::OnDeviceIdReceived, base::Unretained(this),
-        std::move(promise_resolver), isolate, std::move(context_old)));
+  auto context_old = std::make_unique<v8::Global<v8::Context>>(
+      isolate, isolate->GetCurrentContext());
 
-    return resolver.ToLocalChecked()->GetPromise();
-  }
-
-  return v8::Local<v8::Promise>();
+  auto persistent =
+      std::make_unique<v8::Persistent<v8::Function>>(isolate, callback);
+  brave_talk_frame_->BeginAdvertiseShareDisplayMedia(base::BindOnce(
+      &BraveTalkFrameJSHandler::OnDeviceIdReceived, base::Unretained(this),
+      std::move(persistent), isolate, std::move(context_old)));
 }
 
 void BraveTalkFrameJSHandler::OnDeviceIdReceived(
-    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    std::unique_ptr<v8::Persistent<v8::Function>> callback,
     v8::Isolate* isolate,
     std::unique_ptr<v8::Global<v8::Context>> context_old,
     const std::string& response) {
@@ -127,11 +125,11 @@ void BraveTalkFrameJSHandler::OnDeviceIdReceived(
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
-  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
-  v8::Local<v8::String> result =
-      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  v8::Local<v8::Value> args[1] = {
+      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked()};
 
-  std::ignore = resolver->Resolve(context, result);
+  std::ignore =
+      callback->Get(isolate)->Call(context, context->Global(), 1, args);
 }
 
 }  // namespace brave_talk

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_FRAME_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_FRAME_JS_HANDLER_H_
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
@@ -16,6 +17,9 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
+#include "v8-function.h"
+#include "v8-local-handle.h"
+#include "v8-value.h"
 #include "v8/include/v8.h"
 
 namespace brave_talk {
@@ -42,10 +46,11 @@ class BraveTalkFrameJSHandler {
   bool EnsureConnected();
 
   // A function to be called from JS
-  v8::Local<v8::Promise> BeginAdvertiseShareDisplayMedia(v8::Isolate* isolate);
+  void BeginAdvertiseShareDisplayMedia(v8::Isolate* isolate,
+                                       v8::Local<v8::Function> callback);
 
   void OnDeviceIdReceived(
-      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+      std::unique_ptr<v8::Persistent<v8::Function>> callback,
       v8::Isolate* isolate,
       std::unique_ptr<v8::Global<v8::Context>> context_old,
       const std::string& result);
