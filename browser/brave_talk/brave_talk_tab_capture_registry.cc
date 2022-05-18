@@ -6,6 +6,7 @@
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 
 #include <memory>
+
 #include "base/lazy_instance.h"
 #include "chrome/common/extensions/api/tab_capture.h"
 #include "components/sessions/content/session_tab_helper.h"
