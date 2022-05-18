@@ -4630,3 +4630,78 @@ extension Strings {
     )
   }
 }
+
+// Page Zoom
+extension Strings {
+  public struct PageZoom {
+    public static let settingsMenuTitle = NSLocalizedString(
+      "pagezoom.settings.menu-title",
+      bundle: .braveShared,
+      value: "Page Zoom",
+      comment: "Title of the Web-Page Zoom settings menu"
+    )
+    
+    public static let settingsTitle = NSLocalizedString(
+      "pagezoom.settings.title",
+      bundle: .braveShared,
+      value: "Page Zoom Settings",
+      comment: "Title of the Web-Page Zoom screen"
+    )
+    
+    public static let resetAll = NSLocalizedString(
+      "pagezoom.settings.reset-all",
+      bundle: .braveShared,
+      value: "Reset All",
+      comment: "Title of the Web-Page Zoom reset all option"
+    )
+    
+    public static let resetAllDescription = NSLocalizedString(
+      "pagezoom.settings.reset-all-description",
+      bundle: .braveShared,
+      value: "Reset Website Zoom Levels",
+      comment: "Description of the Web-Page Zoom reset all option"
+    )
+    
+    public static let specificWebsitesZoomLevelsSectionTitle = NSLocalizedString(
+      "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle",
+      bundle: .braveShared,
+      value: "Specific Page Settings",
+      comment: "Title for list of websites shown in settings screen"
+    )
+    
+    public static let zoomViewText = NSLocalizedString(
+      "pagezoom.zoomView.text",
+      bundle: .braveShared,
+      value: "Page Zoom",
+      comment: "Title for the web-page zoom level view"
+    )
+    
+    public static let defaultZoomLevelSectionTitle = NSLocalizedString(
+      "pagezoom.settings.defaultZoomLevelSectionTitle",
+      bundle: .braveShared,
+      value: "Default Web-Page Zoom Level",
+      comment: "Title for the section for the global/default zoom level"
+    )
+    
+    public static let otherWebsiteZoomLevelSectionTitle = NSLocalizedString(
+      "pagezoom.settings.otherWebsitesZoomLevelSectionTitle",
+      bundle: .braveShared,
+      value: "All Other Websites",
+      comment: "Title for the section for the Web-Page zoom level of other websites"
+    )
+    
+    public static let emptyZoomSettingsWebsitesTitle = NSLocalizedString(
+      "pagezoom.settings.emptyWebsitesTitle",
+      bundle: .braveShared,
+      value: "No Websites Added",
+      comment: "Title for the empty Web-Page zoom view"
+    )
+    
+    public static let emptyZoomSettingsWebsitesDescription = NSLocalizedString(
+      "pagezoom.settings.emptyWebsitesDescription",
+      bundle: .braveShared,
+      value: "When a website's Zoom-Level has changed, the website will show up on the list here. Currently, there are no websites zoomed in or out.",
+      comment: "Description for the empty Web-Page zoom view"
+    )
+  }
+}
