@@ -107,10 +107,9 @@ v8::Local<v8::Promise> BraveTalkFrameJSHandler::GetCanSetDefaultSearchProvider(
     promise_resolver->Reset(isolate, resolver.ToLocalChecked());
     auto context_old = std::make_unique<v8::Global<v8::Context>>(
         isolate, isolate->GetCurrentContext());
-    brave_talk_advertise_->BeginAdvertiseShareDisplayMedia(
-        base::BindOnce(&BraveTalkFrameJSHandler::OnDeviceIdReceived,
-                       base::Unretained(this), std::move(promise_resolver),
-                       isolate, std::move(context_old)));
+    brave_talk_advertise_->BeginAdvertiseShareDisplayMedia(base::BindOnce(
+        &BraveTalkFrameJSHandler::OnDeviceIdReceived, base::Unretained(this),
+        std::move(promise_resolver), isolate, std::move(context_old)));
 
     return resolver.ToLocalChecked()->GetPromise();
   }
@@ -130,7 +129,8 @@ void BraveTalkFrameJSHandler::OnDeviceIdReceived(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
-  v8::Local<v8::String> result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  v8::Local<v8::String> result =
+      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
   std::ignore = resolver->Resolve(context, result);
 }
