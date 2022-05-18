@@ -79,3 +79,27 @@ export const DownloadButton = styled(WalletButton)`
   height: 14px;
   width: 14px;
 `
+
+export const CopiedToClipboardContainer = styled.div`
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-right: 55px;
+  font-size: 12px;
+  font-weight: 500;
+
+  & p {
+    margin-left: 4px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    color: ${(p) => p.theme.color.text01};
+  }
+`
