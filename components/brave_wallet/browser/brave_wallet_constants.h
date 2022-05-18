@@ -96,6 +96,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE},
     {"braveWalletExpiresInTitle", IDS_BRAVE_WALLET_EXPIRES_IN_TITLE},
     {"braveWalletSendPlaceholder", IDS_BRAVE_WALLET_SEND_PLACEHOLDER},
+    {"braveWalletSendNoURLPlaceholder",
+     IDS_BRAVE_WALLET_SEND_NO_URL_PLACEHOLDER},
     {"braveWalletSwapDisclaimer", IDS_BRAVE_WALLET_SWAP_DISCLAIMER},
     {"braveWalletSwapDisclaimerDescription",
      IDS_BRAVE_WALLET_SWAP_DISCLAIMER_DESCRIPTION},

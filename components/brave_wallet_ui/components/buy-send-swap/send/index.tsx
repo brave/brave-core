@@ -151,6 +151,7 @@ function Send (props: Props) {
         toAddress={toAddress}
         inputName='address'
         onPaste={onPasteFromClipboard}
+        selectedNetwork={selectedNetwork}
       />
       {insufficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
