@@ -23,7 +23,7 @@ BraveSharingHubModel::BraveSharingHubModel(content::BrowserContext* context)
     : SharingHubModel(context),
       brave_talk_share_tab_action_(
           {IDC_BRAVE_TALK_SHARE_TAB,
-           brave_l10n::GetLocalizedResourceUTF16String(IDS_SHARE_MENU_TITLE),
+           brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_TALK_SHARE_TAB),
            &vector_icons::kScreenShareIcon, true, gfx::ImageSkia(),
            "BraveTalk.ShareTab"}) {}
 

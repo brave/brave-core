@@ -429,6 +429,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Hide Brave Wallet icon on toolbar
       </message>
 
+      <!-- Brave Talk Tab Sharing -->
+      <message name="IDS_BRAVE_TALK_SHARE_TAB" desc="The description of the share tab entry in the sharing hub">
+        Share Tab
+      </message>
+
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
         Web Extensions Store
