@@ -446,6 +446,8 @@ export type GetIsStrongPassswordReturnInfo = BraveWallet.KeyringService_IsStrong
 
 export type GetChecksumEthAddressReturnInfo = BraveWallet.KeyringService_GetChecksumEthAddress_ResponseParams
 
+export type IsBase58EncodedSolanaPubkeyReturnInfo = BraveWallet.BraveWalletService_IsBase58EncodedSolanaPubkey_ResponseParams
+
 export interface RecoveryObject {
   value: string
   id: number

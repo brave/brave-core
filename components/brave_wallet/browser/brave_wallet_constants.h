@@ -527,6 +527,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEditPermissionsCustomAllowance",
      IDS_BRAVE_WALLET_EDIT_PERMISSIONS_CUSTOM_ALLOWANCE},
     {"braveWalletNotValidEthAddress", IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS},
+    {"braveWalletNotValidSolAddress", IDS_BRAVE_WALLET_NOT_VALID_SOL_ADDRESS},
     {"braveWalletNotValidAddress", IDS_BRAVE_WALLET_NOT_VALID_ADDRESS},
     {"braveWalletNotDomain", IDS_BRAVE_WALLET_NOT_DOMAIN},
     {"braveWalletSameAddressError", IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR},
