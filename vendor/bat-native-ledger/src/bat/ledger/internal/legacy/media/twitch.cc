@@ -51,14 +51,14 @@ std::pair<std::string, std::string> Twitch::GetMediaIdFromParts(
     unsigned int size = _twitch_events.size();
     for (size_t i = 0; i < size; i++) {
       if (iter->second == _twitch_events[i]) {
-        iter = parts.find("channel");
-        if (iter != parts.end()) {
-          id = iter->second;
+        auto channel_iter = parts.find("channel");
+        if (channel_iter != parts.end()) {
+          id = channel_iter->second;
           user_id = id;
         }
-        iter = parts.find("vod");
-        if (iter != parts.end()) {
-          std::string idAddition(iter->second);
+        auto vod_iter = parts.find("vod");
+        if (vod_iter != parts.end()) {
+          std::string idAddition(vod_iter->second);
           if (idAddition.find('v') != std::string::npos) {
             auto additional_ids = base::SplitString(
                 idAddition,
@@ -70,6 +70,7 @@ std::pair<std::string, std::string> Twitch::GetMediaIdFromParts(
             }
           }
         }
+        break;
       }
     }
   }
