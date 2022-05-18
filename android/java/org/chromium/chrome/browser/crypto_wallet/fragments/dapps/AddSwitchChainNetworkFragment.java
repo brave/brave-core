@@ -42,6 +42,8 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private ImageView mFavicon;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
+    private BraveWalletService mBraveWalletService;
 
     public AddSwitchChainNetworkFragment(BraveWalletDAppsActivity.ActivityType panelType) {
         mPanelType = panelType;
@@ -143,10 +146,17 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         TextView siteTv = view.findViewById(R.id.fragment_add_token_tv_site);
         GURL siteUrl = Utils.getCurentTabUrl();
         if (siteUrl != null) {
-            siteTv.setText(Utils.geteTLDFromGRUL(siteUrl));
+            getWalletService().geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(), origin -> {
+                siteTv.setText(Utils.geteTLDFromGRUL(origin.eTldPlusOne));
+            });
             getFavIcon(siteUrl.getOrigin());
         }
         return view;
+    }
+
+    private BraveWalletService getWalletService() {
+        assert getActivity() instanceof BraveWalletBaseActivity;
+        return ((BraveWalletBaseActivity) getActivity()).getBraveWalletService();
     }
 
     private void getFavIcon(GURL url) {

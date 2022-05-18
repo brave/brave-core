@@ -118,6 +118,8 @@ class BraveWalletService : public KeyedService,
                        const std::string& account,
                        ResetPermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
+ void GeteTLDPlusOneFromOrigin(const url::Origin& origin,
+                                GetActiveOriginCallback callback) override;
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
   void NotifySignMessageRequestProcessed(bool approved, int id) override;

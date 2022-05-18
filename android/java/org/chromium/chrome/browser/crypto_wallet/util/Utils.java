@@ -1500,10 +1500,12 @@ public class Utils {
         }
     }
 
-    public static Spanned geteTLDFromGRUL(GURL url) {
-        StringBuilder builder = new StringBuilder(url.getSpec());
-        int index = builder.indexOf(url.getHost());
-        if (index > 0) {
+    public static Spanned geteTLDFromGRUL(String etldPlusOne) {
+        GURL url = getCurentTabUrl();
+        StringBuilder builder = new StringBuilder();
+        builder.append(url.getScheme()).append("://").append(url.getHost());
+        int index = builder.indexOf(etldPlusOne);        
+        if (index > 0 && index < builder.length()) {
             builder.insert(index, "<b>");
             builder.insert(builder.length(), "</b>");
         }

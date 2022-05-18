@@ -37,6 +37,9 @@ import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modaldialog.ModalDialogProperties.ButtonType;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import android.app.Activity;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Iterator;
@@ -58,6 +61,7 @@ public class BraveEthereumPermissionPromptDialog
     private int mRequestId; // Used for favicon downloader
     private KeyringService mKeyringService;
     private boolean mMojoServicesClosed;
+    private BraveWalletService mBraveWalletService;
 
     @CalledByNative
     private static BraveEthereumPermissionPromptDialog create(long nativeDialogController,
@@ -85,11 +89,13 @@ public class BraveEthereumPermissionPromptDialog
         mFavIconImage = customView.findViewById(R.id.favicon);
         setFavIcon();
         mRecyclerView = customView.findViewById(R.id.accounts_list);
-        GURL visibleUrl = mWebContents.getVisibleUrl();
-        if (visibleUrl != null) {
-            TextView domain = customView.findViewById(R.id.domain);
-            domain.setText(Utils.geteTLDFromGRUL(visibleUrl));
-        }
+        
+        InitBraveWalletService();
+        TextView domain = customView.findViewById(R.id.domain);
+        mBraveWalletService.geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(), origin -> {
+            domain.setText(Utils.geteTLDFromGRUL(origin.eTldPlusOne));
+        });
+                
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
@@ -110,6 +116,13 @@ public class BraveEthereumPermissionPromptDialog
         if (activity != null) {
             activity.dismissWalletPanelOrDialog();
         }
+    }
+
+    private void InitBraveWalletService() {
+        if (mBraveWalletService != null) {
+            return;
+        }
+        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
     private void initAccounts() {

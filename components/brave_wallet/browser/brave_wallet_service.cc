@@ -807,6 +807,11 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
     std::move(callback).Run(MakeOriginInfo(url::Origin()));
 }
 
+void BraveWalletService::GeteTLDPlusOneFromOrigin(
+    const url::Origin& origin, GetActiveOriginCallback callback) {
+  std::move(callback).Run(MakeOriginInfo(origin));
+}
+
 void BraveWalletService::GetPendingSignMessageRequests(
     GetPendingSignMessageRequestsCallback callback) {
   std::vector<mojom::SignMessageRequestPtr> requests;

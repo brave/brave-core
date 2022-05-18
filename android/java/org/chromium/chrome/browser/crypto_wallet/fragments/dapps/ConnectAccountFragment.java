@@ -112,7 +112,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        mWebSite.setText(Utils.geteTLDFromGRUL(getCurrentHostHttpAddress()));
+        getBraveWalletService().geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(), origin -> {
+                mWebSite.setText(Utils.geteTLDFromGRUL(origin.eTldPlusOne));
+            });
         initComponents();
 
         return view;
