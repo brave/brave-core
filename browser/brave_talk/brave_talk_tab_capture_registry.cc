@@ -9,6 +9,7 @@
 
 #include "base/lazy_instance.h"
 #include "chrome/common/extensions/api/tab_capture.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/desktop_streams_registry.h"
@@ -21,7 +22,7 @@ using tab_capture::TabCaptureState;
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry::LiveRequest
-    : public content::WebContentsObserver {
+    : public content::WebContentsObserver, public KeyedService {
  public:
   LiveRequest(content::WebContents* target_contents,
               BraveTalkTabCaptureRegistry* registry)
@@ -36,8 +37,7 @@ class BraveTalkTabCaptureRegistry::LiveRequest
 
   LiveRequest(const LiveRequest&) = delete;
   LiveRequest& operator=(const LiveRequest&) = delete;
-
-  ~LiveRequest() override {}
+  ~LiveRequest() override = default;
 
   bool WasTargettingRenderFrameID(int render_process_id,
                                   int render_frame_id) const {
@@ -67,21 +67,6 @@ BraveTalkTabCaptureRegistry::BraveTalkTabCaptureRegistry(
 
 BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() {
   MediaCaptureDevicesDispatcher::GetInstance()->RemoveObserver(this);
-}
-
-BraveTalkTabCaptureRegistry* BraveTalkTabCaptureRegistry::Get(
-    content::BrowserContext* context) {
-  return extensions::BrowserContextKeyedAPIFactory<
-      BraveTalkTabCaptureRegistry>::Get(context);
-}
-
-static base::LazyInstance<extensions::BrowserContextKeyedAPIFactory<
-    BraveTalkTabCaptureRegistry>>::DestructorAtExit
-    g_brave_talk_tab_capture_registry_factory = LAZY_INSTANCE_INITIALIZER;
-// static
-extensions::BrowserContextKeyedAPIFactory<BraveTalkTabCaptureRegistry>*
-BraveTalkTabCaptureRegistry::GetFactoryInstance() {
-  return g_brave_talk_tab_capture_registry_factory.Pointer();
 }
 
 std::string BraveTalkTabCaptureRegistry::AddRequest(

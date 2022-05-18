@@ -30,4 +30,4 @@ class BraveTalkServiceFactory : public BrowserContextKeyedServiceFactory {
 };
 }  // namespace brave_talk
 
-#endif  // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_FACTORY_H_
+#endif // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_FACTORY_H_

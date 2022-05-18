@@ -9,6 +9,7 @@
 
 #include "base/callback.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
+#include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -57,8 +58,8 @@ void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
   if (!web_contents())
     return;
-  auto* registry =
-      BraveTalkTabCaptureRegistry::Get(target_contents->GetBrowserContext());
+  auto* registry = BraveTalkTabCaptureRegistryFactory::GetForContext(
+      target_contents->GetBrowserContext());
 
   content::DesktopMediaID media_id(
       content::DesktopMediaID::TYPE_WEB_CONTENTS,

@@ -38,4 +38,4 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 };
 }  // namespace brave_talk
 
-#endif  // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_H_
+#endif // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_H_

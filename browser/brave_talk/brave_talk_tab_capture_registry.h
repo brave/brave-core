@@ -9,24 +9,19 @@
 #include <memory>
 #include <vector>
 
-#include "extensions/browser/browser_context_keyed_api_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry
-    : public extensions::BrowserContextKeyedAPI,
-      public MediaCaptureDevicesDispatcher::Observer {
+    : public MediaCaptureDevicesDispatcher::Observer, public KeyedService {
  public:
+  explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
+  ~BraveTalkTabCaptureRegistry() override;
   BraveTalkTabCaptureRegistry(const BraveTalkTabCaptureRegistry&) = delete;
   BraveTalkTabCaptureRegistry& operator=(const BraveTalkTabCaptureRegistry&) =
       delete;
-
-  static BraveTalkTabCaptureRegistry* Get(content::BrowserContext* context);
-
-  // Used by BrowserContextKeyedAPI.
-  static extensions::BrowserContextKeyedAPIFactory<BraveTalkTabCaptureRegistry>*
-  GetFactoryInstance();
 
   std::string AddRequest(content::WebContents* target_contents,
                          content::DesktopMediaID source,
@@ -35,20 +30,12 @@ class BraveTalkTabCaptureRegistry
   bool VerifyRequest(int target_render_process_id, int target_render_frame_id);
 
  private:
-  friend class extensions::BrowserContextKeyedAPIFactory<
-      BraveTalkTabCaptureRegistry>;
   class LiveRequest;
-
-  explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
-  ~BraveTalkTabCaptureRegistry() override;
 
   LiveRequest* FindRequest(const content::WebContents* target_contents) const;
   LiveRequest* FindRequest(int target_render_process_id,
                            int target_render_frame_id) const;
   void KillRequest(LiveRequest* request);
-
-  // Used by BrowserContextKeyedAPI
-  static const char* service_name() { return "BraveTalkTabCaptureRegistry"; }
 
   const raw_ptr<content::BrowserContext> browser_context_;
   std::vector<std::unique_ptr<LiveRequest>> requests_;

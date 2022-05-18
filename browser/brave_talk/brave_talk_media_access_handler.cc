@@ -11,6 +11,7 @@
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
+#include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "chrome/browser/media/webrtc/capture_policy_utils.h"
 #include "chrome/browser/media/webrtc/desktop_media_list.h"
 #include "chrome/browser/media/webrtc/media_stream_capture_indicator.h"
@@ -69,8 +70,9 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
   if (!web_contents)
     return false;
 
-  auto* registry = brave_talk::BraveTalkTabCaptureRegistry::Get(
-      web_contents->GetBrowserContext());
+  auto* registry =
+      brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(
+          web_contents->GetBrowserContext());
   if (!registry || !registry->VerifyRequest(
                        web_contents->GetMainFrame()->GetProcess()->GetID(),
                        web_contents->GetMainFrame()->GetRoutingID())) {
@@ -96,8 +98,9 @@ void BraveTalkMediaAccessHandler::HandleRequest(
     const extensions::Extension* extension) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  auto* registry = brave_talk::BraveTalkTabCaptureRegistry::Get(
-      web_contents->GetBrowserContext());
+  auto* registry =
+      brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(
+          web_contents->GetBrowserContext());
   if (!registry) {
     NOTREACHED();
     std::move(callback).Run(
