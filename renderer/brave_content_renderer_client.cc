@@ -86,7 +86,7 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
-  if (brave_talk::IsDefaultAPIEnabled()) {
+  if (brave_talk::IsJSAPIEnabled()) {
     new brave_talk::BraveTalkRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }

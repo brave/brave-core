@@ -515,7 +515,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (brave_talk::IsDefaultAPIEnabled()) {
+  if (brave_talk::IsJSAPIEnabled()) {
     map->Add<brave_talk::mojom::BraveTalkAdvertise>(
         base::BindRepeating(&BindBraveTalkAdvertiseHost));
   }

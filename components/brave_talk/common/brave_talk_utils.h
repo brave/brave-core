@@ -11,7 +11,7 @@ class GURL;
 namespace brave_talk {
 
 bool IsAllowedHost(const GURL& url);
-bool IsDefaultAPIEnabled();
+bool IsJSAPIEnabled();
 
 }  // namespace brave_talk
 

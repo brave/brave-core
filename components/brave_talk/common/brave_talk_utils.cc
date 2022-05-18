@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/strings/string_piece_forward.h"
 #include "brave/components/brave_search/common/features.h"
+#include "brave/components/brave_talk/common/features.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -33,8 +34,8 @@ bool IsAllowedHost(const GURL& url) {
   return base::Contains(kVettedHosts, host);
 }
 
-bool IsDefaultAPIEnabled() {
-  return true;  // TODO(jharris@brave.com): Add Feature Flag
+bool IsJSAPIEnabled() {
+  return base::FeatureList::IsEnabled(brave_talk::features::kBraveTalkJSAPI);
 }
 
 }  // namespace brave_talk
