@@ -22,6 +22,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
     updateFindInPageVisibility(visible: false)
+    displayPageZoom(visible: false)
 
     if tabManager.selectedTab == nil {
       tabManager.selectTab(tabManager.tabsForCurrentMode.first)
@@ -554,6 +555,9 @@ extension BrowserViewController: ToolbarDelegate {
 
       return url
     }()
+    
+    displayPageZoom(visible: false)
+    
     var activities: [UIActivity] = []
     if let url = selectedTabURL, let tab = tabManager.selectedTab {
       activities = makeShareActivities(for: url, tab: tab, sourceView: view, sourceRect: self.view.convert(self.topToolbar.menuButton.frame, from: self.topToolbar.menuButton.superview), arrowDirection: .up)

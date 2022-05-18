@@ -432,6 +432,20 @@ class SettingsViewController: TableViewController {
     }
 
     display.rows.append(autoCloseTabsRow)
+    
+    // We do NOT persistently save page-zoom settings in Private Browsing
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      display.rows.append(
+        Row(text: Strings.PageZoom.settingsMenuTitle,
+            selection: { [weak self] in
+              let controller = PageZoomSettingsController()
+              self?.navigationController?.pushViewController(controller, animated: true)
+            },
+            image: UIImage(named: "settings-page-zoom") ?? UIImage(),
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self)
+      )
+    }
 
     display.rows.append(contentsOf: [
       .boolRow(

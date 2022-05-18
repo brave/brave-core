@@ -64,6 +64,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   var searchLoader: SearchLoader?
   let alertStackView = UIStackView()  // All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
   var findInPageBar: FindInPageBar?
+  var pageZoomBar: UIHostingController<PageZoomView>?
+  private var pageZoomListener: NSObjectProtocol?
 
   // Single data source used for all favorites vcs
   let backgroundDataSource = NTPDataSource()
@@ -406,12 +408,22 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     Preferences.General.alwaysRequestDesktopSite.observe(from: self)
     Preferences.General.enablePullToRefresh.observe(from: self)
     Preferences.General.mediaAutoBackgrounding.observe(from: self)
+    Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
     Preferences.Privacy.blockAllCookies.observe(from: self)
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
+    
+    pageZoomListener = NotificationCenter.default.addObserver(forName: PageZoomView.notificationName, object: nil, queue: .main) { [weak self] _ in
+      self?.tabManager.allTabs.forEach({
+        guard let url = $0.webView?.url else { return }
+        let zoomLevel = Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
+        $0.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
+      })
+    }
+    
     rewardsEnabledObserveration = rewards.observe(\.isEnabled, options: [.new]) { [weak self] _, _ in
       guard let self = self else { return }
       self.updateRewardsButtonState()
@@ -1305,6 +1317,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       tab.loadRequest(URLRequest(url: url))
 
       recordNavigationInTab(url, visitType: visitType)
+      updateWebViewPageZoom(tab: tab)
     }
   }
 
@@ -1559,6 +1572,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
     let isPage = tab.url?.displayURL?.isWebPage() ?? false
     navigationToolbar.updatePageStatus(isPage)
+    updateWebViewPageZoom(tab: tab)
   }
 
   func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool, isExternal: Bool = false) {
@@ -1673,8 +1687,12 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     let findInPageActivity = FindInPageActivity() { [unowned self] in
       self.updateFindInPageVisibility(visible: true)
     }
+    
+    let pageZoomActivity = PageZoomActivity() { [unowned self] in
+      self.displayPageZoom(visible: true)
+    }
 
-    var activities: [UIActivity] = [findInPageActivity]
+    var activities: [UIActivity] = [findInPageActivity, pageZoomActivity]
 
     // These actions don't apply if we're sharing a temporary document
     if !url.isFileURL {
@@ -1827,6 +1845,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         let findInPageBar = FindInPageBar()
         self.findInPageBar = findInPageBar
         findInPageBar.delegate = self
+        
+        displayPageZoom(visible: false)
         alertStackView.addArrangedSubview(findInPageBar)
 
         findInPageBar.snp.makeConstraints { make in
@@ -1853,6 +1873,57 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       findInPageBar.removeFromSuperview()
       self.findInPageBar = nil
       updateViewConstraints()
+    }
+  }
+  
+  func displayPageZoom(visible: Bool) {
+    if !visible || pageZoomBar != nil {
+      alertStackView.arrangedSubviews.forEach({
+        $0.removeFromSuperview()
+      })
+      
+      updateViewConstraints()
+      pageZoomBar = nil
+      return
+    }
+    
+    guard let webView = tabManager.selectedTab?.webView else { return }
+    let pageZoomBar = UIHostingController(rootView: PageZoomView(webView: webView))
+    
+    pageZoomBar.rootView.dismiss = { [weak self] in
+      guard let self = self else { return }
+      pageZoomBar.view.removeFromSuperview()
+      self.updateViewConstraints()
+      self.pageZoomBar = nil
+    }
+    
+    if let findInPageBar = findInPageBar {
+      findInPageBar.endEditing(true)
+      findInPageBar.removeFromSuperview()
+      self.findInPageBar = nil
+      updateViewConstraints()
+    }
+    
+    alertStackView.arrangedSubviews.forEach({
+      $0.removeFromSuperview()
+    })
+    alertStackView.addArrangedSubview(pageZoomBar.view)
+
+    pageZoomBar.view.snp.makeConstraints { make in
+      make.height.greaterThanOrEqualTo(UIConstants.toolbarHeight)
+      make.edges.equalTo(alertStackView)
+    }
+    
+    updateViewConstraints()
+    self.pageZoomBar = pageZoomBar
+  }
+  
+  private func updateWebViewPageZoom(tab: Tab) {
+    if let currentURL = tab.url {
+      let domain = Domain.getPersistedDomain(for: currentURL)
+      
+      let zoomLevel = domain?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
+      tab.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
     }
   }
 
@@ -2368,6 +2439,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     updateFindInPageVisibility(visible: false, tab: previous)
+    displayPageZoom(visible: false)
     updateTabsBarVisibility()
     selected?.updatePullToRefreshVisibility()
 
@@ -2739,6 +2811,7 @@ extension BrowserViewController: WKUIDelegate {
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
       if let tab = tabManager[webView], tab === tabManager.selectedTab {
         topToolbar.currentURL = tab.url?.displayURL
+        updateWebViewPageZoom(tab: tab)
       }
       return
     }
@@ -3152,6 +3225,12 @@ extension BrowserViewController: PreferencesObserver {
       Preferences.Shields.fingerprintingProtection.key,
       Preferences.Shields.useRegionAdBlock.key:
       tabManager.allTabs.forEach { $0.webView?.reload() }
+    case Preferences.General.defaultPageZoomLevel.key:
+      tabManager.allTabs.forEach({
+        guard let url = $0.webView?.url else { return }
+        let zoomLevel = Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
+        $0.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
+      })
     case Preferences.Shields.httpsEverywhere.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()

@@ -114,6 +114,9 @@ extension Preferences {
 
     /// Whether or not the pull-to-refresh control is added to web views
     static let enablePullToRefresh = Option<Bool>(key: "general.enable-pull-to-refresh", default: true)
+    
+    /// Global Page Zoom-Level
+    static var defaultPageZoomLevel = Option<Double>(key: "general.default-page-zoom-level", default: 1.0)
   }
 
   final class FullScreenCallout {

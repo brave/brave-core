@@ -30,6 +30,7 @@ public final class Domain: NSManagedObject, CRUD {
   @NSManaged public var bookmarks: NSSet?
 
   @NSManaged public var wallet_permittedAccounts: String?
+  @NSManaged public var zoom_level: NSNumber?
 
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
@@ -191,7 +192,7 @@ public final class Domain: NSManagedObject, CRUD {
 
 extension Domain {
   // Currently required, because not `syncable`
-  static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
+  public static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
     return NSEntityDescription.entity(forEntityName: "Domain", in: context)!
   }
 
