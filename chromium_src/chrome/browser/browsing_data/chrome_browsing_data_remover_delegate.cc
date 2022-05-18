@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
 #include "build/build_config.h"
 
 // These files are not supposed to be used on Android and this guard should be
@@ -13,4 +14,10 @@
 #define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_UTILS_H_
 #endif  // BUILDFLAG(IS_ANDROID)
 
+#define kCompromisedCredentials \
+  kIPFSCache:                   \
+  return "kIPFSCache";          \
+  case TracingDataType::kCompromisedCredentials
+
 #include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc"
+#undef kCompromisedCredentials

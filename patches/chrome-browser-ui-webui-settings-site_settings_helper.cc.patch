@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 5bd48f282b397e975c3bd50560ecb63df0628a59..25ff6525191e280434272245e1f141e85d2e8edc 100644
+index 211050f2e19ef477d925eea19d50e3fa5877e016..3777d36feaabee39c7944e9d0a78688cc24c82f7 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -168,6 +168,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::FEDERATED_IDENTITY_API, nullptr},
+@@ -169,6 +169,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::AUTO_DARK_WEB_CONTENT, nullptr},
      {ContentSettingsType::REQUEST_DESKTOP_SITE, nullptr},
+     {ContentSettingsType::GET_DISPLAY_MEDIA_SET_SELECT_ALL_SCREENS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -392,6 +393,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -393,6 +394,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

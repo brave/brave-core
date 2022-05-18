@@ -125,7 +125,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       std::string(), false));
 
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
-  agent.SetContentSettingRules(&content_setting_rules);
+  agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(1, agent.on_content_blocked_count());
@@ -139,6 +139,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           ContentSettingsPattern::FromString("https://example.com"),
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
           std::string(), false));
+  agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_TRUE(agent.AllowAutoplay(true));
 }
 
@@ -156,7 +157,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       std::string(), false));
 
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
-  agent.SetContentSettingRules(&content_setting_rules);
+  agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_TRUE(agent.AllowAutoplay(true));
 
   // Create an exception which allows the autoplay.
@@ -167,6 +168,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           ContentSettingsPattern::FromString("https://example.com"),
           content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
           std::string(), false));
+  agent.SetRendererContentSettingRulesForTest(content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(1, agent.on_content_blocked_count());

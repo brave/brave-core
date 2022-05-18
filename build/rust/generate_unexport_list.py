@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -12,16 +12,18 @@ import sys
 # Set up path to load build_utils.py which enables us to do
 # atomic output that's maximally compatible with ninja.
 sys.path.append(
-  os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir,
-               os.pardir, os.pardir, 'build', 'android', 'gyp'))
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir,
+                 os.pardir, os.pardir, 'build', 'android', 'gyp'))
 from util import build_utils # pylint: disable=no-name-in-module, wrong-import-position
 
 
-def run(exe, input_file, output_file):
+def run(exe, input_file, output_file, disable_bitcode_reader):
   cmdargs = [exe]
   cmdargs += ["--extern-only"]
   cmdargs += ["--no-sort"]
   cmdargs += ["--just-symbol-name"]
+  if disable_bitcode_reader:
+    cmdargs += ["--no-llvm-bc"]
   cmdargs += [input_file]
   job = subprocess.run(cmdargs, capture_output=True, check=False)
   if job.returncode != 0:
@@ -39,10 +41,12 @@ def main():
   parser.add_argument("--bin_path", required=True)
   parser.add_argument("--input", required=True)
   parser.add_argument("--output", required=True)
+  parser.add_argument("--disable_bitcode_reader",
+                      default=False, action='store_true')
   args = parser.parse_args()
 
   exe = os.path.join(args.bin_path, "llvm-nm")
-  return run(exe, args.input, args.output)
+  return run(exe, args.input, args.output, args.disable_bitcode_reader)
 
 
 if __name__ == '__main__':

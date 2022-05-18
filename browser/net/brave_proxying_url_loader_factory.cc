@@ -64,10 +64,10 @@ net::RedirectInfo CreateRedirectInfo(
   // Workaround for a bug in Chromium (crbug.com/1097681).
   // download_utils.cc do not set update_first_party_url_on_redirect to true
   // for new ResourceRequests, but we can mitigate it by looking at
-  // |is_main_frame| which is true for navigations and downloads.
+  // |is_outermost_main_frame| which is true for navigations and downloads.
   const bool update_first_party_url_on_redirect =
       (original_request.update_first_party_url_on_redirect ||
-       original_request.is_main_frame);
+       original_request.is_outermost_main_frame);
   return net::RedirectInfo::ComputeRedirectInfo(
       original_request.method, original_request.url,
       original_request.site_for_cookies,

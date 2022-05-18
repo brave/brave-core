@@ -132,7 +132,7 @@ void BraveWaybackMachineInfoBarContentsView::DontAskButtonPressed() {
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   wayback_spot_graphic_ = new views::ImageView();
   wayback_spot_graphic_->SetProperty(views::kMarginsKey,
-                                    gfx::Insets(8, 34, 8, 24));
+                                     gfx::Insets::TLBR(8, 34, 8, 24));
   AddChildView(wayback_spot_graphic_);
 
   const views::FlexSpecification label_flex_rule =
@@ -146,9 +146,9 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   label->SetProperty(views::kFlexBehaviorKey, label_flex_rule.WithOrder(1));
   label->SetProperty(
       views::kMarginsKey,
-      gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                      DISTANCE_TOAST_LABEL_VERTICAL),
-                  0));
+      gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
+                          DISTANCE_TOAST_LABEL_VERTICAL),
+                      0));
   AddChildView(label);
 
   label = CreateLabel(brave_l10n::GetLocalizedResourceUTF16String(
@@ -156,9 +156,9 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   views_visible_before_checking_.push_back(label);
   label->SetProperty(
       views::kMarginsKey,
-      gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                      DISTANCE_TOAST_LABEL_VERTICAL),
-                  5));
+      gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
+                          DISTANCE_TOAST_LABEL_VERTICAL),
+                      5));
   label->SetElideBehavior(gfx::ELIDE_TAIL);
   label->SetProperty(views::kFlexBehaviorKey, label_flex_rule.WithOrder(2));
   AddChildView(label);
@@ -166,7 +166,7 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   // Add empty view to locate button to last.
   auto* place_holder_view = new views::View;
   views_visible_before_checking_.push_back(place_holder_view);
-  place_holder_view->SetProperty(views::kMarginsKey, gfx::Insets(12, 0));
+  place_holder_view->SetProperty(views::kMarginsKey, gfx::Insets::VH(12, 0));
   place_holder_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
@@ -180,9 +180,9 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   label->SetProperty(views::kFlexBehaviorKey, label_flex_rule);
   label->SetProperty(
       views::kMarginsKey,
-      gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
-                      DISTANCE_TOAST_LABEL_VERTICAL),
-                  0));
+      gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
+                          DISTANCE_TOAST_LABEL_VERTICAL),
+                      0));
   AddChildView(label);
 
   dont_ask_button_ = AddChildView(std::make_unique<views::MdTextButton>(
@@ -200,16 +200,16 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
               base::Unretained(this))));
   views_visible_before_checking_.push_back(fetch_url_button_);
 
-  const gfx::Insets first_button_margin(
-      ChromeLayoutProvider::Get()->GetDistanceMetric(
-          DISTANCE_TOAST_CONTROL_VERTICAL),
-      ChromeLayoutProvider::Get()->GetDistanceMetric(
-          DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL));
+  const auto first_button_margin =
+      gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
+                          DISTANCE_TOAST_CONTROL_VERTICAL),
+                      ChromeLayoutProvider::Get()->GetDistanceMetric(
+                          DISTANCE_RELATED_CONTROL_HORIZONTAL_SMALL));
 
-  const gfx::Insets second_button_margin(
-      ChromeLayoutProvider::Get()->GetDistanceMetric(
-          DISTANCE_TOAST_CONTROL_VERTICAL),
-      0);
+  const auto second_button_margin =
+      gfx::Insets::VH(ChromeLayoutProvider::Get()->GetDistanceMetric(
+                          DISTANCE_TOAST_CONTROL_VERTICAL),
+                      0);
 
   if (views::PlatformStyle::kIsOkButtonLeading) {
     // Move |dont_ask_button_| at the end.

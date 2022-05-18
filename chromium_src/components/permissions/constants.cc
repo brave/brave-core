@@ -5,6 +5,10 @@
 
 #include "components/permissions/constants.h"
 
+#define kChooserBluetoothOverviewURL kChooserBluetoothOverviewURL_ChromeOverride
+#include "src/components/permissions/constants.cc"
+#undef kChooserBluetoothOverviewURL
+
 namespace permissions {
 
 const char kChooserBluetoothOverviewURL[] =

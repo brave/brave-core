@@ -21,12 +21,12 @@
   </message>
   <if expr="is_macosx">
   </if>
-<if expr="chromeos">
+<if expr="chromeos_ash">
   </if>
-<if expr="is_macosx or chromeos">
+<if expr="is_macosx or chromeos_ash">
   </if>
-<if expr="not is_macosx and not chromeos">
+<if expr="not is_macosx and not chromeos_ash">
   </if>
-<if expr="chromeos">
+<if expr="chromeos_ash">
   </if>
 </grit-part>

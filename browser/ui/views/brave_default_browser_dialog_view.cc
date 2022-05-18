@@ -85,7 +85,7 @@ void BraveDefaultBrowserDialogView::CreateChildViews() {
 
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
-      gfx::Insets(kPadding, kPadding, kBottomPadding, kPadding),
+      gfx::Insets::TLBR(kPadding, kPadding, kBottomPadding, kPadding),
       kChildSpacing));
 
   // Use 15px font size for header text.
@@ -150,7 +150,7 @@ bool BraveDefaultBrowserDialogView::ShouldShowCloseButton() const {
 }
 
 void BraveDefaultBrowserDialogView::OnWidgetInitialized() {
-  SetButtonRowInsets(gfx::Insets(0, kPadding, kPadding, kPadding));
+  SetButtonRowInsets(gfx::Insets::TLBR(0, kPadding, kPadding, kPadding));
 }
 
 void BraveDefaultBrowserDialogView::OnCancelButtonClicked() {

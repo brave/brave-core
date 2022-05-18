@@ -5,11 +5,11 @@
   </message>
   <if expr="is_win">
     </if>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     </if>
   <if expr="is_macosx">
     </if>
-  <if expr="is_fuchsia or desktop_linux">
+  <if expr="is_fuchsia or is_linux and not chromeos_ash">
     </if>
 
   </grit-part>

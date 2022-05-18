@@ -11,6 +11,7 @@
 #define ToolbarView BraveToolbarView
 #define BrowserTabStripController BraveBrowserTabStripController
 #define TabStrip BraveTabStrip
+
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 #undef ToolbarView
 #undef BrowserTabStripController

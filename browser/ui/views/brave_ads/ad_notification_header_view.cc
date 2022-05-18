@@ -29,16 +29,16 @@ namespace brave_ads {
 namespace {
 
 // Spacing around each child view
-constexpr gfx::Insets kMargin(/* top */ 0,
-                              /* left */ 0,
-                              /* bottom */ 0,
-                              /* right */ 0);
+constexpr auto kMargin = gfx::Insets::TLBR(/* top */ 0,
+                                           /* left */ 0,
+                                           /* bottom */ 0,
+                                           /* right */ 0);
 
 // Spacing between child views and host views
-constexpr gfx::Insets kInteriorMargin(/* top */ 0,
-                                      /* left */ 10,
-                                      /* bottom */ 0,
-                                      /* right */ 2);
+constexpr auto kInteriorMargin = gfx::Insets::TLBR(/* top */ 0,
+                                                   /* left */ 10,
+                                                   /* bottom */ 0,
+                                                   /* right */ 2);
 
 const int kHeaderViewHeight = 22;
 
@@ -54,10 +54,10 @@ constexpr SkColor kDarkModeTitleColor = SkColorSetRGB(0xe3, 0xe6, 0xec);
 const gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
 const gfx::VerticalAlignment kTitleVerticalAlignment = gfx::ALIGN_BOTTOM;
 
-constexpr gfx::Insets kTitleBorderInsets(/* top */ 11,
-                                         /* left */ 10,
-                                         /* bottom */ 3,
-                                         /* right */ 0);
+constexpr auto kTitleBorderInsets = gfx::Insets::TLBR(/* top */ 11,
+                                                      /* left */ 10,
+                                                      /* bottom */ 3,
+                                                      /* right */ 0);
 
 }  // namespace
 

@@ -16,7 +16,7 @@ public class BraveTabSwitcherModeTTCoordinatorClassAdapter extends BraveClassVis
     public BraveTabSwitcherModeTTCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sBraveTabSwitcherModeTTCoordinatorClassName, "mTabSwitcherModeToolbar");
-        makeProtectedField(sTabSwitcherModeTTCoordinatorClassName, "mTabSwitcherModeToolbar");
+        deleteField(sBraveTabSwitcherModeTTCoordinatorClassName, "mActiveTabSwitcherToolbar");
+        makeProtectedField(sTabSwitcherModeTTCoordinatorClassName, "mActiveTabSwitcherToolbar");
     }
 }

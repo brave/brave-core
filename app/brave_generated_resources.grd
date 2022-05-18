@@ -17,6 +17,7 @@
     <output filename="brave_generated_resources_bs.pak" type="data_package" lang="bs" />
     <output filename="brave_generated_resources_ca.pak" type="data_package" lang="ca" />
     <output filename="brave_generated_resources_cs.pak" type="data_package" lang="cs" />
+    <output filename="brave_generated_resources_cy.pak" type="data_package" lang="cy" />
     <output filename="brave_generated_resources_da.pak" type="data_package" lang="da" />
     <output filename="brave_generated_resources_de.pak" type="data_package" lang="de" />
     <output filename="brave_generated_resources_el.pak" type="data_package" lang="el" />
@@ -260,6 +261,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <!-- Autoplay -->
       <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY" desc="Label for autoplay site settings.">
         Autoplay
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ALLOW" desc="Label for autoplay site settings.">
+        Allow sites to autoplay videos
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_BLOCK" desc="Label for autoplay site settings.">
+	Block sites from autoplaying videos
       </message>
       <message name="IDS_BLOCKED_AUTOPLAY_TITLE" desc="Tooltip and bubble info header text when a page is not allowed to autoplay media.">
         Autoplay was blocked on this page

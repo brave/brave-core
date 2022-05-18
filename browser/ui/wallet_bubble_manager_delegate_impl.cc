@@ -35,8 +35,9 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T> {
                                task_manager_string_id),
         browser_(browser) {}
 
-  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog() override {
-    auto bubble_view = WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog();
+  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
+      const absl::optional<gfx::Rect>& anchor) override {
+    auto bubble_view = WebUIBubbleManagerT<T>::CreateWebUIBubbleDialog(anchor);
     bubble_view_ = bubble_view.get();
     web_ui_contents_for_testing_ = bubble_view_->web_view()->GetWebContents();
     // Checking if we create WalletPanelUI instance of WebUI and

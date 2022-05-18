@@ -154,7 +154,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   const int kTextExtraVerticalPadding = (kTextHeightTarget - text_height) / 2;
   const int kVerticalPadding = kVPadding + kTextExtraVerticalPadding;
   // l, t, r, b
-  rect.Inset(0, kVerticalPadding, 0, kVerticalPadding);
+  rect.Inset(gfx::Insets::TLBR(0, kVerticalPadding, 0, kVerticalPadding));
   // Draw string with ellipsis if it does not fit
   canvas->DrawStringRectWithFlags(utf16_text, base_font, text_color, rect,
                                   gfx::Canvas::TEXT_ALIGN_CENTER);

@@ -11,12 +11,12 @@
 #define SetNonPersonalProfilePrefs virtual SetNonPersonalProfilePrefs
 #define IsAllowedProfilePath virtual IsAllowedProfilePath
 #define LoadProfileByPath virtual LoadProfileByPath
-#define BRAVE_PROFILE_MANAGER_H     \
- private:                           \
-  friend class BraveProfileManager; \
-                                    \
- public:
+#define TestingProfileManager \
+  TestingProfileManager;      \
+  friend class BraveProfileManager;
+
 #include "src/chrome/browser/profiles/profile_manager.h"
+#undef TestingProfileManager
 #undef LoadProfileByPath
 #undef IsAllowedProfilePath
 #undef SetNonPersonalProfilePrefs

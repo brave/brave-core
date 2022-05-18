@@ -5,6 +5,7 @@
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"

@@ -15,3 +15,13 @@ bool ContentSettingsAgentImpl::IsAllowlistedForContentSettings(               \
 
 #include "src/components/content_settings/renderer/content_settings_agent_impl.cc"
 #undef IsAllowlistedForContentSettings
+
+namespace content_settings {
+
+ContentSetting GetContentSettingFromRulesImpl(
+    const ContentSettingsForOneType& rules,
+    const GURL& secondary_url) {
+  return GetContentSettingFromRules(rules, secondary_url);
+}
+
+}  // namespace content_settings

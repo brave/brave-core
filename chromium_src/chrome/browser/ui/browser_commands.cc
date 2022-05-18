@@ -9,8 +9,10 @@
 #include "chrome/browser/ui/browser_commands.h"
 
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
+#define GetReadingListModel GetReadingListModel_ChromiumImpl
 #include "src/chrome/browser/ui/browser_commands.cc"
 #undef ReloadBypassingCache
+#undef GetReadingListModel
 
 namespace chrome {
 
@@ -22,6 +24,10 @@ void ReloadBypassingCache(Browser* browser, WindowOpenDisposition disposition) {
     brave::NewTorConnectionForSite(browser);
   else
     ReloadBypassingCache_ChromiumImpl(browser, disposition);
+}
+
+ReadingListModel* GetReadingListModel(Browser* browser) {
+  return nullptr;
 }
 
 }  // namespace chrome

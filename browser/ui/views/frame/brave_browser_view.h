@@ -74,6 +74,7 @@ class BraveBrowserView : public BrowserView {
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   void ShowBraveVPNBubble() override;
+  void MaybeShowReadingListInSidePanelIPH() override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();

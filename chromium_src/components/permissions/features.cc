@@ -17,6 +17,9 @@ const base::Feature kPermissionLifetime{"PermissionLifetime",
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPermissionOnDeviceNotificationPredictions,
      base::FEATURE_DISABLED_BY_DEFAULT},
+#if !BUILDFLAG(IS_ANDROID)
+    {kPermissionsPostPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 }});
 
 }  // namespace features

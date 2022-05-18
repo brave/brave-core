@@ -17,10 +17,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -59,37 +57,6 @@ namespace {
 
 BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 
-// Content Settings are only sent to the main frame currently. Chrome may fix
-// this at some point, but for now we do this as a work-around. You can verify
-// if this is fixed by running the following test: npm run test --
-// brave_browser_tests --filter=BraveContentSettingsAgentImplBrowserTest.*
-// Chrome seems to also have a bug with RenderFrameHostChanged not updating the
-// content settings so this is fixed here too. That case is covered in tests by:
-// npm run test -- brave_browser_tests
-// --filter=BraveContentSettingsAgentImplBrowserTest.*
-void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
-  web_contents->ForEachRenderFrameHost(
-      base::BindRepeating([](content::RenderFrameHost* frame) {
-        if (!frame->IsRenderFrameLive())
-          return;
-
-        IPC::ChannelProxy* channel = frame->GetProcess()->GetChannel();
-        // channel might be NULL in tests.
-        if (channel) {
-          const auto* map = HostContentSettingsMapFactory::GetForProfile(
-              frame->GetBrowserContext());
-
-          RendererContentSettingRules rules;
-          GetRendererContentSettingRules(map, &rules);
-
-          mojo::AssociatedRemote<chrome::mojom::RendererConfiguration>
-              rc_interface;
-          channel->GetRemoteAssociatedInterface(&rc_interface);
-          rc_interface->SetContentSettingRules(rules);
-        }
-      }));
-}
-
 }  // namespace
 
 BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
@@ -115,11 +82,6 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
             brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
       }
     }
-  }
-
-  WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
-  if (web_contents) {
-    UpdateContentSettingsToRendererFrames(web_contents);
   }
 }
 
