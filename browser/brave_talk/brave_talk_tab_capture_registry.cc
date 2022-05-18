@@ -8,16 +8,11 @@
 #include <memory>
 
 #include "base/lazy_instance.h"
-#include "chrome/common/extensions/api/tab_capture.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/desktop_streams_registry.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents_observer.h"
-
-namespace tab_capture = extensions::api::tab_capture;
-using tab_capture::TabCaptureState;
 
 namespace brave_talk {
 
