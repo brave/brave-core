@@ -13,22 +13,27 @@
 namespace brave_talk {
 class BraveTalkTabCaptureRegistry;
 
-class BraveTalkTabCaptureRegistryFactory : public BrowserContextKeyedServiceFactory {
+class BraveTalkTabCaptureRegistryFactory
+    : public BrowserContextKeyedServiceFactory {
  public:
-  BraveTalkTabCaptureRegistryFactory(const BraveTalkTabCaptureRegistryFactory&) = delete;
-  BraveTalkTabCaptureRegistryFactory& operator=(const BraveTalkTabCaptureRegistryFactory&) = delete;
+  BraveTalkTabCaptureRegistryFactory(
+      const BraveTalkTabCaptureRegistryFactory&) = delete;
+  BraveTalkTabCaptureRegistryFactory& operator=(
+      const BraveTalkTabCaptureRegistryFactory&) = delete;
   ~BraveTalkTabCaptureRegistryFactory() override;
 
-  static BraveTalkTabCaptureRegistry* GetForContext(content::BrowserContext* context);
+  static BraveTalkTabCaptureRegistry* GetForContext(
+      content::BrowserContext* context);
   static BraveTalkTabCaptureRegistryFactory* GetInstance();
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
 
  private:
-  friend struct base::DefaultSingletonTraits<BraveTalkTabCaptureRegistryFactory>;
+  friend struct base::DefaultSingletonTraits<
+      BraveTalkTabCaptureRegistryFactory>;
   BraveTalkTabCaptureRegistryFactory();
 };
 }  // namespace brave_talk
 
-#endif // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_FACTORY_H_

@@ -15,7 +15,8 @@
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry
-    : public MediaCaptureDevicesDispatcher::Observer, public KeyedService {
+    : public MediaCaptureDevicesDispatcher::Observer,
+      public KeyedService {
  public:
   explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
   ~BraveTalkTabCaptureRegistry() override;

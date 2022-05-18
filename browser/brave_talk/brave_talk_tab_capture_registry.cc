@@ -17,7 +17,8 @@
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry::LiveRequest
-    : public content::WebContentsObserver, public KeyedService {
+    : public content::WebContentsObserver,
+      public KeyedService {
  public:
   LiveRequest(content::WebContents* target_contents,
               BraveTalkTabCaptureRegistry* registry)

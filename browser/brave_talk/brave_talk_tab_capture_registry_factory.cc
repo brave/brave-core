@@ -14,7 +14,8 @@
 namespace brave_talk {
 
 // static
-BraveTalkTabCaptureRegistryFactory* BraveTalkTabCaptureRegistryFactory::GetInstance() {
+BraveTalkTabCaptureRegistryFactory*
+BraveTalkTabCaptureRegistryFactory::GetInstance() {
   return base::Singleton<BraveTalkTabCaptureRegistryFactory>::get();
 }
 
@@ -29,7 +30,8 @@ BraveTalkTabCaptureRegistryFactory::BraveTalkTabCaptureRegistryFactory()
           "BraveTalkTabCaptureRegistry",
           BrowserContextDependencyManager::GetInstance()) {}
 
-BraveTalkTabCaptureRegistryFactory::~BraveTalkTabCaptureRegistryFactory() = default;
+BraveTalkTabCaptureRegistryFactory::~BraveTalkTabCaptureRegistryFactory() =
+    default;
 
 KeyedService* BraveTalkTabCaptureRegistryFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
