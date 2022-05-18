@@ -89,7 +89,67 @@ const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
      {},
      {},
      "ETH",
-     "Ethereum",
+     "Ether",
+     18,
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+    {brave_wallet::mojom::kPolygonMainnetChainId,
+     "Polygon Mainnet",
+     {"https://polygonscan.com"},
+     {},
+     {},
+     "MATIC",
+     "MATIC",
+     18,
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+    {brave_wallet::mojom::kBinanceSmartChainMainnetChainId,
+     "Binance Smart Chain Mainnet",
+     {"https://bscscan.com"},
+     {},
+     {"https://bsc-dataseed1.binance.org"},
+     "BNB",
+     "Binance Chain Native Token",
+     18,
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+    {brave_wallet::mojom::kCeloMainnetChainId,
+     "Celo Mainnet",
+     {"https://explorer.celo.org"},
+     {},
+     {"https://forno.celo.org"},
+     "CELO",
+     "CELO",
+     18,
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+    {brave_wallet::mojom::kAvalancheMainnetChainId,
+     "Avalanche C-Chain",
+     {"https://snowtrace.io"},
+     {},
+     {"https://api.avax.network/ext/bc/C/rpc"},
+     "AVAX",
+     "Avalanche",
+     18,
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+    {brave_wallet::mojom::kFantomMainnetChainId,
+     "Fantom Opera",
+     {"https://ftmscan.com"},
+     {},
+     {"https://rpc.ftm.tools"},
+     "FTM",
+     "Fantom",
+     18,
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
+    {brave_wallet::mojom::kOptimismMainnetChainId,
+     "Optimism",
+     {"https://optimistic.etherscan.io"},
+     {},
+     {"https://mainnet.optimism.io"},
+     "ETH",
+     "Ether",
      18,
      brave_wallet::mojom::CoinType::ETH,
      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
@@ -249,6 +309,10 @@ constexpr const char kEnsRegistryContractAddress[] =
     "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
+  if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+    return kPolygonMainnetEndpoint + GetInfuraProjectID();
+  }
+
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
   if (subdomain.empty())
     return std::string();
@@ -917,11 +981,8 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 }
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
-  if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    return GURL(kPolygonMainnetEndpoint + GetInfuraProjectID());
-  }
-
-  if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+  if (chain_id == brave_wallet::mojom::kMainnetChainId ||
+      chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
     return GURL(GetInfuraURLForKnownChainId(chain_id));
   }
 
