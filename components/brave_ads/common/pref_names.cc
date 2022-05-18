@@ -43,7 +43,7 @@ const char kAdNotificationDidFallbackToCustom[] =
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 11;
+const int kCurrentVersionNumber = 12;
 
 }  // namespace prefs
 

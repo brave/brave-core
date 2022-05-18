@@ -104,6 +104,8 @@ class Client final {
 
   void RemoveAllHistory();
 
+  bool is_mutated() const { return is_mutated_; }
+
  private:
   void Save();
   void OnSaved(const bool success);
@@ -114,6 +116,8 @@ class Client final {
   bool FromJson(const std::string& json);
 
   std::unique_ptr<ClientInfo> client_;
+
+  bool is_mutated_ = false;
 
   bool is_initialized_ = false;
 

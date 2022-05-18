@@ -6,10 +6,12 @@
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <utility>
 
 #include "base/check_op.h"
 #include "base/guid.h"
+#include "base/hash/hash.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
@@ -24,6 +26,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -33,6 +36,20 @@ namespace {
 ConfirmationsState* g_confirmations_state_instance = nullptr;
 
 constexpr char kConfirmationsFilename[] = "confirmations.json";
+
+uint64_t GenerateHash(const std::string& value) {
+  return static_cast<uint64_t>(base::PersistentHash(value));
+}
+
+void SetHash(const std::string& value) {
+  AdsClientHelper::Get()->SetUint64Pref(prefs::kConfirmationsHash,
+                                        GenerateHash(value));
+}
+
+bool IsMutated(const std::string& value) {
+  return AdsClientHelper::Get()->GetUint64Pref(prefs::kConfirmationsHash) !=
+         GenerateHash(value);
+}
 
 }  // namespace
 
@@ -92,6 +109,8 @@ void ConfirmationsState::Load() {
           is_initialized_ = true;
         }
 
+        is_mutated_ = IsMutated(ToJson());
+
         callback_(/* success */ true);
       });
 }
@@ -104,6 +123,9 @@ void ConfirmationsState::Save() {
   BLOG(9, "Saving confirmations state");
 
   const std::string json = ToJson();
+
+  SetHash(json);
+
   AdsClientHelper::Get()->Save(
       kConfirmationsFilename, json, [](const bool success) {
         if (!success) {

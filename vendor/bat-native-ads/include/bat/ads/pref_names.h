@@ -44,6 +44,9 @@ extern const char kNextTokenRedemptionAt[];
 extern const char kHasMigratedConversionState[];
 extern const char kHasMigratedRewardsState[];
 
+extern const char kConfirmationsHash[];
+extern const char kClientHash[];
+
 }  // namespace prefs
 }  // namespace ads
 

@@ -202,6 +202,8 @@ source_set("ads") {
     "src/bat/ads/internal/account/user_data/created_at_timestamp_user_data.h",
     "src/bat/ads/internal/account/user_data/locale_user_data.cc",
     "src/bat/ads/internal/account/user_data/locale_user_data.h",
+    "src/bat/ads/internal/account/user_data/mutated_user_data.cc",
+    "src/bat/ads/internal/account/user_data/mutated_user_data.h",
     "src/bat/ads/internal/account/user_data/odyssey_user_data.cc",
     "src/bat/ads/internal/account/user_data/odyssey_user_data.h",
     "src/bat/ads/internal/account/user_data/platform_user_data.cc",
