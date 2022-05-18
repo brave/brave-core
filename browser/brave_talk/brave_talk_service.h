@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_H_
 #define BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_H_
 
+#include <string>
+
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/web_contents_observer.h"
 

@@ -34,7 +34,7 @@ bool IsAllowedHost(const GURL& url) {
 }
 
 bool IsDefaultAPIEnabled() {
-  return true;  // TODO: Add Feature Flag
+  return true;  // TODO(jharris@brave.com): Add Feature Flag
 }
 
 }  // namespace brave_talk

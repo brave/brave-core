@@ -6,6 +6,7 @@
 #include "brave/browser/brave_talk/brave_talk_service.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/callback.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"

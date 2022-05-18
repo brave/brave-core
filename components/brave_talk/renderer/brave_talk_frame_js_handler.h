@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_ADVERTISE_JS_HANDLER_H_
-#define BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_ADVERTISE_JS_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_FRAME_JS_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_FRAME_JS_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -57,4 +57,4 @@ class BraveTalkFrameJSHandler {
 
 }  // namespace brave_talk
 
-#endif  // BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_ADVERTISE_JS_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_FRAME_JS_HANDLER_H_

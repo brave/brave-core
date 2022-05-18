@@ -5,15 +5,14 @@
 
 #include "brave/components/brave_talk/browser/brave_talk_advertise_host.h"
 
-#include "base/bind.h"
-#include "brave/components/brave_search/browser/brave_search_default_host.h"
-
 #include <string>
 #include <utility>
 
+#include "base/bind.h"
 #include "base/logging.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "brave/browser/brave_talk/brave_talk_service_factory.h"
+#include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_talk/common/features.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"

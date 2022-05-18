@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_TAB_CAPTURE_REGISTRY_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "components/keyed_service/core/keyed_service.h"
