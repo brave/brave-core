@@ -280,7 +280,7 @@ struct WalletPanelView: View {
     }
     .onAppear {
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
-      if let request = permissionRequestManager.pendingRequests(for: origin).first {
+      if let request = permissionRequestManager.pendingRequests(for: origin, coinType: .eth).first {
         presentWalletWithContext(.requestEthererumPermissions(request))
       } else {
         cryptoStore.prepare()

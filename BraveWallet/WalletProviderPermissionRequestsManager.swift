@@ -66,8 +66,8 @@ public class WalletProviderPermissionRequestsManager {
   }
   
   /// Returns a list of pending requests waiting for a given origin
-  public func pendingRequests(for origin: URLOrigin) -> [WebpagePermissionRequest] {
-    requests.filter({ $0.requestingOrigin == origin })
+  public func pendingRequests(for origin: URLOrigin, coinType: BraveWallet.CoinType) -> [WebpagePermissionRequest] {
+    requests.filter({ $0.requestingOrigin == origin && $0.coinType == coinType })
   }
   
   /// Cancels an in-flight request without executing any decision
