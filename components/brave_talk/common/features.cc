@@ -7,11 +7,9 @@
 
 #include "base/feature_list.h"
 
-namespace brave_talk {
-namespace features {
+namespace brave_talk::features {
 
 const base::Feature kBraveTalkJSAPI{"BraveTalkJSAPI",
                                     base::FEATURE_ENABLED_BY_DEFAULT};
 
-}  // namespace features
-}  // namespace brave_talk
+}  // namespace brave_talk::features

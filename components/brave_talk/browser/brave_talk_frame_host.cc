@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_talk/browser/brave_talk_advertise_host.h"
+#include "brave/components/brave_talk/browser/brave_talk_frame_host.h"
 
 #include <string>
 #include <utility>
@@ -22,13 +22,13 @@
 
 namespace brave_talk {
 
-BraveTalkAdvertiseHost::BraveTalkAdvertiseHost(content::WebContents* contents,
+BraveTalkFrameHost::BraveTalkFrameHost(content::WebContents* contents,
                                                const std::string& host)
     : contents_(contents), host_(host) {}
 
-BraveTalkAdvertiseHost::~BraveTalkAdvertiseHost() = default;
+BraveTalkFrameHost::~BraveTalkFrameHost() = default;
 
-void BraveTalkAdvertiseHost::BeginAdvertiseShareDisplayMedia(
+void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
     BeginAdvertiseShareDisplayMediaCallback callback) {
   auto* service =
       BraveTalkServiceFactory::GetForContext(contents_->GetBrowserContext());

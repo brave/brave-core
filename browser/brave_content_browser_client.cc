@@ -52,7 +52,7 @@
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_talk/browser/brave_talk_advertise_host.h"
+#include "brave/components/brave_talk/browser/brave_talk_frame_host.h"
 #include "brave/components/brave_talk/common/brave_talk_utils.h"
 #include "brave/components/brave_talk/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -362,15 +362,15 @@ void BindBraveSearchDefaultHost(
   }
 }
 
-void BindBraveTalkAdvertiseHost(
+void BindBraveTalkFrameHost(
     content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_talk::mojom::BraveTalkAdvertise> receiver) {
+    mojo::PendingReceiver<brave_talk::mojom::BraveTalkFrame> receiver) {
   const std::string host = frame_host->GetLastCommittedURL().host();
 
   content::WebContents* contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_talk::BraveTalkAdvertiseHost>(contents, host),
+      std::make_unique<brave_talk::BraveTalkFrameHost>(contents, host),
       std::move(receiver));
 }
 
@@ -516,8 +516,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
   if (brave_talk::IsJSAPIEnabled()) {
-    map->Add<brave_talk::mojom::BraveTalkAdvertise>(
-        base::BindRepeating(&BindBraveTalkAdvertiseHost));
+    map->Add<brave_talk::mojom::BraveTalkFrame>(
+        base::BindRepeating(&BindBraveTalkFrameHost));
   }
 
   if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {

@@ -31,12 +31,12 @@ BraveTalkFrameJSHandler::BraveTalkFrameJSHandler(
 BraveTalkFrameJSHandler::~BraveTalkFrameJSHandler() = default;
 
 bool BraveTalkFrameJSHandler::EnsureConnected() {
-  if (!brave_talk_advertise_.is_bound()) {
+  if (!brave_talk_frame_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
-        brave_talk_advertise_.BindNewPipeAndPassReceiver());
+        brave_talk_frame_.BindNewPipeAndPassReceiver());
   }
 
-  return brave_talk_advertise_.is_bound();
+  return brave_talk_frame_.is_bound();
 }
 
 void BraveTalkFrameJSHandler::AddJavaScriptObjectToFrame(
@@ -53,7 +53,7 @@ void BraveTalkFrameJSHandler::AddJavaScriptObjectToFrame(
 
 void BraveTalkFrameJSHandler::ResetRemote(content::RenderFrame* render_frame) {
   render_frame_ = render_frame;
-  brave_talk_advertise_.reset();
+  brave_talk_frame_.reset();
   EnsureConnected();
 }
 
@@ -75,7 +75,7 @@ void BraveTalkFrameJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, brave_obj, "beginAdvertiseShareDisplayMedia",
       base::BindRepeating(
-          &BraveTalkFrameJSHandler::GetCanSetDefaultSearchProvider,
+          &BraveTalkFrameJSHandler::BeginAdvertiseShareDisplayMedia,
           base::Unretained(this), isolate));
 }
 
@@ -94,7 +94,7 @@ void BraveTalkFrameJSHandler::BindFunctionToObject(
       .Check();
 }
 
-v8::Local<v8::Promise> BraveTalkFrameJSHandler::GetCanSetDefaultSearchProvider(
+v8::Local<v8::Promise> BraveTalkFrameJSHandler::BeginAdvertiseShareDisplayMedia(
     v8::Isolate* isolate) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
@@ -107,7 +107,7 @@ v8::Local<v8::Promise> BraveTalkFrameJSHandler::GetCanSetDefaultSearchProvider(
     promise_resolver->Reset(isolate, resolver.ToLocalChecked());
     auto context_old = std::make_unique<v8::Global<v8::Context>>(
         isolate, isolate->GetCurrentContext());
-    brave_talk_advertise_->BeginAdvertiseShareDisplayMedia(base::BindOnce(
+    brave_talk_frame_->BeginAdvertiseShareDisplayMedia(base::BindOnce(
         &BraveTalkFrameJSHandler::OnDeviceIdReceived, base::Unretained(this),
         std::move(promise_resolver), isolate, std::move(context_old)));
 

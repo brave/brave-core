@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_talk/common/brave_talk_advertise.mojom.h"
+#include "brave/components/brave_talk/common/brave_talk_frame.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -42,8 +42,7 @@ class BraveTalkFrameJSHandler {
   bool EnsureConnected();
 
   // A function to be called from JS
-  v8::Local<v8::Promise> GetCanSetDefaultSearchProvider(v8::Isolate* isolate);
-  void SetIsDefaultSearchProvider(v8::Isolate* isolate);
+  v8::Local<v8::Promise> BeginAdvertiseShareDisplayMedia(v8::Isolate* isolate);
 
   void OnDeviceIdReceived(
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
@@ -52,7 +51,7 @@ class BraveTalkFrameJSHandler {
       const std::string& result);
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
-  mojo::Remote<brave_talk::mojom::BraveTalkAdvertise> brave_talk_advertise_;
+  mojo::Remote<brave_talk::mojom::BraveTalkFrame> brave_talk_frame_;
 };
 
 }  // namespace brave_talk
