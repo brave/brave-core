@@ -11,6 +11,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -206,6 +207,31 @@ void RewardsBrowserTestContextHelper::LoadURL(GURL url) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser_, url));
   auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
+}
+
+void RewardsBrowserTestContextHelper::LoadRewardsPage() {
+  GURL url = rewards_browsertest_util::GetRewardsUrl();
+  auto* tab_strip = browser_->tab_strip_model();
+
+  // Activate the rewards page if it's already loaded into a tab.
+  bool found = false;
+  for (int index = 0; index < tab_strip->count(); ++index) {
+    auto* contents = tab_strip->GetWebContentsAt(index);
+    if (contents->GetLastCommittedURL() == url) {
+      found = true;
+      tab_strip->ActivateTabAt(index);
+      break;
+    }
+  }
+
+  // Otherwise, load the rewards page into a new tab.
+  if (!found) {
+    LoadURL(url);
+  }
+
+  // Wait for the content to be fully rendered before continuing.
+  rewards_browsertest_util::WaitForElementToAppear(
+      tab_strip->GetActiveWebContents(), "[data-test-id=rewards-balance-text]");
 }
 
 void RewardsBrowserTestContextHelper::ReloadCurrentSite() {
