@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 // images
 import EyeOffSvg from '../../../../../assets/svg-icons/eye-off-icon.svg'
-import FrostedGlassRecoveryPhrase from '../images/frosted-glass-recovery-phrase.png'
+import FrostedGlassRecoveryPhrase from './images/frosted-glass-recovery-phrase.png'
 
 export const RecoveryPhraseContainer = styled.div`
   display: flex;
@@ -20,7 +20,9 @@ export const RecoveryPhraseContainer = styled.div`
   padding-top: 16px;
 `
 
-export const RecoveryBubble = styled.div`
+export const RecoveryBubble = styled.div<{
+  verificationModeEnabled?: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,7 +31,10 @@ export const RecoveryBubble = styled.div`
   padding: 5px 0px;
   border-radius: 4px;
   flex-basis: 100px;
-  margin-bottom: 6px;
+  margin-bottom: ${(p) => p.verificationModeEnabled
+    ? 24
+    : 16
+  }px;
 `
 
 export const RecoveryBubbleText = styled.span`

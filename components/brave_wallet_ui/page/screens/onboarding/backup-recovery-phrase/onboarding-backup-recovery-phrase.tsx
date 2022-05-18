@@ -43,7 +43,7 @@ import {
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
-import { RecoveryPhrase } from './components/recovery-phrase'
+import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
 import {
   OnboardingSteps,
   OnboardingStepsNavigation
