@@ -44,13 +44,23 @@ export const Erc20ApproveTransactionInfo = ({ onToggleEditGas }: Erc20Transactio
         .formatAsAsset(6, selectedNetwork.symbol)}
     </TransactionTypeText>
 
-    <TransactionText
-      hasError={transactionDetails.insufficientFundsError}
-    >
-      {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
+    <TransactionText hasError={false}>
       {new Amount(transactionDetails.gasFeeFiat)
         .formatAsFiat(defaultCurrencies.fiat)}
     </TransactionText>
+
+    {transactionDetails.insufficientFundsForGasError &&
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientFundsForGas')}
+      </TransactionText>
+    }
+
+    {transactionDetails.insufficientFundsForGasError === false &&
+      transactionDetails.insufficientFundsError &&
+        <TransactionText hasError={true}>
+          {getLocale('braveWalletSwapInsufficientBalance')}
+        </TransactionText>
+    }
 
     <Divider />
 

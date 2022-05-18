@@ -175,8 +175,8 @@ describe('Amount class', () => {
       expect(Amount.empty().gt('3')).toBeFalsy()
 
       // Compare with undefined amount
-      // OK: 3 > undefined == true
-      expect(new Amount('3').gt(Amount.empty())).toBeTruthy()
+      // OK: 3 > undefined == false
+      expect(new Amount('3').gt(Amount.empty())).toBeFalsy()
     })
 
     it('should return correct comparison for .gte()', () => {
@@ -206,11 +206,11 @@ describe('Amount class', () => {
       expect(new Amount('0x2').lt(new Amount('0x3'))).toBeTruthy()
 
       // Compare with undefined amount
-      // OK: undefined < 3 == true
-      expect(Amount.empty().lt('3')).toBeTruthy()
+      // OK: undefined < 3 == false
+      expect(Amount.empty().lt('3')).toBeFalsy()
 
       // Compare with undefined amount
-      // OK: 3 < undefined == true
+      // OK: 3 < undefined == false
       expect(new Amount('3').lt(Amount.empty())).toBeFalsy()
     })
 
