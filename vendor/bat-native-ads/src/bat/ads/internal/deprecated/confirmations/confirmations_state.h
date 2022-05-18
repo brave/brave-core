@@ -57,6 +57,8 @@ class ConfirmationsState final {
     return unblinded_payment_tokens_.get();
   }
 
+  bool is_mutated() const { return is_mutated_; }
+
  private:
   std::string ToJson();
   bool FromJson(const std::string& json);
@@ -73,6 +75,8 @@ class ConfirmationsState final {
 
   bool ParseUnblindedPaymentTokensFromDictionary(
       base::DictionaryValue* dictionary);
+
+  bool is_mutated_ = false;
 
   bool is_initialized_ = false;
   InitializeCallback callback_;

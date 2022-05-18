@@ -14,7 +14,7 @@ namespace ads {
 namespace user_data {
 
 // A host and guest relationship is a binary that is seen throughout The
-// Odyssey, especially during Odysseus' long journey
+// Odyssey, especially during Odysseus' long journey.
 base::DictionaryValue GetOdyssey();
 
 }  // namespace user_data

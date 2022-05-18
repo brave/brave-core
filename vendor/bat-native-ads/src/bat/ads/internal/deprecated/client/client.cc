@@ -10,6 +10,7 @@
 #include <functional>
 
 #include "base/check_op.h"
+#include "base/hash/hash.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
@@ -23,6 +24,7 @@
 #include "bat/ads/internal/serving/serving_features.h"
 #include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_features.h"
 #include "bat/ads/internal/targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "bat/ads/pref_names.h"
 #include "build/build_config.h"
 
 namespace ads {
@@ -76,6 +78,20 @@ CategoryContentOptActionType ToggleOptOutActionType(
   }
 
   return CategoryContentOptActionType::kOptOut;
+}
+
+uint64_t GenerateHash(const std::string& value) {
+  return static_cast<uint64_t>(base::PersistentHash(value));
+}
+
+void SetHash(const std::string& value) {
+  AdsClientHelper::Get()->SetUint64Pref(prefs::kClientHash,
+                                        GenerateHash(value));
+}
+
+bool IsMutated(const std::string& value) {
+  return AdsClientHelper::Get()->GetUint64Pref(prefs::kClientHash) !=
+         GenerateHash(value);
 }
 
 }  // namespace
@@ -535,6 +551,9 @@ void Client::Save() {
   BLOG(9, "Saving client state");
 
   auto json = client_->ToJson();
+
+  SetHash(json);
+
   auto callback = std::bind(&Client::OnSaved, this, std::placeholders::_1);
   AdsClientHelper::Get()->Save(kClientFilename, json, callback);
 }
@@ -580,6 +599,8 @@ void Client::OnLoaded(const bool success, const std::string& json) {
     is_initialized_ = true;
   }
 
+  is_mutated_ = IsMutated(client_->ToJson());
+
   callback_(/* success  */ true);
 }
 
@@ -591,7 +612,6 @@ bool Client::FromJson(const std::string& json) {
   }
 
   client_.reset(new ClientInfo(client));
-  Save();
 
   return true;
 }

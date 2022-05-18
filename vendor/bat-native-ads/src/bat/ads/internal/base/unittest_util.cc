@@ -298,6 +298,9 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
 
   mock->SetBooleanPref(prefs::kHasMigratedConversionState, true);
   mock->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
+
+  mock->SetUint64Pref(prefs::kConfirmationsHash, 0);
+  mock->SetUint64Pref(prefs::kClientHash, 0);
 }
 
 }  // namespace

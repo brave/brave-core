@@ -66,5 +66,9 @@ const char kHasMigratedConversionState[] =
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
 
+// Stores hash
+const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
+const char kClientHash[] = "brave.brave_ads.client.hash";
+
 }  // namespace prefs
 }  // namespace ads

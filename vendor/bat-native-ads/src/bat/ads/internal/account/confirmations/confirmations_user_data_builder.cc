@@ -12,6 +12,7 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 #include "bat/ads/internal/account/user_data/created_at_timestamp_user_data.h"
 #include "bat/ads/internal/account/user_data/locale_user_data.h"
+#include "bat/ads/internal/account/user_data/mutated_user_data.h"
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 #include "bat/ads/internal/account/user_data/platform_user_data.h"
 #include "bat/ads/internal/account/user_data/studies_user_data.h"
@@ -50,6 +51,9 @@ void ConfirmationsUserDataBuilder::Build(
 
         const base::DictionaryValue locale_user_data = user_data::GetLocale();
         user_data.MergeDictionary(&locale_user_data);
+
+        const base::DictionaryValue mutated_user_data = user_data::GetMutated();
+        user_data.MergeDictionary(&mutated_user_data);
 
         const base::DictionaryValue odyssey_user_data = user_data::GetOdyssey();
         user_data.MergeDictionary(&odyssey_user_data);
