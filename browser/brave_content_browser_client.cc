@@ -367,7 +367,8 @@ void BindBraveTalkAdvertiseHost(
     mojo::PendingReceiver<brave_talk::mojom::BraveTalkAdvertise> receiver) {
   const std::string host = frame_host->GetLastCommittedURL().host();
 
-  content::WebContents* contents = content::WebContents::FromRenderFrameHost(frame_host);
+  content::WebContents* contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_talk::BraveTalkAdvertiseHost>(contents, host),
       std::move(receiver));

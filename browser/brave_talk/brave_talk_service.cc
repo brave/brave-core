@@ -14,8 +14,8 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_process_host.h"
+#include "content/public/browser/web_contents.h"
 
 namespace brave_talk {
 

@@ -2,7 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
+
 #ifndef BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_MEDIA_ACCESS_HANDLER_H_
 #define BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_MEDIA_ACCESS_HANDLER_H_
 
@@ -50,7 +50,7 @@ class BraveTalkMediaAccessHandler : public CaptureAccessHandlerBase {
                      const content::MediaStreamRequest& request,
                      content::MediaResponseCallback callback);
 
-   BraveTalkTabCaptureRegistry* GetRegistry(content::WebContents* contents);
+  BraveTalkTabCaptureRegistry* GetRegistry(content::WebContents* contents);
 };
 
 }  // namespace brave_talk

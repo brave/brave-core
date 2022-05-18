@@ -19,11 +19,10 @@ namespace brave_talk {
 class BraveTalkRenderFrameObserver : public content::RenderFrameObserver {
  public:
   explicit BraveTalkRenderFrameObserver(content::RenderFrame* render_frame,
-                                          int32_t world_id);
-  BraveTalkRenderFrameObserver(const BraveTalkRenderFrameObserver&) =
+                                        int32_t world_id);
+  BraveTalkRenderFrameObserver(const BraveTalkRenderFrameObserver&) = delete;
+  BraveTalkRenderFrameObserver& operator=(const BraveTalkRenderFrameObserver&) =
       delete;
-  BraveTalkRenderFrameObserver& operator=(
-      const BraveTalkRenderFrameObserver&) = delete;
   ~BraveTalkRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
@@ -39,6 +38,6 @@ class BraveTalkRenderFrameObserver : public content::RenderFrameObserver {
   int32_t world_id_;
 };
 
-}  // namespace brave_search
+}  // namespace brave_talk
 
-#endif // BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_RENDER_FRAME_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_RENDER_FRAME_OBSERVER_H_

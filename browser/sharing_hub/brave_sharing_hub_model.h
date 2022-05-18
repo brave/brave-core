@@ -12,7 +12,7 @@
 namespace content {
 class BrowserContext;
 class WebContents;
-}
+}  // namespace content
 
 namespace sharing_hub {
 class BraveSharingHubModel : public sharing_hub::SharingHubModel {
@@ -21,11 +21,11 @@ class BraveSharingHubModel : public sharing_hub::SharingHubModel {
   BraveSharingHubModel(const SharingHubModel&) = delete;
   BraveSharingHubModel& operator=(const SharingHubModel&) = delete;
   ~BraveSharingHubModel() override;
-  
+
   void GetFirstPartyActionList(content::WebContents* web_contents,
                                std::vector<SharingHubAction>* list) override;
 
-private:
+ private:
   SharingHubAction brave_talk_share_tab_action_;
 };
 }  // namespace sharing_hub

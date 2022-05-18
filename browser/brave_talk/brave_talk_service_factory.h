@@ -21,7 +21,8 @@ class BraveTalkServiceFactory : public BrowserContextKeyedServiceFactory {
   static BraveTalkService* GetForContext(content::BrowserContext* context);
   static BraveTalkServiceFactory* GetInstance();
 
-  KeyedService* BuildServiceInstanceFor(content::BrowserContext* context) const override;
+  KeyedService* BuildServiceInstanceFor(
+      content::BrowserContext* context) const override;
 
  private:
   friend struct base::DefaultSingletonTraits<BraveTalkServiceFactory>;
@@ -29,4 +30,4 @@ class BraveTalkServiceFactory : public BrowserContextKeyedServiceFactory {
 };
 }  // namespace brave_talk
 
-#endif // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_FACTORY_H_

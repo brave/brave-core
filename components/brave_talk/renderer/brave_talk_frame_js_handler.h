@@ -24,8 +24,7 @@ class BraveTalkFrameJSHandler {
  public:
   explicit BraveTalkFrameJSHandler(content::RenderFrame* render_frame);
   BraveTalkFrameJSHandler(const BraveTalkFrameJSHandler&) = delete;
-  BraveTalkFrameJSHandler& operator=(const BraveTalkFrameJSHandler&) =
-      delete;
+  BraveTalkFrameJSHandler& operator=(const BraveTalkFrameJSHandler&) = delete;
   ~BraveTalkFrameJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
@@ -56,6 +55,6 @@ class BraveTalkFrameJSHandler {
   mojo::Remote<brave_talk::mojom::BraveTalkAdvertise> brave_talk_advertise_;
 };
 
-}  // namespace brave_search
+}  // namespace brave_talk
 
-#endif // BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_ADVERTISE_JS_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_TALK_RENDERER_BRAVE_TALK_ADVERTISE_JS_HANDLER_H_

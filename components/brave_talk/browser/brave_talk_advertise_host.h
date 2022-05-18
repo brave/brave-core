@@ -13,9 +13,9 @@
 #include "content/public/browser/web_contents.h"
 
 namespace content {
-  class BrowserContext;
-  class WebContents;
-}
+class BrowserContext;
+class WebContents;
+}  // namespace content
 
 namespace brave_talk {
 
@@ -25,7 +25,8 @@ class BraveTalkAdvertiseHost final
   BraveTalkAdvertiseHost(const BraveTalkAdvertiseHost&) = delete;
   BraveTalkAdvertiseHost& operator=(const BraveTalkAdvertiseHost&) = delete;
 
-  explicit BraveTalkAdvertiseHost(content::WebContents* contents, const std::string& host);
+  explicit BraveTalkAdvertiseHost(content::WebContents* contents,
+                                  const std::string& host);
   ~BraveTalkAdvertiseHost() override;
 
   // brave_talk::mojom::BraveTalkAdvertise:
@@ -39,4 +40,4 @@ class BraveTalkAdvertiseHost final
 
 }  // namespace brave_talk
 
-#endif // BRAVE_COMPONENTS_BRAVE_TALK_BROWSER_BRAVE_TALK_ADVERTISE_HOST_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_TALK_BROWSER_BRAVE_TALK_ADVERTISE_HOST_H_

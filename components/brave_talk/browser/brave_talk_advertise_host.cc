@@ -31,8 +31,8 @@ BraveTalkAdvertiseHost::~BraveTalkAdvertiseHost() = default;
 
 void BraveTalkAdvertiseHost::BeginAdvertiseShareDisplayMedia(
     BeginAdvertiseShareDisplayMediaCallback callback) {
-    
-  auto* service = BraveTalkServiceFactory::GetForContext(contents_->GetBrowserContext());
+  auto* service =
+      BraveTalkServiceFactory::GetForContext(contents_->GetBrowserContext());
   service->GetDeviceID(contents_, std::move(callback));
 }
 

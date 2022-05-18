@@ -10,8 +10,8 @@
 #include "chrome/common/extensions/api/tab_capture.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/render_process_host.h"
 #include "content/public/browser/desktop_streams_registry.h"
+#include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents_observer.h"
 
 namespace tab_capture = extensions::api::tab_capture;
@@ -100,8 +100,8 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
   if (main_frame) {
     device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
         main_frame->GetProcess()->GetID(), main_frame->GetRoutingID(),
-        url::Origin::Create(caller_contents->GetLastCommittedURL()), source,
-        "", content::kRegistryStreamTypeTab);
+        url::Origin::Create(caller_contents->GetLastCommittedURL()), source, "",
+        content::kRegistryStreamTypeTab);
   }
 
   return device_id;
@@ -138,9 +138,8 @@ void BraveTalkTabCaptureRegistry::KillRequest(LiveRequest* request) {
   NOTREACHED();
 }
 
-bool BraveTalkTabCaptureRegistry::VerifyRequest(
-    int target_render_process_id,
-    int target_render_frame_id) {
+bool BraveTalkTabCaptureRegistry::VerifyRequest(int target_render_process_id,
+                                                int target_render_frame_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   LiveRequest* const request =

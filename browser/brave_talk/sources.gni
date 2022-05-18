@@ -4,24 +4,24 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 brave_browser_brave_talk_sources = [
-    "//brave/browser/brave_talk/brave_talk_service_factory.cc",
-    "//brave/browser/brave_talk/brave_talk_service_factory.h",
-    "//brave/browser/brave_talk/brave_talk_service.cc",
-    "//brave/browser/brave_talk/brave_talk_service.h",
-    "//brave/browser/brave_talk/brave_talk_media_access_handler.cc",
-    "//brave/browser/brave_talk/brave_talk_media_access_handler.h",
-    "//brave/browser/brave_talk/brave_talk_tab_capture_registry.cc",
-    "//brave/browser/brave_talk/brave_talk_tab_capture_registry.h",
+  "//brave/browser/brave_talk/brave_talk_media_access_handler.cc",
+  "//brave/browser/brave_talk/brave_talk_media_access_handler.h",
+  "//brave/browser/brave_talk/brave_talk_service.cc",
+  "//brave/browser/brave_talk/brave_talk_service.h",
+  "//brave/browser/brave_talk/brave_talk_service_factory.cc",
+  "//brave/browser/brave_talk/brave_talk_service_factory.h",
+  "//brave/browser/brave_talk/brave_talk_tab_capture_registry.cc",
+  "//brave/browser/brave_talk/brave_talk_tab_capture_registry.h",
 ]
 
 brave_browser_brave_talk_deps = [
-    "//base",
-    "//brave/common",
-    "//brave/browser/profiles:util",
-    "//chrome/browser/profiles:profile",
-    "//content/public/browser",
-    "//components/keyed_service/content",
-    "//chrome/browser/ui",
-    "//chrome/browser:browser_process",
-    "//extensions/browser"
+  "//base",
+  "//brave/browser/profiles:util",
+  "//brave/common",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles:profile",
+  "//chrome/browser/ui",
+  "//components/keyed_service/content",
+  "//content/public/browser",
+  "//extensions/browser",
 ]

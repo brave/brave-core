@@ -50,4 +50,4 @@ void BraveTalkRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-}  // namespace brave_search
+}  // namespace brave_talk

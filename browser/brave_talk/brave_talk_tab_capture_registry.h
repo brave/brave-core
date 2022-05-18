@@ -11,7 +11,6 @@
 #include "extensions/browser/browser_context_keyed_api_factory.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
-
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry

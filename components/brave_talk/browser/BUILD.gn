@@ -7,8 +7,8 @@ import("//build/config/features.gni")
 
 static_library("browser") {
   sources = [
-      "brave_talk_advertise_host.cc",
-      "brave_talk_advertise_host.h",
+    "brave_talk_advertise_host.cc",
+    "brave_talk_advertise_host.h",
   ]
 
   deps = [
