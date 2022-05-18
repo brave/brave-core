@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl b/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
-index 1db515ece09ee049978e73b9fab135c6da091de7..a34dfdee2737f31f4e2abe940e9a941aada0f9fb 100644
+index 52865862c0f188a5c9921d9e416b72edbe70f232..d0a2f9c80568d9437a36c297f4aef3b20e0d8c13 100644
 --- a/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
 +++ b/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
-@@ -266,6 +266,17 @@ const v8::FunctionCallbackInfo<v8::Value>& info
+@@ -271,6 +271,17 @@ const v8::FunctionCallbackInfo<v8::Value>& info
    {% endif %}
    {% endif %}
  
@@ -20,7 +20,7 @@ index 1db515ece09ee049978e73b9fab135c6da091de7..a34dfdee2737f31f4e2abe940e9a941a
    {% if world_suffix in attribute.activity_logging_world_list_for_getter %}
    {% if attribute.is_static %}
    ScriptState* script_state = ScriptState::ForCurrentRealm(info);
-@@ -308,6 +319,17 @@ void {{v8_class_or_partial}}::{{attribute.camel_case_name}}ConstructorGetterCall
+@@ -313,6 +324,17 @@ void {{v8_class_or_partial}}::{{attribute.camel_case_name}}ConstructorGetterCall
    {% endif %}
    {% endif %}
  
@@ -38,7 +38,7 @@ index 1db515ece09ee049978e73b9fab135c6da091de7..a34dfdee2737f31f4e2abe940e9a941a
    {% if attribute.is_named_constructor %}
    V8{{attribute.constructor_type}}::NamedConstructorAttributeGetter(property, info);
    {% else %}
-@@ -517,6 +539,17 @@ void {{v8_class_or_partial}}::{{attribute.camel_case_name}}AttributeSetterCallba
+@@ -518,6 +540,17 @@ void {{v8_class_or_partial}}::{{attribute.camel_case_name}}AttributeSetterCallba
    UseCounter::Count(CurrentExecutionContext(info.GetIsolate()), WebFeature::k{{attribute.measure_as('AttributeSetter')}});
    {% endif %}
  

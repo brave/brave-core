@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/worklet_modulator_impl.cc b/third_party/blink/renderer/core/script/worklet_modulator_impl.cc
-index 7b77edd0b4ecb356750386326c652d794befd057..82908f6e7c155facfb782c4b7038c09c3bdd1ab7 100644
+index c78d70a0337adfc623446cf8dc11a73cd5d07358..c65f03fd20c6bb6fb9ba3a8f66dce6cbac60e90f 100644
 --- a/third_party/blink/renderer/core/script/worklet_modulator_impl.cc
 +++ b/third_party/blink/renderer/core/script/worklet_modulator_impl.cc
 @@ -7,10 +7,15 @@

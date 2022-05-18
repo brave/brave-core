@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/script_resource.h b/third_party/blink/renderer/core/loader/resource/script_resource.h
-index 791b32f9ac206030011b39c0a288a3e965f4310f..5f6c40098a9ab9e6739dc246f7251fe9949315f1 100644
+index f6c5707e3edcb9e0a064a19f6ccaea4bbde7b922..b0eaba28eed06305146525cec0e6a8f3a91d13dc 100644
 --- a/third_party/blink/renderer/core/loader/resource/script_resource.h
 +++ b/third_party/blink/renderer/core/loader/resource/script_resource.h
 @@ -37,6 +37,7 @@
@@ -10,7 +10,7 @@ index 791b32f9ac206030011b39c0a288a3e965f4310f..5f6c40098a9ab9e6739dc246f7251fe9
  namespace blink {
  
  class FetchParameters;
-@@ -220,6 +224,8 @@ class CORE_EXPORT ScriptResource final : public TextResource {
+@@ -205,6 +206,8 @@ struct DowncastTraits<ScriptResource> {
    }
  };
  

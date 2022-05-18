@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
-index fab2d2cbc446cc283939830f5e8fe9bb5b500b73..ac0c7134863490aa7277199609b7a3c3fcdd3369 100644
+index fab2d2cbc446cc283939830f5e8fe9bb5b500b73..6305a7c4a90ce6c90a1bb9dcd0fe16da40215c10 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.cc
 +++ b/third_party/blink/renderer/core/frame/local_frame.cc
 @@ -1161,6 +1161,9 @@ bool LocalFrame::BubbleLogicalScrollFromChildFrame(

@@ -1,5 +1,5 @@
 diff --git a/components/cast_channel/cast_transport.cc b/components/cast_channel/cast_transport.cc
-index b4e865aba341b1848e4d0ee3613cabee22af60be..9b7e4d3e4cdac925521070913a4c19ac0a67fd02 100644
+index 340318f6bca1ff926a691bdac11d31a7a3789457..4c088f7022eb400422cc682630f9a711288a7775 100644
 --- a/components/cast_channel/cast_transport.cc
 +++ b/components/cast_channel/cast_transport.cc
 @@ -54,7 +54,7 @@ CastTransportImpl::CastTransportImpl(Channel* channel,

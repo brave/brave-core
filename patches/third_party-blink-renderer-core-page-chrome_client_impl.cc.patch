@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/page/chrome_client_impl.cc b/third_party/blink/renderer/core/page/chrome_client_impl.cc
-index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..dba2b5b1debbb66a64d8cc716ff209a4e91b0fa7 100644
+index 196303d8224d7b7c7f2191f5b7b836be4f26a1a8..919bdb5afee17cbfd3df100170dd164f9d40c770 100644
 --- a/third_party/blink/renderer/core/page/chrome_client_impl.cc
 +++ b/third_party/blink/renderer/core/page/chrome_client_impl.cc
 @@ -112,6 +112,8 @@
@@ -11,7 +11,7 @@ index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..dba2b5b1debbb66a64d8cc716ff209a4
  namespace blink {
  
  namespace {
-@@ -1254,4 +1260,22 @@ void ChromeClientImpl::DocumentDetached(Document& document) {
+@@ -1206,6 +1208,24 @@ double ChromeClientImpl::UserZoomFactor() const {
    return PageZoomLevelToZoomFactor(web_view_->ZoomLevel());
  }
  

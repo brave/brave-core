@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/page/page.cc b/third_party/blink/renderer/core/page/page.cc
-index 50e76a0e0a63cd1270c6036e503fd991df5ae75b..d535fa5390fcfe6dc4f2feef4c3739d5013ab30c 100644
+index 4ae29426622ff50f4713f6fdd365ced522e45071..59498323de4a3d60fa4d8f7dcd5e87d23128e401 100644
 --- a/third_party/blink/renderer/core/page/page.cc
 +++ b/third_party/blink/renderer/core/page/page.cc
-@@ -335,6 +335,12 @@ void Page::DocumentDetached(Document* document) {
+@@ -357,6 +357,12 @@ void Page::DocumentDetached(Document* document) {
    GetChromeClient().DocumentDetached(*document);
  }
  

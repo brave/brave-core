@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_view_impl.cc b/content/renderer/render_view_impl.cc
-index f0cb4833442be24dee52e2e172a0d22474d1135b..4ea1bbf03257f7dc264b6d91a4ada6d4ed42ada4 100644
+index be0a2a33bc8e7d9ca731c3e4868695b5fb56f509..356de8f7cad9ba2aebef8cbd557081081259f9e5 100644
 --- a/content/renderer/render_view_impl.cc
 +++ b/content/renderer/render_view_impl.cc
-@@ -434,6 +434,10 @@ void RenderViewImpl::Initialize(
+@@ -119,6 +119,10 @@ void RenderViewImpl::Initialize(
      scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
    DCHECK(RenderThread::IsMainThread());
  

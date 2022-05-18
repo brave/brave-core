@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.cc b/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.cc
-index 9a89f9b57476c861cd0a248843d0fe0b45e146c5..0f153a98a7fafb68770882edaa983c67ac6b2325 100644
+index 81f1b1bb7c5777563974ebcae06d2b0d853f717a..627c49a6987a781806ee44b548ad4223b8caa24a 100644
 --- a/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.cc
 +++ b/third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.cc
-@@ -41,6 +41,15 @@
+@@ -40,6 +40,15 @@
  #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
  #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
  
@@ -18,7 +18,7 @@ index 9a89f9b57476c861cd0a248843d0fe0b45e146c5..0f153a98a7fafb68770882edaa983c67
  namespace blink {
  
  CSSStyleSheetResource* CSSStyleSheetResource::Fetch(FetchParameters& params,
-@@ -265,4 +274,20 @@ void CSSStyleSheetResource::UpdateDecodedSize() {
+@@ -264,4 +273,20 @@ void CSSStyleSheetResource::UpdateDecodedSize() {
    SetDecodedSize(decoded_size);
  }
  

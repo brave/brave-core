@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/worker_modulator_impl.cc b/third_party/blink/renderer/core/script/worker_modulator_impl.cc
-index 6541c78624bdd4185067fbc45fc89b5ed70c2508..f98601723c915046b6b30f660fdfa1912c898300 100644
+index 56e1adbd128a7278c3598ad0fd01937e45edcbd8..0382097d72455f011ba28c9a79d231ea8a905d80 100644
 --- a/third_party/blink/renderer/core/script/worker_modulator_impl.cc
 +++ b/third_party/blink/renderer/core/script/worker_modulator_impl.cc
-@@ -12,10 +12,12 @@
+@@ -9,10 +9,12 @@
  #include "third_party/blink/renderer/core/loader/modulescript/worker_module_script_fetcher.h"
  #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
  

@@ -1,8 +1,8 @@
 diff --git a/components/crash/content/browser/crash_handler_host_linux.cc b/components/crash/content/browser/crash_handler_host_linux.cc
-index e63d26f25a37d5ed736d2a88a50f2b5d8511501c..3a756087fca570c64b5b381573afefc0711516ce 100644
+index 5297dd2997fb9065a9d9a77f39c8ed0bb4fde054..d883b51f17120d15e14eb9199a9fa497c70bcfd3 100644
 --- a/components/crash/content/browser/crash_handler_host_linux.cc
 +++ b/components/crash/content/browser/crash_handler_host_linux.cc
-@@ -480,7 +480,7 @@ void CrashHandlerHostLinux::QueueCrashDumpTask(
+@@ -479,7 +479,7 @@ void CrashHandlerHostLinux::QueueCrashDumpTask(
    msg.msg_iov = &done_iov;
    msg.msg_iovlen = 1;
  

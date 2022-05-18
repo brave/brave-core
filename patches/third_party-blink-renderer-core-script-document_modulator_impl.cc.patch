@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/document_modulator_impl.cc b/third_party/blink/renderer/core/script/document_modulator_impl.cc
-index f8edf807ba6ec0695a7f2f3b1efc4936a8dcce16..9c19679906a92788412e0d2a9f38d6b40dbb56b7 100644
+index 75b2adf534a399de5e6bfdc1f9ba1a6dae54467a..bf9e86e8c23197abb55ed2a04e3efa55537aaf3f 100644
 --- a/third_party/blink/renderer/core/script/document_modulator_impl.cc
 +++ b/third_party/blink/renderer/core/script/document_modulator_impl.cc
-@@ -10,10 +10,12 @@
+@@ -6,10 +6,12 @@
  
  #include "third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.h"
  

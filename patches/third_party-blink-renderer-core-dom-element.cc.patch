@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
-index 9801e9a3cf88d2b87ca5f19c97869f4b95c4619d..14b6a131a1dcd272f700b422a751d2e5e05f1dd4 100644
+index 68e84e3c75921dec5ef7ad6bc6c7a3c9a4244240..2a6d7d2f7d9ec032aa0e5391a97b674455f4d90c 100644
 --- a/third_party/blink/renderer/core/dom/element.cc
 +++ b/third_party/blink/renderer/core/dom/element.cc
-@@ -166,6 +166,14 @@
+@@ -172,6 +172,14 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
  
@@ -17,7 +17,7 @@ index 9801e9a3cf88d2b87ca5f19c97869f4b95c4619d..14b6a131a1dcd272f700b422a751d2e5
  namespace blink {
  
  enum class ClassStringContent { kEmpty, kWhiteSpaceOnly, kHasClasses };
-@@ -509,7 +517,25 @@ void EnqueueAutofocus(Element& element) {
+@@ -571,7 +579,25 @@ void EnqueueAutofocus(Element& element) {
  Element::Element(const QualifiedName& tag_name,
                   Document* document,
                   ConstructionType type)
@@ -44,7 +44,7 @@ index 9801e9a3cf88d2b87ca5f19c97869f4b95c4619d..14b6a131a1dcd272f700b422a751d2e5
  
  Element* Element::GetAnimationTarget() {
    return this;
-@@ -2411,6 +2437,14 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
+@@ -2323,6 +2349,14 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
  
  DISABLE_CFI_PERF
  void Element::AttributeChanged(const AttributeModificationParams& params) {

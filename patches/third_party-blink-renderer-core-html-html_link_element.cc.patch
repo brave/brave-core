@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_link_element.cc b/third_party/blink/renderer/core/html/html_link_element.cc
-index f5efe07788b8a614830ba81b6adb8dfc3fc8446e..7acc01ee90872a6fd5d7bea84ead22bce1bd1bce 100644
+index 9f96ddbb156d1320ad322b667d5fcca51aa15d6c..592d0ae85f981f334b9cab6266341d2dd0ebd522 100644
 --- a/third_party/blink/renderer/core/html/html_link_element.cc
 +++ b/third_party/blink/renderer/core/html/html_link_element.cc
-@@ -61,7 +61,9 @@ HTMLLinkElement::HTMLLinkElement(Document& document,
+@@ -83,7 +83,9 @@ HTMLLinkElement::HTMLLinkElement(Document& document,
                                               html_names::kResourcesAttr)),
        scopes_(
            MakeGarbageCollected<DOMTokenList>(*this, html_names::kScopesAttr)),

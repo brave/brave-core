@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/frame_tree_node.h b/content/browser/renderer_host/frame_tree_node.h
-index 89ba68e856e90ba55c0a841dfab5a46afdca6ba8..940dc7ad29cf8e41e630fe8a30d7a3259bc7005d 100644
+index 236ab137f382384c8ae71078d8daa04cdc6f7b50..ff0f6dd4e6094c6924d0ec3fe4f321a9181f6311 100644
 --- a/content/browser/renderer_host/frame_tree_node.h
 +++ b/content/browser/renderer_host/frame_tree_node.h
 @@ -69,6 +69,10 @@ class CONTENT_EXPORT FrameTreeNode {

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py
-index f72e41a742163eb3e707b174caea0f06b81bd15e..8665a923eb79cb3290978ddcff27a4121f05a2ef 100644
+index 2c822edf4c2e7ea52d24e95728c677c513d99428..f1fc477163b26b50b9fdf1652f86158130cd4bd4 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py
 @@ -16,10 +16,12 @@ class CodeGenAccumulator(object):
@@ -16,7 +16,7 @@ index f72e41a742163eb3e707b174caea0f06b81bd15e..8665a923eb79cb3290978ddcff27a412
  
      @property
      def include_headers(self):
-@@ -62,3 +64,17 @@ class CodeGenAccumulator(object):
+@@ -53,3 +55,17 @@ class CodeGenAccumulator(object):
      @staticmethod
      def require_struct_decls(struct_names):
          return lambda accumulator: accumulator.add_struct_decls(struct_names)

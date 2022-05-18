@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/image_resource.h b/third_party/blink/renderer/core/loader/resource/image_resource.h
-index 129be3d3b19b8f7cccba32f998de257527c98801..c990dd6c79486fd35ecb092a626f7d4e08e64e35 100644
+index 65d1c4d77e7cd3c86dde5bdc4257d46625161d63..a6e8cf481e0f044592d867c49e7ef4b3dacc36b8 100644
 --- a/third_party/blink/renderer/core/loader/resource/image_resource.h
 +++ b/third_party/blink/renderer/core/loader/resource/image_resource.h
-@@ -183,6 +183,7 @@ class CORE_EXPORT ImageResource final
+@@ -153,6 +153,7 @@ struct DowncastTraits<ImageResource> {
    }
  };
  

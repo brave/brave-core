@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_script_element.cc b/third_party/blink/renderer/core/html/html_script_element.cc
-index 1fda09d556ecaecbc827bf709109b71bc19892b0..a29f4f156404df9f262442d10c163ce9eb807f21 100644
+index 9e8b91e9d45a82fdc04f25e43a96c9b80242c470..5068b4c642382811dd13ad09fac346c8fd951304 100644
 --- a/third_party/blink/renderer/core/html/html_script_element.cc
 +++ b/third_party/blink/renderer/core/html/html_script_element.cc
-@@ -48,7 +49,9 @@ HTMLScriptElement::HTMLScriptElement(Document& document,
+@@ -48,7 +48,9 @@ HTMLScriptElement::HTMLScriptElement(Document& document,
                                       const CreateElementFlags flags)
      : HTMLElement(html_names::kScriptTag, document),
        children_changed_by_api_(false),

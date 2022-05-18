@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/location.cc b/third_party/blink/renderer/core/frame/location.cc
-index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9cad3d2eb 100644
+index 6b4e0724713ca3d2c335ae9b2ec08f19dd513222..6991b8926b4e7279471434024cf7414ad039d124 100644
 --- a/third_party/blink/renderer/core/frame/location.cc
 +++ b/third_party/blink/renderer/core/frame/location.cc
-@@ -70,47 +70,94 @@ inline const KURL& Location::Url() const {
+@@ -67,47 +67,94 @@ inline const KURL& Location::Url() const {
    return url;
  }
  
@@ -111,7 +111,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    return origins;
  }
  
-@@ -123,12 +172,15 @@ String Location::toString() const {
+@@ -116,12 +163,15 @@ String Location::toString() const {
  }
  
  String Location::hash() const {
@@ -128,7 +128,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    LocalDOMWindow* incumbent_window = IncumbentDOMWindow(isolate);
    LocalDOMWindow* entered_window = EnteredDOMWindow(isolate);
    SetLocation(url_string, incumbent_window, entered_window, &exception_state);
-@@ -145,6 +197,7 @@ void Location::setProtocol(v8::Isolate* isolate,
+@@ -138,6 +188,7 @@ void Location::setProtocol(v8::Isolate* isolate,
      return;
    }
  
@@ -136,7 +136,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
                EnteredDOMWindow(isolate), &exception_state);
  }
-@@ -152,6 +205,7 @@ void Location::setProtocol(v8::Isolate* isolate,
+@@ -145,6 +196,7 @@ void Location::setProtocol(v8::Isolate* isolate,
  void Location::setHost(v8::Isolate* isolate,
                         const String& host,
                         ExceptionState& exception_state) {
@@ -144,7 +144,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    KURL url = GetDocument()->Url();
    url.SetHostAndPort(host);
    SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
-@@ -161,6 +215,7 @@ void Location::setHost(v8::Isolate* isolate,
+@@ -154,6 +206,7 @@ void Location::setHost(v8::Isolate* isolate,
  void Location::setHostname(v8::Isolate* isolate,
                             const String& hostname,
                             ExceptionState& exception_state) {
@@ -152,7 +152,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    KURL url = GetDocument()->Url();
    url.SetHost(hostname);
    SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
-@@ -170,6 +225,7 @@ void Location::setHostname(v8::Isolate* isolate,
+@@ -163,6 +216,7 @@ void Location::setHostname(v8::Isolate* isolate,
  void Location::setPort(v8::Isolate* isolate,
                         const String& port,
                         ExceptionState& exception_state) {
@@ -160,7 +160,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    KURL url = GetDocument()->Url();
    url.SetPort(port);
    SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
-@@ -179,6 +235,7 @@ void Location::setPort(v8::Isolate* isolate,
+@@ -172,6 +226,7 @@ void Location::setPort(v8::Isolate* isolate,
  void Location::setPathname(v8::Isolate* isolate,
                             const String& pathname,
                             ExceptionState& exception_state) {
@@ -168,7 +168,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    KURL url = GetDocument()->Url();
    url.SetPath(pathname);
    SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
-@@ -188,6 +245,7 @@ void Location::setPathname(v8::Isolate* isolate,
+@@ -181,6 +236,7 @@ void Location::setPathname(v8::Isolate* isolate,
  void Location::setSearch(v8::Isolate* isolate,
                           const String& search,
                           ExceptionState& exception_state) {
@@ -176,7 +176,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    KURL url = GetDocument()->Url();
    url.SetQuery(search);
    SetLocation(url.GetString(), IncumbentDOMWindow(isolate),
-@@ -202,6 +260,8 @@ void Location::setHash(v8::Isolate* isolate,
+@@ -195,6 +251,8 @@ void Location::setHash(v8::Isolate* isolate,
    String new_fragment_identifier = hash;
    if (hash[0] == '#')
      new_fragment_identifier = hash.Substring(1);
@@ -185,7 +185,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    url.SetFragmentIdentifier(new_fragment_identifier);
    // Note that by parsing the URL and *then* comparing fragments, we are
    // comparing fragments post-canonicalization, and so this handles the
-@@ -215,6 +275,7 @@ void Location::setHash(v8::Isolate* isolate,
+@@ -208,6 +266,7 @@ void Location::setHash(v8::Isolate* isolate,
  void Location::assign(v8::Isolate* isolate,
                        const String& url_string,
                        ExceptionState& exception_state) {
@@ -193,7 +193,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    LocalDOMWindow* incumbent_window = IncumbentDOMWindow(isolate);
    LocalDOMWindow* entered_window = EnteredDOMWindow(isolate);
    SetLocation(url_string, incumbent_window, entered_window, &exception_state);
-@@ -223,6 +284,8 @@ void Location::assign(v8::Isolate* isolate,
+@@ -216,6 +275,8 @@ void Location::assign(v8::Isolate* isolate,
  void Location::replace(v8::Isolate* isolate,
                         const String& url_string,
                         ExceptionState& exception_state) {
@@ -202,7 +202,7 @@ index 63deafc4f52b9f591749e475250e7c06f862d488..3a830d8465977aa646a632c6f0f96cd9
    LocalDOMWindow* incumbent_window = IncumbentDOMWindow(isolate);
    LocalDOMWindow* entered_window = EnteredDOMWindow(isolate);
    SetLocation(url_string, incumbent_window, entered_window, &exception_state,
-@@ -236,6 +299,8 @@ void Location::reload() {
+@@ -229,6 +290,8 @@ void Location::reload() {
      return;
    // reload() is not cross-origin accessible, so |dom_window_| will always be
    // local.

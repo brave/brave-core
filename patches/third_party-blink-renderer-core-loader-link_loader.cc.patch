@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/link_loader.cc b/third_party/blink/renderer/core/loader/link_loader.cc
-index 755214834dac03dff6b0b0d34860b05dafba0959..3a11f2d0d8bd9b9be9b53a427d3f4b5aec88ef1b 100644
+index 6bb22289f61175ec020cb61e2de1e56015ad8858..6b322018d572f4c5a4fa55ec3e473c6e065b18fb 100644
 --- a/third_party/blink/renderer/core/loader/link_loader.cc
 +++ b/third_party/blink/renderer/core/loader/link_loader.cc
 @@ -50,6 +50,13 @@
@@ -40,7 +40,7 @@ index 755214834dac03dff6b0b0d34860b05dafba0959..3a11f2d0d8bd9b9be9b53a427d3f4b5a
  }
  
  // https://html.spec.whatwg.org/C/#link-type-modulepreload
-@@ -264,8 +297,21 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
+@@ -234,8 +259,21 @@ void LinkLoader::LoadStylesheet(
          integrity_attr);
    }
  
@@ -62,7 +62,7 @@ index 755214834dac03dff6b0b0d34860b05dafba0959..3a11f2d0d8bd9b9be9b53a427d3f4b5a
  }
  
  void LinkLoader::Abort() {
-@@ -283,7 +334,11 @@ void LinkLoader::Trace(Visitor* visitor) {
+@@ -253,7 +291,11 @@ void LinkLoader::Trace(Visitor* visitor) const {
    visitor->Trace(finish_observer_);
    visitor->Trace(client_);
    visitor->Trace(prerender_);

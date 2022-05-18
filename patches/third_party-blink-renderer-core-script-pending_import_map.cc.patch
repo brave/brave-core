@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/pending_import_map.cc b/third_party/blink/renderer/core/script/pending_import_map.cc
-index 2d51fbf4301221cc172fef521faa43446b71c725..3bebf621cc2b4690c78af38b887bff5122cf8d0d 100644
+index 2242897135c77d60ef011a8f103a0e4335102583..ee05f6769727284f2e05a1a4c47347aee610917b 100644
 --- a/third_party/blink/renderer/core/script/pending_import_map.cc
 +++ b/third_party/blink/renderer/core/script/pending_import_map.cc
-@@ -11,6 +11,12 @@
+@@ -12,6 +12,12 @@
  #include "third_party/blink/renderer/core/script/script_element_base.h"
  #include "third_party/blink/renderer/platform/weborigin/kurl.h"
  
@@ -24,7 +24,7 @@ index 2d51fbf4301221cc172fef521faa43446b71c725..3bebf621cc2b4690c78af38b887bff51
  
    ScriptValue error_to_rethrow;
    ImportMap* import_map = ImportMap::Parse(
-@@ -83,7 +89,7 @@ void PendingImportMap::RegisterImportMap() const {
+@@ -80,7 +86,7 @@ void PendingImportMap::RegisterImportMap() const {
    if (!frame)
      return;
  

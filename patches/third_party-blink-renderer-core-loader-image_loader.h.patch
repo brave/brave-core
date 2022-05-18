@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/image_loader.h b/third_party/blink/renderer/core/loader/image_loader.h
-index 181069a59f9984c62f10a6d0a1e086bd0bffd89b..dde4d28a75ef8c71908d3101f5b41eab478e56cf 100644
+index 25e7e8f0c3d45e3083c7c3cf23f715174a3ac8c2..4a4b35ce6038084de4b0a84bc4a213031957f365 100644
 --- a/third_party/blink/renderer/core/loader/image_loader.h
 +++ b/third_party/blink/renderer/core/loader/image_loader.h
-@@ -36,6 +36,10 @@
+@@ -37,6 +37,10 @@
  #include "third_party/blink/renderer/platform/wtf/hash_set.h"
  #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
  
@@ -13,7 +13,7 @@ index 181069a59f9984c62f10a6d0a1e086bd0bffd89b..dde4d28a75ef8c71908d3101f5b41eab
  namespace blink {
  
  class ContainerNode;
-@@ -256,6 +260,10 @@ class CORE_EXPORT ImageLoader : public GarbageCollected<ImageLoader>,
+@@ -254,6 +258,10 @@ class CORE_EXPORT ImageLoader : public GarbageCollected<ImageLoader>,
  
    LazyImageLoadState lazy_image_load_state_;
  

@@ -19,7 +19,7 @@ index 78fe811af2a902b4571c057560db76eb55d66016..7555d8437950259ca161d9b1d042f0be
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
    const Font& font = AccessFont();
-@@ -815,6 +824,41 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -983,6 +986,41 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    TextDirection direction =
        ToTextDirection(GetState().GetDirection(), canvas());
  

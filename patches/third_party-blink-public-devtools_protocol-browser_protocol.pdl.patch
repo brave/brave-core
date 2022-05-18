@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-index f444e470f0ae75405f7504d82135486d01ceb575..9949b0403408f4fbd2dc84001105356f34682c3c 100644
+index bd3f53df7612c2ec3dc534b4ca399986242d4121..8f7e921c88316aeb7fad780a4e28376c597ef109 100644
 --- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 +++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-@@ -2138,6 +2138,15 @@ domain DOM
+@@ -2562,6 +2562,15 @@ domain DOM
    # Undoes the last performed action.
    experimental command undo
  
@@ -18,7 +18,7 @@ index f444e470f0ae75405f7504d82135486d01ceb575..9949b0403408f4fbd2dc84001105356f
    # Returns iframe node that owns iframe with the given domain.
    experimental command getFrameOwner
      parameters
-@@ -5592,6 +5601,18 @@ domain Page
+@@ -6958,6 +6967,18 @@ domain Page
    # Enables page domain notifications.
    command enable
  

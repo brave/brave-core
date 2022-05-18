@@ -41,7 +41,7 @@ index a40cd639f9584a71c81440ff1ca2001d198fcf7e..a96837a5ed7e3f7ca407443b1038c354
    return cached_area_->GetItem(key);
  }
  
-@@ -111,6 +141,21 @@ NamedPropertySetterResult StorageArea::setItem(
+@@ -120,6 +145,21 @@ NamedPropertySetterResult StorageArea::setItem(
          "Setting the value of '" + key + "' exceeded the quota.");
      return NamedPropertySetterResult::kIntercepted;
    }
@@ -63,7 +63,7 @@ index a40cd639f9584a71c81440ff1ca2001d198fcf7e..a96837a5ed7e3f7ca407443b1038c354
    RecordModificationInMetrics();
    return NamedPropertySetterResult::kIntercepted;
  }
-@@ -121,6 +168,21 @@ NamedPropertyDeleterResult StorageArea::removeItem(
+@@ -131,6 +171,21 @@ NamedPropertyDeleterResult StorageArea::removeItem(
      exception_state.ThrowSecurityError("access is denied for this document.");
      return NamedPropertyDeleterResult::kDidNotDelete;
    }
@@ -85,7 +85,7 @@ index a40cd639f9584a71c81440ff1ca2001d198fcf7e..a96837a5ed7e3f7ca407443b1038c354
    RecordModificationInMetrics();
    cached_area_->RemoveItem(key, this);
    return NamedPropertyDeleterResult::kDeleted;
-@@ -130,6 +196,21 @@ void StorageArea::clear(ExceptionState& exception_state) {
+@@ -141,6 +196,21 @@ void StorageArea::clear(ExceptionState& exception_state) {
      exception_state.ThrowSecurityError("access is denied for this document.");
      return;
    }

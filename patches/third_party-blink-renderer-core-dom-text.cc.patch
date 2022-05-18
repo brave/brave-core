@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/text.cc b/third_party/blink/renderer/core/dom/text.cc
-index d572463a14c19752487ee463ab1490e434a12997..b3b1a7a3313e7cb047c70d1185002dc18bd3f4e3 100644
+index 6ff0ca1c6b9e0fa50c3c4d65f81d4369f6a915ec..d26c1da675ef0c3d4f148e000000f09cc82ae174 100644
 --- a/third_party/blink/renderer/core/dom/text.cc
 +++ b/third_party/blink/renderer/core/dom/text.cc
-@@ -44,14 +44,39 @@
+@@ -43,14 +43,39 @@
  #include "third_party/blink/renderer/platform/bindings/exception_state.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  

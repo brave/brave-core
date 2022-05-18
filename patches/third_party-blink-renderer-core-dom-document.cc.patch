@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb740102a66 100644
+index 4eebb1d70cafc5d6d29f17b45cffba90f833be5e..933ef2d47bf5c070967084c58dc253b3afb1c84e 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -335,6 +335,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -348,6 +348,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
@@ -18,7 +18,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb7
  namespace blink {
  
  namespace {
-@@ -654,6 +663,11 @@ Document::Document(const DocumentInit& initializer,
+@@ -645,6 +654,11 @@ Document::Document(const DocumentInit& initializer,
                     DocumentClassFlags document_classes)
      : ContainerNode(nullptr, kCreateDocument),
        TreeScope(*this),
@@ -30,7 +30,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb7
        is_initial_empty_document_(initializer.IsInitialEmptyDocument()),
        is_prerendering_(initializer.IsPrerendering()),
        evaluate_media_queries_on_style_recalc_(false),
-@@ -865,7 +879,96 @@ Document::~Document() {
+@@ -841,7 +855,96 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -143,7 +143,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb7
    if (load_event_progress_ == kLoadEventNotRun ||
        // TODO(dcheng): We should consider if we can make this conditional check
        // stronger with a DCHECK() that this isn't called if the unload event is
-@@ -5911,6 +6026,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5447,6 +5559,22 @@ String Document::cookie(ExceptionState& exception_state) const {
      CountUse(WebFeature::kFileAccessedCookies);
    }
  
@@ -166,7 +166,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb7
    return cookie_jar_->Cookies();
  }
  
-@@ -5937,6 +6068,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5475,6 +5603,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
      UseCounter::Count(*this, WebFeature::kFileAccessedCookies);
    }
  
@@ -188,7 +188,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb7
    cookie_jar_->SetCookie(value);
  }
  
-@@ -5952,6 +6098,19 @@ bool Document::CookiesEnabled() const {
+@@ -5488,6 +5631,19 @@ bool Document::CookiesEnabled() const {
  }
  
  const AtomicString& Document::referrer() const {

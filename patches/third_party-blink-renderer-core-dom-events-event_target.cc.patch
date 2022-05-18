@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dbae899c43b 100644
+index 9a6f75cf5ef0ef7ab0a9dbca4491eea6bf5d2283..f7f51728902af4033f65bbf426f9d8e44765430a 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
-@@ -64,6 +64,13 @@
+@@ -67,6 +67,13 @@
  #include "third_party/blink/renderer/platform/wtf/threading.h"
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  
@@ -16,7 +16,7 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dba
  namespace blink {
  namespace {
  
-@@ -253,6 +260,18 @@ void EventTargetData::Trace(Visitor* visitor) {
+@@ -256,6 +263,18 @@ void EventTargetData::Trace(Visitor* visitor) const {
    visitor->Trace(event_listener_map);
  }
  
@@ -35,7 +35,7 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dba
  EventTarget::EventTarget() = default;
  
  EventTarget::~EventTarget() = default;
-@@ -493,6 +512,29 @@ bool EventTarget::addEventListener(const AtomicString& event_type,
+@@ -529,6 +548,29 @@ bool EventTarget::addEventListener(const AtomicString& event_type,
    return AddEventListenerInternal(event_type, listener, options);
  }
  
@@ -65,7 +65,7 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dba
  bool EventTarget::AddEventListenerInternal(
      const AtomicString& event_type,
      EventListener* listener,
-@@ -524,9 +566,41 @@ bool EventTarget::AddEventListenerInternal(
+@@ -563,9 +605,41 @@ bool EventTarget::AddEventListenerInternal(
    }
  
    RegisteredEventListener registered_listener;
@@ -107,7 +107,7 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dba
      if (options->hasSignal()) {
        // Instead of passing the entire |options| here, which could create a
        // circular reference due to |options| holding a Member<AbortSignal>, just
-@@ -626,6 +701,31 @@ bool EventTarget::RemoveEventListenerInternal(
+@@ -714,6 +788,31 @@ bool EventTarget::RemoveEventListenerInternal(
                                      &registered_listener))
      return false;
  
@@ -139,7 +139,7 @@ index 2c506ac3266d0386621100f77d1268fff21a1e46..1b398b89b4e01ce6a88fdd6cd7258dba
    // Notify firing events planning to invoke the listener at 'index' that
    // they have one less listener to invoke.
    if (d->firing_event_iterators) {
-@@ -683,6 +783,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
+@@ -771,6 +870,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
        probe::AsyncTaskScheduled(GetExecutionContext(), event_type,
                                  listener->async_task_id());
      }

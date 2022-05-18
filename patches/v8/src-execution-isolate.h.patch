@@ -1,8 +1,8 @@
 diff --git a/src/execution/isolate.h b/src/execution/isolate.h
-index 037e6ea7f59d0b917dc766adab3a20a716d025ce..65062c8ab2bb0ab2081e487038737cb717188a6a 100644
+index f55af20acdf4a82f79187dfb6c2354f1abd008af..88f3ee4c3ece11b7991b84e5d01e4e26d54cad1c 100644
 --- a/src/execution/isolate.h
 +++ b/src/execution/isolate.h
-@@ -1517,6 +1518,38 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+@@ -1781,6 +1781,38 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
  
    bool HasClientIsolates() const { return client_isolate_head_; }
  
@@ -41,7 +41,7 @@ index 037e6ea7f59d0b917dc766adab3a20a716d025ce..65062c8ab2bb0ab2081e487038737cb7
   private:
    explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator,
                     bool is_shared);
-@@ -1856,6 +1889,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+@@ -2204,6 +2236,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
    // in case of a crash.
    AddCrashKeyCallback add_crash_key_callback_ = nullptr;
  

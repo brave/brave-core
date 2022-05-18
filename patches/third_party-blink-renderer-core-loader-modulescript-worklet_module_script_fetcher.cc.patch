@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc b/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc
-index 43bb0c89006fbd22cffa0dec0214c59e4ee5b1d2..c31c591a95db287c62393df2d11b6bddfd8b4652 100644
+index 049d45c147961dd1392921de3036528389056a15..3611b844bb2b88d0f0f069144e93cd59c2100ee6 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/worklet_module_script_fetcher.cc
-@@ -6,6 +6,10 @@
+@@ -7,6 +7,10 @@
  #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
  #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
  
@@ -13,7 +13,7 @@ index 43bb0c89006fbd22cffa0dec0214c59e4ee5b1d2..c31c591a95db287c62393df2d11b6bdd
  namespace blink {
  
  WorkletModuleScriptFetcher::WorkletModuleScriptFetcher(
-@@ -17,6 +25,7 @@ WorkletModuleScriptFetcher::WorkletModuleScriptFetcher(
+@@ -19,6 +23,7 @@ void WorkletModuleScriptFetcher::Fetch(
      FetchParameters& fetch_params,
      ModuleType expected_module_type,
      ResourceFetcher* fetch_client_settings_object_fetcher,
@@ -21,7 +21,7 @@ index 43bb0c89006fbd22cffa0dec0214c59e4ee5b1d2..c31c591a95db287c62393df2d11b6bdd
      ModuleGraphLevel level,
      ModuleScriptFetcher::Client* client) {
    DCHECK_EQ(fetch_params.GetScriptType(), mojom::blink::ScriptType::kModule);
-@@ -36,8 +45,18 @@ void WorkletModuleScriptFetcher::Fetch(
+@@ -40,8 +45,18 @@ void WorkletModuleScriptFetcher::Fetch(
    // different global scope?
    url_ = fetch_params.Url();
    expected_module_type_ = expected_module_type;
@@ -41,7 +41,7 @@ index 43bb0c89006fbd22cffa0dec0214c59e4ee5b1d2..c31c591a95db287c62393df2d11b6bdd
  }
  
  void WorkletModuleScriptFetcher::NotifyFinished(Resource* resource) {
-@@ -54,6 +78,19 @@ void WorkletModuleScriptFetcher::NotifyFinished(Resource* resource) {
+@@ -61,6 +76,19 @@ void WorkletModuleScriptFetcher::NotifyFinished(Resource* resource) {
                     script_resource->CacheHandler());
    }
  

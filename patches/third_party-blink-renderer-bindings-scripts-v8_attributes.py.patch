@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/v8_attributes.py b/third_party/blink/renderer/bindings/scripts/v8_attributes.py
-index 3adf4eaf8411d00d8f68f9a89efe939ac94d423a..6d68789f70b214894f335d1367dc6b82f818e0e3 100644
+index 3adf4eaf8411d00d8f68f9a89efe939ac94d423a..3162bf0934b8072edd6c5890eb4ddfa9b4e45f41 100644
 --- a/third_party/blink/renderer/bindings/scripts/v8_attributes.py
 +++ b/third_party/blink/renderer/bindings/scripts/v8_attributes.py
 @@ -163,15 +163,16 @@ def attribute_context(interface, attribute, interfaces, component_info):
@@ -21,7 +21,7 @@ index 3adf4eaf8411d00d8f68f9a89efe939ac94d423a..6d68789f70b214894f335d1367dc6b82
          (str(idl_type) == 'Window' and attribute.name in ('frames', 'self', 'window'))
  
      runtime_features = component_info['runtime_enabled_features']
-@@ -287,6 +291,7 @@ def attribute_context(interface, attribute, interfaces, component_info):
+@@ -287,6 +288,7 @@ def attribute_context(interface, attribute, interfaces, component_info):
          v8_utilities.direct_socket_enabled(attribute, interface),
          # [SecureContext]
          'secure_context_test': v8_utilities.secure_context(attribute, interface),

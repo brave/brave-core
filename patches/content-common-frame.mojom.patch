@@ -1,5 +1,5 @@
 diff --git a/content/common/frame.mojom b/content/common/frame.mojom
-index 118765f9323faae3782ea69d6063174dcf5c4373..131728edfcaf1f705b68c92c5a5e956e2a6f47e8 100644
+index 8c2e0114d0f0bf411ae393f1972c79d40e8e9d41..1d301a9abc573b8585fba3f1091a6070454c7e81 100644
 --- a/content/common/frame.mojom
 +++ b/content/common/frame.mojom
 @@ -330,6 +330,10 @@ struct RemoteMainFrameInterfaces {

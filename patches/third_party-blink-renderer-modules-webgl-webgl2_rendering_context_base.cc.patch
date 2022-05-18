@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-index 02015211ecd4f692df5c54c1c7afba70dab456aa..b8b963bbd1d9405f359599ef9223dee983fb363d 100644
+index 02015211ecd4f692df5c54c1c7afba70dab456aa..7e2a4b3a2e10eef41b31148d00ed5df276976d12 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-@@ -33,6 +34,10 @@
+@@ -35,6 +35,10 @@
  #include "third_party/blink/renderer/platform/heap/heap.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
@@ -13,7 +13,7 @@ index 02015211ecd4f692df5c54c1c7afba70dab456aa..b8b963bbd1d9405f359599ef9223dee9
  using WTF::String;
  
  namespace blink {
-@@ -5245,8 +5245,33 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+@@ -5245,8 +5249,33 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                                                       GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -47,7 +47,7 @@ index 02015211ecd4f692df5c54c1c7afba70dab456aa..b8b963bbd1d9405f359599ef9223dee9
        return WebGLAny(
            script_state,
            "WebGL GLSL ES 3.00 (" +
-@@ -5049,6 +5081,28 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+@@ -5254,6 +5283,28 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                ")");
      }
      case GL_VERSION:
@@ -76,7 +76,7 @@ index 02015211ecd4f692df5c54c1c7afba70dab456aa..b8b963bbd1d9405f359599ef9223dee9
        return WebGLAny(
            script_state,
            "WebGL 2.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
-@@ -5802,6 +5803,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
+@@ -5802,6 +5853,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
    if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
                               kFunctionName, target, attachment))
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -84,7 +84,7 @@ index 02015211ecd4f692df5c54c1c7afba70dab456aa..b8b963bbd1d9405f359599ef9223dee9
  
    WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
    DCHECK(!framebuffer_binding || framebuffer_binding->Object());
-@@ -6014,6 +6016,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+@@ -6014,6 +6066,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());

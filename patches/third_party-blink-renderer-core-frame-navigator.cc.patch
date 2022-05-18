@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator.cc b/third_party/blink/renderer/core/frame/navigator.cc
-index f00fb00e14c49995345a19459cb705bafbbf81f3..3b0a044deada8207f1a1ca903afcbd72e801c28a 100644
+index ff2573f855a0a3d23391ff8087cd720366aff5d2..604cd4d0751295821c4219c2e9c5f755461319bf 100644
 --- a/third_party/blink/renderer/core/frame/navigator.cc
 +++ b/third_party/blink/renderer/core/frame/navigator.cc
-@@ -35,6 +35,7 @@
+@@ -36,6 +36,7 @@
  #include "third_party/blink/renderer/platform/instrumentation/memory_pressure_listener.h"
  #include "third_party/blink/renderer/platform/language.h"
  
@@ -10,7 +10,7 @@ index f00fb00e14c49995345a19459cb705bafbbf81f3..3b0a044deada8207f1a1ca903afcbd72
  namespace blink {
  
  Navigator::Navigator(ExecutionContext* context) : NavigatorBase(context) {}
-@@ -59,6 +63,25 @@ String Navigator::vendorSub() const {
+@@ -57,6 +58,25 @@ String Navigator::vendorSub() const {
  }
  
  String Navigator::platform() const {
@@ -36,7 +36,7 @@ index f00fb00e14c49995345a19459cb705bafbbf81f3..3b0a044deada8207f1a1ca903afcbd72
    // TODO(955620): Consider changing devtools overrides to only allow overriding
    // the platform with a frozen platform to distinguish between
    // mobile and desktop when FreezeUserAgent is enabled.
-@@ -95,6 +132,28 @@ bool Navigator::cookieEnabled() const {
+@@ -72,6 +92,28 @@ bool Navigator::cookieEnabled() const {
    if (!DomWindow())
      return false;
  

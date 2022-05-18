@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/v8_interface.py b/third_party/blink/renderer/bindings/scripts/v8_interface.py
-index 02f604dee9d6b58c4c9cfda82b00fee17b5192dc..2fda918ab57b848e6ae47ca8bd6086c7cd059298 100644
+index 60a1adb309dbda5adfcfd9163d7af25917c0f2e5..15e9b2b94024987b9f2bd34c060d948d7e5764b3 100644
 --- a/third_party/blink/renderer/bindings/scripts/v8_interface.py
 +++ b/third_party/blink/renderer/bindings/scripts/v8_interface.py
 @@ -80,6 +80,7 @@ def filter_has_constant_configuration(constants):
@@ -19,7 +19,7 @@ index 02f604dee9d6b58c4c9cfda82b00fee17b5192dc..2fda918ab57b848e6ae47ca8bd6086c7
      ]
  
  
-@@ -384,6 +385,9 @@ def interface_context(interface, interfaces, component_info):
+@@ -397,6 +398,9 @@ def interface_context(interface, interfaces, component_info):
          runtime_enabled_feature_name(interface, runtime_features),
          'snake_case_v8_class':
          NameStyleConverter(v8_class_name).to_snake_case(),
@@ -29,7 +29,7 @@ index 02f604dee9d6b58c4c9cfda82b00fee17b5192dc..2fda918ab57b848e6ae47ca8bd6086c7
          'v8_class':
          v8_class_name,
          'v8_class_or_partial':
-@@ -1041,6 +1045,8 @@ def constant_context(constant, interface, component_info):
+@@ -1072,6 +1076,8 @@ def constant_context(constant, interface, component_info):
          # [RuntimeEnabled] if not in origin trial
          'runtime_enabled_feature_name':
          runtime_enabled_feature_name(constant, runtime_features),
@@ -38,7 +38,7 @@ index 02f604dee9d6b58c4c9cfda82b00fee17b5192dc..2fda918ab57b848e6ae47ca8bd6086c7
          'value':
          constant.value,
      }
-@@ -1209,6 +1215,8 @@ def overloads_context(interface, overloads):
+@@ -1244,6 +1250,8 @@ def overloads_context(interface, overloads):
          # [SecureContext]
          'secure_context_test_all':
          common_value(overloads, 'secure_context_test'),

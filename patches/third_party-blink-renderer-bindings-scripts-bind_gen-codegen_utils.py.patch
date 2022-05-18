@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
-index 7021f1a618c8a57893035c656f308d4d3231bbe4..8aad7a4030690d47b80e2d99ff964ea3e43b71f3 100644
+index 7f16ff4dcc2b031e9e67b8bcf2cacdfe4e4ef7d5..c63ee7e9c3df07ff74603a850059a47499d64b59 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
-@@ -24,6 +24,23 @@ def make_copyright_header():
+@@ -28,6 +28,23 @@ def make_copyright_header():
  """)
  
  

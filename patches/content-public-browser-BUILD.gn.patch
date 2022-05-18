@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 6254eaf68b84913e5f8ab83f2f14b975ec8fceaf..0ebd407b0d9289048c35ea4cf483fe8e350c89bd 100644
+index c605ea090f58fce79979441791e23b96b6bf15f8..1577d538ebfcc0fd03dfd5937c6f80df00a63ca1 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -448,6 +448,7 @@ jumbo_source_set("browser_sources") {
+@@ -466,6 +466,7 @@ source_set("browser_sources") {
      "//ui/base/dragdrop/mojom:mojom_headers",
    ]
    deps = [

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/page/chrome_client_impl.h b/third_party/blink/renderer/core/page/chrome_client_impl.h
-index ec816f101cafd2892decc761195347bd21809b46..974e0e6b74adca7f95eb642ca579e7f8e7c8ad73 100644
+index dc404c85b2e7b5980dfeb901242f1b3768fc3bee..79b64658132677fde4ef865333aa8b9071140b03 100644
 --- a/third_party/blink/renderer/core/page/chrome_client_impl.h
 +++ b/third_party/blink/renderer/core/page/chrome_client_impl.h
-@@ -288,6 +288,9 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
+@@ -290,6 +290,9 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
  
    void DocumentDetached(Document&) override;
  

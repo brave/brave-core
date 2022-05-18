@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/frame_console.cc b/third_party/blink/renderer/core/frame/frame_console.cc
-index 25d8991f8dd320c9c2dbf00d162802818ca8386f..acbad42aad0cf9a44582583f3bd10ac63a4d3577 100644
+index 2b4eff733ccbfb4b0fd811457d4a6d5aa2ad5f86..fbadbb0ff3e8879852dd9d7af620f6b3436ad076 100644
 --- a/third_party/blink/renderer/core/frame/frame_console.cc
 +++ b/third_party/blink/renderer/core/frame/frame_console.cc
-@@ -43,6 +43,11 @@
+@@ -44,6 +44,11 @@
  #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  

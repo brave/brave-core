@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/script_resource.cc b/third_party/blink/renderer/core/loader/resource/script_resource.cc
-index a7a69c2617a7309b8d5b38aaa837864db9b3634a..c25c15c0e219f38b89e48d135f751bdfe11565dd 100644
+index 80238ec76edb95a6fb2ea65a0cb243989576207b..ee67041874f409e6f8b73c4d0a71f6dd952abfce 100644
 --- a/third_party/blink/renderer/core/loader/resource/script_resource.cc
 +++ b/third_party/blink/renderer/core/loader/resource/script_resource.cc
-@@ -50,6 +50,17 @@
+@@ -51,6 +51,17 @@
  #include "third_party/blink/renderer/platform/wtf/functional.h"
  #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
  
@@ -20,7 +20,7 @@ index a7a69c2617a7309b8d5b38aaa837864db9b3634a..c25c15c0e219f38b89e48d135f751bdf
  namespace blink {
  
  namespace {
-@@ -567,4 +578,45 @@ void ScriptResource::CheckStreamingState() const {
+@@ -401,4 +412,45 @@ void ScriptResource::CheckStreamingState() const {
    }
  }
  

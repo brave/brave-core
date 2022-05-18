@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc b/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc
-index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..2643bb916d232d927cd79ad58156e591fee7d5cc 100644
+index b9d66c68944d259e8b4b2bf46636ac23c34b7e2c..80b2bb6fc528ccfdfbedfa18fc10e47454b20c3a 100644
 --- a/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc
 +++ b/third_party/blink/renderer/core/frame/window_or_worker_global_scope.cc
 @@ -50,6 +50,7 @@
@@ -10,7 +10,7 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..2643bb916d232d927cd79ad58156e591
  namespace blink {
  
  static bool IsAllowed(ExecutionContext* execution_context,
-@@ -143,8 +147,20 @@ int WindowOrWorkerGlobalScope::setTimeout(
+@@ -144,8 +145,20 @@ int WindowOrWorkerGlobalScope::setTimeout(
      return 0;
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler, arguments);
@@ -32,7 +32,7 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..2643bb916d232d927cd79ad58156e591
  }
  
  int WindowOrWorkerGlobalScope::setTimeout(ScriptState* script_state,
-@@ -166,8 +188,20 @@ int WindowOrWorkerGlobalScope::setTimeout(ScriptState* script_state,
+@@ -162,8 +175,20 @@ int WindowOrWorkerGlobalScope::setTimeout(ScriptState* script_state,
      return 0;
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler);
@@ -54,7 +54,7 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..2643bb916d232d927cd79ad58156e591
  }
  
  int WindowOrWorkerGlobalScope::setInterval(
-@@ -181,8 +220,20 @@ int WindowOrWorkerGlobalScope::setInterval(
+@@ -177,8 +202,20 @@ int WindowOrWorkerGlobalScope::setInterval(
      return 0;
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler, arguments);
@@ -76,7 +76,7 @@ index 13d6a539a16dde9031df6d4dae47a772ee1c7c9e..2643bb916d232d927cd79ad58156e591
  }
  
  int WindowOrWorkerGlobalScope::setInterval(ScriptState* script_state,
-@@ -199,20 +255,56 @@ int WindowOrWorkerGlobalScope::setInterval(ScriptState* script_state,
+@@ -195,20 +232,56 @@ int WindowOrWorkerGlobalScope::setInterval(ScriptState* script_state,
      return 0;
    auto* action = MakeGarbageCollected<ScheduledAction>(
        script_state, execution_context, handler);

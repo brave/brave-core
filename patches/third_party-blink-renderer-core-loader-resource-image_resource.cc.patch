@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/image_resource.cc b/third_party/blink/renderer/core/loader/resource/image_resource.cc
-index eefacdf9ba1ee9c3598ec49b3498877b4343a442..21ac33b7399ffed7656ea0ad3fb229a5fb5ea277 100644
+index 8c35036da161f5a4fd0599340ce39a46d66ac4d5..5d0a3c76e33ec76f5d3a54570e228b10fea37903 100644
 --- a/third_party/blink/renderer/core/loader/resource/image_resource.cc
 +++ b/third_party/blink/renderer/core/loader/resource/image_resource.cc
-@@ -57,6 +57,15 @@
+@@ -56,6 +56,15 @@
  
  #include "v8/include/v8.h"
  
@@ -18,7 +18,7 @@ index eefacdf9ba1ee9c3598ec49b3498877b4343a442..21ac33b7399ffed7656ea0ad3fb229a5
  namespace blink {
  
  namespace {
-@@ -697,4 +706,21 @@ void ImageResource::FlagAsUserAgentResource() {
+@@ -541,4 +550,21 @@ void ImageResource::FlagAsUserAgentResource() {
    is_referenced_from_ua_stylesheet_ = true;
  }
  

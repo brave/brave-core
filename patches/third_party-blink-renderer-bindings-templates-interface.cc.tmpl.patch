@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/templates/interface.cc.tmpl b/third_party/blink/renderer/bindings/templates/interface.cc.tmpl
-index b8f328b781761b30756e2a5dcff1fb2eabfb4c45..610d5a2da07446908a91659ab8460d7712120b53 100644
+index 36cb832ba9ff7f43a8594a2238a15e3b03b11766..2ec33ebce7a145ad3e65a02d20216c24041f3993 100644
 --- a/third_party/blink/renderer/bindings/templates/interface.cc.tmpl
 +++ b/third_party/blink/renderer/bindings/templates/interface.cc.tmpl
 @@ -877,6 +877,17 @@ static void Constructor(const v8::FunctionCallbackInfo<v8::Value>& info) {

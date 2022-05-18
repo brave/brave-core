@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_listener_map.cc b/third_party/blink/renderer/core/dom/events/event_listener_map.cc
-index 1d59550227aabb4940a1523bf2d31f76c2cdb779..b40c442d095ceac37ce09639e32b661808e79a30 100644
+index 334ed946a08b7dbb799484cdba06ecdce850c5b2..d413145d66a933bce987fc27861d4b9c2d8219c8 100644
 --- a/third_party/blink/renderer/core/dom/events/event_listener_map.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_listener_map.cc
 @@ -44,6 +44,7 @@

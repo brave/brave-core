@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/text_resource.cc b/third_party/blink/renderer/core/loader/resource/text_resource.cc
-index 8da9c8489ce5474f8e14efed67cfe8f9d5e2c9b2..c08fa654e278adb7a23e324ac4ae561a91ba5973 100644
+index a7466df223d9fdfc63caeed71b950d22a04b092d..9388001755e37c44f131c9ab567e2d0d60772edb 100644
 --- a/third_party/blink/renderer/core/loader/resource/text_resource.cc
 +++ b/third_party/blink/renderer/core/loader/resource/text_resource.cc
 @@ -10,6 +10,15 @@
@@ -18,7 +18,7 @@ index 8da9c8489ce5474f8e14efed67cfe8f9d5e2c9b2..c08fa654e278adb7a23e324ac4ae561a
  namespace blink {
  
  namespace {
-@@ -39,4 +48,44 @@ String TextResource::DecodedText() const {
+@@ -66,4 +75,44 @@ String TextResource::DecodedText() const {
    return builder.ToString();
  }
  

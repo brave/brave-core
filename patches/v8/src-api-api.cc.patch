@@ -1,8 +1,8 @@
 diff --git a/src/api/api.cc b/src/api/api.cc
-index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11f23106e5 100644
+index 9d1e53d3bb69c677da5433a50d287c8278a54a34..7377c3e44a63dc780df0851d941fa9bb1a2c432d 100644
 --- a/src/api/api.cc
 +++ b/src/api/api.cc
-@@ -2204,6 +2205,13 @@ MaybeLocal<Value> Script::Run(Local<Context> context) {
+@@ -1986,6 +1986,13 @@ MaybeLocal<Value> Script::Run(Local<Context> context) {
    RETURN_ESCAPED(result);
  }
  
@@ -16,7 +16,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
  Local<Value> ScriptOrModule::GetResourceName() {
    i::Handle<i::Script> obj = Utils::OpenHandle(this);
    i::Isolate* isolate = obj->GetIsolate();
-@@ -2443,12 +2451,23 @@ void Module::SetSyntheticModuleExport(Local<String> export_name,
+@@ -2339,18 +2346,33 @@ void Module::SetSyntheticModuleExport(Local<String> export_name,
                                        i_export_name, i_export_value);
  }
  
@@ -51,7 +51,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
    script_details.host_defined_options =
        host_defined_options.IsEmpty()
            ? isolate->factory()->empty_fixed_array()
-@@ -2497,7 +2526,7 @@ MaybeLocal<UnboundScript> ScriptCompiler::CompileUnboundInternal(
+@@ -2386,7 +2408,7 @@ MaybeLocal<UnboundScript> ScriptCompiler::CompileUnboundInternal(
    i::Compiler::ScriptDetails script_details = GetScriptDetails(
        isolate, source->resource_name, source->resource_line_offset,
        source->resource_column_offset, source->source_map_url,
@@ -60,7 +60,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
    i::MaybeHandle<i::SharedFunctionInfo> maybe_function_info =
        i::Compiler::GetSharedFunctionInfoForScript(
            isolate, str, script_details, source->resource_options, nullptr,
-@@ -2625,7 +2658,7 @@ MaybeLocal<Function> ScriptCompiler::CompileFunctionInContext(
+@@ -2514,7 +2536,7 @@ MaybeLocal<Function> ScriptCompiler::CompileFunctionInContext(
      i::Compiler::ScriptDetails script_details = GetScriptDetails(
          isolate, source->resource_name, source->resource_line_offset,
          source->resource_column_offset, source->source_map_url,
@@ -69,7 +69,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
  
      i::ScriptData* script_data = nullptr;
      if (options == kConsumeCodeCache) {
-@@ -2556,12 +2589,12 @@ ScriptCompiler::ScriptStreamingTask* ScriptCompiler::StartStreaming(
+@@ -2576,12 +2598,12 @@ ScriptCompiler::ScriptStreamingTask* ScriptCompiler::StartStreaming(
  namespace {
  i::MaybeHandle<i::SharedFunctionInfo> CompileStreamedSource(
      i::Isolate* isolate, ScriptCompiler::StreamedSource* v8_source,
@@ -84,7 +84,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
    i::ScriptStreamingData* data = v8_source->impl();
    return i::Compiler::GetSharedFunctionInfoForStreamedScript(
        isolate, str, script_details, origin.Options(), data);
-@@ -2683,14 +2720,14 @@ i::MaybeHandle<i::SharedFunctionInfo> CompileStreamedSource(
+@@ -2592,14 +2614,14 @@ i::MaybeHandle<i::SharedFunctionInfo> CompileStreamedSource(
  MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
                                             StreamedSource* v8_source,
                                             Local<String> full_source_string,
@@ -101,7 +101,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
    has_pending_exception = !maybe_sfi.ToHandle(&sfi);
    if (has_pending_exception) isolate->ReportPendingMessages();
    RETURN_ON_FAILED_EXECUTION(Script);
-@@ -2608,7 +2641,7 @@ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
+@@ -2619,7 +2641,7 @@ MaybeLocal<Module> ScriptCompiler::CompileModule(
                 "V8.CompileStreamedModule");
    i::Handle<i::SharedFunctionInfo> sfi;
    i::MaybeHandle<i::SharedFunctionInfo> maybe_sfi =
@@ -110,7 +110,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
    has_pending_exception = !maybe_sfi.ToHandle(&sfi);
    if (has_pending_exception) isolate->ReportPendingMessages();
    RETURN_ON_FAILED_EXECUTION(Module);
-@@ -5128,6 +5173,21 @@ Local<v8::Value> Function::GetBoundFunction() const {
+@@ -5151,6 +5173,21 @@ Local<v8::Value> Function::GetBoundFunction() const {
    return v8::Undefined(reinterpret_cast<v8::Isolate*>(self->GetIsolate()));
  }
  
@@ -132,7 +132,7 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
  MaybeLocal<String> v8::Function::FunctionProtoToString(Local<Context> context) {
    PREPARE_FOR_EXECUTION(context, Function, FunctionProtoToString, String);
    auto self = Utils::OpenHandle(this);
-@@ -8080,6 +8145,33 @@ void Isolate::CheckMemoryPressure() {
+@@ -8033,6 +8070,33 @@ void Isolate::ReportExternalAllocationLimitReached() {
    heap->ReportExternalMemoryPressure();
  }
  

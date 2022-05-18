@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_id.idl b/third_party/blink/renderer/core/frame/navigator_id.idl
-index 803f5e25f5a7674d625aad3256ba595de61f3e54..94e1e88cbe93361146ff3a25705d96f32d2f78a1 100644
+index c7217f80a00ad85f8f5058d6de8c24e9a5073be1..e8349952c15454ee78374771947f4da2469e9992 100644
 --- a/third_party/blink/renderer/core/frame/navigator_id.idl
 +++ b/third_party/blink/renderer/core/frame/navigator_id.idl
 @@ -33,10 +33,10 @@

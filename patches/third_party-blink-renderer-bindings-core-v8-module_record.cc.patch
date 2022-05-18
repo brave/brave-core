@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/module_record.cc b/third_party/blink/renderer/bindings/core/v8/module_record.cc
-index c3f7edf41a2416a0693abf179bb888af5ec8248d..a89794178f99b246fbb6c489e756107b722e91b2 100644
+index c3f7edf41a2416a0693abf179bb888af5ec8248d..5d4709f73b0df37b99e754f2343b57c33ddfedfc 100644
 --- a/third_party/blink/renderer/bindings/core/v8/module_record.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/module_record.cc
 @@ -21,6 +21,11 @@
@@ -37,7 +37,7 @@ index c3f7edf41a2416a0693abf179bb888af5ec8248d..a89794178f99b246fbb6c489e756107b
    if (out_produce_cache_data) {
      *out_produce_cache_data =
          MakeGarbageCollected<ModuleRecordProduceCacheData>(
-@@ -187,7 +209,11 @@ v8::MaybeLocal<v8::Module> ModuleRecord::ResolveModuleCallback(
+@@ -187,7 +208,11 @@ v8::MaybeLocal<v8::Module> ModuleRecord::ResolveModuleCallback(
      v8::Local<v8::FixedArray> import_assertions,
      v8::Local<v8::Module> referrer) {
    v8::Isolate* isolate = context->GetIsolate();

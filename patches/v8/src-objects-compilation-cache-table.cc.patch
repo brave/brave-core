@@ -1,8 +1,8 @@
 diff --git a/src/objects/compilation-cache-table.cc b/src/objects/compilation-cache-table.cc
-index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c6f7891a8 100644
+index b9345541167810b0ee5eda87da2aa6e3c5336599..84382995b85a4959caa464d107583d049a4372b4 100644
 --- a/src/objects/compilation-cache-table.cc
 +++ b/src/objects/compilation-cache-table.cc
-@@ -143,9 +143,9 @@
+@@ -143,9 +143,9 @@ class StringSharedKey : public HashTableKey {
    //   called. When negative, position is the negation of the position in the
    //   dynamic function's effective source where the ')' ends the parameters.
    StringSharedKey(Handle<String> source, Handle<SharedFunctionInfo> shared,
@@ -14,7 +14,7 @@ index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c
          source_(source),
          shared_(shared),
          language_mode_(language_mode),
-@@ -246,7 +246,7 @@
+@@ -246,7 +246,7 @@ class CodeKey : public HashTableKey {
  
  MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
      Handle<CompilationCacheTable> table, Handle<String> src,
@@ -23,7 +23,7 @@ index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c
    src = String::Flatten(isolate, src);
    StringSharedKey key(src, language_mode);
    InternalIndex entry = table->FindEntry(isolate, &key);
-@@ -265,12 +265,12 @@
+@@ -265,12 +265,12 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
  InfoCellPair CompilationCacheTable::LookupEval(
      Handle<CompilationCacheTable> table, Handle<String> src,
      Handle<SharedFunctionInfo> outer_info, Handle<Context> native_context,
@@ -38,7 +38,7 @@ index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c
    InternalIndex entry = table->FindEntry(isolate, &key);
    if (entry.is_not_found()) return empty_result;
  
-@@ -298,7 +298,7 @@
+@@ -298,7 +298,7 @@ Handle<Object> CompilationCacheTable::LookupRegExp(Handle<String> src,
  Handle<CompilationCacheTable> CompilationCacheTable::PutScript(
      Handle<CompilationCacheTable> cache, Handle<String> src,
      LanguageMode language_mode, Handle<SharedFunctionInfo> value,

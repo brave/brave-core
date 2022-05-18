@@ -1,8 +1,8 @@
 diff --git a/third_party/libxml/BUILD.gn b/third_party/libxml/BUILD.gn
-index 3fe4dfd2990be0ab0e5097163e9ad9b9ddbfd18d..3453433abe1b9924f81ce9e47525b33519b3d3fa 100644
+index 8068e573cbd48de3aeacd858ad8e18bb16a49cdd..a0c090e9535bde840c9dba11e77228cb0fb14b0f 100644
 --- a/third_party/libxml/BUILD.gn
 +++ b/third_party/libxml/BUILD.gn
-@@ -141,6 +141,7 @@ static_library("libxml") {
+@@ -142,6 +142,7 @@ static_library("libxml") {
      "//third_party/blink/renderer/*",
      "//third_party/fontconfig",
      "//third_party/libxslt",

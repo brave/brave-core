@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.h b/third_party/blink/renderer/core/script/dynamic_module_resolver.h
-index e73c78d383bbea22321e4cc7eeb730ad136aef38..729027f3d939e6df50a68fed00141b6e3360e8ba 100644
+index 1c8bd2cccc634db5a57d92ac9de19cf858625311..710e626b891488a84123283a4906d6d2a10af09e 100644
 --- a/third_party/blink/renderer/core/script/dynamic_module_resolver.h
 +++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.h
 @@ -11,6 +11,8 @@
@@ -11,7 +11,7 @@ index e73c78d383bbea22321e4cc7eeb730ad136aef38..729027f3d939e6df50a68fed00141b6e
  namespace blink {
  
  class Modulator;
-@@ -33,6 +38,8 @@ class CORE_EXPORT DynamicModuleResolver final
+@@ -34,6 +36,8 @@ class CORE_EXPORT DynamicModuleResolver final
    void ResolveDynamically(const ModuleRequest& module_request,
                            const KURL& referrer_resource_url,
                            const ReferrerScriptInfo& referrer_info,

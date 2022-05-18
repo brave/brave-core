@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_language.cc b/third_party/blink/renderer/core/frame/navigator_language.cc
-index 061e738dfb92d55e4ef03093e15215f26d4352cd..bc65a4a09d885f898c61a3d316deae10bf7f6b17 100644
+index 14883715ff91c20d96cb629c029b9e4e65cd7c81..4b3c2703c724218d8d7303a7166f312f0f3e4a0b 100644
 --- a/third_party/blink/renderer/core/frame/navigator_language.cc
 +++ b/third_party/blink/renderer/core/frame/navigator_language.cc
 @@ -9,6 +9,12 @@

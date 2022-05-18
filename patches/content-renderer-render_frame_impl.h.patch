@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_frame_impl.h b/content/renderer/render_frame_impl.h
-index 6a33dcf8df3d64f09a262fe62fff1bc7a310d0cb..e28fe2eea0bceadb78e2d6a8c08b34d5c8b2ef71 100644
+index f659ea4833f21b5ae218b5720623972e6402ca3c..22be01d4eb8ef723fcc50a6d9c135641efc8f5c2 100644
 --- a/content/renderer/render_frame_impl.h
 +++ b/content/renderer/render_frame_impl.h
-@@ -469,6 +469,12 @@ class CONTENT_EXPORT RenderFrameImpl
+@@ -362,6 +362,12 @@ class CONTENT_EXPORT RenderFrameImpl
                         const gfx::Range& range) override;
    void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
                             const std::string& message) override;
@@ -15,7 +15,7 @@ index 6a33dcf8df3d64f09a262fe62fff1bc7a310d0cb..e28fe2eea0bceadb78e2d6a8c08b34d5
    blink::PreviewsState GetPreviewsState() override;
    bool IsPasting() override;
    bool IsBrowserSideNavigationPending() override;
-@@ -1041,6 +1047,12 @@ class CONTENT_EXPORT RenderFrameImpl
+@@ -827,6 +833,12 @@ class CONTENT_EXPORT RenderFrameImpl
    void OnMoveCaret(const gfx::Point& point);
    void OnScrollFocusedEditableNodeIntoRect(const gfx::Rect& rect);
    void OnSelectRange(const gfx::Point& base, const gfx::Point& extent);

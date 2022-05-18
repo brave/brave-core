@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.h b/third_party/blink/renderer/bindings/core/v8/scheduled_action.h
-index 4f81e0c38007ca5ffaea7167f90f31ce4ce55236..12e26e92b9b1359800f56c38e6a04932ba0b9ed8 100644
+index 871ec1da867c1c2d76045f6ea5541de35d5f1320..3e6c9c4de6b184375301b4ed75ac8c607ed0fc9c 100644
 --- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.h
 +++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.h
-@@ -78,6 +79,9 @@ class ScheduledAction final : public GarbageCollected<ScheduledAction>,
+@@ -73,6 +73,9 @@ class ScheduledAction final : public GarbageCollected<ScheduledAction>,
    Member<V8Function> function_;
    HeapVector<ScriptValue> arguments_;
    String code_;

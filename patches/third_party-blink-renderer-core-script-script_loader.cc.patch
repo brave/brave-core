@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb4dad8277 100644
+index 0761d94c0e7ff1d13076fffc79a094d20cb2a44d..ece82c28a2989a970c95e78e36ae87957c966127 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
-@@ -71,6 +71,11 @@
+@@ -78,6 +78,11 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_view.h"
  
@@ -14,7 +14,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
  namespace blink {
  
  ScriptLoader::ScriptLoader(ScriptElementBase* element,
-@@ -110,6 +118,10 @@ void ScriptLoader::Trace(Visitor* visitor) {
+@@ -123,6 +128,10 @@ void ScriptLoader::Trace(Visitor* visitor) const {
    visitor->Trace(pending_script_);
    visitor->Trace(prepared_pending_script_);
    visitor->Trace(resource_keep_alive_);
@@ -25,7 +25,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
    PendingScriptClient::Trace(visitor);
  }
  
-@@ -363,7 +375,7 @@ bool IsImportMapEnabled(LocalDOMWindow* context_window) {
+@@ -201,7 +210,7 @@ bool IsImportMapEnabled(LocalDOMWindow* context_window) {
      return true;
  
    Modulator* modulator =
@@ -34,7 +34,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
    if (!modulator)
      return true;
  
-@@ -501,7 +513,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -527,7 +536,7 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
    // If the script’s type is "importmap": [spec text]
    if (GetScriptType() == ScriptTypeAtPrepare::kImportMap) {
      Modulator* modulator =
@@ -43,7 +43,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
      auto aquiring_state = modulator->GetAcquiringImportMapsState();
      switch (aquiring_state) {
        case Modulator::AcquiringImportMapsState::kAfterModuleScriptLoad:
-@@ -588,6 +657,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -648,6 +657,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // script CORS setting, and encoding.</spec>
          FetchClassicScript(url, element_document, options, cross_origin,
                             encoding);
@@ -67,7 +67,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
          break;
        }
        case ScriptTypeAtPrepare::kModule: {
-@@ -601,10 +613,27 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -661,10 +687,27 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // Fetch an external module script graph given url, settings object, and
          // options.</spec>
          Modulator* modulator = Modulator::From(
@@ -96,7 +96,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
        // <spec step="24.6">When the chosen algorithm asynchronously completes,
        // set the script's script to the result. At that time, the script is
        // ready.
-@@ -682,6 +713,25 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -765,6 +808,25 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // <spec step="25.2.A.3">The script is ready.</spec>
          //
          // Implemented by ClassicPendingScript.
@@ -122,7 +122,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
          break;
        }
  
-@@ -696,7 +749,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -779,7 +841,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // href="https://html.spec.whatwg.org/C/#fetch-an-inline-module-script-graph">
          const KURL& source_url = element_document.Url();
          Modulator* modulator = Modulator::From(
@@ -144,7 +144,7 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
  
          // <spec label="fetch-an-inline-module-script-graph" step="1">Let script
          // be the result of creating a JavaScript module script using source
-@@ -1048,4 +1117,19 @@ String ScriptLoader::GetScriptText() const {
+@@ -1109,4 +1184,19 @@ String ScriptLoader::GetScriptText() const {
                                       element_->GetExecutionContext());
  }
  

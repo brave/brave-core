@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/page/chrome_client.h b/third_party/blink/renderer/core/page/chrome_client.h
-index e027493c7217d34ee079152437a008894572dd92..5ad2bdd15c09e9213e747d351c3d27da54717761 100644
+index ed7659e6a4b482c32321078a32f3c98cdad6650e..651581d2719d17bac60209293cc4a6552d2e8649 100644
 --- a/third_party/blink/renderer/core/page/chrome_client.h
 +++ b/third_party/blink/renderer/core/page/chrome_client.h
-@@ -510,6 +510,9 @@ class CORE_EXPORT ChromeClient : public GarbageCollected<ChromeClient> {
+@@ -534,6 +534,9 @@ class CORE_EXPORT ChromeClient : public GarbageCollected<ChromeClient> {
  
    virtual void DocumentDetached(Document&) {}
  

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.h b/third_party/blink/renderer/core/dom/events/event_target.h
-index 0963aaaab0a58735148ff2ecbeee1b18f9162315..859fcf04444feb6232bff321345d9464b6cbac22 100644
+index 08d1ebbd0c65afd4611b47f942d685e06edaa5d2..0227236a91c9e470cc84c21277ddd6b7e1eac32d 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.h
 +++ b/third_party/blink/renderer/core/dom/events/event_target.h
-@@ -86,6 +87,10 @@ class CORE_EXPORT EventTargetData final
+@@ -89,6 +89,10 @@ class CORE_EXPORT EventTargetData final
  
    EventListenerMap event_listener_map;
    std::unique_ptr<FiringEventIteratorVector> firing_event_iterators;

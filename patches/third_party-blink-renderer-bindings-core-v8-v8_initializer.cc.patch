@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc b/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
-index 72248101cdaee12ff71d0d6cd9b83ea50db2c829..9c969dfb8546a98f7fcad97e75a949d42d38b2f2 100644
+index 72248101cdaee12ff71d0d6cd9b83ea50db2c829..41d51071023aa8f1a2a63d6d36bb573d372eaacc 100644
 --- a/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/v8_initializer.cc
 @@ -574,7 +574,12 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
@@ -16,7 +16,7 @@ index 72248101cdaee12ff71d0d6cd9b83ea50db2c829..9c969dfb8546a98f7fcad97e75a949d4
    if (!modulator) {
      // Inactive browsing context (detached frames) doesn't have a modulator.
      // We chose to return a rejected promise (which may never get to catch(),
-@@ -634,7 +634,7 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
+@@ -629,7 +634,7 @@ static v8::MaybeLocal<v8::Promise> HostImportModuleDynamically(
    auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
    ScriptPromise promise = resolver->Promise();
    modulator->ResolveDynamically(module_request, referrer_resource_url,

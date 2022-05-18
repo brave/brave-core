@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h b/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h
-index 9b034af0c3705afff15ced1ed73ae0cf0fad525d..3fd83a03d917cc3a5cc9bc26b123368baf6ce969 100644
+index de102865eae18dbdc967da618b4d8125c275f247..b364ab974c9546d8686a2504195a1e1cde838be4 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_script_fetcher.h
 @@ -14,6 +14,7 @@
@@ -10,7 +10,7 @@ index 9b034af0c3705afff15ced1ed73ae0cf0fad525d..3fd83a03d917cc3a5cc9bc26b123368b
  namespace blink {
  
  class ConsoleMessage;
-@@ -46,6 +50,7 @@ class CORE_EXPORT ModuleScriptFetcher : public ResourceClient {
+@@ -48,6 +49,7 @@ class CORE_EXPORT ModuleScriptFetcher : public ResourceClient {
    virtual void Fetch(FetchParameters&,
                       ModuleType,
                       ResourceFetcher*,
@@ -18,7 +18,7 @@ index 9b034af0c3705afff15ced1ed73ae0cf0fad525d..3fd83a03d917cc3a5cc9bc26b123368b
                       ModuleGraphLevel,
                       Client*) = 0;
  
-@@ -56,6 +61,7 @@  static bool WasModuleLoadSuccessful(
+@@ -58,6 +60,7 @@ class CORE_EXPORT ModuleScriptFetcher : public ResourceClient {
        ScriptResource* resource,
        ModuleType expected_module_type,
        HeapVector<Member<ConsoleMessage>>* error_messages);

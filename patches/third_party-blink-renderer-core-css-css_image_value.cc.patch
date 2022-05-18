@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/css/css_image_value.cc b/third_party/blink/renderer/core/css/css_image_value.cc
-index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e0776c4a40b 100644
+index a54fb823421124ab67883f1362e10fdb58ea2a71..c49f516eb94971d507ba5479cd3e27176a8c5b7c 100644
 --- a/third_party/blink/renderer/core/css/css_image_value.cc
 +++ b/third_party/blink/renderer/core/css/css_image_value.cc
 @@ -37,6 +37,9 @@
@@ -12,7 +12,7 @@ index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e07
  namespace blink {
  
  CSSImageValue::CSSImageValue(const AtomicString& raw_value,
-@@ -116,8 +116,19 @@ StyleImage* CSSImageValue::CacheImage(
+@@ -116,8 +119,19 @@ StyleImage* CSSImageValue::CacheImage(
  
      FetchParameters params =
          PrepareFetch(document, image_request_behavior, cross_origin);

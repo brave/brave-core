@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
-index b8f4aa80447cf56d29de438a032096010709c2c5..7e073c23c8bdc805f953562a6bfd46ad986cffe2 100644
+index b483cd489120ab89712b564997b368a775c44bd8..bfd77b4ba10ee38be9849181518c2ad166c0e322 100644
 --- a/third_party/blink/renderer/core/loader/frame_loader.cc
 +++ b/third_party/blink/renderer/core/loader/frame_loader.cc
-@@ -128,6 +128,9 @@
+@@ -125,6 +125,9 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
@@ -12,7 +12,7 @@ index b8f4aa80447cf56d29de438a032096010709c2c5..7e073c23c8bdc805f953562a6bfd46ad
  namespace blink {
  
  bool IsBackForwardLoadType(WebFrameLoadType type) {
-@@ -797,6 +804,20 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
+@@ -795,6 +798,20 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
      }
    }
  

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/image_resource_content.cc b/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
-index 854baaa5e41d312c7a64bcdcd030a0cec2cc00bc..e8b9d1934d32ac192430eee202c6824189cbe3b2 100644
+index ac259cb798a0d3e44be2eb8c7415e52f8244f2e5..92562381b0c846be0792539b33d5a22e839cabe0 100644
 --- a/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
 +++ b/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
-@@ -25,6 +25,12 @@
+@@ -26,6 +26,12 @@
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  #include "v8/include/v8.h"
  
@@ -15,7 +15,7 @@ index 854baaa5e41d312c7a64bcdcd030a0cec2cc00bc..e8b9d1934d32ac192430eee202c68241
  namespace blink {
  
  namespace {
-@@ -139,6 +145,18 @@ ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
+@@ -105,6 +111,18 @@ ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
    return resource->GetContent();
  }
  

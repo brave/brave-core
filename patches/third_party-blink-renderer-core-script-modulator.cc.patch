@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/modulator.cc b/third_party/blink/renderer/core/script/modulator.cc
-index 2f48e3a2cef9915f077008c5a4009aae45cc0587..892dedee9d1dd78e88fd08b2f596f1f27126a801 100644
+index 0a2c8ac1595b8da9229869613d29a3a244429a4d..3fea14bfa23cf208494bc6b29da79edaadcbb856 100644
 --- a/third_party/blink/renderer/core/script/modulator.cc
 +++ b/third_party/blink/renderer/core/script/modulator.cc
 @@ -16,13 +16,18 @@
@@ -22,7 +22,7 @@ index 2f48e3a2cef9915f077008c5a4009aae45cc0587..892dedee9d1dd78e88fd08b2f596f1f2
    if (!script_state)
      return nullptr;
  
-@@ -36,7 +41,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+@@ -36,14 +41,14 @@ Modulator* Modulator::From(ScriptState* script_state) {
      return modulator;
    ExecutionContext* execution_context = ExecutionContext::From(script_state);
    if (auto* window = DynamicTo<LocalDOMWindow>(execution_context)) {
@@ -39,7 +39,7 @@ index 2f48e3a2cef9915f077008c5a4009aae45cc0587..892dedee9d1dd78e88fd08b2f596f1f2
      Modulator::SetModulator(script_state, modulator);
  
      // See comment in WorkerOrWorkletGlobalScope::modulator_ for this
-@@ -52,7 +57,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
+@@ -51,7 +56,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
      worklet_scope->SetModulator(modulator);
    } else if (auto* worker_scope =
                   DynamicTo<WorkerGlobalScope>(execution_context)) {

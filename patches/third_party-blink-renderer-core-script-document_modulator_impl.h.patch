@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/document_modulator_impl.h b/third_party/blink/renderer/core/script/document_modulator_impl.h
-index a0eac9f5ff6b37580f1d0c5e3430ce1e77dd2aea..b431fb8f6600f24c607f1347a0d0ed75c5ffa2a5 100644
+index a4846d28bfd88e3bba2f7fa6183cb433bab17abf..a5b6deee6019953d51ffaa38c55f3239c6802b1e 100644
 --- a/third_party/blink/renderer/core/script/document_modulator_impl.h
 +++ b/third_party/blink/renderer/core/script/document_modulator_impl.h
-@@ -9,6 +9,8 @@
+@@ -10,6 +10,8 @@
  #include "third_party/blink/public/mojom/v8_cache_options.mojom-blink.h"
  #include "third_party/blink/renderer/platform/heap/handle.h"
  
@@ -11,7 +11,7 @@ index a0eac9f5ff6b37580f1d0c5e3430ce1e77dd2aea..b431fb8f6600f24c607f1347a0d0ed75
  namespace blink {
  
  class ModuleScriptFetcher;
-@@ -20,7 +25,7 @@ class ScriptState;
+@@ -21,7 +23,7 @@ class ScriptState;
  // ModulatorImplBase.
  class DocumentModulatorImpl final : public ModulatorImplBase {
   public:

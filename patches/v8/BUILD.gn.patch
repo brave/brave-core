@@ -1,8 +1,8 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index b2dde3f9d703126395bdf91fdc0b5b9ea752f60f..9840644fb45727dc2028663a1a02192eaaec80c2 100644
+index 5e3045bfdc1d80d51f2d2b121f3f090566ef4df3..c30d1bbdecdeed2318cb7c933faf08ee12efa16b 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -768,12 +768,10 @@ config("toolchain") {
+@@ -1110,12 +1110,10 @@ config("toolchain") {
    }
  
    if (is_clang) {

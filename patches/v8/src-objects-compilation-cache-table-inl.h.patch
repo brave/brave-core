@@ -1,8 +1,8 @@
 diff --git a/src/objects/compilation-cache-table-inl.h b/src/objects/compilation-cache-table-inl.h
-index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c6f7891a8 100644
+index 2e3a88d77cefdaf0c09a4dbaa7e4ad0460d42721..911ddb1022f2cf100ecd9ff9861b6a1460a6e4cc 100644
 --- a/src/objects/compilation-cache-table-inl.h
 +++ b/src/objects/compilation-cache-table-inl.h
-@@ -34,7 +34,7 @@ uint32_t CompilationCacheShape::RegExpHash(String string, Smi flags) {
+@@ -33,7 +33,7 @@ uint32_t CompilationCacheShape::RegExpHash(String string, Smi flags) {
  uint32_t CompilationCacheShape::StringSharedHash(String source,
                                                   SharedFunctionInfo shared,
                                                   LanguageMode language_mode,
@@ -11,7 +11,7 @@ index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c
    uint32_t hash = source.EnsureHash();
    if (shared.HasSourceCode()) {
      // Instead of using the SharedFunctionInfo pointer in the hash
-@@ -48,6 +48,7 @@ uint32_t CompilationCacheShape::StringSharedHash(String source,
+@@ -47,6 +47,7 @@ uint32_t CompilationCacheShape::StringSharedHash(String source,
    STATIC_ASSERT(LanguageModeSize == 2);
    if (is_strict(language_mode)) hash ^= 0x8000;
    hash += position;
@@ -19,7 +19,7 @@ index 81b953a5892844e8ef6ecc7a1ebf36426be09be0..bab3cfdf3631ec171ee2b71e759b8d1c
    return hash;
  }
  
-@@ -57,19 +65,20 @@ uint32_t CompilationCacheShape::HashForObject(ReadOnlyRoots roots,
+@@ -71,19 +72,20 @@ uint32_t CompilationCacheShape::HashForObject(ReadOnlyRoots roots,
    // Script: See StringSharedKey::ToHandle for the encoding.
    FixedArray val = FixedArray::cast(object);
    if (val.map() == roots.fixed_cow_array_map()) {

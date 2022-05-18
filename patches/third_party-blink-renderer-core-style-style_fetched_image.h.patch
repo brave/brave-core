@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/style/style_fetched_image.h b/third_party/blink/renderer/core/style/style_fetched_image.h
-index d579633c07e12065d9ff3d8cd08c2917f457e289..d451c50902240607b88a982790317c4c7ad288a8 100644
+index 843c35c61a1641573f06892b4af66cc8bf75c2b9..ae15501772d2692ad712c8c43da9aa936d0f14bf 100644
 --- a/third_party/blink/renderer/core/style/style_fetched_image.h
 +++ b/third_party/blink/renderer/core/style/style_fetched_image.h
 @@ -29,6 +29,7 @@
@@ -10,7 +10,7 @@ index d579633c07e12065d9ff3d8cd08c2917f457e289..d451c50902240607b88a982790317c4c
  namespace blink {
  
  class Document;
-@@ -45,6 +46,7 @@ class StyleFetchedImage final : public StyleImage,
+@@ -41,6 +42,7 @@ class StyleFetchedImage final : public StyleImage,
  
   public:
    StyleFetchedImage(ImageResourceContent* image,
@@ -18,7 +18,7 @@ index d579633c07e12065d9ff3d8cd08c2917f457e289..d451c50902240607b88a982790317c4c
                      const Document&,
                      bool is_lazyload_possibly_deferred,
                      bool origin_clean,
-@@ -88,6 +92,7 @@ class StyleFetchedImage final : public StyleImage,
+@@ -91,6 +93,7 @@ class StyleFetchedImage final : public StyleImage,
    Member<const Document> document_;
    const KURL url_;
    const bool origin_clean_;

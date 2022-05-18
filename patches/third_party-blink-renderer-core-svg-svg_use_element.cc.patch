@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_use_element.cc b/third_party/blink/renderer/core/svg/svg_use_element.cc
-index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab9d707226 100644
+index 3f15628f159413fc485a5937f384910fd28c3e3f..5687f2c6ee503ac7c7bd776de6ddeba640f6af8f 100644
 --- a/third_party/blink/renderer/core/svg/svg_use_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_use_element.cc
-@@ -48,6 +48,9 @@
+@@ -51,6 +51,9 @@
  #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  
@@ -12,7 +12,7 @@ index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab
  namespace blink {
  
  SVGUseElement::SVGUseElement(Document& document)
-@@ -316,7 +322,16 @@ Element* SVGUseElement::ResolveTargetElement() {
+@@ -314,7 +317,16 @@ Element* SVGUseElement::ResolveTargetElement() {
    }
    if (!document_content_ || !document_content_->GetDocument())
      return nullptr;
@@ -30,7 +30,7 @@ index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab
  }
  
  SVGElement* SVGUseElement::InstanceRoot() const {
-@@ -347,7 +364,11 @@ void SVGUseElement::BuildPendingResource() {
+@@ -343,7 +355,11 @@ void SVGUseElement::BuildPendingResource() {
  
    if (auto* target = DynamicTo<SVGElement>(ResolveTargetElement())) {
      DCHECK(target->isConnected());
@@ -43,7 +43,7 @@ index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab
    }
    DCHECK(!needs_shadow_tree_recreation_);
  }
-@@ -369,13 +390,27 @@ String SVGUseElement::title() const {
+@@ -365,13 +381,27 @@ String SVGUseElement::title() const {
  }
  
  static void AssociateCorrespondingElements(SVGElement& target_root,
@@ -72,7 +72,7 @@ index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab
      instance.SetCorrespondingElement(&*target_iterator);
      ++target_iterator;
    }
-@@ -414,7 +449,11 @@ static void MoveChildrenToReplacementElement(ContainerNode& source_root,
+@@ -410,7 +440,11 @@ static void MoveChildrenToReplacementElement(ContainerNode& source_root,
    }
  }
  
@@ -85,7 +85,7 @@ index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab
    SVGElement* instance_root = &To<SVGElement>(target_root.CloneWithChildren());
    if (IsA<SVGSymbolElement>(target_root)) {
      // Spec: The referenced 'symbol' and its contents are deep-cloned into
-@@ -435,12 +474,20 @@ SVGElement* SVGUseElement::CreateInstanceTree(SVGElement& target_root) const {
+@@ -431,12 +465,20 @@ SVGElement* SVGUseElement::CreateInstanceTree(SVGElement& target_root) const {
      instance_root = svg_element;
    }
    TransferUseWidthAndHeightIfNeeded(*this, *instance_root, target_root);
@@ -108,7 +108,7 @@ index 8cd5633c98c7d92fef94b2e5c427ce152b3c6696..6a63d3e1bac0b2b8aff40123f7e3e2ab
    DCHECK(!InstanceRoot());
    DCHECK(!needs_shadow_tree_recreation_);
  
-@@ -451,7 +498,11 @@ void SVGUseElement::AttachShadowTree(SVGElement& target) {
+@@ -447,7 +489,11 @@ void SVGUseElement::AttachShadowTree(SVGElement& target) {
    // Set up root SVG element in shadow tree.
    // Clone the target subtree into the shadow tree, not handling <use> and
    // <symbol> yet.

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
-index 6733851f4251561921ddc8afff26d652617e85bb..3c5f9e952f1536951133e89ebd10cbeb6c02d7c7 100644
+index 6355a6e917452bf4a2ed73931ec35b2e9b9794ef..6c19c7dd9f4a43b99734fe8546726b558cff51ec 100644
 --- a/third_party/blink/renderer/core/dom/document.h
 +++ b/third_party/blink/renderer/core/dom/document.h
-@@ -73,6 +73,10 @@
+@@ -75,6 +75,10 @@
  #include "third_party/blink/renderer/platform/wtf/casting.h"
  #include "third_party/blink/renderer/platform/wtf/hash_set.h"
  
@@ -13,7 +13,7 @@ index 6733851f4251561921ddc8afff26d652617e85bb..3c5f9e952f1536951133e89ebd10cbeb
  namespace base {
  class SingleThreadTaskRunner;
  }
-@@ -1443,7 +1447,7 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1410,7 +1414,7 @@ class CORE_EXPORT Document : public ContainerNode,
    // EnsureTemplateDocument().
    bool IsTemplateDocument() const { return template_document_host_; }
    Document& EnsureTemplateDocument();
@@ -22,7 +22,7 @@ index 6733851f4251561921ddc8afff26d652617e85bb..3c5f9e952f1536951133e89ebd10cbeb
  
    // TODO(thestig): Rename these and related functions, since we can call them
    // for controls outside of forms as well.
-@@ -1691,6 +1696,9 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1665,6 +1669,9 @@ class CORE_EXPORT Document : public ContainerNode,
    FontPreloadManager& GetFontPreloadManager() { return *font_preload_manager_; }
    void FontPreloadingFinishedOrTimedOut();
  
@@ -32,7 +32,7 @@ index 6733851f4251561921ddc8afff26d652617e85bb..3c5f9e952f1536951133e89ebd10cbeb
    void IncrementAsyncScriptCount() { async_script_count_++; }
    void RecordAsyncScriptCount();
  
-@@ -1706,6 +1714,11 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1715,6 +1722,11 @@ class CORE_EXPORT Document : public ContainerNode,
      return parser_sync_policy_;
    }
  

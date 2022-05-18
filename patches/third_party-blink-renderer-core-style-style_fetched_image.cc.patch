@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/style/style_fetched_image.cc b/third_party/blink/renderer/core/style/style_fetched_image.cc
-index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e0776c4a40b 100644
+index cc194f2142a024307a1bed328cb62d8011e60851..666bb206f7abe9440d4f54f8871d68206a5536d8 100644
 --- a/third_party/blink/renderer/core/style/style_fetched_image.cc
 +++ b/third_party/blink/renderer/core/style/style_fetched_image.cc
-@@ -39,9 +39,16 @@
+@@ -37,9 +37,16 @@
  #include "third_party/blink/renderer/platform/graphics/bitmap_image.h"
  #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
  
@@ -19,7 +19,7 @@ index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e07
                                       const Document& document,
                                       bool is_lazyload_possibly_deferred,
                                       bool origin_clean,
-@@ -55,6 +62,7 @@ StyleFetchedImage::StyleFetchedImage(ImageResourceContent* image,
+@@ -48,6 +55,7 @@ StyleFetchedImage::StyleFetchedImage(ImageResourceContent* image,
      : document_(document),
        url_(url),
        origin_clean_(origin_clean),
@@ -27,7 +27,7 @@ index fc358725ebc4812888e41ef188114cb4e9a8e74e..fffaa5e31bf9f16d036dad446d260e07
        is_ad_related_(is_ad_related) {
    is_image_resource_ = true;
    is_lazyload_possibly_deferred_ = is_lazyload_possibly_deferred;
-@@ -134,10 +160,28 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
+@@ -136,10 +144,28 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
    image_->RemoveObserver(observer);
  }
  

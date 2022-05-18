@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-index 1ff765e6e0e238c713e8235efb4958a96a99eadd..96150fa72b677d860ec7c7c875b8de8b5f40260e 100644
+index ae249656668871f9300f1da3cbb0c3f210fdf6f9..a5216e2eb0417267fd0320dbd82a142dcbaf2c43 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-@@ -85,6 +85,8 @@
+@@ -90,6 +90,8 @@
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  #include "v8/include/v8-inspector.h"
  
@@ -11,7 +11,7 @@ index 1ff765e6e0e238c713e8235efb4958a96a99eadd..96150fa72b677d860ec7c7c875b8de8b
  namespace blink {
  
  using protocol::Response;
-@@ -238,44 +244,6 @@ static std::unique_ptr<TextResourceDecoder> CreateResourceTextDecoder(
+@@ -262,44 +264,6 @@ static std::unique_ptr<TextResourceDecoder> CreateResourceTextDecoder(
    return std::unique_ptr<TextResourceDecoder>();
  }
  

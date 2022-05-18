@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_frame_owner_element.cc b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-index 9be37732a9c3ced03c3e11d9a4bb16d7ba672227..ac14f91298fd192f13709f5aa3a780a9d3ff34a9 100644
+index a1a4a7fee14c0293fdda1d10fcd01894d27070e5..26efbc41830fb3bca22f2c3e68df5302bb8a7c7d 100644
 --- a/third_party/blink/renderer/core/html/html_frame_owner_element.cc
 +++ b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-@@ -55,6 +55,13 @@
+@@ -61,6 +61,13 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  
@@ -16,7 +16,7 @@ index 9be37732a9c3ced03c3e11d9a4bb16d7ba672227..ac14f91298fd192f13709f5aa3a780a9
  namespace blink {
  
  namespace {
-@@ -209,6 +216,17 @@ void HTMLFrameOwnerElement::SetContentFrame(Frame& frame) {
+@@ -224,6 +231,17 @@ void HTMLFrameOwnerElement::SetContentFrame(Frame& frame) {
  
    for (ContainerNode* node = this; node; node = node->ParentOrShadowHostNode())
      node->IncrementConnectedSubframeCount();

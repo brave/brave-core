@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc57a01253 100644
+index 01097a03d36532c47597d6334c940a6e224bb2ef..dc8266f8559655f478c5204006e444e353bedfc0 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -90,6 +90,8 @@
+@@ -100,6 +100,8 @@
  #include "ui/base/resource/scale_factor.h"
  #include "v8/include/v8.h"
  
@@ -11,7 +11,7 @@ index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc
  namespace blink {
  
  namespace {
-@@ -307,6 +313,59 @@ CanvasRenderingContext* HTMLCanvasElement::GetCanvasRenderingContext(
+@@ -307,6 +309,59 @@ CanvasRenderingContext* HTMLCanvasElement::GetCanvasRenderingContext(
  
    if (ContentsCcLayer() != old_contents_cc_layer)
      OnContentsCcLayerChanged();
@@ -71,7 +71,7 @@ index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc
    return result;
  }
  
-@@ -929,6 +929,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -929,6 +984,7 @@ String HTMLCanvasElement::ToDataURLInternal(
      if (!data_buffer)
        return String("data:,");
  
@@ -79,7 +79,7 @@ index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc
      String data_url = data_buffer->ToDataURL(encoding_mime_type, quality);
      base::TimeDelta elapsed_time = base::TimeTicks::Now() - start_time;
      float sqrt_pixels =
-@@ -940,6 +1006,30 @@ String HTMLCanvasElement::toDataURL(const String& mime_type,
+@@ -976,6 +1032,30 @@ String HTMLCanvasElement::toDataURL(const String& mime_type,
      if (v8_value->IsNumber())
        quality = v8_value.As<v8::Number>()->Value();
    }
@@ -110,7 +110,7 @@ index 01097a03d36532c47597d6334c940a6e224bb2ef..3b37fa87b4fc9baaebc1d70f35de40cc
    return ToDataURLInternal(mime_type, quality, kBackBuffer);
  }
  
-@@ -986,6 +1076,16 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -1028,6 +1108,16 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
              : 0);
    }
  

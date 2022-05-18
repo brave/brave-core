@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
-index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8cae18e72cc 100644
+index ddf6e213ef5641cc9e954f4304b4bb39548bd748..3b50d21d29245eed4cbf7bdf83cfaa48f040f81d 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/interface.py
-@@ -40,6 +40,7 @@ from .codegen_utils import component_export
+@@ -42,6 +42,7 @@ from .codegen_utils import component_export
  from .codegen_utils import component_export_header
  from .codegen_utils import enclose_with_header_guard
  from .codegen_utils import make_copyright_header
@@ -10,7 +10,7 @@ index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8ca
  from .codegen_utils import make_forward_declarations
  from .codegen_utils import make_header_include_directives
  from .codegen_utils import write_code_node_to_file
-@@ -1197,6 +1198,87 @@ def make_report_measure_as(cg_context):
+@@ -1407,6 +1408,87 @@ def make_report_measure_as(cg_context):
      return node
  
  
@@ -155,7 +155,7 @@ index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8ca
      ])
      api_source_node.extend([
          make_copyright_header(),
-@@ -4624,6 +4714,8 @@ def generate_interface(interface):
+@@ -7226,6 +7316,8 @@ def generate_class_like(class_like):
      api_source_blink_ns.body.extend([
          make_forward_declarations(api_source_node.accumulator),
          EmptyNode(),
@@ -164,7 +164,7 @@ index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8ca
      ])
      if is_cross_components:
          impl_header_node.extend([
-@@ -4640,6 +4732,8 @@ def generate_interface(interface):
+@@ -7242,6 +7334,8 @@ def generate_class_like(class_like):
          impl_header_blink_ns.body.extend([
              make_forward_declarations(impl_header_node.accumulator),
              EmptyNode(),
@@ -173,7 +173,7 @@ index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8ca
          ])
          impl_source_node.extend([
              make_copyright_header(),
-@@ -4653,6 +4747,8 @@ def generate_interface(interface):
+@@ -7255,6 +7349,8 @@ def generate_class_like(class_like):
          impl_source_blink_ns.body.extend([
              make_forward_declarations(impl_source_node.accumulator),
              EmptyNode(),

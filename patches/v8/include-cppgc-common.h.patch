@@ -1,5 +1,5 @@
 diff --git a/include/cppgc/common.h b/include/cppgc/common.h
-index 228b9abb74e76348d82bde17dfc19399bf57bd0e..fea404f43a9fc38e74c96effc56de42530da31a5 100644
+index b6dbff3dd6f0077d98a44909c04f7b02284e63e7..a6549d66412a9617c45236696416d2c115790d40 100644
 --- a/include/cppgc/common.h
 +++ b/include/cppgc/common.h
 @@ -5,8 +5,6 @@

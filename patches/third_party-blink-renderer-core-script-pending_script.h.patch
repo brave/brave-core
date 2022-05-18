@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/pending_script.h b/third_party/blink/renderer/core/script/pending_script.h
-index 8ba0a5d806a8344c5b096e5980f49f5f0a12ab76..cd6d5cbf7cdd115314e977f81c363b465943482a 100644
+index 6b9c80216054e5edd89652de19f7a7127fc26548..67b34ee6b6a7869a8e1a91a162b77f47a74cfa0d 100644
 --- a/third_party/blink/renderer/core/script/pending_script.h
 +++ b/third_party/blink/renderer/core/script/pending_script.h
-@@ -111,7 +111,6 @@ class CORE_EXPORT PendingScript : public GarbageCollected<PendingScript>,
+@@ -110,7 +110,6 @@ class CORE_EXPORT PendingScript : public GarbageCollected<PendingScript>,
    void Dispose();
  
    ScriptSchedulingType GetSchedulingType() const {

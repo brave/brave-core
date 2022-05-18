@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/installed_service_worker_module_script_fetcher.cc b/third_party/blink/renderer/core/loader/modulescript/installed_service_worker_module_script_fetcher.cc
-index 1862a248eb404e3d101bdb07e3638087252373c6..8fcf6efeba287a5f757be5942bbdfc7b34efc6f2 100644
+index c6a79d205731b652ae22185ac5b75790950bf336..e1229999e4d7946b1d02df4a01f80badcd19ff48 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/installed_service_worker_module_script_fetcher.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/installed_service_worker_module_script_fetcher.cc
-@@ -28,6 +28,7 @@ InstalledServiceWorkerModuleScriptFetcher::
+@@ -30,6 +30,7 @@ void InstalledServiceWorkerModuleScriptFetcher::Fetch(
      FetchParameters& fetch_params,
      ModuleType expected_module_type,
      ResourceFetcher*,

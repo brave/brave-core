@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 2660078b0ed37bc3313e645f59e38cd306b1fdca..55408bb029b2a3d71d8b17fb2b50c02b12ca1d44 100644
+index 6ccbeca2b197997dc4f7878c6fc67e2ce4345ffa..c3bd0251edb07a0643430635ac93b46a72ac48d1 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-@@ -260,6 +260,8 @@
+@@ -262,6 +262,8 @@
  #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
  #include "third_party/blink/renderer/platform/wtf/hash_map.h"
  

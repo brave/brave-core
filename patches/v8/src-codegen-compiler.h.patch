@@ -1,8 +1,8 @@
 diff --git a/src/codegen/compiler.h b/src/codegen/compiler.h
-index 7284003de96f03c1bad100bcbe6f675d9e27fc16..50c4fc164eeee6cb0e2e63553093363e8ae3f232 100644
+index e7d05b3ba3b040221555a64fed77153718c908de..37e1c2941b1e1d272e52259a559405247980856a 100644
 --- a/src/codegen/compiler.h
 +++ b/src/codegen/compiler.h
-@@ -17,6 +17,7 @@
+@@ -22,6 +22,7 @@
  #include "src/utils/allocation.h"
  #include "src/zone/zone.h"
  
@@ -10,7 +10,7 @@ index 7284003de96f03c1bad100bcbe6f675d9e27fc16..50c4fc164eeee6cb0e2e63553093363e
  namespace v8 {
  namespace internal {
  
-@@ -116,15 +117,25 @@ class V8_EXPORT_PRIVATE Compiler : public AllStatic {
+@@ -128,15 +129,25 @@ class V8_EXPORT_PRIVATE Compiler : public AllStatic {
  
    struct ScriptDetails {
      ScriptDetails()

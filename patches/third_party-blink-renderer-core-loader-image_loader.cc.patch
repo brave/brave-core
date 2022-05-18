@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/image_loader.cc b/third_party/blink/renderer/core/loader/image_loader.cc
-index a5f02639f9bbf10221fb5a34e1580613764787aa..1ae76f1e7b9cbdd890163e71611f3cb0449eeeaf 100644
+index 3edafd2862a2c43d9abf7c5270822163160b6516..5ecf03aa88b0c7d64925fb920368fa1ac44f6962 100644
 --- a/third_party/blink/renderer/core/loader/image_loader.cc
 +++ b/third_party/blink/renderer/core/loader/image_loader.cc
 @@ -23,6 +23,7 @@
@@ -10,7 +10,7 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..1ae76f1e7b9cbdd890163e71611f3cb0
  #include <utility>
  
  #include "third_party/blink/public/mojom/fetch/fetch_api_request.mojom-blink.h"
-@@ -69,6 +70,16 @@
+@@ -68,6 +69,16 @@
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
  
@@ -27,7 +27,7 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..1ae76f1e7b9cbdd890163e71611f3cb0
  namespace blink {
  
  namespace {
-@@ -572,7 +583,16 @@ void ImageLoader::DoUpdateFromElement(
+@@ -560,7 +571,16 @@ void ImageLoader::DoUpdateFromElement(
            PreviewsTypes::kSubresourceRedirectOn);
      }
  
@@ -45,7 +45,7 @@ index a5f02639f9bbf10221fb5a34e1580613764787aa..1ae76f1e7b9cbdd890163e71611f3cb0
  
      // If this load is starting while navigating away, treat it as an auditing
      // keepalive request, and don't report its results back to the element.
-@@ -816,6 +841,22 @@ void ImageLoader::ImageNotifyFinished(ImageResourceContent* resource) {
+@@ -812,6 +832,22 @@ void ImageLoader::ImageNotifyFinished(ImageResourceContent* content) {
    if (html_image_element)
      LazyImageHelper::RecordMetricsOnLoadFinished(html_image_element);
  

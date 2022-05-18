@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/modulator_impl_base.h b/third_party/blink/renderer/core/script/modulator_impl_base.h
-index fcae74ca78363501c92a90a85602352f9a77bae8..243785e53d0fb18f0d5e3e9cf6af3046e82524cf 100644
+index e4bee0e15f2e56a79ae2e877e3625d063ea9ad27..ca2f251695c2f2dc94974249f8b04e14a278a51b 100644
 --- a/third_party/blink/renderer/core/script/modulator_impl_base.h
 +++ b/third_party/blink/renderer/core/script/modulator_impl_base.h
-@@ -12,6 +12,9 @@
+@@ -13,6 +13,9 @@
  #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
  #include "third_party/blink/renderer/platform/heap/handle.h"
  
@@ -12,7 +12,7 @@ index fcae74ca78363501c92a90a85602352f9a77bae8..243785e53d0fb18f0d5e3e9cf6af3046
  namespace blink {
  
  class DynamicModuleResolver;
-@@ -29,8 +35,10 @@ class ModulatorImplBase : public Modulator {
+@@ -30,8 +33,10 @@ class ModulatorImplBase : public Modulator {
    ~ModulatorImplBase() override;
    void Trace(Visitor*) const override;
  
@@ -24,7 +24,7 @@ index fcae74ca78363501c92a90a85602352f9a77bae8..243785e53d0fb18f0d5e3e9cf6af3046
  
    ExecutionContext* GetExecutionContext() const;
  
-@@ -76,6 +86,7 @@ class ModulatorImplBase : public Modulator {
+@@ -80,6 +85,7 @@ class ModulatorImplBase : public Modulator {
    void ResolveDynamically(const ModuleRequest& module_request,
                            const KURL&,
                            const ReferrerScriptInfo&,
@@ -32,7 +32,7 @@ index fcae74ca78363501c92a90a85602352f9a77bae8..243785e53d0fb18f0d5e3e9cf6af3046
                            ScriptPromiseResolver*) override;
    const ImportMap* GetImportMapForTest() const final { return import_map_; }
  
-@@ -115,6 +126,8 @@ class ModulatorImplBase : public Modulator {
+@@ -125,6 +131,8 @@ class ModulatorImplBase : public Modulator {
    // [spec text]
    AcquiringImportMapsState acquiring_import_maps_ =
        AcquiringImportMapsState::kAcquiring;

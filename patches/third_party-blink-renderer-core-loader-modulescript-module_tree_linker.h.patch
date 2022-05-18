@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h
-index c4a664b1987501c47e6d051066d26c2dc5b2bc8a..4112cf4ce6f1e69c0dfa0ecee5c41612530a6b7d 100644
+index cbf354522ed3b728de9ce6519604dba0374e67f9..91d6cac7d11bb15778788d97337c374f3b575f1e 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.h
-@@ -119,7 +120,7 @@ class CORE_EXPORT ModuleTreeLinker final : public SingleModuleClient {
+@@ -123,7 +123,7 @@ class CORE_EXPORT ModuleTreeLinker final : public SingleModuleClient {
  
    size_t num_incomplete_fetches_ = 0;
  

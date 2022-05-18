@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc b/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
-index 141b1d06dda1eadc87c2300ffe491cd8ac604e96..2c621b9c7eabe54544194c68d78d5cbd5350f997 100644
+index 3816f71ffad48386e7a1f25f9764e2ced327a42b..15fb0aedfc7cdeeedfadad666cb6e8dafb306ed9 100644
 --- a/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
 +++ b/third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.cc
-@@ -495,7 +495,7 @@ void WorkerOrWorkletGlobalScope::FetchModuleScript(
+@@ -499,7 +499,7 @@ void WorkerOrWorkletGlobalScope::FetchModuleScript(
        mojom::blink::FetchImportanceMode::kImportanceAuto,
        RenderBlockingBehavior::kNonBlocking, reject_coep_unsafe_none);
  

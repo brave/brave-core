@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
-index 0296fc6c7866ae9290997059e1481e2c0eba5407..258c25b05d2f4a7c85273140b2f2891ac1220612 100644
+index 075adfdbaabb2ecb292646b6ad0c5868e207922f..fb91aff43d8672b49c1b793417e8acfce8402daa 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
-@@ -219,7 +219,7 @@ void ModuleScriptLoader::FetchInternal(
+@@ -238,7 +238,7 @@ void ModuleScriptLoader::FetchInternal(
    module_fetcher_ =
        modulator_->CreateModuleScriptFetcher(custom_fetch_type, PassKey());
    module_fetcher_->Fetch(fetch_params, module_request.GetExpectedModuleType(),

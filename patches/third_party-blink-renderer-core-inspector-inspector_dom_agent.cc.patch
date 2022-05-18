@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc b/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
-index ce49bb82a0043c6c7c768c6c151f1443d5c599c5..b55b6d9759ab5565ef7141c0504b791bf661d389 100644
+index 44b445596060c9525f005ffb74420a67345a5b9e..afc373ec914d49ed1fd74dde12b71e9caf66ec5a 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
-@@ -2375,6 +2376,24 @@ Response InspectorDOMAgent::getFileInfo(const String& object_id, String* path) {
+@@ -2424,6 +2424,24 @@ Response InspectorDOMAgent::getFileInfo(const String& object_id, String* path) {
    return Response::Success();
  }
  

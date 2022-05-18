@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/v8_utilities.py b/third_party/blink/renderer/bindings/scripts/v8_utilities.py
-index d6a53c6538ae1c935fcdb873450bf272babf6664..25c33aa2b3adaff50e9c687a55b82094a7e218ff 100644
+index 7432ab4e17f0009de5be7860149b37c3dfd610d1..4250ba26e8b9577a9aa609a0e47df2591794cfc2 100644
 --- a/third_party/blink/renderer/bindings/scripts/v8_utilities.py
 +++ b/third_party/blink/renderer/bindings/scripts/v8_utilities.py
-@@ -443,6 +443,23 @@ def measure_as(definition_or_member, interface):
+@@ -478,6 +478,23 @@ def measure_as(definition_or_member, interface):
      return None
  
  

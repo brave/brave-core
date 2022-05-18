@@ -1,8 +1,8 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index c9c6225eb8fd8b8278c707beb521bde910ab49d9..1dd8377dff2449071b9f25b333e2cac50a02cfeb 100644
+index b4070372eeee34f039d5ff73952324a85c046c35..ce8344d72adf1b02f4d0f6bd0d81282adc331ac7 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
-@@ -4403,6 +4406,79 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+@@ -4823,6 +4823,79 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
    }
  }
  

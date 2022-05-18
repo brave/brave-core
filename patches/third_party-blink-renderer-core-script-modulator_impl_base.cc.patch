@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/modulator_impl_base.cc b/third_party/blink/renderer/core/script/modulator_impl_base.cc
-index c86c9be0937875dab55758aeec80a4d181b84b1b..495f3417d0d4a893ea9c7adac012ebb1f20ca4ad 100644
+index 78a982a80043568023b608cfd35d56e26b78589a..0c0f888e3d0992e7abd48aa9baefd865962c9d49 100644
 --- a/third_party/blink/renderer/core/script/modulator_impl_base.cc
 +++ b/third_party/blink/renderer/core/script/modulator_impl_base.cc
-@@ -22,13 +22,16 @@
+@@ -27,13 +27,16 @@
  #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
@@ -20,7 +20,7 @@ index c86c9be0937875dab55758aeec80a4d181b84b1b..495f3417d0d4a893ea9c7adac012ebb1
      : script_state_(script_state),
        task_runner_(ExecutionContext::From(script_state_)
                         ->GetTaskRunner(TaskType::kNetworking)),
-@@ -38,7 +44,9 @@ ModulatorImplBase::ModulatorImplBase(ScriptState* script_state)
+@@ -43,7 +46,9 @@ ModulatorImplBase::ModulatorImplBase(ScriptState* script_state)
            this,
            ExecutionContext::From(script_state_))),
        dynamic_module_resolver_(
@@ -31,7 +31,7 @@ index c86c9be0937875dab55758aeec80a4d181b84b1b..495f3417d0d4a893ea9c7adac012ebb1
    DCHECK(script_state_);
    DCHECK(task_runner_);
  }
-@@ -220,6 +228,7 @@ void ModulatorImplBase::ResolveDynamically(
+@@ -230,6 +235,7 @@ void ModulatorImplBase::ResolveDynamically(
      const ModuleRequest& module_request,
      const KURL& referrer_url,
      const ReferrerScriptInfo& referrer_info,
@@ -39,7 +39,7 @@ index c86c9be0937875dab55758aeec80a4d181b84b1b..495f3417d0d4a893ea9c7adac012ebb1
      ScriptPromiseResolver* resolver) {
    String reason;
    if (IsDynamicImportForbidden(&reason)) {
-@@ -230,7 +239,8 @@ void ModulatorImplBase::ResolveDynamically(
+@@ -240,7 +246,8 @@ void ModulatorImplBase::ResolveDynamically(
    UseCounter::Count(GetExecutionContext(),
                      WebFeature::kDynamicImportModuleScript);
    dynamic_module_resolver_->ResolveDynamically(module_request, referrer_url,

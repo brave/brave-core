@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl
-index a17a33b07939c0c83136b88ecaf5a2be7c95a3a3..f749c6737becabdedb9652436e2123d66367461d 100644
+index 8ff21db2d0fbae7bacecba56b23ffc476b34deff..d6936d61bd8e776be19a1f0148da265c16150b89 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl
-@@ -39,7 +39,8 @@ enum XMLHttpRequestResponseType {
+@@ -42,7 +42,8 @@ typedef (Blob or BufferSource or FormData or URLSearchParams or USVString) XMLHt
  
  [
      ActiveScriptWrappable,

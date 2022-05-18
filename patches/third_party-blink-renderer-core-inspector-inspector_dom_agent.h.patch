@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_dom_agent.h b/third_party/blink/renderer/core/inspector/inspector_dom_agent.h
-index 689a068d88836c01451108ef3e191aa12c14a8d9..062fd79c8a027220502bbaf2b88ade063dc02c78 100644
+index 826fa8bc62095dbf737e174b68a1e03aef968994..2b6b508612152528676f8471089d905ca3e202f2 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_dom_agent.h
 +++ b/third_party/blink/renderer/core/inspector/inspector_dom_agent.h
 @@ -47,6 +47,7 @@
@@ -10,7 +10,7 @@ index 689a068d88836c01451108ef3e191aa12c14a8d9..062fd79c8a027220502bbaf2b88ade06
  namespace blink {
  
  class CharacterData;
-@@ -247,6 +248,12 @@ class CORE_EXPORT InspectorDOMAgent final
+@@ -253,6 +254,12 @@ class CORE_EXPORT InspectorDOMAgent final
    protocol::Response getFileInfo(const String& object_id,
                                   String* path) override;
  

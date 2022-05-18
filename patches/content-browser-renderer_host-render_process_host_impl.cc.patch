@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 621f9405e1a92e08ce44f8495bc067af45c8cd5b..4fb6139b6ce9fcfce5830a36fe1ce15eda89b094 100644
+index 621f9405e1a92e08ce44f8495bc067af45c8cd5b..0efa22d5935387969a8141c96310cfb4b351ba29 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
 @@ -288,6 +288,10 @@

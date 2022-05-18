@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/fetch/fetch_manager.cc b/third_party/blink/renderer/core/fetch/fetch_manager.cc
-index 5c62a59abe13374d9ace87ec5cd4d48de6c02625..2dfc995ae4b1076c5006d94578fd7fb322185c30 100644
+index 926171643870f477347a9b3a73be4fd3b101d197..1d4e292b4914bc23b983b4a996d1053e1bf5c853 100644
 --- a/third_party/blink/renderer/core/fetch/fetch_manager.cc
 +++ b/third_party/blink/renderer/core/fetch/fetch_manager.cc
-@@ -68,6 +68,13 @@
+@@ -78,6 +78,13 @@
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  
@@ -16,7 +16,7 @@ index 5c62a59abe13374d9ace87ec5cd4d48de6c02625..2dfc995ae4b1076c5006d94578fd7fb3
  using network::mojom::CredentialsMode;
  using network::mojom::FetchResponseType;
  using network::mojom::RedirectMode;
-@@ -315,7 +322,11 @@ bool FetchManager::Loader::WillFollowRedirect(
+@@ -354,7 +361,11 @@ bool FetchManager::Loader::WillFollowRedirect(
  }
  
  void FetchManager::Loader::DidReceiveResponse(
@@ -29,7 +29,7 @@ index 5c62a59abe13374d9ace87ec5cd4d48de6c02625..2dfc995ae4b1076c5006d94578fd7fb3
      const ResourceResponse& response) {
    // Verify that we're dealing with the URL we expect (which could be an
    // HTTPS-upgraded variant of `url_list_.back()`.
-@@ -476,6 +487,16 @@ void FetchManager::Loader::DidReceiveResponse(
+@@ -428,6 +439,16 @@ void FetchManager::Loader::DidReceiveResponse(
  
    response_has_no_store_header_ = response.CacheControlContainsNoStore();
  
@@ -46,7 +46,7 @@ index 5c62a59abe13374d9ace87ec5cd4d48de6c02625..2dfc995ae4b1076c5006d94578fd7fb3
    Response* r =
        Response::Create(resolver_->GetExecutionContext(), tainted_response);
    r->headers()->SetGuard(Headers::kImmutableGuard);
-@@ -776,6 +798,17 @@ void FetchManager::Loader::PerformHTTPFetch(ExceptionState& exception_state) {
+@@ -811,6 +832,17 @@ void FetchManager::Loader::PerformHTTPFetch() {
    threadable_loader_ = MakeGarbageCollected<ThreadableLoader>(
        *execution_context_, this, resource_loader_options);
    threadable_loader_->Start(std::move(request));
@@ -64,7 +64,7 @@ index 5c62a59abe13374d9ace87ec5cd4d48de6c02625..2dfc995ae4b1076c5006d94578fd7fb3
  }
  
  // performDataFetch() is almost the same as performHTTPFetch(), except for:
-@@ -804,6 +839,17 @@ void FetchManager::Loader::PerformDataFetch() {
+@@ -840,6 +872,17 @@ void FetchManager::Loader::PerformDataFetch() {
    threadable_loader_ = MakeGarbageCollected<ThreadableLoader>(
        *execution_context_, this, resource_loader_options);
    threadable_loader_->Start(std::move(request));

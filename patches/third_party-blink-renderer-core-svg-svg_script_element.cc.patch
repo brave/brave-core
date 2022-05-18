@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_script_element.cc b/third_party/blink/renderer/core/svg/svg_script_element.cc
-index 4efb5d34b6534f13c3d044fd770146fcbe143dd7..47912d0da65ff44c59b14642005c20d37612b88d 100644
+index e47f4d0dcd11ca264bd2a081ce34ad1b32303456..e280a3e46e93d02407b08054a6cc22cc9cf56f76 100644
 --- a/third_party/blink/renderer/core/svg/svg_script_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_script_element.cc
-@@ -38,7 +38,9 @@ SVGScriptElement::SVGScriptElement(Document& document,
+@@ -39,7 +39,9 @@ SVGScriptElement::SVGScriptElement(Document& document,
                                     const CreateElementFlags flags)
      : SVGElement(svg_names::kScriptTag, document),
        SVGURIReference(this),

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/classic_pending_script.cc b/third_party/blink/renderer/core/script/classic_pending_script.cc
-index 99d8e6a6d8109118f928943db1d4af7bea2d83f0..4953748d417555f21aada2545901371a796ab480 100644
+index 876f19eb9fc7f022c7120b40f477b61a6efa6894..a521c382b1be82532925f9454f2b21acc5a67d0e 100644
 --- a/third_party/blink/renderer/core/script/classic_pending_script.cc
 +++ b/third_party/blink/renderer/core/script/classic_pending_script.cc
-@@ -31,6 +31,12 @@
+@@ -33,6 +33,12 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/functional.h"
  
@@ -15,7 +15,7 @@ index 99d8e6a6d8109118f928943db1d4af7bea2d83f0..4953748d417555f21aada2545901371a
  namespace blink {
  
  // <specdef href="https://html.spec.whatwg.org/C/#fetch-a-classic-script">
-@@ -67,8 +79,19 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
+@@ -70,8 +76,19 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
    // We allow streaming, as WatchForLoad() is always called when the script
    // needs to execute and the ScriptResource is not finished, so
    // SetClientIsWaitingForFinished is always set on the resource.
@@ -37,7 +37,7 @@ index 99d8e6a6d8109118f928943db1d4af7bea2d83f0..4953748d417555f21aada2545901371a
    pending_script->CheckState();
    return pending_script;
  }
-@@ -291,6 +319,21 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
+@@ -249,6 +266,21 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
                           });
  
    bool error_occurred = GetResource()->ErrorOccurred() || integrity_failure_;
@@ -59,7 +59,7 @@ index 99d8e6a6d8109118f928943db1d4af7bea2d83f0..4953748d417555f21aada2545901371a
    AdvanceReadyState(error_occurred ? kErrorOccurred : kReady);
  }
  
-@@ -394,6 +439,16 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
+@@ -347,6 +379,16 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
                           not_streamed_reason);
  
    ScriptSourceCode source_code(streamer, resource, not_streamed_reason);

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index b946eea979a04f176d4b6f89658ad21be0ade4e9..089811ae3dd645576ea5ea0d0c6299e4d9ad48e1 100644
+index ba6cc6627043dc514a68b947eb79c7f5e7889c94..a941069b126e3cb16d330df15681777d09e9ea34 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -63,6 +63,13 @@
@@ -16,7 +16,7 @@ index b946eea979a04f176d4b6f89658ad21be0ade4e9..089811ae3dd645576ea5ea0d0c6299e4
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -943,6 +949,67 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -945,6 +952,67 @@ void ContainerNode::NotifyNodeInsertedInternal(
    EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
@@ -84,7 +84,7 @@ index b946eea979a04f176d4b6f89658ad21be0ade4e9..089811ae3dd645576ea5ea0d0c6299e4
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-@@ -961,6 +1028,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -963,6 +1031,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
    ScriptForbiddenScope forbid_script;
    EventDispatchForbiddenScope assert_no_event_dispatch;
  

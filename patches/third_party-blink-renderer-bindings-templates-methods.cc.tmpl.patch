@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/templates/methods.cc.tmpl b/third_party/blink/renderer/bindings/templates/methods.cc.tmpl
-index 0546286b2dbf5aad462208504e0c509d27b63fc6..489b133f66f0a59f3577229b177218b5c4bfbd45 100644
+index 02c4fd66c27348695987c12a4a94874197bfd226..40494427762ca1cdf02cf5c1f67c311885a10772 100644
 --- a/third_party/blink/renderer/bindings/templates/methods.cc.tmpl
 +++ b/third_party/blink/renderer/bindings/templates/methods.cc.tmpl
-@@ -359,6 +359,17 @@ static void {{overloads.camel_case_name}}Method{{world_suffix}}(const v8::Functi
+@@ -362,6 +362,17 @@ static void {{overloads.camel_case_name}}Method{{world_suffix}}(const v8::Functi
    {% if overloads.deprecate_all_as %}
    Deprecation::CountDeprecation(CurrentExecutionContext(info.GetIsolate()), WebFeature::k{{overloads.deprecate_all_as}});
    {% endif %}
@@ -20,7 +20,7 @@ index 0546286b2dbf5aad462208504e0c509d27b63fc6..489b133f66f0a59f3577229b177218b5
  
    {# First resolve by length #}
    {% if not fall_through_to_partial_overloads %}
-@@ -431,6 +442,17 @@ static void {{overloads.camel_case_name}}Method{{world_suffix}}(const v8::Functi
+@@ -434,6 +445,17 @@ static void {{overloads.camel_case_name}}Method{{world_suffix}}(const v8::Functi
  
  {% macro test_and_call_overloaded_method(test, method, overloads, world_suffix) %}
  if ({{test}}) {
@@ -38,7 +38,7 @@ index 0546286b2dbf5aad462208504e0c509d27b63fc6..489b133f66f0a59f3577229b177218b5
    {% if method.measure_as and not overloads.measure_all_as %}
    ExecutionContext* execution_context_for_measurement = CurrentExecutionContext(info.GetIsolate());
    UseCounter::Count(execution_context_for_measurement, WebFeature::k{{method.measure_as('Method')}});
-@@ -468,6 +490,17 @@ void {{v8_class_or_partial}}::{{method.camel_case_name}}MethodCallback{{world_su
+@@ -471,6 +493,17 @@ void {{v8_class_or_partial}}::{{method.camel_case_name}}MethodCallback{{world_su
    {% if method.deprecate_as %}
    Deprecation::CountDeprecation(CurrentExecutionContext(info.GetIsolate()), WebFeature::k{{method.deprecate_as}});
    {% endif %}

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py b/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
-index baeeebbb697f76aa72afd002042cc6b3e7b7ffe6..cd96e85db99516c844ec3964595e7bbce95896aa 100644
+index f37ac4153bb87765847f12d11e856d371f0de748..eaaba524536ab650c82d8209c21d3d4d78e6ef8e 100644
 --- a/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
 +++ b/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
-@@ -32,6 +33,7 @@ from .codegen_utils import collect_include_headers_of_idl_types
+@@ -31,6 +31,7 @@ from .codegen_utils import collect_forward_decls_and_include_headers
  from .codegen_utils import component_export
  from .codegen_utils import component_export_header
  from .codegen_utils import enclose_with_header_guard

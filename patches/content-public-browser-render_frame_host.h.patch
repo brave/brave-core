@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/render_frame_host.h b/content/public/browser/render_frame_host.h
-index 99a5c2bf2c29a206264048719ce32517a7709284..4a52ef515adafaa8f276916d4dc200e0dae63781 100644
+index 6f6cb5e066aabc585e0c9a0efed7368657818b1d..b40facf52be32a58062c33f960667e5cb0328b4f 100644
 --- a/content/public/browser/render_frame_host.h
 +++ b/content/public/browser/render_frame_host.h
-@@ -227,6 +228,16 @@ class CONTENT_EXPORT RenderFrameHost : public IPC::Listener,
+@@ -444,6 +444,16 @@ class CONTENT_EXPORT RenderFrameHost : public IPC::Listener,
    virtual void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
                                     const std::string& message) = 0;
  

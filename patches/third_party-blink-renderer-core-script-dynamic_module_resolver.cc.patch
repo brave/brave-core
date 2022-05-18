@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
-index d0eb45607473844843cdfa5ee7e8ab458fbbe2d7..9420b8e85b11f8e9d1b9c13081c0f73ddf8c1398 100644
+index a02c2198a090c5adc58273ade290b081cfc05cc1..4c3031c790b680e98dcd89baf46d15081fa47d01 100644
 --- a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
 +++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
-@@ -16,6 +16,8 @@
+@@ -20,6 +20,8 @@
  #include "third_party/blink/renderer/platform/loader/fetch/fetch_client_settings_object_snapshot.h"
  #include "v8/include/v8.h"
  
@@ -11,7 +11,7 @@ index d0eb45607473844843cdfa5ee7e8ab458fbbe2d7..9420b8e85b11f8e9d1b9c13081c0f73d
  namespace blink {
  
  namespace {
-@@ -159,6 +164,8 @@ void DynamicModuleResolver::ResolveDynamically(
+@@ -262,6 +264,8 @@ void DynamicModuleResolver::ResolveDynamically(
      const ModuleRequest& module_request,
      const KURL& referrer_resource_url,
      const ReferrerScriptInfo& referrer_info,
@@ -20,7 +20,7 @@ index d0eb45607473844843cdfa5ee7e8ab458fbbe2d7..9420b8e85b11f8e9d1b9c13081c0f73d
      ScriptPromiseResolver* promise_resolver) {
    DCHECK(modulator_->GetScriptState()->GetIsolate()->InContext())
        << "ResolveDynamically should be called from V8 callback, within a valid "
-@@ -229,6 +236,9 @@ void DynamicModuleResolver::ResolveDynamically(
+@@ -363,6 +367,9 @@ void DynamicModuleResolver::ResolveDynamically(
        break;
    }
  

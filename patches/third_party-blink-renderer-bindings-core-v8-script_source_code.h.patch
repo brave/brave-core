@@ -24,7 +24,7 @@ index e8582e353506b1a80e42c576697441435165ff33..09917d07fe3364948bb788977f745f4c
  
    const ParkableString source_;
    Member<SingleCachedMetadataHandler> cache_handler_;
-@@ -118,6 +126,9 @@ class CORE_EXPORT ScriptSourceCode final {
+@@ -132,6 +139,9 @@ class CORE_EXPORT ScriptSourceCode final {
    const String source_map_url_;
    const TextPosition start_position_;
    const ScriptSourceLocationType source_location_type_;

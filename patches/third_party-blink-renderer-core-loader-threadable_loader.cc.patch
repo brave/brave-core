@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/threadable_loader.cc b/third_party/blink/renderer/core/loader/threadable_loader.cc
-index 2eabb5f8cf76cd0401b4ec66238c427f4a79c3b1..d9c103a53e30e2ba0a86d4f215950f553dfdefaf 100644
+index a0973dab883155f2346b2bc79f3a6d89e40a0438..b8f51fb7d98996acff0b0c7311c049707c07f8f3 100644
 --- a/third_party/blink/renderer/core/loader/threadable_loader.cc
 +++ b/third_party/blink/renderer/core/loader/threadable_loader.cc
-@@ -153,15 +153,15 @@ void ThreadableLoader::LoadRequest(
+@@ -153,14 +153,14 @@ void ThreadableLoader::Start(ResourceRequest request) {
    if (request_context == mojom::blink::RequestContextType::VIDEO ||
        request_context == mojom::blink::RequestContextType::AUDIO) {
      DCHECK(async);
