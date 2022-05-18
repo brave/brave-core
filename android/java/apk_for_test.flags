@@ -36,7 +36,18 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
+    *** mMvTilesContainerLayout;
     *** insertSiteSectionView(...);
+}
+
+-keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
+    public <init>(...);
+    *** updateTileGridPlaceholderVisibility(...);
+}
+
+-keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesMediator {
+    public <init>(...);
+    *** updateTileGridPlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
@@ -464,3 +475,7 @@
     public <init>(...);
     *** createManageDevicesLink(...);
 }
+
+-keep class org.chromium.chrome.browser.ChromeApplicationImpl
+
+-keep class org.chromium.chrome.browser.BraveApplicationImplBase

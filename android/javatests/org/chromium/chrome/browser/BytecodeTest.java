@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProc
 import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
+import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -356,6 +357,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "createManageDevicesLink", true, void.class, ListView.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                "updateTileGridPlaceholderVisibility", true, void.class));
     }
 
     @Test
@@ -539,6 +543,12 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
                 Context.class, String.class, String.class, BottomSheetController.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
+                "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
+                Resources.class, ViewGroup.class, ViewStub.class, TileRenderer.class,
+                PropertyModel.class, boolean.class, boolean.class, boolean.class, Runnable.class,
+                Runnable.class));
     }
 
     @Test
@@ -684,6 +694,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mNativeInitialized", true, boolean.class));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvTilesContainerLayout"));
     }
 
     @Test

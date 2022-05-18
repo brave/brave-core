@@ -165,6 +165,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION =
             "recyclerview_offset_position_";
 
+    // To delete in bytecode, parent variable will be used instead.
+    private ViewGroup mMvTilesContainerLayout;
+
+    // Own members.
     private View mBraveStatsViewFallBackLayout;
 
     private ImageView mBgImageView;
@@ -182,14 +186,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private ViewGroup mainLayout;
     private DatabaseHelper mDatabaseHelper;
 
-    private ViewGroup mSiteSectionView;
-    private TileGroup mTileGroup;
     private LottieAnimationView mBadgeAnimationView;
 
     private Tab mTab;
     private Activity mActivity;
     private LinearLayout superReferralSitesLayout;
-    private TextView mTopsiteErrorMessage;
 
     // Brave news
     private BraveNewsAdapterFeedCard mAdapterFeedCard;
@@ -328,17 +329,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
         mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
         int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
-        if (mSiteSectionView.getParent() != null) {
-            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
+        if (mMvTilesContainerLayout.getParent() != null) {
+            ((ViewGroup) mMvTilesContainerLayout.getParent()).removeView(mMvTilesContainerLayout);
         }
-        mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-        mSiteSectionView.setLayoutParams(layoutParams);
-        mSiteSectionView.requestLayout();
-        mainLayout.addView(mSiteSectionView, insertionPoint);
-    }
-
-    protected void updateTileGridPlaceholderVisibility() {
-        // This function is kept empty to avoid placeholder implementation
+        mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+        mMvTilesContainerLayout.setLayoutParams(layoutParams);
+        mMvTilesContainerLayout.requestLayout();
+        mainLayout.addView(mMvTilesContainerLayout, insertionPoint);
     }
 
     private boolean shouldShowSuperReferral() {
@@ -355,26 +352,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         }
     }
 
-    private ViewGroup inflateSiteSection(ViewGroup parent) {
-        return (ViewGroup) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.mv_tiles_grid, parent, false);
-    }
-
-    @SuppressLint("VisibleForTests")
     protected void insertSiteSectionView() {
         mainLayout = findViewById(R.id.ntp_main_layout);
-
-        mSiteSectionView = inflateSiteSection(mainLayout);
-        ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
-        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        // If the explore sites section exists as its own section, then space it more closely.
-        int variation = ExploreSitesBridge.getVariation();
-        if (ExploreSitesBridge.isEnabled(variation)) {
-            ((MarginLayoutParams) layoutParams).bottomMargin =
-                    getResources().getDimensionPixelOffset(
-                            R.dimen.tile_grid_layout_vertical_spacing);
-        }
-        mSiteSectionView.setLayoutParams(layoutParams);
+        mMvTilesContainerLayout = (ViewGroup) LayoutInflater.from(mainLayout.getContext())
+                                          .inflate(R.layout.mv_tiles_container, mainLayout, false);
+        mMvTilesContainerLayout.setVisibility(View.VISIBLE);
+        // The page contents are initially hidden; otherwise they'll be drawn centered on the
+        // page before the tiles are available and then jump upwards to make space once the
+        // tiles are available.
+        if (getVisibility() != View.VISIBLE) setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -593,7 +579,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
 
             int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(
-                    mNtpImageGlobal, mSiteSectionView.getHeight());
+                    mNtpImageGlobal, mMvTilesContainerLayout.getHeight());
             if (toTop) {
                 imageCreditCorrection = 0;
             }
@@ -1435,13 +1421,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         Point size = new Point();
         display.getSize(size);
 
-        mSiteSectionView.post(new Runnable() {
+        mMvTilesContainerLayout.post(new Runnable() {
             @Override
             public void run() {
                 correctPosition(false);
             }
         });
-        NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage, mSiteSectionView.getHeight());
+        NTPUtil.updateOrientedUI(
+                mActivity, this, size, ntpImage, mMvTilesContainerLayout.getHeight());
 
         ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
@@ -1799,27 +1786,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private TabImpl getTabImpl() {
         return (TabImpl) getTab();
     }
-
-    /*@Override
-    public void onTileCountChanged() {
-        new Handler().postDelayed(() -> {
-            if (mTileGroup != null && mTileGroup.isEmpty()) {
-                correctPosition(false);
-            }
-        }, 100);
-
-        if (mTopsiteErrorMessage == null) {
-            return;
-        }
-
-        boolean showPlaceholder =
-                mTileGroup != null && mTileGroup.hasReceivedData() && mTileGroup.isEmpty();
-        if (!showPlaceholder) {
-            mTopsiteErrorMessage.setVisibility(View.GONE);
-        } else {
-            mTopsiteErrorMessage.setVisibility(View.VISIBLE);
-        }
-    }*/
 
     @Override
     public void onConnectionError(MojoException e) {
