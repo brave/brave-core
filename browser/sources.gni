@@ -262,7 +262,7 @@ if (is_android) {
     "//brave/browser/importer",
     "//brave/browser/infobars",
     "//brave/browser/ui/bookmark",
-    "//brave/components/weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/infobars/content",
   ]
 }

@@ -22,7 +22,7 @@ static_library("browser") {
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
-    "//brave/components/weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/keyed_service/content:content",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",

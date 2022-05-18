@@ -11,7 +11,7 @@
 #include "base/values.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/weekly_storage/weekly_storage.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_edit_controller.h"

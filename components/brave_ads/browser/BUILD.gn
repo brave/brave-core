@@ -30,7 +30,7 @@ source_set("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
-    "//brave/components/weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
