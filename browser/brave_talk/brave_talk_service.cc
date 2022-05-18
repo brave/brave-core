@@ -5,7 +5,6 @@
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/browser/ui/views/toolbar/share_tab_button.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/navigation_handle.h"
@@ -35,20 +34,9 @@ void BraveTalkService::StartObserving(content::WebContents* contents) {
     StopObserving();
 
   Observe(contents);
-
-  auto* button = share_tab_button();
-  if (!button)
-    return;
-  button->SetVisible(true);
-  button->UpdateImageAndText();
 }
 
 void BraveTalkService::StopObserving() {
-  auto* button = share_tab_button();
-  if (!button)
-    return;
-  share_tab_button()->SetVisible(false);
-
   Observe(nullptr);
 }
 
@@ -60,22 +48,7 @@ void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
   StopObserving();
 }
 
-share_tab_button::ShareTabButton* BraveTalkService::share_tab_button() {
-  if (!web_contents())
-    return nullptr;
-
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents());
-  if (!browser)
-    return nullptr;
-
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  auto* toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
-  return toolbar->share_tab_button();
-}
-
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
-  share_tab_button()->SetVisible(false);
-
   if (!web_contents())
     return;
   auto* registry =

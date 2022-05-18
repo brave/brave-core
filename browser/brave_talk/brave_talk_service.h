@@ -8,10 +8,6 @@ namespace content {
 class WebContents;
 }
 
-namespace share_tab_button {
-class ShareTabButton;
-}
-
 namespace brave_talk {
 class BraveTalkService : public KeyedService, content::WebContentsObserver {
  public:
@@ -32,8 +28,6 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
  private:
   void StartObserving(content::WebContents* contents);
   void StopObserving();
-
-  share_tab_button::ShareTabButton* share_tab_button();
 
   base::OnceCallback<void(const std::string&)> on_received_device_id_;
 };

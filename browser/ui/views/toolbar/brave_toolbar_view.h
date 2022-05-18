@@ -20,17 +20,12 @@ class BraveVPNButton;
 class BookmarkButton;
 class WalletButton;
 
-namespace share_tab_button {
-  class ShareTabButton;
-}
-
 class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
  public:
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
 
-  share_tab_button::ShareTabButton* share_tab_button() const { return share_tab_; }
   BookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
 
@@ -59,7 +54,6 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
 
-  raw_ptr<share_tab_button::ShareTabButton> share_tab_ = nullptr;
   raw_ptr<BookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;

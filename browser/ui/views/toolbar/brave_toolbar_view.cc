@@ -13,7 +13,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
-#include "brave/browser/ui/views/toolbar/share_tab_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -149,13 +148,6 @@ void BraveToolbarView::Init() {
 
   DCHECK(location_bar_);
 
-  share_tab_ = AddChildView(
-      std::make_unique<share_tab_button::ShareTabButton>(
-          base::BindRepeating(callback, browser_, IDC_BRAVE_TALK_SHARE_TAB)));
-  share_tab_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON);
-  share_tab_->UpdateImageAndText();
-  share_tab_->SetVisible(false);
-
   bookmark_ =
       AddChildViewAt(std::make_unique<BookmarkButton>(base::BindRepeating(
                          callback, browser_, IDC_BOOKMARK_THIS_TAB)),
@@ -216,8 +208,6 @@ void BraveToolbarView::OnThemeChanged() {
 
   if (display_mode_ == DisplayMode::NORMAL && bookmark_)
     bookmark_->UpdateImageAndText();
-  if (display_mode_ == DisplayMode::NORMAL && share_tab_)
-    share_tab_->UpdateImageAndText();
   if (display_mode_ == DisplayMode::NORMAL && wallet_)
     wallet_->UpdateImageAndText();
 }
@@ -237,8 +227,6 @@ void BraveToolbarView::LoadImages() {
     bookmark_->UpdateImageAndText();
   if (wallet_)
     wallet_->UpdateImageAndText();
-  if (share_tab_)
-    share_tab_->UpdateImageAndText();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
