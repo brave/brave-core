@@ -5,19 +5,6 @@
 
 import styled from 'styled-components'
 
-import CheckmarkSvg from '../../../assets/svg-icons/big-checkmark.svg'
-
-export const GreenCheckmark = styled.div`
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 4px;
-  background-color: ${(p) => p.theme.color.successBorder};
-  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
-  mask-size: contain;
-  vertical-align: middle;
-`
-
 export const PasswordStrengthTextWrapper = styled.div`
   padding-left: 12px;
   padding-right: 12px;

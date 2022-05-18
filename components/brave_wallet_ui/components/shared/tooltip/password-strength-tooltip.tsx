@@ -5,13 +5,22 @@
 
 import * as React from 'react'
 
+// utils
+import { getLocale } from '$web-common/locale'
+
 // components
 import Tooltip from '.'
-import { GreenCheckmark, PasswordStrengthText, PasswordStrengthTextWrapper, PasswordStrengthHeading } from './password-strength-tooltip.style'
+
+// style
+import {
+  PasswordStrengthText,
+  PasswordStrengthTextWrapper,
+  PasswordStrengthHeading
+} from './password-strength-tooltip.style'
 
 // types
 import { PasswordStrengthResults } from '../../../common/hooks/use-password-strength'
-import { getLocale } from '$web-common/locale'
+import { GreenCheckmark } from '../style'
 
 interface Props {
   isVisible: boolean
