@@ -1,9 +1,9 @@
-#include "brave/components/brave_talk/browser/brave_talk_advertise_host.h"
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+#include "brave/components/brave_talk/browser/brave_talk_advertise_host.h"
 
 #include "base/bind.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
