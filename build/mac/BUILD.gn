@@ -88,6 +88,14 @@ group("brave") {
   exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
   write_file("$root_out_dir/brave_helper",
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
+
+  # We want to declare the minimum macOS version for versions uploaded
+  # to the update server. This prevents versions from being rolled out
+  # to incompatible base systems. Save the minimum version to a file
+  # here, so it can be uploaded to S3, and then in the release step read
+  # back when uploading to the server.
+  write_file("$root_out_dir/mac_min_system_version",
+             [ mac_min_system_version ])
 }
 
 ds_store_file_name = "DS_Store"
