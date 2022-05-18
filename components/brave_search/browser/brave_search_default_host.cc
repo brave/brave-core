@@ -12,7 +12,7 @@
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
-#include "brave/components/weekly_storage/daily_storage.h"
+#include "brave/components/time_period_storage/daily_storage.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
