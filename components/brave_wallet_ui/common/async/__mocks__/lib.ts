@@ -84,7 +84,7 @@ export const getChecksumEthAddress = async () => {
 export const isStrongPassword = (value: string) => {
   return (
     (value.length >= 7) && // is at least 7 characters
-    /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/g.test(value) && // contains a special character
+    /[-'/`~!#*$@_%+=.,^&(){}[\]|;:"<>?\\]/g.test(value) && // contains a special character
     value.toLowerCase() !== value && // contains an uppercase character
     /\d/.test(value) // contains a number
   )
