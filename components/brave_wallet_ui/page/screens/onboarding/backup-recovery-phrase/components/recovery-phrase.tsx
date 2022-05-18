@@ -5,33 +5,33 @@
 
 import * as React from 'react'
 
-// images
-import EyeOffIcon from '../../../../../assets/svg-icons/eye-off-icon.svg'
-
 // styles
 import {
   RecoveryPhraseContainer,
   RecoveryBubble,
   RecoveryBubbleText,
   FrostedGlass,
-  HiddenPhraseContainer
+  HiddenPhraseContainer,
+  EyeOffIcon
 } from './recovery-phrase.style'
 
 interface Props {
   hidden: boolean
   recoveryPhrase: string[]
+  onClickReveal: () => void
 }
 
 const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
 
 export const RecoveryPhrase: React.FC<Props> = ({
   hidden,
+  onClickReveal,
   recoveryPhrase
 }) => {
   if (hidden) {
-    return <HiddenPhraseContainer>
+    return <HiddenPhraseContainer onClick={onClickReveal}>
       <FrostedGlass>
-        <img src={EyeOffIcon} />
+        <EyeOffIcon />
         <p>Click here to see phrase</p>
       </FrostedGlass>
       <RecoveryPhraseContainer>

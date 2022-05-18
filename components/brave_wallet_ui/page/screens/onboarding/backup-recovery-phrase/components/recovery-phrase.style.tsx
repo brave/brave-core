@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+// images
+import EyeOffSvg from '../../../../../assets/svg-icons/eye-off-icon.svg'
 import FrostedGlassRecoveryPhrase from '../images/frosted-glass-recovery-phrase.png'
 
 export const RecoveryPhraseContainer = styled.div`
@@ -62,4 +64,26 @@ export const HiddenPhraseContainer = styled.div`
   padding: 0;
   height: 100%;
   min-height: 100%;
+  cursor: pointer;
+
+  & p {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 10px;
+    color: ${(p) => p.theme.color.background01};
+  }
+`
+
+export const EyeOffIcon = styled.div`
+  height: 24px;
+  width: 24px;
+  mask-image: url(${EyeOffSvg});
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 24px;
+  background-color: ${(p) => p.theme.color.background01};
 `

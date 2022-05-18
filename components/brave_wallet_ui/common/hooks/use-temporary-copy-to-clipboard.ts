@@ -39,5 +39,8 @@ export const useTemporaryCopyToClipboard = () => {
     }
   }, [isCopied])
 
-  return temporaryCopyToClipboard
+  return {
+    temporaryCopyToClipboard,
+    isCopied
+  }
 }

@@ -51,7 +51,7 @@ export const OnboardingRecoveryPhraseExplainer = () => {
 
   // methods
   const nextStep = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+    history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
   }, [])
 
   const goBack = React.useCallback(() => {

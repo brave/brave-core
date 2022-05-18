@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import {
+  CopiedToClipboardContainer,
   CopyButton,
   DownloadButton,
   LinkText,
@@ -37,6 +38,7 @@ import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-tempor
 
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
+import { GreenCheckmark } from '../../../../components/shared/tooltip/password-strength-tooltip.style'
 import { NavButton } from '../../../../components/extension'
 import { OnboardingSteps, OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { ToggleVisibilityButton } from '../../../../components/shared/style'
@@ -53,20 +55,23 @@ export const OnboardingRecoveryPhrase = () => {
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
 
   // custom hooks
-  const tempCopyToClipboard = useTemporaryCopyToClipboard()
+  const {
+    isCopied,
+    temporaryCopyToClipboard
+  } = useTemporaryCopyToClipboard()
 
   // methods
 
-  // const revealPhrase = React.useCallback(() => {
-  //   setIsPhraseShown(true)
-  // }, [])
+  const revealPhrase = React.useCallback(() => {
+    setIsPhraseShown(true)
+  }, [])
 
   const toggleShowPhrase = React.useCallback(() => {
     setIsPhraseShown(prev => !prev)
   }, [])
 
   const nextStep = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+    history.push(WalletRoutes.OnboardingVerifyRecoveryPhrase)
   }, [])
 
   const goBack = React.useCallback(() => {
@@ -74,7 +79,7 @@ export const OnboardingRecoveryPhrase = () => {
   }, [])
 
   const onCopyPhrase = React.useCallback(async () => {
-    await tempCopyToClipboard(mnemonic || '')
+    await temporaryCopyToClipboard(mnemonic || '')
   }, [mnemonic])
 
   // memos
@@ -119,27 +124,38 @@ export const OnboardingRecoveryPhrase = () => {
             <PhraseCardBody>
               <RecoveryPhrase
                 hidden={!isPhraseShown}
+                onClickReveal={revealPhrase}
                 recoveryPhrase={recoveryPhrase}
               />
             </PhraseCardBody>
 
             <PhraseCardBottomRow>
+
               <CopyButton
                 onClick={onCopyPhrase}
               />
+
               <a
                 href={phraseDownloadUri}
-                download='brave-wallet-private-key-backup.txt'
+                download='brave-wallet-backup.txt'
               >
                 <DownloadButton />
               </a>
+
+              {isCopied &&
+                <CopiedToClipboardContainer>
+                  <GreenCheckmark />
+                  <p>Copied to clipboard</p>
+                </CopiedToClipboardContainer>
+              }
+
             </PhraseCardBottomRow>
           </PhraseCard>
 
           <NextButtonRow>
             <NavButton
               buttonType='primary'
-              text={getLocale('braveWalletButtonGotIt')}
+              text={getLocale('braveWalletButtonNext')}
               onSubmit={nextStep}
             />
           </NextButtonRow>

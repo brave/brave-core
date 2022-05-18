@@ -19,7 +19,9 @@ import { WalletRoutes } from '../../../constants/types'
 
 // actions
 import * as WalletPageActions from '../../actions/wallet_page_actions'
+import OnboardingRecoveryPhrase from './backup-recovery-phrase/onboarding-backup-recovery-phrase'
 import OnboardingCreatePassword from './create-password/onboarding-create-password'
+import OnboardingRecoveryPhraseExplainer from './explain-recovery-phrase/explain-recovery-phrase'
 import { OnboardingWelcome } from './welcome'
 
 export const OnboardingRoutes = () => {
@@ -46,6 +48,14 @@ export const OnboardingRoutes = () => {
 
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
         <OnboardingCreatePassword />
+      </Route>
+      
+      <Route path={WalletRoutes.OnboardingExplainRecoveryPhrase} exact>
+        <OnboardingRecoveryPhraseExplainer />
+      </Route>
+      
+      <Route path={WalletRoutes.OnboardingBackupRecoveryPhrase} exact>
+        <OnboardingRecoveryPhrase />
       </Route>
 
       {/* <Route path={WalletRoutes.OnboardingBackupWallet} exact>
