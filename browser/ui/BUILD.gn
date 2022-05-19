@@ -2,7 +2,6 @@ import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
@@ -287,7 +286,6 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",

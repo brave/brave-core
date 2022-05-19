@@ -25,7 +25,6 @@
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_task_traits.h"

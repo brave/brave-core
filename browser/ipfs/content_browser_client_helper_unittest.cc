@@ -13,7 +13,6 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/decentralized_dns/utils.h"

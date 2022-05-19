@@ -12,7 +12,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -28,10 +28,6 @@
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
-
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/utils.h"
-#endif  // BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
@@ -102,7 +98,5 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
 #endif
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
-#endif  // BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 }
