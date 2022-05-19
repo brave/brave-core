@@ -103,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, SharingAPIMakesTabSharable) {
 
   // Note: As we're calling GetDeviceID and ShareTab from the same thread
   // the callback in GetDeviceID will have run before we get here.
-  EXPECT_EQ("", device_id);
+  EXPECT_NE("", device_id);
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
@@ -119,6 +119,19 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, NavigationClearsShareRequest) {
           [&device_id](const std::string& result) { device_id = result; }));
   EXPECT_TRUE(talk_service()->is_requesting_tab());
 
+  // Navigate, same origin.
+  NavigateToURLAndWait(GURL("https://talk.brave.com/foo"));
+
+  EXPECT_FALSE(talk_service()->is_requesting_tab());
+  EXPECT_EQ("", device_id);
+
+  talk_service()->GetDeviceID(
+      requester_contents(),
+      base::BindLambdaForTesting(
+          [&device_id](const std::string& result) { device_id = result; }));
+  EXPECT_TRUE(talk_service()->is_requesting_tab());
+
+  // Navigate, new origin.
   NavigateToURLAndWait(GURL("https://foo.bar"));
 
   EXPECT_FALSE(talk_service()->is_requesting_tab());
