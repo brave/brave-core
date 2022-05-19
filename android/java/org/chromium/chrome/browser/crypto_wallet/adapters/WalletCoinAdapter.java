@@ -40,6 +40,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         VISIBLE_ASSETS_LIST,
         EDIT_VISIBLE_ASSETS_LIST,
         ACCOUNTS_LIST,
+        SELECT_ACCOUNTS_LIST,
         BUY_ASSETS_LIST,
         SEND_ASSETS_LIST,
         SWAP_TO_ASSETS_LIST,
@@ -55,6 +56,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     private AdapterType mType;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private int previousSelectedPos;
 
     public WalletCoinAdapter(AdapterType type) {
         mType = type;
@@ -79,7 +81,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         holder.resetObservers();
 
         holder.titleText.setText(walletListItemModel.getTitle());
-        holder.subTitleText.setText(mType == AdapterType.ACCOUNTS_LIST
+        holder.subTitleText.setText(
+                mType == AdapterType.ACCOUNTS_LIST || mType == AdapterType.SELECT_ACCOUNTS_LIST
                         ? Utils.stripAccountAddress(walletListItemModel.getSubTitle())
                         : walletListItemModel.getSubTitle());
         if (walletListItemModel.getText1() != null) {
@@ -131,6 +134,9 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 }
             } else {
                 onWalletListItemClick.onAccountClick(walletListItemModel);
+                if (mType == AdapterType.SELECT_ACCOUNTS_LIST) {
+                    updateSelectedNetwork(holder.getLayoutPosition());
+                }
             }
         });
 
@@ -169,7 +175,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             }
         }
 
-        if (mType != AdapterType.ACCOUNTS_LIST) {
+        if (mType != AdapterType.ACCOUNTS_LIST && mType != AdapterType.SELECT_ACCOUNTS_LIST) {
             if (walletListItemModel.getBlockchainToken() == null
                     || !walletListItemModel.getBlockchainToken().logo.isEmpty()) {
                 Utils.setBitmapResource(mExecutor, mHandler, context,
@@ -187,7 +193,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                             v -> { onWalletListItemClick.onTrashIconClick(walletListItemModel); });
                 }
             }
-        } else if (mType == AdapterType.ACCOUNTS_LIST) {
+        } else if (mType == AdapterType.ACCOUNTS_LIST
+                || mType == AdapterType.SELECT_ACCOUNTS_LIST) {
             Utils.setBlockiesBitmapResource(
                     mExecutor, mHandler, holder.iconImg, walletListItemModel.getSubTitle(), true);
             holder.itemView.setOnLongClickListener(v -> {
@@ -196,6 +203,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
                 return true;
             });
+            if (mType == AdapterType.SELECT_ACCOUNTS_LIST) {
+                holder.ivSelected.setVisibility(
+                        walletListItemModel.getIsUserSelected() ? View.VISIBLE : View.GONE);
+            }
         }
     }
 
@@ -257,6 +268,31 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
     }
 
+    /**
+     * Update the list's selection icon to the passed account
+     * @param title is the account name
+     * @param subTitle is the account address
+     */
+    public void updateSelectedNetwork(String title, String subTitle) {
+        for (int i = 0; i < walletListItemModelList.size(); i++) {
+            WalletListItemModel walletListItemModel = walletListItemModelList.get(i);
+            if (walletListItemModel.getTitle().equals(title)
+                    && walletListItemModel.getSubTitle().equals(subTitle)) {
+                updateSelectedNetwork(i);
+                break;
+            }
+        }
+    }
+
+    private void updateSelectedNetwork(int selectedAccountPosition) {
+        walletListItemModelList.get(previousSelectedPos).setIsUserSelected(false);
+        notifyItemChanged(previousSelectedPos);
+
+        walletListItemModelList.get(selectedAccountPosition).setIsUserSelected(true);
+        previousSelectedPos = selectedAccountPosition;
+        notifyItemChanged(selectedAccountPosition);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView iconImg;
         public TextView titleText;
@@ -268,6 +304,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         public LinearLayout feeLayout;
         public TextView feeText;
         public ImageView iconTrash;
+        public ImageView ivSelected;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -280,6 +317,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             this.assetCheck = itemView.findViewById(R.id.assetCheck);
             this.feeText = itemView.findViewById(R.id.fee_text);
             this.iconTrash = itemView.findViewById(R.id.icon_trash);
+            this.ivSelected = itemView.findViewById(R.id.iv_selected);
         }
 
         public void resetObservers() {

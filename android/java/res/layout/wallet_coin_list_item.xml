@@ -112,4 +112,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/ic_check"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:tint="@color/brave_blue_tint_color" />
+
 </LinearLayout>
