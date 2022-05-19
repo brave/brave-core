@@ -13,7 +13,6 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.chrome.browser.app.domain.CryptoModel;
 
 // Under development, some parts not tested so use with caution
 // A container for all the native services and APIs
@@ -41,8 +40,11 @@ public class WalletModel {
         mSolanaTxManagerProxy = solanaTxManagerProxy;
         mAssetRatioService = assetRatioService;
         mBraveWalletService = braveWalletService;
-        mCryptoModel = new CryptoModel(mTxService, mKeyringService);
-        mKeyringModel = new KeyringModel(keyringService);
+        mCryptoModel = new CryptoModel(mTxService, mKeyringService, mBlockchainRegistry,
+                mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
+                mAssetRatioService);
+        mKeyringModel = new KeyringModel(keyringService, mCryptoModel.getSharedData());
+        init();
     }
 
     public void resetServices(KeyringService keyringService, BlockchainRegistry blockchainRegistry,
@@ -57,8 +59,19 @@ public class WalletModel {
         setSolanaTxManagerProxy(solanaTxManagerProxy);
         setAssetRatioService(assetRatioService);
         setBraveWalletService(braveWalletService);
-        mCryptoModel.resetServices(mTxService, mKeyringService);
-        mKeyringModel.setKeyringService(mKeyringService);
+        mCryptoModel.resetServices(mTxService, mKeyringService, mBlockchainRegistry,
+                mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
+                mAssetRatioService);
+        mKeyringModel.resetService(mKeyringService);
+        init();
+    }
+
+    /*
+     * Explicit method to ensure the sage initialisation to start the required data process
+     */
+    private void init() {
+        mCryptoModel.init();
+        mKeyringModel.init();
     }
 
     public KeyringModel getKeyringModel() {
