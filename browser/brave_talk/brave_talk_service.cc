@@ -46,6 +46,9 @@ void BraveTalkService::StartObserving(content::WebContents* contents) {
 
 void BraveTalkService::StopObserving() {
   Observe(nullptr);
+
+  if (on_received_device_id_)
+    std::move(on_received_device_id_).Run("");
 }
 
 void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
