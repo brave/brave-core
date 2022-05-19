@@ -21,10 +21,6 @@
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "v8-function.h"
-#include "v8-local-handle.h"
-#include "v8-primitive.h"
-#include "v8-value.h"
 
 namespace brave_talk {
 
