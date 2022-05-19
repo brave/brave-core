@@ -949,6 +949,7 @@
 		5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F926647A234D4EF400359492 /* CoreNFC.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5EEB25DE234E667700279091 /* CertificatePinningTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB25DD234E667700279091 /* CertificatePinningTest.swift */; };
 		6185F9422763E3AA00D135E9 /* BraveWallet.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6185F9402763E3AA00D135E9 /* BraveWallet.strings */; };
+		6ABE2E422834714800420474 /* DownloadQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABE2E412834714800420474 /* DownloadQueueTests.swift */; };
 		744ED5611DBFEB8D00A2B5BE /* MailtoLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */; };
 		7479B4EF1C5306A200DF000B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7479B4ED1C5306A200DF000B /* Reachability.swift */; };
 		74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */; };
@@ -2759,6 +2760,7 @@
 		61E5BF0A2763E42400244330 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveWallet.strings; sourceTree = "<group>"; };
 		61F1D8E52763E3BC002C8D12 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveWallet.strings; sourceTree = "<group>"; };
 		61FB5F932763E42E00F875E3 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveWallet.strings; sourceTree = "<group>"; };
+		6ABE2E412834714800420474 /* DownloadQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadQueueTests.swift; sourceTree = "<group>"; };
 		744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailtoLinkHandler.swift; sourceTree = "<group>"; };
 		7479B4ED1C5306A200DF000B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MailSchemes.plist; sourceTree = "<group>"; };
@@ -6366,6 +6368,7 @@
 				CA04E8A527022D9D00BFBB4D /* PlaylistTests.swift */,
 				CA84F895274F428B00B1388E /* SyncTests.swift */,
 				2F9CE87227CEA0AC008C9C44 /* LoginsHelperTests.swift */,
+				6ABE2E412834714800420474 /* DownloadQueueTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -8674,6 +8677,7 @@
 				8C99379028031B51001CD6E9 /* DebouncingResourceDownloaderTests.swift in Sources */,
 				D3D488591ABB54CD00A93597 /* FileAccessorTests.swift in Sources */,
 				0AD9F88E22F05376008B4D95 /* AdblockRustTests.swift in Sources */,
+				6ABE2E422834714800420474 /* DownloadQueueTests.swift in Sources */,
 				CA84F896274F428B00B1388E /* SyncTests.swift in Sources */,
 				2F9CE87327CEA0AC008C9C44 /* LoginsHelperTests.swift in Sources */,
 				0BA8964B1A250E6500C1010C /* ProfileTest.swift in Sources */,
