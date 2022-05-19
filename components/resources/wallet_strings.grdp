@@ -37,6 +37,7 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>
   <message name="IDS_WALLET_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>
   <message name="IDS_WALLET_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
+  <message name="IDS_WALLET_NOT_AUTHED" desc="Method or account not authorized">The requested method and/or account has not been authorized by the user.</message>
   <message name="IDS_BRAVE_WALLET_DEFI_CATEGORY" desc="Defi apps title">Defi apps</message>
   <message name="IDS_BRAVE_WALLET_NFT_CATEGORY" desc="NFT marketplace title">NFT marketplaces</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CATEGORY" desc="Filter apps placeholder">Search results</message>

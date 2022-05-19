@@ -73,8 +73,7 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
   }
   if (!bytes.size())
     return false;
-  std::unique_ptr<base::Value> new_value =
-      std::make_unique<base::Value>(bytes);
+  std::unique_ptr<base::Value> new_value = std::make_unique<base::Value>(bytes);
   *out = std::move(new_value);
 
   return true;

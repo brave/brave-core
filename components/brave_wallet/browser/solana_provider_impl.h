@@ -20,6 +20,7 @@
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
+class BraveWalletService;
 class KeyringService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
@@ -28,6 +29,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
   SolanaProviderImpl(KeyringService* keyring_service,
+                     BraveWalletService* brave_wallet_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
@@ -63,6 +65,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       RequestPermissionsError error,
       const absl::optional<std::vector<std::string>>& allowed_accounts);
 
+  void OnSignMessageRequestProcessed(const std::vector<uint8_t>& blob_msg,
+                                     const std::string& account,
+                                     SignMessageCallback callback,
+                                     bool approved,
+                                     const std::string& signature,
+                                     const std::string& error);
+
   // mojom::KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override {}
   void KeyringRestored(const std::string& keyring_id) override {}
@@ -83,8 +92,10 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   // will be saved and future connect from the same site will not ask user for
   // permission again until the permission is removed.
   base::flat_set<std::string> connected_set_;
+  int sign_message_id_ = 0;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;

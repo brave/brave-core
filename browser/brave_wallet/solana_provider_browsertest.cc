@@ -9,8 +9,10 @@
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -21,12 +23,14 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
@@ -57,6 +61,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server()->Start());
 
+    brave_wallet_service_ =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            browser()->profile());
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser()->profile());
   }
@@ -135,11 +142,34 @@ class SolanaProviderTest : public InProcessBrowserTest {
                     .ExtractBool());
   }
 
+  void CallSolanaSignMessage(const std::string& message,
+                             const std::string& encoding) {
+    ASSERT_TRUE(ExecJs(web_contents(),
+                       base::StringPrintf(R"(solanaSignMessage('%s', '%s'))",
+                                          message.c_str(), encoding.c_str())));
+  }
+
+  std::string GetSignMessageResult() {
+    return EvalJs(web_contents(), "getSignMessageResult()",
+                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        .ExtractString();
+  }
+
   bool IsSolanaConnected() {
     return EvalJs(web_contents(), "isSolanaConnected()",
                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
         .ExtractBool();
   }
+
+  void WaitForResultReady() {
+    content::DOMMessageQueue message_queue;
+    std::string message;
+    EXPECT_TRUE(message_queue.WaitForMessage(&message));
+    EXPECT_EQ("\"result ready\"", message);
+  }
+
+ protected:
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
 
  private:
   base::test::ScopedFeatureList feature_list_;
@@ -203,6 +233,55 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
   EXPECT_TRUE(IsSolanaConnected());
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
+  RestoreWallet();
+  AddAccount();
+  SetSelectedAccount(first_account);
+  GURL url = https_server()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  // Disconnected state will be rejcted.
+  constexpr char message[] = "bravey baby!";
+  CallSolanaSignMessage(message, "utf8");
+  WaitForResultReady();
+  EXPECT_EQ(GetSignMessageResult(),
+            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
+  CallSolanaConnect();
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected());
+
+  size_t request_index = 0;
+  CallSolanaSignMessage(message, "utf8");
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user rejected request
+  brave_wallet_service_->NotifySignMessageRequestProcessed(false,
+                                                           request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignMessageResult(),
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+  constexpr char expected_signature[] =
+      "98,100,65,130,165,105,247,254,176,58,137,184,149,50,202,4,239,34,179,15,"
+      "99,184,125,255,9,227,4,118,70,108,153,191,78,251,150,104,239,24,191,139,"
+      "242,54,150,144,96,249,42,106,199,171,222,72,108,190,206,193,130,47,125,"
+      "239,173,127,238,11";
+
+  for (const std::string& encoding : {"utf8", "hex", "invalid", ""}) {
+    CallSolanaSignMessage(message, encoding);
+    EXPECT_TRUE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    // user approved request
+    brave_wallet_service_->NotifySignMessageRequestProcessed(true,
+                                                             request_index++);
+    WaitForResultReady();
+    EXPECT_EQ(GetSignMessageResult(), expected_signature);
+  }
 }
 
 }  // namespace brave_wallet

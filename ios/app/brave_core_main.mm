@@ -375,8 +375,14 @@ static bool CustomLogHandler(int severity,
     return nil;
   }
 
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
+    return nil;
+  }
+
   auto* provider = new brave_wallet::SolanaProviderImpl(
-      keyring_service,
+      keyring_service, brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate));
   return

@@ -888,20 +888,25 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
 
   // not Uint8Array
   const std::string msg4 = base::StrCat({"([", msg_str, "])"});
-  auto result4 =
-      EvalJs(web_contents(browser()), SignAndSendTransactionScript(msg4),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result4 = EvalJs(web_contents(browser()), SignMessageScript(msg4),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
       result4.value);
 
   // no arg
-  auto result5 =
-      EvalJs(web_contents(browser()), SignAndSendTransactionScript("()"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result5 = EvalJs(web_contents(browser()), SignMessageScript("()"),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
       result5.value);
+
+  // display is not string, use default utf8 encoding
+  const std::string msg6 =
+      base::StrCat({"(new Uint8Array([", msg_str, "], 12345))"});
+  auto result6 = EvalJs(web_contents(browser()), SignMessageScript(msg6),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result6.value);
 
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetMainFrame());
@@ -909,13 +914,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
 
-  auto result6 = EvalJs(web_contents(browser()), SignMessageScript(msg),
+  auto result7 = EvalJs(web_contents(browser()), SignMessageScript(msg),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   // check error message + error code
   EXPECT_EQ(base::Value(kErrorMessage +
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
-            result6.value);
+            result7.value);
 }
 
 // Request test here won't be testing params object, renderer just convert the
