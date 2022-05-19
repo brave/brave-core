@@ -102,6 +102,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/github_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/helper_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/reddit_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/twitch_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/vimeo_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/youtube_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/publisher_settings_state_unittest.cc",
@@ -118,12 +119,6 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_utils_unittest.cc",
   ]
-
-  if (!is_asan) {
-    # Move sources out of the !is_asan block when
-    # https://github.com/brave/brave-browser/issues/11893 is fixed
-    sources += [ "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/twitch_unittest.cc" ]
-  }
 
   deps = [
     "//base/test:test_support",
