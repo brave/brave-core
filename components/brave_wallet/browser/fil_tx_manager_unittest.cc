@@ -446,18 +446,19 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
 TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   const std::string from_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
   const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-
-  auto tx_data = mojom::FilTxData::New(
-      "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
-      "4" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
-  std::string meta_id;
-  AddUnapprovedTransaction(std::move(tx_data), from_account, absl::nullopt,
-                           &meta_id);
-  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->from(), from_account);
-  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-  GetTransactionMessageToSign(meta_id, R"(
+  // non-empty nonce
+  {
+    auto tx_data = mojom::FilTxData::New(
+        "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
+        "4" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+    std::string meta_id;
+    AddUnapprovedTransaction(std::move(tx_data), from_account, absl::nullopt,
+                             &meta_id);
+    auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+    ASSERT_TRUE(tx_meta);
+    EXPECT_EQ(tx_meta->from(), from_account);
+    EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+    GetTransactionMessageToSign(meta_id, R"(
     {
         "From": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
         "GasFeeCap": "3",
@@ -471,6 +472,39 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
         "Version": 0
     }
   )");
+  }
+  // empty nonce
+  {
+    SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                   "Filecoin.MpoolGetNonce",
+                   R"({ "jsonrpc": "2.0", "id": 1, "result": 5 })");
+
+    auto tx_data = mojom::FilTxData::New(
+        "" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
+        "4" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+    std::string meta_id;
+    AddUnapprovedTransaction(std::move(tx_data), from_account, absl::nullopt,
+                             &meta_id);
+    auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+    ASSERT_TRUE(tx_meta);
+    EXPECT_EQ(tx_meta->from(), from_account);
+    EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+    GetTransactionMessageToSign(meta_id, R"(
+    {
+        "From": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+        "GasFeeCap": "3",
+        "GasLimit": 4,
+        "GasPremium": "2",
+        "Method": 0,
+        "Nonce": 5,
+        "Params": "",
+        "To": "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy",
+        "Value": "11",
+        "Version": 0
+    }
+  )");
+  }
+
   GetTransactionMessageToSign("unknown id", absl::nullopt);
   GetTransactionMessageToSign("", absl::nullopt);
 }

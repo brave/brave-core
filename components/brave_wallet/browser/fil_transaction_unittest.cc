@@ -151,9 +151,25 @@ TEST(FilTransactionUnitTest, Serialization) {
 
 TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+      "", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
       "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   auto message_to_sign = transaction->GetMessageToSign();
+  ASSERT_TRUE(message_to_sign);
+  CompareJSONs(*message_to_sign,
+               R"({
+                 "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+                 "GasFeeCap": "3",
+                 "GasLimit": 1,
+                 "GasPremium": "2",
+                 "Method": 0,
+                 "Params": "",
+                 "Nonce": 0,
+                 "To": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+                 "Value": "6",
+                 "Version": 0
+               })");
+  transaction->set_nonce(1);
+  message_to_sign = transaction->GetMessageToSign();
   ASSERT_TRUE(message_to_sign);
   CompareJSONs(*message_to_sign,
                R"({
@@ -168,6 +184,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
                  "Value": "6",
                  "Version": 0
                })");
+
   std::string private_key_decoded =
       DecodePrivateKey("8VcW07ADswS4BV2cxi5rnIadVsyTDDhY1NfDH19T8Uo=");
   std::vector<uint8_t> private_key(private_key_decoded.begin(),
