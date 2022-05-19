@@ -98,6 +98,29 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED:
       return SkColorSetRGB(0x86, 0x8E, 0x96);
 #endif
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BANNER_TYPE_DESC_TEXT:
+      return SkColorSetRGB(0x2E, 0x30, 0x39);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER:
+      return SkColorSetRGB(0xE2, 0xE3, 0xF8);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM:
+      return SkColorSetARGB(104, 0xFF, 0xFF, 0xFF);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_TO:
+      return SkColorSetARGB(104, 0xEF, 0xEF, 0xFB);
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_INPUT_APPEND:
+      return SkColorSetRGB(0x58, 0x5C, 0x6D);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_NORMAL:
+      return SkColorSetRGB(0xED, 0xEE, 0xFA);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_HOVERED:
+      return SkColorSetRGB(0xE2, 0xE3, 0xF8);
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_NORMAL:
+      return SkColorSetRGB(0x44, 0x4d, 0xd0);
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_HOVERED:
+      return SkColorSetRGB(0x1F, 0x25, 0x7A);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:
@@ -194,6 +217,29 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED:
       return SkColorSetRGB(0xF0, 0xF2, 0xFF);
 #endif
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BANNER_TYPE_DESC_TEXT:
+      return SkColorSetRGB(0xE2, 0xE3, 0xE7);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER:
+      return SkColorSetRGB(0x1F, 0x25, 0x7A);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM:
+      return SkColorSetARGB(104, 0x17, 0x19, 0x1E);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_TO:
+      return SkColorSetARGB(104, 0x1F, 0x25, 0x7A);
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_INPUT_APPEND:
+      return SkColorSetRGB(0xAC, 0xAF, 0xBB);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_NORMAL:
+      return SkColorSetRGB(0x1A, 0x1C, 0x3B);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_HOVERED:
+      return SkColorSetRGB(0x1F, 0x25, 0x7A);
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_NORMAL:
+      return SkColorSetRGB(0xA6, 0xAB, 0xE9);
+    case BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_HOVERED:
+      return SkColorSetRGB(0xE2, 0xE3, 0xF8);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;
     default:
