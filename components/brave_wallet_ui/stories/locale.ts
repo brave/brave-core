@@ -135,10 +135,15 @@ provideStrings({
   braveWalletRecoveryWarning3: 'Anyone with this phrase can take your assets forever.',
   braveWalletRecoveryTerms: 'I have backed up my phrase somewhere safe.',
 
-  // Verify Recovery Phrase
+  // Verify Recovery Phrase (v1)
   braveWalletVerifyRecoveryTitle: 'Verify recovery phrase',
   braveWalletVerifyRecoveryDescription: 'Select the words in your recovery phrase in their correct order.',
   braveWalletVerifyError: 'Recovery phrase did not match, please try again.',
+
+  // Verify Recovery Phrase (v2)
+  braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
+  braveWalletVerifyRecoveryPhraseInstructions: 'Click the First(1st), Third(3rd), and Last(12th) word of your recovery phrase.',
+  braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
 
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
@@ -275,6 +280,11 @@ provideStrings({
   braveWalletPreset50: '50%',
   braveWalletPreset75: '75%',
   braveWalletPreset100: '100%',
+
+  // Ordinals
+  braveWalletOrdinalFirst: 'First',
+  braveWalletOrdinalThird: 'Third',
+  braveWalletOrdinalLast: 'Last',
 
   // Networks
   braveWalletNetworkETH: 'Ethereum',

@@ -16,17 +16,19 @@ import transparent40x40Image from '../../assets/png-icons/transparent40x40.png'
 import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
 import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
+import CloseSvg from '../../assets/svg-icons/close.svg'
 
-export interface AssetIconProps {
-  icon?: string
-}
+// Text
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 10px;
+`
 
-interface StyleProps {
-  status: BraveWallet.TransactionStatus
-  space: number
-}
-
-export const StatusBubble = styled.div<Partial<StyleProps>>`
+// Containers
+export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,13 +49,10 @@ export const StatusBubble = styled.div<Partial<StyleProps>>`
   margin-right: 6px;
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
-  margin-bottom: 10px;
-`
+// Icons
+export interface AssetIconProps {
+  icon?: string
+}
 
 export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   src: stripERC20TokenImageURL(props.icon)
@@ -70,6 +69,31 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   loading: 'lazy'
 }))
 
+export const GreenCheckmark = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  background-color: ${(p) => p.theme.color.successBorder};
+  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
+  mask-size: contain;
+  vertical-align: middle;
+`
+
+export const ErrorXIcon = styled.div`
+  width: 12px;
+  height: 12px;
+  background-color: ${(p) => p.theme.color.errorIcon};
+  -webkit-mask-image: url(${CloseSvg});
+  mask-image: url(${CloseSvg});
+  mask-size: 12px;
+  mask-position: center center;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+`
+
+// Buttons
 export const WalletButton = styled.button<{
   isDraggedOver?: boolean
 }>`
@@ -105,15 +129,4 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
-`
-
-export const GreenCheckmark = styled.div`
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 4px;
-  background-color: ${(p) => p.theme.color.successBorder};
-  mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
-  mask-size: contain;
-  vertical-align: middle;
 `

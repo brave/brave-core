@@ -22,12 +22,17 @@ export const RecoveryPhraseContainer = styled.div`
 
 export const RecoveryBubble = styled.div<{
   verificationModeEnabled?: boolean
+  selected?: boolean
 }>`
+  position: ${(p) => p.verificationModeEnabled ? 'relative' : 'unset'};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.selected
+    ? '#F0F1FF'
+    : p.theme.color.background01
+  };
   padding: 5px 0px;
   border-radius: 4px;
   flex-basis: 100px;
@@ -35,6 +40,29 @@ export const RecoveryBubble = styled.div<{
     ? 24
     : 16
   }px;
+  cursor: ${(p) => p.verificationModeEnabled
+    ? 'pointer'
+    : 'unset'
+  };
+`
+
+export const RecoveryBubbleBadge = styled.p`
+  position: absolute;
+  top: -15px;
+  left: -8px;
+  color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.color.interactive05};
+  width: 40px;
+  border-radius: 4px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 `
 
 export const RecoveryBubbleText = styled.span`

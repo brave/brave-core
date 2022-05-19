@@ -605,6 +605,7 @@ export enum WalletRoutes {
   OnboardingExplainRecoveryPhrase = '/crypto/onboarding/explain-recovery-phrase',
   OnboardingBackupRecoveryPhrase = '/crypto/onboarding/backup-recovery-phrase',
   OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/verify-recovery-phrase',
+  OnboardingComplete = '/crypto/onboarding/complete',
 
   // accounts
   Accounts = '/crypto/accounts',

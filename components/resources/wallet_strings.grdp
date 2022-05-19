@@ -126,6 +126,9 @@
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_TITLE" desc="Verify Recovery screen title">Verify recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_DESCRIPTION" desc="Verify Recovery screen description">Select the words in your recovery phrase in their correct order.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_ERROR" desc="Verify Recovery screen error">Recovery phrase did not match, please try again.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_TITLE" desc="Verify Recovery phrase screen title">Verify your recovery phrase</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the First(1st), Third(3rd), and Last(12th) word of your recovery phrase.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_PHRASE_ERROR" desc="Verify Recovery phrase screen error">Recovery phrase didn't match</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_TITLE" desc="Create Password screen title">Create a new password</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION" desc="Create Password screen description">You will need to enter the password to access your wallet from your Browser.</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_INPUT" desc="Create Password screen password input">Enter new password</message>
@@ -536,4 +539,7 @@
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE" desc="Title to recovery phrase backup screen">Next, let's back up your wallet.</message>
   <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click here to see phrase</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_FIRST" desc="First list item label">First</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_THIRD" desc="Third list item label">Third</message>
+  <message name="IDS_BRAVE_WALLET_ORDINAL_LAST" desc="Last list item label">Last</message>
 </grit-part>
