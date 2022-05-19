@@ -887,6 +887,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 if (mActivity == null) {
                     mActivity = BraveActivity.getBraveActivity();
                 }
+                if (mSettingsBar != null && prevRecyclerViewItemPosition > 0) {
+                    mSettingsBar.setVisibility(View.VISIBLE);
+                    mSettingsBar.setAlpha(0f);
+                }
                 keepPosition(
                         prevScrollPosition, prevRecyclerViewPosition, prevRecyclerViewItemPosition);
             }
@@ -1321,7 +1325,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                         mTouchScroll = true;
                         mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
                         mParentScrollView.scrollBy(0, offset + 2);
-
                     } catch (Exception e) {
                         Log.e("bn", "Exception onScrolled:" + e);
                     }
@@ -1639,8 +1642,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                                       .getActivityTab()
                                                                       .getId(),
                                                     0);
-                                    if (compositorView.getChildAt(2).getId()
-                                            == R.id.news_settings_bar) {
+                                    if (mSettingsBar == null
+                                            && compositorView.getChildAt(2).getId()
+                                                    == R.id.news_settings_bar) {
                                         mSettingsBar = (LinearLayout) compositorView.getChildAt(2);
                                         mSettingsBar.setVisibility(View.INVISIBLE);
                                         mSettingsBar.setAlpha(0f);
