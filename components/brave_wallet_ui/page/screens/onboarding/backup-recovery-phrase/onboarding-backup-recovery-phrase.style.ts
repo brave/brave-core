@@ -19,40 +19,6 @@ export const LinkText = styled.a`
   margin: 0px;
 `
 
-// Phrase card
-export const PhraseCard = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  width: 376px;
-  align-items: center;
-`
-
-export const PhraseCardTopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 375px;
-  height: 40px;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 14px 8px;
-`
-
-export const PhraseCardBody = styled.div`
-  flex: 1;
-  width: 100%;
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${(p) => p.theme.color.divider01};
-  border-radius: 4px;
-`
-
-export const PhraseCardBottomRow = styled(PhraseCardTopRow)`
-  justify-content: flex-start;
-  height: 40px;
-  gap: 14px;
-`
-
 // buttons
 export const CopyButton = styled(WalletButton)`
   cursor: pointer;

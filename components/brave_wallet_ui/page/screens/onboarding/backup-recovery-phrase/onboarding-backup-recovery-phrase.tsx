@@ -27,17 +27,17 @@ import {
   NextButtonRow,
   StyledWrapper,
   Title,
-  TitleAndDescriptionContainer
+  TitleAndDescriptionContainer,
+  PhraseCard,
+  PhraseCardBody,
+  PhraseCardBottomRow,
+  PhraseCardTopRow
 } from '../onboarding.style'
 import {
   CopiedToClipboardContainer,
   CopyButton,
   DownloadButton,
-  LinkText,
-  PhraseCard,
-  PhraseCardBody,
-  PhraseCardBottomRow,
-  PhraseCardTopRow
+  LinkText
 } from './onboarding-backup-recovery-phrase.style'
 
 // components
@@ -92,6 +92,10 @@ export const OnboardingRecoveryPhrase = () => {
     await temporaryCopyToClipboard(mnemonic || '')
   }, [mnemonic])
 
+  const onDownloadPhraseFile = React.useCallback(() => {
+    setFileGUID(randomUUID())
+  }, [])
+
   // memos
   const recoveryPhrase = React.useMemo(() => {
     return (mnemonic || '').split(' ')
@@ -103,10 +107,6 @@ export const OnboardingRecoveryPhrase = () => {
     }`,
     [recoveryPhrase]
   )
-
-  const onDownloadPhraseFile = React.useCallback(() => {
-    setFileGUID(randomUUID())
-  }, [])
 
   // render
   return (
