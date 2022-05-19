@@ -50,6 +50,7 @@ class DebounceComponentInstaller
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
+  const std::string GetETLDForDebounce(const std::string& host) const;
 
   // implementation of our own observers
   class Observer : public base::CheckedObserver {

@@ -63,12 +63,9 @@ void DebounceComponentInstaller::OnDATFileDataReady(
       continue;
     for (const URLPattern& pattern : rule->include_pattern_set()) {
       if (!pattern.host().empty()) {
-        std::string etldp1 =
-            net::registry_controlled_domains::GetDomainAndRegistry(
-                pattern.host(),
-                net::registry_controlled_domains::PrivateRegistryFilter::
-                    INCLUDE_PRIVATE_REGISTRIES);
-        hosts.push_back(std::move(etldp1));
+        const std::string etldp1 = GetETLDForDebounce(pattern.host());
+        if (!etldp1.empty())
+          hosts.push_back(std::move(etldp1));
       }
     }
     rules_.push_back(std::move(rule));
@@ -84,6 +81,13 @@ void DebounceComponentInstaller::OnComponentReady(
     const std::string& manifest) {
   resource_dir_ = install_dir.AppendASCII(kDebounceConfigFileVersion);
   LoadDirectlyFromResourcePath();
+}
+
+const std::string DebounceComponentInstaller::GetETLDForDebounce(
+    const std::string& host) const {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      host, net::registry_controlled_domains::PrivateRegistryFilter::
+                EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace debounce

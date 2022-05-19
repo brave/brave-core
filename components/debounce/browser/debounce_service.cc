@@ -31,9 +31,7 @@ bool DebounceService::Debounce(const GURL& original_url,
   const base::flat_set<std::string>& host_cache =
       component_installer_->host_cache();
   const std::string etldp1 =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          original_url, net::registry_controlled_domains::
-                            PrivateRegistryFilter::INCLUDE_PRIVATE_REGISTRIES);
+      component_installer_->GetETLDForDebounce(original_url.host());
   if (!base::Contains(host_cache, etldp1))
     return false;
 
