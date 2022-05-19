@@ -7,10 +7,12 @@ export default class BalanceUpdater {
   private intervalId: ReturnType<typeof setInterval> | undefined
 
   beginUpdatingBalances (timeMs: number, onUpdateBalances: () => unknown) {
-    this.intervalId = setInterval(
-      () => {
-        onUpdateBalances()
-      }, timeMs)
+    if (!this.intervalId) {
+      this.intervalId = setInterval(
+        () => {
+          onUpdateBalances()
+        }, timeMs)
+    }
   }
 
   stopUpdatingBalances () {
