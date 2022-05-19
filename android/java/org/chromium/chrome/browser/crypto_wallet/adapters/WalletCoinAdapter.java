@@ -81,7 +81,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         holder.resetObservers();
 
         holder.titleText.setText(walletListItemModel.getTitle());
-        holder.subTitleText.setText(mType == AdapterType.ACCOUNTS_LIST
+        holder.subTitleText.setText(
+                mType == AdapterType.ACCOUNTS_LIST || mType == AdapterType.SELECT_ACCOUNTS_LIST
                         ? Utils.stripAccountAddress(walletListItemModel.getSubTitle())
                         : walletListItemModel.getSubTitle());
         if (walletListItemModel.getText1() != null) {

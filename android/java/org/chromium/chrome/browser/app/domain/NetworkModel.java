@@ -3,7 +3,6 @@ package org.chromium.chrome.browser.app.domain;
 import android.text.TextUtils;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -27,10 +26,13 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void init() {
         mJsonRpcService.getChainId(mSharedData.getCoinType(), chainId -> {
-            String id =
-                    TextUtils.isEmpty(chainId) ? BraveWalletConstants.MAINNET_CHAIN_ID : chainId;
+            String id = BraveWalletConstants.MAINNET_CHAIN_ID;
+            if (TextUtils.isEmpty(chainId)) {
+                mJsonRpcService.setNetwork(id, mSharedData.getCoinType(), hasSetNetwork -> {});
+            } else {
+                id = chainId;
+            }
             _mChainId.postValue(id);
-            mJsonRpcService.setNetwork(id, mSharedData.getCoinType(), hasSetNetwork -> {});
         });
     }
 
