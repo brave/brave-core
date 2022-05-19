@@ -33,6 +33,8 @@ class SearchResultAd final : public SearchResultAdObserver {
                  TriggerSearchResultAdEventCallback callback) const;
   void FireViewedEvent(const mojom::SearchResultAdPtr& ad_mojom,
                        TriggerSearchResultAdEventCallback callback) const;
+  void FireClickedEvent(const SearchResultAdInfo& ad,
+                        TriggerSearchResultAdEventCallback callback) const;
 
   void NotifySearchResultAdEvent(
       const SearchResultAdInfo& ad,

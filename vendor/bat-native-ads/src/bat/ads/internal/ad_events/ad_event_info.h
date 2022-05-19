@@ -21,7 +21,7 @@ struct AdEventInfo final {
 
   AdType type = AdType::kUndefined;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
-  std::string uuid;
+  std::string placement_id;
   std::string campaign_id;
   std::string creative_set_id;
   std::string creative_instance_id;

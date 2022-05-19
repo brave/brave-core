@@ -125,6 +125,25 @@ TEST_F(BatAdsPromotedContentAdTest, FireViewedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
 
+TEST_F(BatAdsPromotedContentAdTest, DoNotFireViewedEventIfAlreadyFired) {
+  // Arrange
+  ForcePermissionRules();
+
+  const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
+
+  promoted_content_ad_->FireEvent(kPlacementId,
+                                  creative_ad.creative_instance_id,
+                                  mojom::PromotedContentAdEventType::kViewed);
+
+  // Act
+  promoted_content_ad_->FireEvent(kPlacementId,
+                                  creative_ad.creative_instance_id,
+                                  mojom::PromotedContentAdEventType::kViewed);
+
+  // Assert
+  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+}
+
 TEST_F(BatAdsPromotedContentAdTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
@@ -148,7 +167,7 @@ TEST_F(BatAdsPromotedContentAdTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsPromotedContentAdTest, DoNotFireViewedEventIfAlreadyFired) {
+TEST_F(BatAdsPromotedContentAdTest, DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRules();
 
@@ -156,15 +175,15 @@ TEST_F(BatAdsPromotedContentAdTest, DoNotFireViewedEventIfAlreadyFired) {
 
   promoted_content_ad_->FireEvent(kPlacementId,
                                   creative_ad.creative_instance_id,
-                                  mojom::PromotedContentAdEventType::kViewed);
+                                  mojom::PromotedContentAdEventType::kClicked);
 
   // Act
   promoted_content_ad_->FireEvent(kPlacementId,
                                   creative_ad.creative_instance_id,
-                                  mojom::PromotedContentAdEventType::kViewed);
+                                  mojom::PromotedContentAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
 TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventWithInvalidUuid) {

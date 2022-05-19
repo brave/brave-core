@@ -120,6 +120,21 @@ TEST_F(BatAdsInlineContentAdTest, FireViewedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
 
+TEST_F(BatAdsInlineContentAdTest, DoNotFireViewedEventIfAlreadyFired) {
+  // Arrange
+  const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
+
+  inline_content_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                                mojom::InlineContentAdEventType::kViewed);
+
+  // Act
+  inline_content_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                                mojom::InlineContentAdEventType::kViewed);
+
+  // Assert
+  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+}
+
 TEST_F(BatAdsInlineContentAdTest, FireClickedEvent) {
   // Arrange
   const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
@@ -140,19 +155,19 @@ TEST_F(BatAdsInlineContentAdTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsInlineContentAdTest, DoNotFireViewedEventIfAlreadyFired) {
+TEST_F(BatAdsInlineContentAdTest, DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   const CreativeInlineContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
   inline_content_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                                mojom::InlineContentAdEventType::kViewed);
+                                mojom::InlineContentAdEventType::kClicked);
 
   // Act
   inline_content_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                                mojom::InlineContentAdEventType::kViewed);
+                                mojom::InlineContentAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
 TEST_F(BatAdsInlineContentAdTest, DoNotFireEventWithInvalidUuid) {

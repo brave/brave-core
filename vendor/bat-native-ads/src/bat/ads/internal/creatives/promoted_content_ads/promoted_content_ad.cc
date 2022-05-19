@@ -19,6 +19,25 @@
 
 namespace ads {
 
+namespace {
+
+bool ShouldDebounceAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::PromotedContentAdEventType& event_type) {
+  if (event_type == mojom::PromotedContentAdEventType::kViewed &&
+      HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
+    return true;
+  } else if (event_type == mojom::PromotedContentAdEventType::kClicked &&
+             HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
+    return true;
+  }
+
+  return false;
+}
+
+}  // namespace
+
 PromotedContentAd::PromotedContentAd() = default;
 
 PromotedContentAd::~PromotedContentAd() = default;
@@ -103,12 +122,10 @@ void PromotedContentAd::FireEvent(
           return;
         }
 
-        if (event_type == mojom::PromotedContentAdEventType::kViewed &&
-            HasFiredAdViewedEvent(ad, ad_events)) {
-          BLOG(1,
-               "Promoted content ad: Not allowed as already fired a viewed "
-               "event for this placement id "
-                   << placement_id);
+        if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+          BLOG(1, "Promoted content ad: Not allowed as already fired "
+                      << event_type << " event for this placement id "
+                      << placement_id);
           NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                              event_type);
           return;

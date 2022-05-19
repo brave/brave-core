@@ -19,10 +19,13 @@ class Time;
 
 namespace ads {
 
+class ConfirmationType;
 struct AdInfo;
 struct CreativeAdInfo;
 
-bool HasFiredAdViewedEvent(const AdInfo& ad, const AdEventList& ad_events);
+bool HasFiredAdEvent(const AdInfo& ad,
+                     const AdEventList& ad_events,
+                     const ConfirmationType& confirmation_type);
 
 absl::optional<base::Time> GetLastSeenAdTime(const AdEventList& ad_events,
                                              const CreativeAdInfo& creative_ad);

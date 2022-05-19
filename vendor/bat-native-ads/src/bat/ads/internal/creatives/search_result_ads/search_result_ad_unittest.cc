@@ -198,6 +198,24 @@ TEST_F(BatAdsSearchResultAdTest, FireViewedEventWithConversion) {
   ExpectConversionCountEquals(1);
 }
 
+TEST_F(BatAdsSearchResultAdTest, DoNotFireViewedEventIfAlreadyFired) {
+  // Arrange
+  ForcePermissionRules();
+
+  const mojom::SearchResultAdPtr ad_mojom =
+      BuildAd(kPlacementId, kCreativeInstanceId);
+
+  FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
+
+  // Act
+  FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
+
+  // Assert
+  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
+  ExpectConversionCountEquals(0);
+}
+
 TEST_F(BatAdsSearchResultAdTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
@@ -219,22 +237,20 @@ TEST_F(BatAdsSearchResultAdTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsSearchResultAdTest, DoNotFireViewedEventIfAlreadyFired) {
+TEST_F(BatAdsSearchResultAdTest, DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRules();
 
   const mojom::SearchResultAdPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom, mojom::SearchResultAdEventType::kClicked);
 
   // Act
-  FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom, mojom::SearchResultAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
-  ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
-  ExpectConversionCountEquals(0);
+  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
 TEST_F(BatAdsSearchResultAdTest, DoNotFireEventWithInvalidPlacementId) {

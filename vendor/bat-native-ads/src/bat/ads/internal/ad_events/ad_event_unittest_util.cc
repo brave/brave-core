@@ -30,7 +30,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   AdEventInfo ad_event;
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  ad_event.placement_id = base::GUID::GenerateRandomV4().AsLowercaseString();
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
@@ -53,7 +53,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   AdEventInfo ad_event;
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  ad_event.placement_id = base::GUID::GenerateRandomV4().AsLowercaseString();
   ad_event.campaign_id = ad.campaign_id;
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;
@@ -69,14 +69,14 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   return BuildAdEvent(ad, ad_type, confirmation_type, Now());
 }
 
-AdEventInfo BuildAdEvent(const std::string& uuid,
+AdEventInfo BuildAdEvent(const std::string& placement_id,
                          const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
   ad_event.type = AdType::kAdNotification;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.uuid = uuid;
+  ad_event.placement_id = placement_id;
   ad_event.campaign_id = "604df73f-bc6e-4583-a56d-ce4e243c8537";
   ad_event.creative_set_id = creative_set_id;
   ad_event.creative_instance_id = "7a3b6d9f-d0b7-4da6-8988-8d5b8938c94f";

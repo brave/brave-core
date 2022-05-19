@@ -9,18 +9,22 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
-bool HasFiredAdViewedEvent(const AdInfo& ad, const AdEventList& ad_events) {
-  const auto iter = std::find_if(
-      ad_events.cbegin(), ad_events.cend(), [&ad](const AdEventInfo& ad_event) {
-        return ad_event.confirmation_type == ConfirmationType::kViewed &&
-               ad_event.uuid == ad.placement_id;
-      });
+bool HasFiredAdEvent(const AdInfo& ad,
+                     const AdEventList& ad_events,
+                     const ConfirmationType& confirmation_type) {
+  const auto iter =
+      std::find_if(ad_events.cbegin(), ad_events.cend(),
+                   [&ad, &confirmation_type](const AdEventInfo& ad_event) {
+                     return ad_event.placement_id == ad.placement_id &&
+                            ad_event.confirmation_type == confirmation_type;
+                   });
 
   if (iter == ad_events.end()) {
     return false;
