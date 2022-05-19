@@ -32,6 +32,12 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   bool IsSetupInProgress() const override;
   void StopAndClear() override;
 
+  // SyncEngineHost override.
+  void OnEngineInitialized(
+      const WeakHandle<DataTypeDebugInfoListener>& debug_info_listener,
+      bool success,
+      bool is_first_time_sync_configure) override;
+
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
 
