@@ -456,4 +456,8 @@
   </message>
   <message name="IDS_WALLET_FIL_SEND_TRANSACTION_TO" desc="Error message if transaction 'to' is empty">Transaction data 'to' must be specified</message>
   <message name="IDS_WALLET_FIL_SEND_TRANSACTION_FROM_INVALID" desc="Transaction data is not validated">Transaction data 'from' must be a valid Filecoin address</message>
+  <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TEXT" desc="Notification message text when transaction status updated">Click here to check transaction details for <ph name="VALUE">$1<ex>0xABC</ex></ph></message>
+  <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_CONFIRMED" desc="Notification message title when transaction confirmed">Transaction confirmed</message>
+  <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_ERROR" desc="Notification message title when transaction error">Transaction error</message>
+ <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
 </grit-part>

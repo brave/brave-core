@@ -12,6 +12,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -118,9 +119,15 @@ TxServiceFactory::~TxServiceFactory() {}
 
 KeyedService* TxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
-                       KeyringServiceFactory::GetServiceForContext(context),
-                       user_prefs::UserPrefs::Get(context));
+  auto* tx_service =
+      new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
+                    KeyringServiceFactory::GetServiceForContext(context),
+                    user_prefs::UserPrefs::Get(context));
+  auto* notification_service =
+      WalletNotificationServiceFactory::GetInstance()->GetServiceForContext(
+          context);
+  tx_service->AddObserver(notification_service->GetReceiver());
+  return tx_service;
 }
 
 content::BrowserContext* TxServiceFactory::GetBrowserContextToUse(
