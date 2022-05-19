@@ -1005,6 +1005,9 @@ brave_java_resources = [
   "java/res/xml/use_custom_tabs_brave_preference.xml",
 ]
 
+brave_base_module_resources =
+    [ "java/res_chromium_base/drawable-night/themed_app_icon.xml" ]
+
 # XML preprocessing
 brave_java_preprocess_xml_sources =
     [ "//chrome/android/java/res/menu/main_menu.xml" ]
