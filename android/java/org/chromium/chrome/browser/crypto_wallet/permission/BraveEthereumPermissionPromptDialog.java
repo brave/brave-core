@@ -214,11 +214,11 @@ public class BraveEthereumPermissionPromptDialog
 
     public void DisconnectMojoServices() {
         mMojoServicesClosed = true;
-        if (mKeyringService == null) {
+        if (mKeyringService != null) {
             mKeyringService.close();
             mKeyringService = null;
         }
-        if (mBraveWalletService == null) {
+        if (mBraveWalletService != null) {
             mBraveWalletService.close();
             mBraveWalletService = null;
         }
