@@ -20,6 +20,10 @@
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_wallet/wallet_notification_helper.h"
+#endif
+
 namespace brave_wallet {
 
 // static
@@ -141,9 +145,14 @@ TxServiceFactory::~TxServiceFactory() {}
 
 KeyedService* TxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
-                       KeyringServiceFactory::GetServiceForContext(context),
-                       user_prefs::UserPrefs::Get(context));
+  auto* tx_service =
+      new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
+                    KeyringServiceFactory::GetServiceForContext(context),
+                    user_prefs::UserPrefs::Get(context));
+#if !BUILDFLAG(IS_ANDROID)
+  RegisterWalletNotificationService(context, tx_service);
+#endif
+  return tx_service;
 }
 
 content::BrowserContext* TxServiceFactory::GetBrowserContextToUse(

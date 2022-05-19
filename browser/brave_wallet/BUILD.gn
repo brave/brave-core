@@ -21,6 +21,9 @@ source_set("brave_wallet") {
     "tx_service_factory.cc",
     "tx_service_factory.h",
   ]
+  if (!is_android) {
+    sources += [ "wallet_notification_helper.h" ]
+  }
   deps = [
     "//brave/browser/profiles:util",
     "//brave/components/brave_wallet/browser",
@@ -36,7 +39,6 @@ source_set("brave_wallet") {
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
   ]
-
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",
@@ -172,6 +174,7 @@ source_set("unit_tests") {
     sources += [
       "brave_wallet_tab_helper_unittest.cc",
       "ethereum_provider_impl_unittest.cc",
+      "notifications/wallet_notification_service_unittest.cc",
       "solana_provider_impl_unittest.cc",
     ]
     deps += [
