@@ -128,5 +128,17 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func pendingDecryptRequests() async -> [BraveWallet.DecryptRequest] {
     return []
   }
+  
+  func selectedCoin(_ completion: @escaping (BraveWallet.CoinType) -> Void) {
+    completion(.eth)
+  }
+  
+  func setSelectedCoin(_ coin: BraveWallet.CoinType) {
+    
+  }
+  
+  func isBase58EncodedSolanaPubkey(_ key: String, completion: @escaping (Bool) -> Void) {
+    completion(true)
+  }
 }
 #endif
