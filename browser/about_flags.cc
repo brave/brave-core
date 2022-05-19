@@ -159,6 +159,12 @@ constexpr char kBraveNTPBrandedWallpaperDemoDescription[] =
     "View rate and user opt-in conditionals will still be followed to decide "
     "when to display the Branded Wallpaper.";
 
+constexpr char kBraveBlockScreenFingerprintingName[] =
+    "Block screen fingerprinting";
+constexpr char kBraveBlockScreenFingerprintingDescription[] =
+    "Prevents JavaScript and CSS from learning the user's screen dimensions "
+    "or window position.";
+
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
@@ -565,6 +571,11 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
       flag_descriptions::kRestrictWebSocketsPoolName,                       \
       flag_descriptions::kRestrictWebSocketsPoolDescription, kOsAll,        \
       FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool)},        \
+    {"brave-block-screen-fingerprinting",                                   \
+      flag_descriptions::kBraveBlockScreenFingerprintingName,               \
+      flag_descriptions::kBraveBlockScreenFingerprintingDescription,        \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kBraveBlockScreenFingerprinting)},               \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \
@@ -573,5 +584,5 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
     SPEEDREADER_FEATURE_ENTRIES                                             \
-    BRAVE_SHIELDS_FEATURE_ENTRIES                                        \
+    BRAVE_SHIELDS_FEATURE_ENTRIES                                           \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES

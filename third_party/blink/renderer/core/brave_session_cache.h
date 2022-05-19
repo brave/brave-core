@@ -3,14 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
-#define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
+#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_SESSION_CACHE_H_
+#define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_SESSION_CACHE_H_
+
+#include <map>
+#include <string>
 
 #include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
-#include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/core_export.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
@@ -24,6 +27,19 @@ using blink::Supplement;
 
 namespace brave {
 
+enum FarbleKey {
+  NONE,
+  USER_AGENT,
+  FONT_FAMILY,
+  NAVIGATOR_CONCURRENT_HARDWARE,
+  NAVIGATOR_DEVICE_MEMORY,
+  WINDOW_INNERWIDTH,
+  WINDOW_INNERHEIGHT,
+  WINDOW_SCREENX,
+  WINDOW_SCREENY,
+  KEY_COUNT
+};
+
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
 typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
@@ -35,6 +51,12 @@ GetBraveFarblingLevelFor(ExecutionContext* context,
 CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
 CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
                                  const AtomicString& family_name);
+CORE_EXPORT int FarbledInteger(ExecutionContext* context,
+                               FarbleKey key,
+                               int spoof_value,
+                               int min_random_offset,
+                               int max_random_offset);
+CORE_EXPORT bool AllowScreenFingerprinting(ExecutionContext* context);
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
@@ -55,17 +77,24 @@ class CORE_EXPORT BraveSessionCache final
                      size_t size);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
+  int FarbledInteger(FarbleKey key,
+                     int spoof_value,
+                     int min_random_offset,
+                     int max_random_offset);
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator();
+  FarblingPRNG MakePseudoRandomGenerator(FarbleKey key);
 
  private:
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
+  std::map<FarbleKey, int> farbled_integers_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };
+
 }  // namespace brave
 
-#endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
+#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_SESSION_CACHE_H_

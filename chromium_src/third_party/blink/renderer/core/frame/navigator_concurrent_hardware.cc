@@ -4,10 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
+
 #include "base/compiler_specific.h"
 #include "base/system/sys_info.h"
+#include "brave/third_party/blink/renderer/core/brave_session_cache.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
-#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 namespace brave {
 

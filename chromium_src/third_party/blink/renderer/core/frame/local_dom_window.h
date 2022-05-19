@@ -8,6 +8,8 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+#include "brave/third_party/blink/renderer/core/brave_session_cache.h"
+
 #define SetStorageKey                                                        \
   SetEphemeralStorageOrigin(const SecurityOrigin* ephemeral_storage_origin); \
   const SecurityOrigin* GetEphemeralStorageOrigin() const;                   \
@@ -20,8 +22,30 @@
  public:                                                                     \
   void SetStorageKey
 
+#define outerHeight                                                        \
+  MaybeFarbleInteger(brave::FarbleKey key, int spoof_value, int min_value, \
+                     int max_value, int defaultValue) const;               \
+  int outerHeight_ChromiumImpl() const;                                    \
+  int outerHeight
+
+#define outerWidth                 \
+  outerWidth_ChromiumImpl() const; \
+  int outerWidth
+
+#define screenLeft              \
+  screenX_ChromiumImpl() const; \
+  int screenLeft
+
+#define screenTop               \
+  screenY_ChromiumImpl() const; \
+  int screenTop
+
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.h"
 
 #undef SetStorageKey
+#undef outerHeight
+#undef outerWidth
+#undef screenLeft
+#undef screenTop
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_

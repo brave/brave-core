@@ -46,5 +46,9 @@ const base::Feature kPartitionBlinkMemoryCache{
 const base::Feature kRestrictWebSocketsPool{"RestrictWebSocketsPool",
                                             base::FEATURE_ENABLED_BY_DEFAULT};
 
+// Enable protection against fingerprinting on screen dimensions.
+const base::Feature kBraveBlockScreenFingerprinting{
+    "kBraveBlockScreenFingerprinting", base::FEATURE_ENABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace blink

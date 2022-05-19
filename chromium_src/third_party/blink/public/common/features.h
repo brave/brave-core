@@ -15,6 +15,7 @@ BLINK_COMMON_EXPORT extern const base::Feature kFileSystemAccessAPI;
 BLINK_COMMON_EXPORT extern const base::Feature kNavigatorConnectionAttribute;
 BLINK_COMMON_EXPORT extern const base::Feature kPartitionBlinkMemoryCache;
 BLINK_COMMON_EXPORT extern const base::Feature kRestrictWebSocketsPool;
+BLINK_COMMON_EXPORT extern const base::Feature kBraveBlockScreenFingerprinting;
 
 }  // namespace features
 }  // namespace blink

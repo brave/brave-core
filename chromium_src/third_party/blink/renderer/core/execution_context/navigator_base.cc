@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/core/execution_context/navigator_base.h"
 
+#include "brave/third_party/blink/renderer/core/brave_session_cache.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"

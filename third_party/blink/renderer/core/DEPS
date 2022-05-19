@@ -1,4 +1,5 @@
 include_rules = [
   "+third_party/blink/renderer/core",
+  "+third_party/blink/renderer/execution_context",
   "+third_party/blink/renderer/platform",
 ]
