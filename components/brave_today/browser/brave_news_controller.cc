@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/bind.h"
 #include "base/guid.h"
 #include "base/time/time.h"
@@ -86,7 +87,7 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
 
-  p3a::RecordAtInit(prefs);
+  StartP3ATimer();
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
   ConditionallyStartOrStopTimer();
@@ -102,6 +103,17 @@ void BraveNewsController::Bind(
 void BraveNewsController::ClearHistory() {
   // TODO(petemill): Clear history once/if we actually store
   // feed cache somewhere.
+}
+
+void BraveNewsController::StartP3ATimer() {
+  timer_p3a_.Start(FROM_HERE, base::Hours(24), this,
+    &BraveNewsController::UpdateP3A);
+  UpdateP3A();
+}
+
+void BraveNewsController::UpdateP3A() {
+  VLOG(1) << "BraveNewsController: Running P3A update";
+  p3a::RecordAtInit(prefs_);
 }
 
 mojo::PendingRemote<mojom::BraveNewsController>

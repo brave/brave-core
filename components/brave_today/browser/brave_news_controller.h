@@ -97,6 +97,8 @@ class BraveNewsController : public KeyedService,
   void OnDisplayAdPurgeOrphanedEvents() override;
 
  private:
+  void StartP3ATimer();
+  void UpdateP3A();
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
@@ -114,6 +116,7 @@ class BraveNewsController : public KeyedService,
   base::OneShotTimer timer_prefetch_;
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
+  base::RepeatingTimer timer_p3a_;
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
