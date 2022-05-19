@@ -1,4 +1,5 @@
 #include <memory>
+#include <string>
 #include "base/command_line.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
@@ -41,7 +42,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
 
     NavigateParams launch_tab(browser(), GURL("https://example.com"),
                               ui::PAGE_TRANSITION_LINK);
-    launch_tab.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    launch_tab.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
     ui_test_utils::NavigateToURL(&launch_tab);
 
     ASSERT_EQ(2, browser()->tab_strip_model()->count());
@@ -98,12 +99,28 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, SharingAPIMakesTabSharable) {
           [&device_id](const std::string& result) { device_id = result; }));
   talk_service()->ShareTab(target_contents());
 
-  // Note: As we're calling GetDeviceID and ShareTab from the same thread the
-  // callback in GetDeviceID will have run before we get here.
-  ASSERT_NE("", device_id);
+  // content::ExecuteScript(requester_contents(), const std::string& script)
+
+  // Note: As we're calling GetDeviceID and ShareTab from the same thread
+  // the callback in GetDeviceID will have run before we get here.
+  EXPECT_EQ("", device_id);
 
   // We should have a share request for the |target_contents()| now.
-  ASSERT_TRUE(registry()->VerifyRequest(
+  EXPECT_TRUE(registry()->VerifyRequest(
       target_contents()->GetMainFrame()->GetProcess()->GetID(),
       target_contents()->GetMainFrame()->GetRoutingID()));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, NavigationClearsShareRequest) {
+  std::string device_id;
+  talk_service()->GetDeviceID(
+      requester_contents(),
+      base::BindLambdaForTesting(
+          [&device_id](const std::string& result) { device_id = result; }));
+  EXPECT_TRUE(talk_service()->is_requesting_tab());
+
+  NavigateToURLAndWait(GURL("https://foo.bar"));
+
+  EXPECT_FALSE(talk_service()->is_requesting_tab());
+  EXPECT_EQ("", device_id);
 }
