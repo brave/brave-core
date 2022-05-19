@@ -10,10 +10,15 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/time/time.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/time_period_storage/monthly_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+namespace brave_news {
+namespace p3a {
 
 namespace {
 
@@ -45,14 +50,73 @@ void RecordToHistogramBucket(const char* histogram_name,
   base::UmaHistogramExactLinear(histogram_name, answer, std::size(buckets) + 1);
 }
 
-}  // namespace
+void RecordLastUsageTime(PrefService* prefs) {
+  base::Time last_session_time =
+      prefs->GetTime(prefs::kBraveTodayLastSessionTime);
+  if (last_session_time.is_null()) {
+    return;
+  }
+  int answer = 0;
+  int duration_days = (base::Time::Now() - last_session_time).InDays();
+  int duration_weeks = duration_days / 7;
+  if (duration_weeks < 4) {
+    answer = duration_weeks + 1;
+  } else {
+    int duration_months = duration_days / 30;
+    answer = duration_months < 2 ? 5 : 6;
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kLastUsageTimeHistogramName, answer, 7);
+}
 
-namespace brave_news {
-namespace p3a {
+void RecordNewUserReturning(PrefService* prefs) {
+  base::Time last_use_time = prefs->GetTime(prefs::kBraveTodayLastSessionTime);
+  base::Time first_use_time =
+      prefs->GetTime(prefs::kBraveTodayFirstSessionTime);
+  int answer = 0;
+  if (!first_use_time.is_null()) {
+    // If the first use time was set (by RecordAtSessionStart),
+    // we can assume that News was used at least once
+    bool prev_used_second_day =
+        prefs->GetBoolean(prefs::kBraveTodayUsedSecondDay);
+    int first_now_delta_days = (base::Time::Now() - first_use_time).InDays();
+    int first_last_delta_days = (last_use_time - first_use_time).InDays();
+    if (first_now_delta_days >= 7) {
+      // I used Brave News, but I'm not a first time user this week
+      answer = 1;
+    } else if (first_last_delta_days == 0) {
+      // I'm a first time user this week, but did not return again during the
+      // week
+      answer = 2;
+    } else if (prev_used_second_day || first_last_delta_days == 1) {
+      // I'm a first time user this week, and I returned the following day
+      answer = 3;
+      if (!prev_used_second_day) {
+        // Set a preference flag to ensure that the same answer
+        // is recorded for the rest of the week
+        prefs->SetBoolean(prefs::kBraveTodayUsedSecondDay, true);
+      }
+    } else {
+      // I'm a first time user this week, and returned this week (but not the
+      // following day)
+      answer = 4;
+    }
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kNewUserReturningHistogramName, answer, 5);
+}
 
-void RecordEverInteracted() {
-  // Track if user has ever scrolled to Brave Today.
-  UMA_HISTOGRAM_EXACT_LINEAR(kEverInteractedHistogramName, 1, 1);
+void RecordDaysInMonthUsedCount(PrefService* prefs, bool is_add) {
+  if (prefs->GetTime(prefs::kBraveTodayLastSessionTime).is_null()) {
+    // Don't report if News was never used
+    return;
+  }
+  // How many days was News used in the last month?
+  constexpr int buckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
+  MonthlyStorage storage(prefs, prefs::kBraveTodayDaysInMonthUsedCount);
+  if (is_add) {
+    storage.ReplaceTodaysValueIfGreater(1);
+  }
+  RecordToHistogramBucket(kDaysInMonthUsedCountHistogramName, buckets,
+                          storage.GetMonthlySum());
 }
 
 void RecordWeeklySessionCount(PrefService* prefs, bool is_add) {
@@ -63,6 +127,27 @@ void RecordWeeklySessionCount(PrefService* prefs, bool is_add) {
       prefs, prefs::kBraveTodayWeeklySessionCount, is_add);
   RecordToHistogramBucket(kWeeklySessionCountHistogramName, buckets,
                           total_session_count);
+}
+
+void ResetCurrSessionTotalViewsCount(PrefService* prefs) {
+  prefs->SetUint64(prefs::kBraveTodayCurrSessionCardViews, 0);
+  VLOG(1) << "NewsP3A: reset curr session total card views count";
+}
+
+}  // namespace
+
+void RecordAtSessionStart(PrefService* prefs) {
+  base::Time now_midnight = base::Time::Now().LocalMidnight();
+  prefs->SetTime(prefs::kBraveTodayLastSessionTime, now_midnight);
+  if (prefs->GetTime(prefs::kBraveTodayFirstSessionTime).is_null()) {
+    prefs->SetTime(prefs::kBraveTodayFirstSessionTime, now_midnight);
+  }
+  RecordLastUsageTime(prefs);
+  RecordNewUserReturning(prefs);
+  RecordDaysInMonthUsedCount(prefs, true);
+
+  RecordWeeklySessionCount(prefs, true);
+  ResetCurrSessionTotalViewsCount(prefs);
 }
 
 void RecordWeeklyMaxCardVisitsCount(
@@ -114,11 +199,6 @@ void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change) {
                           weekly_total);
 }
 
-void ResetCurrSessionTotalViewsCount(PrefService* prefs) {
-  prefs->SetUint64(prefs::kBraveTodayCurrSessionCardViews, 0);
-  VLOG(1) << "NewsP3A: reset curr session total card views count";
-}
-
 void RecordTotalCardViews(PrefService* prefs,
                           uint64_t cards_viewed_session_total_count) {
   WeeklyStorage total_storage(prefs, prefs::kBraveTodayTotalCardViews);
@@ -143,8 +223,13 @@ void RecordTotalCardViews(PrefService* prefs,
   RecordToHistogramBucket(kTotalCardViewsHistogramName, buckets, total);
 }
 
-void RecordAtStart(PrefService* prefs) {
+void RecordAtInit(PrefService* prefs) {
   ResetCurrSessionTotalViewsCount(prefs);
+
+  RecordLastUsageTime(prefs);
+  RecordNewUserReturning(prefs);
+  RecordDaysInMonthUsedCount(prefs, false);
+
   RecordDirectFeedsTotal(prefs);
   RecordWeeklyAddedDirectFeedsCount(prefs, 0);
   RecordWeeklySessionCount(prefs, false);
@@ -161,7 +246,11 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveTodayWeeklyDisplayAdViewedCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyAddedDirectFeedsCount);
   registry->RegisterListPref(prefs::kBraveTodayTotalCardViews);
+  registry->RegisterListPref(prefs::kBraveTodayDaysInMonthUsedCount);
   registry->RegisterUint64Pref(prefs::kBraveTodayCurrSessionCardViews, 0);
+  registry->RegisterTimePref(prefs::kBraveTodayFirstSessionTime, base::Time());
+  registry->RegisterTimePref(prefs::kBraveTodayLastSessionTime, base::Time());
+  registry->RegisterBooleanPref(prefs::kBraveTodayUsedSecondDay, false);
 }
 
 }  // namespace p3a
