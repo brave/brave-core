@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index d88235ab6308c37019ca78b7f4edeb3690d67c05..944de0a02f22b3eb3ca604761950f997eba4679b 100644
+index 3f4eb14a38603bc4f6512a03ac8ea0f58b1b260b..1e49b48d669d63e735756da9b60853474ddd9d4c 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4166,6 +4166,7 @@ if (is_android) {
+@@ -4176,6 +4176,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/time/Timer.java",
        "android/java/src/org/chromium/base/time/UptimeTimer.java",
      ]
