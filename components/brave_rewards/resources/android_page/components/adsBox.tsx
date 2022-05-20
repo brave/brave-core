@@ -10,11 +10,17 @@ import { connect } from 'react-redux'
 import BoxMobile, { Props as BoxMobileProps } from '../../ui/components/mobile/boxMobile'
 import { List, NextContribution, Tokens } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
+import { AlertCircleIcon } from 'brave-ui/components/icons'
 import AdsOnboarding from './adsOnboarding'
 import {
   StyledArrivingSoon,
   StyledListContent,
-  StyledTotalContent
+  StyledTotalContent,
+  StyledNeedsBrowserUpdateView,
+  StyledNeedsBrowserUpdateIcon,
+  StyledNeedsBrowserUpdateContent,
+  StyledNeedsBrowserUpdateContentHeader,
+  StyledNeedsBrowserUpdateContentBody
 } from './style'
 
 import { PaymentStatusView } from '../../shared/components/payment_status_view'
@@ -182,6 +188,24 @@ class AdsBox extends React.Component<Props, {}> {
     )
   }
 
+  needsBrowserUpdateView = () => {
+    return (
+      <StyledNeedsBrowserUpdateView>
+        <StyledNeedsBrowserUpdateIcon>
+          <AlertCircleIcon />
+        </StyledNeedsBrowserUpdateIcon>
+        <StyledNeedsBrowserUpdateContent>
+          <StyledNeedsBrowserUpdateContentHeader>
+            {getLocale('rewardsBrowserCannotReceiveAds')}
+          </StyledNeedsBrowserUpdateContentHeader>
+          <StyledNeedsBrowserUpdateContentBody>
+            {getLocale('rewardsBrowserNeedsUpdateToSeeAds')}
+          </StyledNeedsBrowserUpdateContentBody>
+        </StyledNeedsBrowserUpdateContent>
+      </StyledNeedsBrowserUpdateView>
+    )
+  }
+
   render () {
     // Default values from storage.ts
     let adsEnabled = false
@@ -192,6 +216,7 @@ class AdsBox extends React.Component<Props, {}> {
     let earningsThisMonth = 0
     let earningsLastMonth = 0
     let adEarningsReceived = false
+    let needsBrowserUpdateToSeeAds = false
 
     const {
       adsData,
@@ -208,6 +233,7 @@ class AdsBox extends React.Component<Props, {}> {
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
+      needsBrowserUpdateToSeeAds = adsData.needsBrowserUpdateToSeeAds
     }
 
     if (balanceReport) {
@@ -236,6 +262,9 @@ class AdsBox extends React.Component<Props, {}> {
     }
     if (!isDisabled && !boxPropsExtra.checked) {
       boxPropsExtra.extraDescriptionChild = <AdsOnboarding />
+    }
+    if (needsBrowserUpdateToSeeAds) {
+      boxPropsExtra.headerAlertContent = this.needsBrowserUpdateView()
     }
 
     const tokenString = getLocale('tokens')

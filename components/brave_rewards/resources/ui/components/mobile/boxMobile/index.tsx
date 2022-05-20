@@ -27,6 +27,7 @@ export interface Props {
   checked?: boolean
   alertContent?: React.ReactNode
   extraDescriptionChild?: React.ReactNode
+  headerAlertContent?: React.ReactNode
   toggleAction?: () => void
 }
 
@@ -305,7 +306,8 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
   render () {
     const {
       id,
-      checked
+      checked,
+      headerAlertContent
     } = this.props
 
     const showDetailView = checked && this.state.detailView
@@ -317,6 +319,8 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
       >
         <Styled.Flip>
           <Styled.ContentWrapper open={!this.state.settings}>
+            {headerAlertContent}
+            <Styled.Break />
             {this.getToggleHeader(this.props)}
             <Styled.Break />
             <Styled.DetailInfo>

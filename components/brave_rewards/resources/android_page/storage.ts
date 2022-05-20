@@ -47,6 +47,7 @@ export const defaultState: Rewards.State = {
     shouldAllowAdsSubdivisionTargeting: true,
     adsUIEnabled: false,
     adsIsSupported: false,
+    needsBrowserUpdateToSeeAds: false,
     adsNextPaymentDate: 0,
     adsReceivedThisMonth: 0,
     adsEarningsThisMonth: 0,
