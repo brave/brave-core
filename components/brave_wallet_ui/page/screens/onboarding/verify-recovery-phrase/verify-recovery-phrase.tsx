@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
 
 // routes
 import { PageState, WalletRoutes } from '../../../../constants/types'
@@ -85,7 +85,15 @@ export const OnboardingVerifyRecoveryPhrase = () => {
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
             <Description>
-              {getLocale('braveWalletVerifyRecoveryPhraseInstructions')}
+              <span>
+                {getLocaleWithTags('braveWalletVerifyRecoveryPhraseInstructions', 3).map(text => {
+                  return <>
+                    {text.beforeTag}
+                    <b>{text.duringTag}</b>
+                    {text.afterTag}
+                  </>
+                })}
+              </span>
             </Description>
           </TitleAndDescriptionContainer>
 

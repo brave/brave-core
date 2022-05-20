@@ -142,7 +142,7 @@ provideStrings({
 
   // Verify Recovery Phrase (v2)
   braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
-  braveWalletVerifyRecoveryPhraseInstructions: 'Click the First(1st), Third(3rd), and Last(12th) word of your recovery phrase.',
+  braveWalletVerifyRecoveryPhraseInstructions: 'Click the $1First(1st)$2, $3Third(3rd)$4, and $5Last(12th)$6 word of your recovery phrase.',
   braveWalletVerifyPhraseError: 'Recovery phrase didn\'t match',
 
   // Create Password
