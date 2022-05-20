@@ -160,8 +160,6 @@ const Config = function () {
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
-  // os.cpus().length is number of threads not physical cores
-  this.defaultGomaJValue = Math.min(160, os.cpus().length * 20)
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
@@ -878,17 +876,9 @@ Config.prototype.update = function (options) {
     })
   }
 
-  if (this.use_goma) {
-    if (!this.goma_offline &&
-        !this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
-      this.extraNinjaOpts.push('-j', this.defaultGomaJValue)
-    }
-
-    if (this.goma_offline) {
-      this.extraNinjaOpts.push('--offline')
-    }
-  } else {
-    // Always pass '--offline' when use_goma is not set to keep autoninja from ramping up to -j400.
+  if (this.goma_offline || !this.use_goma) {
+    // Pass '--offline' also when '--use_goma' is not set to disable goma detect in
+    // autoninja when doing local builds.
     this.extraNinjaOpts.push('--offline')
   }
 
@@ -938,7 +928,14 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       }
     }
 
+    if (this.use_goma) {
+      // Vars used by autoninja to generate -j value, adjusted for Brave-specific setup.
+      env.NINJA_CORE_MULTIPLIER = 20
+      env.NINJA_CORE_LIMIT = 160
+    }
+
     if (this.isCI) {
+      // Enables autoninja to show build speed and final stats on finish.
       env.NINJA_SUMMARIZE_BUILD = 1
     }
 
