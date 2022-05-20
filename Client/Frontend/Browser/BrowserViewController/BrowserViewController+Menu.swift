@@ -138,8 +138,8 @@ extension BrowserViewController {
         MenuItemButton(
           icon: #imageLiteral(resourceName: "menu-crypto").template,
           title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))"
-        ) { [unowned self] in
-          self.presentWallet()
+        ) { [weak self] in
+          self?.presentWallet()
         }
         MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
           guard let self = self else { return }
