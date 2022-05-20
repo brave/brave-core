@@ -13,9 +13,10 @@ import Tooltip from '.'
 
 // style
 import {
+  CriteriaCheckContainer,
+  PasswordStrengthHeading,
   PasswordStrengthText,
-  PasswordStrengthTextWrapper,
-  PasswordStrengthHeading
+  PasswordStrengthTextWrapper
 } from './password-strength-tooltip.style'
 
 // types
@@ -43,20 +44,26 @@ const PasswordStrengthDetails = ({
         {getLocale('braveWalletPasswordStrengthTooltipHeading')}
       </PasswordStrengthHeading>
 
-      <PasswordStrengthText isStrong={isLongEnough}>
-        {isLongEnough && <GreenCheckmark />}{' '}
-        {getLocale('braveWalletPasswordStrengthTooltipIsLongEnough')}
-      </PasswordStrengthText>
+      <CriteriaCheckContainer>
+        {isLongEnough && <GreenCheckmark />}
+        <PasswordStrengthText isStrong={isLongEnough}>
+          {getLocale('braveWalletPasswordStrengthTooltipIsLongEnough')}
+        </PasswordStrengthText>
+      </CriteriaCheckContainer>
 
-      <PasswordStrengthText isStrong={containsNumber}>
-        {containsNumber && <GreenCheckmark />}{' '}
-        {getLocale('braveWalletPasswordStrengthTooltipContainsNumber')}
-      </PasswordStrengthText>
+      <CriteriaCheckContainer>
+        {containsNumber && <GreenCheckmark />}
+        <PasswordStrengthText isStrong={containsNumber}>
+          {getLocale('braveWalletPasswordStrengthTooltipContainsNumber')}
+        </PasswordStrengthText>
+      </CriteriaCheckContainer>
 
-      <PasswordStrengthText isStrong={containsSpecialChar}>
-        {containsSpecialChar && <GreenCheckmark />}{' '}
-        {getLocale('braveWalletPasswordStrengthTooltipContainsSpecialChar')}
-      </PasswordStrengthText>
+      <CriteriaCheckContainer>
+        {containsSpecialChar && <GreenCheckmark />}
+        <PasswordStrengthText isStrong={containsSpecialChar}>
+          {getLocale('braveWalletPasswordStrengthTooltipContainsSpecialChar')}
+        </PasswordStrengthText>
+      </CriteriaCheckContainer>
 
     </PasswordStrengthTextWrapper>
   )
