@@ -25,7 +25,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.brave_wallet.mojom.AddChainRequest;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
@@ -62,7 +61,6 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private ImageView mFavicon;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
-    private BraveWalletService mBraveWalletService;
 
     public AddSwitchChainNetworkFragment(BraveWalletDAppsActivity.ActivityType panelType) {
         mPanelType = panelType;
@@ -158,14 +156,14 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             FaviconImageCallback imageCallback =
-                    (bitmap, iconUrl) -> onFavIconAvailable(url, bitmap);
+                    (bitmap, iconUrl) -> setBitmapOnImageView(url, bitmap);
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), url, 0, imageCallback);
         }
     }
 
-    private void onFavIconAvailable(GURL pageUrl, Bitmap iconBitmap) {
+    private void setBitmapOnImageView(GURL pageUrl, Bitmap iconBitmap) {
         if (iconBitmap == null) {
             if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
             iconBitmap = mDefaultFaviconHelper.getDefaultFaviconBitmap(
