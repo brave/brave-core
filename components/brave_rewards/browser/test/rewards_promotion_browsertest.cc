@@ -95,26 +95,14 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         response);
   }
 
-  double ClaimPromotion(bool use_panel, const bool should_finish = true) {
-    // Use the appropriate WebContents
-    base::WeakPtr<content::WebContents> contents =
-        use_panel ? context_helper_->OpenRewardsPopup()
-                  : browser()
-                        ->tab_strip_model()
-                        ->GetActiveWebContents()
-                        ->GetWeakPtr();
+  double ClaimPromotion(bool should_finish = true) {
+    auto contents = context_helper_->OpenRewardsPopup();
 
     // Wait for promotion to initialize
     promotion_->WaitForPromotionInitialization();
 
-    // Claim promotion via settings page or panel, as instructed
-    if (use_panel) {
-      rewards_browsertest_util::WaitForElementThenClick(
-          contents.get(), "[data-test-id=notification-action-button");
-    } else {
-      rewards_browsertest_util::WaitForElementThenClick(
-          contents.get(), "[data-test-id='claimGrant']");
-    }
+    rewards_browsertest_util::WaitForElementThenClick(
+        contents.get(), "[data-test-id=notification-action-button");
 
     // Wait for CAPTCHA
     rewards_browsertest_util::WaitForElementToAppear(
@@ -143,20 +131,12 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(promotion->expires_at, 1740816427ull);
 
     // Check that promotion notification shows the appropriate amount
-    const std::string selector = use_panel
-        ? "[id='root']"
-        : "[data-test-id='newTokenGrant']";
+    const std::string selector = "[id='root']";
+
     rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
                                                       "Free Token Grant");
     rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
                                                       "30.000 BAT");
-
-    // Dismiss the promotion notification
-    if (use_panel) {
-      rewards_browsertest_util::WaitForElementThenClick(contents.get(),
-                                                        "#"
-                                                        "grant-completed-ok");
-    }
 
     return 30;
   }
@@ -188,25 +168,16 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   bool removed_ = false;
 };
 
-// https://github.com/brave/brave-browser/issues/12605
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  double balance = ClaimPromotion();
+  ASSERT_EQ(balance, 30.0);
+}
+
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
-                       DISABLED_ClaimViaSettingsPage) {
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
-  double balance = ClaimPromotion(false);
-  ASSERT_EQ(balance, 30.0);
-}
-
-// https://github.com/brave/brave-browser/issues/12605
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, DISABLED_ClaimViaPanel) {
-  double balance = ClaimPromotion(true);
-  ASSERT_EQ(balance, 30.0);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    RewardsPromotionBrowserTest,
-    PromotionHasEmptyPublicKey) {
+                       PromotionHasEmptyPublicKey) {
   response_->SetPromotionEmptyKey(true);
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
 
   base::WeakPtr<content::WebContents> popup =
       context_helper_->OpenRewardsPopup();
@@ -218,16 +189,15 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
   gone_ = true;
-  rewards_browsertest_util::StartProcess(rewards_service_);
-  ClaimPromotion(true, false);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  ClaimPromotion(false);
   CheckPromotionStatus("Over");
 }
 
-// https://github.com/brave/brave-browser/issues/12632
-IN_PROC_BROWSER_TEST_F(
-    RewardsPromotionBrowserTest,
-    DISABLED_PromotionRemovedFromEndpoint) {
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
+                       PromotionRemovedFromEndpoint) {
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadRewardsPage();
   promotion_->WaitForPromotionInitialization();
   removed_ = true;
   context_helper_->ReloadCurrentSite();
@@ -240,7 +210,7 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
   rewards_service_->FetchPromotions();
   promotion_->WaitForPromotionInitialization();
 
