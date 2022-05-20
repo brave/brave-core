@@ -15,15 +15,17 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 class FilTransaction;
 
-class FilecoinKeyring : public HDKeyring {
+class FilecoinKeyring : public HDKeyring, public mojom::JsonRpcServiceObserver {
  public:
-  FilecoinKeyring();
+  explicit FilecoinKeyring(const std::string& chain_id);
   ~FilecoinKeyring() override;
   FilecoinKeyring(const FilecoinKeyring&) = delete;
   FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
@@ -35,10 +37,23 @@ class FilecoinKeyring : public HDKeyring {
                                     mojom::FilecoinAddressProtocol protocol);
   void RestoreFilecoinAccount(const std::vector<uint8_t>& input_key,
                               const std::string& address);
+  mojo::PendingRemote<mojom::JsonRpcServiceObserver> GetReceiver() {
+    return rpc_observer_receiver_.BindNewPipeAndPassRemote();
+  }
+  // mojom::JsonRpcServiceObserver
+  void ChainChangedEvent(const std::string& chain_id,
+                         mojom::CoinType coin) override;
+  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
+                                          const std::string& error) override {}
+  void OnIsEip1559Changed(const std::string& chain_id,
+                          bool is_eip1559) override {}
+
   absl::optional<std::string> SignTransaction(const FilTransaction* tx);
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
+  std::string network_prefix_;
+  mojo::Receiver<mojom::JsonRpcServiceObserver> rpc_observer_receiver_{this};
 };
 
 }  // namespace brave_wallet
