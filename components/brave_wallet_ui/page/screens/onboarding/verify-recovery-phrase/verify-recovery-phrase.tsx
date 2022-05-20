@@ -86,12 +86,12 @@ export const OnboardingVerifyRecoveryPhrase = () => {
             <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
             <Description>
               <span>
-                {getLocaleWithTags('braveWalletVerifyRecoveryPhraseInstructions', 3).map(text => {
-                  return <>
+                {getLocaleWithTags('braveWalletVerifyRecoveryPhraseInstructions', 3).map((text, i) => {
+                  return <span key={text.duringTag || i}>
                     {text.beforeTag}
                     <b>{text.duringTag}</b>
                     {text.afterTag}
-                  </>
+                  </span>
                 })}
               </span>
             </Description>
