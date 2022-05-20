@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -59,7 +60,9 @@ public class BraveVpnUtils {
     }
 
     public static boolean isBraveVpnFeatureEnable() {
-        if (BraveVpnPrefUtils.isBraveVpnFeatureEnabled()) {
+        if (ContextUtils.getApplicationContext().getPackageName().equals(
+                    BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                || BraveVpnPrefUtils.isBraveVpnFeatureEnabled()) {
             return true;
         }
         return false;
