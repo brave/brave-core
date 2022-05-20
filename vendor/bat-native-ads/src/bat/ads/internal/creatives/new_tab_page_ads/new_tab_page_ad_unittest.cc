@@ -124,6 +124,23 @@ TEST_F(BatAdsNewTabPageAdTest, FireViewedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
 
+TEST_F(BatAdsNewTabPageAdTest, DoNotFireViewedEventIfAlreadyFired) {
+  // Arrange
+  ForcePermissionRules();
+
+  const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
+
+  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                              mojom::NewTabPageAdEventType::kViewed);
+
+  // Act
+  new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                              mojom::NewTabPageAdEventType::kViewed);
+
+  // Assert
+  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+}
+
 TEST_F(BatAdsNewTabPageAdTest, FireClickedEvent) {
   // Arrange
   ForcePermissionRules();
@@ -146,21 +163,21 @@ TEST_F(BatAdsNewTabPageAdTest, FireClickedEvent) {
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
-TEST_F(BatAdsNewTabPageAdTest, DoNotFireViewedEventIfAlreadyFired) {
+TEST_F(BatAdsNewTabPageAdTest, DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
   ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
   new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+                              mojom::NewTabPageAdEventType::kClicked);
 
   // Act
   new_tab_page_ad_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
-                              mojom::NewTabPageAdEventType::kViewed);
+                              mojom::NewTabPageAdEventType::kClicked);
 
   // Assert
-  ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
+  ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
 
 TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventWithInvalidUuid) {

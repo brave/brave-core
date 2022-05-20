@@ -6,6 +6,7 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad.h"
 
 #include "base/check.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/internal/account/deposits/deposit_builder.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
@@ -23,6 +24,24 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
+
+namespace {
+
+bool ShouldDebounceAdEvent(const AdInfo& ad,
+                           const AdEventList& ad_events,
+                           const mojom::SearchResultAdEventType& event_type) {
+  if (event_type == mojom::SearchResultAdEventType::kViewed &&
+      HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
+    return true;
+  } else if (event_type == mojom::SearchResultAdEventType::kClicked &&
+             HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
+    return true;
+  }
+
+  return false;
+}
+
+}  // namespace
 
 SearchResultAd::SearchResultAd() = default;
 
@@ -58,14 +77,18 @@ void SearchResultAd::FireEvent(
   }
 
   switch (event_type) {
-    case mojom::SearchResultAdEventType::kServed:
-    case mojom::SearchResultAdEventType::kClicked: {
+    case mojom::SearchResultAdEventType::kServed: {
       FireEvent(ad, event_type, callback);
       break;
     }
 
     case mojom::SearchResultAdEventType::kViewed: {
       FireViewedEvent(ad_mojom, callback);
+      break;
+    }
+
+    case mojom::SearchResultAdEventType::kClicked: {
+      FireClickedEvent(ad, callback);
       break;
     }
   }
@@ -125,20 +148,20 @@ void SearchResultAd::FireViewedEvent(
       database_table.GetForType(
           mojom::AdType::kSearchResultAd,
           [=](const bool success, const AdEventList& ad_events) {
+            const mojom::SearchResultAdEventType event_type =
+                mojom::SearchResultAdEventType::kViewed;
+
             if (!success) {
               BLOG(1, "Search result ad: Failed to get ad events");
-              NotifySearchResultAdEventFailed(
-                  ad, mojom::SearchResultAdEventType::kViewed, callback);
+              NotifySearchResultAdEventFailed(ad, event_type, callback);
               return;
             }
 
-            if (HasFiredAdViewedEvent(ad, ad_events)) {
-              BLOG(1,
-                   "Search result ad: Not allowed as already fired a viewed "
-                   "event for this placement id "
-                       << ad.placement_id);
-              NotifySearchResultAdEventFailed(
-                  ad, mojom::SearchResultAdEventType::kViewed, callback);
+            if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+              BLOG(1, "Search result ad: Not allowed as already fired "
+                          << event_type << " event for this placement id "
+                          << ad.placement_id);
+              NotifySearchResultAdEventFailed(ad, event_type, callback);
               return;
             }
 
@@ -146,10 +169,38 @@ void SearchResultAd::FireViewedEvent(
             // being delivered by the library
             FireEvent(ad, mojom::SearchResultAdEventType::kServed, callback);
 
-            FireEvent(ad, mojom::SearchResultAdEventType::kViewed, callback);
+            FireEvent(ad, event_type, callback);
           });
     });
   });
+}
+
+void SearchResultAd::FireClickedEvent(
+    const SearchResultAdInfo& ad,
+    TriggerSearchResultAdEventCallback callback) const {
+  database::table::AdEvents database_table;
+  database_table.GetForType(
+      mojom::AdType::kSearchResultAd,
+      [=](const bool success, const AdEventList& ad_events) {
+        const mojom::SearchResultAdEventType event_type =
+            mojom::SearchResultAdEventType::kClicked;
+
+        if (!success) {
+          BLOG(1, "Search result ad: Failed to get ad events");
+          NotifySearchResultAdEventFailed(ad, event_type, callback);
+          return;
+        }
+
+        if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+          BLOG(1, "Search result ad: Not allowed as already fired "
+                      << event_type << " event for this placement id "
+                      << ad.placement_id);
+          NotifySearchResultAdEventFailed(ad, event_type, callback);
+          return;
+        }
+
+        FireEvent(ad, event_type, callback);
+      });
 }
 
 void SearchResultAd::NotifySearchResultAdEvent(

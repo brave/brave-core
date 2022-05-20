@@ -19,6 +19,24 @@
 
 namespace ads {
 
+namespace {
+
+bool ShouldDebounceAdEvent(const AdInfo& ad,
+                           const AdEventList& ad_events,
+                           const mojom::NewTabPageAdEventType& event_type) {
+  if (event_type == mojom::NewTabPageAdEventType::kViewed &&
+      HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
+    return true;
+  } else if (event_type == mojom::NewTabPageAdEventType::kClicked &&
+             HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
+    return true;
+  }
+
+  return false;
+}
+
+}  // namespace
+
 NewTabPageAd::NewTabPageAd() = default;
 
 NewTabPageAd::~NewTabPageAd() = default;
@@ -105,12 +123,10 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
           return;
         }
 
-        if (event_type == mojom::NewTabPageAdEventType::kViewed &&
-            HasFiredAdViewedEvent(ad, ad_events)) {
-          BLOG(1,
-               "New tab page ad: Not allowed as already fired a viewed event "
-               "for this placement id "
-                   << placement_id);
+        if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+          BLOG(1, "New tab page ad: Not allowed as already fired "
+                      << event_type << " event for this placement id "
+                      << placement_id);
           NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
                                         event_type);
           return;

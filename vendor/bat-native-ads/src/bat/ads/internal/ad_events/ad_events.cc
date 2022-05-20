@@ -23,9 +23,9 @@ void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,
                 AdEventCallback callback) {
   AdEventInfo ad_event;
-  ad_event.uuid = ad.placement_id;
   ad_event.type = ad.type;
   ad_event.confirmation_type = confirmation_type;
+  ad_event.placement_id = ad.placement_id;
   ad_event.campaign_id = ad.campaign_id;
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;

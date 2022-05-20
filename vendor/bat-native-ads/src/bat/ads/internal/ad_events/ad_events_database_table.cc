@@ -31,7 +31,7 @@ int BindParameters(mojom::DBCommand* command, const AdEventList& ad_events) {
 
   int index = 0;
   for (const auto& ad_event : ad_events) {
-    BindString(command, index++, ad_event.uuid);
+    BindString(command, index++, ad_event.placement_id);
     BindString(command, index++, ad_event.type.ToString());
     BindString(command, index++, ad_event.confirmation_type.ToString());
     BindString(command, index++, ad_event.campaign_id);
@@ -51,7 +51,7 @@ AdEventInfo GetFromRecord(mojom::DBRecord* record) {
 
   AdEventInfo ad_event;
 
-  ad_event.uuid = ColumnString(record, 0);
+  ad_event.placement_id = ColumnString(record, 0);
   ad_event.type = AdType(ColumnString(record, 1));
   ad_event.confirmation_type = ConfirmationType(ColumnString(record, 2));
   ad_event.campaign_id = ColumnString(record, 3);

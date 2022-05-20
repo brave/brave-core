@@ -32,7 +32,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
                          const ConfirmationType& confirmation_type,
                          const base::Time created_at);
 
-AdEventInfo BuildAdEvent(const std::string& uuid,
+AdEventInfo BuildAdEvent(const std::string& placement_id,
                          const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type);
 AdEventInfo BuildAdEvent(const std::string& creative_set_id,
