@@ -22,6 +22,9 @@ public struct WebpagePermissionRequest: Equatable {
   let coinType: BraveWallet.CoinType
   /// A handler to be called when the user either approves or rejects the connection request
   let decisionHandler: (Response) -> Void
+  /// A completion block from `BraveWalletProviderDelegate` that needs to be perfromed when
+  /// wallet notificaiton has been ignored by users
+  public var providerHandler: BraveWalletProviderResultsCallback?
   
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.requestingOrigin == rhs.requestingOrigin && lhs.coinType == rhs.coinType
@@ -47,9 +50,10 @@ public class WalletProviderPermissionRequestsManager {
   public func beginRequest(
     for origin: URLOrigin,
     coinType: BraveWallet.CoinType,
+    providerHandler: BraveWalletProviderResultsCallback?,
     completion: ((WebpagePermissionRequest.Response) -> Void)? = nil
   ) -> WebpagePermissionRequest {
-    let request = WebpagePermissionRequest(requestingOrigin: origin, coinType: coinType) { [weak self] decision in
+    var request = WebpagePermissionRequest(requestingOrigin: origin, coinType: coinType) { [weak self] decision in
       guard let self = self, let originURL = origin.url else { return }
       if case .granted(let accounts) = decision {
         Domain.setEthereumPermissions(forUrl: originURL, accounts: accounts, grant: true)
@@ -57,6 +61,7 @@ public class WalletProviderPermissionRequestsManager {
       self.requests.removeAll(where: { $0.requestingOrigin == origin && $0.coinType == coinType })
       completion?(decision)
     }
+    request.providerHandler = providerHandler
     requests.append(request)
     return request
   }
