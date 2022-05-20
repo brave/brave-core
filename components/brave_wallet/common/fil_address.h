@@ -33,6 +33,7 @@ class FilAddress {
 
   bool IsEmpty() const { return bytes_.empty(); }
   mojom::FilecoinAddressProtocol protocol() const { return protocol_; }
+  const std::string& network() const { return network_; }
   std::string EncodeAsString() const;
 
  private:
