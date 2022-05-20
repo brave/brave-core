@@ -8,6 +8,7 @@ import * as statsAPI from './stats'
 import * as privateTabDataAPI from './privateTabData'
 import * as torTabDataAPI from './torTabData'
 import * as wallpaper from './wallpaper'
+import * as newTabAdsDataAPI from './newTabAdsData'
 
 export type InitialData = {
   preferences: NewTab.Preferences
@@ -26,6 +27,7 @@ export type PreInitialRewardsData = {
   rewardsEnabled: boolean
   enabledAds: boolean
   adsSupported: boolean
+  needsBrowserUpdateToSeeAds: boolean
 }
 
 export type InitialRewardsData = {
@@ -110,19 +112,28 @@ export async function getInitialData (): Promise<InitialData> {
 }
 
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
-  const [rewardsEnabled, enabledAds, adsSupported] = await Promise.all([
+  const [
+    rewardsEnabled,
+    enabledAds,
+    adsSupported,
+    adsData
+  ] = await Promise.all([
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getRewardsEnabled(resolve)),
     new Promise<boolean>(
       (resolve) => chrome.braveRewards.getAdsEnabled(resolve)),
     new Promise<boolean>(
-      (resolve) => chrome.braveRewards.getAdsSupported(resolve))
-  ])
+      (resolve) => chrome.braveRewards.getAdsSupported(resolve)),
+    newTabAdsDataAPI.getNewTabAdsData()
+    ])
+
+  const needsBrowserUpdateToSeeAds = adsData.needsBrowserUpdateToSeeAds
 
   return {
     rewardsEnabled,
     enabledAds,
-    adsSupported
+    adsSupported,
+    needsBrowserUpdateToSeeAds
   }
 }
 

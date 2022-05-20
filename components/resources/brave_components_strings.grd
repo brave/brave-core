@@ -534,7 +534,7 @@
       </message>
 
       <message name="IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS" desc="">Oops! Your browser cannot receive Brave Private Ads.</message>
-      <message name="IDS_REWARDS_BROWSER_NEED_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
+      <message name="IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED" desc="Ads not initialized">Ads not initialized, please refresh the page.</message>

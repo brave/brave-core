@@ -37,6 +37,7 @@ source_set("favicon_source") {
 source_set("ui") {
   # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
   check_includes = false
+  public_deps = []
   sources = [
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
@@ -150,6 +151,8 @@ source_set("ui") {
         "webui/settings/brave_relaunch_handler_mac.mm",
       ]
     }
+
+    public_deps += [ "//brave/vendor/bat-native-ads" ]
   }  # !is_android
 
   if (toolkit_views) {

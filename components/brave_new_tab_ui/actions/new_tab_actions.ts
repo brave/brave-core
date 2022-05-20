@@ -11,6 +11,7 @@ import { types } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 import { TorTabData } from '../api/torTabData'
+import { NewTabAdsData } from '../api/newTabAdsData'
 import { InitialData } from '../api/initialData'
 import { CustomBackground } from '../api/background'
 
@@ -31,6 +32,9 @@ export const privateTabDataUpdated = (data: PrivateTabData) =>
 
 export const torTabDataUpdated = (data: TorTabData) =>
   action(types.NEW_TAB_TOR_TAB_DATA_UPDATED, data)
+
+export const newTabAdsDataUpdated = (data: NewTabAdsData) =>
+  action(types.NEW_TAB_ADS_DATA_UPDATED, data)
 
 export const dismissBrandedWallpaperNotification = (isUserAction: boolean) =>
   action(types.NEW_TAB_DISMISS_BRANDED_WALLPAPER_NOTIFICATION, {

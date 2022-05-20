@@ -156,6 +156,7 @@ declare namespace NewTab {
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
     enabledAds: boolean
+    needsBrowserUpdateToSeeAds: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
     totalContribution: number

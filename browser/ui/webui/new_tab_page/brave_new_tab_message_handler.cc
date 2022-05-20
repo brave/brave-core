@@ -21,7 +21,6 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
@@ -145,6 +144,8 @@ enum class NTPCustomizeUsage { kNeverOpened, kOpened, kOpenedAndEdited, kSize };
 const char kNTPCustomizeUsageStatus[] =
     "brave.new_tab_page.customize_p3a_usage";
 
+const char kNeedsBrowserUpdateToSeeAds[] = "needsBrowserUpdateToSeeAds";
+
 }  // namespace
 
 // static
@@ -176,6 +177,7 @@ bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
   return (time_first_run <= talk_prompt_trigger_time);
 }
 
+// static
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
     Profile* profile) {
@@ -183,19 +185,19 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Initial Values
   // Should only contain data that is static
   //
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
   // For safety, default |is_ads_supported_locale_| to true. Better to have
   // false positive than falsen egative,
   // in which case we would not show "opt out" toggle.
-  bool is_ads_supported_locale_ = true;
-  if (!ads_service_) {
+  bool is_ads_supported_locale = true;
+  if (!ads_service) {
     LOG(ERROR) << "Ads service is not initialized!";
   } else {
-    is_ads_supported_locale_ = ads_service_->IsSupportedLocale();
+    is_ads_supported_locale = ads_service->IsSupportedLocale();
   }
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
-                     is_ads_supported_locale_);
+                     is_ads_supported_locale);
   source->AddBoolean("braveTalkPromptAllowed",
                      BraveNewTabMessageHandler::CanPromptBraveTalk());
 
@@ -209,6 +211,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile), weak_ptr_factory_(this) {
+  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 #if BUILDFLAG(ENABLE_TOR)
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
 #endif
@@ -244,6 +247,10 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getNewTabPageTorProperties",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetTorProperties,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getNewTabAdsData",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetNewTabAdsData,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "toggleAlternativePrivateSearchEngine",
@@ -384,6 +391,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   if (tor_launcher_factory_)
     tor_launcher_factory_->AddObserver(this);
 #endif
+
+  if (ads_service_) {
+    ads_service_observation_.Reset();
+    ads_service_observation_.Observe(ads_service_);
+  }
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -392,6 +404,7 @@ void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   if (tor_launcher_factory_)
     tor_launcher_factory_->RemoveObserver(this);
 #endif
+  ads_service_observation_.Reset();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
@@ -428,6 +441,18 @@ void BraveNewTabMessageHandler::HandleGetTorProperties(
 #else
   auto data = GetTorPropertiesDictionary(false, "");
 #endif
+  ResolveJavascriptCallback(args[0], data);
+}
+
+void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
+    const base::Value::List& args) {
+  if (!ads_service_) {
+    return;
+  }
+
+  AllowJavascript();
+
+  base::Value data = GetAdsDataDictionary();
   ResolveJavascriptCallback(args[0], data);
 }
 
@@ -617,6 +642,19 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
   FireWebUIListener("preferences-changed", data);
 }
 
+base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
+  base::Value::Dict ads_data;
+
+  bool needs_browser_update_to_see_ads = false;
+  if (ads_service_) {
+    needs_browser_update_to_see_ads =
+        ads_service_->NeedsBrowserUpdateToSeeAds();
+  }
+  ads_data.Set(kNeedsBrowserUpdateToSeeAds, needs_browser_update_to_see_ads);
+
+  return base::Value(std::move(ads_data));
+}
+
 void BraveNewTabMessageHandler::OnTorCircuitEstablished(bool result) {
   auto data = GetTorPropertiesDictionary(result, "");
   FireWebUIListener("tor-tab-data-updated", data);
@@ -626,4 +664,9 @@ void BraveNewTabMessageHandler::OnTorInitializing(
     const std::string& percentage) {
   auto data = GetTorPropertiesDictionary(false, percentage);
   FireWebUIListener("tor-tab-data-updated", data);
+}
+
+void BraveNewTabMessageHandler::OnNeedsBrowserUpdateToSeeAds() {
+  base::Value data = GetAdsDataDictionary();
+  FireWebUIListener("new-tab-ads-data-updated", data);
 }

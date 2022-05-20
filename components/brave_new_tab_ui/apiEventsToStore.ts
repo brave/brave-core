@@ -9,6 +9,7 @@ import * as statsAPI from './api/stats'
 import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as torTabDataAPI from './api/torTabData'
+import * as newTabAdsDataAPI from './api/newTabAdsData'
 import getNTPBrowserAPI, { CustomBackground } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 
@@ -26,6 +27,10 @@ async function updatePrivateTabData (data: privateTabDataAPI.PrivateTabData) {
 
 async function updateTorTabData (data: torTabDataAPI.TorTabData) {
   getActions().torTabDataUpdated(data)
+}
+
+async function updateNewTabAdsData (data: newTabAdsDataAPI.NewTabAdsData) {
+  getActions().newTabAdsDataUpdated(data)
 }
 
 function onRewardsToggled (prefData: NewTab.Preferences): void {
@@ -61,6 +66,7 @@ export function wireApiEventsToStore () {
     preferencesAPI.addChangeListener(onRewardsToggled)
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
     torTabDataAPI.addChangeListener(updateTorTabData)
+    newTabAdsDataAPI.addChangeListener(updateNewTabAdsData)
     getNTPBrowserAPI().addCustomBackgroundUpdatedListener(onCustomBackgroundUpdated)
   })
   .catch(e => {
