@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+	xmlns:app="http://schemas.android.com/apk/res-auto" 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/shields_tooltip_layout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:background="@drawable/shields_tooltip_background">
+
+	<TextView
+		android:id="@+id/tv_tooltip_info"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textSize="14sp"
+		android:text="@string/type_website"
+		android:textColor="@color/onboarding_welcome_text_color"/>
+
+	<TextView
+		android:id="@+id/tv_tooltip_title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="24dp"
+		android:text="@string/searchbox_onboarding"
+		android:textSize="18sp"
+		android:alpha="0.9"
+		android:textColor="@android:color/white"/>
+
+</LinearLayout>

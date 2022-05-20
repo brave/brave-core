@@ -42,25 +42,20 @@ public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
     private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
-    private static final String PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE =
-            "next_set_default_browser_modal_date";
-    private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
-    private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
     private static final String PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A =
             "show_default_browser_modal_after_p3a";
     public static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
-    public static final String ONBOARDING_TYPE = "onboarding_type";
     public static final String FROM_NOTIFICATION = "from_notification";
     public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
     public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
-    public static final String ADS_TRACKERS_NOTIFICATION = "ads_trackers_notification";
-    public static final String DATA_SAVED_NOTIFICATION = "data_saved_notification";
-    public static final String TIME_SAVED_NOTIFICATION = "time_saved_notification";
     public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
     public static final String PREF_DORMANT_USERS_ENGAGEMENT = "dormant_users_engagement";
+    private static final String PREF_SHOW_SEARCHBOX_TOOLTIP = "show_searchbox_tooltip";
+    private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
+            "p3a_crash_reporting_message_shown";
 
     private static OnboardingPrefManager sInstance;
 
@@ -113,6 +108,26 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
+    public boolean isOnboardingSearchBoxTooltip() {
+        return mSharedPreferences.getBoolean(PREF_SHOW_SEARCHBOX_TOOLTIP, false);
+    }
+
+    public void setOnboardingSearchBoxTooltip(boolean shouldTooltipShow) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_SEARCHBOX_TOOLTIP, shouldTooltipShow);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean isP3aCrashReportingMessageShown() {
+        return mSharedPreferences.getBoolean(PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN, false);
+    }
+
+    public void setP3aCrashReportingMessageShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
     /**
      * Returns the user preference for whether the onboarding is shown.
      */
@@ -145,10 +160,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public boolean isOnboardingNotificationShown() {
-        return isOnboardingNotificationShown;
-    }
-
     public boolean isBraveStatsEnabled() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_STATS, false);
     }
@@ -169,14 +180,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public long getPrefNextOnboardingDate() {
-        return mSharedPreferences.getLong(PREF_NEXT_ONBOARDING_DATE, 0);
-    }
-
-    public void setOnboardingNotificationShown(boolean isShown) {
-        isOnboardingNotificationShown = isShown;
-    }
-
     public boolean hasSearchEngineOnboardingShown() {
         return mSharedPreferences.getBoolean(PREF_SEARCH_ENGINE_ONBOARDING, false);
     }
@@ -187,35 +190,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public long getNextOnboardingDate() {
-        return mSharedPreferences.getLong(PREF_NEXT_ONBOARDING_DATE, 0);
-    }
-
-    public void setNextOnboardingDate(long nextDate) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_ONBOARDING_DATE, nextDate);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean hasOnboardingShownForSkip() {
-        return mSharedPreferences.getBoolean(PREF_ONBOARDING_FOR_SKIP, false);
-    }
-
-    public void setOnboardingShownForSkip(boolean isShown) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_FOR_SKIP, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean showOnboardingForSkip(Context context) {
-        boolean shouldShow = PackageUtils.isFirstInstall(context)
-                             && !hasOnboardingShownForSkip()
-                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-                             && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-                             && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
-        return shouldShow;
-    }
-
     public boolean isAdsAvailable() {
         return BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedRegularProfile());
     }
@@ -223,6 +197,14 @@ public class OnboardingPrefManager {
     public void showOnboarding(Context context) {
         Intent intent = new Intent(context, OnboardingActivity.class);
         context.startActivity(intent);
+    }
+
+    public boolean isOnboardingNotificationShown() {
+        return isOnboardingNotificationShown;
+    }
+
+    public void setOnboardingNotificationShown(boolean isShown) {
+        isOnboardingNotificationShown = isShown;
     }
 
     public void onboardingNotification() {
@@ -241,26 +223,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.putLong(PREF_NEXT_CROSS_PROMO_MODAL_DATE, nextDate);
         sharedPreferencesEditor.apply();
     }
-
-    public long getNextSetDefaultBrowserModalDate() {
-        return mSharedPreferences.getLong(PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE, 0);
-    }
-
-    public void setNextSetDefaultBrowserModalDate(long nextDate) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE, nextDate);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean shouldShowDefaultBrowserModalAfterP3A() {
-        return mSharedPreferences.getBoolean(PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A, false);
-    }
-
-    public void setShowDefaultBrowserModalAfterP3A(boolean shouldShow) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A, shouldShow);
-        sharedPreferencesEditor.apply();
-    };
 
     public void setCrossPromoModalShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
@@ -335,36 +297,6 @@ public class OnboardingPrefManager {
     public void setDormantUsersNotificationTime(String notificationType, long timeInMilliseconds) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putLong(notificationType, timeInMilliseconds);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean isAdsTrackersNotificationStarted() {
-        return mSharedPreferences.getBoolean(ADS_TRACKERS_NOTIFICATION, false);
-    }
-
-    public void setAdsTrackersNotificationStarted(boolean isAdsTrackersNotificationStarted) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(ADS_TRACKERS_NOTIFICATION, isAdsTrackersNotificationStarted);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean isDataSavedNotificationStarted() {
-        return mSharedPreferences.getBoolean(DATA_SAVED_NOTIFICATION, false);
-    }
-
-    public void setDataSavedNotificationStarted(boolean isDataSavedNotificationStarted) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(DATA_SAVED_NOTIFICATION, isDataSavedNotificationStarted);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean isTimeSavedNotificationStarted() {
-        return mSharedPreferences.getBoolean(TIME_SAVED_NOTIFICATION, false);
-    }
-
-    public void setTimeSavedNotificationStarted(boolean isTimeSavedNotificationStarted) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(TIME_SAVED_NOTIFICATION, isTimeSavedNotificationStarted);
         sharedPreferencesEditor.apply();
     }
 

@@ -6,42 +6,63 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/shields_tooltip_layout"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content">
+	android:layout_height="wrap_content"
+	android:background="@drawable/shields_tooltip_background">
 
 	<TextView
-		android:id="@+id/txt_tooltip_title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="16sp"
-		android:fontFamily="sans-serif-medium"
-		android:layout_marginBottom="8dp"
-		android:textColor="@android:color/white"/>
+		android:textSize="14sp"
+		android:gravity="end"
+		android:text="@string/shield_onboarding"
+		android:textColor="@color/onboarding_welcome_text_color"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_marginTop="20dp"
+		android:paddingTop="8dp"
+		android:paddingStart="16dp"
+		android:paddingBottom="8dp"
+		android:paddingEnd="16dp"
+		android:background="@drawable/brave_shields_tooltip_text_bg">
+
+		<ImageView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		app:srcCompat="@drawable/ic_shield_done_outlined"
+        		android:contentDescription="@null"/>
+
+		<TextView
+			android:id="@+id/tv_blocked"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_marginStart="8dp"
+			android:textSize="18sp"
+			android:textColor="@color/onboarding_welcome_text_color"/>
+
+	</LinearLayout>
 
 	<TextView
-		android:id="@+id/txt_tooltip_text"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="16sp"
-		android:fontFamily="sans-serif-medium"
-		android:layout_marginBottom="8dp"
-		android:textColor="@android:color/white"/>
-
-	<android.widget.Button
-        android:id="@+id/btn_tooltip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="@drawable/white_rounded_holo_button"
-        android:text="@string/take_a_look"
-        android:fontFamily="sans-serif"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:padding="8dp"
-        android:visibility="gone"
-        android:textColor="@android:color/white"
-        style="?android:attr/borderlessButtonStyle"/>
+		android:layout_marginTop="14dp"
+		android:paddingTop="8dp"
+		android:paddingStart="16dp"
+		android:paddingBottom="8dp"
+		android:paddingEnd="16dp"
+		android:drawablePadding="10dp"
+        	app:drawableStartCompat="@drawable/ic_brave_36"
+        	android:gravity="center_vertical"
+		android:text="@string/shield_tooltip_desc"
+		android:textSize="14sp"
+		android:textColor="@color/onboarding_welcome_text_color"
+		android:background="@drawable/brave_shields_tooltip_text_bg"/>
 
 </LinearLayout>
