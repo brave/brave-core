@@ -141,6 +141,10 @@
     android:exported="false">
 </activity>
 
+<meta-data
+        android:name="com.google.android.play.billingclient.version"
+        android:value="4.0.0" />
+
 <activity android:name="com.android.billingclient.api.ProxyBillingActivity"
     android:theme="@style/BraveProxyBillingActivityTheme"
     android:exported="false"
