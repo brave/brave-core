@@ -2993,7 +2993,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Disconnect
     </message>
     <message name="IDS_FRAGMENT_SIGN_MESSAGE_DESCRIPTION" desc="Sign message dialog description.">
-      Your signature is being requested
+      A DApp is requesting your public encryption key
+    </message>
+    <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide encryption key panel details">
+      is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.
     </message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME" desc="Add network panel name label">
       Network name
