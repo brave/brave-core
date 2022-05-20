@@ -14,6 +14,7 @@ export const localeStrings = {
   rewardsGiving: 'Giving',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsLearnMore: 'Learn more',
+  rewardsLogInToSeeBalance: '$1Log in to $2$3 to see your balance',
   rewardsOptInHeader: 'Earn tokens and give back',
   rewardsOptInTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   rewardsOptInText: 'Earn tokens by viewing Brave Private Ads and support content creators automatically.',

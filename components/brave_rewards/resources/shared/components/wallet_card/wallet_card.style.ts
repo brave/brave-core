@@ -11,21 +11,68 @@ export const root = styled.div`
   color: var(--brave-palette-white);
 `
 
-export const overview = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 7px;
+export const grid = styled.div`
   padding: 13px 13px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "status-indicator earnings"
+    "balance          earnings"
+    "add-funds        view-statement";
 `
 
-export const balancePanel = styled.div`
-  flex: 1 1 50%;
-  padding-right: 5px;
+export const statusIndicator = styled.div`
+  grid-area: status-indicator;
+  justify-self: start;
+  align-self: start;
 `
 
 export const rewardsBalance = styled.div`
-  margin-left: 20px;
-  margin-top: 6px;
+  grid-area: balance;
+  justify-self: start;
+  align-self: end;
+  margin: 6px 5px 0 20px;
+`
+
+export const disconnectedBalance = styled.div`
+  grid-area: balance;
+  justify-self: start;
+  align-self: start;
+  margin: 6px 15px 0 4px;
+  padding: 12px;
+  border-radius: 8px;
+  background: linear-gradient(137.04deg, #346FE1 33.4%, #5844C3 82.8%);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+  position: relative;
+
+  strong {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .icon {
+    display: none;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+  }
+
+  &.cover-actions {
+    grid-area: balance-start / balance-start / add-funds-end / balance-end;
+    align-self: stretch;
+    font-size: 14px;
+    line-height: 20px;
+    padding-bottom: 32px;
+
+    .icon {
+      display: block;
+    }
+  }
 `
 
 export const balanceHeader = styled.div`
@@ -54,8 +101,10 @@ export const exchangeAmount = styled.div`
 `
 
 export const earningsPanel = styled.div`
-  flex: 1 1 50%;
-  padding-left: 5px;
+  grid-area: earnings;
+  justify-content: start;
+  align-self: end;
+  margin-top: 20px;
 `
 
 export const dateRange = styled.div`
@@ -71,30 +120,24 @@ export const earningsHeader = styled.div`
   opacity: 0.65;
 `
 
-export const summaryBox = styled.div`
-  margin-top: 17px;
-  padding: 0 17px 16px;
-`
-
-export const summaryActions = styled.div`
-  margin: 0 9px 24px 13px;
-  display: flex;
-  justify-content: space-between;
-
-  button {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    padding: 6px 18px;
-    border-radius: 48px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
+const summaryActionButton = `
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 6px 18px;
+  border-radius: 48px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 `
 
 export const addFunds = styled.div`
+  grid-area: add-funds;
+  margin-top: 9px;
+  margin-left: 9px;
+
   button {
+    ${summaryActionButton}
     background: rgba(255, 255, 255, 0.24);
 
     &:hover {
@@ -112,7 +155,14 @@ export const addFunds = styled.div`
 `
 
 export const viewStatement = styled.div`
+  grid-area: view-statement;
+  align-self: center;
+  justify-self: end;
+  margin-top: 9px;
+  margin-right: 9px;
+
   button {
+    ${summaryActionButton}
     padding: 6px 13px;
   }
 
@@ -123,6 +173,10 @@ export const viewStatement = styled.div`
     margin-right: 6px;
     margin-bottom: 2px;
   }
+`
+
+export const summaryBox = styled.div`
+  padding: 17px 17px 16px;
 `
 
 export const pendingBox = styled.div`

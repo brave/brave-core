@@ -17,8 +17,8 @@ function splitMessage (message: string) {
   const slots: Array<[string, number]> = []
 
   for (const match of message.matchAll(/([\s\S]*?)(\$\d|$)/g)) {
-    if (match[0]) {
-      parts.push(match[1] || '')
+    if (match[1]) {
+      parts.push(match[1])
     }
     if (match[2]) {
       slots.push([match[2], parts.length])
@@ -72,21 +72,26 @@ export function formatMessage (
     options = { placeholders }
   }
 
+  let tagKey = ''
+  let tagStart = -1
+
   for (const [key, index] of slots) {
     if (options.placeholders && key in options.placeholders) {
       parts[index] = options.placeholders[key]
-    }
-
-    if (options.tags && key in options.tags) {
-      if (index < parts.length - 1) {
-        parts[index] = ''
-        parts[index + 1] = options.tags[key](parts[index + 1])
-        if (index < parts.length - 2) {
-          parts[index + 2] = ''
+    } else if (options.tags) {
+      if (key in options.tags) {
+        tagKey = key
+        tagStart = index
+      } else if (tagStart >= 0) {
+        const content = parts.slice(tagStart + 1, index)
+        parts[tagStart] = options.tags[tagKey](content)
+        while (++tagStart <= index) {
+          parts[tagStart] = null
         }
+        tagStart = -1
       }
     }
   }
 
-  return parts
+  return parts.filter(x => x != null)
 }

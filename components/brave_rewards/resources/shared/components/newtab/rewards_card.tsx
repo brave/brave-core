@@ -6,6 +6,8 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GrantInfo } from '../../lib/grant_info'
+import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
+import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
 import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
@@ -71,6 +73,7 @@ interface Props {
   earningsReceived: boolean
   contributionsThisMonth: number
   grantInfo: GrantInfo | null
+  externalWallet: ExternalWallet | null
   onEnableRewards: () => void
   onEnableAds: () => void
   onClaimGrant: () => void
@@ -86,6 +89,32 @@ export function RewardsCard (props: Props) {
           grantInfo={props.grantInfo}
           onClaim={props.onClaimGrant}
         />
+      )
+    }
+
+    const { externalWallet } = props
+    if (externalWallet && externalWallet.status === 'disconnected') {
+      const onClick = () => {
+        if (externalWallet.links.reconnect) {
+          window.open(externalWallet.links.reconnect, '_blank')
+        }
+      }
+      return (
+        <style.disconnected onClick={onClick}>
+          {
+            formatMessage(getString('rewardsLogInToSeeBalance'), {
+              placeholders: {
+                $2: getExternalWalletProviderName(externalWallet.provider)
+              },
+              tags: {
+                $1: (content) => <strong key='1'>{content}</strong>
+              }
+            })
+          }
+          <style.disconnectedArrow>
+            <ArrowCircleIcon />
+          </style.disconnectedArrow>
+        </style.disconnected>
       )
     }
 

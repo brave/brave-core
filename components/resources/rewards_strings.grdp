@@ -13,6 +13,10 @@
     Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards are on the way. Keep an eye out!
   </message>
 
+  <message name="IDS_REWARDS_LOG_IN_TO_SEE_BALANCE" desc="">
+    <ph name="BEGIN_BOLD">$1</ph>Log in to <ph name="PROVIDER">$2<ex>Uphold</ex></ph><ph name="END_BOLD">$3</ph> to see your balance
+  </message>
+
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>

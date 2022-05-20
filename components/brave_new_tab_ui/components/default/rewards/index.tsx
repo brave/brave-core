@@ -12,6 +12,7 @@ import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/lo
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
 import { OnboardingCompletedStore } from '../../../../brave_rewards/resources/shared/lib/onboarding_completed_store'
+import { externalWalletFromExtensionData } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 import {
   RewardsCard,
@@ -45,6 +46,7 @@ export interface RewardsProps {
   rewardsEnabled: boolean
   enabledAds: boolean
   balance: NewTab.RewardsBalance
+  externalWallet?: RewardsExtension.ExternalWallet
   report?: NewTab.RewardsBalanceReport
   adsAccountStatement: NewTab.AdsAccountStatement
   parameters: NewTab.RewardsParameters
@@ -105,6 +107,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       exchangeCurrency='USD'
       exchangeRate={props.parameters.rate}
       grantInfo={grantInfo}
+      externalWallet={externalWalletFromExtensionData(props.externalWallet)}
       nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
       earningsThisMonth={adsInfo ? adsInfo.earningsThisMonth : 0}
       earningsLastMonth={adsInfo ? adsInfo.earningsLastMonth : 0}

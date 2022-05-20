@@ -83,25 +83,13 @@ export function getRewardsParameters () {
   })
 }
 
-const externalWalletLoginURLs = new Map<ExternalWalletProvider, string>()
-
-export function getExternalWalletLoginURL (provider: ExternalWalletProvider) {
-  return new Promise<string>((resolve) => {
-    resolve(externalWalletLoginURLs.get(provider) || '')
-  })
-}
-
 export function getExternalWalletProviders () {
   return new Promise<ExternalWalletProvider[]>((resolve) => {
     // The extension API currently does not support retrieving a list of
     // external wallet providers. Instead, use the `getExternalWallet` function
-    // to retrieve the "currently selected" provider and save the OAuth URL for
-    // that provider.
+    // to retrieve the "currently selected" provider.
     chrome.braveRewards.getExternalWallet((_, wallet) => {
       const provider = wallet && externalWalletProviderFromString(wallet.type)
-      if (provider && wallet && wallet.loginUrl) {
-        externalWalletLoginURLs.set(provider, wallet.loginUrl)
-      }
       resolve(provider ? [provider] : [])
     })
   })
