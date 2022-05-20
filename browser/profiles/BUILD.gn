@@ -1,4 +1,3 @@
-import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -37,7 +36,6 @@ source_set("profiles") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/tor",
     "//brave/content:browser",

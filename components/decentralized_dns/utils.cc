@@ -9,11 +9,11 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/net/decentralized_dns/constants.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -31,8 +31,24 @@ base::Value MakeSelectValue(ResolveMethodTypes value,
 
 }  // namespace
 
-bool IsDecentralizedDnsEnabled() {
-  return base::FeatureList::IsEnabled(features::kDecentralizedDns);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterIntegerPref(kUnstoppableDomainsResolveMethod,
+                                static_cast<int>(ResolveMethodTypes::ASK));
+  registry->RegisterIntegerPref(kENSResolveMethod,
+                                static_cast<int>(ResolveMethodTypes::ASK));
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  // Added 05/2022
+  if (static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS) ==
+      local_state->GetInteger(
+          decentralized_dns::kUnstoppableDomainsResolveMethod)) {
+    local_state->ClearPref(decentralized_dns::kUnstoppableDomainsResolveMethod);
+  }
+  if (static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS) ==
+      local_state->GetInteger(decentralized_dns::kENSResolveMethod)) {
+    local_state->ClearPref(decentralized_dns::kENSResolveMethod);
+  }
 }
 
 bool IsUnstoppableDomainsTLD(const GURL& url) {
@@ -44,7 +60,7 @@ bool IsUnstoppableDomainsTLD(const GURL& url) {
 }
 
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state) {
-  if (!local_state || !IsDecentralizedDnsEnabled()) {
+  if (!local_state) {
     return false;  // Treat it as disabled.
   }
 
@@ -52,17 +68,8 @@ bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ASK);
 }
 
-bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state) {
-  if (!local_state || !IsDecentralizedDnsEnabled()) {
-    return false;  // Treat it as disabled.
-  }
-
-  return local_state->GetInteger(kUnstoppableDomainsResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
-}
-
 bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state) {
-  if (!local_state || !IsDecentralizedDnsEnabled()) {
+  if (!local_state) {
     return false;  // Treat it as disabled.
   }
 
@@ -75,7 +82,7 @@ bool IsENSTLD(const GURL& url) {
 }
 
 bool IsENSResolveMethodAsk(PrefService* local_state) {
-  if (!local_state || !IsDecentralizedDnsEnabled()) {
+  if (!local_state) {
     return false;  // Treat it as disabled.
   }
 
@@ -83,17 +90,8 @@ bool IsENSResolveMethodAsk(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ASK);
 }
 
-bool IsENSResolveMethodDoH(PrefService* local_state) {
-  if (!local_state || !IsDecentralizedDnsEnabled()) {
-    return false;  // Treat it as disabled.
-  }
-
-  return local_state->GetInteger(kENSResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
-}
-
 bool IsENSResolveMethodEthereum(PrefService* local_state) {
-  if (!local_state || !IsDecentralizedDnsEnabled()) {
+  if (!local_state) {
     return false;  // Treat it as disabled.
   }
 
@@ -101,7 +99,7 @@ bool IsENSResolveMethodEthereum(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ETHEREUM);
 }
 
-base::Value GetResolveMethodList(Provider provider) {
+base::Value GetResolveMethodList() {
   base::Value list(base::Value::Type::LIST);
   list.Append(MakeSelectValue(ResolveMethodTypes::ASK,
                               brave_l10n::GetLocalizedResourceUTF16String(
@@ -110,11 +108,6 @@ base::Value GetResolveMethodList(Provider provider) {
       MakeSelectValue(ResolveMethodTypes::DISABLED,
                       brave_l10n::GetLocalizedResourceUTF16String(
                           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED)));
-  list.Append(MakeSelectValue(
-      ResolveMethodTypes::DNS_OVER_HTTPS,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS)));
-
   list.Append(
       MakeSelectValue(ResolveMethodTypes::ETHEREUM,
                       brave_l10n::GetLocalizedResourceUTF16String(

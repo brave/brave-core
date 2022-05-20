@@ -8,16 +8,11 @@
 
 namespace decentralized_dns {
 
-enum class Provider {
-  UNSTOPPABLE_DOMAINS,
-  ENS,
-};
-
 // GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.decentralized_dns
 enum class ResolveMethodTypes {
   ASK,
   DISABLED,
-  DNS_OVER_HTTPS,
+  DEPRECATED_DNS_OVER_HTTPS,
   ETHEREUM,
   MAX_VALUE = ETHEREUM,
 };

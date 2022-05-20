@@ -23,8 +23,8 @@ namespace decentralized_dns {
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->browser_context || !IsDecentralizedDnsEnabled() ||
-      ctx->browser_context->IsOffTheRecord() || !g_browser_process) {
+  if (!ctx->browser_context || ctx->browser_context->IsOffTheRecord() ||
+      !g_browser_process) {
     return net::OK;
   }
 
