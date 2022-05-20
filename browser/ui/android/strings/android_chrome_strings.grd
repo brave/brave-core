@@ -3133,10 +3133,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         <ph name="TAB_COUNT">%1$s<ex>6</ex></ph> tabs
       </message>
       <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITH_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that had a user specified group title. TITLE_OF_GROUP is the user specified title of the group.">
-        <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph>
+        Tab group - <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph>
       </message>
-      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITHOUT_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that does not have a user specified title.">
-        1 tab group
+      <message name="IDS_RECENT_TABS_GROUP_CLOSURE_WITHOUT_TITLE" desc="Text for a Recent Tabs Page &gt; Recently Closed row item that represents a single group of tabs closed together that does not have a user specified title. TAB_COUNT is the total number of tabs closed in the group.">
+        Tab group - <ph name="TAB_COUNT">%1$s<ex>5</ex></ph> tabs
       </message>
 
       <!-- Explore sites strings -->
@@ -5427,7 +5427,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to prompt user for sign in consent.">
         Sign in to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service.">
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP" desc="The consent text shown to the user before sign up when there is no privacy policy.">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK1">&lt;/link_terms_of_service&gt;</ph>.
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there is no terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph>.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up.">
