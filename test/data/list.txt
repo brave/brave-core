@@ -1,1 +1,3 @@
+! Title: Test list
+! Homepage: https://example.com/list.txt
 ||b.com^*logo.png^

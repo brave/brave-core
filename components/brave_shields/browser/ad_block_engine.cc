@@ -192,13 +192,15 @@ base::Value AdBlockEngine::HiddenClassIdSelectors(
   }
 }
 
-void AdBlockEngine::Load(bool deserialize,
-                         const DATFileDataBuffer& dat_buf,
-                         const std::string& resources_json) {
+absl::optional<adblock::FilterListMetadata> AdBlockEngine::Load(
+    bool deserialize,
+    const DATFileDataBuffer& dat_buf,
+    const std::string& resources_json) {
   if (deserialize) {
     OnDATLoaded(dat_buf, resources_json);
+    return absl::nullopt;
   } else {
-    OnListSourceLoaded(dat_buf, resources_json);
+    return absl::make_optional(OnListSourceLoaded(dat_buf, resources_json));
   }
 }
 
@@ -218,12 +220,13 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
                 [&](const std::string tag) { ad_block_client_->addTag(tag); });
 }
 
-void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
-                                       const std::string& resources_json) {
-  UpdateAdBlockClient(
-      std::make_unique<adblock::Engine>(
-          reinterpret_cast<const char*>(filters.data()), filters.size()),
-      resources_json);
+adblock::FilterListMetadata AdBlockEngine::OnListSourceLoaded(
+    const DATFileDataBuffer& filters,
+    const std::string& resources_json) {
+  auto metadata_and_engine = adblock::engineFromBufferWithMetadata(
+      reinterpret_cast<const char*>(filters.data()), filters.size());
+  UpdateAdBlockClient(std::move(metadata_and_engine.second), resources_json);
+  return std::move(metadata_and_engine.first);
 }
 
 void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,

@@ -53,6 +53,19 @@ bool ParseTimeValue(const base::Value* value, base::Time* field) {
   return true;
 }
 
+bool ParseOptionalStringField(const base::Value* value,
+                              absl::optional<std::string>* field) {
+  if (value == nullptr) {
+    *field = absl::nullopt;
+    return true;
+  } else if (!value->is_string()) {
+    return false;
+  } else {
+    *field = value->GetString();
+    return true;
+  }
+}
+
 const base::TimeDelta kListUpdateInterval = base::Days(7);
 const base::TimeDelta kListRetryInterval = base::Hours(1);
 const base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
@@ -76,6 +89,10 @@ const base::FilePath::CharType kSubscriptionsDir[] =
 
 }  // namespace
 
+SubscriptionInfo::SubscriptionInfo() {}
+SubscriptionInfo::~SubscriptionInfo() {}
+SubscriptionInfo::SubscriptionInfo(const SubscriptionInfo&) = default;
+
 void SubscriptionInfo::RegisterJSONConverter(
     base::JSONValueConverter<SubscriptionInfo>* converter) {
   // The `subscription_url` field is skipped, as it's not stored within the
@@ -89,6 +106,10 @@ void SubscriptionInfo::RegisterJSONConverter(
       "last_successful_update_attempt",
       &SubscriptionInfo::last_successful_update_attempt, &ParseTimeValue);
   converter->RegisterBoolField("enabled", &SubscriptionInfo::enabled);
+  converter->RegisterCustomValueField<absl::optional<std::string>>(
+      "homepage", &SubscriptionInfo::homepage, &ParseOptionalStringField);
+  converter->RegisterCustomValueField<absl::optional<std::string>>(
+      "title", &SubscriptionInfo::title, &ParseOptionalStringField);
 }
 
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
@@ -226,7 +247,9 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
   auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
       subscription_service->AsWeakPtr(), subscription_filters_provider.get(),
-      resource_provider_, task_runner_);
+      resource_provider_, task_runner_,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListMetadata,
+                          weak_ptr_factory_.GetWeakPtr(), sub_url));
 
   {
     base::AutoLock lock(subscription_services_lock_);
@@ -326,6 +349,35 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
       base::DoNothing());
 }
 
+void AdBlockSubscriptionServiceManager::OnListMetadata(
+    const GURL& sub_url,
+    const adblock::FilterListMetadata& metadata) {
+  // The engine will have loaded new list metadata; read it and update local
+  // preferences with the new values.
+
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  auto info = GetInfo(sub_url);
+  if (!info)
+    return;
+
+  // Title can only be set once - only set it if an existing title does not
+  // exist
+  if (!info->title && metadata.title) {
+    info->title = absl::make_optional(*metadata.title);
+  }
+
+  if (metadata.homepage) {
+    info->homepage = absl::make_optional(*metadata.homepage);
+  } else {
+    info->homepage = absl::nullopt;
+  }
+
+  UpdateSubscriptionPrefs(sub_url, *info);
+
+  NotifyObserversOfServiceEvent();
+}
+
 void AdBlockSubscriptionServiceManager::SetUpdateIntervalsForTesting(
     base::TimeDelta* initial_delay,
     base::TimeDelta* retry_interval) {
@@ -377,8 +429,10 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
               GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
       auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
           subscription_service->AsWeakPtr(),
-          subscription_filters_provider.get(), resource_provider_,
-          task_runner_);
+          subscription_filters_provider.get(), resource_provider_, task_runner_,
+          base::BindRepeating(
+              &AdBlockSubscriptionServiceManager::OnListMetadata,
+              weak_ptr_factory_.GetWeakPtr(), sub_url));
 
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
@@ -408,6 +462,12 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   subscription_dict.SetKey(
       "last_successful_update_attempt",
       base::TimeToValue(info.last_successful_update_attempt));
+  if (info.homepage) {
+    subscription_dict.SetKey("homepage", base::Value(*info.homepage));
+  }
+  if (info.title) {
+    subscription_dict.SetKey("title", base::Value(*info.title));
+  }
   subscriptions_dict->SetKey(sub_url.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar

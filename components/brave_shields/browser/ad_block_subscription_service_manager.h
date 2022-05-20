@@ -48,6 +48,10 @@ using brave_component_updater::BraveComponent;
 namespace brave_shields {
 
 struct SubscriptionInfo {
+  SubscriptionInfo();
+  ~SubscriptionInfo();
+  SubscriptionInfo(const SubscriptionInfo&);
+
   // The URL used to fetch the list, which is also used as a unique identifier
   // for a subscription service.
   GURL subscription_url;
@@ -62,6 +66,9 @@ struct SubscriptionInfo {
   // otherwise it will be bypassed. Disabled lists will not be automatically
   // updated.
   bool enabled;
+
+  absl::optional<std::string> homepage;
+  absl::optional<std::string> title;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<SubscriptionInfo>*);
@@ -137,6 +144,9 @@ class AdBlockSubscriptionServiceManager {
   void ClearSubscriptionPrefs(const GURL& sub_url);
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
+
+  void OnListMetadata(const GURL& sub_url,
+                      const adblock::FilterListMetadata& metadata);
 
   absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
