@@ -286,6 +286,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
   const findUpdatedTokenInfo = (token: BraveWallet.BlockchainToken) => {
     return updatedTokensList.find((t) =>
+      t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
       t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
       t.chainId === token.chainId)
   }
@@ -294,7 +295,8 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     return updatedTokensList.some(t =>
     (
       t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.chainId === token.chainId)
+      t.chainId === token.chainId &&
+      t.symbol.toLowerCase() === token.symbol.toLowerCase())
     )
   }
 
@@ -324,7 +326,10 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     if (isUserToken(token)) {
       if (isCustom || token.contractAddress === '') {
         const updatedToken = selected ? { ...token, visible: true } : { ...token, visible: false }
-        const tokenIndex = updatedTokensList.findIndex((t) => t === token)
+        const tokenIndex = updatedTokensList.findIndex((t) =>
+          t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+          t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
+          t.chainId === token.chainId)
         let newList = [...updatedTokensList]
         newList.splice(tokenIndex, 1, updatedToken)
         setUpdatedTokensList(newList)
