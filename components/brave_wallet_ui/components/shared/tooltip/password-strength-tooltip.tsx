@@ -82,7 +82,11 @@ export const PasswordStrengthTooltip: React.FC<React.PropsWithChildren<Props>> =
       isVisible={isVisible}
       position='right'
       pointerPosition={'center'}
-      text={<PasswordStrengthDetails passwordStrength={passwordStrength} />}
+      text={
+        <PasswordStrengthDetails
+          passwordStrength={passwordStrength}
+        />
+      }
     >
       {children}
     </Tooltip>
