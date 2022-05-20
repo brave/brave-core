@@ -27,7 +27,6 @@ import {
   WalletState,
   WalletInfo,
   TransactionProviderError,
-  SupportedCoinTypes,
   SendFilTransactionParams,
   SendSolTransactionParams,
   SPLTransferFromParams
@@ -41,6 +40,7 @@ import {
   hasEIP1559Support,
   refreshKeyringInfo,
   refreshNetworkInfo,
+  refreshFullNetworkList,
   refreshTokenPriceHistory,
   refreshSitePermissions,
   refreshTransactionHistory,
@@ -249,6 +249,8 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
     crypto: defualtCrypo.cryptocurrency
   }
   store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
+  const showTestNetworks = await braveWalletService.getShowWalletTestNetworks()
+  store.dispatch(WalletActions.setShowTestNetworks(showTestNetworks.isEnabled))
   // Fetch Balances and Prices
   if (!state.isWalletLocked && state.isWalletCreated) {
     const currentNetwork = await store.dispatch(refreshNetworkInfo())
@@ -267,15 +269,8 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
   }
 })
 
-handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
-  const jsonRpcService = getAPIProxy().jsonRpcService
-
-  const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-    const networkList = await jsonRpcService.getAllNetworks(coin)
-    return networkList.networks
-  }))
-  const networkList = getFullNetworkList.flat(1)
-  store.dispatch(WalletActions.setAllNetworks(networkList))
+handler.on(WalletActions.getAllNetworks.getType(), async (store: Store) => {
+  await store.dispatch(refreshFullNetworkList())
 })
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {

@@ -520,6 +520,11 @@ void BraveWalletService::SetSelectedCoin(mojom::CoinType coin) {
   ::brave_wallet::SetSelectedCoin(prefs_, coin);
 }
 
+void BraveWalletService::GetShowWalletTestNetworks(
+    GetShowWalletTestNetworksCallback callback) {
+  std::move(callback).Run(::brave_wallet::GetShowWalletTestNetworks(prefs_));
+}
+
 void BraveWalletService::OnDefaultWalletChanged() {
   auto default_wallet = ::brave_wallet::GetDefaultWallet(prefs_);
   for (const auto& observer : observers_) {

@@ -69,6 +69,11 @@
         </template>
       </iron-list>
     </div>
+    <settings-toggle-button id="showBravewalletTestNetworks"
+      class="cr-row"
+      pref="{{prefs.brave.wallet.show_wallet_test_networks}}"
+      label="$i18n{showBravewalletTestNetworks}">
+    </settings-toggle-button>
   </div>
 </div>
 <template is="dom-if" if="[[showAddWalletNetworkDialog_]]" restamp>

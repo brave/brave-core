@@ -912,6 +912,10 @@ void SetSelectedCoin(PrefService* prefs, mojom::CoinType coin) {
   prefs->SetInteger(kBraveWalletSelectedCoin, static_cast<int>(coin));
 }
 
+bool GetShowWalletTestNetworks(PrefService* prefs) {
+  return prefs->GetBoolean(kShowWalletTestNetworks);
+}
+
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCryptocurrency);
 }

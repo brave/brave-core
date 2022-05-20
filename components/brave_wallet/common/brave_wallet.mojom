@@ -1029,6 +1029,9 @@ interface BraveWalletService {
   // Checks if the Ethereum permission is allowed for the origin on the account
   HasEthereumPermission(url.mojom.Origin origin, string account) => (bool success, bool has_permission);
 
+  // Obtains the show test networks user pref from settings
+  GetShowWalletTestNetworks() => (bool isEnabled);
+
   // Controls last selected coin pref.
   GetSelectedCoin() => (CoinType coin);
   SetSelectedCoin(CoinType coin);

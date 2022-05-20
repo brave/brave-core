@@ -471,6 +471,17 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return selected_coin;
   }
 
+  bool GetShowWalletTestNetworks() {
+    base::RunLoop run_loop;
+    bool show_wallet_test_networks;
+    service_->GetShowWalletTestNetworks(base::BindLambdaForTesting([&](bool b) {
+      show_wallet_test_networks = b;
+      run_loop.Quit();
+    }));
+    run_loop.Run();
+    return show_wallet_test_networks;
+  }
+
   void SimulateOnGetImportInfo(const std::string& new_password,
                                bool result,
                                const ImportInfo& info,
@@ -1102,6 +1113,15 @@ TEST_F(BraveWalletServiceUnitTest, SelectedCoin) {
   EXPECT_EQ(static_cast<int>(mojom::CoinType::SOL),
             GetPrefs()->GetInteger(kBraveWalletSelectedCoin));
   EXPECT_EQ(mojom::CoinType::SOL, GetSelectedCoin());
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetShowWalletTestNetworks) {
+  // Default value for kShowWalletTestNetworks should be false
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kShowWalletTestNetworks));
+  EXPECT_FALSE(GetShowWalletTestNetworks());
+
+  GetPrefs()->SetBoolean(kShowWalletTestNetworks, true);
+  EXPECT_TRUE(GetShowWalletTestNetworks());
 }
 
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {

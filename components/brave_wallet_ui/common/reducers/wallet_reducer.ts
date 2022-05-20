@@ -40,7 +40,7 @@ const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
   isSolanaEnabled: false,
-  isTestNetworksEnabled: true,
+  isTestNetworksEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -517,6 +517,13 @@ export const createWalletReducer = (initialState: WalletState) => {
       ...state,
       isFetchingPortfolioPriceHistory: true,
       selectedNetworkFilter: payload
+    }
+  })
+
+  reducer.on(WalletActions.setShowTestNetworks, (state: WalletState, payload: boolean): WalletState => {
+    return {
+      ...state,
+      isTestNetworksEnabled: payload
     }
   })
 

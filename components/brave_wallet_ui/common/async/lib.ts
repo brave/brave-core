@@ -475,11 +475,11 @@ export function refreshTransactionHistory (address?: string) {
   }
 }
 
-export function refreshNetworkInfo () {
+export function refreshFullNetworkList () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
-    const { wallet: { selectedCoin, isFilecoinEnabled, isSolanaEnabled, isTestNetworksEnabled } } = getState()
+    const { wallet: { isFilecoinEnabled, isSolanaEnabled, isTestNetworksEnabled } } = getState()
 
     // Get All Networks
     const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
@@ -500,6 +500,17 @@ export function refreshNetworkInfo () {
         ? flattenedNetworkList
         : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
     dispatch(WalletActions.setAllNetworks(networkList))
+  }
+}
+
+export function refreshNetworkInfo () {
+  return async (dispatch: Dispatch, getState: () => State) => {
+    // Get All Networks and set to state first
+    await dispatch(refreshFullNetworkList())
+
+    const apiProxy = getAPIProxy()
+    const { jsonRpcService } = apiProxy
+    const { wallet: { selectedCoin, networkList } } = getState()
 
     // Get default network for each coinType
     const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
