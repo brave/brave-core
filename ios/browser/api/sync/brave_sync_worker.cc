@@ -14,7 +14,10 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/qr_code_data.h"
+#include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/driver/sync_service.h"
@@ -80,28 +83,19 @@ BraveSyncWorker::~BraveSyncWorker() {
   // Observer will be removed by ScopedObservation
 }
 
-bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
+bool BraveSyncWorker::RequestSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* setup_service =
-      SyncSetupServiceFactory::GetForBrowserState(browser_state_);
-  auto* sync_service = SyncServiceFactory::GetForBrowserState(browser_state_);
+  syncer::SyncService* sync_service = GetSyncService();
 
-  if (!setup_service || !sync_service) {
+  if (!sync_service) {
     return false;
   }
 
-  if (!sync_service_observer_.IsObserving()) {
-    sync_service_observer_.Observe(sync_service);
+  if (!sync_service_observer_.IsObservingSource(sync_service)) {
+    sync_service_observer_.AddObservation(sync_service);
   }
 
-  setup_service->SetSyncEnabled(enabled);
-
-  if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
-    // setup_service->PrepareForFirstSyncSetup();
-    // setup_service->CommitSyncChanges();
-    setup_service->SetFirstSetupComplete(
-        syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
-  }
+  sync_service->GetUserSettings()->SetSyncRequested(true);
 
   return true;
 }
@@ -136,11 +130,13 @@ BraveSyncWorker::GetDeviceList() {
 
 std::string BraveSyncWorker::GetOrCreateSyncCode() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service = GetSyncService();
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
   std::string sync_code;
   if (sync_service) {
     sync_code = sync_service->GetOrCreateSyncCode();
   }
+
+  CHECK(brave_sync::crypto::IsPassphraseValid(sync_code));
   return sync_code;
 }
 
@@ -158,7 +154,7 @@ bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
     return false;
   }
 
-  auto* sync_service = GetSyncService();
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
     const std::string error_msg = sync_service
                                       ? "invalid sync code:" + sync_code
@@ -215,15 +211,81 @@ std::string BraveSyncWorker::GetHexSeedFromSyncCode(
   return sync_code_hex;
 }
 
+std::string BraveSyncWorker::GetQrCodeJsonFromHexSeed(
+    const std::string& hex_seed) {
+  DCHECK(!hex_seed.empty());
+  return brave_sync::QrCodeData::CreateWithActualDate(hex_seed)->ToJson();
+}
+
+brave_sync::QrCodeDataValidationResult
+BraveSyncWorker::GetQrCodeValidationResult(const std::string json) {
+  DCHECK(!json.empty());
+  return brave_sync::QrCodeDataValidator::ValidateQrDataJson(json);
+}
+
+brave_sync::WordsValidationStatus BraveSyncWorker::GetWordsValidationResult(
+    const std::string time_limited_words) {
+  DCHECK(!time_limited_words.empty());
+  return brave_sync::TimeLimitedWords::Parse(time_limited_words).status;
+}
+
+std::string BraveSyncWorker::GetWordsFromTimeLimitedWords(
+    const std::string& time_limited_words) {
+  DCHECK(!time_limited_words.empty());
+  auto words_with_status =
+      brave_sync::TimeLimitedWords::Parse(time_limited_words);
+  DCHECK_EQ(words_with_status.status,
+            brave_sync::WordsValidationStatus::kValid);
+  DCHECK(words_with_status.pure_words.has_value());
+  return words_with_status.pure_words.value();
+}
+
+std::string BraveSyncWorker::GetTimeLimitedWordsFromWords(
+    const std::string& words) {
+  DCHECK(!words.empty());
+  return brave_sync::TimeLimitedWords::GenerateForNow(words);
+}
+
+std::string BraveSyncWorker::GetHexSeedFromQrCodeJson(const std::string& json) {
+  DCHECK(!json.empty());
+  std::unique_ptr<brave_sync::QrCodeData> qr_data =
+      brave_sync::QrCodeData::FromJson(json);
+  if (qr_data) {
+    DCHECK(!GetSyncCodeFromHexSeed(qr_data->sync_code_hex).empty());
+    return qr_data->sync_code_hex;
+  }
+
+  DCHECK(!GetSyncCodeFromHexSeed(json).empty());
+  return json;
+}
+
 bool BraveSyncWorker::IsFirstSetupComplete() {
   syncer::SyncService* sync_service = GetSyncService();
   return sync_service &&
          sync_service->GetUserSettings()->IsFirstSetupComplete();
 }
 
+bool BraveSyncWorker::SetSetupComplete() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  syncer::SyncService* sync_service = GetSyncService();
+
+  if (!sync_service) {
+    return false;
+  }
+
+  sync_service->GetUserSettings()->SetSyncRequested(true);
+
+  if (!sync_service->GetUserSettings()->IsFirstSetupComplete()) {
+    sync_service->GetUserSettings()->SetFirstSetupComplete(
+        syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  }
+
+  return true;
+}
+
 void BraveSyncWorker::ResetSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service = GetSyncService();
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
 
   if (!sync_service) {
     return;
@@ -240,7 +302,7 @@ void BraveSyncWorker::ResetSync() {
 
 void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service = GetSyncService();
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
 
   if (!sync_service) {
     return;
@@ -302,12 +364,6 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
     return;
   }
 
-  brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-  bool failed_to_decrypt = false;
-  std::string sync_code = brave_sync_prefs.GetSeed(&failed_to_decrypt);
-  DCHECK_NE(sync_code.size(), 0u);
-  DCHECK(!failed_to_decrypt);
-
   if (service->GetUserSettings()->IsPassphraseRequired()) {
     SetDecryptionPassphrase(service);
   } else {
@@ -316,17 +372,15 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
 }
 
 void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
-  if (sync_service_observer_.IsObserving()) {
-    DCHECK(sync_service_observer_.IsObservingSource(service));
-    sync_service_observer_.Reset();
+  if (sync_service_observer_.IsObservingSource(service)) {
+    sync_service_observer_.RemoveObservation(service);
   }
 }
 
 void BraveSyncWorker::OnResetDone() {
   syncer::SyncService* sync_service = GetSyncService();
-  if (sync_service && sync_service_observer_.IsObserving()) {
-    DCHECK(sync_service_observer_.IsObservingSource(sync_service));
-    sync_service_observer_.Reset();
+  if (sync_service && sync_service_observer_.IsObservingSource(sync_service)) {
+    sync_service_observer_.RemoveObservation(sync_service);
   }
 }
 
@@ -344,7 +398,7 @@ bool BraveSyncWorker::CanSyncFeatureStart() {
 
 bool BraveSyncWorker::IsSyncFeatureActive() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service = SyncServiceFactory::GetForBrowserState(browser_state_);
+  syncer::SyncService* sync_service = GetSyncService();
 
   if (!sync_service) {
     return false;
