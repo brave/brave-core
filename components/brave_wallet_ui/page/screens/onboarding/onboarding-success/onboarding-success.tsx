@@ -7,7 +7,10 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
+// import { getLocale } from '../../../../../common/locale'
+
+// images
+import WalletAccessSvg from './images/wallet-access.svg'
 
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
@@ -17,48 +20,49 @@ import { NavButton } from '../../../../components/extension'
 import { WalletRoutes } from '../../../../constants/types'
 
 // styles
-import { OnboardingWrapper } from '../onboarding.style'
 import {
-  PageIcon,
   Description,
   Title,
-  ButtonContainer,
-  LearnMoreLink
-} from './onboarding-welcome.style'
+  OnboardingWrapper
+} from '../onboarding.style'
+import {
+  ButtonContainer, IntroContainer, IntroImg
+} from './onboarding-success.style'
 
-export const OnboardingWelcome = () => {
+export const OnboardingSuccess = () => {
   const history = useHistory()
 
   const onSetup = React.useCallback(() => {
     history.push(`${WalletRoutes.Onboarding}/create-password`)
   }, [])
 
-  const onRestore = React.useCallback(() => {
-    history.push(WalletRoutes.Restore)
-  }, [])
-
   return <WalletPageLayout>
     <OnboardingWrapper>
-      <PageIcon />
 
-      <Title>{getLocale('braveWalletWelcomeTitle')}</Title>
+      <IntroContainer>
+        <Title>{
+          // getLocale('braveWalletWelcomeTitle')
+          'Congrats! Your wallet is ready'
+        }</Title>
 
-      <Description>{getLocale('braveWalletWelcomeDescription')}</Description>
+        <Description textAlign='center'>{
+          // getLocale('braveWalletWelcomeDescription')
+          'Now you can easily access your wallet any time from the wallet icon in Brave Browser.'
+        }</Description>
+
+        <IntroImg src={WalletAccessSvg} height={118} />
+
+      </IntroContainer>
 
       <ButtonContainer>
         <NavButton
           buttonType='primary'
-          text={getLocale('braveWalletWelcomeButton')}
+          text={
+            'Go To Portfolio' // TODO: locale
+          }
           onSubmit={onSetup}
         />
 
-        <NavButton
-          buttonType='secondary'
-          text={getLocale('braveWalletWelcomeIAlreadyHaveAWallet')}
-          onSubmit={onRestore}
-        />
-
-        <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>{getLocale('braveWalletWhatIsACryptoWallet')}</LearnMoreLink>
       </ButtonContainer>
 
     </OnboardingWrapper>

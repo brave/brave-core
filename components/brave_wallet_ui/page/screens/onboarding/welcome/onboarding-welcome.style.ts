@@ -5,23 +5,8 @@
 
 import styled from 'styled-components'
 
-import WelcomeBackgroundSVG from './images/onboarding-welcome-background.svg'
 import WelcomeIcon from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
 import WelcomeIconDark from '../../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
-
-export const OnboardingWelcomeWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-x: hidden;
-  background-repeat: no-repeat;
-  background-image: url(${WelcomeBackgroundSVG});
-  background-position: 50% 90%;
-  background-size: 88%;
-`
 
 export const PageIcon = styled.div`
   width: 240px;
