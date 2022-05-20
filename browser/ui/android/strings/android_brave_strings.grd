@@ -2306,7 +2306,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Vpn profile creation failed. Please try again.
     </message>
     <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
-      Purchase verification failed. Please try again.
+      Your subscription has expired. You can subscribe again at any time.
     </message>
     <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
       VPN is running in the background
@@ -2423,10 +2423,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       You are already subscribed to the subscription. Try restoring the subscription.
     </message>
     <message name="IDS_ERROR_CAUSED_BY_USER" desc="Brave Vpn in app purchase message">
-      ERROR!!\nCaused by a user cancelling the purchase flow.
+      You've quit your subscription purchase.
     </message>
     <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
-      ERROR!!\nPurchase failed..
+      Purchase failed. Please contact Google Play support.
     </message>
     <message name="IDS_REJECT" desc="Brave crypto wallet button reject">
       Reject
@@ -2966,7 +2966,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       You have already selected the same server.
     </message>
     <message name="IDS_PERMISSION_WAS_CANCELLED" desc="Vpn user consent text">
-      Permission was cancelled
+      You've stopped the installation of the VPN profile.
     </message>
     <message name="IDS_BRAVE_WALLET_QUEUE_REJECT_ALL" desc="Confirm Transaction Queue Reject All Transactions">
       Reject <ph name="TRANSACTION_LENGTH"><ex>4</ex>%1$s</ph> transactions
@@ -3036,6 +3036,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_ACCOUNT_SELECTOR_ACTIVITY_TITLE" desc="Account Selector activity toolbar title">
       Select Account
+    </message>
+    <message name="IDS_COULDNT_GET_MATCHING_TIMEZONE" desc="Brave vpn error message">
+      Couldn't get matching timezone for : <ph name="VALUE">%1$s</ph>
     </message>
   </messages>
   </release>

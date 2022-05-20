@@ -53,6 +53,15 @@ public class BraveVpnApiResponseUtils {
         if (isSuccess) {
             String region = BraveVpnUtils.getRegionForTimeZone(
                     jsonTimezones, TimeZone.getDefault().getID());
+            if (TextUtils.isEmpty(region)) {
+                Toast.makeText(activity,
+                             String.format(activity.getResources().getString(
+                                                   R.string.couldnt_get_matching_timezone),
+                                     TimeZone.getDefault().getID()),
+                             Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
             if (!TextUtils.isEmpty(BraveVpnUtils.selectedServerRegion)
                     && BraveVpnUtils.selectedServerRegion != null) {
                 region = BraveVpnUtils.selectedServerRegion.equals(
