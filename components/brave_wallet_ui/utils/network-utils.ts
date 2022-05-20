@@ -16,9 +16,9 @@ export const emptyNetwork = {
   }
 }
 
-export const getNetworkInfo = (chainId: string, list: BraveWallet.NetworkInfo[]) => {
+export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list: BraveWallet.NetworkInfo[]) => {
   for (let it of list) {
-    if (it.chainId === chainId) {
+    if (it.chainId === chainId && it.coin === coin) {
       return it
     }
   }

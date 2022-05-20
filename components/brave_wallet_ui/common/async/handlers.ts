@@ -130,7 +130,7 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
 
   // Updated Selected Network
   const coinsChainId = await jsonRpcService.getChainId(coin)
-  const defaultNetwork = getNetworkInfo(coinsChainId.chainId, networkList)
+  const defaultNetwork = getNetworkInfo(coinsChainId.chainId, coin, networkList)
   await store.dispatch(WalletActions.setNetwork(defaultNetwork))
 }
 

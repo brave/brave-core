@@ -625,7 +625,9 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
             onLearnMore={onNetworkLearnMore}
-            networkPayload={getNetworkInfo(switchChainRequest.chainId, networkList)}
+            // Passed BraveWallet.CoinType.ETH here since AllowAddChangeNetworkPanel
+            // is only used for EVM networks and switchChainRequest doesn't return cointType.
+            networkPayload={getNetworkInfo(switchChainRequest.chainId, BraveWallet.CoinType.ETH, networkList)}
             panelType='change'
           />
         </LongWrapper>
@@ -642,7 +644,7 @@ function Container (props: Props) {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
+            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />
@@ -822,7 +824,7 @@ function Container (props: Props) {
                 onSubmit={onSubmitBuy}
                 selectedAsset={selectedBuyAsset}
                 buyAmount={buyAmount}
-                selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
+                selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
                 networkList={networkList}
                 selectedBuyOption={selectedBuyOption}
                 onSelectBuyOption={setSelectedBuyOption}
@@ -974,7 +976,7 @@ function Container (props: Props) {
         defaultCurrencies={defaultCurrencies}
         spotPrices={transactionSpotPrices}
         selectedAccount={selectedAccount}
-        selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
+        selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
         isConnected={isConnectedToSite}
         navAction={navigateTo}
         onOpenSettings={onOpenSettings}
