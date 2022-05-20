@@ -75,7 +75,6 @@ export const RecoveryPhrase: React.FC<Props> = ({
     }
   }, [verificationModeEnabled])
 
-
   // memos
   const shuffledPhrase = React.useMemo(() => {
     const array = recoveryPhrase.slice().sort()
@@ -154,7 +153,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
         const wordIndex = selectedWords?.findIndex((selectedWord) =>
           selectedWord.index === word.id &&
           selectedWord.value === word.value
-        ) 
+        )
         const isWordSelected = wordIndex > -1
         return (
           <RecoveryBubble
