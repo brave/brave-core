@@ -1,9 +1,11 @@
 #include <memory>
 #include <string>
 #include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/test_timeouts.h"
+#include "brave/browser/brave_talk/brave_talk_media_access_handler.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
@@ -36,7 +38,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
       : http_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUp() override {
-    http_server_.AddDefaultHandlers(GetChromeTestDataDir());
+    http_server_.AddDefaultHandlers(base::FilePath(FILE_PATH_LITERAL("brave/test/data")));
 
     InProcessBrowserTest::SetUp();
   }
@@ -51,10 +53,10 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
     // By default, all SSL cert checks are valid. Can be overridden in tests.
     cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
-    NavigateToURLAndWait(http_server_.GetURL("talk.brave.com", "/web_app_badging/blank.html"));
+    NavigateToURLAndWait(http_server_.GetURL("talk.brave.com", "/brave_talk/test.html"));
 
     
-    NavigateParams launch_tab(browser(), http_server_.GetURL("example.com", "/web_app_badging/blank.html"),
+    NavigateParams launch_tab(browser(), http_server_.GetURL("example.com", "/brave_talk/test.html"),
                               ui::PAGE_TRANSITION_LINK);
     launch_tab.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
     ui_test_utils::NavigateToURL(&launch_tab);
@@ -123,24 +125,27 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, SharingAPIMakesTabSharable) {
-  constexpr char kDeviceIdScript[] =
-      "let accept;"
-      "window.deviceIdPromise = new Promise(a => accept = a);"
-      "  brave.beginAdvertiseShareDisplayMedia(deviceId => {"
-      "  accept(deviceId);"
-      "})";
+  // constexpr char kDeviceIdScript[] =
+  //     "let accept;"
+  //     "window.deviceIdPromise = new Promise(a => accept = a);"
+  //     "  brave.beginAdvertiseShareDisplayMedia(deviceId => {"
+  //     "  accept(deviceId);"
+  //     "})";
 
-  ASSERT_TRUE(content::ExecJs(requester_contents(), kDeviceIdScript));
+  // ASSERT_TRUE(content::ExecJs(requester_contents(), kDeviceIdScript));
   talk_service()->ShareTab(target_contents());
 
   auto result = content::EvalJs(requester_contents(), "window.deviceIdPromise");
-  ASSERT_FALSE(nullptr == result);
+  EXPECT_FALSE(nullptr == result);
   EXPECT_NE("", result);
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
       target_contents()->GetMainFrame()->GetProcess()->GetID(),
       target_contents()->GetMainFrame()->GetRoutingID()));
+
+  // EXPECT_EQ(true, content::EvalJs(requester_contents(), "startCapture('" + result.ExtractString() + "');"));
+  base::RunLoop().Run();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, NavigationClearsShareRequest) {

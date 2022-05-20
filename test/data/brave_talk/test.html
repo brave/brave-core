@@ -1,0 +1,35 @@
+<html>
+<video id="player" autoplay></video>
+<iframe id="frame" src="frame.html"></iframe>
+<script>
+    let lastDeviceId;
+    let resolve;
+    window.deviceIdPromise = new Promise(a => resolve = a);
+
+    async function startCapture(deviceId) {
+        const stream = await window.navigator.mediaDevices.getUserMedia({
+            video: {
+                mandatory: {
+                    chromeMediaSource: 'tab',
+                    chromeMediaSourceId: deviceId
+                }
+            }
+        });
+
+        player.srcObject = stream;
+        return true;
+    }
+
+    async function delegateCaptureToFrame(deviceId) {
+        frame.contentWindow.postMessage({
+            deviceId
+        });
+    }
+
+    brave.beginAdvertiseShareDisplayMedia(deviceId => {
+        lastDeviceId = deviceId;
+        resolve(deviceId);
+    });
+</script>
+
+</html>

@@ -1,0 +1,26 @@
+<html>
+<div style="border: 1px solid black; width: 800px; height: 480px;">
+    Frame
+    <video id="player"></video>
+</div>
+<script>
+    async function startCapture(deviceId) {
+        const stream = await window.navigator.mediaDevices.getUserMedia({
+            video: {
+                mandatory: {
+                    chromeMediaSource: 'tab',
+                    chromeMediaSourceId: deviceId
+                }
+            }
+        });
+
+        player.srcObject = stream;
+        return true;
+    }
+
+    window.addEventListener('message', e => {
+        window.startCapturePromise = startCapture(e.data.deviceId);
+    });
+</script>
+
+</html>
