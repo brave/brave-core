@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -25,6 +26,11 @@ class DeviceInfo;
 class BraveDeviceInfo;
 class SyncServiceImpl;
 }  // namespace syncer
+
+namespace brave_sync {
+enum class QrCodeDataValidationResult;
+enum class WordsValidationStatus;
+}  // namespace brave_sync
 
 class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
  public:
@@ -64,17 +70,27 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
 
-  bool SetSyncEnabled(bool enabled);
+  bool RequestSync();
   std::string GetOrCreateSyncCode();
   bool IsValidSyncCode(const std::string& sync_code);
   bool SetSyncCode(const std::string& sync_code);
   std::string GetSyncCodeFromHexSeed(const std::string& hex_seed);
   std::string GetHexSeedFromSyncCode(const std::string& code_words);
+  std::string GetQrCodeJsonFromHexSeed(const std::string& hex_seed);
+  brave_sync::QrCodeDataValidationResult GetQrCodeValidationResult(
+      const std::string json);
+  brave_sync::WordsValidationStatus GetWordsValidationResult(
+      const std::string time_limited_words);
+  std::string GetWordsFromTimeLimitedWords(
+      const std::string& time_limited_words);
+  std::string GetTimeLimitedWordsFromWords(const std::string& words);
+  std::string GetHexSeedFromQrCodeJson(const std::string& json);
   const syncer::DeviceInfo* GetLocalDeviceInfo();
   std::vector<std::unique_ptr<syncer::BraveDeviceInfo>> GetDeviceList();
   bool CanSyncFeatureStart();
   bool IsSyncFeatureActive();
   bool IsFirstSetupComplete();
+  bool SetSetupComplete();
   void ResetSync();
   void DeleteDevice(const std::string& device_guid);
 
@@ -93,7 +109,8 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string passphrase_;
 
   ChromeBrowserState* browser_state_;  // NOT OWNED
-  base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedMultiSourceObservation<syncer::SyncService,
+                                     syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
 };

@@ -16,6 +16,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/qr_code_validator.h"
+#include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
@@ -38,6 +40,50 @@
 #error "This file requires ARC support."
 #endif
 
+// MARK: - QrCodeDataValidationResult
+
+BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultValid =
+        static_cast<NSInteger>(brave_sync::QrCodeDataValidationResult::kValid);
+BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultNotWellFormed =
+        static_cast<NSInteger>(
+            brave_sync::QrCodeDataValidationResult::kNotWellFormed);
+BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultVersionDeprecated =
+        static_cast<NSInteger>(
+            brave_sync::QrCodeDataValidationResult::kVersionDeprecated);
+BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultExpired = static_cast<NSInteger>(
+        brave_sync::QrCodeDataValidationResult::kExpired);
+BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultValidForTooLong =
+        static_cast<NSInteger>(
+            brave_sync::QrCodeDataValidationResult::kValidForTooLong);
+
+// MARK: - WordsValidationStatus
+
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusValid =
+        static_cast<NSInteger>(brave_sync::WordsValidationStatus::kValid);
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusNotValidPureWords = static_cast<NSInteger>(
+        brave_sync::WordsValidationStatus::kNotValidPureWords);
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusVersionDeprecated = static_cast<NSInteger>(
+        brave_sync::WordsValidationStatus::kVersionDeprecated);
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusExpired =
+        static_cast<NSInteger>(brave_sync::WordsValidationStatus::kExpired);
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusValidForTooLong = static_cast<NSInteger>(
+        brave_sync::WordsValidationStatus::kValidForTooLong);
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
+        brave_sync::WordsValidationStatus::kWrongWordsNumber);
+
+// MARK: - BraveSyncDeviceObserver
+
 @interface BraveSyncDeviceObserver : NSObject {
   std::unique_ptr<BraveSyncDeviceTracker> _device_observer;
 }
@@ -54,6 +100,8 @@
   return self;
 }
 @end
+
+// MARK: - BraveSyncServiceObserver
 
 @interface BraveSyncServiceObserver : NSObject {
   std::unique_ptr<BraveSyncServiceTracker> _service_tracker;
@@ -72,6 +120,8 @@
   return self;
 }
 @end
+
+// MARK: - BraveSyncAPI
 
 @interface BraveSyncAPI () {
   std::unique_ptr<BraveSyncWorker> _worker;
@@ -94,16 +144,24 @@
   _chromeBrowserState = NULL;
 }
 
-- (bool)syncEnabled {
+- (bool)canSyncFeatureStart {
   return _worker->CanSyncFeatureStart();
-}
-
-- (void)setSyncEnabled:(bool)enabled {
-  _worker->SetSyncEnabled(enabled);
 }
 
 - (bool)isSyncFeatureActive {
   return _worker->IsSyncFeatureActive();
+}
+
+- (bool)isFirstSetupComplete {
+  return _worker->IsFirstSetupComplete();
+}
+
+- (void)setSetupComplete {
+  _worker->SetSetupComplete();
+}
+
+- (void)requestSync {
+  _worker->RequestSync();
 }
 
 - (bool)isValidSyncCode:(NSString*)syncCode {
@@ -131,6 +189,39 @@
 - (NSString*)hexSeedFromSyncCode:(NSString*)syncCode {
   return base::SysUTF8ToNSString(
       _worker->GetHexSeedFromSyncCode(base::SysNSStringToUTF8(syncCode)));
+}
+
+- (NSString*)qrCodeJsonFromHexSeed:(NSString*)hexSeed {
+  return base::SysUTF8ToNSString(
+      _worker->GetQrCodeJsonFromHexSeed(base::SysNSStringToUTF8(hexSeed)));
+}
+
+- (BraveSyncAPIQrCodeDataValidationResult)getQRCodeValidationResult:
+    (NSString*)json {
+  return static_cast<BraveSyncAPIQrCodeDataValidationResult>(
+      _worker->GetQrCodeValidationResult(base::SysNSStringToUTF8(json)));
+}
+
+- (BraveSyncAPIWordsValidationStatus)getWordsValidationResult:
+    (NSString*)timeLimitedWords {
+  return static_cast<BraveSyncAPIWordsValidationStatus>(
+      _worker->GetWordsValidationResult(
+          base::SysNSStringToUTF8(timeLimitedWords)));
+}
+
+- (NSString*)getWordsFromTimeLimitedWords:(NSString*)timeLimitedWords {
+  return base::SysUTF8ToNSString(_worker->GetWordsFromTimeLimitedWords(
+      base::SysNSStringToUTF8(timeLimitedWords)));
+}
+
+- (NSString*)getTimeLimitedWordsFromWords:(NSString*)words {
+  return base::SysUTF8ToNSString(
+      _worker->GetTimeLimitedWordsFromWords(base::SysNSStringToUTF8(words)));
+}
+
+- (NSString*)getHexSeedFromQrCodeJson:(NSString*)json {
+  return base::SysUTF8ToNSString(
+      _worker->GetHexSeedFromQrCodeJson(base::SysNSStringToUTF8(json)));
 }
 
 - (UIImage*)getQRCodeImage:(CGSize)size {
