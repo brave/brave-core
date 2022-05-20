@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/toolbar/toolbar_action_view_delegate.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/vector_icons/vector_icons.h"
+#include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_action.h"
 #include "extensions/browser/extension_action_manager.h"
 #include "extensions/browser/extension_registry.h"
