@@ -446,8 +446,13 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->VerifyTip(amount, true, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
+// TODO(https://github.com/brave/brave-browser/issues/12555): This test is known
+// to fail intermittently. The likely cause is that after waiting for tips to
+// reconcile, one or both of the generated fees may have already been removed
+// from the ExternalWallet data.
+IN_PROC_BROWSER_TEST_F(
+    RewardsContributionBrowserTest,
+    DISABLED_MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
