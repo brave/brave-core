@@ -55,13 +55,8 @@ export const BarProgressTooltipContainer = styled.div<{
   criteria: boolean[]
 }>`
   width: 100%;
-  margin-left: -75px;
   z-index: 200;
-
-  transform:
-    translateX(${(p) => (
-      ((p.criteria.filter(c => !!c).length / p.criteria.length) * 100) - 5
-    )}%);
+  transform: translateX(50%);
 `
 
 export const BarMessage = styled.p<{ criteria: boolean[] }>`

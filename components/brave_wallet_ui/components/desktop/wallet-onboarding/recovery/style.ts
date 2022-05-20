@@ -40,6 +40,7 @@ export const CopyButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  text-align: center;
   cursor: pointer;
   outline: none;
   background: none;
@@ -50,7 +51,6 @@ export const CopyButton = styled(WalletButton)`
   font-size: 13px;
   line-height: 20px;
   color: ${(p) => p.theme.color.interactive07};
-  margin-top: 16px;
 `
 
 export const TermsRow = styled.div`
@@ -110,6 +110,7 @@ export const RecoveryPhraseContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   width: 418px;
+  margin-bottom: 16px;
 `
 
 export const RecoveryBubble = styled.div`
@@ -138,4 +139,5 @@ export const BigCheckMark = styled.div`
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 4px;
+  display: inline-block;
 `

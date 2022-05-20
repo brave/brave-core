@@ -10,24 +10,30 @@ interface StyleProps {
 export const TipAndChildrenWrapper = styled.div`
   position: relative;
   cursor: default;
+  display: inline-block flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 `
 
-export const TipWrapper = styled.div<StyleProps>`
+export const TipWrapper = styled.div<StyleProps>`  
   position: absolute;
-  
+
+  left: ${(p) => p.position === 'left' ? 0 : 'unset'};
+  right: ${(p) => p.position === 'right' ? 0 : 'unset'};
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+
   transform: 
-    translateX(${
-      (p) => p.position === 'center'
-        ? '0%'
-        : p?.horizontalMargin
-          ? p.position === 'left'
-            ? '-' + p.horizontalMargin
-            : '' + p.horizontalMargin
-        : '0'
-    })
     translateY(${
       (p) => p.verticalPosition === 'below'
-        ? '0px'
+        ? '8px'
         : '-105%'
     });
 
