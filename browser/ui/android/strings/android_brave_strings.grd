@@ -2269,9 +2269,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
       Your subscription has expired. You can subscribe again at any time.
     </message>
-    <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
-      VPN is running in the background
-    </message>
     <message name="IDS_SUBSCRIPTION" desc="Brave VPN settings section title">
       Subscription
     </message>
@@ -3016,6 +3013,27 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
       Show Top sites
+    </message>
+    <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
+      Connected to <ph name="VALUE">%1$s</ph>
+    </message>
+    <message name="IDS_TRANSFER_BYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> B
+    </message>
+    <message name="IDS_TRANSFER_GIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> GiB
+    </message>
+    <message name="IDS_TRANSFER_KIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> KiB
+    </message>
+    <message name="IDS_TRANSFER_MIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> MiB
+    </message>
+    <message name="IDS_TRANSFER_RX_TX" desc="Brave Vpn notification statistics text" translateable="false">
+      rx: <ph name="RX">%1$s</ph>, tx: <ph name="TX">%2$s</ph>
+    </message>
+    <message name="IDS_TRANSFER_TIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> TiB
     </message>
     <message name="IDS_TRIAL" desc="Brave VPN trial text">
       Trial
