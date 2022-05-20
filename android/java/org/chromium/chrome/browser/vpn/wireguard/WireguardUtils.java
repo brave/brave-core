@@ -14,8 +14,11 @@ import com.wireguard.config.Interface;
 import com.wireguard.config.Peer;
 import com.wireguard.crypto.KeyPair;
 
+import org.chromium.chrome.R;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WireguardUtils {
     public static Interface getInterface(String address, String clientPrivateKey)
@@ -49,5 +52,33 @@ public class WireguardUtils {
             }
         }
         return false;
+    }
+
+    public static String formatBytes(Context context, Long bytes) {
+        String bytesString = "";
+        if (bytes < 1024) {
+            bytesString = String.format(context.getResources().getString(R.string.transfer_bytes),
+                    String.format(Locale.getDefault(), "%.2f", (double) bytes));
+        } else if (bytes < 1024 * 1024) {
+            bytesString =
+                    String.format(context.getResources().getString(R.string.transfer_kibibytes,
+                            String.format(Locale.getDefault(), "%.2f", (double) (bytes / 1024.0))));
+        } else if (bytes < 1024 * 1024 * 1024) {
+            bytesString =
+                    String.format(context.getResources().getString(R.string.transfer_mibibytes,
+                            String.format(Locale.getDefault(), "%.2f",
+                                    (double) (bytes / (1024.0 * 1024.0)))));
+        } else if (bytes < 1024 * 1024 * 1024 * 1024L) {
+            bytesString =
+                    String.format(context.getResources().getString(R.string.transfer_gibibytes,
+                            String.format(Locale.getDefault(), "%.2f",
+                                    (double) (bytes / (1024.0 * 1024.0 * 1024.0)))));
+        } else {
+            bytesString =
+                    String.format(context.getResources().getString(R.string.transfer_tibibytes,
+                            String.format(Locale.getDefault(), "%.2f",
+                                    (double) (bytes / (1024.0 * 1024.0 * 1024.0) / 1024.0))));
+        }
+        return bytesString;
     }
 }

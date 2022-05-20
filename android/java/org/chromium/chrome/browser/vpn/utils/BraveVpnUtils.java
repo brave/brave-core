@@ -8,8 +8,6 @@
 package org.chromium.chrome.browser.vpn.utils;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +15,6 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import org.json.JSONArray;
@@ -49,7 +46,6 @@ public class BraveVpnUtils {
     public static final String SUBSCRIPTION_PARAM_TEXT = "subscription";
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
-    public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     public static boolean mIsServerLocationChanged;
     public static String selectedServerRegion;
@@ -204,28 +200,6 @@ public class BraveVpnUtils {
             Log.e(TAG, "BraveVpnUtils -> getServerLocations JSONException error " + e);
         }
         return vpnServerRegions;
-    }
-
-    public static Notification getBraveVpnNotification(Context context) {
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(context, BraveActivity.CHANNEL_ID);
-
-        notificationBuilder.setSmallIcon(R.drawable.ic_vpn)
-                .setAutoCancel(false)
-                .setContentTitle(context.getResources().getString(R.string.brave_firewall_vpn))
-                .setContentText(
-                        context.getResources().getString(R.string.brave_vpn_notification_message))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        context.getResources().getString(R.string.brave_vpn_notification_message)))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        return notificationBuilder.build();
-    }
-
-    public static void cancelBraveVpnNotification(Context context) {
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(BRAVE_VPN_NOTIFICATION_ID);
     }
 
     public static void resetProfileConfiguration(Activity activity) {
