@@ -16,7 +16,12 @@ import {
 import {
   StyledWrapper
 } from './style'
-import { useSelector } from 'react-redux'
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux'
+
+// Actions
+import { WalletActions } from '../../../common/actions'
 
 export interface Props {
   selectedView: BuySendSwapViewTypes
@@ -43,6 +48,11 @@ export const AccountsAssetsNetworks = (props: Props) => {
   } = useSelector((state: {wallet: WalletState}) => {
     return state.wallet
   })
+  const dispatch = useDispatch()
+
+  const onAddNetwork = () => {
+    dispatch(WalletActions.expandWalletNetworks())
+  }
 
   // render
   return (
@@ -66,6 +76,7 @@ export const AccountsAssetsNetworks = (props: Props) => {
         <SelectNetworkWithHeader
           onBack={goBack}
           hasAddButton={true}
+          onAddNetwork={onAddNetwork}
         />
       }
     </StyledWrapper>
