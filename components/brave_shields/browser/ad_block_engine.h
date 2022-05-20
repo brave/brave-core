@@ -15,8 +15,10 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/values.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -71,13 +73,15 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
             const DATFileDataBuffer& dat_buf,
             const std::string& resources_json);
 
-  class TestObserver : public base::CheckedObserver {
+  class EngineUpdateObserver : public base::CheckedObserver {
    public:
     virtual void OnEngineUpdated() = 0;
   };
 
-  void AddObserverForTest(TestObserver* observer);
-  void RemoveObserverForTest();
+  void AddUpdateObserver(EngineUpdateObserver* observer);
+  void RemoveUpdateObserver(EngineUpdateObserver* observer);
+
+  const adblock::FilterListMetadata& GetLastListMetadata() const;
 
  protected:
   void AddKnownTagsToAdBlockInstance();
@@ -90,6 +94,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
                    const std::string& resources_json);
 
   std::unique_ptr<adblock::Engine> ad_block_client_;
+  adblock::FilterListMetadata metadata_;
 
  private:
   friend class ::AdBlockServiceTest;
@@ -99,7 +104,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
 
   std::set<std::string> tags_;
 
-  raw_ptr<TestObserver> test_observer_ = nullptr;
+  base::ObserverList<EngineUpdateObserver> observers_;
 };
 
 }  // namespace brave_shields

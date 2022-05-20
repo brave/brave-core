@@ -210,15 +210,16 @@ bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
 
 // A test observer that allows blocking waits for an AdBlockEngine to be
 // updated with new rules.
-class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
+class EngineTestObserver
+    : public brave_shields::AdBlockEngine::EngineUpdateObserver {
  public:
   // Constructs an EngineTestObserver which will observe the given adblock
   // engine for filter data updates.
   explicit EngineTestObserver(brave_shields::AdBlockEngine* engine)
       : engine_(engine) {
-    engine_->AddObserverForTest(this);
+    engine_->AddUpdateObserver(this);
   }
-  ~EngineTestObserver() override { engine_->RemoveObserverForTest(); }
+  ~EngineTestObserver() override { engine_->RemoveUpdateObserver(this); }
 
   EngineTestObserver(const EngineTestObserver& other) = delete;
   EngineTestObserver& operator=(const EngineTestObserver& other) = delete;
@@ -795,6 +796,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
     ASSERT_EQ(subscriptions[0].enabled, true);
+    ASSERT_EQ(subscriptions[0].homepage, absl::nullopt);
+    ASSERT_EQ(subscriptions[0].title, absl::nullopt);
   }
 
   // Ensure that the subscription gets update attempts, and ultimately is
@@ -841,6 +844,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
     ASSERT_EQ(subscriptions[0].enabled, false);
+    ASSERT_EQ(subscriptions[0].homepage, "https://example.com/list.txt");
+    ASSERT_EQ(subscriptions[0].title, "Test list");
   }
 
   EXPECT_EQ(true,

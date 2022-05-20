@@ -17,6 +17,12 @@
 typedef struct C_Engine C_Engine;
 
 /**
+ * Includes information about any "special comments" as described by
+ * https://help.eyeo.com/adblockplus/how-to-write-filters#special-comments
+ */
+typedef struct C_FilterListMetadata C_FilterListMetadata;
+
+/**
  * An external callback that receives a hostname and two out-parameters for
  * start and end position. The callback should fill the start and end positions
  * with the start and end indices of the domain part of the hostname.
@@ -34,10 +40,35 @@ typedef void (*C_DomainResolverCallback)(const char*, uint32_t*, uint32_t*);
 bool set_domain_resolver(C_DomainResolverCallback resolver);
 
 /**
- * Create a new `Engine`.
+ * Create a new `Engine`, interpreting `data` as a C string and then parsing as
+ * a filter list in ABP syntax.
+ */
+struct C_Engine* engine_create_from_buffer(const char* data, size_t data_size);
+
+/**
+ * Create a new `Engine`, interpreting `data` as a C string and then parsing as
+ * a filter list in ABP syntax. Also populates metadata from the filter list
+ * into `metadata`.
+ */
+struct C_Engine* engine_create_from_buffer_with_metadata(
+    const char* data,
+    size_t data_size,
+    struct C_FilterListMetadata** metadata);
+
+/**
+ * Create a new `Engine`, interpreting `rules` as a null-terminated C string and
+ * then parsing as a filter list in ABP syntax.
  */
 struct C_Engine* engine_create(const char* rules);
-struct C_Engine* engine_create_from_buffer(const char* data, size_t data_size);
+
+/**
+ * Create a new `Engine`, interpreting `rules` as a null-terminated C string and
+ * then parsing as a filter list in ABP syntax. Also populates metadata from the
+ * filter list into `metadata`.
+ */
+struct C_Engine* engine_create_with_metadata(
+    const char* rules,
+    struct C_FilterListMetadata** metadata);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.
@@ -108,6 +139,25 @@ bool engine_deserialize(struct C_Engine* engine,
  * Destroy a `Engine` once you are done with it.
  */
 void engine_destroy(struct C_Engine* engine);
+
+/**
+ * Puts a pointer to the homepage of the `FilterListMetadata` into `homepage`.
+ * Returns `true` if a homepage was returned.
+ */
+bool filter_list_metadata_homepage(const struct C_FilterListMetadata* metadata,
+                                   char** homepage);
+
+/**
+ * Puts a pointer to the title of the `FilterListMetadata` into `title`. Returns
+ * `true` if a title was returned.
+ */
+bool filter_list_metadata_title(const struct C_FilterListMetadata* metadata,
+                                char** title);
+
+/**
+ * Destroy a `FilterListMetadata` once you are done with it.
+ */
+void filter_list_metadata_destroy(struct C_FilterListMetadata* metadata);
 
 /**
  * Destroy a `*c_char` once you are done with it.

@@ -40,6 +40,52 @@ FilterList::FilterList(const FilterList& other) = default;
 
 FilterList::~FilterList() {}
 
+FilterListMetadata::FilterListMetadata() {}
+
+FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
+  char* str_buffer;
+
+  if (filter_list_metadata_homepage(metadata, &str_buffer)) {
+    homepage = absl::make_optional(std::string(str_buffer));
+    c_char_buffer_destroy(str_buffer);
+  }
+
+  if (filter_list_metadata_title(metadata, &str_buffer)) {
+    title = absl::make_optional(std::string(str_buffer));
+    c_char_buffer_destroy(str_buffer);
+  }
+}
+
+FilterListMetadata::~FilterListMetadata() {}
+
+MetadataAndEngine engineWithMetadata(const std::string& rules) {
+  C_FilterListMetadata* c_metadata;
+  std::unique_ptr<Engine> engine = std::make_unique<Engine>(
+      engine_create_with_metadata(rules.c_str(), &c_metadata));
+  FilterListMetadata metadata = FilterListMetadata(c_metadata);
+  filter_list_metadata_destroy(c_metadata);
+
+  return MetadataAndEngine(metadata, std::move(engine));
+}
+
+MetadataAndEngine engineFromBufferWithMetadata(const char* data,
+                                               size_t data_size) {
+  C_FilterListMetadata* c_metadata;
+  std::unique_ptr<Engine> engine = std::make_unique<Engine>(
+      engine_create_from_buffer_with_metadata(data, data_size, &c_metadata));
+  FilterListMetadata metadata = FilterListMetadata(c_metadata);
+  filter_list_metadata_destroy(c_metadata);
+
+  return MetadataAndEngine(metadata, std::move(engine));
+}
+
+MetadataAndEngine::MetadataAndEngine(FilterListMetadata metadata,
+                                     std::unique_ptr<Engine> engine)
+    : metadata_(metadata), engine_(std::move(engine)) {}
+MetadataAndEngine::~MetadataAndEngine() {}
+
+Engine::Engine(C_Engine* c_engine) : raw(c_engine) {}
+
 Engine::Engine() : raw(engine_create("")) {}
 
 Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {}

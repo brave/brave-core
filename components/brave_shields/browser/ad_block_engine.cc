@@ -208,8 +208,8 @@ void AdBlockEngine::UpdateAdBlockClient(
   ad_block_client_ = std::move(ad_block_client);
   AddResources(resources_json);
   AddKnownTagsToAdBlockInstance();
-  if (test_observer_) {
-    test_observer_->OnEngineUpdated();
+  for (AdBlockEngine::EngineUpdateObserver& observer : observers_) {
+    observer.OnEngineUpdated();
   }
 }
 
@@ -220,10 +220,15 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
 
 void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
                                        const std::string& resources_json) {
-  UpdateAdBlockClient(
-      std::make_unique<adblock::Engine>(
-          reinterpret_cast<const char*>(filters.data()), filters.size()),
-      resources_json);
+  adblock::MetadataAndEngine metadata_and_engine =
+      adblock::engineFromBufferWithMetadata(
+          reinterpret_cast<const char*>(filters.data()), filters.size());
+  metadata_ = metadata_and_engine.metadata_;
+  UpdateAdBlockClient(std::move(metadata_and_engine.engine_), resources_json);
+}
+
+const adblock::FilterListMetadata& AdBlockEngine::GetLastListMetadata() const {
+  return metadata_;
 }
 
 void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
@@ -240,12 +245,14 @@ void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
   UpdateAdBlockClient(std::move(client), resources_json);
 }
 
-void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
-  test_observer_ = observer;
+void AdBlockEngine::AddUpdateObserver(
+    AdBlockEngine::EngineUpdateObserver* observer) {
+  observers_.AddObserver(observer);
 }
 
-void AdBlockEngine::RemoveObserverForTest() {
-  test_observer_ = nullptr;
+void AdBlockEngine::RemoveUpdateObserver(
+    AdBlockEngine::EngineUpdateObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 }  // namespace brave_shields

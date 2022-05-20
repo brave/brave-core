@@ -48,6 +48,10 @@ using brave_component_updater::BraveComponent;
 namespace brave_shields {
 
 struct SubscriptionInfo {
+  SubscriptionInfo();
+  ~SubscriptionInfo();
+  SubscriptionInfo(const SubscriptionInfo&);
+
   // The URL used to fetch the list, which is also used as a unique identifier
   // for a subscription service.
   GURL subscription_url;
@@ -63,8 +67,23 @@ struct SubscriptionInfo {
   // updated.
   bool enabled;
 
+  absl::optional<std::string> homepage;
+  absl::optional<std::string> title;
+
   static void RegisterJSONConverter(
       base::JSONValueConverter<SubscriptionInfo>*);
+};
+
+class SubscriptionEngineUpdateObserver : AdBlockEngine::EngineUpdateObserver {
+ public:
+  SubscriptionEngineUpdateObserver(
+      base::WeakPtr<AdBlockEngine> engine,
+      base::RepeatingCallback<void()> on_updated_callback);
+  ~SubscriptionEngineUpdateObserver() override;
+  void OnEngineUpdated() override;
+
+ private:
+  base::RepeatingCallback<void()> on_updated_callback_;
 };
 
 // The AdBlock subscription service manager, in charge of initializing and
@@ -138,6 +157,8 @@ class AdBlockSubscriptionServiceManager {
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
 
+  void OnEngineUpdated(const GURL& sub_url);
+
   absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
@@ -159,6 +180,8 @@ class AdBlockSubscriptionServiceManager {
       subscription_filters_providers_;
   std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
       subscription_source_observers_;
+  std::map<GURL, std::unique_ptr<SubscriptionEngineUpdateObserver>>
+      engine_update_observers_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 
