@@ -433,6 +433,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
+    Preferences.Wallet.defaultWallet.observe(from: self)
     
     // Lists need to be compiled before attempting tab restoration
     
@@ -3281,6 +3282,9 @@ extension BrowserViewController: PreferencesObserver {
       PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
+    case Preferences.Wallet.defaultWallet.key:
+      tabManager.reset()
+      tabManager.reloadSelectedTab()
     default:
       log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
       break

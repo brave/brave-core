@@ -74,6 +74,21 @@ public class SettingsStore: ObservableObject {
   public func addKeyringServiceObserver(_ observer: BraveWalletKeyringServiceObserver) {
     keyringService.add(observer)
   }
+  
+  private var manageSiteConnectionsStore: ManageSiteConnectionsStore?
+
+  func manageSiteConnectionsStore(keyringStore: KeyringStore) -> ManageSiteConnectionsStore {
+    if let manageSiteConnectionsStore = manageSiteConnectionsStore {
+      return manageSiteConnectionsStore
+    }
+    let manageSiteConnectionsStore = ManageSiteConnectionsStore(keyringStore: keyringStore)
+    self.manageSiteConnectionsStore = manageSiteConnectionsStore
+    return manageSiteConnectionsStore
+  }
+  
+  func closeManageSiteConnectionStore() {
+    manageSiteConnectionsStore = nil
+  }
 }
 
 struct CurrencyCode: Hashable, Identifiable {
