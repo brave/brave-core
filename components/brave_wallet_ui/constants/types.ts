@@ -17,7 +17,7 @@ export { TimeDelta }
 interface TokenBalanceRegistry {
   [contractAddress: string]: string
 }
-const BraveKeyringsTypes = [BraveWallet.DEFAULT_KEYRING_ID, BraveWallet.FILECOIN_KEYRING_ID] as const
+const BraveKeyringsTypes = [BraveWallet.DEFAULT_KEYRING_ID, BraveWallet.FILECOIN_KEYRING_ID, BraveWallet.SOLANA_KEYRING_ID] as const
 export type BraveKeyrings = typeof BraveKeyringsTypes[number]
 
 export interface WalletAccountType {

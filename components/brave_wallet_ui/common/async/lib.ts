@@ -173,6 +173,9 @@ export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings
   if (coin === BraveWallet.CoinType.FIL) {
     return BraveWallet.FILECOIN_KEYRING_ID
   }
+  if (coin === BraveWallet.CoinType.SOL) {
+    return BraveWallet.SOLANA_KEYRING_ID
+  }
   assert(coin === BraveWallet.CoinType.ETH)
   return BraveWallet.DEFAULT_KEYRING_ID
 }
