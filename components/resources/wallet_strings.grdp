@@ -126,7 +126,7 @@
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_DESCRIPTION" desc="Verify Recovery screen description">Select the words in your recovery phrase in their correct order.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_ERROR" desc="Verify Recovery screen error">Recovery phrase did not match, please try again.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_TITLE" desc="Verify Recovery phrase screen title">Verify your recovery phrase</message>
-  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the First(1st), Third(3rd), and Last(12th) word of your recovery phrase.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the <ph name="FIRST_BEFORE">$1</ph>First(1st)<ph name="FIRST_AFTER">$2</ph>, <ph name="THIRD_BEFORE">$3</ph>Third(3rd)<ph name="THIRD_AFTER">$4</ph>, and <ph name="LAST_BEFORE">$5</ph>Last(12th)<ph name="LAST_AFTER">$6</ph> word of your recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_PHRASE_ERROR" desc="Verify Recovery phrase screen error">Recovery phrase didn't match</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_TITLE" desc="Create Password screen title">Create a new password</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION" desc="Create Password screen description">You will need to enter the password to access your wallet from your Browser.</message>
