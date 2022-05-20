@@ -40,26 +40,23 @@ export const OnboardingCreatePassword = () => {
 
   // state
   const [isValid, setIsValid] = React.useState(false)
+  const [password, setPassword] = React.useState('')
 
   // methods
   const nextStep = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
-  }, [])
+    if (isValid) {
+      dispatch(WalletPageActions.createWallet({ password }))
+      history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+    }
+  }, [password, isValid])
 
   const handlePasswordChange = React.useCallback(({ isValid, password }: NewPasswordValues) => {
+    setPassword(password)
     setIsValid(isValid)
   }, [])
 
-  const handlePasswordSubmit = React.useCallback(({ isValid, password }: NewPasswordValues) => {
-    alert(password)
-    if (isValid) {
-      dispatch(WalletPageActions.createWallet({ password }))
-      nextStep()
-    }
-  }, [nextStep])
-
   const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.Onboarding)
+    history.push(WalletRoutes.OnboardingWelcome)
   }, [])
 
   // render
@@ -81,7 +78,7 @@ export const OnboardingCreatePassword = () => {
 
           <NewPasswordInput
             autoFocus={true}
-            onSubmit={handlePasswordSubmit}
+            onSubmit={nextStep}
             onChange={handlePasswordChange}
           />
 
