@@ -41,7 +41,9 @@ function SelectNetworkItem (props: Props) {
         <CreateNetworkIcon network={network} marginRight={14} />
         <NetworkName>{network.chainName}</NetworkName>
       </LeftSide>
-      {selectedNetwork.chainId === network.chainId &&
+      {
+        selectedNetwork.chainId === network.chainId &&
+        selectedNetwork.coin === network.coin &&
         <BigCheckMark />
       }
     </StyledWrapper>

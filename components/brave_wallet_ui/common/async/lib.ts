@@ -514,14 +514,14 @@ export function refreshNetworkInfo () {
     // Get default network for each coinType
     const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
       const coinsChainId = await jsonRpcService.getChainId(coin)
-      const network = getNetworkInfo(coinsChainId.chainId, networkList)
+      const network = getNetworkInfo(coinsChainId.chainId, coin, networkList)
       return network
     }))
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
     const chainId = await jsonRpcService.getChainId(selectedCoin)
-    const currentNetwork = getNetworkInfo(chainId.chainId, networkList)
+    const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
     dispatch(WalletActions.setNetwork(currentNetwork))
     return currentNetwork
   }

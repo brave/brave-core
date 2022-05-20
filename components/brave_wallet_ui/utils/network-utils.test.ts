@@ -17,13 +17,14 @@ const ethMainNetwork = mockNetworks[0]
 
 describe('getNetworkInfo', () => {
   it('should return network info', () => {
-    const chainId = ethMainNetwork.chainId
-    expect(getNetworkInfo(chainId, mockNetworks)).toEqual(ethMainNetwork)
+    const { chainId, coin } = ethMainNetwork
+    expect(getNetworkInfo(chainId, coin, mockNetworks)).toEqual(ethMainNetwork)
   })
 
   it('should return network object with default values if network with chainId is not found', () => {
     const chainId = 'fakeChainId'
-    expect(getNetworkInfo(chainId, mockNetworks)).toEqual(emptyNetwork)
+    const coin = BraveWallet.CoinType.ETH
+    expect(getNetworkInfo(chainId, coin, mockNetworks)).toEqual(emptyNetwork)
   })
 })
 
