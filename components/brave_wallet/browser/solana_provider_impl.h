@@ -55,6 +55,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void Request(base::Value arg, RequestCallback callback) override;
 
  private:
+  bool IsAccountConnected(const std::string& account);
   void ContinueConnect(bool is_eagerly_connect,
                        const std::string& selected_account,
                        ConnectCallback callback,

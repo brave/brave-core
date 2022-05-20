@@ -97,12 +97,20 @@ void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
   if (!account)
     std::move(callback).Run(false);
   else
-    std::move(callback).Run(connected_set_.contains(*account));
+    std::move(callback).Run(IsAccountConnected(*account));
 }
 
 void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
-  NOTIMPLEMENTED();
-  std::move(callback).Run("");
+  absl::optional<std::string> account =
+      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  if (!account) {
+    std::move(callback).Run("");
+    return;
+  }
+  if (IsAccountConnected(*account))
+    std::move(callback).Run(*account);
+  else
+    std::move(callback).Run("");
 }
 
 void SolanaProviderImpl::SignTransaction(
@@ -142,7 +150,7 @@ void SolanaProviderImpl::SignMessage(
                             base::Value(base::Value::Type::DICTIONARY));
     return;
   }
-  if (!connected_set_.contains(*account)) {
+  if (!IsAccountConnected(*account)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
                             base::Value(base::Value::Type::DICTIONARY));
@@ -170,6 +178,10 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
   NOTIMPLEMENTED();
   std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
                           std::move(result));
+}
+
+bool SolanaProviderImpl::IsAccountConnected(const std::string& account) {
+  return connected_set_.contains(account);
 }
 
 void SolanaProviderImpl::ContinueConnect(bool is_eagerly_connect,
@@ -253,7 +265,7 @@ void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
   DCHECK(keyring_service_);
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
-  if (connected_set_.contains(*account))
+  if (IsAccountConnected(*account))
     events_listener_->AccountChangedEvent(account);
   else
     events_listener_->AccountChangedEvent(absl::nullopt);

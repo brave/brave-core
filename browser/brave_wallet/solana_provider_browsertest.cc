@@ -92,6 +92,13 @@ class SolanaProviderTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void LockWallet() {
+    keyring_service_->Lock();
+    // Needed so KeyringServiceObserver::Locked handler can be hit
+    // which the provider object listens to for the accountsChanged event.
+    base::RunLoop().RunUntilIdle();
+  }
+
   void AddAccount() {
     base::RunLoop run_loop;
     keyring_service_->AddAccount(
@@ -282,6 +289,40 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
     WaitForResultReady();
     EXPECT_EQ(GetSignMessageResult(), expected_signature);
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
+  RestoreWallet();
+  AddAccount();
+  SetSelectedAccount(first_account);
+  GURL url = https_server()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  constexpr char get_public_key_script[] =
+      "window.domAutomationController.send(window.solana."
+      "publicKey ? window.solana.publicKey.toString() : '')";
+
+  // Will get null in disconnected state
+  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            "");
+
+  CallSolanaConnect();
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected());
+
+  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            first_account);
+
+  LockWallet();
+  // Publickey is still accessible when wallet is locked
+  EXPECT_EQ(EvalJs(web_contents(), get_public_key_script,
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            first_account);
 }
 
 }  // namespace brave_wallet
