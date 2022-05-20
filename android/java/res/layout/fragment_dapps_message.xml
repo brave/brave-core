@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:minHeight="100dp"
         android:inputType="none"
+        android:paddingVertical="10dp"
         android:textIsSelectable="true"
         android:focusable="false"
         android:longClickable="false"

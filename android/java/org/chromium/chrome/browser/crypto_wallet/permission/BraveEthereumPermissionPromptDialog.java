@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -20,10 +21,13 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.content_public.browser.ImageDownloadCallback;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -57,6 +61,7 @@ public class BraveEthereumPermissionPromptDialog
     private int mRequestId; // Used for favicon downloader
     private KeyringService mKeyringService;
     private boolean mMojoServicesClosed;
+    private BraveWalletService mBraveWalletService;
 
     @CalledByNative
     private static BraveEthereumPermissionPromptDialog create(long nativeDialogController,
@@ -84,11 +89,11 @@ public class BraveEthereumPermissionPromptDialog
         mFavIconImage = customView.findViewById(R.id.favicon);
         setFavIcon();
         mRecyclerView = customView.findViewById(R.id.accounts_list);
-        GURL visibleUrl = mWebContents.getVisibleUrl();
-        if (visibleUrl != null) {
-            TextView domain = customView.findViewById(R.id.domain);
-            domain.setText(visibleUrl.getOrigin().getSpec());
-        }
+
+        InitBraveWalletService();
+        TextView domain = customView.findViewById(R.id.domain);
+        mBraveWalletService.geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
+                origin -> { domain.setText(Utils.geteTLD(origin.eTldPlusOne)); });
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
@@ -109,6 +114,13 @@ public class BraveEthereumPermissionPromptDialog
         if (activity != null) {
             activity.dismissWalletPanelOrDialog();
         }
+    }
+
+    private void InitBraveWalletService() {
+        if (mBraveWalletService != null) {
+            return;
+        }
+        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
     private void initAccounts() {
@@ -202,11 +214,14 @@ public class BraveEthereumPermissionPromptDialog
 
     public void DisconnectMojoServices() {
         mMojoServicesClosed = true;
-        if (mKeyringService == null) {
-            return;
+        if (mKeyringService != null) {
+            mKeyringService.close();
+            mKeyringService = null;
         }
-        mKeyringService.close();
-        mKeyringService = null;
+        if (mBraveWalletService != null) {
+            mBraveWalletService.close();
+            mBraveWalletService = null;
+        }
     }
 
     @Override
