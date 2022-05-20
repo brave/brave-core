@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 16a2e7318f494481a01153f0945fabe8676d14a3..f146c8bb543f4365228bdbe4ea527bf4ffd8e6b2 100644
+index e7d8cd3b263da83ce129e231e60bc1b0a6581e82..f0870711de3e9505cd9bf55fd73c58e3924dd67c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -401,7 +401,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-     private TextBubbleBackPressHandler mTextBubbleBackPressHandler;
+@@ -403,7 +403,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+     private Callback<TabModelSelector> mSelectionPopupBackPressInitCallback;
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
