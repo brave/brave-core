@@ -11,6 +11,16 @@ export const PasswordStrengthTextWrapper = styled.div`
   margin-bottom: 20px;
 `
 
+export const CriteriaCheckContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 4px;
+`
+
 export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
   font-family: Poppins;
   font-style: normal;
