@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 import {
   StyledWrapper,
@@ -15,20 +16,22 @@ import {
   PlaceholderBubble
 } from './style'
 import { NavButton } from '../../../extension'
-import { RecoveryObject } from '../../../../constants/types'
+import { PageState, RecoveryObject } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import { DropBoundary } from '../../../shared/drop-boundary'
 import { unbiasedRandom } from '../../../../utils/random-utils'
 
 export interface Props {
-  recoveryPhrase: string[]
   onNextStep: () => void
 }
 
 export function OnboardingVerify ({
-  onNextStep,
-  recoveryPhrase
+  onNextStep
 }: Props) {
+  // redux
+  const mnemonic = useSelector(({ page }: { page: PageState }) => page?.mnemonic)
+  const recoveryPhrase = React.useMemo(() => (mnemonic || '').split(' '), [mnemonic])
+
   // state
   const [hasVerifyError, setVerifyError] = React.useState<boolean>(false)
   const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])

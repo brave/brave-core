@@ -270,21 +270,22 @@ function Container (props: Props) {
     props.walletActions.unlockWallet({ password: inputValue })
     setInputValue('')
   }
-  const onLockWallet = () => {
-    props.walletActions.lockWallet()
-  }
+
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
     if (hasIncorrectPassword) {
       props.walletActions.hasIncorrectPassword(false)
     }
   }
+
   const onRestore = () => {
     props.walletPanelActions.expandRestoreWallet()
   }
+
   const onSetup = () => {
     props.walletPanelActions.setupWallet()
   }
+
   const addToFavorites = (app: BraveWallet.AppItem) => {
     props.walletActions.addFavoriteApp(app)
   }
@@ -976,7 +977,6 @@ function Container (props: Props) {
         selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={isConnectedToSite}
         navAction={navigateTo}
-        onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
         originInfo={activeOrigin}
         isSwapSupported={isSwapSupported}

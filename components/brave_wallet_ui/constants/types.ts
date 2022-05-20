@@ -266,7 +266,6 @@ export interface PageState {
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
-
 }
 
 export interface WalletPageState {
@@ -558,26 +557,45 @@ export type UpdateAccountNamePayloadType = {
   isDerived: boolean
 }
 
-export enum WalletOnboardingSteps {
-  OnboardingWelcome = 0,
-  OnboardingCreatePassword = 1,
-  OnboardingBackupWallet = 2,
-  OnboardingImportMetaMask = 3,
-  OnboardingImportCryptoWallets = 4
-}
-
 export enum WalletRoutes {
-  Unlock = '/crypto/unlock',
+  // index
+  CryptoPage = '/crypto/:category/:id?',
+
+  // onboarding
   Onboarding = '/crypto/onboarding',
-  Restore = '/crypto/restore-wallet',
-  Portfolio = '/crypto/portfolio',
-  PortfolioSub = '/crypto/portfolio/:id?',
+  OnboardingCreatePassword = '/crypto/onboarding/create-password',
+  OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
+  OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
+  OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+
+  // accounts
   Accounts = '/crypto/accounts',
+  Account = '/crypto/accounts/:id',
+
+  // add account modals
   AddAccountModal = '/crypto/accounts/add-account',
-  AddAssetModal = '/crypto/portfolio/add-asset',
-  AccountsSub = '/crypto/accounts/:id?',
+  CreateAccountModalStart = '/crypto/accounts/add-account/create/',
+  CreateAccountModal = '/crypto/accounts/add-account/create/:accountTypeName?',
+
+  // import account modals
+  ImportAccountModalStart = '/crypto/accounts/add-account/import/',
+  ImportAccountModal = '/crypto/accounts/add-account/import/:accountTypeName?',
+
+  // hardware wallet import modals
+  AddHardwareAccountModalStart = '/crypto/accounts/add-account/hardware',
+  AddHardwareAccountModal = '/crypto/accounts/add-account/hardware/:accountTypeName?',
+
+  // wallet mangement
   Backup = '/crypto/backup-wallet',
-  CryptoPage = '/crypto/:category/:id?'
+  Restore = '/crypto/restore-wallet',
+  Unlock = '/crypto/unlock',
+
+  // portfolio
+  Portfolio = '/crypto/portfolio',
+  PortfolioAsset = '/crypto/portfolio/:id',
+
+  // portfolio asset modals
+  AddAssetModal = '/crypto/portfolio/add-asset',
 }
 
 export const WalletOrigin = 'chrome://wallet'

@@ -1,8 +1,25 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router'
+
+// actions
+import { WalletPageActions } from '../../../../page/actions'
+
+// utils
+import { getLocale } from '../../../../../common/locale'
+
+// types
 import {
-  WalletOnboardingSteps,
-  ImportWalletError
+  PageState,
+  WalletRoutes
 } from '../../../../constants/types'
+
+// components
 import {
   StyledWrapper,
   Title,
@@ -17,70 +34,155 @@ import {
 import { Checkbox } from 'brave-ui'
 import { PasswordInput } from '../../../shared'
 import { NavButton } from '../../../extension'
-import { getLocale } from '../../../../../common/locale'
 
-export interface Props {
-  onSubmit: () => void
-  onPasswordChanged: (value: string) => void
-  onConfirmPasswordChanged: (value: string) => void
-  onImportPasswordChanged: (value: string) => void
-  onClickLost: () => void
-  onUseSamePassword: (selected: boolean) => void
-  password: string
-  confirmedPassword: string
-  useSamePassword: boolean
-  importError: ImportWalletError
-  hasPasswordError: boolean
-  hasConfirmPasswordError: boolean
-  disabled: boolean
-  onboardingStep: WalletOnboardingSteps
-  needsNewPassword: boolean
-  useSamePasswordVerified: boolean
-  importPassword: string
-}
+// hooks
+import { usePasswordStrength } from '../../../../common/hooks/use-password-strength'
 
-function OnboardingImportMetaMaskOrLegacy (props: Props) {
+function OnboardingImportMetaMaskOrLegacy () {
+  // routing
+  const history = useHistory()
+  const { pathname: currentRoute } = useLocation()
+
+  // redux
+  const dispatch = useDispatch()
+  const importWalletError = useSelector(({ page }: { page: PageState }) => page.importWalletError)
+
+  // state
+  const [needsNewPassword, setNeedsNewPassword] = React.useState<boolean>(false)
+  const [useSamePassword, setUseSamePassword] = React.useState<boolean>(false)
+  const [useSamePasswordVerified, setUseSamePasswordVerified] = React.useState<boolean>(false)
+  const [importPassword, setImportPassword] = React.useState<string>('')
+  const [isStrongImportPassword, setIsStrongImportPassword] = React.useState<boolean>(false)
+
+  // custom hooks
   const {
-    onSubmit,
-    onPasswordChanged,
-    onConfirmPasswordChanged,
-    onImportPasswordChanged,
-    onClickLost,
-    onUseSamePassword,
-    useSamePasswordVerified,
-    importPassword,
-    password,
+    checkIsStrongPassword,
     confirmedPassword,
-    useSamePassword,
+    hasConfirmedPasswordError,
     hasPasswordError,
-    hasConfirmPasswordError,
-    importError,
-    onboardingStep,
-    disabled,
-    needsNewPassword
-  } = props
+    onPasswordChanged,
+    password,
+    setConfirmedPassword
+  } = usePasswordStrength()
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !disabled) {
-      onSubmit()
+  // memos
+  React.useMemo(() => {
+    if (importWalletError.hasError) {
+      setUseSamePassword(false)
+      setNeedsNewPassword(false)
+      setUseSamePasswordVerified(false)
     }
-  }
+  }, [importWalletError])
 
-  const isMetaMask = onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask
+  // computed
+  const isMetaMask = currentRoute === WalletRoutes.OnboardingImportMetaMask
 
-  const onSelectUseSamePassword = (key: string, selected: boolean) => {
+  const isCreateWalletDisabled = hasConfirmedPasswordError ||
+    hasPasswordError ||
+    password === '' ||
+    confirmedPassword === ''
+
+  const isImportDisabled = isCreateWalletDisabled || importPassword === ''
+
+  // methods
+  const setImportWalletError = React.useCallback((hasError: boolean) => {
+    dispatch(WalletPageActions.setImportWalletError({ hasError }))
+  }, [])
+
+  const handleImportPasswordChanged = React.useCallback(async (value: string) => {
+    if (importWalletError.hasError) {
+      setImportWalletError(false)
+    }
+
+    if (needsNewPassword || useSamePasswordVerified) {
+      setNeedsNewPassword(false)
+      setUseSamePassword(false)
+    }
+
+    setImportPassword(value)
+
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongImportPassword(isStrong)
+  }, [
+    importWalletError,
+    needsNewPassword,
+    useSamePasswordVerified,
+    setImportWalletError,
+    checkIsStrongPassword,
+    setIsStrongImportPassword
+  ])
+
+  const onImportMetaMask = React.useCallback((password: string, newPassword: string) => {
+    dispatch(WalletPageActions.importFromMetaMask({ password, newPassword }))
+  }, [])
+
+  const onImportCryptoWallets = React.useCallback((password: string, newPassword: string) => {
+    dispatch(WalletPageActions.importFromCryptoWallets({ password, newPassword }))
+  }, [])
+
+  const onImport = React.useCallback(
+    () => {
+      if (currentRoute === WalletRoutes.OnboardingImportMetaMask) {
+        onImportMetaMask(importPassword, confirmedPassword)
+      } else {
+        onImportCryptoWallets(importPassword, confirmedPassword)
+      }
+    },
+    [
+      currentRoute,
+      importPassword,
+      confirmedPassword,
+      onImportMetaMask,
+      onImportCryptoWallets
+    ]
+  )
+
+  const onClickLost = React.useCallback(() => {
+    history.push(WalletRoutes.OnboardingCreatePassword)
+  }, [])
+
+  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && !isImportDisabled) {
+      onImport()
+    }
+  }, [isImportDisabled, onImport])
+
+  const onSelectUseSamePassword = React.useCallback((key: string, selected: boolean) => {
     if (key === 'useSamePassword') {
-      onUseSamePassword(selected)
+      setUseSamePassword(selected)
     }
-  }
+  }, [])
 
+  // effects
+  React.useEffect(() => {
+    if (useSamePassword) {
+      onPasswordChanged(importPassword)
+      setConfirmedPassword(importPassword)
+      if (!isStrongImportPassword) {
+        setNeedsNewPassword(true)
+        setUseSamePasswordVerified(false)
+      } else {
+        setNeedsNewPassword(false)
+        setUseSamePasswordVerified(true)
+      }
+    } else {
+      onPasswordChanged('')
+      setConfirmedPassword('')
+      setNeedsNewPassword(false)
+      setUseSamePasswordVerified(false)
+    }
+  }, [useSamePassword])
+
+  // render
   return (
     <StyledWrapper>
+
       {isMetaMask ? (
         <MetaMaskIcon />
       ) : (
         <BraveIcon />
       )}
+
       <Title>
         {getLocale('braveWalletImportTitle').replace('$1',
           isMetaMask
@@ -88,6 +190,7 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
             : getLocale('braveWalletImportBraveLegacyTitle')
         )}
       </Title>
+
       <Description>
         {getLocale('braveWalletImportDescription').replace('$1',
           isMetaMask
@@ -95,15 +198,17 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
             : getLocale('braveWalletImportBraveLegacyTitle')
         )}
       </Description>
+
       <InputColumn useSamePasswordVerified={useSamePasswordVerified}>
         <PasswordInput
           placeholder={isMetaMask ? getLocale('braveWalletImportMetaMaskInput') : getLocale('braveWalletImportBraveLegacyInput')}
-          onChange={onImportPasswordChanged}
-          error={importError.errorMessage ? importError.errorMessage : ''}
-          hasError={importError.hasError}
+          onChange={handleImportPasswordChanged}
+          error={importWalletError.errorMessage ? importWalletError.errorMessage : ''}
+          hasError={importWalletError.hasError}
           autoFocus={true}
         />
       </InputColumn>
+
       {!useSamePasswordVerified &&
         <PasswordTitle needsNewPassword={needsNewPassword}>
           {needsNewPassword
@@ -111,6 +216,7 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
             : getLocale('braveWalletImportFromExternalCreatePassword')}
         </PasswordTitle>
       }
+
       {!needsNewPassword &&
         <CheckboxRow>
           <Checkbox disabled={importPassword === ''} value={{ useSamePassword: useSamePassword }} onChange={onSelectUseSamePassword}>
@@ -118,6 +224,7 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
           </Checkbox>
         </CheckboxRow>
       }
+
       {!useSamePasswordVerified &&
         <>
           <Description>{getLocale('braveWalletCreatePasswordDescription')}</Description>
@@ -133,17 +240,26 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
             <PasswordInput
               placeholder={getLocale('braveWalletConfirmPasswordInput')}
               value={confirmedPassword}
-              onChange={onConfirmPasswordChanged}
+              onChange={setConfirmedPassword}
               onKeyDown={handleKeyDown}
               error={getLocale('braveWalletConfirmPasswordError')}
-              hasError={hasConfirmPasswordError}
+              hasError={hasConfirmedPasswordError}
             />
           </InputColumn>
         </>
       }
-      <NavButton buttonType='primary' text={getLocale('braveWalletAddAccountImport')} onSubmit={onSubmit} disabled={disabled} />
+
+      <NavButton
+        buttonType='primary'
+        text={getLocale('braveWalletAddAccountImport')}
+        onSubmit={onImport}
+        disabled={isImportDisabled}
+      />
+
       {!isMetaMask &&
-        <LostButton onClick={onClickLost}>{getLocale('braveWalletImportBraveLegacyAltButton')}</LostButton>
+        <LostButton onClick={onClickLost}>
+          {getLocale('braveWalletImportBraveLegacyAltButton')}
+        </LostButton>
       }
     </StyledWrapper>
   )

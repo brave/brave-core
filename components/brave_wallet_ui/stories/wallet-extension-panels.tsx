@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { combineReducers, createStore } from 'redux'
@@ -35,7 +40,8 @@ import {
   AppsListType,
   BuySendSwapViewTypes,
   Origin,
-  WalletState
+  WalletState,
+  AccountTransactions
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { filterAppList } from '../utils/filter-app-list'
@@ -51,7 +57,13 @@ import {
 import { mockNetworks } from './mock-data/mock-networks'
 import { PanelTitles } from '../options/panel-titles'
 import './locale'
-import { transactionDummyData } from './wallet-concept'
+import { LibContext } from '../common/context/lib.context'
+import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
+import { createWalletReducer } from '../common/reducers/wallet_reducer'
+import { createPageReducer } from '../page/reducers/page_reducer'
+
+// mocks
+import * as MockedLib from '../common/async/__mocks__/lib'
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-data/mock-transaction-info'
 import { mockDefaultCurrencies } from './mock-data/mock-default-currencies'
 import { mockTransactionSpotPrices } from './mock-data/current-price-data'
@@ -59,15 +71,11 @@ import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
-import { LibContext } from '../common/context/lib.context'
-import * as MockedLib from '../common/async/__mocks__/lib'
-
-import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
-import { createWalletReducer } from '../common/reducers/wallet_reducer'
-import { createPageReducer } from '../page/reducers/page_reducer'
 import { mockPageState } from './mock-data/mock-page-state'
 import { mockWalletState } from './mock-data/mock-wallet-state'
 import { mockSendCryptoState } from './mock-data/send-crypto-state'
+import { mockUserAccounts } from './mock-data/user-accounts'
+
 export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
@@ -76,6 +84,237 @@ export default {
   argTypes: {
     locked: { control: { type: 'boolean', lock: false } }
   }
+}
+
+const transactionDummyData: AccountTransactions = {
+  [mockUserAccounts[0].id]: [
+    {
+      fromAddress: 'ETHEREUM ACCOUNT 1',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: 'ETHEREUM ACCOUNT 2',
+            value: '0xb1a2bc2ec50000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 3,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
+      submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
+      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
+      originInfo: mockOriginInfo
+    },
+    {
+      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec50000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 3,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
+    },
+    {
+      fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 4,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
+    },
+    {
+      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 2,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
+    },
+    {
+      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 1,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
+    }
+  ],
+  [mockUserAccounts[1].id]: [
+    {
+      fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 0,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
+    },
+    {
+      fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 5,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
+    }
+  ]
 }
 
 const originInfo = mockOriginInfo
@@ -450,10 +689,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     }
   }
 
-  const onLockWallet = () => {
-    setWalletLocked(true)
-  }
-
   const handlePasswordChanged = (value: string) => {
     setHasPasswordError(false)
     setInputValue(value)
@@ -531,7 +766,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                 selectedAccount={selectedAccount}
                 isConnected={true}
                 navAction={navigateTo}
-                onLockWallet={onLockWallet}
                 onOpenSettings={onOpenSettings}
                 originInfo={originInfo}
                 isSwapSupported={true}

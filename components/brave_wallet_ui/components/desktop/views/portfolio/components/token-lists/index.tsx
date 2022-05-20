@@ -1,10 +1,17 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { useHistory } from 'react-router'
 
 // Types
 import {
   BraveWallet,
   UserAssetInfoType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  WalletRoutes
 } from '../../../../../../constants/types'
 
 // Utils
@@ -36,7 +43,6 @@ export interface Props {
   networks: BraveWallet.NetworkInfo[]
   onSetFilteredAssetList: (filteredList: UserAssetInfoType[]) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => () => void
-  onShowAssetModal: () => void
 }
 
 const TokenLists = (props: Props) => {
@@ -48,14 +54,26 @@ const TokenLists = (props: Props) => {
     hideBalances,
     networks,
     onSelectAsset,
-    onShowAssetModal,
     onSetFilteredAssetList
   } = props
 
-  const erc721TokenList = React.useMemo(() => filteredAssetList.filter((token) => token.asset.isErc721), [filteredAssetList])
+  // routing
+  const history = useHistory()
 
+  // memos
+  const nonFungibleTokenList = React.useMemo(
+    () => filteredAssetList.filter(({ asset }) => asset.isErc721),
+    [filteredAssetList]
+  )
+
+  const fungibleTokenList = React.useMemo(
+    () => filteredAssetList.filter(({ asset }) => !asset.isErc721),
+    [filteredAssetList]
+  )
+
+  // methods
   // This filters a list of assets when the user types in search bar
-  const onFilterAssets = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onFilterAssets = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value
     if (search === '') {
       onSetFilteredAssetList(userAssetList)
@@ -70,15 +88,20 @@ const TokenLists = (props: Props) => {
       })
       onSetFilteredAssetList(filteredList)
     }
-  }
+  }, [onSetFilteredAssetList, userAssetList])
 
+  const showAddAssetsModal = React.useCallback(() => {
+    history.push(WalletRoutes.AddAssetModal)
+  }, [])
+
+  // render
   return (
     <>
       <FilterTokenRow>
         <SearchBar placeholder={getLocale('braveWalletSearchText')} action={onFilterAssets} />
         <NetworkFilterSelector />
       </FilterTokenRow>
-      {filteredAssetList.filter((asset) => !asset.asset.isErc721).map((item) =>
+      {fungibleTokenList.map((item) =>
         <PortfolioAssetItem
           spotPrices={tokenPrices}
           defaultCurrencies={defaultCurrencies}
@@ -90,12 +113,12 @@ const TokenLists = (props: Props) => {
           networks={networks}
         />
       )}
-      {erc721TokenList.length !== 0 &&
+      {nonFungibleTokenList.length !== 0 &&
         <>
           <Spacer />
           <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
           <SubDivider />
-          {erc721TokenList.map((item) =>
+          {nonFungibleTokenList.map((item) =>
             <PortfolioAssetItem
               spotPrices={tokenPrices}
               defaultCurrencies={defaultCurrencies}
@@ -112,7 +135,7 @@ const TokenLists = (props: Props) => {
       <ButtonRow>
         <AddButton
           buttonType='secondary'
-          onSubmit={onShowAssetModal}
+          onSubmit={showAddAssetsModal}
           text={getLocale('braveWalletAccountsEditVisibleAssets')}
         />
       </ButtonRow>

@@ -1,15 +1,20 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
+
+// Utils
+import { getLocale } from '../../../../../common/locale'
+import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 
 // Components
 import { PasswordInput, BackButton } from '../../../shared'
 import { NavButton } from '../../../extension'
 import { Checkbox } from 'brave-ui'
-
-// Utils
-import { getLocale } from '../../../../../common/locale'
-import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 
 // Styles
 import {
@@ -26,7 +31,7 @@ import {
 } from './style'
 
 // hooks
-import { useLib } from '../../../../common/hooks/useLib'
+import { usePasswordStrength } from '../../../../common/hooks/use-password-strength'
 
 import * as WalletPageActions from '../../../../page/actions/wallet_page_actions'
 import { PageState, WalletRoutes, WalletState } from '../../../../constants/types'
@@ -38,30 +43,62 @@ export const OnboardingRestore = () => {
 
   // redux
   const dispatch = useDispatch()
-  const {
-    isWalletCreated,
-    isWalletLocked
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
-  const { invalidMnemonic } = useSelector(({ page }: { page: PageState }) => page)
+  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
+  const isWalletLocked = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked)
+  const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
 
   // custom hooks
-  const { isStrongPassword: checkIsStrongPassword } = useLib()
+  const {
+    hasConfirmedPasswordError,
+    hasPasswordError,
+    password,
+    onPasswordChanged: handlePasswordChanged,
+    setConfirmedPassword: handleConfirmPasswordChanged,
+    isValid: isPasswordValid
+  } = usePasswordStrength()
 
   // state
   const [showRecoveryPhrase, setShowRecoveryPhrase] = React.useState<boolean>(false)
   const [isLegacyWallet, setIsLegacyWallet] = React.useState<boolean>(false)
-  const [isStrongPassword, setIsStrongPassword] = React.useState<boolean>(false)
-  const [password, setPassword] = React.useState<string>('')
-  const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
   const [recoveryPhrase, setRecoveryPhrase] = React.useState<string>('')
 
+  // memos
+  const isValidRecoveryPhrase = React.useMemo(() => {
+    if (recoveryPhrase.trim().split(/\s+/g).length >= 12) {
+      return true
+    } else {
+      return false
+    }
+  }, [recoveryPhrase])
+
+  // computed
+  const isDisabled = !isValidRecoveryPhrase || !isPasswordValid
+
   // methods
-  const onBack = () => {
+  const toggleShowRestore = React.useCallback(() => {
+    if (walletLocation === WalletRoutes.Restore) {
+      // If a user has not yet created a wallet and clicks Restore
+      // from the panel, we need to route to onboarding if they click back.
+      if (!isWalletCreated) {
+        history.push(WalletRoutes.Onboarding)
+        return
+      }
+      // If a user has created a wallet and clicks Restore from the panel
+      // while the wallet is locked, we need to route to unlock if they click back.
+      if (isWalletCreated && isWalletLocked) {
+        history.push(WalletRoutes.Unlock)
+      }
+    } else {
+      history.push(WalletRoutes.Restore)
+    }
+  }, [walletLocation, isWalletCreated, isWalletLocked])
+
+  const onBack = React.useCallback(() => {
     toggleShowRestore()
     setRecoveryPhrase('')
-  }
+  }, [toggleShowRestore])
 
-  const onSubmitRestore = () => {
+  const onSubmitRestore = React.useCallback(async () => {
     dispatch(WalletPageActions.restoreWallet({
       // added an additional trim here in case the phrase length is
       // 12, 15, 18 or 21 long and has a space at the end.
@@ -69,19 +106,10 @@ export const OnboardingRestore = () => {
       password,
       isLegacy: isLegacyWallet
     }))
-  }
+    history.push(WalletRoutes.Portfolio)
+  }, [recoveryPhrase, password, isLegacyWallet])
 
-  const handlePasswordChanged = async (value: string) => {
-    setPassword(value)
-    const isStrong = await checkIsStrongPassword(value)
-    setIsStrongPassword(isStrong)
-  }
-
-  const handleConfirmPasswordChanged = (value: string) => {
-    setConfirmedPassword(value)
-  }
-
-  const handleRecoveryPhraseChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRecoveryPhraseChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
     // This prevents there from being a space at the begining of the phrase.
@@ -100,74 +128,29 @@ export const OnboardingRestore = () => {
     } else {
       setRecoveryPhrase(removePeriod)
     }
-  }
+  }, [])
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !isDisabled) {
       onSubmitRestore()
     }
-  }
+  }, [onSubmitRestore, isDisabled])
 
-  const onShowRecoveryPhrase = (key: string, selected: boolean) => {
+  const onShowRecoveryPhrase = React.useCallback((key: string, selected: boolean) => {
     if (key === 'showPhrase') {
       setShowRecoveryPhrase(selected)
     }
-  }
+  }, [])
 
-  const onSetIsLegacyWallet = (key: string, selected: boolean) => {
+  const onSetIsLegacyWallet = React.useCallback((key: string, selected: boolean) => {
     if (key === 'isLegacy') {
       setIsLegacyWallet(selected)
     }
-  }
+  }, [])
 
-  const onClearClipboard = () => {
+  const onClearClipboard = React.useCallback(() => {
     copyToClipboard('')
-  }
-
-  const toggleShowRestore = React.useCallback(() => {
-    if (walletLocation === WalletRoutes.Restore) {
-      // If a user has not yet created a wallet and clicks Restore
-      // from the panel, we need to route to onboarding if they click back.
-      if (!isWalletCreated) {
-        history.push(WalletRoutes.Onboarding)
-        return
-      }
-      // If a user has created a wallet and clicks Restore from the panel
-      // while the wallet is locked, we need to route to unlock if they click back.
-      if (isWalletCreated && isWalletLocked) {
-        history.push(WalletRoutes.Unlock)
-      }
-    } else {
-      history.push(WalletRoutes.Restore)
-    }
-  }, [walletLocation, isWalletCreated])
-
-  // memos
-  const isValidRecoveryPhrase = React.useMemo(() => {
-    if (recoveryPhrase.trim().split(/\s+/g).length >= 12) {
-      return false
-    } else {
-      return true
-    }
-  }, [recoveryPhrase])
-
-  const checkPassword = React.useMemo(() => {
-    if (password === '') {
-      return false
-    }
-    return !isStrongPassword
-  }, [password, isStrongPassword])
-
-  const checkConfirmedPassword = React.useMemo(() => {
-    if (confirmedPassword === '') {
-      return false
-    } else {
-      return confirmedPassword !== password
-    }
-  }, [confirmedPassword, password])
-
-  // computed
-  const isDisabled = isValidRecoveryPhrase || checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''
+  }, [])
 
   // effects
   React.useEffect(() => {
@@ -185,9 +168,12 @@ export const OnboardingRestore = () => {
   return (
     <>
       <BackButton onSubmit={onBack} />
+
       <StyledWrapper>
+
         <Title>{getLocale('braveWalletRestoreTite')}</Title>
         <Description>{getLocale('braveWalletRestoreDescription')}</Description>
+
         <FormWrapper>
           <RecoveryPhraseInput
             autoFocus={true}
@@ -198,7 +184,9 @@ export const OnboardingRestore = () => {
             autoComplete='off'
             onPaste={onClearClipboard}
           />
+
           {invalidMnemonic && <ErrorText>{getLocale('braveWalletRestoreError')}</ErrorText>}
+
           {recoveryPhrase.split(' ').length === 24 &&
             <LegacyCheckboxRow>
               <Checkbox value={{ isLegacy: isLegacyWallet }} onChange={onSetIsLegacyWallet}>
@@ -206,36 +194,41 @@ export const OnboardingRestore = () => {
               </Checkbox>
             </LegacyCheckboxRow>
           }
+
           <CheckboxRow>
             <Checkbox value={{ showPhrase: showRecoveryPhrase }} onChange={onShowRecoveryPhrase}>
               <div data-key='showPhrase'>{getLocale('braveWalletRestoreShowPhrase')}</div>
             </Checkbox>
           </CheckboxRow>
+
           <FormText>{getLocale('braveWalletRestoreFormText')}</FormText>
           <Description textAlign='left'>{getLocale('braveWalletCreatePasswordDescription')}</Description>
           <InputColumn>
             <PasswordInput
               placeholder={getLocale('braveWalletCreatePasswordInput')}
               onChange={handlePasswordChanged}
-              hasError={checkPassword}
+              hasError={hasPasswordError}
               error={getLocale('braveWalletCreatePasswordError')}
               onKeyDown={handleKeyDown}
             />
             <PasswordInput
               placeholder={getLocale('braveWalletConfirmPasswordInput')}
               onChange={handleConfirmPasswordChanged}
-              hasError={checkConfirmedPassword}
+              hasError={hasConfirmedPasswordError}
               error={getLocale('braveWalletConfirmPasswordError')}
               onKeyDown={handleKeyDown}
             />
           </InputColumn>
+
         </FormWrapper>
+
         <NavButton
           disabled={isDisabled}
           buttonType='primary'
           text={getLocale('braveWalletWelcomeRestoreButton')}
           onSubmit={onSubmitRestore}
         />
+
       </StyledWrapper>
     </>
   )

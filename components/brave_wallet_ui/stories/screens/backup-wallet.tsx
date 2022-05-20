@@ -1,60 +1,99 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+
+// components
 import {
   OnboardingBackup,
   OnboardingRecovery,
   OnboardingVerify
 } from '../../components/desktop'
-
 import { BackButton } from '../../components/shared'
+
+// utils
 import { copyToClipboard } from '../../utils/copy-to-clipboard'
 
+// actions
+import { WalletPageActions } from '../../page/actions'
+
+// types
+import { PageState, WalletRoutes } from '../../constants/types'
+
 export interface Props {
-  recoveryPhrase: string[]
-  onSubmit: () => void
   onCancel: () => void
-  onBack?: () => void
   isOnboarding: boolean
 }
 
 const recoverPhraseCopiedTimeout = 5000 // 5s
 
-export function BackupWallet (props: Props) {
-  const { recoveryPhrase, isOnboarding, onSubmit, onCancel, onBack } = props
+export const BackupWallet = (props: Props) => {
+  const { isOnboarding, onCancel } = props
+
+  // routing
+  const history = useHistory()
+
+  // redux
+  const dispatch = useDispatch()
+  const mnemonic = useSelector(({ page }: { page: PageState }) => (page?.mnemonic || ''))
+  const recoveryPhrase = React.useMemo(() => (mnemonic || '').split(' '), [mnemonic])
+
+  // state
   const [backupStep, setBackupStep] = React.useState<number>(0)
   const [backupTerms, setBackupTerms] = React.useState<boolean>(false)
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
-
   const [isRecoverPhraseCopied, setIsRecoverPhraseCopied] = React.useState(false)
 
-  const nextStep = () => {
+  // methods
+  const onSubmit = React.useCallback(() => {
+    dispatch(WalletPageActions.walletBackupComplete())
+    dispatch(WalletPageActions.walletSetupComplete())
+
+    if (isOnboarding) {
+      history.push(WalletRoutes.Portfolio)
+    } else {
+      history.goBack()
+    }
+  }, [isOnboarding])
+
+  const nextStep = React.useCallback(() => {
     if (backupStep === 2) {
       onSubmit()
       return
     }
     setBackupStep(backupStep + 1)
-  }
+  }, [backupStep, onSubmit])
 
-  const onGoBack = () => {
-    if (onBack && isOnboarding && backupStep === 0) {
-      onBack()
+  const onGoBack = React.useCallback(() => {
+    if (isOnboarding && backupStep === 0) {
+      history.goBack()
     } else {
       setBackupStep(backupStep - 1)
     }
-  }
+  }, [isOnboarding, backupStep])
 
-  const checkedBox = (key: string, selected: boolean) => {
+  const checkedBox = React.useCallback((key: string, selected: boolean) => {
     if (key === 'backupTerms') {
       setBackupTerms(selected)
     }
     if (key === 'backedUp') {
       setBackedUp(selected)
     }
-  }
+  }, [])
 
-  const onCopyToClipboard = async () => {
+  const onCopyToClipboard = React.useCallback(async () => {
     await copyToClipboard(recoveryPhrase.join(' '))
     setIsRecoverPhraseCopied(true)
-  }
+  }, [recoveryPhrase])
+
+  // effects
+  React.useEffect(() => {
+    dispatch(WalletPageActions.showRecoveryPhrase(true))
+  }, [])
 
   React.useEffect(() => {
     if (isRecoverPhraseCopied) {
@@ -66,6 +105,7 @@ export function BackupWallet (props: Props) {
     return () => {}
   }, [isRecoverPhraseCopied])
 
+  // render
   return (
     <>
       {backupStep !== 0 &&
@@ -92,7 +132,7 @@ export function BackupWallet (props: Props) {
         />
       }
       {backupStep === 2 &&
-        <OnboardingVerify recoveryPhrase={recoveryPhrase} onNextStep={nextStep} />
+        <OnboardingVerify onNextStep={nextStep} />
       }
     </>
   )

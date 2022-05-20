@@ -9,7 +9,6 @@ import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
   PrivateKeyAvailablePayloadType,
-  RestoreWalletPayloadType,
   SelectAssetPayloadType,
   UpdateSelectedAssetType,
   ImportAccountPayloadType,
@@ -19,7 +18,8 @@ import {
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   ImportWalletErrorPayloadType,
-  ImportFilecoinAccountPayloadType
+  ImportFilecoinAccountPayloadType,
+  RestoreWalletPayloadType
 } from '../constants/action_types'
 import {
   BraveWallet,

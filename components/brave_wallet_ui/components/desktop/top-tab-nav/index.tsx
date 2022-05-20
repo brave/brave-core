@@ -28,7 +28,6 @@ export interface Props {
   hasMoreButtons?: boolean
   showMore?: boolean
   onSelectTab: (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => void
-  onClickLock?: () => void
   onClickSettings?: () => void
   onClickBackup?: () => void
   onClickMore?: () => void
@@ -43,7 +42,6 @@ function TopTabNav (props: Props) {
     onClickMore,
     onClickSettings,
     onClickBackup,
-    onClickLock,
     onSelectTab
   } = props
 
@@ -73,7 +71,6 @@ function TopTabNav (props: Props) {
       </MoreRow>
       {showMore &&
         <WalletMorePopup
-          onClickLock={onClickLock}
           onClickBackup={onClickBackup}
           onClickSetting={onClickSettings}
         />
