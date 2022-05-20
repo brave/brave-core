@@ -101,7 +101,11 @@ extension BrowserViewController: BraveWalletDelegate {
 
 extension BrowserViewController: BraveWalletProviderDelegate {
   func showPanel() {
-    guard presentedViewController == nil else { return }
+    // only display notification when BVC is front and center & `displayWeb3Notifications` is enabled
+    guard presentedViewController == nil,
+          Preferences.Wallet.displayWeb3Notifications.value else {
+      return
+    }
     
     let walletNotificaton = WalletNotification(priority: .low) { [weak self] action in
       if action == .connectWallet {

@@ -83,6 +83,7 @@ class TabManager: NSObject {
   var tempTabs: [Tab]?
   private weak var rewards: BraveRewards?
   var makeWalletProvider: ((Tab) -> (BraveWalletBraveWalletProvider, js: String)?)?
+  private var domainFrc = Domain.frc()
 
   init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?) {
     assert(Thread.isMainThread)
@@ -100,6 +101,15 @@ class TabManager: NSObject {
     Preferences.Shields.blockImages.observe(from: self)
     Preferences.General.blockPopups.observe(from: self)
     Preferences.General.nightModeEnabled.observe(from: self)
+    
+    #if WALLET_DAPPS_ENABLED
+    domainFrc.delegate = self
+    do {
+      try domainFrc.performFetch()
+    } catch {
+      log.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error)")
+    }
+    #endif
   }
 
   func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
@@ -1194,6 +1204,21 @@ extension TabManager: PreferencesObserver {
       NightModeHelper.setNightMode(tabManager: self, enabled: Preferences.General.nightModeEnabled.value)
     default:
       break
+    }
+  }
+}
+
+extension TabManager: NSFetchedResultsControllerDelegate {
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    if let domain = anObject as? Domain, let domainURL = domain.url {
+      // if `wallet_permittedAccounts` changes on a `Domain` from
+      // wallet settings / manage web3 site connections, we need to
+      // fire `accountsChanged` event on open tabs for this `Domain`
+      let tabsForDomain = self.allTabs.filter { $0.url?.domainURL.absoluteString.caseInsensitiveCompare(domainURL) == .orderedSame }
+      tabsForDomain.forEach { tab in
+        let accounts = domain.wallet_permittedAccounts?.split(separator: ",").map(String.init) ?? []
+        tab.accountsChangedEvent(Array(accounts))
+      }
     }
   }
 }

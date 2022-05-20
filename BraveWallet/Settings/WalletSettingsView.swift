@@ -6,11 +6,15 @@
 import SwiftUI
 import struct Shared.Strings
 import BraveUI
+import BraveShared
 
 public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
+  @ObservedObject var defaultWallet = Preferences.Wallet.defaultWallet
+  @ObservedObject var allowDappsRequestAccounts = Preferences.Wallet.allowEthereumProviderAccountRequests
+  @ObservedObject var displayDappsNotifications = Preferences.Wallet.displayWeb3Notifications
 
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
@@ -81,7 +85,7 @@ public struct WalletSettingsView: View {
                           set: { toggledBiometricsUnlock($0) })
           )
             .foregroundColor(Color(.braveLabel))
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -95,6 +99,49 @@ public struct WalletSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      #if WALLET_DAPPS_ENABLED
+      Section(
+        header: Text(Strings.Wallet.web3PreferencesSectionTitle)
+          .foregroundColor(Color(.secondaryBraveLabel))
+      ) {
+        HStack {
+          Text(Strings.Wallet.web3PreferencesDefaultWallet)
+            .foregroundColor(Color(.braveLabel))
+          Spacer()
+          Menu {
+            Picker("", selection: $defaultWallet.value) {
+              ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
+                Text(walletType.name)
+                  .tag(walletType)
+              }
+            }
+            .pickerStyle(.inline)
+          } label: {
+            let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
+            Text(wallet.name)
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+        }
+        Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)
+          .foregroundColor(Color(.braveLabel))
+          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
+          .foregroundColor(Color(.braveLabel))
+          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        NavigationLink(
+          destination: ManageSiteConnectionsView(
+            siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+          )
+          .onDisappear {
+            settingsStore.closeManageSiteConnectionStore()
+          }
+        ) {
+          Text(Strings.Wallet.web3PreferencesManageSiteConnections)
+            .foregroundColor(Color(.braveLabel))
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      #endif
       Section(
         footer: Text(Strings.Wallet.settingsResetTransactionFooter)
           .foregroundColor(Color(.secondaryBraveLabel))

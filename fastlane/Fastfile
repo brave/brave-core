@@ -46,7 +46,10 @@ platform :ios do
         "ClientTests/HttpCookieExtensionTest/testSaveAndLoadCookie",
         "ClientTests/UserAgentTests",
         "DataTests",
-        "SPMLibrariesTests/WebServerTests/testWebServerIsServingRequests"
+        "SPMLibrariesTests/WebServerTests/testWebServerIsServingRequests",
+      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+      	"BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission"
       ]
     )
 
