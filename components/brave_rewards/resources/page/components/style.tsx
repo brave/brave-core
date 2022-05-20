@@ -66,3 +66,36 @@ export const PaymentStatus = styled.div`
     display: block;
   }
 `
+
+export const NeedsBrowserUpdateView = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background: #FDF1F2;
+  padding: 5px;
+  border-radius: 6px;
+`
+
+export const NeedsBrowserUpdateIcon = styled.div`
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  color: ${p => p.theme.palette.red500};
+`
+
+export const NeedsBrowserUpdateContent = styled.div`
+  display: block;
+`
+
+export const NeedsBrowserUpdateContentHeader = styled.div`
+  margin: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brave-palette-neutral800);
+`
+
+export const NeedsBrowserUpdateContentBody = styled.div`
+  margin: 5px;
+  font-size: 15px;
+  color: var(--brave-palette-neutral800);
+`

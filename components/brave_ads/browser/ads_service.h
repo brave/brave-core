@@ -95,6 +95,8 @@ class AdsService : public KeyedService {
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
+  virtual bool NeedsBrowserUpdateToSeeAds() const = 0;
+
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   virtual void ShowScheduledCaptcha(const std::string& payment_id,
                                     const std::string& captcha_id) = 0;

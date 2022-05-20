@@ -551,6 +551,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "landed",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED },
         { "view",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW },
 
+        { "rewardsBrowserCannotReceiveAds",  IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS },  // NOLINT
+        { "rewardsBrowserNeedsUpdateToSeeAds",  IDS_REWARDS_BROWSER_NEED_UPDATE_TO_SEE_ADS },  // NOLINT
+
         { "activityCopy", IDS_BRAVE_UI_ACTIVITY_COPY },
         { "activityNote", IDS_BRAVE_UI_ACTIVITY_NOTE },
         { "ads", IDS_BRAVE_UI_ADS},

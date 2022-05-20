@@ -39,6 +39,8 @@ class MockAdsService : public AdsService {
   MOCK_METHOD1(SetAutoDetectedAdsSubdivisionTargetingCode,
                void(const std::string&));
 
+  MOCK_CONST_METHOD0(NeedsBrowserUpdateToSeeAds, bool());
+
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   MOCK_METHOD2(ShowScheduledCaptcha,
                void(const std::string&, const std::string&));

@@ -123,7 +123,9 @@ namespace brave_ads {
 
 namespace {
 
-const unsigned int kRetriesCountOnNetworkChange = 1;
+constexpr unsigned int kRetriesCountOnNetworkChange = 1;
+
+constexpr int kHttpUpgradeRequiredStatusCode = 426;
 
 constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
 
@@ -295,6 +297,10 @@ void AdsServiceImpl::SetAutoDetectedAdsSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
   SetStringPref(ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode,
                 subdivision_targeting_code);
+}
+
+bool AdsServiceImpl::NeedsBrowserUpdateToSeeAds() const {
+  return needs_browser_update_to_see_ads_;
 }
 
 void AdsServiceImpl::ChangeLocale(const std::string& locale) {
@@ -1260,20 +1266,25 @@ void AdsServiceImpl::OnURLRequestComplete(
   } else if (!url_loader->ResponseInfo()->headers) {
     VLOG(6) << "Failed to obtain headers from the network stack";
   } else {
-    response_code = url_loader->ResponseInfo()->headers->response_code();
-
     scoped_refptr<net::HttpResponseHeaders> headers_list =
         url_loader->ResponseInfo()->headers;
+    response_code = headers_list->response_code();
 
-    if (headers_list) {
-      size_t iter = 0;
-      std::string key;
-      std::string value;
+    size_t iter = 0;
+    std::string key;
+    std::string value;
 
-      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
-        key = base::ToLowerASCII(key);
-        headers[key] = value;
-      }
+    while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+      key = base::ToLowerASCII(key);
+      headers[key] = value;
+    }
+  }
+
+  if (response_code == kHttpUpgradeRequiredStatusCode &&
+      !needs_browser_update_to_see_ads_) {
+    needs_browser_update_to_see_ads_ = true;
+    for (AdsServiceObserver& observer : observers_) {
+      observer.OnNeedsBrowserUpdateToSeeAds();
     }
   }
 

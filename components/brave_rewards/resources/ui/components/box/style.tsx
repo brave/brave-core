@@ -78,6 +78,12 @@ export const StyledContent = styled('div')<{}>`
   margin-top: 25px;
 `
 
+export const StyledHeader = styled('div')<{}>`
+  flex-basis: 100%;
+  flex-grow: 1;
+  margin-bottom: 25px;
+`
+
 export const StyledSettingsWrapper = styled('div')<StyleProps>`
   background: #fff;
   display: ${p => p.open ? 'block' : 'none'};
