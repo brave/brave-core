@@ -671,11 +671,11 @@
 <translation id="1164622162816276433">24時間のボリューム</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Braveで「Unstoppable Domains」のサポートを有効にしますか？</translation>
-<translation id="3470923752115324276">Braveは、「DNS over HTTPS（DoH）」を使用する.cryptoドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.cryptoドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.cryptoドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="2173151783558384314">BraveはInfuraを使用して、Unstoppable DomainsからスマートコントラクトにEthereum JSON-RPCの呼び出しをかけることで、.crypto (および.x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) ドメイン名のルックアップ要求を解決します。これを有効にすると、Infuraはあなたがアクセスしようとしている特定のドメインを見ることができますが、他のドメインを見ることはできません。Infuraの<ph name="BEGIN_INFURA_TOU_LINK"/>利用規約<ph name="END_INFURA_TOU_LINK"/>および<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="6513892817556267573">イーサリアムネームサービス</translation>
 <translation id="4335039108389860301">Braveでイーサリアムネームサービス（ENS）のサポートを有効にしますか？</translation>
-<translation id="618766505813078707">Braveは、「DNS over HTTPS（DoH）」を使用する.ethドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.ethドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
-<translation id="5636651007798897342">Cloudflareサーバーを使用して続行する</translation>
+<translation id="8328137586971750853">BraveはInfuraを使用して、Ethereum Name ServiceからスマートコントラクトにEthereum JSON-RPCの呼び出しをかけることで、.ethドメイン名のルックアップ要求を解決します。これを有効にすると、Infuraはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることができなくなります。Infuraの<ph name="BEGIN_INFURA_TOU_LINK"/>利用規約<ph name="END_INFURA_TOU_LINK"/>および<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="7378412287463452336">Infuraサーバーを使用して続行する</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">イーサリアム</translation>
@@ -802,6 +802,7 @@
 <translation id="9161147058107529840">単一のオブジェクトのパラメーターが必要です。</translation>
 <translation id="1875861420974447980">このチェーンIDは現在使用中です</translation>
 <translation id="167698752210114155">内部エラーが発生しました</translation>
+<translation id="2326876601333401685">このRPCメソッドはサポートされていません。</translation>
 <translation id="1128992132632883337">レスポンスのパースエラーが発生しました</translation>
 <translation id="1680597601664421644">インポートされたニーモニックはBraveウォレットで有効ではありません</translation>
 <translation id="4641919696349069826">すでにリクエストを処理中です</translation>
@@ -812,7 +813,6 @@
 <translation id="7577623631309755655">トランザクションデータ 'gasPrice' は無効です</translation>
 <translation id="8909404207805041979">トランザクションデータ 'gas' は無効です</translation>
 <translation id="670444168393199227">トランザクションデータ 'value' は無効です</translation>
-<translation id="6180576227145734714">トランザクションデータ 'to' は、有効なアドレスで指定する必要があります</translation>
 <translation id="6916219411793555838">トランザクションデータ 'gasPrice' または 'maxFeePerGas' を指定する必要があります</translation>
 <translation id="1406937874668963740">トランザクションデータ 'chainId' は無効です</translation>
 <translation id="9195349857587166771">トランザクションデータ 'maxFeePerGas' は無効です</translation>
@@ -826,8 +826,9 @@
 <translation id="1462494615260983714">トランザクションの処理中にエラーが発生しました</translation>
 <translation id="4886059598718763020">「<ph name="VALUE"/>」は署名を許可されていません</translation>
 <translation id="8719220598078667817">トランザクションの署名に失敗しました</translation>
-<translation id="5486744676117070166">次のノンス値を取得できませんでした</translation>
 <translation id="875506212625074179">RPCサービスからのチェーンIDレスポンスが無効です</translation>
+<translation id="5486744676117070166">次のノンス値を取得できませんでした</translation>
+<translation id="6180576227145734714">トランザクションデータ 'to' は、指定する場合は有効なアドレスである必要があります</translation>
 <translation id="4958950550253325418">Defi アプリ</translation>
 <translation id="735961408871282410">NFT マーケットプレイス</translation>
 <translation id="7740287852186792672">検索結果</translation>
@@ -875,6 +876,7 @@
 <translation id="151946611346774041">0xは、取引を完了するためにイーサリアムのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
 <translation id="8368540604723748428">小数点以下の桁数が多すぎます</translation>
+<translation id="6575120282593094155"><ph name="ACCOUNT_TYPE"/>アカウントがありません。作成しますか？</translation>
 <translation id="2704606927547763573">コピーしました</translation>
 <translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
 <translation id="8303434745767477417">あなたの管理下に暗号資産を保持します。ポートフォリオのパフォーマンスを追跡し、Web 3 DApp とやり取りします。DeFi で取引、投資、借り入れ、貸し出しを行います。Brave プライバシーブラウザからご利用いただけます。拡張機能やダウンロードは必要ありません。</translation>
@@ -1000,8 +1002,6 @@
 <translation id="8569380433211549748">価格</translation>
 <translation id="2490428413101944234">Faucet をテスト</translation>
 <translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/> のフォーセットから Ether を入手する</translation>
-<translation id="7420359180991315365">続けてWyreを使用する</translation>
-<translation id="2581671693710952401">Etherを取得する</translation>
 <translation id="8009571545960303544">署名がリクエストされています。</translation>
 <translation id="5294062982587710720">Brave は、署名した場合に何が起こるかを認証しているわけではないことに注意してください。署名は、リクエストを行うサイトにアカウントと暗号資産の完全な制御を与えることを含む (ただしこれらに限定されない)、あなたに代わってアカウント内外のほぼ全ての操作を許可する可能性があります。このアクションを実行することを望み、要求元のサイトを信頼する場合にのみ署名してください。</translation>
 <translation id="3474375934783434676">ご自身の責任で署名してください</translation>
@@ -1043,6 +1043,7 @@
 <translation id="5821668936183240062">次へ</translation>
 <translation id="793994607260936590">first</translation>
 <translation id="4709524402122994378">トランザクション</translation>
+<translation id="4591079278963448049">関連するトークンアカウントはまだ存在しません。作成と資金調達のために少量のSOLを消費します。</translation>
 <translation id="523862956770478816">サイトの許可設定</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>アカウントを接続しました</translation>
 <translation id="4305817255990598646">切り替える</translation>
@@ -1093,6 +1094,7 @@
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Confirmed</translation>
 <translation id="1165039591588034296">エラー</translation>
+<translation id="8373210463207847451">Dropped</translation>
 <translation id="9065572743819293042">直近のトランザクション</translation>
 <translation id="4235538284468006757">トランザクション詳細</translation>
 <translation id="7488671812634887146">速度向上</translation>
@@ -1172,9 +1174,13 @@
 <translation id="7829441065063984927">暗号資産が当たる7日間のキャンペーン！賞金総額50万ドル。</translation>
 <translation id="8292716346768453265">今すぐエントリー！</translation>
 <translation id="6423985584914773314">有効なFILアドレスではありません</translation>
+<translation id="3898731124813934210">Wyreで購入</translation>
+<translation id="5522073372365069684">Rampで購入</translation>
 <translation id="8528916244724490964">すべてのネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
 <translation id="2816106784624007524">ガスリミットは、0以上の整数である必要があります</translation>
+<translation id="3354376789153561654">トランザクションデータ 'to' を指定する必要があります</translation>
+<translation id="8728991256628663004">トランザクションデータ 'from' には有効なFilecoinのアドレスを入力してください</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1218,7 +1224,7 @@
 <translation id="2325196879156848326">接続に失敗しました</translation>
 <translation id="745054660363064771">サーバーに接続できません</translation>
 <translation id="3936826714240735937">別のサーバーを選択</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>が<ph name="REGION_NAME"/>サーバーに接続できませんでした。再度お試しいただくか、別のものを選択してください</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/>が<ph name="REGION_NAME"/>サーバーに接続できませんでした。再度お試しいただくか、別のものを選択してください。</translation>
 <translation id="1024255913009642477">VPNを購入済みですか？</translation>
 <translation id="8814357473522731680">提供元</translation>
 <translation id="5747552184818312860">有効期限</translation>
@@ -1231,6 +1237,24 @@
 <translation id="1751947227857853925">最大 100 Mbps の速度が無制限</translation>
 <translation id="1400240082805528049">24 時間年中無休のサポート</translation>
 <translation id="8463313539532697053">読み込んでいます。少々お待ちください…</translation>
+<translation id="4613076894734402086">お支払い方法を編集</translation>
+<translation id="1898254156730880135">直近のお支払いが完了しなかったようです。お支払いの問題が解決されるまで、このサブスクリプションへのアクセスは一時停止されます。お支払い方法を変更するか、Braveサポートまでお問い合わせください。</translation>
+<translation id="1839021455997460752">メールアドレス</translation>
+<translation id="5154702632169343078">件名</translation>
+<translation id="6625978880678465492">理由を選択してください</translation>
+<translation id="6687228121145903051">VPN に接続できません (その他のエラー)</translation>
+<translation id="9184988385244077767">接続時にインターネットがない</translation>
+<translation id="21570240866965662">低速回線</translation>
+<translation id="1219475260382643267">ウェブサイトが機能しない</translation>
+<translation id="7138678301420049075">その他</translation>
+<translation id="1387340358507240698">問題の内容を説明してください</translation>
+<translation id="501818585183973587">共有したい情報を選択してください</translation>
+<translation id="3195618332367441234">より多くの情報をご共有いただくことで、サポートスタッフがより的確に対応できるようになります。</translation>
+<translation id="5682143294773821728">VPNホスト名:</translation>
+<translation id="24242621812020123">アプリのバージョン:</translation>
+<translation id="6676791921618140305">OSのバージョン:</translation>
+<translation id="1156325797949437777">サポートはGuardianとのパートナーシップを通じて提供されます。</translation>
+<translation id="3307461350293459700">VPN接続に失敗しました。接続を再度お試しください。必ず［許可］をクリックしてBraveのVPN設定を有効にしてください。</translation>
 <translation id="7586151660465233733">その他の市場を確認するには、<ph name="SITE_NAME"/>へ</translation>
 <translation id="952067063131306699">FTXで暗号資産の市場を確認し、取引</translation>
 <translation id="5963745988819586370">市場</translation>

@@ -668,11 +668,8 @@
 <translation id="1164622162816276433">Volum 24HR</translation>
 <translation id="7534079972563542000">Domenii Unstoppable</translation>
 <translation id="4492298165410552103">Activați Unstoppable Domains în Brave?</translation>
-<translation id="3470923752115324276">Cu ajutorul Brave, puteți accesa domenii .crypto folosind Cloudflare pentru a rezolva solicitările de căutare a numelui domeniului .crypto folosind DNS prin HTTPS. Dacă activați aceasta, Cloudflare va vedea domeniul .crypto pe care încercați să-l accesați, dar ei nu vor putea vedea alte domenii. Accesați <ph name="BEGIN_CF_TOU_LINK"/>condițiile de utilizare<ph name="END_CF_TOU_LINK"/> și <ph name="BEGIN_CF_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Activați Ethereum Name Service (ENS) în Brave?</translation>
-<translation id="618766505813078707">Cu ajutorul Brave, puteți accesa domenii .eth folosind Cloudflare pentru a rezolva solicitările de căutare a numelui domeniului .eth folosind DNS prin HTTPS. Dacă activați aceasta, Cloudflare va vedea domeniul .crypto pe care încercați să-l accesați, dar ei nu vor putea vedea alte domenii. Consultați <ph name="BEGIN_CF_TOU_LINK"/>condițiile de cutilizare<ph name="END_CF_TOU_LINK"/> și <ph name="BEGIN_CF_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
-<translation id="5636651007798897342">Continuați folosind serverul Cloudflare</translation>
 <translation id="2356070529366658676">Întreabă-mă</translation>
 <translation id="2218918398178303658">DNS prin HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -809,7 +806,6 @@
 <translation id="7577623631309755655">Datele 'gasPrice' privind tranzacția nu sunt valide</translation>
 <translation id="8909404207805041979">Datele 'gas' privind tranzacția nu sunt valide</translation>
 <translation id="670444168393199227">Datele 'value' privind tranzacția nu sunt valide</translation>
-<translation id="6180576227145734714">Datele 'to' privind tranzacția trebuie să fie o adresă validă</translation>
 <translation id="6916219411793555838">Trebuie specificate datele 'gasPrice' sau 'maxFeePerGas' privind tranzacția</translation>
 <translation id="1406937874668963740">Datele 'chainID' privind tranzacția nu sunt valide</translation>
 <translation id="9195349857587166771">Datele 'maxFeePerGas' privind tranzacția nu sunt valide</translation>
@@ -823,8 +819,9 @@
 <translation id="1462494615260983714">Eroare la procesarea tranzacției</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>” nu deține autorizarea de a semna mesajul</translation>
 <translation id="8719220598078667817">Imposibil de semnat tranzacția</translation>
-<translation id="5486744676117070166">Imposibil de obținut următoarea valoare nonce</translation>
 <translation id="875506212625074179">Răspuns ID lanț nevalid de la serviciul RPC</translation>
+<translation id="5486744676117070166">Imposibil de obținut următoarea valoare nonce</translation>
+<translation id="6180576227145734714">Datele 'to' privind tranzacția trebuie să fie o adresă validă</translation>
 <translation id="4958950550253325418">Aplicații de finanțare descentralizată</translation>
 <translation id="735961408871282410">Piețe de token-uri nefungibile</translation>
 <translation id="7740287852186792672">Rezultatele căutării</translation>
@@ -997,8 +994,6 @@
 <translation id="8569380433211549748">Prețul în</translation>
 <translation id="2490428413101944234">Robinet de testare</translation>
 <translation id="3352959425838279177">Obțineți Ether de la un robinet pentru <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Continuați la Wyre</translation>
-<translation id="2581671693710952401">Obțineți Ether</translation>
 <translation id="8009571545960303544">Semnătura dvs. este solicitată</translation>
 <translation id="5294062982587710720">Rețineți că Brave nu poate verifica ce se va întâmpla dacă semnați. O semnătură ar putea autoriza aproape orice operațiune în contul dvs. sau în numele dvs. Este posibil inclusiv să oferiți controlul total asupra contului și activelor dvs. (fără limitare la acestea) site-ului care face solicitarea. Semnați numai dacă aveți certitudinea că doriți să faceți acest pas și aveți încredere în site-ul care vă cere acest lucru.</translation>
 <translation id="3474375934783434676">Semnați pe propria răspundere</translation>
@@ -1090,6 +1085,7 @@
 <translation id="6666273175654835609">Trimis</translation>
 <translation id="2331676293859649642">Confirmat</translation>
 <translation id="1165039591588034296">Eroare</translation>
+<translation id="8373210463207847451">Pierdut</translation>
 <translation id="9065572743819293042">Tranzacții recente</translation>
 <translation id="4235538284468006757">Detalii privind tranzacțiile</translation>
 <translation id="7488671812634887146">Accelerare</translation>
@@ -1216,7 +1212,6 @@
 <translation id="2325196879156848326">Eroare de conexiune</translation>
 <translation id="745054660363064771">Nu este posibilă conectarea la server</translation>
 <translation id="3936826714240735937">Selectați un alt server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> nu s-a putut conecta la serverul <ph name="REGION_NAME"/>. Puteți încerca din nou sau puteți selecta un alt server</translation>
 <translation id="1024255913009642477">Ați achiziționat deja VPN?</translation>
 <translation id="8814357473522731680">Oferit de</translation>
 <translation id="5747552184818312860">Expiră</translation>
@@ -1229,6 +1224,12 @@
 <translation id="1751947227857853925">Rapid și nelimitat, până la 100 Mbps</translation>
 <translation id="1400240082805528049">Asistență non-stop</translation>
 <translation id="8463313539532697053">Așteptați puțin până se încarcă...</translation>
+<translation id="5154702632169343078">Subiect</translation>
+<translation id="6687228121145903051">Nu este posibilă conectarea la VPN (altă eroare)</translation>
+<translation id="9184988385244077767">Fără internet în momentul conectării</translation>
+<translation id="21570240866965662">Viteză mică</translation>
+<translation id="1219475260382643267">Site-ul nu funcționează</translation>
+<translation id="7138678301420049075">Altele</translation>
 <translation id="7586151660465233733">Mai multe piețe pe <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vedeți piețe și tranzacționați criptomonede pe FTX</translation>
 <translation id="5963745988819586370">Piețe</translation>

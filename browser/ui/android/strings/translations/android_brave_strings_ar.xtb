@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">تمكين/تعطيل طرق حماية Brave</translation>
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="2278950434998763147">فتح بعض مواقع الويب باستحدام اتصال  HTTPS آمن بدلاً من اتصال HTTP عادي.</translation>
+<translation id="5510493033031835532">إعادة توجيه صفحات AMP تلقائيًا</translation>
+<translation id="5197219128592971597">قم دائمًا بزيارة عناوين URL للصفحة الأصلية (التي ليست بتنسيق AMP)، بدلاً من إصدارات صفحات الجوال المسرَّعة من Google</translation>
 <translation id="94154759592465111">حظر النصوص</translation>
 <translation id="7714773920987474116">حظر JavaScript (قد يتسبب في تعطل بعض المواقع)</translation>
 <translation id="6052725679982758334">حجب وسائل التواصل الاجتماعي</translation>
@@ -549,7 +551,6 @@
 <translation id="1078873179929044999">في الخطوة التالية، سترى ’ عبارة استرداد مكونة من 12 كلمة، والتي يمكنك استخدامها لاستعادة حسابات التشفير الأساسية الخاصة بك. احفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاسترداد الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ..</translation>
 <translation id="2359808026110333948">استمرار</translation>
 <translation id="5488357322146334497">رسالة</translation>
-<translation id="7228169875515099943">البيانات</translation>
 <translation id="1904000155026201268">أدرك أنه في حالة فقدان عبارة الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة عملاتي المشفرة.</translation>
 <translation id="3933122286596948824">عبارة الاسترداد الخاصة بك</translation>
 <translation id="5077747669435508720">اكتب هذه الكلمات أو انسخها بالترتيب الدقيق الموضح أدناه، واحفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ.</translation>
@@ -662,7 +663,7 @@
 <translation id="3510283489391432976">اختيار موقعك الجغرافي / بلدك</translation>
 <translation id="4390800080658195654">يبقيك مجهولاً على الإنترنت</translation>
 <translation id="639981156979733813">يدعم سرعات تصل إلى 100 ميجابت في الثانية</translation>
-<translation id="8396607116169935837">يستخدم نفق VPN المشفر الآمن لنظام IKEv2</translation>
+<translation id="1190117345570417902">يستخدم نفق شبكة VPN المشفر الآمن من Wireguard</translation>
 <translation id="1571230671455380494">نحن لا نشارك أو نبيع المعلومات الخاصة بك</translation>
 <translation id="276866628038850725">تتضمن جميع الخطط إصدارًا تجريبيًا مجانيًا لمدة 7 أيام!</translation>
 <translation id="7280825497485894053">اشتراك شهري</translation>
@@ -687,7 +688,7 @@
 إذا لم تقبل هذا الطلب، فلن يتم إعادة اتصال VPN ولن يتم تأمين اتصالك بالإنترنت.</translation>
 <translation id="2429299231491852747">قبول طلب الاتصال</translation>
 <translation id="3428909627460825679">تعذّر إنشاء ملف تعريف Vpn. يُرجى المحاولة مرة أخرى.</translation>
-<translation id="8584119457978684056">تعذّر التحقق من رمز الشراء. يُرجى المحاولة مرة أخرى.</translation>
+<translation id="1326227401245340613">فشل التحقق من الشراء. يُرجى المحاولة مرة اخرى.</translation>
 <translation id="8905950042180169719">VPN قيد التشغيل في الخلفية</translation>
 <translation id="8681480718817027245">اشتراك</translation>
 <translation id="7805768142964895445">الحالة</translation>
@@ -698,7 +699,6 @@
 <translation id="5646376287012673985">الموقع الجغرافي</translation>
 <translation id="8375573361134671513">إعادة التكوين</translation>
 <translation id="850405162932416400">دعم VPN</translation>
-<translation id="1330148827129583049">لم يتم إنشاء ملف تعريف Vpn. إنشاء ملف تعريف شخصي جديد.</translation>
 <translation id="6772117549627334582">تعذّر الحصول على موقع الخادم. الرجاء معاودة المحاولة في وقت لاحق.</translation>
 <translation id="5863914199331127413">اسم مضيف VPN</translation>
 <translation id="5499653136178260315">نوع الاشتراك</translation>
@@ -708,9 +708,9 @@
 <translation id="4395361077929528480">نوع الشبكة</translation>
 <translation id="755448900483975096">الناقل الخلوي</translation>
 <translation id="1279441577056010362">المتابعة إلى البريد الإلكتروني</translation>
-<translation id="2553687444159335134">تم تقديم الدعم بمساعدة فريق الحماية. \ n \ n الرجاء تحديد المعلومات التي تشعر بالارتياح لمشاركتها معنا. \ n \ n كلما شاركت المزيد من المعلومات معنا في البداية، كان من الأسهل على فريق الدعم لدينا مساعدتك في إيجاد حل</translation>
+<translation id="7125582363614011660">الدعم المُقدم بمساعدة فريق Guardian.\n\nيُرجى تحديد المعلومات التي تشعر بارتياح عند مشاركتها معنا.\n\nوكلما زادت المعلومات التي تشاركها معنا في البداية، سيسهل على فريق الدعم لدينا مساعدتك في حل مشكلتك.</translation>
 <translation id="7999094850625689785">سيتم تحديد منطقة الخادم الأقرب إليك تلقائيًا، بناءً على المنطقة الزمنية لنظامك. يوصى بذلك لضمان سرعات إنترنت عالية.</translation>
-<translation id="8018707825009059641">مسائل أخرى</translation>
+<translation id="4397083831618200686">تحديد المشكلة</translation>
 <translation id="6687228121145903051">لا يمكن الاتصال بـ VPN (خطأ آخر)</translation>
 <translation id="9184988385244077767">لا يوجد إنترنت عند الاتصال</translation>
 <translation id="21570240866965662">اتصال بطيء</translation>
@@ -725,7 +725,7 @@
 <translation id="1187506504156101449">تعذّر الإقرار بالشراء:</translation>
 <translation id="8420522105268941892">أنت مشترك بالفعل في الاشتراك. حاول استعادة الاشتراك.</translation>
 <translation id="74771564105268111">ERROR!!\nتسبب أحد المستخدمين في إلغاء تدفق الشراء.</translation>
-<translation id="3851978668258201962">تعذّر شراء ERROR!!\n</translation>
+<translation id="7312462922610983743">خطأ!!\nفشلت عملية الشراء..</translation>
 <translation id="6452181791372256707">رفض</translation>
 <translation id="8030852056903932865">موافق</translation>
 <translation id="1597199892790541240">رسوم الجاس</translation>
@@ -798,11 +798,13 @@
 <translation id="5061574358754621254">بيانات أسعار مدعومة من CoinGecko</translation>
 <translation id="4626407663177532837">يتضمن عرض الأسعار 0.875٪ كرسوم لـ Brave.</translation>
 <translation id="8574289650879708853">إضافة أصل مخصص</translation>
+<translation id="1974060860693918893">الإعدادات المتقدّمة</translation>
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="6600400596821238377">اسم الرمز المميز</translation>
 <translation id="4432966365400169165">عنوان عقد الرمز</translation>
 <translation id="4092152169181928870">شكل الرمز المميز</translation>
 <translation id="4351811224047421378">دقة الكسور العشرية</translation>
+<translation id="547122651977318828">معرف الرمز (لـ ERC721 فقط)</translation>
 <translation id="8614026298974065517">إزالة الأصول المخصصة</translation>
 <translation id="4378941981362528553">هل تريد إزالة الرمز المميز <ph name="TOKEN_NAME"/>()<ph name="TOKEN_SYMBOL"/>؟</translation>
 <translation id="4250680216510889253">لا</translation>
@@ -864,5 +866,32 @@
 <translation id="2478788592457735063">سيؤدي هذا إلى تحويل الشبكة إلى شبكة مضافة مسبقًا.</translation>
 <translation id="8756686998207163764">قم بتبديل الشبكة</translation>
 <translation id="394256914628786902">تمكين الإنشاء التلقائي لمجموعة علامات تبويب</translation>
+<translation id="5242300593039211344">قفل المحفظة</translation>
+<translation id="1108298724135935307">المواقع المتصلة</translation>
+<translation id="4255623233927788178">عرض مستكشف الحظر</translation>
 <translation id="8274201358637112807">هذه الصفحة ترغب في التفاعل مع محفظة Brave</translation>
+<translation id="3355936511340229503">خطأ الاتصال</translation>
+<translation id="4891604214809245310">يتعذّر تعيين الشبكة على <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">يبدو أن لديك شبكات VPN أخرى على هذا الجهاز معينة على "قيد التشغيل دائمًا". لتمكين Brave Firewall + VPN، قم أولاً بتعطيل إعداد "قيد التشغيل دائمًا" لشبكات VPN الأخرى قبل الاتصال مرة أخرى. وفي حال استمرت المشكلة، جرّب إلغاء تثبيت شبكات VPN الأخرى.</translation>
+<translation id="85136472535634474">فتح إعدادات VPN</translation>
+<translation id="8352805003811526272">جارِ إعادة تعيين التهيئة ...</translation>
+<translation id="6809312301323611382">لقد حدّدت الخادم نفسه بالفعل.</translation>
+<translation id="7694991972030057904">تم إلغاء الإذن</translation>
+<translation id="9106265941552476098">رفض <ph name="TRANSACTION_LENGTH"/> معاملات</translation>
+<translation id="523862956770478816">أذونات الموقع</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> حساب متصل</translation>
+<translation id="4305817255990598646">تبديل</translation>
+<translation id="4804818685124855865">قطع الاتصال</translation>
+<translation id="8009571545960303544">جاري طلب توقيعك</translation>
+<translation id="1982257600591932657">اسم الشبكة</translation>
+<translation id="5052727830821470769">عنوان URL للشبكة</translation>
+<translation id="4822132585477111396">معرّف السلسلة</translation>
+<translation id="7131971375297699539">رمز العملة</translation>
+<translation id="7982789257301363584">الشبكة</translation>
+<translation id="2521480044079508357">سيسمح هذا باستخدام هذه الشبكة داخل Brave Wallet.</translation>
+<translation id="4717431746210146708">هل تسمح لهذا الموقع بإضافة شبكة؟</translation>
+<translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
+<translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
+<translation id="1324417023773393937">متصفح Brave</translation>
+<translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
 </translationbundle>

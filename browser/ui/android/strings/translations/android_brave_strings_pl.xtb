@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Włącz/wyłącz tarcze Brave</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="2278950434998763147">Otwiera niektóre witryny przy użyciu bezpiecznego połączenia HTTPS zamiast zwykłego HTTP.</translation>
+<translation id="5510493033031835532">Automatyczne przekierowywanie stron AMP</translation>
+<translation id="5197219128592971597">Zawsze odwiedzaj pierwotne (bez standardu AMP) adresy URL, a nie wersje stron korzystających ze standardu Accelerated Mobile Pages Google</translation>
 <translation id="94154759592465111">Zablokuj skrypty</translation>
 <translation id="7714773920987474116">Blokuje skrypty Javascript (może popsuć działanie stron internetowych)</translation>
 <translation id="6052725679982758334">Zablokuj sieci społecznościowe</translation>
@@ -555,7 +557,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1078873179929044999">W kolejnym kroku zostanie wyświetlone 12-wyrazowe wyrażenie odzyskiwania, które możesz wykorzystać do odzyskania głównych kont kryptowalutowych. Zapisz je w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione albo zechcesz zmienić portfele.</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="5488357322146334497">Wiadomość</translation>
-<translation id="7228169875515099943">DANE</translation>
 <translation id="1904000155026201268">Rozumiem, że jeśli stracę moje słowa odzyskiwania, nie będę w stanie uzyskać dostępu do mojego portfela kryptowalut.</translation>
 <translation id="3933122286596948824">Twoje wyrażenie odzyskiwania</translation>
 <translation id="5077747669435508720">Zapisz lub skopiuj te słowa w dokładnie takiej kolejności, jak pokazano poniżej i przechowaj w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione lub zechcesz zmienić portfele.</translation>
@@ -668,7 +669,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3510283489391432976">Wybierz położenie geograficzne / kraj</translation>
 <translation id="4390800080658195654">Dba o Twoją anonimowość w sieci</translation>
 <translation id="639981156979733813">Obsługa szybkości do 100 Mbps</translation>
-<translation id="8396607116169935837">Wykorzystuje szyfrowany tunel VPN zabezpieczony protokołem IKEv2</translation>
+<translation id="1190117345570417902">Wykorzystuje bezpieczny, szyfrowany tunel VPN Wireguard</translation>
 <translation id="1571230671455380494">Nigdy nie udostępniamy i nie sprzedajemy Twoich danych</translation>
 <translation id="276866628038850725">Wszystkie plany obejmują siedmiodniowy okres próbny.</translation>
 <translation id="7280825497485894053">Miesięczna subskrypcja</translation>
@@ -693,7 +694,7 @@ Czy na pewno chcesz to zrobić?</translation>
 Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponownie nawiązane i połączenie internetowe nie zostanie zabezpieczone.</translation>
 <translation id="2429299231491852747">Zaakceptuj żądanie połączenia</translation>
 <translation id="3428909627460825679">Nie udało się utworzyć profilu VPN. Spróbuj ponownie.</translation>
-<translation id="8584119457978684056">Nie udało się zweryfikować tokena zakupu. Spróbuj ponownie.</translation>
+<translation id="1326227401245340613">Nie udało się zweryfikować zakupu. Spróbuj ponownie.</translation>
 <translation id="8905950042180169719">VPN pracuje w tle</translation>
 <translation id="8681480718817027245">Subskrypcja</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -704,7 +705,6 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5646376287012673985">Lokalizacja</translation>
 <translation id="8375573361134671513">Resetuj konfigurację</translation>
 <translation id="850405162932416400">Obsługa techniczna VPN</translation>
-<translation id="1330148827129583049">Brak utworzonego profilu VPN. Tworzenie nowego profilu w toku.</translation>
 <translation id="6772117549627334582">Nie można uzyskać lokalizacji serwera. Spróbuj ponownie później.</translation>
 <translation id="5863914199331127413">Nazwa hosta VPN</translation>
 <translation id="5499653136178260315">Typ subskrypcji</translation>
@@ -714,9 +714,9 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4395361077929528480">Typ sieci</translation>
 <translation id="755448900483975096">Operator sieci komórkowej</translation>
 <translation id="1279441577056010362">Przejdź do wiadomości e-mail</translation>
-<translation id="2553687444159335134">Wsparcie techniczne zapewniane z pomocą zespołu Guardian.\n\nWybierz dane, które chcesz nam udostępnić\n\nIm więcej danych udostępnisz nam na początku, tym łatwiej będzie naszemu personelowi rozwiązać Twój</translation>
+<translation id="7125582363614011660">Wsparcie techniczne zapewniane z pomocą zespołu Guardian.\n\nWybierz dane, które chcesz nam udostępnić.\n\nIm więcej danych udostępnisz nam na początku, tym łatwiej będzie naszemu personelowi rozwiązać Twój problem.</translation>
 <translation id="7999094850625689785">Region serwera najbliżej Twojej lokalizacji zostanie wybrany automatycznie, w oparciu o strefę czasową ustawioną w Twoim systemie. Jest to zalecane w celu zapewnienia dużej szybkości połączenia internetowego.</translation>
-<translation id="8018707825009059641">Inne problemy</translation>
+<translation id="4397083831618200686">Wybierz problem</translation>
 <translation id="6687228121145903051">Nie można połączyć się z VPN (inny błąd)</translation>
 <translation id="9184988385244077767">Brak dostępu do Internetu po połączeniu</translation>
 <translation id="21570240866965662">Mała prędkość połączenia</translation>
@@ -731,7 +731,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1187506504156101449">Nie udało się potwierdzić zakupu:</translation>
 <translation id="8420522105268941892">Jesteś już subskrybentem tej subskrypcji. Spróbuj przywrócić subskrypcję.</translation>
 <translation id="74771564105268111">BŁĄD!!!\nSpowodowany anulowaniem procesu zakupowego przez użytkownika.</translation>
-<translation id="3851978668258201962">BŁĄD!!!\nZakup nie powiódł się.</translation>
+<translation id="7312462922610983743">BŁĄD!!!\nZakup nie powiódł się.</translation>
 <translation id="6452181791372256707">Odrzuć</translation>
 <translation id="8030852056903932865">Zatwierdź</translation>
 <translation id="1597199892790541240">Opłata za gaz</translation>
@@ -804,11 +804,13 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="5061574358754621254">Dane dotyczące cen wspierane przez CoinGecko</translation>
 <translation id="4626407663177532837">Oferta zawiera opłatę Brave w wysokości 0,875%</translation>
 <translation id="8574289650879708853">Dodaj spersonalizowane aktywo</translation>
+<translation id="1974060860693918893">Zaawansowane</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6600400596821238377">Nazwa tokena</translation>
 <translation id="4432966365400169165">Adres kontraktu tokena</translation>
 <translation id="4092152169181928870">Symbol tokena</translation>
 <translation id="4351811224047421378">Dokładność liczb po przecinku</translation>
+<translation id="547122651977318828">Identyfikator tokena (tylko dla ERC721)</translation>
 <translation id="8614026298974065517">Usuń niestandardowe środki</translation>
 <translation id="4378941981362528553">Czy chcesz usunąć token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">Nie</translation>
@@ -870,5 +872,32 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2478788592457735063">Spowoduje to zmianę sieci na poprzednio dodaną sieć.</translation>
 <translation id="8756686998207163764">Zmień sieć</translation>
 <translation id="394256914628786902">Włącz automatyczne tworzenie grupy kart</translation>
+<translation id="5242300593039211344">Zablokuj portfel</translation>
+<translation id="1108298724135935307">Połączone strony</translation>
+<translation id="4255623233927788178">Wyświetl w eksploratorze bloków</translation>
 <translation id="8274201358637112807">Ta witryna chce wejść w interakcję z portfelem Brave</translation>
+<translation id="3355936511340229503">Błąd połączenia</translation>
+<translation id="4891604214809245310">Nie można ustawić <ph name="NETWORK_NAME"/> jako sieci</translation>
+<translation id="685345388423515592">Wygląda na to, że masz na tym urządzeniu inne aplikacje VPN z aktywnym ustawieniem „zawsze włączone”. Aby włączyć Zaporę ogniową Brave + VPN, dezaktywuj opcję „zawsze włączone” w innych aplikacjach VPN, zanim znów spróbujesz się połączyć. Jeśli problem będzie się powtarzał, spróbuj odinstalować inne aplikacje VPN.</translation>
+<translation id="85136472535634474">Otwórz ustawienia VPN</translation>
+<translation id="8352805003811526272">Resetowanie konfiguracji…</translation>
+<translation id="6809312301323611382">Wybrano już ten sam serwer.</translation>
+<translation id="7694991972030057904">Odwołano uprawnienia</translation>
+<translation id="9106265941552476098">Odrzuć transakcje: <ph name="TRANSACTION_LENGTH"/></translation>
+<translation id="523862956770478816">Uprawnienia witryny</translation>
+<translation id="2141313140218636977">Powiązane konta: <ph name="VALUE"/></translation>
+<translation id="4305817255990598646">Przełącz</translation>
+<translation id="4804818685124855865">Rozłącz</translation>
+<translation id="8009571545960303544">Twój podpis jest wymagany</translation>
+<translation id="1982257600591932657">Nazwa sieci</translation>
+<translation id="5052727830821470769">Adres URL sieci</translation>
+<translation id="4822132585477111396">Identyfikator łańcucha</translation>
+<translation id="7131971375297699539">Symbol waluty</translation>
+<translation id="7982789257301363584">Sieć</translation>
+<translation id="2521480044079508357">Umożliwi to wykorzystywanie tej sieci w połączeniu z portfelem Brave.</translation>
+<translation id="4717431746210146708">Zezwolić tej stronie na dodanie sieci?</translation>
+<translation id="3378339846292573874">Dodaj sugerowany token</translation>
+<translation id="2322227405137827074">Czy chcesz zaimportować ten token?</translation>
+<translation id="1324417023773393937">Przeglądarka Brave</translation>
+<translation id="6044189892950611565">Kanał powiadomień przeglądarki Brave</translation>
 </translationbundle>

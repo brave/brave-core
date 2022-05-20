@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24 č. promet</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Da li želite da omogućite podršku od strane Unstoppable Domains u Brave-u?</translation>
-<translation id="3470923752115324276">Brave vam može omogućiti da posetite .crypto domene pomoću Cloudflare-a kako biste razrešili zahteve za pronalaženje naziva .crypto domena korišćenjem DNS preko HTTPS. Ako ovo omogućite, Cloudflare će videti .crypto domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Pogledajte Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>uslove korišćenja<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>smernice za privatnost<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave će koristiti Infura server za izdavanje Ethereum JSON-RPC poziva za „smart contract“ od strane Unstoppable Domains kako biste razrešili zahteve za pronalaženje naziva .crypto domena (kao i .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ako ovo omogućite, Infura će videti ove posebne domene koje pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Videti Infura <ph name="BEGIN_INFURA_TOU_LINK"/>uslove korišćenja<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>smernice za privatnost<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Da li želite da omogućite podršku od strane Ethereum Name Service (ENS) u Brave-u?</translation>
-<translation id="618766505813078707">Brave vam može omogućiti da posetite .eth domene pomoću Cloudflare-a da biste razrešili zahteve za pronalaženje naziva .eth domena korišćenjem DNS preko HTTPS. Ako ovo omogućite, Cloudflare će videti .eth domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Pogledajte Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>uslove korišćenja<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>smernice za privatnost<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Nastavite koristeći Cloudflare server</translation>
+<translation id="8328137586971750853">Brave će koristiti Infura server za izdavanje Ethereum JSON-RPC poziva za Ethereum Name Service kako biste razrešili zahteve za pronalaženje naziva .eth domena. Ako ovo omogućite, Infura će videti .eth domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Videti Infura <ph name="BEGIN_INFURA_TOU_LINK"/>uslove korišćenja<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>smernice za privatnost<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Nastavite s korišćenjem Infura servera</translation>
 <translation id="2356070529366658676">Питај</translation>
 <translation id="2218918398178303658">DNS preko HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Očekivani pojedinačni, parametar objekta.</translation>
 <translation id="1875861420974447980">Ovaj ID lanca se trenutno koristi</translation>
 <translation id="167698752210114155">Došlo je do unutrašnje greške</translation>
+<translation id="2326876601333401685">Ovaj RPC metod nije podržan.</translation>
 <translation id="1128992132632883337">Došlo je do greške u analizi odgovora</translation>
 <translation id="1680597601664421644">Mnemoničko sredstvo koje se uvozi nije važeće za Brave novčanik</translation>
 <translation id="4641919696349069826">Zahtev je već u toku</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Podatak o transakciji 'gasPrice' nije važeći</translation>
 <translation id="8909404207805041979">Podatak o transakciji 'gas' nije važeći</translation>
 <translation id="670444168393199227">Podatak o transakciji 'value' nije važeći</translation>
-<translation id="6180576227145734714">Podatak o transakciji 'to' mora da se navede kao važeća adresa</translation>
 <translation id="6916219411793555838">Podaci o transakciji 'gasPrice' ili 'maxFeePerGas' moraju da budu navedeni</translation>
 <translation id="1406937874668963740">Podatak o transakciji 'chainId' nije važeći</translation>
 <translation id="9195349857587166771">Podatak o transakciji 'maxFeePerGas' nije važeći</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Greška u obradi transakcije</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' nije ovlašćen da potpiše poruku</translation>
 <translation id="8719220598078667817">Nije uspelo potpisivanje transakcije</translation>
-<translation id="5486744676117070166">Pribavljanje vrednosti sledećeg jednokratnog ključa nije uspelo</translation>
 <translation id="875506212625074179">Pogrešan odziv ID lanca na RPC servisu</translation>
+<translation id="5486744676117070166">Pribavljanje vrednosti sledećeg jednokratnog ključa nije uspelo</translation>
+<translation id="6180576227145734714">Podatak o transakciji 'to' mora da se navede kao važeća adresa</translation>
 <translation id="4958950550253325418">Aplikacije decentralizovanih finansija</translation>
 <translation id="735961408871282410">NFT tržišta</translation>
 <translation id="7740287852186792672">Rezultati pretrage</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x će obraditi Ethereum adresu i IP adresu da bi izvršio transakciju (uključujući dobijanje ponuda). 0x će koristiti ove podatke SAMO u svrhe procesuiranja transakcija.</translation>
 <translation id="4626407663177532837">Ponuda uključuje i 0,875% Brave naknade.</translation>
 <translation id="8368540604723748428">Previše decimalnih mesta</translation>
+<translation id="6575120282593094155">Još uvek nemate <ph name="ACCOUNT_TYPE"/> nalog. Da li želite sada da ga kreirate?</translation>
 <translation id="2704606927547763573">Копирано</translation>
 <translation id="1420318137760245955">Dobro došli u novi Brave novčanik</translation>
 <translation id="8303434745767477417">Čuvajte kripto sredstva pod svojim nadzorom. Pratite učinak portfolija i vršite interakciju sa veb 3 decentralizovanim aplikacijama (dapps). Trgujte, investirajte, uzimajte i dajte zajmove pomoću decentralizovanih finansija (DeFi). Sva prava iz Brave privatnog pregledača. Bez proširenja i potrebe za preuzimanjem.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Cena u</translation>
 <translation id="2490428413101944234">Test slavina</translation>
 <translation id="3352959425838279177">Preuzmite Ether sa slavine za <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Nastavite ka Wyre</translation>
-<translation id="2581671693710952401">Nabavite Ether</translation>
 <translation id="8009571545960303544">Zahteva se vaš potpis</translation>
 <translation id="5294062982587710720">Uzmite u obzir da Brave ne može da proveri šta će se dogoditi nakon vašeg potpisivanja. Potpis bi mogao da omogući skoro bilo kakvu aktivnost na vašem nalogu ili u vaše ime, uključujući i (ali ne ograničavajući se samo na) davanje potpune kontrole nad vašim nalogom i kripto sredstvima veb-lokaciji koja to traži. Potpišite samo ako ste sigurni da to želite i ako imate poverenja u veb-lokaciju koja upućuje zahtev.</translation>
 <translation id="3474375934783434676">Potpisujete na sopstvenu odgovornost</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">sledeće</translation>
 <translation id="793994607260936590">prvo</translation>
 <translation id="4709524402122994378">transakcije</translation>
+<translation id="4591079278963448049">Povezani token nalog još uvek ne postoji. Manja količina SOL će biti potrošena kako biste ga kreirali i finansirali.</translation>
 <translation id="523862956770478816">Dozvole za sajt</translation>
 <translation id="1575262454612599115">Povezanih naloga: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
 <translation id="4305817255990598646">Prebacivanje</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Prosleđeno</translation>
 <translation id="2331676293859649642">Potvrđeno</translation>
 <translation id="1165039591588034296">Грешка</translation>
+<translation id="8373210463207847451">Ispušteno</translation>
 <translation id="9065572743819293042">Nedavne transakcije</translation>
 <translation id="4235538284468006757">Detalji o transakciji</translation>
 <translation id="7488671812634887146">Ubrzaj</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 dana kripto poklona, ~$500k u nagradama.</translation>
 <translation id="8292716346768453265">Unesite sada!</translation>
 <translation id="6423985584914773314">FIL adresa nije važeća</translation>
+<translation id="3898731124813934210">Kupiti preko servisa Wyre</translation>
+<translation id="5522073372365069684">Kupiti preko servisa Ramp</translation>
 <translation id="8528916244724490964">Sve mreže</translation>
 <translation id="2781668117338732220">Sekundarne mreže</translation>
 <translation id="2816106784624007524">Gas limit mora biti ceo broj veći od 0</translation>
+<translation id="3354376789153561654">Podatak o transakciji 'to' mora da bude naveden</translation>
+<translation id="8728991256628663004">Podatak o transakciji 'from' mora biti važeća Filecoin adresa</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
 <translation id="3745016858329272300">Opšte informacije</translation>
 <translation id="4045404575593562245">Tor kontrolni događaji</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Povezivanje nije uspelo</translation>
 <translation id="745054660363064771">Povezivanje sa serverom nije moguće</translation>
 <translation id="3936826714240735937">Izaberite drugi server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ne može da se poveže na <ph name="REGION_NAME"/> server. Možete pokušati ponovo ili izabrati drugi</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ne može da se poveže na <ph name="REGION_NAME"/> server. Možete pokušati ponovo, ili izabrati drugi.</translation>
 <translation id="1024255913009642477">Već ste kupili VPN?</translation>
 <translation id="8814357473522731680">Omogućava</translation>
 <translation id="5747552184818312860">Истиче</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Brz i neograničen do 100 Mb/s</translation>
 <translation id="1400240082805528049">Podrška non-stop</translation>
 <translation id="8463313539532697053">Samo trenutak. Učitavanje…</translation>
+<translation id="4613076894734402086">Promeniti način plaćanja</translation>
+<translation id="1898254156730880135">Izgleda da vaša poslednja uplata nije prošla. Pristup ovoj pretplati će se pauzirati dok se problem sa plaćanjem ne reši. Pokušajte da izmenite način plaćanja ili se obratite Brave podršci.</translation>
+<translation id="1839021455997460752">Vaša imejl adresa</translation>
+<translation id="5154702632169343078">Predmet</translation>
+<translation id="6625978880678465492">Izaberite razlog</translation>
+<translation id="6687228121145903051">Nije moguće povezivanje na VPN (druga greška)</translation>
+<translation id="9184988385244077767">Nema veze sa internetom pri povezivanju</translation>
+<translation id="21570240866965662">Spora veza</translation>
+<translation id="1219475260382643267">Veb-sajt ne radi</translation>
+<translation id="7138678301420049075">Друго</translation>
+<translation id="1387340358507240698">Opišite problem</translation>
+<translation id="501818585183973587">Izaberite informacije koje ste spremni da delite s nama</translation>
+<translation id="3195618332367441234">Što više informacija podelite, to će podršci biti lakše da vam pomogne.</translation>
+<translation id="5682143294773821728">VPN naziv hosta:</translation>
+<translation id="24242621812020123">Verzija aplikacije:</translation>
+<translation id="6676791921618140305">Verzija OS:</translation>
+<translation id="1156325797949437777">Podrška obezbeđena uz partnerstvo sa Guardian.</translation>
+<translation id="3307461350293459700">VPN konekcija nije uspela. Pokušajte da se konektujete ponovo i proverite da li ste kliknuli na Dozvoli kako biste omogućili Brave VPN konfiguraciju.</translation>
 <translation id="7586151660465233733">Više tržišta na <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vidite tržišta i trgujte kripto valutom na FTX-u</translation>
 <translation id="5963745988819586370">Tržišta</translation>

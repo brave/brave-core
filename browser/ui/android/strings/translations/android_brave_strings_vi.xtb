@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Bật/Tắt Khiên Brave</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="2278950434998763147">Mở một số trang web sử dụng kết nối HTTPS bảo mật thay vì HTTP thông thường.</translation>
+<translation id="5510493033031835532">Tự động chuyển hướng các trang AMP</translation>
+<translation id="5197219128592971597">Luôn truy cập các URL trang gốc (không phải AMP), thay vì các phiên bản Trang dành cho thiết bị di động được tăng tốc của Google</translation>
 <translation id="94154759592465111">Chặn Kịch bản</translation>
 <translation id="7714773920987474116">Chặn JavaScript (có thể làm hỏng một số trang web)</translation>
 <translation id="6052725679982758334">Chặn Mạng Xã hội</translation>
@@ -554,7 +556,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1078873179929044999">Trong bước tiếp theo, bạn sẽ thấy một cụm từ khôi phục gồm 12 từ, mà bạn có thể sử dụng để khôi phục tài khoản tiền mã hóa chính của mình. Hãy lưu giữ cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn chuyển đổi ví.</translation>
 <translation id="2359808026110333948">Tiếp tục</translation>
 <translation id="5488357322146334497">Tin nhắn</translation>
-<translation id="7228169875515099943">DỮ LIỆU</translation>
 <translation id="1904000155026201268">Tôi hiểu rằng nếu tôi làm mất cụm từ khôi phục, tôi sẽ không thể truy cập ví tiền điện tử của mình.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
 <translation id="5077747669435508720">Ghi lại hoặc sao chép những từ này theo thứ tự chính xác được hiển thị bên dưới và lưu chúng ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn đổi ví.</translation>
@@ -667,7 +668,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3510283489391432976">Chọn vị trí địa lý/quốc gia của bạn</translation>
 <translation id="4390800080658195654">Giữ bạn ẩn danh trên mạng</translation>
 <translation id="639981156979733813">Hỗ trợ tốc độ lên đến 100 Mbps</translation>
-<translation id="8396607116169935837">Sử dụng đường hầm VPN mã hóa bảo mật IKEv2</translation>
+<translation id="1190117345570417902">Sử dụng đường hầm VPN được mã hóa an toàn Wireguard</translation>
 <translation id="1571230671455380494">Chúng tôi sẽ không bao giờ chia sẻ hoặc bán thông tin của bạn</translation>
 <translation id="276866628038850725">Tất cả các gói đều bao gồm dùng thử 7 ngày miễn phí!</translation>
 <translation id="7280825497485894053">Đăng ký hàng tháng</translation>
@@ -692,7 +693,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối lại và kết nối internet của bạn sẽ không được bảo vệ an toàn.</translation>
 <translation id="2429299231491852747">Chấp nhận yêu cầu kết nối</translation>
 <translation id="3428909627460825679">Không tạo được cấu hình VPN. Vui lòng thử lại.</translation>
-<translation id="8584119457978684056">Xác thực mua token không thành công. Vui lòng thử lại.</translation>
+<translation id="1326227401245340613">Xác minh giao dịch mua không thành công. Vui lòng thử lại.</translation>
 <translation id="8905950042180169719">VPN đang chạy dưới nền</translation>
 <translation id="8681480718817027245">Đăng ký</translation>
 <translation id="7805768142964895445">Trạng thái</translation>
@@ -703,7 +704,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5646376287012673985">Vị trí</translation>
 <translation id="8375573361134671513">Đặt lại cấu hình</translation>
 <translation id="850405162932416400">Hỗ trợ VPN</translation>
-<translation id="1330148827129583049">Cấu hình VPN chưa được tạo. Đang tạo một cấu hình mới.</translation>
 <translation id="6772117549627334582">Không lấy được vị trí máy chủ. Vui lòng thử lại sau.</translation>
 <translation id="5863914199331127413">Tên máy chủ VPN</translation>
 <translation id="5499653136178260315">Loại đăng ký</translation>
@@ -713,9 +713,9 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4395361077929528480">Loại mạng</translation>
 <translation id="755448900483975096">Nhà mạng di động</translation>
 <translation id="1279441577056010362">Tiếp tục đến email</translation>
-<translation id="2553687444159335134">Hỗ trợ được cung cấp với sự trợ giúp của đội ngũ Guardian.\n\nVui lòng chọn thông tin mà bạn cảm thấy thoải mái khi chia sẻ với chúng tôi.\n\nThông tin mà bạn chia sẻ ban đầu với chúng tôi càng nhiều thì càng dễ dàng hơn cho nhân viên hỗ trợ của chúng tôi hỗ trợ bạn giải quyết vấn đề</translation>
+<translation id="7125582363614011660">Hỗ trợ được cung cấp với sự trợ giúp của nhóm Guardian.\n\nVui lòng chọn thông tin bạn cảm thấy thoải mái khi chia sẻ với chúng tôi.\n\nBạn càng chia sẻ nhiều thông tin từ đầu thì nhân viên hỗ trợ của chúng tôi càng dễ hỗ trợ giải quyết vấn đề của bạn.</translation>
 <translation id="7999094850625689785">Một khu vực máy chủ gần nhất với bạn sẽ được tự động chọn dựa trên múi giờ hệ thống của bạn. Điều này được khuyến nghị để bảo đảm tốc độ internet nhanh.</translation>
-<translation id="8018707825009059641">Các vấn đề khác</translation>
+<translation id="4397083831618200686">Chọn lỗi</translation>
 <translation id="6687228121145903051">Không thể kết nối với VPN (Lỗi khác)</translation>
 <translation id="9184988385244077767">Không có internet khi kết nối</translation>
 <translation id="21570240866965662">Kết nối chậm</translation>
@@ -730,7 +730,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1187506504156101449">Không xác nhận được giao dịch mua:</translation>
 <translation id="8420522105268941892">Bạn đã đăng ký một gói đăng ký. Hãy thử khôi phục gói đăng ký</translation>
 <translation id="74771564105268111">LỖI!!\nGây ra do người dùng hủy luồng mua.</translation>
-<translation id="3851978668258201962">LỖI!!\nMua không thành công.</translation>
+<translation id="7312462922610983743">LỖI!!\nMua không thành công..</translation>
 <translation id="6452181791372256707">Từ chối</translation>
 <translation id="8030852056903932865">Phê duyệt</translation>
 <translation id="1597199892790541240">Tiền ga</translation>
@@ -803,11 +803,13 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5061574358754621254">Dữ liệu giá được cung cấp bởi CoinGecko</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
 <translation id="8574289650879708853">Thêm tài sản tùy chỉnh</translation>
+<translation id="1974060860693918893">Nâng cao</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="6600400596821238377">Tên token</translation>
 <translation id="4432966365400169165">Địa chỉ hợp đồng token</translation>
 <translation id="4092152169181928870">Ký hiệu token</translation>
 <translation id="4351811224047421378">Số thập phân chính xác</translation>
+<translation id="547122651977318828">ID token (chỉ dành cho ERC721)</translation>
 <translation id="8614026298974065517">Loại bỏ tài sản tùy chỉnh</translation>
 <translation id="4378941981362528553">Bạn có muốn loại bỏ token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) không?</translation>
 <translation id="4250680216510889253">Không</translation>
@@ -869,5 +871,32 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2478788592457735063">Điều này sẽ chuyển đổi mạng sang một mạng đã thêm trước đó.</translation>
 <translation id="8756686998207163764">Chuyển đổi mạng</translation>
 <translation id="394256914628786902">Bật tự động tạo Nhóm tab</translation>
+<translation id="5242300593039211344">Khóa Ví</translation>
+<translation id="1108298724135935307">Các website đã kết nối</translation>
+<translation id="4255623233927788178">Xem trên trình khám phá khối</translation>
 <translation id="8274201358637112807">Trang này muốn tương tác với Ví Brave</translation>
+<translation id="3355936511340229503">Lỗi kết nối</translation>
+<translation id="4891604214809245310">Không thể đặt mạng thành <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">Có vẻ như bạn có các VPN khác trên thiết bị này được đặt thành “Luôn bật”. Để bật Brave Tường lửa + VPN, trước tiên hãy tắt cài đặt “Luôn bật” này cho các VPN khác trước khi kết nối lại. Nếu vẫn còn lỗi thì hãy thử gỡ cài đặt các VPN khác.</translation>
+<translation id="85136472535634474">Mở Cài đặt VPN</translation>
+<translation id="8352805003811526272">Đang đặt lại cấu hình...</translation>
+<translation id="6809312301323611382">Bạn đã chọn cùng một máy chủ.</translation>
+<translation id="7694991972030057904">Quyền đã bị hủy bỏ</translation>
+<translation id="9106265941552476098">Từ chối <ph name="TRANSACTION_LENGTH"/> giao dịch</translation>
+<translation id="523862956770478816">Quyền trang</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> tài khoản được kết nối</translation>
+<translation id="4305817255990598646">Chuyển đổi</translation>
+<translation id="4804818685124855865">Ngắt kết nối</translation>
+<translation id="8009571545960303544">Chữ ký của bạn đang được yêu cầu</translation>
+<translation id="1982257600591932657">Tên mạng</translation>
+<translation id="5052727830821470769">URL mạng</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
+<translation id="7982789257301363584">Mạng</translation>
+<translation id="2521480044079508357">Điều này sẽ cho phép sử dụng mạng này bên trong Ví Brave.</translation>
+<translation id="4717431746210146708">Cho phép trang web này thêm mạng?</translation>
+<translation id="3378339846292573874">Thêm token được đề xuất</translation>
+<translation id="2322227405137827074">Bạn có muốn nhập token này không?</translation>
+<translation id="1324417023773393937">Trình duyệt Brave</translation>
+<translation id="6044189892950611565">Kênh thông báo cho Trình duyệt Brave</translation>
 </translationbundle>

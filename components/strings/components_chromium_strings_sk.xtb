@@ -4,7 +4,6 @@
 <translation id="130631256467250065">Zmeny sa prejavia po ďalšom reštartovaní zariadenia.</translation>
 <translation id="7999989146447764333">Správy o zlyhaní nie sú v prehliadači Brave k dispozícii.</translation>
 <translation id="1953231710324290369">Prezeráte si zabezpečenú stránku prehliadača Brave</translation>
-<translation id="4010643444566880169">Systém Chrome OS nedokončil počiatočné nastavenie.</translation>
 <translation id="4847979153841887006">Logo prehliadača Brave</translation>
 <translation id="7932149101545999102">Prehliadač Brave mohol vzniknúť vďaka projektu s otvoreným zdrojom <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> a ďalšiemu <ph name="BEGIN_LINK_OSS"/>softvéru s otvoreným zdrojom<ph name="END_LINK_OSS"/> .</translation>
 <translation id="8746410156982274638">Prejdite na
@@ -19,6 +18,7 @@
           a zrušte začiarknutie políčka „Používať server proxy pre sieť LAN".</translation>
 <translation id="303960458633076466">Táto stránka bola zablokovaná prehliadačom Brave</translation>
 <translation id="2017237562285586622">Prehliadaču Brave povoľte prístup k sieti v nastaveniach brány firewall alebo antivírusového softvéru.</translation>
+<translation id="2505647373045235387">Brave OS nedokončil počiatočné nastavenie.</translation>
 <translation id="8619622797841001082">Prejdite na
           ponuku Brave &gt;
           <ph name="SETTINGS_TITLE"/>

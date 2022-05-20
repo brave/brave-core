@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Brave Shieldsを有効/無効にします</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="2278950434998763147">HTTPではなく、安全なHTTPSを使用してサイトを開きます。</translation>
+<translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
+<translation id="5197219128592971597">GoogleのAccelerated Mobile Pageバージョンではなく、常にオリジナルの (AMPでない) ページURLにアクセスする</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
 <translation id="7714773920987474116">JavaScript をブロック（サイト破損の可能性あり）</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
@@ -554,7 +556,6 @@
 <translation id="1078873179929044999">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる 12 語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="2359808026110333948">続ける</translation>
 <translation id="5488357322146334497">Message</translation>
-<translation id="7228169875515099943">データ</translation>
 <translation id="1904000155026201268">リカバリーフレーズを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="3933122286596948824">リカバリーフレーズ</translation>
 <translation id="5077747669435508720">これらの単語を以下に示す正確な順序で書き留めるかコピーして、安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを回復する唯一の方法が、このリカバリフレーズになります。</translation>
@@ -667,7 +668,7 @@
 <translation id="3510283489391432976">地域/国の場所を選択してください</translation>
 <translation id="4390800080658195654">オンラインでの匿名状態を維持</translation>
 <translation id="639981156979733813">最大 100 Mbps の速度をサポート</translation>
-<translation id="8396607116169935837">IKEv2 の安全な暗号化された VPN トンネルを使用します</translation>
+<translation id="1190117345570417902">Wireguardの安全な暗号化されたVPNトンネルを使用します</translation>
 <translation id="1571230671455380494">私たちはお客様の情報を共有したり販売したりすることは決してありません</translation>
 <translation id="276866628038850725">すべてのプランには 7 日間の無料トライアルが含まれています！</translation>
 <translation id="7280825497485894053">月間サブスクリプション</translation>
@@ -692,7 +693,7 @@
 このリクエストを受け入れない場合、VPN は再接続せず、インターネット接続は保護されません。</translation>
 <translation id="2429299231491852747">接続要求を受け入れる</translation>
 <translation id="3428909627460825679">VPN プロファイルの作成に失敗しました。もう一度お試しください。</translation>
-<translation id="8584119457978684056">購入トークンの検証に失敗しました。もう一度お試しください。</translation>
+<translation id="1326227401245340613">購入の検証に失敗しました。もう一度お試しください。</translation>
 <translation id="8905950042180169719">VPN はバックグラウンドで実行されています</translation>
 <translation id="8681480718817027245">サブスクリプション</translation>
 <translation id="7805768142964895445">ステータス</translation>
@@ -703,7 +704,6 @@
 <translation id="5646376287012673985">位置情報</translation>
 <translation id="8375573361134671513">設定をリセット</translation>
 <translation id="850405162932416400">VPN サポート</translation>
-<translation id="1330148827129583049">VPN プロファイルが作成されていません。新しいプロファイルを作成します。</translation>
 <translation id="6772117549627334582">サーバーの場所を取得できません。後でもう一度やり直してください。</translation>
 <translation id="5863914199331127413">VPN ホスト名</translation>
 <translation id="5499653136178260315">サブスクリプションタイプ</translation>
@@ -713,9 +713,9 @@
 <translation id="4395361077929528480">ネットワークタイプ</translation>
 <translation id="755448900483975096">セルラーキャリア</translation>
 <translation id="1279441577056010362">メールに進む</translation>
-<translation id="2553687444159335134">Guardian チームの支援を得てサポートが提供されます。\n\n私たちと共有しても構わない情報を選択してください。\n\n最初に私たちと共有する情報が多いほど、サポートスタッフが問題の解決を支援しやすくなります。</translation>
+<translation id="7125582363614011660">Guardian チームの支援を得てサポートが提供されます。\n\n私たちと共有しても構わない情報を選択してください。\n\n最初に私たちと共有する情報が多いほど、サポートスタッフが問題の解決を支援しやすくなります。</translation>
 <translation id="7999094850625689785">システム設定のタイムゾーンに基づいて、最も近いサーバーリージョンが自動的に選択されます。高速のインターネット速度を確保するためにこの設定が推奨されます。</translation>
-<translation id="8018707825009059641">その他の問題</translation>
+<translation id="4397083831618200686">問題を選択</translation>
 <translation id="6687228121145903051">VPN に接続できません (その他のエラー)</translation>
 <translation id="9184988385244077767">接続時にインターネットがない</translation>
 <translation id="21570240866965662">低速回線</translation>
@@ -730,7 +730,7 @@
 <translation id="1187506504156101449">購入の確認に失敗しました:</translation>
 <translation id="8420522105268941892">すでにサブスクリプションに登録しています。サブスクリプションの復元を試してみてください。</translation>
 <translation id="74771564105268111">エラー!!\nユーザーが購入フローをキャンセルしたことが原因です。</translation>
-<translation id="3851978668258201962">エラー!!\n購入に失敗しました。</translation>
+<translation id="7312462922610983743">エラー!!\n購入に失敗しました。</translation>
 <translation id="6452181791372256707">拒否</translation>
 <translation id="8030852056903932865">承認する</translation>
 <translation id="1597199892790541240">ガス料金</translation>
@@ -803,11 +803,13 @@
 <translation id="5061574358754621254">CoinGeckoによる価格データ</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
 <translation id="8574289650879708853">カスタムアセットを追加</translation>
+<translation id="1974060860693918893">詳細</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="6600400596821238377">トークン名</translation>
 <translation id="4432966365400169165">トークン契約アドレス</translation>
 <translation id="4092152169181928870">トークンシンボル</translation>
 <translation id="4351811224047421378">小数点桁数</translation>
+<translation id="547122651977318828">トークンID (ERC721のみ)</translation>
 <translation id="8614026298974065517">カスタムアセットを削除</translation>
 <translation id="4378941981362528553"><ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/> ) トークンを削除しますか？</translation>
 <translation id="4250680216510889253">いいえ</translation>
@@ -869,5 +871,32 @@
 <translation id="2478788592457735063">この操作を行うと、現在のネットワークを以前に追加されたネットワークに切り替えます。</translation>
 <translation id="8756686998207163764">ネットワークを切り替え</translation>
 <translation id="394256914628786902">タブグループの自動作成を有効にする</translation>
+<translation id="5242300593039211344">ウォレットをロックする</translation>
+<translation id="1108298724135935307">接続したサイト</translation>
+<translation id="4255623233927788178">ブロックエクスプローラーで表示</translation>
 <translation id="8274201358637112807">このページは、Braveウォレットとの通信をリクエストしています</translation>
+<translation id="3355936511340229503">接続エラー</translation>
+<translation id="4891604214809245310">ネットワークを<ph name="NETWORK_NAME"/>に設定できません</translation>
+<translation id="685345388423515592">この端末で他のVPNが「常にオン」に設定されているようです。Brave Firewall + VPNを有効にするには、まず他のVPNのこの「常にオン」の設定を無効にしてから再度接続してください。それでも問題が解決しない場合は、他のVPNのアンインストールをお試しください。</translation>
+<translation id="85136472535634474">VPN設定を開く</translation>
+<translation id="8352805003811526272">構成をリセットしています...</translation>
+<translation id="6809312301323611382">同じサーバーを既に選択済みです。</translation>
+<translation id="7694991972030057904">権限がキャンセルされました</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/>件のトランザクションを拒否</translation>
+<translation id="523862956770478816">サイトのアクセス許可</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/>件のアカウントを接続しました</translation>
+<translation id="4305817255990598646">切り替える</translation>
+<translation id="4804818685124855865">切断</translation>
+<translation id="8009571545960303544">あなたの署名がリクエストされています。</translation>
+<translation id="1982257600591932657">ネットワーク名</translation>
+<translation id="5052727830821470769">ネットワーク URL</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="7131971375297699539">通貨記号</translation>
+<translation id="7982789257301363584">ネットワーク</translation>
+<translation id="2521480044079508357">これにより、このネットワークを Brave Wallet 内で使用できるようになります。</translation>
+<translation id="4717431746210146708">このサイトにネットワークの追加を許可しますか？</translation>
+<translation id="3378339846292573874">推奨トークンを追加</translation>
+<translation id="2322227405137827074">このトークンをインポートしますか?</translation>
+<translation id="1324417023773393937">Braveブラウザ</translation>
+<translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
 </translationbundle>

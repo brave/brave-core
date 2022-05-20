@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">የ Brave መከላከያዎችን አንቃ/አቦዝን</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="2278950434998763147">ከ HTTP ይልቅ ደሕንነቱ የተጠበቀ HTTPS በመጠቀም አንዳንድ ድረ ገጾችን ይከፍታል</translation>
+<translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
+<translation id="5197219128592971597">ሁልጊዜ ኦሪጅናል (AMP ያልሆኑ) ገጽ URLs ን ይጎብኙ፣ ከ Google Accelerated Mobile ገጽ ስሪቶች ይልቅ</translation>
 <translation id="94154759592465111">ስክሪፕቶችን አግድ</translation>
 <translation id="7714773920987474116">የጃቫ ስክሪፕቶችን ማገድ (ጣቢያዎችን ሊሰብር ይችላል)</translation>
 <translation id="6052725679982758334">የማህበራዊ ሚዲያ እገዳ</translation>
@@ -555,7 +557,6 @@
 <translation id="1078873179929044999">በቀጣዩ ደረጃ ፣ ቀዳሚ የክሪፕቶ መለያዎችዎን መመለስ የሚችሉበትን የ12 ቃል የዳግም መመለሻ ሀረግ ያያሉ። ድህንነቱ በተጠበቀ ቦታ ያስቀምጡት። የይለፍ ቃልዎ ቢረሳ፣ ቢጠፋ ወይም መሳሪያዎ ቢሰረቅ ወይም ዋሌት ለመቀየር ከፈለጉ የዳግም መመለሻ ሀረግ መለያዎን ዳግም ለመድረስ ብቸኛው መንገድ ነው።</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="5488357322146334497">መልዕክት</translation>
-<translation id="7228169875515099943">ዳታ</translation>
 <translation id="1904000155026201268">የማገገሚያ ሀረግ ከጠፋብኝ ’t በማሸነፍ የ crypto ቦርሳዬን ማግኘት እንደማልችል ተረድቻለሁ።</translation>
 <translation id="3933122286596948824">የእርስዎ የመልሶ ማግኛ ሓረግ</translation>
 <translation id="5077747669435508720">ከዚህ በታች በሚታየው ትክክለኛ ቅደም ተከተል እነዚህን ቃላት ይፃፉ ወይም ይቅዱ እና ደህንነቱ በተጠበቀ ቦታ ያስቀምጧቸው። የተረሳ የይለፍ ቃል ፣ የጠፋ ወይም የተሰረቀ መሣሪያ ቢኖር ወይም walletsን ለመለወጥ ከፈለጉ የመለያ መዳረሻን መልሶ የማገገሚያ ሐረግዎ ብቸኛው መንገድ ነው።</translation>
@@ -668,7 +669,7 @@
 <translation id="3510283489391432976">የእርስዎን Geo/ሀገር አቀማመጥ ይምረጡ</translation>
 <translation id="4390800080658195654">በመስመር ላይ ስም-አልባ ያደርግዎታል</translation>
 <translation id="639981156979733813">እስከ 100 Mbps ፍጥነትን ይደግፋል</translation>
-<translation id="8396607116169935837">IKEv2 ደህንነቱ የተጠበቀ የተመሰጠረ የVPN ዋሻ ይጠቀማል</translation>
+<translation id="1190117345570417902">Wireguard ደህንነቱ የተጠበቀ የተመሰጠረ የ VPN ዋሻ ይጠቀማል</translation>
 <translation id="1571230671455380494">እኛ መረጃዎን በጭራሽ አናጋራም ወይም አንሸጥም</translation>
 <translation id="276866628038850725">ሁሉም ዕቅዶች ነፃ የ 7 ቀን ሙከራን ያካትታሉ!</translation>
 <translation id="7280825497485894053">ወርሃዊ የደንበኝነት ምዝገባ</translation>
@@ -691,7 +692,7 @@
 <translation id="7267573208549764106">የቀድሞው VPN ግንኙነትዎ ተቋርጧል። ከ VPN ጋር እንደገና ለመገናኘት የግንኙነት ጥያቄውን መቀበል ያስፈልግዎታል ።ይህን ጥያቄ ካልተቀበሉ VPN እንደገና አይገናኝም እና የበይነመረብ ግንኙነትዎ ደህንነቱ የተጠበቀ አይሆንም።</translation>
 <translation id="2429299231491852747">የግንኙነት ጥያቄን ይቀበሉ</translation>
 <translation id="3428909627460825679">የ Vpn መገለጫ መፍጠር አልተሳካም። እባክዎ ዳግም ይሞክሩ.</translation>
-<translation id="8584119457978684056">የግዢ ቶክን ማረጋገጫ አልተሳካም። እባክዎ ዳግም ይሞክሩ።</translation>
+<translation id="1326227401245340613">የግዢ ማረጋገጫ አልተሳካም። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="8905950042180169719">VPN ከበስተጀርባ እያሄደ ነው</translation>
 <translation id="8681480718817027245">የደንበኝነት ምዝገባ</translation>
 <translation id="7805768142964895445">ሁኔታ</translation>
@@ -702,7 +703,6 @@
 <translation id="5646376287012673985">አካባቢ</translation>
 <translation id="8375573361134671513">ውቅረት ዳግም አስጀምር</translation>
 <translation id="850405162932416400">የVPN ድጋፍ</translation>
-<translation id="1330148827129583049">የ Vpn መገለጫ አልተፈጠረም። አዲስ መገለጫ በመፍጠር ላይ።</translation>
 <translation id="6772117549627334582">የአገልጋይ ሥፍራ ማግኘት አልተሳካም። እባክዎ ቆየት ብለው ይሞክሩ.</translation>
 <translation id="5863914199331127413">የ VPN አስተናጋጅ ስም</translation>
 <translation id="5499653136178260315">የደንበኝነት ምዝገባ ዓይነት</translation>
@@ -712,9 +712,9 @@
 <translation id="4395361077929528480">የአውታረ መረብ ዓይነት</translation>
 <translation id="755448900483975096">የግንኙነት አቅራቢ</translation>
 <translation id="1279441577056010362">ወደ ኢሜል ይቀጥሉ</translation>
-<translation id="2553687444159335134">በአሳዳጊው ቡድን እገዛ የሚሰጥ ድጋፍ። \n\n እባክዎን ለእኛ የሚያጋሩትን መረጃ ይምረጡ። \n\n መጀመሪያ ለእኛ ያጋሩን ተጨማሪ መረጃ የእኛ የድጋፍ ሰጪ ሰራተኞች እርስዎን ለመፍታት እንዲያግዙዎት ቀላል ይሆናል።</translation>
+<translation id="7125582363614011660">በጋርዲያን ቡድን እገዛ የሚሰጥ ድጋፍ።\n\nእባክዎ እኛን ለማጋራት የሚመችዎትን መረጃ ይምረጡ።\n\nበመጀመሪያ ለእኛ ባጋሩ ቁጥር የድጋፍ ሰራተኞቻችን የእርስዎን ችግር ለመፍታት እንዲያግዙዎት ቀላል ይሆናል።</translation>
 <translation id="7999094850625689785">ለእርስዎ በጣም ቅርብ የሆነ የአገልጋይ ክልል በራስ-ሰር በስርዓትዎ የሰዓት ሰቅ ላይ የተመሠረተ ይሆናል። ፈጣን የበይነመረብ ፍጥነትን ለማረጋገጥ ይህ ይመከራል።</translation>
-<translation id="8018707825009059641">ሌሎች ጉዳዮች</translation>
+<translation id="4397083831618200686">ጉዳይ ይምረጡ</translation>
 <translation id="6687228121145903051">ከ VPN ጋር መገናኘት አይቻልም (ሌላ ስህተት)</translation>
 <translation id="9184988385244077767">ሲገናኝ ምንም በይነመረብ የለም</translation>
 <translation id="21570240866965662">ቀርፋፋ ግንኙነት</translation>
@@ -729,7 +729,7 @@
 <translation id="1187506504156101449">ግዢውን መቀበል አልተሳካም፦</translation>
 <translation id="8420522105268941892">አስቀድመው ለደንበኝነት ተመዝግበዋል። የደንበኝነት ምዝገባውን ወደነበረበት ለመመለስ ይሞክሩ።</translation>
 <translation id="74771564105268111">ስህተት !! \ n አንድ ተጠቃሚ የግዢ ፍሰቱን በመሰረዝ ምክንያት።</translation>
-<translation id="3851978668258201962">ስህተት !! \ n መግዛት አልተሳካም ..</translation>
+<translation id="7312462922610983743">ስህተት!!\nግዢው አልተሳካም..</translation>
 <translation id="6452181791372256707">አይቀበሉ</translation>
 <translation id="8030852056903932865">ፍቀድ</translation>
 <translation id="1597199892790541240">የነዳጅ ክፍያ</translation>
@@ -802,11 +802,13 @@
 <translation id="5061574358754621254">በCoinGecko የተጠናከረ የዋጋ መረጃ</translation>
 <translation id="4626407663177532837">ጥቅሱ 0.875% የBrave ክፍያን ያካትታል።</translation>
 <translation id="8574289650879708853">ብጁ ንብረትን ያክሉ</translation>
+<translation id="1974060860693918893">የላቀ</translation>
 <translation id="7791543448312431591">አክል</translation>
 <translation id="6600400596821238377">የምልክት ስም</translation>
 <translation id="4432966365400169165">የመለያ ምልክት ኮንትራት አድራሻ</translation>
 <translation id="4092152169181928870">የቶክን ምልክት</translation>
 <translation id="4351811224047421378">የትክክለኛነት አስርዮሽ</translation>
+<translation id="547122651977318828">የቶክን ID (ለ ERC721 ብቻ)</translation>
 <translation id="8614026298974065517">የተለምዶ ንብረትን ያስወግዱ</translation>
 <translation id="4378941981362528553">ማስወገድ ይፈልጋሉ? 
 <ph name="TOKEN_NAME"/> (
@@ -870,5 +872,36 @@
 <translation id="2478788592457735063">ይህ ቀድሞ ወደተጨመረ አውታረ መረብ ይለውጠዋል።</translation>
 <translation id="8756686998207163764">ኔትዎርኩን ይቀይሩ</translation>
 <translation id="394256914628786902">የ Tab Group በራስ-መፍጠርን አንቃ</translation>
+<translation id="5242300593039211344">ዋሌቱን ይቆልፉ</translation>
+<translation id="1108298724135935307">የተገናኙ ጣቢያዎች</translation>
+<translation id="4255623233927788178">በBlock explorer ላይ ይመልከቱ</translation>
 <translation id="8274201358637112807">ይህ ገጽ ከ Brave ዋሌት ጋር መስተጋብር መፍጠር ይፈልጋል</translation>
+<translation id="3355936511340229503">የግንኙነት ስህተት</translation>
+<translation id="4891604214809245310">አውታረ መረብን ወደ
+1<ph name="NETWORK_NAME"/> 
+ማዋቀር አልተቻለም</translation>
+<translation id="685345388423515592">በዚህ መሣሪያ ላይ ወደ “ሁልጊዜ አብራ” የተቀናበሩ ሌሎች  VPNዎች ያለዎት ይመስላል። Brave Firewall + VPN ለማንቃት መጀመሪያ እንደገና ከማገናኘትዎ በፊት ይህ “ሁልጊዜ አብራ” የሚለውን የሌሎች VPNዎች ቅንብር ያሰናክሉ። ችግሩ ከቀጠለ ሌሎች VPNዎችን ለማራገፍ ይሞክሩ።</translation>
+<translation id="85136472535634474">የVPN ቅንብሮችን ክፈት</translation>
+<translation id="8352805003811526272">ውቅረትን ዳግም በማስጀመር ላይ..</translation>
+<translation id="6809312301323611382">ቀድሞውንም ተመሳሳይ አገልጋይ መርጠዋል።</translation>
+<translation id="7694991972030057904">ፍቃዱ ተሰርዟል።</translation>
+<translation id="9106265941552476098">የ 1<ph name="TRANSACTION_LENGTH"/>
+ግብይቶችን አትቀበል</translation>
+<translation id="523862956770478816">የጣቢያ ፈቃድ</translation>
+<translation id="2141313140218636977">1 <ph name="VALUE"/>
+መለያዎች ተገናኝተዋል</translation>
+<translation id="4305817255990598646">ቀይር</translation>
+<translation id="4804818685124855865">ግንኙነት አቋርጥ</translation>
+<translation id="8009571545960303544">ፊርማዎ እየተጠየቀ ነው</translation>
+<translation id="1982257600591932657">የአውታረ መረብ ስም</translation>
+<translation id="5052727830821470769">የአውታር URL</translation>
+<translation id="4822132585477111396">የሰንሰለት መታወቂያ</translation>
+<translation id="7131971375297699539">የመገበያያ ምልክት</translation>
+<translation id="7982789257301363584">አውታረ መረብ</translation>
+<translation id="2521480044079508357">ይህ አውታረ መረብ በ Brave Wallet ውስጥ ጥቅም ላይ እንዲውል ያስችለዋል።</translation>
+<translation id="4717431746210146708">ይህ ጣቢያ አውታረ መረብ እንዲያክል ይፈቀድለት?</translation>
+<translation id="3378339846292573874">የተጠቆመ ማስመሰያ ያክሉ</translation>
+<translation id="2322227405137827074">ይህን ማስመሰያ ማስመጣት ይፈልጋሉ?</translation>
+<translation id="1324417023773393937">Brave አሳሽ</translation>
+<translation id="6044189892950611565">ለ Brave Browser የማስታወቂያ ጣቢያ</translation>
 </translationbundle>

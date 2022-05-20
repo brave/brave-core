@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">Jumlah 24JAM</translation>
 <translation id="7534079972563542000">Domain yang tidak dapat Dihentikan</translation>
 <translation id="4492298165410552103">Mengaktifkan sokongan Domain yang tidak dapat Dihentikan di Brave?</translation>
-<translation id="3470923752115324276">Brave boleh membenarkan anda untuk melawat domain .crypto dengan menggunakan Cloudflare untuk menyelesaikan permintaan carian nama domain .crypto menggunakan DNS melalui HTTPS. Jika anda mengaktifkan ciri-ciri ini, Cloudflare akan melihat domain .crypto yang anda cuba untuk melawat, tetapi mereka tidak dapat melihat domain lain. Lihat Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Domain yang Tidak Dapat Dihentikan bagi menyelesaikan permintaan carian nama domain .crypto (dan juga .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jika anda mendayakan tetapan ini, Infura dapat melihat domain tertentu tersebut yang cuba anda lawati tetapi Infura tidak dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Mengaktifkan sokongan Ethereum Name Service (ENS) di Brave?</translation>
-<translation id="618766505813078707">Brave boleh membenarkan anda untuk melawat domain .eth dengan menggunakan Cloudflare untuk menyelesaikan permintaan carian nama domain .eth menggunakan DNS melalui HTTPS. Jika anda mengaktifkan ciri-ciri ini, Cloudflare akan melihat domain .eth yang anda cuba untuk melawat, tetapi mereka tidak dapat melihat domain lain. Lihat Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Teruskan dengan menggunakan pelayan Cloudflare</translation>
+<translation id="8328137586971750853">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Ethereum Name Service bagi menyelesaikan permintaan carian nama domain .eth. Jika anda mendayakan tetapan ini, Infura dapat melihat domain .eth yang cuba anda lawati tetapi Infura tidak dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="7378412287463452336">Teruskan penggunaan pelayan Infura</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="2218918398178303658">DNS melalui HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Dijangka tunggal, parameter objek.</translation>
 <translation id="1875861420974447980">ID Rantai ini digunakan pada masa ini</translation>
 <translation id="167698752210114155">Satu ralat dalaman telah berlaku</translation>
+<translation id="2326876601333401685">Kaedah RPC ini tidak disokong.</translation>
 <translation id="1128992132632883337">Ralat penghuraian respons telah berlaku</translation>
 <translation id="1680597601664421644">Mnemonik yang diimport tidak sah untuk Brave Wallet</translation>
 <translation id="4641919696349069826">Satu permintan telah berlangsung</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Data transaksi 'gasPrice' tidak sah</translation>
 <translation id="8909404207805041979">Data transaksi 'gas' tidak sah</translation>
 <translation id="670444168393199227">Data transaksi 'nilai' tidak sah</translation>
-<translation id="6180576227145734714">Data transaksi 'kepada' mestilah alamat yang sah apabila dinyatakan</translation>
 <translation id="6916219411793555838">Data transaksi 'gasPrice' atau 'maxFeePerGas' mesti ditentukan</translation>
 <translation id="1406937874668963740">Data transaksi 'Idrantaian' tidak sah</translation>
 <translation id="9195349857587166771">Data transaksi 'FiPerGasmaks' tidak sah</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Ralat memproses transaksi</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' tidak dibenarkan untuk menandatangan mesej</translation>
 <translation id="8719220598078667817">Gagal menandatangani transaksi</translation>
-<translation id="5486744676117070166">Gagal mendapat nilai nonce seterusnya</translation>
 <translation id="875506212625074179">Respons ID rantaian tidak sah daripada perkhidmatan RPC</translation>
+<translation id="5486744676117070166">Gagal mendapat nilai nonce seterusnya</translation>
+<translation id="6180576227145734714">Data transaksi 'kepada' mestilah alamat yang sah apabila dinyatakan</translation>
 <translation id="4958950550253325418">Aplikasi DeFi</translation>
 <translation id="735961408871282410">Pasaran sehenti NFT</translation>
 <translation id="7740287852186792672">Hasil carian</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). 0x HANYA akan menggunakan data ini untuk tujuan pemprosesan transaksi.</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
 <translation id="8368540604723748428">Terlalu banyak tempat perpuluhan</translation>
+<translation id="6575120282593094155">Anda belum lagi mempunyai akaun <ph name="ACCOUNT_TYPE"/> . Buat akaun sekarang?</translation>
 <translation id="2704606927547763573">Disalin</translation>
 <translation id="1420318137760245955">Selamat datang ke Dompet Brave yang baharu</translation>
 <translation id="8303434745767477417">Tahan aset kripto dalam jagaan anda. Jejak prestasi portfolio, dan berinteraksi dengan aplikasi nyahpusat web 3. Dagangkan, labur, pinjam, dan beri pinjam dengan DeFi. Semuanya daripada pelayar privasi Brave. Tiada sambungan dan muat turut diperlukan.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Harga dalam</translation>
 <translation id="2490428413101944234">Ujian faucet</translation>
 <translation id="3352959425838279177">Dapatkan Ether daripada faucet untuk <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Teruskan ke Wyre</translation>
-<translation id="2581671693710952401">Dapatkan Ether</translation>
 <translation id="8009571545960303544">Tandatangan anda sedang diminta</translation>
 <translation id="5294062982587710720">Sila ambil perhatian bahawa Brave tidak dapat mengesahkan kesan akibat daripada penandatangan anda.  Tandatangan boleh membenarkan hampir semua operasi di akaun anda atau bagi pihak anda, termasuk (tetapi tidak terhad kepada) memberikan kawalan sepenuhnya terhadap akaun dan aset kripto anda ke laman web yang membuat permintaan tersebut. Hanya tandatangan jika anda pasti dengan tindakan ini, dan mempercayai laman web tersebut.</translation>
 <translation id="3474375934783434676">Tandatangan atas risiko anda sendiri.</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">seterusnya</translation>
 <translation id="793994607260936590">pertama</translation>
 <translation id="4709524402122994378">transaksi</translation>
+<translation id="4591079278963448049">Akaun token berkaitan belum wujud lagi. Jumlah kecil SOL akan dibelanjakan untuk membuat akaun dan memberikan dana.</translation>
 <translation id="523862956770478816">Kebenaran laman web</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> akaun disambungkan</translation>
 <translation id="4305817255990598646">Tukar</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Dihantar</translation>
 <translation id="2331676293859649642">Disahkan</translation>
 <translation id="1165039591588034296">Ralat</translation>
+<translation id="8373210463207847451">Jatuh</translation>
 <translation id="9065572743819293042">Transaksi baru-baru ini</translation>
 <translation id="4235538284468006757">Butiran transaksi</translation>
 <translation id="7488671812634887146">Percepatan</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 hari hadiah percuma kripto, hadiah bernilai ~$500 ribu.</translation>
 <translation id="8292716346768453265">Sertai sekarang!</translation>
 <translation id="6423985584914773314">Bukan alamat FIL yang sah</translation>
+<translation id="3898731124813934210">Beli dengan Wyre</translation>
+<translation id="5522073372365069684">Beli dengan Ramp</translation>
 <translation id="8528916244724490964">Semua Rangkaian</translation>
 <translation id="2781668117338732220">Rangkaian Kedua</translation>
 <translation id="2816106784624007524">Had gas mestilah dalam bentuk nombor bulat yang lebih besar daripada 0</translation>
+<translation id="3354376789153561654">Data transaksi 'kepada' perlu ditentukan</translation>
+<translation id="8728991256628663004">Data transaksi 'daripada' mestilah alamat Filecoin yang sah</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Sambungan Gagal</translation>
 <translation id="745054660363064771">Tidak dapat menyambung ke pelayan</translation>
 <translation id="3936826714240735937">Pilih pelayan lain</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> tidak dapat bersambung kepada pelayan <ph name="REGION_NAME"/>. Anda boleh cuba lagi, atau pilih lain</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> tidak dapat bersambung dengan pelayan <ph name="REGION_NAME"/>. Anda boleh cuba semula atau pilih pelayan lain.</translation>
 <translation id="1024255913009642477">Telah membeli VPN?</translation>
 <translation id="8814357473522731680">Dikuasakan oleh</translation>
 <translation id="5747552184818312860">Tamat tempoh</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Cepat dan tanpa had sehingga 100 Mbps</translation>
 <translation id="1400240082805528049">Sokongan 24/7</translation>
 <translation id="8463313539532697053">Sekejap semasa memuatkan…</translation>
+<translation id="4613076894734402086">Edit kaedah pembayaran</translation>
+<translation id="1898254156730880135">Nampaknya pembayaran terkini anda tidak dihantar. Akses kepada langganan ini akan dijedakan sehingga isu pembayaran diselesaikan. Cuba edit kaedah pembayaran anda atau hubungi sokongan Brave.</translation>
+<translation id="1839021455997460752">Alamat e-mel anda</translation>
+<translation id="5154702632169343078">Subjek</translation>
+<translation id="6625978880678465492">Sila pilih sebab</translation>
+<translation id="6687228121145903051">Tidak dapat bersambung ke VPN (Ralat lain)</translation>
+<translation id="9184988385244077767">Tiada internet apabila disambungkan</translation>
+<translation id="21570240866965662">Sambungan perlahan</translation>
+<translation id="1219475260382643267">Laman web tidak berfungsi</translation>
+<translation id="7138678301420049075">Lain-lain</translation>
+<translation id="1387340358507240698">Jelaskan isu anda</translation>
+<translation id="501818585183973587">Pilih maklumat yang mahu anda kongsikan dengan kami</translation>
+<translation id="3195618332367441234">Lebih banyak maklumat yang anda kongsikan, lebih mudah bagi staf sokongan memberikan bantuan.</translation>
+<translation id="5682143294773821728">Nama hos VPN:</translation>
+<translation id="24242621812020123">Versi apl:</translation>
+<translation id="6676791921618140305">Versi OS:</translation>
+<translation id="1156325797949437777">Sokongan diberikan dengan kerjasama Guardian.</translation>
+<translation id="3307461350293459700">Sambungan VPN gagal. Sila cuba sambung sekali lagi dan pastikan anda klik pada Benarkan bagi mendayakan konfigurasi VPN Brave.</translation>
 <translation id="7586151660465233733">Lebih banyak pasaran di <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Lihat pasaran dan dagang kripto di FTX</translation>
 <translation id="5963745988819586370">Pasaran</translation>

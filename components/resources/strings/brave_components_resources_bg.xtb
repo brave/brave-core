@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Грешка: трябва ви потвърден акаунт, за да влезете</translation>
 <translation id="5260522591743022748">Изглежда, че вашите Brave награди вече са потвърдени с друг акаунт в <ph name="PROVIDER"/>. Опитайте да потвърдите отново, като използвате предишния си акаунт.</translation>
 <translation id="5111921830714291902">Грешка: друг акаунт</translation>
+<translation id="6933939911547091461">За съжаление, вашите Brave Rewards не могат да бъдат потвърдени, защото в момента вашият регион не се поддържа за потвърждаване на Brave Rewards.</translation>
+<translation id="8218538368080510976">Грешка: регионът не се поддържа</translation>
 <translation id="5382684862562314222">BAT все още не се поддържа във вашия регион в Uphold.</translation>
 <translation id="9074594632540931067">Грешка: BAT не е наличен</translation>
 <translation id="413458922997276130">Вашият акаунт в Uphold в момента е блокиран.</translation>
@@ -666,12 +668,8 @@
 <translation id="1164622162816276433">24-часов обем</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Активиране на поддръжката на Unstoppable Domains в Brave?</translation>
-<translation id="3470923752115324276">Brave може да Ви позволи да посещавате .crypto домейни, като използвате Cloudflare за разрешаване на заявките за търсене на име на .crypto домейн, използвайки DNS през HTTPS. Ако разрешите това, Cloudflare ще види домейна .crypto, който се опитвате да посетите, но няма да може да вижда други домейни. Вижте <ph name="BEGIN_CF_TOU_LINK"/>условията за ползване<ph name="END_CF_TOU_LINK"/> и <ph name="BEGIN_CF_PRIVACY_LINK"/>политиката за поверителност<ph name="END_CF_PRIVACY_LINK"/>. на Cloudflare</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Активирайте поддръжка на Ethereum Name Service (ENS) в Brave?</translation>
-<translation id="618766505813078707">Brave може да Ви позволи да посещавате .eth домейни, като използвате Cloudflare за разрешаване на заявките за търсене на домейн .eth, използвайки DNS през HTTPS. Ако разрешите това, Cloudflare ще види домейна .eth, който се опитвате да посетите, но няма да може да види други домейни.
-Вижте <ph name="BEGIN_CF_TOU_LINK"/>условията за ползване<ph name="END_CF_TOU_LINK"/> и <ph name="BEGIN_CF_PRIVACY_LINK"/>политиката за поверителност<ph name="END_CF_PRIVACY_LINK"/>. на Cloudflare</translation>
-<translation id="5636651007798897342">Продължете с помощта на сървър на Cloudflare</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="2218918398178303658">DNS по HTTPS</translation>
 <translation id="1448289340149908413">Етериум</translation>
@@ -768,6 +766,7 @@
 <translation id="3600355176618429948">Прогнозни печалби</translation>
 <translation id="4244985009709452836">Влезте в своя акаунт в <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Еднократни дарения</translation>
+<translation id="7580329715937096918">Има временен проблем при потвърждаването с <ph name="PROVIDER"/>. Вашите Brave Rewards ще останат в състояние на изчакване и автоматично ще се извърши повторен опит, но можете също да опитате отново по-късно.</translation>
 <translation id="590733288489975971">Награди от реклами</translation>
 <translation id="6181762795539107980">Непроверено</translation>
 <translation id="3026978804849658576">Преглед на изявлението</translation>
@@ -807,7 +806,6 @@
 <translation id="7577623631309755655">Данните за трансакция в полето „gasPrice“ са невалидни</translation>
 <translation id="8909404207805041979">Данните за трансакция в полето „gas“ са невалидни</translation>
 <translation id="670444168393199227">Данните за трансакция в полето „value“ са невалидни</translation>
-<translation id="6180576227145734714">Данните за трансакция в полето „to“ трябва да бъдат валиден адрес, когато са посочени</translation>
 <translation id="6916219411793555838">Данните за трансакция в полетата „gasPrice“ или „maxFeePerGas“ трябва да бъдат посочени</translation>
 <translation id="1406937874668963740">Данните за трансакция в полето „chainId“ са невалидни</translation>
 <translation id="9195349857587166771">Данните за трансакция в полето „maxFeePerGas“ са невалидни</translation>
@@ -821,8 +819,9 @@
 <translation id="1462494615260983714">Грешка при обработването на трансакцията</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ няма пълномощия да подписва съобщение</translation>
 <translation id="8719220598078667817">Неуспешно подписване на трансакцията</translation>
-<translation id="5486744676117070166">Неуспешно получаване на следващата стойност на nonce</translation>
 <translation id="875506212625074179">Невалиден отговор на идентификатора на веригата от услуга за RPC</translation>
+<translation id="5486744676117070166">Неуспешно получаване на следващата стойност на nonce</translation>
+<translation id="6180576227145734714">Данните за трансакция в полето „to“ трябва да бъдат валиден адрес, когато са посочени</translation>
 <translation id="4958950550253325418">Приложения за DeFi</translation>
 <translation id="735961408871282410">Пазари на NFT</translation>
 <translation id="7740287852186792672">Резултати от търсенето</translation>
@@ -995,15 +994,15 @@
 <translation id="8569380433211549748">Цена в</translation>
 <translation id="2490428413101944234">Тестване на faucet</translation>
 <translation id="3352959425838279177">Вземете Ether от faucet за <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Продължете към Wyre</translation>
-<translation id="2581671693710952401">Вземете етер</translation>
 <translation id="8009571545960303544">Изисква се вашият подпис</translation>
 <translation id="5294062982587710720">Имайте предвид, че Brave не може да гарантира какво ще се случи, ако подпишете. Подписът може да удостовери почти всяка операция във вашия акаунт или от ваше име, включително (но не само) да предостави пълен контрол върху акаунта ви и крипоактивите на сайта, който ги заявява. Подпишете само ако сте сигурни, че искате да предприемете това действие, и вярвате на сайта.</translation>
 <translation id="3474375934783434676">Подписване на свой собствен риск</translation>
 <translation id="5488357322146334497">Съобщение</translation>
 <translation id="3586752056660754651">Подпис</translation>
 <translation id="3484981968509595506">DApp изисква Вашия публичен ключ за криптиране</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> изисква публичен ключ за криптиране на портфейлите ви. Ако се съгласите да предоставите този ключ, сайтът ще може да съставя криптирани съобщения за вас.</translation>
 <translation id="3340247553212049934">Осигуряване</translation>
+<translation id="1619778919922494944">DApp иска да прочете това съобщение, за да изпълни заявката ви</translation>
 <translation id="714506544401754321">Дешифриране на съобщението</translation>
 <translation id="5039804452771397117">Позволи</translation>
 <translation id="9032898664193335413">Разрешаване на това приложение да похарчи вашите <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1031,6 +1030,7 @@
 <translation id="3948067511324628726">Такса за газ</translation>
 <translation id="7163997622278957886">Оферта</translation>
 <translation id="1074360622426001342">Количество + газ</translation>
+<translation id="2186011161688824046">Сума + такса</translation>
 <translation id="7084089311475827950">Няма данни.</translation>
 <translation id="5821668936183240062">следващ</translation>
 <translation id="793994607260936590">първи</translation>
@@ -1085,6 +1085,7 @@
 <translation id="6666273175654835609">Изпратен</translation>
 <translation id="2331676293859649642">Потвърден</translation>
 <translation id="1165039591588034296">Грешка</translation>
+<translation id="8373210463207847451">Пуснат</translation>
 <translation id="9065572743819293042">Скорошни трансакции</translation>
 <translation id="4235538284468006757">Данни за трансакция</translation>
 <translation id="7488671812634887146">Ускоряване</translation>
@@ -1163,6 +1164,10 @@
 <translation id="1752214435563414457">Разменни залози за Brave</translation>
 <translation id="7829441065063984927">7 дни крипто раздаване, награди за ~500 хиляди USD.</translation>
 <translation id="8292716346768453265">Влезте още сега!</translation>
+<translation id="6423985584914773314">FIL адресът не е валиден</translation>
+<translation id="8528916244724490964">Всички мрежи</translation>
+<translation id="2781668117338732220">Допълнителни мрежи</translation>
+<translation id="2816106784624007524">Ограничението за газ трябва да бъде цяло число, по-голямо от 0</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -1181,26 +1186,32 @@
 <translation id="5799940914270080805">Промяната на тези настройки може да повреди сайтовете.</translation>
 <translation id="9204041448536398473">Настройки на глобалния щит</translation>
 <translation id="2108334320919763866">Глобални настройки по подразбиране</translation>
+<translation id="4516904298421534459">Списъци с филтри</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="131231380815754440">Активиране на HTTPS</translation>
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
 <translation id="3246600097575692802">Разширяване на блокирани скриптове</translation>
 <translation id="3603525299146223354">Проследяващи елементи и реклами</translation>
 <translation id="4448697385961650078">Блокиране на проследяването и рекламите</translation>
+<translation id="8593054718053894081">Агресивно блокиране на тракерите и рекламите</translation>
 <translation id="7384778069178817075">Разрешаване на всички проследявания и реклами</translation>
 <translation id="4941539331405513605">Блокиране на бисквитките между различни сайтове</translation>
 <translation id="6883611015375728278">Блокиране на всички „бисквитки“</translation>
 <translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
 <translation id="8366221601425141146">Цифровите отпечатъци са блокирани</translation>
+<translation id="6531019308847917584">Блокиране на пръстовите отпечатъци</translation>
+<translation id="1899608006846124237">Агресивно блокиране на пръстовите отпечатъци</translation>
 <translation id="8034285923190068220">Позволяване на пръстови отпечатъци</translation>
 <translation id="1992750560347846445">Подаване на сигнал за сайта</translation>
 <translation id="2387532482048804818">Кажете ни, ако сайтът не работи правилно с вдигнати щитове.</translation>
+<translation id="3795015906457257780">Вие разглеждате този сайт без защитите за поверителност на Brave.</translation>
+<translation id="7194012750329511146">Блокирани са
+<ph name="NUMBER"/> тракера, реклами и други от щитовете на Brave</translation>
 <translation id="1742469581923031760">Свързване…</translation>
 <translation id="1287487756047817908">Връзката се прекъсва…</translation>
 <translation id="2325196879156848326">Неуспешно свързване</translation>
 <translation id="745054660363064771">Не може да се установи връзка със сървъра</translation>
 <translation id="3936826714240735937">Избор на друг сървър</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> не могат да се свържат със сървъра на <ph name="REGION_NAME"/>. Можете да опитате отново или да изберете друг</translation>
 <translation id="1024255913009642477">Вече закупихте VPN?</translation>
 <translation id="8814357473522731680">Предоставено от</translation>
 <translation id="5747552184818312860">Изтича на</translation>
@@ -1213,6 +1224,11 @@
 <translation id="1751947227857853925">Бързи и неограничени до 100 Mbps</translation>
 <translation id="1400240082805528049">Поддръжка 24/7</translation>
 <translation id="8463313539532697053">Един момент. Зареждане…</translation>
+<translation id="6687228121145903051">Неуспешно свързване с VPN (друга грешка)</translation>
+<translation id="9184988385244077767">Няма връзка с интернет</translation>
+<translation id="21570240866965662">Връзката е бавна</translation>
+<translation id="1219475260382643267">Уебсайтът не работи</translation>
+<translation id="7138678301420049075">Друго</translation>
 <translation id="7586151660465233733">Включване на повече пазари<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Преглед на пазарите и търгуване с криптовалута в FTX</translation>
 <translation id="5963745988819586370">Пазари</translation>

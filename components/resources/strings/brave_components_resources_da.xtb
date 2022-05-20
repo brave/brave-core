@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Fejl: Du skal have en bekræftet konto, før du kan logge ind</translation>
 <translation id="5260522591743022748">Hmm, det ser ud til, at din Brave Belønninger allerede er bekræftet med en anden <ph name="PROVIDER"/> konto. Bekræft venligst med din tidligere konto.</translation>
 <translation id="5111921830714291902">Fejl: En anden konto</translation>
+<translation id="6933939911547091461">Desværre kan dine Brave Rewards ikke verificeres, da din region ikke understøtter Brave Rewards-verifikation i øjeblikket.</translation>
+<translation id="8218538368080510976">Fejl: Region ikke understøttet</translation>
 <translation id="5382684862562314222">BAT understøttes endnu ikke i din region på Uphold.</translation>
 <translation id="9074594632540931067">Fejl: BAT ikke tilgængelig</translation>
 <translation id="413458922997276130">Din konto på Uphold er i øjeblikket blokeret.</translation>
@@ -666,11 +668,11 @@
 <translation id="1164622162816276433">24-timers volumen</translation>
 <translation id="7534079972563542000">Unstoppable-domæner</translation>
 <translation id="4492298165410552103">Aktivér understøttelse af Unstoppable-domæner i Brave?</translation>
-<translation id="3470923752115324276">Brave giver dig mulighed for at besøge .crypto-domæner med Cloudflare til løsning af opslagsanmodninger for .crypto-domænenavne ved hjælp af DNS over HTTPS. Hvis du aktiverer dette, vil Cloudflare se det .crypto-domæne, du forsøger at besøge, men de vil ikke kunne se andre domæner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>brugsvilkår<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave bruger Infura til at udstede Ethereum JSON-RPC-opkald til smartkontakter fra Unstoppable Domains til at besvare anmodninger om søgning på crypto- (samt .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domænenavne. Hvis du aktiverer, vil Infura være i stand til at se de specifikke domænenavne, som du forsøger at besøge, men de vil ikke kunne se andre domæner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>servicebetingelser<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>fortrolighedspolitik<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Vil du aktivere understøttelse af Ethereum Name Service (ENS) i Brave?</translation>
-<translation id="618766505813078707">Brave giver dig mulighed for at besøge .eth-domæner med Cloudflare til at løse opslagsanmodninger for .eth-domænenavne ved hjælp af DNS over HTTPS. Hvis du aktiverer dette, vil Cloudflare se det .eth-domæne, du forsøger at besøge, men vil ikke kunne se andre domæner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>brugsvilkår<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Fortsæt med Cloudflare-server</translation>
+<translation id="8328137586971750853">Brave bruger Infura til at sende Ethereum JSON-RPC-opkald til smartkontakter fra Ethereum Name Service for at løse opslagsanmodninger for .eth-domænenavne. Hvis du aktiverer dette, vil Infura se det .eth-domæne, du forsøger at besøge, men vil ikke kunne se andre domæner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brugsvilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Fortsæt med Infura-server</translation>
 <translation id="2356070529366658676">Spørg</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -767,6 +769,7 @@
 <translation id="3600355176618429948">Anslået indtjening</translation>
 <translation id="4244985009709452836">Log på din <ph name="PROVIDER"/>-konto</translation>
 <translation id="2613359062756190460">Engangsdonationer</translation>
+<translation id="7580329715937096918">Der er et midlertidigt problem med verifikation med <ph name="PROVIDER"/>, Dine Brave Rewards forbliver i Ventende status, og verifikationsforsøget gentages automatisk, men du kan også prøve igen senere.</translation>
 <translation id="590733288489975971">Belønninger fra reklamer</translation>
 <translation id="6181762795539107980">Ikke-verificeret</translation>
 <translation id="3026978804849658576">Se opgørelse</translation>
@@ -796,6 +799,7 @@
 <translation id="9161147058107529840">Forventet enkelt objektparameter.</translation>
 <translation id="1875861420974447980">Dette kæde-id er allerede i brug</translation>
 <translation id="167698752210114155">Der opstod en intern fejl</translation>
+<translation id="2326876601333401685">Denne RPC-metode er ikke understøttet.</translation>
 <translation id="1128992132632883337">Der opstod en fejl ved svartolkning</translation>
 <translation id="1680597601664421644">Den mnemoteknik, der importeres, er ikke gyldig i Brave Wallet</translation>
 <translation id="4641919696349069826">En anmodning er allerede under behandling</translation>
@@ -806,7 +810,6 @@
 <translation id="7577623631309755655">Transaktionsdata 'gasPrice' er ikke gyldig</translation>
 <translation id="8909404207805041979">Transaktionsdata 'gas' er ikke gyldig</translation>
 <translation id="670444168393199227">Transaktionsdata 'value' er ikke gyldig</translation>
-<translation id="6180576227145734714">Transaktionsdata 'to' skal være en gyldig adresse, når det udbedes</translation>
 <translation id="6916219411793555838">Transaktionsdata 'gasPrice' eller 'maxFeePerGas' skal udspecificeres</translation>
 <translation id="1406937874668963740">Transaktionsdata 'chainId' er ikke gyldig</translation>
 <translation id="9195349857587166771">Transaktionsdata 'maxFeePerGas' er ikke gyldig</translation>
@@ -820,8 +823,9 @@
 <translation id="1462494615260983714">Fejl i behandlingen af transaktionen</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' er ikke autoriseret til at underskrive denne besked</translation>
 <translation id="8719220598078667817">Kunne ikke underskrive transaktion</translation>
-<translation id="5486744676117070166">Kunne ikke få næste nonce-værdi</translation>
 <translation id="875506212625074179">Ugyldigt kæde-ID-svar fra RPC-tjeneste</translation>
+<translation id="5486744676117070166">Kunne ikke få næste nonce-værdi</translation>
+<translation id="6180576227145734714">Transaktionsdata 'to' skal være en gyldig adresse, når det udbedes</translation>
 <translation id="4958950550253325418">Defi-apps</translation>
 <translation id="735961408871282410">NFT-markedspladser</translation>
 <translation id="7740287852186792672">Søgeresultater</translation>
@@ -869,6 +873,7 @@
 <translation id="151946611346774041">0x vil behanle Ethereum-adressen og IP-adresen for at gennemføre en transaktion (deriblandt modtagelse af tilbud). 0x vil KUN bruge disse data i forbindelse med behandling af transaktioner.</translation>
 <translation id="4626407663177532837">Priser inkluderer et Brave-gebyr på 0,875 %.</translation>
 <translation id="8368540604723748428">For mange decimalpladser</translation>
+<translation id="6575120282593094155">Du har endnu ikke en <ph name="ACCOUNT_TYPE"/>-konto. Vil du lave en nu?</translation>
 <translation id="2704606927547763573">Kopieret</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave Wallet</translation>
 <translation id="8303434745767477417">Behold crypto-aktiver i dine varetægt. Følg porteføljepræstation, og interagér med web 3 DApps. Handl, investér, lån og udlån med DeFi. Det hele direkte fra din Brave-browser. Ingen udvidelser, ingen downloads kræves.</translation>
@@ -994,15 +999,15 @@
 <translation id="8569380433211549748">Pris i</translation>
 <translation id="2490428413101944234">Test hane</translation>
 <translation id="3352959425838279177">Få Ether fra en hane for <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Fortsæt til Wyre</translation>
-<translation id="2581671693710952401">Hent Ether</translation>
 <translation id="8009571545960303544">Din signatur er ønsket</translation>
 <translation id="5294062982587710720">Vær opmærksom på, at Brave ikke kan garantere, hvad der vil ske, hvis du skriver under. En signatur kan godkende næsten enhver form for handling i din konto eller på dine vegne, blandt andet at give fuld kontrol over din konto og crypto-aktiver til siden, der anmoder dig. Skriv kun under, hvis du er sikker på, du vil udføre denne handling og stoler på siden.</translation>
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="5488357322146334497">Besked</translation>
 <translation id="3586752056660754651">Underskriv</translation>
 <translation id="3484981968509595506">En DApp anmoder om din offentlige krypteringsnøgle</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> anmoder om din wallets offentlige krypteringsnøgle. Hvis du giver dit samtykke til at levere denne nøgle, vil sitet kunne sende krypterede beskeder til dig.</translation>
 <translation id="3340247553212049934">Giv</translation>
+<translation id="1619778919922494944">Denne DApp vil gerne læse denne besked for at fuldføre din anmodning</translation>
 <translation id="714506544401754321">Dekrypter besked</translation>
 <translation id="5039804452771397117">Tillad</translation>
 <translation id="9032898664193335413">Tillad, at denne app bruger dine <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1030,10 +1035,12 @@
 <translation id="3948067511324628726">Gasgebyr</translation>
 <translation id="7163997622278957886">Byd</translation>
 <translation id="1074360622426001342">Beløb + gas</translation>
+<translation id="2186011161688824046">Beløb + gebyr</translation>
 <translation id="7084089311475827950">Ingen data.</translation>
 <translation id="5821668936183240062">næste</translation>
 <translation id="793994607260936590">første</translation>
 <translation id="4709524402122994378">transaktioner</translation>
+<translation id="4591079278963448049">Den tilknyttede token-konto findes ikke endnu. En lille mængde SOL vil blive brugt på at skabe og finansiere den.</translation>
 <translation id="523862956770478816">Sidetilladelser</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> konti forbundet</translation>
 <translation id="4305817255990598646">Skift</translation>
@@ -1084,6 +1091,7 @@
 <translation id="6666273175654835609">Indsendt</translation>
 <translation id="2331676293859649642">Bekræftet</translation>
 <translation id="1165039591588034296">Fejl</translation>
+<translation id="8373210463207847451">Droppet</translation>
 <translation id="9065572743819293042">Seneste transaktioner</translation>
 <translation id="4235538284468006757">Transaktionsoplysninger</translation>
 <translation id="7488671812634887146">Speedup</translation>
@@ -1162,6 +1170,14 @@
 <translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 dage med crypto-gaver, præmier for ca. 500.000 ~$</translation>
 <translation id="8292716346768453265">Deltag nu!</translation>
+<translation id="6423985584914773314">Ikke en gyldig FIL-adresse</translation>
+<translation id="3898731124813934210">Køb med Wyre</translation>
+<translation id="5522073372365069684">Køb med Ramp</translation>
+<translation id="8528916244724490964">Alle netværk</translation>
+<translation id="2781668117338732220">Sekundære netværk</translation>
+<translation id="2816106784624007524">Gasgrænse skal være et helt tal højere end 0</translation>
+<translation id="3354376789153561654">Transaktionsdata 'to' skal udspecificeres</translation>
+<translation id="8728991256628663004">Transaktionsdata 'from' skal være en gyldig Filecoin-adresse</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="3745016858329272300">Generel info</translation>
 <translation id="4045404575593562245">Tor kontrolhændelser</translation>
@@ -1180,26 +1196,33 @@
 <translation id="5799940914270080805">Det kan ødelægge sider at ændre disse indstillinger.</translation>
 <translation id="9204041448536398473">Globale skjoldindstillinger</translation>
 <translation id="2108334320919763866">Global standard</translation>
+<translation id="4516904298421534459">Filtrer lister</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="131231380815754440">Aktivér HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="3246600097575692802">Aktivér Scripts blokeret</translation>
 <translation id="3603525299146223354">Trackers &amp; reklamer</translation>
 <translation id="4448697385961650078">Blokér trackere &amp; reklamer</translation>
+<translation id="8593054718053894081">Blokerer aggressivt trackers og reklamer</translation>
 <translation id="7384778069178817075">Tillad alle trackere &amp; reklamer</translation>
 <translation id="4941539331405513605">Blokér cross-site cookies</translation>
 <translation id="6883611015375728278">Blokér alle cookies</translation>
 <translation id="5657156137487675418">Tillad alle cookies</translation>
 <translation id="8366221601425141146">Fingeraftryk blokeret</translation>
+<translation id="6531019308847917584">Blokér fingeraftryk</translation>
+<translation id="1899608006846124237">Blokerer aggressivt fingeraftryk</translation>
 <translation id="8034285923190068220">Tillad fingeraftryk</translation>
 <translation id="1992750560347846445">Anmeld side</translation>
 <translation id="2387532482048804818">Fortæl os, hvis siden ikke virkede korrekt med skjoldene oppe.</translation>
+<translation id="3795015906457257780">Du ser dette site uden Braves privatlivsbeskyttelse.</translation>
+<translation id="7194012750329511146">Brave Shields
+<ph name="NUMBER"/> Trackers, reklamer med mere blokeret</translation>
 <translation id="1742469581923031760">Oprette forbindelse …</translation>
 <translation id="1287487756047817908">Afbryder forbindelse ...</translation>
 <translation id="2325196879156848326">Forbindelse fejlede</translation>
 <translation id="745054660363064771">Kan ikke oprette forbindelse til server</translation>
 <translation id="3936826714240735937">Vælg en anden server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kunne ikke oprette forbindelse til <ph name="REGION_NAME"/>-serveren. Prøv igen, eller vælg en anden</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kunne ikke oprette forbindelse til <ph name="REGION_NAME"/>-serveren. Prøv igen, eller vælg en anden</translation>
 <translation id="1024255913009642477">Har du allerede købt en VPN?</translation>
 <translation id="8814357473522731680">Køres af</translation>
 <translation id="5747552184818312860">Udløber</translation>
@@ -1212,6 +1235,24 @@
 <translation id="1751947227857853925">Hurtig og ubegrænset op til 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 support</translation>
 <translation id="8463313539532697053">Vent et øjeblik, mens der indlæses…</translation>
+<translation id="4613076894734402086">Redigér betalingsmetode</translation>
+<translation id="1898254156730880135">Det ser ud, som om din seneste betaling ikke gik igennem. Adgang til dette abonnement vil blive suspenderet, indtil betalingsproblemerne er blevet løst. Redigér din betalingsmetode, eller kontakt Brave-supporten.</translation>
+<translation id="1839021455997460752">Din e-mailadresse</translation>
+<translation id="5154702632169343078">Emne</translation>
+<translation id="6625978880678465492">Vælg en grund</translation>
+<translation id="6687228121145903051">Kan ikke oprette forbindelse til VPN (anden fejl)</translation>
+<translation id="9184988385244077767">Intet internet, når der er forbindelse</translation>
+<translation id="21570240866965662">Langsom forbindelse</translation>
+<translation id="1219475260382643267">Hjemmesiden virker ikke</translation>
+<translation id="7138678301420049075">Andet</translation>
+<translation id="1387340358507240698">Beskriv dit problem</translation>
+<translation id="501818585183973587">Vælg de oplysninger, du gerne vil dele med os</translation>
+<translation id="3195618332367441234">Jo flere oplysninger du deler, desto nemmere bliver det for supportmedarbejderne at hjælpe dig.</translation>
+<translation id="5682143294773821728">VPN-værtsnavn:</translation>
+<translation id="24242621812020123">App-version:</translation>
+<translation id="6676791921618140305">OS-version:</translation>
+<translation id="1156325797949437777">Support gives i samarbejde med Guardian:</translation>
+<translation id="3307461350293459700">VPN-forbindelse mislykkedes. Prøv at oprette forbindelse igen, og sørg for at klikke Tillad for at aktivere Braves VPN-konfiguration.</translation>
 <translation id="7586151660465233733">Flere markeder på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Se markeder og krypto på FTX</translation>
 <translation id="5963745988819586370">Markeder</translation>
