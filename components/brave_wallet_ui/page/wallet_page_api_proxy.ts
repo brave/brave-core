@@ -27,6 +27,7 @@ class WalletPageApiProxy extends WalletApiProxy {
       this.txService.$.bindNewPipeAndPassReceiver(),
       this.ethTxManagerProxy.$.bindNewPipeAndPassReceiver(),
       this.solanaTxManagerProxy.$.bindNewPipeAndPassReceiver(),
+      this.filTxManagerProxy.$.bindNewPipeAndPassReceiver(),
       this.braveWalletService.$.bindNewPipeAndPassReceiver())
   }
 }
