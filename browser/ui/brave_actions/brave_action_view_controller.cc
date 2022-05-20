@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/memory/ptr_util.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "chrome/browser/extensions/extension_context_menu_model.h"
@@ -138,14 +139,22 @@ BraveActionViewController::GetIconImageSource(
   // generate icon
   // `web_contents` may be null during tab closure or in tests.  Fall back on a
   // generic color provider.
-  const auto* const color_provider =
-      web_contents
-          ? &web_contents->GetColorProvider()
-          : ui::ColorProviderManager::Get().GetColorProviderFor(
-                ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(
-                    nullptr));
+  auto get_color_provider_callback = base::BindRepeating(
+      [](base::WeakPtr<content::WebContents> weak_web_contents) {
+        const auto* const color_provider =
+            weak_web_contents
+                ? &weak_web_contents->GetColorProvider()
+                : ui::ColorProviderManager::Get().GetColorProviderFor(
+                      ui::NativeTheme::GetInstanceForNativeUi()
+                          ->GetColorProviderKey(nullptr));
+        return color_provider;
+      },
+      web_contents ? web_contents->GetWeakPtr()
+                   : base::WeakPtr<content::WebContents>());
+
   std::unique_ptr<BraveActionIconWithBadgeImageSource> image_source(
-      new BraveActionIconWithBadgeImageSource(size, color_provider));
+      new BraveActionIconWithBadgeImageSource(
+          size, std::move(get_color_provider_callback)));
   image_source->SetIcon(icon_factory_.GetIcon(tab_id));
   // set text
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
