@@ -11,6 +11,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -18,8 +19,10 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ubidiimp.h"
@@ -32,20 +35,47 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
   BraveTalkAPIBrowserTest()
       : http_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
+  void SetUp() override {
+    http_server_.AddDefaultHandlers(GetChromeTestDataDir());
+
+    InProcessBrowserTest::SetUp();
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     ASSERT_NE(talk_service(), nullptr);
+    host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(http_server_.Start());
 
-    NavigateToURLAndWait(brave_talk_url_);
+    // By default, all SSL cert checks are valid. Can be overridden in tests.
+    cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
-    NavigateParams launch_tab(browser(), GURL("https://example.com"),
+    NavigateToURLAndWait(http_server_.GetURL("talk.brave.com", "/web_app_badging/blank.html"));
+
+    
+    NavigateParams launch_tab(browser(), http_server_.GetURL("example.com", "/web_app_badging/blank.html"),
                               ui::PAGE_TRANSITION_LINK);
     launch_tab.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
     ui_test_utils::NavigateToURL(&launch_tab);
 
     ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    cert_verifier_.TearDownInProcessBrowserTestFixture();
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    // Browser will both run and display insecure content.
+    command_line->AppendSwitch(switches::kAllowRunningInsecureContent);
+    cert_verifier_.SetUpCommandLine(command_line);
   }
 
  protected:
@@ -88,22 +118,24 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
 
  private:
   net::EmbeddedTestServer http_server_;
+  content::ContentMockCertVerifier cert_verifier_;
   GURL brave_talk_url_ = GURL("https://talk.brave.com/");
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, SharingAPIMakesTabSharable) {
-  std::string device_id;
-  talk_service()->GetDeviceID(
-      requester_contents(),
-      base::BindLambdaForTesting(
-          [&device_id](const std::string& result) { device_id = result; }));
+  constexpr char kDeviceIdScript[] =
+      "let accept;"
+      "window.deviceIdPromise = new Promise(a => accept = a);"
+      "  brave.beginAdvertiseShareDisplayMedia(deviceId => {"
+      "  accept(deviceId);"
+      "})";
+
+  ASSERT_TRUE(content::ExecJs(requester_contents(), kDeviceIdScript));
   talk_service()->ShareTab(target_contents());
 
-  // content::ExecuteScript(requester_contents(), const std::string& script)
-
-  // Note: As we're calling GetDeviceID and ShareTab from the same thread
-  // the callback in GetDeviceID will have run before we get here.
-  EXPECT_NE("", device_id);
+  auto result = content::EvalJs(requester_contents(), "window.deviceIdPromise");
+  ASSERT_FALSE(nullptr == result);
+  EXPECT_NE("", result);
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
