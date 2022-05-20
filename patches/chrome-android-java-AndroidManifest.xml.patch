@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index b31d14a673bb536c55ca146a3ad0100f6814e13f..24142dc73b58e9e041a2d2707dc3617ffcb6445a 100644
+index b31d14a673bb536c55ca146a3ad0100f6814e13f..2df2b5599914355fdbae3997ca7a5f0d4eca03e5 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -26,6 +26,7 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
      <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-+    <uses-permission android:name="com.android.vending.BILLING"/>
++    {% include "//brave/android/java/AndroidManifest_user_permissions.xml" %}
  
      <!--
        Enable runtime permissions as uses-permission in tip of tree builds
