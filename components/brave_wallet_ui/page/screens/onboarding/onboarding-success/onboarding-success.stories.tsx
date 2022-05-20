@@ -3,4 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-export * from './onboarding-welcome'
+import * as React from 'react'
+
+import { OnboardingSuccess } from './onboarding-success'
+
+export const _OnboardingSuccess = () => {
+  return <OnboardingSuccess />
+}
+
+_OnboardingSuccess.story = {
+  name: 'Success'
+}
+
+export default _OnboardingSuccess

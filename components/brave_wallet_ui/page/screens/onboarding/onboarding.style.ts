@@ -5,6 +5,35 @@
 
 import styled from 'styled-components'
 
+// images
+import WelcomeBackgroundSVG from './images/onboarding-welcome-background.svg'
+
+// Layout
+export const OnboardingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  background-repeat: no-repeat;
+  background-image: url(${WelcomeBackgroundSVG});
+  background-position: 50% 90%;
+  background-size: 88%;
+`
+
+export const NextButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  margin-bottom: 28px;
+`
+
 export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,6 +58,7 @@ export const TitleAndDescriptionContainer = styled.div`
   margin-bottom: 24px;
 `
 
+// Text
 export const Title = styled.p`
   font-family: Poppins;
   font-size: 20px;
@@ -39,7 +69,7 @@ export const Title = styled.p`
   text-align: left;
 `
 
-export const Description = styled.p`
+export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -48,17 +78,16 @@ export const Description = styled.p`
   line-height: 20px;
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
-  text-align: left;
-`
+  text-align: ${(p) => p?.textAlign || 'left'};
 
-export const NextButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  margin-bottom: 28px;
+  & > * > b {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+  }
 `
 
 // Phrase card

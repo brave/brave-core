@@ -17,13 +17,14 @@ import { OnboardingRecoveryPhrase } from './backup-recovery-phrase/onboarding-ba
 import { OnboardingCreatePassword } from './create-password/onboarding-create-password'
 import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
 import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
-import { OnboardingWelcome } from './welcome'
+import { OnboardingWelcome } from './welcome/onboarding-welcome'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
 
 // actions
 import * as WalletPageActions from '../../actions/wallet_page_actions'
+import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 
 export const OnboardingRoutes = () => {
   // routing
@@ -63,14 +64,11 @@ export const OnboardingRoutes = () => {
         <OnboardingVerifyRecoveryPhrase />
       </Route>
 
-      {/* <Route path={WalletRoutes.OnboardingBackupWallet} exact>
-        <BackupWallet
-          isOnboarding={true}
-          onCancel={onSkipBackup}
-        />
+      <Route path={WalletRoutes.OnboardingComplete} exact>
+        <OnboardingSuccess />
       </Route>
 
-      <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
+      {/*<Route path={WalletRoutes.OnboardingImportMetaMask} exact>
         <OnboardingImportMetaMaskOrLegacy />
       </Route>
 
