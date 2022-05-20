@@ -123,7 +123,12 @@ export const OnboardingRecoveryPhrase = () => {
             <Title>{getLocale('braveWalletRecoveryPhraseBackupTitle')}</Title>
             <Description>
               {getLocale('braveWalletRecoveryPhraseBackupWarning')}
-              <LinkText>{getLocale('braveWalletWelcomePanelButton')}</LinkText>
+              <LinkText
+                href='https://brave.com/learn/wallet-recovery-phrase/'
+                target='_blank'
+              >
+                {getLocale('braveWalletWelcomePanelButton')}
+              </LinkText>
             </Description>
           </TitleAndDescriptionContainer>
 
