@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -81,7 +82,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 removedValueText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         SkuDetails monthlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
-                InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
+                getPackageName().equals(BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                        ? InAppPurchaseWrapper.RELEASE_MONTHLY_SUBSCRIPTION
+                        : InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
 
         mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
         mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +102,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                         monthlySkuDetails.getPrice()));
 
         SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
-                InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
+                getPackageName().equals(BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                        ? InAppPurchaseWrapper.RELEASE_YEARLY_SUBSCRIPTION
+                        : InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
 
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
         mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
