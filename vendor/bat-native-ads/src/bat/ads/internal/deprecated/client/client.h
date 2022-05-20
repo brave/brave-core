@@ -14,13 +14,13 @@
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ads_aliases.h"
 #include "bat/ads/category_content_action_types.h"
-#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/creative_ad_info_aliases.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info_aliases.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info_aliases.h"
 #include "bat/ads/internal/deprecated/client/preferences/flagged_ad_info_aliases.h"
 #include "bat/ads/internal/deprecated/client/preferences/saved_ad_info_aliases.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/targeting/data_types/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
 
 namespace base {
 class Time;

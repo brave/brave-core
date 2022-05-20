@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/json_helper.h"
+#include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "build/build_config.h"
 
 namespace ads {

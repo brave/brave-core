@@ -18,6 +18,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
@@ -40,7 +41,7 @@ TEST_F(BatAdsConversionUserDataTest, GetForConversionConfirmationType) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  user_data::GetConversion(
+  GetConversion(
       kCreativeInstanceId, ConfirmationType::kConversion,
       [](base::Value user_data) {
         const absl::optional<security::VerifiableConversionEnvelopeInfo>&
@@ -57,7 +58,7 @@ TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  user_data::GetConversion(
+  GetConversion(
       kCreativeInstanceId, ConfirmationType::kViewed,
       [](base::Value user_data) {
         const absl::optional<security::VerifiableConversionEnvelopeInfo>&
@@ -69,4 +70,5 @@ TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
   // Assert
 }
 
+}  // namespace user_data
 }  // namespace ads

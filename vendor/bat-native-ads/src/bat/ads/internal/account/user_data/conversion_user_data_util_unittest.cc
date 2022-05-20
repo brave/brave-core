@@ -14,6 +14,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
@@ -33,7 +34,7 @@ TEST(BatAdsConversionUserDataUtilTest, GetEnvelope) {
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>&
       verifiable_conversion_envelope_optional =
-          user_data::GetEnvelope(conversion_queue_item);
+          GetEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_TRUE(verifiable_conversion_envelope_optional);
@@ -47,7 +48,7 @@ TEST(BatAdsConversionUserDataUtilTest, DoNotGetEnvelopeIfConversionIdIsEmpty) {
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>&
       verifiable_conversion_envelope_optional =
-          user_data::GetEnvelope(conversion_queue_item);
+          GetEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_FALSE(verifiable_conversion_envelope_optional);
@@ -62,7 +63,7 @@ TEST(BatAdsConversionUserDataUtilTest,
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>&
       verifiable_conversion_envelope_optional =
-          user_data::GetEnvelope(conversion_queue_item);
+          GetEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_FALSE(verifiable_conversion_envelope_optional);
@@ -77,10 +78,11 @@ TEST(BatAdsConversionUserDataUtilTest,
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>&
       verifiable_conversion_envelope_optional =
-          user_data::GetEnvelope(conversion_queue_item);
+          GetEnvelope(conversion_queue_item);
 
   // Assert
   EXPECT_FALSE(verifiable_conversion_envelope_optional);
 }
 
+}  // namespace user_data
 }  // namespace ads

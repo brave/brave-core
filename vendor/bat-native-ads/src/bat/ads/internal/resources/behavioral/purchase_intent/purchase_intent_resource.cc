@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/features/purchase_intent_features.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"
-#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_features.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -31,7 +31,7 @@ bool PurchaseIntent::IsInitialized() const {
 
 void PurchaseIntent::Load() {
   LoadAndParseResource(kResourceId,
-                       features::GetPurchaseIntentResourceVersion(),
+                       targeting::features::GetPurchaseIntentResourceVersion(),
                        base::BindOnce(&PurchaseIntent::OnLoadAndParseResource,
                                       weak_ptr_factory_.GetWeakPtr()));
 }

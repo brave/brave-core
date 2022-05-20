@@ -19,6 +19,8 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
+namespace builder {
 
 namespace {
 
@@ -50,7 +52,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  user_data::BuildConversion(kCreativeInstanceId, [](base::Value user_data) {
+  BuildConversion(kCreativeInstanceId, [](base::Value user_data) {
     const absl::optional<std::string> message_optional =
         security::OpenEvenlopeForUserDataAndAdvertiserSecretKey(
             user_data, kAdvertiserSecretKey);
@@ -71,27 +73,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  user_data::BuildConversion(kMissingCreativeInstanceId,
-                             [](base::Value user_data) {
-                               std::string json;
-                               base::JSONWriter::Write(user_data, &json);
-
-                               const std::string expected_json = "{}";
-
-                               EXPECT_EQ(expected_json, json);
-                             });
-
-  // Assert
-}
-
-TEST_F(BatAdsConversionUserDataBuilderTest,
-       DoNotBuildConversionIfConversionIdOrAdvertiserPublicKeyIsEmpty) {
-  // Arrange
-  BuildAndSaveConversionQueueItem(kEmptyConversionId,
-                                  kEmptyAdvertiserPublicKey);
-
-  // Act
-  user_data::BuildConversion(kCreativeInstanceId, [](base::Value user_data) {
+  BuildConversion(kMissingCreativeInstanceId, [](base::Value user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 
@@ -103,4 +85,25 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
   // Assert
 }
 
+TEST_F(BatAdsConversionUserDataBuilderTest,
+       DoNotBuildConversionIfConversionIdOrAdvertiserPublicKeyIsEmpty) {
+  // Arrange
+  BuildAndSaveConversionQueueItem(kEmptyConversionId,
+                                  kEmptyAdvertiserPublicKey);
+
+  // Act
+  BuildConversion(kCreativeInstanceId, [](base::Value user_data) {
+    std::string json;
+    base::JSONWriter::Write(user_data, &json);
+
+    const std::string expected_json = "{}";
+
+    EXPECT_EQ(expected_json, json);
+  });
+
+  // Assert
+}
+
+}  // namespace builder
+}  // namespace user_data
 }  // namespace ads

@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENTS_H_
 
+#include <functional>
 #include <vector>
 
-#include "bat/ads/internal/ad_events/ad_events_aliases.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace base {
@@ -21,6 +21,8 @@ class AdType;
 class ConfirmationType;
 struct AdEventInfo;
 struct AdInfo;
+
+using AdEventCallback = std::function<void(const bool)>;
 
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,

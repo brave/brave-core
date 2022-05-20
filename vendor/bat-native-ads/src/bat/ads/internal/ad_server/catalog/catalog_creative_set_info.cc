@@ -35,4 +35,21 @@ bool CatalogCreativeSetInfo::operator!=(
   return !(*this == rhs);
 }
 
+bool CatalogCreativeSetInfo::DoesSupportOS() const {
+  if (oses.empty()) {
+    // Creative set supports all operating systems
+    return true;
+  }
+
+  const std::string platform_name = PlatformHelper::GetInstance()->GetName();
+
+  for (const auto& os : oses) {
+    if (os.name == platform_name) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 }  // namespace ads

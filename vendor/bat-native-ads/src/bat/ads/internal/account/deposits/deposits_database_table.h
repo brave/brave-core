@@ -6,18 +6,23 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 
+#include <functional>
 #include <string>
 
 #include "bat/ads/ads_client_aliases.h"
-#include "bat/ads/internal/account/deposits/deposits_database_table_aliases.h"
-#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info_aliases.h"
+#include "bat/ads/internal/account/deposits/deposit_info.h"
+#include "bat/ads/internal/creatives/creative_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
-
 namespace database {
 namespace table {
+
+using GetDepositsCallback =
+    std::function<void(const bool success,
+                       const absl::optional<DepositInfo>& deposit_optional)>;
 
 class Deposits final : public TableInterface {
  public:

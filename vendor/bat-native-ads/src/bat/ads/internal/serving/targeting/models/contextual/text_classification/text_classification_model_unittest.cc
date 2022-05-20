@@ -10,8 +10,8 @@
 
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
-#include "bat/ads/internal/targeting/processors/contextual/text_classification/text_classification_processor.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client.h"
-#include "bat/ads/internal/targeting/data_types/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {

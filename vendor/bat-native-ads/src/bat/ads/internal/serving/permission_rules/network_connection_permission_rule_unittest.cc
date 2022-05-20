@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -54,7 +54,7 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
   kParameters["should_only_serve_ads_with_valid_internet_connection"] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.push_back(
-      {features::frequency_capping::kFeature, kParameters});
+      {permission_rules::features::kFeature, kParameters});
 
   const std::vector<base::Feature> disabled_features;
 

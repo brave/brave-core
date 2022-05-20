@@ -14,7 +14,6 @@ namespace ads {
 namespace user_data {
 
 using ConfirmationTypeBucketMap = base::flat_map<std::string, int>;
-
 using AdTypeBucketMap = base::flat_map<std::string, ConfirmationTypeBucketMap>;
 
 }  // namespace user_data

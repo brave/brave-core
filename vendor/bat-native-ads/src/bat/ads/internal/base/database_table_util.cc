@@ -13,8 +13,6 @@
 
 namespace ads {
 namespace database {
-namespace table {
-namespace util {
 
 namespace {
 
@@ -44,9 +42,9 @@ std::string BuildInsertQuery(const std::string& from,
 
 }  // namespace
 
-void CreateIndex(mojom::DBTransaction* transaction,
-                 const std::string& table_name,
-                 const std::string& key) {
+void CreateTableIndex(mojom::DBTransaction* transaction,
+                      const std::string& table_name,
+                      const std::string& key) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
   DCHECK(!key.empty());
@@ -62,7 +60,8 @@ void CreateIndex(mojom::DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-void Drop(mojom::DBTransaction* transaction, const std::string& table_name) {
+void DropTable(mojom::DBTransaction* transaction,
+               const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
@@ -79,7 +78,8 @@ void Drop(mojom::DBTransaction* transaction, const std::string& table_name) {
   transaction->commands.push_back(std::move(command));
 }
 
-void Delete(mojom::DBTransaction* transaction, const std::string& table_name) {
+void DeleteTable(mojom::DBTransaction* transaction,
+                 const std::string& table_name) {
   DCHECK(transaction);
   DCHECK(!table_name.empty());
 
@@ -93,13 +93,13 @@ void Delete(mojom::DBTransaction* transaction, const std::string& table_name) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CopyColumns(mojom::DBTransaction* transaction,
-                 const std::string& from,
-                 const std::string& to,
-                 const std::vector<std::string>& from_columns,
-                 const std::vector<std::string>& to_columns,
-                 const bool should_drop,
-                 const std::string& group_by) {
+void CopyTableColumns(mojom::DBTransaction* transaction,
+                      const std::string& from,
+                      const std::string& to,
+                      const std::vector<std::string>& from_columns,
+                      const std::vector<std::string>& to_columns,
+                      const bool should_drop,
+                      const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -127,25 +127,25 @@ void CopyColumns(mojom::DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-void CopyColumns(mojom::DBTransaction* transaction,
-                 const std::string& from,
-                 const std::string& to,
-                 const std::vector<std::string>& columns,
-                 const bool should_drop,
-                 const std::string& group_by) {
+void CopyTableColumns(mojom::DBTransaction* transaction,
+                      const std::string& from,
+                      const std::string& to,
+                      const std::vector<std::string>& columns,
+                      const bool should_drop,
+                      const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
   DCHECK(!columns.empty());
 
-  return CopyColumns(transaction, from, to, columns, columns, should_drop,
-                     group_by);
+  return CopyTableColumns(transaction, from, to, columns, columns, should_drop,
+                          group_by);
 }
 
-void Rename(mojom::DBTransaction* transaction,
-            const std::string& from,
-            const std::string& to) {
+void RenameTable(mojom::DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -161,7 +161,5 @@ void Rename(mojom::DBTransaction* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace util
-}  // namespace table
 }  // namespace database
 }  // namespace ads

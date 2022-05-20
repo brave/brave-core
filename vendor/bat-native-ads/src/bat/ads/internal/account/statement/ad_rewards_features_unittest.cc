@@ -13,12 +13,13 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace features {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsEnabled) {
   // Arrange
 
   // Act
-  const bool is_enabled = features::IsAdRewardsEnabled();
+  const bool is_enabled = IsAdRewardsEnabled();
 
   // Assert
   EXPECT_TRUE(is_enabled);
@@ -30,14 +31,14 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
       enabled_features;
 
   std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(features::kAdRewards);
+  disabled_features.push_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
   // Act
-  const bool is_enabled = features::IsAdRewardsEnabled();
+  const bool is_enabled = IsAdRewardsEnabled();
 
   // Assert
   EXPECT_FALSE(is_enabled);
@@ -49,7 +50,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   base::FieldTrialParams kAdRewardsParameters;
   const char kNextPaymentDayParameter[] = "next_payment_day";
   kAdRewardsParameters[kNextPaymentDayParameter] = "7";
-  enabled_features.push_back({features::kAdRewards, kAdRewardsParameters});
+  enabled_features.push_back({kAdRewards, kAdRewardsParameters});
 
   const std::vector<base::Feature> disabled_features;
 
@@ -58,7 +59,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
                                                     disabled_features);
 
   // Act
-  const int next_payment_day = features::GetAdRewardsNextPaymentDay();
+  const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
   const int expected_next_payment_day = 7;
@@ -76,7 +77,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int next_payment_day = features::GetAdRewardsNextPaymentDay();
+  const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
   const int expected_next_payment_day = 5;
@@ -89,18 +90,19 @@ TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
       enabled_features;
 
   std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(features::kAdRewards);
+  disabled_features.push_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
   // Act
-  const int next_payment_day = features::GetAdRewardsNextPaymentDay();
+  const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
   const int expected_next_payment_day = 5;
   EXPECT_EQ(expected_next_payment_day, next_payment_day);
 }
 
+}  // namespace features
 }  // namespace ads

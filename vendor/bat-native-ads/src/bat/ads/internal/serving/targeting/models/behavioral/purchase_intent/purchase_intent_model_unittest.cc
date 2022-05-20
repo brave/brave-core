@@ -7,8 +7,8 @@
 
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
-#include "bat/ads/internal/targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

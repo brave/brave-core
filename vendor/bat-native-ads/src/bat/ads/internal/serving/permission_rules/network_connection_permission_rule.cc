@@ -6,7 +6,7 @@
 #include "bat/ads/internal/serving/permission_rules/network_connection_permission_rule.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 namespace ads {
 
@@ -15,7 +15,7 @@ NetworkConnectionPermissionRule::NetworkConnectionPermissionRule() = default;
 NetworkConnectionPermissionRule::~NetworkConnectionPermissionRule() = default;
 
 bool NetworkConnectionPermissionRule::ShouldAllow() {
-  if (!features::frequency_capping::
+  if (!permission_rules::features::
           ShouldOnlyServeAdsWithValidInternetConnection()) {
     return true;
   }

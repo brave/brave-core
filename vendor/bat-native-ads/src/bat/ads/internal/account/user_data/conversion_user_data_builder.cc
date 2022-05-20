@@ -16,6 +16,7 @@
 
 namespace ads {
 namespace user_data {
+namespace builder {
 
 namespace {
 
@@ -26,14 +27,14 @@ constexpr char kEphemeralPublicKeyKey[] = "epk";
 constexpr char kNonceKey[] = "nonce";
 constexpr char kConversionEnvelopeKey[] = "conversionEnvelope";
 
-void ReportConversionDoesNotExist(ConversionCallback callback) {
+void ReportConversionDoesNotExist(BuildConversionCallback callback) {
   callback(base::DictionaryValue());
 }
 
 }  // namespace
 
 void BuildConversion(const std::string& creative_instance_id,
-                     ConversionCallback callback) {
+                     BuildConversionCallback callback) {
   DCHECK(!creative_instance_id.empty());
 
   database::table::ConversionQueue database_table;
@@ -82,5 +83,6 @@ void BuildConversion(const std::string& creative_instance_id,
       });
 }
 
+}  // namespace builder
 }  // namespace user_data
 }  // namespace ads

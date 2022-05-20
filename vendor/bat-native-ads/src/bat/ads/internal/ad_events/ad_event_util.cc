@@ -11,7 +11,7 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

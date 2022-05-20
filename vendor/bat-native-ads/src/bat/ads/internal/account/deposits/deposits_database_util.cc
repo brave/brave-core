@@ -1,0 +1,27 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "bat/ads/internal/account/deposits/deposits_database_util.h"
+
+#include "bat/ads/internal/account/deposits/deposits_database_table.h"
+#include "bat/ads/internal/base/logging_util.h"
+
+namespace ads {
+namespace database {
+
+void PurgeExpiredDeposits() {
+  database::table::Deposits database_table;
+  database_table.PurgeExpired([](const bool success) {
+    if (!success) {
+      BLOG(0, "Failed to purge expired deposits");
+      return;
+    }
+
+    BLOG(3, "Successfully purged expired deposits");
+  });
+}
+
+}  // namespace database
+}  // namespace ads

@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/user_activity/browsing/user_activity_features.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -34,7 +34,7 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
     parameters[kThresholdParameter] = "2.0";
     std::vector<base::test::ScopedFeatureList::FeatureAndParams>
         enabled_features;
-    enabled_features.push_back({features::user_activity::kFeature, parameters});
+    enabled_features.push_back({user_activity::features::kFeature, parameters});
 
     const std::vector<base::Feature> disabled_features;
 

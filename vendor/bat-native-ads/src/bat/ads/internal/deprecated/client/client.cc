@@ -18,12 +18,12 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
-#include "bat/ads/internal/deprecated/json_helper.h"
+#include "bat/ads/internal/deprecated/json/json_helper.h"
+#include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/history/history_constants.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/serving/serving_features.h"
-#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_features.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/pref_names.h"
 #include "build/build_config.h"
 
@@ -502,7 +502,7 @@ void Client::AppendTextClassificationProbabilitiesToHistory(
   client_->text_classification_probabilities.push_front(probabilities);
 
   const size_t maximum_entries =
-      features::GetTextClassificationProbabilitiesHistorySize();
+      targeting::features::GetTextClassificationProbabilitiesHistorySize();
   if (client_->text_classification_probabilities.size() > maximum_entries) {
     client_->text_classification_probabilities.resize(maximum_entries);
   }

@@ -12,17 +12,17 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 TEST(BatAdsTotalsUserDataUtilTest, GetBucketsForNoUnblindedPaymentTokens) {
   // Arrange
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
   // Act
-  const user_data::AdTypeBucketMap buckets =
-      user_data::BuildBuckets(unblinded_payment_tokens);
+  const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
 
   // Assert
-  const user_data::AdTypeBucketMap expected_buckets;
+  const AdTypeBucketMap expected_buckets;
 
   EXPECT_EQ(expected_buckets, buckets);
 }
@@ -33,14 +33,13 @@ TEST(BatAdsTotalsUserDataUtilTest, GetBuckets) {
       privacy::GetUnblindedPaymentTokens(2);
 
   // Act
-  const user_data::AdTypeBucketMap buckets =
-      user_data::BuildBuckets(unblinded_payment_tokens);
+  const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
 
   // Assert
-  const user_data::AdTypeBucketMap expected_buckets = {
-      {"ad_notification", {{"view", 2}}}};
+  const AdTypeBucketMap expected_buckets = {{"ad_notification", {{"view", 2}}}};
 
   EXPECT_EQ(expected_buckets, buckets);
 }
 
+}  // namespace user_data
 }  // namespace ads

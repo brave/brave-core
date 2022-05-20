@@ -17,7 +17,6 @@
 #include "bat/ads/internal/account/statement/statement.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
-#include "bat/ads/internal/account/transactions/transactions_database_table_aliases.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 #include "bat/ads/internal/account/wallet/wallet.h"

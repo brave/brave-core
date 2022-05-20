@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/base/platform_helper.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
-#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 namespace ads {
 
@@ -16,7 +16,7 @@ BrowserIsActivePermissionRule::BrowserIsActivePermissionRule() = default;
 BrowserIsActivePermissionRule::~BrowserIsActivePermissionRule() = default;
 
 bool BrowserIsActivePermissionRule::ShouldAllow() {
-  if (!features::frequency_capping::ShouldOnlyServeAdsIfBrowserIsActive()) {
+  if (!permission_rules::features::ShouldOnlyServeAdsIfBrowserIsActive()) {
     return true;
   }
 

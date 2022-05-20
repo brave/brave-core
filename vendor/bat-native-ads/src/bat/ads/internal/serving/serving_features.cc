@@ -69,6 +69,11 @@ bool IsServingEnabled() {
   return base::FeatureList::IsEnabled(kServing);
 }
 
+int GetServingVersion() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kServing, kFieldTrialParameterServingVersion, kDefaultServingVersion);
+}
+
 int GetDefaultAdNotificationsPerHour() {
   return GetFieldTrialParamByFeatureAsInt(
       kServing, kFieldTrialParameterDefaultAdNotificationsPerHour,
@@ -139,11 +144,6 @@ int GetBrowsingHistoryDaysAgo() {
   return GetFieldTrialParamByFeatureAsInt(
       kServing, kFieldTrialParameterBrowsingHistoryDaysAgo,
       kDefaultBrowsingHistoryDaysAgo);
-}
-
-int GetServingVersion() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kServing, kFieldTrialParameterServingVersion, kDefaultServingVersion);
 }
 
 }  // namespace features

@@ -16,11 +16,12 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
 std::string GetStudiesAsJson() {
-  const base::DictionaryValue user_data = user_data::GetStudies();
+  const base::DictionaryValue user_data = GetStudies();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);
@@ -74,4 +75,5 @@ TEST(BatAdsStudiesUserDataTest, GetStudies) {
   EXPECT_EQ(expected_json, json);
 }
 
+}  // namespace user_data
 }  // namespace ads

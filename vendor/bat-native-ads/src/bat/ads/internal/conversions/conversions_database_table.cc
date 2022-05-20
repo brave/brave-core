@@ -12,9 +12,10 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database_statement_util.h"
+#include "bat/ads/internal/base/database_bind_util.h"
+#include "bat/ads/internal/base/database_column_util.h"
 #include "bat/ads/internal/base/database_table_util.h"
-#include "bat/ads/internal/base/database_util.h"
+#include "bat/ads/internal/base/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time_formatting_util.h"
 
@@ -216,7 +217,7 @@ void Conversions::OnGetConversions(mojom::DBCommandResponsePtr response,
 void Conversions::MigrateToV23(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, "ad_conversions");
+  DropTable(transaction, "ad_conversions");
 
   const std::string query =
       "CREATE TABLE IF NOT EXISTS creative_ad_conversions "

@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/no_destructor.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/locale/supported_country_codes.h"
+#include "bat/ads/internal/geographic/country/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -34,8 +34,8 @@ const char g_catalog_json_schema_data_resource_name[] = "catalog-schema.json";
 bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  for (const auto& schema : kSupportedCountryCodes) {
-    const SupportedCountryCodesSet country_codes = schema.second;
+  for (const auto& schema : geographic::kSupportedCountryCodes) {
+    const geographic::SupportedCountryCodeSet country_codes = schema.second;
     const auto iter =
         std::find(country_codes.cbegin(), country_codes.cend(), country_code);
     if (iter != country_codes.end()) {

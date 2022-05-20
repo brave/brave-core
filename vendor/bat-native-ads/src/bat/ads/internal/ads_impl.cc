@@ -19,6 +19,11 @@
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification.h"
+#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
+#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_server/catalog/catalog.h"
 #include "bat/ads/internal/ad_server/catalog/catalog_util.h"
@@ -33,23 +38,23 @@
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_logs.h"
-#include "bat/ads/internal/creatives/ad_notifications/ad_notification.h"
-#include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
-#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad.h"
-#include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad.h"
-#include "bat/ads/internal/creatives/search_result_ads/search_result_ad.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/diagnostics/diagnostics.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/internal/features/features_util.h"
+#include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
+#include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
@@ -59,21 +64,16 @@
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/language_components.h"
-#include "bat/ads/internal/serving/ad_notifications/ad_notification_serving.h"
-#include "bat/ads/internal/serving/inline_content_ads/inline_content_ad_serving.h"
-#include "bat/ads/internal/serving/new_tab_page_ads/new_tab_page_ad_serving.h"
-#include "bat/ads/internal/serving/targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/serving/ad_notification_serving.h"
+#include "bat/ads/internal/serving/inline_content_ad_serving.h"
+#include "bat/ads/internal/serving/new_tab_page_ad_serving.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/studies/studies_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
-#include "bat/ads/internal/targeting/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "bat/ads/internal/targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
-#include "bat/ads/internal/targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
-#include "bat/ads/internal/targeting/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/transfer/transfer.h"
-#include "bat/ads/internal/user_activity/browsing/user_activity.h"
-#include "bat/ads/internal/user_activity/idle_detection/idle_time.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/user_interaction/idle_detection/idle_time.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
@@ -542,25 +542,23 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   epsilon_greedy_bandit_resource_ =
       std::make_unique<resource::EpsilonGreedyBandit>();
   epsilon_greedy_bandit_processor_ =
-      std::make_unique<targeting::processor::EpsilonGreedyBandit>();
+      std::make_unique<processor::EpsilonGreedyBandit>();
 
   text_classification_resource_ =
       std::make_unique<resource::TextClassification>();
   text_classification_processor_ =
-      std::make_unique<targeting::processor::TextClassification>(
+      std::make_unique<processor::TextClassification>(
           text_classification_resource_.get());
 
   purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
-  purchase_intent_processor_ =
-      std::make_unique<targeting::processor::PurchaseIntent>(
-          purchase_intent_resource_.get());
+  purchase_intent_processor_ = std::make_unique<processor::PurchaseIntent>(
+      purchase_intent_resource_.get());
 
   anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
 
   conversions_resource_ = std::make_unique<resource::Conversions>();
 
-  subdivision_targeting_ =
-      std::make_unique<targeting::geographic::SubdivisionTargeting>();
+  subdivision_targeting_ = std::make_unique<geographic::SubdivisionTargeting>();
 
   ad_notification_serving_ = std::make_unique<ad_notifications::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
@@ -594,8 +592,6 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   conversions_ = std::make_unique<Conversions>();
   conversions_->AddObserver(this);
 
-  database_ = std::make_unique<database::Initialize>();
-
   new_tab_page_ad_serving_ = std::make_unique<new_tab_page_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
   new_tab_page_ad_serving_->AddObserver(this);
@@ -615,10 +611,9 @@ void AdsImpl::InitializeBrowserManager() {
 }
 
 void AdsImpl::InitializeDatabase(InitializeCallback callback) {
-  database_->CreateOrOpen([=](const bool success) {
+  database::CreateOrOpen([=](const bool success) {
     if (!success) {
-      BLOG(0,
-           "Failed to initialize database: " << database_->get_last_message());
+      BLOG(0, "Failed to initialize database");
       callback(/* success */ false);
       return;
     }
@@ -813,7 +808,7 @@ void AdsImpl::OnStatementOfAccountsDidChange() {
   AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 
-void AdsImpl::OnCatalogUpdated(const Catalog& catalog) {
+void AdsImpl::OnDidUpdateCatalog(const Catalog& catalog) {
   epsilon_greedy_bandit_resource_->LoadFromCatalog(catalog);
 }
 

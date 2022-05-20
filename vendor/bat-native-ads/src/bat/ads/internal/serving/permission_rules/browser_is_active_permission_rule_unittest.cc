@@ -11,7 +11,7 @@
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
-#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -73,7 +73,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   kParameters["should_only_serve_ads_if_browser_is_active"] = "false";
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.push_back(
-      {features::frequency_capping::kFeature, kParameters});
+      {permission_rules::features::kFeature, kParameters});
 
   const std::vector<base::Feature> disabled_features;
 

@@ -14,8 +14,8 @@
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/deprecated/client/preferences/ad_preferences_info.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/targeting/data_types/contextual/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
+#include "bat/ads/internal/serving/targeting/models/contextual/text_classification/text_classification_aliases.h"
 
 namespace ads {
 

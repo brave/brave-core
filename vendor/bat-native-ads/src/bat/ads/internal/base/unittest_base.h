@@ -17,12 +17,12 @@
 #include "bat/ads/internal/base/platform_helper_mock.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/covariates/covariate_logs.h"
-#include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/diagnostics/diagnostics.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
-#include "bat/ads/internal/user_activity/browsing/user_activity.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -109,7 +109,6 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<Client> client_;
   std::unique_ptr<AdNotifications> ad_notifications_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
-  std::unique_ptr<database::Initialize> database_initialize_;
   std::unique_ptr<Database> database_;
   std::unique_ptr<Diagnostics> diagnostics_;
   std::unique_ptr<BrowserManager> browser_manager_;

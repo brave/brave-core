@@ -14,6 +14,7 @@
 #include "bat/ads/internal/ad_server/catalog/catalog_creative_promoted_content_ad_info_aliases.h"
 #include "bat/ads/internal/ad_server/catalog/catalog_os_info_aliases.h"
 #include "bat/ads/internal/ad_server/catalog/catalog_segment_info_aliases.h"
+#include "bat/ads/internal/base/platform_helper.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 
 namespace ads {
@@ -25,6 +26,8 @@ struct CatalogCreativeSetInfo final {
 
   bool operator==(const CatalogCreativeSetInfo& rhs) const;
   bool operator!=(const CatalogCreativeSetInfo& rhs) const;
+
+  bool DoesSupportOS() const;
 
   std::string creative_set_id;
   unsigned int per_day = 0;
