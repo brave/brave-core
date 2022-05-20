@@ -14,6 +14,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
+#include "base/memory/weak_ptr.h"
 #include "base/threading/thread_checker.h"
 #include "components/update_client/component.h"
 #include "components/update_client/configurator.h"
@@ -42,9 +43,7 @@ class SequentialUpdateChecker : public UpdateChecker {
       PersistedData* persistent);
 
   void CheckForUpdates(
-      const std::string& session_id,
-      const std::vector<std::string>& ids_checked,
-      const IdToComponentPtrMap& components,
+      scoped_refptr<UpdateContext> update_context,
       const base::flat_map<std::string, std::string>& additional_attributes,
       UpdateCheckCallback update_check_callback) override;
 
@@ -63,19 +62,23 @@ class SequentialUpdateChecker : public UpdateChecker {
       int error,
       int retry_after_sec);
 
+  // Handles |update_context_| callback value. This will trigger
+  // |update_context_.callback| once the we've processed all apps, with whatever
+  // error code might have been produced by any of the apps being updated.
+  void OnClientUpdated(Error error);
+
   base::ThreadChecker thread_checker_;
 
   const scoped_refptr<Configurator> config_;
   PersistedData* metadata_ = nullptr;
 
-  // Store the parameters to CheckForUpdates(...), so we can pass them multiple
-  // times to the original UpdateChecker implementation.
-  std::string session_id_;
-  // Needs to be a pointer because the values in IdToComponentPtrMap are of
-  // type std::unique_ptr, which we can't copy. Furthermore, it is okay to keep
-  // this pointer because IdToComponentPtrMap resides in in UpdateContext, which
-  // outlives this class.
-  const IdToComponentPtrMap* components_;
+  // This update conext instance is stored locally and then used to create
+  // individidual UpdateContext instances based on each application id.
+  scoped_refptr<UpdateContext> update_context_;
+
+  // A completion error code provided by |update_context_.callback|.
+  Error completion_error_;
+
   base::flat_map<std::string, std::string> additional_attributes_;
   UpdateCheckCallback update_check_callback_;
 
@@ -86,6 +89,8 @@ class SequentialUpdateChecker : public UpdateChecker {
   std::unique_ptr<UpdateChecker> update_checker_;
   // Aggregates results from all sequential update requests.
   ProtocolParser::Results results_;
+
+  base::WeakPtrFactory<SequentialUpdateChecker> weak_factory_{this};
 };
 
 }  // namespace update_client
