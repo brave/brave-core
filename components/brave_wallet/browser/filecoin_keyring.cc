@@ -24,9 +24,8 @@ bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
   if (private_key.size() != 32 || !public_key_out)
     return false;
 
-  std::array<uint8_t, 32> payload;
-  std::copy_n(private_key.begin(), 32, payload.begin());
-  auto result = filecoin::bls_private_key_to_public_key(payload);
+  auto result = filecoin::bls_private_key_to_public_key(
+      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
   std::vector<uint8_t> public_key(result.begin(), result.end());
   if (std::all_of(public_key.begin(), public_key.end(),
                   [](int i) { return i == 0; }))
