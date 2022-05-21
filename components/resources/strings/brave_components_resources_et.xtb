@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24 h maht</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Kas lubada Brave'is Unstoppable Domainsi tugi?</translation>
-<translation id="3470923752115324276">Brave saab anda teile võimaluse külastada .crypto-domeene, kasutades .crypto-domeeni hostinime leidmise päringute resolvimiseks Cloudflare'i ja DNS-i HTTPS-i kaudu. Kui selle lubate, näeb Cloudflare .crypto-domeeni, mida proovite külastada, kuid mitte muid domeene. Vaadake Cloudflare'i <ph name="BEGIN_CF_TOU_LINK"/>kasutustingimusi<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave kasutab Infurat Ethereumi JSON-RPC kutsete väljastamiseks Unstoppable Domainsi nutilepingusse domeeninime .crypto (ja ka .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) leidmispäringute lahendamiseks. Kui selle lubate, näeb Infura neid konkreetseid domeene, mida üritate külastada, kuid ei näe muid domeene. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereumi nimeteenus</translation>
 <translation id="4335039108389860301">Kas lubada Brave'is Ethereumi nimeteenus (ENS)?</translation>
-<translation id="618766505813078707">Brave saab anda teile võimaluse külastada .eth-domeene, kasutades .eth-domeeni hostinime leidmise päringute resolvimiseks Cloudflare'i ja DNS-i HTTPS-i kaudu. Kui selle lubate, näeb Cloudflare .eth-domeeni, mida proovite külastada, kuid mitte muid domeene. Vaadake Cloudflare'i <ph name="BEGIN_CF_TOU_LINK"/>kasutustingimusi<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Jätka Cloudflare'i serveri kasutamist</translation>
+<translation id="8328137586971750853">Brave kasutab Infurat Ethereumi JSON-RPC kutsete väljastamiseks Ethereumi nimeteenuse nutilepingusse domeeninime .eth leidmispäringute lahendamiseks. Kui selle lubate, näeb Infura .eth domeene, mida üritate külastada, kuid ei näe muid domeene. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Jätka Infura serveri kasutamisega</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="2218918398178303658">DNS HTTPS-i kaudu</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Oodatakse ühte objektparameetrit.</translation>
 <translation id="1875861420974447980">See ahela ID on praegu kasutusel</translation>
 <translation id="167698752210114155">Ilmnes sisemine tõrge</translation>
+<translation id="2326876601333401685">Seda RPC meetodit ei toetata.</translation>
 <translation id="1128992132632883337">Vastuse sõelumisel ilmnes tõrge</translation>
 <translation id="1680597601664421644">Imporditav mnemoonik ei kehti Brave'i rahakoti jaoks</translation>
 <translation id="4641919696349069826">Taotlus on juba töös</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Tehinguandmete gaasihinna väli „gasPrice“ ei ole õige</translation>
 <translation id="8909404207805041979">Tehinguandmete gaasi väli „gas“ ei ole õige</translation>
 <translation id="670444168393199227">Tehinguandmete väärtuse väli „value“ ei ole õige</translation>
-<translation id="6180576227145734714">Tehinguandmete saaja väljal „to“ peab olema kehtiv aadress, kui see on määratud</translation>
 <translation id="6916219411793555838">Tehinguandmete gaasihinna väli „gasPrice“ või väli „maxFeePerGas“ peab olema määratud</translation>
 <translation id="1406937874668963740">Tehinguandmete ahela ID väli „chainId“ ei ole õige</translation>
 <translation id="9195349857587166771">Tehinguandmete väli „maxFeePerGas“ ei ole õige</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Tõrge tehingu töötlemisel</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ ei oma sõnumi allkirjastamise luba</translation>
 <translation id="8719220598078667817">Tehingu allkirjastamine nurjus</translation>
-<translation id="5486744676117070166">Nonsi väärtuse hankimine nurjus</translation>
 <translation id="875506212625074179">RPC-teenuse ahela ID vastus on sobimatu</translation>
+<translation id="5486744676117070166">Nonsi väärtuse hankimine nurjus</translation>
+<translation id="6180576227145734714">Tehinguandmete saaja väljal „to“ peab olema kehtiv aadress, kui see on määratud</translation>
 <translation id="4958950550253325418">DeFi rakendused</translation>
 <translation id="735961408871282410">NFT turuplatsid</translation>
 <translation id="7740287852186792672">Otsingutulemused</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x töötleb Ethereumi aadressi ja IP-aadressi, et sooritada tehing (sealhulgas saada hinnapakkumisi). 0x kasutab neid andmeid AINULT tehingute töötlemise eesmärgil.</translation>
 <translation id="4626407663177532837">Hinnapakkumine sisaldab 0,875% Brave'i tasu.</translation>
 <translation id="8368540604723748428">Liiga palju kümnendkohti</translation>
+<translation id="6575120282593094155">Teil pole veel <ph name="ACCOUNT_TYPE"/> kontot. Kas luua see kohe?</translation>
 <translation id="2704606927547763573">Kopeeritud</translation>
 <translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
 <translation id="8303434745767477417">Hoidke krüptovarad oma valduses. Saate jälgida portfelli tootlust ja suhelda Web 3 detsentraliseeritud rakenduste abil. Kauplemine, investeerimine, laenamine ja laenu andmine DeFi kaudu. Kõik otse Brave'i privaatsest brauserist. Ei mingeid laiendusi, ei mingit allalaadimist.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Hind:</translation>
 <translation id="2490428413101944234">Katseta kraani</translation>
 <translation id="3352959425838279177">Eetri hankimine kraanist võrgu <ph name="SELECTED_NETWORK"/> korral</translation>
-<translation id="7420359180991315365">Ava Wyre</translation>
-<translation id="2581671693710952401">Hankige eetrit</translation>
 <translation id="8009571545960303544">Taotletakse teie allkirja</translation>
 <translation id="5294062982587710720">Arvestage, et Brave ei saa kontrollida, mis pärast allkirjastamist toimub. Allkiri võib anda volitused peaaegu iga toimingu tegemiseks teie kontol või nimel, muuhulgas anda taotlevale veebisaidile täieliku kontrolli teie konto ja krüptovarade üle. Allkirjastage ainult juhul, kui olete kindel, et soovite seda teha ja usaldate taotlevat veebisaiti.</translation>
 <translation id="3474375934783434676">Allkirjastage omal vastutusel</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">järgmine</translation>
 <translation id="793994607260936590">esimene</translation>
 <translation id="4709524402122994378">tehingud</translation>
+<translation id="4591079278963448049">Seotud tokenikontot ei ole veel olemas. Selle loomiseks ja rahastamiseks kulub veidi SOL-e.</translation>
 <translation id="523862956770478816">Veebisaidi õigused</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> kontot on ühendatud</translation>
 <translation id="4305817255990598646">Vaheta</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Edastatud</translation>
 <translation id="2331676293859649642">Kinnitatud</translation>
 <translation id="1165039591588034296">Viga</translation>
+<translation id="8373210463207847451">Vabastatud</translation>
 <translation id="9065572743819293042">Hiljutised tehingud</translation>
 <translation id="4235538284468006757">Tehingu üksikasjad</translation>
 <translation id="7488671812634887146">Kiirendus</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 päeva krüptokingitusi, ligikaudu 500 000 $ eest auhindu.</translation>
 <translation id="8292716346768453265">Sisenege kohe!</translation>
 <translation id="6423985584914773314">Ei ole kehtiv FIL-i aadress</translation>
+<translation id="3898731124813934210">Osta Wyre kaudu</translation>
+<translation id="5522073372365069684">Osta Rampi kaudu</translation>
 <translation id="8528916244724490964">Kõik võrgud</translation>
 <translation id="2781668117338732220">Teisesed võrgud</translation>
 <translation id="2816106784624007524">Gaasi limiit peab olema täisarv ja suurem kui 0</translation>
+<translation id="3354376789153561654">Tehinguandmete saaja väli „to“ peab olema määratud</translation>
+<translation id="8728991256628663004">Tehinguandmete saatja väli „from“ peab kehtiv Filecoini aadress</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Ühenduse loomine nurjus</translation>
 <translation id="745054660363064771">Serveriga ühendamine ei õnnestu</translation>
 <translation id="3936826714240735937">Valige muu server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ei saanud luua ühendust piirkonna <ph name="REGION_NAME"/> serveriga. Võite proovida uuesti või valida muu</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ei saanud luua ühendust<ph name="REGION_NAME"/> serveriga. Võite proovida uuesti või valida mõne muu.</translation>
 <translation id="1024255913009642477">Kas VPN on juba ostetud?</translation>
 <translation id="8814357473522731680">Platvorm:</translation>
 <translation id="5747552184818312860">Aegub</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Kiire ja piiramatu kuni 100 mbit/s</translation>
 <translation id="1400240082805528049">24/7 tugi</translation>
 <translation id="8463313539532697053">Oodake hetk, kuni laaditakse…</translation>
+<translation id="4613076894734402086">Muuda makseviisi</translation>
+<translation id="1898254156730880135">Tundub, et teie viimane makse ei läinud läbi. Juurdepääs sellele tellimusele peatatakse kuni makseprobleemi lahendamiseni. Proovige muuta oma makseviisi või võtke ühendust Brave'i klienditoega.</translation>
+<translation id="1839021455997460752">Teie e-posti aadress</translation>
+<translation id="5154702632169343078">Teema</translation>
+<translation id="6625978880678465492">Valige põhjus</translation>
+<translation id="6687228121145903051">VPN-iga ei saa ühendust luua (muu tõrge)</translation>
+<translation id="9184988385244077767">Pärast ühendamist pole internetti</translation>
+<translation id="21570240866965662">Aeglane ühendus</translation>
+<translation id="1219475260382643267">Veebisait ei toimi</translation>
+<translation id="7138678301420049075">Muu</translation>
+<translation id="1387340358507240698">Kirjeldage oma probleemi</translation>
+<translation id="501818585183973587">Valige teave, mida nõustute meiega jagama</translation>
+<translation id="3195618332367441234">Mida rohkem teavet jagate, seda lihtsam on tugitöötajatel aidata.</translation>
+<translation id="5682143294773821728">VPN-i hostinimi:</translation>
+<translation id="24242621812020123">Rakenduse versioon:</translation>
+<translation id="6676791921618140305">Operatsioonisüsteemi versioon:</translation>
+<translation id="1156325797949437777">Tugiteenust osutatakse koostöös Guardianiga.</translation>
+<translation id="3307461350293459700">VPN-i ühenduse loomine nurjus. Proovige uuesti ühendust luua ja klõpsake kindlasti valikul „Luba“, et lubada Brave'i VPN-i konfiguratsioon.</translation>
 <translation id="7586151660465233733">Veel turge saidil <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vaata turge ja kauple FTX-is krüptoga</translation>
 <translation id="5963745988819586370">Turud</translation>

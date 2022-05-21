@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24 na Oras na Volume</translation>
 <translation id="7534079972563542000">Mga Hindi Napipigilang Domain</translation>
 <translation id="4492298165410552103">I-enable ang suporta ng Mga Hindi Napipigilang Domain sa Brave?</translation>
-<translation id="3470923752115324276">Mabibigyang-daan ka ng Brave na bisitahin ang mga .crypto na domain sa pamamagitan ng paggamit ng Cloudflare para resolbahin ang mga kahilingan sa paghahanap ng .crypto na domain name gamit ang DNS sa halip na HTTPS. Kung ie-enable mo ito, makikita ng Cloudflare ang .crypto na domain na sinusubukan mong bisitahin pero hindi nito makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_CF_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_CF_TOU_LINK"/> at <ph name="BEGIN_CF_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_CF_PRIVACY_LINK"/> ng Cloudflare.</translation>
+<translation id="2173151783558384314">Gagamit ang Brave ng Infura para magbigay ng mga Ethereum JSON-RPC na pagtawag sa smart contract mula sa Mga Hindi Napipigilang Domain para lutasin ang mga kahilingan sa paghahanap ng .crypto (pati ng .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) na domain name. Kung io-on mo ito, makikita ng Infura ang mga partikular na domain na sinusubukan mong bisitahin pero hindi nila makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_INFURA_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_INFURA_TOU_LINK"/> at <ph name="BEGIN_INFURA_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_INFURA_PRIVACY_LINK"/> ng Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">I-enable ang suporta ng Ethereum Name Service (ENS) sa Brave?</translation>
-<translation id="618766505813078707">Mabibigyang-daan ka ng Brave na bisitahin ang mga .eth na domain sa pamamagitan ng paggamit ng Cloudflare para resolbahin ang mga kahilingan sa paghahanap ng .eth na domain name gamit ang DNS sa halip na HTTPS. Kung ie-enable mo ito, makikita ng Cloudflare ang .eth na domain na sinusubukan mong bisitahin pero hindi nito makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_CF_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_CF_TOU_LINK"/> at <ph name="BEGIN_CF_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_CF_PRIVACY_LINK"/> ng Cloudflare.</translation>
-<translation id="5636651007798897342">Magpatuloy gamit ang server ng Cloudflare</translation>
+<translation id="8328137586971750853">Gagamit ang Brave ng Infura para magbigay ng mga Ethereum JSON-RPC na pagtawag sa smart contract mula sa Mga Hindi Napipigilang Domain para lutasin ang mga kahilingan sa paghahanap ng .eth na domain name. Kung io-on mo ito, makikita ng Infura ang .eth na domain na sinusubukan mong bisitahin pero hindi nila makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_INFURA_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_INFURA_TOU_LINK"/> at <ph name="BEGIN_INFURA_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_INFURA_PRIVACY_LINK"/> ng Infura.</translation>
+<translation id="7378412287463452336">Magpatuloy gamit ang server ng Infura</translation>
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="2218918398178303658">DNS sa HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Inaasahang isang parameter ng object.</translation>
 <translation id="1875861420974447980">Kasalukuyang ginagamit ang Chain ID na ito</translation>
 <translation id="167698752210114155">Nagkaroon ng internal na error</translation>
+<translation id="2326876601333401685">Hindi sinusuportahan ang pamamaraang RPC na ito.</translation>
 <translation id="1128992132632883337">May nangyaring response parsing error</translation>
 <translation id="1680597601664421644">Hindi valid para sa Brave Wallet ang ini-import na mnemonic</translation>
 <translation id="4641919696349069826">Mayroon nang ipinoprosesong kahilingan</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Hindi valid ang data ng transaksyon na 'gasPrice'</translation>
 <translation id="8909404207805041979">Hindi valid ang data ng transaksyon na 'gas'</translation>
 <translation id="670444168393199227">Hindi valid ang data ng transaksyon na 'value'</translation>
-<translation id="6180576227145734714">Dapat ay valid na address ang data ng transaksyon na 'to' kapag tinukoy ito</translation>
 <translation id="6916219411793555838">Dapat na tukuyin ang data ng transakyon na 'gasPrice' o 'maxFeePerGas'</translation>
 <translation id="1406937874668963740">Hindi valid ang data ng transaksyon na 'chainId'</translation>
 <translation id="9195349857587166771">Hindi valid ang data ng transaksyon na 'maxFeePerGas'</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Nagka-error sa pagpoproseso ng transaksyon</translation>
 <translation id="4886059598718763020">Hindi awtorisadong pumirma ng mensahe ang '<ph name="VALUE"/>'</translation>
 <translation id="8719220598078667817">Hindi na-sign ang transaksyon</translation>
-<translation id="5486744676117070166">Hindi nakuha ang susunod na nonce value</translation>
 <translation id="875506212625074179">Invalid na tugon ng chain ID mula sa serbisyo ng RPC</translation>
+<translation id="5486744676117070166">Hindi nakuha ang susunod na nonce value</translation>
+<translation id="6180576227145734714">Dapat ay valid na address ang data ng transaksyon na 'to' kapag tinukoy ito</translation>
 <translation id="4958950550253325418">Mga Defi app</translation>
 <translation id="735961408871282410">Mga Pamilihan ng NFT</translation>
 <translation id="7740287852186792672">Mga resulta ng paghahanap</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">Ipoproseso ng 0x ang Ethereum address at IP address para magawa ang isang transaksyon (kasama na ang pagkuha ng mga quote). Gagamitin LANG ng 0x ang data na ito para sa mga layunin ng pagpoproseso ng mga transaksyon.</translation>
 <translation id="4626407663177532837">Ang quote ay may kasamang Brave fee na 0.875%.</translation>
 <translation id="8368540604723748428">Napakaraming decimal places</translation>
+<translation id="6575120282593094155">Wala ka pang <ph name="ACCOUNT_TYPE"/> account. Gumawa na ngayon?</translation>
 <translation id="2704606927547763573">Kinopya</translation>
 <translation id="1420318137760245955">Welcome sa bagong Brave Wallet</translation>
 <translation id="8303434745767477417">Alagaan ang iyong mga asset ng cryptocurrency. I-track ang performance ng portfolio, at makipag-ugnayan sa mga web 3 DApp. Mag-trade, mag-invest, humiram, at magpahiram gamit ang DeFi. Iyon na ang lahat para sa pribadong browser ng Brave. Walang mga extension, walang kinakailangang pag-download.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Presyo sa</translation>
 <translation id="2490428413101944234">Subukan ang faucet</translation>
 <translation id="3352959425838279177">Kumuha ng Ether mula sa faucet para sa <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Magpatuloy sa Wyre</translation>
-<translation id="2581671693710952401">Kumuha ng Ether</translation>
 <translation id="8009571545960303544">Hinihiling ang iyong signature</translation>
 <translation id="5294062982587710720">Tandaang hindi mave-verify ng Brave ang mangyayari kapag lumagda ka. Posibleng pahintulutan ng lagda ang halos anumang operasyon sa iyong account o sa ngalan mo, kabilang ang (pero hindi  ito limitado sa) pagbibigay ng ganap na kontrol sa iyong account at mga asset ng cryptocurrency sa humihiling na site. Lumagda lang kung sigurado kang gusto mong gawin ang pagkilos na ito, at pinagkakatiwalaan mo ang humihiling na site.</translation>
 <translation id="3474375934783434676">Lumagda sa sarili mong pananagutan</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">susunod</translation>
 <translation id="793994607260936590">una</translation>
 <translation id="4709524402122994378">mga transaksyon</translation>
+<translation id="4591079278963448049">Hindi pa umiiral ang nauugnay na token account. May kaunting SOL na gagastusin para magawa at mapondohan ito.</translation>
 <translation id="523862956770478816">Mga pahintulot ng site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> account ang konektado</translation>
 <translation id="4305817255990598646">Lumipat</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Isinumite</translation>
 <translation id="2331676293859649642">Nakumpirma</translation>
 <translation id="1165039591588034296">Nagka-error</translation>
+<translation id="8373210463207847451">Na-drop</translation>
 <translation id="9065572743819293042">Bagong mga transaksyon</translation>
 <translation id="4235538284468006757">Mga detalye ng transaksyon</translation>
 <translation id="7488671812634887146">Pabilisin</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 araw ng mga crypto giveaway, ~$500k halaga ng mga premyo.</translation>
 <translation id="8292716346768453265">Sumali na!</translation>
 <translation id="6423985584914773314">Hindi valid na FIL na address</translation>
+<translation id="3898731124813934210">Bumili gamit ang Wyre</translation>
+<translation id="5522073372365069684">Bumili gamit ang Ramp</translation>
 <translation id="8528916244724490964">Lahat ng Network</translation>
 <translation id="2781668117338732220">Mga Pangalawang Network</translation>
 <translation id="2816106784624007524">Integer na mas malaki dapat sa 0 ang limitasyon sa gas</translation>
+<translation id="3354376789153561654">Dapat na tukuyin ang data ng transaksyong 'to'</translation>
+<translation id="8728991256628663004">Dapat ay valid na Filecoin address ang data ng transaksyong 'from'</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
 <translation id="4045404575593562245">Mga Control Event ng Tor</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Hindi Nakakonekta</translation>
 <translation id="745054660363064771">Hindi makakonekta sa server</translation>
 <translation id="3936826714240735937">Pumili ng ibang server</translation>
-<translation id="8006923044496340707">Hindi makakonekta ang <ph name="PRODUCT_NAME"/> sa <ph name="REGION_NAME"/> server. Pwede kang sumubok ulit, o pumili ng iba</translation>
+<translation id="1305433007676951913">Hindi makakonekta ang <ph name="PRODUCT_NAME"/> sa <ph name="REGION_NAME"/> server. Pwede kang sumubok ulit, o pumili ng iba.</translation>
 <translation id="1024255913009642477">Nakabili na ng VPN?</translation>
 <translation id="8814357473522731680">Pinapagana ng</translation>
 <translation id="5747552184818312860">Mag-e-expire sa</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Mabilis at unlimited nang hanggang 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 na suporta</translation>
 <translation id="8463313539532697053">Maghintay habang naglo-load…</translation>
+<translation id="4613076894734402086">I-edit ang paraan ng pagbabayad</translation>
+<translation id="1898254156730880135">Mukhang ang pinakahuli mong pagbabayad ay hindi natuloy. Mapo-pause ang access sa subscription na ito hanggang sa malutas ang isyu sa pagbabayad. Subukang i-edit ang iyong paraan ng pagbabayad, o makipag-ugnayan sa suporta sa Brave.</translation>
+<translation id="1839021455997460752">Ang iyong email address</translation>
+<translation id="5154702632169343078">Paksa</translation>
+<translation id="6625978880678465492">Mangyaring pumili ng dahilan</translation>
+<translation id="6687228121145903051">Hindi makakonekta sa VPN (Iba pang error)</translation>
+<translation id="9184988385244077767">Walang internet nang kumonekta</translation>
+<translation id="21570240866965662">Mabagal na koneksyon</translation>
+<translation id="1219475260382643267">Hindi gumagana ang website</translation>
+<translation id="7138678301420049075">Iba pa</translation>
+<translation id="1387340358507240698">Ilarawan ang iyong isyu</translation>
+<translation id="501818585183973587">Piliin ang impormasyong handa kang ibahagi sa amin</translation>
+<translation id="3195618332367441234">Kapag mas marami kang impormasyong ibabahagi sa amin, mas magiging madali para sa aming staff ng suporta na tumulong.</translation>
+<translation id="5682143294773821728">Hostname ng VPN:</translation>
+<translation id="24242621812020123">Bersyon ng App:</translation>
+<translation id="6676791921618140305">Bersyon ng OS:</translation>
+<translation id="1156325797949437777">Ang suporta ay ibinibigay sa tulong ng Guardian.</translation>
+<translation id="3307461350293459700">Hindi nakakonekta sa VPN. Pakisubukang kumonekta ulit, at tiyaking i-click ang Payagan para i-on ang VPN configuration ng Brave.</translation>
 <translation id="7586151660465233733">Higit pang merkado sa <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Tumingin ng mga merkado at mag-trade ng crypto sa FTX</translation>
 <translation id="5963745988819586370">Mga Merkado</translation>

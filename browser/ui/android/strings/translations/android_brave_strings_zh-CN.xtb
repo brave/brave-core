@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">启用/关闭 Brave 屏蔽</translation>
 <translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="2278950434998763147">使用安全的 HTTPS 连接而不是明文的 HTTP 打开一些站点。</translation>
+<translation id="5510493033031835532">自动重定向 AMP 页面</translation>
+<translation id="5197219128592971597">始终访问原始（非 AMP）页面 URL，而非谷歌的”加速移动页面“版本</translation>
 <translation id="94154759592465111">拦截脚本</translation>
 <translation id="7714773920987474116">拦截 JavaScript（可能导致一些网站无法正常运作）</translation>
 <translation id="6052725679982758334">社交媒体屏蔽</translation>
@@ -555,7 +557,6 @@
 <translation id="1078873179929044999">接下来，您将看到一个 12 个单词的恢复短语，可以将其用于恢复主加密账户。确保其安全。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复帐户访问的唯一方法。</translation>
 <translation id="2359808026110333948">继续</translation>
 <translation id="5488357322146334497">消息</translation>
-<translation id="7228169875515099943">数据</translation>
 <translation id="1904000155026201268">我理解一旦我丢失我的恢复短语，我将无法访问我的加密钱包。</translation>
 <translation id="3933122286596948824">您的恢复密语</translation>
 <translation id="5077747669435508720">按照下面所示的顺序写下或复制这些单词，并将它们保存在安全的地方。您的恢复短语是在忘记密码、设备丢失或被盗、或您想切换钱包的情况下恢复账户访问的唯一方法。</translation>
@@ -668,7 +669,7 @@
 <translation id="3510283489391432976">选择地理/国家位置</translation>
 <translation id="4390800080658195654">保持在网上匿名</translation>
 <translation id="639981156979733813">支持最快 100 Mbps 的速度</translation>
-<translation id="8396607116169935837">采用 IKEv2 安全加密的 VPN 通道</translation>
+<translation id="1190117345570417902">使用 Wireguard 安全加密的 VPN 隧道</translation>
 <translation id="1571230671455380494">我们从不分享或出售您的信息</translation>
 <translation id="276866628038850725">所有计划都包括 7 天免费试用期！</translation>
 <translation id="7280825497485894053">月度订阅</translation>
@@ -693,7 +694,7 @@
 如果您不接受此请求，VPN 不会重新连接，您的互联网连接将不受到保护。</translation>
 <translation id="2429299231491852747">接受连接请求</translation>
 <translation id="3428909627460825679">创建 VPN 配置文件失败。请再试一次。</translation>
-<translation id="8584119457978684056">购买代币验证失败。请再试一次。</translation>
+<translation id="1326227401245340613">购买验证失败。请再试一次。</translation>
 <translation id="8905950042180169719">VPN 正在后台运行</translation>
 <translation id="8681480718817027245">订阅</translation>
 <translation id="7805768142964895445">状态</translation>
@@ -704,7 +705,6 @@
 <translation id="5646376287012673985">位置信息</translation>
 <translation id="8375573361134671513">重置配置</translation>
 <translation id="850405162932416400">VPN 支持</translation>
-<translation id="1330148827129583049">未创建 VPN 配置文件。创建新的配置文件。</translation>
 <translation id="6772117549627334582">获取服务器位置失败。请稍后再试。</translation>
 <translation id="5863914199331127413">VPN 主机名</translation>
 <translation id="5499653136178260315">订阅类型</translation>
@@ -714,9 +714,9 @@
 <translation id="4395361077929528480">网络类型</translation>
 <translation id="755448900483975096">移动网络服务提供商</translation>
 <translation id="1279441577056010362">继续使用电子邮件</translation>
-<translation id="2553687444159335134">支持由 Guardian 团队帮助提供。\n\n请选择您愿意与我们分享的信息。\n\n您最初与我们分享的信息越多，我们的支持人员就越容易帮助您解决您的问题</translation>
+<translation id="7125582363614011660">此支持由 Guardian 团队帮助提供。\n\n请选择您愿意与我们分享的信息。\n\n您最初与我们分享的信息越多，我们的支持人员就越容易帮助您解决问题。</translation>
 <translation id="7999094850625689785">将根据您的系统时区自动选择最接近您的服务器区域。这是推荐选项，以确保高速的互联网连接。</translation>
-<translation id="8018707825009059641">其他问题</translation>
+<translation id="4397083831618200686">请选择问题</translation>
 <translation id="6687228121145903051">无法连接到 VPN（其他错误）</translation>
 <translation id="9184988385244077767">连接成功，但没法上网</translation>
 <translation id="21570240866965662">连接缓慢</translation>
@@ -731,7 +731,7 @@
 <translation id="1187506504156101449">未能确认购买：</translation>
 <translation id="8420522105268941892">您已经订阅了订阅套餐。尝试恢复订阅。</translation>
 <translation id="74771564105268111">错误！！\n由用户取消购买流程引起。</translation>
-<translation id="3851978668258201962">错误！！\n购买失败。</translation>
+<translation id="7312462922610983743">错误！！\n购买失败。</translation>
 <translation id="6452181791372256707">拒绝</translation>
 <translation id="8030852056903932865">批准</translation>
 <translation id="1597199892790541240">Gas 费用</translation>
@@ -804,11 +804,13 @@
 <translation id="5061574358754621254">价格数据由 CoinGecko 提供技术支持</translation>
 <translation id="4626407663177532837">报价包含 0.875% 的 Brave 费用</translation>
 <translation id="8574289650879708853">添加定制资产</translation>
+<translation id="1974060860693918893">高级</translation>
 <translation id="7791543448312431591">添加</translation>
 <translation id="6600400596821238377">代币名称</translation>
 <translation id="4432966365400169165">代币合约地址</translation>
 <translation id="4092152169181928870">代币符号</translation>
 <translation id="4351811224047421378">精确小数点</translation>
+<translation id="547122651977318828">令牌 ID（仅对于 ERC721）</translation>
 <translation id="8614026298974065517">删除定制资产</translation>
 <translation id="4378941981362528553">你想删除<ph name="TOKEN_NAME"/>（<ph name="TOKEN_SYMBOL"/>）代币吗？</translation>
 <translation id="4250680216510889253">否</translation>
@@ -870,5 +872,32 @@
 <translation id="2478788592457735063">这将把网络切换到先前添加的网络。</translation>
 <translation id="8756686998207163764">切换网络</translation>
 <translation id="394256914628786902">启用“标签组”自动创建</translation>
+<translation id="5242300593039211344">锁定钱包</translation>
+<translation id="1108298724135935307">连接的站点</translation>
+<translation id="4255623233927788178">在区块浏览器器上查看</translation>
 <translation id="8274201358637112807">此页面想与 Brave 互动</translation>
+<translation id="3355936511340229503">连接出错</translation>
+<translation id="4891604214809245310">无法将网络设置为 <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">这个设备似乎有其他 VPN 设置为“始终开启”。要启用 Brave Firewall + VPN，请先禁用其他 VPN 的“始终开启”设置，然后再重新连接。如果问题仍然存在，请尝试卸载其他 VPN。</translation>
+<translation id="85136472535634474">打开 VPN 设置</translation>
+<translation id="8352805003811526272">正在重置配置...</translation>
+<translation id="6809312301323611382">您已经选择了相同的服务器。</translation>
+<translation id="7694991972030057904">权限已被取消</translation>
+<translation id="9106265941552476098">拒绝<ph name="TRANSACTION_LENGTH"/>交易</translation>
+<translation id="523862956770478816">站点权限</translation>
+<translation id="2141313140218636977">已有 <ph name="VALUE"/> 个账户被关联</translation>
+<translation id="4305817255990598646">切换</translation>
+<translation id="4804818685124855865">断开连接</translation>
+<translation id="8009571545960303544">正在请求你的签名</translation>
+<translation id="1982257600591932657">网络名称</translation>
+<translation id="5052727830821470769">网络 URL</translation>
+<translation id="4822132585477111396">链 ID</translation>
+<translation id="7131971375297699539">货币符号</translation>
+<translation id="7982789257301363584">网络</translation>
+<translation id="2521480044079508357">这将允许在 Brave 钱包内使用该网络。</translation>
+<translation id="4717431746210146708">允许此站点添加一个网络？</translation>
+<translation id="3378339846292573874">添加建议的代币</translation>
+<translation id="2322227405137827074">要导入此代币吗？</translation>
+<translation id="1324417023773393937">Brave 的浏览器</translation>
+<translation id="6044189892950611565">Brave 浏览器的通知通道</translation>
 </translationbundle>

@@ -12,16 +12,8 @@
 <translation id="2666990579225592931">गेस्ट विंडो खोलें</translation>
 <translation id="4986483413015198747">गेस्ट विंडो खोलें</translation>
 <translation id="8275068909952022340">और…</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
-<translation id="6786747875388722282">एक्सटेंशन</translation>
-<translation id="984275831282074731">भुगतान के तरीके</translation>
 <translation id="1990886731975529483">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
-<translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
-<translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
-<translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
-<translation id="1369311132025451972">.onion साइटों पर अपने आप रीडायरेक्ट करें</translation>
-<translation id="2843777623071353503">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या Tor विंडो में .onion खोलेगा</translation>
 <translation id="4900351245762303149">Google Widevine को इंस्टॉल करें</translation>
 <translation id="2313383941300459392">Google Widevine को इनेबल करने के लिए ब्राउज़र को रीस्टार्ट करें</translation>
 <translation id="2200626478572277092">किसी वेबपेज पर मीडिया चलाने के लिए कभी-कभी Widevine की आवश्यकता होती है. यह Google सर्वर से लोड किया गया एक Google एक्सटेंशन है, जिसका Brave निरीक्षण नहीं कर सकता. इंस्टॉल करके, आप Google की उपयोग की शर्तों से सहमत होंगे.</translation>
@@ -30,99 +22,11 @@
 या बाद में <ph name="SETTINGS_EXTENIONS_LINK"/>पर बदलें.</translation>
 <translation id="6229752134959014186">Widevine के बारे में अधिक जानें</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/>आपसे अनुरोध करता है</translation>
-<translation id="410351446219883937">स्वतः प्ले</translation>
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
-<translation id="1448289340149908413">Ethereum</translation>
-<translation id="6583467242903731748">पूछें कि कोई साइट एथेरियम प्रदाता API का उपयोग कब करना चाहता है</translation>
-<translation id="7017590444693657895">साइटों को एथेरियम प्रदाता API तक पहुँचने से रोकें</translation>
 <translation id="8988939298652262600">Brave सुरक्षा और बचाव के लिए एक्सटेंशन की समीक्षा नहीं करता है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
-<translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
-<translation id="1679356339067548863">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave की प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
-<translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
-<translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
-<translation id="2988792685798128092">साइट बंद करने पर साफ़ करें</translation>
-<translation id="2044383478723007273">Brave रंग</translation>
-<translation id="1692470335103807198">शुल्क
-घड़ी
-अमान्य प्रविष्टि।
-यूफोल्ड वॉलेट
-किया हुआ
-मूल्यांकन करें
-सत्र समाप्त हुआ
-Binance कनेक्ट सक्षम करें
-क्या आप वाकई डिस्कनेक्ट करना चाहते हैं?
-पुष्टि करें
-जारी रखें
-Binance
-खोज
-इनाम बीएटी
-बिनेंस के साथ खरीद और व्यापार
-प्रतिलिपि
-उपलब्ध
-आपके द्वारा दर्ज की गई राशि आपके वर्तमान में उपलब्ध राशि से अधिक है।
-शीर्ष साइट्स
-रद्द करना
-जमा पता
-जमा BAT
-व्यापार
-आपने रूपांतरित किया
-अपने क्रेडेंशियल्स को मान्य ...
-नहीं धन्यवाद
-पुन: प्रयास करें
-मुझे खर्च करना है...
-मैं रूपांतरित होना चाहता हूं ...
-बहादुर आँकड़े
-आप पाएंगे
-खाता डिस्कनेक्ट किया गया
-प्रायोजित चित्र
-अधिक थीम प्राप्त करें</translation>
-<translation id="2906510232093002459">Brave डिफ़ॉल्ट इमेजिस</translation>
-<translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
-<translation id="6333347122924254968">एड्रेस बार में  Brave Rewards आइकॉन दिखाएं</translation>
-<translation id="1811404036171336214">हमेशा नए टैब पेज पर बुकमार्क दिखाएं</translation>
-<translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
-<translation id="1013121820689882118">स्पीडरीडर</translation>
-<translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
-<translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
-<translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
-<translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
-<translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
-<translation id="301088458323355543">ऑटोकम्पलीट सुझावों में Brave द्वारा सुझाई गई साइटें दिखाएँ</translation>
-<translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
-<translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
-<translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
-<translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
-<translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
-<translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
-<translation id="6821903322090655051">Brave Rewards बंद किए गए हैं</translation>
-<translation id="413570371620795359">इस चालू करके शुरू करने के लिए रिवॉर्ड पैनल खोलें</translation>
-<translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
-<translation id="8798099450830957504">सामान्य</translation>
-<translation id="4176463684765177261">अक्षम</translation>
-<translation id="4851215387785619212">Brave प्राइवेट विज्ञापन</translation>
-<translation id="7808122468353671181">Brave के विज्ञापन देखकर टोकन कमाएँ. आप जिस तरह से ब्राउज़ करते हैं, उसी के मुताबिक आपकी पसंद को ध्यान में रखकर आपको विज्ञापन दिखाए जाते हैं. कोई भी निजी डेटा या आपने क्या ब्राउज़ किया, इसकी जानकारी आपके ब्राउज़र से कभी बाहर नहीं जाती.</translation>
-<translation id="1758947220824279023">दिखाए जाने वाले विज्ञापन की अधिकतम संख्या</translation>
-<translation id="2356652719351432565">क्षेत्रीय विज्ञापन से जुड़ी ज़रूरी जानकारी</translation>
-<translation id="2196950072404588793">इससे Brave आपको वो विज्ञापन दिखा पाता है, जो खास तौर पर आपके क्षेत्र के लिए हैं. <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
-<translation id="6112368337882254910">स्वतः-योगदान</translation>
-<translation id="9132509928968869844">ऑटोमैटिक योगदान की हर महीने की सीमा</translation>
-<translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
-<translation id="4424486208397124985">प्रकाशक की योग्यता के लिए न्यूनतम विज़िट</translation>
-<translation id="6248554379744796526">सूची में गैर-सत्यापित साइट दिखाएं</translation>
-<translation id="5510618543889994434">वीडियो में योगदान की इजाज़त दें</translation>
-<translation id="924777189963477634">ऑटोमैटिक योगदान को चालू करके आप <ph name="BEGIN_LINK_TOS"/>सेवा की शर्तें<ph name="END_LINK_TOS"/> और <ph name="BEGIN_LINK_PP"/>निजता नीति<ph name="END_LINK_PP"/> पर अपनी सहमति देते हैं.</translation>
-<translation id="5733490796524078528">टिप बटन</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="2635094637295383009">ट्विटर</translation>
-<translation id="6032511312767282174">GitHub</translation>
-<translation id="7781069478569868053">नया टैब पेज</translation>
-<translation id="1988804048511540801">नया टैब पेज दिखाता है</translation>
-<translation id="2970343821770026391">डैशबोर्ड</translation>
-<translation id="3719826155360621982">होमपेज</translation>
-<translation id="5448570825852364919">खाली पेज</translation>
-<translation id="5919424224662539292">नए टैब पेज़ पर दिखाई देने वाली पृष्ठभूमि छवि और विजेट को कस्टमाइज़ करें</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="6924909138923993900">इस साइट के लिए नया टॉर कनेक्शन</translation>
 <translation id="4734294903299549345">टोर के साथ निजी विंडो से बाहर निकलें</translation>
@@ -134,6 +38,8 @@ Binance
 <translation id="1970435562892104727">यह टोर के साथ एक निजी विंडो है</translation>
 <translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
 <translation id="1725356094208762656">Tor में खोलें</translation>
+<translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
+<translation id="7473245612074035141">सेटअप शुरू करें</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
 <translation id="7398397225367092613">.onion</translation>
@@ -164,181 +70,13 @@ Binance
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3229091547987707389">एक डायरेक्टरी इम्पोर्ट और शेयर करें</translation>
-<translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
-<translation id="7924918279836988121">Bat खाता सेवाएं</translation>
-<translation id="4472575034687746823">आरंभ करें</translation>
-<translation id="3400357268283240774">अतिरिक्त सेटिंग्स</translation>
-<translation id="6303294677342628402">सुरक्षा कवच</translation>
-<translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
-<translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
-<translation id="1485394570478670912">यह वेबसाइटों पर ज़्यादातर विज्ञापनों को ब्लॉक कर देगा, Brave निजी विज्ञापनों को नहीं — जिन्हें कंट्रोल किया जाता है</translation>
-<translation id="6388201778088078932">सेटिंग।</translation>
-<translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
-<translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
-<translation id="130615081792797568">सरल व्यू</translation>
-<translation id="2360360976480535628">उन्नत व्यू</translation>
-<translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
-<translation id="8823559166155093873">कुकीज़ ब्लॉक करें</translation>
-<translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
-<translation id="7607166182943595829">मेरी भाषा प्राथमिकताओं के आधार पर साइट को मेरे फ़िंगरप्रिंट लेने से रोकें</translation>
-<translation id="3497934980362703405">आपकी भाषा प्राथमिकताओं के बारे में वेब साइटें कितना जान सकती हैं, यह आप इस सेटिंग को चालू करके कम कर सकते हैं.</translation>
-<translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
-<translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
-<translation id="4395160081588457461">देखो &amp; महसूस करो</translation>
-<translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
-<translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
-<translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
-<translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
-<translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
-<translation id="4078738236287221428">एग्रेसिव</translation>
-<translation id="7740996059027112821">मानक</translation>
-<translation id="5770288601196774623">केवल क्रॉस-साइट</translation>
-<translation id="3587482841069643663">सभी</translation>
-<translation id="5533533363827555308">सख्त, साइटों को ब्रेक कर सकते हैं</translation>
-<translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
-<translation id="6165508094623778733">अधिक जानें</translation>
-<translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
-<translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
-<translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
-<translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
-<translation id="5565355416171743213">सिंक का उपयोग करना शुरू करें</translation>
-<translation id="4332558599726753990">सिंक सेटअप</translation>
-<translation id="2187778349654214731">शुरू करने के लिए, आप जिन उपकरणों को सिंक करना चाहते हैं आपको उन सभी में Brave इनस्टॉल करना आवश्यक है। फ़िर, उन्हें सिंक कोड के साथ सुरक्षित रूप से लिंक करें।</translation>
-<translation id="7530575064080939974">अपने सिंक किए गए उपकरणों को प्रबंधित करें</translation>
-<translation id="7575156386943878014">सिंक प्रबंधक</translation>
-<translation id="1755198127524719638">सिंक सेटिंग</translation>
-<translation id="7558480201297099157">प्रबंधित करें कि आप किन सूचनाओं को डिवाइसों के बीच सिंक करना चाहते हैं। ये सेटिंग्स केवल इस डिवाइस को प्रभावित करती हैं।</translation>
-<translation id="7731928563672901833">उपकरण की सूची</translation>
-<translation id="28332161031213248">नीचे दी गयी डिवाइस सूची में आपकी सिंक चेन की सभी डिवाइस सम्मिलित हैं। किसी भी डिवाइस को किसी अन्य डिवाइस से प्रबन्धित किया है।</translation>
-<translation id="1313162974556054106">डिवाइस का नाम</translation>
-<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (यह उपकरण)</translation>
-<translation id="3686835020221422649">पिछले बार सक्रीय</translation>
-<translation id="1181037720776840403">हटाएं</translation>
-<translation id="2569646144216067185">शब्दों की संख्याt: <ph name="WORD_COUNT"/></translation>
-<translation id="7885157704277298658">कॉपी की गई!</translation>
-<translation id="8802630444265810662">आपके सिंक कोड को प्रसारित करने के लिए मोबाइल डिवाइस के साथ स्कैन किया जाने वाला एक QR कोड</translation>
-<translation id="6221331245829088299">QR कोड दिखने में कुछ समस्या हुई, कृपया रिफ़्रेश करें और पुनः प्रयास करें।`</translation>
-<translation id="298546024891487702">शुरूआत करने के लिए, आपको उन सभी डिवाइसों पर Brave इंस्टॉल करना होगा जिन्हें आप सिंक करना चाहते हैं। उन्हें एक साथ रखने के लिए, सिंक चेन को शुरू करें जिसे आप सभी डिवाइस को सुरक्षापूर्वक जोड़ने के लिए किये प्रयोग करेंगे।</translation>
-<translation id="6200528822592747640">नयी सिंक चेन की शुरुआत करें</translation>
-<translation id="5184726904895809379">मेरे पास एक सिंक कोड है</translation>
-<translation id="8780295742023331191">सिंक कोड देखें</translation>
-<translation id="9017050385815017931">फोन/टैबलेट</translation>
-<translation id="1736420071277903564">कंप्यूटर</translation>
-<translation id="3407602902101449803">सिंक चेन QR कोड</translation>
-<translation id="8369686073965491869">अपनी मोबाइल डिवाइस पर, सेटिंग पैनल में Brave सिंक पर जाएँ और बटन पर क्लिक करें</translation>
-<translation id="6527776448555649991">“सिंक चेन कोड”</translation>
-<translation id="1400862780574843709">QR कोड को स्कैन करने के लिए अपने कैमरे का प्रयोग करें।</translation>
-<translation id="5086223971958279691">सिंक चेन कोड</translation>
-<translation id="2899261497479389619">अपने लक्ष्य कंप्यूटर पर, सेटिंग में Brave सिंक पर जाएँ और बटन पर क्लिक करें</translation>
-<translation id="4827439149833241990">“मेरे पास एक सिंक कोड है”।</translation>
-<translation id="8299617838343103908">नीचे दिखाए गए सिंक चेन कोड शब्दों को दर्ज़ करें।</translation>
-<translation id="4485276108749547761">इस कोड को पासवर्ड की तरह इस्तेमाल करें। अगर किसी को इसके बारे में पता है, तो वे आपके सिंक किए गए डाटा को पढ़ और संशोधित कर सकते हैं।</translation>
-<translation id="3034163433136515805">QR कोड देखें</translation>
-<translation id="5373825572723282843">सिंक कोड दर्ज करें</translation>
-<translation id="5734745018569675530">नीचे दिए गए फॉर्म में आपको पहुँचाया गया सिंक चेन कोड दर्ज़ करें।</translation>
-<translation id="1061533051865606843">नए डिवाइस जोड़ें</translation>
-<translation id="5093410893656857925">डिवाइस प्रकार चुनें</translation>
-<translation id="4581190919849683048">आप किस प्रकार के उपकरण से सिंक करना चाहेंगे?</translation>
-<translation id="4112587618563511470">अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।</translation>
-<translation id="2339730291919608488">सिंक चेन छोड़ें</translation>
-<translation id="115699408012835975">यदि आप सिंक रिसेट करते हैं, तो आपको इसके साथ सिंक करने के लिए किसी अन्य डिवाइस से सिंक कोड को फ़िर से दर्ज करना होगा। क्या आप वाकई आगे बढ़ना चाहते हैं?</translation>
-<translation id="6092564993102418148">क्या आप वाकई में चुने गए डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
-<translation id="2936582902048232286">चेतावनी : इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें कोड शब्द बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
-
-कृपया यह एक बार फिर से जाँच लें कि ये कोड शब्द आपकी ही किसी डिवाइस से बनाए गए हैं.
-
-क्या आप वाकई यह करना चाहते हैं?</translation>
-<translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
-<translation id="7473245612074035141">सेटअप शुरू करें</translation>
-<translation id="3411013544209536575">सहायक सुझाव</translation>
-<translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
-<translation id="1807246157184219062">मन्द</translation>
-<translation id="2414886740292270097">गाढ़ा</translation>
-<translation id="1360441190790440400">Linux के जैसे ही</translation>
-<translation id="1336940801687497203">Windows के जैसे ही</translation>
-<translation id="8721331068159819483">MacOS के जैसे ही</translation>
-<translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
-<translation id="2356070529366658676">पूछें</translation>
-<translation id="7701040980221191251">कुछ नहीं</translation>
-<translation id="1274962333945373242">क्रिप्टो वॉलेट (डेप्रीकेट किए हुए)</translation>
-<translation id="3695088618483091287">Brave Wallet (एक्सटेंशन हो तो बेहतर है)</translation>
-<translation id="9131889008937672866">डिफ़ॉल्ट क्रिप्टोक्यूरेंसी वॉलेट</translation>
-<translation id="4718664830805652430">डिफ़ॉल्ट बेस करेंसी</translation>
-<translation id="7992507032049865603">डिफ़ॉल्ट बेस क्रिप्टोकरेंसी</translation>
-<translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
+<translation id="5029193871181468990">Brave रिवॉर्ड आइकन को छिपाएँ</translation>
 <translation id="4613486011786721686">टूल बार पर Brave वॉलेट के आइकन को छिपाएँ</translation>
-<translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
-<translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
-<translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
-<translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
-<translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
-<translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
-<translation id="7024553202001112871">अपना IPNS की सेट अप करें</translation>
-<translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
-<translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
-<translation id="911363100236037920">नई की के लिए नया नाम एंटर करें</translation>
-<translation id="6358469157239228181">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
-<translation id="5761731140570209168">नई सहकर्मी कनेक्शन स्ट्रिंग जोड़ें</translation>
-<translation id="2082206983920804886">की घुमाएँ</translation>
-<translation id="5078501082919354191">Brave स्थानीय IPFS नोड को नहीं रोक पा रहे हैं</translation>
-<translation id="5687424953196903465">Brave स्थानीय IPFS नोड को लांच कर पा रहे हैं</translation>
-<translation id="6476061084931271248">बदलाव लागू करने के लिए नोड को रीस्टार्ट करें</translation>
-<translation id="3754226427671882382">नोड रीस्टार्ट करें</translation>
-<translation id="949667118776341807">घुमाएँ</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
-<translation id="6758961763875471084">साथियों की सूची में बदलाव करें</translation>
-<translation id="1295874070797049002">की एक्सपोर्ट करें</translation>
-<translation id="3946479342297227860">की हटाएँ</translation>
-<translation id="1534091531114892221">IPFS साथियों का विवरण सेट करें</translation>
-<translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> को हटाना चाहते हैं?</translation>
-<translation id="910215077892371264">नोड लांच नहीं किया गया</translation>
-<translation id="616058968889448209">IPFS सर्विस लांच एरर, <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> पर अधिक जानकारी उपलब्ध है.</translation>
-<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
-<translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
-<translation id="5975930666279943472">वॉलेट लेनदेन और गलत-सूचना साफ़ करें</translation>
-<translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
-<translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
-<translation id="9216386092464743272">क्या आप वाकई अपने सभी वॉलेट लेनदेन और गैर-सूचना को रीसेट करना चाहते हैं? यह विकल्प ज्यादातर लोकल टेस्ट सर्वर चलाने वाले डेवलपर्स द्वारा इस्तेमाल किया जाता है. कंफ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
-<translation id="3752403403443723332">आपका वॉलेट रिसेट किया गया.</translation>
-<translation id="594766067816395072">आपकी वॉलेट लेन-देन की जानकारी रीसेट कर दी गई थी.</translation>
-<translation id="1426410128494586442">हां</translation>
-<translation id="8275038454117074363">आयात करें</translation>
-<translation id="3654980960391973513">जेनरेट करें</translation>
-<translation id="5531501313997312487">नोड चालू करें</translation>
-<translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
-<translation id="1327977588028644528">गेटवे</translation>
-<translation id="1195880978080389104">Brave स्थानीय IPFS नोड</translation>
-<translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Brave स्थानीय  IPFS नोड और गेटवे गोपनीयता विचारों के बारे में और <ph name="END_LINK_MPL"/> में जानें.</translation>
-<translation id="8425213833346101688">बदलें</translation>
-<translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
-<translation id="8571837315037233299">गेटवे पता</translation>
-<translation id="1251574393468476924">IPFS कैच का अधिकतम आकार (GB)</translation>
-<translation id="2503497578400410320">IPFS रिपॉजिटरी के डेटास्टोर के आकार के लिए एक नरम ऊपरी सीमा।</translation>
-<translation id="7703184801853248830">अमान्य गेटवे पता</translation>
-<translation id="7690058578502751948">Brave में केवल एक वैध IPFS गेटवे का उपयोग किया जा सकता है जिसमें मूल अलगाव सक्षम है.</translation>
-<translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
-<translation id="2618080188892567155">अगर आपके Brave स्थानीय नोड तक नहीं पहुँच सकता है, तो अपने आप सार्वजनिक IPFS गेटवे पर वापस चला जाएगा.</translation>
-<translation id="4107552920076294723">IPFS संसाधनों को कॉन्फ़िगर किए गए IPFS गेटवे पर पुनर्निर्देशित करें</translation>
-<translation id="6494857428933042381">जब IPFS गेटवे संसाधन की जानकारी होती है, तो IPFS प्रस्तावों के लिए कॉन्फ़िगर किए गए गेटवे का स्वचालित रूप से उपयोग करता है।</translation>
-<translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
-<translation id="2233724520223030977">जब भी संभव हो, वेबसाइट के IPFS संस्करण में नेविगेट करने के लिए DNSLink का स्वचालित रूप से उपयोग करता है</translation>
-<translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
-<translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
-<translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
-<translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
-<translation id="8068526464562249859">आपके ब्राउज़र बार से सामान्य IPFS टास्क एक्सेस करने सहित Brave में बेहतर IPFS समर्थन के लिए IPFS Companion एक्सटेंशन का उपयोग करता है।</translation>
-<translation id="8137559199583651773">एक्सटेंशन प्रबंधित करें</translation>
-<translation id="7013485839273047434">और एक्सटेंशन प्राप्त करें</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="3161744659507801211">ध्यान दें: Brave, एक्सटेंशन को आपके ब्राउज़िंग विवरण को रिकॉर्ड करने से नहीं रोक सकता है।</translation>
 <translation id="2162109630536601963">यदि यह एक्सटेंशन नेटवर्क का अनुरोध करता है, तो वे टॉर या निजी मोड का उपयोग नहीं करेंगे।</translation>
 <translation id="2725327089319971976">निजी मोड और टॉर मोड में इस एक्सटेंशन को निष्क्रिय करने के लिए, इस विकल्प को अचयनित करें।</translation>
-<translation id="4846154056248462491">बाहर निकलने पर</translation>
 <translation id="5057399635433117814">इस पेज का अनुवाद करें? इससे यह इस पेज के सभी टेक्स्ट को अनुवाद के लिए Microsoft भेजेगा।</translation>
 <translation id="330263065709195164">इस पेज का अनुवाद करने के लिए Google Translate  एक्सटेंशन स्थापित करें?</translation>
 <translation id="3789841737615482174">इंस्‍टॉल करें</translation>
@@ -349,60 +87,34 @@ Binance
 <translation id="8303432794159193481">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
 <translation id="8292967014767479012">Brave  ब्राउज़र ऐप</translation>
 <translation id="4743468424889072281">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
-<translation id="6624718837376802990">अवतार ईडी रिवार्ड्स</translation>
-<translation id="6617313057407561765">अवतार ईडी ब्रेव</translation>
-<translation id="6754445808455578019">अवतार ईडी ओसियन</translation>
-<translation id="1202230982786524987">अवतार ईडी ग्रास</translation>
-<translation id="5795513892420634319">अवतार एडगी कोर्न</translation>
-<translation id="3561521017993720050">अवतार एडी रॉयल</translation>
-<translation id="1235866128911626592">अवतार ईडी निंजा</translation>
-<translation id="2090755120827623384">अवतार पालदीन रिवार्ड्स</translation>
-<translation id="2018119859356143702">अवतार पालाडिन ब्रेव</translation>
-<translation id="4740488466586929481">अवतार पालाडिन ओसियन</translation>
-<translation id="5006207620676644913">अवतार पालदीन ग्रास</translation>
-<translation id="3989232963815817109">अवतार पालदीन कॉर्न</translation>
-<translation id="4594102608669574640">अवतार पालदीन रॉयल</translation>
-<translation id="2183738260538789532">अवतार पालदीन निंजा</translation>
-<translation id="1364533449989493534">अवतार ग्लेम रिवार्ड्स</translation>
-<translation id="7885078296101135895">अवतार ग्लेम ब्रेव</translation>
-<translation id="5569105529336093187">अवतार ग्लेम ओसियन</translation>
-<translation id="8905105122495847950">अवतार ग्लेम ग्रास</translation>
-<translation id="5118043134512650846">अवतार ग्लेम कॉर्न</translation>
-<translation id="7054896317531348319">अवतार ग्लेम रॉयल</translation>
-<translation id="5493441852328628982">अवतार ग्लेम निंजा</translation>
-<translation id="2752844432779340213">अवतार ओवल पुरस्कार</translation>
-<translation id="3981340065784739675">अवतार ओवल ब्रेव</translation>
-<translation id="8950124663623888116">अवतार ओवल ओसियन</translation>
-<translation id="1029136880675307651">अवतार ओवल ग्रास</translation>
-<translation id="3285059582709531888">अवतार ओवल कॉर्न</translation>
-<translation id="8540390244071055918">अवतार ओवल रॉयल</translation>
-<translation id="3435440003463944104">अवतार ओवल निंजा</translation>
-<translation id="4222150638283443362">अवतार बॉनबॉन रिवार्ड्स</translation>
-<translation id="8888471219870198387">अवतार बॉनबॉन ब्रेव</translation>
-<translation id="2883756935342108947">अवतार बॉनबॉन ओसियन</translation>
-<translation id="6280956561199400472">अवतार बॉनबॉन ग्रास</translation>
-<translation id="5318548116565208315">अवतार बॉनबॉन कॉर्न</translation>
-<translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
-<translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
 <translation id="239760341987199724">क्रोमियम को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
 <translation id="1391855377994926460">वेब तेज़ी से ब्राउज़ करना जारी रखें - प्रमुख समाचार साइटों पर 6 गुना तेज़ी से.</translation>
 <translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="732814027519296280">Brave Search को और भी बेहतर बनाना चाहते हैं?</translation>
 <translation id="2677865600861971449">गुमनाम रूप से कुछ खोज &amp; ब्राउज़िंग डेटा, और सभी के लिए Brave Search  परिणामों में सुधार करें. गोपनीयता-संरक्षण. और बिना किसी कोशिश. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="6165508094623778733">ज़्यादा जानें</translation>
 <translation id="5860491529813859533">चालू करें</translation>
 <translation id="780301667611848630">नहीं, रहने दें</translation>
 <translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="7053983685419859001">ब्लॉक करें</translation>
+<translation id="1679356339067548863">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave की प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> यकायक बंद हो गया.</translation>
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
 <translation id="7276554663454265692">आप ब्राउज़र सेटिंग में जाकर कभी भी <ph name="SETTING_TEXT"/> बदल सकते हैं</translation>
 <translation id="6873781976650514089">यह सेटिंग</translation>
+<translation id="8915916167043355778">सभी को बंद करें</translation>
+<translation id="4870911314065352661">क्या आप सभी टैब बंद करना चाहते हैं?</translation>
+<translation id="7551864359422178684">आपकी इस ब्राउज़र विंडो में <ph name="NUMBER_OF_TABS"/> टैब खुले हुए हैं.</translation>
+<translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> टैब</translation>
+<translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
+<translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="6040143037577758943">बंद करें</translation>
 <translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
 <translation id="4174337572777167894">वेब डिस्कवरी प्रोजेक्ट</translation>
 <translation id="8659271182272561965">कुछ अनाम सर्च में योगदान करें &amp; Brave Search को बेहतर बनाने के लिए ब्राउज़िंग डेटा.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
+<translation id="1181037720776840403">हटाएं</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
 <translation id="5404213409401164238">साइडबार दिखाएं</translation>
 <translation id="7561196759112975576">हमेशा</translation>
@@ -410,6 +122,7 @@ Binance
 <translation id="7961015016161918242">कभी नहीं</translation>
 <translation id="8981254605840444865">सेटिंग दिखाएँ</translation>
 <translation id="59174027418879706">सक्षम किया गया</translation>
+<translation id="4176463684765177261">अक्षम</translation>
 <translation id="8258999165172757081">जोड़ दिया गया</translation>
 <translation id="6959315322491671328">हटाने के लिए राइट क्लिक करें</translation>
 <translation id="495046168593986294">ऊपर स्क्रॉल करें</translation>
@@ -462,24 +175,239 @@ Binance
 <translation id="5310426188697803101">टूलबार में VPN बटन छुपाएं</translation>
 <translation id="945522503751344254">फ़ीडबैक दें</translation>
 <translation id="3015685033234401792">मेरा प्लान मैनेज करें</translation>
-<translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="4989337484121655457">पूर्ण डिस्क एक्सेस की आवश्यकता है</translation>
 <translation id="8025559074845816210">आपके बुकमार्क को Safari से इम्पोर्ट करने के लिए Brave को पुरे डिस्क के एक्सेस के आवश्यकता है।</translation>
 <translation id="8515328844674404333">अपने सिस्टम प्रेफ़रेंस से पूर्ण डिस्क एक्सेस देने का तरीका जानें.</translation>
 <translation id="6414878884710400018">सिस्टम प्रेफ़रेंस शुरू करें</translation>
-<translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
+<translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
-<translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="1968543937259008435">बेहतरीन ऑनलाइन गोपनीयता के लिए तैयार हैं?</translation>
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
+<translation id="3400357268283240774">अतिरिक्त सेटिंग्स</translation>
+<translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
+<translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
+<translation id="4472575034687746823">आरंभ करें</translation>
+<translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
+<translation id="6786747875388722282">एक्सटेंशन</translation>
+<translation id="984275831282074731">भुगतान के तरीके</translation>
+<translation id="2044383478723007273">Brave रंग</translation>
+<translation id="1807246157184219062">मन्द</translation>
+<translation id="2414886740292270097">गाढ़ा</translation>
+<translation id="1360441190790440400">Linux के जैसे ही</translation>
+<translation id="1336940801687497203">Windows के जैसे ही</translation>
+<translation id="8721331068159819483">MacOS के जैसे ही</translation>
+<translation id="1692470335103807198">शुल्क
+घड़ी
+अमान्य प्रविष्टि।
+यूफोल्ड वॉलेट
+किया हुआ
+मूल्यांकन करें
+सत्र समाप्त हुआ
+Binance कनेक्ट सक्षम करें
+क्या आप वाकई डिस्कनेक्ट करना चाहते हैं?
+पुष्टि करें
+जारी रखें
+Binance
+खोज
+इनाम बीएटी
+बिनेंस के साथ खरीद और व्यापार
+प्रतिलिपि
+उपलब्ध
+आपके द्वारा दर्ज की गई राशि आपके वर्तमान में उपलब्ध राशि से अधिक है।
+शीर्ष साइट्स
+रद्द करना
+जमा पता
+जमा BAT
+व्यापार
+आपने रूपांतरित किया
+अपने क्रेडेंशियल्स को मान्य ...
+नहीं धन्यवाद
+पुन: प्रयास करें
+मुझे खर्च करना है...
+मैं रूपांतरित होना चाहता हूं ...
+बहादुर आँकड़े
+आप पाएंगे
+खाता डिस्कनेक्ट किया गया
+प्रायोजित चित्र
+अधिक थीम प्राप्त करें</translation>
+<translation id="2906510232093002459">Brave डिफ़ॉल्ट इमेजिस</translation>
+<translation id="2396127686705429331">बुकमार्क आईकन दिखाएँ</translation>
+<translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
+<translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
+<translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
+<translation id="301088458323355543">ऑटोकम्पलीट सुझावों में Brave द्वारा सुझाई गई साइटें दिखाएँ</translation>
+<translation id="6333347122924254968">एड्रेस बार में  Brave Rewards आइकॉन दिखाएं</translation>
+<translation id="1811404036171336214">हमेशा नए टैब पेज पर बुकमार्क दिखाएं</translation>
+<translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
+<translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
+<translation id="1013121820689882118">स्पीडरीडर</translation>
+<translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
+<translation id="7781069478569868053">नया टैब पेज</translation>
+<translation id="1988804048511540801">नया टैब पेज दिखाता है</translation>
+<translation id="2970343821770026391">डैशबोर्ड</translation>
+<translation id="3719826155360621982">होमपेज</translation>
+<translation id="5448570825852364919">खाली पेज</translation>
+<translation id="5919424224662539292">नए टैब पेज़ पर दिखाई देने वाली पृष्ठभूमि छवि और विजेट को कस्टमाइज़ करें</translation>
+<translation id="6303294677342628402">सुरक्षा कवच</translation>
+<translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
+<translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
+<translation id="1485394570478670912">यह वेबसाइटों पर ज़्यादातर विज्ञापनों को ब्लॉक कर देगा, Brave निजी विज्ञापनों को नहीं — जिन्हें कंट्रोल किया जाता है</translation>
+<translation id="6388201778088078932">सेटिंग।</translation>
+<translation id="4395160081588457461">देखो &amp; महसूस करो</translation>
+<translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
+<translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
+<translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
+<translation id="7607166182943595829">मेरी भाषा प्राथमिकताओं के आधार पर साइट को मेरे फ़िंगरप्रिंट लेने से रोकें</translation>
+<translation id="3497934980362703405">आपकी भाषा प्राथमिकताओं के बारे में वेब साइटें कितना जान सकती हैं, यह आप इस सेटिंग को चालू करके कम कर सकते हैं.</translation>
+<translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
+<translation id="4078738236287221428">एग्रेसिव</translation>
+<translation id="7740996059027112821">मानक</translation>
+<translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
+<translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
+<translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
+<translation id="5533533363827555308">सख्त, साइटों को ब्रेक कर सकते हैं</translation>
+<translation id="8823559166155093873">कुकीज़ ब्लॉक करें</translation>
+<translation id="5770288601196774623">केवल क्रॉस-साइट</translation>
+<translation id="3587482841069643663">सभी</translation>
+<translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
+<translation id="130615081792797568">सरल व्यू</translation>
+<translation id="2360360976480535628">उन्नत व्यू</translation>
+<translation id="6821903322090655051">Brave Rewards बंद किए गए हैं</translation>
+<translation id="413570371620795359">इस चालू करके शुरू करने के लिए रिवॉर्ड पैनल खोलें</translation>
+<translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
+<translation id="8798099450830957504">सामान्य</translation>
+<translation id="4851215387785619212">Brave प्राइवेट विज्ञापन</translation>
+<translation id="7808122468353671181">Brave के विज्ञापन देखकर टोकन कमाएँ. आप जिस तरह से ब्राउज़ करते हैं, उसी के मुताबिक आपकी पसंद को ध्यान में रखकर आपको विज्ञापन दिखाए जाते हैं. कोई भी निजी डेटा या आपने क्या ब्राउज़ किया, इसकी जानकारी आपके ब्राउज़र से कभी बाहर नहीं जाती.</translation>
+<translation id="1758947220824279023">दिखाए जाने वाले विज्ञापन की अधिकतम संख्या</translation>
+<translation id="2356652719351432565">क्षेत्रीय विज्ञापन से जुड़ी ज़रूरी जानकारी</translation>
+<translation id="2196950072404588793">इससे Brave आपको वो विज्ञापन दिखा पाता है, जो खास तौर पर आपके क्षेत्र के लिए हैं. <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">स्वतः-योगदान</translation>
+<translation id="9132509928968869844">ऑटोमैटिक योगदान की हर महीने की सीमा</translation>
+<translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
+<translation id="4424486208397124985">प्रकाशक की योग्यता के लिए न्यूनतम विज़िट</translation>
+<translation id="6248554379744796526">सूची में गैर-सत्यापित साइट दिखाएं</translation>
+<translation id="5510618543889994434">वीडियो में योगदान की इजाज़त दें</translation>
+<translation id="924777189963477634">ऑटोमैटिक योगदान को चालू करके आप <ph name="BEGIN_LINK_TOS"/>सेवा की शर्तें<ph name="END_LINK_TOS"/> और <ph name="BEGIN_LINK_PP"/>निजता नीति<ph name="END_LINK_PP"/> पर अपनी सहमति देते हैं.</translation>
+<translation id="5733490796524078528">टिप बटन</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">ट्विटर</translation>
+<translation id="6032511312767282174">GitHub</translation>
+<translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
+<translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
+<translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
+<translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
+<translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
+<translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
+<translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
+<translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
+<translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
+<translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
+<translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
+<translation id="4846154056248462491">बाहर निकलने पर</translation>
+<translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
+<translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
+<translation id="2988792685798128092">साइट बंद करने पर साफ़ करें</translation>
+<translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
+<translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
+<translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
+<translation id="410351446219883937">स्वतः प्ले</translation>
+<translation id="3512883292907992390">वेबसाइट को वीडियो अपने-आप शुरू करने की इजाज़त दें</translation>
+<translation id="1876603079388924308">साइट को वीडियो अपने-आप प्ले करने से रोकें</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">पूछें कि कोई साइट एथेरियम प्रदाता API का उपयोग कब करना चाहता है</translation>
+<translation id="7017590444693657895">साइटों को एथेरियम प्रदाता API तक पहुँचने से रोकें</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="4539536028173362640">पूछें कि साइट Solana प्रोवाइडर API को कब ऐक्सेस करना चाहती है</translation>
+<translation id="2777102601740875941">साइट को Solana प्रोवाइडर API को ऐक्सेस करने से रोकें</translation>
+<translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
+<translation id="5565355416171743213">सिंक का उपयोग करना शुरू करें</translation>
+<translation id="4332558599726753990">सिंक सेटअप</translation>
+<translation id="2187778349654214731">शुरू करने के लिए, आप जिन उपकरणों को सिंक करना चाहते हैं आपको उन सभी में Brave इनस्टॉल करना आवश्यक है। फ़िर, उन्हें सिंक कोड के साथ सुरक्षित रूप से लिंक करें।</translation>
+<translation id="7530575064080939974">अपने सिंक किए गए उपकरणों को प्रबंधित करें</translation>
+<translation id="7575156386943878014">सिंक प्रबंधक</translation>
+<translation id="1755198127524719638">सिंक सेटिंग</translation>
+<translation id="7558480201297099157">प्रबंधित करें कि आप किन सूचनाओं को डिवाइसों के बीच सिंक करना चाहते हैं। ये सेटिंग्स केवल इस डिवाइस को प्रभावित करती हैं।</translation>
+<translation id="7731928563672901833">उपकरण की सूची</translation>
+<translation id="28332161031213248">नीचे दी गयी डिवाइस सूची में आपकी सिंक चेन की सभी डिवाइस सम्मिलित हैं। किसी भी डिवाइस को किसी अन्य डिवाइस से प्रबन्धित किया है।</translation>
+<translation id="1313162974556054106">डिवाइस का नाम</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (यह उपकरण)</translation>
+<translation id="3686835020221422649">पिछले बार सक्रीय</translation>
+<translation id="2569646144216067185">शब्दों की संख्याt: <ph name="WORD_COUNT"/></translation>
+<translation id="7885157704277298658">कॉपी की गई!</translation>
+<translation id="8802630444265810662">आपके सिंक कोड को प्रसारित करने के लिए मोबाइल डिवाइस के साथ स्कैन किया जाने वाला एक QR कोड</translation>
+<translation id="6221331245829088299">QR कोड दिखने में कुछ समस्या हुई, कृपया रिफ़्रेश करें और पुनः प्रयास करें।`</translation>
+<translation id="298546024891487702">शुरूआत करने के लिए, आपको उन सभी डिवाइसों पर Brave इंस्टॉल करना होगा जिन्हें आप सिंक करना चाहते हैं। उन्हें एक साथ रखने के लिए, सिंक चेन को शुरू करें जिसे आप सभी डिवाइस को सुरक्षापूर्वक जोड़ने के लिए किये प्रयोग करेंगे।</translation>
+<translation id="6200528822592747640">नयी सिंक चेन की शुरुआत करें</translation>
+<translation id="5184726904895809379">मेरे पास एक सिंक कोड है</translation>
+<translation id="8780295742023331191">सिंक कोड देखें</translation>
+<translation id="9017050385815017931">फोन/टैबलेट</translation>
+<translation id="1736420071277903564">कंप्यूटर</translation>
+<translation id="3407602902101449803">सिंक चेन QR कोड</translation>
+<translation id="8369686073965491869">अपनी मोबाइल डिवाइस पर, सेटिंग पैनल में Brave सिंक पर जाएँ और बटन पर क्लिक करें</translation>
+<translation id="6527776448555649991">“सिंक चेन कोड”</translation>
+<translation id="1400862780574843709">QR कोड को स्कैन करने के लिए अपने कैमरे का प्रयोग करें।</translation>
+<translation id="5086223971958279691">सिंक चेन कोड</translation>
+<translation id="2899261497479389619">अपने लक्ष्य कंप्यूटर पर, सेटिंग में Brave सिंक पर जाएँ और बटन पर क्लिक करें</translation>
+<translation id="4827439149833241990">“मेरे पास एक सिंक कोड है”।</translation>
+<translation id="8299617838343103908">नीचे दिखाए गए सिंक चेन कोड शब्दों को दर्ज़ करें।</translation>
+<translation id="4485276108749547761">इस कोड को पासवर्ड की तरह इस्तेमाल करें। अगर किसी को इसके बारे में पता है, तो वे आपके सिंक किए गए डाटा को पढ़ और संशोधित कर सकते हैं।</translation>
+<translation id="3034163433136515805">QR कोड देखें</translation>
+<translation id="5373825572723282843">सिंक कोड दर्ज करें</translation>
+<translation id="5734745018569675530">नीचे दिए गए फॉर्म में आपको पहुँचाया गया सिंक चेन कोड दर्ज़ करें।</translation>
+<translation id="1061533051865606843">नए डिवाइस जोड़ें</translation>
+<translation id="5093410893656857925">डिवाइस प्रकार चुनें</translation>
+<translation id="4581190919849683048">आप किस प्रकार के उपकरण से सिंक करना चाहेंगे?</translation>
+<translation id="4112587618563511470">अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।</translation>
+<translation id="2339730291919608488">सिंक चेन छोड़ें</translation>
+<translation id="115699408012835975">यदि आप सिंक रिसेट करते हैं, तो आपको इसके साथ सिंक करने के लिए किसी अन्य डिवाइस से सिंक कोड को फ़िर से दर्ज करना होगा। क्या आप वाकई आगे बढ़ना चाहते हैं?</translation>
+<translation id="6092564993102418148">क्या आप वाकई में चुने गए डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
+<translation id="4400414577602898435">चेतावनी : यह आपके Brave डेटा और संभावित तौर पर आपके पासवर्ड को उस डिवाइस के साथ शेयर करेगा जिसने ये कोड जनरेट किए हैं.
+
+    कृपया पूरा ध्यान रखें कि ये कोड आपके अपने डिवाइस से ही जनरेट किए गए हों.
+
+    क्या आप सचमुच ऐसा करना चाहते हैं?</translation>
+<translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
+<translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
+<translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
+<translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
+<translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
+<translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
+<translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
+<translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
+<translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
+<translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
+<translation id="1369311132025451972">.onion साइटों पर अपने आप रीडायरेक्ट करें</translation>
+<translation id="2843777623071353503">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या Tor विंडो में .onion खोलेगा</translation>
+<translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
+<translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
+<translation id="8137559199583651773">एक्सटेंशन प्रबंधित करें</translation>
+<translation id="7013485839273047434">और एक्सटेंशन प्राप्त करें</translation>
+<translation id="9131889008937672866">डिफ़ॉल्ट क्रिप्टोक्यूरेंसी वॉलेट</translation>
+<translation id="8488282162676695335">Brave वॉलेट</translation>
+<translation id="2356070529366658676">पूछें</translation>
+<translation id="7701040980221191251">कुछ नहीं</translation>
+<translation id="1274962333945373242">क्रिप्टो वॉलेट (डेप्रीकेट किए हुए)</translation>
+<translation id="3695088618483091287">Brave Wallet (एक्सटेंशन हो तो बेहतर है)</translation>
+<translation id="4718664830805652430">डिफ़ॉल्ट बेस करेंसी</translation>
+<translation id="7992507032049865603">डिफ़ॉल्ट बेस क्रिप्टोकरेंसी</translation>
+<translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
+<translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
+<translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="1241283133946520352">नेटवर्क</translation>
-<translation id="8205945804087322170">नया नेटवर्क जोड़ें</translation>
-<translation id="2156993118928861787">अमान्य पता</translation>
-<translation id="2653659639078652383">सबमिट करें</translation>
+<translation id="5975930666279943472">वॉलेट लेनदेन और गलत-सूचना साफ़ करें</translation>
+<translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
+<translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
+<translation id="9216386092464743272">क्या आप वाकई अपने सभी वॉलेट लेनदेन और गैर-सूचना को रीसेट करना चाहते हैं? यह विकल्प ज्यादातर लोकल टेस्ट सर्वर चलाने वाले डेवलपर्स द्वारा इस्तेमाल किया जाता है. कंफ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="3752403403443723332">आपका वॉलेट रिसेट किया गया.</translation>
+<translation id="594766067816395072">आपकी वॉलेट लेन-देन की जानकारी रीसेट कर दी गई थी.</translation>
+<translation id="1426410128494586442">हां</translation>
 <translation id="2556708692502648323">वॉलेट नेटवर्क</translation>
+<translation id="3159419679550543837">टेस्ट नेटवर्क दिखाएँ</translation>
+<translation id="8205945804087322170">नया नेटवर्क जोड़ें</translation>
 <translation id="1330032157352961756">नई चेन की आईडी</translation>
 <translation id="3423620355610881890">एक धनात्मक दशमलव नंबर</translation>
 <translation id="726121047592132939">चेन का नया नाम</translation>
@@ -494,11 +422,96 @@ Binance
 <translation id="7059127752542505809">URL डालें</translation>
 <translation id="3047726704186619366">आइकन के URL</translation>
 <translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
+<translation id="2653659639078652383">सबमिट करें</translation>
+<translation id="2156993118928861787">अमान्य पता</translation>
 <translation id="6301398959353668507">यह फ़ील्ड खाली नहीं रह सकता</translation>
 <translation id="7504462451153306677">अमान्य फ़ॉर्मैट, सीरीज़ आईडी एक पॉज़िटिव नंबर है</translation>
 <translation id="650071759190249039">आंतरिक गड़बड़ी, नेटवर्क नहीं जोड़ा जा सका.</translation>
-<translation id="868529041590572443">मूल करेंसी के बारे में सभी जानकारी भरें</translation>
+<translation id="336035846712292194">कृपया अपने देश की करंसी के बारे में सारी जानकारी भरें</translation>
 <translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
 <translation id="2234108191702901162">नेटवर्क नहीं जोड़ा जा सका</translation>
+<translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> को मिटाना चाहते हैं?</translation>
 <translation id="2618193846561624884">क्या आप मौजूदा नेटवर्क को अपडेट करना चाहते हैं?</translation>
+<translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
+<translation id="1327977588028644528">गेटवे</translation>
+<translation id="1195880978080389104">Brave स्थानीय IPFS नोड</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Brave स्थानीय  IPFS नोड और गेटवे गोपनीयता विचारों के बारे में और <ph name="END_LINK_MPL"/> में जानें.</translation>
+<translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
+<translation id="8425213833346101688">बदलें</translation>
+<translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
+<translation id="2618080188892567155">अगर आपके Brave स्थानीय नोड तक नहीं पहुँच सकता है, तो अपने आप सार्वजनिक IPFS गेटवे पर वापस चला जाएगा.</translation>
+<translation id="4107552920076294723">IPFS संसाधनों को कॉन्फ़िगर किए गए IPFS गेटवे पर पुनर्निर्देशित करें</translation>
+<translation id="6494857428933042381">जब IPFS गेटवे संसाधन की जानकारी होती है, तो IPFS प्रस्तावों के लिए कॉन्फ़िगर किए गए गेटवे का स्वचालित रूप से उपयोग करता है।</translation>
+<translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
+<translation id="2233724520223030977">जब भी संभव हो, वेबसाइट के IPFS संस्करण में नेविगेट करने के लिए DNSLink का स्वचालित रूप से उपयोग करता है</translation>
+<translation id="8068526464562249859">आपके ब्राउज़र बार से सामान्य IPFS टास्क एक्सेस करने सहित Brave में बेहतर IPFS समर्थन के लिए IPFS Companion एक्सटेंशन का उपयोग करता है।</translation>
+<translation id="1251574393468476924">IPFS कैच का अधिकतम आकार (GB)</translation>
+<translation id="2503497578400410320">IPFS रिपॉजिटरी के डेटास्टोर के आकार के लिए एक नरम ऊपरी सीमा।</translation>
+<translation id="6758961763875471084">साथियों की सूची में बदलाव करें</translation>
+<translation id="5761731140570209168">नई सहकर्मी कनेक्शन स्ट्रिंग जोड़ें</translation>
+<translation id="7024553202001112871">अपना IPNS की सेट अप करें</translation>
+<translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
+<translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
+<translation id="911363100236037920">नई की के लिए नया नाम एंटर करें</translation>
+<translation id="6358469157239228181">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
+<translation id="2082206983920804886">की घुमाएँ</translation>
+<translation id="5078501082919354191">Brave स्थानीय IPFS नोड को नहीं रोक पा रहे हैं</translation>
+<translation id="5687424953196903465">Brave स्थानीय IPFS नोड को लांच कर पा रहे हैं</translation>
+<translation id="6476061084931271248">बदलाव लागू करने के लिए नोड को रीस्टार्ट करें</translation>
+<translation id="3754226427671882382">नोड रीस्टार्ट करें</translation>
+<translation id="949667118776341807">घुमाएँ</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
+<translation id="1295874070797049002">की एक्सपोर्ट करें</translation>
+<translation id="3946479342297227860">की हटाएँ</translation>
+<translation id="1534091531114892221">IPFS साथियों का विवरण सेट करें</translation>
+<translation id="910215077892371264">नोड लांच नहीं किया गया</translation>
+<translation id="616058968889448209">IPFS सर्विस लांच एरर, <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> पर अधिक जानकारी उपलब्ध है.</translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
+<translation id="8275038454117074363">आयात करें</translation>
+<translation id="3654980960391973513">जेनरेट करें</translation>
+<translation id="5531501313997312487">नोड चालू करें</translation>
+<translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
+<translation id="8571837315037233299">गेटवे पता</translation>
+<translation id="7703184801853248830">अमान्य गेटवे पता</translation>
+<translation id="7690058578502751948">Brave में केवल एक वैध IPFS गेटवे का उपयोग किया जा सकता है जिसमें मूल अलगाव सक्षम है.</translation>
+<translation id="3411013544209536575">सहायक सुझाव</translation>
+<translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
+<translation id="3095201688102519917">कई सारे टैब वाली विंडो बंद करने से पहले मुझे बताएँ</translation>
+<translation id="6624718837376802990">अवतार ईडी रिवार्ड्स</translation>
+<translation id="6617313057407561765">अवतार ईडी ब्रेव</translation>
+<translation id="6754445808455578019">अवतार ईडी ओसियन</translation>
+<translation id="1202230982786524987">अवतार ईडी ग्रास</translation>
+<translation id="5795513892420634319">अवतार एडगी कोर्न</translation>
+<translation id="3561521017993720050">अवतार एडी रॉयल</translation>
+<translation id="1235866128911626592">अवतार ईडी निंजा</translation>
+<translation id="2090755120827623384">अवतार पालदीन रिवार्ड्स</translation>
+<translation id="2018119859356143702">अवतार पालाडिन ब्रेव</translation>
+<translation id="4740488466586929481">अवतार पालाडिन ओसियन</translation>
+<translation id="5006207620676644913">अवतार पालदीन ग्रास</translation>
+<translation id="3989232963815817109">अवतार पालदीन कॉर्न</translation>
+<translation id="4594102608669574640">अवतार पालदीन रॉयल</translation>
+<translation id="2183738260538789532">अवतार पालदीन निंजा</translation>
+<translation id="1364533449989493534">अवतार ग्लेम रिवार्ड्स</translation>
+<translation id="7885078296101135895">अवतार ग्लेम ब्रेव</translation>
+<translation id="5569105529336093187">अवतार ग्लेम ओसियन</translation>
+<translation id="8905105122495847950">अवतार ग्लेम ग्रास</translation>
+<translation id="5118043134512650846">अवतार ग्लेम कॉर्न</translation>
+<translation id="7054896317531348319">अवतार ग्लेम रॉयल</translation>
+<translation id="5493441852328628982">अवतार ग्लेम निंजा</translation>
+<translation id="2752844432779340213">अवतार ओवल पुरस्कार</translation>
+<translation id="3981340065784739675">अवतार ओवल ब्रेव</translation>
+<translation id="8950124663623888116">अवतार ओवल ओसियन</translation>
+<translation id="1029136880675307651">अवतार ओवल ग्रास</translation>
+<translation id="3285059582709531888">अवतार ओवल कॉर्न</translation>
+<translation id="8540390244071055918">अवतार ओवल रॉयल</translation>
+<translation id="3435440003463944104">अवतार ओवल निंजा</translation>
+<translation id="4222150638283443362">अवतार बॉनबॉन रिवार्ड्स</translation>
+<translation id="8888471219870198387">अवतार बॉनबॉन ब्रेव</translation>
+<translation id="2883756935342108947">अवतार बॉनबॉन ओसियन</translation>
+<translation id="6280956561199400472">अवतार बॉनबॉन ग्रास</translation>
+<translation id="5318548116565208315">अवतार बॉनबॉन कॉर्न</translation>
+<translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
+<translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
 </translationbundle>

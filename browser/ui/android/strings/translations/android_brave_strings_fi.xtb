@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Ota Brave Shields käyttöön tai poista se käytöstä</translation>
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="2278950434998763147">Avaa joitakin sivustoja käyttämällä suojattua HTTPS-yhteyttä pelkän HTTP:n sijaan.</translation>
+<translation id="5510493033031835532">AMP-sivujen automaattinen uudelleenohjaus</translation>
+<translation id="5197219128592971597">Käy aina sivun alkuperäisessä URL-osoitteessa (ei-AMP) Googlen Accelerated Mobile Pages -tekniikkaa käyttävän version sijaan</translation>
 <translation id="94154759592465111">Estä komentosarjat</translation>
 <translation id="7714773920987474116">Estää JavaScriptin (voi rikkoa sivustoja)</translation>
 <translation id="6052725679982758334">Sosiaalisen median esto</translation>
@@ -556,7 +558,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1078873179929044999">Seuraavassa vaiheessa näet 12 sanan palautuslauseen, jonka avulla voit palauttaa ensisijaiset kryptotilisi. Säilytä sitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="5488357322146334497">Viesti</translation>
-<translation id="7228169875515099943">TIEDOT</translation>
 <translation id="1904000155026201268">Ymmärrän, että jos kadotan palautuslauseeni, en voi käyttää kryptolompakkoani.</translation>
 <translation id="3933122286596948824">Palautuslauseesi</translation>
 <translation id="5077747669435508720">Kirjoita ylös tai kopioi nämä sanat alla esitetyssä järjestyksessä ja säilytä niitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
@@ -669,7 +670,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3510283489391432976">Valitse sijainti tai maa</translation>
 <translation id="4390800080658195654">Pitää sinut anonyyminä verkossa</translation>
 <translation id="639981156979733813">Tukee jopa 100 Mbps:n nopeutta</translation>
-<translation id="8396607116169935837">Käyttää suojattua ja salattua IKEv2-protokollaan perustuvaa VPN-tunnelia</translation>
 <translation id="1571230671455380494">Emme koskaan jaa tai myy tietojasi</translation>
 <translation id="276866628038850725">Kaikki tilaukset sisältävät maksuttoman 7 päivän kokeilujakson!</translation>
 <translation id="7280825497485894053">Kuukausitilaus</translation>
@@ -694,7 +694,6 @@ Haluatko varmasti tehdä tämän?</translation>
 Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja Internet-yhteyttäsi ei suojata.</translation>
 <translation id="2429299231491852747">Hyväksy yhteyden muodostuspyyntö</translation>
 <translation id="3428909627460825679">VPN-profiilin luonti epäonnistui. Yritä uudelleen.</translation>
-<translation id="8584119457978684056">Ostotokenin vahvistus epäonnistui. Yritä uudelleen.</translation>
 <translation id="8905950042180169719">VPN on käynnissä taustalla</translation>
 <translation id="8681480718817027245">Tilaus</translation>
 <translation id="7805768142964895445">Tila</translation>
@@ -705,7 +704,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5646376287012673985">Sijainti</translation>
 <translation id="8375573361134671513">Nollaa määritykset</translation>
 <translation id="850405162932416400">VPN-tuki</translation>
-<translation id="1330148827129583049">VPN-profiilia ei luotu. Uutta profiilia luodaan.</translation>
 <translation id="6772117549627334582">Palvelimen sijainnin haku ei onnistu. Yritä myöhemmin uudelleen.</translation>
 <translation id="5863914199331127413">VPN:n isäntänimi</translation>
 <translation id="5499653136178260315">Tilaustyyppi</translation>
@@ -715,9 +713,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4395361077929528480">Verkkotyyppi</translation>
 <translation id="755448900483975096">Mobiilipalveluntarjoaja</translation>
 <translation id="1279441577056010362">Jatka sähköpostiin</translation>
-<translation id="2553687444159335134">Tuki tarjotaan Guardian-tiimin kautta.\n\nValitse tiedot, jotka haluat jakaa kanssamme.\n\nMitä enemmän tietoja meille annat, sitä helpompaa tukihenkilöstömme on auttaa sinua ratkaisemaan ongelmasi</translation>
 <translation id="7999094850625689785">Lähin palvelinalue valitaan automaattisesti järjestelmän aikavyöhykkeen perusteella. Tätä suositellaan Internet-yhteyden nopeuden varmistamiseksi.</translation>
-<translation id="8018707825009059641">Muut ongelmat</translation>
 <translation id="6687228121145903051">VPN:ään ei saada yhteyttä (muu virhe)</translation>
 <translation id="9184988385244077767">Ei Internet-yhteyttä yhdistämisen jälkeen</translation>
 <translation id="21570240866965662">Hidas yhteys</translation>
@@ -732,7 +728,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1187506504156101449">Ostoksen hyväksyminen epäonnistui:</translation>
 <translation id="8420522105268941892">Olet jo tehnyt tilauksen. Yritä palauttaa tilaus.</translation>
 <translation id="74771564105268111">VIRHE!!\nSyynä on käyttäjän peruuttama ostos.</translation>
-<translation id="3851978668258201962">VIRHE!!\nOstaminen epäonnistui..</translation>
 <translation id="6452181791372256707">Hylkää</translation>
 <translation id="8030852056903932865">Hyväksy</translation>
 <translation id="1597199892790541240">Gas-maksu</translation>
@@ -805,11 +800,13 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5061574358754621254">Hintatiedot tarjoaa CoinGecko</translation>
 <translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
 <translation id="8574289650879708853">Lisää mukautettuja varoja</translation>
+<translation id="1974060860693918893">Lisäasetukset</translation>
 <translation id="7791543448312431591">Lisää</translation>
 <translation id="6600400596821238377">Tokenin nimi</translation>
 <translation id="4432966365400169165">Tokenin yhteystieto-osoite</translation>
 <translation id="4092152169181928870">Tokenin symboli</translation>
 <translation id="4351811224047421378">Desimaalitarkkuus</translation>
+<translation id="547122651977318828">Tokenitunnus (vain ERC721)</translation>
 <translation id="8614026298974065517">Poista mukautettu vara</translation>
 <translation id="4378941981362528553">Haluatko poistaa tokenin <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">Ei</translation>
@@ -871,5 +868,23 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2478788592457735063">Tämä vaihtaa verkon aiemmin lisättyyn verkkoon.</translation>
 <translation id="8756686998207163764">Vaihda verkkoa</translation>
 <translation id="394256914628786902">Ota käyttöön välilehtiryhmän automaattinen luonti</translation>
+<translation id="5242300593039211344">Lukitse lompakko</translation>
+<translation id="1108298724135935307">Yhdistetyt sivustot</translation>
+<translation id="4255623233927788178">Näytä lohkoketjuohjelmassa</translation>
 <translation id="8274201358637112807">Tämä sivu haluaa käyttää Brave-lompakkoa</translation>
+<translation id="3355936511340229503">Yhteysvirhe</translation>
+<translation id="523862956770478816">Sivuston käyttöoikeudet</translation>
+<translation id="4305817255990598646">Vaihda</translation>
+<translation id="4804818685124855865">Katkaise yhteys</translation>
+<translation id="8009571545960303544">Allekirjoitustasi pyydetään</translation>
+<translation id="1982257600591932657">Verkon nimi</translation>
+<translation id="5052727830821470769">Verkon URL-osoite</translation>
+<translation id="4822132585477111396">Ketjun tunnus</translation>
+<translation id="7131971375297699539">Valuutan symboli</translation>
+<translation id="7982789257301363584">Verkko</translation>
+<translation id="2521480044079508357">Tämä mahdollistaa tämän verkon käytön Brave Wallet -lompakossa.</translation>
+<translation id="4717431746210146708">Anna tälle sivustolle lupa lisätä verkko?</translation>
+<translation id="3378339846292573874">Lisää ehdotettu token</translation>
+<translation id="2322227405137827074">Haluatko tuoda tämän tokenin?</translation>
+<translation id="1324417023773393937">Brave-selain</translation>
 </translationbundle>

@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">Εικοσιτετράωρος Όγκος</translation>
 <translation id="7534079972563542000">Ασταμάτητοι Τομείς</translation>
 <translation id="4492298165410552103">Ενεργοποιήστε την υποστήριξη των Ασταμάτητων Τομέων στο Brave;</translation>
-<translation id="3470923752115324276">Το Brave μπορεί να σας επιτρέψει να επισκεφθείτε τομείς .crypto χρησιμοποιώντας το Cloudflare για να επιλύσετε αιτήματα αναζήτησης ονόματος τομέα .crypto χρησιμοποιώντας DNS μέσω HTTPS. Εάν το ενεργοποιήσετε, το Cloudflare θα δει τον τομέα .crypto τον οποίο προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε <ph name="BEGIN_CF_TOU_LINK"/>τους όρους χρήσης <ph name="END_CF_TOU_LINK"/> και <ph name="BEGIN_CF_PRIVACY_LINK"/>την πολιτική απορρήτου<ph name="END_CF_PRIVACY_LINK"/> του Cloudflare.</translation>
+<translation id="2173151783558384314">Ο Brave θα χρησιμοποιεί το Infura για την έκδοση κλήσεων Ethereum JSON-RPC στο έξυπνο συμβόλαιο από Unstoppable Domains για την επίλυση .crypto (και επίσης .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) αιτήματα αναζήτησης ονόματος τομέα. Εάν το ενεργοποιήσετε, το Infura θα δει τους συγκεκριμένους τομείς που προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορούν να δουν άλλους τομείς. Δείτε τους <ph name="BEGIN_INFURA_TOU_LINK"/> όρους χρήσης <ph name="END_INFURA_TOU_LINK"/> και την <ph name="BEGIN_INFURA_PRIVACY_LINK"/>πολιτική απορρήτου<ph name="END_INFURA_PRIVACY_LINK"/> της Infura .</translation>
 <translation id="6513892817556267573">Υπηρεσία Ονόματος Ethereum</translation>
 <translation id="4335039108389860301">Ενεργοποίηση υποστήριξης της Υπηρεσίας Ονόματος Ethereum (ΥΟΕ) στο Brave;</translation>
-<translation id="618766505813078707">Το Brave μπορεί να σας επιτρέψει να επισκεφθείτε τομείς .eth χρησιμοποιώντας το Cloudflare για να επιλύσετε αιτήματα αναζήτησης ονόματος τομέων .eth χρησιμοποιώντας DNS μέσω HTTPS. Εάν το ενεργοποιήσετε, το Cloudflare θα δει τον τομέα .eth τον οποίο προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε <ph name="BEGIN_CF_TOU_LINK"/>τους όρους χρήσης <ph name="END_CF_TOU_LINK"/> και <ph name="BEGIN_CF_PRIVACY_LINK"/>την πολιτική απορρήτου<ph name="END_CF_PRIVACY_LINK"/> του Cloudflare.</translation>
-<translation id="5636651007798897342">Συνεχίστε χρησιμοποιώντας το διακομιστή Cloudflare</translation>
+<translation id="8328137586971750853">Η Brave θα χρησιμοποιεί το Infura για να εκδίδει κλήσεις Ethereum JSON-RPC στο έξυπνο συμβόλαιο από την υπηρεσία ονομάτων Ethereum για την επίλυση αιτημάτων αναζήτησης ονόματος τομέα .eth. Εάν το ενεργοποιήσετε, το Infura θα δει τον τομέα .eth που προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε τους <ph name="BEGIN_INFURA_TOU_LINK"/>όρους χρήσης<ph name="END_INFURA_TOU_LINK"/> και την <ph name="BEGIN_INFURA_PRIVACY_LINK"/>πολιτική απορρήτου<ph name="END_INFURA_PRIVACY_LINK"/> της Infura.</translation>
+<translation id="7378412287463452336">Συνεχίστε χρησιμοποιώντας τον διακομιστή Infura</translation>
 <translation id="2356070529366658676">Να γίνεται ερώτηση</translation>
 <translation id="2218918398178303658">DNS μέσω HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -800,6 +800,7 @@
 <translation id="9161147058107529840">Αναμένεται μονή παράμετρος αντικειμένου.</translation>
 <translation id="1875861420974447980">Αυτό το αναγνωριστικό αλυσίδας χρησιμοποιείται ήδη.</translation>
 <translation id="167698752210114155">Παρουσιάστηκε εσωτερικό σφάλμα</translation>
+<translation id="2326876601333401685">Αυτή η μέθοδος RPC δεν υποστηρίζεται.</translation>
 <translation id="1128992132632883337">Παρουσιάστηκε σφάλμα ανάλυσης απόκρισης</translation>
 <translation id="1680597601664421644">Το μνημονικό που εισάγεται δεν ισχύει για το Πορτοφόλι Brave</translation>
 <translation id="4641919696349069826">Υπάρχει ήδη ένα αίτημα σε εξέλιξη</translation>
@@ -810,7 +811,6 @@
 <translation id="7577623631309755655">Τα δεδομένα συναλλαγής 'gasPrice' δεν είναι έγκυρα</translation>
 <translation id="8909404207805041979">Τα δεδομένα συναλλαγής 'gas' δεν είναι έγκυρα</translation>
 <translation id="670444168393199227">Τα δεδομένα συναλλαγής 'value' δεν είναι έγκυρα</translation>
-<translation id="6180576227145734714">Όταν καθορίζονται δεδομένα συναλλαγής 'to' πρέπει να περιλαμβάνουν έγκυρη διεύθυνση</translation>
 <translation id="6916219411793555838">Πρέπει να καθοριστούν τα δεδομένα συναλλαγής 'gasPrice' ή 'maxFeePerGas'</translation>
 <translation id="1406937874668963740">Τα δεδομένα συναλλαγής 'chainId' δεν είναι έγκυρα</translation>
 <translation id="9195349857587166771">Τα δεδομένα συναλλαγής 'maxFeePerGas' δεν είναι έγκυρα</translation>
@@ -824,8 +824,9 @@
 <translation id="1462494615260983714">Σφάλμα επεξεργασίας συναλλαγής</translation>
 <translation id="4886059598718763020">Το <ph name="VALUE"/>δεν έχει άδεια υπογραφής μηνύματος</translation>
 <translation id="8719220598078667817">Η υπογραφή της συναλλαγής απέτυχε</translation>
-<translation id="5486744676117070166">Η λήψη της επόμενης τιμής nonce απέτυχε</translation>
 <translation id="875506212625074179">Μη έγκυρη απόκριση αναγνωριστικού αλυσίδας από την υπηρεσία RPC</translation>
+<translation id="5486744676117070166">Η λήψη της επόμενης τιμής nonce απέτυχε</translation>
+<translation id="6180576227145734714">Όταν καθορίζονται δεδομένα συναλλαγής 'to' πρέπει να περιλαμβάνουν έγκυρη διεύθυνση</translation>
 <translation id="4958950550253325418">Εφαρμογές Defi</translation>
 <translation id="735961408871282410">Αγορές NFT</translation>
 <translation id="7740287852186792672">Αποτελέσματα αναζήτησης</translation>
@@ -873,6 +874,7 @@
 <translation id="151946611346774041">Το 0x θα επεξεργαστεί τη διεύθυνση Ethereum και τη διεύθυνση IP για να ολοκληρώσει μια συναλλαγή (συμπεριλαμβανομένης της λήψης προσφορών). Το 0x θα χρησιμοποιήσει αυτά τα δεδομένα ΑΠΟΚΛΕΙΣΤΙΚΑ για σκοπούς επεξεργασίας συναλλαγών.</translation>
 <translation id="4626407663177532837">Η προσφορά περιλαμβάνει τέλος Brave 0,875%.</translation>
 <translation id="8368540604723748428">Πάρα πολλά δεκαδικά ψηφία</translation>
+<translation id="6575120282593094155">Δεν έχετε ακόμη <ph name="ACCOUNT_TYPE"/>  λογαριασμό. Δημιουργία τώρα;</translation>
 <translation id="2704606927547763573">Αντιγράφ.</translation>
 <translation id="1420318137760245955">Καλώς ήρθατε στο νέο Πορτοφόλι Brave</translation>
 <translation id="8303434745767477417">Κρατήστε τα στοιχεία κρυπτονομισμάτων υπό την κηδεμονία σας. Παρακολουθήστε την απόδοση του χαρτοφυλακίου και αλληλεπιδράστε με 3 DApps ιστού. Ανταλλάξτε, επενδύστε, δανειστείτε και δανείστε με το DeFi. Όλα απευθείας από το πρόγραμμα περιήγησης απορρήτου Brave. Χωρίς επεκτάσεις, χωρίς να απαιτείται λήψη.</translation>
@@ -998,8 +1000,6 @@
 <translation id="8569380433211549748">Τιμή σε</translation>
 <translation id="2490428413101944234">Έλεγχος πηγής</translation>
 <translation id="3352959425838279177">Αποκτήστε Ether από μια πηγή για το <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Συνεχίστε στο Wyre</translation>
-<translation id="2581671693710952401">Λάβετε Ether</translation>
 <translation id="8009571545960303544">Ζητείται η υπογραφή σας</translation>
 <translation id="5294062982587710720">Λάβετε υπόψη ότι το Brave δεν μπορεί να επαληθεύσει τι θα συμβεί αν υπογράψετε. Η υπογραφή θα μπορούσε να εξουσιοδοτήσει σχεδόν οποιαδήποτε λειτουργία στον λογαριασμό σας ή εκ μέρους σας, συμπεριλαμβανομένου (ενδεικτικά) του πλήρους ελέγχου του λογαριασμού σας και των στοιχείων κρυπτονομισμάτων στον ιστότοπο που υποβάλλει το αίτημα. Υπογράψτε μόνο αν είστε σίγουροι ότι θέλετε να προβείτε σε αυτήν την ενέργεια και εμπιστεύεστε τον ιστότοπο που υποβάλλει το αίτημα.</translation>
 <translation id="3474375934783434676">Συνδεθείτε με δικό σας ρίσκο</translation>
@@ -1041,6 +1041,7 @@
 <translation id="5821668936183240062">επόμενο</translation>
 <translation id="793994607260936590">πρώτη</translation>
 <translation id="4709524402122994378">συναλλαγές</translation>
+<translation id="4591079278963448049">Ο συσχετισμένος λογαριασμός token δεν υπάρχει ακόμα. Ένα μικρό ποσό SOL θα δαπανηθεί για τη δημιουργία και τη χρηματοδότησή του.</translation>
 <translation id="523862956770478816">Άδειες ιστοτόπου</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> συνδεδεμένοι λογαριασμοί</translation>
 <translation id="4305817255990598646">Εναλλαγή</translation>
@@ -1091,6 +1092,7 @@
 <translation id="6666273175654835609">Υποβλήθηκε</translation>
 <translation id="2331676293859649642">Επιβεβαιωμένο</translation>
 <translation id="1165039591588034296">Σφάλμα</translation>
+<translation id="8373210463207847451">Απορρίφθηκε</translation>
 <translation id="9065572743819293042">Πρόσφατες συναλλαγές</translation>
 <translation id="4235538284468006757">Λεπτομέρειες συναλλαγής</translation>
 <translation id="7488671812634887146">Επιτάχυνση</translation>
@@ -1170,9 +1172,13 @@
 <translation id="7829441065063984927">7 ημέρες δώρων κρυπτονoμισμάτων, ~500.000k σε βραβεία.</translation>
 <translation id="8292716346768453265">Μπείτε τώρα!</translation>
 <translation id="6423985584914773314">Μη έγκυρη διεύθυνση FIL</translation>
+<translation id="3898731124813934210">Αγορά με Wyre</translation>
+<translation id="5522073372365069684">Αγορά με Ramp</translation>
 <translation id="8528916244724490964">Όλα τα δίκτυα</translation>
 <translation id="2781668117338732220">Δευτερεύοντα δίκτυα</translation>
 <translation id="2816106784624007524">Το όριο καυσίμου πρέπει να είναι ακέραιος μεγαλύτερος του 0</translation>
+<translation id="3354376789153561654">Τα δεδομένα συναλλαγής «σε» πρέπει να προσδιορίζονται</translation>
+<translation id="8728991256628663004">Τα δεδομένα συναλλαγής «από» πρέπει να είναι έγκυρη διεύθυνση Filecoin</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="3745016858329272300">Γενικές Πληροφορίες</translation>
 <translation id="4045404575593562245">Συμβάντα Ελέγχου Tor</translation>
@@ -1217,7 +1223,7 @@
 <translation id="2325196879156848326">Η σύνδεση απέτυχε</translation>
 <translation id="745054660363064771">Δεν είναι δυνατή η σύνδεση σε διακομιστή</translation>
 <translation id="3936826714240735937">Επιλέξτε διαφορετικό διακομιστή</translation>
-<translation id="8006923044496340707">Δεν ήταν δυνατή η σύνδεση του <ph name="PRODUCT_NAME"/> στον διακομιστή του <ph name="REGION_NAME"/>. Μπορείτε να δοκιμάσετε ξανά ή να επιλέξετε άλλον.</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> δεν μπόρεσε να συνδεθεί στον <ph name="REGION_NAME"/> διακομιστή. Μπορείτε να δοκιμάσετε ξανά ή να επιλέξετε άλλον.</translation>
 <translation id="1024255913009642477">Έχετε ήδη αγοράσει VPN;</translation>
 <translation id="8814357473522731680">Με την υποστήριξη</translation>
 <translation id="5747552184818312860">Λήγει</translation>
@@ -1230,6 +1236,24 @@
 <translation id="1751947227857853925">Γρήγορο και απεριόριστο έως τα 100 Mbps</translation>
 <translation id="1400240082805528049">Υποστήριξη 24/7</translation>
 <translation id="8463313539532697053">Περιμένετε όσο γίνεται φόρτωση…</translation>
+<translation id="4613076894734402086">Επεξεργασία τρόπου πληρωμής</translation>
+<translation id="1898254156730880135">Φαίνεται ότι η πιο πρόσφατη πληρωμή σας δεν ολοκληρώθηκε. Η πρόσβαση σε αυτήν τη συνδρομή θα σταματήσει μέχρι να επιλυθεί το πρόβλημα πληρωμής. Προσπαθήστε να επεξεργαστείτε τον τρόπο πληρωμής σας ή επικοινωνήστε με την υποστήριξη της Brave.</translation>
+<translation id="1839021455997460752">Η ηλεκτρονική σου διεύθυνση</translation>
+<translation id="5154702632169343078">Θέμα</translation>
+<translation id="6625978880678465492">Παρακαλώ επιλέξτε έναν λόγο</translation>
+<translation id="6687228121145903051">Δεν είναι δυνατή η σύνδεση με το VPN (Άλλο σφάλμα)</translation>
+<translation id="9184988385244077767">Δεν υπάρχει σύνδεση στο διαδίκτυο κατά τη σύνδεση.</translation>
+<translation id="21570240866965662">Αργή σύνδεση</translation>
+<translation id="1219475260382643267">Ο ιστότοπος δεν λειτουργεί</translation>
+<translation id="7138678301420049075">Άλλο</translation>
+<translation id="1387340358507240698">Περιγράψτε το πρόβλημα σας</translation>
+<translation id="501818585183973587">Επιλέξτε τις πληροφορίες που θέλετε να μοιραστείτε μαζί μας</translation>
+<translation id="3195618332367441234">Όσο περισσότερες πληροφορίες κοινοποιείτε, τόσο πιο εύκολο θα είναι για το προσωπικό υποστήριξης να βοηθήσει.</translation>
+<translation id="5682143294773821728">VPN hostname:</translation>
+<translation id="24242621812020123">Έκδοση εφαρμογής:</translation>
+<translation id="6676791921618140305">Έκδοση λειτουργικού συστήματος:</translation>
+<translation id="1156325797949437777">Υποστήριξη που παρέχεται σε συνεργασία με τον Guardian.</translation>
+<translation id="3307461350293459700">Η σύνδεση VPN απέτυχε. Δοκιμάστε να συνδεθείτε ξανά και φροντίστε να κάνετε κλικ στην Αποδοχή για να ενεργοποιήσετε τη διαμόρφωση VPN του Brave.</translation>
 <translation id="7586151660465233733">Δείτε περισσότερες αγορές στο <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Δείτε τις αγορές και κάντε συναλλαγές με crypto στο FTX</translation>
 <translation id="5963745988819586370">Αγορές</translation>

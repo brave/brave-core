@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Activați/dezactivați scuturile Brave</translation>
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="2278950434998763147">Deschide anumite site-uri folosind o conexiune securizată HTTPS, în loc de HTTP simplu.</translation>
+<translation id="5510493033031835532">Redireacționați automat paginile AMP</translation>
+<translation id="5197219128592971597">Accesați mereu adresele URL originale ale paginilor (non-AMP), în loc de versiunile Google Accelerated Mobile Page</translation>
 <translation id="94154759592465111">Blocare script</translation>
 <translation id="7714773920987474116">Blochează JavaScript (poate bloca site-urile)</translation>
 <translation id="6052725679982758334">Blocare social media</translation>
@@ -554,7 +556,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1078873179929044999">La pasul următor, veți vedea o expresie de recuperare din 12 cuvinte, pe care o puteți folosi pentru a recupera principalele dvs. conturi de criptomonede. Salvați expresia într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
 <translation id="2359808026110333948">Continuă</translation>
 <translation id="5488357322146334497">Mesaj</translation>
-<translation id="7228169875515099943">DATE</translation>
 <translation id="1904000155026201268">Înțeleg faptul că, dacă pierd expresia de recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
 <translation id="3933122286596948824">Expresia dvs. de recuperare</translation>
 <translation id="5077747669435508720">Scrieți sau copiați aceste cuvinte exact în ordinea indicată mai jos și salvați-le într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
@@ -668,7 +669,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3510283489391432976">Selectați zona dvs. geografică/țara</translation>
 <translation id="4390800080658195654">Vă păstrați anonimitatea online</translation>
 <translation id="639981156979733813">Acceptă viteze de până la 100 Mbps</translation>
-<translation id="8396607116169935837">Utilizează un tunel VPN criptat și securizat IKEv2</translation>
 <translation id="1571230671455380494">Nu distribuim și nu vindem niciodată datele dvs.</translation>
 <translation id="276866628038850725">Toate abonamentele includ o perioadă de încercare de 7 zile!</translation>
 <translation id="7280825497485894053">Abonament lunar</translation>
@@ -693,7 +693,6 @@ Sigur doriți să faceți acest lucru?</translation>
 Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, iar conexiunea la internet nu va fi securizată.</translation>
 <translation id="2429299231491852747">Acceptați cererea de conexiune</translation>
 <translation id="3428909627460825679">Nu a reușit crearea profilului VPN. Încercați din nou.</translation>
-<translation id="8584119457978684056">Nu s-a reușit confirmarea token-ului pentru achiziții. Încercați din nou!</translation>
 <translation id="8905950042180169719">VPN-ul rulează în fundal</translation>
 <translation id="8681480718817027245">Abonament</translation>
 <translation id="7805768142964895445">Stare</translation>
@@ -704,7 +703,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5646376287012673985">Locație</translation>
 <translation id="8375573361134671513">Resetați configurația</translation>
 <translation id="850405162932416400">Asistență VPN</translation>
-<translation id="1330148827129583049">Profilul VPN nu este creat. Crearea unui profil nou.</translation>
 <translation id="6772117549627334582">Nu s-a putut obține locul serverului. Încercați din nou mai târziu.</translation>
 <translation id="5863914199331127413">Nume gazdă VPN</translation>
 <translation id="5499653136178260315">Tipul abonamentului</translation>
@@ -714,9 +712,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4395361077929528480">Tip de rețea</translation>
 <translation id="755448900483975096">Furnizor de date mobile</translation>
 <translation id="1279441577056010362">Continuați la e-mail</translation>
-<translation id="2553687444159335134">Se oferă asistență cu ajutorul echipei Guardian.\n\nSelectați informațiile pe care sunteți de acord să ni le transmiteți.\n\nCu cât ne furnizați mai multe informații inițial, cu atât va fi mai ușor pentru echipa noastră de asistență să rezolve</translation>
 <translation id="7999094850625689785">Se va selecta automat regiunea de server cea mai apropiată de dvs., în funcție de fusul orar în care vă aflați. Această opțiune este recomandată pentru a asigura conexiunea la viteză mare.</translation>
-<translation id="8018707825009059641">Alte probleme</translation>
 <translation id="6687228121145903051">Nu este posibilă conectarea la VPN (altă eroare)</translation>
 <translation id="9184988385244077767">Fără internet în momentul conectării</translation>
 <translation id="21570240866965662">Viteză mică</translation>
@@ -731,7 +727,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1187506504156101449">Nu s-a reușit confirmarea achiziției:</translation>
 <translation id="8420522105268941892">Aveți deja acest abonament. Încercați să restabiliți abonamentul.</translation>
 <translation id="74771564105268111">EROARE!!\nEste cauzată de un utilizator care a anulat fluxul de achiziție.</translation>
-<translation id="3851978668258201962">EROARE!!\nAchiziția nu a reușit.</translation>
 <translation id="6452181791372256707">Respingeți</translation>
 <translation id="8030852056903932865">Aprobă</translation>
 <translation id="1597199892790541240">Taxă gas</translation>
@@ -804,11 +799,13 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
 <translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="8574289650879708853">Adăugați activ personalizat</translation>
+<translation id="1974060860693918893">Avansate</translation>
 <translation id="7791543448312431591">Adaugă</translation>
 <translation id="6600400596821238377">Numele token-ului</translation>
 <translation id="4432966365400169165">Adresă contract token</translation>
 <translation id="4092152169181928870">Simbol token</translation>
 <translation id="4351811224047421378">Zecimale de precizie</translation>
+<translation id="547122651977318828">Identificator token (numai pentur ERC721)</translation>
 <translation id="8614026298974065517">Eliminați activ personalizat</translation>
 <translation id="4378941981362528553">Doriți să eliminați tokenul <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">Nu</translation>
@@ -870,5 +867,23 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2478788592457735063">Acest lucru va schimba rețeaua la una adăugată anterior.</translation>
 <translation id="8756686998207163764">Schimbați rețeaua</translation>
 <translation id="394256914628786902">Activați crearea automată a grupurilor de file</translation>
+<translation id="5242300593039211344">Blocați portofelul</translation>
+<translation id="1108298724135935307">Site-uri conectate</translation>
+<translation id="4255623233927788178">Vedeți în exploratorul de blocuri</translation>
 <translation id="8274201358637112807">Această pagină vrea să interacționeze cu portofelul Brave</translation>
+<translation id="3355936511340229503">Eroare de conexiune</translation>
+<translation id="523862956770478816">Permisiuni site</translation>
+<translation id="4305817255990598646">Comutați</translation>
+<translation id="4804818685124855865">Deconectează-te</translation>
+<translation id="8009571545960303544">Semnătura dvs. este solicitată</translation>
+<translation id="1982257600591932657">Numele rețelei</translation>
+<translation id="5052727830821470769">URL rețea</translation>
+<translation id="4822132585477111396">ID lanț</translation>
+<translation id="7131971375297699539">Simbolul monedei</translation>
+<translation id="7982789257301363584">Rețea</translation>
+<translation id="2521480044079508357">Acest lucru va permite utilizarea acestei rețele în portofelul Brave.</translation>
+<translation id="4717431746210146708">Permiteți acestui site să adauge o rețea?</translation>
+<translation id="3378339846292573874">Adăugați token sugerat</translation>
+<translation id="2322227405137827074">Doriți să importați acest token?</translation>
+<translation id="1324417023773393937">Browserul Brave</translation>
 </translationbundle>
