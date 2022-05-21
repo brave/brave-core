@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="3470923752115324276">Brave maakt het mogelijk om .crypto domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .crypto domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .crypto domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Brave maakt het mogelijk om .eth domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .eth domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Ga verder met de Cloudflare server</translation>
 </translationbundle>

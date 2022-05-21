@@ -1257,4 +1257,7 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="3470923752115324276">Braven avulla voit vierailla .crypto-verkkotunnuksissa käyttämällä Cloudflarea selvittämään .crypto-verkkotunnuksen nimitarkistuspyynnöt käyttämällä DNS:ää HTTPS:n kautta. Jos otat tämän käyttöön, Cloudflare näkee avaamasi .crypto-verkkotunnuksen, mutta ei muita verkkotunnuksia. Lue Cloudflaren <ph name="BEGIN_CF_TOU_LINK"/>käyttöehdot<ph name="END_CF_TOU_LINK"/> ja <ph name="BEGIN_CF_PRIVACY_LINK"/>tietosuojakäytäntö<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Braven avulla voit vierailla .eth-verkkotunnuksissa käyttämällä Cloudflarea selvittämään .eth-verkkotunnuksen nimitarkistuspyynnöt käyttämällä DNS:ää HTTPS:n kautta. Jos otat tämän käyttöön, Cloudflare näkee avaamasi .eth-verkkotunnuksen, mutta ei muita verkkotunnuksia. Lue Cloudflaren <ph name="BEGIN_CF_TOU_LINK"/>käyttöehdot<ph name="END_CF_TOU_LINK"/> ja <ph name="BEGIN_CF_PRIVACY_LINK"/>tietosuojakäytäntö<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Jatka Cloudflare-palvelimella</translation>
 </translationbundle>

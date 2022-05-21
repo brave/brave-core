@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Não mostrar os seus saldos no ecrã</translation>
 <translation id="4548946945059463969">Mostrar os seus saldos no ecrã</translation>
 <translation id="242959166945779492">Não tem saldos na sua conta. Visite FTX para comprar.</translation>
+<translation id="3470923752115324276">O Brave pode permitir-lhe usar domínios .crypto pela Cloudflare para a resolução de pesquisa do nome de domínio .crypto pelo uso de DNS sobre HTTPS. Caso o permita, Cloudflare verificará o domínio .crypto que quer visitar, mas não lhe será possível visualizar outros domínios.  Visualizar o que Cloudflare diz sobre <ph name="BEGIN_CF_TOU_LINK"/>termos de utilização<ph name="END_CF_TOU_LINK"/> e <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">O Brave pode permitir-lhe vistar domínios .eth pela Cloudflare para a resolução de pesquisa do nome de domínio .eth pelo uso de DNS sobre HTTPS. Caso o permita, Cloudflare verificará o domínio .eth que visa visitar mas não lhe será possível visualizar outros domínios.  Visualizar o que Cloudflare diz sobre <ph name="BEGIN_CF_TOU_LINK"/>termos de utilização<ph name="END_CF_TOU_LINK"/> e <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Continuar pelo uso do servidor Cloudflare</translation>
 </translationbundle>

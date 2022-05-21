@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="3470923752115324276">Brave dapat memungkinkan Anda mengunjungi domain .eth dengan menggunakan Cloudflare untuk menelusuri permintaan pencarian nama domain .crypto menggunakan DNS di atas HTTPS. Jika Anda mengaktifkan ini, Cloudflare akan melihat domain .crypto yang ingin Anda kunjungi tetapi mereka tidak akan dapat melihat domain lain. Baca <ph name="BEGIN_CF_TOU_LINK"/>ketentuan penggunaan<ph name="END_CF_TOU_LINK"/> dan <ph name="BEGIN_CF_PRIVACY_LINK"/>kebijakan privasi<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
+<translation id="618766505813078707">Brave dapat memungkinkan Anda mengunjungi domain .eth dengan menggunakan Cloudflare untuk menelusuri permintaan pencarian nama domain .eth menggunakan DNS di atas HTTPS. Jika Anda mengaktifkan ini, Cloudflare akan melihat domain .eth yang ingin Anda kunjungi tetapi mereka tidak akan dapat melihat domain lain. Baca <ph name="BEGIN_CF_TOU_LINK"/>ketentuan penggunaan<ph name="END_CF_TOU_LINK"/> dan <ph name="BEGIN_CF_PRIVACY_LINK"/>kebijakan privasi<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
+<translation id="5636651007798897342">Lanjutkan menggunakan server Cloudflare</translation>
 </translationbundle>

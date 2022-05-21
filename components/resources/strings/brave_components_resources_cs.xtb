@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="3470923752115324276">Prohlížeč Brave umožňuje navštěvovat domény .crypto prostřednictvím služby Cloudflare za účelem vyřešení požadavků na vyhledání názvu domény .crypto prostřednictvím protokolu DNS přes HTTPS. Pokud tuto možnost povolíte, služba Cloudflare uvidí doménu .crypto, kterou se pokoušíte navštívit, ale neuvidí jiné domény. Podívejte se na <ph name="BEGIN_CF_TOU_LINK"/>podmínky použití<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobních údajů<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
+<translation id="618766505813078707">Prohlížeč Brave umožňuje navštěvovat domény .eth prostřednictvím služby Cloudflare za účelem vyřešení požadavků na vyhledání názvu domény .eth prostřednictvím protokolu DNS přes HTTPS. Pokud tuto možnost povolíte, služba Cloudflare uvidí doménu .eth, kterou se pokoušíte navštívit, ale neuvidí jiné domény. Podívejte se na <ph name="BEGIN_CF_TOU_LINK"/>podmínky použití<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobních údajů<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
+<translation id="5636651007798897342">Pokračovat pomocí serveru Cloudflare</translation>
 </translationbundle>

@@ -1290,4 +1290,7 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="3470923752115324276">Brave ከHTTPS ይልቅ DNSን በመጠቀም .crypto የጎራ ስም ፍለጋ ጥያቄዎችን ለመፍታት Cloudflareን በመጠቀም .crypto ጎራዎችን እንዲጎበኙ ሊያስችልዎት ይችላል። ይህንን ካነቁት Cloudflare ሊጎበኙት እየሞከሩ ያለውን የ .crypto ጎራ ያያል ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የCloudflareን <ph name="BEGIN_CF_TOU_LINK"/>የአገልግሎት ውል<ph name="END_CF_TOU_LINK"/> እና <ph name="BEGIN_CF_PRIVACY_LINK"/>ግላዊነት ፖሊሲ<ph name="END_CF_PRIVACY_LINK"/> ይመልከቱ።</translation>
+<translation id="618766505813078707">Brave ከHTTPS ይልቅ DNSን በመጠቀም .eth የጎራ ስም ፍለጋ ጥያቄዎችን ለመፍታት Cloudflareን በመጠቀም .eth ጎራዎችን እንዲጎበኙ ሊያስችልዎት ይችላል። ይህንን ካነቁት Cloudflare ሊጎበኙት እየሞከሩ ያለውን የ .crypto ጎራ ያያል ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የCloudflareን <ph name="BEGIN_CF_TOU_LINK"/>የአገልግሎት ውል<ph name="END_CF_TOU_LINK"/> እና <ph name="BEGIN_CF_PRIVACY_LINK"/>ግላዊነት ፖሊሲ<ph name="END_CF_PRIVACY_LINK"/> ይመልከቱ።</translation>
+<translation id="5636651007798897342">የCloudflare አገልጋይ መጠቀሙን ይቀጥሉ</translation>
 </translationbundle>

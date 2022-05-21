@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">پنهان کردن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="4548946945059463969">نشان دادن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="242959166945779492">هیچ موجودی در حسابتان ندارید. برای خرید مقداری ارز، به FTX بروید.</translation>
+<translation id="3470923752115324276">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.crypto بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.crypto را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎crypto را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
+<translation id="618766505813078707">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.eth بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.eth را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎.eth را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
+<translation id="5636651007798897342">ادامه با استفاده از سرور Cloudflare</translation>
 </translationbundle>

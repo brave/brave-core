@@ -1246,4 +1246,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="3470923752115324276">Brave var nodrošināt iespēju apmeklēt .crypto domēnus, izmantojot Cloudflare, lai atrisinātu .crypto domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .crypto domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Brave var nodrošināt iespēju apmeklēt .eth domēnus, izmantojot Cloudflare, lai atrisinātu .eth domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .eth domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Turpināt izmantot Cloudflare serveri</translation>
 </translationbundle>

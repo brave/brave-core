@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="3470923752115324276">Brave có thể cho phép bạn truy cập các tên miền ".crypto" bằng cách dùng Cloudflare để xử lý các yêu cầu tra cứu tên miền ".crypto" bằng DNS qua giao thức HTTPS. Nếu bạn bật mục này, Cloudflare sẽ thấy được miền ".crypto" mà bạn đang cố truy cập nhưng sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_CF_TOU_LINK"/>các điều khoản sử dụng<ph name="END_CF_TOU_LINK"/> và<ph name="BEGIN_CF_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_CF_PRIVACY_LINK"/> của Cloudflare.</translation>
+<translation id="618766505813078707">Brave có thể cho phép bạn truy cập các tên miền ".crypto" bằng cách dùng Cloudflare để xử lý các yêu cầu tra cứu tên miền ".crypto" bằng DNS qua giao thức HTTPS. Nếu bạn bật mục này, Cloudflare sẽ thấy được miền ".crypto" mà bạn đang cố truy cập nhưng sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_CF_TOU_LINK"/>các điều khoản sử dụng<ph name="END_CF_TOU_LINK"/> và <ph name="BEGIN_CF_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_CF_PRIVACY_LINK"/> của Cloudflare.</translation>
+<translation id="5636651007798897342">Tiếp tục dùng máy chủ Cloudflare</translation>
 </translationbundle>

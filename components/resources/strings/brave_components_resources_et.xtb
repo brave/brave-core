@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="3470923752115324276">Brave saab anda teile võimaluse külastada .crypto-domeene, kasutades .crypto-domeeni hostinime leidmise päringute resolvimiseks Cloudflare'i ja DNS-i HTTPS-i kaudu. Kui selle lubate, näeb Cloudflare .crypto-domeeni, mida proovite külastada, kuid mitte muid domeene. Vaadake Cloudflare'i <ph name="BEGIN_CF_TOU_LINK"/>kasutustingimusi<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Brave saab anda teile võimaluse külastada .eth-domeene, kasutades .eth-domeeni hostinime leidmise päringute resolvimiseks Cloudflare'i ja DNS-i HTTPS-i kaudu. Kui selle lubate, näeb Cloudflare .eth-domeeni, mida proovite külastada, kuid mitte muid domeene. Vaadake Cloudflare'i <ph name="BEGIN_CF_TOU_LINK"/>kasutustingimusi<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Jätka Cloudflare'i serveri kasutamist</translation>
 </translationbundle>

@@ -1271,4 +1271,7 @@
 <translation id="6973157709854838218">Κρύψτε τα υπόλοιπά σας από την οθόνη</translation>
 <translation id="4548946945059463969">Εμφανίστε τα υπόλοιπά σας στην οθόνη</translation>
 <translation id="242959166945779492">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφτείτε το FTX για να αγοράσετε.</translation>
+<translation id="3470923752115324276">Το Brave μπορεί να σας επιτρέψει να επισκεφθείτε τομείς .crypto χρησιμοποιώντας το Cloudflare για να επιλύσετε αιτήματα αναζήτησης ονόματος τομέα .crypto χρησιμοποιώντας DNS μέσω HTTPS. Εάν το ενεργοποιήσετε, το Cloudflare θα δει τον τομέα .crypto τον οποίο προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε <ph name="BEGIN_CF_TOU_LINK"/>τους όρους χρήσης <ph name="END_CF_TOU_LINK"/> και <ph name="BEGIN_CF_PRIVACY_LINK"/>την πολιτική απορρήτου<ph name="END_CF_PRIVACY_LINK"/> του Cloudflare.</translation>
+<translation id="618766505813078707">Το Brave μπορεί να σας επιτρέψει να επισκεφθείτε τομείς .eth χρησιμοποιώντας το Cloudflare για να επιλύσετε αιτήματα αναζήτησης ονόματος τομέων .eth χρησιμοποιώντας DNS μέσω HTTPS. Εάν το ενεργοποιήσετε, το Cloudflare θα δει τον τομέα .eth τον οποίο προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε <ph name="BEGIN_CF_TOU_LINK"/>τους όρους χρήσης <ph name="END_CF_TOU_LINK"/> και <ph name="BEGIN_CF_PRIVACY_LINK"/>την πολιτική απορρήτου<ph name="END_CF_PRIVACY_LINK"/> του Cloudflare.</translation>
+<translation id="5636651007798897342">Συνεχίστε χρησιμοποιώντας το διακομιστή Cloudflare</translation>
 </translationbundle>

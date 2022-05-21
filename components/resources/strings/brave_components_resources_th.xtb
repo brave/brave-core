@@ -1271,4 +1271,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="3470923752115324276">Brave ทำให้คุณเข้าชมโดเมน .crypto ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .crypto โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .crypto ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
+<translation id="618766505813078707">Brave ทำให้คุณเข้าชมโดเมน .eth ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .eth โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .eth ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
+<translation id="5636651007798897342">ดำเนินการโดยใช้เซิร์ฟเวอร์ Cloudflare</translation>
 </translationbundle>

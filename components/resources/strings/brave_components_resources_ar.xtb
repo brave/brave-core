@@ -1271,4 +1271,7 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="3470923752115324276">يمكّنك Brave من زيارة نطاقات crypto. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم نطاق crypto. باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسوف يتعرف خادم كلاود فلير على نطاق crypto. الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام كلاود فلير <ph name="BEGIN_CF_TOU_LINK"/><ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">يمكّنك Brave من زيارة نطاقات eth. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم المجال باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسيتمكن خادم كلاود فلير من التعرف على نطاق .eth.الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام <ph name="BEGIN_CF_TOU_LINK"/> كلاود فلير <ph name="END_CF_TOU_LINK"/> aو<ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">تابع باستخدام خادم كلاود فلير</translation>
 </translationbundle>

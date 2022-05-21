@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Приховати баланси по вашим рахункам з екрана</translation>
 <translation id="4548946945059463969">Відобразити баланси на екрані</translation>
 <translation id="242959166945779492">У вас немає залишків на рахунку. Відвідайте FTX, щоб поповнити його.</translation>
+<translation id="3470923752115324276">Brave дозволяє вам відвідувати домени .crypto, використовуючи Cloudflare для вирішення запитів пошуку доменів .crypto за допомогою DNS через HTTPS. Якщо ви це ввімкнете, Cloudflare побачить домен .crypto, який ви намагаєтесь відвідати, але не зможе побачити інші домени. Перегляньте <ph name="BEGIN_CF_TOU_LINK"/>умови використання<ph name="END_CF_TOU_LINK"/> та <ph name="BEGIN_CF_PRIVACY_LINK"/>політику конфіденційності<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
+<translation id="618766505813078707">Brave дозволяє вам відвідувати домени .eth, використовуючи Cloudflare для вирішення запитів пошуку доменів .eth за допомогою DNS через HTTPS. Якщо ви це ввімкнете, Cloudflare побачить домен .eth, який ви намагаєтесь відвідати, але не зможе побачити інші домени. Перегляньте <ph name="BEGIN_CF_TOU_LINK"/>умови використання<ph name="END_CF_TOU_LINK"/> та <ph name="BEGIN_CF_PRIVACY_LINK"/>політику конфіденційності<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
+<translation id="5636651007798897342">Продовжити, використовуючи сервер Cloudflare</translation>
 </translationbundle>

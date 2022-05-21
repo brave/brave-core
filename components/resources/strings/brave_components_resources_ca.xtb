@@ -1246,4 +1246,7 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="3470923752115324276">Brave et pot permetre visitar dominis .crypto mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .crypto utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .crypto que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
+<translation id="618766505813078707">Brave et pot permetre visitar dominis .eth mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .eth utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .eth que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
+<translation id="5636651007798897342">Continua utilitzant el servidor Cloudflare</translation>
 </translationbundle>

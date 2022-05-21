@@ -1252,4 +1252,7 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="6973157709854838218">Slėpti likučius ekrane</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
+<translation id="3470923752115324276">„Brave“ gali leisti apsilankyti .crypto domenuose naudojant „Cloudflare“, kai reikia spręsti .crypto domeno vardo paieškos užklausas naudojant DNS per HTTPS. Jei tai įjungsite, „Cloudflare“ matys .crypto domeną, kurį bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Cloudflare“ <ph name="BEGIN_CF_TOU_LINK"/>naudojimo sąlygas<ph name="END_CF_TOU_LINK"/> ir <ph name="BEGIN_CF_PRIVACY_LINK"/>privatumo politiką<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">„Brave“ gali leisti apsilankyti .eth domenuose naudojant „Cloudflare“, kai reikia spręsti .eth domeno vardo paieškos užklausas naudojant DNS per HTTPS. Jei tai įjungsite, „Cloudflare“ matys .eth domeną, kurį bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Cloudflare“ <ph name="BEGIN_CF_TOU_LINK"/>naudojimo sąlygas<ph name="END_CF_TOU_LINK"/> ir <ph name="BEGIN_CF_PRIVACY_LINK"/>privatumo politiką<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Toliau naudoti „Cloudflare“ serverį</translation>
 </translationbundle>

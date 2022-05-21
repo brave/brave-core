@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="3470923752115324276">Brave boleh membenarkan anda untuk melawat domain .crypto dengan menggunakan Cloudflare untuk menyelesaikan permintaan carian nama domain .crypto menggunakan DNS melalui HTTPS. Jika anda mengaktifkan ciri-ciri ini, Cloudflare akan melihat domain .crypto yang anda cuba untuk melawat, tetapi mereka tidak dapat melihat domain lain. Lihat Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Brave boleh membenarkan anda untuk melawat domain .eth dengan menggunakan Cloudflare untuk menyelesaikan permintaan carian nama domain .eth menggunakan DNS melalui HTTPS. Jika anda mengaktifkan ciri-ciri ini, Cloudflare akan melihat domain .eth yang anda cuba untuk melawat, tetapi mereka tidak dapat melihat domain lain. Lihat Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Teruskan dengan menggunakan pelayan Cloudflare</translation>
 </translationbundle>

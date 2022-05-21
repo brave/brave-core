@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="3470923752115324276">A Brave lehetővé teheti a .crypto domének felkeresését Cloudflare-t használva a .crypto doménnevek keresési kérések megoldására DNS-t használva HTTPS helyett. Ha ezt engedélyezed a Cloudflare látni fogja a keresett .crypto domént, de mást doméneket nem fog látni. Nézd meg a Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>használati feltételeit<ph name="END_CF_TOU_LINK"/> és <ph name="BEGIN_CF_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">A Brave lehetővé teheti a .eth domének felkeresését Cloudflare-t használva a .eth doménnevek keresési kérések megoldására DNS-t használva HTTPS helyett. Ha ezt engedélyezed a Cloudflare látni fogja a keresett .crypto domént, de mást doméneket nem fog látni. Nézd meg a Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>használati feltételeit<ph name="END_CF_TOU_LINK"/> és <ph name="BEGIN_CF_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_CF_PRIVACY_LINK"/></translation>
+<translation id="5636651007798897342">Folytatás Cloudflare szerverrel</translation>
 </translationbundle>

@@ -1246,4 +1246,8 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="3470923752115324276">Brave може да Ви позволи да посещавате .crypto домейни, като използвате Cloudflare за разрешаване на заявките за търсене на име на .crypto домейн, използвайки DNS през HTTPS. Ако разрешите това, Cloudflare ще види домейна .crypto, който се опитвате да посетите, но няма да може да вижда други домейни. Вижте <ph name="BEGIN_CF_TOU_LINK"/>условията за ползване<ph name="END_CF_TOU_LINK"/> и <ph name="BEGIN_CF_PRIVACY_LINK"/>политиката за поверителност<ph name="END_CF_PRIVACY_LINK"/>. на Cloudflare</translation>
+<translation id="618766505813078707">Brave може да Ви позволи да посещавате .eth домейни, като използвате Cloudflare за разрешаване на заявките за търсене на домейн .eth, използвайки DNS през HTTPS. Ако разрешите това, Cloudflare ще види домейна .eth, който се опитвате да посетите, но няма да може да види други домейни.
+Вижте <ph name="BEGIN_CF_TOU_LINK"/>условията за ползване<ph name="END_CF_TOU_LINK"/> и <ph name="BEGIN_CF_PRIVACY_LINK"/>политиката за поверителност<ph name="END_CF_PRIVACY_LINK"/>. на Cloudflare</translation>
+<translation id="5636651007798897342">Продължете с помощта на сървър на Cloudflare</translation>
 </translationbundle>

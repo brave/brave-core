@@ -1270,4 +1270,7 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="3470923752115324276">Brave può permetterti di visitare i domini .crypto utilizzando Cloudflare per risolvere le richieste di ricerca del nome di dominio .crypto tramite DNS su HTTPS. Se lo abiliti, Cloudflare vedrà il dominio .crypto che stai tentando di visitare ma non sarà in grado di vedere altri domini. Consulta le <ph name="BEGIN_CF_TOU_LINK"/>condizioni d'uso<ph name="END_CF_TOU_LINK"/> e l'<ph name="BEGIN_CF_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_CF_PRIVACY_LINK"/> di Cloudflare.</translation>
+<translation id="618766505813078707">Brave può permetterti di visitare i domini .eth utilizzando Cloudflare per risolvere le richieste di ricerca del nome di dominio .eth tramite DNS su HTTPS. Se lo abiliti, Cloudflare vedrà il dominio .eth che stai tentando di visitare ma non sarà in grado di vedere altri domini. Consulta le <ph name="BEGIN_CF_TOU_LINK"/>condizioni d'uso<ph name="END_CF_TOU_LINK"/> e l'<ph name="BEGIN_CF_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_CF_PRIVACY_LINK"/> di Cloudflare.</translation>
+<translation id="5636651007798897342">Procedi utilizzando il server Cloudflare</translation>
 </translationbundle>

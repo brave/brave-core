@@ -1271,4 +1271,7 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="3470923752115324276">Cloudflare और HTTPS पर DNS के उपयोग से .crypto डोमेन नाम के लुकअप के अनुरोधों को हल करके Brave आपको .crypto डोमेन पर जाने में सक्षम कर सकता है। यदि आप इसे सक्षम करते हैं तो Cloudflare वह .crypto डोमेन देखेगा जिसे आप देखने का प्रयास कर रहे हैं लेकिन वे अन्य डोमेन नहीं देख पाएंगे। Cloudflare की <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/> देखें।</translation>
+<translation id="618766505813078707">Brave आपको Cloudflare और HTTPS पर DNS का उपयोग करके .eth डोमेन नाम के लुकअप के अनुरोधों को हल करने और .eth डोमेन देखने में सक्षम कर सकता है। यदि आप इसे सक्षम करते हैं तो Cloudflare को वह .eth डोमेन दिखेगा जिसे आप देखने का प्रयास कर रहे हैं लेकिन वे अन्य डोमेन नहीं देख पाएंगे। Cloudflare की <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/> देखें।</translation>
+<translation id="5636651007798897342">Cloudflare सर्वर का उपयोग करके आगे बढ़ें</translation>
 </translationbundle>

@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="3470923752115324276">Brave 可使用 Cloudflare 來透過 DNS，而不是 HTTPS 處理 .crypto 域名的查詢要求，讓您造訪 .crypto 網域。如您啟用此功能，Cloudflare 將會看到您想造訪的 .crypto 網域，但無法看到其他網域。請見 Cloudflare 的<ph name="BEGIN_CF_TOU_LINK"/>使用條款<ph name="END_CF_TOU_LINK"/>與<ph name="BEGIN_CF_PRIVACY_LINK"/>隱私政策<ph name="END_CF_PRIVACY_LINK"/>。</translation>
+<translation id="618766505813078707">Brave 可使用 Cloudflare 來透過 DNS，而不是 HTTPS 處理 .eth 域名的查詢要求，讓您造訪 .eth 網域。如您啟用此功能，Cloudflare 將會看到您想造訪的 .eth 網域，但無法看到其他網域。請見 Cloudflare 的<ph name="BEGIN_CF_TOU_LINK"/>使用條款<ph name="END_CF_TOU_LINK"/>與<ph name="BEGIN_CF_PRIVACY_LINK"/>隱私政策<ph name="END_CF_PRIVACY_LINK"/>。</translation>
+<translation id="5636651007798897342">使用 Cloudflare 伺服器繼續</translation>
 </translationbundle>

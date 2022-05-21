@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="3470923752115324276">Brave, .crypto etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .crypto etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .crypto etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
+<translation id="618766505813078707">Brave, .eth etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .eth etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .eth etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
+<translation id="5636651007798897342">Cloudflare sunucusu kullanarak ilerleyin</translation>
 </translationbundle>

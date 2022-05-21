@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="3470923752115324276">Brave vam lahko omogoči obisk domen .crypto z uporabo Cloudflare-a za reševanje zahtev za iskanje domen .crypto z uporabo DNS prek HTTPS. Če to omogočite, bo Cloudflare videl domeno .crypto, ki jo želite obiskati, ne bo pa mogel videti drugih domen. Oglejte si Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>pogoje uporabe<ph name="END_CF_TOU_LINK"/> in <ph name="BEGIN_CF_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Brave vam lahko omogoči obisk domen .eth z uporabo Cloudflareja za reševanje zahtev za iskanje domen .eth z uporabo DNS prek HTTPS. Če to omogočite, bo Cloudflare videl domeno .eth, ki jo poskušate obiskati, ne bo pa mogel videti drugih domen. Oglejte si Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>pogoje uporabe<ph name="END_CF_TOU_LINK"/> in <ph name="BEGIN_CF_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Nadaljujte s strežnikom Cloudflare</translation>
 </translationbundle>

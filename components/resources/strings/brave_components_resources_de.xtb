@@ -1270,4 +1270,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="3470923752115324276">Mit Brave können Sie .crypto-Domains besuchen, indem Sie Cloudflare verwenden, um .crypto-Domainnamensuchanforderungen mithilfe von DNS über HTTPS aufzulösen. Wenn Sie dies aktivieren, wird Cloudflare die .crypto-Domain anzeigen, die Sie besuchen möchten, andere Domains können jedoch nicht angezeigt werden. Lesen Sie die <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/> von Cloudflare.</translation>
+<translation id="618766505813078707">Mit Brave können Sie .eth-Domains besuchen, indem Sie Cloudflare verwenden, um .eth-Domainnamensuchanforderungen mithilfe von DNS über HTTPS aufzulösen. Wenn Sie dies aktivieren, wird Cloudflare die .eth-Domain anzeigen, die Sie besuchen möchten, andere Domains können jedoch nicht angezeigt werden. Lesen Sie die <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/> von Cloudflare.</translation>
+<translation id="5636651007798897342">Fahren Sie mit dem Cloudflare-Server fort</translation>
 </translationbundle>

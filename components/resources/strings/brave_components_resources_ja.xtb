@@ -1272,4 +1272,7 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="3470923752115324276">Braveは、「DNS over HTTPS（DoH）」を使用する.cryptoドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.cryptoドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.cryptoドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="618766505813078707">Braveは、「DNS over HTTPS（DoH）」を使用する.ethドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.ethドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="5636651007798897342">Cloudflareサーバーを使用して続行する</translation>
 </translationbundle>

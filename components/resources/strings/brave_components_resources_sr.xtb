@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Sakriti saldo sa ekrana</translation>
 <translation id="4548946945059463969">Prikazati saldo na ekranu</translation>
 <translation id="242959166945779492">Nemate ništa na stanju na vašem računu. Posetite FTX da biste nešto imali.</translation>
+<translation id="3470923752115324276">Brave vam može omogućiti da posetite .crypto domene pomoću Cloudflare-a kako biste razrešili zahteve za pronalaženje naziva .crypto domena korišćenjem DNS preko HTTPS. Ako ovo omogućite, Cloudflare će videti .crypto domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Pogledajte Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>uslove korišćenja<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>smernice za privatnost<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="618766505813078707">Brave vam može omogućiti da posetite .eth domene pomoću Cloudflare-a da biste razrešili zahteve za pronalaženje naziva .eth domena korišćenjem DNS preko HTTPS. Ako ovo omogućite, Cloudflare će videti .eth domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Pogledajte Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>uslove korišćenja<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>smernice za privatnost<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Nastavite koristeći Cloudflare server</translation>
 </translationbundle>

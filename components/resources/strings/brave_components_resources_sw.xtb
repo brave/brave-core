@@ -1270,4 +1270,7 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="3470923752115324276">Brave inaweza kukuwezesha kutembelea vikoa vya .crypto kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .crypto kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .crypto unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
+<translation id="618766505813078707">Brave inaweza kukuwezesha kutembelea vikoa vya .eth kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .eth kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .eth unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
+<translation id="5636651007798897342">Endelea kutumia seva ya Cloudflare</translation>
 </translationbundle>
