@@ -17,9 +17,8 @@ namespace {
 std::vector<uint8_t> GetPublicKey(const std::string& private_key_hex) {
   std::vector<uint8_t> private_key;
   base::HexStringToBytes(private_key_hex, &private_key);
-  std::array<uint8_t, 32> payload;
-  std::copy_n(private_key.begin(), 32, payload.begin());
-  auto result = filecoin::bls_private_key_to_public_key(payload);
+  auto result = filecoin::bls_private_key_to_public_key(
+      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
   std::vector<uint8_t> public_key(result.begin(), result.end());
   return public_key;
 }
