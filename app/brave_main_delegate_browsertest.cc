@@ -27,7 +27,6 @@
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
-#include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
@@ -36,7 +35,6 @@
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
@@ -69,16 +67,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
   EXPECT_EQ(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
                 switches::kComponentUpdater),
             std::string("url-source=") + BUILDFLAG(UPDATER_PROD_ENDPOINT));
-}
-
-IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
-  EXPECT_TRUE(
-      base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kNoPings));
-  content::WebContents* contents =
-      chrome_test_utils::GetActiveWebContents(this);
-  const blink::web_pref::WebPreferences prefs =
-      contents->GetOrCreateWebPreferences();
-  EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
