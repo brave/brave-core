@@ -29,11 +29,13 @@
 <translation id="1146678959555564648">VR-ში შესვლა</translation>
 <translation id="114825011539563458">კონფიდენციალურობისა და უსაფრთხოების მართვის ყველაზე მნიშვნელოვანი საშუალებები ერთ სივრცეში</translation>
 <translation id="1149401351239820326">ვადის გასვლის თვე</translation>
+<translation id="7083341910267693582"><ph name="APP_NAME"/> გაიხსნება Brave-ში. გაგრძელებით ეთანხმებით <ph name="BEGIN_LINK1"/>Brave-ის მომსახურების პირობებს<ph name="END_LINK1"/>, ასევე, <ph name="BEGIN_LINK2"/>Brave-ისა და ChromeOS-ის მომსახურების დამატებით პირობებს<ph name="END_LINK2"/>.</translation>
 <translation id="1154704303112745282">გვერდი მიუწვდომელია ხაზგარეშე რეჟიმში: <ph name="VIOLATED_URL"/></translation>
 <translation id="1171770572613082465">იხილეთ პოპულარული ვებსაიტები „ტოპ-საიტების“ ღილაკზე შეხებით</translation>
 <translation id="1173894706177603556">სახელის შეცვლა</translation>
 <translation id="1177863135347784049">მორგებული</translation>
 <translation id="1181037720776840403">ამოშლა</translation>
+<translation id="1193729455103054076">გსურთ, გამოიყენოთ ძლიერი პაროლი?</translation>
 <translation id="1197267115302279827">სანიშნეების გადატანა</translation>
 <translation id="1201402288615127009">შემდეგი</translation>
 <translation id="1202892408424955784">პროდუქტები, რომლებსაც თვალს ადევნებთ</translation>
@@ -88,6 +90,7 @@
 <translation id="1409879593029778104"><ph name="FILE_NAME"/> ვერ ჩამოიტვირთა, რადგან ფაილი უკვე არსებობს.</translation>
 <translation id="1853026300647876496">მიმდინარეობს Brave-თან დაკავშირება. ამას შეიძლება ერთი წუთი დასჭირდეს…</translation>
 <translation id="1416550906796893042">პროგრამის ვერსია</translation>
+<translation id="1428770807407000502">გამოირთოს სინქრონიზაცია?</translation>
 <translation id="1430915738399379752">ბეჭდვა</translation>
 <translation id="1436784010935106834">წაშლილი</translation>
 <translation id="1448440926884431741">ორგანიზებულად დაალაგეთ თვალმიდევნებული პროდუქტები „სანიშნეებში“</translation>
@@ -145,7 +148,6 @@
 <translation id="1779766957982586368">ფანჯრის დახურვა</translation>
 <translation id="1791662854739702043">დაინსტალირებულია</translation>
 <translation id="1792959175193046959">ჩამოტვირთვის ნაგულისხმევი მდებარეობის შეცვლა ნებისმიერ დროს შეგიძლიათ</translation>
-<translation id="2368444735104192323">Brave-ისა და Chrome OS-ის მომსახურების დამატებითი პირობები</translation>
 <translation id="1807246157184219062">ნათელი</translation>
 <translation id="1810845389119482123">სინქრონიზაციის თავდაპირველი დაყენება არ დასრულებულა</translation>
 <translation id="1829244130665387512">გვერდზე ძებნა</translation>
@@ -182,8 +184,6 @@
 <translation id="2000419248597011803">თქვენს ნაგულისხმევ საძიებო სისტემას უგზავნის ზოგიერთ ქუქი-ჩანაწერს და საძიებო მოთხოვნებს მისამართთა ზოლიდან ან საძიებო ველიდან</translation>
 <translation id="6968892567705775281">გსურთ, დაურთოთ გარშემო ტექსტი Brave ძიებებს?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# ფაილი}other{# ფაილი}}</translation>
-<translation id="2185841461857887156"><ph name="APP_NAME"/> გაიხსნება Brave-ში. გაგრძელებით ეთანხმებით <ph name="BEGIN_LINK1"/>Brave-ის მომსახურების პირობებს<ph name="END_LINK1"/>, ასევე, <ph name="BEGIN_LINK2"/>Brave-ისა და Chrome OS-ის მომსახურების დამატებით პირობებს<ph name="END_LINK2"/>. გარდა ამისა, მოქმედებს <ph name="BEGIN_LINK3"/>კონფიდენციალურობის დებულება<ph name="END_LINK3"/>.</translation>
-<translation id="2019145049163614359">გსურთ, წაშალოთ ინტერესი?</translation>
 <translation id="2020309681647789787">ისტორია თქვენს ყველა სინქრონიზებულ მოწყობილობაზე გაქვთ ჩართული, ამიტომ შეგიძლიათ გააგრძელოთ ის, რასაც აკეთებდით</translation>
 <translation id="2021896219286479412">სრულეკრანიანი რეჟიმის მართვა</translation>
 <translation id="2038563949887743358">საიტის დესკტოპის ვერსიის მოთხოვნის ჩართვა</translation>
@@ -208,10 +208,12 @@
 <translation id="796823723482603597">უზრუნველყოფილია Brave-ის მიერ</translation>
 <translation id="2132122640199389833">ყველა მიბმული მოწყობილობის ამოშლა</translation>
 <translation id="213279576345780926"><ph name="TAB_TITLE"/> დაიხურა</translation>
+<translation id="6659395979197839222">Brave-ის გამოყენებით ეთანხმებით <ph name="BEGIN_TOS_LINK"/>Brave-ის მომსახურების პირობებს<ph name="END_TOS_LINK"/>, ასევე, <ph name="BEGIN_ATOS_LINK"/>Brave-ისა და ChromeOS-ის მომსახურების დამატებით პირობებს<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="2139186145475833000">მთავარ ეკრანზე დამატება</translation>
 <translation id="2141396931810938595">ეფუძნება თქვენს გამოყენების მონაცემებს</translation>
 <translation id="6516933364477884970">აირჩიეთ, რისი გაზიარება გაწყობთ Brave-თან. თქვენ მიერ გაზიარებული მეტრიკა ხელს შეუწყობს Brave-ის ფუნქციების, წარმადობისა და სტაბილურობის გაუმჯობესებას.</translation>
 <translation id="2149973817440762519">სანიშნის რედაქტირება</translation>
+<translation id="2155214902713132423">დადასტურების ეს მეთოდი ამ მოწყობილობისთვის მიუწვდომელია. აირჩიეთ განსხვავებული ვარიანტი თქვენს სხვა მოწყობილობაზე.</translation>
 <translation id="6162454065885854378">თქვენი ტელეფონიდან სხვა მოწყობილობაზე კონტენტის გასაზიარებლად ორივე მოწყობილობაზე საჭიროა სინქრონიზაციის ჩართვა Brave-ის პარამეტრებიდან.</translation>
 <translation id="4162910516440006395">Brave-მა ვერ შეამოწმა ყველა პაროლი</translation>
 <translation id="2169830938017475061">ახლა</translation>
@@ -390,6 +392,7 @@
 <translation id="6153252609477956632">თქვენს ინტერესებთან დაკავშირებული სტატიები Brave-ში</translation>
 <translation id="3066573403916685335">გადაადგილება ქვევით</translation>
 <translation id="3070005020161560471">ავტომატურად ითარგმნოს</translation>
+<translation id="1094255666887095087"><ph name="APP_NAME"/> გაიხსნება Brave-ში. გაგრძელებით ეთანხმებით <ph name="BEGIN_LINK1"/>Brave-ის მომსახურების პირობებს<ph name="END_LINK1"/>, ასევე, <ph name="BEGIN_LINK2"/>Brave-ისა და ChromeOS-ის მომსახურების დამატებით პირობებს<ph name="END_LINK2"/>. გარდა ამისა, მოქმედებს <ph name="BEGIN_LINK3"/>კონფიდენციალურობის დებულება<ph name="END_LINK3"/>.</translation>
 <translation id="3091010850649238832">გაცვლის ბუფერის შიგთავსის ჩვენება</translation>
 <translation id="821565628224723530">ზოგიერთი სურათი გაეგზავნება Brave-ს, უკეთესი აღწერილობები რომ შემოგთავაზოთ</translation>
 <translation id="3114507951000454849">გაეცანით დღის სიახლეებს <ph name="NEWS_ICON"/></translation>
@@ -458,7 +461,6 @@
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/> შემოთავაზებული კონტენტის შესახებ</translation>
 <translation id="3495219333887281978">სისტემაში შესვლის ქვედა ფურცელი გახსნილია ნახევარ სიმაღლეზე.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="5067649501056343732">Brave-ის გამოყენებით ეთანხმებით <ph name="BEGIN_TOS_LINK"/>Brave-ის მომსახურების პირობებს<ph name="END_TOS_LINK"/>, ასევე, <ph name="BEGIN_ATOS_LINK"/>Brave-ისა და Chrome OS-ის მომსახურების დამატებით პირობებს<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="3507132249039706973">სტანდარტული დაცვა ჩართულია</translation>
 <translation id="8669829441518807650">ხაზგარეშეა. Brave ვერ ახერხებს განახლებების შემოწმებას.</translation>
 <translation id="3513704683820682405">აუგმენტური რეალობა</translation>
@@ -581,9 +583,11 @@
 <translation id="4269820728363426813">ბმულის მისამართის კოპირება</translation>
 <translation id="4290281343757112331">გსურთ, მოგვიანებით ჩამოტვირთოთ?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>ჩართეთ ეკრანის დაბლოკვა Android-ის პარამეტრებიდან<ph name="END_LINK"/></translation>
+<translation id="6299940168852877221">Brave-ის გამოყენებით ეთანხმებით <ph name="BEGIN_TOS_LINK"/>Brave-ის მომსახურების პირობებს<ph name="END_TOS_LINK"/>, ასევე, <ph name="BEGIN_ATOS_LINK"/>Brave-ისა და ChromeOS-ის მომსახურების დამატებით პირობებს<ph name="END_ATOS_LINK"/>. გარდა ამისა, მოქმედებს <ph name="BEGIN_PRIVACY_LINK"/>კონფიდენციალურობის დებულება<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="8120164982795455341">ახალი ინკოგნიტო ჩანართი</translation>
 <translation id="4298388696830689168">მიბმული საიტები</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">პაროლების მმართველი</translation>
 <translation id="4307992518367153382">ძირითადი</translation>
 <translation id="4320177379694898372">ინტერნეტთან კავშირი არ არის</translation>
 <translation id="4321739720395210191">კამერის გახსნა ვერ მოხერხდა. გადატვირთეთ მოწყობილობა და ცადეთ ხელახლა.</translation>
@@ -730,7 +734,6 @@
 <translation id="4744980273298156620">მალე, ახალი ჩანართის გახსნისას, იხილავთ ამბებს <ph name="SITE_NAME"/>-დან. თქვენ მიერ თვალმიდევნებული საიტები შეინახება თქვენს Brave ანგარიშში. მათი მართვა Discover-ის პარამეტრებიდან შეგიძლიათ.</translation>
 <translation id="5091249083535528968">გამოყენების გაფართოებული მონაცემები</translation>
 <translation id="509429900233858213">შეცდომა მოხდა.</translation>
-<translation id="5098190077610408701">გსურთ, დაამატოთ ინტერესი?</translation>
 <translation id="225414324447409614">საიტის მიერ პაროლის მოპარვის მცდელობის ან თქვენ მიერ საზიანო ფაილის ჩამოტვირთვის შემთხვევაში, Brave-ის მიერ Safe Browsing-ს გაეგზავნება URL-ები და შესაბამისი გვერდის კონტენტის გარკვეული ნაწილი</translation>
 <translation id="510275257476243843">დარჩენილია 1 საათი</translation>
 <translation id="5115811374190515607">აქ: <ph name="PRODUCT_NAME"/></translation>
@@ -811,7 +814,6 @@
 <translation id="5578795271662203820">ამ გამოსახულების ძიება <ph name="SEARCH_ENGINE"/>-ში</translation>
 <translation id="5581519193887989363"><ph name="BEGIN_LINK1"/>პარამეტრებიდან<ph name="END_LINK1"/> ნებისმიერ დროს შეგიძლიათ აირჩიოთ, რისი სინქრონიზაცია გსურთ.</translation>
 <translation id="5590372121997663538">ამ კომპიუტერის დამახსოვრება</translation>
-<translation id="559871659088672663">ეს ფუნქცია ამჟამად შემუშავების ეტაპზეა</translation>
 <translation id="6157610782452852023">Brave ასისტენტს შეუძლია გარკვეული მოქმედების შესრულება თქვენ ნაცვლად სხვადასხვა ვებსაიტზე</translation>
 <translation id="5620163320393916465">შენახული პაროლები არ არის</translation>
 <translation id="5620928963363755975">თქვენი ფაილები და გვერდები ხელმისაწვდომია „ჩამოტვირთვების“ სექციაში, რომელზე წვდომაც „დამატებითი ვარიანტების“ ღილაკით შეგიძლიათ</translation>
@@ -874,6 +876,7 @@
 <translation id="1985257319311245640">საიტების URL-ების ცოდნა საშუალებას აძლევს Brave ასისტენტს, დაგეხმაროთ ამოცანების შესრულებაში. ასისტენტის გამორთვა შეგიძლიათ Brave-ის პარამეტრებიდან.</translation>
 <translation id="5916664084637901428">ჩართვა</translation>
 <translation id="5919204609460789179">სინქრონიზაციის დასაწყებად, განაახლეთ <ph name="PRODUCT_NAME"/></translation>
+<translation id="5938820472109305350">დაემატოს <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">ძიებისთვის Brave გამოიყენება</translation>
 <translation id="5945035219773565305">ამჟამინდელი რეკომენდაცია:  <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">მიმდინარეობს გამოქვეყნებული გვერდის გადახედვა</translation>
@@ -893,7 +896,6 @@
 <translation id="6557407328070865042"><ph name="BEGIN_LINK"/>Privacy Sandbox<ph name="END_LINK"/>-ის სახით Brave ავითარებს ახალ ტექნოლოგიებს, რომლებიც დაგიცავთ საიტებს შორის თვალის მიდევნების მექანიზმებისგან, იმავდროულად კი შეინარჩუნებს ინტერნეტზე ღია წვდომას.
 
 Privacy Sandbox-ის საცდელი ვერსიები კვლავ აქტიური შემუშავების ფაზაშია და მხოლოდ გარკვეულ რეგიონებშია ხელმისაწვდომი. ამჟამად საიტებს შეუძლია დაცული Privacy Sandbox-ის ცდა, პარალელურად კი ახლანდელი ვებ-ტექნოლოგიებით, როგორიცაა მესამე მხარის ქუქი-ჩანაწერები, სარგებლობის გაგრძელება.</translation>
-<translation id="6036057147555329831">დამატებითი ICU მოდული</translation>
 <translation id="6039379616847168523">შემდეგ ჩანართზე გადასვლა</translation>
 <translation id="6040143037577758943">დახურვა</translation>
 <translation id="604124094241169006">ავტომატური</translation>
@@ -951,7 +953,6 @@ Privacy Sandbox-ის საცდელი ვერსიები კვლ�
 <translation id="6345878117466430440">წაკითხულად მონიშვნა</translation>
 <translation id="6363990818884053551">სინქრონიზაციის დასაწყებად დაადასტურეთ, რომ ეს თქვენ ხართ</translation>
 <translation id="6364438453358674297">ამოიშალოს შემოთავაზება ისტორიიდან?</translation>
-<translation id="4993481112200507346"><ph name="APP_NAME"/> გაიხსნება Brave-ში. გაგრძელებით ეთანხმებით <ph name="BEGIN_LINK1"/>Brave-ის მომსახურების პირობებს<ph name="END_LINK1"/>, ასევე, <ph name="BEGIN_LINK2"/>Brave-ისა და Chrome OS-ის მომსახურების დამატებით პირობებს<ph name="END_LINK2"/>.</translation>
 <translation id="806493401838431801">უფრო ხშირად ჩატვირთავს წინასწარ გვერდებს, რომლებიც, Brave-ის გათვლებით, შეიძლება მოინახულოთ. ამ პარამეტრმა შეიძლება გამოიწვიოს მონაცემთა გაზრდილი მოხმარება.</translation>
 <translation id="906679704132418761">როცა ცდები ჩართულია, სპამისა და თაღლითობისგან დაცვა ფუნქციონირებს ნდობის ჟეტონების საფუძველზე და ეხმარება საიტებს თაღლითობასთან ბრძოლაში, ასევე, ბოტების ადამიანებისგან გარჩევაში.
 
@@ -1018,6 +1019,7 @@ Privacy Sandbox-ის საცდელი ვერსიები კვლ�
 <translation id="2259649928554669581">კონფიდენციალურობასთან, უსაფრთხოებასთან და მონაცემთა შეგროვებასთან დაკავშირებული სხვა პარამეტრებისთვის იხილეთ <ph name="BEGIN_LINK1"/>სინქრონიზაცია<ph name="END_LINK1"/> და <ph name="BEGIN_LINK2"/>Brave სერვისები<ph name="END_LINK2"/>.</translation>
 <translation id="7939692063031538305">ამ აპის გაუმჯობესების მიზნით, Brave უგზავნის მოხმარებისა და ავარიულად გათიშვის მონაცემებს Brave-ს. <ph name="BEGIN_UMA_LINK"/>მართვა<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">დაბლოკვა ყოველთვის</translation>
+<translation id="6641780377503683465">წაიშალოს <ph name="INTEREST"/></translation>
 <translation id="6643016212128521049">გასუფთავება</translation>
 <translation id="6645629752388991326">გააკონტროლეთ, რომელ მოწყობილობას შეუძლია სისტემაში შესვლა ამ მოწყობილობის უსაფრთხოების გასაღების სახით გამოყენების მეშვეობით.</translation>
 <translation id="6678472970290886941">თქვენს ადმინისტრატორს დისტანციურად შეუძლია ბრაუზერში დაყენებული პარამეტრების შეცვლა. ამ მოწყობილობაზე აქტივობა შეიძლება იმართებოდეს Brave-ს მიღმაც.</translation>
@@ -1042,9 +1044,9 @@ Privacy Sandbox-ის საცდელი ვერსიები კვლ�
 <translation id="6751521182688001123">სწრაფად გახსენით ახალი ჩანართი. ამ მალსახმობის რედაქტირებისთვის შეეხეთ ხანგრძლივად.</translation>
 <translation id="6756507620369789050">გამოხმაურება</translation>
 <translation id="6767294960381293877">მოწყობილობების სია, რომლებთანაც უნდა გაზიარდეს ჩანართი, გახსნილია ნახევარ სიმაღლეზე.</translation>
-<translation id="6770042910635026163">თქვენ მიერ მონახულებული ის საიტები, რომლებიც განაპირობებს თქვენს ინტერესებს</translation>
 <translation id="6770602306803890733">უსაფრთხოების გაუმჯობესება თქვენთვის და ვების ყველა მომხმარებლისთვის</translation>
 <translation id="6783942555455976443">შეინახეთ ეს გვერდი მოგვიანებით წასაკითხად და მიიღეთ შეხსენება</translation>
+<translation id="8174975477247159780">Brave-ისა და ChromeOS-ის მომსახურების დამატებითი პირობები</translation>
 <translation id="6795633245022906657">სწრაფად გახსენით ახალი ჩანართი. ამ მალსახმობის რედაქტირებისთვის გადადით პარამეტრებზე.</translation>
 <translation id="6802555630140434547">ფანჯარა დაიხურება</translation>
 <translation id="6811034713472274749">გვერდი მზად არის სანახავად</translation>
@@ -1121,7 +1123,6 @@ Privacy Sandbox-ის საცდელი ვერსიები კვლ�
 <translation id="7208109991155904980">რეაქცია გადატანილია</translation>
 <translation id="7222235798733126207">საიტებს შორის შეზღუდული გაზიარება</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 ჩამოტვირთვა მოლოდინის რეჟიმშია}other{# ჩამოტვირთვა მოლოდინის რეჟიმშია}}</translation>
-<translation id="7256686223798862196">Brave-ის გამოყენებით ეთანხმებით <ph name="BEGIN_TOS_LINK"/>Brave-ის მომსახურების პირობებს<ph name="END_TOS_LINK"/>, ასევე, <ph name="BEGIN_ATOS_LINK"/>Brave-ისა და Chrome OS-ის მომსახურების დამატებით პირობებს<ph name="END_ATOS_LINK"/>. გარდა ამისა, მოქმედებს <ph name="BEGIN_PRIVACY_LINK"/>კონფიდენციალურობის დებულება<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="7242755609445462077">სტილიზებული გამოყოფილი კონტენტი — <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">დარწმუნდით, რომ <ph name="TARGET_DEVICE_NAME"/>-ისთვის Brave-ში ჩართულია სინქრონიზაცია</translation>
 <translation id="7252076891734325316">მოათავსეთ ტელეფონი კომპიუტერთან უფრო ახლოს</translation>

@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Aktyvinti / išjungti „Brave“ skydus</translation>
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 <translation id="2278950434998763147">Kai kurios svetainės atveriamos naudojant saugų HTTPS ryšį vietoj paprasto HTTP.</translation>
+<translation id="5510493033031835532">Automatiškai peradresuoti AMP puslapius</translation>
+<translation id="5197219128592971597">Visada naudoti originalius (ne AMP) puslapių URL adresus, o ne „Google Accelerated Mobile Page“ versijas</translation>
 <translation id="94154759592465111">Blokuoti scenarijus</translation>
 <translation id="7714773920987474116">blokuoti „JavaScript“ (gali sugadinti svetaines)</translation>
 <translation id="6052725679982758334">Socialinės žiniasklaidos blokavimas</translation>
@@ -560,7 +562,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="1078873179929044999">Atlikdami kitą veiksmą, matysite 12 žodžių atkūrimo frazę, kurią galėsite panaudoti pagrindinėms kriptovaliutos sąskaitoms atkurti. Laikykite frazę saugioje vietoje. Ši atkūrimo frazė yra vienintelis būdas atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įvykus įrenginio vagystei arba norint pereiti nuo vienos piniginės prie kitos.</translation>
 <translation id="2359808026110333948">Tęsti</translation>
 <translation id="5488357322146334497">Pranešimas</translation>
-<translation id="7228169875515099943">DUOMENYS</translation>
 <translation id="1904000155026201268">Suprantu, kad praradęs atkūrimo frazę neteksiu prieigos prie savo kriptopiniginės.</translation>
 <translation id="3933122286596948824">Jūsų atkūrimo frazė</translation>
 <translation id="5077747669435508720">Užsirašykite arba nukopijuokite šiuos žodžius būtent tokia tvarka, kokia jie rodomi, ir saugokite saugioje vietoje. Šį atkūrimo frazė yra vienintelis būdas norint atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įrenginio vagystės atveju arba norint pereiti nuo vienos piniginės prie kitos.</translation>
@@ -674,7 +675,6 @@ pasiūlymų gavimą). <ph name="DEX_PROVIDER"/> šiuos duomenis naudos TIK sando
 <translation id="3510283489391432976">Parenka vietą pagal jūsų geografinę / šalies vietovę</translation>
 <translation id="4390800080658195654">Užtikrina jūsų anonimiškumą naršant internete</translation>
 <translation id="639981156979733813">Palaiko iki 100 Mb/s spartą</translation>
-<translation id="8396607116169935837">Naudoja IKEv2 saugų užšifruotą VPN tunelį</translation>
 <translation id="1571230671455380494">Niekada nebendriname ir neparduodame informacijos apie jus</translation>
 <translation id="276866628038850725">Visiems planams taikomas 7 dienų nemokamos bandomosios versijos laikotarpis!</translation>
 <translation id="7280825497485894053">Mėnesinė prenumerata</translation>
@@ -699,7 +699,6 @@ pasiūlymų gavimą). <ph name="DEX_PROVIDER"/> šiuos duomenis naudos TIK sando
 Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryšys liks neapsaugotas.</translation>
 <translation id="2429299231491852747">Priimti ryšio užklausą</translation>
 <translation id="3428909627460825679">Sukurti VPN profilio nepavyko. Bandykite dar kartą.</translation>
-<translation id="8584119457978684056">Žetono pirkimo patvirtinti nepavyko. Bandykite dar kartą.</translation>
 <translation id="8905950042180169719">VPN veikia fone</translation>
 <translation id="8681480718817027245">Prenumerata</translation>
 <translation id="7805768142964895445">Būsena</translation>
@@ -710,7 +709,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5646376287012673985">Vieta</translation>
 <translation id="8375573361134671513">Nustatyti konfigūraciją iš naujo</translation>
 <translation id="850405162932416400">VPN pagalbos tarnyba</translation>
-<translation id="1330148827129583049">VPN profilis nesukurtas. Kuriamas naujas profilis.</translation>
 <translation id="6772117549627334582">Gauti serverio vietovės nepavyko. Bandykite dar kartą vėliau.</translation>
 <translation id="5863914199331127413">VPN pagrindinio kompiuterio vardas</translation>
 <translation id="5499653136178260315">Prenumeratos tipas</translation>
@@ -720,9 +718,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4395361077929528480">Tinklo tipas</translation>
 <translation id="755448900483975096">Mobiliojo ryšio operatorius</translation>
 <translation id="1279441577056010362">Tęsti naudojant el. paštą</translation>
-<translation id="2553687444159335134">Pagalba teikiama bendradarbiaujant su „Guardian“ komanda.\n\nPasirinkite informaciją, kurią sutinkate su mumis bendrinti.\n\nKuo daugiau informacijos iš pat pradžių su mumis bendrinsite, tuo greičiau pagalbos tarnybos darbuotojams pavyks išspręsti kilusią problemą</translation>
 <translation id="7999094850625689785">Priklausomai nuo jūsų sistemoje nustatytos laiko juostos, bus automatiškai parinktas artimiausias serverio regionas. Rekomenduojama naudoti šią parinktį, nes taip bus užtikrinta didžiausia interneto sparta.</translation>
-<translation id="8018707825009059641">Kitos problemos</translation>
 <translation id="6687228121145903051">Negalima prisijungti prie VPN (kita klaida)</translation>
 <translation id="9184988385244077767">Prisijungus nėra interneto ryšio</translation>
 <translation id="21570240866965662">Lėtas ryšys</translation>
@@ -737,7 +733,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1187506504156101449">Nepavyko patvirtinti pirkimo:</translation>
 <translation id="8420522105268941892">Jau esate užsisakę šią prenumeratą. Bandykite ją atkurti.</translation>
 <translation id="74771564105268111">KLAIDA!!\nKilo naudotojui atšaukus pirkimo seką.</translation>
-<translation id="3851978668258201962">KLAIDA!!\nNusipirkti nepavyko.</translation>
 <translation id="6452181791372256707">Atmesti</translation>
 <translation id="8030852056903932865">Patvirtinti</translation>
 <translation id="1597199892790541240">Dujų mokestis</translation>
@@ -810,11 +805,13 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5061574358754621254">„CoinGecko“ pateikiami kainų duomenys</translation>
 <translation id="4626407663177532837">Į pasiūlymą įtrauktas 0,875% „Brave“ mokestis.</translation>
 <translation id="8574289650879708853">Pridėti pasirinktinį aktyvą</translation>
+<translation id="1974060860693918893">Išplėstiniai</translation>
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="6600400596821238377">Žetono pavadinimas</translation>
 <translation id="4432966365400169165">Žetono sutarties adresas</translation>
 <translation id="4092152169181928870">Žetono simbolis</translation>
 <translation id="4351811224047421378">Skaičiai po kablelio</translation>
+<translation id="547122651977318828">Žetono ID (tik ERC721)</translation>
 <translation id="8614026298974065517">Pašalinti pasirinktinį aktyvą</translation>
 <translation id="4378941981362528553">Ar norite pašalinti <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) žetoną?</translation>
 <translation id="4250680216510889253">Ne</translation>
@@ -876,5 +873,23 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2478788592457735063">Taip tinklas bus perjungtas į anksčiau pridėtą tinklą.</translation>
 <translation id="8756686998207163764">Perjungti tinklą</translation>
 <translation id="394256914628786902">Įjungti automatinį skirtukų grupių kūrimą</translation>
+<translation id="5242300593039211344">Užrakinti piniginę</translation>
+<translation id="1108298724135935307">Susietos svetainės</translation>
+<translation id="4255623233927788178">Peržiūrėti blokų naršyklėje</translation>
 <translation id="8274201358637112807">Šis puslapis nori sąveikauti su „Brave“ pinigine</translation>
+<translation id="3355936511340229503">Ryšio klaida</translation>
+<translation id="523862956770478816">Svetainės leidimai</translation>
+<translation id="4305817255990598646">Perjungti</translation>
+<translation id="4804818685124855865">Atsijungti</translation>
+<translation id="8009571545960303544">Prašoma jūsų parašo</translation>
+<translation id="1982257600591932657">Tinklo pavadinimas</translation>
+<translation id="5052727830821470769">Tinklo URL</translation>
+<translation id="4822132585477111396">Grandinės ID</translation>
+<translation id="7131971375297699539">Valiutos simbolis</translation>
+<translation id="7982789257301363584">Tinklas</translation>
+<translation id="2521480044079508357">Atlikus šį veiksmą, tinklą bus galima naudoti „Brave“ piniginei.</translation>
+<translation id="4717431746210146708">Leisti šiai svetainei pridėti tinklą?</translation>
+<translation id="3378339846292573874">Pridėti siūlomą žetoną</translation>
+<translation id="2322227405137827074">Ar norėtumėte importuoti šį žetoną?</translation>
+<translation id="1324417023773393937">„Brave“ naršyklė</translation>
 </translationbundle>

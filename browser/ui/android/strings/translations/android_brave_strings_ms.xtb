@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Dayakan/Nyahdayakan Pelindung Brave</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="2278950434998763147">Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat dan bukannya HTTP biasa.</translation>
+<translation id="5510493033031835532">Auto ubah hala halaman AMP</translation>
+<translation id="5197219128592971597">Sentiasa layari URL halaman (bukan AMP) asal dan bukannya versi Halaman Mudah Alih Dipercepatkan Google</translation>
 <translation id="94154759592465111">Sekat Skrip</translation>
 <translation id="7714773920987474116">Menyekat JavaScript (boleh merosakkan laman)</translation>
 <translation id="6052725679982758334">Sekatan Media Sosial</translation>
@@ -555,7 +557,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1078873179929044999">Pada langkah seterusnya, anda’ akan melihat frasa pemulihan 12 perkataan yang boleh digunakan untuk mendapatkan akaun kripto utama anda semula. Simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses sekiranya anda terlupa kata laluan, peranti anda hilang atau dicuri, atau anda ingin beralih dompet.</translation>
 <translation id="2359808026110333948">Teruskan</translation>
 <translation id="5488357322146334497">Mesej</translation>
-<translation id="7228169875515099943">DATA</translation>
 <translation id="1904000155026201268">Saya faham bahawa jika saya kehilangan frasa pemulihan saya, saya tidak akan dapat mengakses dompet kripto saya.</translation>
 <translation id="3933122286596948824">Frasa pemulihan anda</translation>
 <translation id="5077747669435508720">Tulis atau salin perkataan ini mengikut urutan yang sebenar yang ditunjukkan di bawah, dan simpan di tempat yang selamat. Frasa pemulihan anda adalah satu-satunya cara untuk mendapatkan semula akses akaun sekiranya anda terlupa kata laluan, kehilangan peranti atau dicuri, atau anda mahu menukar dompet.</translation>
@@ -668,7 +669,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3510283489391432976">Pilih lokasi geo/negara anda</translation>
 <translation id="4390800080658195654">Pastikan anda tidak dikenali dalam talian</translation>
 <translation id="639981156979733813">Menyokong kelajuan hingga 100 Mbps</translation>
-<translation id="8396607116169935837">Menggunakan terowong VPN yang disulitkan IKEv2 yang selamat</translation>
+<translation id="1190117345570417902">Menggunakan terowong VPN yang disulitkan Wireguard yang selamat</translation>
 <translation id="1571230671455380494">Kami tidak sekali-kali berkongsi atau menjual maklumat anda</translation>
 <translation id="276866628038850725">Semua pelan termasuk percubaan 7 hari percuma!</translation>
 <translation id="7280825497485894053">Langganan bulanan</translation>
@@ -693,7 +694,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sambungan internet anda tidak akan dilindungi.</translation>
 <translation id="2429299231491852747">Terima permintaan sambungan</translation>
 <translation id="3428909627460825679">Penciptaan profil vpn gagal. Sila cuba lagi.</translation>
-<translation id="8584119457978684056">Pengesahan Pembelian Token gagal. Sila cuba lagi.</translation>
+<translation id="1326227401245340613">Pengesahan pembelian gagal. Sila cuba lagi.</translation>
 <translation id="8905950042180169719">VPN sedang berjalan di latar belakang</translation>
 <translation id="8681480718817027245">Langganan</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -704,7 +705,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5646376287012673985">Lokasi</translation>
 <translation id="8375573361134671513">Set Semula Konfigurasi</translation>
 <translation id="850405162932416400">Sokongan VPN</translation>
-<translation id="1330148827129583049">Profil vpn tidak dicipta. Mencipta profil baharu.</translation>
 <translation id="6772117549627334582">Gagal mendapatkan lokasi pelayan. Sila cuba lagi kemudian.</translation>
 <translation id="5863914199331127413">Nama hos VPN</translation>
 <translation id="5499653136178260315">Jenis Langganan</translation>
@@ -714,9 +714,9 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4395361077929528480">Jenis Rangkaian</translation>
 <translation id="755448900483975096">Pembawa Selular</translation>
 <translation id="1279441577056010362">Teruskan untuk E-mel</translation>
-<translation id="2553687444159335134">Sokongan diberikan dengan bantuan pasukan Guardian.\n\nSila pilih maklumat yang selesa untuk anda kongsi dengan kami.\n\nLebih banyak maklumat yang anda kongsikan dengan kami akan lebih memudahkan kakitangan sokongan kami untuk membantu menyelesaikan masalah anda.</translation>
+<translation id="7125582363614011660">Sokongan diberikan dengan bantuan pasukan Guardian.\n\nSila pilih maklumat yang selesa anda kongsikan dengan kami.\n\nLebih banyak maklumat yang anda kongsikan dengan kami, lebih mudah bagi kakitangan sokongan kami untuk membantu menyelesaikan isu anda.</translation>
 <translation id="7999094850625689785">Rantau pelayan yang paling hampir dengan anda akan dipilih secara automatik, berdasakan zon waktu sistem anda. Ini disyorkan untuk memastikan kelajuan internet yang pantas.</translation>
-<translation id="8018707825009059641">Isu Lain</translation>
+<translation id="4397083831618200686">Pilih Isu</translation>
 <translation id="6687228121145903051">Tidak dapat bersambung ke VPN (Ralat lain)</translation>
 <translation id="9184988385244077767">Tiada internet apabila disambungkan</translation>
 <translation id="21570240866965662">Sambungan perlahan</translation>
@@ -731,7 +731,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1187506504156101449">Gagal mengakui pembelian :</translation>
 <translation id="8420522105268941892">Anda sudah melanggan kepada langganan. Cuba pulihkan langganan.</translation>
 <translation id="74771564105268111">RALAT!!\nDisebabkan oleh pengguna membatalkan aliran pembelian</translation>
-<translation id="3851978668258201962">RALAT!!\nPembelian gagal..</translation>
+<translation id="7312462922610983743">RALAT!!\nPembelian gagal.</translation>
 <translation id="6452181791372256707">Tolak</translation>
 <translation id="8030852056903932865">Luluskan</translation>
 <translation id="1597199892790541240">Fi Gas</translation>
@@ -804,11 +804,13 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5061574358754621254">Data harga dikuasakan oleh CoinGecko</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
 <translation id="8574289650879708853">Tambah aset tersuai</translation>
+<translation id="1974060860693918893">Lanjutan</translation>
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="6600400596821238377">Nama token</translation>
 <translation id="4432966365400169165">Alamat kontrak token</translation>
 <translation id="4092152169181928870">Simbol token</translation>
 <translation id="4351811224047421378">Titik perpuluhan tepat</translation>
+<translation id="547122651977318828">ID Token (hanya untuk ERC721)</translation>
 <translation id="8614026298974065517">Alih keluar aset tersuai</translation>
 <translation id="4378941981362528553">Adakah anda mahu mengalih keluar <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
 <translation id="4250680216510889253">Tidak</translation>
@@ -870,5 +872,32 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2478788592457735063">Ini akan menukarkan rangkaian kepada rangkaian yang ditambah sebelum ini.</translation>
 <translation id="8756686998207163764">Tukar rangkaian</translation>
 <translation id="394256914628786902">Dayakan penciptaan auto Kumpulan Tab</translation>
+<translation id="5242300593039211344">Kuncikan Dompet</translation>
+<translation id="1108298724135935307">Laman web bersambung</translation>
+<translation id="4255623233927788178">Lihat pada sekatan penjelajah</translation>
 <translation id="8274201358637112807">Halaman ini ingin berinteraksi dengan Dompet Brave</translation>
+<translation id="3355936511340229503">Ralat sambungan</translation>
+<translation id="4891604214809245310">Tidak boleh menetapkan rangkaian kepada <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">Nampaknya anda mempunyai VPN lain yang ditetapkan kepada “Sentiasa hidup” pada peranti ini. Untuk mendayakan Brave Firewall + VPN, nyahdayakan dahulu tetapan “Sentiasa hidup” ini bagi VPN lain sebelum menyambung semula. Jika masalah berterusan, cuba nyahpasang VPN lain.</translation>
+<translation id="85136472535634474">Buka Tetapan VPN</translation>
+<translation id="8352805003811526272">Menetapkan semula konfigurasi ...</translation>
+<translation id="6809312301323611382">Anda telah memilih pelayan yang sama.</translation>
+<translation id="7694991972030057904">Kebenaran telah dibatalkan</translation>
+<translation id="9106265941552476098">Tolak <ph name="TRANSACTION_LENGTH"/> transaksi</translation>
+<translation id="523862956770478816">Kebenaran laman web</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> akaun disambungkan</translation>
+<translation id="4305817255990598646">Tukar</translation>
+<translation id="4804818685124855865">Putuskan sambungan</translation>
+<translation id="8009571545960303544">Tandatangan anda sedang diminta</translation>
+<translation id="1982257600591932657">Nama rangkaian</translation>
+<translation id="5052727830821470769">URL Rangkaian</translation>
+<translation id="4822132585477111396">ID Rantaian</translation>
+<translation id="7131971375297699539">Simbol mata wang</translation>
+<translation id="7982789257301363584">Rangkaian</translation>
+<translation id="2521480044079508357">Ini akan membenarkan rangkaian ini untuk digunakan dalam Dompet Brave.</translation>
+<translation id="4717431746210146708">Benarkan laman ini untuk menambah rangkaian?</translation>
+<translation id="3378339846292573874">Tambah token yang disyorkan</translation>
+<translation id="2322227405137827074">Adakah anda ingin mengimport token ini?</translation>
+<translation id="1324417023773393937">Pelayar Brave</translation>
+<translation id="6044189892950611565">Saluran pemberitahuan untuk Penyemak Imbas Brave</translation>
 </translationbundle>

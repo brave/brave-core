@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Brave Shields 활성화/비활성화</translation>
 <translation id="3570081523466826008">연결을 HTTPS로 업그레이드</translation>
 <translation id="2278950434998763147">일부 웹사이트를 일반 HTTP 대신 보안 HTTPS를 사용하여 엽니다.</translation>
+<translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
+<translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
 <translation id="94154759592465111">스크립트 차단</translation>
 <translation id="7714773920987474116">자바스크립트 차단(사이트가 깨질 수 있음)</translation>
 <translation id="6052725679982758334">소셜 미디어 차단</translation>
@@ -554,7 +556,6 @@
 <translation id="1078873179929044999">다음 단계에서는 12단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="2359808026110333948">계속</translation>
 <translation id="5488357322146334497">메시지</translation>
-<translation id="7228169875515099943">데이터</translation>
 <translation id="1904000155026201268">복구 문구를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
 <translation id="3933122286596948824">복구 문구</translation>
 <translation id="5077747669435508720">이들 단어를 표시되는 정확한 순서대로 잘 적어두거나 복사해두었다가 안전한 곳에 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
@@ -667,7 +668,7 @@
 <translation id="3510283489391432976">지역/국가 위치 선택</translation>
 <translation id="4390800080658195654">온라인에서 익명 유지</translation>
 <translation id="639981156979733813">최대 100Mbps 속도 지원</translation>
-<translation id="8396607116169935837">IKEv2 보안 암호화 VPN 터널 사용</translation>
+<translation id="1190117345570417902">Wireguard 보안 암호화 VPN 터널 사용</translation>
 <translation id="1571230671455380494">고객의 정보는 절대 공유 또는 판매되지 않습니다.</translation>
 <translation id="276866628038850725">모든 플랜에는 7일 평가판이 포함되어 있습니다!</translation>
 <translation id="7280825497485894053">월간 구독</translation>
@@ -692,7 +693,7 @@
 요청을 수락하지 않으면 VPN이 다시 연결되지 않아 인터넷 연결의 보안이 취약해집니다.</translation>
 <translation id="2429299231491852747">연결 요청 수락</translation>
 <translation id="3428909627460825679">VPN 프로필 생성에 실패했습니다. 다시 시도하세요.</translation>
-<translation id="8584119457978684056">구매 토큰 검증에 실패했습니다. 다시 시도하세요.</translation>
+<translation id="1326227401245340613">구매 검증 실패. 다시 시도하세요.</translation>
 <translation id="8905950042180169719">백그라운드에서 VPN 실행 중</translation>
 <translation id="8681480718817027245">구독</translation>
 <translation id="7805768142964895445">상태</translation>
@@ -703,7 +704,6 @@
 <translation id="5646376287012673985">위치</translation>
 <translation id="8375573361134671513">구성 초기화</translation>
 <translation id="850405162932416400">VPN 지원</translation>
-<translation id="1330148827129583049">VPN 프로필이 생성되지 않았습니다. 새 프로필을 생성합니다.</translation>
 <translation id="6772117549627334582">서버 위치 가져오기 실패. 나중에 다시 시도하세요.</translation>
 <translation id="5863914199331127413">VPN 호스트이름</translation>
 <translation id="5499653136178260315">구독 유형</translation>
@@ -713,9 +713,9 @@
 <translation id="4395361077929528480">네트워크 유형</translation>
 <translation id="755448900483975096">이동통신사</translation>
 <translation id="1279441577056010362">이메일로 이동하기</translation>
-<translation id="2553687444159335134">지원은 Guardian 팀의 도움으로 제공됩니다.\n\n공유해주셔도 마음이 편한 정보를 선택해주세요.\n\n처음에 공유해주시는 정보가 많을수록 지원팀 담당자가 쉽게 문제를 해결하고 더 나은 서비스를 제공할 수 있습니다.</translation>
+<translation id="7125582363614011660">Guardian 팀의 도움으로 지원이 제공됩니다.\n\n공유하셔도 마음이 편한 정보를 선택해주세요.\n\n처음에 공유해주시는 정보가 많을수록 지원팀 담당자가 쉽게 문제를 해결해드릴 수 있습니다.</translation>
 <translation id="7999094850625689785">시스템 시간대를 기준으로 가장 근접한 서버 리전이 자동으로 선택됩니다. 빠른 인터넷 속도가 보장되도록 추천됩니다.</translation>
-<translation id="8018707825009059641">기타 문제</translation>
+<translation id="4397083831618200686">문제 선택</translation>
 <translation id="6687228121145903051">VPN으로 연결할 수 없음(기타 오류)</translation>
 <translation id="9184988385244077767">연결 시 인터넷에 연결되지 않음</translation>
 <translation id="21570240866965662">연결 느림</translation>
@@ -730,7 +730,7 @@
 <translation id="1187506504156101449">구매 확인 실패:</translation>
 <translation id="8420522105268941892">이미 구독 중인 구독자입니다. 구독을 복구해보세요.</translation>
 <translation id="74771564105268111">오류!!\n구매 흐름에서 사용자가 취소했습니다.</translation>
-<translation id="3851978668258201962">오류!!\n구매에 실패했습니다...</translation>
+<translation id="7312462922610983743">오류!!\n구매 실패...</translation>
 <translation id="6452181791372256707">거부</translation>
 <translation id="8030852056903932865">수락</translation>
 <translation id="1597199892790541240">가스 수수료</translation>
@@ -803,11 +803,13 @@
 <translation id="5061574358754621254">CoinGecko에서 제공한 가격 데이터</translation>
 <translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
 <translation id="8574289650879708853">사용자 정의 자산 추가</translation>
+<translation id="1974060860693918893">고급</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="6600400596821238377">토큰 이름</translation>
 <translation id="4432966365400169165">토큰 컨트랙트 주소</translation>
 <translation id="4092152169181928870">토큰 기호</translation>
 <translation id="4351811224047421378">소수 자릿수</translation>
+<translation id="547122651977318828">토큰 ID(ERC721에만 해당)</translation>
 <translation id="8614026298974065517">사용자 정의 자산 제거</translation>
 <translation id="4378941981362528553"><ph name="TOKEN_NAME"/>(<ph name="TOKEN_SYMBOL"/>) 토큰을 제거하시겠습니까?</translation>
 <translation id="4250680216510889253">아니요</translation>
@@ -869,5 +871,32 @@
 <translation id="2478788592457735063">네트워크가 이전에 추가한 네트워크로 전환됩니다.</translation>
 <translation id="8756686998207163764">네트워크 전환</translation>
 <translation id="394256914628786902">탭 그룹 자동 생성 활성화</translation>
+<translation id="5242300593039211344">월렛 잠금</translation>
+<translation id="1108298724135935307">연결된 사이트</translation>
+<translation id="4255623233927788178">블록 탐색기에서 보기</translation>
 <translation id="8274201358637112807">이 페이지가 Brave 월렛과 상호작용하려고 합니다.</translation>
+<translation id="3355936511340229503">연결 오류</translation>
+<translation id="4891604214809245310">네트워크를 <ph name="NETWORK_NAME"/>(으)로 설정할 수 없음</translation>
+<translation id="685345388423515592">이 디바이스에 다른 VPN이 "항상"으로 설정된 것 같습니다. Brave Firewall + VPN을 활성화하려면 먼저 다른 VPN의 "항상" 설정을 비활성화하고 다시 연결하세요. 문제가 지속되면 다른 VPN을 제거해보세요.</translation>
+<translation id="85136472535634474">VPN 설정 열기</translation>
+<translation id="8352805003811526272">구성 초기화 중...</translation>
+<translation id="6809312301323611382">동일한 서버를 이미 선택하셨습니다.</translation>
+<translation id="7694991972030057904">권한이 취소됨</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> 트랜잭션 거부</translation>
+<translation id="523862956770478816">사이트 권한</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> 계정 연결됨</translation>
+<translation id="4305817255990598646">전환</translation>
+<translation id="4804818685124855865">연결 해제</translation>
+<translation id="8009571545960303544">서명을 요청 중입니다.</translation>
+<translation id="1982257600591932657">네트워크 이름</translation>
+<translation id="5052727830821470769">네트워크 URL</translation>
+<translation id="4822132585477111396">체인 ID</translation>
+<translation id="7131971375297699539">통화 기호</translation>
+<translation id="7982789257301363584">네트워크</translation>
+<translation id="2521480044079508357">이 네트워크를 Brave 월렛 내에서 사용할 수 있게 됩니다.</translation>
+<translation id="4717431746210146708">이 사이트가 네트워크를 추가할 수 있게 허용하시겠습니까?</translation>
+<translation id="3378339846292573874">추천 토큰 추가</translation>
+<translation id="2322227405137827074">이 토큰을 가져오시겠습니까?</translation>
+<translation id="1324417023773393937">Brave 브라우저</translation>
+<translation id="6044189892950611565">Brave 브라우저의 알림 채널</translation>
 </translationbundle>

@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24HR mennyiség</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Engedélyezed az Unstoppable Domains támogatását a Brave-ben?</translation>
-<translation id="3470923752115324276">A Brave lehetővé teheti a .crypto domének felkeresését Cloudflare-t használva a .crypto doménnevek keresési kérések megoldására DNS-t használva HTTPS helyett. Ha ezt engedélyezed a Cloudflare látni fogja a keresett .crypto domént, de mást doméneket nem fog látni. Nézd meg a Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>használati feltételeit<ph name="END_CF_TOU_LINK"/> és <ph name="BEGIN_CF_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">A Brave az Infura használatával fog kiadni Ethereum JSON-RPC-hívásokat az „Unstoppable Domains”-ből származó intelligens szerződés felé azért, hogy teljesítse a .crypto (valamint az .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) doménnevek keresési kérését. Ha engedélyezi ezt, az Infura látni fogja az Ön által felkeresni kívánt doméneket, de más doméneket nem fog látni. Olvassa el az Infura <ph name="BEGIN_INFURA_TOU_LINK"/>felhasználási feltételeit<ph name="END_INFURA_TOU_LINK"/> és <ph name="BEGIN_INFURA_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Engedélyezed az Ethereum Name Service (ENS) támogatást a Brave-ben?</translation>
-<translation id="618766505813078707">A Brave lehetővé teheti a .eth domének felkeresését Cloudflare-t használva a .eth doménnevek keresési kérések megoldására DNS-t használva HTTPS helyett. Ha ezt engedélyezed a Cloudflare látni fogja a keresett .crypto domént, de mást doméneket nem fog látni. Nézd meg a Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>használati feltételeit<ph name="END_CF_TOU_LINK"/> és <ph name="BEGIN_CF_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_CF_PRIVACY_LINK"/></translation>
-<translation id="5636651007798897342">Folytatás Cloudflare szerverrel</translation>
+<translation id="8328137586971750853">A Brave az Infura használatával fog kiadni Ethereum JSON-RPC-hívásokat az „Ethereum Name Service”-ből származó intelligens szerződés felé azért, hogy teljesítse a .eth doménnevek keresési kérését. Ha engedélyezi ezt, az Infura látni fogja az Ön által felkeresni kívánt .eth doméneket, de más doméneket nem fog látni. Olvassa el az Infura <ph name="BEGIN_INFURA_TOU_LINK"/>felhasználási feltételeit<ph name="END_INFURA_TOU_LINK"/> és <ph name="BEGIN_INFURA_PRIVACY_LINK"/>adatvédelmi szabályzatát<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Folytatás Infura-szerver használatával</translation>
 <translation id="2356070529366658676">Kérés</translation>
 <translation id="2218918398178303658">DNS HTTPS-en keresztül</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Egyetlen objektumparamétert várt.</translation>
 <translation id="1875861420974447980">Ez a láncazonosító már használatban van</translation>
 <translation id="167698752210114155">Belső hiba lépett fel</translation>
+<translation id="2326876601333401685">Ez az RPC (távoli eljáráshívási) módszer nem támogatott.</translation>
 <translation id="1128992132632883337">Hiba történt a válaszfeldolgozás során</translation>
 <translation id="1680597601664421644">Az éppen importált mnemonika nem érvényes a Brave pénztárca esetén</translation>
 <translation id="4641919696349069826">A kérelem már folyamatban van</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">A 'gasPrice' tranzakciós adat nem érvényes</translation>
 <translation id="8909404207805041979">A 'gas' tranzakciós adat nem érvényes</translation>
 <translation id="670444168393199227">A 'value' tranzakciós adat nem érvényes</translation>
-<translation id="6180576227145734714">A 'to' tranzakciós adat, ha meg van adva, érvényes cím kell, hogy legyen</translation>
 <translation id="6916219411793555838">A 'gasPrice' vagy a 'maxFeePerGas' tranzakciós adatot meg kell adni</translation>
 <translation id="1406937874668963740">A 'chainId' tranzakciós adat nem érvényes</translation>
 <translation id="9195349857587166771">A 'maxFeePerGas' tranzakciós adat nem érvényes</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Hiba történt a tranzakció feldolgozásakor</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' nem jogosult az üzenet aláírására</translation>
 <translation id="8719220598078667817">Nem sikerült aláírni a tranzakciót</translation>
-<translation id="5486744676117070166">Nem sikerült lehívni a következő nonce értéket</translation>
 <translation id="875506212625074179">Érvénytelen láncazonosítóra adott válasz az RPC (távoli eljáráshívás)-szolgáltatótól.</translation>
+<translation id="5486744676117070166">Nem sikerült lehívni a következő nonce értéket</translation>
+<translation id="6180576227145734714">A 'to' tranzakciós adat, ha meg van adva, érvényes cím kell, hogy legyen</translation>
 <translation id="4958950550253325418">Defi alkalmazások</translation>
 <translation id="735961408871282410">NFT piacterek</translation>
 <translation id="7740287852186792672">Keresési eredmények</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">A 0x feldolgozza az Ethereum-címet és az IP-címet a tranzakciók teljesítéséhez (beleértve az árajánlatok lehívását). A 0x KIZÁRÓLAG a tranzakciók feldolgozása céljából használja ezeket az adatokat.</translation>
 <translation id="4626407663177532837">Az árajánlat tartalmazza a Brave 0,875% -os díját.</translation>
 <translation id="8368540604723748428">Túl sok tizedeshely</translation>
+<translation id="6575120282593094155">Még nincs <ph name="ACCOUNT_TYPE"/> fiókja. Létrehoz most egyet?</translation>
 <translation id="2704606927547763573">Másolt</translation>
 <translation id="1420318137760245955">Üdvözli az új Brave pénztárca</translation>
 <translation id="8303434745767477417">Tartson magánál letétben kriptoeszközöket. Kövesse nyomon a portfóliója teljesítményét és lépjen interakcióba web 3 decentralizált applikációkkal. Kereskedjen, fektessen be, vegyen fel kölcsönt, és adjon kölcsön a DeFi-vel. Mindezt egyenesen a Brave adatvédelmi böngészőből. Nincsenek bővítmények és a letöltés sem szükséges.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Ár ebben:</translation>
 <translation id="2490428413101944234">Pénzcsap tesztelése</translation>
 <translation id="3352959425838279177">Szerezzen Ethert pénzcsapból ehhez: <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Tovább a Wyre-re</translation>
-<translation id="2581671693710952401">Ether beszerzése</translation>
 <translation id="8009571545960303544">Szükség van az aláírására</translation>
 <translation id="5294062982587710720">Ne feledje, hogy a Brave nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.</translation>
 <translation id="3474375934783434676">Csak a saját felelősségére írjon alá</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">következő</translation>
 <translation id="793994607260936590">első</translation>
 <translation id="4709524402122994378">tranzakciók</translation>
+<translation id="4591079278963448049">A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL összeg lesz felhasználva.</translation>
 <translation id="523862956770478816">Oldalengedélyek</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> fiók csatlakoztatva</translation>
 <translation id="4305817255990598646">Kapcsoló</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Elküldve</translation>
 <translation id="2331676293859649642">Megerősítve</translation>
 <translation id="1165039591588034296">Hiba</translation>
+<translation id="8373210463207847451">Ejtve</translation>
 <translation id="9065572743819293042">Legutóbbi tranzakciók</translation>
 <translation id="4235538284468006757">Tranzakció részletei</translation>
 <translation id="7488671812634887146">Felgyorsítás</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">Kriptovaluta-nyereményjátékok 7 napon keresztül, összesen nagyjából 500 ezer dollár értékű nyereményekkel.</translation>
 <translation id="8292716346768453265">Nevezzen be most!</translation>
 <translation id="6423985584914773314">Érvénytelen FIL cím</translation>
+<translation id="3898731124813934210">Megvásárlás Wyre-vel</translation>
+<translation id="5522073372365069684">Megvásárlás Ramppel</translation>
 <translation id="8528916244724490964">Összes hálózat</translation>
 <translation id="2781668117338732220">Másodlagos hálózatok</translation>
 <translation id="2816106784624007524">A gas határértéke 0-nál nagyobb egész szám legyen</translation>
+<translation id="3354376789153561654">A 'címzett' tranzakciós adatot kötelező megadni</translation>
+<translation id="8728991256628663004">A 'feladó' tranzakciós adatnak érvényes Filecoin címnek kell lennie</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">A kapcsolódás sikertelen volt</translation>
 <translation id="745054660363064771">Nem lehet kapcsolódni a szerverhez</translation>
 <translation id="3936826714240735937">Válasszon másik szervert</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> nem tudott csatlakozni a(z) <ph name="REGION_NAME"/> szerverhez. Megpróbálhatja újra, vagy válasszon egy másik szervert</translation>
+<translation id="1305433007676951913">A <ph name="PRODUCT_NAME"/> nem tudott csatlakozni a(z) <ph name="REGION_NAME"/> szerverhez. Megpróbálhatja újra, vagy választhat egy másik szervert.</translation>
 <translation id="1024255913009642477">Már vásárolt VPN-szolgáltatást?</translation>
 <translation id="8814357473522731680">Szolgáltató:</translation>
 <translation id="5747552184818312860">Lejár</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Gyors és 100 Mbps-ig korlátlan</translation>
 <translation id="1400240082805528049">0–24 ügyfélszolgálat</translation>
 <translation id="8463313539532697053">Egy pillanat, a betöltés folyamatban…</translation>
+<translation id="4613076894734402086">Fizetési mód szerkesztése</translation>
+<translation id="1898254156730880135">Úgy tűnik, legutóbbi befizetése sikertelen volt. Az előfizetéshez történő hozzáférés szüneteltetve lesz, amíg a fizetési probléma meg nem oldódik. Próbálja meg módosítani a fizetési módot, vagy forduljon a Brave ügyfélszolgálatához.</translation>
+<translation id="1839021455997460752">Az Ön e-mail-címe</translation>
+<translation id="5154702632169343078">Tárgy</translation>
+<translation id="6625978880678465492">Válassza ki az okot</translation>
+<translation id="6687228121145903051">Nem tudok a VPN-hez csatlakozni (Egyéb hiba)</translation>
+<translation id="9184988385244077767">A kapcsolódás után nincs internet</translation>
+<translation id="21570240866965662">Lassú kapcsolat</translation>
+<translation id="1219475260382643267">A weboldal nem működik</translation>
+<translation id="7138678301420049075">Egyéb</translation>
+<translation id="1387340358507240698">Írja le a problémát</translation>
+<translation id="501818585183973587">Adja meg az adatokat, amelyeket szívesen megoszt velünk</translation>
+<translation id="3195618332367441234">Minél több adatot ad meg, ügyfélszolgálati csapatunk annál könnyebben fog tudni segíteni.</translation>
+<translation id="5682143294773821728">VPN kiszolgáló neve:</translation>
+<translation id="24242621812020123">Alkalmazás verziója:</translation>
+<translation id="6676791921618140305">Operációs rendszer verziója:</translation>
+<translation id="1156325797949437777">A támogatást a Guardiannel együttműködésben nyújtjuk.</translation>
+<translation id="3307461350293459700">A VPN-csatlakozás sikertelen volt. Próbáljon meg újból csatlakozni, és győződjön meg róla, hogy rákattintott az Engedélyezés gombra a Brave VPN-konfigurációjának engedélyezéséhez.</translation>
 <translation id="7586151660465233733">További piacok itt: <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Megtekintheti a piacokat és kriptokereskedést bonyolíthat az FTX-en</translation>
 <translation id="5963745988819586370">Piacok</translation>

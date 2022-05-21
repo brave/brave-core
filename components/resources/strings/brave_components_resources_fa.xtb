@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">حجم 24 ساعته</translation>
 <translation id="7534079972563542000">دامنه‌های توقف‌ناپذیر</translation>
 <translation id="4492298165410552103">پشتیبانی از «دامنه‌های توقف‌ناپذیر» در Brave فعال شود؟</translation>
-<translation id="3470923752115324276">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.crypto بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.crypto را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎crypto را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
+<translation id="2173151783558384314">Brave از Infura برای صدور فراخوان‌های  Ethereum JSON-RPC در قرارداد هوشمند از «دامنه‌های توقف‌ناپدیر» برای حل و فصل درخواست‌های جستجوی نام دامنه crypto. (و همچنین x.، ‏coin.،‏ nft.،‏ doa.،‏ wallet.،‏ 888.،‏ blockchian.،‏ bitcoin.) استفاده خواهد کرد. اگر آن را فعال کنید، Infura آن دامنه‌های خاصی را که سعی دارید بازدید کنید خواهد دید، اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/>Infura مراجعه کنید.</translation>
 <translation id="6513892817556267573">سرویس نام اتریوم</translation>
 <translation id="4335039108389860301">پشتیبانی از «سروبی نام اتریوم» (ENS) در Brave فعال شود؟</translation>
-<translation id="618766505813078707">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.eth بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.eth را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎.eth را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
-<translation id="5636651007798897342">ادامه با استفاده از سرور Cloudflare</translation>
+<translation id="8328137586971750853">Brave از Infura برای صدور فراخوان‌های Ethereum JSON-RPC در قرارداد هوشمند از «سرویس نام Ethereum» برای حل و فصل درخواست‌های جستجوی نام دامنه eth. استفاده خواهد کرد. اگر آن را فعال کنید، Infura می‌تواند دامنه‌هایی را که سعی دارید بازدید کنید ببیند، اما قادر به دیدن سایر دامنه‌ها نخواهد بود. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده<ph name="END_INFURA_TOU_LINK"/>و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/>Infira مراجعه کنید.</translation>
+<translation id="7378412287463452336">ادامه با استفاده از سرور Infura</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="2218918398178303658">DNS ازطریق HTTPS</translation>
 <translation id="1448289340149908413">اتریوم</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">پارامتر شیء واحد مورد انتظار</translation>
 <translation id="1875861420974447980">این شناسه زنجیره در حال حاضر استفاده می‌شود</translation>
 <translation id="167698752210114155">خطایی داخلی رخ داده است</translation>
+<translation id="2326876601333401685">از این روش RPC پشتیبانی نمی‌شود.</translation>
 <translation id="1128992132632883337">خطای تجزیه پاسخ رخ داده است</translation>
 <translation id="1680597601664421644">یادیار واردشده برای کیف پول Brave معتبر نیست</translation>
 <translation id="4641919696349069826">درخواستی در حال حاضر در جریان است</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">«gasPrice» داده‌های تراکنش معتبر نیست</translation>
 <translation id="8909404207805041979">«gas» داده‌های تراکنش معتبر نیست</translation>
 <translation id="670444168393199227">«value» داده‌های تراکنش معتبر نیست</translation>
-<translation id="6180576227145734714">«to» داده‌های تراکنش باید هنگام مشخص شدن آدرسی معتبر باشد</translation>
 <translation id="6916219411793555838">«gasPrice» یا «maxFeePerGas» داده‌های تراکنش باید مشخص شود</translation>
 <translation id="1406937874668963740">«chainId» داده‌های تراکنش معتبر نیست</translation>
 <translation id="9195349857587166771">داده‌های تراکنش «maxFeePerGas» معتبر نیست</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">خطا در پردازش تراکنش</translation>
 <translation id="4886059598718763020">«<ph name="VALUE"/>» اجازه ندارد پیام را امضا کند</translation>
 <translation id="8719220598078667817">امضای معامله انجام نشد</translation>
-<translation id="5486744676117070166">دریافت مقدار فعلی بعدی انجام نشد</translation>
 <translation id="875506212625074179">پاسخ شناسه زنجیره‌ای نامعتبر از سرویس RPC</translation>
+<translation id="5486744676117070166">دریافت مقدار فعلی بعدی انجام نشد</translation>
+<translation id="6180576227145734714">«to» داده‌های تراکنش باید هنگام مشخص شدن آدرسی معتبر باشد</translation>
 <translation id="4958950550253325418">برنامه‌های دیفای</translation>
 <translation id="735961408871282410">بازارهای NFT</translation>
 <translation id="7740287852186792672">نتایج جستجو</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x نشانی اتریوم و نشانی IP را پردازش می‌کند تا تراکنش را تکمیل کند (دریافت نرخ لحظه‌ای را شامل می‌شود). 0x از این داده‌ها «فقط» برای اهادف پردازش تراکنش‌ها استفاده می‌کند.</translation>
 <translation id="4626407663177532837">مظنه شامل 0.875 درصد از هزینه Brave است.</translation>
 <translation id="8368540604723748428">تعداد اعشارها بسیار زیاد است</translation>
+<translation id="6575120282593094155">هنوز حساب <ph name="ACCOUNT_TYPE"/> ندارید. اکنون یک حساب ایجاد می‌کنید؟</translation>
 <translation id="2704606927547763573">کپی شد</translation>
 <translation id="1420318137760245955">به «کیف پول Brave» خوش آمدید</translation>
 <translation id="8303434745767477417">دارایی‌های رمزارز را در اختیار خود نگه دارید. عملکرد پرتفوی را ردیابی کنید، و با web 3 DApp تعامل برقرار کنید. با دیفای تجارت کنید، سرمایه‌گذاری کنید، وام بگیرید و قرض دهید. همه این کارها را مستقیماً از مرورگر حریم خصوصی Brave انجام دهید. بدون افزونه. نیازی به دانلود هم نیست.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">قیمت بر حسب</translation>
 <translation id="2490428413101944234">تست فاست</translation>
 <translation id="3352959425838279177">دریافت اتر از فاست برای <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">ادامه به Wyre</translation>
-<translation id="2581671693710952401">اتر را بگیرید</translation>
 <translation id="8009571545960303544">امضاء شما درخواست میشود</translation>
 <translation id="5294062982587710720">توجه داشته باشید که اگر امضا کنید Brave نمی‌تواند تأیید کند که چه اتفاقی می‌افتد. امضا می‌تواند تقریباً هرگونه عملیاتی را، از جمله (اما نه محدود به) کنترل کامل حساب شما و دارایی‌های رمزارز به سایت درخواست‌کننده در حساب شما یا از طرف شما مجاز کند. فقط در صورتی امضا کنید که از انجام این اقدام مطمئن و به سایت درخواست‌کننده اعتماد داشته باشید.</translation>
 <translation id="3474375934783434676">با مسئولیت خود ثبت‌نام کنید</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">بعدی</translation>
 <translation id="793994607260936590">اول</translation>
 <translation id="4709524402122994378">معاملات</translation>
+<translation id="4591079278963448049">حساب توکن مربوطه هنوز وجود ندارد. مقدار اندکی SOL برای ایجاد و تهیه وجه آن هزینه خواهد شد.</translation>
 <translation id="523862956770478816">مجوزهای سایت</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> حساب متصل شد</translation>
 <translation id="4305817255990598646">جابجایی</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">ارائه شد</translation>
 <translation id="2331676293859649642">تأیید شد</translation>
 <translation id="1165039591588034296">خطا</translation>
+<translation id="8373210463207847451">نزول کرد</translation>
 <translation id="9065572743819293042">تراکنش‌های اخیر</translation>
 <translation id="4235538284468006757">جزئیات تراکنش</translation>
 <translation id="7488671812634887146">سرعت گرفتن</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 روز هدایای رمزگذاری‌شده، معادل 500 هزار دلار جایزه است.</translation>
 <translation id="8292716346768453265">اکنون وارد شوید!</translation>
 <translation id="6423985584914773314">آدرس FIL معتبر نیست</translation>
+<translation id="3898731124813934210">خرید با Wyre</translation>
+<translation id="5522073372365069684">خرید با Ramp</translation>
 <translation id="8528916244724490964">تمام شبکه‌ها</translation>
 <translation id="2781668117338732220">شبکه‌های ثانویه</translation>
 <translation id="2816106784624007524">محدوده گس باید عدد صحیح بزرگ‌تر از 0 باشد</translation>
+<translation id="3354376789153561654">داده‌های تراکنش «به» باید مشخص شود</translation>
+<translation id="8728991256628663004">داده‌های تراکنش «از» باید یک آدرس Filecoin معتبر باشد</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">اتصال قطع شد</translation>
 <translation id="745054660363064771">به سرور متصل نشد</translation>
 <translation id="3936826714240735937">انتخاب سروری دیگر</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> به سرور <ph name="REGION_NAME"/> متصل نشد. می‌توانید دوباره امتحان کنید یا مورد دیگری را انتخاب کنید</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/>به سرور<ph name="REGION_NAME"/> متصل نشد. می‌توانید دوباره تلاش کنید یا مورد دیگری را انتخاب کنید.</translation>
 <translation id="1024255913009642477">قبلاً VPN خریده‌اید؟</translation>
 <translation id="8814357473522731680">تحت پشتیبانی</translation>
 <translation id="5747552184818312860">تاریخ انقضا</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">سریع و نامحدود تا 100 مگابیت در ثانیه</translation>
 <translation id="1400240082805528049">پشتیبانی شبانه‌روزی</translation>
 <translation id="8463313539532697053">هنگام بارگذاری یک لحظه صبر کنید…</translation>
+<translation id="4613076894734402086">ویرایش روش پرداخت</translation>
+<translation id="1898254156730880135">به نظر می‌رسد که آخرین پرداخت شما انجام نشده است. تا زمانی که مشکل حل نشود، دسترسی به این اشتراک متوقف می‌گردد. سعی کنید روش پرداختتان را ویرایش کنید، یا با پشتیبانی Brave تماس بگیرید.</translation>
+<translation id="1839021455997460752">آدرس ایمیل شما</translation>
+<translation id="5154702632169343078">موضوع</translation>
+<translation id="6625978880678465492">لطفاً یک دلیل انتخاب کنید</translation>
+<translation id="6687228121145903051">اتصال به VPN امکان‌پذیر نیست (خطای دیگر)</translation>
+<translation id="9184988385244077767">هنگام اتصال اینترنت ندارید</translation>
+<translation id="21570240866965662">اتصال ضعیف</translation>
+<translation id="1219475260382643267">وب‌سایت کار نمی‌کند</translation>
+<translation id="7138678301420049075">دیگر</translation>
+<translation id="1387340358507240698">مشکلتان را توضیح دهید</translation>
+<translation id="501818585183973587">اطلاعاتی را که می‌خواهید با ما به اشتراک بگذارید، انتخاب کنید</translation>
+<translation id="3195618332367441234">هر چه اطلاعات بیشتری به اشتراک بگذارید، کارکنان پشتیبانی راحت‌تر می‌توانند کمک کنند.</translation>
+<translation id="5682143294773821728">نام میزبان VPN:</translation>
+<translation id="24242621812020123">نسخه برنامه:</translation>
+<translation id="6676791921618140305">نسخه سیستم عامل:</translation>
+<translation id="1156325797949437777">پشتیبانی با شراکت Guardian ارائه می‌شود.</translation>
+<translation id="3307461350293459700">اتصال VPN قطع شد. لطفاً دوباره برای اتصال تلاش کنید، و دقت کنید که روی «مجاز شود» کلیک کنید تا پیکربندی VPN مربوط به Brave فعال شود.</translation>
 <translation id="7586151660465233733">بازارهای بیشتر در <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">مشاهده بازارها و تبادل رمزارزها در FTX</translation>
 <translation id="5963745988819586370">بازارها</translation>

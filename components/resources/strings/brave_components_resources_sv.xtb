@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24HR Volume</translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
 <translation id="4492298165410552103">Aktivera stöd för ostoppbara domäner i Brave?</translation>
-<translation id="3470923752115324276">Brave kan göra det möjligt för dig att besöka .crypto-domäner genom att använda Cloudflare för att lösa .crypto-domänförfrågningar med DNS via HTTPS. Om du aktiverar detta kommer Cloudflare att se .crypto-domänen som du försöker besöka men de kommer inte att kunna se andra domäner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>användarvillkor<ph name="END_CF_TOU_LINK"/> och <ph name="BEGIN_CF_PRIVACY_LINK"/>integritetspolicy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave kommer att använda Infura för att utfärda Ethereum JSON-RPC-anrop till det smarta kontraktet från Unstoppable Domains för att lösa domännamnsökningar för .crypto (och även .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Om du aktiverar detta kommer Infura att se de specifika domäner som du försöker besöka, men de kommer inte att kunna se andra domäner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor<ph name="END_INFURA_TOU_LINK"/> och <ph name="BEGIN_INFURA_PRIVACY_LINK"/>integritetspolicy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Aktivera stöd för Ethereum Name Service (ENS) i Brave?</translation>
-<translation id="618766505813078707">Brave kan göra det möjligt för dig att besöka .eth-domäner genom att använda Cloudflare för att lösa .eth-domänförfrågningar med DNS via HTTPS. Om du aktiverar detta kommer Cloudflare att se .eth-domänen som du försöker besöka men de kommer inte att kunna se andra domäner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>användarvillkor<ph name="END_CF_TOU_LINK"/> och <ph name="BEGIN_CF_PRIVACY_LINK"/>integritetspolicy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Fortsätt med Cloudflare-server</translation>
+<translation id="8328137586971750853">Brave kommer att använda Infura för att utfärda Ethereum JSON-RPC-anrop till det smarta kontraktet från Ethereum Name Service för att lösa sökningsförfrågningar för domännamn i .eth-domänen. Om du aktiverar detta kommer Infura att se den .eth-domän som du försöker besöka, men de kommer inte att kunna se andra domäner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor <ph name="END_INFURA_TOU_LINK"/> och <ph name="BEGIN_INFURA_PRIVACY_LINK"/>sekretesspolicy <ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Fortsätt med Infura-server</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="2218918398178303658">DNS över HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Förväntad enkel objektparameter.</translation>
 <translation id="1875861420974447980">Detta kedje-ID används för närvarande</translation>
 <translation id="167698752210114155">Ett internt fel har inträffat</translation>
+<translation id="2326876601333401685">Den här RPC-metoden stöds inte.</translation>
 <translation id="1128992132632883337">Ett svarstolkningsfel har inträffat</translation>
 <translation id="1680597601664421644">Snabbtangenten som importeras är inte giltig för Brave Wallet</translation>
 <translation id="4641919696349069826">En begäran pågår redan</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Transaktionsdata 'gasPrice' är ogiltigt</translation>
 <translation id="8909404207805041979">Transaktionsdata 'gas' är ogiltig</translation>
 <translation id="670444168393199227">Transaktionsdatas värde är ogiltigt</translation>
-<translation id="6180576227145734714">Transaktionsdata "till" måste vara en giltig adress när den anges</translation>
 <translation id="6916219411793555838">Transaktionsdata 'gasPrice' eller 'maxFeePerGas' måste anges</translation>
 <translation id="1406937874668963740">Transaktionsdata 'chainId' är ogiltig</translation>
 <translation id="9195349857587166771">Transaktionsdata 'maxFeePerGas' är ogiltigt</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Fel vid bearbetning av transaktionen</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' är inte auktoriserad för att signera meddelanden</translation>
 <translation id="8719220598078667817">Det gick inte att signera transaktionen</translation>
-<translation id="5486744676117070166">Det gick inte att hämta nästa nonce-värde</translation>
 <translation id="875506212625074179">Ogiltigt kedje-ID-svar från RPC-tjänsten</translation>
+<translation id="5486744676117070166">Det gick inte att hämta nästa nonce-värde</translation>
+<translation id="6180576227145734714">Transaktionsdata "till" måste vara en giltig adress när den anges</translation>
 <translation id="4958950550253325418">Defi appar</translation>
 <translation id="735961408871282410">NFT marknadsplatser</translation>
 <translation id="7740287852186792672">Sökresultat</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x kommer att behandla Ethereum-adressen och IP-numret för att genomföra en transaktion (samt att hämta kurser). 0x kommer ENDAST att använda dessa data till att hantera transaktioner.</translation>
 <translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
 <translation id="8368540604723748428">För många decimalställen</translation>
+<translation id="6575120282593094155">Du har inte ett <ph name="ACCOUNT_TYPE"/> konto. Vill du skapa ett nu?</translation>
 <translation id="2704606927547763573">Kopierat</translation>
 <translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
 <translation id="8303434745767477417">Håll kryptotillgångar i din förvaring. Spåra portföljprestanda och interagera med web 3 DApps. Handla, investera, låna och låna med DeFi. Okej från Brave sekretesswebbläsare. Inga tillägg, ingen hämtning krävs.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Pris i</translation>
 <translation id="2490428413101944234">Testkran</translation>
 <translation id="3352959425838279177">Hämta Ether från en kran för <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Fortsätt till Wyre</translation>
-<translation id="2581671693710952401">Skaffa Ether</translation>
 <translation id="8009571545960303544">En begäran om din signatur har skickats</translation>
 <translation id="5294062982587710720">Uppmärksamma att Brave inte kan’ verifiera vad som händer om du signerar. En signatur kan godkänna nästan alla operationer på ditt konto eller för dina räkning, inklusive (men inte begränsat till) att ge fullständig kontroll över ditt konto och kryptotillgångar till webbplatsen som gör begäran. Skriv bara om du’är säker på att du vill vidta denna åtgärden och lita på den begärande webbplatsen.</translation>
 <translation id="3474375934783434676">Registrera på egen risk</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">nästa</translation>
 <translation id="793994607260936590">först</translation>
 <translation id="4709524402122994378">transaktioner</translation>
+<translation id="4591079278963448049">Det tillhörande tokenkontot  finns inte ännu. Ett litet antal SOL kommer att spenderas för att skapa och finansiera det.</translation>
 <translation id="523862956770478816">Webbplatsbehörigheter</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> konton anslutna</translation>
 <translation id="4305817255990598646">Växla</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Inskickat</translation>
 <translation id="2331676293859649642">Bekräftat</translation>
 <translation id="1165039591588034296">Fel</translation>
+<translation id="8373210463207847451">Tappad</translation>
 <translation id="9065572743819293042">Senaste transaktioner</translation>
 <translation id="4235538284468006757">Transaktionsdetaljer</translation>
 <translation id="7488671812634887146">Snabba på</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 dagar med kryptogåvor, ~$500k i priser</translation>
 <translation id="8292716346768453265">Delta nu!</translation>
 <translation id="6423985584914773314">Inte en giltig FIL-adress</translation>
+<translation id="3898731124813934210">Köp med Wyre</translation>
+<translation id="5522073372365069684">Köp med Ramp</translation>
 <translation id="8528916244724490964">Alla nätverk</translation>
 <translation id="2781668117338732220">Sekundära nätverk</translation>
 <translation id="2816106784624007524">Gasgränsen måste vara ett heltal som är större än 0</translation>
+<translation id="3354376789153561654">Transaktionsdata ”till” måste anges</translation>
+<translation id="8728991256628663004">Transaktionsdata ”från” måste vara en giltig Filecoin-adress</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Anslutningen misslyckades</translation>
 <translation id="745054660363064771">Kan inte ansluta till servern</translation>
 <translation id="3936826714240735937">Välj en annan server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kunde inte ansluta till <ph name="REGION_NAME"/> servern. Du kan försöka igen eller välja en annan</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kunde inte ansluta till <ph name="REGION_NAME"/> servern. Du kan försöka igen eller välja en annan.</translation>
 <translation id="1024255913009642477">Redan köpt VPN?</translation>
 <translation id="8814357473522731680">Drivs av</translation>
 <translation id="5747552184818312860">Upphör att gälla</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Snabb och obegränsad upp till 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 support</translation>
 <translation id="8463313539532697053">Ett ögonblick medan inläsning sker…</translation>
+<translation id="4613076894734402086">Redigera betalningsmetod</translation>
+<translation id="1898254156730880135">Det verkar som om din senaste betalning inte gick igenom. Tillgången till denna prenumeration kommer att avbrytas tills betalningsproblemet är löst. Försök att redigera din betalningsmetod eller kontakta Brave-supporten.</translation>
+<translation id="1839021455997460752">Din e-postadress</translation>
+<translation id="5154702632169343078">Ämne</translation>
+<translation id="6625978880678465492">Välj en anledning</translation>
+<translation id="6687228121145903051">Kan inte ansluta till VPN (annat fel)</translation>
+<translation id="9184988385244077767">Inget internet när det är anslutet</translation>
+<translation id="21570240866965662">Långsam uppkoppling</translation>
+<translation id="1219475260382643267">Webbplatsen fungerar inte</translation>
+<translation id="7138678301420049075">Övrigt</translation>
+<translation id="1387340358507240698">Beskriv ditt problem</translation>
+<translation id="501818585183973587">Välj den information du är villig att dela med oss</translation>
+<translation id="3195618332367441234">Ju mer information du delar, desto enklare blir det för supportpersonalen att hjälpa dig</translation>
+<translation id="5682143294773821728">VPN-värdnamn:</translation>
+<translation id="24242621812020123">Appversion:</translation>
+<translation id="6676791921618140305">OS-version:</translation>
+<translation id="1156325797949437777">Support ges i partnerskap med Guardian</translation>
+<translation id="3307461350293459700">VPN-anslutningen misslyckades. Försök att ansluta igen och klicka på Tillåt för att aktivera Braves VPN-konfiguration.</translation>
 <translation id="7586151660465233733">Fler marknader på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Visa marknader och handla krypto på FTX</translation>
 <translation id="5963745988819586370">Marknader</translation>

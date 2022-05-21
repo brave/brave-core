@@ -668,11 +668,8 @@
 <translation id="1164622162816276433">24 h apjoms</translation>
 <translation id="7534079972563542000">Neapturamie domēni</translation>
 <translation id="4492298165410552103">Vai iespējot neapturamo domēnu atbalstu sistēmā Brave?</translation>
-<translation id="3470923752115324276">Brave var nodrošināt iespēju apmeklēt .crypto domēnus, izmantojot Cloudflare, lai atrisinātu .crypto domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .crypto domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Vai iespējot Ethereum Name Service (ENS) atbalstu sistēmā Brave?</translation>
-<translation id="618766505813078707">Brave var nodrošināt iespēju apmeklēt .eth domēnus, izmantojot Cloudflare, lai atrisinātu .eth domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .eth domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Turpināt izmantot Cloudflare serveri</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="2218918398178303658">DNS ir pārāks par HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -809,7 +806,6 @@
 <translation id="7577623631309755655">Darījuma dati “gasPrice” nav derīgi.</translation>
 <translation id="8909404207805041979">Darījuma dati “gas” nav derīgi.</translation>
 <translation id="670444168393199227">Darījuma dati “value” nav derīgi.</translation>
-<translation id="6180576227145734714">Darījuma datiem “to” ir jābūt derīgai adresei, ja tā ir norādīta.</translation>
 <translation id="6916219411793555838">Jānorāda darījuma dati “gasPrice” vai “maxFeePerGas”.</translation>
 <translation id="1406937874668963740">Darījuma dati “chainId” nav derīgi.</translation>
 <translation id="9195349857587166771">Darījuma dati “maxFeePerGas” nav derīgi.</translation>
@@ -823,8 +819,9 @@
 <translation id="1462494615260983714">Kļūda darījuma apstrādē</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' nav pilnvarots parakstīt ziņojumu</translation>
 <translation id="8719220598078667817">Neizdevās parakstīt darījumu</translation>
-<translation id="5486744676117070166">Neizdevās iegūt nākamo šī brīža vērtību</translation>
 <translation id="875506212625074179">Nederīga ķēdes ID atbilde no RPC pakalpojuma</translation>
+<translation id="5486744676117070166">Neizdevās iegūt nākamo šī brīža vērtību</translation>
+<translation id="6180576227145734714">Darījuma datiem “to” ir jābūt derīgai adresei, ja norādīts</translation>
 <translation id="4958950550253325418">DeFi lietotnes</translation>
 <translation id="735961408871282410">NFT tirgi</translation>
 <translation id="7740287852186792672">Meklēšanas rezultāti</translation>
@@ -997,8 +994,6 @@
 <translation id="8569380433211549748">Cena, kas izteikta</translation>
 <translation id="2490428413101944234">Testēt "krāna" vietni</translation>
 <translation id="3352959425838279177">Saņemiet Ether no plūsmas šim tīklam:  <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Pāriet uz Wyre</translation>
-<translation id="2581671693710952401">Saņemt Ether</translation>
 <translation id="8009571545960303544">Nepieciešams jūsu paraksts</translation>
 <translation id="5294062982587710720">Ņemiet vērā, ka Brave nevar pārbaudīt, kas notiks parakstīšanas gadījumā. Paraksts var atļaut gandrīz jebkādu darbību jūsu kontā vai jūsu vārdā, ieskaitot (bet ne tikai) pilnīgu jūsu konta un kriptovalūtu līdzekļu kontroles nodošanu vietnei, kura iesniedz pieprasījumu. Parakstieties vienīgi tad, ja esat pārliecināts, ka vēlaties veikt šo darbību, un uzticaties pieprasītāja vietnei.</translation>
 <translation id="3474375934783434676">Parakstieties uz savu atbildību</translation>
@@ -1090,6 +1085,7 @@
 <translation id="6666273175654835609">Iesniegts</translation>
 <translation id="2331676293859649642">Apstiprināts</translation>
 <translation id="1165039591588034296">Kļūda</translation>
+<translation id="8373210463207847451">Atmests</translation>
 <translation id="9065572743819293042">Pēdējie darījumi</translation>
 <translation id="4235538284468006757">Darījuma informācija</translation>
 <translation id="7488671812634887146">Paātrināt</translation>
@@ -1216,7 +1212,6 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="2325196879156848326">Savienojums neizdevās</translation>
 <translation id="745054660363064771">Nevar savienoties ar serveri</translation>
 <translation id="3936826714240735937">Izvēlēties citu serveri</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> nevarēja savienoties ar  <ph name="REGION_NAME"/> serveri. Jūs varat mēģināt vēlreiz vai izvēlēties citu</translation>
 <translation id="1024255913009642477">Vai jūs jau iegādājāties VPN?</translation>
 <translation id="8814357473522731680">Nodrošina</translation>
 <translation id="5747552184818312860">Termiņš</translation>
@@ -1229,6 +1224,11 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="1751947227857853925">Ātrs un neierobežots līdz 100 Mb/s.</translation>
 <translation id="1400240082805528049">Atbalsts visu diennakti</translation>
 <translation id="8463313539532697053">Uzgaidiet mirkli, kamēr notiek ielāde…</translation>
+<translation id="6687228121145903051">Nevar izveidot savienojumu ar VPN (cita kļūda).</translation>
+<translation id="9184988385244077767">Nav interneta, kad savienojums ir izveidots</translation>
+<translation id="21570240866965662">Lēns savienojums.</translation>
+<translation id="1219475260382643267">Vietne nedarbojas.</translation>
+<translation id="7138678301420049075">Cits</translation>
 <translation id="7586151660465233733">Vairāk tirgu vietnē <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Skatīt tirgus un pārdot kriptovalūtu FTX</translation>
 <translation id="5963745988819586370">Tirgi</translation>
