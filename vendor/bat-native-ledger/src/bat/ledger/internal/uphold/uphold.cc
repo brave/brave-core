@@ -219,6 +219,25 @@ void Uphold::GetUser(GetUserCallback callback) {
   user_->Get(callback);
 }
 
+void Uphold::GetCapabilities(GetCapabilitiesCallback callback) {
+  auto uphold_wallet = GetWallet();
+  if (!uphold_wallet) {
+    BLOG(0, "Uphold wallet is null!");
+    return callback(type::Result::LEDGER_ERROR, {});
+  }
+
+  if (uphold_wallet->status != type::WalletStatus::PENDING &&
+      uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Uphold wallet is neither in PENDING, nor in VERIFIED state!");
+    return callback(type::Result::LEDGER_ERROR, {});
+  }
+
+  CheckWalletState(uphold_wallet.get());
+
+  uphold_server_->get_capabilities()->Request(uphold_wallet->token,
+                                              std::move(callback));
+}
+
 void Uphold::SaveTransferFee(const std::string& contribution_id,
                              const double fee) {
   StartTransferFeeTimer(contribution_id, 1);

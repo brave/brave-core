@@ -16,29 +16,12 @@
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
+using ledger::uphold::Capabilities;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
 namespace ledger {
 namespace uphold {
-
-namespace {
-type::Result GetReturnValueForUserStatus(UserStatus status) {
-  DCHECK(status != UserStatus::OK);
-
-  switch (status) {
-    case UserStatus::BLOCKED:
-      return type::Result::UPHOLD_BLOCKED_USER;
-    case UserStatus::PENDING:
-      return type::Result::UPHOLD_PENDING_USER;
-    case UserStatus::RESTRICTED:
-      return type::Result::UPHOLD_RESTRICTED_USER;
-    default:
-      DCHECK(status == UserStatus::EMPTY);
-      return type::Result::LEDGER_ERROR;
-  }
-}
-}  // namespace
 
 UpholdWallet::UpholdWallet(LedgerImpl* ledger)
     : ledger_{ledger},
@@ -118,16 +101,6 @@ void UpholdWallet::OnGetUser(const type::Result result,
     return callback(type::Result::CONTINUE);
   }
 
-  if (user.customer_due_diligence_required) {
-    BLOG(0, "Customer due diligence is required for the user!");
-    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
-    ledger_->uphold()->DisconnectWallet(
-        uphold_wallet->status == type::WalletStatus::VERIFIED
-            ? ledger::notifications::kWalletDisconnected
-            : "");
-    return callback(type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED);
-  }
-
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
@@ -142,11 +115,48 @@ void UpholdWallet::OnGetUser(const type::Result result,
     return callback(type::Result::LEDGER_ERROR);
   }
 
-  if (user.status != UserStatus::OK) {
-    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
-    ledger_->uphold()->DisconnectWallet("");
+  ledger_->uphold()->GetCapabilities(std::bind(
+      &UpholdWallet::OnGetCapabilities, this, _1, _2, std::move(callback)));
+}
 
-    return callback(GetReturnValueForUserStatus(user.status));
+void UpholdWallet::OnGetCapabilities(type::Result result,
+                                     Capabilities capabilities,
+                                     ledger::ResultCallback callback) const {
+  auto uphold_wallet = ledger_->uphold()->GetWallet();
+  if (!uphold_wallet) {
+    BLOG(0, "Uphold wallet is null!");
+    return callback(type::Result::LEDGER_ERROR);
+  }
+
+  if (uphold_wallet->status != type::WalletStatus::PENDING &&
+      uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    return callback(type::Result::LEDGER_OK);
+  }
+
+  CheckWalletState(uphold_wallet.get());
+
+  if (result == type::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Access token expired!");
+    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
+    ledger_->uphold()->DisconnectWallet(
+        ledger::notifications::kWalletDisconnected);
+    return callback(type::Result::EXPIRED_TOKEN);
+  }
+
+  if (result != type::Result::LEDGER_OK || !capabilities.can_receive ||
+      !capabilities.can_send) {
+    BLOG(0, "Couldn't get capabilities from Uphold!");
+    return callback(type::Result::CONTINUE);
+  }
+
+  if (!*capabilities.can_receive || !*capabilities.can_send) {
+    BLOG(0, "User doesn't have the required Uphold capabilities!");
+    // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
+    ledger_->uphold()->DisconnectWallet(
+        uphold_wallet->status == type::WalletStatus::VERIFIED
+            ? ledger::notifications::kWalletDisconnected
+            : "");
+    return callback(type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES);
   }
 
   if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
@@ -154,8 +164,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
         std::bind(&UpholdWallet::OnTransferTokens, this, _1, _2, callback));
   }
 
-  ledger_->uphold()->CreateCard(
-      std::bind(&UpholdWallet::OnCreateCard, this, _1, _2, callback));
+  ledger_->uphold()->CreateCard(std::bind(&UpholdWallet::OnCreateCard, this, _1,
+                                          _2, std::move(callback)));
 }
 
 void UpholdWallet::OnCreateCard(const type::Result result,
