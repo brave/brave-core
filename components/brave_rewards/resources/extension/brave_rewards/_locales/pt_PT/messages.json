@@ -231,7 +231,7 @@
     "description": ""
   },
   "walletPendingText": {
-    "message": "Há um problema temporário na verificação do $provider$. Suas Recompensas Brave permanecerão em estado pendente e uma nova tentativa será realizada automaticamente, mas você também pode tentar novamente mais tarde.",
+    "message": "Existe um problema temporário ao realizar a verificação em $provider$. As suas Recompensas Brave permanecerão no estado pendente e será realizada uma nova tentativa automaticamente. Também pode tentar novamente mais tarde.",
     "description": "",
     "placeholders": {
       "provider": {

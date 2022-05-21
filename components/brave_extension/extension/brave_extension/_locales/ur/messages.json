@@ -88,7 +88,7 @@
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "کوکیز مسدود ہیں",
+    "message": "Cookies blocked",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
@@ -136,11 +136,11 @@
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "مسدود کریں",
+    "message": "Block",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "اجازت دیں",
+    "message": "Allow",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
@@ -156,11 +156,11 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "منسوخ کریں",
+    "message": "Cancel",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "پیچھے جائیں",
+    "message": "Go back",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
@@ -200,11 +200,11 @@
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "سمجھ آ گئی",
+    "message": "Got it",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "مزید جانیں",
+    "message": "Learn more",
     "description": "Message inviting the user to learn more about Shields"
   }
 }

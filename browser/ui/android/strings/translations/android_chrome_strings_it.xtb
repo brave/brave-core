@@ -29,11 +29,13 @@
 <translation id="1146678959555564648">Entra nella VR</translation>
 <translation id="114825011539563458">I controlli per la privacy e la sicurezza più importanti in un unico posto</translation>
 <translation id="1149401351239820326">Mese di scadenza</translation>
+<translation id="7083341910267693582"><ph name="APP_NAME"/> si aprirà in Brave. Se continui, accetti i <ph name="BEGIN_LINK1"/>Termini di servizio di Brave<ph name="END_LINK1"/> e i <ph name="BEGIN_LINK2"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_LINK2"/>.</translation>
 <translation id="1154704303112745282">Pagina non disponibile offline: <ph name="VIOLATED_URL"/></translation>
 <translation id="1171770572613082465">Scopri i siti web più visitati toccando il pulsante "Siti principali"</translation>
 <translation id="1173894706177603556">Rinomina</translation>
 <translation id="1177863135347784049">Personalizzati</translation>
 <translation id="1181037720776840403">Rimuovi</translation>
+<translation id="1193729455103054076">Vuoi usare una password efficace?</translation>
 <translation id="1197267115302279827">Sposta i Preferiti</translation>
 <translation id="1201402288615127009">Avanti</translation>
 <translation id="1202892408424955784">Prodotti monitorati</translation>
@@ -88,6 +90,7 @@ Quando elimini la cronologia di navigazione (l'intera cronologia o soltanto quel
 <translation id="1409879593029778104">Download di <ph name="FILE_NAME"/> impedito perché il file esiste già.</translation>
 <translation id="1853026300647876496">Connessione a Brave in corso. L'operazione potrebbe richiedere un minuto…</translation>
 <translation id="1416550906796893042">Versione applicazione</translation>
+<translation id="1428770807407000502">Vuoi disattivare la sincronizzazione?</translation>
 <translation id="1430915738399379752">Stampa</translation>
 <translation id="1436784010935106834">Rimosso</translation>
 <translation id="1448440926884431741">Organizza i tuoi prodotti monitorati in Segnalibri</translation>
@@ -138,7 +141,6 @@ Quando elimini la cronologia di navigazione (l'intera cronologia o soltanto quel
 <translation id="1779766957982586368">Chiudi finestra</translation>
 <translation id="1791662854739702043">Installato</translation>
 <translation id="1792959175193046959">Modifica il percorso di download predefinito in qualsiasi momento</translation>
-<translation id="2368444735104192323">Termini di servizio aggiuntivi di Brave e Chrome OS</translation>
 <translation id="1807246157184219062">Chiaro</translation>
 <translation id="1810845389119482123">Configurazione iniziale della sincronizzazione non terminata</translation>
 <translation id="1829244130665387512">Trova nella pagina</translation>
@@ -175,8 +177,6 @@ Quando elimini la cronologia di navigazione (l'intera cronologia o soltanto quel
 <translation id="2000419248597011803">Invia al tuo motore di ricerca predefinito alcune ricerche dalla barra degli indirizzi e dalla casella di ricerca, nonché alcuni cookie</translation>
 <translation id="6968892567705775281">Vuoi includere il testo circostante nelle ricerche Brave?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# file}other{# file}}</translation>
-<translation id="2185841461857887156"><ph name="APP_NAME"/> si aprirà in Brave. Se continui, accetti i <ph name="BEGIN_LINK1"/>Termini di servizio di Brave<ph name="END_LINK1"/> e i <ph name="BEGIN_LINK2"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_LINK2"/>. Si applicano anche le <ph name="BEGIN_LINK3"/>Norme sulla privacy<ph name="END_LINK3"/>.</translation>
-<translation id="2019145049163614359">Vuoi rimuovere l'interesse?</translation>
 <translation id="2020309681647789787">La tua cronologia sarà disponibile su tutti i dispositivi sincronizzati, quindi potrai continuare ciò che stavi facendo</translation>
 <translation id="2021896219286479412">Controlli sito a schermo intero</translation>
 <translation id="2038563949887743358">Attiva Richiedi sito desktop</translation>
@@ -201,10 +201,12 @@ Tocca una parola per eseguire una ricerca. Per perfezionare la ricerca, tocca e 
 <translation id="796823723482603597">Con tecnologia Brave</translation>
 <translation id="2132122640199389833">Rimuovi tutti i dispositivi collegati</translation>
 <translation id="213279576345780926">La scheda <ph name="TAB_TITLE"/> è stata chiusa</translation>
+<translation id="6659395979197839222">Se utilizzi Brave, accetti i <ph name="BEGIN_TOS_LINK"/>Termini di servizio di Brave<ph name="END_TOS_LINK"/> e i <ph name="BEGIN_ATOS_LINK"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="2139186145475833000">Aggiungi a schermata Home</translation>
 <translation id="2141396931810938595">In base al tuo utilizzo</translation>
 <translation id="6516933364477884970">Scegli quali dati condividere con Brave. Le metriche che condividi verranno utilizzate per contribuire a migliorare le funzionalità, le prestazioni e la stabilità di Brave.</translation>
 <translation id="2149973817440762519">Modifica Preferito</translation>
+<translation id="2155214902713132423">Questo metodo di verifica non è disponibile per il dispositivo in uso. Scegli un'opzione diversa sull'altro dispositivo.</translation>
 <translation id="6162454065885854378">Per condividere contenuti dal tuo telefono con un altro dispositivo, attiva la sincronizzazione nelle impostazioni di Brave su entrambi i dispositivi</translation>
 <translation id="4162910516440006395">Brave non ha potuto controllare tutte le password</translation>
 <translation id="2169830938017475061">Ora</translation>
@@ -379,6 +381,7 @@ Tocca e tieni premuta una parola per eseguire una ricerca. Per perfezionare la r
 <translation id="6153252609477956632">Articoli relativi ai tuoi interessi su Brave</translation>
 <translation id="3066573403916685335">Sposta giù</translation>
 <translation id="3070005020161560471">Traduci automaticamente</translation>
+<translation id="1094255666887095087"><ph name="APP_NAME"/> si aprirà in Brave. Se continui, accetti i <ph name="BEGIN_LINK1"/>Termini di servizio di Brave<ph name="END_LINK1"/> e i <ph name="BEGIN_LINK2"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_LINK2"/>. Si applicano anche le <ph name="BEGIN_LINK3"/>Norme sulla privacy<ph name="END_LINK3"/>.</translation>
 <translation id="3091010850649238832">Mostra contenuti degli appunti</translation>
 <translation id="821565628224723530">Alcune immagini vengono inviate a Brave per migliorare le descrizioni</translation>
 <translation id="3114507951000454849">Leggi le notizie di oggi <ph name="NEWS_ICON"/></translation>
@@ -447,7 +450,6 @@ Tocca e tieni premuta una parola per eseguire una ricerca. Per perfezionare la r
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Ulteriori informazioni<ph name="END_LINK"/> sui contenuti suggeriti</translation>
 <translation id="3495219333887281978">Riquadro inferiore di accesso aperto nella parte inferiore dello schermo.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="5067649501056343732">Utilizzando Brave, accetti i <ph name="BEGIN_TOS_LINK"/>Termini di servizio di Brave<ph name="END_TOS_LINK"/> e i <ph name="BEGIN_ATOS_LINK"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="3507132249039706973">Protezione standard è attiva</translation>
 <translation id="8669829441518807650">Offline. Brave non può controllare la disponibilità di aggiornamenti.</translation>
 <translation id="3513704683820682405">Realtà aumentata</translation>
@@ -564,8 +566,10 @@ Tocca e tieni premuta una parola per eseguire una ricerca. Per perfezionare la r
 <translation id="4269820728363426813">Copia indirizzo link</translation>
 <translation id="4290281343757112331">Vuoi scaricare più tardi?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Attiva il blocco schermo nelle impostazioni di Android<ph name="END_LINK"/></translation>
+<translation id="6299940168852877221">Se utilizzi Brave, accetti i <ph name="BEGIN_TOS_LINK"/>Termini di servizio di Brave<ph name="END_TOS_LINK"/> e i <ph name="BEGIN_ATOS_LINK"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_ATOS_LINK"/>. Si applicano anche le <ph name="BEGIN_PRIVACY_LINK"/>Norme sulla privacy<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="4298388696830689168">Siti collegati</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">Gestione password</translation>
 <translation id="4307992518367153382">Impostazioni di base</translation>
 <translation id="4320177379694898372">Nessuna connessione Internet</translation>
 <translation id="4321739720395210191">Impossibile aprire la fotocamera. Riavvia il dispositivo e riprova.</translation>
@@ -710,7 +714,6 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="4744980273298156620">A breve vedrai storie di <ph name="SITE_NAME"/> quando aprirai una nuova scheda. I siti che segui vengono salvati nel tuo Account Brave. Puoi gestirli nelle impostazioni di Discover.</translation>
 <translation id="5091249083535528968">Dati completi sull'utilizzo</translation>
 <translation id="509429900233858213">Si è verificato un errore.</translation>
-<translation id="5098190077610408701">Vuoi aggiungere l'interesse?</translation>
 <translation id="225414324447409614">Se un sito cerca di rubare la tua password o se scarichi un file dannoso, Brave potrebbe inviare gli URL, inclusi frammenti dei contenuti delle pagine, a Navigazione sicura</translation>
 <translation id="510275257476243843">1 ora rimanente</translation>
 <translation id="5115811374190515607">in <ph name="PRODUCT_NAME"/></translation>
@@ -790,7 +793,6 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="5578795271662203820">Cerca questa immagine su <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Puoi scegliere in qualsiasi momento i dati da sincronizzare nelle <ph name="BEGIN_LINK1"/>impostazioni<ph name="END_LINK1"/>.</translation>
 <translation id="5590372121997663538">Ricorda questo computer</translation>
-<translation id="559871659088672663">Al momento questa funzionalità è in fase di sviluppo</translation>
 <translation id="6157610782452852023">L'Assistente Brave può completare azioni per te sui siti web</translation>
 <translation id="5620163320393916465">Nessuna password salvata</translation>
 <translation id="5620928963363755975">Usa il pulsante Altre opzioni per trovare i tuoi file e le tue pagine nella cartella Download</translation>
@@ -853,6 +855,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="1985257319311245640">Conoscere gli URL dei siti consente all'Assistente Brave di aiutarti a completare le attività. Puoi disattivare l'assistente nelle impostazioni di Brave.</translation>
 <translation id="5916664084637901428">On</translation>
 <translation id="5919204609460789179">Aggiorna <ph name="PRODUCT_NAME"/> per avviare la sincronizzazione</translation>
+<translation id="5938820472109305350">Aggiungi <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Brave in uso per la ricerca</translation>
 <translation id="5945035219773565305">Consiglio corrente: <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">Visualizzazione della pagina attiva</translation>
@@ -872,7 +875,6 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="6557407328070865042">Con <ph name="BEGIN_LINK"/>Privacy Sandbox<ph name="END_LINK"/>, Brave sviluppa nuove tecnologie che ti tutelano dai meccanismi di tracciamento tra siti salvaguardando al contempo il Web aperto.
 
 Le prove di Privacy Sandbox sono ancora in fase di sviluppo attivo e sono disponibili soltanto in alcune aree geografiche. Per il momento i siti possono provare Privacy Sandbox continuando a usare le attuali tecnologie web quali i cookie di terze parti.</translation>
-<translation id="6036057147555329831">ICU extra</translation>
 <translation id="6039379616847168523">Vai alla scheda successiva</translation>
 <translation id="6040143037577758943">Chiudi</translation>
 <translation id="604124094241169006">Automatico</translation>
@@ -930,7 +932,6 @@ Ad esempio, alcuni siti web potrebbero rispondere alla richiesta mostrando annun
 <translation id="6345878117466430440">Segna come letto</translation>
 <translation id="6363990818884053551">Per avviare la sincronizzazione devi verificare la tua identità</translation>
 <translation id="6364438453358674297">Rimuovere il suggerimento dalla cronologia?</translation>
-<translation id="4993481112200507346"><ph name="APP_NAME"/> si aprirà in Brave. Se continui, accetti i <ph name="BEGIN_LINK1"/>Termini di servizio di Brave<ph name="END_LINK1"/> e i <ph name="BEGIN_LINK2"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_LINK2"/>.</translation>
 <translation id="806493401838431801">Precarica più di frequente le pagine che Brave ritiene tu possa visitare. Questa impostazione potrebbe comportare un maggior utilizzo dei dati.</translation>
 <translation id="6395288395575013217">LINK</translation>
 <translation id="6397616442223433927">Di nuovo online</translation>
@@ -991,6 +992,7 @@ Ad esempio, alcuni siti web potrebbero rispondere alla richiesta mostrando annun
 <translation id="2259649928554669581">Per altre impostazioni relative a privacy, sicurezza e raccolta dei dati, consulta le sezioni <ph name="BEGIN_LINK1"/>Sincronizzazione<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>Servizi Brave<ph name="END_LINK2"/></translation>
 <translation id="7939692063031538305">Per contribuire a migliorare l'app, Brave invia a Brave dati sull'utilizzo e sugli arresti anomali. <ph name="BEGIN_UMA_LINK"/>Gestisci<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Blocca sempre</translation>
+<translation id="6641780377503683465">Rimuovi <ph name="INTEREST"/></translation>
 <translation id="6643016212128521049">Cancella</translation>
 <translation id="6645629752388991326">Controlla quali dispositivi possono eseguire l'accesso usando questo dispositivo come token di sicurezza.</translation>
 <translation id="6678472970290886941">L'amministratore può modificare da remoto la configurazione del browser. L'attività svolta su questo dispositivo potrebbe essere gestita anche al di fuori di Brave.</translation>
@@ -1015,9 +1017,9 @@ Ad esempio, alcuni siti web potrebbero rispondere alla richiesta mostrando annun
 <translation id="6751521182688001123">Apri rapidamente una nuova scheda. Tocca e tieni premuto per modificare questa scorciatoia.</translation>
 <translation id="6756507620369789050">Condividi feedback</translation>
 <translation id="6767294960381293877">Elenco di dispositivi con cui condividere una scheda aperto nella parte inferiore dello schermo.</translation>
-<translation id="6770042910635026163">Siti visitati che definiscono i tuoi interessi</translation>
 <translation id="6770602306803890733">Aumenta la sicurezza per te e per tutti gli utenti del Web</translation>
 <translation id="6783942555455976443">Salva questa pagina per un secondo momento e ricevi un promemoria</translation>
+<translation id="8174975477247159780">Termini di servizio aggiuntivi di Brave e Chrome OS</translation>
 <translation id="6795633245022906657">Apri rapidamente una nuova scheda. Per modificare questa scorciatoia, vai a Impostazioni.</translation>
 <translation id="6802555630140434547">La finestra verrà chiusa</translation>
 <translation id="6811034713472274749">La pagina è pronta per essere visualizzata</translation>
@@ -1091,7 +1093,6 @@ Ad esempio, alcuni siti web potrebbero rispondere alla richiesta mostrando annun
 <translation id="7208109991155904980">Reazione spostata</translation>
 <translation id="7222235798733126207">Condivisione tra siti limitata</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 download in attesa}other{# download in attesa}}</translation>
-<translation id="7256686223798862196">Se utilizzi Brave, accetti i <ph name="BEGIN_TOS_LINK"/>Termini di servizio di Brave<ph name="END_TOS_LINK"/> e i <ph name="BEGIN_ATOS_LINK"/>Termini di servizio aggiuntivi di Brave e Chrome OS<ph name="END_ATOS_LINK"/>. Si applicano anche le <ph name="BEGIN_PRIVACY_LINK"/>Norme sulla privacy<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="7242755609445462077">Evidenziazione stilizzata: <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Assicurati che in Brave sia attiva la sincronizzazione di <ph name="TARGET_DEVICE_NAME"/></translation>
 <translation id="7252076891734325316">Avvicina il telefono al computer</translation>

@@ -668,11 +668,25 @@
 <translation id="1164622162816276433">24ሰዐት ድምፅ</translation>
 <translation id="7534079972563542000">የማይቆሙ ጎራዎች</translation>
 <translation id="4492298165410552103">Brave ውስጥ የማይቆሙ ጎራዎች ድጋፍ ይንቃ?</translation>
-<translation id="3470923752115324276">Brave ከHTTPS ይልቅ DNSን በመጠቀም .crypto የጎራ ስም ፍለጋ ጥያቄዎችን ለመፍታት Cloudflareን በመጠቀም .crypto ጎራዎችን እንዲጎበኙ ሊያስችልዎት ይችላል። ይህንን ካነቁት Cloudflare ሊጎበኙት እየሞከሩ ያለውን የ .crypto ጎራ ያያል ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የCloudflareን <ph name="BEGIN_CF_TOU_LINK"/>የአገልግሎት ውል<ph name="END_CF_TOU_LINK"/> እና <ph name="BEGIN_CF_PRIVACY_LINK"/>ግላዊነት ፖሊሲ<ph name="END_CF_PRIVACY_LINK"/> ይመልከቱ።</translation>
+<translation id="2173151783558384314">Brave ከUnstoppable Domains .crypto (እንዲሁም .x፣ .coin, .nft፣ .dao፣ .wallet፣ .888፣ .blockchain፣ .bitcoin) የጎራ ስም ፍለጋ ጥያቄዎች ለመፍታት የEthereum JSON-RPC ጥሪዎችን ወደ ዘመናዊው ኮንትራትከ  Infura በመጠቀም  ያቀርባል። ይህንን ካነቁት Infura እርስዎ ሊጎበኟቸው የሚፈልጓቸውን የተወሰኑ ጎራዎች ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የ Infuraን ይመልከቱ
+1 <ph name="BEGIN_INFURA_TOU_LINK"/>
+የአጠቃቀም ውል
+2 <ph name="END_INFURA_TOU_LINK"/>
+እና
+3 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>
+የግላዊነት መመሪያ
+4 <ph name="END_INFURA_PRIVACY_LINK"/></translation>
 <translation id="6513892817556267573">የEthereum ስም አገልግሎት</translation>
 <translation id="4335039108389860301">በ Brave ውስጥ የEthereum ስም አገልግሎት (ENS) ድጋፍ ይንቃ?</translation>
-<translation id="618766505813078707">Brave ከHTTPS ይልቅ DNSን በመጠቀም .eth የጎራ ስም ፍለጋ ጥያቄዎችን ለመፍታት Cloudflareን በመጠቀም .eth ጎራዎችን እንዲጎበኙ ሊያስችልዎት ይችላል። ይህንን ካነቁት Cloudflare ሊጎበኙት እየሞከሩ ያለውን የ .crypto ጎራ ያያል ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የCloudflareን <ph name="BEGIN_CF_TOU_LINK"/>የአገልግሎት ውል<ph name="END_CF_TOU_LINK"/> እና <ph name="BEGIN_CF_PRIVACY_LINK"/>ግላዊነት ፖሊሲ<ph name="END_CF_PRIVACY_LINK"/> ይመልከቱ።</translation>
-<translation id="5636651007798897342">የCloudflare አገልጋይ መጠቀሙን ይቀጥሉ</translation>
+<translation id="8328137586971750853">Brave የ Ethereum .eth የጎራ ፍለጋ ጥያቄዎችን ለመፍታት  ከ Ethereum ስም አገልግሎት ወደ Ethereum JSON-RPC ጥሪዎችን  ዘመናዊ ኮንትራት ለመስጠት Infura ን ይጠቀማል። ይህን ካነቁት Infura ሊጎበኙት የሞከሩትን የ.eth ጎራ ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። Infura ን ይመልከቱ
+1 <ph name="BEGIN_INFURA_TOU_LINK"/>
+የአጠቃቀም መመሪያ
+2 <ph name="END_INFURA_TOU_LINK"/>
+እና
+3 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>
+የግላዊ ሁኔታ መመሪያ
+4 <ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="7378412287463452336">የInfura አገልጋይ መጠቀሙን ቀጥል</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="2218918398178303658">ከ HTTPS ይልቅ DNS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +813,7 @@
 <translation id="9161147058107529840">የሚጠበቅ ነጠላ፣ የኦብጀክት መለኪያ።</translation>
 <translation id="1875861420974447980">ይህ ቼይን መታወቂያ በአሁኑ ጊዜ ጥቅም ላይ ውሏል</translation>
 <translation id="167698752210114155">ውስጣዊ ስህተት ተፈጥሯል</translation>
+<translation id="2326876601333401685">ይህ የ RPC ዘዴ አይደገፍም።</translation>
 <translation id="1128992132632883337">የምላሽ መተንተን ስህተት ተፈጥሯል</translation>
 <translation id="1680597601664421644">ከውጭ የገባው የሃሳብ ማስታወሻ ቁልፍ ለBrave Wallet ተቀባይነት የለውም።</translation>
 <translation id="4641919696349069826">ጥያቄ ቀድሞውኑ በሂደት ላይ ነው</translation>
@@ -809,7 +824,6 @@
 <translation id="7577623631309755655">የግብይት ውሂብ 'gasPrice' ትክክል አይደለም</translation>
 <translation id="8909404207805041979">የግብይት ውሂብ 'gas' ልክ አይደለም</translation>
 <translation id="670444168393199227">የግብይት ውሂብ 'ዋጋ' ትክክል አይደለም</translation>
-<translation id="6180576227145734714">የግብይት መረጃ  'to' ሲገለጽ ልክ የሆነ አድራሻ መሆን አለበት</translation>
 <translation id="6916219411793555838">የግብይት ውሂብ 'gasPrice' ወይም 'maxFeePerGas' መገለጽ አለበት</translation>
 <translation id="1406937874668963740">የግብይት ውሂብ 'chainId' ልክ አይደለም</translation>
 <translation id="9195349857587166771">የግብይት ውሂብ 'maxFeePerGas' ትክክል አይደለም</translation>
@@ -823,8 +837,9 @@
 <translation id="1462494615260983714">ግብይቱን በማስኬድ ላይ የተፈጠረ ስህተት</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' መልእክት እንዲፈርም አልተፈቀደለትም</translation>
 <translation id="8719220598078667817">ግብይቱን ለመፈረም አልተቻለም</translation>
-<translation id="5486744676117070166">ቀጣይ የnonce ዋጋን ማግኘት አልተቻለም</translation>
 <translation id="875506212625074179">ከRPC አገልግሎት የመጣ የተሳሳተ የሰንሰለት መታወቂያ ምላሽ</translation>
+<translation id="5486744676117070166">ቀጣይ የnonce ዋጋን ማግኘት አልተቻለም</translation>
+<translation id="6180576227145734714">የግብይት መረጃ  'to' ሲገለጽ ልክ የሆነ አድራሻ መሆን አለበት</translation>
 <translation id="4958950550253325418">DeFi መተግበሪያዎች</translation>
 <translation id="735961408871282410">የ NFT የገበያ ቦታዎች</translation>
 <translation id="7740287852186792672">የፍለጋ ውጤቶች</translation>
@@ -872,6 +887,9 @@
 <translation id="151946611346774041">ግብይቱን ለማሟላት (ዋጋዎችን ማግኘትን ጨምሮ) 0x የEthereum አድራሻ እና የIP አድራሻ ሂደት ያደርጋል። 0x ይህንን ውሂብ የሚተቀመው ግብይቶችን ለማስኬድ ዓላማ ብቻ ነው</translation>
 <translation id="4626407663177532837">ጥቅሱ 0.875% የBrave ክፍያን ያካትታል።</translation>
 <translation id="8368540604723748428">በርካታ የአስርዮሽ ቦታዎች</translation>
+<translation id="6575120282593094155">እስካሁን የ 
+1<ph name="ACCOUNT_TYPE"/> 
+መለያ የሎትም። አሁን መለያ ይፈጠር?</translation>
 <translation id="2704606927547763573">ተቀድቷል</translation>
 <translation id="1420318137760245955">ወደ አዲሱ Brave ዋሌት እንኳን በደህና መጡ</translation>
 <translation id="8303434745767477417">በእርስዎ ጥበቃ ውስጥ የ crypto ንብረቶችን ይያዙ። የፖርትፎሊዮ አፈፃፀምን ይከታተሉ እና ከድር 3 DApps ጋር ይገናኙ። ከ DeFi ጋር ይገበያዩ ፣ ኢንቨስት ያድርጉ ፣ ያበድሩ እና ያበድሩ። ደህና ከ Brave የግላዊነት አሳሽ። ምንም ቅጥያዎች ፣ ማውረድ አያስፈልግም።</translation>
@@ -997,8 +1015,6 @@
 <translation id="8569380433211549748">ዋጋ በ</translation>
 <translation id="2490428413101944234">የሙከራ faucet</translation>
 <translation id="3352959425838279177">Ether ከፋሴት ይውሰዱ ለ <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">ወደ Wyre ይቀጥሉ</translation>
-<translation id="2581671693710952401">Ether ያግኙ</translation>
 <translation id="8009571545960303544">ፊርማዎ እየተጠየቀ ነው</translation>
 <translation id="5294062982587710720">ልብ ይበሉ እርስዎ ቢፈርሙ Brave  ምን እንደሚሆን ማረጋገጥ አይችልም። ጥያቄው ለሚያደርገው ጣቢያ የመለያዎን እና የ Crypto ንብረቶችን አጠቃላይ ቁጥጥር ((ግን አይገደብም)) ጨምሮ በመለያዎ ውስጥ ወይም በርስዎ ስም ማንኛውንም ክወና ማለት ይቻላል ሊፈቅድ ይችላል። ይህንን እርምጃ መውሰድ እንደሚፈልጉ እርግጠኛ ከሆኑ እና ጠያቂውን ጣቢያ ካመኑ ብቻ ይፈርሙ።</translation>
 <translation id="3474375934783434676">በራስዎ ሃላፊነት ወስደው ይፈርሙ</translation>
@@ -1040,6 +1056,7 @@
 <translation id="5821668936183240062">ቀጣይ</translation>
 <translation id="793994607260936590">መጀመሪያ</translation>
 <translation id="4709524402122994378">ግብይቶች</translation>
+<translation id="4591079278963448049">የተያያዘው የማስመሰያ መለያ እስካሁን የለም። ይህ ለመፍጠር እና ለመደገፍ አነስተኛ መጠን ያለው SOL ወጪ ይደረጋል።</translation>
 <translation id="523862956770478816">የጣቢያ ፈቃድ</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> መለያው ተገናኝቷል</translation>
 <translation id="4305817255990598646">ቀይር</translation>
@@ -1091,6 +1108,7 @@
 <translation id="6666273175654835609">የቀረበ</translation>
 <translation id="2331676293859649642">ተረጋገጠ</translation>
 <translation id="1165039591588034296">ስህተት</translation>
+<translation id="8373210463207847451">የተጣለ</translation>
 <translation id="9065572743819293042">የቅርብ ጊዜ ግብይቶች</translation>
 <translation id="4235538284468006757">የግብይቶች ዝርዝሮች</translation>
 <translation id="7488671812634887146">ይፍጠኑ</translation>
@@ -1170,9 +1188,13 @@
 <translation id="7829441065063984927">የ 7 ቀናት የ crypto ስጦታዎች፣ ~$500k በሽልማት።</translation>
 <translation id="8292716346768453265">አሁን ይግቡ!</translation>
 <translation id="6423985584914773314">የሚሰራ የ FIL አድራሻ አይደለም</translation>
+<translation id="3898731124813934210">በ Wyre ይግዙ</translation>
+<translation id="5522073372365069684">በRamp ይግዙ</translation>
 <translation id="8528916244724490964">ሁሉም አውታረ መረቦች</translation>
 <translation id="2781668117338732220">ሁለተኛ አውታረ መረቦች</translation>
 <translation id="2816106784624007524">የጋዝ ገደብ ኢንቲጀር ሆኖ ከ 0 በላይ መሆን አለበት</translation>
+<translation id="3354376789153561654">የግብይት ውሂብ 'ወደ' መገለጽ አለበት።</translation>
+<translation id="8728991256628663004">የግብይት ውሂብ 'ከ' ትክክለኛ የ Filecoin አድራሻ መሆን አለበት።</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
@@ -1217,7 +1239,10 @@
 <translation id="2325196879156848326">ግንኙነት ተቋርጧል</translation>
 <translation id="745054660363064771">ከሰርቨሩ ጋር መገናኘት አልተቻለም</translation>
 <translation id="3936826714240735937">ሌላ ሰርቨር ይምረጡ</translation>
-<translation id="8006923044496340707">ይህ <ph name="PRODUCT_NAME"/> ከ <ph name="REGION_NAME"/> ሰርቨር ጋ መገናኘት አልቻለም። እንደገና መሞከር ይችላልሉ ወይም ሌላ መምረጥ</translation>
+<translation id="1305433007676951913">1 <ph name="PRODUCT_NAME"/> 
+ከ  
+<ph name="REGION_NAME"/> 
+አገላግይ ጋር መገናኘት አልተቻለም። እንደገና መሞከር ወይም ሌላ መምረጥ ይችላሉ።</translation>
 <translation id="1024255913009642477">አስቀድመው VPN ገዝተዋልን?</translation>
 <translation id="8814357473522731680">የተጎላበተው በ</translation>
 <translation id="5747552184818312860">ጊዜው አልፎበታል</translation>
@@ -1230,6 +1255,24 @@
 <translation id="1751947227857853925">ፈጣን እና ያልተገደበ እስከ 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 ድጋፍ</translation>
 <translation id="8463313539532697053">…ን በመጫን ላይ ትንሽ ይጠብቁ</translation>
+<translation id="4613076894734402086">የመክፈያ ዘዴን ያርትዑ</translation>
+<translation id="1898254156730880135">የቅርብ ጊዜ ክፍያዎ ያልተፈጸመ ይመስላል። የክፍያው ችግር እስኪፈታ ድረስ የዚህ ምዝገባ መዳረሻ ባለበት ይቆማል። የመክፈያ ዘዴዎን ለማርትዕ ይሞክሩ ወይም የ Brave ድጋፍን ያግኙ።</translation>
+<translation id="1839021455997460752">የኢሜይል አድራሻዎ</translation>
+<translation id="5154702632169343078">ርዕሰ ጉዳይ</translation>
+<translation id="6625978880678465492">እባክዎ ምክንያት ይምረጡ</translation>
+<translation id="6687228121145903051">ከ VPN ጋር መገናኘት አይቻልም (ሌላ ስህተት)</translation>
+<translation id="9184988385244077767">ሲገናኝ ምንም በይነመረብ የለም</translation>
+<translation id="21570240866965662">ቀርፋፋ ግንኙነት</translation>
+<translation id="1219475260382643267">ድር ጣቢያ አይሰራም</translation>
+<translation id="7138678301420049075">ሌላ</translation>
+<translation id="1387340358507240698">ጉዳይዎን ይግለጹ</translation>
+<translation id="501818585183973587">ከእኛ ጋር ለመጋራት የፈለጉትን መረጃ ይምረጡ</translation>
+<translation id="3195618332367441234">ብዙ መረጃ ባጋሩ ቁጥር የድጋፍ ሰጪ ሰራተኞችን እርስዎን ለመርዳት ቀላል ይሆናል።</translation>
+<translation id="5682143294773821728">የVPN አስተናጋጅ ስም፦</translation>
+<translation id="24242621812020123">የመተግበሪያ ስሪት፦</translation>
+<translation id="6676791921618140305">የOS ስሪት፦</translation>
+<translation id="1156325797949437777">ከጋርድያን ጋር በመተባበር ድጋፍ ይሰጣል።</translation>
+<translation id="3307461350293459700">የ VPN ግንኙነት አልተሳካም። እባክዎ እንደገና ለማገናኘት ይሞክሩና የ Brave's VPN ውቅረትን ለማንቃት ፍቀድ የሚለውን ጠቅ ማድረግዎን ያረጋግጡ።</translation>
 <translation id="7586151660465233733">ተጨማሪ ገበያዎች በ​<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">ገበያዎች ይመልከቱ እና በ FTX ላይ ክሪፕቶ ይነግዱ</translation>
 <translation id="5963745988819586370">ገበያዎች</translation>

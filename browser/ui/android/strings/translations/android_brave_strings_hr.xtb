@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Omogući/onemogući štitnike Brave</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="2278950434998763147">Otvaraju se neka mrežna mjesta upotrebom sigurnog protokola HTTPS umjesto običnog HTTP-a.</translation>
+<translation id="5510493033031835532">Automatski preusmjeri stranice AMP</translation>
+<translation id="5197219128592971597">Uvijek posjetite izvorne URL-ove stranice (ne AMP-ove) umjesto Googleovih inačica ubrzanih stranica za mobilne uređaje</translation>
 <translation id="94154759592465111">Blokiraj skripte</translation>
 <translation id="7714773920987474116">Blokira Javascript (mogu se rušiti mrežna mjesta)</translation>
 <translation id="6052725679982758334">Blokiranje društvenih mreža</translation>
@@ -556,7 +558,6 @@ Sigurno želite to napraviti?</translation>
 <translation id="1078873179929044999">U sljedećem koraku navodi se rečenica za oporavak od 12 riječi koju možete upotrijebiti za oporavak primarnih računa za kriptovalute. Spremite je na sigurno mjesto. Vaša rečenica za oporavak jedini je način za povraćanje pristupa računu ako zaboravite lozinku, ako se izgubi ili ukrade uređaj ili ako želite promijeniti novčanike.</translation>
 <translation id="2359808026110333948">Nastavi</translation>
 <translation id="5488357322146334497">Poruka</translation>
-<translation id="7228169875515099943">PODATCI</translation>
 <translation id="1904000155026201268">Razumijem da neću moći pristupiti svom novčaniku za kriptovalute ako izgubim svoju rečenicu za oporavak.</translation>
 <translation id="3933122286596948824">Vaša rečenica za oporavak</translation>
 <translation id="5077747669435508720">Zapišite ili kopirajte te riječi točnim redoslijedom prikazanim u nastavku i spremite ih na sigurno mjesto. Vaša rečenica za oporavak jedini je način za povraćanje pristupa računu ako zaboravite lozinku, ako se izgubi ili ukrade uređaj ili ako želite promijeniti novčanike.</translation>
@@ -669,7 +670,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="3510283489391432976">Odaberi svoju geolokaciju/državu</translation>
 <translation id="4390800080658195654">Održava se vaša anonimnost na mreži</translation>
 <translation id="639981156979733813">Podržavaju se brzine do 100 Mbps</translation>
-<translation id="8396607116169935837">Upotrebljava se siguran šifriran tunel IKEv2 mreže VPN</translation>
+<translation id="1190117345570417902">Upotrebljava siguran šifriran tunel Wireguard mreže VPN</translation>
 <translation id="1571230671455380494">Nikada ne dijelimo ili prodajemo vaše informacije</translation>
 <translation id="276866628038850725">Svim planovima uključuje se besplatno 7-dnevno razdoblje probnog rada!</translation>
 <translation id="7280825497485894053">Mjesečna pretplata</translation>
@@ -694,7 +695,7 @@ Sigurno želite to napraviti?</translation>
 Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite vaše internetske veze.</translation>
 <translation id="2429299231491852747">Prihvati zahtjev za povezivanje</translation>
 <translation id="3428909627460825679">Neuspješna izrada profila za mrežu VPN. Pokušajte ponovno.</translation>
-<translation id="8584119457978684056">Neuspješna potvrda tokena za kupnju. Pokušajte ponovno.</translation>
+<translation id="1326227401245340613">Potvrda kupnje neuspješna. Pokušajte ponovno.</translation>
 <translation id="8905950042180169719">Mreža VPN radi u pozadini</translation>
 <translation id="8681480718817027245">Pretplata</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -705,7 +706,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="5646376287012673985">Lokacija</translation>
 <translation id="8375573361134671513">Ponovno postavi konfiguraciju</translation>
 <translation id="850405162932416400">Podrška za mrežu VPN</translation>
-<translation id="1330148827129583049">Profil za mrežu VPN nije stvoren. Stvaranje novog profila.</translation>
 <translation id="6772117549627334582">Neuspješno dohvaćanje lokacije poslužitelja. Pokušajte ponovno kasnije.</translation>
 <translation id="5863914199331127413">Naziv glavnog računala mreže VPN</translation>
 <translation id="5499653136178260315">Vrsta pretplate</translation>
@@ -715,9 +715,9 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="4395361077929528480">Vrsta mreže</translation>
 <translation id="755448900483975096">Mobilni operater</translation>
 <translation id="1279441577056010362">Nastavi do elektroničke pošte</translation>
-<translation id="2553687444159335134">Podrška pružena uz pomoć tima Guardian.\n\nOdaberite informacije koje možete podijeliti s nama.\n\nŠto više informacija podijelite na početku, to je našem osoblju za pružanje podrške lakše pomoći vam pri rješavanju vašeg</translation>
+<translation id="7125582363614011660">Podrška pružena uz pomoć tima Guardian.\n\nOdaberite informacije koje želite podijeliti s nama.\n\nŠto više informacija podijelite na početku, to je našem osoblju za podršku jednostavnije pružiti vam pomoć pri rješavanju vašeg problema.</translation>
 <translation id="7999094850625689785">Vama najbliža regija poslužitelja automatski se odabire na temelju vremenske zone vašeg sustava. To se preporučuje radi jamčenja brzog Interneta.</translation>
-<translation id="8018707825009059641">Ostali problemi</translation>
+<translation id="4397083831618200686">Odaberi problem</translation>
 <translation id="6687228121145903051">Nemogućnost povezivanja s mrežom VPN (druga pogreška)</translation>
 <translation id="9184988385244077767">Nema Interneta nakon povezivanja</translation>
 <translation id="21570240866965662">Spora veza</translation>
@@ -732,7 +732,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="1187506504156101449">Neuspješna potvrda kupnje:</translation>
 <translation id="8420522105268941892">Već ste pretplaćeni na pretplatu. Pokušajte vratiti pretplatu.</translation>
 <translation id="74771564105268111">POGREŠKA!\nProuzročena korisnikovim otkazivanjem toka kupnje.</translation>
-<translation id="3851978668258201962">POGREŠKA!!\nNeuspješna kupnja..</translation>
+<translation id="7312462922610983743">POGREŠKA!!\nKupnja neuspješna..</translation>
 <translation id="6452181791372256707">Odbaci</translation>
 <translation id="8030852056903932865">Odobri</translation>
 <translation id="1597199892790541240">Naknada za gorivo</translation>
@@ -805,11 +805,13 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="5061574358754621254">Podatke o cijenama pruža CoinGecko</translation>
 <translation id="4626407663177532837">Ponudom se uključuje naknada od 0,875 % za preglednik Brave.</translation>
 <translation id="8574289650879708853">Dodaj prilagođenu imovinu</translation>
+<translation id="1974060860693918893">Napredno</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6600400596821238377">Naziv tokena</translation>
 <translation id="4432966365400169165">Ugovorna adresa tokena</translation>
 <translation id="4092152169181928870">Simbol tokena</translation>
 <translation id="4351811224047421378">Precizni decimalni brojevi</translation>
+<translation id="547122651977318828">ID tokena (samo za ERC721)</translation>
 <translation id="8614026298974065517">Ukloni prilagođenu imovinu</translation>
 <translation id="4378941981362528553">Želite li ukloniti token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">Ne</translation>
@@ -871,5 +873,32 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="2478788592457735063">Time prebacujete mrežu na prethodno dodanu mrežu.</translation>
 <translation id="8756686998207163764">Promijeni mrežu</translation>
 <translation id="394256914628786902">Omogući automatsko stvaranje grupe kartica</translation>
+<translation id="5242300593039211344">Zaključaj novčanik</translation>
+<translation id="1108298724135935307">Povezana mrežna mjesta</translation>
+<translation id="4255623233927788178">Prikaži u tražilici Block Explorer</translation>
 <translation id="8274201358637112807">Ova se stranica želi povezati s novčanikom Brave</translation>
+<translation id="3355936511340229503">Pogreška veze</translation>
+<translation id="4891604214809245310">Nije moguće postaviti mrežu na <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">Izgleda da imate druge VPN-ove na ovom uređaju postavljene na „Uvijek uključeno”. Za omogućavanje vatrozida i VPN-a Brave prvo onemogućite postavku „Uvijek uključeno” za druge VPN-ove prije ponovnog povezivanja. Ako se problem nastavi, pokušajte deinstalirati druge VPN-ove.</translation>
+<translation id="85136472535634474">Otvori postavke VPN-a</translation>
+<translation id="8352805003811526272">Ponovno postavljanje konfiguracije...</translation>
+<translation id="6809312301323611382">Već ste odabrali isti poslužitelj.</translation>
+<translation id="7694991972030057904">Dopuštenje otkazano</translation>
+<translation id="9106265941552476098">Odbij<ph name="TRANSACTION_LENGTH"/> transakciju/e/a</translation>
+<translation id="523862956770478816">Dopuštenja za mrežno mjesto</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> povezan/a/ih račun/a</translation>
+<translation id="4305817255990598646">Promijeni</translation>
+<translation id="4804818685124855865">Prekini vezu</translation>
+<translation id="8009571545960303544">Vaš se potpis zahtijeva</translation>
+<translation id="1982257600591932657">Naziv mreže</translation>
+<translation id="5052727830821470769">URL mreže</translation>
+<translation id="4822132585477111396">Identifikacijska oznaka bloka</translation>
+<translation id="7131971375297699539">Simbol valute</translation>
+<translation id="7982789257301363584">Mreža</translation>
+<translation id="2521480044079508357">Time se omogućuje upotreba mreže unutar značajke Brave Wallet.</translation>
+<translation id="4717431746210146708">Dopustiti ovom mrežnom mjestu dodavanje mreže?</translation>
+<translation id="3378339846292573874">Dodaj predloženi token</translation>
+<translation id="2322227405137827074">Želite li uvesti ovaj token?</translation>
+<translation id="1324417023773393937">Preglednik Brave</translation>
+<translation id="6044189892950611565">Kanal obavijesti preglednika Brave</translation>
 </translationbundle>

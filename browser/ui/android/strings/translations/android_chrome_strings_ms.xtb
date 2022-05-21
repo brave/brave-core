@@ -29,11 +29,13 @@
 <translation id="1146678959555564648">Masukkan VR</translation>
 <translation id="114825011539563458">Kawalan privasi dan keselamatan yang paling penting di satu tempat</translation>
 <translation id="1149401351239820326">Bulan tamat tempoh</translation>
+<translation id="7083341910267693582"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave dan Chrome OS<ph name="END_LINK2"/>.</translation>
 <translation id="1154704303112745282">Halaman tidak tersedia di luar talian: <ph name="VIOLATED_URL"/></translation>
 <translation id="1171770572613082465">Lihat laman web popular dengan mengetik butang "Tapak popular"</translation>
 <translation id="1173894706177603556">Namakan semula</translation>
 <translation id="1177863135347784049">Tersuai</translation>
 <translation id="1181037720776840403">Alih keluar</translation>
+<translation id="1193729455103054076">Gunakan kata laluan kukuh?</translation>
 <translation id="1197267115302279827">Alihkan penanda halaman</translation>
 <translation id="1201402288615127009">Seterusnya</translation>
 <translation id="1202892408424955784">Produk yang dijejaki</translation>
@@ -88,6 +90,7 @@ Apabila anda memadamkan sejarah penyemakan imbas anda — semua atau untuk laman
 <translation id="1409879593029778104">Muat turun <ph name="FILE_NAME"/> dihalang kerana fail ini sudah wujud.</translation>
 <translation id="1853026300647876496">Menghubungi Brave. Mungkin mengambil sedikit masa…</translation>
 <translation id="1416550906796893042">Versi aplikasi</translation>
+<translation id="1428770807407000502">Matikan penyegerakan?</translation>
 <translation id="1430915738399379752">Cetak</translation>
 <translation id="1436784010935106834">Dibuang</translation>
 <translation id="1448440926884431741">Atur produk yang dijejaki dalam Penanda Halaman</translation>
@@ -138,7 +141,6 @@ Apabila anda memadamkan sejarah penyemakan imbas anda — semua atau untuk laman
 <translation id="1779766957982586368">Tutup tetingkap</translation>
 <translation id="1791662854739702043">Dipasang</translation>
 <translation id="1792959175193046959">Tukar lokasi muat turun lalai pada bila-bila masa</translation>
-<translation id="2368444735104192323">Syarat Perkhidmatan Tambahan Brave &amp; OS Brave</translation>
 <translation id="1807246157184219062">Cahaya</translation>
 <translation id="1810845389119482123">Penyediaan penyegerakan permulaan belum selesai</translation>
 <translation id="1829244130665387512">Cari dalam halaman</translation>
@@ -175,8 +177,6 @@ Apabila anda memadamkan sejarah penyemakan imbas anda — semua atau untuk laman
 <translation id="2000419248597011803">Menghantar beberapa kuki dan carian daripada bar alamat dan kotak carian ke enjin carian lalai anda</translation>
 <translation id="6968892567705775281">Sertakan teks sekitar dalam carian Brave?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# Fail}other{# Fail}}</translation>
-<translation id="2185841461857887156"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave dan Chrome OS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Dasar Privasi<ph name="END_LINK3"/> juga dikenakan.</translation>
-<translation id="2019145049163614359">Alih keluar minat?</translation>
 <translation id="2020309681647789787">Sejarah anda boleh didapati pada semua peranti tersegerak anda, jadi anda boleh meneruskan perkara yang sedang anda lakukan</translation>
 <translation id="2021896219286479412">Kawalan tapak skrin penuh</translation>
 <translation id="2038563949887743358">Hidupkan Minta tapak desktop</translation>
@@ -201,10 +201,12 @@ Ketik mana-mana perkataan untuk mencari. Untuk memperhalus carian anda, sentuh &
 <translation id="796823723482603597">Dikuasakan oleh Brave</translation>
 <translation id="2132122640199389833">Alih keluar semua peranti terpaut</translation>
 <translation id="213279576345780926"><ph name="TAB_TITLE"/> tertutup</translation>
+<translation id="6659395979197839222">Dengan menggunakan Brave, anda bersetuju menerima <ph name="BEGIN_TOS_LINK"/>Syarat Perkhidmatan Brave<ph name="END_TOS_LINK"/> dan <ph name="BEGIN_ATOS_LINK"/>Syarat Perkhidmatan Tambahan Brave dan Chrome OS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="2139186145475833000">Tambahkan kepada Skrin utama</translation>
 <translation id="2141396931810938595">Berdasarkan penggunaan anda</translation>
 <translation id="6516933364477884970">Pilih perkara yang anda selesa untuk dikongsi dengan Brave. Metrik yang anda kongsi akan digunakan untuk membantu kami meningkatkan ciri, prestasi dan kestabilan Brave.</translation>
 <translation id="2149973817440762519">Edit Penanda Halaman</translation>
+<translation id="2155214902713132423">Kaedah pengesahan ini tidak tersedia untuk peranti ini. Pilih pilihan lain pada peranti anda yang lain.</translation>
 <translation id="6162454065885854378">Untuk berkongsi sesuatu daripada telefon anda kepada peranti lain, hidupkan penyegerakan dalam tetapan Brave pada kedua-dua peranti</translation>
 <translation id="4162910516440006395">Brave tidak dapat menyemak semua kata laluan</translation>
 <translation id="2169830938017475061">Sekarang</translation>
@@ -379,6 +381,7 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="6153252609477956632">Artikel tentang minat anda di Brave</translation>
 <translation id="3066573403916685335">Alihkan Ke Bawah</translation>
 <translation id="3070005020161560471">Terjemah secara automatik</translation>
+<translation id="1094255666887095087"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave dan Chrome OS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Dasar Privasi<ph name="END_LINK3"/> juga dikenakan.</translation>
 <translation id="3091010850649238832">Paparkan kandungan papan keratan</translation>
 <translation id="821565628224723530">Sesetengah imej dihantar kepada Brave untuk meningkatkan perihalan untuk anda</translation>
 <translation id="3114507951000454849">Baca berita hari ini <ph name="NEWS_ICON"/></translation>
@@ -447,7 +450,6 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/> tentang kandungan yang disyorkan</translation>
 <translation id="3495219333887281978">Helaian bawah log masuk dibuka pada ketinggian separuh.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="5067649501056343732">Dengan menggunakan Brave, anda bersetuju menerima <ph name="BEGIN_TOS_LINK"/>Syarat Perkhidmatan Brave<ph name="END_TOS_LINK"/> dan <ph name="BEGIN_ATOS_LINK"/>Syarat Perkhidmatan Tambahan Brave dan OS Brave<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="3507132249039706973">Perlindungan Standard dihidupkan</translation>
 <translation id="8669829441518807650">Luar talian. Brave tidak dapat menyemak kemas kini.</translation>
 <translation id="3513704683820682405">Realiti Tambahan</translation>
@@ -564,8 +566,10 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="4269820728363426813">Salin alamat pautan</translation>
 <translation id="4290281343757112331">Muat turun kemudian?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Hidupkan kunci skrin dalam tetapan Android<ph name="END_LINK"/></translation>
+<translation id="6299940168852877221">Dengan menggunakan Brave, anda bersetuju menerima <ph name="BEGIN_TOS_LINK"/>Syarat Perkhidmatan Brave<ph name="END_TOS_LINK"/> dan <ph name="BEGIN_ATOS_LINK"/>Syarat Perkhidmatan Tambahan Brave dan Chrome OS<ph name="END_ATOS_LINK"/>. <ph name="BEGIN_PRIVACY_LINK"/>Dasar Privasi<ph name="END_PRIVACY_LINK"/> juga dikenakan.</translation>
 <translation id="4298388696830689168">Tapak terpaut</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">Pengurus Kata Laluan</translation>
 <translation id="4307992518367153382">Asas</translation>
 <translation id="4320177379694898372">Tiada sambungan Internet</translation>
 <translation id="4321739720395210191">Tidak dapat membuka kamera anda. Mulakan semula peranti anda dan cuba lagi.</translation>
@@ -710,7 +714,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="4744980273298156620">Tidak lama lagi, anda akan melihat cerita daripada <ph name="SITE_NAME"/> apabila anda membuka tab baharu. Laman yang anda ikuti disimpan pada Brave sync chain anda. Anda boleh mengurus laman tersebut dalam tetapan Discover.</translation>
 <translation id="5091249083535528968">Data penggunaan lanjutan</translation>
 <translation id="509429900233858213">Ralat telah berlaku.</translation>
-<translation id="5098190077610408701">Tambah minat?</translation>
 <translation id="225414324447409614">Jika laman cuba mencuri kata laluan anda atau apabila anda memuat turun fail yang berbahaya, Brave mungkin menghantar URL termasuk sedikit kandungan halaman kepada Penyemakan Imbas Selamat</translation>
 <translation id="510275257476243843">1 jam lagi</translation>
 <translation id="5115811374190515607">ke <ph name="PRODUCT_NAME"/></translation>
@@ -790,7 +793,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="5578795271662203820">Cari imej ini di <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Anda boleh memilih item yang hendak disegerakkan dalam <ph name="BEGIN_LINK1"/>tetapan<ph name="END_LINK1"/> pada bila-bila masa.</translation>
 <translation id="5590372121997663538">Ingat komputer ini</translation>
-<translation id="559871659088672663">Ciri ini sedang dibangunkan</translation>
 <translation id="6157610782452852023">Brave Assistant boleh melengkapkan tindakan merentas beberapa laman web untuk anda</translation>
 <translation id="5620163320393916465">Tiada kata laluan yang disimpan</translation>
 <translation id="5620928963363755975">Cari fail dan halaman anda dalam Muat Turun daripada butang Lagi Pilihan</translation>
@@ -853,6 +855,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="1985257319311245640">Mengetahui URL bagi laman membolehkan Brave Assistant membantu anda menyelesaikan tugas. Anda boleh mematikan Assistant dalam tetapan Brave.</translation>
 <translation id="5916664084637901428">Hidupkan</translation>
 <translation id="5919204609460789179">Kemas kini <ph name="PRODUCT_NAME"/> untuk memulakan penyegerakan</translation>
+<translation id="5938820472109305350">Tambah <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Menggunakan Brave untuk carian</translation>
 <translation id="5945035219773565305">Syor semasa:  <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">Melihat halaman langsung</translation>
@@ -872,7 +875,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="6557407328070865042">Dengan <ph name="BEGIN_LINK"/>Kotak Pasir Privasi<ph name="END_LINK"/>, Brave membangunkan teknologi baharu untuk melindungi anda daripada penjejakan rentas laman sambil memelihara web terbuka.
 
 Percubaan Kotak Pasir Privasi masih aktif dibangunkan dan tersedia di rantau terpilih. Buat masa ini, laman boleh mencuba Kotak Pasir Privasi sambil terus menggunakan teknologi web semasa seperti kuki pihak ketiga.</translation>
-<translation id="6036057147555329831">ICU tambahan</translation>
 <translation id="6039379616847168523">Lompat ke tab seterusnya</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="604124094241169006">Automatik</translation>
@@ -930,7 +932,6 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="6345878117466430440">Tandai sebagai dibaca</translation>
 <translation id="6363990818884053551">Untuk memulakan penyegerakan, sahkan orang itu ialah anda</translation>
 <translation id="6364438453358674297">Alih keluar cadangan daripada sejarah?</translation>
-<translation id="4993481112200507346"><ph name="APP_NAME"/> akan dibuka dalam Brave. Dengan meneruskan penggunaan, anda bersetuju menerima <ph name="BEGIN_LINK1"/>Syarat Perkhidmatan Brave<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Syarat Perkhidmatan Tambahan Brave dan OS Brave<ph name="END_LINK2"/>.</translation>
 <translation id="806493401838431801">Lebih kerap mempramuat halaman yang diramal oleh Brave akan anda lawati. Tetapan ini boleh menyebabkan penggunaan data meningkat.</translation>
 <translation id="6395288395575013217">PAUTAN</translation>
 <translation id="6397616442223433927">Kembali dalam talian</translation>
@@ -991,6 +992,7 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="2259649928554669581">Untuk mendapatkan pelbagai lagi tetapan yang berkaitan dengan privasi, keselamatan dan pengumpulan data, lihat <ph name="BEGIN_LINK1"/>Penyegerakan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>perkhidmatan Brave<ph name="END_LINK2"/>.</translation>
 <translation id="7939692063031538305">Untuk membantu dalam usaha meningkatkan apl, Brave menghantar data penggunaan dan ranap sistem kepada Brave. <ph name="BEGIN_UMA_LINK"/>Urus<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Sekat sepanjang masa</translation>
+<translation id="6641780377503683465">Alih keluar <ph name="INTEREST"/></translation>
 <translation id="6643016212128521049">Kosongkan</translation>
 <translation id="6645629752388991326">Kawal peranti yang boleh log masuk dengan menggunakan peranti ini sebagai kunci keselamatan.</translation>
 <translation id="6678472970290886941">Pentadbir anda boleh menukar persediaan penyemak imbas anda dari jauh. Aktiviti pada peranti ini mungkin turut diurus di luar Brave.</translation>
@@ -1015,9 +1017,9 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="6751521182688001123">Buka tab baharu dengan pantas. Untuk mengedit pintasan ini, sentuh dan tahan.</translation>
 <translation id="6756507620369789050">Kongsi maklum balas</translation>
 <translation id="6767294960381293877">Senarai peranti untuk berkongsi tab dibuka pada ketinggian separuh.</translation>
-<translation id="6770042910635026163">Laman yang anda lawati yang menentukan minat anda</translation>
 <translation id="6770602306803890733">Meningkatkan keselamatan untuk anda dan semua orang yang melayari web</translation>
 <translation id="6783942555455976443">Simpan halaman ini untuk kemudian dan dapatkan peringatan</translation>
+<translation id="8174975477247159780">Syarat Perkhidmatan Tambahan Brave &amp; Chrome OS</translation>
 <translation id="6795633245022906657">Buka tab baharu dengan pantas. Untuk mengedit pintasan ini, pergi ke Tetapan.</translation>
 <translation id="6802555630140434547">Tetingkap akan ditutup</translation>
 <translation id="6811034713472274749">Halaman sedia untuk dipaparkan</translation>
@@ -1091,7 +1093,6 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="7208109991155904980">Reaksi dialihkan</translation>
 <translation id="7222235798733126207">Perkongsian terhad antara laman</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 muat turun belum selesai}other{# muat turun belum selesai}}</translation>
-<translation id="7256686223798862196">Dengan menggunakan Brave, anda bersetuju menerima <ph name="BEGIN_TOS_LINK"/>Syarat Perkhidmatan Brave<ph name="END_TOS_LINK"/> dan <ph name="BEGIN_ATOS_LINK"/>Syarat Perkhidmatan Tambahan Brave dan Chrome OS<ph name="END_ATOS_LINK"/>. <ph name="BEGIN_PRIVACY_LINK"/>Dasar Privasi<ph name="END_PRIVACY_LINK"/> juga dikenakan.</translation>
 <translation id="7242755609445462077">Serlahan digayakan <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Pastikan penyegerakan telah dihidupkan dalam Brave pada <ph name="TARGET_DEVICE_NAME"/></translation>
 <translation id="7252076891734325316">Letakkan telefon anda dekat dengan komputer</translation>

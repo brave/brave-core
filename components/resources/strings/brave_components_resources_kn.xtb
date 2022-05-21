@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24HR ವಾಲ್ಯೂಮ್</translation>
 <translation id="7534079972563542000">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳು</translation>
 <translation id="4492298165410552103">Brave ನಲ್ಲಿ ನಿಲ್ಲಿಸಲಾಗದ ಡೊಮೇನ್‍ಗಳಿಗಾಗಿ ಬೆಂಬಲ ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
-<translation id="3470923752115324276">HTTPS ಮುಖೇನ DNS ಬಳಸಿಕೊಂಡು .crypto ಡೊಮೇನ್ ಹೆಸರು ವೀಕ್ಷಣೆ ವಿನಂತಿಯನ್ನು ಪರಿಹರಿಸುವ ನಿಟ್ಟಿನಲ್ಲಿ, Cloudflare ಬಳಸುವ ಮೂಲಕ .crypto ಡೊಮೇನ್‍ಗಳಿಗೆ ನೀವು ಭೇಟಿ ನೀಡುವುದನ್ನು Brave ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು. ನೀವು ಅದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ .crypto ಡೊಮೇನ್ ಅನ್ನು Cloudflare ನೋಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ, ಆದರೆ ಅವರಿಗೆ ಬೇರೆ ಇತರೆ ಡೊಮೇನ್‍ಗಳನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>ಬಳಕೆ ನಿಯಮಗಳು<ph name="END_CF_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_CF_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_CF_PRIVACY_LINK"/> ಯನ್ನು ನೋಡಿ.</translation>
+<translation id="2173151783558384314">.crypto (ಮತ್ತು .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) ಡೊಮೇನ್ ಹೆಸರು ಲುಕಪ್ ವಿನಂತಿಗಳನ್ನು ಪರಿಹರಿಸಲು ಅನ್‌ಸ್ಟಾಪಬಲ್ ಡೊಮೇನ್‌ಗಳಿಂದ ಸ್ಮಾರ್ಟ್ ಒಪ್ಪಂದಕ್ಕೆ Ethereum JSON-RPC ಕರೆಗಳನ್ನು ನೀಡಲು Infura ಅನ್ನು Brave ಬಳಸುತ್ತದೆ. ನೀವು ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ ನಿರ್ದಿಷ್ಟ ಡೊಮೇನ್‌ಗಳನ್ನು Infura ನೋಡುತ್ತದೆ ಆದರೆ ಅವುಗಳಿಗೆ ಇತರ ಡೊಮೇನ್‌ಗಳನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. Infura ನ <ph name="BEGIN_INFURA_TOU_LINK"/>ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="END_INFURA_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_INFURA_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_INFURA_PRIVACY_LINK"/> ಅನ್ನು ನೋಡಿ.</translation>
 <translation id="6513892817556267573">ಈಥೇರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್</translation>
 <translation id="4335039108389860301">Brave ನಲ್ಲಿ ಈಥೆರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್ (ENS) ಬೆಂಬಲ ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
-<translation id="618766505813078707">HTTPS ಮುಖೇನ DNS ಬಳಸಿಕೊಂಡು .eth ಡೊಮೇನ್ ಹೆಸರು ವೀಕ್ಷಣೆ ವಿನಂತಿಯನ್ನು ಪರಿಹರಿಸುವ ನಿಟ್ಟಿನಲ್ಲಿ, Cloudflare ಬಳಸುವ ಮೂಲಕ .eth ಡೊಮೇನ್‍ಗಳಿಗೆ ನೀವು ಭೇಟಿ ನೀಡುವುದನ್ನು Brave ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು. ನೀವು ಅದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ .eth ಡೊಮೇನ್ ಅನ್ನು Cloudflare ನೋಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ, ಆದರೆ ಅವರಿಗೆ ಬೇರೆ ಇತರೆ ಡೊಮೇನ್‍ಗಳನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>ಬಳಕೆ ನಿಯಮಗಳು<ph name="END_CF_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_CF_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_CF_PRIVACY_LINK"/> ಯನ್ನು ನೋಡಿ.</translation>
-<translation id="5636651007798897342">Cloudflare ಸರ್ವರ್ ಬಳಸಿ ಮುಂದುವರೆಯಿಸಿ</translation>
+<translation id="8328137586971750853">.eth ಡೊಮೇನ್ ಹೆಸರು ಲುಕಪ್ ವಿನಂತಿಗಳನ್ನು ಪರಿಹರಿಸಲು Ethereum ನೇಮ್ ಸೇವೆಯಿಂದ ಸ್ಮಾರ್ಟ್ ಒಪ್ಪಂದಕ್ಕೆ Ethereum JSON-RPC ಕರೆಗಳನ್ನು ನೀಡಲು Infura ಅನ್ನು Brave ಬಳಸುತ್ತದೆ. ನೀವು ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ .eth ಡೊಮೇನ್ ಅನ್ನು Infura ನೋಡುತ್ತದೆ ಆದರೆ ಅವುಗಳಿಗೆ ಇತರ ಡೊಮೇನ್‌ಗಳನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. Infura ನ <ph name="BEGIN_INFURA_TOU_LINK"/>ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="END_INFURA_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_INFURA_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_INFURA_PRIVACY_LINK"/> ಅನ್ನು ನೋಡಿ.</translation>
+<translation id="7378412287463452336">Infura ಸರ್ವರ್ ಬಳಸಿ ಮುಂದುವರಿಯಿರಿ</translation>
 <translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="2218918398178303658">HTTPS ಮೂಲಕ DNS</translation>
 <translation id="1448289340149908413">ಈಥೆರಿಯಮ್</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">ನಿರೀಕ್ಷಿತ, ಏಕ, ಆಬ್ಜೆಕ್ಟ್ ಪ್ಯಾರಾಮೀಟರ್.</translation>
 <translation id="1875861420974447980">ಈ ಚೈನ್ ID ಅನ್ನು ಪ್ರಸ್ತುತ ಬಳಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="167698752210114155">ಒಂದು ಆಂತರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
+<translation id="2326876601333401685">ಈ RPC ವಿಧಾನವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.</translation>
 <translation id="1128992132632883337">ಪ್ರತಿಕ್ರಿಯೆ ಪಾರ್ಸಿಂಗ್ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
 <translation id="1680597601664421644">ಆಮದು ಮಾಡಲಾಗುತ್ತಿರುವ ನ್ಯೂಮೋನಿಕ್ Brave ವ್ಯಾಲೆಟ್‌ಗೆ ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
 <translation id="4641919696349069826">ವಿನಂತಿ ಈಗಾಗಲೇ ಪ್ರಗತಿಯಲ್ಲಿದೆ</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">ವಹಿವಾಟು ಡೇಟಾ 'gasPrice' ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
 <translation id="8909404207805041979">ವಹಿವಾಟು ಡೇಟಾ 'ಗ್ಯಾಸ್' ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
 <translation id="670444168393199227">ವಹಿವಾಟು ಡೇಟಾ 'ಮೌಲ್ಯ' ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
-<translation id="6180576227145734714">ವಹಿವಾಟು ಡೇಟಾ 'ಇಲ್ಲಿಗೆ' ಅನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿದಾಗ ಮಾನ್ಯ ವಿಳಾಸವಾಗಿರಬೇಕು</translation>
 <translation id="6916219411793555838">ವಹಿವಾಟು ಡೇಟಾ 'gasPrice' ಅಥವಾ 'maxFeePerGas' ನಿರ್ದಿಷ್ಟಪಡಿಸಬೇಕು</translation>
 <translation id="1406937874668963740">ವಹಿವಾಟು ಡೇಟಾ 'ಚೈನ್‌ಐಡಿ' ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
 <translation id="9195349857587166771">ವಹಿವಾಟು ಡೇಟಾ 'maxFeePerGas' ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">ವಹಿವಾಟು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ದೋಷ</translation>
 <translation id="4886059598718763020">ಸಂದೇಶಕ್ಕೆ ಸಹಿ ಮಾಡಲು '<ph name="VALUE"/>' ಗೆ ಅಧಿಕಾರ ನೀಡಲಾಗಿಲ್ಲ</translation>
 <translation id="8719220598078667817">ವಹಿವಾಟಿಗೆ ಸಹಿ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ</translation>
-<translation id="5486744676117070166">ಮುಂದಿನ ನಾನ್ಸ್ ಮೌಲ್ಯ ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ</translation>
 <translation id="875506212625074179">RPC ಸೇವೆಯಿಂದ ಅಮಾನ್ಯ ID ಪ್ರತಿಕ್ರಿಯೆ</translation>
+<translation id="5486744676117070166">ಮುಂದಿನ ನಾನ್ಸ್ ಮೌಲ್ಯ ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ</translation>
+<translation id="6180576227145734714">ವಹಿವಾಟು ಡೇಟಾ 'ಇಲ್ಲಿಗೆ' ಅನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಿದಾಗ ಮಾನ್ಯ ವಿಳಾಸವಾಗಿರಬೇಕು</translation>
 <translation id="4958950550253325418">ಡೆಫಿ ಆ್ಯಪ್‌ಗಳು</translation>
 <translation id="735961408871282410">NFT ಮಾರ್ಕೆಟ್‌ಪ್ಲೇಸ್‌ಗಳು</translation>
 <translation id="7740287852186792672">ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳು</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">ವಹಿವಾಟನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು (ಉಲ್ಲೇಖಗಳನ್ನು ಪಡೆಯುವುದನ್ನು ಒಳಗೊಂಡಂತೆ) ಎಥೇರಿಯಮ್ ವಿಳಾಸ ಮತ್ತು IP ವಿಳಾಸವನ್ನು 0x ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತದೆ. ವಹಿವಾಟುಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವ ಉದ್ದೇಶಗಳಿಗಾಗಿ ಮಾತ್ರ ಈ ಡೇಟಾವನ್ನು 0x ಬಳಸುತ್ತದೆ.</translation>
 <translation id="4626407663177532837">ಉಲ್ಲೇಖವು 0.875% Brave ಶುಲ್ಕವನ್ನು ಒಳಗೊಂಡಿದೆ.</translation>
 <translation id="8368540604723748428">ತೀರಾ ಹೆಚ್ಚು ದಶಮಾಂಶ ಸ್ಥಳಗಳು</translation>
+<translation id="6575120282593094155">ನೀವು ಇನ್ನೂ <ph name="ACCOUNT_TYPE"/> ಖಾತೆಯನ್ನು ಹೊಂದಿಲ್ಲ. ಇದೀಗ ಒಂದನ್ನು ರಚಿಸುವುದೇ?</translation>
 <translation id="2704606927547763573">ನಕಲಿಸಲಾಗಿದೆ</translation>
 <translation id="1420318137760245955">ಹೊಸ Brave ವ್ಯಾಲೆಟ್‌ಗೆ ಸ್ವಾಗತ</translation>
 <translation id="8303434745767477417">ನಿಮ್ಮ ರಕ್ಷಣೆಯಲ್ಲಿ ಕ್ರಿಪ್ಟೋ ಅಸೆಟ್‌ಗಳನ್ನು ಇರಿಸಿಕೊಳ್ಳಿ. ಪೋರ್ಟ್‌ಫೋಲಿಯೋ ಕಾರ್ಯನಿರ್ವಹಣೆಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ ಮತ್ತು ವೆಬ್ 3D ಆ್ಯಪ್‌ಗಳ ಜೊತೆಗೆ ಸಂವಹನ ಮಾಡಿ. DeFi ಮೂಲಕ ಟ್ರೇಡ್ ಮಾಡಿ, ಹೂಡಿಕೆ ಮಾಡಿ, ಎರವಲು ಪಡೆಯಿರಿ ಮತ್ತು ಸಾಲ ನೀಡಿ. Brave ಗೌಪ್ಯತೆ ಬ್ರೌಸರ್‌ನಿಂದಲೇ ಎಲ್ಲಾ ಹಕ್ಕು. ಯಾವುದೇ ವಿಸ್ತರಣೆಗಳಿಲ್ಲ, ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಅಗತ್ಯವಿಲ್ಲ.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">ಇದರಲ್ಲಿ ದರಗಳು</translation>
 <translation id="2490428413101944234">ಫಾಸೆಟ್ ಪರೀಕ್ಷಿಸಿ</translation>
 <translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/>ಗಾಗಿನ ಫಾಸೆಟ್‌ನಿಂದ ಈಥರ್ ಪಡೆಯಿರಿ</translation>
-<translation id="7420359180991315365">Wyre ಗೆ ಮುಂದುವರಿಸಿ</translation>
-<translation id="2581671693710952401">ಎಥರ್ ಪಡೆಯಿರಿ</translation>
 <translation id="8009571545960303544">ನಿಮ್ಮ ಸಹಿಯನ್ನು ವಿನಂತಿಸಲಾಗಿದೆ</translation>
 <translation id="5294062982587710720">ನೀವು ಸಹಿ ಮಾಡಿದರೆ ಏನಾಗುತ್ತದೆ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಲು Brave ಗೆ ಸಾಧ್ಯವಿಲ್ಲ ಎಂಬುದನ್ನು ಗಮನಿಸಿ. ವಿನಂತಿಯನ್ನು ಮಾಡುತ್ತಿರುವ ಖಾತೆಗೆ ನಿಮ್ಮ ಖಾತೆಯ ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಅಸೆಟ್‌ಗಳ ಒಟ್ಟು ನಿಯಂತ್ರಣ ನೀಡುವುದನ್ನು ಒಳಗೊಂಡಂತೆ (ಇದಕ್ಕೆ ಸೀಮಿತವಾಗಿಲ್ಲದೇ) ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿನ ಅಥವಾ ನಿಮ್ಮ ಪರವಾಗಿನ ಬಹುಪಾಲು ಯಾವುದೇ ಕಾರ್ಯಾಚರಣೆಗೆ ಸಹಿಯು ಅಧಿಕಾರ ನೀಡಬಹುದು. ಈ ಕ್ರಿಯೆಯನ್ನು ಮಾಡಲು ಬಯಸಿದರೆ ಮತ್ತು ವಿನಂತಿಸುತ್ತಿರುವ ಸೈಟ್ ಅನ್ನು ನಂಬಿದರೆ ಮಾತ್ರ ಸಹಿ ಮಾಡಿ.</translation>
 <translation id="3474375934783434676">ನಿಮ್ಮ ಸ್ವಂತ ಹೊಣೆಗಾರಿಕೆಯಲ್ಲಿ ಸಹಿ ಮಾಡಿ</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">ಮುಂದೆ</translation>
 <translation id="793994607260936590">ಮೊದಲ</translation>
 <translation id="4709524402122994378">ವಹಿವಾಟುಗಳು</translation>
+<translation id="4591079278963448049">ಸಂಬಂಧಿತ ಟೋಕನ್ ಖಾತೆಯು ಇನ್ನೂ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ. ಸಣ್ಣ ಪ್ರಮಾಣದ SOL ಅನ್ನು ರಚಿಸಲು ಮತ್ತು ಅದನ್ನು ಧನಸಹಾಯ ಮಾಡಲು ಖರ್ಚು ಮಾಡಲಾಗುತ್ತದೆ.</translation>
 <translation id="523862956770478816">ಸೈಟ್ ಅನುಮತಿಗಳು</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> ಖಾತೆಗಳು ಸಂಪರ್ಕಗೊಂಡಿವೆ</translation>
 <translation id="4305817255990598646">ಬದಲಾಯಿಸಿ</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">ಸಲ್ಲಿಸಲಾಗಿದೆ</translation>
 <translation id="2331676293859649642">ಖಚಿತಪಡಿಸಲಾಗಿದೆ</translation>
 <translation id="1165039591588034296">ದೋಷ</translation>
+<translation id="8373210463207847451">ಕೈಬಿಡಲಾಗಿದೆ</translation>
 <translation id="9065572743819293042">ಇತ್ತೀಚಿನ ವಹಿವಾಟುಗಳು</translation>
 <translation id="4235538284468006757">ವಹಿವಾಟು ವಿವರಗಳು</translation>
 <translation id="7488671812634887146">ತ್ವರಿತಗೊಳಿಸಿ</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 ದಿನಗಳ ಕ್ರಿಪ್ಟೋ ಕೊಡುಗೆಗಳು, ಬಹುಮಾನಗಳ ರೂಪದಲ್ಲಿ ~$500 ಸಾವಿರ.</translation>
 <translation id="8292716346768453265">ಈಗಲೇ ಪ್ರವೇಶಿಸಿ!</translation>
 <translation id="6423985584914773314">ಇದು ಮಾನ್ಯವಾದ FIL ವಿಳಾಸವಲ್ಲ</translation>
+<translation id="3898731124813934210">Wyre ನೊಂದಿಗೆ ಖರೀದಿಸಿ</translation>
+<translation id="5522073372365069684">Ramp ನೊಂದಿಗೆ ಖರೀದಿಸಿ</translation>
 <translation id="8528916244724490964">ಎಲ್ಲಾ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="2781668117338732220">ಎರಡನೆಯ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="2816106784624007524">ಗ್ಯಾಸ್ ಮಿತಿಯು 0 ಗಿಂತ ದೊಡ್ಡದಾದ ಪೂರ್ಣಾಂಕವಾಗಿರಬೇಕು</translation>
+<translation id="3354376789153561654">ವಹಿವಾಟಿನ ಡೇಟಾ 'ಗೆ' ಅನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಬೇಕು</translation>
+<translation id="8728991256628663004">ವಹಿವಾಟಿನ ಡೇಟಾ 'ಇಂದ' ಮಾನ್ಯವಾದ Filecoin ವಿಳಾಸವಾಗಿರಬೇಕು</translation>
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="3745016858329272300">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="4045404575593562245">ಟೋರ್ ನಿಯಂತ್ರಣ ಈವೆಂಟ್‌ಗಳು</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">ಸಂಪರ್ಕ ವಿಫಲಗೊಂಡಿದೆ</translation>
 <translation id="745054660363064771">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲಾಗುವುದಿಲ್ಲ</translation>
 <translation id="3936826714240735937">ಮತ್ತೊಂದು ಸರ್ವರ್ ಆರಿಸಿ</translation>
-<translation id="8006923044496340707"><ph name="REGION_NAME"/> ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಗೊಳ್ಳಲು <ph name="PRODUCT_NAME"/> ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನೀವು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಬಹುದು ಅಥವಾ ಮತ್ತೊಂದನ್ನು ಆರಿಸಬಹುದು</translation>
+<translation id="1305433007676951913"><ph name="REGION_NAME"/> ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು <ph name="PRODUCT_NAME"/> ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನೀವು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಬಹುದು ಅಥವಾ ಇನ್ನೊಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಬಹುದು.</translation>
 <translation id="1024255913009642477">ಈಗಾಗಲೇ VPN ಖರೀದಿಸಿದ್ದೀರಾ?</translation>
 <translation id="8814357473522731680">ಇದರಿಂದ ಸಾಮರ್ಥ್ಯ ಪಡೆದಿದೆ</translation>
 <translation id="5747552184818312860">ಅವಧಿ ಮೀರುವುದು</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">100 Mbps ವರೆಗೆ ವೇಗದ ಮತ್ತು ಅನಿಯಮಿತ</translation>
 <translation id="1400240082805528049">24/7 ಬೆಂಬಲ</translation>
 <translation id="8463313539532697053">ಲೋಡ್ ಮಾಡುವಾಗ ಒಂದು ಕ್ಷಣ ನಿರೀಕ್ಷಿಸಿ…</translation>
+<translation id="4613076894734402086">ಪಾವತಿ ವಿಧಾನವನ್ನು ಎಡಿಟ್ ಮಾಡಿ</translation>
+<translation id="1898254156730880135">ನಿಮ್ಮ ತೀರಾ ಇತ್ತೀಚಿನ ಪಾವತಿಯು ಪೂರ್ಣಗೊಂಡಿಲ್ಲ ಎಂದು ತೋರುತ್ತಿದೆ. ಪಾವತಿ ಸಮಸ್ಯೆಯನ್ನು ಪರಿಹರಿಸುವವರೆಗೆ ಈ ಚಂದಾದಾರಿಕೆಗೆ ಪ್ರವೇಶವನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ ಪಾವತಿ ವಿಧಾನವನ್ನು ಎಡಿಟ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ Brave ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ.</translation>
+<translation id="1839021455997460752">ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸ</translation>
+<translation id="5154702632169343078">ವಿಷಯ</translation>
+<translation id="6625978880678465492">ದಯವಿಟ್ಟು ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="6687228121145903051">VPN ಗೆ ಸಂಪರ್ಕಿಸಲಾಗುವುದಿಲ್ಲ (ಇತರ ದೋಷ)</translation>
+<translation id="9184988385244077767">ಸಂಪರ್ಕಗೊಂಡಾಗ ಯಾವುದೇ ಇಂಟರ್ನೆಟ್ ಇಲ್ಲ</translation>
+<translation id="21570240866965662">ನಿಧಾನ ಸಂಪರ್ಕ</translation>
+<translation id="1219475260382643267">ವೆಬ್‌ಸೈಟ್ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲ</translation>
+<translation id="7138678301420049075">ಇತರೆ</translation>
+<translation id="1387340358507240698">ನಿಮ್ಮ ಸಮಸ್ಯೆಯನ್ನು ವಿವರಿಸಿ</translation>
+<translation id="501818585183973587">ನೀವು ನಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ಸಿದ್ಧರಿರುವ ಮಾಹಿತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="3195618332367441234">ನೀವು ಹೆಚ್ಚು ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಂಡರೆ, ಸಹಾಯಕ ಸಿಬ್ಬಂದಿಗೆ ಸಹಾಯ ಮಾಡುವುದು ಸುಲಭವಾಗುತ್ತದೆ.</translation>
+<translation id="5682143294773821728">VPN ಹೋಸ್ಟ್‌ ಹೆಸರು:</translation>
+<translation id="24242621812020123">ಆ್ಯಪ್‌ ಆವೃತ್ತಿ:</translation>
+<translation id="6676791921618140305">OS ಆವೃತ್ತಿ:</translation>
+<translation id="1156325797949437777">ಗಾರ್ಡಿಯನ್ ಸಹಭಾಗಿತ್ವದಲ್ಲಿ ಬೆಂಬಲವನ್ನು ಒದಗಿಸಲಾಗಿದೆ.</translation>
+<translation id="3307461350293459700">VPN ಸಂಪರ್ಕ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಸಂಪರ್ಕಿಸಲು ಪ್ರಯತ್ನಿಸಿ ಮತ್ತು Brave ನ VPN ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಅನುಮತಿಸು ಕ್ಲಿಕ್ ಮಾಡಲು ಮರೆಯದಿರಿ.</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> ನಲ್ಲಿ ಹೆಚ್ಚಿನ ಮಾರುಕಟ್ಟೆಗಳು</translation>
 <translation id="952067063131306699">FTX ನಲ್ಲಿ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ನೋಡಿ ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಟ್ರೇಡ್ ಮಾಡಿ</translation>
 <translation id="5963745988819586370">ಮಾರುಕಟ್ಟೆಗಳು</translation>
