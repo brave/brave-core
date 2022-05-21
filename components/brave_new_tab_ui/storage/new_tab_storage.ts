@@ -74,6 +74,7 @@ export const defaultState: NewTab.State = {
     dismissedNotifications: [],
     rewardsEnabled: false,
     enabledAds: false,
+    needsBrowserUpdateToSeeAds: false,
     adsSupported: false,
     promotions: [],
     totalContribution: 0.0,

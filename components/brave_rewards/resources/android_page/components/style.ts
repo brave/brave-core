@@ -152,3 +152,36 @@ export const StyledArrivingSoon = styled.div`
     display: block;
   }
 `
+
+export const StyledNeedsBrowserUpdateView = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background: #FDF1F2;
+  padding: 5px;
+  border-radius: 4px 4px 0px 0px;
+`
+
+export const StyledNeedsBrowserUpdateIcon = styled.div`
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  color: ${p => p.theme.palette.red500};
+`
+
+export const StyledNeedsBrowserUpdateContent = styled.div`
+  display: block;
+`
+
+export const StyledNeedsBrowserUpdateContentHeader = styled.div`
+  margin: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brave-palette-neutral800);
+`
+
+export const StyledNeedsBrowserUpdateContentBody = styled.div`
+  margin: 5px;
+  font-size: 14px;
+  color: var(--brave-palette-neutral800);
+`

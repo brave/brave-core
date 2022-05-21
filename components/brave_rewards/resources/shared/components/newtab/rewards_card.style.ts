@@ -182,6 +182,28 @@ export const pendingRewards = styled.div`
   }
 `
 
+export const needsBrowserUpdateView = styled.div`
+  display: block;
+  align-items: center;
+  justify-content: start;
+  background: #FDF1F2;
+  padding: 5px;
+  border-radius: 6px;
+`
+
+export const needsBrowserUpdateContentHeader = styled.div`
+  margin: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brave-palette-neutral800);
+`
+
+export const needsBrowserUpdateContentBody = styled.div`
+  margin: 5px;
+  font-size: 13px;
+  color: var(--brave-palette-neutral800);
+`
+
 export const progressHeader = styled.div`
   margin-top: 16px;
   display: flex;

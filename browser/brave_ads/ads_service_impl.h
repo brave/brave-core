@@ -120,6 +120,8 @@ class AdsServiceImpl : public AdsService,
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
+  bool NeedsBrowserUpdateToSeeAds() const override;
+
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
@@ -493,7 +495,9 @@ class AdsServiceImpl : public AdsService,
 
   bool deprecated_data_files_removed_ = false;
 
-  bool is_upgrading_from_pre_brave_ads_build_;
+  bool needs_browser_update_to_see_ads_ = false;
+
+  bool is_upgrading_from_pre_brave_ads_build_ = false;
 
   // This is needed to check if current ads service init become stale as
   // another ads service start is in progress

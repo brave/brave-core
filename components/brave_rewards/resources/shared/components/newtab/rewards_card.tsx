@@ -64,6 +64,7 @@ interface Props {
   rewardsEnabled: boolean
   adsEnabled: boolean
   adsSupported: boolean
+  needsBrowserUpdateToSeeAds: boolean
   rewardsBalance: number
   exchangeRate: number
   exchangeCurrency: string
@@ -115,6 +116,28 @@ export function RewardsCard (props: Props) {
             <ArrowCircleIcon />
           </style.disconnectedArrow>
         </style.disconnected>
+      )
+    }
+
+    if (props.needsBrowserUpdateToSeeAds && props.adsSupported) {
+      return (
+        <style.balance>
+          <style.needsBrowserUpdateView>
+            <style.needsBrowserUpdateContentHeader>
+              {getString('rewardsBrowserCannotReceiveAds')}
+            </style.needsBrowserUpdateContentHeader>
+            <style.needsBrowserUpdateContentBody>
+              {getString('rewardsBrowserNeedsUpdateToSeeAds')}
+            </style.needsBrowserUpdateContentBody>
+          </style.needsBrowserUpdateView>
+          <style.pendingRewards>
+            <PaymentStatusView
+              earningsLastMonth={props.earningsLastMonth}
+              earningsReceived={props.earningsReceived}
+              nextPaymentDate={props.nextPaymentDate}
+            />
+          </style.pendingRewards>
+        </style.balance>
       )
     }
 

@@ -41,6 +41,7 @@ export function Card () {
             rewardsEnabled={true}
             adsEnabled={true}
             adsSupported={true}
+            needsBrowserUpdateToSeeAds={false}
             rewardsBalance={91.5812}
             exchangeCurrency='USD'
             exchangeRate={0.82}

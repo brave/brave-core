@@ -8,6 +8,7 @@ import {
   StyledCard,
   StyledDescription,
   StyledSettingsIcon,
+  StyledHeader,
   StyledContent,
   StyledTitle,
   StyledSettingsWrapper,
@@ -43,6 +44,7 @@ export interface Props {
   onSettingsClick?: () => void
   settingsOpened?: boolean
   tos?: React.ReactNode
+  headerAlert?: React.ReactNode
 }
 
 /*
@@ -69,7 +71,8 @@ export default class Box extends React.PureComponent<Props, {}> {
       children,
       testId,
       settingsOpened,
-      onSettingsClick
+      onSettingsClick,
+      headerAlert
     } = this.props
 
     return (
@@ -77,6 +80,13 @@ export default class Box extends React.PureComponent<Props, {}> {
         <StyledCard
           testId={id}
         >
+          {
+            headerAlert
+              ? <StyledHeader>
+                  {headerAlert}
+                </StyledHeader>
+              : null
+          }
           <StyledFlip>
             <StyledContentWrapper open={!settingsOpened}>
               <StyledSettingTitleWrapper>

@@ -13,7 +13,9 @@ namespace brave_ads {
 
 class AdsServiceObserver : public base::CheckedObserver {
  public:
-  virtual void OnAdRewardsChanged() = 0;
+  virtual void OnAdRewardsChanged() {}
+
+  virtual void OnNeedsBrowserUpdateToSeeAds() {}
 
  protected:
   ~AdsServiceObserver() override = default;

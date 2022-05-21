@@ -22,6 +22,7 @@ import { setMostVisitedSettings } from '../api/topSites'
 
 // Utils
 import { handleWidgetPrefsChange } from './stack_widget_reducer'
+import { NewTabAdsData } from '../api/newTabAdsData'
 
 let sideEffectState: NewTab.State = storage.load()
 
@@ -135,6 +136,11 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         torCircuitEstablished: torTabData.torCircuitEstablished,
         torInitProgress: torTabData.torInitProgress
       }
+      break
+
+    case types.NEW_TAB_ADS_DATA_UPDATED:
+      const newTabAdsData = payload as NewTabAdsData
+      state.rewardsState.needsBrowserUpdateToSeeAds = newTabAdsData.needsBrowserUpdateToSeeAds
       break
 
     case types.NEW_TAB_DISMISS_BRANDED_WALLPAPER_NOTIFICATION:
