@@ -58,7 +58,9 @@ content::RenderFrameHost* BraveTalkFrameHost::FindFrameForToken(
   if (!frame_token)
     return main_frame;
 
-  auto* frame_tree_node = main_frame->FindAndVerifyChild(frame_token.value(), content::bad_message::BadMessageReason::RWH_INVALID_FRAME_TOKEN);
+  auto* frame_tree_node = main_frame->FindAndVerifyChild(
+      frame_token.value(),
+      content::bad_message::BadMessageReason::RWH_INVALID_FRAME_TOKEN);
   if (!frame_tree_node)
     return nullptr;
 

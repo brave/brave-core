@@ -9,6 +9,7 @@
 #include <tuple>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"
@@ -16,6 +17,7 @@
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/common/tokens/tokens.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/mojom/frame/frame.mojom.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -25,6 +27,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "third_party/blink/public/web/web_view.h"
+#include "third_party/blink/renderer/bindings/core/v8/v8_html_iframe_element.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -117,29 +120,21 @@ void BraveTalkFrameJSHandler::BeginAdvertiseShareDisplayMedia(
   if (!EnsureConnected())
     return;
 
-  auto* my_frame =
-      blink::WebLocalFrame::FrameForContext(isolate->GetCurrentContext());
-  LOG(ERROR) << "My Frame: " << my_frame << ", " << my_frame->GetFrameToken().ToString();
-
-  auto other_context = frame->GetCreationContext().ToLocalChecked();
-  auto* other_frame = blink::WebLocalFrame::FrameForContext(other_context);
-  LOG(ERROR) << "Other frame: " << other_frame << ", " << other_frame->GetFrameToken().ToString();
-
-  auto context = isolate->GetCurrentContext();
-  LOG(ERROR) << "c1: " << &context << " c2: " << &other_context;
-
-  // auto* unwrapped = blink::WrapperTypeInfo::Unwrap(frame);
-  LOG(ERROR) << "Frame: " << *v8::String::Utf8Value(isolate, frame);
-  // LOG(ERROR) << "Hmm? " << unwrapped->interface_name;
+  absl::optional<blink::FrameToken> frame_token;
+  if (blink::V8HTMLIFrameElement::HasInstance(isolate, frame)) {
+    auto* iframe = blink::V8HTMLIFrameElement::ToImpl(frame);
+    frame_token = iframe->ContentFrame()->GetFrameToken();
+  }
 
   auto context_old = std::make_unique<v8::Global<v8::Context>>(
       isolate, isolate->GetCurrentContext());
 
   auto persistent =
       std::make_unique<v8::Persistent<v8::Function>>(isolate, callback);
-  brave_talk_frame_->BeginAdvertiseShareDisplayMedia(other_frame->GetFrameToken(), base::BindOnce(
-      &BraveTalkFrameJSHandler::OnDeviceIdReceived, base::Unretained(this),
-      std::move(persistent), isolate, std::move(context_old)));
+  brave_talk_frame_->BeginAdvertiseShareDisplayMedia(
+      frame_token, base::BindOnce(&BraveTalkFrameJSHandler::OnDeviceIdReceived,
+                                  base::Unretained(this), std::move(persistent),
+                                  isolate, std::move(context_old)));
 }
 
 void BraveTalkFrameJSHandler::OnDeviceIdReceived(
