@@ -14,14 +14,11 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_talk/common/brave_talk_frame.mojom.h"
 #include "content/public/renderer/render_frame.h"
-#include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "third_party/blink/renderer/core/dom/node.h"
-#include "third_party/blink/renderer/core/html/html_iframe_element.h"
 #include "url/gurl.h"
-#include "v8-local-handle.h"
-#include "v8-object.h"
-#include "v8-value.h"
+#include "v8/include/v8-local-handle.h"
+#include "v8/include/v8-object.h"
+#include "v8/include/v8-value.h"
 #include "v8/include/v8.h"
 
 namespace brave_talk {
