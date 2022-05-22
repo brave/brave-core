@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24 h objem</translation>
 <translation id="7534079972563542000">Nezastaviteľné domény</translation>
 <translation id="4492298165410552103">Povoliť podporu nezastaviteľných domén v prehliadači Brave?</translation>
-<translation id="3470923752115324276">Brave vám môže umožniť navštíviť domény .crypto pomocou Cloudflare na vyriešenie požiadaviek na vyhľadanie názvu domény .crypto pomocou DNS cez HTTPS. Ak povolíte túto možnosť, Cloudflare uvidí doménu .crypto, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_CF_TOU_LINK"/>podmienky používania<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
+<translation id="2173151783558384314">Brave bude používať službu Infura na prenos hovorov Ethereum JSON-RPC do smart kontraktu z Unstoppable Domain na vyriešenie požiadaviek na vyhľadanie názvu domény .crypto (a tiež domén .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ak povolíte túto možnosť, Infura uvidí konkrétne domény, ktoré sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si  <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/>služby Infura.</translation>
 <translation id="6513892817556267573">služba Ethereum Name Service</translation>
 <translation id="4335039108389860301">Povoliť podporu službe Ethereum Name Service (ENS) v prehliadači Brave?</translation>
-<translation id="618766505813078707">Brave vám umožní navštíviť domény .eth pomocou Cloudflare na vyriešenie požiadaviek na vyhľadanie názvu domény .eth pomocou DNS cez HTTPS. Ak to povolíte, Cloudflare uvidí doménu .eth, ktorú sa pokúšate navštíviť, ale nebude môcť vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_CF_TOU_LINK"/>podmienky používania<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
-<translation id="5636651007798897342">Pokračovať pomocou servera Cloudflare</translation>
+<translation id="8328137586971750853">Brave bude používať službu Infura na prenos hovorov Ethereum JSON-RPC do smart kontraktu z Ethereum Name Service na vyriešenie požiadaviek na vyhľadanie názvu domény .eth. Ak povolíte túto možnosť, Infura uvidí doménu .eth, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/>služby Infura.</translation>
+<translation id="7378412287463452336">Pokračovať pomocou servera Infura</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="2218918398178303658">DNS cez HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Očakávaný samostatný, objektívny parameter.</translation>
 <translation id="1875861420974447980">Toto ID reťazca sa momentálne používa</translation>
 <translation id="167698752210114155">Vyskytla sa interná chyba</translation>
+<translation id="2326876601333401685">Táto metóda RPC nie je podporovaná.</translation>
 <translation id="1128992132632883337">Vyskytla sa chyba pri analyzovaní odpovede</translation>
 <translation id="1680597601664421644">Importovaná mnemotehnická pomôcka nie je platná pre peňaženku Brave</translation>
 <translation id="4641919696349069826">Žiadosť sa už spracováva</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Údaje o transakcii „gasPrice“ nie sú platné</translation>
 <translation id="8909404207805041979">Údaje o transakcii „gas“ nie sú platné</translation>
 <translation id="670444168393199227">Údaje o transakcii „value“ nie sú platné</translation>
-<translation id="6180576227145734714">Údaje o transakcii „to“ musia byť platnou adresou, keď sú uvedené</translation>
 <translation id="6916219411793555838">Údaje o transakcii „gasPrice“ alebo „maxFeePerGas“ musia byť uvedené</translation>
 <translation id="1406937874668963740">Údaje o transakcii „chainId“ nie sú platné</translation>
 <translation id="9195349857587166771">Údaje o transakcii „maxFeePerGas“ nie sú platné</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Chyba pri spracovaní transakcie</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ nemá oprávnenie na podpísanie správy</translation>
 <translation id="8719220598078667817">Transakciu sa nepodarilo podpísať</translation>
-<translation id="5486744676117070166">Nepodarilo sa získať ďalšiu hodnotu nonce</translation>
 <translation id="875506212625074179">Neplatná odpoveď ID reťazca zo služby RPC</translation>
+<translation id="5486744676117070166">Nepodarilo sa získať ďalšiu hodnotu nonce</translation>
+<translation id="6180576227145734714">Transakčné údaje „to“ musia byť platnou adresou, keď sú uvedené</translation>
 <translation id="4958950550253325418">Aplikácie Defi</translation>
 <translation id="735961408871282410">Trhy NFT</translation>
 <translation id="7740287852186792672">Výsledky vyhľadávania</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">Ox spracuje adresu Etherea a IP adresu na vykonanie transakcie (vrátane získania kotácií). 0x bude tieto údaje používať IBA na účely spracovania transakcií.</translation>
 <translation id="4626407663177532837">Cenová ponuka zahŕňa poplatok Brave vo výške 0,875 %.</translation>
 <translation id="8368540604723748428">Príliš veľa desatinných miest</translation>
+<translation id="6575120282593094155">Ešte nemáte účet <ph name="ACCOUNT_TYPE"/>. Chcete ho teraz vytvoriť?</translation>
 <translation id="2704606927547763573">Skopírované</translation>
 <translation id="1420318137760245955">Vitajte v novej peňaženke Brave</translation>
 <translation id="8303434745767477417">Držte kryptoaktíva vo svojej úschove. Sledujte výkonnosť portfólia a komunikujte s webovými aplikáciami 3 DApps. Obchodujte, investujte, požičiavajte si a požičiavajte s DeFi. Všetko priamo zo súkromného prehliadača Brave. Žiadne rozšírenia, žiadne sťahovanie nie je potrebné.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Cena v</translation>
 <translation id="2490428413101944234">Testovací faucet</translation>
 <translation id="3352959425838279177">Získajte Ether z faucetu pre <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Pokračovať na Wyre</translation>
-<translation id="2581671693710952401">Získejte Ether</translation>
 <translation id="8009571545960303544">Je vyžadován váš podpis</translation>
 <translation id="5294062982587710720">Upozorňujeme, že Brave nedokáže overiť, čo sa stane, ak sa prihlásite. Podpisom sa dá schváliť takmer každá operácia na vašom účte alebo vo vašom mene, vrátane (okrem iného) poskytnutia úplnej kontroly nad vaším účtom a kryptoaktívami v prospech stránky vytvárajúcej žiadosť.  Podpíšte sa len vtedy, ak ste si istí, že chcete túto akciu vykonať a že dôverujete žiadajúcej stránke.</translation>
 <translation id="3474375934783434676">Zaregistrujte sa na vlastné riziko</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">ďalšia</translation>
 <translation id="793994607260936590">prvá</translation>
 <translation id="4709524402122994378">transakce</translation>
+<translation id="4591079278963448049">Príslušný tokenový účet zatiaľ neexistuje. Na jeho vytvorenie a financovanie sa vynaloží malé množstvo SOL.</translation>
 <translation id="523862956770478816">Povolenia lokality</translation>
 <translation id="1575262454612599115">Pripojené účty: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
 <translation id="4305817255990598646">Prepnúť</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Odesláno</translation>
 <translation id="2331676293859649642">Potvrzeno</translation>
 <translation id="1165039591588034296">Chyba</translation>
+<translation id="8373210463207847451">Zrušeno</translation>
 <translation id="9065572743819293042">Nedávne transakcie</translation>
 <translation id="4235538284468006757">Podrobnosti transakcie</translation>
 <translation id="7488671812634887146">Zrýchliť</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 dní krypto darčekov, ~500 000 USD v cenách.</translation>
 <translation id="8292716346768453265">Zadajte teraz!</translation>
 <translation id="6423985584914773314">Neplatná adresa FIL</translation>
+<translation id="3898731124813934210">Kúpiť s Wyre</translation>
+<translation id="5522073372365069684">Kúpiť s Ramp</translation>
 <translation id="8528916244724490964">Všetky siete</translation>
 <translation id="2781668117338732220">Sekundárne siete</translation>
 <translation id="2816106784624007524">Limit paliva musí byť celé číslo väčšie ako 0</translation>
+<translation id="3354376789153561654">Musia byť uvedené transakčné údaje „to“</translation>
+<translation id="8728991256628663004">Transakčné údaje „from“ musia byť platnou adresou Filecoin</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="3745016858329272300">Všeobecné informácie</translation>
 <translation id="4045404575593562245">Udalosti riadenia Tor</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Pripojenie zlyhalo</translation>
 <translation id="745054660363064771">Nedá sa pripojiť k serveru</translation>
 <translation id="3936826714240735937">Vybrať iný server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> sa nepodarilo pripojiť k serveru <ph name="REGION_NAME"/>. Môžete to skúsiť znova alebo vybrať iný.</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> sa nepodarilo pripojiť k serveru <ph name="REGION_NAME"/>. Môžete to skúsiť znova alebo vybrať iný server.</translation>
 <translation id="1024255913009642477">Už ste si zakúpili VPN?</translation>
 <translation id="8814357473522731680">Používa technológiu</translation>
 <translation id="5747552184818312860">Koniec platnosti</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Rýchle a bez obmedzení až do 100 Mb/s</translation>
 <translation id="1400240082805528049">Neptretržitá podpora</translation>
 <translation id="8463313539532697053">Počkajte, kým sa načíta…</translation>
+<translation id="4613076894734402086">Upraviť platobnú metódu</translation>
+<translation id="1898254156730880135">Zdá sa, že vaša posledná platba neprebehla. Prístup k tomuto odberu bude pozastavený, kým sa problém s platbou nevyrieši. Skúste upraviť platobnú metódu alebo kontaktujte podporu Brave.</translation>
+<translation id="1839021455997460752">Vaša emailová adresa</translation>
+<translation id="5154702632169343078">Predmet</translation>
+<translation id="6625978880678465492">Zvoľte dôvod</translation>
+<translation id="6687228121145903051">Nedá sa pripojiť k VPN (iná chyba)</translation>
+<translation id="9184988385244077767">Pri pripojení nebol žiadny internet</translation>
+<translation id="21570240866965662">Pomalé pripojenie</translation>
+<translation id="1219475260382643267">Webová stránka nefunguje</translation>
+<translation id="7138678301420049075">Ostatné</translation>
+<translation id="1387340358507240698">Popíšte váš problém</translation>
+<translation id="501818585183973587">Zvoľte informácie, ktoré chcete s nami zdieľať</translation>
+<translation id="3195618332367441234">Čím viac informácií zdieľate, tým ľahšie vám dokážu pracovníci podpory pomôcť.</translation>
+<translation id="5682143294773821728">Názov hostiteľa siete VPN:</translation>
+<translation id="24242621812020123">Verzia aplikácie:</translation>
+<translation id="6676791921618140305">Verzia OS:</translation>
+<translation id="1156325797949437777">Podpora poskytovaná v spolupráci s Guardian.</translation>
+<translation id="3307461350293459700">Pripojenie siete VPN zlyhalo. Skúste sa pripojiť znova a nezabudnite kliknúť na možnosť Povoliť pre povolenie konfigurácie siete VPN prehliadača Brave.</translation>
 <translation id="7586151660465233733">Viac trhov na webovej stránke <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Zobraziť trhy a obchodovať s kryptomenami na FTX</translation>
 <translation id="5963745988819586370">Trhy</translation>

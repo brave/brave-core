@@ -668,11 +668,8 @@
 <translation id="1164622162816276433">Volum 24HR</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Vols activar el suport de Unstoppable Domains a Brave?</translation>
-<translation id="3470923752115324276">Brave et pot permetre visitar dominis .crypto mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .crypto utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .crypto que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
 <translation id="6513892817556267573">Servei de noms Ethereum</translation>
 <translation id="4335039108389860301">Vols activar el suport del servei de noms Ethereum (ENS) a Brave?</translation>
-<translation id="618766505813078707">Brave et pot permetre visitar dominis .eth mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .eth utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .eth que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
-<translation id="5636651007798897342">Continua utilitzant el servidor Cloudflare</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="2218918398178303658">DNS mitjançant HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -809,7 +806,6 @@
 <translation id="7577623631309755655">La dada de transacció 'gasPrice' no és vàlida</translation>
 <translation id="8909404207805041979">La dada de transacció 'gas' no és vàlida</translation>
 <translation id="670444168393199227">La dada de transacció 'value' no és vàlida</translation>
-<translation id="6180576227145734714">La dada de transacció 'to' ha de ser una adreça vàlida quan s'especifica</translation>
 <translation id="6916219411793555838">S'han d'especificar les dades de transacció 'gasPrice' o 'maxFeePerGas'</translation>
 <translation id="1406937874668963740">La dada de transacció 'chainId' no és vàlida</translation>
 <translation id="9195349857587166771">La dada de transacció 'maxFeePerGas' no és vàlida</translation>
@@ -823,8 +819,9 @@
 <translation id="1462494615260983714">Error en processar la transacció</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' no té autorització per signar el missatge</translation>
 <translation id="8719220598078667817">No ha estat possible signar la transacció</translation>
-<translation id="5486744676117070166">No ha estat possible obtenir el següent valor de nonce</translation>
 <translation id="875506212625074179">Resposta d'ID de cadena no vàlida del servei RPC</translation>
+<translation id="5486744676117070166">No ha estat possible obtenir el següent valor de nonce</translation>
+<translation id="6180576227145734714">La dada de transacció 'to' ha de ser una adreça vàlida quan s'especifica</translation>
 <translation id="4958950550253325418">Aplicacions de DeFi</translation>
 <translation id="735961408871282410">Mercats web NFT</translation>
 <translation id="7740287852186792672">Resultats de cerca</translation>
@@ -997,8 +994,6 @@
 <translation id="8569380433211549748">Preu en</translation>
 <translation id="2490428413101944234">Verifiqueu el faucet</translation>
 <translation id="3352959425838279177">Aconsegueix Ether d'una aixeta per a <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Continua a Wyre</translation>
-<translation id="2581671693710952401">Aconsegueix Ether</translation>
 <translation id="8009571545960303544">Es necessita la teva firma</translation>
 <translation id="5294062982587710720">Tingueu en compte que Brave no pot verificar què passarà si signeu. Una signatura podria autoritzar gairebé qualsevol operació al vostre compte o en nom vostre, incloent-hi, però sense limitar-se a, la cessió del control total del vostre compte i actius en criptomoneda al lloc que fa la sol·licitud. Signeu únicament si esteu segurs que voleu realitzar aquesta acció i confieu en el lloc sol·licitant.</translation>
 <translation id="3474375934783434676">Signeu sota la vostra responsabilitat</translation>
@@ -1090,6 +1085,7 @@
 <translation id="6666273175654835609">Enviat</translation>
 <translation id="2331676293859649642">Confirmat</translation>
 <translation id="1165039591588034296">Error</translation>
+<translation id="8373210463207847451">Caigut</translation>
 <translation id="9065572743819293042">Transaccions recents</translation>
 <translation id="4235538284468006757">Detalls de la transacció</translation>
 <translation id="7488671812634887146">Speedup</translation>
@@ -1216,7 +1212,6 @@
 <translation id="2325196879156848326">Connexió fallida</translation>
 <translation id="745054660363064771">No es pot connectar al servidor</translation>
 <translation id="3936826714240735937">Tria un altre servidor</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> no s'ha pogut connectar al servidor <ph name="REGION_NAME"/>. Pots intentar-ho de nou més tard, o bé triar-ne un altre.</translation>
 <translation id="1024255913009642477">Ja has comprat un VPN?</translation>
 <translation id="8814357473522731680">Impulsat per</translation>
 <translation id="5747552184818312860">Data de caducitat</translation>
@@ -1229,6 +1224,11 @@
 <translation id="1751947227857853925">Ràpid i il·limitat fins a 100 Mbps</translation>
 <translation id="1400240082805528049">Suport 24/7</translation>
 <translation id="8463313539532697053">Un moment mentre es carrega…</translation>
+<translation id="6687228121145903051">No s'ha pogut connectar a la VPN (Altres errors)</translation>
+<translation id="9184988385244077767">No hi havia Internet en connectar-se</translation>
+<translation id="21570240866965662">Connexió lenta</translation>
+<translation id="1219475260382643267">El lloc web no funciona</translation>
+<translation id="7138678301420049075">Altres</translation>
 <translation id="7586151660465233733">Més mercats a <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Veure mercats i fer transaccions amb criptomoneda a FTX</translation>
 <translation id="5963745988819586370">Mercats</translation>

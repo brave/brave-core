@@ -29,11 +29,13 @@
 <translation id="1146678959555564648">VR'ye Gir</translation>
 <translation id="114825011539563458">Gizlilik ve güvenlikle ilgili en önemli kontrolleri tek bir yerde inceleyin</translation>
 <translation id="1149401351239820326">Son kullanım tarihinin ayı</translation>
+<translation id="7083341910267693582"><ph name="APP_NAME"/>, Brave'da açılacak. Devam ederek <ph name="BEGIN_LINK1"/>Brave Hizmet Şartları<ph name="END_LINK1"/> ile <ph name="BEGIN_LINK2"/>Brave ve ChromeOS Ek Hizmet Şartları<ph name="END_LINK2"/>'nı kabul etmiş olursunuz.</translation>
 <translation id="1154704303112745282">Sayfa çevrimdışı kullanılamaz: <ph name="VIOLATED_URL"/></translation>
 <translation id="1171770572613082465">"Popüler siteler" düğmesine dokunarak popüler web sitelerini görün</translation>
 <translation id="1173894706177603556">Yeniden adlandır</translation>
 <translation id="1177863135347784049">Özel</translation>
 <translation id="1181037720776840403">Kaldır</translation>
+<translation id="1193729455103054076">Güçlü şifre kullanılsın mı?</translation>
 <translation id="1197267115302279827">Yer işaretlerini taşı</translation>
 <translation id="1201402288615127009">İleri</translation>
 <translation id="1202892408424955784">Takip edilen ürünler</translation>
@@ -88,6 +90,7 @@ Belirli bir siteye ait veya tüm tarama geçmişinizi sildiğinizde bununla ili�
 <translation id="1409879593029778104"><ph name="FILE_NAME"/> dosyası zaten var olduğu için indirme işlemi engellendi.</translation>
 <translation id="1853026300647876496">Brave ile bağlantı kuruluyor. Bu işlem bir dakika sürebilir…</translation>
 <translation id="1416550906796893042">Uygulama sürümü</translation>
+<translation id="1428770807407000502">Senkronizasyon kapatılsın mı?</translation>
 <translation id="1430915738399379752">Yazdır</translation>
 <translation id="1436784010935106834">Kaldırıldı</translation>
 <translation id="1448440926884431741">Takip edilen ürünlerinizi yer işaretlerinde düzenleyin</translation>
@@ -138,7 +141,6 @@ Belirli bir siteye ait veya tüm tarama geçmişinizi sildiğinizde bununla ili�
 <translation id="1779766957982586368">Pencereyi kapat</translation>
 <translation id="1791662854739702043">Yüklendi</translation>
 <translation id="1792959175193046959">Dosyaların indirileceği varsayılan konumu istediğiniz zaman değiştirebilirsiniz</translation>
-<translation id="2368444735104192323">Brave ve Chrome OS Ek Hizmet Şartları</translation>
 <translation id="1807246157184219062">Açık</translation>
 <translation id="1810845389119482123">İlk senkronizasyon kurulumu tamamlanmadı</translation>
 <translation id="1829244130665387512">Sayfada bul</translation>
@@ -175,8 +177,6 @@ Belirli bir siteye ait veya tüm tarama geçmişinizi sildiğinizde bununla ili�
 <translation id="2000419248597011803">Adres çubuğundan ve arama kutusundan bazı çerezleri ve aramaları varsayılan arama motorunuza gönderir</translation>
 <translation id="6968892567705775281">Seçilen kelimenin etrafındaki metin Brave aramalarına dahil edilsin mi?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# Dosya}other{# Dosya}}</translation>
-<translation id="2185841461857887156"><ph name="APP_NAME"/>, Brave'da açılacak. Devam ederek <ph name="BEGIN_LINK1"/>Brave Hizmet Şartları<ph name="END_LINK1"/> ile <ph name="BEGIN_LINK2"/>Brave ve Chrome OS Ek Hizmet Şartları<ph name="END_LINK2"/>'nı kabul etmiş olursunuz. <ph name="BEGIN_LINK3"/>Gizlilik Politikası<ph name="END_LINK3"/> da geçerlidir.</translation>
-<translation id="2019145049163614359">İlgi alanı kaldırılsın mı?</translation>
 <translation id="2020309681647789787">Geçmiş bilgilerinizi senkronize edilmiş tüm cihazlarınızda bulabileceksiniz. Bu şekilde, son bıraktığınız yerden devam edebilirsiniz</translation>
 <translation id="2021896219286479412">Tam ekran site kontrolleri</translation>
 <translation id="2038563949887743358">Masaüstü sitesi iste işlevini etkinleştir</translation>
@@ -201,10 +201,12 @@ Arama yapmak için herhangi bir kelimeye dokunun. Aramanızı hassaslaştırmak 
 <translation id="796823723482603597">Brave tarafından desteklenmektedir</translation>
 <translation id="2132122640199389833">Tüm bağlı cihazları kaldır</translation>
 <translation id="213279576345780926"><ph name="TAB_TITLE"/> kapatıldı</translation>
+<translation id="6659395979197839222">Brave'u kullanarak <ph name="BEGIN_TOS_LINK"/>Brave Hizmet Şartları<ph name="END_TOS_LINK"/> ile <ph name="BEGIN_ATOS_LINK"/>Brave ve ChromeOS Ek Hizmet Şartları<ph name="END_ATOS_LINK"/>'nı kabul etmiş olursunuz.</translation>
 <translation id="2139186145475833000">Ana ekrana ekle</translation>
 <translation id="2141396931810938595">Kullanımınıza göre</translation>
 <translation id="6516933364477884970">Brave'la paylaşmak istediklerinizi seçin. Paylaştığınız metrikler Brave’un özelliklerini, performansını ve kararlılığını iyileştirmeye yardımcı olmak için kullanılır.</translation>
 <translation id="2149973817440762519">Yer İşaretini Düzenle</translation>
+<translation id="2155214902713132423">Bu doğrulama yöntemi bu cihazda kullanılamıyor. Diğer cihazınızda farklı bir seçenek belirtin.</translation>
 <translation id="6162454065885854378">Telefonunuzdan başka bir cihazla herhangi bir şey paylaşmak için her iki cihazdaki Brave ayarlarında senkronizasyonu açın</translation>
 <translation id="4162910516440006395">Brave, şifrelerin tümünü kontrol edemedi</translation>
 <translation id="2169830938017475061">Şimdi</translation>
@@ -379,6 +381,7 @@ Arama yapmak için herhangi bir kelimeye dokunup basılı tutun. Aramanızı has
 <translation id="6153252609477956632">İlgilendiğiniz makaleler Brave'da</translation>
 <translation id="3066573403916685335">Aşağı Git</translation>
 <translation id="3070005020161560471">Otomatik olarak çevir</translation>
+<translation id="1094255666887095087"><ph name="APP_NAME"/>, Brave'da açılacak. Devam ederek <ph name="BEGIN_LINK1"/>Brave Hizmet Şartları<ph name="END_LINK1"/> ile <ph name="BEGIN_LINK2"/>Brave ve ChromeOS Ek Hizmet Şartları<ph name="END_LINK2"/>'nı kabul etmiş olursunuz. Ayrıca <ph name="BEGIN_LINK3"/>Gizlilik Politikası<ph name="END_LINK3"/> da geçerli olur.</translation>
 <translation id="3091010850649238832">Pano içeriklerini göster</translation>
 <translation id="821565628224723530">Bazı resimler size daha iyi açıklamalar sunmak için Brave'a gönderilir</translation>
 <translation id="3114507951000454849">Bugünkü haberleri <ph name="NEWS_ICON"/> okuyun</translation>
@@ -447,7 +450,6 @@ Arama yapmak için herhangi bir kelimeye dokunup basılı tutun. Aramanızı has
 <translation id="3493531032208478708">Önerilen içerik hakkında <ph name="BEGIN_LINK"/>daha fazla bilgi edinin<ph name="END_LINK"/></translation>
 <translation id="3495219333887281978">Oturum açma alt sayfası ekranın yarısına kadar açıldı.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="5067649501056343732">Brave'u kullanarak <ph name="BEGIN_TOS_LINK"/>Brave Hizmet Şartları<ph name="END_TOS_LINK"/> ile <ph name="BEGIN_ATOS_LINK"/>Brave ve Chrome OS Ek Hizmet Şartları<ph name="END_ATOS_LINK"/>'nı kabul etmiş olursunuz.</translation>
 <translation id="3507132249039706973">Standart Koruma açık</translation>
 <translation id="8669829441518807650">Çevrimdışı. Brave, güncellemeleri denetleyemiyor.</translation>
 <translation id="3513704683820682405">Artırılmış Gerçeklik</translation>
@@ -564,8 +566,10 @@ Arama yapmak için herhangi bir kelimeye dokunup basılı tutun. Aramanızı has
 <translation id="4269820728363426813">Bağlantı adresini kopyala</translation>
 <translation id="4290281343757112331">Bunun yerine daha sonra indirilsin mi?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Android ayarlarında ekran kilidini açın<ph name="END_LINK"/></translation>
+<translation id="6299940168852877221">Brave'u kullanarak <ph name="BEGIN_TOS_LINK"/>Brave Hizmet Şartları<ph name="END_TOS_LINK"/> ile <ph name="BEGIN_ATOS_LINK"/>Brave ve ChromeOS Ek Hizmet Şartları<ph name="END_ATOS_LINK"/>'nı kabul etmiş olursunuz. Ayrıca <ph name="BEGIN_PRIVACY_LINK"/>Gizlilik Politikası<ph name="END_PRIVACY_LINK"/> da geçerli olur.</translation>
 <translation id="4298388696830689168">Bağlantılı siteler</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">Şifre Yöneticisi</translation>
 <translation id="4307992518367153382">Temel Bilgiler</translation>
 <translation id="4320177379694898372">İnternet bağlantısı yok</translation>
 <translation id="4321739720395210191">Kameranız açılamıyor. Cihazınızı yeniden başlatıp işlemi tekrar deneyin.</translation>
@@ -710,7 +714,6 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="4744980273298156620">Yakında yeni sekme açtığınızda <ph name="SITE_NAME"/> kaynağından haberler göreceksiniz. Takip ettiğiniz siteler Brave hesabınıza kaydedilir. Bunları Keşfet ayarlarından yönetebilirsiniz.</translation>
 <translation id="5091249083535528968">Genişletilmiş kullanım verileri</translation>
 <translation id="509429900233858213">Bir hata oluştu.</translation>
-<translation id="5098190077610408701">İlgi alanı eklensin mi?</translation>
 <translation id="225414324447409614">Brave, bir sitenin şifrenizi çalmaya çalışması veya zararlı bir dosya indirmeniz halinde Güvenli Tarama'ya sayfa içeriğinden parçalarla birlikte URL'ler gönderebilir</translation>
 <translation id="510275257476243843">1 saat kaldı</translation>
 <translation id="5115811374190515607">Hedef: <ph name="PRODUCT_NAME"/></translation>
@@ -790,7 +793,6 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="5578795271662203820">Bu resmi, <ph name="SEARCH_ENGINE"/> üzerinde ara</translation>
 <translation id="5581519193887989363">Neyin senkronize edileceğini istediğiniz zaman <ph name="BEGIN_LINK1"/>ayarlardan<ph name="END_LINK1"/> seçebilirsiniz.</translation>
 <translation id="5590372121997663538">Bu bilgisayarı hatırla</translation>
-<translation id="559871659088672663">Bu özellik şu anda geliştirme aşamasındadır</translation>
 <translation id="6157610782452852023">Brave Asistan sizin için web sitelerindeki işlemleri tamamlayabilir</translation>
 <translation id="5620163320393916465">Kaydedilen şifre yok</translation>
 <translation id="5620928963363755975">Diğer Seçenekler düğmesini kullanarak İndirilenler bölümünden dosyalarınızı ve sayfalarınızı bulabilirsiniz</translation>
@@ -853,6 +855,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="1985257319311245640">Sitelerin URL'lerini bilmek, Brave Asistan'ın görevleri tamamlamanıza yardımcı olmasını sağlar. Asistan'ı Brave ayarlarından kapatabilirsiniz.</translation>
 <translation id="5916664084637901428">Açık</translation>
 <translation id="5919204609460789179">Senkronizasyonu başlatmak için <ph name="PRODUCT_NAME"/> adlı uygulamayı güncelleyin</translation>
+<translation id="5938820472109305350">Ekle: <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Arama için Brave kullanılıyor</translation>
 <translation id="5945035219773565305">Geçerli öneri:  <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">Yayındaki sayfa görüntüleniyor</translation>
@@ -872,7 +875,6 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="6557407328070865042">Brave, <ph name="BEGIN_LINK"/>Özel Korumalı Alan<ph name="END_LINK"/> girişimi kapsamında, açık web'i korurken sizi siteler arası izlemeden koruyacak yeni teknolojiler geliştiriyor.
 
 Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli bölgelerde kullanılmaktadır. Şimdilik, siteler üçüncü taraf çerezler gibi geçerli web teknolojilerini kullanmaya devam ederken Privacy Sandbox'ı deneyebilir.</translation>
-<translation id="6036057147555329831">Ekstra ICU</translation>
 <translation id="6039379616847168523">Sonraki sekmeye gider</translation>
 <translation id="6040143037577758943">Kapat</translation>
 <translation id="604124094241169006">Otomatik</translation>
@@ -930,7 +932,6 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="6345878117466430440">Okundu olarak işaretle</translation>
 <translation id="6363990818884053551">Senkronizasyonu başlatmak için kimliğinizi doğrulayın</translation>
 <translation id="6364438453358674297">Öneri geçmişten kaldırılsın mı?</translation>
-<translation id="4993481112200507346"><ph name="APP_NAME"/>, Brave'da açılacak. Devam ederek <ph name="BEGIN_LINK1"/>Brave Hizmet Şartları<ph name="END_LINK1"/> ile <ph name="BEGIN_LINK2"/>Brave ve Chrome OS Ek Hizmet Şartları<ph name="END_LINK2"/>'nı kabul etmiş olursunuz.</translation>
 <translation id="806493401838431801">Brave'un ziyaret edebileceğinizi düşündüğü sayfaları daha sık önceden yükler. Bu ayar sonucunda veri kullanımı artabilir.</translation>
 <translation id="6395288395575013217">BAĞLANTI</translation>
 <translation id="6397616442223433927">İnternete yeniden bağlanıldı</translation>
@@ -991,6 +992,7 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="2259649928554669581">Gizlilik, güvenlik ve veri toplamayla ilgili daha fazla ayar için <ph name="BEGIN_LINK1"/>Senkronizasyon<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Brave hizmetleri<ph name="END_LINK2"/> konularına bakın.</translation>
 <translation id="7939692063031538305">Brave, uygulamanın iyileştirilmesine yardımcı olmak için kullanım ve kilitlenme verilerini Brave'a gönderir. <ph name="BEGIN_UMA_LINK"/>Yönetin<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Her zaman engelle</translation>
+<translation id="6641780377503683465">Kaldır: <ph name="INTEREST"/></translation>
 <translation id="6643016212128521049">Temizle</translation>
 <translation id="6645629752388991326">Bu cihazı güvenlik anahtarı olarak kullanarak hangi cihazların oturum açabileceğini kontrol edin.</translation>
 <translation id="6678472970290886941">Yöneticiniz, tarayıcınızın kurulumunu uzaktan değiştirebilir. Bu cihazdaki etkinlikler Brave dışında da yönetilebilir.</translation>
@@ -1015,9 +1017,9 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="6751521182688001123">Hızlıca yeni bir sekme açın. Bu kısayolu düzenlemek için dokunup basılı tutun.</translation>
 <translation id="6756507620369789050">Geri bildiriminizi paylaşın</translation>
 <translation id="6767294960381293877">Sekme paylaşılacak cihazların listesi yarım yükseklikte açıldı.</translation>
-<translation id="6770042910635026163">Ziyaret ettiğiniz ve ilgi alanlarınızı belirleyen siteler</translation>
 <translation id="6770602306803890733">Hem siz hem de web'deki herkes için güvenliği iyileştirir</translation>
 <translation id="6783942555455976443">Sayfayı daha sonrası için kaydedip hatırlatıcı al</translation>
+<translation id="8174975477247159780">Brave ve ChromeOS Ek Hizmet Şartları</translation>
 <translation id="6795633245022906657">Hızlıca yeni bir sekme açın. Bu kısayolu düzenlemek için Ayarlar'a gidin.</translation>
 <translation id="6802555630140434547">Pencere kapatılacak</translation>
 <translation id="6811034713472274749">Sayfa görüntülenmeye hazır</translation>
@@ -1091,7 +1093,6 @@ Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli b
 <translation id="7208109991155904980">Tepki taşındı</translation>
 <translation id="7222235798733126207">Siteler arasında kısıtlı paylaşım</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 indirme işlemi beklemede}other{# indirme işlemi beklemede}}</translation>
-<translation id="7256686223798862196">Brave'u kullanarak <ph name="BEGIN_TOS_LINK"/>Brave Hizmet Şartları<ph name="END_TOS_LINK"/> ile <ph name="BEGIN_ATOS_LINK"/>Brave ve Chrome OS Ek Hizmet Şartları<ph name="END_ATOS_LINK"/>'nı kabul etmiş olursunuz. Ayrıca <ph name="BEGIN_PRIVACY_LINK"/>Gizlilik Politikası<ph name="END_PRIVACY_LINK"/> da geçerli olur.</translation>
 <translation id="7242755609445462077">Stil eklenmiş vurgu <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230"><ph name="TARGET_DEVICE_NAME"/> cihazının Brave'da senkronizasyonunun açık olduğundan emin olun</translation>
 <translation id="7252076891734325316">Telefonunuzu bilgisayara yakın bir yere koyun</translation>

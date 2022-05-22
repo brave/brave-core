@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">Khối lượng 24 giờ</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Bật hỗ trợ Unstoppable Domains trong Brave?</translation>
-<translation id="3470923752115324276">Brave có thể cho phép bạn truy cập các tên miền ".crypto" bằng cách dùng Cloudflare để xử lý các yêu cầu tra cứu tên miền ".crypto" bằng DNS qua giao thức HTTPS. Nếu bạn bật mục này, Cloudflare sẽ thấy được miền ".crypto" mà bạn đang cố truy cập nhưng sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_CF_TOU_LINK"/>các điều khoản sử dụng<ph name="END_CF_TOU_LINK"/> và<ph name="BEGIN_CF_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_CF_PRIVACY_LINK"/> của Cloudflare.</translation>
+<translation id="2173151783558384314">Brave sẽ sử dụng Infura để đưa ra các lệnh gọi Ethereum JSON-RPC tới hợp đồng thông minh từ Unstoppable Domains để xử lý các yêu cầu tra cứu tên miền .crypto (và cả .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Nếu bạn bật tính năng này thì Infura sẽ thấy các tên miền cụ thể mà bạn đang cố gắng truy cập nhưng họ sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_INFURA_TOU_LINK"/>điều khoản sử dụng<ph name="END_INFURA_TOU_LINK"/> và <ph name="BEGIN_INFURA_PRIVACY_LINK"/>chính sách bảo mật <ph name="END_INFURA_PRIVACY_LINK"/> của Infura.</translation>
 <translation id="6513892817556267573">Dịch vụ Cung cấp Tên miền Ethereum</translation>
 <translation id="4335039108389860301">Bật hỗ trợ Dịch vụ Cung cấp Tên miền Ethereum (ENS) trong Brave?</translation>
-<translation id="618766505813078707">Brave có thể cho phép bạn truy cập các tên miền ".crypto" bằng cách dùng Cloudflare để xử lý các yêu cầu tra cứu tên miền ".crypto" bằng DNS qua giao thức HTTPS. Nếu bạn bật mục này, Cloudflare sẽ thấy được miền ".crypto" mà bạn đang cố truy cập nhưng sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_CF_TOU_LINK"/>các điều khoản sử dụng<ph name="END_CF_TOU_LINK"/> và <ph name="BEGIN_CF_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_CF_PRIVACY_LINK"/> của Cloudflare.</translation>
-<translation id="5636651007798897342">Tiếp tục dùng máy chủ Cloudflare</translation>
+<translation id="8328137586971750853">Brave sẽ sử dụng Infura để đưa ra lệnh gọi Ethereum JSON-RPC tới hợp đồng thông minh từ Ethereum Name Service để xử lý các yêu cầu tra cứu tên miền .eth. Nếu bạn bật tính năng này thì Infura sẽ thấy tên miền .eth mà bạn đang cố gắng truy cập nhưng họ sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_INFURA_TOU_LINK"/>điều khoản sử dụng<ph name="END_INFURA_TOU_LINK"/> và <ph name="BEGIN_INFURA_PRIVACY_LINK"/>chính sách bảo mật <ph name="END_INFURA_PRIVACY_LINK"/> của Infura.</translation>
+<translation id="7378412287463452336">Tiếp tục sử dụng máy chủ Infura</translation>
 <translation id="2356070529366658676">Yêu cầu</translation>
 <translation id="2218918398178303658">DNS qua HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Mong đợi nhận một tham số đối tượng.</translation>
 <translation id="1875861420974447980">Mã chuỗi này hiện đang được sử dụng</translation>
 <translation id="167698752210114155">Đã xảy ra lỗi nội bộ</translation>
+<translation id="2326876601333401685">Phương pháp RPC này không được hỗ trợ.</translation>
 <translation id="1128992132632883337">Đã xảy ra lỗi phân tích cú pháp phản hồi</translation>
 <translation id="1680597601664421644">Cụm từ ghi nhớ được nhập không hợp lệ cho Ví Brave</translation>
 <translation id="4641919696349069826">Một yêu cầu đang được thực hiện</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Dữ liệu giao dịch 'gasPrice' không hợp lệ</translation>
 <translation id="8909404207805041979">Dữ liệu giao dịch 'gas' không hợp lệ</translation>
 <translation id="670444168393199227">Dữ liệu giao dịch 'value' không hợp lệ</translation>
-<translation id="6180576227145734714">Dữ liệu giao dịch 'to' phải là địa chỉ hợp lệ khi được chỉ rõ</translation>
 <translation id="6916219411793555838">Dữ liệu giao dịch 'gasPrice' hoặc 'maxFeePerGas' phải được chỉ rõ</translation>
 <translation id="1406937874668963740">Dữ liệu giao dịch 'chainId' không hợp lệ</translation>
 <translation id="9195349857587166771">Dữ liệu giao dịch 'maxFeePerGas' không hợp lệ</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Lỗi khi xử lý giao dịch</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' không được phép ký tin nhắn</translation>
 <translation id="8719220598078667817">Ký giao dịch không thành công</translation>
-<translation id="5486744676117070166">Tải giá trị số giao dịch tiếp theo không thành công</translation>
 <translation id="875506212625074179">Phản hồi mã chuỗi không hợp lệ từ dịch vụ RPC</translation>
+<translation id="5486744676117070166">Tải giá trị số giao dịch tiếp theo không thành công</translation>
+<translation id="6180576227145734714">Dữ liệu giao dịch 'to' phải là địa chỉ hợp lệ khi được chỉ rõ</translation>
 <translation id="4958950550253325418">Ứng dụng Defi</translation>
 <translation id="735961408871282410">Chợ NFT</translation>
 <translation id="7740287852186792672">Kết quả tìm kiếm</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện một giao dịch (bao gồm nhận báo giá). 0x sẽ CHỈ sử dụng dữ liệu này cho mục đích xử lý giao dịch.</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
 <translation id="8368540604723748428">Quá nhiều chữ số thập phân</translation>
+<translation id="6575120282593094155">Bạn chưa có tài khoản <ph name="ACCOUNT_TYPE"/>. Tạo tài khoản ngay bây giờ?</translation>
 <translation id="2704606927547763573">Đã sao chép</translation>
 <translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
 <translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Giá bằng</translation>
 <translation id="2490428413101944234">Kiểm tra vòi nước</translation>
 <translation id="3352959425838279177">Nhận Ether từ vòi nước cho <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Continue to Wyre</translation>
-<translation id="2581671693710952401">Lấy Ether</translation>
 <translation id="8009571545960303544">Chữ ký của bạn đang được yêu cầu</translation>
 <translation id="5294062982587710720">Lưu ý rằng Brave không thể xác thực điều gì sẽ xảy ra nếu bạn ký. Một chữ ký có thể cho phép hầu như mọi thao tác trong tài khoản của bạn hoặc thay mặt bạn, bao gồm (nhưng không chỉ giới hạn ở) việc cấp toàn quyền kiểm soát tài khoản và tài sản kỹ thuật số của bạn cho trang web đưa ra yêu cầu. Chỉ ký nếu bạn chắc chắn rằng mình muốn thực hiện hành động này và tin tưởng trang web yêu cầu.</translation>
 <translation id="3474375934783434676">Tự chịu trách nhiệm khi ký</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">tiếp theo</translation>
 <translation id="793994607260936590">đầu tiên</translation>
 <translation id="4709524402122994378">transactions</translation>
+<translation id="4591079278963448049">Tài khoản mã thông báo liên kết chưa tồn tại. Một ít SOL sẽ được sử dụng để tạo và cấp vốn cho tài khoản này.</translation>
 <translation id="523862956770478816">Quyền trang</translation>
 <translation id="1575262454612599115">Đã kết nối <ph name="NUMBER_OF_ACCOUNTS"/> tài khoản</translation>
 <translation id="4305817255990598646">Chuyển đổi</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Confirmed</translation>
 <translation id="1165039591588034296">Lỗi</translation>
+<translation id="8373210463207847451">Dropped</translation>
 <translation id="9065572743819293042">Giao dịch gần đây</translation>
 <translation id="4235538284468006757">Chi tiết giao dịch</translation>
 <translation id="7488671812634887146">Tăng tốc</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">Quà tặng tiền điện tử trong 7 ngày, giải thưởng trị giá ~500k đô la.</translation>
 <translation id="8292716346768453265">Tham gia ngay!</translation>
 <translation id="6423985584914773314">Không phải là địa chỉ FIL hợp lệ</translation>
+<translation id="3898731124813934210">Mua bằng Wyre</translation>
+<translation id="5522073372365069684">Mua bằng Ramp</translation>
 <translation id="8528916244724490964">Tất cả các mạng</translation>
 <translation id="2781668117338732220">Mạng phụ</translation>
 <translation id="2816106784624007524">Giới hạn khí phải là một số nguyên lớn hơn 0</translation>
+<translation id="3354376789153561654">Dữ liệu giao dịch 'to' phải được chỉ định</translation>
+<translation id="8728991256628663004">Dữ liệu giao dịch 'from' phải là địa chỉ Filecoin hợp lệ</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Kết nối không thành công</translation>
 <translation id="745054660363064771">Không thể kết nối với máy chủ</translation>
 <translation id="3936826714240735937">Chọn một máy chủ khác</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> không thể kết nối với máy chủ <ph name="REGION_NAME"/>. Bạn có thể thử lại hoặc chọn một máy chủ khác</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> không thể kết nối với máy chủ <ph name="REGION_NAME"/>. Bạn có thể thử lại hoặc chọn một máy chủ khác.</translation>
 <translation id="1024255913009642477">Đã mua VPN?</translation>
 <translation id="8814357473522731680">Được hỗ trợ bởi</translation>
 <translation id="5747552184818312860">Hết hạn</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Nhanh và không giới hạn lên đến 100 Mbps</translation>
 <translation id="1400240082805528049">Hỗ trợ 24/7</translation>
 <translation id="8463313539532697053">Chờ một chút trong khi tải…</translation>
+<translation id="4613076894734402086">Chỉnh sửa phương thức thanh toán</translation>
+<translation id="1898254156730880135">Có vẻ như khoản thanh toán gần đây nhất của bạn đã không thành công. Quyền truy cập vào đăng ký này sẽ tạm dừng cho đến khi vấn đề thanh toán được giải quyết. Hãy cố gắng chỉnh sửa phương thức thanh toán của bạn hoặc liên hệ với bộ phận hỗ trợ của Brave.</translation>
+<translation id="1839021455997460752">Địa chỉ email của bạn</translation>
+<translation id="5154702632169343078">Chủ đề</translation>
+<translation id="6625978880678465492">Vui lòng chọn một lý do</translation>
+<translation id="6687228121145903051">Không thể kết nối với VPN (Lỗi khác)</translation>
+<translation id="9184988385244077767">Không có internet khi kết nối</translation>
+<translation id="21570240866965662">Kết nối chậm</translation>
+<translation id="1219475260382643267">Trang web không hoạt động</translation>
+<translation id="7138678301420049075">Khác</translation>
+<translation id="1387340358507240698">Mô tả vấn đề của bạn</translation>
+<translation id="501818585183973587">Chọn thông tin bạn muốn chia sẻ với chúng tôi</translation>
+<translation id="3195618332367441234">Bạn càng chia sẻ nhiều thông tin, nhân viên hỗ trợ càng dễ trợ giúp.</translation>
+<translation id="5682143294773821728">Tên máy chủ VPN:</translation>
+<translation id="24242621812020123">Phiên bản ứng dụng:</translation>
+<translation id="6676791921618140305">Phiên bản HĐH:</translation>
+<translation id="1156325797949437777">Hỗ trợ được cung cấp thông qua Guardian.</translation>
+<translation id="3307461350293459700">Kết nối VPN không thành công. Vui lòng thử kết nối lại và nhớ nhấp vào Cho phép để bật cấu hình VPN của Brave.</translation>
 <translation id="7586151660465233733">Thêm thị trường trên <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Xem thị trường và giao dịch tiền điện tử trên FTX</translation>
 <translation id="5963745988819586370">Thị trường</translation>

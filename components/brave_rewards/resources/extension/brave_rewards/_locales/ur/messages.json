@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "ریفریش کریں",
+    "message": "Refresh",
     "description": ""
   },
   "pendingTipText": {
@@ -67,7 +67,7 @@
     "description": ""
   },
   "ok": {
-    "message": "ٹھیک ہے",
+    "message": "OK",
     "description": ""
   },
   "set": {
@@ -79,7 +79,7 @@
     "description": ""
   },
   "cancel": {
-    "message": "منسوخ کریں",
+    "message": "Cancel",
     "description": ""
   },
   "grantCaptchaTitle": {
@@ -467,15 +467,15 @@
     "description": ""
   },
   "onboardingTourContinue": {
-    "message": "جاری رکھیں",
+    "message": "Continue",
     "description": ""
   },
   "onboardingTourDone": {
-    "message": "ہوگیا",
+    "message": "Done",
     "description": ""
   },
   "onboardingTourSkip": {
-    "message": "نظر انداز کریں",
+    "message": "Skip",
     "description": ""
   },
   "onboardingTourSkipForNow": {
@@ -547,7 +547,7 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "توثیق کریں",
+    "message": "Verify",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
@@ -603,7 +603,7 @@
     "description": ""
   },
   "captchaDismiss": {
-    "message": "برخاست کریں",
+    "message": "Dismiss",
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {

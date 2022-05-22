@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Povoliť/zakázať štíty Brave</translation>
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="2278950434998763147">Otvorí niektoré webové stránky pomocou zabezpečeného pripojenia HTTPS namiesto obyčajného protokolu HTTP.</translation>
+<translation id="5510493033031835532">Webové stránky AMP s automatickým presmerovaním</translation>
+<translation id="5197219128592971597">Namiesto verzií Accelerated Mobile Page od spoločnosti Google vždy navštevujte pôvodné (iné ako AMP) URL adresy webových stránok.</translation>
 <translation id="94154759592465111">Blokovať skripty</translation>
 <translation id="7714773920987474116">Zablokovať JavaScript (môže prerušiť webové stránky)</translation>
 <translation id="6052725679982758334">Blokovanie sociálnych médií</translation>
@@ -554,7 +556,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1078873179929044999">V ďalšom kroku uvidíte 12-slovnú frázu na obnovenie, ktorú môžete použiť na obnovenie svojich základných kryptoúčtov. Uložte si ju na bezpečné miesto. V prípade zabudnutého hesla, strateného alebo ukradnutého zariadenia alebo zmeny peňaženky je fráza na obnovenie jediný spôsob, ako opäť získať prístup k účtu.</translation>
 <translation id="2359808026110333948">Pokračovať</translation>
 <translation id="5488357322146334497">Zpráva</translation>
-<translation id="7228169875515099943">ÚDAJE</translation>
 <translation id="1904000155026201268">Rozumiem, že ak stratím frázu na obnovenie, nebudem mať prístup k svojej kryptopeňaženke.</translation>
 <translation id="3933122286596948824">Vaša fráza na obnovenie</translation>
 <translation id="5077747669435508720">napíšte si alebo skopírujte tieto slová presne v uvedenom poradí a uložte si ich na bezpečné miesto. V prípade zabudnutého hesla, strateného alebo ukradnutého zariadenia alebo zmeny peňaženiek je fráza na obnovenie jediný spôsob, ako opäť získať prístup k účtu.</translation>
@@ -667,7 +668,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3510283489391432976">Zvoľte svoju geografickú polohu/krajinu</translation>
 <translation id="4390800080658195654">Zachováva vašu anonymitu online</translation>
 <translation id="639981156979733813">Podporuje rýchlosti až do 100 Mb/s</translation>
-<translation id="8396607116169935837">Používa bezpečný zašifrovaný tunel VPN IKEv2</translation>
+<translation id="1190117345570417902">Používa bezpečný zašifrovaný tunel siete VPN Wireguard</translation>
 <translation id="1571230671455380494">Vaše informácie nikdy nezdieľame ani nepredávame</translation>
 <translation id="276866628038850725">Všetky predplatné zahŕňajú 7-dňovú bezplatnú skúšobnú dobu.</translation>
 <translation id="7280825497485894053">Mesačné predplatné</translation>
@@ -692,7 +693,7 @@ Naozaj chcete pokračovať?</translation>
 Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na internet nebude zabezpečené.</translation>
 <translation id="2429299231491852747">Prijať žiadosť o pripojenie</translation>
 <translation id="3428909627460825679">Vytvorenie profilu VPN sa nepodarilo. Skúste to znova.</translation>
-<translation id="8584119457978684056">Overenie tokenu nákupu zlyhalo. Skúste to znova.</translation>
+<translation id="1326227401245340613">Overenie nákupu zlyhalo. Skúste to znova.</translation>
 <translation id="8905950042180169719">VPN beží na pozadí</translation>
 <translation id="8681480718817027245">Predplatné</translation>
 <translation id="7805768142964895445">Stav</translation>
@@ -703,7 +704,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5646376287012673985">Poloha</translation>
 <translation id="8375573361134671513">Obnoviť konfiguráciu</translation>
 <translation id="850405162932416400">Podpora VPN</translation>
-<translation id="1330148827129583049">Profil VPN nie je vytvorený. Prebieha vytovrenie nového profilu.</translation>
 <translation id="6772117549627334582">Získanie polohy servera zlyhalo. Skúste to znova neskôr.</translation>
 <translation id="5863914199331127413">Meno hostiteľa VPN</translation>
 <translation id="5499653136178260315">Typ predplatného</translation>
@@ -713,9 +713,9 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4395361077929528480">Typ siete</translation>
 <translation id="755448900483975096">Poskytovateľ mobilného pripojenia</translation>
 <translation id="1279441577056010362">Pokračovať na e-mail</translation>
-<translation id="2553687444159335134">Podpora je poskytovaná s pomocou tímu Guardian.\n\nVyberte informácie, ktoré s nami chcete zdieľať.\n\nČím viac informácií nám na začiatku poskytnete, tým ľahšie vám naši pracovníci podpory pomôžu vyriešiť vaše</translation>
+<translation id="7125582363614011660">Podpora poskytovaná s pomocou tímu Guardian.\n\nVyberte informácie, ktoré s nami chcete zdieľať.\n\nČím viac informácií nám na začiatku poskytnete, tým ľahšie vám naši pracovníci podpory pomôžu vyriešiť váš problém.</translation>
 <translation id="7999094850625689785">Na základe vášho systémového časového pásma sa automaticky vyberie oblasť servera, ktorá je k vám najbližšie. Tento postup sa odporúča na zabezpečenie rýchlych internetových prenosov.</translation>
-<translation id="8018707825009059641">Ostatné problémy</translation>
+<translation id="4397083831618200686">Zvoliť problém</translation>
 <translation id="6687228121145903051">Nedá sa pripojiť k VPN (iná chyba)</translation>
 <translation id="9184988385244077767">Pri pripojení nebol žiadny internet</translation>
 <translation id="21570240866965662">Pomalé pripojenie</translation>
@@ -730,7 +730,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1187506504156101449">Nepodarilo sa potvrdiť nákup:</translation>
 <translation id="8420522105268941892">Už ste sa prihlásili na odber tohto predplatného. Skúste obnoviť predplatné.</translation>
 <translation id="74771564105268111">CHYBA!\nSpôsobená používateľom, ktorý zrušil priebeh nákupu.</translation>
-<translation id="3851978668258201962">CHYBA!\nNákup sa nepodaril…</translation>
+<translation id="7312462922610983743">CHYBA!!\nNákup sa nepodaril..</translation>
 <translation id="6452181791372256707">Odmítnout</translation>
 <translation id="8030852056903932865">Schválit</translation>
 <translation id="1597199892790541240">Poplatek za palivo</translation>
@@ -803,11 +803,13 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5061574358754621254">Údaje o cenách zabezpečuje CoinGecko</translation>
 <translation id="4626407663177532837">Cenová ponuka zahŕňa poplatok Brave vo výške 0,875 %.</translation>
 <translation id="8574289650879708853">Pridať vlastné aktívum</translation>
+<translation id="1974060860693918893">Rozšírené</translation>
 <translation id="7791543448312431591">Pridať</translation>
 <translation id="6600400596821238377">Názov tokenu</translation>
 <translation id="4432966365400169165">Adresa zmluvy tokenov</translation>
 <translation id="4092152169181928870">Symbol tokenu</translation>
 <translation id="4351811224047421378">Počet desatinných miest presnosti</translation>
+<translation id="547122651977318828">ID tokenu (iba pre ERC721)</translation>
 <translation id="8614026298974065517">Odstrániť vlastné aktívum</translation>
 <translation id="4378941981362528553">Chcete odstrániť token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">Nie</translation>
@@ -869,5 +871,32 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2478788592457735063">Týmto sa prepne sieť na predchádzajúcu pridanú sieť.</translation>
 <translation id="8756686998207163764">Prepnúť sieť</translation>
 <translation id="394256914628786902">Povoliť kartu na automatické vytváranie skupín</translation>
+<translation id="5242300593039211344">Zámok peňaženky</translation>
+<translation id="1108298724135935307">Prepojené stránky</translation>
+<translation id="4255623233927788178">Zobraziť v blokovom prieskumníkovi</translation>
 <translation id="8274201358637112807">Táto stránka chce spolupracovať s peňaženkou Brave</translation>
+<translation id="3355936511340229503">Chyba pripojenia</translation>
+<translation id="4891604214809245310">Sieť nemožno nastaviť na <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">Zdá sa, že na tomto zariadení máte ďalšie siete VPN nastavené na „Vždy zapnuté“. Pokiaľ chcete povoliť Brave Firewall + VPN, pred opätovným pripojením najskôr deaktivujte nastavenie „Vždy zapnuté“ pre ostatné siete VPN. Ak problém pretrváva, skúste odinštalovať iné siete VPN.</translation>
+<translation id="85136472535634474">Otvoriť nastavenia siete VPN</translation>
+<translation id="8352805003811526272">Prebieha obnovenie konfigurácie ...</translation>
+<translation id="6809312301323611382">Už ste zvolili rovnaký server.</translation>
+<translation id="7694991972030057904">Povolenie bolo zrušené</translation>
+<translation id="9106265941552476098">Zamietnuť <ph name="TRANSACTION_LENGTH"/> transakcie</translation>
+<translation id="523862956770478816">Povolenia lokality</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> pripojené účty</translation>
+<translation id="4305817255990598646">Prepnúť</translation>
+<translation id="4804818685124855865">Odpojiť</translation>
+<translation id="8009571545960303544">Je vyžadován váš podpis</translation>
+<translation id="1982257600591932657">Názov siete</translation>
+<translation id="5052727830821470769">Adresa URL siete</translation>
+<translation id="4822132585477111396">ID reťazca</translation>
+<translation id="7131971375297699539">Symbol meny</translation>
+<translation id="7982789257301363584">Sieť</translation>
+<translation id="2521480044079508357">To umožní, aby mohla byť táto sieť použité v rámci peňaženky Brave.</translation>
+<translation id="4717431746210146708">Povoliť tejto stránke pridať sieť?</translation>
+<translation id="3378339846292573874">Pridať odporúčaný token</translation>
+<translation id="2322227405137827074">Chcete importovať tento token?</translation>
+<translation id="1324417023773393937">Prehliadač Brave</translation>
+<translation id="6044189892950611565">Kanál s upozorneniami pre prehliadač Brave</translation>
 </translationbundle>

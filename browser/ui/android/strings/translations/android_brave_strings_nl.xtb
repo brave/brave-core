@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Schakel Brave Shields in/uit</translation>
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
 <translation id="2278950434998763147">Hiermee worden sommige websites met gebruik van een beveiligde HTTPS-verbinding geopend in plaats van standaard HTTP.</translation>
+<translation id="5510493033031835532">AMP-pagina's automatisch omleiden</translation>
+<translation id="5197219128592971597">Bezoek altijd originele (niet-AMP) pagina-URL's in plaats van mobiele paginaversies van Google Accelerated</translation>
 <translation id="94154759592465111">Blokkeer scripts</translation>
 <translation id="7714773920987474116">Hiermee wordt JavaScript geblokkeerd (websites werken hierdoor mogelijk niet)</translation>
 <translation id="6052725679982758334">Sociale media blokkeren</translation>
@@ -556,7 +558,6 @@ Beschikbaar</translation>
 <translation id="1078873179929044999">Bij de volgende stap zie je een herstelzin van 12 woorden die je kunt gebruiken om je primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met je herstelzin kun je weer toegang krijgen tot je account wanneer je je wachtwoord bent vergeten, je apparaat kwijt is of is gestolen en wanneer je van wallet wilt wisselen.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="5488357322146334497">Message</translation>
-<translation id="7228169875515099943">GEGEVENS</translation>
 <translation id="1904000155026201268">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
 <translation id="3933122286596948824">Jouw herstelwoorden</translation>
 <translation id="5077747669435508720">Noteer deze woorden of kopieer ze in de exacte volgorde zoals hieronder weergegeven en bewaar ze op een veilige plek. Je herstelzin is de enige manier om weer toegang te krijgen tot je account als je je wachtwoord bent vergeten, je apparaat is gestolen of verloren of wanneer je van wallet wilt wisselen.</translation>
@@ -669,7 +670,7 @@ Beschikbaar</translation>
 <translation id="3510283489391432976">Kies je geo-locatie of land</translation>
 <translation id="4390800080658195654">Houdt je online anoniem</translation>
 <translation id="639981156979733813">Ondersteunt snelheden tot 100 Mbps</translation>
-<translation id="8396607116169935837">Maakt gebruik van een beveiligde, versleutelde VPN-tunnel van IKEv2</translation>
+<translation id="1190117345570417902">Maakt gebruik van een beveiligde, versleutelde VPN-tunnel van Wireguard</translation>
 <translation id="1571230671455380494">We delen of verkopen je info nooit</translation>
 <translation id="276866628038850725">Alle abonnementen bieden een 7-daagse proefperiode!</translation>
 <translation id="7280825497485894053">Maandelijks abonnement</translation>
@@ -694,7 +695,7 @@ Beschikbaar</translation>
 Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je internetverbinding niet beveiligd.</translation>
 <translation id="2429299231491852747">Verbindingsverzoek accepteren</translation>
 <translation id="3428909627460825679">Aanmaken van een VPN-profiel is mislukt. Probeer het opnieuw.</translation>
-<translation id="8584119457978684056">Verificatie van aankooptoken mislukt. Probeer het opnieuw.</translation>
+<translation id="1326227401245340613">Verificatie van aankoop mislukt. Probeer het opnieuw.</translation>
 <translation id="8905950042180169719">VPN wordt uitgevoerd op de achtergrond</translation>
 <translation id="8681480718817027245">Abonnement</translation>
 <translation id="7805768142964895445">staat</translation>
@@ -705,7 +706,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5646376287012673985">Locatie</translation>
 <translation id="8375573361134671513">Configuratie resetten</translation>
 <translation id="850405162932416400">VPN-ondersteuning</translation>
-<translation id="1330148827129583049">VPN-profiel is niet aangemaakt. Maak een nieuw profiel aan.</translation>
 <translation id="6772117549627334582">Het is niet gelukt om de serverlocatie op te halen. Probeer het later opnieuw.</translation>
 <translation id="5863914199331127413">VPN-hostname</translation>
 <translation id="5499653136178260315">Abonnementstype</translation>
@@ -715,9 +715,9 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4395361077929528480">Netwerktype</translation>
 <translation id="755448900483975096">Mobiele provider</translation>
 <translation id="1279441577056010362">Doorgaan naar e-mail</translation>
-<translation id="2553687444159335134">Ondersteuning met de hulp van het Guardian-team.\n\nSelecteer de informatie die je met ons wilt delen.\n\nHoe meer informatie je met ons deelt, hoe gemakkelijker het voor ons ondersteunend personeel is om je te helpen bij het oplossen van je</translation>
+<translation id="7125582363614011660">Ondersteuning met de hulp van het Guardian-team.\n\nSelecteer de informatie die u met ons wilt delen.\n\nHoe meer informatie u met ons deelt, hoe gemakkelijker het voor ons ondersteunend personeel is om u te helpen bij het oplossen van uw probleem.</translation>
 <translation id="7999094850625689785">De dichtstbijzijnde regio van de server wordt automatisch geselecteerd op basis van de tijdzone van je systeem. Dit wordt aanbevolen om sneller internet te garanderen.</translation>
-<translation id="8018707825009059641">Andere problemen</translation>
+<translation id="4397083831618200686">Probleem selecteren</translation>
 <translation id="6687228121145903051">Kan geen verbinding maken met de VPN (andere fout)</translation>
 <translation id="9184988385244077767">Geen internet bij verbinding</translation>
 <translation id="21570240866965662">Langzame verbinding</translation>
@@ -732,7 +732,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1187506504156101449">Fout bij het bevestigen van de aankoop:</translation>
 <translation id="8420522105268941892">Je maakt al gebruik van dit abonnement. Probeer het abonnement te herstellen.</translation>
 <translation id="74771564105268111">FOUT!\nVeroorzaakt door een gebruiker die de aankoop heeft geannuleerd.</translation>
-<translation id="3851978668258201962">FOUT!\nAankoop mislukt...</translation>
+<translation id="7312462922610983743">FOUT!\nAankoop mislukt...</translation>
 <translation id="6452181791372256707">Afwijzen</translation>
 <translation id="8030852056903932865">Goedkeuren</translation>
 <translation id="1597199892790541240">Gas vergoeding</translation>
@@ -805,11 +805,13 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5061574358754621254">Prijsgegevens beschikbaar gesteld door CoinGecko</translation>
 <translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
 <translation id="8574289650879708853">Aangepaste asset toevoegen</translation>
+<translation id="1974060860693918893">Geavanceerd</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
 <translation id="6600400596821238377">Tokennaam</translation>
 <translation id="4432966365400169165">Contractadres van token</translation>
 <translation id="4092152169181928870">Tokensymbool</translation>
 <translation id="4351811224047421378">Zichtbare decimalen</translation>
+<translation id="547122651977318828">Token-ID (alleen voor ERC721)</translation>
 <translation id="8614026298974065517">Aangepaste asset verwijderen</translation>
 <translation id="4378941981362528553">Wilt u de token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) verwijderen?</translation>
 <translation id="4250680216510889253">Nee</translation>
@@ -871,5 +873,32 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2478788592457735063">Hiermee schakel je over naar een netwerk dat je eerder hebt toegevoegd.</translation>
 <translation id="8756686998207163764">Van netwerk wisselen</translation>
 <translation id="394256914628786902">Automatische creatie van tabbladgroep inschakelen</translation>
+<translation id="5242300593039211344">Wallet vergrendelen</translation>
+<translation id="1108298724135935307">Gekoppelde sites</translation>
+<translation id="4255623233927788178">Weergeven op Blokkering Explorer</translation>
 <translation id="8274201358637112807">Deze pagina wil communiceren met Brave Wallet</translation>
+<translation id="3355936511340229503">Verbindingsfout</translation>
+<translation id="4891604214809245310">Kan netwerk niet instellen op <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">Het lijkt erop dat u andere VPN's op dit apparaat hebt ingeschakeld op 'Altijd aan'. Om Brave Firewall + VPN in te schakelen, schakelt u eerst de 'Altijd aan'-instelling uit voor andere VPN's voordat u opnieuw verbinding maakt. Als het probleem zich blijft voordoen, probeer dan andere VPN's te verwijderen.</translation>
+<translation id="85136472535634474">VPN-instellingen openen</translation>
+<translation id="8352805003811526272">Configuratie aan het resetten ...</translation>
+<translation id="6809312301323611382">U hebt dezelfde server al geselecteerd.</translation>
+<translation id="7694991972030057904">Toestemming werd geannuleerd</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> transacties weigeren</translation>
+<translation id="523862956770478816">Toestemmingen site</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> verbonden accounts</translation>
+<translation id="4305817255990598646">Schakel over</translation>
+<translation id="4804818685124855865">Verbinding verbreken</translation>
+<translation id="8009571545960303544">Uw handtekening wordt aangevraagd</translation>
+<translation id="1982257600591932657">Netwerknaam</translation>
+<translation id="5052727830821470769">Netwerk-URL</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="7131971375297699539">Valutasymbool</translation>
+<translation id="7982789257301363584">Netwerk</translation>
+<translation id="2521480044079508357">Hierdoor kan dit netwerk binnen Brave-wallet worden gebruikt.</translation>
+<translation id="4717431746210146708">Deze website toestaan om een netwerk toe te voegen?</translation>
+<translation id="3378339846292573874">Voorgestelde token toevoegen</translation>
+<translation id="2322227405137827074">Wil je deze token importeren?</translation>
+<translation id="1324417023773393937">Brave-browser</translation>
+<translation id="6044189892950611565">Meldingkanaal voor Brave Browser</translation>
 </translationbundle>

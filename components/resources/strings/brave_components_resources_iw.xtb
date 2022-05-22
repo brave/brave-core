@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">נפח של 24 שעות</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
 <translation id="4492298165410552103">לאפשר תמיכה בדומיינים בלתי ניתנים לעצירה ב-Brave?</translation>
-<translation id="3470923752115324276">Brave יכול לאפשר לך לבקר בדומיינים מסוג crypto. באמצעות Cloudflare לפתרון בקשות חיפוש של שם דומיין מסוג crypto. באמצעות DNS על HTTPS. אם תאפשר/י זאת, Cloudflare יראה את דומיין ה-crypto. שאת/ה מנסה לבקר בו אבל הם לא יוכלו לראות דומיינים אחרים. ראו את <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>. של Cloudflare.</translation>
+<translation id="2173151783558384314">Brave ישתמש ב-Infura כדי להנפיק קריאות אתריום JSON-RPC לחוזה החכם מ-Unstoppable Domains כדי לפתור בקשות לחיפוש את שם הדומיין crypto. (וכמו גם את .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). כאשר ההגדרה מופעלת, Infura תראה את הדומיינים הספציפיים שבהם ניסית לבקר אך הם לא יוכלו לראות דומיינים אחרים. יש לעיין בתנאי השימוש <ph name="END_INFURA_TOU_LINK"/> ואת <ph name="BEGIN_INFURA_PRIVACY_LINK"/>מדיניות הפרטיות <ph name="END_INFURA_PRIVACY_LINK"/> של Infura <ph name="BEGIN_INFURA_TOU_LINK"/>.</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="4335039108389860301">לאפשר תמיכה ב-Ethereum Name Service (ENS) ב-Brave?</translation>
-<translation id="618766505813078707">Brave יכול לאפשר לך לבקר בדומיינים מסוג eth. באמצעות Cloudflare כדי לפתור בקשות חיפוש שמות דומיין מסוג eth. באמצעות DNS על HTTPS. אם תאפשר/י את זה, Cloudflare יראה את דומיין ה-eth. שאת/ה מנסה לבקר בו אבל הם לא יוכלו לראות דומיינים אחרים. ראו את <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>. של Cloudflare</translation>
-<translation id="5636651007798897342">להמשיך באמצעות שרת Cloudflare</translation>
+<translation id="8328137586971750853">Brave ישתמש ב-Infura כדי להנפיק קריאות אתריום JSON-RPC לחוזה החכם משירות Ethereum Name כדי לפתור בקשות לחיפוש את שם הדומיין eth. כאשר ההגדרה מופעלת, Infura תראה את הדומיינים הספציפיים שבהם ניסית לבקר אך הם לא יוכלו לראות דומיינים אחרים. יש לעיין <ph name="BEGIN_INFURA_TOU_LINK"/>בתנאי השימוש<ph name="END_INFURA_TOU_LINK"/> ואת <ph name="BEGIN_INFURA_PRIVACY_LINK"/> מדיניות הפרטיות <ph name="END_INFURA_PRIVACY_LINK"/> של Infura.</translation>
+<translation id="7378412287463452336">המשך להשתמש בשרת Infura</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="2218918398178303658">DNS על פני HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -801,6 +801,7 @@
 <translation id="9161147058107529840">המערכת מצפה לפרמטר אובייקט בודד.</translation>
 <translation id="1875861420974447980">מזהה שרשרת זה נמצא כעת בשימוש</translation>
 <translation id="167698752210114155">קרתה שגיאה פנימית</translation>
+<translation id="2326876601333401685">לא קיימת תמיכה בשיטת RPC זו.</translation>
 <translation id="1128992132632883337">אירעה שגיאת ניתוח תגובה</translation>
 <translation id="1680597601664421644">מסייע הזיכרון המיובא אינו תקף לגבי Brave Wallet</translation>
 <translation id="4641919696349069826">בקשה כבר נמצאת בביצוע</translation>
@@ -811,7 +812,6 @@
 <translation id="7577623631309755655">נתוני העסקה 'gasPrice' אינם תקפים</translation>
 <translation id="8909404207805041979">נתוני העסקה 'דלק' אינם חוקיים</translation>
 <translation id="670444168393199227">נתוני העסקה 'gasPrice' אינם תקפים</translation>
-<translation id="6180576227145734714">נתוני העסקה 'אל' חייבים להיות כתובת תקינה בעת ציון</translation>
 <translation id="6916219411793555838">ש לציין נתוני עסקה 'gasPrice' או 'maxFeePerGas'</translation>
 <translation id="1406937874668963740">נתוני העסקה 'chainId' אינם תקפים</translation>
 <translation id="9195349857587166771">נתוני העסקה 'maxFeePerGas' אינם תקפים</translation>
@@ -825,8 +825,9 @@
 <translation id="1462494615260983714">שגיאה בעיבוד העסקה</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>'אינו מורשה לחתום על הודעה</translation>
 <translation id="8719220598078667817">חתימת העסקה נכשלה</translation>
-<translation id="5486744676117070166">לא ניתן היה לקבל את הערך הבא</translation>
 <translation id="875506212625074179">תגובת מזהה שרשרת לא חוקית משירות RPC</translation>
+<translation id="5486744676117070166">לא ניתן היה לקבל את הערך הבא</translation>
+<translation id="6180576227145734714">נתוני העסקה 'אל' חייבים להיות כתובת תקינה בעת ציון</translation>
 <translation id="4958950550253325418">אפליקציות DeFi</translation>
 <translation id="735961408871282410">שווקי NFT</translation>
 <translation id="7740287852186792672">תוצאות חיפוש</translation>
@@ -874,6 +875,7 @@
 <translation id="151946611346774041">העיבוד של כתובת Ethereum וכתובת ה-IP יתבצע באמצעות Ox כדי להשלים עסקה (כולל קבלת הצעות מחיר). המידע ישמש את Ox אך ורק למטרות הטיפול בעסקה.</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
 <translation id="8368540604723748428">יותר מדי מקומות עשרוניים</translation>
+<translation id="6575120282593094155">עדיין אין לך <ph name="ACCOUNT_TYPE"/> חשבון. ליצור אחד עכשיו?</translation>
 <translation id="2704606927547763573">הועתק</translation>
 <translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
 <translation id="8303434745767477417">החזק בנכסי קריפטו במשמורת שלך. עקוב אחר ביצועי תיק ההשקעות וקיים אינטראקציה עם אפליקציות 3D. סחור, השקע, לווה והלווה באמצעות DeFi. הכל ישר מדפדפן הפרטיות Brave. ללא תוספות, ללא צורך בהורדה.</translation>
@@ -999,8 +1001,6 @@
 <translation id="8569380433211549748">מחיר ב</translation>
 <translation id="2490428413101944234">בדיקת ברז (Faucet)</translation>
 <translation id="3352959425838279177">קבל Ether מן ברז עבור <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">המשך ל-Wyre</translation>
-<translation id="2581671693710952401">השג/י את'ר</translation>
 <translation id="8009571545960303544">נדרשת חתימתך</translation>
 <translation id="5294062982587710720">שים לב כי Brave לא יכול לאמת מה יקרה אם תחתום. חתימה יכולה לאשר כמעט כל פעולה בחשבונך או בשמך, כולל (אך לא מוגבל ל)מתן שליטה מוחלטת בחשבונך ובנכסי הקריפטו לאתר המבקש את הבקשה. חתום רק אם אתה בטוח שאתה רוצה לבצע פעולה זו וסומך על האתר המבקש.</translation>
 <translation id="3474375934783434676">הירשם על אחריותך בלבד</translation>
@@ -1042,6 +1042,7 @@
 <translation id="5821668936183240062">הבא</translation>
 <translation id="793994607260936590">ראשון</translation>
 <translation id="4709524402122994378">עסקאות</translation>
+<translation id="4591079278963448049">חשבון האסימון המשויך עדיין לא קיים. סכום קטן של SOL יושקע כדי ליצור ולממן אותו.</translation>
 <translation id="523862956770478816">הרשאות אתר</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> חשבונות מחוברים</translation>
 <translation id="4305817255990598646">החלף</translation>
@@ -1092,6 +1093,7 @@
 <translation id="6666273175654835609">הוגש</translation>
 <translation id="2331676293859649642">אושר</translation>
 <translation id="1165039591588034296">שגיאה</translation>
+<translation id="8373210463207847451">נשמט</translation>
 <translation id="9065572743819293042">פעולות אחרונות</translation>
 <translation id="4235538284468006757">פרטי פעולות</translation>
 <translation id="7488671812634887146">זירוז</translation>
@@ -1171,9 +1173,13 @@
 <translation id="7829441065063984927">7 ימים של חלוקת קריפטו, פרסים בסך של כ-500$.</translation>
 <translation id="8292716346768453265">היכנסו עכשיו!</translation>
 <translation id="6423985584914773314">כתובת FIL לא חוקית</translation>
+<translation id="3898731124813934210">לרכישה באמצעות Wyre</translation>
+<translation id="5522073372365069684">לרכישה באמצעות Ramp</translation>
 <translation id="8528916244724490964">כל הרשתות</translation>
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="2816106784624007524">הגבלת הדלק חייבת להיות מספר שלם הגדול מאפס</translation>
+<translation id="3354376789153561654">יש לציין את נתוני העסקה 'אל'</translation>
+<translation id="8728991256628663004">נתוני העסקה 'מאת' חייבים להיות כתובת Filecoin חוקית</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -1218,7 +1224,7 @@
 <translation id="2325196879156848326">ההתחברות נכשלה</translation>
 <translation id="745054660363064771">לא ניתן להתחבר לשרת</translation>
 <translation id="3936826714240735937">בחר שרת אחר</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>לא ניתן להתחבר לשרת<ph name="REGION_NAME"/>. באפשרותך לנסות שוב, ולבחור בשרת אחר</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> לא הצליח להתחבר אל שרת ה-<ph name="REGION_NAME"/>. באפשרותך לנסות שוב, או לבחור באחד אחר.</translation>
 <translation id="1024255913009642477">כבר קנית VPN?</translation>
 <translation id="8814357473522731680">מופעל באמצעות</translation>
 <translation id="5747552184818312860">מועד תפוגה</translation>
@@ -1231,6 +1237,24 @@
 <translation id="1751947227857853925">מהיר וללא הגבלה עד 100 Mbps</translation>
 <translation id="1400240082805528049">תמיכה 24/7</translation>
 <translation id="8463313539532697053">יש להמתין בזמן טעינת…</translation>
+<translation id="4613076894734402086">עריכת אמצעי תשלום</translation>
+<translation id="1898254156730880135">נראה שהתשלום האחרון שלך עבור לא עבר. הגישה למנוי תושהה עד לפתרון סוגיית התשלום. עליך לנסות לערוך את אמצעי התשלום שלך, או לפנות לתמיכה של Brave.</translation>
+<translation id="1839021455997460752">כתובת האימייל שלך</translation>
+<translation id="5154702632169343078">נושא</translation>
+<translation id="6625978880678465492">יש לבחור סיבה</translation>
+<translation id="6687228121145903051">לא ניתן להתחבר ל- VPN (שגיאה אחרת)</translation>
+<translation id="9184988385244077767">אין אינטרנט בזמן התחברות</translation>
+<translation id="21570240866965662">חיבור איטי</translation>
+<translation id="1219475260382643267">האתר לא עובד</translation>
+<translation id="7138678301420049075">אחר</translation>
+<translation id="1387340358507240698">תיאור הבעיה</translation>
+<translation id="501818585183973587">עליך לבחור את המידע שברצונך לחלוק איתנו</translation>
+<translation id="3195618332367441234">ככל שנקבל ממך מידע רב יותר, כך יהיה קל יותר לצוות התמיכה לסייע לך.</translation>
+<translation id="5682143294773821728">שם מארח VPN:</translation>
+<translation id="24242621812020123">גרסת האפליקציה:</translation>
+<translation id="6676791921618140305">גרסת מערכת ההפעלה:</translation>
+<translation id="1156325797949437777">התמיכה מוענקת בשיתוף Guardian.</translation>
+<translation id="3307461350293459700">חיבור ה-VPN נכשל. יש לנסות להתחבר שוב, ולהקפיד ללחוץ על ׳אפשר׳ כדי להפעיל את תצורת ה-VPN של Brave.</translation>
 <translation id="7586151660465233733">שווקים נוספים ב-<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">צפו בשווקים וקנו קריפטו ב-FTX</translation>
 <translation id="5963745988819586370">שווקים</translation>

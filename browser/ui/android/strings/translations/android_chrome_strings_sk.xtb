@@ -29,11 +29,13 @@
 <translation id="1146678959555564648">Zadať VR</translation>
 <translation id="114825011539563458">Najdôležitejšie ovládanie ochrany súkromia a zabezpečenia na jednom mieste</translation>
 <translation id="1149401351239820326">Mesiac vypršania platnosti</translation>
+<translation id="7083341910267693582">Aplikácia <ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Brave OS<ph name="END_LINK2"/>.</translation>
 <translation id="1154704303112745282">Stránka nie je k dispozícii offline: <ph name="VIOLATED_URL"/></translation>
 <translation id="1171770572613082465">Klepnutím na tlačidlo Hlavné weby zobrazíte obľúbené webové stránky</translation>
 <translation id="1173894706177603556">Premenovať</translation>
 <translation id="1177863135347784049">Vlastné</translation>
 <translation id="1181037720776840403">Odstrániť</translation>
+<translation id="1193729455103054076">Chcete použiť silné heslo?</translation>
 <translation id="1197267115302279827">Presunúť záložky</translation>
 <translation id="1201402288615127009">Ďalej</translation>
 <translation id="1202892408424955784">Sledované produkty</translation>
@@ -88,6 +90,7 @@ Keď odstránite históriu prehliadania (buď celú, alebo pre konkrétny web), 
 <translation id="1409879593029778104">Sťahovanie súboru <ph name="FILE_NAME"/> bolo zrušené, pretože daný súbor už existuje.</translation>
 <translation id="1853026300647876496">Kontaktuje sa Brave. Môže to chvíľu trvať…</translation>
 <translation id="1416550906796893042">Verzia aplikácie</translation>
+<translation id="1428770807407000502">Chcete vypnúť synchronizáciu?</translation>
 <translation id="1430915738399379752">Tlačiť</translation>
 <translation id="1436784010935106834">Odstránené</translation>
 <translation id="1448440926884431741">Organizujte svoje sledované produkty v Záložkách</translation>
@@ -138,7 +141,6 @@ Keď odstránite históriu prehliadania (buď celú, alebo pre konkrétny web), 
 <translation id="1779766957982586368">Zavrieť okno</translation>
 <translation id="1791662854739702043">Nainštalovaný</translation>
 <translation id="1792959175193046959">Kedykoľvek zmeniť predvolené umiestnenie stiahnutých súborov</translation>
-<translation id="2368444735104192323">Dodatočné zmluvné podmienky prehliadača Brave a systému Chrome OS</translation>
 <translation id="1807246157184219062">Svetlý režim</translation>
 <translation id="1810845389119482123">Úvodné nastavenie synchronizácie nebolo dokončené</translation>
 <translation id="1829244130665387512">Nájsť na stránke</translation>
@@ -175,8 +177,6 @@ Keď odstránite históriu prehliadania (buď celú, alebo pre konkrétny web), 
 <translation id="2000419248597011803">Odošle niektoré súbory cookie a vyhľadávania z panela s adresou a vyhľadávacieho poľa do vášho predvoleného vyhľadávača</translation>
 <translation id="6968892567705775281">Chcete zahŕňať okolitý text vo vyhľadávaniach na Googli?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# súbor}few{# súbory}many{# Files}other{# súborov}}</translation>
-<translation id="2185841461857887156"><ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Chrome OS<ph name="END_LINK2"/>. Uplatňujú sa aj <ph name="BEGIN_LINK3"/>pravidlá ochrany súkromia<ph name="END_LINK3"/>.</translation>
-<translation id="2019145049163614359">Chcete odstrániť záujem?</translation>
 <translation id="2020309681647789787">Históriu budete mať vo všetkých synchronizovaných zariadeniach, takže budete môcť pokračovať v tom, čo ste robili</translation>
 <translation id="2021896219286479412">Ovládanie webu na celú obrazovku</translation>
 <translation id="2038563949887743358">Zapnutie žiadosti o verziu stránok pre počítače</translation>
@@ -201,10 +201,12 @@ Vyhľadávanie spustíte klepnutím na ľubovoľné slovo. Spresníte ho pridrž
 <translation id="796823723482603597">Používa technológiu prehliadača Brave</translation>
 <translation id="2132122640199389833">Odstrániť všetky prepojené zariadenia</translation>
 <translation id="213279576345780926">Karta „<ph name="TAB_TITLE"/>“ je zavretá</translation>
+<translation id="6659395979197839222">Používaním Chromu vyjadrujete súhlas so <ph name="BEGIN_TOS_LINK"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_TOS_LINK"/> a <ph name="BEGIN_ATOS_LINK"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Brave OS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="2139186145475833000">Pridať na plochu</translation>
 <translation id="2141396931810938595">Na základe vášho používania</translation>
 <translation id="6516933364477884970">Vyberte, čo chcete zdieľať s Chromom. Zdieľané metriky pomôžu zlepšovať funkcie, výkonnosť aj stabilitu Chromu.</translation>
 <translation id="2149973817440762519">Upraviť záložku</translation>
+<translation id="2155214902713132423">Tento spôsob overenia nie pre toto zariadenie k dispozícii. Vyberte si inú možnosť v druhom zariadení.</translation>
 <translation id="6162454065885854378">Ak chcete niečo zo svojho telefónu zdieľať s iným zariadením, zapnite v oboch synchronizáciu v nastaveniach Chromu</translation>
 <translation id="4162910516440006395">Chromu sa nepodarilo skontrolovať všetky heslá</translation>
 <translation id="2169830938017475061">Teraz</translation>
@@ -379,6 +381,7 @@ Vyhľadávanie spustíte pridržaním ľubovoľného slova. Spresníte ho výber
 <translation id="6153252609477956632">Články o vašich záujmoch v Brave</translation>
 <translation id="3066573403916685335">Presunúť nadol</translation>
 <translation id="3070005020161560471">Automaticky prekladať</translation>
+<translation id="1094255666887095087">Aplikácia <ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Brave OS<ph name="END_LINK2"/>. Uplatňujú sa aj <ph name="BEGIN_LINK3"/>pravidlá ochrany súkromia<ph name="END_LINK3"/>.</translation>
 <translation id="3091010850649238832">Zobraziť obsah schránky</translation>
 <translation id="821565628224723530">Niektoré obrázky sa na zlepšovanie popisov pre vás odosielajú Googlu</translation>
 <translation id="3114507951000454849">Prečítajte si dnešné správy <ph name="NEWS_ICON"/></translation>
@@ -447,7 +450,6 @@ Vyhľadávanie spustíte pridržaním ľubovoľného slova. Spresníte ho výber
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/> o návrhoch obsahu</translation>
 <translation id="3495219333887281978">Dolný hárok prihlásenia otvorený na polovičnú výšku.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="5067649501056343732">Používaním Chromu vyjadrujete súhlas so <ph name="BEGIN_TOS_LINK"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_TOS_LINK"/> a <ph name="BEGIN_ATOS_LINK"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Chrome OS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="3507132249039706973">Je zapnutá štandardná ochrana</translation>
 <translation id="8669829441518807650">Offline. Brave nemôže skontrolovať dostupnosť aktualizácií.</translation>
 <translation id="3513704683820682405">Rozšírená realita</translation>
@@ -564,8 +566,10 @@ Vyhľadávanie spustíte pridržaním ľubovoľného slova. Spresníte ho výber
 <translation id="4269820728363426813">Kopírovať adresu odkazu</translation>
 <translation id="4290281343757112331">Chcete radšej stiahnuť neskôr?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Zapnite zámku obrazovky v nastaveniach Androidu<ph name="END_LINK"/></translation>
+<translation id="6299940168852877221">Používaním Chromu vyjadrujete súhlas so <ph name="BEGIN_TOS_LINK"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_TOS_LINK"/> a <ph name="BEGIN_ATOS_LINK"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Brave OS<ph name="END_ATOS_LINK"/>. Uplatňujú sa aj <ph name="BEGIN_PRIVACY_LINK"/>pravidlá ochrany súkromia<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="4298388696830689168">Prepojené weby</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">Správca hesiel</translation>
 <translation id="4307992518367153382">Základy</translation>
 <translation id="4320177379694898372">Žiadne internetové pripojenie</translation>
 <translation id="4321739720395210191">Vaša kamera sa nedá otvoriť. Reštartujte zariadenie a skúste to znova.</translation>
@@ -710,7 +714,6 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="4744980273298156620">Keď otvoríte novú kartu, čoskoro sa vám budú zobrazovať príbehy z webu <ph name="SITE_NAME"/>. Weby, ktoré sledujete, sa ukladajú do vášho účtu Brave. Môžete ich spravovať v nastaveniach kanála Objaviť.</translation>
 <translation id="5091249083535528968">Rozšírené údaje o používaní</translation>
 <translation id="509429900233858213">Vyskytla sa chyba.</translation>
-<translation id="5098190077610408701">Chcete pridať záujem?</translation>
 <translation id="225414324447409614">Ak sa vám určitý web pokúsi ukradnúť heslo alebo stiahnete škodlivý súbor, Brave môže odoslať Bezpečnému prehliadaniu webové adresy vrátane častí obsahu stránok</translation>
 <translation id="510275257476243843">Zostáva: 1 h</translation>
 <translation id="5115811374190515607">do služby <ph name="PRODUCT_NAME"/></translation>
@@ -790,7 +793,6 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="5578795271662203820">Hľadať obrázok v službe <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Položky, ktoré chcete synchronizovať, môžete vybrať v <ph name="BEGIN_LINK1"/>nastaveniach<ph name="END_LINK1"/>.</translation>
 <translation id="5590372121997663538">Zapamätať si tento počítač</translation>
-<translation id="559871659088672663">Táto funkcia je momentálne vo vývoji</translation>
 <translation id="6157610782452852023">Asistent Brave v Brave môže za vás dokončovať akcie na rôznych weboch</translation>
 <translation id="5620163320393916465">Žiadne uložené heslá</translation>
 <translation id="5620928963363755975">Stiahnuté súbory a stránky nájdete po použití tlačidla Ďalšie možnosti</translation>
@@ -853,6 +855,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="1985257319311245640">Keď bude Asistent Brave poznať webové adresy, bude vám môcť pomáhať s plnením úloh. Asistenta môžete vypnúť v nastaveniach Chromu.</translation>
 <translation id="5916664084637901428">Zapnuté</translation>
 <translation id="5919204609460789179">Ak chcete spustiť synchronizáciu, aktualizujte aplikáciu <ph name="PRODUCT_NAME"/></translation>
+<translation id="5938820472109305350">Pridať <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Na vyhľadávanie sa používa Brave</translation>
 <translation id="5945035219773565305">Aktuálne odporúčanie: <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">Je zobrazená zverejnená stránka</translation>
@@ -872,7 +875,6 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="6557407328070865042">Pomocou technológií <ph name="BEGIN_LINK"/>Privacy Sandbox<ph name="END_LINK"/> vyvíja Brave nové technológie, ktoré vás ochránia pred mechanizmami sledovania na rôznych weboch a súčasne zachovajú internet otvorený.
 
 Skúšobné obdobia technológií Privacy Sandbox sú stále v aktívnom vývoji a v niektorých oblastiach sú dostupné. Weby si zatiaľ môžu technológie Privacy Sandbox vyskúšať a zároveň používať aktuálne internetové technológie, ako sú súbory cookie tretej strany.</translation>
-<translation id="6036057147555329831">Dodatočný modul ICU</translation>
 <translation id="6039379616847168523">Prechod na ďalšiu kartu</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
 <translation id="604124094241169006">Automatické</translation>
@@ -930,7 +932,6 @@ Niektoré weby môžu napríklad na túto žiadosť reagovať tak, že vám zobr
 <translation id="6345878117466430440">Označiť ako prečítané</translation>
 <translation id="6363990818884053551">Ak chcete spustiť synchronizáciu, overte svoju totožnosť</translation>
 <translation id="6364438453358674297">Odstrániť návrh z histórie?</translation>
-<translation id="4993481112200507346"><ph name="APP_NAME"/> sa otvorí v Brave. Pokračovaním vyjadrujete súhlas so <ph name="BEGIN_LINK1"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Chrome OS<ph name="END_LINK2"/>.</translation>
 <translation id="806493401838431801">Častejšie prednačítava stránky, ktoré podľa Chromu pravdepodobne navštívite. Toto nastavenie môže zvýšiť spotrebu dát.</translation>
 <translation id="6395288395575013217">ODKAZ</translation>
 <translation id="6397616442223433927">Sme späť online</translation>
@@ -991,6 +992,7 @@ Niektoré weby môžu napríklad na túto žiadosť reagovať tak, že vám zobr
 <translation id="2259649928554669581">Ďalšie nastavenia týkajúce sa ochrany súkromia, zabezpečenia a zhromažďovania údajov nájdete v sekciách <ph name="BEGIN_LINK1"/>Synchronizácia<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>služby Googlu<ph name="END_LINK2"/>.</translation>
 <translation id="7939692063031538305">Na účely zlepšovania aplikácie odosiela Brave údaje o využití a pádoch Googlu. <ph name="BEGIN_UMA_LINK"/>Spravovať<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Blokovať neustále</translation>
+<translation id="6641780377503683465">Odstrániť <ph name="INTEREST"/></translation>
 <translation id="6643016212128521049">Vymazať</translation>
 <translation id="6645629752388991326">Ovládajte, ktoré zariadenia sa môžu prihlásiť pomocou tohto zariadenia nastaveného ako bezpečnostný kľúč.</translation>
 <translation id="6678472970290886941">Nastavenia prehliadača môže vzdialene zmeniť správca. Aktivita v tomto zariadení môže byť tiež spravovaná mimo Chromu.</translation>
@@ -1015,9 +1017,9 @@ Niektoré weby môžu napríklad na túto žiadosť reagovať tak, že vám zobr
 <translation id="6751521182688001123">Skratka na rýchle otvorenie novej karty. Ak ju chcete upraviť, pridržte ju.</translation>
 <translation id="6756507620369789050">Odoslať spätnú väzbu</translation>
 <translation id="6767294960381293877">Zoznam zariadení, s ktorými sa má zdieľať karta, je otvorený na polovičnú výšku.</translation>
-<translation id="6770042910635026163">Navštevované weby, ktoré definujú vaše záujmy</translation>
 <translation id="6770602306803890733">Zvyšuje zabezpečenie pre vás aj ostatných na internete</translation>
 <translation id="6783942555455976443">Uložte si túto stranu na neskôr a dostanete pripomenutie</translation>
+<translation id="8174975477247159780">Dodatočné zmluvné podmienky prehliadača Brave a systému Brave OS</translation>
 <translation id="6795633245022906657">Skratka na rýchle otvorenie novej karty. Ak chcete skratku upraviť, prejdite do Nastavení.</translation>
 <translation id="6802555630140434547">Okno bude zavreté</translation>
 <translation id="6811034713472274749">Stránka je pripravená na prezeranie</translation>
@@ -1091,7 +1093,6 @@ Niektoré weby môžu napríklad na túto žiadosť reagovať tak, že vám zobr
 <translation id="7208109991155904980">Reakcia bola presunutá</translation>
 <translation id="7222235798733126207">Obmedzené zdieľanie medzi webmi</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{Na stiahnutie čaká 1 položka}few{Na stiahnutie čakajú # položky}many{# downloads pending}other{Na stiahnutie čaká # položiek}}</translation>
-<translation id="7256686223798862196">Používaním Chromu vyjadrujete súhlas so <ph name="BEGIN_TOS_LINK"/>zmluvnými podmienkami spoločnosti Brave<ph name="END_TOS_LINK"/> a <ph name="BEGIN_ATOS_LINK"/>dodatočnými zmluvnými podmienkami prehliadača Brave a systému Chrome OS<ph name="END_ATOS_LINK"/>. Uplatňujú sa aj <ph name="BEGIN_PRIVACY_LINK"/>pravidlá ochrany súkromia<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="7242755609445462077">Štylizované zvýraznenie <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Skontrolujte, či má <ph name="TARGET_DEVICE_NAME"/> v Brave zapnutú synchronizáciu</translation>
 <translation id="7252076891734325316">Položte telefón k počítaču</translation>

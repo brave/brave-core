@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Brave Shields aktivieren / deaktivieren</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="2278950434998763147">Öffnet manche Seiten über eine sichere HTTPS-Verbindung anstelle einer gewöhnlichen HTTP-Verbindung.</translation>
+<translation id="5510493033031835532">AMP-Seiten automatisch umleiten</translation>
+<translation id="5197219128592971597">Besuchen Sie immer die Originalseiten-URLs (ohne AMP) und nicht die Accelerated Mobile Page-Versionen von Google</translation>
 <translation id="94154759592465111">Skripte blockieren</translation>
 <translation id="7714773920987474116">Blockiert JavaScript (kann zu Fehlfunktionen auf Websites führen)</translation>
 <translation id="6052725679982758334">Social Media Blocking</translation>
@@ -553,7 +555,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1078873179929044999">Im nächsten Schritt sehen Sie eine 12-Wörter-Wiederherstellungsphrase, mit der Sie Ihre primären Krypto-Konten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff im Falle eines vergessenen Passworts, eines verlorenen oder gestohlenen Geräts oder eines Wechsels der Wallet wiederzuerlangen.</translation>
 <translation id="2359808026110333948">Fortfahren</translation>
 <translation id="5488357322146334497">Nachricht</translation>
-<translation id="7228169875515099943">DATEN</translation>
 <translation id="1904000155026201268">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet mehr habe, wenn ich meine Formulierung zur Wiederherstellung zur Wiederherstellung verliere.</translation>
 <translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
 <translation id="5077747669435508720">Schreiben oder kopieren Sie diese Wörter in der genauen Reihenfolge, die unten gezeigt wird, und bewahren Sie sie an einem sicheren Ort auf. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff wiederzuerlangen, wenn Sie Ihr Passwort vergessen, Ihr Gerät verloren oder gestohlen haben oder Ihre Wallet wechseln möchten.</translation>
@@ -666,7 +667,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3510283489391432976">Wählen Sie Ihren Standort/Ihren Land</translation>
 <translation id="4390800080658195654">Hält Sie online anonym</translation>
 <translation id="639981156979733813">Unterstützt Geschwindigkeiten von bis zu 100 Mbit/s</translation>
-<translation id="8396607116169935837">Verwendet einen sicheren verschlüsselten IKEv2-VPN-Tunnel</translation>
+<translation id="1190117345570417902">Verwendet einen sicheren verschlüsselten Wireguard-VPN-Tunnel</translation>
 <translation id="1571230671455380494">Wir teilen oder verkaufen Ihre Daten niemals</translation>
 <translation id="276866628038850725">Alle Abos beinhalten eine kostenlose 7-Tage-Testversion!</translation>
 <translation id="7280825497485894053">Monatsabo</translation>
@@ -691,7 +692,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden und Ihre Internetverbindung wird nicht gesichert.</translation>
 <translation id="2429299231491852747">Verbindungsanfrage annehmen</translation>
 <translation id="3428909627460825679">VPN-Profilerstellung fehlgeschlagen. Bitte versuchen Sie es erneut.</translation>
-<translation id="8584119457978684056">Die Überprüfung des Kauf-Tokens ist fehlgeschlagen. Bitte versuchen Sie es erneut.</translation>
+<translation id="1326227401245340613">Die Überprüfung des Kaufs ist fehlgeschlagen. Bitte versuchen Sie es erneut.</translation>
 <translation id="8905950042180169719">VPN läuft im Hintergrund</translation>
 <translation id="8681480718817027245">Abonnement</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -702,7 +703,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5646376287012673985">Ort</translation>
 <translation id="8375573361134671513">Konfiguration zurücksetzen</translation>
 <translation id="850405162932416400">VPN-Support</translation>
-<translation id="1330148827129583049">VPN-Profil wird nicht erstellt. Erstellen eines neuen Profils.</translation>
 <translation id="6772117549627334582">Fehler beim Abrufen des Serverstandorts. Bitte versuchen Sie es später erneut.</translation>
 <translation id="5863914199331127413">VPN-Hostname</translation>
 <translation id="5499653136178260315">Abonnementtyp</translation>
@@ -712,9 +712,9 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4395361077929528480">Netzwerkart</translation>
 <translation id="755448900483975096">Mobilfunkanbieter</translation>
 <translation id="1279441577056010362">Weiter zu E-Mail</translation>
-<translation id="2553687444159335134">Support mit Hilfe des Guardian-Teams.\n\nBitte wählen Sie die Informationen aus, die Sie gerne mit uns teilen möchten.\n\nJe mehr Informationen Sie uns anfangs mitteilen, desto einfacher wird es für unsere Supportmitarbeiter, Ihnen bei der Lösung zu helfen von</translation>
+<translation id="7125582363614011660">Support wird bereitgestellt mit Hilfe des Guardian-Teams.\n\nBitte wählen Sie die Informationen aus, die Sie gerne mit uns teilen möchten.\n\nJe mehr Informationen Sie uns anfangs mitteilen, desto einfacher wird es für unsere Supportmitarbeiter, Ihnen bei der Lösung Ihres Problems zu helfen</translation>
 <translation id="7999094850625689785">Eine Serverregion, die Ihnen am nächsten liegt, wird automatisch basierend auf Ihrer Systemzeitzone ausgewählt. Dies wird empfohlen, um schnelle Internetgeschwindigkeiten zu gewährleisten.</translation>
-<translation id="8018707825009059641">Andere Probleme</translation>
+<translation id="4397083831618200686">Problem auswählen</translation>
 <translation id="6687228121145903051">Kann keine Verbindung zum VPN herstellen (anderer Fehler)</translation>
 <translation id="9184988385244077767">Kein Internet wenn verbunden</translation>
 <translation id="21570240866965662">Langsame Verbindung</translation>
@@ -729,7 +729,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1187506504156101449">Kaufbestätigung fehlgeschlagen:</translation>
 <translation id="8420522105268941892">Sie haben das Abonnement bereits abgeschlossen. Versuchen Sie, das Abonnement wiederherzustellen.</translation>
 <translation id="74771564105268111">FEHLER!!\nVerursacht durch einen Benutzer, der den Kaufvorgang abgebrochen hat.</translation>
-<translation id="3851978668258201962">FEHLER!!\nKauf fehlgeschlagen..</translation>
+<translation id="7312462922610983743">FEHLER!!\nKauf fehlgeschlagen.</translation>
 <translation id="6452181791372256707">Ablehnen</translation>
 <translation id="8030852056903932865">Genehmigen</translation>
 <translation id="1597199892790541240">Gasgebühren</translation>
@@ -802,11 +802,13 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5061574358754621254">Preisdaten zur Verfügung gestellt von CoinGecko</translation>
 <translation id="4626407663177532837">Angebot beinhaltet eine Brave-Gebühr von 0,875 %.</translation>
 <translation id="8574289650879708853">Benutzerdefiniertes Asset hinzufügen</translation>
+<translation id="1974060860693918893">Erweitert</translation>
 <translation id="7791543448312431591">Hinzufügen</translation>
 <translation id="6600400596821238377">Tokenname</translation>
 <translation id="4432966365400169165">Token-Vertragsadresse</translation>
 <translation id="4092152169181928870">Tokensymbol</translation>
 <translation id="4351811224047421378">Dezimalstellen der Genauigkeit</translation>
+<translation id="547122651977318828">Token-ID (nur für ERC721)</translation>
 <translation id="8614026298974065517">Benutzerdefiniertes Asset entfernen</translation>
 <translation id="4378941981362528553">Möchten Sie das <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)-Token entfernen?</translation>
 <translation id="4250680216510889253">Nein</translation>
@@ -868,5 +870,32 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2478788592457735063">Dadurch wird das Netzwerk zu einem zuvor hinzugefügten Netzwerk gewechselt.</translation>
 <translation id="8756686998207163764">Netzwerk wechseln</translation>
 <translation id="394256914628786902">Automatische Erstellung von Tabgruppen aktivieren</translation>
+<translation id="5242300593039211344">Wallet schließen</translation>
+<translation id="1108298724135935307">Verbundene Websites</translation>
+<translation id="4255623233927788178">Im Block-Explorer anzeigen</translation>
 <translation id="8274201358637112807">Diese Seite möchte mit der Brave-Wallet interagieren</translation>
+<translation id="3355936511340229503">Verbindungsfehler</translation>
+<translation id="4891604214809245310"><ph name="NETWORK_NAME"/> kann nicht als Netzwerk festgelegt werden</translation>
+<translation id="685345388423515592">Anscheinend haben Sie für andere VPNs auf diesem Gerät „Immer an“ festgelegt. Um Brave Firewall + VPN zu aktivieren, müssen Sie zunächst die Einstellung „Immer an“ für andere VPNs deaktivieren, bevor Sie die Verbindung erneut herstellen können. Sollte das Problem weiterhin bestehen, deinstallieren Sie die anderen VPNs.</translation>
+<translation id="85136472535634474">VPN-Einstellungen öffnen</translation>
+<translation id="8352805003811526272">Konfiguration wird zurückgesetzt …</translation>
+<translation id="6809312301323611382">Sie haben bereits denselben Server ausgewählt.</translation>
+<translation id="7694991972030057904">Berechtigungsanfrage abgebrochen</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> Transaktionen ablehnen</translation>
+<translation id="523862956770478816">Site-Berechtigungen</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> Konten verbunden</translation>
+<translation id="4305817255990598646">Wechseln</translation>
+<translation id="4804818685124855865">Verbindung trennen</translation>
+<translation id="8009571545960303544">Deine Unterschrift wird angefordert</translation>
+<translation id="1982257600591932657">Netzwerkname</translation>
+<translation id="5052727830821470769">Netzwerk-URL</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="7131971375297699539">Währungssymbol</translation>
+<translation id="7982789257301363584">Netzwerk</translation>
+<translation id="2521480044079508357">Dadurch kann dieses Netzwerk innerhalb von Brave Wallet verwendet werden.</translation>
+<translation id="4717431746210146708">Zulassen, dass dieser Site ein Netzwerk hinzugefügt wird?</translation>
+<translation id="3378339846292573874">Vorgeschlagenes Token hinzufügen</translation>
+<translation id="2322227405137827074">Möchten Sie dieses Token importieren?</translation>
+<translation id="1324417023773393937">Brave Browser</translation>
+<translation id="6044189892950611565">Benachrichtigungskanal für den Brave-Browser</translation>
 </translationbundle>

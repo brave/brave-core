@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Enable/disable Brave Shields</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="2278950434998763147">Opens some sites using a secure HTTPS connection instead of plain HTTP.</translation>
+<translation id="5510493033031835532">Auto-redirect AMP pages</translation>
+<translation id="5197219128592971597">Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions</translation>
 <translation id="94154759592465111">Block Scripts</translation>
 <translation id="7714773920987474116">Blocks JavaScript (may break sites)</translation>
 <translation id="6052725679982758334">Social Media Blocking</translation>
@@ -668,7 +670,7 @@ Are you sure you want to do this?</translation>
 <translation id="3510283489391432976">Choose your geo/country location</translation>
 <translation id="4390800080658195654">Keeps you anonymous online</translation>
 <translation id="639981156979733813">Supports speeds of up to 100 Mbps</translation>
-<translation id="8396607116169935837">Uses IKEv2 secure encrypted VPN tunnel</translation>
+<translation id="1190117345570417902">Uses Wireguard secure encrypted VPN tunnel</translation>
 <translation id="1571230671455380494">We never share or sell your info</translation>
 <translation id="276866628038850725">All plans include a free 7-day trial.</translation>
 <translation id="7280825497485894053">Monthly subscription</translation>
@@ -693,7 +695,7 @@ Are you sure you want to do this?</translation>
 If you don't accept this request, VPN will not reconnect and your Internet connection will not be secured.</translation>
 <translation id="2429299231491852747">Accept connection request</translation>
 <translation id="3428909627460825679">Vpn profile creation failed. Please try again.</translation>
-<translation id="8584119457978684056">Purchase token verification failed. Please try again.</translation>
+<translation id="1326227401245340613">Purchase verification failed. Please try again.</translation>
 <translation id="8905950042180169719">VPN is running in the background</translation>
 <translation id="8681480718817027245">Subscription</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -704,7 +706,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5646376287012673985">Location</translation>
 <translation id="8375573361134671513">Reset configuration</translation>
 <translation id="850405162932416400">VPN support</translation>
-<translation id="1330148827129583049">Vpn profile is not created. Creating a new profile.</translation>
 <translation id="6772117549627334582">Fail to get server location. Please try again later.</translation>
 <translation id="5863914199331127413">VPN hostname</translation>
 <translation id="5499653136178260315">Subscription type</translation>
@@ -714,9 +715,9 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4395361077929528480">Network type</translation>
 <translation id="755448900483975096">Mobile carrier</translation>
 <translation id="1279441577056010362">Continue to email</translation>
-<translation id="2553687444159335134">Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us, the easier it will be for our support staff to help you resolve your</translation>
+<translation id="7125582363614011660">Support provided with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us, the easier it will be for our support staff to help you resolve your issue.</translation>
 <translation id="7999094850625689785">A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast Internet speeds.</translation>
-<translation id="8018707825009059641">Other issues</translation>
+<translation id="4397083831618200686">Select issue</translation>
 <translation id="6687228121145903051">Cannot connect to the VPN (Other error)</translation>
 <translation id="9184988385244077767">No Internet when connected</translation>
 <translation id="21570240866965662">Slow connection</translation>
@@ -731,7 +732,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1187506504156101449">Failed to acknowledge purchase:</translation>
 <translation id="8420522105268941892">You are already subscribed to the subscription. Try restoring the subscription.</translation>
 <translation id="74771564105268111">ERROR!!\nCaused by a user cancelling the purchase flow.</translation>
-<translation id="3851978668258201962">ERROR!!\nPurchase failed.</translation>
+<translation id="7312462922610983743">ERROR!!\nPurchase failed.</translation>
 <translation id="6452181791372256707">Reject</translation>
 <translation id="8030852056903932865">Approve</translation>
 <translation id="1597199892790541240">Gas Fee</translation>
@@ -804,11 +805,13 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5061574358754621254">Price data powered by CoinGecko</translation>
 <translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
 <translation id="8574289650879708853">Add custom asset</translation>
+<translation id="1974060860693918893">Advanced</translation>
 <translation id="7791543448312431591">Add</translation>
 <translation id="6600400596821238377">Token name</translation>
 <translation id="4432966365400169165">Token contract address</translation>
 <translation id="4092152169181928870">Token symbol</translation>
 <translation id="4351811224047421378">Decimals of precision</translation>
+<translation id="547122651977318828">Token ID (only for ERC721)</translation>
 <translation id="8614026298974065517">Remove custom asset</translation>
 <translation id="4378941981362528553">Do you want to remove <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
 <translation id="4250680216510889253">No</translation>
@@ -854,9 +857,14 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4945690646623486292">Select network</translation>
 <translation id="8853725596990766789">Change amount</translation>
 <translation id="5233638681132016545">New tab</translation>
+<translation id="8006088103295786154">Access Brave Wallet</translation>
 <translation id="5308380583665731573">Connect</translation>
+<translation id="3432029672560911238">User account</translation>
+<translation id="5753378322046059140">Switch account</translation>
 <translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">Expand</translation>
 <translation id="3586752056660754651">Sign</translation>
+<translation id="6592721981110586529">Connect with Brave Wallet</translation>
 <translation id="329813193938846695">Select account(s)</translation>
 <translation id="3890989020011724401">New account</translation>
 <translation id="291375746846291973">Only connect with sites you trust.</translation>
@@ -864,4 +872,33 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1060221736464994328">Allow this site to switch the network?</translation>
 <translation id="2478788592457735063">This will switch the network to a previously added network.</translation>
 <translation id="8756686998207163764">Switch network</translation>
+<translation id="394256914628786902">Enable tab group auto creation</translation>
+<translation id="5242300593039211344">Lock Wallet</translation>
+<translation id="1108298724135935307">Connected sites</translation>
+<translation id="4255623233927788178">View on block explorer</translation>
+<translation id="8274201358637112807">This page wants to interact with Brave Wallet</translation>
+<translation id="3355936511340229503">Connection error</translation>
+<translation id="4891604214809245310">Unable to set network to <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">It appears you have other VPNs on this device set to “Always on”. To enable Brave Firewall + VPN, first disable this “Always on” setting for other VPNs before connecting again. If the problem persists, try uninstalling other VPNs.</translation>
+<translation id="85136472535634474">Open VPN settings</translation>
+<translation id="8352805003811526272">Resetting configuration ...</translation>
+<translation id="6809312301323611382">You have already selected the same server.</translation>
+<translation id="7694991972030057904">Permission was cancelled</translation>
+<translation id="9106265941552476098">Reject <ph name="TRANSACTION_LENGTH"/> transactions</translation>
+<translation id="523862956770478816">Site permissions</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> accounts connected</translation>
+<translation id="4305817255990598646">Switch</translation>
+<translation id="4804818685124855865">Disconnect</translation>
+<translation id="8009571545960303544">Your signature is being requested</translation>
+<translation id="1982257600591932657">Network name</translation>
+<translation id="5052727830821470769">Network URL</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="7131971375297699539">Currency symbol</translation>
+<translation id="7982789257301363584">Network</translation>
+<translation id="2521480044079508357">This will allow this network to be used within Brave Wallet.</translation>
+<translation id="4717431746210146708">Allow this site to add a network?</translation>
+<translation id="3378339846292573874">Add suggested token</translation>
+<translation id="2322227405137827074">Would you like to import this token?</translation>
+<translation id="1324417023773393937">Brave Browser</translation>
+<translation id="6044189892950611565">Notification channel for Brave browser</translation>
 </translationbundle>

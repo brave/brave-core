@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24U Volume</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Ondersteuning voor Unstoppable Domains inschakelen in Brave?</translation>
-<translation id="3470923752115324276">Brave maakt het mogelijk om .crypto domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .crypto domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .crypto domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave maakt gebruik van Infura om Ethereum JSON-RPC-aanroepen tot het smart contract van Unstoppable Domains uit te voeren om domeinnamen van .crypto (en .x, .coin, .nft, .wallet, .888, .blockchain, .bitcoin) op te lossen. Als u dit inschakelt, ziet Infura de specifieke domeinen die u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Ondersteuning voor Ethereum Name Service (ENS) inschakelen in Brave?</translation>
-<translation id="618766505813078707">Brave maakt het mogelijk om .eth domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .eth domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Ga verder met de Cloudflare server</translation>
+<translation id="8328137586971750853">Brave maakt gebruik van Infura om Ethereum JSON-RPC-aanroepen tot het smart contract van Ethereum Name Service uit te voeren om opgevraagde .eth-domeinnamen op te lossen. Als u dit inschakelt, ziet Infura het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
+<translation id="7378412287463452336">Ga verder met de Infura-server</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="2218918398178303658">DNS met HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Eén verwacht, objectparameter.</translation>
 <translation id="1875861420974447980">Deze keten-ID wordt momenteel gebruikt</translation>
 <translation id="167698752210114155">Er is een interne fout opgetreden</translation>
+<translation id="2326876601333401685">Deze RPC-methode wordt niet ondersteund.</translation>
 <translation id="1128992132632883337">Er is een fout opgetreden bij parseren van het antwoord</translation>
 <translation id="1680597601664421644">De mnemonic die wordt geïmporteerd, is niet geldig voor de Brave-wallet</translation>
 <translation id="4641919696349069826">Er is al een verzoek in behandeling</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Transactiegegevens 'gasPrice' zijn niet geldig</translation>
 <translation id="8909404207805041979">Transactiegegevens 'gas' zijn niet geldig</translation>
 <translation id="670444168393199227">Transactiegegevens 'value' zijn niet geldig</translation>
-<translation id="6180576227145734714">Transactiegegevens 'naar' moeten een geldig adres zijn wanneer deze worden vermeld</translation>
 <translation id="6916219411793555838">Transactiegegevens 'gasPrice' of 'maxFeePerGas' moeten worden vermeld</translation>
 <translation id="1406937874668963740">Transactiegegevens 'chainld' zijn niet geldig</translation>
 <translation id="9195349857587166771">Transactiegegevens 'maxFeePerGas' zijn niet geldig</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Fout bij verwerken van transactie</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' heeft geen toestemming om bericht te ondertekenen</translation>
 <translation id="8719220598078667817">Fout bij ondertekenen van transactie</translation>
-<translation id="5486744676117070166">Fout bij het ophalen van volgende nonce-waarde</translation>
 <translation id="875506212625074179">Ongeldige respons van keten-ID vanuit RPC-service</translation>
+<translation id="5486744676117070166">Fout bij het ophalen van volgende nonce-waarde</translation>
+<translation id="6180576227145734714">Transactiegegevens 'naar' moeten een geldig adres zijn wanneer deze worden vermeld</translation>
 <translation id="4958950550253325418">Defi-apps</translation>
 <translation id="735961408871282410">NFT-marktplaatsen</translation>
 <translation id="7740287852186792672">Resultaten zoeken</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x verwerkt het Ethereum-adres en het IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens ALLEEN met het doel om transacties te verwerken.</translation>
 <translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
 <translation id="8368540604723748428">Teveel decimalen</translation>
+<translation id="6575120282593094155">U hebt nog geen <ph name="ACCOUNT_TYPE"/>-account. Wilt u er nu een aanmaken?</translation>
 <translation id="2704606927547763573">Gekopieerd</translation>
 <translation id="1420318137760245955">Welkom bij de nieuwe Brave-wallet</translation>
 <translation id="8303434745767477417">Houd cryptoassets in je eigen bezit. Volg portfolioprestaties en communiceer met web 3 DApps. Verhandel, investeer, leen en leen uit met DeFi. Dit allemaal rechtstreeks vanuit de Brave-privébrowser. Er zijn geen extensies of downloads vereist.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Prijs in</translation>
 <translation id="2490428413101944234">Kraan testen</translation>
 <translation id="3352959425838279177">Haal Ether op uit een kraan voor <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Continue to Wyre</translation>
-<translation id="2581671693710952401">Krijg Ether</translation>
 <translation id="8009571545960303544">Uw handtekening wordt aangevraagd</translation>
 <translation id="5294062982587710720">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als je tekent. Een ondertekening kan bijna elke bewerking in jouw account of namens jouw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over jouw account en cryptoassets aan de website die het verzoek doet. Teken alleen als je deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
 <translation id="3474375934783434676">Tekenen op eigen risico</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">volgende</translation>
 <translation id="793994607260936590">eerst</translation>
 <translation id="4709524402122994378">transacties</translation>
+<translation id="4591079278963448049">Het bijbehorende tokenaccount bestaat nog niet. Er wordt een kleine hoeveelheid SOL gespendeerd om het aan te maken en te financieren.</translation>
 <translation id="523862956770478816">Toestemmingen site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> accounts gekoppeld</translation>
 <translation id="4305817255990598646">Schakel over</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Bevestigd</translation>
 <translation id="1165039591588034296">Fout</translation>
+<translation id="8373210463207847451">Dropped</translation>
 <translation id="9065572743819293042">Recente transacties</translation>
 <translation id="4235538284468006757">Transactiegegevens</translation>
 <translation id="7488671812634887146">Versnellen</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 dagen cryptogiveaways, zo'n $ 500.000 aan prijzengeld.</translation>
 <translation id="8292716346768453265">Doe nu mee!</translation>
 <translation id="6423985584914773314">Geen geldig FIL-adres</translation>
+<translation id="3898731124813934210">Kopen met Wyre</translation>
+<translation id="5522073372365069684">Kopen met Ramp</translation>
 <translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="2816106784624007524">Gaslimiet moet een geheel getal zijn dat groter dan 0 is</translation>
+<translation id="3354376789153561654">Transactiegegevens 'naar' moeten worden vermeld</translation>
+<translation id="8728991256628663004">Transactiegegevens 'vanuit' moeten een geldig Filecoin-adres zijn</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Verbinden mislukt</translation>
 <translation id="745054660363064771">Kan geen verbinding maken met server</translation>
 <translation id="3936826714240735937">Andere server kiezen</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kan geen verbinding maken met de server in <ph name="REGION_NAME"/>. Probeer het opnieuw of kies een andere server</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kan geen verbinding maken met de server in <ph name="REGION_NAME"/>. Probeer het opnieuw of kies een andere server.</translation>
 <translation id="1024255913009642477">Heb je al VPN gekocht?</translation>
 <translation id="8814357473522731680">Mogelijk gemaakt door</translation>
 <translation id="5747552184818312860">Verloopt</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Snel en ongelimiteerd tot 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 ondersteuning</translation>
 <translation id="8463313539532697053">Een ogenblik geduld tijdens het laden…</translation>
+<translation id="4613076894734402086">Betaalmethode bewerken</translation>
+<translation id="1898254156730880135">Het lijkt erop dat uw meest recente betaling is mislukt. De toegang tot dit abonnement wordt gepauzeerd totdat het betalingsprobleem is opgelost. Probeer uw betaalmethode te bewerken of neem contact op met de Brave-ondersteuning.</translation>
+<translation id="1839021455997460752">Uw e-mailadres</translation>
+<translation id="5154702632169343078">Onderwerp</translation>
+<translation id="6625978880678465492">Kies een reden</translation>
+<translation id="6687228121145903051">Kan geen verbinding maken met de VPN (andere fout)</translation>
+<translation id="9184988385244077767">Geen internet bij verbinding</translation>
+<translation id="21570240866965662">Langzame verbinding</translation>
+<translation id="1219475260382643267">Website werkt niet</translation>
+<translation id="7138678301420049075">Overige</translation>
+<translation id="1387340358507240698">Beschrijf uw probleem</translation>
+<translation id="501818585183973587">Selecteer de informatie die u met ons wilt delen</translation>
+<translation id="3195618332367441234">Hoe meer informatie u deelt, hoe gemakkelijker het is voor het ondersteunend personeel om te helpen.</translation>
+<translation id="5682143294773821728">VPN-hostnaam:</translation>
+<translation id="24242621812020123">Appversie:</translation>
+<translation id="6676791921618140305">OS-versie:</translation>
+<translation id="1156325797949437777">Ondersteuning wordt verleend in samenwerking met Guardian.</translation>
+<translation id="3307461350293459700">VPN-verbinding mislukt. Probeer opnieuw verbinding te maken en klik op Toestaan om de VPN-configuratie van Brave in te schakelen.</translation>
 <translation id="7586151660465233733">Meer markten op <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Markten bekijken en crypto verhandelen op FTX</translation>
 <translation id="5963745988819586370">Markten</translation>
