@@ -12,15 +12,29 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/render_view.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/mojom/frame/frame.mojom.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
+#include "third_party/blink/public/web/web_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "third_party/blink/public/web/web_view.h"
+#include "third_party/blink/renderer/core/dom/node.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/html/html_iframe_element.h"
+#include "third_party/blink/renderer/platform/bindings/wrapper_type_info.h"
+#include "third_party/blink/renderer/platform/supplementable.h"
+#include "v8-local-handle.h"
+#include "v8-object.h"
+#include "v8-template.h"
+#include "v8-value.h"
 
 namespace brave_talk {
 
@@ -54,6 +68,8 @@ void BraveTalkFrameJSHandler::AddJavaScriptObjectToFrame(
 void BraveTalkFrameJSHandler::ResetRemote(content::RenderFrame* render_frame) {
   render_frame_ = render_frame;
   brave_talk_frame_.reset();
+
+  // render_frame->GetRenderView()->GetWebView()->MainFrame()->ToWebLocalFrame()->
   EnsureConnected();
 }
 
@@ -96,16 +112,32 @@ void BraveTalkFrameJSHandler::BindFunctionToObject(
 
 void BraveTalkFrameJSHandler::BeginAdvertiseShareDisplayMedia(
     v8::Isolate* isolate,
-    v8::Local<v8::Function> callback) {
+    v8::Local<v8::Function> callback,
+    v8::Local<v8::Object> frame) {
   if (!EnsureConnected())
     return;
+
+  auto* my_frame =
+      blink::WebLocalFrame::FrameForContext(isolate->GetCurrentContext());
+  LOG(ERROR) << "My Frame: " << my_frame << ", " << my_frame->GetFrameToken().ToString();
+
+  auto other_context = frame->GetCreationContext().ToLocalChecked();
+  auto* other_frame = blink::WebLocalFrame::FrameForContext(other_context);
+  LOG(ERROR) << "Other frame: " << other_frame << ", " << other_frame->GetFrameToken().ToString();
+
+  auto context = isolate->GetCurrentContext();
+  LOG(ERROR) << "c1: " << &context << " c2: " << &other_context;
+
+  // auto* unwrapped = blink::WrapperTypeInfo::Unwrap(frame);
+  LOG(ERROR) << "Frame: " << *v8::String::Utf8Value(isolate, frame);
+  // LOG(ERROR) << "Hmm? " << unwrapped->interface_name;
 
   auto context_old = std::make_unique<v8::Global<v8::Context>>(
       isolate, isolate->GetCurrentContext());
 
   auto persistent =
       std::make_unique<v8::Persistent<v8::Function>>(isolate, callback);
-  brave_talk_frame_->BeginAdvertiseShareDisplayMedia(base::BindOnce(
+  brave_talk_frame_->BeginAdvertiseShareDisplayMedia(other_frame->GetFrameToken(), base::BindOnce(
       &BraveTalkFrameJSHandler::OnDeviceIdReceived, base::Unretained(this),
       std::move(persistent), isolate, std::move(context_old)));
 }

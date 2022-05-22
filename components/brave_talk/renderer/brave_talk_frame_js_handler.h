@@ -16,7 +16,12 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/blink/renderer/core/dom/node.h"
+#include "third_party/blink/renderer/core/html/html_iframe_element.h"
 #include "url/gurl.h"
+#include "v8-local-handle.h"
+#include "v8-object.h"
+#include "v8-value.h"
 #include "v8/include/v8.h"
 
 namespace brave_talk {
@@ -44,7 +49,7 @@ class BraveTalkFrameJSHandler {
 
   // A function to be called from JS
   void BeginAdvertiseShareDisplayMedia(v8::Isolate* isolate,
-                                       v8::Local<v8::Function> callback);
+                                       v8::Local<v8::Function> callback, v8::Local<v8::Object> frame);
 
   void OnDeviceIdReceived(
       std::unique_ptr<v8::Persistent<v8::Function>> callback,

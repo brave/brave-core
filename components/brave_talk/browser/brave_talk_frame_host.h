@@ -9,8 +9,12 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/unguessable_token.h"
 #include "brave/components/brave_talk/common/brave_talk_frame.mojom.h"
+#include "content/browser/renderer_host/render_frame_host_impl.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/tokens/tokens.h"
 
 namespace content {
 class BrowserContext;
@@ -29,10 +33,12 @@ class BraveTalkFrameHost final : public brave_talk::mojom::BraveTalkFrame {
   ~BraveTalkFrameHost() override;
 
   // brave_talk::mojom::BraveTalkAdvertise:
-  void BeginAdvertiseShareDisplayMedia(
+  void BeginAdvertiseShareDisplayMedia(const absl::optional<::blink::FrameToken>& frame_token,
       BeginAdvertiseShareDisplayMediaCallback callback) override;
 
  private:
+  content::RenderFrameHost* FindFrameForToken(const absl::optional<::blink::FrameToken>& frame_token);
+
   base::raw_ptr<content::WebContents> contents_;
   const std::string host_;
 };

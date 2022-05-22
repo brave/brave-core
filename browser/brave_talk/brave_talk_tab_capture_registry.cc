@@ -11,6 +11,7 @@
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/desktop_streams_registry.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents_observer.h"
 
@@ -68,7 +69,7 @@ BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() {
 std::string BraveTalkTabCaptureRegistry::AddRequest(
     content::WebContents* target_contents,
     content::DesktopMediaID source,
-    content::WebContents* caller_contents) {
+    content::RenderFrameHost* owning_frame) {
   std::string device_id;
   LiveRequest* const request = FindRequest(target_contents);
 
@@ -78,13 +79,10 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
   }
 
   requests_.push_back(std::make_unique<LiveRequest>(target_contents, this));
-  auto* const main_frame = caller_contents->GetMainFrame();
-  if (main_frame) {
-    device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
-        main_frame->GetProcess()->GetID(), main_frame->GetRoutingID(),
-        url::Origin::Create(caller_contents->GetLastCommittedURL()), source, "",
-        content::kRegistryStreamTypeTab);
-  }
+  device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
+      owning_frame->GetProcess()->GetID(), owning_frame->GetRoutingID(),
+      url::Origin::Create(owning_frame->GetLastCommittedURL()), source, "",
+      content::kRegistryStreamTypeTab);
 
   return device_id;
 }

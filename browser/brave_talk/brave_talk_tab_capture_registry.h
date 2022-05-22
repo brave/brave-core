@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "components/keyed_service/core/keyed_service.h"
+#include "content/public/browser/render_frame_host.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
 namespace brave_talk {
@@ -27,7 +28,7 @@ class BraveTalkTabCaptureRegistry
 
   std::string AddRequest(content::WebContents* target_contents,
                          content::DesktopMediaID source,
-                         content::WebContents* caller_contents);
+                         content::RenderFrameHost* owning_frame);
 
   bool VerifyRequest(int target_render_process_id, int target_render_frame_id);
 

@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 
@@ -29,10 +30,14 @@ BraveTalkService::~BraveTalkService() {
 
 void BraveTalkService::GetDeviceID(
     content::WebContents* contents,
+    int owning_process_id,
+    int owning_frame_id,
     base::OnceCallback<void(const std::string&)> callback) {
   if (on_received_device_id_)
     std::move(on_received_device_id_).Run("");
 
+  owning_render_frame_id_ = owning_frame_id;
+  owning_render_process_id_ = owning_process_id;
   on_received_device_id_ = std::move(callback);
   StartObserving(contents);
 }
@@ -71,8 +76,13 @@ void BraveTalkService::ShareTab(content::WebContents* target_contents) {
       content::WebContentsMediaCaptureId(
           target_contents->GetMainFrame()->GetProcess()->GetID(),
           target_contents->GetMainFrame()->GetRoutingID()));
+
+  auto* owning_render_frame = content::RenderFrameHost::FromID(
+      owning_render_process_id_, owning_render_frame_id_);
   std::string device_id =
-      registry->AddRequest(target_contents, media_id, web_contents());
+      owning_render_frame
+          ? registry->AddRequest(target_contents, media_id, owning_render_frame)
+          : "";
   if (on_received_device_id_)
     std::move(on_received_device_id_).Run(device_id);
 }

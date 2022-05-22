@@ -22,5 +22,5 @@ static_library("common") {
 mojom("mojom") {
   sources = [ "brave_talk_frame.mojom" ]
 
-  deps = [ "//mojo/public/mojom/base" ]
+  deps = [ "//mojo/public/mojom/base", "//third_party/blink/public/mojom/tokens" ]
 }
