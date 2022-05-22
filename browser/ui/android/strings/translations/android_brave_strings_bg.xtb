@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Разрешаване/забраняване на Brave Shields</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="2278950434998763147">Отваря някои сайтове, използвайки защитена HTTPS връзка вместо обикновен HTTP.</translation>
+<translation id="5510493033031835532">Автоматично пренасочване на AMP страници</translation>
+<translation id="5197219128592971597">Винаги отваряйте URL адресите на оригинални (не AMP) страници, вместо версиите на ускорената мобилна страница на Google</translation>
 <translation id="94154759592465111">Блокиране на скриптове</translation>
 <translation id="7714773920987474116">Блокира JavaScript (може да попречи на работата на сайтовете)</translation>
 <translation id="6052725679982758334">Блокиране на социални медии</translation>
@@ -667,7 +669,6 @@
 <translation id="3510283489391432976">Изберете вашето географско местоположение или държава</translation>
 <translation id="4390800080658195654">Поддържа ви анонимни онлайн</translation>
 <translation id="639981156979733813">Поддържа скорости до 100 Mbps</translation>
-<translation id="8396607116169935837">Използва защитен и шифрован VPN tunnel от IKEv2</translation>
 <translation id="1571230671455380494">Не споделяме или продаваме вашата информация</translation>
 <translation id="276866628038850725">Всички планове включват безплатен 7-дневен пробен период!</translation>
 <translation id="7280825497485894053">Месечен абонамент</translation>
@@ -692,7 +693,6 @@
 Ако не я приемете, VPN няма да се свърже отново и вашата интернет връзка няма да бъде защитена.</translation>
 <translation id="2429299231491852747">Приемане на заявката за връзка</translation>
 <translation id="3428909627460825679">Създаването на профил за VPN е неуспешно. Опитайте отново.</translation>
-<translation id="8584119457978684056">Проверката на покупката на жетони е неуспешна. Опитайте отново.</translation>
 <translation id="8905950042180169719">VPN се изпълнява на заден план</translation>
 <translation id="8681480718817027245">Абонамент</translation>
 <translation id="7805768142964895445">Състояние</translation>
@@ -703,7 +703,6 @@
 <translation id="5646376287012673985">Местоположение</translation>
 <translation id="8375573361134671513">Нулиране на конфигурацията</translation>
 <translation id="850405162932416400">Поддръжка на VPN</translation>
-<translation id="1330148827129583049">Не е създаден профил за VPN. Създаване на нов профил.</translation>
 <translation id="6772117549627334582">Неуспешно получаване на местоположението на сървъра. Опитайте отново по-късно.</translation>
 <translation id="5863914199331127413">Име на хоста на VPN</translation>
 <translation id="5499653136178260315">Тип абонамент</translation>
@@ -713,9 +712,7 @@
 <translation id="4395361077929528480">Тип мрежа</translation>
 <translation id="755448900483975096">Мобилен оператор</translation>
 <translation id="1279441577056010362">Продължаване към имейла</translation>
-<translation id="2553687444159335134">Поддръжката е предоставена с помощта на екипа на Guardian.\n\nИзберете информацията, която ще споделите с нас.\n\nКолкото повече информация първоначално споделите с нас, толкова по-лесно ще е нашият екип по поддържката да разреши вашия</translation>
 <translation id="7999094850625689785">Регионът на сървъра, който е най-близо до вас, ще бъде автоматично избран в зависимост от часовата зона на системата ви. Препоръчва се за осигуряване на бързи скорости на интернет.</translation>
-<translation id="8018707825009059641">Други проблеми</translation>
 <translation id="6687228121145903051">Неуспешно свързване с VPN (друга грешка)</translation>
 <translation id="9184988385244077767">Няма връзка с интернет</translation>
 <translation id="21570240866965662">Връзката е бавна</translation>
@@ -730,7 +727,6 @@
 <translation id="1187506504156101449">Неуспешно потвърждаване на покупката:</translation>
 <translation id="8420522105268941892">Вече сте абонирани за абонамента. Опитайте да го възстановите.</translation>
 <translation id="74771564105268111">ГРЕШКА!!\Възникнала в резултат от отмяната на потока за покупки от потребителя.</translation>
-<translation id="3851978668258201962">ГРЕШКА!!\nНеуспешно закупуване..</translation>
 <translation id="6452181791372256707">Отхвърляне</translation>
 <translation id="8030852056903932865">Одобри</translation>
 <translation id="1597199892790541240">Такса за газ</translation>
@@ -803,11 +799,13 @@
 <translation id="5061574358754621254">Данни за цените, предоставени от CoinGecko</translation>
 <translation id="4626407663177532837">Офертата включва такса на Brave от 0,875%.</translation>
 <translation id="8574289650879708853">Добавяне на персонализиран актив</translation>
+<translation id="1974060860693918893">Разширени</translation>
 <translation id="7791543448312431591">Добавяне</translation>
 <translation id="6600400596821238377">Име на жетон</translation>
 <translation id="4432966365400169165">Адрес на договор за жетони</translation>
 <translation id="4092152169181928870">Символ на жетон</translation>
 <translation id="4351811224047421378">Точност до десетични знаци</translation>
+<translation id="547122651977318828">Идентификатор на жетон (само за ERC721)</translation>
 <translation id="8614026298974065517">Премахване на персонализиран актив</translation>
 <translation id="4378941981362528553">Искате ли да премахнете токена<ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">Не</translation>
@@ -853,9 +851,14 @@
 <translation id="4945690646623486292">Изберете мрежа</translation>
 <translation id="8853725596990766789">Промяна на сумата</translation>
 <translation id="5233638681132016545">Нов раздел</translation>
+<translation id="8006088103295786154">Достъп до Brave Wallet</translation>
 <translation id="5308380583665731573">Свързване</translation>
+<translation id="3432029672560911238">Потребителски акаунт</translation>
+<translation id="5753378322046059140">Превключване на акаунт</translation>
 <translation id="3897092660631435901">Меню</translation>
+<translation id="42981349822642051">Разгъване</translation>
 <translation id="3586752056660754651">Подпис</translation>
+<translation id="6592721981110586529">Свързване с Brave Wallet</translation>
 <translation id="329813193938846695">Изберете акаунт(и)</translation>
 <translation id="3890989020011724401">Нов акаунт</translation>
 <translation id="291375746846291973">Свързвайте се само със сайтове, на които имате доверие.</translation>
@@ -863,4 +866,24 @@
 <translation id="1060221736464994328">Разрешаване на този сайт да превключи мрежата?</translation>
 <translation id="2478788592457735063">Това ще преключи мрежата към предишна добавена мрежа.</translation>
 <translation id="8756686998207163764">Превключване на мрежа</translation>
+<translation id="394256914628786902">Активиране на автоматично създаване на групи раздели</translation>
+<translation id="5242300593039211344">Заключване на портфейл</translation>
+<translation id="1108298724135935307">Свързани сайтове</translation>
+<translation id="4255623233927788178">Преглед в Block Explorer</translation>
+<translation id="8274201358637112807">Тази страница иска да взаимодейства с Brave Wallet</translation>
+<translation id="3355936511340229503">Грешка във връзката</translation>
+<translation id="523862956770478816">Разрешения на сайта</translation>
+<translation id="4305817255990598646">Превключване</translation>
+<translation id="4804818685124855865">Прекъсване на връзката</translation>
+<translation id="8009571545960303544">Изисква се вашият подпис</translation>
+<translation id="1982257600591932657">Име на мрежата</translation>
+<translation id="5052727830821470769">URL адрес на мрежата</translation>
+<translation id="4822132585477111396">Идентификатор на веригата</translation>
+<translation id="7131971375297699539">Символ на валута</translation>
+<translation id="7982789257301363584">Мрежа</translation>
+<translation id="2521480044079508357">Това ще позволи тази мрежа да бъде използвана с портфейл в Brave.</translation>
+<translation id="4717431746210146708">Разрешаване на този сайт да добави мрежа?</translation>
+<translation id="3378339846292573874">Добавяне на препоръчан маркер</translation>
+<translation id="2322227405137827074">Искате ли да импортирате този токен?</translation>
+<translation id="1324417023773393937">Браузър Brave</translation>
 </translationbundle>

@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">Aktivér/deaktiver Brave-skjolde</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="2278950434998763147">Åbner nogle webside med en sikkert HTTPS-forbindelse i stedet for den almindelige HTTP.</translation>
+<translation id="5510493033031835532">Omdirigér automatisk AMP-sider</translation>
+<translation id="5197219128592971597">Besøg altid originale (ikke-AMP) URL'er i stedet for Googles Accelerated Mobile Page-versioner)</translation>
 <translation id="94154759592465111">Bloker scripts</translation>
 <translation id="7714773920987474116">Blokerer Javascript (kan ødelægge websider)</translation>
 <translation id="6052725679982758334">Blokering af sociale medier</translation>
@@ -667,7 +669,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3510283489391432976">Vælg din placering/dit land</translation>
 <translation id="4390800080658195654">Holder dig anonym, når du er online</translation>
 <translation id="639981156979733813">Understøtter hastigheder på op til 100 Mbps</translation>
-<translation id="8396607116169935837">Bruger IKEv2 sikker, krypteret VPN-tunnel</translation>
+<translation id="1190117345570417902">Bruger Wireguard sikker, krypteret VPN-tunnel</translation>
 <translation id="1571230671455380494">Vi deler eller sælger aldrig din information</translation>
 <translation id="276866628038850725">Alle abonnementer indeholder en gratis prøveperiode på 7 dage!</translation>
 <translation id="7280825497485894053">Månedlig abonnement</translation>
@@ -692,7 +694,7 @@ Er du sikker på, du vil gennemføre?</translation>
 Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genoprettet og din internetforbindelse er ikke sikker.</translation>
 <translation id="2429299231491852747">Acceptér forbindelsesanmodning</translation>
 <translation id="3428909627460825679">VPN-profil kunne ikke oprettes. Prøv igen.</translation>
-<translation id="8584119457978684056">Bekræftelse af køb af polet mislykkedes. Prøv igen.</translation>
+<translation id="1326227401245340613">Bekræftelse af køb mislykkedes. Prøv igen.</translation>
 <translation id="8905950042180169719">VPN kører i baggrunden</translation>
 <translation id="8681480718817027245">Abonnement</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -703,7 +705,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5646376287012673985">Placering</translation>
 <translation id="8375573361134671513">Nulstil konfiguration</translation>
 <translation id="850405162932416400">VPN-support</translation>
-<translation id="1330148827129583049">VPN-profil blev ikke oprettet. Opretter en ny profil.</translation>
 <translation id="6772117549627334582">Kunne ikke få serverplacering. Prøv igen.</translation>
 <translation id="5863914199331127413">VPN-værtsnavn</translation>
 <translation id="5499653136178260315">Abonnementstype</translation>
@@ -713,9 +714,9 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4395361077929528480">Netværkstype</translation>
 <translation id="755448900483975096">Mobilselskab</translation>
 <translation id="1279441577056010362">Fortsæt til e-mail</translation>
-<translation id="2553687444159335134">Support giver med hjælp fra Guardian-teamet.\n\nVælg den information, du vil dele med os.\n\nDen information, du deler med os, vil gøre det nemmere for vores supportmedarbejdere at løse dit</translation>
+<translation id="7125582363614011660">Support giver med hjælp fra Guardian-teamet.\n\nVælg den information, du vil dele med os.\n\nDen information, du deler med os, vil gøre det nemmere for vores supportmedarbejdere at løse dit problem.</translation>
 <translation id="7999094850625689785">En serverregion tætteste på dig bliver automatisk valgt baseret på dit systems tidszone. Dette anbefales for at sikre hurtig internethastighed.</translation>
-<translation id="8018707825009059641">Andre problemer</translation>
+<translation id="4397083831618200686">Vælg problem</translation>
 <translation id="6687228121145903051">Kan ikke oprette forbindelse til VPN (anden fejl)</translation>
 <translation id="9184988385244077767">Intet internet, når der er forbindelse</translation>
 <translation id="21570240866965662">Langsom forbindelse</translation>
@@ -730,7 +731,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1187506504156101449">Kunne ikke bekræfte køb :</translation>
 <translation id="8420522105268941892">Du er allerede tilmeldt dette abonnement. Prøv at gendanne abonnementet.</translation>
 <translation id="74771564105268111">FEJL!!\nForårsaget af en bruger, der annullerede købsprocessen.</translation>
-<translation id="3851978668258201962">FEJL!!\nKøb mislykkedes ...</translation>
+<translation id="7312462922610983743">FEJL!!\nKøb mislykkedes ...</translation>
 <translation id="6452181791372256707">Afvis</translation>
 <translation id="8030852056903932865">Godkend</translation>
 <translation id="1597199892790541240">Brændstofgebyr</translation>
@@ -803,11 +804,13 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5061574358754621254">Prisdata leveret af CoinGecko</translation>
 <translation id="4626407663177532837">Priser inkluderer et Brave-gebyr på 0,875 %.</translation>
 <translation id="8574289650879708853">Tilføj tilpasset aktiv</translation>
+<translation id="1974060860693918893">Avanceret</translation>
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="6600400596821238377">Poletnavn</translation>
 <translation id="4432966365400169165">Polet-kontaktadresse</translation>
 <translation id="4092152169181928870">Polet-symbol</translation>
 <translation id="4351811224047421378">Decimalpræcision</translation>
+<translation id="547122651977318828">Token-id (kun for ERC721)</translation>
 <translation id="8614026298974065517">Fjern tilpasset aktiv</translation>
 <translation id="4378941981362528553">Vil du fjerne <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
 <translation id="4250680216510889253">Nej</translation>
@@ -853,9 +856,14 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4945690646623486292">Vælg netværk</translation>
 <translation id="8853725596990766789">Ændr beløb</translation>
 <translation id="5233638681132016545">Ny fane</translation>
+<translation id="8006088103295786154">Tilgå Brave Wallet</translation>
 <translation id="5308380583665731573">Få forbindelse</translation>
+<translation id="3432029672560911238">Brugerkonto</translation>
+<translation id="5753378322046059140">Skift konto</translation>
 <translation id="3897092660631435901">Menu</translation>
+<translation id="42981349822642051">Udvid</translation>
 <translation id="3586752056660754651">Underskriv</translation>
+<translation id="6592721981110586529">Forbind til Brave Wallet</translation>
 <translation id="329813193938846695">Vælg beløb</translation>
 <translation id="3890989020011724401">Ny konto</translation>
 <translation id="291375746846291973">Forbind kun med websteder, du stoler på.</translation>
@@ -863,4 +871,33 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1060221736464994328">Tillad denne side at skifte netværk?</translation>
 <translation id="2478788592457735063">Dette vil skifte netværket til et tidligere tilføjet netværk.</translation>
 <translation id="8756686998207163764">Skift netværk</translation>
+<translation id="394256914628786902">Aktivér autooprettelse af fanegruppe</translation>
+<translation id="5242300593039211344">Lås tegnebog</translation>
+<translation id="1108298724135935307">Forbundne websteder</translation>
+<translation id="4255623233927788178">Se på Block Explorer</translation>
+<translation id="8274201358637112807">Denne side vil gerne interagere med Brave Wallet</translation>
+<translation id="3355936511340229503">Forbindelsesfejl</translation>
+<translation id="4891604214809245310">Kunne ikke indstille netværk til <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">Det ser ud til, at du har andre VPN'ere på denne enhed, som er indstillet til "Altid aktiveret". For at aktivere Brave Firewall + VPN, skal du først deaktivere denne "Altid aktiveret"-tilstand for de andre VPN'ere, inden du opretter forbindelse. Hvis problemet fortsætter, skal du afinstallere de andre VPN'ere.</translation>
+<translation id="85136472535634474">Åbn VPN-indstillinger</translation>
+<translation id="8352805003811526272">Nulstiller konfiguration ...</translation>
+<translation id="6809312301323611382">Du har allerede valgt den samme server.</translation>
+<translation id="7694991972030057904">Tilladelse blev annulleret</translation>
+<translation id="9106265941552476098">Afvis <ph name="TRANSACTION_LENGTH"/>-transaktioner</translation>
+<translation id="523862956770478816">Sidetilladelser</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> konti forbundet</translation>
+<translation id="4305817255990598646">Skift</translation>
+<translation id="4804818685124855865">Afbryd</translation>
+<translation id="8009571545960303544">Din signatur er ønsket</translation>
+<translation id="1982257600591932657">Netværksnavn</translation>
+<translation id="5052727830821470769">Netværks-url</translation>
+<translation id="4822132585477111396">Kæde-ID</translation>
+<translation id="7131971375297699539">Valutasymbol</translation>
+<translation id="7982789257301363584">Netværk</translation>
+<translation id="2521480044079508357">Dette giver tilladelse til, at netværket bruges inden i Brave Wallet.</translation>
+<translation id="4717431746210146708">Tillad denne side at tilføje te netværk?</translation>
+<translation id="3378339846292573874">Tilføj foreslåede token</translation>
+<translation id="2322227405137827074">Ønsker du at tilføje dette token?</translation>
+<translation id="1324417023773393937">Brave Browser</translation>
+<translation id="6044189892950611565">Notifikationskanal for Brave Browser</translation>
 </translationbundle>
