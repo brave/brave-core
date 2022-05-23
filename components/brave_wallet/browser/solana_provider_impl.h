@@ -93,7 +93,6 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   // will be saved and future connect from the same site will not ask user for
   // permission again until the permission is removed.
   base::flat_set<std::string> connected_set_;
-  int sign_message_id_ = 0;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;

@@ -223,6 +223,7 @@ class BraveWalletService : public KeyedService,
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
 
+  int sign_message_id_ = 0;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
