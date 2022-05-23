@@ -13,10 +13,12 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/container_util.h"
-#include "bat/ads/internal/base/database_statement_util.h"
+#include "bat/ads/internal/base/database_bind_util.h"
+#include "bat/ads/internal/base/database_column_util.h"
 #include "bat/ads/internal/base/database_table_util.h"
-#include "bat/ads/internal/base/database_util.h"
+#include "bat/ads/internal/base/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
 namespace ads {
 namespace database {
@@ -398,7 +400,7 @@ void ConversionQueue::OnGetForCreativeInstanceId(
 void ConversionQueue::MigrateToV10(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, "conversion_queue");
+  DropTable(transaction, "conversion_queue");
 
   // campaign_id and advertiser_id can be NULL for legacy conversions migrated
   // from |ad_conversions.json| and conversion_id and advertiser_public_key will
@@ -448,17 +450,17 @@ void ConversionQueue::MigrateToV11(mojom::DBTransaction* transaction) {
       "campaign_id",   "creative_set_id", "creative_instance_id",
       "advertiser_id", "conversion_id",   "timestamp"};
 
-  util::CopyColumns(transaction, "conversion_queue", temp_table_name, columns,
-                    /* should_drop */ true);
+  CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
+                   /* should_drop */ true);
 
   // Rename temporary table
-  util::Rename(transaction, temp_table_name, "conversion_queue");
+  RenameTable(transaction, temp_table_name, "conversion_queue");
 }
 
 void ConversionQueue::MigrateToV17(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::CreateIndex(transaction, "conversion_queue", "creative_instance_id");
+  CreateTableIndex(transaction, "conversion_queue", "creative_instance_id");
 }
 
 void ConversionQueue::MigrateToV21(mojom::DBTransaction* transaction) {
@@ -492,11 +494,11 @@ void ConversionQueue::MigrateToV21(mojom::DBTransaction* transaction) {
       "advertiser_id", "conversion_id",   "advertiser_public_key",
       "timestamp"};
 
-  util::CopyColumns(transaction, "conversion_queue", temp_table_name, columns,
-                    /* should_drop */ true);
+  CopyTableColumns(transaction, "conversion_queue", temp_table_name, columns,
+                   /* should_drop */ true);
 
   // Rename temporary table
-  util::Rename(transaction, temp_table_name, "conversion_queue");
+  RenameTable(transaction, temp_table_name, "conversion_queue");
 
   // Migrate legacy conversions
   const std::string& update_query = base::StringPrintf(

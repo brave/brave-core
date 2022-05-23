@@ -14,9 +14,9 @@
 #include "base/rand_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/segments/segments_json_reader.h"
-#include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_features.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {

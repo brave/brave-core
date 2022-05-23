@@ -13,9 +13,10 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database_statement_util.h"
+#include "bat/ads/internal/base/database_bind_util.h"
+#include "bat/ads/internal/base/database_column_util.h"
 #include "bat/ads/internal/base/database_table_util.h"
-#include "bat/ads/internal/base/database_util.h"
+#include "bat/ads/internal/base/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time_formatting_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
@@ -203,7 +204,7 @@ void Transactions::Update(
 void Transactions::Delete(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
-  util::Delete(transaction.get(), GetTableName());
+  DeleteTable(transaction.get(), GetTableName());
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),
@@ -305,7 +306,7 @@ void Transactions::MigrateToV18(mojom::DBTransaction* transaction) {
 
   transaction->commands.push_back(std::move(command));
 
-  util::CreateIndex(transaction, "transactions", "id");
+  CreateTableIndex(transaction, "transactions", "id");
 }
 
 }  // namespace table

@@ -6,11 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSIT_INTERFACE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSIT_INTERFACE_H_
 
+#include <functional>
 #include <string>
 
-#include "bat/ads/internal/account/deposits/deposit_aliases.h"
-
 namespace ads {
+
+using GetDepositCallback = std::function<void(const bool, const double)>;
 
 class DepositInterface {
  public:

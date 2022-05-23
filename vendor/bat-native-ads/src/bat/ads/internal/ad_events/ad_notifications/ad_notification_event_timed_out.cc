@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_timed_out.h"
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/creatives/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
 
 namespace ads {
 namespace ad_notifications {

@@ -9,7 +9,7 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ad_server/catalog/catalog_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/deprecated/json_helper.h"
+#include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {
 

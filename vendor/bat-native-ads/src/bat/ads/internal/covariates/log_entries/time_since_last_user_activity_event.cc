@@ -6,8 +6,8 @@
 #include "bat/ads/internal/covariates/log_entries/time_since_last_user_activity_event.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/user_activity/browsing/user_activity.h"
-#include "bat/ads/internal/user_activity/browsing/user_activity_util.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
 
 namespace ads {
 

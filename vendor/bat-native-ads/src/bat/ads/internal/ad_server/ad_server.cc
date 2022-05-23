@@ -13,9 +13,9 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/ad_server/catalog/bundle/bundle.h"
 #include "bat/ads/internal/ad_server/catalog/catalog.h"
 #include "bat/ads/internal/ad_server/catalog/catalog_constants.h"
+#include "bat/ads/internal/ad_server/catalog/catalog_util.h"
 #include "bat/ads/internal/ad_server/get_catalog_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
@@ -31,6 +31,17 @@ namespace {
 constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
 constexpr int64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
+
+bool ShouldUpdateCatalog(const Catalog& catalog) {
+  const std::string last_catalog_id =
+      AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
+
+  if (!catalog.HasChanged(last_catalog_id)) {
+    return false;
+  }
+
+  return true;
+}
 
 }  // namespace
 
@@ -90,55 +101,35 @@ void AdServer::OnFetch(const mojom::UrlResponse& url_response) {
     BLOG(1, "Parsing catalog");
 
     Catalog catalog;
-    if (catalog.FromJson(url_response.body)) {
-      SaveCatalog(catalog);
-
-      NotifyCatalogUpdated(catalog);
-
-      FetchAfterDelay();
-
+    if (!catalog.FromJson(url_response.body)) {
+      BLOG(1, "Failed to parse catalog");
+      NotifyFailedToUpdateCatalog();
+      Retry();
       return;
     }
+
+    AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                          base::Time::Now().ToDoubleT());
+
+    if (!ShouldUpdateCatalog(catalog)) {
+      BLOG(1, "Catalog id " << catalog.GetId() << " is up to date");
+      FetchAfterDelay();
+      return;
+    }
+
+    SaveCatalog(catalog);
+    NotifyDidUpdateCatalog(catalog);
+    FetchAfterDelay();
+    return;
   } else if (url_response.status_code == 304) {
     BLOG(1, "Catalog is up to date");
-
     FetchAfterDelay();
-
     return;
   }
 
-  BLOG(1, "Failed to parse catalog");
-
-  NotifyCatalogFailed();
+  BLOG(1, "Failed to fetch catalog");
+  NotifyFailedToUpdateCatalog();
   Retry();
-}
-
-void AdServer::SaveCatalog(const Catalog& catalog) {
-  const double catalog_last_updated = base::Time::Now().ToDoubleT();
-  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
-                                        catalog_last_updated);
-
-  const std::string last_catalog_id =
-      AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
-
-  const std::string catalog_id = catalog.GetId();
-
-  if (!catalog.HasChanged(last_catalog_id)) {
-    BLOG(1, "Catalog id " << catalog_id << " is up to date");
-    return;
-  }
-
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId, catalog_id);
-
-  const int catalog_version = catalog.GetVersion();
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion,
-                                         catalog_version);
-
-  const int64_t catalog_ping = catalog.GetPing();
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing, catalog_ping);
-
-  Bundle bundle;
-  bundle.BuildFromCatalog(catalog);
 }
 
 void AdServer::FetchAfterDelay() {
@@ -170,15 +161,15 @@ void AdServer::OnRetry() {
   Fetch();
 }
 
-void AdServer::NotifyCatalogUpdated(const Catalog& catalog) const {
+void AdServer::NotifyDidUpdateCatalog(const Catalog& catalog) const {
   for (AdServerObserver& observer : observers_) {
-    observer.OnCatalogUpdated(catalog);
+    observer.OnDidUpdateCatalog(catalog);
   }
 }
 
-void AdServer::NotifyCatalogFailed() const {
+void AdServer::NotifyFailedToUpdateCatalog() const {
   for (AdServerObserver& observer : observers_) {
-    observer.OnCatalogFailed();
+    observer.OnFailedToUpdateCatalog();
   }
 }
 

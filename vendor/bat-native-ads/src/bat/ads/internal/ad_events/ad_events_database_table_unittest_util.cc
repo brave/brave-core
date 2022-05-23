@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database_table_util.h"
-#include "bat/ads/internal/base/database_util.h"
+#include "bat/ads/internal/base/database_transaction_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
@@ -21,7 +21,7 @@ namespace ad_events {
 void Reset(ResultCallback callback) {
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
 
-  util::Delete(transaction.get(), "ad_events");
+  DeleteTable(transaction.get(), "ad_events");
 
   AdsClientHelper::Get()->RunDBTransaction(
       std::move(transaction),

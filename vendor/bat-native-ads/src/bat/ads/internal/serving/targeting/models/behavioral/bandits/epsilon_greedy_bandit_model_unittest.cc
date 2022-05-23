@@ -11,11 +11,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
-#include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_unittest_util.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
-#include "bat/ads/internal/targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

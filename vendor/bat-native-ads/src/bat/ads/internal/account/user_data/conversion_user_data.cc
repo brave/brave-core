@@ -24,10 +24,10 @@ void GetConversion(const std::string& creative_instance_id,
     return;
   }
 
-  BuildConversion(creative_instance_id,
-                  [callback](const base::Value& user_data) {
-                    callback(user_data.Clone());
-                  });
+  builder::BuildConversion(creative_instance_id,
+                           [callback](const base::Value& user_data) {
+                             callback(user_data.Clone());
+                           });
 }
 
 }  // namespace user_data

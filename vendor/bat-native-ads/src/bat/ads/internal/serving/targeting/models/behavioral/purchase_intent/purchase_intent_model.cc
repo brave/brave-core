@@ -11,9 +11,8 @@
 #include <utility>
 
 #include "bat/ads/internal/deprecated/client/client.h"
-#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_features.h"
-#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_model_constants.h"
-#include "bat/ads/internal/targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
+#include "bat/ads/internal/features/purchase_intent_features.h"
+#include "bat/ads/internal/serving/targeting/models/behavioral/purchase_intent/purchase_intent_aliases.h"
 
 namespace ads {
 namespace targeting {
@@ -21,14 +20,17 @@ namespace model {
 
 namespace {
 
+constexpr uint16_t kSignalLevel = 1;
+constexpr size_t kMaximumSegments = 3;
+
 uint16_t CalculateScoreForHistory(
     const PurchaseIntentSignalHistoryList& history) {
   uint16_t score = 0;
 
-  const int64_t time_window = features::GetPurchaseIntentTimeWindowInSeconds();
+  const base::TimeDelta time_window = features::GetPurchaseIntentTimeWindow();
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_time =
-        signal_segment.created_at + base::Seconds(time_window);
+        signal_segment.created_at + time_window;
 
     if (base::Time::Now() > signal_decayed_time) {
       continue;

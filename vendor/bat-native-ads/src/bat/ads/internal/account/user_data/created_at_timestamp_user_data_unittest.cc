@@ -17,12 +17,12 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
 std::string GetCreatedAtTimestampAsJson(const base::Time time) {
-  const base::DictionaryValue user_data =
-      user_data::GetCreatedAtTimestamp(time);
+  const base::DictionaryValue user_data = GetCreatedAtTimestamp(time);
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);
@@ -55,4 +55,5 @@ TEST_F(BatAdsCreatedAtTimestampUserDataTest, GetCreatedAtTimestamp) {
   EXPECT_EQ(expected_json, json);
 }
 
+}  // namespace user_data
 }  // namespace ads

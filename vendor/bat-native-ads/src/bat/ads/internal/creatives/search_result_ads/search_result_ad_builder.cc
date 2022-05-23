@@ -10,7 +10,7 @@
 namespace ads {
 
 namespace {
-const char kSegment[] = "keyword";
+constexpr char kSegment[] = "keyword";
 }  // namespace
 
 SearchResultAdInfo BuildSearchResultAd(

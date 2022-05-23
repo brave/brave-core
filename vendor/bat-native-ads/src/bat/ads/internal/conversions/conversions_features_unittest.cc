@@ -10,6 +10,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace features {
 
 TEST(BatAdsConversionsFeaturesTest, ConversionsEnabled) {
   // Arrange
@@ -17,7 +18,7 @@ TEST(BatAdsConversionsFeaturesTest, ConversionsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(features::IsConversionsEnabled());
+  EXPECT_TRUE(IsConversionsEnabled());
 }
 
 TEST(BatAdsConversionsFeaturesTest, ConversionsResourceVersion) {
@@ -26,7 +27,7 @@ TEST(BatAdsConversionsFeaturesTest, ConversionsResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(1, features::GetConversionsResourceVersion());
+  EXPECT_EQ(1, GetConversionsResourceVersion());
 }
 
 TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
@@ -37,7 +38,8 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
   // Assert
   const std::string& expected_pattern =
       "<meta.*name=\"ad-conversion-id\".*content=\"([-a-zA-Z0-9]*)\".*>";
-  EXPECT_EQ(expected_pattern, features::GetDefaultConversionIdPattern());
+  EXPECT_EQ(expected_pattern, GetDefaultConversionIdPattern());
 }
 
+}  // namespace features
 }  // namespace ads

@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
-#include "bat/ads/internal/server/hosts/server_host_util.h"
+#include "bat/ads/internal/server/url/hosts/server_host_util.h"
 
 namespace ads {
 

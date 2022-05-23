@@ -6,16 +6,21 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_BUILDER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_BUILDER_H_
 
+#include <functional>
 #include <string>
 
-#include "bat/ads/internal/account/user_data/conversion_user_data_aliases.h"
+#include "base/values.h"
 
 namespace ads {
 namespace user_data {
+namespace builder {
+
+using BuildConversionCallback = std::function<void(base::Value)>;
 
 void BuildConversion(const std::string& creative_instance_id,
-                     ConversionCallback callback);
+                     BuildConversionCallback callback);
 
+}  // namespace builder
 }  // namespace user_data
 }  // namespace ads
 

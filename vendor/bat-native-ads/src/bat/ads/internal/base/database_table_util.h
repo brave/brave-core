@@ -13,38 +13,36 @@
 
 namespace ads {
 namespace database {
-namespace table {
-namespace util {
 
-void CreateIndex(mojom::DBTransaction* transaction,
-                 const std::string& table_name,
-                 const std::string& key);
+void CreateTableIndex(mojom::DBTransaction* transaction,
+                      const std::string& table_name,
+                      const std::string& key);
 
-void Drop(mojom::DBTransaction* transaction, const std::string& table_name);
+void DropTable(mojom::DBTransaction* transaction,
+               const std::string& table_name);
 
-void Delete(mojom::DBTransaction* transaction, const std::string& table_name);
+void DeleteTable(mojom::DBTransaction* transaction,
+                 const std::string& table_name);
 
-void CopyColumns(mojom::DBTransaction* transaction,
+void CopyTableColumns(mojom::DBTransaction* transaction,
+                      const std::string& from,
+                      const std::string& to,
+                      const std::vector<std::string>& from_columns,
+                      const std::vector<std::string>& to_columns,
+                      const bool should_drop,
+                      const std::string& group_by = "");
+
+void CopyTableColumns(mojom::DBTransaction* transaction,
+                      const std::string& from,
+                      const std::string& to,
+                      const std::vector<std::string>& columns,
+                      const bool should_drop,
+                      const std::string& group_by = "");
+
+void RenameTable(mojom::DBTransaction* transaction,
                  const std::string& from,
-                 const std::string& to,
-                 const std::vector<std::string>& from_columns,
-                 const std::vector<std::string>& to_columns,
-                 const bool should_drop,
-                 const std::string& group_by = "");
+                 const std::string& to);
 
-void CopyColumns(mojom::DBTransaction* transaction,
-                 const std::string& from,
-                 const std::string& to,
-                 const std::vector<std::string>& columns,
-                 const bool should_drop,
-                 const std::string& group_by = "");
-
-void Rename(mojom::DBTransaction* transaction,
-            const std::string& from,
-            const std::string& to);
-
-}  // namespace util
-}  // namespace table
 }  // namespace database
 }  // namespace ads
 

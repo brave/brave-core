@@ -15,10 +15,10 @@ class Catalog;
 class AdServerObserver : public base::CheckedObserver {
  public:
   // Invoked when the catalog has been updated
-  virtual void OnCatalogUpdated(const Catalog& catalog) {}
+  virtual void OnDidUpdateCatalog(const Catalog& catalog) {}
 
   // Invoked when fetching the catalog fails
-  virtual void OnCatalogFailed() {}
+  virtual void OnFailedToUpdateCatalog() {}
 
  protected:
   ~AdServerObserver() override = default;

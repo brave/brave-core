@@ -6,9 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_USER_DATA_BUILDER_INTERFACE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_USER_DATA_BUILDER_INTERFACE_H_
 
-#include "bat/ads/internal/account/user_data/user_data_builder_aliases.h"
+#include <functional>
+
+#include "base/values.h"
 
 namespace ads {
+
+using UserDataBuilderCallback = std::function<void(const base::Value&)>;
 
 class UserDataBuilderInterface {
  public:

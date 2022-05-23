@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/serving/permission_rules/media_permission_rule.h"
 
-#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -17,7 +17,7 @@ MediaPermissionRule::MediaPermissionRule() = default;
 MediaPermissionRule::~MediaPermissionRule() = default;
 
 bool MediaPermissionRule::ShouldAllow() {
-  if (!features::frequency_capping::ShouldOnlyServeAdsIfMediaIsNotPlaying()) {
+  if (!permission_rules::features::ShouldOnlyServeAdsIfMediaIsNotPlaying()) {
     return true;
   }
 

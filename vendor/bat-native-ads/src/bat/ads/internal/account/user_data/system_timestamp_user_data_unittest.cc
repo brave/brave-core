@@ -17,11 +17,12 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
 std::string GetSystemTimestampAsJson() {
-  const base::DictionaryValue user_data = user_data::GetSystemTimestamp();
+  const base::DictionaryValue user_data = GetSystemTimestamp();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);
@@ -54,4 +55,5 @@ TEST_F(BatAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
   EXPECT_EQ(expected_json, json);
 }
 
+}  // namespace user_data
 }  // namespace ads

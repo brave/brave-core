@@ -16,11 +16,12 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
 std::string GetVersionNumberAsJson() {
-  const base::DictionaryValue user_data = user_data::GetVersionNumber();
+  const base::DictionaryValue user_data = GetVersionNumber();
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);
@@ -46,4 +47,5 @@ TEST(BatAdsVersionNumberUserDataTest, GetVersionNumber) {
   EXPECT_EQ(expected_json, json);
 }
 
+}  // namespace user_data
 }  // namespace ads

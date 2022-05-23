@@ -7,11 +7,11 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_info.h"
-#include "bat/ads/internal/ad_server/catalog/bundle/creative_ad_unittest_util.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/creatives/creative_ad_info.h"
+#include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/legacy_migration/database/database_version.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

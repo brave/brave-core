@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/platform_helper.h"
-#include "bat/ads/internal/features/frequency_capping_features.h"
+#include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 namespace ads {
 
@@ -16,7 +16,7 @@ FullScreenModePermissionRule::FullScreenModePermissionRule() = default;
 FullScreenModePermissionRule::~FullScreenModePermissionRule() = default;
 
 bool FullScreenModePermissionRule::ShouldAllow() {
-  if (!features::frequency_capping::ShouldOnlyServeAdsInWindowedMode()) {
+  if (!permission_rules::features::ShouldOnlyServeAdsInWindowedMode()) {
     return true;
   }
 

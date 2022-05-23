@@ -30,15 +30,13 @@ class AdServer final {
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
 
-  void SaveCatalog(const Catalog& catalog);
-
   void FetchAfterDelay();
 
   void Retry();
   void OnRetry();
 
-  void NotifyCatalogUpdated(const Catalog& catalog) const;
-  void NotifyCatalogFailed() const;
+  void NotifyDidUpdateCatalog(const Catalog& catalog) const;
+  void NotifyFailedToUpdateCatalog() const;
 
   base::ObserverList<AdServerObserver> observers_;
 

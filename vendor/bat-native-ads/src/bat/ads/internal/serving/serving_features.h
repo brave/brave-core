@@ -14,6 +14,7 @@ namespace features {
 extern const base::Feature kServing;
 
 bool IsServingEnabled();
+
 int GetServingVersion();
 
 int GetDefaultAdNotificationsPerHour();

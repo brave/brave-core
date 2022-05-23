@@ -13,7 +13,7 @@
 #include "bat/ads/internal/base/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -208,9 +208,7 @@ void UnitTestBase::Initialize() {
   confirmations_state_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
 
-  database_initialize_ = std::make_unique<database::Initialize>();
-  database_initialize_->CreateOrOpen(
-      [](const bool success) { ASSERT_TRUE(success); });
+  database::CreateOrOpen([](const bool success) { ASSERT_TRUE(success); });
 
   diagnostics_ = std::make_unique<Diagnostics>();
 

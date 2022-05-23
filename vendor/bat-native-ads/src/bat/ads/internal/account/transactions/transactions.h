@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 
+#include <functional>
 #include <string>
 
-#include "bat/ads/internal/account/transactions/transactions_aliases.h"
-#include "bat/ads/internal/account/transactions/transactions_database_table_aliases.h"
+#include "bat/ads/transaction_info_aliases.h"
 
 namespace base {
 class Time;
@@ -23,17 +23,24 @@ struct TransactionInfo;
 
 namespace transactions {
 
+using AddCallback =
+    std::function<void(const bool, const TransactionInfo& transaction)>;
+
+using GetCallback = std::function<void(const bool, const TransactionList&)>;
+
+using RemoveAllCallback = std::function<void(const bool)>;
+
 TransactionInfo Add(const std::string& creative_instance_id,
                     const double value,
                     const AdType& ad_type,
                     const ConfirmationType& confirmation_type,
-                    AddTransactionCallback callback);
+                    AddCallback callback);
 
 void GetForDateRange(const base::Time from_time,
                      const base::Time to_time,
-                     GetTransactionsCallback callback);
+                     GetCallback callback);
 
-void RemoveAll(RemoveAllTransactionsCallback callback);
+void RemoveAll(RemoveAllCallback callback);
 
 }  // namespace transactions
 }  // namespace ads

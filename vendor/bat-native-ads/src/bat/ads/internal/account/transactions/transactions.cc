@@ -20,7 +20,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
                     const double value,
                     const AdType& ad_type,
                     const ConfirmationType& confirmation_type,
-                    AddTransactionCallback callback) {
+                    AddCallback callback) {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(AdType::kUndefined, ad_type.value());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
@@ -48,7 +48,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
 
 void GetForDateRange(const base::Time from_time,
                      const base::Time to_time,
-                     GetTransactionsCallback callback) {
+                     GetCallback callback) {
   database::table::Transactions database_table;
   database_table.GetForDateRange(
       from_time, to_time,
@@ -62,7 +62,7 @@ void GetForDateRange(const base::Time from_time,
       });
 }
 
-void RemoveAll(RemoveAllTransactionsCallback callback) {
+void RemoveAll(RemoveAllCallback callback) {
   database::table::Transactions database_table;
   database_table.Delete([callback](const bool success) {
     if (!success) {

@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/hosts/server_host_util.h"
+#include "bat/ads/internal/server/url/hosts/server_host_util.h"
 
 namespace ads {
 

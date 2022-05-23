@@ -15,13 +15,13 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace user_data {
 
 namespace {
 
 std::string GetTotalsAsJson(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  const base::DictionaryValue user_data =
-      user_data::GetTotals(unblinded_payment_tokens);
+  const base::DictionaryValue user_data = GetTotals(unblinded_payment_tokens);
 
   std::string json;
   base::JSONWriter::Write(user_data, &json);
@@ -78,4 +78,5 @@ TEST(BatAdsTotalsUserDataTest, GetTotals) {
   EXPECT_EQ(expected_json, json);
 }
 
+}  // namespace user_data
 }  // namespace ads

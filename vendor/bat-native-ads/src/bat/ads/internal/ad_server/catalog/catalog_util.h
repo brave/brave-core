@@ -10,9 +10,16 @@
 
 namespace ads {
 
+class Catalog;
+
+void SaveCatalog(const Catalog& catalog);
+
 void ResetCatalog();
+
 std::string GetCatalogId();
+
 bool DoesCatalogExist();
+
 bool HasCatalogExpired();
 
 }  // namespace ads

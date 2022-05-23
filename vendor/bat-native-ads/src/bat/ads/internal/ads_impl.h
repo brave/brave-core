@@ -15,16 +15,16 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_observer.h"
+#include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_observer.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
+#include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/creatives/ad_notifications/ad_notification_observer.h"
-#include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_observer.h"
-#include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_observer.h"
-#include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/internal/creatives/search_result_ads/search_result_ad_observer.h"
-#include "bat/ads/internal/serving/ad_notifications/ad_notification_serving_observer.h"
-#include "bat/ads/internal/serving/inline_content_ads/inline_content_ad_serving_observer.h"
-#include "bat/ads/internal/serving/new_tab_page_ads/new_tab_page_ad_serving_observer.h"
+#include "bat/ads/internal/serving/ad_notification_serving_observer.h"
+#include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
+#include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -48,8 +48,6 @@ namespace new_tab_page_ads {
 class Serving;
 }  // namespace new_tab_page_ads
 
-namespace targeting {
-
 namespace processor {
 class EpsilonGreedyBandit;
 class PurchaseIntent;
@@ -59,8 +57,6 @@ class TextClassification;
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
-
-}  // namespace targeting
 
 namespace resource {
 class AntiTargeting;
@@ -262,7 +258,7 @@ class AdsImpl final : public Ads,
   void OnStatementOfAccountsDidChange() override;
 
   // AdServerObserver:
-  void OnCatalogUpdated(const Catalog& catalog) override;
+  void OnDidUpdateCatalog(const Catalog& catalog) override;
 
   // AdNotificationServingObserver:
   void OnDidServeAdNotification(const AdNotificationInfo& ad) override;
@@ -331,20 +327,17 @@ class AdsImpl final : public Ads,
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;
-  std::unique_ptr<targeting::processor::EpsilonGreedyBandit>
+  std::unique_ptr<processor::EpsilonGreedyBandit>
       epsilon_greedy_bandit_processor_;
   std::unique_ptr<resource::EpsilonGreedyBandit>
       epsilon_greedy_bandit_resource_;
   std::unique_ptr<resource::TextClassification> text_classification_resource_;
-  std::unique_ptr<targeting::processor::TextClassification>
-      text_classification_processor_;
+  std::unique_ptr<processor::TextClassification> text_classification_processor_;
   std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
-  std::unique_ptr<targeting::processor::PurchaseIntent>
-      purchase_intent_processor_;
+  std::unique_ptr<processor::PurchaseIntent> purchase_intent_processor_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<resource::Conversions> conversions_resource_;
-  std::unique_ptr<targeting::geographic::SubdivisionTargeting>
-      subdivision_targeting_;
+  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<ad_notifications::Serving> ad_notification_serving_;
   std::unique_ptr<AdNotification> ad_notification_;
   std::unique_ptr<AdNotifications> ad_notifications_;
@@ -355,7 +348,6 @@ class AdsImpl final : public Ads,
   std::unique_ptr<Client> client_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<Conversions> conversions_;
-  std::unique_ptr<database::Initialize> database_;
   std::unique_ptr<new_tab_page_ads::Serving> new_tab_page_ad_serving_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;

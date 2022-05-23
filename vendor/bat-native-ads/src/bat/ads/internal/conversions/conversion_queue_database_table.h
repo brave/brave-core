@@ -6,11 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_DATABASE_TABLE_H_
 
+#include <functional>
 #include <string>
 
 #include "base/check_op.h"
 #include "bat/ads/ads_client_aliases.h"
-#include "bat/ads/internal/conversions/conversion_queue_database_table_aliases.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -21,6 +21,14 @@ struct ConversionQueueItemInfo;
 
 namespace database {
 namespace table {
+
+using GetConversionQueueCallback =
+    std::function<void(const bool, const ConversionQueueItemList&)>;
+
+using GetConversionQueueForCreativeInstanceIdCallback =
+    std::function<void(const bool,
+                       const std::string& creative_instance_id,
+                       const ConversionQueueItemList&)>;
 
 class ConversionQueue final : public TableInterface {
  public:
