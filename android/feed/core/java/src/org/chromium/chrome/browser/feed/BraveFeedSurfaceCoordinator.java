@@ -56,13 +56,14 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @NonNull Supplier<Toolbar> toolbarSupplier, @SurfaceType int surfaceType,
             long embeddingSurfaceCreatedTimeNs, @Nullable FeedSwipeRefreshLayout swipeRefreshLayout,
             boolean overScrollDisabled, @Nullable ViewGroup viewportView,
-            FeedActionDelegate actionDelegate, HelpAndFeedbackLauncher helpAndFeedbackLauncher) {
+            FeedActionDelegate actionDelegate, HelpAndFeedbackLauncher helpAndFeedbackLauncher,
+            TabModelSelector tabModelSelector) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
                 showDarkBackground, delegate, profile, isPlaceholderShownInitially,
                 bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
                 launchOrigin, privacyPreferencesManager, toolbarSupplier, surfaceType,
                 embeddingSurfaceCreatedTimeNs, swipeRefreshLayout, overScrollDisabled, viewportView,
-                actionDelegate, helpAndFeedbackLauncher);
+                actionDelegate, helpAndFeedbackLauncher, tabModelSelector);
     }
 
     public void createScrollViewForPolicy() {
