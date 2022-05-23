@@ -44,10 +44,7 @@ import {
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
-import {
-  OnboardingSteps,
-  OnboardingStepsNavigation
-} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // storybook compiler thinks `randomUUID` doesnt exist
 const randomUUID = () => (
@@ -116,7 +113,7 @@ export const OnboardingRecoveryPhrase = () => {
 
           <OnboardingStepsNavigation
             goBack={goBack}
-            currentStep={OnboardingSteps.backupRecoveryPhrase}
+            currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
           />
 
           <TitleAndDescriptionContainer>

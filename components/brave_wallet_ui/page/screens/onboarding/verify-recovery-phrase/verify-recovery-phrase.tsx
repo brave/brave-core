@@ -33,10 +33,7 @@ import {
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
-import {
-  OnboardingSteps,
-  OnboardingStepsNavigation
-} from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 export const OnboardingVerifyRecoveryPhrase = () => {
   // routing
@@ -79,7 +76,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
 
           <OnboardingStepsNavigation
             goBack={goBack}
-            currentStep={OnboardingSteps.verifyRecoveryPhrase}
+            currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
           />
 
           <TitleAndDescriptionContainer>
