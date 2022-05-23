@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BRAVE_ADS_HOST_ANDROID_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BRAVE_ADS_HOST_ANDROID_H_
 
+#include <string>
 #include <vector>
 
 #include "base/android/jni_android.h"
@@ -14,24 +15,29 @@
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "components/sessions/core/session_id.h"
 
 class Profile;
 
-class Profile;
+namespace content {
+class WebContents;
+}
 
 namespace brave_ads {
 
-// The class handles chrome.braveRequestAdsEnabled() js api call for Android
-// platform. The js api asks the user for permission to enable ads.
+// The class handles ads requests from renderer side for Android platform.
 class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost,
                             public brave_rewards::RewardsServiceObserver {
  public:
-  explicit BraveAdsHostAndroid(Profile* profile);
+  BraveAdsHostAndroid(Profile* profile, content::WebContents* web_contents);
   BraveAdsHostAndroid(const BraveAdsHostAndroid&) = delete;
   BraveAdsHostAndroid& operator=(const BraveAdsHostAndroid&) = delete;
   ~BraveAdsHostAndroid() override;
 
   // brave_ads::mojom::BraveAdsHost
+  void MaybeTriggerAdViewedEvent(
+      const std::string& creative_instance_id,
+      MaybeTriggerAdViewedEventCallback callback) override;
   void RequestAdsEnabled(RequestAdsEnabledCallback callback) override;
 
   // brave_rewards::RewardsServiceObserver
@@ -47,6 +53,7 @@ class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost,
   void RunCallbacksAndReset(bool ads_enabled);
 
   raw_ptr<Profile> profile_ = nullptr;
+  SessionID tab_id_;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
   std::vector<RequestAdsEnabledCallback> callbacks_;
   base::ScopedObservation<brave_rewards::RewardsService,

@@ -1,8 +1,10 @@
 include_rules = [
   "+brave/components/brave_ads/common",
+  "+brave/components/brave_search/common",
   "+content/public/renderer",
   "+gin",
   "+mojo/public/cpp/bindings",
+  "+services/network/public/cpp",
   "+third_party/blink/public",
   "+v8/include",
 ]

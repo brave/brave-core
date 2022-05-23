@@ -6,16 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_SEARCH_RESULT_AD_PARSING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_SEARCH_RESULT_AD_SEARCH_RESULT_AD_PARSING_H_
 
-#include <vector>
+#include <map>
+#include <string>
 
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 namespace brave_ads {
 
-using SearchResultAdsList = std::vector<ads::mojom::SearchResultAdPtr>;
+using SearchResultAdMap = std::map<std::string, ads::mojom::SearchResultAdPtr>;
 
-SearchResultAdsList ParseWebPageEntities(blink::mojom::WebPagePtr web_page);
+SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page);
 
 }  // namespace brave_ads
 
