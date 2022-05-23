@@ -3,26 +3,13 @@
 <video id="player" autoplay></video>
 <iframe id="frame"></iframe>
 <script>
-    let resolveFrameLoadPromise;
-    const frameLoadPromise = new Promise(a => resolveFrameLoadPromise = a);
     frame.src = new URLSearchParams(location.search).get('sub_frame');
-    frame.onload = resolveFrameLoadPromise;
 
-    let resolveLoadPromise;
-    const documentLoadPromise = new Promise(a => resolveLoadPromise = a);
-    window.addEventListener('load', e => resolveLoadPromise(e));
-
-    let lastDeviceId;
     let resolveDeviceIdPromise;
-    window.deviceIdPromise = new Promise(a => resolveDeviceIdPromise = a);
+    const deviceIdPromise = new Promise(a => resolveDeviceIdPromise = a);
 
-    window.requestCapture = async function requestCapture(target) {
-        await documentLoadPromise;
-        await frameLoadPromise;
-        brave.beginAdvertiseShareDisplayMedia(deviceId => {
-            lastDeviceId = deviceId;
-            resolveDeviceIdPromise(deviceId);
-        }, target || window);
+    async function requestCapture(target) {
+        brave.beginAdvertiseShareDisplayMedia(resolveDeviceIdPromise, target || window);
     }
 
     async function startCapture(deviceId) {

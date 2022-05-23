@@ -4,8 +4,8 @@
     <video id="player"></video>
 </div>
 <script>
-    let accept;
-    window.startCapturePromise = new Promise(a => accept = a);
+    let resolveStartCapturePromise;
+    const startCapturePromise = new Promise(a => resolveStartCapturePromise = a);
 
     async function startCapture(deviceId) {
         const stream = await window.navigator.mediaDevices.getUserMedia({
@@ -22,10 +22,8 @@
     }
 
     window.addEventListener('message', async e => {
-        console.log(e.data);
-
         const result = await startCapture(e.data.deviceId);
-        accept(result);
+        resolveStartCapturePromise(result);
     });
 </script>
 

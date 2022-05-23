@@ -145,7 +145,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
     talk_service()->ShareTab(target_contents());
 
     auto result =
-        content::EvalJs(requester_contents(), "window.deviceIdPromise");
+        content::EvalJs(requester_contents(), "deviceIdPromise");
     EXPECT_FALSE(nullptr == result);
     EXPECT_NE("", result);
     return result.ExtractString();
@@ -185,7 +185,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
       requester_contents(),
       "delegateCaptureToFrame('" + device_id + "');"));
   EXPECT_EQ(true, content::EvalJs(requester_sub_frame(),
-                                  "window.startCapturePromise"));
+                                  "startCapturePromise"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
@@ -203,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
       requester_contents(),
       "delegateCaptureToFrame('" + device_id + "');"));
   EXPECT_EQ(true, content::EvalJs(requester_sub_frame(),
-                                  "window.startCapturePromise"));
+                                  "startCapturePromise"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
