@@ -207,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
-                       DISABLED_NavigationClearsShareRequest) {
+                       NavigationClearsShareRequest) {
   std::string device_id;
   talk_service()->GetDeviceID(
       requester_contents(),
