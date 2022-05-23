@@ -43,7 +43,7 @@ export const StepsNavigation: <T extends string>(
 
           return showLink
             ? <NavLink
-                to={`/${stepName}`}
+                to={stepName}
                 key={stepName}
                 isActive={() => currentStep === stepName}
                 activeClassName="active"

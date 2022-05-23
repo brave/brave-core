@@ -3,26 +3,31 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-/* eslint-disable @typescript-eslint/array-type */
 import * as React from 'react'
 
-// components
-import StepsNavigation, { StepsNavigationProps } from '../../../../../components/desktop/steps-navigation/steps-navigation'
+// routes
+import { WalletRoutes } from '../../../../../constants/types'
 
-export enum OnboardingSteps {
-  createPassword = 'create-password',
-  explainRecoveryPhrase = 'explain-recovery-phrase',
-  backupRecoveryPhrase = 'backup-recovery-phrase',
-  verifyRecoveryPhrase = 'verify-recovery-phrase',
-  complete = 'complete'
-}
+// components
+import { StepsNavigation, StepsNavigationProps } from '../../../../../components/desktop/steps-navigation/steps-navigation'
+
+type OnboardingSteps =
+  | WalletRoutes.OnboardingBackupRecoveryPhrase
+  | WalletRoutes.OnboardingBackupWallet
+  | WalletRoutes.OnboardingComplete
+  | WalletRoutes.OnboardingCreatePassword
+  | WalletRoutes.OnboardingExplainRecoveryPhrase
+  | WalletRoutes.OnboardingImportCryptoWallets
+  | WalletRoutes.OnboardingImportMetaMask
+  | WalletRoutes.OnboardingVerifyRecoveryPhrase
+  | WalletRoutes.OnboardingWelcome
 
 const STEPS: OnboardingSteps[] = [
-  OnboardingSteps.createPassword,
-  OnboardingSteps.explainRecoveryPhrase,
-  OnboardingSteps.backupRecoveryPhrase,
-  OnboardingSteps.verifyRecoveryPhrase,
-  OnboardingSteps.complete
+  WalletRoutes.OnboardingCreatePassword,
+  WalletRoutes.OnboardingExplainRecoveryPhrase,
+  WalletRoutes.OnboardingBackupRecoveryPhrase,
+  WalletRoutes.OnboardingVerifyRecoveryPhrase,
+  WalletRoutes.OnboardingComplete
 ]
 
 interface Props extends Omit<StepsNavigationProps<OnboardingSteps>, 'steps'> {}
