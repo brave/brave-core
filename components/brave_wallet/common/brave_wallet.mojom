@@ -972,6 +972,7 @@ struct SignMessageRequest {
   // Should be used only if is_eip712 is true
   string? domain_hash;
   string? primary_hash;
+  CoinType coin;
 };
 
 enum ExternalWalletType {

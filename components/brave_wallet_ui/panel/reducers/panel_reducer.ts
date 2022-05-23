@@ -59,7 +59,8 @@ const defaultState: PanelState = {
     message: '',
     isEip712: false,
     domainHash: '',
-    primaryHash: ''
+    primaryHash: '',
+    coin: BraveWallet.CoinType.ETH
   }],
   getEncryptionPublicKeyRequest: {
     originInfo: defaultOriginInfo,

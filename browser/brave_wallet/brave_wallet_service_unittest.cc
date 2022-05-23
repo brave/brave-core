@@ -1668,7 +1668,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   auto request1 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 1, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt);
+      absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1692,7 +1692,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   auto request2 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 2, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt);
+      absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1718,7 +1718,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   auto request1 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 1, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt);
+      absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1738,7 +1738,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   auto request2 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 2, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt);
+      absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1943,7 +1943,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   auto request1 = mojom::SignMessageRequest::New(
       origin_info.Clone(), 1, address,
       std::string(message.begin(), message.end()), false, absl::nullopt,
-      absl::nullopt);
+      absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting(
