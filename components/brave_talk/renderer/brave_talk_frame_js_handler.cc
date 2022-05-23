@@ -19,9 +19,6 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_html_iframe_element.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
-#include "v8-local-handle.h"
-#include "v8-object.h"
-#include "v8-template.h"
 
 namespace brave_talk {
 
