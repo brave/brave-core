@@ -4,14 +4,13 @@ import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
 import CheckIcon from '../../assets/filled-checkmark.svg'
 import { PanelButtonTypes } from './index'
 import { WalletButton } from '../../../shared/style'
-interface StyleProps {
+
+export const StyledButton = styled(WalletButton)<{
   buttonType: PanelButtonTypes
   disabled?: boolean
   addTopMargin?: boolean
-  fullWidth?: boolean
-}
-
-export const StyledButton = styled(WalletButton) <Partial<StyleProps>>`
+  to?: string // for links & routes
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,9 +35,13 @@ export const StyledButton = styled(WalletButton) <Partial<StyleProps>>`
       p.buttonType === 'confirm' ||
       p.buttonType === 'sign' ? '0px' : '8px'};
   pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
+
+  text-decoration: none;
 `
 
-export const ButtonText = styled.span<Partial<StyleProps>>`
+export const ButtonText = styled.span<{
+  buttonType: PanelButtonTypes
+}>`
   font-size: 13px;
   font-weight: 600;
   line-height: 20px;
