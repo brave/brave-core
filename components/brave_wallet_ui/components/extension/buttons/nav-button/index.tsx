@@ -1,4 +1,10 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 
 // Styled Components
 import {
@@ -17,35 +23,50 @@ export type PanelButtonTypes =
   | 'sign'
   | 'reject'
 
-export interface Props {
+interface BaseProps {
   buttonType: PanelButtonTypes
   text: string | undefined
-  onSubmit: () => void
   disabled?: boolean
   needsTopMargin?: boolean
 }
 
-export default class NavButton extends React.PureComponent<Props, {}> {
-  render () {
-    const { onSubmit, text, buttonType, disabled, needsTopMargin } = this.props
-    return (
-      <StyledButton
-        disabled={disabled}
-        buttonType={buttonType}
-        onClick={onSubmit}
-        addTopMargin={needsTopMargin && text ? text.length > 20 : false}
-      >
-        {buttonType === 'reject' &&
-          <RejectIcon />
-        }
-        {buttonType === 'sign' &&
-          <SignIcon />
-        }
-        {buttonType === 'confirm' &&
-          <ConfirmIcon />
-        }
-        <ButtonText buttonType={buttonType}>{text}</ButtonText>
-      </StyledButton>
-    )
+type ClickProps = (
+  {
+    onSubmit: () => void
+    url?: string
   }
+  | {
+    url: string
+    onSubmit?: () => void
+  }
+)
+
+export type Props = BaseProps & ClickProps
+
+export const NavButton: React.FC<Props> = (props) => {
+  const { text, buttonType, disabled, needsTopMargin, onSubmit, url } = props
+
+  return (
+    <StyledButton
+      disabled={disabled}
+      buttonType={buttonType}
+      onClick={onSubmit}
+      addTopMargin={needsTopMargin && text ? text.length > 20 : false}
+      as={url ? Link : 'button'}
+      to={url}
+    >
+      {buttonType === 'reject' &&
+        <RejectIcon />
+      }
+      {buttonType === 'sign' &&
+        <SignIcon />
+      }
+      {buttonType === 'confirm' &&
+        <ConfirmIcon />
+      }
+      <ButtonText buttonType={buttonType}>{text}</ButtonText>
+    </StyledButton>
+  )
 }
+
+export default NavButton
