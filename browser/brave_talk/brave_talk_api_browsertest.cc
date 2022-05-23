@@ -93,8 +93,10 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
     observer.WaitForNavigationFinished();
   }
 
-  void SetRequesterFrameOrigins(const std::string& main_frame_origin, const std::string& sub_frame_origin) {
-    const GURL& origin = http_server_.GetURL(sub_frame_origin, "/brave_talk/frame.html");
+  void SetRequesterFrameOrigins(const std::string& main_frame_origin,
+                                const std::string& sub_frame_origin) {
+    const GURL& origin =
+        http_server_.GetURL(sub_frame_origin, "/brave_talk/frame.html");
     auto root_url = http_server_.GetURL(
         main_frame_origin, "/brave_talk/test.html?sub_frame=" + origin.spec());
     NavigateToURLAndWait(root_url);
@@ -134,6 +136,21 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
         browser()->profile());
   }
 
+  std::string GetDeviceID(const std::string& frame) {
+    base::RunLoop awaiter;
+    talk_service()->OnGetDeviceIDRequestedForTesting(awaiter.QuitClosure());
+    EXPECT_TRUE(content::ExecJs(requester_contents(), "requestCapture(" + frame + ")"));
+    awaiter.Run();
+
+    talk_service()->ShareTab(target_contents());
+
+    auto result =
+        content::EvalJs(requester_contents(), "window.deviceIdPromise");
+    EXPECT_FALSE(nullptr == result);
+    EXPECT_NE("", result);
+    return result.ExtractString();
+  }
+
   net::EmbeddedTestServer* http_server() { return &http_server_; }
 
  private:
@@ -143,12 +160,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, CanRequestCapture) {
-  ASSERT_TRUE(content::ExecJs(requester_contents(), "requestCapture()"));
-  talk_service()->ShareTab(target_contents());
-
-  auto result = content::EvalJs(requester_contents(), "window.deviceIdPromise");
-  EXPECT_FALSE(nullptr == result);
-  EXPECT_NE("", result);
+  auto device_id = GetDeviceID("");
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
@@ -157,17 +169,12 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, CanRequestCapture) {
 
   EXPECT_EQ(true,
             content::EvalJs(requester_contents(),
-                            "startCapture('" + result.ExtractString() + "');"));
+                            "startCapture('" + device_id + "');"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
                        CanRequestCaptureForSubframeOnSameOrigin) {
-  ASSERT_TRUE(content::ExecJs(requester_contents(), "requestCapture(frame)"));
-  talk_service()->ShareTab(target_contents());
-
-  auto result = content::EvalJs(requester_contents(), "window.deviceIdPromise");
-  EXPECT_FALSE(nullptr == result);
-  EXPECT_NE("", result);
+  auto device_id = GetDeviceID("frame");
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
@@ -176,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
 
   EXPECT_TRUE(content::ExecJs(
       requester_contents(),
-      "delegateCaptureToFrame('" + result.ExtractString() + "');"));
+      "delegateCaptureToFrame('" + device_id + "');"));
   EXPECT_EQ(true, content::EvalJs(requester_sub_frame(),
                                   "window.startCapturePromise"));
 }
@@ -184,12 +191,8 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
                        CanRequestCaptureForSubframeOnDifferentOrigin) {
   SetRequesterFrameOrigins("talk.brave.com", "example.com");
-  ASSERT_TRUE(content::ExecJs(requester_contents(), "requestCapture(frame)"));
-  talk_service()->ShareTab(target_contents());
-
-  auto result = content::EvalJs(requester_contents(), "window.deviceIdPromise");
-  EXPECT_FALSE(nullptr == result);
-  EXPECT_NE("", result);
+  
+  auto device_id = GetDeviceID("frame");
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
@@ -198,12 +201,13 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
 
   EXPECT_TRUE(content::ExecJs(
       requester_contents(),
-      "delegateCaptureToFrame('" + result.ExtractString() + "');"));
+      "delegateCaptureToFrame('" + device_id + "');"));
   EXPECT_EQ(true, content::EvalJs(requester_sub_frame(),
                                   "window.startCapturePromise"));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, DISABLED_NavigationClearsShareRequest) {
+IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
+                       DISABLED_NavigationClearsShareRequest) {
   std::string device_id;
   talk_service()->GetDeviceID(
       requester_contents(),
