@@ -29,7 +29,8 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
                    int owning_process_id,
                    int owning_frame_id,
                    base::OnceCallback<void(const std::string&)> callback);
-  void OnGetDeviceIDRequestedForTesting(base::OnceCallback<void()> callback_for_testing);
+  void OnGetDeviceIDRequestedForTesting(
+      base::OnceCallback<void()> callback_for_testing);
 
   void DidStartNavigation(content::NavigationHandle* handle) override;
 

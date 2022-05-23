@@ -46,7 +46,8 @@ class BraveTalkFrameJSHandler {
 
   // A function to be called from JS
   void BeginAdvertiseShareDisplayMedia(v8::Isolate* isolate,
-                                       v8::Local<v8::Function> callback, v8::Local<v8::Object> frame);
+                                       v8::Local<v8::Function> callback,
+                                       v8::Local<v8::Object> frame);
 
   void OnDeviceIdReceived(
       std::unique_ptr<v8::Persistent<v8::Function>> callback,
