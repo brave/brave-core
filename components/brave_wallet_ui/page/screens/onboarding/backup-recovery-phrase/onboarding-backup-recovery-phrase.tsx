@@ -10,7 +10,7 @@ import { useHistory } from 'react-router'
 // utils
 import { getLocale } from '../../../../../common/locale'
 
-// routes
+// types
 import { PageState, WalletRoutes } from '../../../../constants/types'
 
 // hooks
@@ -185,5 +185,3 @@ export const OnboardingRecoveryPhrase = () => {
     </WalletPageLayout>
   )
 }
-
-export default OnboardingRecoveryPhrase
