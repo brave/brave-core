@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { ToggleVisibilityButton } from '../../shared/style'
 
 // svgs
-import WarningCircle from '../../../assets/svg-icons/warning-circle-icon.svg'
 import CheckmarkSvg from '../../../assets/svg-icons/big-checkmark.svg'
 
 interface StyleProps {
@@ -82,34 +81,6 @@ export const InputLabel = styled.label`
   display: block;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text03};
-`
-
-export const ErrorRow = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 10px;
-`
-
-export const ErrorText = styled.span`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 240px;
-  font-family: Poppins;
-  font-size: 12px;
-  letter-spacing: 0.01em;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
-  padding-left: 4px;
-`
-
-export const WarningIcon = styled.div`
-  width: 14px;
-  height: 15px;
-  background: url(${WarningCircle});
 `
 
 export const PasswordMatchRow = styled.div`
