@@ -613,17 +613,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
-  const [selectedBuyOption, setSelectedBuyOption] = React.useState(BraveWallet.OnRampProvider.kRamp)
-
-  const onSetBuyAmount = (value: string) => {
-    setBuyAmount(value)
-  }
-
-  const onSubmitBuy = () => {
-    alert(`Buy ${selectedWyreAsset.symbol} asset`)
-  }
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -851,18 +841,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       }
                       {selectedPanel === 'buy' &&
                         <Buy
-                          defaultCurrencies={mockDefaultCurrencies}
                           onChangeBuyView={onChangeSendView}
-                          onInputChange={onSetBuyAmount}
-                          onSubmit={onSubmitBuy}
                           selectedAsset={selectedWyreAsset}
-                          buyAmount={buyAmount}
-                          selectedNetwork={selectedNetwork}
-                          networkList={[]}
-                          selectedBuyOption={selectedBuyOption}
-                          onSelectBuyOption={setSelectedBuyOption}
-                          rampAssetOptions={mockAccountAssetOptions}
-                          wyreAssetOptions={mockAccountAssetOptions} />
+                        />
                       }
                       {selectedPanel === 'sitePermissions' &&
                         <SitePermissions
