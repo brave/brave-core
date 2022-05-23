@@ -48,7 +48,7 @@ export const StepsNavigation: <T extends string>(
                 isActive={() => currentStep === stepName}
                 activeClassName="active"
               />
-            : <div />
+            : <div key={stepName} />
         })}
       </DotsWrapper>
 
