@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_RENDERER_WORKER_CONTENT_SETTINGS_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_RENDERER_WORKER_CONTENT_SETTINGS_CLIENT_H_
 
-#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H                  \
-  BraveFarblingLevel GetBraveFarblingLevel() override;          \
-  bool AllowFingerprinting(bool enabled_per_settings) override; \
+#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H         \
+  BraveFarblingLevel GetBraveFarblingLevel() override; \
+  bool AllowFingerprinting() override;                 \
   blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
 
 #include "src/chrome/renderer/worker_content_settings_client.h"

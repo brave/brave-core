@@ -121,21 +121,21 @@ TEST_F(BraveShieldsUtilTest, ControlTypeFromString) {
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
-  brave_shields::SetBraveShieldsEnabled(map, true, GURL("http://brave.com"));
+  brave_shields::SetBraveShieldsEnabled(map, false, GURL("http://brave.com"));
   // setting should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
                                         ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   // setting should apply to different scheme
   setting = map->GetContentSetting(GURL("https://brave.com"), GURL(),
                                    ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   // setting should not apply to default
   setting = map->GetContentSetting(GURL(), GURL(),
                                    ContentSettingsType::BRAVE_SHIELDS);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_IsNotHttpHttps) {
@@ -202,10 +202,10 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_Default) {
   // settings should be default
   auto setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::BRAVE_ADS);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
   setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
                                    ContentSettingsType::BRAVE_ADS);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   /* ALLOW */
   brave_shields::SetAdControlType(map, ControlType::ALLOW, GURL());
@@ -248,7 +248,7 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_ForOrigin) {
   // setting should not apply to default
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::BRAVE_ADS);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetAdControlType_Default) {
@@ -617,11 +617,11 @@ TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_Default) {
   // settings should be default
   auto setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
   setting = map->GetContentSetting(
       GURL("http://brave.com"), GURL(),
       ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   /* disabled */
   brave_shields::SetHTTPSEverywhereEnabled(map, false, GURL());
@@ -668,7 +668,7 @@ TEST_F(BraveShieldsUtilTest, SetHTTPSEverywhereEnabled_ForOrigin) {
   // setting should not apply to default
   setting = map->GetContentSetting(
       GURL(), GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 }
 
 TEST_F(BraveShieldsUtilTest, GetHTTPSEverywhereEnabled_Default) {

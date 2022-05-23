@@ -60,6 +60,10 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
   const GURL kBatURL("https://basicattentiontoken.org");
   const GURL kGoogleURL("https://www.google.com");
   const GURL kAbcURL("https://www.abc.com");
+
+  // defaults
+  int start_count = GetShieldsSettingsCount();
+
   // Three settings are added.
   map()->SetContentSettingDefaultScope(
       kBraveURL, GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
@@ -77,7 +81,7 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
 
   // Check current shields settings count is 2 and zero after clearing 1 day
   // time range.
-  EXPECT_EQ(2, GetShieldsSettingsCount());
+  EXPECT_EQ(2 + start_count, GetShieldsSettingsCount());
   delegate()->ClearShieldsSettings(k1DaysOld, kNow);
-  EXPECT_EQ(0, GetShieldsSettingsCount());
+  EXPECT_EQ(start_count, GetShieldsSettingsCount());
 }

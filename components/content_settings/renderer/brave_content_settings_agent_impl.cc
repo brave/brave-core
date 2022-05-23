@@ -232,10 +232,7 @@ bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
              frame, secondary_url, content_setting_rules_->brave_shields_rules);
 }
 
-bool BraveContentSettingsAgentImpl::AllowFingerprinting(
-    bool enabled_per_settings) {
-  if (!enabled_per_settings)
-    return false;
+bool BraveContentSettingsAgentImpl::AllowFingerprinting() {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
   if (IsBraveShieldsDown(frame, secondary_url)) {

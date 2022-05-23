@@ -26,9 +26,6 @@ BraveDefaultProvider::~BraveDefaultProvider() {}
 std::unique_ptr<RuleIterator> BraveDefaultProvider::GetRuleIterator(
     ContentSettingsType content_type,
     bool off_the_record) const {
-  if (content_settings::IsShieldsContentSettingsType(content_type))
-    return nullptr;
-
   return DefaultProvider::GetRuleIterator(content_type, off_the_record);
 }
 

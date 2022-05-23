@@ -20,7 +20,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
   blink::ExecutionContext* context = host->GetTopExecutionContext();
   blink::WebContentSettingsClient* settings =
       brave::GetContentSettingsClientFor(context);
-  return !settings || settings->AllowFingerprinting(true);
+  return !settings || settings->AllowFingerprinting();
 }
 
 }  // namespace

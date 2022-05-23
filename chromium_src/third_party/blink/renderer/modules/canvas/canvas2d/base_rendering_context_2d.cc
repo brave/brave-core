@@ -37,7 +37,7 @@ bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
       blink::ExecutionContext::From(script_state);
   blink::WebContentSettingsClient* settings =
       brave::GetContentSettingsClientFor(context);
-  return !settings || settings->AllowFingerprinting(true);
+  return !settings || settings->AllowFingerprinting();
 }
 
 }  // namespace

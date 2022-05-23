@@ -11,22 +11,20 @@
 
 class GURL;
 
-#define AllowStorageAccessSync                                              \
-  AllowAutoplay(bool play_requested) { return true; }                       \
-  virtual bool AllowFingerprinting(bool enabled_per_settings) {             \
-    return enabled_per_settings;                                            \
-  }                                                                         \
-  virtual bool IsCosmeticFilteringEnabled(const GURL& url) { return true; } \
-  virtual bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) {      \
-    return false;                                                           \
-  }                                                                         \
-  virtual BraveFarblingLevel GetBraveFarblingLevel() {                      \
-    return BraveFarblingLevel::OFF;                                         \
-  }                                                                         \
-  virtual bool IsReduceLanguageEnabled() { return true; }                   \
-  virtual blink::WebSecurityOrigin GetEphemeralStorageOriginSync() {        \
-    return blink::WebSecurityOrigin();                                      \
-  }                                                                         \
+#define AllowStorageAccessSync                                               \
+  AllowAutoplay(bool play_requested) { return true; }                        \
+  virtual bool AllowFingerprinting() { return true; }                        \
+  virtual bool IsCosmeticFilteringEnabled(const GURL& url) { return false; } \
+  virtual bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) {       \
+    return false;                                                            \
+  }                                                                          \
+  virtual BraveFarblingLevel GetBraveFarblingLevel() {                       \
+    return BraveFarblingLevel::OFF;                                          \
+  }                                                                          \
+  virtual bool IsReduceLanguageEnabled() { return false; }                   \
+  virtual blink::WebSecurityOrigin GetEphemeralStorageOriginSync() {         \
+    return blink::WebSecurityOrigin();                                       \
+  }                                                                          \
   virtual bool AllowStorageAccessSync
 
 #include "src/third_party/blink/public/platform/web_content_settings_client.h"
