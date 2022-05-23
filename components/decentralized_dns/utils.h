@@ -8,6 +8,7 @@
 
 class GURL;
 class PrefService;
+class PrefRegistrySimple;
 
 namespace base {
 class Value;
@@ -15,20 +16,17 @@ class Value;
 
 namespace decentralized_dns {
 
-enum class Provider;
-
-bool IsDecentralizedDnsEnabled();
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
 bool IsUnstoppableDomainsTLD(const GURL& url);
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state);
-bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state);
 bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state);
 
 bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);
-bool IsENSResolveMethodDoH(PrefService* local_state);
 bool IsENSResolveMethodEthereum(PrefService* local_state);
-base::Value GetResolveMethodList(Provider provider);
+base::Value GetResolveMethodList();
 
 }  // namespace decentralized_dns
 

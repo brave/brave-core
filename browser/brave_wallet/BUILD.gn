@@ -130,7 +130,7 @@ source_set("tab_helper") {
     "//content/public/browser",
   ]
 
-  if (!is_android && !is_ios) {
+  if (!is_android) {
     deps += [ "//brave/browser/ui/brave_wallet" ]
   }
 }
@@ -168,7 +168,7 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//testing/gtest",
   ]
-  if (!is_android && !is_ios) {
+  if (!is_android) {
     sources += [
       "brave_wallet_tab_helper_unittest.cc",
       "ethereum_provider_impl_unittest.cc",

@@ -57,7 +57,7 @@ source_set("sidebar") {
     "//ui/webui/resources/js/browser_command:mojo_bindings",
   ]
 
-  if (!is_android && !is_ios) {
+  if (!is_android) {
     deps += [ "//chrome/browser/ui/webui/new_tab_page:mojo_bindings" ]
   }
 }

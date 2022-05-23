@@ -5,10 +5,8 @@
 
 #include "brave/components/decentralized_dns/utils.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -17,94 +15,84 @@
 
 namespace decentralized_dns {
 
-class UtilsUnitTest : public testing::TestWithParam<bool> {
+class UtilsUnitTest : public testing::Test {
  public:
-  UtilsUnitTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()),
-        feature_enabled_(GetParam()) {}
+  UtilsUnitTest() : local_state_(TestingBrowserProcess::GetGlobal()) {}
   ~UtilsUnitTest() override = default;
 
-  void SetUp() override {
-    if (feature_enabled_) {
-      feature_list_.InitAndEnableFeature(features::kDecentralizedDns);
-    } else {
-      feature_list_.InitAndDisableFeature(features::kDecentralizedDns);
-    }
-  }
-
   PrefService* local_state() { return local_state_.Get(); }
-  bool feature_enabled() { return feature_enabled_; }
 
  private:
   base::test::TaskEnvironment task_environment_;
-  base::test::ScopedFeatureList feature_list_;
   ScopedTestingLocalState local_state_;
-  bool feature_enabled_;
 };
 
-TEST_P(UtilsUnitTest, IsDecentralizedDnsEnabled) {
-  EXPECT_EQ(feature_enabled(), IsDecentralizedDnsEnabled());
-}
-
-TEST_P(UtilsUnitTest, IsUnstoppableDomainsTLD) {
+TEST_F(UtilsUnitTest, IsUnstoppableDomainsTLD) {
   EXPECT_TRUE(IsUnstoppableDomainsTLD(GURL("http://test.crypto")));
   EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://test.com")));
   EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://test.eth")));
   EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://crypto")));
 }
 
-TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
-  EXPECT_EQ(feature_enabled(),
-            IsUnstoppableDomainsResolveMethodAsk(local_state()));
+TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
+  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 
-  local_state()->SetInteger(
-      kUnstoppableDomainsResolveMethod,
-      static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 }
 
-TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodDoH) {
-  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodDoH(local_state()));
-
-  local_state()->SetInteger(
-      kUnstoppableDomainsResolveMethod,
-      static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
-  EXPECT_EQ(feature_enabled(),
-            IsUnstoppableDomainsResolveMethodDoH(local_state()));
-}
-
-TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEthereum) {
+TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEthereum) {
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ETHEREUM));
-  EXPECT_EQ(feature_enabled(),
-            IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
 }
 
-TEST_P(UtilsUnitTest, IsENSTLD) {
+TEST_F(UtilsUnitTest, IsENSTLD) {
   EXPECT_TRUE(IsENSTLD(GURL("http://test.eth")));
   EXPECT_FALSE(IsENSTLD(GURL("http://test.com")));
   EXPECT_FALSE(IsENSTLD(GURL("http://test.crypto")));
   EXPECT_FALSE(IsENSTLD(GURL("http://eth")));
 }
 
-TEST_P(UtilsUnitTest, IsENSResolveMethodAsk) {
-  EXPECT_EQ(feature_enabled(), IsENSResolveMethodAsk(local_state()));
+TEST_F(UtilsUnitTest, IsENSResolveMethodAsk) {
+  EXPECT_TRUE(IsENSResolveMethodAsk(local_state()));
 
-  local_state()->SetInteger(
-      kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  local_state()->SetInteger(kENSResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
   EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
 }
 
-TEST_P(UtilsUnitTest, IsENSResolveMethodDoH) {
-  EXPECT_FALSE(IsENSResolveMethodDoH(local_state()));
+TEST_F(UtilsUnitTest, IsENSResolveMethodEthereum) {
+  EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
 
-  local_state()->SetInteger(
-      kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
-  EXPECT_EQ(feature_enabled(), IsENSResolveMethodDoH(local_state()));
+  local_state()->SetInteger(kENSResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+  EXPECT_TRUE(IsENSResolveMethodEthereum(local_state()));
 }
 
-INSTANTIATE_TEST_SUITE_P(/* no prefix */, UtilsUnitTest, testing::Bool());
+TEST_F(UtilsUnitTest, ResolveMethodMigration) {
+  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
+  EXPECT_TRUE(IsENSResolveMethodAsk(local_state()));
+
+  local_state()->SetInteger(
+      kUnstoppableDomainsResolveMethod,
+      static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS));
+  local_state()->SetInteger(
+      kENSResolveMethod,
+      static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS));
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
+  EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+  EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
+
+  MigrateObsoleteLocalStatePrefs(local_state());
+  EXPECT_FALSE(local_state()->HasPrefPath(kUnstoppableDomainsResolveMethod));
+  EXPECT_FALSE(local_state()->HasPrefPath(kENSResolveMethod));
+  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
+  EXPECT_TRUE(IsENSResolveMethodAsk(local_state()));
+}
 
 }  // namespace decentralized_dns

@@ -12,10 +12,7 @@ source_set("browser_tests") {
   if (!is_android) {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [
-      "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_browsertest.cc",
-      "//brave/browser/decentralized_dns/test/decentralized_dns_service_browsertest.cc",
-    ]
+    sources = [ "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_browsertest.cc" ]
     deps = [
       "//base/test:test_support",
       "//brave/components/decentralized_dns",
@@ -36,8 +33,6 @@ source_set("unit_tests") {
     "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_unittest.cc",
     "//brave/browser/decentralized_dns/test/utils_unittest.cc",
     "//brave/browser/net/decentralized_dns_network_delegate_helper_unittest.cc",
-    "//brave/net/dns/brave_resolve_context_unittest.cc",
-    "//brave/net/dns/dns_transaction_unittest.cc",
   ]
 
   deps = [

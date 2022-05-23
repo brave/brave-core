@@ -2,7 +2,6 @@ import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
@@ -287,7 +286,6 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
@@ -506,10 +504,6 @@ source_set("ui") {
       }
     }
 
-    if (decentralized_dns_enabled) {
-      deps += [ "//brave/components/decentralized_dns" ]
-    }
-
     if (enable_tor) {
       sources += [
         "views/location_bar/onion_location_view.cc",
@@ -529,6 +523,7 @@ source_set("ui") {
       "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
+      "//brave/components/decentralized_dns",
       "//brave/components/resources:static_resources",
       "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",
@@ -591,7 +586,7 @@ source_set("ui") {
     deps += [ "//brave/components/tor/resources:internals_generated_resources" ]
   }
 
-  if (!is_android && !is_ios) {
+  if (!is_android) {
     sources += [
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
@@ -628,7 +623,7 @@ source_set("ui") {
     ]
   }
 
-  if (ethereum_remote_client_enabled && !is_android && !is_ios) {
+  if (ethereum_remote_client_enabled && !is_android) {
     sources += [
       "webui/ethereum_remote_client/ethereum_remote_client_ui.cc",
       "webui/ethereum_remote_client/ethereum_remote_client_ui.h",

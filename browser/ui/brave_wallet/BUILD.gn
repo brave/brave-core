@@ -1,4 +1,4 @@
-assert(!is_android && !is_ios)
+assert(!is_android)
 
 source_set("brave_wallet") {
   sources = [ "wallet_bubble_manager_delegate.h" ]

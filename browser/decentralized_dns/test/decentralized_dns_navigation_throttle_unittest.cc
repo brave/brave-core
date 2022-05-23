@@ -7,7 +7,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/decentralized_dns/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -35,8 +34,6 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
   ~DecentralizedDnsNavigationThrottleTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(features::kDecentralizedDns);
-
     ASSERT_TRUE(profile_manager_.SetUp());
     profile_ = profile_manager_.CreateTestingProfile(kTestProfileName);
     local_state_ = profile_manager_.local_state();
@@ -66,7 +63,6 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
   raw_ptr<ScopedTestingLocalState> local_state_ = nullptr;
   TestingProfileManager profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
-  base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::string locale_;
 };
