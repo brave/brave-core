@@ -7,7 +7,6 @@ const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
 const assert = require('assert')
-const crypto = require('crypto')
 
 const runGClient = (args, options = {}) => {
   if (config.gClientVerbose) args.push('--verbose')
@@ -545,7 +544,7 @@ const util = {
   buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
     // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
     // debugging issues (e.g., slowness or remote-failures).
-    const buildId = crypto.randomUUID();
+    const buildId = crypto.randomUUID()
     options.env.AUTONINJA_BUILD_ID = buildId
     console.log('building ' + target + ' (id=' + buildId + ') ...')
 
