@@ -30,12 +30,15 @@ import {
 } from './onboarding-success.style'
 
 export const OnboardingSuccess = () => {
+  // routing
   const history = useHistory()
 
-  const onSetup = React.useCallback(() => {
-    history.push(`${WalletRoutes.Onboarding}/create-password`)
+  // methods
+  const onComplete = React.useCallback(() => {
+    history.push(WalletRoutes.Portfolio)
   }, [])
 
+  // render
   return <WalletPageLayout>
     <OnboardingWrapper>
 
@@ -60,7 +63,7 @@ export const OnboardingSuccess = () => {
           text={
             'Go To Portfolio' // TODO: locale
           }
-          onSubmit={onSetup}
+          onSubmit={onComplete}
         />
 
       </ButtonContainer>
