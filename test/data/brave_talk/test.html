@@ -1,10 +1,19 @@
 <html>
 <video id="player" autoplay></video>
-<iframe id="frame" src="frame.html"></iframe>
+<iframe id="frame"></iframe>
 <script>
+    frame.src = new URLSearchParams(location.search).get('sub_frame');
+
     let lastDeviceId;
     let resolve;
     window.deviceIdPromise = new Promise(a => resolve = a);
+
+    window.requestCapture = function requestCapture(target) {
+        brave.beginAdvertiseShareDisplayMedia(deviceId => {
+            lastDeviceId = deviceId;
+            resolve(deviceId);
+        }, target || window);
+    }
 
     async function startCapture(deviceId) {
         const stream = await window.navigator.mediaDevices.getUserMedia({
@@ -25,11 +34,6 @@
             deviceId
         });
     }
-
-    brave.beginAdvertiseShareDisplayMedia(deviceId => {
-        lastDeviceId = deviceId;
-        resolve(deviceId);
-    });
 </script>
 
 </html>

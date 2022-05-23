@@ -33,13 +33,11 @@ void BraveTalkService::GetDeviceID(
     int owning_process_id,
     int owning_frame_id,
     base::OnceCallback<void(const std::string&)> callback) {
-  if (on_received_device_id_)
-    std::move(on_received_device_id_).Run("");
+  StartObserving(contents);
 
   owning_render_frame_id_ = owning_frame_id;
   owning_render_process_id_ = owning_process_id;
   on_received_device_id_ = std::move(callback);
-  StartObserving(contents);
 }
 
 void BraveTalkService::StartObserving(content::WebContents* contents) {
@@ -50,10 +48,10 @@ void BraveTalkService::StartObserving(content::WebContents* contents) {
 }
 
 void BraveTalkService::StopObserving() {
-  Observe(nullptr);
-
   if (on_received_device_id_)
     std::move(on_received_device_id_).Run("");
+
+  Observe(nullptr);
 }
 
 void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
