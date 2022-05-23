@@ -1,4 +1,5 @@
 <html>
+
 <video id="player" autoplay></video>
 <iframe id="frame"></iframe>
 <script>
@@ -8,7 +9,7 @@
     frame.onload = resolveFrameLoadPromise;
 
     let resolveLoadPromise;
-    const documentLoadPromise = new Promise(a => resolveLoadPromise);
+    const documentLoadPromise = new Promise(a => resolveLoadPromise = a);
     window.addEventListener('load', e => resolveLoadPromise(e));
 
     let lastDeviceId;
