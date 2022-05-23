@@ -187,4 +187,8 @@
   <message name="IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED" desc="A highlited note on the main panel when permission from the user is not allowed to create a VPN profile on OS-level">
     VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave's VPN configuration.
   </message>
+
+  <message name="IDS_BRAVE_VPN_DNS_CHANGE_ALERT" desc="A text shown to user when he changed DNS settings with Brave VPN enabled">
+    Turning off DoH or using default resolvers (for DoH) on Windows may leak the hostnames to your ISP. Brave does not recommend doing this. Do you want to do it anyways?
+  </message>
 </grit-part>
