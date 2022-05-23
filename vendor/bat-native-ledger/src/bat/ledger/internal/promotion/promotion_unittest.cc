@@ -11,6 +11,7 @@
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/database/database_mock.h"
+#include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 #include "bat/ledger/internal/promotion/promotion.h"
@@ -33,8 +34,10 @@ std::string GetResponse(const std::string& url) {
 
   // Fetch promotions
   response.insert(std::make_pair(
-      "https://grant.rewards.brave.com/v1/promotions?"
-      "migrate=true&paymentId=fa5dea51-6af4-44ca-801b-07b6df3dcfe4&platform=",
+      endpoint::promotion::GetServerUrl(
+          "/v1/promotions"
+          "?migrate=true&paymentId=fa5dea51-6af4-44ca-801b-07b6df3dcfe4"
+          "&platform="),
       R"({
       "promotions":[{
         "id":"36baa4c3-f92d-4121-b6d9-db44cb273a02",
