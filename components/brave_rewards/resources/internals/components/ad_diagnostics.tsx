@@ -25,8 +25,8 @@ const getEntries = (entries: RewardsInternals.AdDiagnosticsEntry[]) => {
   }
 
   return entries.map(entry => (
-    <DiagnosticsEntry key={entry.key}>
-      {entry.key}: {entry.value}
+    <DiagnosticsEntry key={entry.name}>
+      {entry.name}: {entry.value}
     </DiagnosticsEntry>
   ))
 }
