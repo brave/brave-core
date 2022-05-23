@@ -15,19 +15,16 @@ import { usePasswordStrength } from '../../../common/hooks'
 import { PasswordStrengthBar } from './password-strength-bar'
 
 // style
+import { ToggleVisibilityButton } from '../style'
 import {
   StyledWrapper,
   InputWrapper,
   Input,
-  ErrorText,
-  ErrorRow,
-  WarningIcon,
   InputLabel,
   PasswordMatchRow,
   PasswordMatchText,
   PasswordMatchCheckmark
 } from './new-password-input.styles'
-import { ToggleVisibilityButton } from '../style'
 
 export interface NewPasswordValues {
   password: string
@@ -64,19 +61,6 @@ export const NewPasswordInput = ({
     setConfirmedPassword
   } = usePasswordStrength()
 
-  // memos
-  const passwordError = React.useMemo(() => {
-    return hasPasswordError
-      ? getLocale('braveWalletCreatePasswordError')
-      : ''
-  }, [isStrongPassword, password])
-
-  const passwordConfirmationError = React.useMemo(() => {
-    return hasConfirmedPasswordError
-      ? getLocale('braveWalletConfirmPasswordError')
-      : ''
-  }, [isStrongPassword, password, confirmedPassword])
-
   // methods
   const onTogglePasswordVisibility = () => {
     setShowPassword(prevShowPassword => !prevShowPassword)
@@ -89,7 +73,7 @@ export const NewPasswordInput = ({
       isValid: confirmedPassword === newPassword && isStrongPassword,
       password: newPassword
     })
-  }, [onPasswordChanged, onChange, confirmedPassword])
+  }, [onPasswordChanged, onChange, confirmedPassword, isStrongPassword])
 
   const handlePasswordConfirmationChanged = React.useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmedPassword(event.target.value)
@@ -97,19 +81,19 @@ export const NewPasswordInput = ({
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      if (!passwordConfirmationError) {
+      if (!hasConfirmedPasswordError) {
         onSubmit({
           isValid: confirmedPassword === password && isStrongPassword,
           password
         })
       }
     }
-  }, [isStrongPassword, confirmedPassword, passwordConfirmationError, onSubmit])
+  }, [hasConfirmedPasswordError, onSubmit, confirmedPassword, password, isStrongPassword])
 
   // effect
   React.useEffect(() => {
     onChange({ isValid, password })
-  }, [isValid, password])
+  }, [onChange, isValid, password])
 
   // render
   return (
@@ -119,7 +103,7 @@ export const NewPasswordInput = ({
 
         <InputWrapper>
           <Input
-            hasError={!!passwordError}
+            hasError={!!hasPasswordError}
             type={(showToggleButton && showPassword) ? 'text' : 'password'}
             placeholder={getLocale('braveWalletCreatePasswordInput')}
             value={password}
@@ -150,19 +134,13 @@ export const NewPasswordInput = ({
           />
         }
 
-        {!!passwordError &&
-          <ErrorRow>
-            <WarningIcon />
-            <ErrorText>{passwordError}</ErrorText>
-          </ErrorRow>
-        }
     </StyledWrapper>
 
     <StyledWrapper>
       <InputLabel>{getLocale('braveWalletConfirmPasswordInput')}</InputLabel>
       <InputWrapper>
         <Input
-          hasError={!!passwordConfirmationError}
+          hasError={!!hasConfirmedPasswordError}
           type={(showToggleButton && showPassword) ? 'text' : 'password'}
           placeholder={getLocale('braveWalletConfirmPasswordInput')}
           value={confirmedPassword}
@@ -190,12 +168,6 @@ export const NewPasswordInput = ({
         }
       </PasswordMatchRow>
 
-      {!!passwordConfirmationError &&
-        <ErrorRow>
-          <WarningIcon />
-          <ErrorText>{passwordConfirmationError}</ErrorText>
-        </ErrorRow>
-      }
     </StyledWrapper>
     </>
   )
