@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/serving/permission_rules/catalog_permission_rule.h"
 
-#include "bat/ads/internal/ad_server/catalog/catalog_util.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
 

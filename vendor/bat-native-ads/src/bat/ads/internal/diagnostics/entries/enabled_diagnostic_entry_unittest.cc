@@ -26,9 +26,8 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
 
-  EnabledDiagnosticEntry diagnostic_entry;
-
   // Act
+  EnabledDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kEnabled, diagnostic_entry.GetType());
@@ -40,9 +39,8 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, Disabled) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
 
-  EnabledDiagnosticEntry diagnostic_entry;
-
   // Act
+  EnabledDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kEnabled, diagnostic_entry.GetType());

@@ -7,8 +7,7 @@
 
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
 
@@ -31,11 +30,7 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetName() const {
 }
 
 std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
-  const double catalog_last_updated_timestamp =
-      AdsClientHelper::Get()->GetDoublePref(prefs::kCatalogLastUpdated);
-
-  const base::Time catalog_last_updated =
-      base::Time::FromDoubleT(catalog_last_updated_timestamp);
+  const base::Time catalog_last_updated = GetCatalogLastUpdated();
   if (catalog_last_updated.is_null()) {
     return {};
   }

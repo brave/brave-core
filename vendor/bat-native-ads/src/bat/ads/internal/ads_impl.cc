@@ -24,9 +24,6 @@
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad.h"
-#include "bat/ads/internal/ad_server/ad_server.h"
-#include "bat/ads/internal/ad_server/catalog/catalog.h"
-#include "bat/ads/internal/ad_server/catalog/catalog_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/platform_helper.h"
@@ -35,6 +32,9 @@
 #include "bat/ads/internal/base/time_formatting_util.h"
 #include "bat/ads/internal/base/url_util.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
+#include "bat/ads/internal/catalog/catalog.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_logs.h"
@@ -96,7 +96,7 @@ AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   ad_notification_->RemoveObserver(this);
   ad_notification_serving_->RemoveObserver(this);
-  ad_server_->RemoveObserver(this);
+  catalog_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   inline_content_ad_->RemoveObserver(this);
@@ -246,7 +246,7 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
 
   BLOG(1, "Browser state changed to unidle after " << base::Seconds(idle_time));
 
-  MaybeUpdateCatalog();
+  MaybeFetchCatalog();
 
   if (!ShouldRewardUser()) {
     return;
@@ -268,7 +268,7 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
 void AdsImpl::OnBrowserDidEnterForeground() {
   BrowserManager::Get()->OnDidEnterForeground();
 
-  MaybeUpdateCatalog();
+  MaybeFetchCatalog();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -567,8 +567,8 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   ad_notification_->AddObserver(this);
   ad_notifications_ = std::make_unique<AdNotifications>();
 
-  ad_server_ = std::make_unique<AdServer>();
-  ad_server_->AddObserver(this);
+  catalog_ = std::make_unique<Catalog>();
+  catalog_->AddObserver(this);
 
   transfer_ = std::make_unique<Transfer>();
   transfer_->AddObserver(this);
@@ -716,7 +716,7 @@ void AdsImpl::Start() {
 
   conversions_->StartTimerIfReady();
 
-  ad_server_->MaybeFetch();
+  catalog_->MaybeFetch();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -732,12 +732,12 @@ void AdsImpl::CleanupAdEvents() {
   });
 }
 
-void AdsImpl::MaybeUpdateCatalog() {
+void AdsImpl::MaybeFetchCatalog() {
   if (!HasCatalogExpired()) {
     return;
   }
 
-  ad_server_->MaybeFetch();
+  catalog_->MaybeFetch();
 }
 
 void AdsImpl::MaybeServeAdNotification() {
@@ -808,7 +808,7 @@ void AdsImpl::OnStatementOfAccountsDidChange() {
   AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 
-void AdsImpl::OnDidUpdateCatalog(const Catalog& catalog) {
+void AdsImpl::OnDidUpdateCatalog(const CatalogInfo& catalog) {
   epsilon_greedy_bandit_resource_->LoadFromCatalog(catalog);
 }
 

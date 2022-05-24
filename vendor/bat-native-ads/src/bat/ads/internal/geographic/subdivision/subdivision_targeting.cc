@@ -29,12 +29,10 @@ namespace geographic {
 
 namespace {
 
-constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
-
-constexpr int64_t kFetchSubdivisionTargetingPing =
-    24 * base::Time::kSecondsPerHour;
-constexpr int64_t kDebugFetchSubdivisionTargetingPing =
-    5 * base::Time::kSecondsPerMinute;
+constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+constexpr base::TimeDelta kFetchSubdivisionTargetingPing = base::Days(1);
+constexpr base::TimeDelta kDebugFetchSubdivisionTargetingPing =
+    base::Minutes(5);
 
 }  // namespace
 
@@ -265,17 +263,15 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
 
 void SubdivisionTargeting::Retry() {
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::Seconds(kRetryAfterSeconds),
+      kRetryAfter,
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Retry fetching subdivision target " << FriendlyDateAndTime(time));
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const int64_t ping = g_is_debug ? kDebugFetchSubdivisionTargetingPing
-                                  : kFetchSubdivisionTargetingPing;
-
-  const base::TimeDelta delay = base::Seconds(ping);
+  const base::TimeDelta delay = g_is_debug ? kDebugFetchSubdivisionTargetingPing
+                                           : kFetchSubdivisionTargetingPing;
 
   const base::Time time = timer_.StartWithPrivacy(
       delay,

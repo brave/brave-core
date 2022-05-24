@@ -19,7 +19,7 @@
 namespace ads {
 
 namespace {
-constexpr int64_t kTransferAdAfterSeconds = 10;
+constexpr base::TimeDelta kTransferAdAfter = base::Seconds(10);
 }  // namespace
 
 Transfer::Transfer() {
@@ -67,11 +67,10 @@ void Transfer::TransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = tab_id;
 
-  const base::TimeDelta delay = base::Seconds(kTransferAdAfterSeconds);
-
-  const base::Time time = timer_.Start(
-      delay, base::BindOnce(&Transfer::OnTransferAd, base::Unretained(this),
-                            tab_id, redirect_chain));
+  const base::Time time =
+      timer_.Start(kTransferAdAfter, base::BindOnce(&Transfer::OnTransferAd,
+                                                    base::Unretained(this),
+                                                    tab_id, redirect_chain));
 
   NotifyWillTransferAd(last_clicked_ad_, time);
 }

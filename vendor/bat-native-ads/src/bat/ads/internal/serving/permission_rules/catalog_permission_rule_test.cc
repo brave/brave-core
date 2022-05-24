@@ -5,10 +5,9 @@
 
 #include "bat/ads/internal/serving/permission_rules/catalog_permission_rule.h"
 
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -85,7 +84,7 @@ TEST_F(BatAdsCatalogPermissionRuleTest,
 
 TEST_F(BatAdsCatalogPermissionRuleTest, DoNotAllowAdIfCatalogDoesNotExist) {
   // Arrange
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, 0);
+  SetCatalogVersion(0);
 
   // Act
   CatalogPermissionRule permission_rule;

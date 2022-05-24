@@ -29,14 +29,12 @@ namespace ads {
 
 namespace {
 
-constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
-
+constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
+constexpr base::TimeDelta kExpiredNextTokenRedemptionAfter = base::Minutes(1);
 constexpr int64_t kNextTokenRedemptionAfterSeconds =
     24 * base::Time::kSecondsPerHour;
 constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
-constexpr int64_t kExpiredNextTokenRedemptionAfterSeconds =
-    1 * base::Time::kSecondsPerMinute;
 
 }  // namespace
 
@@ -173,9 +171,8 @@ void RedeemUnblindedPaymentTokens::Retry() {
   }
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::Seconds(kRetryAfterSeconds),
-      base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
-                     base::Unretained(this)));
+      kRetryAfter, base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
+                                  base::Unretained(this)));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
               << FriendlyDateAndTime(time));
@@ -200,7 +197,7 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
   base::TimeDelta delay;
   if (now >= next_token_redemption_at) {
     // Browser was launched after the next token redemption date
-    delay = base::Seconds(kExpiredNextTokenRedemptionAfterSeconds);
+    delay = kExpiredNextTokenRedemptionAfter;
   } else {
     delay = next_token_redemption_at - now;
   }

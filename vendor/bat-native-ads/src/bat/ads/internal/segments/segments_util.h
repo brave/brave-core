@@ -13,9 +13,9 @@
 
 namespace ads {
 
-class Catalog;
+struct CatalogInfo;
 
-SegmentList GetSegments(const Catalog& catalog);
+SegmentList GetSegments(const CatalogInfo& catalog);
 
 template <typename T>
 SegmentList GetSegments(const T& creative_ads) {

@@ -20,7 +20,7 @@
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
-#include "bat/ads/internal/ad_server/ad_server_observer.h"
+#include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/serving/ad_notification_serving_observer.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
@@ -79,7 +79,6 @@ class Account;
 class Diagnostics;
 class AdNotification;
 class AdNotifications;
-class AdServer;
 class Transfer;
 class AdsClientHelper;
 class BrowserManager;
@@ -96,6 +95,7 @@ class TabManager;
 class UserActivity;
 struct AdInfo;
 struct AdNotificationInfo;
+struct CatalogInfo;
 struct HistoryInfo;
 struct ConversionQueueItemInfo;
 struct InlineContentAdInfo;
@@ -108,7 +108,7 @@ class AdsImpl final : public Ads,
                       public AccountObserver,
                       public AdNotificationObserver,
                       public AdNotificationServingObserver,
-                      public AdServerObserver,
+                      public CatalogObserver,
                       public TransferObserver,
                       public InlineContentAdObserver,
                       public InlineContentServingObserver,
@@ -239,7 +239,7 @@ class AdsImpl final : public Ads,
 
   void CleanupAdEvents();
 
-  void MaybeUpdateCatalog();
+  void MaybeFetchCatalog();
 
   void MaybeServeAdNotification();
 
@@ -257,8 +257,8 @@ class AdsImpl final : public Ads,
       const ConfirmationType& confirmation_type) override;
   void OnStatementOfAccountsDidChange() override;
 
-  // AdServerObserver:
-  void OnDidUpdateCatalog(const Catalog& catalog) override;
+  // CatalogObserver:
+  void OnDidUpdateCatalog(const CatalogInfo& catalog) override;
 
   // AdNotificationServingObserver:
   void OnDidServeAdNotification(const AdNotificationInfo& ad) override;
@@ -341,7 +341,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<ad_notifications::Serving> ad_notification_serving_;
   std::unique_ptr<AdNotification> ad_notification_;
   std::unique_ptr<AdNotifications> ad_notifications_;
-  std::unique_ptr<AdServer> ad_server_;
+  std::unique_ptr<Catalog> catalog_;
   std::unique_ptr<Transfer> transfer_;
   std::unique_ptr<inline_content_ads::Serving> inline_content_ad_serving_;
   std::unique_ptr<InlineContentAd> inline_content_ad_;
