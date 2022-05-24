@@ -105,6 +105,19 @@ public class AsyncUtils {
         }
     }
 
+    public static class GetErc721TokenBalanceResponseContext extends GetBalanceResponseBaseContext
+            implements JsonRpcService.GetErc721TokenBalance_Response {
+        public GetErc721TokenBalanceResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(String balance, Integer error, String errorMessage) {
+            warnWhenError(TAG, "getErc721TokenBalance", error, errorMessage);
+            super.callBase(balance, error, errorMessage);
+        }
+    }
+
     public static class GetBalanceResponseContext
             extends GetBalanceResponseBaseContext implements JsonRpcService.GetBalance_Response {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {

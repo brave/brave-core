@@ -230,7 +230,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 assert mChainId != null && !mChainId.isEmpty();
                 TokenUtils.getUserAssetsFiltered(
-                        braveWalletService, mChainId, TokenUtils.TokenType.ALL, (userAssets) -> {
+                        braveWalletService, mChainId, TokenUtils.TokenType.ALL, userAssets -> {
                             TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
                                     mChainId, TokenUtils.TokenType.ALL, tokens -> {
                                         tokens = Utils.fixupTokensRegistry(tokens, mChainId);
@@ -238,10 +238,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                     });
                         });
             } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
-                // TODO: ERC721 Send
                 assert mChainId != null && !mChainId.isEmpty();
                 TokenUtils.getUserAssetsFiltered(braveWalletService, mChainId,
-                        TokenUtils.TokenType.ERC20,
+                        TokenUtils.TokenType.ALL,
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {

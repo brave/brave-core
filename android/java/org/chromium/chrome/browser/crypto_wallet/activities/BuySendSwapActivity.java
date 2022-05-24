@@ -179,6 +179,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private TextView mToAssetText;
     private TextView mSendToValidation;
     private TextView mFromSendValueValidation;
+    private LinearLayout mFromValueBlock;
 
     @Override
     public void onDestroy() {
@@ -226,6 +227,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         mSendToValidation = findViewById(R.id.to_send_error_text);
         mFromSendValueValidation = findViewById(R.id.from_send_value_error_text);
+
+        mFromValueBlock = findViewById(R.id.from_value_block);
 
         onInitialLayoutInflationComplete();
         mInitialLayoutInflationComplete = true;
@@ -499,6 +502,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
             updateBuySendSwapAsset(eth.symbol, eth, false);
         } else {
+            // Only ERC20 tokens can be swapped
             mBlockchainRegistry.getTokenBySymbol(
                     BraveWalletConstants.MAINNET_CHAIN_ID, CoinType.ETH, swapToAsset, token -> {
                         if (token != null) {
@@ -606,6 +610,16 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         }
                         populateBalance(balance, from);
                     });
+        } else if (blockchainToken.isErc721) {
+            mJsonRpcService.getErc721TokenBalance(blockchainToken.contractAddress,
+                    blockchainToken.tokenId, address, mCurrentChainId,
+                    (balance, error, errorMessage) -> {
+                        warnWhenError(TAG, "getERC721TokenBalance", error, errorMessage);
+                        if (error != ProviderError.SUCCESS) {
+                            return;
+                        }
+                        populateBalance(balance, from);
+                    });
         } else {
             mJsonRpcService.getErc20TokenBalance(blockchainToken.contractAddress, address,
                     mCurrentChainId, (balance, error, errorMessage) -> {
@@ -664,8 +678,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private void setSendToFromValueValidationResult(
             String validationResult, boolean disableButtonOnError, boolean sendTo) {
         boolean validationSucceeded = (validationResult == null || validationResult.isEmpty());
-        final TextView otherValueValidation = sendTo ? mFromSendValueValidation : mSendToValidation;
         final TextView thisValueValidation = sendTo ? mSendToValidation : mFromSendValueValidation;
+        final TextView otherValueValidation = sendTo ? mFromSendValueValidation : mSendToValidation;
 
         boolean otherValidationError = otherValueValidation.getVisibility() == View.VISIBLE;
         boolean buttonShouldBeEnabled = validationSucceeded || (sendTo && !disableButtonOnError);
@@ -891,9 +905,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             Utils.toHexWei(value, mCurrentBlockchainToken.decimals), from,
                             mCurrentBlockchainToken.contractAddress);
                 } else if (mCurrentBlockchainToken.isErc721) {
-                    // TODO tokenId text field
-                    //                     addUnapprovedTransactionERC721(from, to, tokenId,
-                    //                         mCurrentBlockchainToken.contractAddress);
+                    addUnapprovedTransactionERC721(from, to, mCurrentBlockchainToken.tokenId,
+                            mCurrentBlockchainToken.contractAddress);
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
@@ -1273,6 +1286,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             }
 
             assert mTxService != null;
+            TxDataUnion txDataUnion = new TxDataUnion();
             if (isEIP1559) {
                 TxData1559 txData1559 = new TxData1559();
                 txData1559.baseData = data;
@@ -1287,28 +1301,18 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 txData1559.gasEstimation.fastMaxPriorityFeePerGas = "";
                 txData1559.gasEstimation.fastMaxFeePerGas = "";
                 txData1559.gasEstimation.baseFeePerGas = "";
-                TxDataUnion txDataUnion = new TxDataUnion();
                 txDataUnion.setEthTxData1559(txData1559);
-                mTxService.addUnapprovedTransaction(
-                        txDataUnion, from, null, (success, tx_meta_id, error_message) -> {
-                            // Do nothing here when success as we will receive an
-                            // unapproved transaction in TxServiceObserver.
-                            // When we have error, let the user know,
-                            // error_message is localized, do not disable send button
-                            setSendToFromValueValidationResult(error_message, false, true);
-                        });
             } else {
-                TxDataUnion txDataUnion = new TxDataUnion();
                 txDataUnion.setEthTxData(data);
-                mTxService.addUnapprovedTransaction(
-                        txDataUnion, from, null, (success, tx_meta_id, error_message) -> {
-                            // Do nothing here when success as we will receive an
-                            // unapproved transaction in TxServiceObserver.
-                            // When we have error, let the user know,
-                            // error_message is localized, do not disable send button
-                            setSendToFromValueValidationResult(error_message, false, true);
-                        });
             }
+            mTxService.addUnapprovedTransaction(
+                    txDataUnion, from, null, (success, tx_meta_id, error_message) -> {
+                        // Do nothing here when success as we will receive an
+                        // unapproved transaction in TxServiceObserver.
+                        // When we have error, let the user know,
+                        // error_message is localized, do not disable send button
+                        setSendToFromValueValidationResult(error_message, false, true);
+                    });
         });
     }
 
@@ -1381,9 +1385,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void updateBuySendSwapAsset(
             String asset, BlockchainToken blockchainToken, boolean buySend) {
         if (!buySend && mCurrentBlockchainToken != null
-                        && mCurrentBlockchainToken.symbol.equals(blockchainToken.symbol)
+                        && TokenUtils.isSameToken(mCurrentBlockchainToken, blockchainToken)
                 || buySend && mCurrentSwapToBlockchainToken != null
-                        && mCurrentSwapToBlockchainToken.symbol.equals(blockchainToken.symbol))
+                        && TokenUtils.isSameToken(mCurrentSwapToBlockchainToken, blockchainToken))
             return;
 
         TextView assetText = buySend ? mFromAssetText : mToAssetText;
@@ -1412,8 +1416,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     (float) 0.5);
         }
         if (buySend && token.isErc721) {
-            mFromValueText.setText("1");
+            mFromValueBlock.setVisibility(View.GONE);
         } else {
+            mFromValueBlock.setVisibility(View.VISIBLE);
             mFromValueText.setText("");
         }
         if (buySend && mActivityType == ActivityType.SWAP || !buySend) {

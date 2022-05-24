@@ -53,6 +53,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.Predicate;
@@ -170,15 +171,14 @@ public class Utils {
     public static String getTextFromClipboard(Context context) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = clipboard.getPrimaryClip();
         String pasteData = "";
-        if (!(clipboard.hasPrimaryClip()) || clipboard.getPrimaryClipDescription() == null) {
-            return pasteData;
-        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
-            return pasteData;
+        if (clipData != null && clipData.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN)
+                && clipData.getItemCount() > 0) {
+            return clipData.getItemAt(0).getText().toString();
         }
-        ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
 
-        return item.getText().toString();
+        return "";
     }
 
     public static void clearClipboard(String textToCompare, int delay) {
@@ -1072,6 +1072,8 @@ public class Utils {
                 txInfo, jsonRpcService, activity, getAccountName(accountInfos, txInfo.fromAddress));
     }
 
+    // TODO (Wengling): this chain of functions can be cleaned-up with transaction parser
+    // (components/brave_wallet_ui/common/hooks/transaction-parser.ts)
     public static void setUpTransactionList(AccountInfo[] accountInfos,
             AssetRatioService assetRatioService, TxService txService,
             BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
@@ -1184,20 +1186,21 @@ public class Utils {
             String chainSymbol, int chainDecimals, WalletCoinAdapter walletTxCoinAdapter) {
         assert chainId != null;
         assert blockchainRegistry != null;
-        // TODO: Transaction Parser (components/brave_wallet_ui/common/hooks/transaction-parser.ts)
+
         TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId,
-                TokenUtils.TokenType.ERC20, tokens -> {
+                TokenUtils.TokenType.ALL, tokens -> {
+                    // Replace USDC and DAI contract addresses for Ropsten network
+                    tokens = fixupTokensRegistry(tokens, chainId);
                     HashMap<String, String> assets = new HashMap<String, String>();
                     HashMap<String, Integer> assetsDecimals = new HashMap<String, Integer>();
                     for (String accountName : pendingTxInfos.keySet()) {
                         TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
                         for (TransactionInfo txInfo : txInfos) {
                             if (txInfo.txType == TransactionType.ERC20_TRANSFER
-                                    || txInfo.txType == TransactionType.ERC20_APPROVE) {
+                                    || txInfo.txType == TransactionType.ERC20_APPROVE
+                                    || txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
+                                    || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
                                 for (BlockchainToken token : tokens) {
-                                    // Replace USDC and DAI contract addresses for Ropsten network
-                                    token.contractAddress = getContractAddress(
-                                            chainId, token.symbol, token.contractAddress);
                                     String symbol = token.symbol;
                                     int decimals = token.decimals;
                                     if (txInfo.txType == TransactionType.ERC20_APPROVE) {
@@ -1325,6 +1328,17 @@ public class Utils {
                     context.getResources().getString(R.string.wallet_tx_info_approved_unlimited),
                     assetSymbol, "0x Exchange Proxy");
             valueToDisplay = "0.0000 " + assetSymbol;
+        } else if ((txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
+                           || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
+                && txInfo.txArgs.length > 2) {
+            to = txInfo.txArgs[1];
+            String tokenId = txInfo.txArgs[2];
+            valueToDisplay =
+                    String.format(Locale.getDefault(), "%d", (int) Utils.fromHexWei(tokenId, 0));
+            action = String.format(
+                    context.getResources().getString(R.string.wallet_tx_info_sent_erc721),
+                    accountName, assetSymbol, valueToDisplay, strDate);
+            detailInfo = accountName + " -> " + Utils.getAccountName(accountInfos, to);
         }
         if (txInfo.txDataUnion.getEthTxData1559()
                         .baseData.to.toLowerCase(Locale.getDefault())
@@ -1562,18 +1576,14 @@ public class Utils {
 
         for (BlockchainToken userAsset : userAssets) {
             String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
-            Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);
+            String currentAssetKey = userAsset.isErc721
+                    ? Utils.formatErc721TokenTitle(currentAssetSymbol, userAsset.tokenId)
+                    : currentAssetSymbol;
+            Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetKey, 0.0d);
             String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-            Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetSymbol, 0.0d);
+            Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
             String cryptoBalanceString =
                     String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
-
-            // Override amount to 1 for ERC721
-            if (userAsset.isErc721) {
-                fiatBalanceString = "1";
-                cryptoBalanceString =
-                        String.format(Locale.getDefault(), "%d %s", 1, userAsset.symbol);
-            }
 
             WalletListItemModel walletListItemModel = new WalletListItemModel(R.drawable.ic_eth,
                     userAsset.name, userAsset.symbol, userAsset.tokenId,
@@ -1594,5 +1604,30 @@ public class Utils {
         walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
 
         return walletCoinAdapter;
+    }
+
+    public static void getExactUserAsset(BraveWalletService braveWalletService, String chainId,
+            String assetSymbol, String assetName, String assetId, String contractAddress,
+            int assetDecimals, Callback<BlockchainToken> callback) {
+        TokenUtils.getUserAssetsFiltered(
+                braveWalletService, chainId, TokenUtils.TokenType.ALL, (userAssets) -> {
+                    BlockchainToken resultToken = null;
+                    for (BlockchainToken userAsset : userAssets) {
+                        if (chainId.equals(userAsset.chainId)
+                                && assetSymbol.equals(userAsset.symbol)
+                                && assetName.equals(userAsset.name)
+                                && (assetId.isEmpty() || assetId.equals(userAsset.tokenId))
+                                && contractAddress.equals(userAsset.contractAddress)
+                                && assetDecimals == userAsset.decimals) {
+                            resultToken = userAsset;
+                        }
+                    }
+
+                    callback.onResult(resultToken);
+                });
+    }
+
+    public static String formatErc721TokenTitle(String title, String id) {
+        return title + " #" + id;
     }
 }

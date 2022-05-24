@@ -114,4 +114,17 @@ public class TokenUtils {
 
         return both.toArray(new BlockchainToken[both.size()]);
     }
+
+    public static boolean isSameToken(BlockchainToken token1, BlockchainToken token2) {
+        if (token1.chainId.equals(token2.chainId) && token1.symbol.equals(token2.symbol)
+                && token1.name.equals(token2.name)
+                && ((token1.tokenId.isEmpty() && token2.tokenId.isEmpty())
+                        || token1.tokenId.equals(token2.tokenId))
+                && token1.contractAddress.equals(token2.contractAddress)
+                && token1.decimals == token2.decimals) {
+            return true;
+        }
+
+        return false;
+    }
 }

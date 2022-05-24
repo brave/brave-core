@@ -2470,6 +2470,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET" desc="Amount Asset" translateable="false">
       <ph name="AMOUNT">%1$s<ex>0.0001</ex></ph> <ph name="ASSET">%2$s<ex>ETH</ex></ph>
     </message>
+    <message name="IDS_CRYPTO_WALLET_AMOUNT_ASSET_ERC721" desc="Amount Asset Text for ERC721" translateable="false">
+      <ph name="ASSET">%1$s<ex>CK</ex></ph> #<ph name="TOKEN_ID">%2$s<ex>1</ex></ph>
+    </message>
     <message name="IDS_CRYPTO_WALLET_AMOUNT_FIAT" desc="$amount_fiat" translateable="false">
       $<ph name="AMOUNT">%1$s<ex>3.08</ex></ph>
     </message>
@@ -2571,6 +2574,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
       <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="CRYPTO_VALUE">%2$s<ex>0.0444</ex></ph> <ph name="ASSET">%3$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%4$s<ex>10.00</ex></ph>) - <ph name="DATE">%5$s<ex>2021-11-12 08:38pm</ex></ph>
+    </message>
+    <message name="IDS_WALLET_TX_INFO_SENT_ERC721" desc="Brave wallet sent erc721 assets tx history">
+      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="ASSET">%2$s<ex>CK</ex></ph> #<ph name="ASSET_ID">%3$s<ex>1</ex></ph> - <ph name="DATE">%4$s<ex>2021-11-12 08:38pm</ex></ph>
     </message>
     <message name="IDS_WALLET_TX_INFO_APPROVED" desc="Brave wallet approved assets tx history">
       <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> approved <ph name="ASSET">%2$s<ex>BAT</ex></ph> - <ph name="DATE">%3$s<ex>2021-11-12 08:38pm</ex></ph>

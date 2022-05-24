@@ -254,10 +254,23 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
                     assert blockchainRegistry != null;
                     TokenUtils.getAllTokensFiltered(getBraveWalletService(), blockchainRegistry,
-                            chainId, TokenUtils.TokenType.ERC721,
-                            tokens
-                            -> {
-                                    // TODO erc721 send
+                            chainId, TokenUtils.TokenType.ERC721, tokens -> {
+                                boolean foundToken = false;
+                                for (BlockchainToken token : tokens) {
+                                    if (token.contractAddress.toLowerCase(Locale.getDefault())
+                                                    .equals(mTxInfo.txDataUnion.getEthTxData1559()
+                                                                    .baseData.to.toLowerCase(
+                                                                            Locale.getDefault()))) {
+                                        fillAssetDependentControls(
+                                                token.symbol, view, token.decimals);
+                                        foundToken = true;
+                                        break;
+                                    }
+                                }
+                                // Fallback to ETH to avoid empty screen
+                                if (!foundToken) {
+                                    fillAssetDependentControls(mChainSymbol, view, mChainDecimals);
+                                }
                             });
                 } else {
                     if (mTxInfo.txDataUnion.getEthTxData1559()
@@ -325,48 +338,70 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private void fillAssetDependentControls(String asset, View view, int decimals) {
         String valueToConvert = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
         String to = mTxInfo.txDataUnion.getEthTxData1559().baseData.to;
+        double value = Utils.fromHexWei(valueToConvert, decimals);
+        String amountText =
+                String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
+                        String.format(Locale.getDefault(), "%.4f", value), asset);
+        // TODO (Wengling): Transaction Parser
+        // (components/brave_wallet_ui/common/hooks/transaction-parser.ts)
         if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
-            valueToConvert = mTxInfo.txArgs[1];
+            value = Utils.fromHexWei(mTxInfo.txArgs[1], decimals);
             to = mTxInfo.txArgs[0];
+            amountText =
+                    String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
+                            String.format(Locale.getDefault(), "%.4f", value), asset);
+        } else if ((mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
+                           || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
+                && mTxInfo.txArgs.length > 2) {
+            to = mTxInfo.txArgs[1];
+            String tokenId = mTxInfo.txArgs[2];
+            amountText = String.format(
+                    getResources().getString(R.string.crypto_wallet_amount_asset_erc721), asset,
+                    String.format(Locale.getDefault(), "%d", (int) Utils.fromHexWei(tokenId, 0)));
         }
         TextView fromTo = view.findViewById(R.id.from_to);
         fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
                 mAccountName, Utils.stripAccountAddress(to)));
         TextView amountAsset = view.findViewById(R.id.amount_asset);
-        amountAsset.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
-                        String.format(Locale.getDefault(), "%.4f",
-                                Utils.fromHexWei(valueToConvert, decimals)),
-                        asset));
-        AssetRatioService assetRatioService = getAssetRatioService();
-        assert assetRatioService != null;
-        String[] assets = {asset.toLowerCase(Locale.getDefault())};
-        String[] toCurr = {"usd"};
-        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-            String valueFiat = "0";
-            if (values.length != 0) {
-                valueFiat = values[0].price;
-            }
-            String valueAsset = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
-            if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
-                valueAsset = mTxInfo.txArgs[1];
-            }
-            double value = Utils.fromHexWei(valueAsset, decimals);
-            double price = Double.valueOf(valueFiat);
-            mTotalPrice = value * price;
-            TextView amountFiat = view.findViewById(R.id.amount_fiat);
-            amountFiat.setText(
-                    String.format(getResources().getString(R.string.crypto_wallet_amount_fiat),
-                            String.format(Locale.getDefault(), "%.2f", mTotalPrice)));
-            ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
-            ApproveTxFragmentPageAdapter adapter =
-                    new ApproveTxFragmentPageAdapter(getChildFragmentManager(), mTxInfo, asset,
-                            decimals, mChainSymbol, mChainDecimals, mTotalPrice, getActivity());
-            viewPager.setAdapter(adapter);
-            viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
-            TabLayout tabLayout = view.findViewById(R.id.tabs);
-            tabLayout.setupWithViewPager(viewPager);
-        });
+        amountAsset.setText(amountText);
+        TextView amountFiat = view.findViewById(R.id.amount_fiat);
+        final double valueFinal = value;
+        if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
+                || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
+            amountFiat.setVisibility(View.GONE);
+            setupPager(asset, view, decimals);
+        } else {
+            // ETH or ERC20
+            AssetRatioService assetRatioService = getAssetRatioService();
+            assert assetRatioService != null;
+            String[] assets = {asset.toLowerCase(Locale.getDefault())};
+            String[] toCurr = {"usd"};
+            assetRatioService.getPrice(
+                    assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
+                        String valueFiat = "0";
+                        if (values.length != 0) {
+                            valueFiat = values[0].price;
+                        }
+                        double price = Double.valueOf(valueFiat);
+                        mTotalPrice = valueFinal * price;
+                        amountFiat.setVisibility(View.VISIBLE);
+                        amountFiat.setText(String.format(
+                                getResources().getString(R.string.crypto_wallet_amount_fiat),
+                                String.format(Locale.getDefault(), "%.2f", mTotalPrice)));
+                        setupPager(asset, view, decimals);
+                    });
+        }
+    }
+
+    private void setupPager(String asset, View view, int decimals) {
+        ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
+        ApproveTxFragmentPageAdapter adapter =
+                new ApproveTxFragmentPageAdapter(getChildFragmentManager(), mTxInfo, asset,
+                        decimals, mChainSymbol, mChainDecimals, mTotalPrice, getActivity());
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void rejectTransaction(boolean dismiss) {
