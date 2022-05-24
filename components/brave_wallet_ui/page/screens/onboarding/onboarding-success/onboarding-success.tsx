@@ -22,7 +22,7 @@ import { WalletPageActions } from '../../../actions'
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
-import { ArticleLinkBubble } from './components/article-link-bubble/article-link-bubble'
+import { ArticleLinkBubble, ArticleLinkBubbleProps } from './components/article-link-bubble/article-link-bubble'
 
 // styles
 import {
@@ -31,10 +31,63 @@ import {
   OnboardingWrapper
 } from '../onboarding.style'
 import {
+  ArticleLinksContainer,
   ButtonContainer,
   IntroContainer,
   IntroImg
 } from './onboarding-success.style'
+
+const ARTICLES: ArticleLinkBubbleProps[] = [
+  {
+    icon: 'wallet',
+    iconBackgroundColor: 'purple400',
+    text: 'How to use a crypto wallet?',
+    url: 'https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
+  },
+  {
+    icon: 'wallet-with-coins',
+    iconBackgroundColor: 'yellow500',
+    text: 'What’s the best crypto wallet?',
+    url: 'https://brave.com/learn/what-is-best-crypto-wallet/'
+  },
+  {
+    icon: 'smartphone-desktop',
+    iconBackgroundColor: 'green600',
+    text: 'What’s a crypto browser?',
+    url: 'https://brave.com/learn/what-are-crypto-browsers/'
+  },
+  {
+    icon: 'crypto-wallets',
+    iconBackgroundColor: 'magenta400',
+    text: 'Crypto wallets 101',
+    url: 'https://brave.com/learn/what-is-crypto-wallet/'
+  },
+  {
+    icon: 'key',
+    iconBackgroundColor: 'red200',
+    text: 'What’s a recovery phrase?',
+    url: 'https://brave.com/learn/wallet-recovery-phrase/'
+  },
+  {
+    icon: 'ipfs',
+    iconBackgroundColor: 'orange300',
+    text: 'What are DApps?',
+    url: 'https://brave.com/learn/what-are-dapps/'
+  },
+  {
+    icon: 'grid',
+    iconBackgroundColor: 'blue300',
+    text: 'What’s web 3?',
+    url: 'https://brave.com/learn/what-is-web3/'
+  }
+]
+
+const ArticleLinks = ARTICLES.map((article) => (
+  <ArticleLinkBubble
+    key={article.text}
+    {...article}
+  />
+))
 
 export const OnboardingSuccess = () => {
   // routing
@@ -68,12 +121,9 @@ export const OnboardingSuccess = () => {
 
       </IntroContainer>
 
-      <ArticleLinkBubble
-        icon='key'
-        iconBackgroundColor='red200'
-        text='What’s a recovery phrase?'
-        url='brave.com'
-      />
+      <ArticleLinksContainer>
+        {ArticleLinks}
+      </ArticleLinksContainer>
 
       <ButtonContainer>
         <NavButton

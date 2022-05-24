@@ -6,7 +6,13 @@
 import styled from 'styled-components'
 
 // icons
+import CryptoWalletsIcon from '../../../../../../assets/svg-icons/crypto-wallets-icon.svg'
+import GridIcon from '../../../../../../assets/svg-icons/grid-icon.svg'
+import IpfsIcon from '../../../../../../assets/svg-icons/ipfs-icon.svg'
 import KeyIcon from '../../../../../../assets/svg-icons/key-icon.svg'
+import SmartphoneDesktopIcon from '../../../../../../assets/svg-icons/smartphone-desktop-icon.svg'
+import WalletWithCoinsIcon from '../../../../../../assets/svg-icons/wallet-with-coins-icon.svg'
+import WalletIcon from '../../../../../../assets/svg-icons/wallet-icon.svg'
 
 export type ArticleLinkIcons =
   | 'crypto-wallets'
@@ -28,13 +34,13 @@ export type IconBubbleColors =
 
 const getIcon = (iconName: ArticleLinkIcons) => {
   return ({
-    'wallet': '',
-    'wallet-with-coins': '',
-    'smartphone-desktop': '',
-    'crypto-wallets': '',
+    'crypto-wallets': CryptoWalletsIcon,
+    'grid': GridIcon,
+    'ipfs': IpfsIcon,
     'key': KeyIcon,
-    'ipfs': '',
-    'grid': ''
+    'smartphone-desktop': SmartphoneDesktopIcon,
+    'wallet-with-coins': WalletWithCoinsIcon,
+    'wallet': WalletIcon
   } as Record<ArticleLinkIcons, string>)[iconName] || ''
 }
 
@@ -70,7 +76,7 @@ export const Bubble = styled.a`
   gap: 4px;
   height: 40px;
 
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 
   background: ${(p) => p.theme.palette.white};
   box-shadow: 0px 2px 8px rgba(104, 105, 120, 0.16);
