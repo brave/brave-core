@@ -38,6 +38,8 @@ class RewardsBrowserTestContextHelper {
 
   void LoadURL(GURL url);
 
+  void LoadRewardsPage();
+
   void ReloadCurrentSite();
 
  private:

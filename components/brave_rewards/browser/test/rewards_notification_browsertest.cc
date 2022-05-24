@@ -314,7 +314,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
@@ -330,9 +330,9 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForACNotEnoughFunds) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->LoadRewardsPage();
   // Visit publishers
   const bool verified = true;
   context_helper_->VisitPublisher(
@@ -358,12 +358,10 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    InsufficientNotificationForInsufficientAmount) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
+                       InsufficientNotificationForInsufficientAmount) {
   rewards_browsertest_util::CreateWallet(rewards_service_);
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 20.0,
@@ -389,12 +387,10 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_FALSE(is_showing_notification);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    InsufficientNotificationForVerifiedInsufficientAmount) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
+                       InsufficientNotificationForVerifiedInsufficientAmount) {
   rewards_browsertest_util::CreateWallet(rewards_service_);
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->LoadRewardsPage();
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode("duckduckgo.com", 50.0,
