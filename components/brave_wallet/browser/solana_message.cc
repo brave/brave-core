@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_message.h"
 
 #include <algorithm>
+#include <tuple>
 #include <utility>
 
 #include "base/check.h"
@@ -166,6 +167,74 @@ absl::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
   }
 
   return message_bytes;
+}
+
+// static
+absl::optional<SolanaMessage> SolanaMessage::Deserialize(
+    const std::vector<uint8_t>& bytes) {
+  size_t bytes_index = 0;
+  if (bytes.size() < 3)  // Message header length.
+    return absl::nullopt;
+  // Message header
+  uint8_t num_required_signatures = bytes[bytes_index++];
+  uint8_t num_readonly_signed_accounts = bytes[bytes_index++];
+  uint8_t num_readonly_unsigned_accounts = bytes[bytes_index++];
+
+  // Compact array of account addresses
+  auto ret = CompactU16Decode(bytes, bytes_index);
+  if (!ret)
+    return absl::nullopt;
+  const uint16_t num_of_accounts = std::get<0>(*ret);
+  bytes_index += std::get<1>(*ret);
+  std::vector<SolanaAccountMeta> accounts;
+  for (size_t i = 0; i < num_of_accounts; ++i) {
+    if (bytes_index + kSolanaPubkeySize > bytes.size())
+      return absl::nullopt;
+
+    const std::vector<uint8_t> address_bytes(
+        bytes.begin() + bytes_index,
+        bytes.begin() + bytes_index + kSolanaPubkeySize);
+    bool is_signer = i < num_required_signatures;
+    bool is_writable =
+        (i < (num_required_signatures - num_readonly_signed_accounts)) ||
+        (i >= num_required_signatures &&
+         i < num_of_accounts - num_readonly_unsigned_accounts);
+
+    accounts.push_back(
+        SolanaAccountMeta(Base58Encode(address_bytes), is_signer, is_writable));
+    bytes_index += kSolanaPubkeySize;
+  }
+
+  if (bytes_index + kSolanaBlockhashSize > bytes.size())
+    return absl::nullopt;
+  const std::vector<uint8_t> blockhash_bytes(
+      bytes.begin() + bytes_index,
+      bytes.begin() + bytes_index + kSolanaBlockhashSize);
+  bytes_index += kSolanaBlockhashSize;
+  const std::string recent_blockhash = Base58Encode(blockhash_bytes);
+
+  // instructions length
+  ret = CompactU16Decode(bytes, bytes_index);
+  if (!ret)
+    return absl::nullopt;
+  bytes_index += std::get<1>(*ret);
+  size_t num_of_instructions = std::get<0>(*ret);
+
+  std::vector<SolanaInstruction> instructions;
+  for (size_t i = 0; i < num_of_instructions; ++i) {
+    auto instruction =
+        SolanaInstruction::Deserialize(accounts, bytes, &bytes_index);
+    if (!instruction)
+      return absl::nullopt;
+    instructions.push_back(*instruction);
+  }
+
+  // Byte array needs to be exact without any left over bytes.
+  if (bytes_index != bytes.size())
+    return absl::nullopt;
+
+  return SolanaMessage(recent_blockhash, 0, accounts[0].pubkey,
+                       std::move(instructions));
 }
 
 mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {

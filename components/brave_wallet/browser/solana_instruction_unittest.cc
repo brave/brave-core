@@ -16,7 +16,7 @@
 
 namespace brave_wallet {
 
-TEST(SolanaInstructionUnitTest, Serialize) {
+TEST(SolanaInstructionUnitTest, SerializeDeserialize) {
   // Test serializing an instruction for transfering SOL from an account to
   // itself.
   std::string from_account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
@@ -35,7 +35,7 @@ TEST(SolanaInstructionUnitTest, Serialize) {
       SolanaAccountMeta(from_account, true, true),
       SolanaAccountMeta(kSolanaSystemProgramId, false, false)};
   std::vector<uint8_t> bytes;
-  EXPECT_TRUE(instruction.Serialize(account_metas, &bytes));
+  ASSERT_TRUE(instruction.Serialize(account_metas, &bytes));
   std::vector<uint8_t> expected_bytes = {
       1,                                         // program id index
       2,                                         // length of accounts
@@ -43,6 +43,17 @@ TEST(SolanaInstructionUnitTest, Serialize) {
       12,                                        // data length
       2,  0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   };
+  EXPECT_EQ(bytes, expected_bytes);
+
+  // Deserialize and serialize again should get the same byte array.
+  size_t bytes_index = 0;
+  auto deserialized_instruction =
+      SolanaInstruction::Deserialize(account_metas, bytes, &bytes_index);
+  ASSERT_TRUE(deserialized_instruction);
+  EXPECT_EQ(bytes_index, bytes.size());
+
+  bytes.clear();
+  ASSERT_TRUE(deserialized_instruction->Serialize(account_metas, &bytes));
   EXPECT_EQ(bytes, expected_bytes);
 
   // Program ID not found.
@@ -79,6 +90,7 @@ TEST(SolanaInstructionUnitTest, Serialize) {
   EXPECT_FALSE(invalid_instruction.Serialize(account_metas, &bytes));
 
   EXPECT_DCHECK_DEATH(instruction.Serialize({}, nullptr));
+  EXPECT_DCHECK_DEATH(instruction.Deserialize(account_metas, bytes, nullptr));
 }
 
 TEST(SolanaInstructionUnitTest, FromToValue) {
