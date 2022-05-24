@@ -17,6 +17,7 @@ import EyeOnIcon from '../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../assets/svg-icons/eye-off-icon.svg'
 import CheckmarkSvg from '../../assets/svg-icons/big-checkmark.svg'
 import CloseSvg from '../../assets/svg-icons/close.svg'
+import { Link } from 'react-router-dom'
 
 // Text
 export const ErrorText = styled.span`
@@ -104,10 +105,15 @@ export const WalletButton = styled.button<{
   }
  `
 
-export const VerticalSpacer = styled.div<{ space: number | string }>`
-  display: flex;
-  height: ${p => typeof p.space === 'number' ? `${p.space}px` : p.space};
-`
+export const WalletButtonLink = styled(Link)<{
+  isDraggedOver?: boolean
+}>`
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.palette.blurple300};
+    outline-width: 2px;
+  }
+ `
 
 export const ToggleVisibilityButton = styled(WalletButton)<{
   isVisible: boolean
@@ -129,4 +135,10 @@ export const ToggleVisibilityButton = styled(WalletButton)<{
   mask-size: contain;
   mask-position: center;
   mask-repeat: no-repeat;
+`
+
+// Spacers
+export const VerticalSpacer = styled.div<{ space: number | string }>`
+  display: flex;
+  height: ${p => typeof p.space === 'number' ? `${p.space}px` : p.space};
 `

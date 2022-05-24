@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 
 import {
   StyledWrapper,
@@ -46,18 +45,6 @@ const ImportantTextSegments = () => {
 }
 
 export const OnboardingRecoveryPhraseExplainer = () => {
-  // routing
-  const history = useHistory()
-
-  // methods
-  const nextStep = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
-  }, [])
-
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.Onboarding)
-  }, [])
-
   // render
   return (
     <WalletPageLayout>
@@ -65,7 +52,7 @@ export const OnboardingRecoveryPhraseExplainer = () => {
         <StyledWrapper>
 
           <OnboardingStepsNavigation
-            goBack={goBack}
+            goBackUrl={WalletRoutes.Onboarding}
             currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
           />
 
@@ -85,7 +72,7 @@ export const OnboardingRecoveryPhraseExplainer = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonGotIt')}
-              onSubmit={nextStep}
+              url={WalletRoutes.OnboardingBackupRecoveryPhrase}
             />
           </NextButtonRow>
 

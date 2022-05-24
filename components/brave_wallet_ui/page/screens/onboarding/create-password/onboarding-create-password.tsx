@@ -55,10 +55,6 @@ export const OnboardingCreatePassword = () => {
     setIsValid(isValid)
   }, [])
 
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingWelcome)
-  }, [])
-
   // render
   return (
     <WalletPageLayout>
@@ -66,7 +62,7 @@ export const OnboardingCreatePassword = () => {
         <StyledWrapper>
 
           <OnboardingStepsNavigation
-            goBack={goBack}
+            goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
             preventSkipAhead
           />

@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Link } from 'react-router-dom'
 
 // Styled Components
 import {
@@ -12,7 +11,8 @@ import {
   ButtonText,
   RejectIcon,
   SignIcon,
-  ConfirmIcon
+  ConfirmIcon,
+  StyledLink
 } from './style'
 
 export type PanelButtonTypes =
@@ -46,15 +46,9 @@ export type Props = BaseProps & ClickProps
 export const NavButton: React.FC<Props> = (props) => {
   const { text, buttonType, disabled, needsTopMargin, onSubmit, url } = props
 
-  return (
-    <StyledButton
-      disabled={disabled}
-      buttonType={buttonType}
-      onClick={onSubmit}
-      addTopMargin={needsTopMargin && text ? text.length > 20 : false}
-      as={url ? Link : 'button'}
-      to={url}
-    >
+  // memos
+  const buttonContent = React.useMemo(() => {
+    return <>
       {buttonType === 'reject' &&
         <RejectIcon />
       }
@@ -65,6 +59,27 @@ export const NavButton: React.FC<Props> = (props) => {
         <ConfirmIcon />
       }
       <ButtonText buttonType={buttonType}>{text}</ButtonText>
+    </>
+  }, [buttonType, text])
+
+  // render
+  return url ? (
+    <StyledLink
+      disabled={disabled}
+      kind={buttonType}
+      onClick={onSubmit}
+      to={url || ''}
+    >
+      {buttonContent}
+    </StyledLink>
+  ) : (
+    <StyledButton
+      disabled={disabled}
+      buttonType={buttonType}
+      onClick={onSubmit}
+      addTopMargin={needsTopMargin && text ? text.length > 20 : false}
+    >
+      {buttonContent}
     </StyledButton>
   )
 }

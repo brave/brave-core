@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
 
 // utils
 import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
@@ -36,9 +35,6 @@ import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
 import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 export const OnboardingVerifyRecoveryPhrase = () => {
-  // routing
-  const history = useHistory()
-
   // state
   const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
   const [hasSelectedWords, setHasSelectedWords] = React.useState(false)
@@ -47,14 +43,6 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
 
   // methods
-  const nextStep = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingComplete)
-  }, [])
-
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
-  }, [])
-
   const onSelectedWordsUpdated = React.useCallback((words: any[]) => {
     setHasSelectedWords(words.length === 3)
   }, [])
@@ -75,7 +63,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
         <StyledWrapper>
 
           <OnboardingStepsNavigation
-            goBack={goBack}
+            goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
             currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
           />
 
@@ -121,8 +109,8 @@ export const OnboardingVerifyRecoveryPhrase = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonNext')}
-              onSubmit={nextStep}
               disabled={!nextStepEnabled}
+              url={WalletRoutes.OnboardingComplete}
             />
           </NextButtonRow>
 

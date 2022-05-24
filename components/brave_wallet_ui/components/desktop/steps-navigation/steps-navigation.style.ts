@@ -24,7 +24,9 @@ export const Wrapper = styled.div`
   margin-bottom: 40px;
 `
 
-export const BackButton = styled(WalletButton)`
+export const BackButton = styled(WalletButton)<{
+  to?: string // used for links
+}>`
   ${Font}
   display: flex;
   flex: 1;
@@ -40,6 +42,7 @@ export const BackButton = styled(WalletButton)`
   line-height: 20px;
   letter-spacing: 0.01em;
   border: none;
+  text-decoration: ${(p) => p.to ? 'none' : 'unset'};
 `
 
 export const DotsWrapper = styled.div`

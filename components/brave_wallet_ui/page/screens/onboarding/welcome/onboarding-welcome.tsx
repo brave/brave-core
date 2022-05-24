@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -27,16 +26,6 @@ import {
 } from './onboarding-welcome.style'
 
 export const OnboardingWelcome = () => {
-  const history = useHistory()
-
-  const onSetup = React.useCallback(() => {
-    history.push(`${WalletRoutes.Onboarding}/create-password`)
-  }, [])
-
-  const onRestore = React.useCallback(() => {
-    history.push(WalletRoutes.Restore)
-  }, [])
-
   return <WalletPageLayout>
     <OnboardingWrapper>
       <PageIcon />
@@ -49,13 +38,13 @@ export const OnboardingWelcome = () => {
         <NavButton
           buttonType='primary'
           text={getLocale('braveWalletWelcomeButton')}
-          onSubmit={onSetup}
+          url={WalletRoutes.OnboardingCreatePassword}
         />
 
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletWelcomeIAlreadyHaveAWallet')}
-          onSubmit={onRestore}
+          url={WalletRoutes.Restore}
         />
 
         <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>{getLocale('braveWalletWhatIsACryptoWallet')}</LearnMoreLink>
