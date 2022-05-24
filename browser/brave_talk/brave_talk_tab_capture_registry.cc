@@ -60,8 +60,14 @@ BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() = default;
 
 std::string BraveTalkTabCaptureRegistry::AddRequest(
     content::WebContents* target_contents,
-    content::DesktopMediaID source,
     content::RenderFrameHost* owning_frame) {
+  content::DesktopMediaID media_id(
+      content::DesktopMediaID::TYPE_WEB_CONTENTS,
+      content::DesktopMediaID::kNullId,
+      content::WebContentsMediaCaptureId(
+          target_contents->GetMainFrame()->GetProcess()->GetID(),
+          target_contents->GetMainFrame()->GetRoutingID()));
+
   std::string device_id;
   LiveRequest* const request =
       FindRequest(target_contents->GetMainFrame()->GetProcess()->GetID(),
@@ -75,7 +81,7 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
   requests_.push_back(std::make_unique<LiveRequest>(target_contents, this));
   device_id = content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
       owning_frame->GetProcess()->GetID(), owning_frame->GetRoutingID(),
-      url::Origin::Create(owning_frame->GetLastCommittedURL()), source, "",
+      url::Origin::Create(owning_frame->GetLastCommittedURL()), media_id, "",
       content::kRegistryStreamTypeTab);
 
   return device_id;

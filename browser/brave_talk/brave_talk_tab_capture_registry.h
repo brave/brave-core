@@ -16,8 +16,7 @@
 
 namespace brave_talk {
 
-class BraveTalkTabCaptureRegistry
-    : public KeyedService {
+class BraveTalkTabCaptureRegistry : public KeyedService {
  public:
   explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
   ~BraveTalkTabCaptureRegistry() override;
@@ -26,7 +25,6 @@ class BraveTalkTabCaptureRegistry
       delete;
 
   std::string AddRequest(content::WebContents* target_contents,
-                         content::DesktopMediaID source,
                          content::RenderFrameHost* owning_frame);
 
   bool VerifyRequest(int target_render_process_id, int target_render_frame_id);
