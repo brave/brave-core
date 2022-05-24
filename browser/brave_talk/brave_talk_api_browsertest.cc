@@ -210,7 +210,6 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
                        SubFrameOriginChangeInvalidatesRequest) {
-
   auto device_id = GetDeviceID("frame");
 
   // We should have a share request for the |target_contents()| now.
@@ -219,6 +218,21 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
       target_contents()->GetMainFrame()->GetRoutingID()));
 
   SetRequesterFrameOrigins("talk.brave.com", "example.com");
+
+  EXPECT_TRUE(content::ExecJs(requester_contents(),
+                              "delegateCaptureToFrame('" + device_id + "');"));
+  EXPECT_EQ(false,
+            content::EvalJs(requester_sub_frame(), "startCapturePromise"));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
+                       CantConsumeMainFrameTokenInSubFrame) {
+  auto device_id = GetDeviceID("");
+
+  // We should have a share request for the |target_contents()| now.
+  EXPECT_TRUE(registry()->VerifyRequest(
+      target_contents()->GetMainFrame()->GetProcess()->GetID(),
+      target_contents()->GetMainFrame()->GetRoutingID()));
 
   EXPECT_TRUE(content::ExecJs(requester_contents(),
                               "delegateCaptureToFrame('" + device_id + "');"));
