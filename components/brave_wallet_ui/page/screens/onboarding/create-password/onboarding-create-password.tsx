@@ -29,7 +29,7 @@ import { WalletPageActions } from '../../../actions'
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 export const OnboardingCreatePassword = () => {
   // routing
@@ -61,7 +61,7 @@ export const OnboardingCreatePassword = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingStepsNavigation
+          <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
             preventSkipAhead

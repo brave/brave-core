@@ -43,14 +43,14 @@ import {
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // storybook compiler thinks `randomUUID` doesnt exist
 const randomUUID = () => (
   window.crypto as Crypto & { randomUUID: () => string }
 ).randomUUID()
 
-export const OnboardingRecoveryPhrase = () => {
+export const OnboardingBackupRecoveryPhrase = () => {
   // redux
   const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
 
@@ -99,7 +99,7 @@ export const OnboardingRecoveryPhrase = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingStepsNavigation
+          <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
             currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
           />

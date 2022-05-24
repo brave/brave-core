@@ -599,13 +599,21 @@ export enum WalletRoutes {
   // onboarding
   Onboarding = '/crypto/onboarding',
   OnboardingWelcome = '/crypto/onboarding/welcome',
+
+  // onboarding (new wallet)
   OnboardingCreatePassword = '/crypto/onboarding/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/backup-wallet',
-  OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
-  OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
   OnboardingExplainRecoveryPhrase = '/crypto/onboarding/explain-recovery-phrase',
   OnboardingBackupRecoveryPhrase = '/crypto/onboarding/backup-recovery-phrase',
   OnboardingVerifyRecoveryPhrase = '/crypto/onboarding/verify-recovery-phrase',
+
+  // onboarding (import / restore)
+  OnboardingImportOrRestore = '/crypto/onboarding/import-or-restore',
+  OnboardingImportMetaMask = '/crypto/onboarding/import-metamask-wallet',
+  OnboardingRestoreWallet = '/crypto/onboarding/restore-wallet',
+  OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
+
+  // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 
   // accounts

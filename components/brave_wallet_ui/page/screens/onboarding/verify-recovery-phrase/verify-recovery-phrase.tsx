@@ -36,7 +36,7 @@ import {
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
 import { RecoveryPhrase } from '../components/recovery-phrase/recovery-phrase'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 export const OnboardingVerifyRecoveryPhrase = () => {
   // state
@@ -75,7 +75,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingStepsNavigation
+          <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
             currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
           />

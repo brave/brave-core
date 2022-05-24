@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
-import OnboardingBackupRecoveryPhrase from './onboarding-backup-recovery-phrase'
+import { OnboardingBackupRecoveryPhrase } from './onboarding-backup-recovery-phrase'
 
 export const _OnboardingBackupRecoveryPhrase = () => {
   return <WalletPageStory>
