@@ -53,7 +53,6 @@ void BraveTalkFrameJSHandler::ResetRemote(content::RenderFrame* render_frame) {
   render_frame_ = render_frame;
   brave_talk_frame_.reset();
 
-  // render_frame->GetRenderView()->GetWebView()->MainFrame()->ToWebLocalFrame()->
   EnsureConnected();
 }
 
