@@ -22,14 +22,18 @@ namespace brave_wallet {
 class BraveWalletProviderDelegate;
 class BraveWalletService;
 class KeyringService;
+class SolanaMessage;
+class TxService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
-                                 mojom::KeyringServiceObserver {
+                                 public mojom::KeyringServiceObserver,
+                                 public mojom::TxServiceObserver {
  public:
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
   SolanaProviderImpl(KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
+                     TxService* tx_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
@@ -72,6 +76,14 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                                      bool approved,
                                      const std::string& signature,
                                      const std::string& error);
+  void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
+                                  bool success,
+                                  const std::string& tx_meta_id,
+                                  const std::string& error_message);
+
+  absl::optional<SolanaMessage> GetDeserializedMessage(
+      const std::string& encoded_serialized_msg,
+      const std::string& account);
 
   // mojom::KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override {}
@@ -84,6 +96,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void AutoLockMinutesChanged() override {}
   void SelectedAccountChanged(mojom::CoinType coin) override;
 
+  // mojom::TxServiceObserver
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
+  void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+
   // This set is used to maintain connected status for each frame, it is a
   // separate non persistent status from site permission. It depends on if a
   // site successfully call connect or not, calling disconnect will remove
@@ -93,11 +110,15 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   // will be saved and future connect from the same site will not ask user for
   // permission again until the permission is removed.
   base::flat_set<std::string> connected_set_;
+  base::flat_map<std::string, SignAndSendTransactionCallback>
+      sign_and_send_tx_callbacks_;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<TxService> tx_service_ = nullptr;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
+  mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };

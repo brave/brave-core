@@ -543,7 +543,6 @@ void JSSolanaProvider::OnSignAndSendTransaction(
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    // const base::Value result_value(std::move(result));
     v8_result = v8_value_converter_->ToV8Value(&result, context);
   } else {
     std::unique_ptr<base::Value> formed_response =

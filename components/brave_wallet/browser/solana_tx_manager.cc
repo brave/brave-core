@@ -88,11 +88,17 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
-  GetSolanaBlockTracker()->GetLatestBlockhash(
-      base::BindOnce(&SolanaTxManager::OnGetLatestBlockhash,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(meta),
-                     std::move(callback)),
-      true);
+  const std::string blockhash = meta->tx()->message()->recent_blockhash();
+  if (blockhash.empty()) {
+    GetSolanaBlockTracker()->GetLatestBlockhash(
+        base::BindOnce(&SolanaTxManager::OnGetLatestBlockhash,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                       std::move(callback)),
+        true);
+  } else {
+    OnGetLatestBlockhash(std::move(meta), std::move(callback), blockhash, 0,
+                         mojom::SolanaProviderError::kSuccess, "");
+  }
 }
 
 void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
@@ -204,7 +210,8 @@ void SolanaTxManager::OnGetSignatureStatuses(
       continue;
 
     if (!signature_statuses[i]) {
-      if (meta->tx()->message()->last_valid_block_height() < block_height) {
+      if (meta->tx()->message()->last_valid_block_height() &&
+          meta->tx()->message()->last_valid_block_height() < block_height) {
         meta->set_status(mojom::TransactionStatus::Dropped);
         tx_state_manager_->AddOrUpdateTx(*meta);
       }

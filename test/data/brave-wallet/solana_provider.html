@@ -3,6 +3,7 @@
 <script>
   var connectedAccount = ''
   var signMessageResult = ''
+  var signAndSendTransactionResult = ''
 
   function solanaConnect() {
     window.solana.connect().then(result => {
@@ -40,8 +41,24 @@
       })
   }
 
+  function solanaSignAndSendTransaction(serializedTx) {
+    const tx = window.solana.createTransaction(serializedTx)
+    window.solana.signAndSendTransaction(tx)
+      .then(result => {
+        signAndSendTransactionResult = result.signature
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signAndSendTransactionResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
   function getSignMessageResult() {
     window.domAutomationController.send(signMessageResult)
+  }
+
+  function getSignAndSendTransactionResult() {
+    window.domAutomationController.send(signAndSendTransactionResult)
   }
 
 </script>

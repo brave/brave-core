@@ -109,10 +109,12 @@ base::Value SolanaTransaction::ToValue() const {
 }
 
 void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
-  DCHECK(tx_type >= mojom::TransactionType::Other &&
-         tx_type <=
-             mojom::TransactionType::
-                 SolanaSPLTokenTransferWithAssociatedTokenAccountCreation);
+  DCHECK((tx_type >= mojom::TransactionType::Other &&
+          tx_type <=
+              mojom::TransactionType::
+                  SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
+         tx_type == mojom::TransactionType::SolanaDappSignAndSendTransaction ||
+         tx_type == mojom::TransactionType::SolanaDappSignTransaction);
   tx_type_ = tx_type;
 }
 

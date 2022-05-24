@@ -357,18 +357,22 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
 TEST_F(SolanaTransactionUnitTest, SetTxType) {
   auto tx = SolanaTransaction(
       "", 0, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
-  int solana_min = static_cast<int>(mojom::TransactionType::Other);
-  int solana_max = static_cast<int>(
-      mojom::TransactionType::
-          SolanaSPLTokenTransferWithAssociatedTokenAccountCreation);
   int max = static_cast<int>(mojom::TransactionType::kMaxValue);
+  const base::flat_set<mojom::TransactionType> valid_types = {
+      mojom::TransactionType::Other,
+      mojom::TransactionType::SolanaSystemTransfer,
+      mojom::TransactionType::SolanaSPLTokenTransfer,
+      mojom::TransactionType::
+          SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      mojom::TransactionType::SolanaDappSignAndSendTransaction,
+      mojom::TransactionType::SolanaDappSignTransaction};
   for (int i = 0; i <= max; i++) {
     auto type = static_cast<mojom::TransactionType>(i);
-    if (i < solana_min || i > solana_max) {
-      EXPECT_DCHECK_DEATH(tx.set_tx_type(type));
-    } else {
+    if (valid_types.contains(type)) {
       tx.set_tx_type(type);
       EXPECT_EQ(tx.tx_type(), type);
+    } else {
+      EXPECT_DCHECK_DEATH(tx.set_tx_type(type));
     }
   }
 }
