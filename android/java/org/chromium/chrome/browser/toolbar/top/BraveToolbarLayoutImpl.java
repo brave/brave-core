@@ -447,7 +447,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     if (getToolbarDataProvider().getTab() == tab) {
                         showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
                     } else {
-                        mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId()) ? View.VISIBLE: View.GONE);
+                        mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId())
+                                        ? View.VISIBLE
+                                        : View.GONE);
                     }
                 }
             }
