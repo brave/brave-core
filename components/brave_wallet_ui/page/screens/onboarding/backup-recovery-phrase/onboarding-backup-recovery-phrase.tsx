@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -52,9 +51,6 @@ const randomUUID = () => (
 ).randomUUID()
 
 export const OnboardingRecoveryPhrase = () => {
-  // routing
-  const history = useHistory()
-
   // redux
   const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
 
@@ -75,14 +71,6 @@ export const OnboardingRecoveryPhrase = () => {
 
   const toggleShowPhrase = React.useCallback(() => {
     setIsPhraseShown(prev => !prev)
-  }, [])
-
-  const nextStep = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingVerifyRecoveryPhrase)
-  }, [])
-
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
   }, [])
 
   const onCopyPhrase = React.useCallback(async () => {
@@ -112,7 +100,7 @@ export const OnboardingRecoveryPhrase = () => {
         <StyledWrapper>
 
           <OnboardingStepsNavigation
-            goBack={goBack}
+            goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
             currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
           />
 
@@ -173,7 +161,7 @@ export const OnboardingRecoveryPhrase = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonNext')}
-              onSubmit={nextStep}
+              url={WalletRoutes.OnboardingVerifyRecoveryPhrase}
             />
           </NextButtonRow>
 

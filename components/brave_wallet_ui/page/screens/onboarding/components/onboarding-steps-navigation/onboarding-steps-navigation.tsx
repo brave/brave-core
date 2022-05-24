@@ -35,11 +35,11 @@ interface Props extends Omit<StepsNavigationProps<OnboardingSteps>, 'steps'> {}
 export const OnboardingStepsNavigation = ({
   currentStep,
   preventSkipAhead,
-  goBack
+  goBackUrl
 }: Props) => {
   return <StepsNavigation
-    goBack={goBack}
     steps={STEPS}
+    goBackUrl={goBackUrl}
     currentStep={currentStep}
     preventSkipAhead={preventSkipAhead}
   />

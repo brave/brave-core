@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 
 // utils
 // import { getLocale } from '../../../../../common/locale'
@@ -30,14 +29,6 @@ import {
 } from './onboarding-success.style'
 
 export const OnboardingSuccess = () => {
-  // routing
-  const history = useHistory()
-
-  // methods
-  const onComplete = React.useCallback(() => {
-    history.push(WalletRoutes.Portfolio)
-  }, [])
-
   // render
   return <WalletPageLayout>
     <OnboardingWrapper>
@@ -63,7 +54,7 @@ export const OnboardingSuccess = () => {
           text={
             'Go To Portfolio' // TODO: locale
           }
-          onSubmit={onComplete}
+          url={WalletRoutes.Portfolio}
         />
 
       </ButtonContainer>
