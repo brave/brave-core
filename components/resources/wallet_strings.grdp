@@ -542,4 +542,16 @@
   <message name="IDS_BRAVE_WALLET_ORDINAL_FIRST" desc="First list item label">First</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_THIRD" desc="Third list item label">Third</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_LAST" desc="Last list item label">Last</message>
+  
+  
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE" desc="Wallet is ready for use message">Congrats! Your wallet is ready</message>
+  <message name="IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION" desc="Wallet access description">Now you can easily access your wallet any time from the wallet icon in Brave Browser.</message>
+  <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO_BUTTON" desc="Link to wallet portfolio page">Go To Portfolio</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET" desc="Title of article link 'How to use a crypto wallet?'">How to use a crypto wallet?</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_THE_BEST_WALLET" desc="Title of article link 'What’s the best crypto wallet?'">What’s the best crypto wallet?</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_CRYPTO_BROWSER" desc="Title of article link 'What’s a crypto browser?'">What’s a crypto browser?</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WALLETS_BASICS" desc="Title of article link 'Crypto wallets 101'">Crypto wallets 101</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE" desc="Title of article link 'What’s a recovery phrase?'">What’s a recovery phrase?</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS" desc="Title of article link 'What are DApps?'">What are DApps?</message>
+  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3" desc="Title of article link 'What’s web 3?'">What’s web 3?</message>
 </grit-part>

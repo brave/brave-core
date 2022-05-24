@@ -163,6 +163,20 @@ provideStrings({
   braveWalletPasswordStrengthTooltipContainsNumber: '1 number',
   braveWalletPasswordStrengthTooltipContainsSpecialChar: '1 special character',
 
+  // Wallet Onboarding Success
+  braveWalletOnboardingSuccessTitle: 'Congrats! Your wallet is ready',
+  braveWalletOnboardingSuccessDescription: 'Now you can easily access your wallet any time from the wallet icon in Brave Browser.',
+  braveWalletGoToPortfolioButton: 'Go To Portfolio',
+
+  // Wallet Onboarding Success Article Links
+  braveWalletArticleLinkHowToUseAWallet: 'How to use a crypto wallet?',
+  braveWalletArticleLinkWhatsTheBestWallet: 'What’s the best crypto wallet?',
+  braveWalletArticleLinkWhatsACryptoBrowser: 'What’s a crypto browser?',
+  braveWalletArticleLinkWalletsBasics: 'Crypto wallets 101',
+  braveWalletArticleLinkWhatsARecoveryPhrase: 'What’s a recovery phrase?',
+  braveWalletArticleLinkWhatAreDapps: 'What are DApps?',
+  braveWalletArticleLinkWhatIsWeb3: 'What’s web 3?',
+
   // Lock Screen
   braveWalletEnterYourPassword: 'Enter your Brave Wallet password',
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',

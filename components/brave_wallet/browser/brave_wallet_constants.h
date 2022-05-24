@@ -728,6 +728,22 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletOrdinalFirst", IDS_BRAVE_WALLET_ORDINAL_FIRST},
     {"braveWalletOrdinalThird", IDS_BRAVE_WALLET_ORDINAL_THIRD},
     {"braveWalletOrdinalLast", IDS_BRAVE_WALLET_ORDINAL_LAST},
+    
+    
+    
+    {"braveWalletOnboardingSuccessTitle", IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_TITLE},
+    {"braveWalletOnboardingSuccessDescription", IDS_BRAVE_WALLET_ONBOARDING_SUCCESS_DESCRIPTION},
+    {"braveWalletGoToPortfolioButton", IDS_BRAVE_WALLET_GO_TO_PORTFOLIO_BUTTON},
+    {"braveWalletArticleLinkHowToUseAWallet", IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET},
+    {"braveWalletArticleLinkWhatsTheBestWallet", IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_THE_BEST_WALLET},
+    {"braveWalletArticleLinkWhatsACryptoBrowser", IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_CRYPTO_BROWSER},
+    {"braveWalletArticleLinkWalletsBasics", IDS_BRAVE_WALLET_ARTICLE_LINK_WALLETS_BASICS},
+    {"braveWalletArticleLinkWhatsARecoveryPhrase", IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE},
+    {"braveWalletArticleLinkWhatAreDapps", IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS},
+    {"braveWalletArticleLinkWhatIsWeb3", IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3},
+
+
+
     {"braveWalletWhatIsACryptoWallet",
      IDS_BRAVE_WALLET_WHAT_IS_A_CRYPTO_WALLET}};
 
