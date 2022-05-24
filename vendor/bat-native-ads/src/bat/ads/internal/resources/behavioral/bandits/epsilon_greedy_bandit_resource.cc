@@ -7,9 +7,9 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_server/catalog/catalog.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/segments/segments_json_reader.h"
 #include "bat/ads/internal/segments/segments_json_writer.h"
 #include "bat/ads/internal/segments/segments_util.h"
@@ -37,7 +37,7 @@ bool EpsilonGreedyBandit::IsInitialized() const {
   return is_initialized_;
 }
 
-void EpsilonGreedyBandit::LoadFromCatalog(const Catalog& catalog) {
+void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
   const SegmentList segments = GetSegments(catalog);
   const SegmentList parent_segments = GetParentSegments(segments);
   const std::string json = JSONWriter::WriteSegments(parent_segments);

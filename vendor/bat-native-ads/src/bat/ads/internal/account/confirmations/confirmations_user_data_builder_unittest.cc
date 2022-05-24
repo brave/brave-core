@@ -9,12 +9,11 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
-#include "bat/ads/pref_names.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -44,8 +43,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
   SetBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
-
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId, kCatalogId);
+  SetCatalogId(kCatalogId);
 
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
@@ -76,8 +74,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
   SetBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
-
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId, kCatalogId);
+  SetCatalogId(kCatalogId);
 
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;

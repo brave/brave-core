@@ -11,6 +11,7 @@
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/pref_names.h"
 
@@ -34,10 +35,8 @@ TEST_F(BatAdsDiagnosticsTest, Diagnostics) {
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId,
-                                        "da5dd0e8-71e9-4607-a45b-13e28b607a81");
-  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
-                                        NowAsTimestamp());
+  SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
+  SetCatalogLastUpdated(Now());
 
   SetLastUnIdleTimeDiagnosticEntry();
 

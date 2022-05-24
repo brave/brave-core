@@ -41,7 +41,7 @@ namespace ads {
 
 namespace {
 
-constexpr int64_t kRetryAfterSeconds = 15;
+constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 
 constexpr int kMinimumUnblindedTokens = 20;
 constexpr int kMaximumUnblindedTokens = 50;
@@ -360,7 +360,7 @@ void RefillUnblindedTokens::Retry() {
   }
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::Seconds(kRetryAfterSeconds),
+      kRetryAfter,
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(time));

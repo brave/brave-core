@@ -11,9 +11,7 @@
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
-#include "bat/ads/internal/ad_server/catalog/catalog.h"
-#include "bat/ads/internal/ad_server/catalog/catalog_campaign_info.h"
-#include "bat/ads/internal/ad_server/catalog/catalog_creative_set_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 
@@ -48,18 +46,14 @@ void RemoveDuplicates(SegmentList* segments) {
 
 }  // namespace
 
-SegmentList GetSegments(const Catalog& catalog) {
+SegmentList GetSegments(const CatalogInfo& catalog) {
   SegmentList segments;
 
-  const CatalogCampaignList catalog_campaigns = catalog.GetCampaigns();
-  for (const auto& catalog_campaign : catalog_campaigns) {
-    CatalogCreativeSetList catalog_creative_sets =
-        catalog_campaign.creative_sets;
-    for (const auto& catalog_creative_set : catalog_creative_sets) {
-      CatalogSegmentList catalog_segments = catalog_creative_set.segments;
-      for (const auto& catalog_segment : catalog_segments) {
-        DCHECK(!catalog_segment.name.empty());
-        segments.push_back(catalog_segment.name);
+  for (const auto& campaign : catalog.campaigns) {
+    for (const auto& creative_set : campaign.creative_sets) {
+      for (const auto& segment : creative_set.segments) {
+        DCHECK(!segment.name.empty());
+        segments.push_back(segment.name);
       }
     }
   }

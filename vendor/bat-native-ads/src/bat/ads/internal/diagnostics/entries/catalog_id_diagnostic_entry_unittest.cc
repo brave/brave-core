@@ -5,11 +5,10 @@
 
 #include "bat/ads/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
@@ -24,12 +23,10 @@ class BatAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {
 
 TEST_F(BatAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Arrange
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId,
-                                        "da5dd0e8-71e9-4607-a45b-13e28b607a81");
-
-  CatalogIdDiagnosticEntry diagnostic_entry;
+  SetCatalogId("da5dd0e8-71e9-4607-a45b-13e28b607a81");
 
   // Act
+  CatalogIdDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
@@ -40,9 +37,9 @@ TEST_F(BatAdsCatalogIdDiagnosticEntryTest, CatalogId) {
 
 TEST_F(BatAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   // Arrange
-  CatalogIdDiagnosticEntry diagnostic_entry;
 
   // Act
+  CatalogIdDiagnosticEntry diagnostic_entry;
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());

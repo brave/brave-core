@@ -8,10 +8,10 @@
 
 namespace ads {
 
-class Catalog;
+struct CatalogInfo;
 struct CreativesInfo;
 
-CreativesInfo BuildCreatives(const Catalog& catalog);
+CreativesInfo BuildCreatives(const CatalogInfo& catalog);
 
 }  // namespace ads
 

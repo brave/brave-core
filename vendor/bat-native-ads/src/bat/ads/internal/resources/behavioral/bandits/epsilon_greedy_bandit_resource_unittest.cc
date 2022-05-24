@@ -7,10 +7,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_server/catalog/catalog.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_file_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
+#include "bat/ads/internal/catalog/catalog_json_reader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -30,16 +31,17 @@ class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-       SuccessfullyInitializeWithValidCatalog) {
+       SuccessfullyInitializeWithCatalog) {
   // Arrange
-  const absl::optional<std::string> opt_value =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kCatalog);
-  ASSERT_TRUE(opt_value.has_value());
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
-  const std::string json = opt_value.value();
-
-  Catalog catalog;
-  ASSERT_TRUE(catalog.FromJson(json));
+  const absl::optional<CatalogInfo> catalog_optional =
+      JSONReader::ReadCatalog(json);
+  ASSERT_TRUE(catalog_optional);
+  const CatalogInfo& catalog = catalog_optional.value();
 
   // Act
   EpsilonGreedyBandit resource;
@@ -51,10 +53,9 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-       SuccessfullyInitializeWithInvalidCatalog) {
+       SuccessfullyInitializeWithEmptyCatalog) {
   // Arrange
-  Catalog catalog;
-  ASSERT_FALSE(catalog.FromJson("INVALID_CATALOG"));
+  CatalogInfo catalog;
 
   // Act
   EpsilonGreedyBandit resource;

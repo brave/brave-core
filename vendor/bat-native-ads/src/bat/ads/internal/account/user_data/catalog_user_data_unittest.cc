@@ -9,10 +9,9 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -43,7 +42,7 @@ class BatAdsConfirmationCatalogDtoUserDataTest : public UnitTestBase {
 
 TEST_F(BatAdsConfirmationCatalogDtoUserDataTest, GetCatalog) {
   // Arrange
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId, kCatalogId);
+  SetCatalogId(kCatalogId);
 
   // Act
   const std::string json = GetCatalogAsJson();

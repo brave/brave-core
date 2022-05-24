@@ -14,9 +14,9 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/ad_server/catalog/catalog.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/platform_helper.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_info.h"
 #include "bat/ads/internal/creatives/creative_daypart_info_aliases.h"
 #include "bat/ads/internal/creatives/creatives_info.h"
@@ -28,11 +28,11 @@
 
 namespace ads {
 
-CreativesInfo BuildCreatives(const Catalog& catalog) {
+CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
   CreativesInfo creatives;
 
   // Campaigns
-  for (const auto& campaign : catalog.GetCampaigns()) {
+  for (const auto& campaign : catalog.campaigns) {
     // Geo Targets
     base::flat_set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {

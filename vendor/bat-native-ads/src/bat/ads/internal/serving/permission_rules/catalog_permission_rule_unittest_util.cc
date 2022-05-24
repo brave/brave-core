@@ -5,22 +5,17 @@
 
 #include "bat/ads/internal/serving/permission_rules/catalog_permission_rule_unittest_util.h"
 
-#include "bat/ads/internal/ads_client_helper.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
 
 void ForceCatalogFrequencyCapPermission() {
-  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId,
-                                        "573c74fa-623a-4a46-adce-e688dfb7e8f5");
-
-  AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, 1);
-
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing, 7200000);
-
-  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
-                                        NowAsTimestamp());
+  SetCatalogId("573c74fa-623a-4a46-adce-e688dfb7e8f5");
+  SetCatalogVersion(1);
+  SetCatalogPing(base::Hours(2));
+  SetCatalogLastUpdated(Now());
 }
 
 }  // namespace ads

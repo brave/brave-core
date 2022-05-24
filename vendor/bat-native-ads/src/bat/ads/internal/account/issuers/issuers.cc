@@ -28,7 +28,7 @@ namespace ads {
 
 namespace {
 
-constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 
 absl::optional<IssuersInfo> ParseJson(const std::string& json) {
   const absl::optional<IssuersInfo>& issuers_optional =
@@ -140,8 +140,7 @@ void Issuers::Retry() {
   DCHECK(!timer_.IsRunning());
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::Seconds(kRetryAfterSeconds),
-      base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
+      kRetryAfter, base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(time));
 }

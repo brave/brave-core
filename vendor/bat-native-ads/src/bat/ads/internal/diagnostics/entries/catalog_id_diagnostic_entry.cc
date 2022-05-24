@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
 
@@ -27,7 +26,7 @@ std::string CatalogIdDiagnosticEntry::GetName() const {
 }
 
 std::string CatalogIdDiagnosticEntry::GetValue() const {
-  return AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
+  return GetCatalogId();
 }
 
 }  // namespace ads
