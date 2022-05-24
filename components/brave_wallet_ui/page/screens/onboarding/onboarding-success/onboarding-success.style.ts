@@ -18,6 +18,18 @@ export const IntroContainer = styled.div`
   justify-content: center;
 `
 
+export const ArticleLinksContainer = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+`
+
 export const ButtonContainer = styled.div`
   display: flex;
   flex: 1;
@@ -26,4 +38,6 @@ export const ButtonContainer = styled.div`
   & > * {
     width: 100%;
   }
+
+  margin-bottom: 80px;
 `

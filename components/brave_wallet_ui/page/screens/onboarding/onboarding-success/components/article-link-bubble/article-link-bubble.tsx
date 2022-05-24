@@ -14,14 +14,14 @@ import {
   IconBubbleColors
 } from './article-link-bubble.style'
 
-interface Props {
+export interface ArticleLinkBubbleProps {
   icon: ArticleLinkIcons
   iconBackgroundColor: IconBubbleColors
   text: string
   url: string
 }
 
-export const ArticleLinkBubble: React.FC<Props> = ({
+export const ArticleLinkBubble: React.FC<ArticleLinkBubbleProps> = ({
   icon,
   iconBackgroundColor,
   text,
