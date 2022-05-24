@@ -25,14 +25,14 @@ void SequentialUpdateChecker::CheckForUpdates(
     const base::flat_map<std::string, std::string>& additional_attributes,
     UpdateCheckCallback update_check_callback) {
   DCHECK(thread_checker_.CalledOnValidThread());
-  DCHECK(!update_context->ids.empty());
+  DCHECK(!update_context->components_to_check_for_updates.empty());
   VLOG(3) << "> CheckForUpdates";
 
   update_context_ = std::move(update_context);
   additional_attributes_ = additional_attributes;
   update_check_callback_ = std::move(update_check_callback);
 
-  for (const auto& id : update_context_->ids) {
+  for (const auto& id : update_context_->components_to_check_for_updates) {
     remaining_ids_.push_back(id);
   }
 
@@ -45,15 +45,25 @@ void SequentialUpdateChecker::CheckNext() {
   DCHECK(!remaining_ids_.empty());
   DCHECK(update_context_);
 
+  const auto id = remaining_ids_.front();
+  remaining_ids_.pop_front();
+
   scoped_refptr<UpdateContext> context = new UpdateContext(
       update_context_->config, update_context_->is_foreground,
-      update_context_->is_install, {remaining_ids_.front()},
+      update_context_->is_install, {id},
       update_context_->crx_state_change_callback,
       update_context_->notify_observers_callback,
       base::BindOnce(&SequentialUpdateChecker::OnClientUpdated,
                      weak_factory_.GetWeakPtr()),
       update_context_->persisted_data);
-  remaining_ids_.pop_front();
+
+
+  auto& component = context->components[id];
+  auto& crx_component = update_context_->components[id]->crx_component();
+  component->set_crx_component(*crx_component);
+  component->set_previous_version(crx_component->version);
+  component->set_previous_fp(crx_component->fingerprint);
+  context->components_to_check_for_updates.push_back(id);
 
   update_checker_ = UpdateChecker::Create(config_, metadata_);
   update_checker_->CheckForUpdates(
@@ -97,6 +107,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 }
 
 void SequentialUpdateChecker::OnClientUpdated(Error error) {
+  VLOG(1) << "OnClientUpdated";
   DCHECK(update_context_);
   if (error != Error::NONE)
     completion_error_ = error;
