@@ -13,13 +13,9 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/components/brave_search/common",
-    "//brave/components/brave_search/common:mojom",
-    "//brave/components/weekly_storage",
+    "//brave/components/brave_talk/common",
+    "//brave/components/brave_talk/common:mojom",
     "//components/prefs",
-    "//components/search_engines",
-    "//net",
-    "//services/network/public/cpp",
-    "//url",
+    "//content/public/browser"
   ]
 }
