@@ -22,10 +22,42 @@ namespace tor {
 
 #if BUILDFLAG(IS_WIN)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Windows)";
+constexpr const char kTorPluggableTransportComponentId[] =
+    "dnkcahhmfcanmkjhnjejoomdihffoefm";
+constexpr const char kComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0IHQS/8g4/"
+    "MBIKh6qQRVQ4auvWHFaqMtCO+8C8VEqNxCxR9BWZb5kL+0QaLOeDjdbzO/YXdFSt/9tRiH4sQ/"
+    "/0XEuxmatKebzKSBBwg30oTveQeGrmtQf0FU3f6iPoPjtujNVmMtG2Azp33NqTH+"
+    "lYwdTSDpXwZwgpt2xxBdEaBwWf/"
+    "gz8OYaAniqu4xKvFpa7ai5ihRhOEP05gGFTJGSB9KbyRo4P6VSJwMZoeGlNxYSJkRr1ZpzU0lN"
+    "L1qWBpBR2LCk8SpDXluT4CZeDWJ/Ux9c5nb1yma/"
+    "uOscVniKvRRohudxoXxwsGSFtowmNLOZWSo49j+k3eBrFjdkzxn6QIDAQAB";
 #elif BUILDFLAG(IS_MAC)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Mac)";
+constexpr const char kTorPluggableTransportComponentId[] =
+    "einfndjnccmoohcngmlldpmellegjjnk";
+constexpr const char kComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArO9CH6FdCcJkYZx073Atx+1OryS/"
+    "0uD2sHghK2ol3/SDmUmoJYSCMLgQ6DF+GtLpNTckRxss7ZM4HS1o/"
+    "RmUi02Y4siJzKjMiaXilI7EXMxwMmgTz8A6WEQo6uayBICFUQ1gzrqiQKSwQ47bjRfx2f5zuwn"
+    "Xb1sTJm+jRXpCIIeKs/YDG4e5hUHObnGR6dZCBt1R9N5DgKIPJttbfKRhJCCxY/"
+    "qeJ5maTLDHor8/h45B+VCw8w8jJ2e/"
+    "XO6PsXziSEJUIqbMBjeeLKrrFd7C7jU92MYAUzT3FWPW4Bd270iMfyLxbMhIpMeqzJvs+"
+    "wZdPOb8kowtrAtpRAQAFDX/twIDAQAB";
 #elif BUILDFLAG(IS_LINUX)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Linux)";
+constexpr const char kTorPluggableTransportComponentId[] =
+    "apfggiafobakjahnkchiecbomjgigkkn";
+constexpr const char kComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6V9OyRC0zja5KfQ+"
+    "cTbu1fgwD04dhcH36wU0NKlaERMSm/"
+    "kZqYFFyxr3THAki6Ajo+X4m89EW0mIcjhgvOeUqyb1AzoVLwX/"
+    "fKAM1Bf1q9zIjeDspaorSaniTtMMKcfxVI/"
+    "e+xKsPc+95NtVsxEtU1PoQdKbBvQfSXkz3QJA3Z5/"
+    "7vM+1omqwg5rCqvmqTXpyuhWOZl5lNeLRJ6zMfNiL/"
+    "rkvq+A7h3DRhABQdjKrd+UfsPhQuMlVS3tCvoHNvB/"
+    "qHEhWJqZzb0qpaMnHBCjZXD0s5PR5NxkEw/"
+    "Yd2Xcxt1xdKULx0AZWD8wx5X2Idhy5rJAHiWQ5iZCdo1IHuAy4wIDAQAB";
 #endif
 
 constexpr const char kSnowflakeExecutableName[] = "tor-snowflake-brave";
@@ -49,19 +81,6 @@ bool Initialize(const base::FilePath& install_dir) {
   }
   return true;
 }
-
-constexpr const char kTorPluggableTransportComponentId[] =
-    "hajklemofkhfcgodegbighbamaclcfgo";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA1f30bAR70KT2EJKNxP3O"
-    "5lXckE6+Io67Hydjmiou6R5iwkHkrCbelRqLmDpR1i9lR1uLxgc1ZVLKoy0bWeX4"
-    "CFu/qwyrWvQ3fnzZ6+AZPk7r2sI56pcj94/RrrVkhvsWwOC6NordeJSLvjlYt+wQ"
-    "44UDjobpEaW3p7mz1eXJDNIARL/aI4ARYqWTV2/xtACh1uubSVEo9h7R1TGLTI4A"
-    "67X5qtp9FRvgB2O/QHDbdlVXZkhFA3/Bf7k+JonXzpHAbvOXA/QnS8zILYpoOf7d"
-    "ySPcI0VBeiH2lM/CX+ZKv+nfOTdBRnWDoE9MxE1eUNWVxdrn/7BsVZh56xnLKO8D"
-    "IVkVkE2/e9CNLqSfcAazU672Ro3oA/8XjcyYbLjzbmV3FM85KgEEq6OMlGbSroBi"
-    "5KHW/4YhYoRKljhePtuOKmaNNMcZ13iBtiXjZByce+FKfVDw7Lw1wzB7mF4YBfeO"
-    "I0AI8JYknZEB8AkrOEMvPvokwXISqRQjkIr7DH3SV4WxAgMBAAE=";
 
 BraveTorPluggableTransportUpdater::BraveTorPluggableTransportUpdater(
     BraveComponent::Delegate* component_delegate,
