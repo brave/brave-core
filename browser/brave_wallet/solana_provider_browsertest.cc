@@ -249,17 +249,11 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
   GURL url = https_server()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  // Disconnected state will be rejcted.
-  constexpr char message[] = "bravey baby!";
-  CallSolanaSignMessage(message, "utf8");
-  WaitForResultReady();
-  EXPECT_EQ(GetSignMessageResult(),
-            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-
   CallSolanaConnect();
   UserGrantPermission(true);
   ASSERT_TRUE(IsSolanaConnected());
 
+  constexpr char message[] = "bravey baby!";
   size_t request_index = 0;
   CallSolanaSignMessage(message, "utf8");
   EXPECT_TRUE(
