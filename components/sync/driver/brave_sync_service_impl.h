@@ -20,6 +20,7 @@ namespace syncer {
 
 class BraveSyncAuthManager;
 class SyncServiceImplDelegate;
+class SyncServiceCrypto;
 
 class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
@@ -54,7 +55,11 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void Initialize() override;
 
  private:
+  friend class BraveSyncServiceImplTest;
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           ForcedSetDecryptionPassphrase);
   BraveSyncAuthManager* GetBraveSyncAuthManager();
+  SyncServiceCrypto* GetCryptoForTests();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 

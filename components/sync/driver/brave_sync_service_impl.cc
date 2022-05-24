@@ -154,6 +154,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
 
   syncer::SyncUserSettings* sync_user_settings = GetUserSettings();
   if (!sync_user_settings->IsFirstSetupComplete()) {
+    // If first setup has not been complete, we don't need to force
     return;
   }
 
@@ -170,6 +171,10 @@ void BraveSyncServiceImpl::OnEngineInitialized(
     VLOG(1) << "Forced set decryption passphrase result is "
             << set_passphrase_result;
   }
+}
+
+SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTests() {
+  return &crypto_;
 }
 
 }  // namespace syncer
