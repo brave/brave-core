@@ -8,7 +8,7 @@ import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 
 // utils
-// import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '../../../../../common/locale'
 
 // images
 import WalletAccessSvg from './images/wallet-access.svg'
@@ -41,43 +41,43 @@ const ARTICLES: ArticleLinkBubbleProps[] = [
   {
     icon: 'wallet',
     iconBackgroundColor: 'purple400',
-    text: 'How to use a crypto wallet?',
+    text: getLocale('braveWalletArticleLinkHowToUseAWallet'),
     url: 'https://brave.com/learn/what-is-crypto-wallet/#how-to-use-a-crypto-wallet'
   },
   {
     icon: 'wallet-with-coins',
     iconBackgroundColor: 'yellow500',
-    text: 'What’s the best crypto wallet?',
+    text: getLocale('braveWalletArticleLinkWhatsTheBestWallet'),
     url: 'https://brave.com/learn/what-is-best-crypto-wallet/'
   },
   {
     icon: 'smartphone-desktop',
     iconBackgroundColor: 'green600',
-    text: 'What’s a crypto browser?',
+    text: getLocale('braveWalletArticleLinkWhatsACryptoBrowser'),
     url: 'https://brave.com/learn/what-are-crypto-browsers/'
   },
   {
     icon: 'crypto-wallets',
     iconBackgroundColor: 'magenta400',
-    text: 'Crypto wallets 101',
+    text: getLocale('braveWalletArticleLinkWalletsBasics'),
     url: 'https://brave.com/learn/what-is-crypto-wallet/'
   },
   {
     icon: 'key',
     iconBackgroundColor: 'red200',
-    text: 'What’s a recovery phrase?',
+    text: getLocale('braveWalletArticleLinkWhatsARecoveryPhrase'),
     url: 'https://brave.com/learn/wallet-recovery-phrase/'
   },
   {
     icon: 'ipfs',
     iconBackgroundColor: 'orange300',
-    text: 'What are DApps?',
+    text: getLocale('braveWalletArticleLinkWhatAreDapps'),
     url: 'https://brave.com/learn/what-are-dapps/'
   },
   {
     icon: 'grid',
     iconBackgroundColor: 'blue300',
-    text: 'What’s web 3?',
+    text: getLocale('braveWalletArticleLinkWhatIsWeb3'),
     url: 'https://brave.com/learn/what-is-web3/'
   }
 ]
@@ -108,13 +108,11 @@ export const OnboardingSuccess = () => {
 
       <IntroContainer>
         <Title>{
-          // getLocale('braveWalletWelcomeTitle')
-          'Congrats! Your wallet is ready'
+          getLocale('braveWalletOnboardingSuccessTitle')
         }</Title>
 
         <Description textAlign='center'>{
-          // getLocale('braveWalletWelcomeDescription')
-          'Now you can easily access your wallet any time from the wallet icon in Brave Browser.'
+          getLocale('braveWalletOnboardingSuccessDescription')
         }</Description>
 
         <IntroImg src={WalletAccessSvg} height={118} />
@@ -128,9 +126,7 @@ export const OnboardingSuccess = () => {
       <ButtonContainer>
         <NavButton
           buttonType='primary'
-          text={
-            'Go To Portfolio' // TODO: locale
-          }
+          text={getLocale('braveWalletGoToPortfolioButton')}
           onSubmit={onComplete}
         />
 
