@@ -542,10 +542,7 @@ const util = {
   },
 
   buildTarget: (target = config.buildTarget, options = config.defaultOptions) => {
-    // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
-    // debugging issues (e.g., slowness or remote-failures).
     const buildId = crypto.randomUUID()
-    options.env.AUTONINJA_BUILD_ID = buildId
     console.log('building ' + target + ' (id=' + buildId + ') ...')
 
     let num_compile_failure = 1
@@ -585,7 +582,10 @@ const util = {
       util.run('goma_ctl', ['showflags'], options)
       util.run('goma_ctl', ['stat'], options)
     }
-
+    
+    // Setting `AUTONINJA_BUILD_ID` allows tracing Goma remote execution which helps with
+    // debugging issues (e.g., slowness or remote-failures).
+    options.env.AUTONINJA_BUILD_ID = buildId
     util.run('autoninja', ninjaOpts, options)
 
     if (config.isCI && config.use_goma) {
