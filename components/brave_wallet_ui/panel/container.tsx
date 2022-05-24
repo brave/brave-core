@@ -108,7 +108,8 @@ function Container (props: Props) {
     defaultCurrencies,
     transactions,
     userVisibleTokensInfo,
-    defaultAccounts
+    defaultAccounts,
+    defaultNetworks
   } = props.wallet
 
   const {
@@ -651,6 +652,7 @@ function Container (props: Props) {
             onCancel={onCancelSigning}
             onSign={onSignData}
             selectedNetwork={getNetworkInfo(selectedNetwork.chainId, selectedNetwork.coin, networkList)}
+            defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />

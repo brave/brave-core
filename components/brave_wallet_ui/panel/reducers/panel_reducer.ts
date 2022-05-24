@@ -135,13 +135,6 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.signMessage, (state: any, payload: SignMessagePayload[]) => {
-    return {
-      ...state,
-      signMessageData: payload
-    }
-  })
-
   reducer.on(PanelActions.setHardwareWalletInteractionError, (state: any, payload?: HardwareWalletResponseCodeType) => {
     return {
       ...state,
