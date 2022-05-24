@@ -4,13 +4,17 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 
 // utils
 import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
 
 // routes
 import { PageState, WalletRoutes } from '../../../../constants/types'
+
+// actions
+import { WalletPageActions } from '../../../actions'
 
 // styles
 import { ErrorText, ErrorXIcon } from '../../../../components/shared/style'
@@ -40,7 +44,11 @@ export const OnboardingVerifyRecoveryPhrase = () => {
   const [hasSelectedWords, setHasSelectedWords] = React.useState(false)
 
   // redux
+  const dispatch = useDispatch()
   const { mnemonic } = useSelector(({ page }: { page: PageState }) => page)
+
+  // routing
+  const history = useHistory()
 
   // methods
   const onSelectedWordsUpdated = React.useCallback((words: any[]) => {
@@ -49,6 +57,11 @@ export const OnboardingVerifyRecoveryPhrase = () => {
 
   const onPhraseVerificationUpdated = React.useCallback((doesWordOrderMatch: boolean) => {
     setNextStepEnabled(doesWordOrderMatch)
+  }, [])
+
+  const onNextStep = React.useCallback(() => {
+    dispatch(WalletPageActions.walletBackupComplete())
+    history.push(WalletRoutes.OnboardingComplete)
   }, [])
 
   // memos
@@ -110,7 +123,7 @@ export const OnboardingVerifyRecoveryPhrase = () => {
               buttonType='primary'
               text={getLocale('braveWalletButtonNext')}
               disabled={!nextStepEnabled}
-              url={WalletRoutes.OnboardingComplete}
+              onSubmit={onNextStep}
             />
           </NextButtonRow>
 
