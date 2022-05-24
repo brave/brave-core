@@ -13,12 +13,16 @@ import { useDispatch } from 'react-redux'
 // images
 import WalletAccessSvg from './images/wallet-access.svg'
 
+// routes
+import { WalletRoutes } from '../../../../constants/types'
+
+// actions
+import { WalletPageActions } from '../../../actions'
+
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
-
-// routes
-import { WalletRoutes } from '../../../../constants/types'
+import { ArticleLinkBubble } from './components/article-link-bubble/article-link-bubble'
 
 // styles
 import {
@@ -31,9 +35,6 @@ import {
   IntroContainer,
   IntroImg
 } from './onboarding-success.style'
-
-// actions
-import { WalletPageActions } from '../../../actions'
 
 export const OnboardingSuccess = () => {
   // routing
@@ -66,6 +67,13 @@ export const OnboardingSuccess = () => {
         <IntroImg src={WalletAccessSvg} height={118} />
 
       </IntroContainer>
+
+      <ArticleLinkBubble
+        icon='key'
+        iconBackgroundColor='red200'
+        text='What’s a recovery phrase?'
+        url='brave.com'
+      />
 
       <ButtonContainer>
         <NavButton
