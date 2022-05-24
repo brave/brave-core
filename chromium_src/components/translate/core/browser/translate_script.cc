@@ -9,6 +9,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "brave/common/brave_services_key.h"
+#include "brave/common/network_constants.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
@@ -22,7 +24,7 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
   const useGoogleTranslateEndpoint = %s;
   const securityOriginHost = new URL(securityOrigin).host;
   const redirectToSecurityOrigin = (url) => {
-    new_url = new URL(url);
+    let new_url = new URL(url);
     if (useGoogleTranslateEndpoint && new_url.pathname === '/translate') {
       new_url.host = 'translate.googleapis.com';
       new_url.pathname = '/translate_a/t';
@@ -37,6 +39,8 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
                                      user = "", password = "") {
       this.realOpen(method, redirectToSecurityOrigin(url), async, user,
                     password);
+      if (!useGoogleTranslateEndpoint)
+        this.setRequestHeader('%s', '%s');
     }
   };
   originalOnLoadCSS = cr.googleTranslate.onLoadCSS;
@@ -80,7 +84,8 @@ void TranslateScript::OnScriptFetchComplete(bool success,
   const std::string new_data = base::StrCat(
       {base::StringPrintf(
            kRedirectAllRequestsToSecurityOrigin,
-           translate::UseGoogleTranslateEndpoint() ? "true" : "false"),
+           translate::UseGoogleTranslateEndpoint() ? "true" : "false",
+           kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)),
        data});
   ChromiumTranslateScript::OnScriptFetchComplete(success, new_data);
 }
