@@ -17,8 +17,7 @@
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry
-    : public MediaCaptureDevicesDispatcher::Observer,
-      public KeyedService {
+    : public KeyedService {
  public:
   explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
   ~BraveTalkTabCaptureRegistry() override;
@@ -35,7 +34,6 @@ class BraveTalkTabCaptureRegistry
  private:
   class LiveRequest;
 
-  LiveRequest* FindRequest(const content::WebContents* target_contents) const;
   LiveRequest* FindRequest(int target_render_process_id,
                            int target_render_frame_id) const;
   void KillRequest(LiveRequest* request);

@@ -18,8 +18,7 @@
 namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry::LiveRequest
-    : public content::WebContentsObserver,
-      public KeyedService {
+    : public content::WebContentsObserver {
  public:
   LiveRequest(content::WebContents* target_contents,
               BraveTalkTabCaptureRegistry* registry)
@@ -42,8 +41,6 @@ class BraveTalkTabCaptureRegistry::LiveRequest
            render_frame_id_ == render_frame_id;
   }
 
-  url::Origin origin() const { return origin_; }
-
  protected:
   void WebContentsDestroyed() override {
     registry_->KillRequest(this);  // Deletes |this|.
@@ -51,27 +48,24 @@ class BraveTalkTabCaptureRegistry::LiveRequest
 
  private:
   const raw_ptr<BraveTalkTabCaptureRegistry> registry_;
-  url::Origin origin_;
   int render_process_id_;
   int render_frame_id_;
 };
 
 BraveTalkTabCaptureRegistry::BraveTalkTabCaptureRegistry(
     content::BrowserContext* context)
-    : browser_context_(context) {
-  MediaCaptureDevicesDispatcher::GetInstance()->AddObserver(this);
-}
+    : browser_context_(context) {}
 
-BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() {
-  MediaCaptureDevicesDispatcher::GetInstance()->RemoveObserver(this);
-}
+BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() = default;
 
 std::string BraveTalkTabCaptureRegistry::AddRequest(
     content::WebContents* target_contents,
     content::DesktopMediaID source,
     content::RenderFrameHost* owning_frame) {
   std::string device_id;
-  LiveRequest* const request = FindRequest(target_contents);
+  LiveRequest* const request =
+      FindRequest(target_contents->GetMainFrame()->GetProcess()->GetID(),
+                  target_contents->GetMainFrame()->GetRoutingID());
 
   if (request) {
     // Delete the request before creating it's replacement.
@@ -85,16 +79,6 @@ std::string BraveTalkTabCaptureRegistry::AddRequest(
       content::kRegistryStreamTypeTab);
 
   return device_id;
-}
-
-BraveTalkTabCaptureRegistry::LiveRequest*
-BraveTalkTabCaptureRegistry::FindRequest(
-    const content::WebContents* contents) const {
-  for (const auto& request : requests_) {
-    if (request->web_contents() == contents)
-      return request.get();
-  }
-  return nullptr;
 }
 
 BraveTalkTabCaptureRegistry::LiveRequest*
