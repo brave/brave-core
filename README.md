@@ -105,3 +105,6 @@ The easiest known way to find your team ID is to log into your [Apple Developer]
 <br>`https://developer.apple.com/account/<TEAM ID>`
 
 Use this string literal in the above, `DevTeam.xcconfig` file to code sign
+
+### Attribution
+This repository is a fork of [Firefox iOS Browser](https://github.com/mozilla-mobile/firefox-ios)
