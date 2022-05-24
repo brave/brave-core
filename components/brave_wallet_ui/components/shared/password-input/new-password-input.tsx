@@ -146,7 +146,7 @@ export const NewPasswordInput = ({
           value={confirmedPassword}
           onChange={handlePasswordConfirmationChanged}
           onKeyDown={handleKeyDown}
-          autoFocus={autoFocus}
+          autoFocus={false}
           autoComplete='off'
         />
         {showToggleButton &&
