@@ -227,7 +227,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private boolean mIsNewsOn;
     private boolean mIsShowOptin;
     private boolean mIsShowNewsOn;
-    private int mmViewedNewsCardsCount;
+    private int mPrevVisibleNewsCardPosition = -1;
+    private int mNewsSessionCardViews;
 
     private boolean mIsFeedLoaded;
     private CopyOnWriteArrayList<FeedItemsCard> mExistingNewsFeedObject;
@@ -860,15 +861,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     ? SharedPreferencesManager.getInstance().readInt(
                             BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
                     : 0;
-            mmViewedNewsCardsCount = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
-                                             "mViewedNewsCardsCount_" + tab.getId())
-                                                   : 0;
 
             if (prevScrollPosition == 0 && prevRecyclerViewPosition == 0
                     && prevRecyclerViewItemPosition == 0) {
                 isFeedLoaded = false;
                 existingNewsFeedObject = null;
-                mmViewedNewsCardsCount = 0;
             }
 
             if (!isFeedLoaded || isFromNewTab) {
@@ -1137,8 +1134,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    int firstCompletelyVisibleItemPosition =
-                            linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+
                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                         mEndCardViewTime = System.currentTimeMillis();
                         long timeDiff = mEndCardViewTime - mStartCardViewTime;
@@ -1152,21 +1148,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                         mBraveNewsController.onPromotedItemView(
                                                 mUuid, mCreativeInstanceId);
                                     }
-                                } else {
-                                    mmViewedNewsCardsCount++;
-                                    SharedPreferencesManager.getInstance().writeInt(
-                                            "mViewedNewsCardsCount_"
-                                                    + BraveActivity.getBraveActivity()
-                                                              .getActivityTab()
-                                                              .getId(),
-                                            mmViewedNewsCardsCount);
-
-                                    if (mmViewedNewsCardsCount > 0) {
-                                        mBraveNewsController.onSessionCardViewsCountChanged(
-                                                (short) mmViewedNewsCardsCount);
-                                    }
                                 }
                             }
+                        }
+
+                        int lastVisibleItemPosition =
+                                linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                        if (lastVisibleItemPosition > -1
+                                && lastVisibleItemPosition > mPrevVisibleNewsCardPosition) {
+                            for (int i = mPrevVisibleNewsCardPosition + 1;
+                                    i <= lastVisibleItemPosition; i++) {
+                                FeedItemsCard itemsCard = mNewsItemsFeedCard.get(i);
+                                if (itemsCard != null) {
+                                    List<FeedItemCard> feedItems = itemsCard.getFeedItems();
+                                    // Two items are shown as two cards side by side,
+                                    // and three or more items is shown as one card as a list
+                                    mNewsSessionCardViews +=
+                                            feedItems != null && feedItems.size() == 2 ? 2 : 1;
+                                }
+                            }
+                            mBraveNewsController.onSessionCardViewsCountChanged(
+                                    (short) mNewsSessionCardViews);
+                            mPrevVisibleNewsCardPosition = lastVisibleItemPosition;
                         }
                     }
 
@@ -1607,7 +1610,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     mNTPBackgroundImagesBridge.getTopSites();
                 }
             }
-        } 
+        }
     };
 
     private FetchWallpaperWorkerTask.WallpaperRetrievedCallback
