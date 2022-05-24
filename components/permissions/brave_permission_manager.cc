@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/auto_reset.h"
 #include "components/permissions/permission_context_base.h"
 #include "content/public/browser/browser_thread.h"
 #include "url/origin.h"
@@ -31,56 +32,35 @@ GURL BravePermissionManager::GetCanonicalOrigin(
                                                embedding_origin);
 }
 
-void BravePermissionManager::ResetPermissionViaContentSetting(
-    ContentSettingsType type,
-    const GURL& requesting_origin,
-    const GURL& embedding_origin) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  PermissionContextBase* context = GetPermissionContext(type);
-  if (!context)
-    return;
-  context->ResetPermission(
-      GetCanonicalOrigin(type, requesting_origin, embedding_origin),
-      url::Origin::Create(embedding_origin).GetURL());
-}
-
-void BravePermissionManager::RequestPermissionsDeprecated(
+void BravePermissionManager::RequestPermissionsForOrigin(
     const std::vector<blink::PermissionType>& permissions,
     content::RenderFrameHost* render_frame_host,
     const GURL& requesting_origin,
     bool user_gesture,
     base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
         callback) {
-  RequestPermissions(permissions, render_frame_host, requesting_origin,
-                     user_gesture, std::move(callback));
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  base::AutoReset<GURL> auto_reset_requesting_origin(&forced_requesting_origin_,
+                                                     requesting_origin);
+  return RequestPermissionsFromCurrentDocument(
+      permissions, render_frame_host, user_gesture, std::move(callback));
 }
 
 blink::mojom::PermissionStatus
-BravePermissionManager::GetPermissionStatusForFrame(
+BravePermissionManager::GetPermissionStatusForOrigin(
     blink::PermissionType permission,
     content::RenderFrameHost* render_frame_host,
     const GURL& requesting_origin) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  ContentSettingsType type =
-      PermissionUtil::PermissionTypeToContentSetting(permission);
-
-  const GURL embedding_origin =
-      GetEmbeddingOriginInternal(render_frame_host, requesting_origin);
-
-  PermissionResult result = GetPermissionStatusHelper(
-      type,
-      /*render_process_host=*/nullptr, render_frame_host, requesting_origin,
-      embedding_origin);
-
-  return ContentSettingToPermissionStatusInternal(result.content_setting);
+  base::AutoReset<GURL> auto_reset_requesting_origin(&forced_requesting_origin_,
+                                                     requesting_origin);
+  return GetPermissionStatusForCurrentDocument(permission, render_frame_host);
 }
-
-PermissionResult BravePermissionManager::GetPermissionStatusDeprecated(
-    ContentSettingsType permission,
-    const GURL& requesting_origin,
-    const GURL& embedding_origin) {
-  return PermissionManager::GetPermissionStatusDeprecated(
-      permission, requesting_origin, embedding_origin);
+void BravePermissionManager::ResetPermission(blink::PermissionType permission,
+                                             const GURL& requesting_origin,
+                                             const GURL& embedding_origin) {
+  PermissionManager::ResetPermission(permission, requesting_origin,
+                                     embedding_origin);
 }
 
 }  // namespace permissions

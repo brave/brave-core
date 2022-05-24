@@ -195,7 +195,7 @@ void BraveWalletPermissionContext::RequestPermissions(
   }
 
   std::vector<blink::PermissionType> types(addresses.size(), permission);
-  permission_manager->RequestPermissionsDeprecated(
+  permission_manager->RequestPermissionsForOrigin(
       types, rfh, origin.GetURL(), rfh->HasTransientUserActivation(),
       std::move(callback));
 }
@@ -233,18 +233,20 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
     return;
   }
 
+  const ContentSettingsType content_settings_type =
+      PermissionUtil::PermissionTypeToContentSettingSafe(permission);
+
   std::vector<std::string> allowed_accounts;
   url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
   for (const auto& address : addresses) {
     url::Origin sub_request_origin;
     bool success = brave_wallet::GetSubRequestOrigin(
-        ContentSettingsTypeToRequestType(
-            PermissionUtil::PermissionTypeToContentSettingSafe(permission)),
-        origin, address, &sub_request_origin);
+        ContentSettingsTypeToRequestType(content_settings_type), origin,
+        address, &sub_request_origin);
     if (success) {
-      auto result = permission_manager->GetPermissionStatusForFrame(
+      auto status = permission_manager->GetPermissionStatusForOrigin(
           permission, rfh, sub_request_origin.GetURL());
-      if (result == blink::mojom::PermissionStatus::GRANTED) {
+      if (status == blink::mojom::PermissionStatus::GRANTED) {
         allowed_accounts.push_back(address);
       }
     }
@@ -255,17 +257,19 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
 
 // static
 bool BraveWalletPermissionContext::AddPermission(
-    ContentSettingsType content_settings_type,
+    blink::PermissionType permission,
     content::BrowserContext* context,
     const url::Origin& origin,
     const std::string& account) {
   bool has_permission;
-  if (!HasPermission(content_settings_type, context, origin, account,
-                     &has_permission))
+  if (!HasPermission(permission, context, origin, account, &has_permission))
     return false;
 
   if (has_permission)
     return true;
+
+  const ContentSettingsType content_settings_type =
+      PermissionUtil::PermissionTypeToContentSettingSafe(permission);
 
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
@@ -284,7 +288,7 @@ bool BraveWalletPermissionContext::AddPermission(
 
 // static
 bool BraveWalletPermissionContext::HasPermission(
-    ContentSettingsType content_settings_type,
+    blink::PermissionType permission,
     content::BrowserContext* context,
     const url::Origin& origin,
     const std::string& account,
@@ -296,6 +300,9 @@ bool BraveWalletPermissionContext::HasPermission(
   if (!permission_manager)
     return false;
 
+  const ContentSettingsType content_settings_type =
+      PermissionUtil::PermissionTypeToContentSettingSafe(permission);
+
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
           ContentSettingsTypeToRequestType(content_settings_type), origin,
@@ -303,18 +310,17 @@ bool BraveWalletPermissionContext::HasPermission(
     return false;
   }
 
-  permissions::PermissionResult result =
-      permission_manager->GetPermissionStatusDeprecated(
-          content_settings_type, origin_wallet_address.GetURL(),
-          origin_wallet_address.GetURL());
+  auto status = permission_manager->GetPermissionStatus(
+      permission, origin_wallet_address.GetURL(),
+      origin_wallet_address.GetURL());
 
-  *has_permission = result.content_setting == CONTENT_SETTING_ALLOW;
+  *has_permission = status == blink::mojom::PermissionStatus::GRANTED;
   return true;
 }
 
 // static
 bool BraveWalletPermissionContext::ResetPermission(
-    ContentSettingsType content_settings_type,
+    blink::PermissionType permission,
     content::BrowserContext* context,
     const url::Origin& origin,
     const std::string& account) {
@@ -323,6 +329,9 @@ bool BraveWalletPermissionContext::ResetPermission(
   if (!permission_manager)
     return false;
 
+  const ContentSettingsType content_settings_type =
+      PermissionUtil::PermissionTypeToContentSettingSafe(permission);
+
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
           ContentSettingsTypeToRequestType(content_settings_type), origin,
@@ -330,17 +339,20 @@ bool BraveWalletPermissionContext::ResetPermission(
     return false;
   }
 
-  permission_manager->ResetPermissionViaContentSetting(
-      content_settings_type, origin_wallet_address.GetURL(),
-      origin_wallet_address.GetURL());
+  permission_manager->ResetPermission(permission,
+                                      origin_wallet_address.GetURL(),
+                                      origin_wallet_address.GetURL());
   return true;
 }
 
 // static
 std::vector<std::string>
 BraveWalletPermissionContext::GetWebSitesWithPermission(
-    ContentSettingsType content_settings_type,
+    blink::PermissionType permission,
     content::BrowserContext* context) {
+  const ContentSettingsType content_settings_type =
+      PermissionUtil::PermissionTypeToContentSettingSafe(permission);
+
   HostContentSettingsMap* map =
       PermissionsClient::Get()->GetSettingsMap(context);
   ContentSettingsForOneType settings;
@@ -359,7 +371,7 @@ BraveWalletPermissionContext::GetWebSitesWithPermission(
 
 // static
 bool BraveWalletPermissionContext::ResetWebSitePermission(
-    ContentSettingsType content_settings_type,
+    blink::PermissionType permission,
     content::BrowserContext* context,
     const std::string& formed_website) {
   auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
@@ -368,8 +380,7 @@ bool BraveWalletPermissionContext::ResetWebSitePermission(
   if (!permission_manager || !url.is_valid())
     return false;
 
-  permission_manager->ResetPermissionViaContentSetting(content_settings_type,
-                                                       url, url);
+  permission_manager->ResetPermission(permission, url, url);
   return true;
 }
 

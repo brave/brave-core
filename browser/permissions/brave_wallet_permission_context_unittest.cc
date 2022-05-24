@@ -36,11 +36,11 @@ TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
   url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const struct {
     const char* address;
-    ContentSettingsType type;
+    blink::PermissionType type;
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
-                ContentSettingsType::BRAVE_ETHEREUM},
+                blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                ContentSettingsType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     bool has_permission;
     bool success = permissions::BraveWalletPermissionContext::HasPermission(
@@ -66,11 +66,11 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetPermission) {
   url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const struct {
     const char* address;
-    ContentSettingsType type;
+    blink::PermissionType type;
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
-                ContentSettingsType::BRAVE_ETHEREUM},
+                blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                ContentSettingsType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].type, browser_context(), origin, cases[i].address);
@@ -107,18 +107,21 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
   const struct {
     const char* address;
     ContentSettingsType type;
-  } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
-                ContentSettingsType::BRAVE_ETHEREUM},
-               {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                ContentSettingsType::BRAVE_SOLANA}};
+    blink::PermissionType permission;
+  } cases[] = {
+      {"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
-        cases[i].type, browser_context(), origin, cases[i].address);
+        cases[i].permission, browser_context(), origin, cases[i].address);
     EXPECT_TRUE(success) << "case: " << i;
 
     std::vector<std::string> web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
-            cases[i].type, browser_context());
+            cases[i].permission, browser_context());
     EXPECT_EQ(web_sites.size(), (uint32_t)1);
 
     url::Origin origin_wallet_address;
@@ -140,32 +143,35 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetWebSitePermission) {
   const struct {
     const char* address;
     ContentSettingsType type;
-  } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
-                ContentSettingsType::BRAVE_ETHEREUM},
-               {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                ContentSettingsType::BRAVE_SOLANA}};
+    blink::PermissionType permission;
+  } cases[] = {
+      {"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
-        cases[i].type, browser_context(), origin, cases[i].address);
+        cases[i].permission, browser_context(), origin, cases[i].address);
     EXPECT_TRUE(success) << "case: " << i;
 
     std::vector<std::string> web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
-            cases[i].type, browser_context());
+            cases[i].permission, browser_context());
     EXPECT_EQ(web_sites.size(), (uint32_t)1);
 
     // Not a valid URL test
     EXPECT_FALSE(
         permissions::BraveWalletPermissionContext::ResetWebSitePermission(
-            cases[i].type, browser_context(), "not_valid"));
+            cases[i].permission, browser_context(), "not_valid"));
 
     EXPECT_TRUE(
         permissions::BraveWalletPermissionContext::ResetWebSitePermission(
-            cases[i].type, browser_context(), web_sites[0]));
+            cases[i].permission, browser_context(), web_sites[0]));
 
     web_sites =
         permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
-            cases[i].type, browser_context());
+            cases[i].permission, browser_context());
     EXPECT_EQ(web_sites.size(), (uint32_t)0);
   }
 }
