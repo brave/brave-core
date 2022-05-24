@@ -13,17 +13,21 @@
     }
 
     async function startCapture(deviceId) {
-        const stream = await window.navigator.mediaDevices.getUserMedia({
-            video: {
-                mandatory: {
-                    chromeMediaSource: 'tab',
-                    chromeMediaSourceId: deviceId
+        try {
+            const stream = await window.navigator.mediaDevices.getUserMedia({
+                video: {
+                    mandatory: {
+                        chromeMediaSource: 'tab',
+                        chromeMediaSourceId: deviceId
+                    }
                 }
-            }
-        });
+            });
 
-        player.srcObject = stream;
-        return true;
+            player.srcObject = stream;
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async function delegateCaptureToFrame(deviceId) {

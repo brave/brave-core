@@ -240,6 +240,19 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
             content::EvalJs(requester_sub_frame(), "startCapturePromise"));
 }
 
+IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
+                       CantConsumeSubFrameTokenInMainFrame) {
+  auto device_id = GetDeviceID("frame");
+
+  // We should have a share request for the |target_contents()| now.
+  EXPECT_TRUE(registry()->VerifyRequest(
+      target_contents()->GetMainFrame()->GetProcess()->GetID(),
+      target_contents()->GetMainFrame()->GetRoutingID()));
+
+  EXPECT_EQ(false, content::EvalJs(requester_contents(),
+                                  "startCapture('" + device_id + "');"));
+}
+
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, NavigationClearsShareRequest) {
   std::string device_id;
   talk_service()->GetDeviceID(
