@@ -140,5 +140,9 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func isBase58EncodedSolanaPubkey(_ key: String, completion: @escaping (Bool) -> Void) {
     completion(true)
   }
+  
+  func showWalletTestNetworks(_ completion: @escaping (Bool) -> Void) {
+    completion(true)
+  }
 }
 #endif
