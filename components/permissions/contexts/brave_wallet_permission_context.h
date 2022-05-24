@@ -70,16 +70,16 @@ class BraveWalletPermissionContext : public PermissionContextBase {
       const std::vector<std::string>& addresses,
       base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
 
-  static bool AddPermission(ContentSettingsType content_settings_type,
+  static bool AddPermission(blink::PermissionType permission,
                             content::BrowserContext* context,
                             const url::Origin& origin,
                             const std::string& account);
-  static bool HasPermission(ContentSettingsType content_settings_type,
+  static bool HasPermission(blink::PermissionType permission,
                             content::BrowserContext* context,
                             const url::Origin& origin,
                             const std::string& account,
                             bool* has_permission);
-  static bool ResetPermission(ContentSettingsType content_settings_type,
+  static bool ResetPermission(blink::PermissionType permission,
                               content::BrowserContext* context,
                               const url::Origin& origin,
                               const std::string& account);

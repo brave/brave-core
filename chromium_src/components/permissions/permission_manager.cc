@@ -3,19 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#define BRAVE_FORCED_REQUESTING_ORIGIN \
+  !forced_requesting_origin_.is_empty() ? forced_requesting_origin_:
+
 #include "src/components/permissions/permission_manager.cc"
 
-namespace permissions {
-
-GURL PermissionManager::GetEmbeddingOriginInternal(
-    content::RenderFrameHost* const render_frame_host,
-    const GURL& requesting_origin) {
-  return GetEmbeddingOrigin(render_frame_host, requesting_origin);
-}
-
-PermissionStatus PermissionManager::ContentSettingToPermissionStatusInternal(
-    ContentSetting setting) {
-  return ContentSettingToPermissionStatus(setting);
-}
-
-}  // namespace permissions
+#undef BRAVE_FORCED_REQUESTING_ORIGIN

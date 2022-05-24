@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -118,7 +119,7 @@ void BraveWalletServiceDelegateImpl::AddPermission(
     const url::Origin& origin,
     const std::string& account,
     AddPermissionCallback callback) {
-  auto type = CoinTypeToContentSettingsType(coin);
+  auto type = CoinTypeToPermissionType(coin);
   if (!type) {
     std::move(callback).Run(false);
     return;
@@ -134,7 +135,7 @@ void BraveWalletServiceDelegateImpl::HasPermission(
     const std::string& account,
     HasPermissionCallback callback) {
   bool has_permission = false;
-  auto type = CoinTypeToContentSettingsType(coin);
+  auto type = CoinTypeToPermissionType(coin);
   if (!type) {
     std::move(callback).Run(false, has_permission);
     return;
@@ -149,7 +150,7 @@ void BraveWalletServiceDelegateImpl::ResetPermission(
     const url::Origin& origin,
     const std::string& account,
     ResetPermissionCallback callback) {
-  auto type = CoinTypeToContentSettingsType(coin);
+  auto type = CoinTypeToPermissionType(coin);
   if (!type) {
     std::move(callback).Run(false);
     return;

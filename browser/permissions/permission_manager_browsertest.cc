@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    permission_manager()->RequestPermissionsDeprecated(
+    permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
         base::DoNothing());
 
@@ -200,7 +200,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     }
 
     observer->Reset();
-    permission_manager()->RequestPermissionsDeprecated(
+    permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
         base::DoNothing());
 
@@ -284,7 +284,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    permission_manager()->RequestPermissionsDeprecated(
+    permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetMainFrame(), origin.GetURL(), true,
         base::DoNothing());
 

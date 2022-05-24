@@ -35,11 +35,11 @@ TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
   url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const struct {
     const char* address;
-    ContentSettingsType type;
+    blink::PermissionType type;
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
-                ContentSettingsType::BRAVE_ETHEREUM},
+                blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                ContentSettingsType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     bool has_permission;
     bool success = permissions::BraveWalletPermissionContext::HasPermission(
@@ -65,11 +65,11 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetPermission) {
   url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const struct {
     const char* address;
-    ContentSettingsType type;
+    blink::PermissionType type;
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
-                ContentSettingsType::BRAVE_ETHEREUM},
+                blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                ContentSettingsType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA}};
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
         cases[i].type, browser_context(), origin, cases[i].address);
