@@ -10,7 +10,7 @@ namespace update_client {
 SequentialUpdateChecker::SequentialUpdateChecker(
     scoped_refptr<Configurator> config,
     PersistedData* metadata)
-    : config_(config), metadata_(metadata), completion_error_(Error::NONE) {
+    : config_(config), metadata_(metadata) {
   VLOG(3) << "SequentialUpdateChecker";
 }
 
@@ -53,10 +53,9 @@ void SequentialUpdateChecker::CheckNext() {
       update_context_->is_install, {id},
       update_context_->crx_state_change_callback,
       update_context_->notify_observers_callback,
-      base::BindOnce(&SequentialUpdateChecker::OnClientUpdated,
-                     weak_factory_.GetWeakPtr()),
-      update_context_->persisted_data);
-
+      // We don't pass a context callback here because UpdateChecker doesn't use
+      // it. This is instead done by UpdateEngine, which calls us.
+      base::DoNothing(), update_context_->persisted_data);
 
   auto& component = context->components[id];
   auto& crx_component = update_context_->components[id]->crx_component();
@@ -104,18 +103,6 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     CheckNext();
   }
   VLOG(3) << "> UpdateResultAvailable(" << error << ")";
-}
-
-void SequentialUpdateChecker::OnClientUpdated(Error error) {
-  VLOG(1) << "OnClientUpdated";
-  DCHECK(update_context_);
-  if (error != Error::NONE)
-    completion_error_ = error;
-
-  if (remaining_ids_.empty()) {
-    std::move(update_context_->callback).Run(completion_error_);
-    update_context_ = nullptr;
-  }
 }
 
 std::unique_ptr<UpdateChecker> SequentialUpdateChecker::Create(
