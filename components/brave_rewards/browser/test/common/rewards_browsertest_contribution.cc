@@ -208,7 +208,7 @@ void RewardsBrowserTestContribution::VerifyTip(
   }
 
   // Load rewards page
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->LoadRewardsPage();
 
   if (should_contribute) {
     // Make sure that balance is updated correctly
@@ -220,8 +220,7 @@ void RewardsBrowserTestContribution::VerifyTip(
                 : "[data-test-id=rewards-summary-one-time]";
 
     rewards_browsertest_util::WaitForElementToContain(
-        contents(), selector,
-        "-" + base::StringPrintf("%.2f", amount) + " BAT");
+        contents(), selector, base::StringPrintf("-%.2f BAT", amount));
     return;
   }
 
@@ -245,8 +244,7 @@ void RewardsBrowserTestContribution::IsBalanceCorrect() {
 
 void RewardsBrowserTestContribution::IsPendingBalanceCorrect() {
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[data-test-id='pending-contribution-box']",
+      contents(), "[data-test-id=rewards-summary-pending]",
       GetStringPendingBalance());
 }
 
@@ -436,9 +434,7 @@ std::string RewardsBrowserTestContribution::GetStringBalance() {
 }
 
 std::string RewardsBrowserTestContribution::GetStringPendingBalance() {
-  const std::string balance =
-      rewards_browsertest_util::BalanceDoubleToString(pending_balance_);
-  return balance + " BAT";
+  return base::StringPrintf("%.2f BAT", pending_balance_);
 }
 
 ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
