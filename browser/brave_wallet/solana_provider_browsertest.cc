@@ -338,6 +338,33 @@ class SolanaProviderTest : public InProcessBrowserTest {
         .ExtractString();
   }
 
+  void CallSolanaSignTransaction(const std::string& unsigned_tx_array_string) {
+    const std::string script =
+        base::StringPrintf(R"(solanaSignTransaction(new Uint8Array([%s])))",
+                           unsigned_tx_array_string.c_str());
+    ASSERT_TRUE(ExecJs(web_contents(), script));
+  }
+
+  void CallSolanaSignAllTransactions(const std::string& unsigned_tx_array_str,
+                                     const std::string& signed_tx_array_str) {
+    const std::string script = base::StringPrintf(
+        R"(solanaSignAllTransactions(new Uint8Array([%s]), new Uint8Array([%s])))",
+        unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str());
+    ASSERT_TRUE(ExecJs(web_contents(), script));
+  }
+
+  std::string GetSignTransactionResult() {
+    return EvalJs(web_contents(), "getSignTransactionResult()",
+                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        .ExtractString();
+  }
+
+  std::string GetSignAllTransactionsResult() {
+    return EvalJs(web_contents(), "getSignAllTransactionsResult()",
+                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        .ExtractString();
+  }
+
   bool IsSolanaConnected() {
     return EvalJs(web_contents(), "isSolanaConnected()",
                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
@@ -578,6 +605,78 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   WaitForResultReady();
   EXPECT_EQ(GetSignAndSendTransactionResult(), kEncodedSignature);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
+  RestoreWallet();
+  AddAccount();
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CallSolanaConnect();
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected());
+
+  size_t request_index = 0;
+  CallSolanaSignTransaction(kUnsignedTxArrayStr);
+
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user rejected request
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(false,
+                                                               request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignTransactionResult(),
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+  CallSolanaSignTransaction(kUnsignedTxArrayStr);
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user approved request
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(true,
+                                                               request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
+  RestoreWallet();
+  AddAccount();
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  CallSolanaConnect();
+  UserGrantPermission(true);
+  ASSERT_TRUE(IsSolanaConnected());
+
+  size_t request_index = 0;
+  CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
+
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user rejected request
+  brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
+      false, request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignAllTransactionsResult(),
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+  CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  // user approved request
+  brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
+      true, request_index++);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignAllTransactionsResult(), "success");
 }
 
 }  // namespace brave_wallet

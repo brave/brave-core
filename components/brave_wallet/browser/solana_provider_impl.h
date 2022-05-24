@@ -23,6 +23,7 @@ class BraveWalletProviderDelegate;
 class BraveWalletService;
 class KeyringService;
 class SolanaMessage;
+class SolanaTransaction;
 class TxService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
@@ -76,6 +77,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                                      bool approved,
                                      const std::string& signature,
                                      const std::string& error);
+  void OnSignTransactionRequestProcessed(const SolanaTransaction& tx,
+                                         SignTransactionCallback callback,
+                                         bool approved);
+  void OnSignAllTransactionsRequestProcessed(
+      const std::vector<SolanaTransaction>& txs,
+      SignAllTransactionsCallback callback,
+      bool approved);
   void OnAddUnapprovedTransaction(SignAndSendTransactionCallback callback,
                                   bool success,
                                   const std::string& tx_meta_id,

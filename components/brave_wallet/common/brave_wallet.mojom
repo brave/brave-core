@@ -977,6 +977,20 @@ struct SignMessageRequest {
   CoinType coin;
 };
 
+struct SignTransactionRequest {
+  OriginInfo origin_info;
+  int32 id;
+  string from_address;
+  TxDataUnion tx_data;
+};
+
+struct SignAllTransactionsRequest {
+  OriginInfo origin_info;
+  int32 id;
+  string from_address;
+  array<TxDataUnion> tx_datas;
+};
+
 enum ExternalWalletType {
   CryptoWallets,
   MetaMask
@@ -1078,6 +1092,16 @@ interface BraveWalletService {
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
   NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
+
+  GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
+  // Used for UI notifying native when the user apprrove/reject sign
+  // transaction request.
+  NotifySignTransactionRequestProcessed(bool approved, int32 id);
+
+  GetPendingSignAllTransactionsRequests() => (array<SignAllTransactionsRequest> requests);
+  // Used for UI notifying native when the user apprrove/reject sign all
+  // transactions request.
+  NotifySignAllTransactionsRequestProcessed(bool approved, int32 id);
 
   // Used for UI notifying native when the user apprrove/reject add suggest
   // token requests.

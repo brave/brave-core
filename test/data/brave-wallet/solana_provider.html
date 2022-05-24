@@ -4,6 +4,8 @@
   var connectedAccount = ''
   var signMessageResult = ''
   var signAndSendTransactionResult = ''
+  var signTransactionResult = ''
+  var signAllTransactionsResult = ''
 
   function solanaConnect() {
     window.solana.connect().then(result => {
@@ -53,12 +55,50 @@
       })
   }
 
+  function solanaSignTransaction(serializedTx) {
+    const tx = window.solana.createTransaction(serializedTx)
+    window.solana.signTransaction(tx)
+      .then(result => {
+        signTransactionResult = result.serialize().join()
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signTransactionResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
+  function solanaSignAllTransactions(serializedTx, expectedSignTx) {
+    const tx = window.solana.createTransaction(serializedTx)
+    const expectedTx = expectedSignTx.join()
+    window.solana.signAllTransactions([tx, tx])
+      .then(result => {
+        const isSameTx =
+          (tx) => tx.serialize().join() === expectedTx
+        if (result.every(isSameTx))
+          signAllTransactionsResult = 'success'
+        else
+          signAllTransactionsResult = 'fail'
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signAllTransactionsResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
   function getSignMessageResult() {
     window.domAutomationController.send(signMessageResult)
   }
 
   function getSignAndSendTransactionResult() {
     window.domAutomationController.send(signAndSendTransactionResult)
+  }
+
+  function getSignTransactionResult() {
+    window.domAutomationController.send(signTransactionResult)
+  }
+
+  function getSignAllTransactionsResult() {
+    window.domAutomationController.send(signAllTransactionsResult)
   }
 
 </script>

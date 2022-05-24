@@ -39,6 +39,8 @@ class SolanaTransaction {
   std::string GetSignedTransaction(KeyringService* keyring_service) const;
   // Serialize and encode the message in Base64.
   std::string GetBase64EncodedMessage() const;
+  absl::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
+      KeyringService* keyring_service) const;
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
   base::Value ToValue() const;

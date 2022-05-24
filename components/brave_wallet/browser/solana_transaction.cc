@@ -47,15 +47,16 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
 // A compact-array is serialized as the array length, followed by each array
 // item. The array length is a special multi-byte encoding called compact-u16.
 // See https://docs.solana.com/developing/programming-model/transactions.
-std::string SolanaTransaction::GetSignedTransaction(
+absl::optional<std::vector<uint8_t>>
+SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service) const {
   if (!keyring_service)
-    return "";
+    return absl::nullopt;
 
   std::vector<std::string> signers;
   auto message_bytes = message_.Serialize(&signers);
   if (!message_bytes || signers.empty())
-    return "";
+    return absl::nullopt;
 
   std::vector<uint8_t> transaction_bytes;
   // Compact array of signatures.
@@ -72,9 +73,16 @@ std::string SolanaTransaction::GetSignedTransaction(
                            message_bytes->end());
 
   if (transaction_bytes.size() > kSolanaMaxTxSize)
-    return "";
+    return absl::nullopt;
+  return transaction_bytes;
+}
 
-  return base::Base64Encode(transaction_bytes);
+std::string SolanaTransaction::GetSignedTransaction(
+    KeyringService* keyring_service) const {
+  auto transaction_bytes = GetSignedTransactionBytes(keyring_service);
+  if (!transaction_bytes)
+    return "";
+  return base::Base64Encode(*transaction_bytes);
 }
 
 std::string SolanaTransaction::GetBase64EncodedMessage() const {
