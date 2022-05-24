@@ -2,7 +2,7 @@ diff --git a/chrome/browser/web_applications/os_integration/web_app_shortcut_mac
 index 6b4fc626d07ffdd97e0e36fb052043a8ef088476..917c53653b877cd5c3e349c4bb81c0552dbb9762 100644
 --- a/chrome/browser/web_applications/os_integration/web_app_shortcut_mac.mm
 +++ b/chrome/browser/web_applications/os_integration/web_app_shortcut_mac.mm
-@@ -793,6 +793,7 @@ base::FilePath GetChromeAppsFolder() {
+@@ -793,6 +793,7 @@ bool AppShimLaunchDisabled() {
    if (path.empty())
      return path;
  
