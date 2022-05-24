@@ -43,6 +43,30 @@ void BraveTalkService::GetDeviceID(
     std::move(on_get_device_id_requested_for_testing_).Run();
 }
 
+void BraveTalkService::ShareTab(content::WebContents* target_contents) {
+  if (!web_contents() || !target_contents || !is_requesting_tab())
+    return;
+  auto* registry = BraveTalkTabCaptureRegistryFactory::GetForContext(
+      target_contents->GetBrowserContext());
+
+  auto* owning_render_frame = content::RenderFrameHost::FromID(
+      owning_render_process_id_, owning_render_frame_id_);
+  std::string device_id =
+      owning_render_frame
+          ? registry->AddRequest(target_contents, owning_render_frame)
+          : "";
+  if (on_received_device_id_)
+    std::move(on_received_device_id_).Run(device_id);
+}
+
+void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
+  if (!handle->IsInMainFrame())
+    return;
+
+  // On any navigation of the main frame stop observing the web contents.
+  StopObserving();
+}
+
 void BraveTalkService::OnGetDeviceIDRequestedForTesting(
     base::OnceCallback<void()> callback_for_testing) {
   on_get_device_id_requested_for_testing_ = std::move(callback_for_testing);
@@ -60,30 +84,6 @@ void BraveTalkService::StopObserving() {
     std::move(on_received_device_id_).Run("");
 
   Observe(nullptr);
-}
-
-void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
-  if (!handle->IsInMainFrame())
-    return;
-
-  // On any navigation of the main frame stop observing the web contents.
-  StopObserving();
-}
-
-void BraveTalkService::ShareTab(content::WebContents* target_contents) {
-  if (!web_contents() || !target_contents || !is_requesting_tab())
-    return;
-  auto* registry = BraveTalkTabCaptureRegistryFactory::GetForContext(
-      target_contents->GetBrowserContext());
-
-  auto* owning_render_frame = content::RenderFrameHost::FromID(
-      owning_render_process_id_, owning_render_frame_id_);
-  std::string device_id =
-      owning_render_frame
-          ? registry->AddRequest(target_contents, owning_render_frame)
-          : "";
-  if (on_received_device_id_)
-    std::move(on_received_device_id_).Run(device_id);
 }
 
 }  // namespace brave_talk
