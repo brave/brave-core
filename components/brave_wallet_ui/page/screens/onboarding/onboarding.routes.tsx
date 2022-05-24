@@ -13,7 +13,7 @@ import {
 } from 'react-router'
 
 // components
-import { OnboardingRecoveryPhrase } from './backup-recovery-phrase/onboarding-backup-recovery-phrase'
+import { OnboardingBackupRecoveryPhrase } from './backup-recovery-phrase/onboarding-backup-recovery-phrase'
 import { OnboardingCreatePassword } from './create-password/onboarding-create-password'
 import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
 import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
@@ -51,13 +51,13 @@ export const OnboardingRoutes = () => {
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
         <OnboardingCreatePassword />
       </Route>
-      
+
       <Route path={WalletRoutes.OnboardingExplainRecoveryPhrase} exact>
         <OnboardingRecoveryPhraseExplainer />
       </Route>
-      
+
       <Route path={WalletRoutes.OnboardingBackupRecoveryPhrase} exact>
-        <OnboardingRecoveryPhrase />
+        <OnboardingBackupRecoveryPhrase />
       </Route>
 
       <Route path={WalletRoutes.OnboardingVerifyRecoveryPhrase} exact>
@@ -68,7 +68,7 @@ export const OnboardingRoutes = () => {
         <OnboardingSuccess />
       </Route>
 
-      {/*<Route path={WalletRoutes.OnboardingImportMetaMask} exact>
+      {/* <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
         <OnboardingImportMetaMaskOrLegacy />
       </Route>
 

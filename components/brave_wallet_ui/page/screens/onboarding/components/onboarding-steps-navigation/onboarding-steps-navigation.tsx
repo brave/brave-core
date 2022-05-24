@@ -11,18 +11,19 @@ import { WalletRoutes } from '../../../../../constants/types'
 // components
 import { StepsNavigation, StepsNavigationProps } from '../../../../../components/desktop/steps-navigation/steps-navigation'
 
-type OnboardingSteps =
+//
+// New wallet Steps
+//
+type OnboardingNewWalletSteps =
   | WalletRoutes.OnboardingBackupRecoveryPhrase
   | WalletRoutes.OnboardingBackupWallet
   | WalletRoutes.OnboardingComplete
   | WalletRoutes.OnboardingCreatePassword
   | WalletRoutes.OnboardingExplainRecoveryPhrase
-  | WalletRoutes.OnboardingImportCryptoWallets
-  | WalletRoutes.OnboardingImportMetaMask
   | WalletRoutes.OnboardingVerifyRecoveryPhrase
   | WalletRoutes.OnboardingWelcome
 
-const STEPS: OnboardingSteps[] = [
+const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
   WalletRoutes.OnboardingCreatePassword,
   WalletRoutes.OnboardingExplainRecoveryPhrase,
   WalletRoutes.OnboardingBackupRecoveryPhrase,
@@ -30,19 +31,77 @@ const STEPS: OnboardingSteps[] = [
   WalletRoutes.OnboardingComplete
 ]
 
-interface Props extends Omit<StepsNavigationProps<OnboardingSteps>, 'steps'> {}
+interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {}
 
-export const OnboardingStepsNavigation = ({
+export const OnboardingNewWalletStepsNavigation = ({
   currentStep,
   preventSkipAhead,
   goBackUrl
-}: Props) => {
+}: OnboardingNewWalletStepsNavigationProps) => {
   return <StepsNavigation
-    steps={STEPS}
+    steps={NEW_WALLET_STEPS}
     goBackUrl={goBackUrl}
     currentStep={currentStep}
     preventSkipAhead={preventSkipAhead}
   />
 }
 
-export default OnboardingStepsNavigation
+//
+// Import Wallet Steps
+//
+type OnboardingImportWalletSteps =
+  | WalletRoutes.OnboardingComplete
+  | WalletRoutes.OnboardingImportCryptoWallets
+  | WalletRoutes.OnboardingImportMetaMask
+  | WalletRoutes.OnboardingWelcome
+
+const IMPORT_WALLET_STEPS: OnboardingImportWalletSteps[] = [
+  WalletRoutes.OnboardingWelcome,
+  WalletRoutes.OnboardingImportCryptoWallets,
+  WalletRoutes.OnboardingImportMetaMask,
+  WalletRoutes.OnboardingComplete
+]
+
+interface OnboardingImportWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingImportWalletSteps>, 'steps'> {}
+
+export const OnboardingImportWalletStepsNavigation = ({
+  currentStep,
+  preventSkipAhead,
+  goBackUrl
+}: OnboardingImportWalletStepsNavigationProps) => {
+  return <StepsNavigation
+    steps={IMPORT_WALLET_STEPS}
+    goBackUrl={goBackUrl}
+    currentStep={currentStep}
+    preventSkipAhead={preventSkipAhead}
+  />
+}
+
+//
+// Restore Wallet Steps
+//
+type OnboardingRestoreWalletSteps =
+  | WalletRoutes.OnboardingComplete
+  | WalletRoutes.OnboardingRestoreWallet
+  | WalletRoutes.OnboardingWelcome
+
+const RESTORE_WALLET_STEPS: OnboardingRestoreWalletSteps[] = [
+  WalletRoutes.OnboardingWelcome,
+  WalletRoutes.OnboardingRestoreWallet,
+  WalletRoutes.OnboardingComplete
+]
+
+interface OnboardingRestoreWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingImportWalletSteps>, 'steps'> {}
+
+export const OnboardingRestoreWalletStepsNavigation = ({
+  currentStep,
+  preventSkipAhead,
+  goBackUrl
+}: OnboardingRestoreWalletStepsNavigationProps) => {
+  return <StepsNavigation
+    steps={RESTORE_WALLET_STEPS}
+    goBackUrl={goBackUrl}
+    currentStep={currentStep}
+    preventSkipAhead={preventSkipAhead}
+  />
+}

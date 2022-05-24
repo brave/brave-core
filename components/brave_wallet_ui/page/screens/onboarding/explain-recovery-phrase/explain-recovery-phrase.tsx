@@ -32,7 +32,7 @@ import ExamplePhrase from './images/example-recovery-phrase.svg'
 // components
 import { WalletPageLayout } from '../../../../components/desktop'
 import { NavButton } from '../../../../components/extension'
-import { OnboardingStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
+import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
 
@@ -51,8 +51,8 @@ export const OnboardingRecoveryPhraseExplainer = () => {
       <MainWrapper>
         <StyledWrapper>
 
-          <OnboardingStepsNavigation
-            goBackUrl={WalletRoutes.Onboarding}
+          <OnboardingNewWalletStepsNavigation
+            goBackUrl={WalletRoutes.OnboardingCreatePassword}
             currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
           />
 
