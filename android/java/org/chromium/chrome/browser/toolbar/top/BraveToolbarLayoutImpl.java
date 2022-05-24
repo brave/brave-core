@@ -441,11 +441,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mTabModelSelectorTabModelObserver = new TabModelSelectorTabModelObserver(selector) {
             @Override
             public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
-                if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
-                        && !tab.isIncognito()) {
+                if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
                             tab.getId(), tab.getUrl().getSpec());
-                    showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
+                    if (getToolbarDataProvider().getTab() == tab) {
+                        showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
+                    } else {
+                        mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId()) ? View.VISIBLE: View.GONE);
+                    }
                 }
             }
         };
