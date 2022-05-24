@@ -70,6 +70,7 @@ BraveTalkFrameHost::~BraveTalkFrameHost() = default;
 void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
     const absl::optional<::blink::FrameToken>& frame_token,
     BeginAdvertiseShareDisplayMediaCallback callback) {
+  // If there is no frame token, the request is for the main frame.
   if (!frame_token) {
     BraveTalkServiceFactory::GetForContext(contents_->GetBrowserContext())
         ->GetDeviceID(
@@ -88,22 +89,6 @@ void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
         return content::RenderFrameHost::FrameIterationAction::kStop;
       },
       base::Owned(std::move(finder))));
-}
-
-content::RenderFrameHost* BraveTalkFrameHost::FindFrameForToken(
-    const absl::optional<::blink::FrameToken>& frame_token) {
-  auto* main_frame =
-      static_cast<content::RenderFrameHostImpl*>(contents_->GetMainFrame());
-  if (!frame_token)
-    return main_frame;
-
-  auto* frame_tree_node = main_frame->FindAndVerifyChild(
-      frame_token.value(),
-      content::bad_message::BadMessageReason::RWH_INVALID_FRAME_TOKEN);
-  if (!frame_tree_node)
-    return nullptr;
-
-  return frame_tree_node->current_frame_host();
 }
 
 }  // namespace brave_talk

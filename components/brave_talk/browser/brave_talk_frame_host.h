@@ -37,9 +37,6 @@ class BraveTalkFrameHost final : public brave_talk::mojom::BraveTalkFrame {
       BeginAdvertiseShareDisplayMediaCallback callback) override;
 
  private:
-  content::RenderFrameHost* FindFrameForToken(
-      const absl::optional<::blink::FrameToken>& frame_token);
-
   base::raw_ptr<content::WebContents> contents_;
   const std::string host_;
 };
