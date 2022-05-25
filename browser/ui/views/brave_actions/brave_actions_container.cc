@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_talk_share_tab_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
@@ -104,6 +105,7 @@ void BraveActionsContainer::Init() {
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
   AddActionViewForShields();
+  AddActionViewForShareTab();
   // Populate actions
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV1)) {
@@ -273,6 +275,11 @@ void BraveActionsContainer::AddActionViewForShields() {
     shields_action_btn_->SetPreferredSize(GetToolbarActionSize());
     shields_action_btn_->Init();
   }
+}
+
+void BraveActionsContainer::AddActionViewForShareTab() {
+  share_tab_action_btn_ = AddChildViewAt(std::make_unique<brave_talk::BraveTalkShareTabActionView>(browser_->profile(), browser_->tab_strip_model()), 1);
+  share_tab_action_btn_->SetPreferredSize(GetToolbarActionSize());
 }
 
 void BraveActionsContainer::Update() {
