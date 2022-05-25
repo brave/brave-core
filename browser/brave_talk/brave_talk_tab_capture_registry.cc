@@ -52,9 +52,7 @@ class BraveTalkTabCaptureRegistry::LiveRequest
   int render_frame_id_;
 };
 
-BraveTalkTabCaptureRegistry::BraveTalkTabCaptureRegistry(
-    content::BrowserContext* context)
-    : browser_context_(context) {}
+BraveTalkTabCaptureRegistry::BraveTalkTabCaptureRegistry() = default;
 
 BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() = default;
 

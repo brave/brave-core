@@ -18,7 +18,7 @@ namespace brave_talk {
 
 class BraveTalkTabCaptureRegistry : public KeyedService {
  public:
-  explicit BraveTalkTabCaptureRegistry(content::BrowserContext* context);
+  explicit BraveTalkTabCaptureRegistry();
   ~BraveTalkTabCaptureRegistry() override;
   BraveTalkTabCaptureRegistry(const BraveTalkTabCaptureRegistry&) = delete;
   BraveTalkTabCaptureRegistry& operator=(const BraveTalkTabCaptureRegistry&) =
@@ -36,7 +36,6 @@ class BraveTalkTabCaptureRegistry : public KeyedService {
                            int target_render_frame_id) const;
   void KillRequest(LiveRequest* request);
 
-  const raw_ptr<content::BrowserContext> browser_context_;
   std::vector<std::unique_ptr<LiveRequest>> requests_;
 };
 

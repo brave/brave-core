@@ -35,7 +35,7 @@ BraveTalkTabCaptureRegistryFactory::~BraveTalkTabCaptureRegistryFactory() =
 
 KeyedService* BraveTalkTabCaptureRegistryFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveTalkTabCaptureRegistry(context);
+  return new BraveTalkTabCaptureRegistry();
 }
 
 }  // namespace brave_talk
