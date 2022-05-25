@@ -288,10 +288,14 @@ void Publisher::SaveVisitInternal(
   bool is_verified = IsConnectedOrVerified(status);
 
   bool new_publisher = false;
+  bool updated_publisher = false;
   if (!publisher_info) {
     new_publisher = true;
     publisher_info = type::PublisherInfo::New();
     publisher_info->id = publisher_key;
+  } else if (publisher_info->name != visit_data.name ||
+             publisher_info->url != visit_data.url) {
+    updated_publisher = true;
   }
 
   std::string fav_icon = visit_data.favicon_url;
@@ -337,11 +341,9 @@ void Publisher::SaveVisitInternal(
   bool verified_new = !allow_non_verified && !is_verified;
   bool verified_old = allow_non_verified || is_verified;
 
-  if (new_publisher &&
-      (excluded ||
-       !ledger_->state()->GetAutoContributeEnabled() ||
-       min_duration_new ||
-       verified_new)) {
+  if ((new_publisher || updated_publisher) &&
+      (excluded || !ledger_->state()->GetAutoContributeEnabled() ||
+       min_duration_new || verified_new)) {
     panel_info = publisher_info->Clone();
 
     auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
@@ -349,10 +351,8 @@ void Publisher::SaveVisitInternal(
         _1);
 
     ledger_->database()->SavePublisherInfo(std::move(publisher_info), callback);
-  } else if (!excluded &&
-             ledger_->state()->GetAutoContributeEnabled() &&
-             min_duration_ok &&
-             verified_old) {
+  } else if (!excluded && ledger_->state()->GetAutoContributeEnabled() &&
+             min_duration_ok && verified_old) {
     if (first_visit) {
       publisher_info->visits += 1;
     }
