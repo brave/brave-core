@@ -232,6 +232,8 @@ source_set("ads") {
     "src/bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.cc",
     "src/bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h",
     "src/bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h",
+    "src/bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.cc",
+    "src/bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h",
     "src/bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.cc",
     "src/bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h",
     "src/bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.cc",

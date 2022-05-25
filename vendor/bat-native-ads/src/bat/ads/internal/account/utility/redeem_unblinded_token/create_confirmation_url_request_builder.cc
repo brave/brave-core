@@ -8,8 +8,8 @@
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
-#include "bat/ads/internal/server/url/hosts/server_host_util.h"
 
 namespace ads {
 
@@ -38,9 +38,9 @@ mojom::UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
-  std::string spec = base::StringPrintf("%s/v2/confirmation/%s",
-                                        server::GetAnonymousHost().c_str(),
-                                        confirmation_.id.c_str());
+  std::string spec = base::StringPrintf(
+      "%s/v2/confirmation/%s", GetAnonymousHost(confirmation_.ad_type).c_str(),
+      confirmation_.id.c_str());
 
   if (!confirmation_.credential.empty()) {
     spec += "/";

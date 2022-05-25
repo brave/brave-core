@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/url/hosts/server_host_util.h"
+#include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
 
 namespace ads {
 
@@ -35,9 +35,10 @@ mojom::UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
-  const std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/%s/paymentToken", server::GetAnonymousHost().c_str(),
-      confirmation_.id.c_str());
+  const std::string spec =
+      base::StringPrintf("%s/v2/confirmation/%s/paymentToken",
+                         GetAnonymousHost(confirmation_.ad_type).c_str(),
+                         confirmation_.id.c_str());
   return GURL(spec);
 }
 
