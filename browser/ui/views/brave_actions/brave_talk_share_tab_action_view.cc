@@ -96,18 +96,6 @@ void BraveTalkShareTabActionView::OnIsRequestingChanged(bool requesting) {
   SetVisible(requesting);
 }
 
-SkPath BraveTalkShareTabActionView::GetHighlightPath() const {
-  gfx::Insets highlight_insets(0, 0, 0, kBraveActionRightMargin);
-  gfx::Rect rect(GetPreferredSize());
-  rect.Inset(highlight_insets);
-
-  const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kMaximum, rect.size());
-  SkPath path;
-  path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
-  return path;
-}
-
 void BraveTalkShareTabActionView::ButtonPressed() {
   brave_talk_service_->PromptShareTab(tab_strip_model_->GetActiveWebContents());
 }

@@ -25,9 +25,9 @@ class BraveTalkShareTabActionView : public views::LabelButton, public BraveTalkS
   // BraveTalkService::BraveTalkServiceObserver:
   void OnIsRequestingChanged(bool requesting) override;
 
+  // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
-  SkPath GetHighlightPath() const;
 
  private:
   void ButtonPressed();
