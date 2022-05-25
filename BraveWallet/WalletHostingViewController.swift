@@ -27,6 +27,14 @@ public enum PresentingContext {
   case requestEthererumPermissions(_ request: WebpagePermissionRequest)
   /// Shows the user only the unlock/setup screen then dismisses to view an unlocked panel
   case panelUnlockOrSetup
+  /// Shows the user available wallet accounts to use
+  case accountSelection
+  /// Shows the user transaction history of current selected account and network
+  case transactionHistory
+  /// Shows the user one of the three transaction action screens 1. Buy 2. Send 3. Swap
+  case buySendSwap(_ destination: BuySendSwapDestination)
+  /// Shows the user the wallet settings screen
+  case settings
 }
 
 /// The initial wallet controller to present when the user wants to view their wallet

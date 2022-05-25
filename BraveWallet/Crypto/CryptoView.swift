@@ -105,6 +105,65 @@ public struct CryptoView: View {
               )
             case .panelUnlockOrSetup:
               EmptyView()
+            case .accountSelection:
+              AccountListView(keyringStore: keyringStore)
+            case .transactionHistory:
+              AccountTransactionListView(
+                keyringStore: walletStore.keyringStore,
+                activityStore: store.accountActivityStore(for: walletStore.keyringStore.selectedAccount),
+                networkStore: store.networkStore
+              )
+            case .buySendSwap(let destination):
+              switch destination.kind {
+              case .buy:
+                BuyTokenView(
+                  keyringStore: keyringStore,
+                  networkStore: store.networkStore,
+                  buyTokenStore: store.openBuyTokenStore(destination.initialToken),
+                  onDismiss: {
+                    store.closeBSSStores()
+                  }
+                )
+              case .send:
+                SendTokenView(
+                  keyringStore: keyringStore,
+                  networkStore: store.networkStore,
+                  sendTokenStore: store.openSendTokenStore(destination.initialToken),
+                  completion: { success in
+                    if success {
+                      dismissAction?()
+                    }
+                  },
+                  onDismiss: {
+                    store.closeBSSStores()
+                  }
+                )
+              case .swap:
+                SwapCryptoView(
+                  keyringStore: keyringStore,
+                  ethNetworkStore: store.networkStore,
+                  swapTokensStore: store.openSwapTokenStore(destination.initialToken),
+                  completion: { success in
+                    if success {
+                      dismissAction?()
+                    }
+                  },
+                  onDismiss: {
+                    store.closeBSSStores()
+                  }
+                )
+              }
+            case .settings:
+              NavigationView {
+                WalletSettingsView(
+                  settingsStore: store.settingsStore,
+                  networkStore: store.networkStore,
+                  keyringStore: keyringStore
+                )
+                .toolbar {
+                  dismissButtonToolbarContents
+                }
+              }
             }
           }
           .transition(.asymmetric(insertion: .identity, removal: .opacity))

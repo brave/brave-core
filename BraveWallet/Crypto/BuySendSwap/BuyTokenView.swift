@@ -17,6 +17,8 @@ struct BuyTokenView: View {
 
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
+  
+  var onDismiss: (() -> Void)?
 
   var body: some View {
     NavigationView {
@@ -116,6 +118,7 @@ struct BuyTokenView: View {
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: {
+            onDismiss?()
             presentationMode.dismiss()
           }) {
             Text(Strings.cancelButtonTitle)

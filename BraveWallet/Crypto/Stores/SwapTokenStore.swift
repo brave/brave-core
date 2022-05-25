@@ -231,7 +231,7 @@ public class SwapTokenStore: ObservableObject {
     return swapParams
   }
 
-  private func createETHSwapTransaction() {
+  private func createETHSwapTransaction(completion: @escaping (_ success: Bool) -> Void) {
     isMakingTx = true
     rpcService.network { [weak self] network in
       guard
@@ -275,6 +275,7 @@ public class SwapTokenStore: ObservableObject {
             baseData: baseData,
             from: accountInfo
           ) { success in
+            completion(success)
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
@@ -293,6 +294,7 @@ public class SwapTokenStore: ObservableObject {
           )
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
           self.txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.address, origin: nil) { success, txMetaId, error in
+            completion(success)
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
@@ -360,7 +362,10 @@ public class SwapTokenStore: ObservableObject {
     checkBalanceShowError(swapResponse: response)
   }
 
-  private func createERC20ApprovalTransaction(_ spenderAddress: String) {
+  private func createERC20ApprovalTransaction(
+    _ spenderAddress: String,
+    completion: @escaping (_ success: Bool) -> Void
+  ) {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
       let fromToken = selectedFromToken,
@@ -402,6 +407,7 @@ public class SwapTokenStore: ObservableObject {
             baseData: baseData,
             from: accountInfo
           ) { success in
+            completion(success)
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
@@ -416,6 +422,7 @@ public class SwapTokenStore: ObservableObject {
             from: accountInfo.address,
             origin: nil,
             completion: { success, txMetaId, error in
+              completion(success)
               guard success else {
                 self.state = .error(Strings.Wallet.unknownError)
                 self.clearAllAmount()
@@ -553,15 +560,15 @@ public class SwapTokenStore: ObservableObject {
     }
   }
 
-  func prepareSwap() {
+  func prepareSwap(completion: @escaping (_ success: Bool) -> Void) {
     switch state {
     case .error(_), .idle:
       // will never come here
       break
     case .lowAllowance(let spenderAddress):
-      createERC20ApprovalTransaction(spenderAddress)
+      createERC20ApprovalTransaction(spenderAddress, completion: completion)
     case .swap:
-      createETHSwapTransaction()
+      createETHSwapTransaction(completion: completion)
     }
   }
 

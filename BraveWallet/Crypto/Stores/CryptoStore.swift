@@ -39,9 +39,7 @@ public class CryptoStore: ObservableObject {
   @Published var buySendSwapDestination: BuySendSwapDestination? {
     didSet {
       if buySendSwapDestination == nil {
-        buyTokenStore = nil
-        sendTokenStore = nil
-        swapTokenStore = nil
+        closeBSSStores()
       }
     }
   }
@@ -179,6 +177,7 @@ public class CryptoStore: ObservableObject {
     }
     let store = AccountActivityStore(
       account: account,
+      keyringService: keyringService,
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
@@ -193,6 +192,12 @@ public class CryptoStore: ObservableObject {
     if let store = accountActivityStore, store.account.address == account.address {
       accountActivityStore = nil
     }
+  }
+  
+  func closeBSSStores() {
+    buyTokenStore = nil
+    sendTokenStore = nil
+    swapTokenStore = nil
   }
   
   private var confirmationStore: TransactionConfirmationStore?

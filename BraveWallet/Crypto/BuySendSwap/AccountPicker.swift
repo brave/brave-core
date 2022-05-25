@@ -12,7 +12,6 @@ struct AccountPicker: View {
   @ObservedObject var networkStore: NetworkStore
 
   @State private var isPresentingPicker: Bool = false
-  @State private var isPresentingAddAccount: Bool = false
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var avatarSize = 24.0
 
@@ -33,7 +32,7 @@ struct AccountPicker: View {
       }
     }
     .sheet(isPresented: $isPresentingPicker) {
-      pickerList
+      AccountListView(keyringStore: keyringStore)
     }
   }
 
@@ -110,56 +109,6 @@ struct AccountPicker: View {
       networkStore: networkStore,
       selectedNetwork: networkStore.selectedChainBinding
     )
-  }
-
-  private var pickerList: some View {
-    NavigationView {
-      List {
-        Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
-        ) {
-          ForEach(keyringStore.keyring.accountInfos) { account in
-            Button(action: {
-              keyringStore.selectedAccount = account
-              isPresentingPicker = false
-            }) {
-              AccountView(address: account.address, name: account.name)
-            }
-            .contextMenu {
-              Button(action: {
-                UIPasteboard.general.string = account.address
-              }) {
-                Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
-              }
-            }
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
-      .navigationTitle(Strings.Wallet.selectAccountTitle)
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { isPresentingPicker = false }) {
-            Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
-          }
-        }
-        ToolbarItemGroup(placement: .primaryAction) {
-          Button(action: { isPresentingAddAccount = true }) {
-            Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
-              .foregroundColor(Color(.braveOrange))
-          }
-        }
-      }
-      .sheet(isPresented: $isPresentingAddAccount) {
-        NavigationView {
-          AddAccountView(keyringStore: keyringStore)
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-      }
-    }
-    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

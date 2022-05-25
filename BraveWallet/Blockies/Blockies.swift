@@ -112,6 +112,23 @@ struct Blockie: View {
   }
 }
 
+struct BlockieMaterial: View {
+  
+  init(address: String) {
+    self.blockies = Blockies(seed: address)
+  }
+  
+  private let blockies: Blockies
+  
+  var body: some View {
+    LinearGradient(
+      colors: [.init(blockies.makeColor()), .init(blockies.makeColor())],
+      startPoint: .top,
+      endPoint: .bottom
+    )
+  }
+}
+
 #if DEBUG
 struct BlockiesPreview: PreviewProvider {
   static var previews: some View {

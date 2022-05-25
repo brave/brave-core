@@ -971,6 +971,8 @@
 		7D2D6F162735BCDB000650EA /* TokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D6F152735BCDB000650EA /* TokenView.swift */; };
 		7D2D6F232735D627000650EA /* BuySendSwapGridBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2D6F222735D627000650EA /* BuySendSwapGridBackgroundView.swift */; };
 		7D3393EA2744200B00265F1A /* AddCustomAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3393E92744200B00265F1A /* AddCustomAssetView.swift */; };
+		7D3E38AC27F79E3000A2BB49 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E38AB27F79E3000A2BB49 /* AccountListView.swift */; };
+		7D3E38E827FB8E1100A2BB49 /* AccountTransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3E38E727FB8E1100A2BB49 /* AccountTransactionListView.swift */; };
 		7D49CDDD271FA8B5008AB67E /* SendTokenSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D49CDDC271FA8B5008AB67E /* SendTokenSearchView.swift */; };
 		7D49CDDF271FB359008AB67E /* SendTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D49CDDE271FB359008AB67E /* SendTokenStore.swift */; };
 		7D4C4914278E31E40073C37E /* WebImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C4913278E31E40073C37E /* WebImageReader.swift */; };
@@ -2786,6 +2788,8 @@
 		7D2D6F152735BCDB000650EA /* TokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenView.swift; sourceTree = "<group>"; };
 		7D2D6F222735D627000650EA /* BuySendSwapGridBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySendSwapGridBackgroundView.swift; sourceTree = "<group>"; };
 		7D3393E92744200B00265F1A /* AddCustomAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomAssetView.swift; sourceTree = "<group>"; };
+		7D3E38AB27F79E3000A2BB49 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
+		7D3E38E727FB8E1100A2BB49 /* AccountTransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransactionListView.swift; sourceTree = "<group>"; };
 		7D49CDDC271FA8B5008AB67E /* SendTokenSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenSearchView.swift; sourceTree = "<group>"; };
 		7D49CDDE271FB359008AB67E /* SendTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenStore.swift; sourceTree = "<group>"; };
 		7D4C4913278E31E40073C37E /* WebImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageReader.swift; sourceTree = "<group>"; };
@@ -3868,6 +3872,8 @@
 				271F686926EBD27D00AA2A50 /* Add */,
 				271F686B26EBD27D00AA2A50 /* AccountView.swift */,
 				271F686C26EBD27D00AA2A50 /* AccountsView.swift */,
+				7D3E38AB27F79E3000A2BB49 /* AccountListView.swift */,
+				7D3E38E727FB8E1100A2BB49 /* AccountTransactionListView.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -7668,6 +7674,7 @@
 				2701B14C2735B65300BE6FC6 /* EditPriorityFeeView.swift in Sources */,
 				D51DFAA028173CE300F92818 /* ManageSiteConnectionsView.swift in Sources */,
 				27842B5827AC8868002B3EDA /* NewSiteConnectionView.swift in Sources */,
+				7D3E38E827FB8E1100A2BB49 /* AccountTransactionListView.swift in Sources */,
 				27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */,
 				271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */,
 				27AAE241274FFBA900288E90 /* TransactionConfirmationStore.swift in Sources */,
@@ -7700,6 +7707,7 @@
 				271F68A326EBD27E00AA2A50 /* AccountView.swift in Sources */,
 				7D758921271F07B800B643C3 /* SendTokenView.swift in Sources */,
 				271F68B526EBD27E00AA2A50 /* TabbedPageViewController.swift in Sources */,
+				7D3E38AC27F79E3000A2BB49 /* AccountListView.swift in Sources */,
 				271F68AF26EBD27E00AA2A50 /* SetupCryptoView.swift in Sources */,
 				27DDE88826FD2D8B00A70C3A /* WalletStore.swift in Sources */,
 				7D758919271A184D00B643C3 /* BuyTokenSearchView.swift in Sources */,
