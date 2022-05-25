@@ -24,9 +24,9 @@ COLOR_NONE='\033[0m'
 # Install Node.js dependencies and build user scripts
 
 if [ "$1" == --ci ]; then
-  npm install
-else
   npm ci
+else
+  npm install
 fi
 
 npm run build
