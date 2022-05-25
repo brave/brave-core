@@ -70,10 +70,9 @@ void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
     BeginAdvertiseShareDisplayMediaCallback callback) {
   // If there is no frame token, the request is for the main frame.
   if (!frame_token) {
-    BraveTalkService::GetInstance()
-        ->GetDeviceID(
-            contents_, contents_->GetMainFrame()->GetProcess()->GetID(),
-            contents_->GetMainFrame()->GetRoutingID(), std::move(callback));
+    BraveTalkService::GetInstance()->GetDeviceID(
+        contents_, contents_->GetMainFrame()->GetProcess()->GetID(),
+        contents_->GetMainFrame()->GetRoutingID(), std::move(callback));
     return;
   }
   auto finder = std::make_unique<FrameFinder>(frame_token.value(), contents_,

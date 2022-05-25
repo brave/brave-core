@@ -99,8 +99,8 @@ void BraveTalkMediaAccessHandler::HandleRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* registry =
-      brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(BraveTalkService::GetInstance()->
-          web_contents()->GetBrowserContext());
+      brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(
+          BraveTalkService::GetInstance()->web_contents()->GetBrowserContext());
   if (!registry) {
     NOTREACHED();
     std::move(callback).Run(
