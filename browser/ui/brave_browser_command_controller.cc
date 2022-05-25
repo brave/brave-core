@@ -74,15 +74,13 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.SupportsCommand(id)
-      : BrowserCommandController::SupportsCommand(id);
+  return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
+                             : BrowserCommandController::SupportsCommand(id);
 }
 
 bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.IsCommandEnabled(id)
-      : BrowserCommandController::IsCommandEnabled(id);
+  return IsBraveCommands(id) ? brave_command_updater_.IsCommandEnabled(id)
+                             : BrowserCommandController::IsCommandEnabled(id);
 }
 
 bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
@@ -96,14 +94,16 @@ bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
 }
 
 void BraveBrowserCommandController::AddCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.AddCommandObserver(id, observer)
       : BrowserCommandController::AddCommandObserver(id, observer);
 }
 
 void BraveBrowserCommandController::RemoveCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.RemoveCommandObserver(id, observer)
       : BrowserCommandController::RemoveCommandObserver(id, observer);
@@ -117,8 +117,8 @@ void BraveBrowserCommandController::RemoveCommandObserver(
 
 bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
   return IsBraveCommands(id)
-      ? brave_command_updater_.UpdateCommandEnabled(id, state)
-      : BrowserCommandController::UpdateCommandEnabled(id, state);
+             ? brave_command_updater_.UpdateCommandEnabled(id, state)
+             : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {

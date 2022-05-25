@@ -41,8 +41,9 @@ class BraveTalkConfirmBubbleModel : public ConfirmBubbleModel {
   explicit BraveTalkConfirmBubbleModel(content::WebContents* target_contents)
       : target_contents_(target_contents->GetWeakPtr()) {}
 
-  BraveTalkConfirmBubbleModel(const ConfirmBubbleModel&) = delete;
-  BraveTalkConfirmBubbleModel& operator=(const ConfirmBubbleModel&) = delete;
+  BraveTalkConfirmBubbleModel(const BraveTalkConfirmBubbleModel&) = delete;
+  BraveTalkConfirmBubbleModel& operator=(const BraveTalkConfirmBubbleModel&) =
+      delete;
 
   ~BraveTalkConfirmBubbleModel() override = default;
 
