@@ -18,7 +18,6 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/constants/brave_features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

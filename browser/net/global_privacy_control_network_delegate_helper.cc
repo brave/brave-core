@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/feature_list.h"
-#include "brave/components/constants/brave_features.h"
 #include "brave/components/constants/network_constants.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
