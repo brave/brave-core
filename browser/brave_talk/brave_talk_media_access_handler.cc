@@ -73,7 +73,7 @@ bool BraveTalkMediaAccessHandler::SupportsStreamType(
 
   auto* registry =
       brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(
-          web_contents->GetBrowserContext());
+          BraveTalkService::GetInstance()->web_contents()->GetBrowserContext());
   if (!registry || !registry->VerifyRequest(
                        web_contents->GetMainFrame()->GetProcess()->GetID(),
                        web_contents->GetMainFrame()->GetRoutingID())) {
@@ -100,8 +100,8 @@ void BraveTalkMediaAccessHandler::HandleRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* registry =
-      brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(
-          web_contents->GetBrowserContext());
+      brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(BraveTalkService::GetInstance()->
+          web_contents()->GetBrowserContext());
   if (!registry) {
     NOTREACHED();
     std::move(callback).Run(

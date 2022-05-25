@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/callback.h"
+#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_talk/brave_talk_service_factory.h"
@@ -78,6 +79,11 @@ BraveTalkService::~BraveTalkService() {
   Shutdown();
 }
 
+// static
+BraveTalkService* BraveTalkService::GetInstance() {
+  return base::Singleton<BraveTalkService>::get();
+}
+
 void BraveTalkService::GetDeviceID(
     content::WebContents* contents,
     int owning_process_id,
@@ -113,7 +119,7 @@ void BraveTalkService::ShareTab(content::WebContents* target_contents) {
   if (!web_contents() || !target_contents || !is_requesting_tab())
     return;
   auto* registry = BraveTalkTabCaptureRegistryFactory::GetForContext(
-      target_contents->GetBrowserContext());
+      web_contents()->GetBrowserContext());
 
   auto* owning_render_frame = content::RenderFrameHost::FromID(
       owning_render_process_id_, owning_render_frame_id_);

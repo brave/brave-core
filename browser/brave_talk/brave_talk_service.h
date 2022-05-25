@@ -10,8 +10,10 @@
 #include <vector>
 
 #include "base/callback_forward.h"
+#include "base/memory/singleton.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 
 namespace content {
@@ -29,6 +31,8 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
    public:
     virtual void OnIsRequestingChanged(bool requesting) = 0;
   };
+
+  static BraveTalkService* GetInstance();
 
   BraveTalkService();
   BraveTalkService(const BraveTalkService&) = delete;
@@ -56,6 +60,7 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   // content::WebContentsObserver:
   void DidStartNavigation(content::NavigationHandle* handle) override;
+  using content::WebContentsObserver::web_contents;
 
   // Testing:
   // Injects a callback for testing, which is called when a DeviceID has been
@@ -64,6 +69,8 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
       base::OnceCallback<void()> callback_for_testing);
 
  private:
+  friend struct base::DefaultSingletonTraits<BraveTalkService>;
+
   void StartObserving(content::WebContents* contents);
   void StopObserving();
   void NotifyObservers();

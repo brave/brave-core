@@ -10,6 +10,7 @@
 
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "content/public/browser/browser_context.h"
 
 namespace brave_talk {
 
@@ -20,6 +21,7 @@ BraveTalkServiceFactory* BraveTalkServiceFactory::GetInstance() {
 
 BraveTalkService* BraveTalkServiceFactory::GetForContext(
     content::BrowserContext* context) {
+      return BraveTalkService::GetInstance();
   return static_cast<BraveTalkService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
