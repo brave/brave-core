@@ -480,8 +480,12 @@ export function refreshTransactionHistory (address?: string) {
 export function refreshFullNetworkList () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { jsonRpcService } = apiProxy
-    const { wallet: { isFilecoinEnabled, isSolanaEnabled, isTestNetworksEnabled } } = getState()
+    const { jsonRpcService, braveWalletService } = apiProxy
+    const { wallet: { isFilecoinEnabled, isSolanaEnabled } } = getState()
+
+    // Get isTestNetworkEnabled
+    const isTestNetworksEnabled = await braveWalletService.getShowWalletTestNetworks()
+    dispatch(WalletActions.setShowTestNetworks(isTestNetworksEnabled.isEnabled))
 
     // Get All Networks
     const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
@@ -498,7 +502,7 @@ export function refreshFullNetworkList () {
     }))
     const flattenedNetworkList = getFullNetworkList.flat(1)
     const networkList =
-      isTestNetworksEnabled
+      isTestNetworksEnabled.isEnabled
         ? flattenedNetworkList
         : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
     dispatch(WalletActions.setAllNetworks(networkList))
