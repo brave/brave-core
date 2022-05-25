@@ -21,9 +21,13 @@ class IssuersDelegateMock : public IssuersDelegate {
   IssuersDelegateMock(const IssuersDelegateMock&) = delete;
   IssuersDelegateMock& operator=(const IssuersDelegateMock&) = delete;
 
-  MOCK_METHOD(void, OnDidGetIssuers, (const IssuersInfo& issuers));
+  MOCK_METHOD(void, OnDidFetchIssuers, (const IssuersInfo& issuers));
 
-  MOCK_METHOD(void, OnFailedToGetIssuers, ());
+  MOCK_METHOD(void, OnFailedToFetchIssuers, ());
+
+  MOCK_METHOD(void, OnWillRetryFetchingIssuers, (const base::Time retry_at));
+
+  MOCK_METHOD(void, OnDidRetryFetchingIssuers, ());
 };
 
 }  // namespace ads

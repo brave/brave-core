@@ -19,9 +19,8 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
-namespace security {
 
-bool Verify(const ConfirmationInfo& confirmation) {
+bool VerifyConfirmation(const ConfirmationInfo& confirmation) {
   std::string credential;
   base::Base64Decode(confirmation.credential, &credential);
 
@@ -63,5 +62,4 @@ bool Verify(const ConfirmationInfo& confirmation) {
   return verification_key.Verify(verification_signature, payload);
 }
 
-}  // namespace security
 }  // namespace ads

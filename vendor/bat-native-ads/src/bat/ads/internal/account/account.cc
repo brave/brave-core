@@ -242,7 +242,7 @@ void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
   TopUpUnblindedTokens();
 }
 
-void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
+void Account::OnDidFetchIssuers(const IssuersInfo& issuers) {
   const absl::optional<IssuerInfo>& issuer_optional =
       GetIssuerForType(issuers, IssuerType::kPayments);
   if (!issuer_optional) {
@@ -266,8 +266,8 @@ void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
   TopUpUnblindedTokens();
 }
 
-void Account::OnFailedToGetIssuers() {
-  BLOG(0, "Failed to get issuers");
+void Account::OnFailedToFetchIssuers() {
+  BLOG(0, "Failed to fetch issuers");
 }
 
 void Account::OnDidRedeemUnblindedPaymentTokens(

@@ -22,15 +22,15 @@ base::circular_deque<HistoryItemInfo> GetUnsortedHistory() {
   base::circular_deque<HistoryItemInfo> history;
 
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(22222222222);
+  history_item.time = base::Time::FromDoubleT(222222222);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(33333333333);
+  history_item.time = base::Time::FromDoubleT(333333333);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(11111111111);
+  history_item.time = base::Time::FromDoubleT(111111111);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(55555555555);
+  history_item.time = base::Time::FromDoubleT(555555555);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(44444444444);
+  history_item.time = base::Time::FromDoubleT(444444444);
   history.push_back(history_item);
 
   return history;
@@ -61,15 +61,15 @@ TEST(BatAdsHistorySortTest, DescendingSortOrder) {
   // Assert
   base::circular_deque<HistoryItemInfo> expected_history;
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(55555555555);
+  history_item.time = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(44444444444);
+  history_item.time = base::Time::FromDoubleT(444444444);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(33333333333);
+  history_item.time = base::Time::FromDoubleT(333333333);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(22222222222);
+  history_item.time = base::Time::FromDoubleT(222222222);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(11111111111);
+  history_item.time = base::Time::FromDoubleT(111111111);
   expected_history.push_back(history_item);
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -97,15 +97,15 @@ TEST(BatAdsHistorySortTest, AscendingSortOrder) {
 
   base::circular_deque<HistoryItemInfo> expected_history;
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(11111111111);
+  history_item.time = base::Time::FromDoubleT(111111111);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(22222222222);
+  history_item.time = base::Time::FromDoubleT(222222222);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(33333333333);
+  history_item.time = base::Time::FromDoubleT(333333333);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(44444444444);
+  history_item.time = base::Time::FromDoubleT(444444444);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(55555555555);
+  history_item.time = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
 
   base::circular_deque<HistoryItemInfo> history = GetUnsortedHistory();

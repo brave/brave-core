@@ -16,6 +16,7 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
@@ -27,7 +28,6 @@
 #include "bat/ads/statement_info.h"
 #include "bat/ads/transaction_info.h"
 #include "bat/ads/transaction_info_aliases.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

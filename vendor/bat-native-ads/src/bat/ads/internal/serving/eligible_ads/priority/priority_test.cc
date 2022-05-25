@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/guid.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
@@ -13,7 +14,6 @@
 #include "bat/ads/internal/serving/ad_notification_serving.h"
 #include "bat/ads/internal/serving/eligible_ads/eligible_ads_unittest_util.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -10,13 +10,13 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_time_util.h"
 #include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -89,7 +89,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens())
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -163,7 +163,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens())
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -221,7 +221,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens())
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -274,7 +274,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens())
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -337,7 +337,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens())
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
@@ -390,7 +390,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
-              OnWillRetryRedeemingUnblindedPaymentTokens())
+              OnWillRetryRedeemingUnblindedPaymentTokens(_))
       .Times(1);
 
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,

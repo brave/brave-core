@@ -7,9 +7,9 @@
 
 #include <vector>
 
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

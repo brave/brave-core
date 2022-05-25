@@ -9,6 +9,7 @@
 
 #include "base/guid.h"
 #include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_unittest_util.h"
@@ -17,7 +18,6 @@
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 #include "bat/ads/internal/serving/serving_features.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -15,24 +15,26 @@ class RedeemUnblindedPaymentTokensDelegate {
  public:
   virtual ~RedeemUnblindedPaymentTokensDelegate() = default;
 
-  // Invoked to tell the delegate unblinded payment tokens were redeemed
+  // Invoked to tell the delegate we successfully redeemed unblinded payment
+  // tokens
   virtual void OnDidRedeemUnblindedPaymentTokens(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {}
 
   // Invoked to tell the delegate unblinded payment token redemption failed
   virtual void OnFailedToRedeemUnblindedPaymentTokens() {}
 
-  // Invoked to tell the delegate that we have scheduled the unblinded payment
-  // token redemption |time|
+  // Invoked to tell the delegate that we have scheduled an unblinded payment
+  // token redemption at the specified time
   virtual void OnDidScheduleNextUnblindedPaymentTokensRedemption(
-      const base::Time time) {}
+      const base::Time redeem_at) {}
 
-  // Invoked to tell the delegate that we will retry to redeem unblinded
-  // payment tokens
-  virtual void OnWillRetryRedeemingUnblindedPaymentTokens() {}
+  // Invoked to tell the delegate that we will retry redeeming unblinded payment
+  // tokens at the specified time
+  virtual void OnWillRetryRedeemingUnblindedPaymentTokens(
+      const base::Time retry_at) {}
 
-  // Invoked to tell the delegate that we did retry to redeem unblinded
-  // payment tokens
+  // Invoked to tell the delegate that we did retry redeeming unblinded payment
+  // tokens
   virtual void OnDidRetryRedeemingUnblindedPaymentTokens() {}
 };
 

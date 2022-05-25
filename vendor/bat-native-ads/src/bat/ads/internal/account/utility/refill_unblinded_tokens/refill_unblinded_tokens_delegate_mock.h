@@ -27,7 +27,9 @@ class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
 
   MOCK_METHOD(void, OnFailedToRefillUnblindedTokens, ());
 
-  MOCK_METHOD(void, OnWillRetryRefillingUnblindedTokens, ());
+  MOCK_METHOD(void,
+              OnWillRetryRefillingUnblindedTokens,
+              (const base::Time retry_at));
   MOCK_METHOD(void, OnDidRetryRefillingUnblindedTokens, ());
 
   MOCK_METHOD(void,

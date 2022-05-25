@@ -33,13 +33,13 @@ class Issuers {
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
 
-  void OnDidGetIssuers(const IssuersInfo& issuers);
-  void OnFailedToGetIssuers();
+  void OnDidFetchIssuers(const IssuersInfo& issuers);
+  void OnFailedToFetchIssuers(const bool should_retry);
 
   void FetchAfterDelay();
   base::TimeDelta GetFetchDelay() const;
 
-  void Retry();
+  void RetryAfterDelay();
   void OnRetry();
   void StopRetrying();
 

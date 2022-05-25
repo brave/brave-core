@@ -336,6 +336,7 @@ source_set("ads") {
     "src/bat/ads/internal/base/database_transaction_util.h",
     "src/bat/ads/internal/base/field_trial_params_util.cc",
     "src/bat/ads/internal/base/field_trial_params_util.h",
+    "src/bat/ads/internal/base/http_status_code.h",
     "src/bat/ads/internal/base/instance_id_util.cc",
     "src/bat/ads/internal/base/instance_id_util.h",
     "src/bat/ads/internal/base/key_pair_info.cc",

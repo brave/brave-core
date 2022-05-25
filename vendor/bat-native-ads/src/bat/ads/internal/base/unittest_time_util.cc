@@ -74,8 +74,8 @@ double DistantFutureAsTimestamp() {
 }
 
 base::Time DistantFuture() {
-  // Thursday, 31 December 2099 23:59:59
-  return base::Time::FromDoubleT(4102444799);
+  // Tuesday, 19 January 2038 03:14:07
+  return base::Time::FromDoubleT(2147483647);
 }
 
 std::string DistantFutureAsISO8601() {

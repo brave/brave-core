@@ -10,11 +10,8 @@ namespace ads {
 
 struct ConfirmationInfo;
 
-namespace security {
+bool VerifyConfirmation(const ConfirmationInfo& confirmation);
 
-bool Verify(const ConfirmationInfo& confirmation);
-
-}  // namespace security
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_UTIL_H_
