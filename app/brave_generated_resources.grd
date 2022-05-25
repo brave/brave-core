@@ -430,8 +430,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Brave Talk Tab Sharing -->
-      <message name="IDS_BRAVE_TALK_SHARE_TAB" desc="The description of the share tab entry in the sharing hub">
+      <message name="IDS_BRAVE_TALK_SHARE_TAB_BUTTON_TOOLTIP" desc="The description of the share tab entry in the sharing hub">
         Share Tab
+      </message>
+      <message name="IDS_BRAVE_TALK_SHARE_TAB_CONFIRM_PROMPT_TITLE" desc="The title of the confirm popup which shows when the user clicks the share tab button">
+        Share this tab?
+      </message>
+      <message name="IDS_BRAVE_TALK_SHARE_TAB_CONFIRM_PROMPT_MESSAGE" desc="The message in the confirm popup which shows when the user clicks the share tab button">
+        The contents of this tab will be shared with your active Brave Talk call
       </message>
 
       <!-- Extensions page strings -->

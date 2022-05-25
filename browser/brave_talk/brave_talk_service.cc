@@ -17,6 +17,8 @@
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/confirm_bubble.h"
 #include "chrome/browser/ui/confirm_bubble_model.h"
@@ -43,11 +45,14 @@ class BraveTalkConfirmBubbleModel : public ConfirmBubbleModel {
 
   ~BraveTalkConfirmBubbleModel() override = default;
 
-  std::u16string GetTitle() const override { return u"Share this tab?"; }
+  std::u16string GetTitle() const override {
+    return brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_BRAVE_TALK_SHARE_TAB_CONFIRM_PROMPT_TITLE);
+  }
 
   std::u16string GetMessageText() const override {
-    return u"The contents of this tab will be shared with your active Brave "
-           u"Talk call";
+    return brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_BRAVE_TALK_SHARE_TAB_CONFIRM_PROMPT_MESSAGE);
   }
 
   void Accept() override {
