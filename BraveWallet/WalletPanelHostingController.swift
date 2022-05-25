@@ -8,6 +8,7 @@ import UIKit
 import BraveCore
 import SwiftUI
 import Combine
+import BraveUI
 
 /// Displays a summary of the users wallet when they are visiting a webpage that wants to connect with the
 /// users wallet
@@ -39,6 +40,23 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       )
       walletHostingController.delegate = self.delegate
       self.present(walletHostingController, animated: true)
+    }
+    rootView.presentBuySendSwap = { [weak self] in
+      guard let self = self, let store = walletStore.cryptoStore else { return }
+      let controller = FixedHeightHostingPanModalController(
+        rootView: BuySendSwapView(
+          network: store.networkStore.selectedChain,
+          action: { destination in
+            self.dismiss(
+              animated: true,
+              completion: {
+                let walletHostingController = WalletHostingViewController(walletStore: walletStore, presentingContext: .buySendSwap(destination), faviconRenderer: faviconRenderer)
+                walletHostingController.delegate = self.delegate
+                self.present(walletHostingController, animated: true)
+              })
+          })
+      )
+      self.presentPanModal(controller)
     }
     
     cancellable = walletStore.keyringStore.$keyring

@@ -21,6 +21,7 @@ public struct WalletPanelContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
   var origin: URLOrigin
   var presentWalletWithContext: ((PresentingContext) -> Void)?
+  var presentBuySendSwap: (() -> Void)?
   
   // When the screen first apperas the keyring is set as the default value
   // which causes an unnessary animation
@@ -54,7 +55,7 @@ public struct WalletPanelContainerView: View {
       } label: {
         HStack(spacing: 4) {
           Image("brave.unlock")
-          Text("Unlock Wallet")
+          Text(Strings.Wallet.walletPanelUnlockWallet)
         }
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
@@ -69,10 +70,10 @@ public struct WalletPanelContainerView: View {
     ScrollView(.vertical) {
       VStack(spacing: 36) {
         VStack(spacing: 4) {
-          Text("Brave Wallet")
+          Text(Strings.Wallet.braveWallet)
             .foregroundColor(Color(.bravePrimary))
             .font(.headline)
-          Text("Use this panel to securely access web3 and all your crypto assets.")
+          Text(Strings.Wallet.walletPanelSetupWalletDescription)
             .foregroundColor(Color(.secondaryBraveLabel))
             .font(.subheadline)
         }
@@ -80,7 +81,7 @@ public struct WalletPanelContainerView: View {
         Button {
           presentWalletWithContext?(.panelUnlockOrSetup)
         } label: {
-          Text("Learn More")
+          Text(Strings.Wallet.learnMoreButton)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
       }
@@ -100,9 +101,13 @@ public struct WalletPanelContainerView: View {
             keyringStore: keyringStore,
             cryptoStore: cryptoStore,
             networkStore: cryptoStore.networkStore,
+            accountActivityStore: cryptoStore.accountActivityStore(for: keyringStore.selectedAccount),
             origin: origin,
             presentWalletWithContext: { context in
               self.presentWalletWithContext?(context)
+            },
+            presentBuySendSwap: {
+              self.presentBuySendSwap?()
             }
           )
           .transition(.asymmetric(insertion: .identity, removal: .opacity))
@@ -124,7 +129,7 @@ public struct WalletPanelContainerView: View {
     }
     .onChange(of: keyringStore.keyring) { newValue in
       fetchingInitialKeyring = false
-      if visibleScreen != .panel {
+      if visibleScreen != .panel, !keyringStore.lockedManually {
         presentWalletWithContext?(.panelUnlockOrSetup)
       }
     }
@@ -135,12 +140,36 @@ struct WalletPanelView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var networkStore: NetworkStore
+  @ObservedObject var accountActivityStore: AccountActivityStore
   var origin: URLOrigin
   var presentWalletWithContext: (PresentingContext) -> Void
+  var presentBuySendSwap: () -> Void
   
   @Environment(\.pixelLength) private var pixelLength
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var blockieSize = 54
+  
+  private let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
+  
+  init(
+    keyringStore: KeyringStore,
+    cryptoStore: CryptoStore,
+    networkStore: NetworkStore,
+    accountActivityStore: AccountActivityStore,
+    origin: URLOrigin,
+    presentWalletWithContext: @escaping (PresentingContext) -> Void,
+    presentBuySendSwap: @escaping () -> Void
+  ) {
+    self.keyringStore = keyringStore
+    self.cryptoStore = cryptoStore
+    self.networkStore = networkStore
+    self.accountActivityStore = accountActivityStore
+    self.origin = origin
+    self.presentWalletWithContext = presentWalletWithContext
+    self.presentBuySendSwap = presentBuySendSwap
+    
+    currencyFormatter.currencyCode = accountActivityStore.currencyCode
+  }
   
   private var connectButton: some View {
     Button {
@@ -172,31 +201,100 @@ struct WalletPanelView: View {
     )
   }
   
+  private var pendingRequestsButton: some View {
+    Button(action: { presentWalletWithContext(.pendingRequests) }) {
+      Image("brave.bell.badge")
+        .foregroundColor(.white)
+    }
+  }
+  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 0) {
-        HStack {
-          Spacer()
-          Text("Brave Wallet")
-            .font(.headline)
-          Spacer()
-          if cryptoStore.pendingRequest != nil {
-            Button(action: { presentWalletWithContext(.pendingRequests) }) {
-              Image(uiImage: UIImage(imageLiteralResourceName: "brave.bell.badge").template)
-                .foregroundColor(.white)
+        if sizeCategory.isAccessibilityCategory {
+          VStack {
+            Text(Strings.Wallet.braveWallet)
+              .font(.headline)
+              .background(
+                Color.clear
+              )
+            HStack {
+              Button {
+                presentWalletWithContext(.default)
+              } label: {
+                Image(systemName: "arrow.up.left.and.arrow.down.right")
+                  .rotationEffect(.init(degrees: 90))
+              }
+              .accessibilityLabel(Strings.Wallet.walletFullScreenAccessibilityTitle)
+              Spacer()
+              if cryptoStore.pendingRequest != nil {
+                pendingRequestsButton
+                Spacer()
+              }
+              Menu {
+                Button(action: { keyringStore.lock() }) {
+                  Label(Strings.Wallet.lock, image: "brave.lock")
+                }
+                Divider()
+                Button(action: { presentWalletWithContext(.settings) }) {
+                  Label(Strings.Wallet.settings, image: "brave.gear")
+                }
+              } label: {
+                Image(systemName: "ellipsis")
+              }
+              .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
             }
           }
-        }
           .padding(16)
-          .frame(maxWidth: .infinity)
           .overlay(
             Color.white.opacity(0.3) // Divider
               .frame(height: pixelLength),
             alignment: .bottom
           )
-          .background(
-            Color.clear
+        } else {
+          HStack {
+            Button {
+              presentWalletWithContext(.default)
+            } label: {
+              Image(systemName: "arrow.up.left.and.arrow.down.right")
+                .rotationEffect(.init(degrees: 90))
+            }
+            .accessibilityLabel(Strings.Wallet.walletFullScreenAccessibilityTitle)
+            if cryptoStore.pendingRequest != nil {
+              // fake bell icon for layout
+              pendingRequestsButton
+              .hidden()
+            }
+            Spacer()
+            Text(Strings.Wallet.braveWallet)
+              .font(.headline)
+              .background(
+                Color.clear
+              )
+            Spacer()
+            if cryptoStore.pendingRequest != nil {
+              pendingRequestsButton
+            }
+            Menu {
+              Button(action: { keyringStore.lock() }) {
+                Label(Strings.Wallet.lock, image: "brave.lock")
+              }
+              Divider()
+              Button(action: { presentWalletWithContext(.settings) }) {
+                Label(Strings.Wallet.settings, image: "brave.gear")
+              }
+            } label: {
+              Image(systemName: "ellipsis")
+            }
+            .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
+          }
+          .padding(16)
+          .overlay(
+            Color.white.opacity(0.3) // Divider
+              .frame(height: pixelLength),
+            alignment: .bottom
           )
+        }
         VStack {
           if sizeCategory.isAccessibilityCategory {
             VStack {
@@ -212,7 +310,7 @@ struct WalletPanelView: View {
           }
           VStack(spacing: 12) {
             Button {
-              
+              presentWalletWithContext(.accountSelection)
             } label: {
               Blockie(address: keyringStore.selectedAccount.address)
                 .frame(width: blockieSize, height: blockieSize)
@@ -234,15 +332,16 @@ struct WalletPanelView: View {
             }
           }
           VStack(spacing: 4) {
-            Text("0.31178 ETH")
+            let nativeAsset = accountActivityStore.assets.first(where: { $0.token.symbol == networkStore.selectedChain.symbol })
+            Text(String(format: "%.04f %@", nativeAsset?.decimalBalance ?? 0.0, networkStore.selectedChain.symbol))
               .font(.title2.weight(.bold))
-            Text("$872.48")
+            Text(currencyFormatter.string(from: NSNumber(value: (Double(nativeAsset?.price ?? "") ?? 0) * (nativeAsset?.decimalBalance ?? 0.0))) ?? "")
               .font(.callout)
           }
           .padding(.vertical)
           HStack(spacing: 0) {
             Button {
-              
+              presentBuySendSwap()
             } label: {
               Image("brave.arrow.left.arrow.right")
                 .imageScale(.large)
@@ -252,6 +351,7 @@ struct WalletPanelView: View {
             Color.white.opacity(0.6)
               .frame(width: pixelLength)
             Button {
+              presentWalletWithContext(.transactionHistory)
             } label: {
               Image("brave.history")
                 .imageScale(.large)
@@ -266,11 +366,7 @@ struct WalletPanelView: View {
     }
     .foregroundColor(.white)
     .background(
-      LinearGradient(
-        colors: [.green, .blue],
-        startPoint: .top,
-        endPoint: .bottom
-      )
+      BlockieMaterial(address: keyringStore.selectedAccount.id)
       .ignoresSafeArea()
     )
     .onChange(of: cryptoStore.pendingRequest) { newValue in
@@ -285,6 +381,7 @@ struct WalletPanelView: View {
       } else {
         cryptoStore.prepare()
       }
+      accountActivityStore.update()
     }
   }
 }
@@ -297,15 +394,19 @@ struct WalletPanelView_Previews: PreviewProvider {
         keyringStore: .previewStoreWithWalletCreated,
         cryptoStore: .previewStore,
         networkStore: .previewStore,
+        accountActivityStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
-        presentWalletWithContext: { _ in }
+        presentWalletWithContext: { _ in },
+        presentBuySendSwap: {}
       )
       WalletPanelView(
         keyringStore: .previewStore,
         cryptoStore: .previewStore,
         networkStore: .previewStore,
+        accountActivityStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
-        presentWalletWithContext: { _ in }
+        presentWalletWithContext: { _ in },
+        presentBuySendSwap: {}
       )
       WalletPanelView(
         keyringStore: {
@@ -315,8 +416,10 @@ struct WalletPanelView_Previews: PreviewProvider {
         }(),
         cryptoStore: .previewStore,
         networkStore: .previewStore,
+        accountActivityStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
-        presentWalletWithContext: { _ in }
+        presentWalletWithContext: { _ in },
+        presentBuySendSwap: {}
       )
     }
     .fixedSize(horizontal: false, vertical: true)

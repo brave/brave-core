@@ -9,7 +9,7 @@ import SwiftUI
 import BraveCore
 
 /// Used to determine where a user is navigated to when they tap on a buy, send or swap button
-struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
+public struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
   enum Kind: String, Identifiable, CaseIterable {
     case buy, send, swap
 
@@ -42,7 +42,7 @@ struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
 
   var kind: Kind
   var initialToken: BraveWallet.BlockchainToken?
-  var id: String { kind.id }
+  public var id: String { kind.id }
 }
 
 private struct BuySendSwapDestinationKey: EnvironmentKey {
