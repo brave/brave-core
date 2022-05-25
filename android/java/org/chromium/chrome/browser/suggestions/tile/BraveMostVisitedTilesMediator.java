@@ -11,15 +11,17 @@ import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
-    public BraveMostVisitedTilesMediator(Resources resources, ViewGroup mvTilesLayout,
-            ViewStub noMvPlaceholderStub, TileRenderer renderer, PropertyModel propertyModel,
-            boolean shouldShowSkeletonUIPreNative, boolean isScrollableMVTEnabled, boolean isTablet,
+    public BraveMostVisitedTilesMediator(Resources resources, UiConfig uiConfig,
+            ViewGroup mvTilesLayout, ViewStub noMvPlaceholderStub, TileRenderer renderer,
+            PropertyModel propertyModel, boolean shouldShowSkeletonUIPreNative,
+            boolean isScrollableMVTEnabled, boolean isTablet,
             @Nullable Runnable snapshotTileGridChangedRunnable,
             @Nullable Runnable tileCountChangedRunnable) {
-        super(resources, mvTilesLayout, noMvPlaceholderStub, renderer, propertyModel,
+        super(resources, uiConfig, mvTilesLayout, noMvPlaceholderStub, renderer, propertyModel,
                 shouldShowSkeletonUIPreNative, isScrollableMVTEnabled, isTablet,
                 snapshotTileGridChangedRunnable, tileCountChangedRunnable);
     }
