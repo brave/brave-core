@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.firstrun;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,7 +48,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private boolean mInitializeViewsDone;
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsP3aEnabled;
-    private boolean isTablet;
+    private boolean mIsTablet;
     private FirstRunFlowSequencer mFirstRunFlowSequencer;
     private int mCurrentStep = -1;
 
@@ -73,7 +74,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         assert !mInitializeViewsDone;
         setContentView(R.layout.activity_welcome_onboarding);
 
-        isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
+        mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
 
         initViews();
         onClickViews();
@@ -102,13 +103,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mCheckboxP3a = findViewById(R.id.checkbox_p3a);
         mBtnPositive = findViewById(R.id.btn_positive);
         mBtnNegative = findViewById(R.id.btn_negative);
+        LinearLayout layoutData = findViewById(R.id.layout_data);
+        LayoutTransition layoutTransition = new LayoutTransition();
+        layoutTransition.setDuration(1000);
+        layoutData.setLayoutTransition(layoutTransition);
 
-        int margin;
-        if (isTablet) {
-            margin = 200;
-        } else {
-            margin = 50;
-        }
+        int margin = mIsTablet ? 200 : 50;
 
         ViewGroup.MarginLayoutParams topLeafParams =
                 (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
@@ -143,44 +143,46 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         });
     }
 
-    private void startTimer(int timer) {
-        new Handler().postDelayed(this::nextOnboardingStep, timer);
+    private void startTimer(int delayMillis) {
+        new Handler().postDelayed(this::nextOnboardingStep, delayMillis);
     }
 
     private void nextOnboardingStep() {
         mCurrentStep++;
 
         if (mCurrentStep == 0) {
-            int margin = isTablet ? 100 : 0;
+            int margin = mIsTablet ? 100 : 0;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
             setFadeInAnimation(mTvWelcome, 200);
             mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
-            startTimer(2000);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mTvWelcome.animate()
+                            .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
+                            .setDuration(3000)
+                            .start();
+                }
+            }, 200);
+
+            startTimer(3000);
 
         } else if (mCurrentStep == 1) {
-            int margin = isTablet ? 200 : 30;
+            int margin = mIsTablet ? 200 : 30;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
 
-            mTvWelcome.setVisibility(View.VISIBLE);
-
             if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
                 mBtnPositive.setText(getResources().getString(R.string.continue_text));
-            } else {
-                mBtnPositive.setText(getResources().getString(R.string.set_default_browser));
-                mBtnNegative.setText(getResources().getString(R.string.not_now));
-                mBtnNegative.setVisibility(View.VISIBLE);
+                mBtnNegative.setVisibility(View.GONE);
             }
-
             mTvWelcome.setVisibility(View.GONE);
-            mTvCard.setText(getResources().getString(R.string.privacy_onboarding));
-            mTvDefault.setText(getResources().getString(R.string.onboarding_set_default));
             mLayoutCard.setVisibility(View.VISIBLE);
             mIvArrowDown.setVisibility(View.VISIBLE);
 
         } else if (mCurrentStep == 2) {
-            int margin = isTablet ? 250 : 60;
+            int margin = mIsTablet ? 250 : 60;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
 

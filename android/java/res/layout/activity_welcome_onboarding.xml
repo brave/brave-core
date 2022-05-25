@@ -62,11 +62,11 @@
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/layout_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:animateLayoutChanges="true">
+            android:orientation="vertical">
     
             <TextView
                 android:id="@+id/tv_welcome"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:padding="16dp"
+                android:padding="24dp"
                 android:visibility="gone"
                 android:orientation="vertical"
                 android:background="@drawable/rounded_onboarding_welcome_bg">
@@ -95,7 +95,8 @@
                     android:id="@+id/tv_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:text="@string/privacy_onboarding"
+                    android:textSize="22sp"
                     android:textColor="@color/onboarding_card_text_color"/>
 
                 <TextView
@@ -121,15 +122,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/ic_p3a_checkbox"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="8dp"/>
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="12dp"/>
 
                     <TextView
                         android:id="@+id/tv_crash"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/p3a_crash"
-                        android:lineSpacingMultiplier="1.2"
                         android:textSize="14sp"
                         android:textColor="@color/onboarding_card_text_color"/>
 
@@ -148,14 +148,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:button="@drawable/ic_p3a_checkbox"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="8dp"/>
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="12dp"/>
 
                     <TextView
                         android:id="@+id/tv_p3a"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="1.2"
                         android:text="@string/p3a_insights"
                         android:textSize="14sp"
                         android:textColor="@color/onboarding_card_text_color"/>
@@ -170,6 +169,7 @@
                     android:layout_marginTop="16dp"
                     android:background="@drawable/blue_48_rounded_bg"
                     app:backgroundTint="@null"
+                    android:text="@string/set_default_browser"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
@@ -184,10 +184,10 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="6dp"
                     android:background="@android:color/transparent"
+                    android:text="@string/not_now"
                     android:textAllCaps="false"
                     android:textColor="@color/onboarding_negative_button_color"
                     android:textSize="16sp"
-                    android:visibility="gone"
                     style="?android:attr/borderlessButtonStyle"/>
 
             </LinearLayout>

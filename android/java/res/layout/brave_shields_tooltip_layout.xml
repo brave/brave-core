@@ -16,7 +16,7 @@
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="14sp"
+		android:textSize="16sp"
 		android:gravity="end"
 		android:text="@string/shield_onboarding"
 		android:textColor="@color/onboarding_welcome_text_color"/>
@@ -26,10 +26,7 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:layout_marginTop="20dp"
-		android:paddingTop="8dp"
-		android:paddingStart="16dp"
-		android:paddingBottom="8dp"
-		android:paddingEnd="16dp"
+		android:padding="16dp"
 		android:background="@drawable/brave_shields_tooltip_text_bg">
 
 		<ImageView
@@ -42,9 +39,8 @@
 			android:id="@+id/tv_blocked"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:layout_marginStart="8dp"
-			android:textSize="18sp"
+			android:layout_marginStart="12dp"
+			android:textSize="20sp"
 			android:textColor="@color/onboarding_welcome_text_color"/>
 
 	</LinearLayout>
@@ -53,14 +49,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="14dp"
-		android:paddingTop="8dp"
-		android:paddingStart="16dp"
-		android:paddingBottom="8dp"
-		android:paddingEnd="16dp"
+		android:padding="16dp"
 		android:drawablePadding="10dp"
         	app:drawableStartCompat="@drawable/ic_brave_36"
-        	android:gravity="center_vertical"
-		android:text="@string/shield_tooltip_desc"
+        	android:text="@string/shield_tooltip_desc"
 		android:textSize="14sp"
 		android:textColor="@color/onboarding_welcome_text_color"
 		android:background="@drawable/brave_shields_tooltip_text_bg"/>

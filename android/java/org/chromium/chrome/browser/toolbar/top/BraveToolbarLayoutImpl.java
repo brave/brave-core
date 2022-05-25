@@ -51,7 +51,6 @@ import androidx.core.content.res.ResourcesCompat;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.BooleanSupplier;
@@ -249,6 +248,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
+        if (!mBraveShieldsHandler.isDisconnectEntityLoaded
+                && !BraveShieldsUtils.hasShieldsTooltipShown(
+                        BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
+            mBraveShieldsHandler.loadDisconnectEntityList();
+        }
         mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
             @Override
             public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
@@ -433,7 +437,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private void checkForTooltip(Tab tab) {
         if (!BraveShieldsUtils.isTooltipShown) {
-            mBraveShieldsHandler.loadDisconnectEntityList();
             if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
                     && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
                                     + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
@@ -451,18 +454,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
-            float padding = (float) dpToPx(getContext(), 16);
-
+            float padding = (float) dpToPx(getContext(), 20);
             mShieldsPopupWindowTooltip =
                     new PopupWindowTooltip.Builder(getContext())
                             .anchorView(mBraveShieldsButton)
-                            .arrowColor(getContext().getResources().getColor(
-                                    R.color.onboarding_arrow_color))
+                            .arrowColor(ContextCompat.getColor(
+                                    getContext(), R.color.onboarding_arrow_color))
                             .gravity(Gravity.BOTTOM)
                             .dismissOnOutsideTouch(true)
                             .dismissOnInsideTouch(false)
                             .backgroundDimDisabled(true)
                             .padding(padding)
+                            .parentPaddingHorizontal(dpToPx(getContext(), 10))
                             .modal(true)
                             .onDismissListener(tooltip -> {
                                 if (viewGroup != null && highlightView != null) {
@@ -474,6 +477,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             .build();
 
             ArrayList<String> blockerNamesList = mBraveShieldsHandler.getBlockerNamesList(tabId);
+
             int adsTrackersCount = mBraveShieldsHandler.getTrackersBlockedCount(tabId)
                     + mBraveShieldsHandler.getAdsBlockedCount(tabId);
 
@@ -503,7 +507,24 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
                 viewGroup.addView(highlightView);
                 HighlightItem item = new HighlightItem(mBraveShieldsButton);
+
+                ImageButton braveShieldButton =
+                        new ImageButton(getContext(), null, R.style.ToolbarButton);
+                braveShieldButton.setImageResource(R.drawable.btn_brave);
+                FrameLayout.LayoutParams braveShieldParams =
+                        new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                                FrameLayout.LayoutParams.WRAP_CONTENT);
+
+                int[] location = new int[2];
+                highlightView.getLocationOnScreen(location);
+                braveShieldParams.leftMargin = item.getScreenLeft() + dpToPx(getContext(), 10);
+                braveShieldParams.topMargin = item.getScreenTop()
+                        + ((item.getScreenBottom() - item.getScreenTop()) / 4) - location[1];
+                braveShieldButton.setLayoutParams(braveShieldParams);
+                highlightView.addView(braveShieldButton);
+
                 highlightView.setShouldShowHighlight(true);
+                highlightView.setHighlightTransparent(true);
                 highlightView.setHighlightItem(item);
                 highlightView.initializeAnimators();
                 highlightView.startAnimation();

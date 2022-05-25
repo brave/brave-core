@@ -17,7 +17,7 @@
 		android:id="@+id/tv_tooltip_info"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="14sp"
+		android:textSize="16sp"
 		android:text="@string/type_website"
 		android:textColor="@color/onboarding_welcome_text_color"/>
 
@@ -27,7 +27,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="24dp"
 		android:text="@string/searchbox_onboarding"
-		android:textSize="18sp"
+		android:textSize="20sp"
 		android:alpha="0.9"
 		android:textColor="@android:color/white"/>
 

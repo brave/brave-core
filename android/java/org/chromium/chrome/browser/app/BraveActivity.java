@@ -853,8 +853,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         highlightView.setColor(
                 ContextCompat.getColor(this, R.color.onboarding_search_highlight_color));
         ViewGroup viewGroup = findViewById(android.R.id.content);
-        View anchorView = (View) findViewById(R.id.url_bar);
-        float padding = (float) dpToPx(this, 16);
+        View anchorView = (View) findViewById(R.id.toolbar);
+        float padding = (float) dpToPx(this, 20);
+        boolean isTablet = ConfigurationUtils.isTablet(this);
         new Handler().postDelayed(() -> {
             PopupWindowTooltip popupWindowTooltip =
                     new PopupWindowTooltip.Builder(this)
@@ -864,7 +865,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                             .dismissOnOutsideTouch(true)
                             .dismissOnInsideTouch(false)
                             .backgroundDimDisabled(true)
+                            .contentArrowAtStart(!isTablet)
                             .padding(padding)
+                            .parentPaddingHorizontal(dpToPx(this, 10))
                             .onDismissListener(tooltip -> {
                                 if (viewGroup != null && highlightView != null) {
                                     viewGroup.removeView(highlightView);
@@ -876,6 +879,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
             viewGroup.addView(highlightView);
             HighlightItem item = new HighlightItem(anchorView);
+            highlightView.setHighlightTransparent(true);
             highlightView.setHighlightItem(item);
             popupWindowTooltip.show();
         }, 500);
