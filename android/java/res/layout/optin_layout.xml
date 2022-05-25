@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="-20dp"
     android:background="@drawable/card_bg"
     android:orientation="vertical">
 
@@ -17,13 +16,16 @@
         tools:ignore="ContentDescription"
         android:src="@drawable/ic_close" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/optin_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:contentDescription="@null"
         android:layout_gravity="center_horizontal"
-        tools:ignore="ContentDescription"
-        app:srcCompat="@drawable/sparkling_newsreader" />
+        app:lottie_loop="true"
+        app:lottie_fileName="ntp_news_optin_icon_animation.json"
+        app:lottie_autoPlay="true" />
 
     <TextView
         android:id="@+id/optin_title"
@@ -58,7 +60,6 @@
         android:background="@drawable/news_button_bg"
         android:layout_marginHorizontal="60dp"
         android:orientation="horizontal">
-
 
         <ProgressBar
             android:id="@+id/optin_loading_spinner"
@@ -95,6 +96,5 @@
         android:text="@string/brave_news_optin_learn_more"
         android:textAlignment="center"
         android:textColor="@color/news_text_color"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="14sp" />
 </LinearLayout>

@@ -301,7 +301,7 @@ public class BraveStatsUtil {
         updateBraveShareStatsLayoutAndShare(shareStatsLayout);
     }
 
-    private static List<Pair<String, String>> getStatsPairs() {
+    public static List<Pair<String, String>> getStatsPairs() {
         List<Pair<String, String>> statsPair = new ArrayList<>();
         Profile mProfile = Profile.getLastUsedRegularProfile();
         long trackersBlockedCount =

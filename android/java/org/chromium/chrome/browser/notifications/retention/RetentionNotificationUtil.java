@@ -23,7 +23,6 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 import java.util.Calendar;

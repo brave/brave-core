@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.core.widget.NestedScrollView;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
@@ -42,7 +41,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private FrameLayout mRootView;
 
     // Own members.
-    private @Nullable NestedScrollView mScrollViewForPolicy;
+    private @Nullable FrameLayout mFrameLayoutForPolicy;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
@@ -66,37 +65,33 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 actionDelegate, helpAndFeedbackLauncher, tabModelSelector);
     }
 
-    public void createScrollViewForPolicy() {
-        assert mScrollViewForPolicy == null : "mScrollViewForPolicy should be created only once!";
+    public void createFrameLayoutForPolicy() {
+        assert mFrameLayoutForPolicy == null : "mFrameLayoutForPolicy should be created only once!";
 
         // Remove all previously added views.
         mRootView.removeAllViews();
 
-        mScrollViewForPolicy = new NestedScrollView(mActivity);
-        mScrollViewForPolicy.setLayoutParams(new FrameLayout.LayoutParams(
+        mFrameLayoutForPolicy = new FrameLayout(mActivity);
+        mFrameLayoutForPolicy.setLayoutParams(new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        mScrollViewForPolicy.setBackgroundColor(ApiCompatibilityUtils.getColor(
+        mFrameLayoutForPolicy.setBackgroundColor(ApiCompatibilityUtils.getColor(
                 mActivity.getResources(), R.color.default_bg_color_baseline));
-        mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
 
-        // Make scroll view focusable so that it is the next focusable view when the url bar clears
+        // Make framelayout focusable so that it is the next focusable view when the url bar clears
         // focus.
-        mScrollViewForPolicy.setFocusable(true);
-        mScrollViewForPolicy.setFocusableInTouchMode(true);
-        mScrollViewForPolicy.setContentDescription(
-                mScrollViewForPolicy.getResources().getString(R.string.accessibility_new_tab_page));
+        mFrameLayoutForPolicy.setFocusable(true);
+        mFrameLayoutForPolicy.setFocusableInTouchMode(true);
+        mFrameLayoutForPolicy.setContentDescription(mFrameLayoutForPolicy.getResources().getString(
+                R.string.accessibility_new_tab_page));
 
         if (mNtpHeader != null) {
             UiUtils.removeViewFromParent(mNtpHeader);
-            mScrollViewForPolicy.addView(mNtpHeader);
+            mFrameLayoutForPolicy.addView(mNtpHeader);
         }
-        mRootView.addView(mScrollViewForPolicy);
-        mScrollViewForPolicy.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        mScrollViewForPolicy.setFillViewport(true);
-        mScrollViewForPolicy.requestFocus();
+        mRootView.addView(mFrameLayoutForPolicy);
     }
 
-    public NestedScrollView getScrollViewForPolicy() {
-        return mScrollViewForPolicy;
+    public FrameLayout getFrameLayoutForPolicy() {
+        return mFrameLayoutForPolicy;
     }
 }
