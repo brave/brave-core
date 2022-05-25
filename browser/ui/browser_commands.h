@@ -22,7 +22,6 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 void OpenIpfsFilesWebUI(Browser* browser);
-void ScreenShareActiveTab(Browser* browser);
 
 }  // namespace brave
 

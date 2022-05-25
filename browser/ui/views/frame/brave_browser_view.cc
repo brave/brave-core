@@ -8,8 +8,6 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/brave_talk/brave_talk_service.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -333,12 +331,6 @@ void BraveBrowserView::CreateApproveWalletBubble() {
 void BraveBrowserView::CloseWalletBubble() {
   if (GetWalletButton())
     GetWalletButton()->CloseWalletBubble();
-}
-
-void BraveBrowserView::ScreenShareActiveTab() {
-  auto* service =
-      brave_talk::BraveTalkServiceFactory::GetForContext(browser_->profile());
-  service->PromptShareTab(browser_->tab_strip_model()->GetActiveWebContents());
 }
 
 void BraveBrowserView::OnTabStripModelChanged(

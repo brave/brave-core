@@ -58,7 +58,6 @@ class BraveBrowserView : public BrowserView {
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
-  void ScreenShareActiveTab();
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
 

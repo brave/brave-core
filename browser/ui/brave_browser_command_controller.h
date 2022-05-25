@@ -71,7 +71,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandForBraveWallet();
   void UpdateCommandForSidebar();
   void UpdateCommandForBraveVPN();
-  void UpdateCommandForShareTab();
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);

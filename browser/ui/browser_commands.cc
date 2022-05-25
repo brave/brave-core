@@ -57,7 +57,8 @@
 
 using content::WebContents;
 
-namespace {}  // namespace
+namespace {
+}  // namespace
 
 namespace brave {
 
@@ -75,9 +76,10 @@ void NewTorConnectionForSite(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
-      TorProfileServiceFactory::GetForContext(profile);
+    TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
-  WebContents* current_tab = browser->tab_strip_model()->GetActiveWebContents();
+  WebContents* current_tab =
+    browser->tab_strip_model()->GetActiveWebContents();
   if (!current_tab)
     return;
   service->SetNewTorCircuit(current_tab);
@@ -171,12 +173,6 @@ void ShowApproveWalletBubble(Browser* browser) {
 void CloseWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();
-#endif
-}
-
-void ScreenShareActiveTab(Browser* browser) {
-#if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(browser->window())->ScreenShareActiveTab();
 #endif
 }
 

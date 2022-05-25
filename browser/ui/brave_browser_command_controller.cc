@@ -159,7 +159,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
-  UpdateCommandForShareTab();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -228,10 +227,6 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, true);
   UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, true);
-}
-
-void BraveBrowserCommandController::UpdateCommandForShareTab() {
-  UpdateCommandEnabled(IDC_BRAVE_TALK_SHARE_TAB, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -310,9 +305,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);
-      break;
-    case IDC_BRAVE_TALK_SHARE_TAB:
-      brave::ScreenShareActiveTab(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
