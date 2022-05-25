@@ -91,6 +91,7 @@ import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.content_public.browser.BrowserContextHandle;
@@ -546,9 +547,9 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                Resources.class, ViewGroup.class, ViewStub.class, TileRenderer.class,
-                PropertyModel.class, boolean.class, boolean.class, boolean.class, Runnable.class,
-                Runnable.class));
+                Resources.class, UiConfig.class, ViewGroup.class, ViewStub.class,
+                TileRenderer.class, PropertyModel.class, boolean.class, boolean.class,
+                boolean.class, Runnable.class, Runnable.class));
     }
 
     @Test
