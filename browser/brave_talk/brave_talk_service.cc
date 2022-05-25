@@ -14,7 +14,6 @@
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -62,8 +61,7 @@ class BraveTalkConfirmBubbleModel : public ConfirmBubbleModel {
     if (!target_contents_)
       return;
 
-    auto* service = BraveTalkServiceFactory::GetForContext(
-        target_contents_->GetBrowserContext());
+    auto* service = BraveTalkService::GetInstance();
     service->ShareTab(target_contents_.get());
   }
 

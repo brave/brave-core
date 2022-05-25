@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "brave/browser/brave_talk/brave_talk_service.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "chrome/browser/media/webrtc/capture_policy_utils.h"

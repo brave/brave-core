@@ -10,7 +10,6 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -69,7 +68,7 @@ BraveTalkShareTabActionView::BraveTalkShareTabActionView(
           std::u16string()),
       profile_(profile),
       tab_strip_model_(tab_strip_model),
-      brave_talk_service_(BraveTalkServiceFactory::GetForContext(profile)) {
+      brave_talk_service_(BraveTalkService::GetInstance()) {
   auto* ink_drop = views::InkDrop::Get(this);
   ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop->SetBaseColorCallback(base::BindRepeating(

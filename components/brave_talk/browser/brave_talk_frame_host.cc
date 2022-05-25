@@ -15,7 +15,6 @@
 #include "base/callback_forward.h"
 #include "base/logging.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/components/brave_talk/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/bad_message.h"
@@ -46,8 +45,7 @@ class FrameFinder {
   }
 
   void OnFoundFrame(content::RenderFrameHost* frame) {
-    auto* service =
-        BraveTalkServiceFactory::GetForContext(contents_->GetBrowserContext());
+    auto* service = BraveTalkService::GetInstance();
     service->GetDeviceID(contents_, frame->GetProcess()->GetID(),
                          frame->GetRoutingID(),
                          std::move(on_received_device_id_));
@@ -72,7 +70,7 @@ void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
     BeginAdvertiseShareDisplayMediaCallback callback) {
   // If there is no frame token, the request is for the main frame.
   if (!frame_token) {
-    BraveTalkServiceFactory::GetForContext(contents_->GetBrowserContext())
+    BraveTalkService::GetInstance()
         ->GetDeviceID(
             contents_, contents_->GetMainFrame()->GetProcess()->GetID(),
             contents_->GetMainFrame()->GetRoutingID(), std::move(callback));

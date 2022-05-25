@@ -13,7 +13,6 @@
 #include "base/test/test_timeouts.h"
 #include "brave/browser/brave_talk/brave_talk_media_access_handler.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
-#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -132,8 +131,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
   }
 
   brave_talk::BraveTalkService* talk_service() {
-    return brave_talk::BraveTalkServiceFactory::GetForContext(
-        browser()->profile());
+    return brave_talk::BraveTalkService::GetInstance();
   }
 
   brave_talk::BraveTalkTabCaptureRegistry* registry() {
