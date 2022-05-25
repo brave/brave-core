@@ -338,7 +338,7 @@ void BraveBrowserView::CloseWalletBubble() {
 void BraveBrowserView::ScreenShareActiveTab() {
   auto* service =
       brave_talk::BraveTalkServiceFactory::GetForContext(browser_->profile());
-  service->ShareTab(browser_->tab_strip_model()->GetActiveWebContents());
+  service->PromptShareTab(browser_->tab_strip_model()->GetActiveWebContents());
 }
 
 void BraveBrowserView::OnTabStripModelChanged(

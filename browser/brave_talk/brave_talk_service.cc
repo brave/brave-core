@@ -6,21 +6,64 @@
 #include "brave/browser/brave_talk/brave_talk_service.h"
 
 #include <algorithm>
+#include <memory>
+#include <string>
 #include <utility>
 
 #include "base/callback.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/confirm_bubble.h"
+#include "chrome/browser/ui/confirm_bubble_model.h"
+#include "chrome/browser/ui/views/confirm_bubble_views.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
+#include "content/public/browser/render_view_host.h"
+#include "content/public/browser/render_widget_host.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/geometry/point.h"
 
 namespace brave_talk {
+
+class BraveTalkConfirmBubbleModel : public ConfirmBubbleModel {
+ public:
+  explicit BraveTalkConfirmBubbleModel(content::WebContents* target_contents)
+      : target_contents_(target_contents->GetWeakPtr()) {}
+
+  BraveTalkConfirmBubbleModel(const ConfirmBubbleModel&) = delete;
+  BraveTalkConfirmBubbleModel& operator=(const ConfirmBubbleModel&) = delete;
+
+  ~BraveTalkConfirmBubbleModel() override = default;
+
+  std::u16string GetTitle() const override { return u"Share this tab?"; }
+
+  std::u16string GetMessageText() const override {
+    return u"The contents of this tab will be shared with your active Brave "
+           u"Talk call";
+  }
+
+  void Accept() override {
+    if (!target_contents_)
+      return;
+
+    auto* service = BraveTalkServiceFactory::GetForContext(
+        target_contents_->GetBrowserContext());
+    service->ShareTab(target_contents_.get());
+  }
+
+  void Cancel() override {}
+
+ private:
+  base::WeakPtr<content::WebContents> target_contents_;
+};
 
 BraveTalkService::BraveTalkService() = default;
 BraveTalkService::~BraveTalkService() {
@@ -41,6 +84,20 @@ void BraveTalkService::GetDeviceID(
 
   if (on_get_device_id_requested_for_testing_)
     std::move(on_get_device_id_requested_for_testing_).Run();
+}
+
+void BraveTalkService::PromptShareTab(content::WebContents* target_contents) {
+  if (!web_contents() || !target_contents || !is_requesting_tab())
+    return;
+
+  auto* rvh = target_contents->GetRenderViewHost()->GetWidget()->GetView();
+  auto rect = rvh->GetViewBounds();
+  auto anchor = gfx::Point(rect.CenterPoint().x(), rect.y());
+  auto confirm_bubble =
+      std::make_unique<BraveTalkConfirmBubbleModel>(target_contents);
+  chrome::ShowConfirmBubble(target_contents->GetTopLevelNativeWindow(),
+                            rvh->GetNativeView(), anchor,
+                            std::move(confirm_bubble));
 }
 
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {

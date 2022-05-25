@@ -34,6 +34,9 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
                    int owning_frame_id,
                    base::OnceCallback<void(const std::string&)> callback);
 
+  // Prompts the user to confirm whether they want to share a tab.
+  void PromptShareTab(content::WebContents* target_contents);
+
   // Shares a tab with whichever GetDeviceID request was most recent.
   void ShareTab(content::WebContents* target_contents);
 
