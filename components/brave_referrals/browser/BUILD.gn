@@ -18,6 +18,7 @@ static_library("browser") {
       "//base",
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_stats/browser",
+      "//brave/components/constants",
       "//brave/vendor/brave_base",
       "//components/prefs",
       "//content/public/browser",

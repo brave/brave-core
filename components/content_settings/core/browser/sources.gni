@@ -20,7 +20,6 @@ if (!is_ios) {
     "//base",
     "//brave/components/brave_shields/common",
     "//brave/components/constants",
-    "//brave/components/constants",
     "//brave/components/content_settings/core/common",
     "//components/prefs",
     "//net",
