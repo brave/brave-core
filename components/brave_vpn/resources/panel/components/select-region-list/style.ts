@@ -49,6 +49,18 @@ export const RegionList = styled.div`
   }
 `
 
+export const RegionLabelButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  scroll-margin: 5px;
+  cursor: pointer;
+`
+
 export const RegionLabel = styled.span`
   color: ${(p) => p.theme.color.text01};
   font-family: Poppins;

@@ -22,7 +22,8 @@ namespace {
 bool IsValidRegionValue(const base::Value& value) {
   if (!value.FindStringKey(kRegionContinentKey) ||
       !value.FindStringKey(kRegionNameKey) ||
-      !value.FindStringKey(kRegionNamePrettyKey)) {
+      !value.FindStringKey(kRegionNamePrettyKey) ||
+      !value.FindStringKey(kRegionCountryIsoCodeKey)) {
     return false;
   }
 
@@ -37,6 +38,8 @@ mojom::Region GetRegionFromValue(const base::Value& value) {
     region.name = *name;
   if (auto* name_pretty = value.FindStringKey(kRegionNamePrettyKey))
     region.name_pretty = *name_pretty;
+  if (auto* country_iso_code = value.FindStringKey(kRegionCountryIsoCodeKey))
+    region.country_iso_code = *country_iso_code;
   return region;
 }
 
@@ -80,6 +83,7 @@ base::Value GetValueFromRegion(const mojom::Region& region) {
   region_dict.SetStringKey(kRegionContinentKey, region.continent);
   region_dict.SetStringKey(kRegionNameKey, region.name);
   region_dict.SetStringKey(kRegionNamePrettyKey, region.name_pretty);
+  region_dict.SetStringKey(kRegionCountryIsoCodeKey, region.country_iso_code);
   return region_dict;
 }
 

@@ -81,6 +81,7 @@ constexpr char kBraveVPNEntryName[] = "BraveVPN";
 constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
+constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
 
 }  // namespace brave_vpn

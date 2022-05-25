@@ -12,6 +12,7 @@ import ContactSupport from '../contact-support'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import { ConnectionState } from '../../api/panel_browser_api'
+import Flag from '../flag'
 
 function MainPanel () {
   const dispatch = useDispatch()
@@ -75,6 +76,7 @@ function MainPanel () {
           type='button'
           onClick={onSelectRegionButtonClick}
         >
+          <Flag countryCode={currentRegion?.countryIsoCode}/>
           <S.RegionLabel>{currentRegion?.namePretty}</S.RegionLabel>
           <CaratStrongRightIcon />
         </S.RegionSelectorButton>

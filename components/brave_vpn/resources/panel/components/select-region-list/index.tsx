@@ -8,6 +8,7 @@ import { Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import { getLocale } from '../../../../../common/locale'
+import Flag from '../flag'
 
 function SelectRegion () {
   // TODO(nullhook): Scroll to the selected radio input when this component loads
@@ -64,12 +65,16 @@ function SelectRegion () {
                 key={i}
                 data-value={entry.name}
               >
-                <S.RegionLabel
+                <S.RegionLabelButton
+                  type="button"
+                  aria-describedby="country-name"
                   onClick={handleItemClick.bind(this, entry)}
-                  ref={(selectedRegion?.name === entry.name) ? ref : null}
                 >
-                  {entry.namePretty}
-                </S.RegionLabel>
+                  <Flag countryCode={entry.countryIsoCode} />
+                  <S.RegionLabel id="country-name">
+                    {entry.namePretty}
+                  </S.RegionLabel>
+                </S.RegionLabelButton>
               </div>
             ))}
           </Radio>
