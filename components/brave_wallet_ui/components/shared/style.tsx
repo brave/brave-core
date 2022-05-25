@@ -113,6 +113,16 @@ export const WalletLink = styled(Link)`
   line-height: 20px;
   text-align: center;
   color: ${(p) => p.theme.color.interactive05};
+  background: none;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+  
+  &:active {
+    opacity: 0.5;
+  }
 `
 
 export const WalletButtonLink = styled(Link)<{
