@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -29,7 +30,7 @@ BraveBrowserContentSettingBubbleModelDelegate::ShowWidevineLearnMorePage() {
 
 void BraveBrowserContentSettingBubbleModelDelegate::ShowLearnMorePage(
     ContentSettingsType type) {
-  // TODO: Use specific support pages for each content setting type
+  // TODO(yrliou): Use specific support pages for each content setting type
   GURL learn_more_url(kBraveCommunitySupportUrl);
   chrome::AddSelectedTabWithURL(browser_, learn_more_url,
                                 ui::PAGE_TRANSITION_LINK);
