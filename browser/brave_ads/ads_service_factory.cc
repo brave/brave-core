@@ -90,13 +90,14 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
       brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
           profile);
 
-  std::unique_ptr<AdsServiceImpl> ads_service(new AdsServiceImpl(
-      profile,
+  std::unique_ptr<AdsServiceImpl> ads_service =
+      std::make_unique<AdsServiceImpl>(
+          profile,
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-      brave_adaptive_captcha_service,
-      std::make_unique<AdsTooltipsDelegateImpl>(profile),
+          brave_adaptive_captcha_service,
+          std::make_unique<AdsTooltipsDelegateImpl>(profile),
 #endif
-      history_service, rewards_service, ad_notification_data_store));
+          history_service, rewards_service, ad_notification_data_store);
   return ads_service.release();
 }
 
