@@ -21,7 +21,7 @@ OBJC_EXPORT
 
 @property(nonatomic, strong) NSURL* url;
 @property(nonatomic, nullable, copy) NSString* title;
-@property(nonatomic) NSUInteger tabId;
+@property(nonatomic) NSInteger tabId;
 @property(nonatomic, nullable, copy) NSString* sessionTag;
 
 /// Open Tab Constructor used with OpenTabSessionAPI
@@ -31,7 +31,7 @@ OBJC_EXPORT
 /// @param sessionTag - Uniquely identifies the distant session this tab belongs to
 - (instancetype)initWithURL:(NSURL*)url
                       title:(nullable NSString*)title
-                      tabId:(NSUInteger)tabId
+                      tabId:(NSInteger)tabId
                  sessionTag:(nullable NSString*)sessionTag;
 @end
 
@@ -43,6 +43,9 @@ OBJC_EXPORT
 // - (void)removeObserver:(id<OpenTabsSessionServiceListener>)observer;
 
 - (instancetype)init NS_UNAVAILABLE;
+
+- (void)getSyncedTabs:(void (^)(NSArray<IOSOpenTabNode*>*))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

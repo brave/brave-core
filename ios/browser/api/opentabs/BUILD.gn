@@ -21,9 +21,10 @@ source_set("opentabs") {
   deps = [
     "//base",
     "//components/keyed_service/ios:ios",
+    "//components/sync_sessions",
     "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
-    "//ios/chrome/browser/sessions",
+    "//ios/chrome/browser/sync",
     "//ios/chrome/browser/ui/recent_tabs:synced_sessions",
     "//ios/web/public/thread",
     "//net",

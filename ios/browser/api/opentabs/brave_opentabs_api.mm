@@ -9,6 +9,7 @@
 #include "base/strings/sys_string_conversions.h"
 
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/sync/session_sync_service_factory.h"
 #include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
 
 #include "ios/web/public/thread/web_thread.h"
@@ -28,7 +29,7 @@
 
 - (instancetype)initWithURL:(NSURL*)url
                       title:(nullable NSString*)title
-                      tabId:(NSUInteger)tabId
+                      tabId:(NSInteger)tabId
                  sessionTag:(nullable NSString*)sessionTag {
   if ((self = [super init])) {
     self.url = url;
@@ -82,6 +83,65 @@
 
 - (void)dealloc {
   _chromeBrowserState = NULL;
+}
+
+
+- (void)getSyncedTabs:(void (^)(NSArray<IOSOpenTabNode*>* results))completion {
+  // Getting SessionSyncService from BrowserState
+  sync_sessions::SessionSyncService* syncService =
+      SessionSyncServiceFactory::GetForBrowserState(_chromeBrowserState);
+
+  // Getting SyncedSessions from SessionSyncService
+  auto syncedSessions =
+      std::make_unique<synced_sessions::SyncedSessions>(syncService);
+
+  // Getting DistantTabSet from SyncSessions
+  std::vector<synced_sessions::DistantTabsSet> displayedTabs;
+
+  for (size_t s = 0; s < syncedSessions->GetSessionCount(); s++) {
+    const synced_sessions::DistantSession* session =
+        syncedSessions->GetSession(s);
+
+    synced_sessions::DistantTabsSet distant_tabs;
+    distant_tabs.session_tag = session->tag;
+    displayedTabs.push_back(distant_tabs);
+  }
+
+  NSArray<IOSOpenTabNode*>* tabInfoList = [self onLoginsResult:std::move(displayedTabs)];
+
+  completion(tabInfoList);
+
+  // const synced_sessions::DistantTabsSet* exampleSet = &displayedTabs[0];
+
+  // const synced_sessions::DistantTab* distantTab = exampleSet->filtered_tabs.value()[0];
+
+  // std::cout << "Title of synced Tab " << distantTab->title;
+
+  // Conversion to objc object OpenTabNode
+}
+
+- (NSArray<IOSOpenTabNode*>*)onLoginsResult:
+      (std::vector<synced_sessions::DistantTabsSet>)distantTabSet {
+  NSMutableArray<IOSOpenTabNode*>* tabNodeList = [[NSMutableArray alloc] init];
+
+  int index = 0;
+
+  for (const auto& distantTabSetItem : distantTabSet) {
+    synced_sessions::DistantTab* distantTab = 
+        distantTabSetItem.filtered_tabs.value()[index];
+
+    IOSOpenTabNode* openTabNode = [[IOSOpenTabNode alloc]
+                initWithURL:net::NSURLWithGURL(distantTab->virtual_url)
+                      title:base::SysUTF16ToNSString(distantTab->title)
+                      tabId: distantTab->tab_id.id()
+                 sessionTag:base::SysUTF8ToNSString(distantTab->session_tag)];
+    
+    [tabNodeList addObject: openTabNode];
+
+    ++index;
+  }
+
+  return tabNodeList;
 }
 
 @end
