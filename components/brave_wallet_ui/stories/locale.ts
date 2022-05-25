@@ -177,6 +177,13 @@ provideStrings({
   braveWalletArticleLinkWhatAreDapps: 'What are DApps?',
   braveWalletArticleLinkWhatIsWeb3: 'What’s web 3?',
 
+  // Onboarding import or restore wallet page
+  braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
+  braveWalletImportOrRestoreDescription: 'By connecting to your wallet, you may need to enter your 12 word recovery phrase to restore/import. We support Ethereum wallet at this time.',
+  braveWalletRestoreMyBraveWallet: 'Restore my Brave Wallet',
+  braveWalletImportFromMetaMask: 'Import from MetaMask',
+  braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
+
   // Lock Screen
   braveWalletEnterYourPassword: 'Enter your Brave Wallet password',
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',

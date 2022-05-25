@@ -44,7 +44,7 @@ export const OnboardingWelcome = () => {
         <NavButton
           buttonType='secondary'
           text={getLocale('braveWalletWelcomeIAlreadyHaveAWallet')}
-          url={WalletRoutes.Restore}
+          url={WalletRoutes.OnboardingImportOrRestore}
         />
 
         <LearnMoreLink href='https://brave.com/learn/what-is-crypto-wallet/' target='_blank'>{getLocale('braveWalletWhatIsACryptoWallet')}</LearnMoreLink>

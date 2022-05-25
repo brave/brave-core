@@ -18,6 +18,7 @@ import { OnboardingCreatePassword } from './create-password/onboarding-create-pa
 import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/explain-recovery-phrase'
 import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
+import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
@@ -64,8 +65,8 @@ export const OnboardingRoutes = () => {
         <OnboardingVerifyRecoveryPhrase />
       </Route>
 
-      <Route path={WalletRoutes.OnboardingComplete} exact>
-        <OnboardingSuccess />
+      <Route path={WalletRoutes.OnboardingImportOrRestore} exact>
+        <OnboardingImportOrRestoreWallet />
       </Route>
 
       {/* <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
@@ -75,6 +76,10 @@ export const OnboardingRoutes = () => {
       <Route path={WalletRoutes.OnboardingImportCryptoWallets} exact>
         <OnboardingImportMetaMaskOrLegacy />
       </Route> */}
+
+      <Route path={WalletRoutes.OnboardingComplete} exact>
+        <OnboardingSuccess />
+      </Route>
 
       <Route path={WalletRoutes.Onboarding} exact>
         <OnboardingWelcome />
