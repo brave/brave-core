@@ -30,6 +30,7 @@ source_set("unit_tests") {
     "//components/sync:test_support_engine",
     "//components/sync/driver:driver",
     "//components/sync/driver:test_support",
+    "//components/sync/engine",
     "//content/test:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp:cpp",
