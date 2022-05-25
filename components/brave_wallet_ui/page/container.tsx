@@ -40,6 +40,9 @@ import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { useAssets, useLib } from '../common/hooks'
 import ProtectedRoute from '../components/shared/protected-routing/protected-route'
 
+// Utils
+import { getRampAssetSymbol } from '../utils/asset-utils'
+
 export const Container = () => {
   // routing
   let history = useHistory()
@@ -123,8 +126,9 @@ export const Container = () => {
   }, [hasIncorrectPassword])
 
   const onSubmitBuy = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    const buyAsset = selectedBuyOption === BraveWallet.OnRampProvider.kRamp ? { ...asset, symbol: getRampAssetSymbol(asset) } : asset
     getBuyAssetUrl({
-      asset,
+      asset: buyAsset,
       onRampProvider: selectedBuyOption,
       chainId: selectedNetwork.chainId,
       address: selectedAccount.address,
