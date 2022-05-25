@@ -368,7 +368,9 @@ class WelcomeViewController: UIViewController {
             details: Strings.Onboarding.navigateSettingsOnboardingScreenDescription))
       }
 
-    present(nextController, animated: true, completion: nil)
+    present(nextController, animated: true) {
+      Preferences.General.basicOnboardingDefaultBrowserSelected.value = true
+    }
   }
 
   private func onSetDefaultBrowser() {
