@@ -278,10 +278,14 @@ void BraveActionsContainer::AddActionViewForShields() {
 }
 
 void BraveActionsContainer::AddActionViewForShareTab() {
-  if (browser_->profile()->IsIncognitoProfile() || browser_->profile()->IsOffTheRecord()) {
+  if (browser_->profile()->IsIncognitoProfile() ||
+      browser_->profile()->IsOffTheRecord()) {
     return;
   }
-  share_tab_action_btn_ = AddChildViewAt(std::make_unique<brave_talk::BraveTalkShareTabActionView>(browser_->profile(), browser_->tab_strip_model()), 1);
+  share_tab_action_btn_ =
+      AddChildViewAt(std::make_unique<brave_talk::BraveTalkShareTabActionView>(
+                         browser_->profile(), browser_->tab_strip_model()),
+                     1);
   share_tab_action_btn_->SetPreferredSize(GetToolbarActionSize());
 }
 

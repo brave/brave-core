@@ -250,7 +250,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
       target_contents()->GetMainFrame()->GetRoutingID()));
 
   EXPECT_EQ(false, content::EvalJs(requester_contents(),
-                                  "startCapture('" + device_id + "');"));
+                                   "startCapture('" + device_id + "');"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest, NavigationClearsShareRequest) {

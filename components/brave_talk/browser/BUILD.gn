@@ -16,6 +16,6 @@ static_library("browser") {
     "//brave/components/brave_talk/common",
     "//brave/components/brave_talk/common:mojom",
     "//components/prefs",
-    "//content/public/browser"
+    "//content/public/browser",
   ]
 }

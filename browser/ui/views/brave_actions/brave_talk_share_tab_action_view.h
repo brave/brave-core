@@ -15,11 +15,15 @@ class TabStripModel;
 
 namespace brave_talk {
 
-class BraveTalkShareTabActionView : public views::LabelButton, public BraveTalkService::BraveTalkServiceObserver {
+class BraveTalkShareTabActionView
+    : public views::LabelButton,
+      public BraveTalkService::BraveTalkServiceObserver {
  public:
-  explicit BraveTalkShareTabActionView(Profile* profile, TabStripModel* tab_strip_model);
+  explicit BraveTalkShareTabActionView(Profile* profile,
+                                       TabStripModel* tab_strip_model);
   BraveTalkShareTabActionView(const BraveTalkShareTabActionView&) = delete;
-  BraveTalkShareTabActionView& operator=(const BraveTalkShareTabActionView&) = delete;
+  BraveTalkShareTabActionView& operator=(const BraveTalkShareTabActionView&) =
+      delete;
   ~BraveTalkShareTabActionView() override;
 
   // BraveTalkService::BraveTalkServiceObserver:
