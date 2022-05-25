@@ -739,6 +739,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletArticleLinkWhatsARecoveryPhrase", IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE},
     {"braveWalletArticleLinkWhatAreDapps", IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS},
     {"braveWalletArticleLinkWhatIsWeb3", IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3},
+    
+    
+    {"braveWalletImportOrRestoreWalletTitle", IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE},
+    {"braveWalletImportOrRestoreDescription", IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION},
+    {"braveWalletRestoreMyBraveWallet", IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET},
+    {"braveWalletImportFromMetaMask", IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK},
+    {"braveWalletCreateWalletInsteadLink", IDS_BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK},
 
 
 

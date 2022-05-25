@@ -105,6 +105,16 @@ export const WalletButton = styled.button<{
   }
  `
 
+export const WalletLink = styled(Link)`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  color: ${(p) => p.theme.color.interactive05};
+`
+
 export const WalletButtonLink = styled(Link)<{
   isDraggedOver?: boolean
 }>`

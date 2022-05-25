@@ -553,4 +553,10 @@
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE" desc="Title of article link 'What’s a recovery phrase?'">What’s a recovery phrase?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS" desc="Title of article link 'What are DApps?'">What are DApps?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3" desc="Title of article link 'What’s web 3?'">What’s web 3?</message>
+  
+  <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE" desc="Title to Import or Restore Wallet onboarding screen">Connect to your existing wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION" desc="Description of Import or Restore Wallet onboarding screen">By connecting to your wallet, you may need to enter your 12 word recovery phrase to restore/import. We support Ethereum wallet at this time.</message>
+  <message name="IDS_BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET" desc="Button text to restore from an existing Brave Wallet">Restore my Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK" desc="Button text to restore from an existing MetaMask wallet">Import from MetaMask</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK" desc="A navigation link to create a new wallet">Never mind, I’ll create a new wallet</message>
 </grit-part>
