@@ -11,7 +11,7 @@
 #include "brave/browser/resources/sidebar/grit/sidebar_resources.h"
 #include "brave/browser/resources/sidebar/grit/sidebar_resources_map.h"
 #include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_page_handler.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"

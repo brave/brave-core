@@ -16,7 +16,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/ipfs/import/save_package_observer.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"

@@ -9,7 +9,7 @@
 #include "src/chrome/browser/ui/tabs/tab_renderer_data.cc"
 #undef FromTabInModel
 
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "url/gurl.h"
 
 TabRendererData TabRendererData::FromTabInModel(TabStripModel* model,

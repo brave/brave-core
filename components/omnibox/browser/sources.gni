@@ -21,8 +21,8 @@ brave_components_omnibox_browser_sources = [
 
 brave_components_omnibox_browser_deps = [
   "//base",
-  "//brave/common:pref_names",
   "//brave/components/binance/browser/buildflags",
+  "//brave/components/constants",
   "//url",
 ]
 

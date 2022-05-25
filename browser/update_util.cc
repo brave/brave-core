@@ -5,7 +5,7 @@
 #include "brave/browser/update_util.h"
 
 #include "base/command_line.h"
-#include "brave/common/brave_switches.h"
+#include "brave/components/constants/brave_switches.h"
 
 namespace brave {
 

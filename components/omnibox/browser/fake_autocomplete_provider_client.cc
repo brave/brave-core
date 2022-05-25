@@ -5,7 +5,7 @@
 
 #include "brave/components/omnibox/browser/fake_autocomplete_provider_client.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 FakeAutocompleteProviderClient::FakeAutocompleteProviderClient() {

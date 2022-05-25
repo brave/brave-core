@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"

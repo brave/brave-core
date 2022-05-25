@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 
 const char kAdblockHost[] = "adblock";
 const char kAdblockJS[] = "brave_adblock.js";
@@ -38,6 +38,5 @@ const char kUntrustedTrezorURL[] = "chrome-untrusted://trezor-bridge/";
 const char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
 const char kShieldsPanelHost[] = "brave-shields.top-chrome";
 const char kSidebarBookmarksHost[] = "sidebar-bookmarks.top-chrome";
-const char kFederatedInternalsURL[] =
-    "brave://federated-internals";
+const char kFederatedInternalsURL[] = "brave://federated-internals";
 const char kFederatedInternalsHost[] = "federated-internals";

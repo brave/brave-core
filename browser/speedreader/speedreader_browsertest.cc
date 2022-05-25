@@ -9,7 +9,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"

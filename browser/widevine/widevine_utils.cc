@@ -11,7 +11,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"

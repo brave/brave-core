@@ -14,7 +14,7 @@ source_set("search") {
     deps += [
       "//base",
       "//brave/browser/profiles:profiles",
-      "//brave/common:pref_names",
+      "//brave/components/constants",
       "//brave/components/crypto_dot_com/browser/buildflags",
       "//brave/components/crypto_dot_com/common",
       "//chrome/browser/ui",
@@ -32,7 +32,7 @@ source_set("unit_tests") {
     sources = [ "ntp_utils_unittest.cc" ]
     deps = [
       "//brave/browser/search",
-      "//brave/common:pref_names",
+      "//brave/components/constants",
       "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
       "//chrome/test:test_support",
       "//components/prefs",

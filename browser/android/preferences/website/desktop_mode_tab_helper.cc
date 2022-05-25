@@ -5,13 +5,13 @@
 
 #include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "content/browser/web_contents/web_contents_impl.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
-#include "content/browser/web_contents/web_contents_impl.h"
 
 namespace {
 

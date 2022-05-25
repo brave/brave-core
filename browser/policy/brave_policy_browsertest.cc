@@ -5,7 +5,7 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

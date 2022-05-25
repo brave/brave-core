@@ -6,10 +6,10 @@
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
 
 #include "base/values.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_service.h"
 
 namespace gcm {
 

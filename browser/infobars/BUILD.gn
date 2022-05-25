@@ -45,8 +45,8 @@ source_set("infobars") {
     ]
 
     deps += [
-      "//brave/common:switches",
       "//brave/components/brave_wayback_machine",
+      "//brave/components/constants",
     ]
   }
 }

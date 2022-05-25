@@ -4,7 +4,7 @@
 
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 

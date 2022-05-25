@@ -6,7 +6,7 @@
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 
 #include "brave/browser/ui/bookmark/bookmark_prefs_service.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"

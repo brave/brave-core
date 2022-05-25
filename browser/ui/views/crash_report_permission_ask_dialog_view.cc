@@ -11,7 +11,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"

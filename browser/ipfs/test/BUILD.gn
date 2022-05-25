@@ -60,7 +60,7 @@ source_set("browsertests") {
       "//brave/browser",
       "//brave/browser/tor",
       "//brave/common:common",
-      "//brave/common:pref_names",
+      "//brave/components/constants",
       "//brave/components/ipfs",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

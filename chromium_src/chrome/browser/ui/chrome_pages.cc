@@ -12,7 +12,7 @@ GURL GetSettingsUrl_ChromiumImpl(const std::string& sub_page) {
 
 #undef BRAVE_GET_SETTINGS_URL
 
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 
 namespace chrome {
 

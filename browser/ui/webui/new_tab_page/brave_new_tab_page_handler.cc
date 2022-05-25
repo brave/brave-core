@@ -15,7 +15,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ntp_background_images/constants.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"

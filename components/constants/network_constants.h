@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMMON_NETWORK_CONSTANTS_H_
-#define BRAVE_COMMON_NETWORK_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
+#define BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_
 
 extern const char kExtensionUpdaterDomain[];
 
@@ -48,4 +48,4 @@ extern const char kBittorrentMimeType[];
 extern const char kOctetStreamMimeType[];
 
 extern const char kSecGpcHeader[];
-#endif  // BRAVE_COMMON_NETWORK_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_CONSTANTS_NETWORK_CONSTANTS_H_

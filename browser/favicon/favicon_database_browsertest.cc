@@ -6,7 +6,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"

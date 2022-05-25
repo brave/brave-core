@@ -9,7 +9,7 @@
 
 #include "base/values.h"
 #include "brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

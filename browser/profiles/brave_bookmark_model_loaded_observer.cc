@@ -5,8 +5,8 @@
 
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
 
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"

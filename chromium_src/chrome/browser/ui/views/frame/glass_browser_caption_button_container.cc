@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/views/frame/glass_browser_caption_button_container.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 
 #define GlassBrowserCaptionButtonContainer \

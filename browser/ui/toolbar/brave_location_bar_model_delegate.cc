@@ -7,8 +7,8 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/common/url_constants.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "chrome/browser/profiles/profile.h"

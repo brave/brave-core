@@ -10,7 +10,7 @@
 
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/common/network_constants.h"
+#include "brave/components/constants/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 

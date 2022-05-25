@@ -14,7 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/browser/ui/browser.h"

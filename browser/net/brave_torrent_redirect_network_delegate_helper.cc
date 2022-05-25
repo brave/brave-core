@@ -10,8 +10,8 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/common/network_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "brave/components/constants/network_constants.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"

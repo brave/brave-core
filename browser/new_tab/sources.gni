@@ -17,7 +17,7 @@ if (!is_android) {
   brave_browser_new_tab_deps += [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/common:pref_names",
+    "//brave/components/constants",
     "//chrome/common",
     "//components/prefs",
     "//content/public/browser",

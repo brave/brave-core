@@ -13,7 +13,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/gemini/browser/gemini_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/user_prefs/user_prefs.h"

@@ -14,7 +14,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"

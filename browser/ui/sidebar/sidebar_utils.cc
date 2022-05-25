@@ -6,7 +6,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"

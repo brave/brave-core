@@ -8,7 +8,7 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "build/build_config.h"

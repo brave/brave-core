@@ -5,7 +5,7 @@
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"

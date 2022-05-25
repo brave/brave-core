@@ -11,8 +11,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
-#include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

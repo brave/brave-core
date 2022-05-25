@@ -8,7 +8,7 @@
 #undef CanAddURLToHistory
 
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
