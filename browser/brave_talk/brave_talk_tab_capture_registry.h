@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/singleton.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
@@ -24,12 +25,15 @@ class BraveTalkTabCaptureRegistry : public KeyedService {
   BraveTalkTabCaptureRegistry& operator=(const BraveTalkTabCaptureRegistry&) =
       delete;
 
+  static BraveTalkTabCaptureRegistry* GetInstance();
+
   std::string AddRequest(content::WebContents* target_contents,
                          content::RenderFrameHost* owning_frame);
 
   bool VerifyRequest(int target_render_process_id, int target_render_frame_id);
 
  private:
+  friend struct base::DefaultSingletonTraits<BraveTalkTabCaptureRegistry>;
   class LiveRequest;
 
   LiveRequest* FindRequest(int target_render_process_id,

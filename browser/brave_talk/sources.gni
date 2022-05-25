@@ -10,8 +10,6 @@ brave_browser_brave_talk_sources = [
   "//brave/browser/brave_talk/brave_talk_service.h",
   "//brave/browser/brave_talk/brave_talk_tab_capture_registry.cc",
   "//brave/browser/brave_talk/brave_talk_tab_capture_registry.h",
-  "//brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.cc",
-  "//brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h",
 ]
 
 brave_browser_brave_talk_deps = [

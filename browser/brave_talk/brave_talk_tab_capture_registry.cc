@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/lazy_instance.h"
+#include "base/memory/singleton.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/desktop_streams_registry.h"
@@ -55,6 +56,10 @@ class BraveTalkTabCaptureRegistry::LiveRequest
 BraveTalkTabCaptureRegistry::BraveTalkTabCaptureRegistry() = default;
 
 BraveTalkTabCaptureRegistry::~BraveTalkTabCaptureRegistry() = default;
+
+BraveTalkTabCaptureRegistry* BraveTalkTabCaptureRegistry::GetInstance() {
+  return base::Singleton<BraveTalkTabCaptureRegistry>::get();
+}
 
 std::string BraveTalkTabCaptureRegistry::AddRequest(
     content::WebContents* target_contents,

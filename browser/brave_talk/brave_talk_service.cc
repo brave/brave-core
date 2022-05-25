@@ -15,7 +15,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
-#include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -116,8 +115,7 @@ void BraveTalkService::PromptShareTab(content::WebContents* target_contents) {
 void BraveTalkService::ShareTab(content::WebContents* target_contents) {
   if (!web_contents() || !target_contents || !is_requesting_tab())
     return;
-  auto* registry = BraveTalkTabCaptureRegistryFactory::GetForContext(
-      web_contents()->GetBrowserContext());
+  auto* registry = BraveTalkTabCaptureRegistry::GetInstance();
 
   auto* owning_render_frame = content::RenderFrameHost::FromID(
       owning_render_process_id_, owning_render_frame_id_);
