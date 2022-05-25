@@ -17,7 +17,7 @@
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/constants/brave_features.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
