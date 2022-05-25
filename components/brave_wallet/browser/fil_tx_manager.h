@@ -36,6 +36,9 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
   FilTxManager(const FilTxManager&) = delete;
   FilTxManager operator=(const FilTxManager&) = delete;
 
+  using ProcessFilHardwareSignatureCallback =
+      mojom::FilTxManagerProxy::ProcessFilHardwareSignatureCallback;
+
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
@@ -57,6 +60,11 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
 
   void Reset() override;
 
+  void ProcessFilHardwareSignature(
+      const std::string& tx_meta_id,
+      const std::string& signed_message,
+      ProcessFilHardwareSignatureCallback callback);
+
   void GetEstimatedGas(const std::string& from,
                        const absl::optional<url::Origin>& origin,
                        std::unique_ptr<FilTransaction> tx,
@@ -70,6 +78,10 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                       ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);
+  void OnGetNextNonceForHardware(std::unique_ptr<FilTxMeta> meta,
+                                 GetTransactionMessageToSignCallback callback,
+                                 bool success,
+                                 uint256_t nonce);
   void OnSendFilecoinTransaction(const std::string& tx_meta_id,
                                  ApproveTransactionCallback callback,
                                  const std::string& tx_hash,
@@ -85,6 +97,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
       int64_t gas_limit,
       mojom::FilecoinProviderError error,
       const std::string& error_message);
+
   void OnGetFilStateSearchMsgLimited(const std::string& tx_meta_id,
                                      int64_t exit_code,
                                      mojom::FilecoinProviderError error,

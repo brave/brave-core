@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { assert } from 'chrome://resources/js/assert.m.js'
-import { CoinType } from '@glif/filecoin-address'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -33,8 +32,8 @@ import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -60,7 +59,7 @@ export const getERC20Allowance = (
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
     const keyring = getHardwareKeyring(opts.hardware, opts.coin)
-    if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
+    if ((keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) && opts.scheme) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
@@ -69,8 +68,8 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
           reject(result.error)
         })
         .catch(reject)
-    } else if (keyring instanceof FilecoinLedgerKeyring) {
-      keyring.getAccounts(opts.startIndex, opts.stopIndex, CoinType.TEST)
+    } else if (keyring instanceof FilecoinLedgerKeyring && opts.network) {
+      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.network)
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             return resolve(result.payload)

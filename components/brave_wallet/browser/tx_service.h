@@ -33,7 +33,8 @@ class FilTxManager;
 class TxService : public KeyedService,
                   public mojom::TxService,
                   public mojom::EthTxManagerProxy,
-                  public mojom::SolanaTxManagerProxy {
+                  public mojom::SolanaTxManagerProxy,
+                  public mojom::FilTxManagerProxy {
  public:
   TxService(JsonRpcService* json_rpc_service,
             KeyringService* keyring_service,
@@ -51,6 +52,10 @@ class TxService : public KeyedService,
   MakeSolanaTxManagerProxyRemote();
   void BindSolanaTxManagerProxy(
       mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver);
+
+  mojo::PendingRemote<mojom::FilTxManagerProxy> MakeFilTxManagerProxyRemote();
+  void BindFilTxManagerProxy(
+      mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver);
 
   // mojom::TxService
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
@@ -162,6 +167,12 @@ class TxService : public KeyedService,
   void GetEstimatedTxFee(const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback) override;
 
+  // mojom::FilTxManagerProxy
+  void ProcessFilHardwareSignature(
+      const std::string& tx_meta_id,
+      const std::string& signed_message,
+      ProcessFilHardwareSignatureCallback callback) override;
+
  private:
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
@@ -178,6 +189,7 @@ class TxService : public KeyedService,
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;
   mojo::ReceiverSet<mojom::EthTxManagerProxy> eth_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::SolanaTxManagerProxy> solana_tx_manager_receivers_;
+  mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
 
   base::WeakPtrFactory<TxService> weak_factory_;
 };

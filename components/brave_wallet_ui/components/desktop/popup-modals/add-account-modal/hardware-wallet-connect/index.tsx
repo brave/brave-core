@@ -21,7 +21,7 @@ import {
 // Custom types
 import { HardwareWalletConnectOpts, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 import HardwareWalletAccountsList from './accounts-list'
-import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork } from '../../../../../common/hardware/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 
 export interface Props {
@@ -35,14 +35,11 @@ export interface Props {
   filecoinNetwork: FilecoinNetwork
 }
 
-const derivationBatch = 4
-
 export default function (props: Props) {
   const {
     selectedAccountType,
     selectedNetwork,
-    filecoinNetwork,
-    onChangeFilecoinNetwork
+    filecoinNetwork
   } = props
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
@@ -68,16 +65,33 @@ export default function (props: Props) {
 
     return { error: error.message, userHint: '' }
   }
-
+  const onFilecoinNetworkChanged = (network: FilecoinNetwork) => {
+    props.onChangeFilecoinNetwork(network)
+    props.onConnectHardwareWallet({
+      hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
+      startIndex: 0,
+      stopIndex: DerivationBatchSize,
+      network: network,
+      coin: BraveWallet.CoinType.FIL
+    }).then((result) => {
+      setAccounts(result)
+    }).catch((error) => {
+      setConnectionError(getErrorMessage(error, selectedAccountType.name))
+      setShowAccountsList(false)
+    }).finally(
+      () => setIsConnecting(false)
+    )
+  }
   const onChangeDerivationScheme = (scheme: HardwareDerivationScheme) => {
     setSelectedDerivationScheme(scheme)
     setAccounts([])
     props.onConnectHardwareWallet({
       hardware: selectedHardwareWallet,
       startIndex: 0,
-      stopIndex: derivationBatch,
+      stopIndex: DerivationBatchSize,
       scheme: scheme,
-      coin: selectedAccountType.coin
+      coin: selectedAccountType.coin,
+      network: filecoinNetwork
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
@@ -143,9 +157,10 @@ export default function (props: Props) {
     props.onConnectHardwareWallet({
       hardware: selectedHardwareWallet,
       startIndex: accounts.length,
-      stopIndex: accounts.length + derivationBatch,
+      stopIndex: accounts.length + DerivationBatchSize,
       scheme: selectedDerivationScheme,
-      coin: selectedAccountType.coin
+      coin: selectedAccountType.coin,
+      network: filecoinNetwork
     }).then((result) => {
       setAccounts([...accounts, ...result])
       setShowAccountsList(true)
@@ -172,7 +187,7 @@ export default function (props: Props) {
         getBalance={getBalance}
         selectedNetwork={selectedNetwork}
         filecoinNetwork={filecoinNetwork}
-        onChangeFilecoinNetwork={onChangeFilecoinNetwork}
+        onChangeFilecoinNetwork={onFilecoinNetworkChanged}
         selectedAccountType={selectedAccountType}
       />
     )

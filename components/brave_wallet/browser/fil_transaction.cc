@@ -180,9 +180,16 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
 absl::optional<std::string> FilTransaction::GetMessageToSign() const {
   auto value = ToValue();
   value.RemoveKey("MaxFee");
-  value.SetIntKey("MethodNum", 0);
+  value.SetIntKey("Method", 0);
   value.SetIntKey("Version", 0);
   value.SetStringKey("Params", "");
+  const std::string* nonce_value = value.FindStringKey("Nonce");
+  bool nonce_empty = nonce_value && nonce_value->empty();
+  // Nonce is empty usually for first transactions. We set it to 0 and skip
+  // conversion bellow to get correct signature.
+  if (nonce_empty) {
+    value.SetIntKey("Nonce", 0);
+  }
   std::string json;
   base::JSONWriter::Write(value, &json);
 
@@ -191,9 +198,11 @@ absl::optional<std::string> FilTransaction::GetMessageToSign() const {
           .c_str();
   if (converted_json.empty())
     return absl::nullopt;
-  converted_json = json::convert_string_value_to_uint64(
-                       "/Nonce", converted_json.c_str(), false)
-                       .c_str();
+  if (!nonce_empty) {
+    converted_json = json::convert_string_value_to_uint64(
+                         "/Nonce", converted_json.c_str(), false)
+                         .c_str();
+  }
   return converted_json;
 }
 

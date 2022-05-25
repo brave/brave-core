@@ -104,6 +104,8 @@ void WalletPanelUI::CreatePanelHandler(
         eth_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
         solana_tx_manager_proxy_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
+        filecoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
         brave_wallet_service_receiver) {
   DCHECK(page);
@@ -130,6 +132,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(eth_tx_manager_proxy_receiver));
   brave_wallet::TxServiceFactory::BindSolanaTxManagerProxyForContext(
       profile, std::move(solana_tx_manager_proxy_receiver));
+  brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
+      profile, std::move(filecoin_tx_manager_proxy_receiver));
   brave_wallet::BraveWalletServiceFactory::BindForContext(
       profile, std::move(brave_wallet_service_receiver));
 
