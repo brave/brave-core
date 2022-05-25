@@ -15,9 +15,10 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
   private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<DefaultBrowserCalloutView>
   
   static var shouldShowCallout: Bool {
-    !Preferences.General.defaultBrowserCalloutDismissed.value
-    && AppConstants.iOSVersionGreaterThanOrEqual(to: 14)
-    && AppConstants.buildChannel == .release
+    !Preferences.General.defaultBrowserCalloutDismissed.value &&
+    !Preferences.General.basicOnboardingDefaultBrowserSelected.value &&
+    AppConstants.iOSVersionGreaterThanOrEqual(to: 14) &&
+    AppConstants.buildChannel == .release
   }
   
   func registerCells(to collectionView: UICollectionView) {
