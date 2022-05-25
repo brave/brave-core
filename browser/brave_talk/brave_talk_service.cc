@@ -12,6 +12,7 @@
 
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "brave/browser/brave_talk/brave_talk_service_factory.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
@@ -89,6 +90,8 @@ void BraveTalkService::GetDeviceID(
 
   if (on_get_device_id_requested_for_testing_)
     std::move(on_get_device_id_requested_for_testing_).Run();
+
+  NotifyObservers();
 }
 
 void BraveTalkService::PromptShareTab(content::WebContents* target_contents) {
@@ -119,6 +122,22 @@ void BraveTalkService::ShareTab(content::WebContents* target_contents) {
           : "";
   if (on_received_device_id_)
     std::move(on_received_device_id_).Run(device_id);
+
+  NotifyObservers();
+}
+
+void BraveTalkService::AddObserver(BraveTalkServiceObserver* observer) {
+  observers_.push_back(observer);
+}
+
+void BraveTalkService::RemoveObserver(BraveTalkServiceObserver* observer) {
+  for (auto it = observers_.begin(); it != observers_.end(); ++it) {
+    if (*it == observer) {
+      observers_.erase(it);
+      return;
+    }
+  }
+  NOTREACHED();
 }
 
 void BraveTalkService::DidStartNavigation(content::NavigationHandle* handle) {
@@ -146,6 +165,12 @@ void BraveTalkService::StopObserving() {
     std::move(on_received_device_id_).Run("");
 
   Observe(nullptr);
+}
+
+void BraveTalkService::NotifyObservers() {
+  for (auto* observer : observers_) {
+    observer->OnIsRequestingChanged(is_requesting_tab());
+  }
 }
 
 }  // namespace brave_talk

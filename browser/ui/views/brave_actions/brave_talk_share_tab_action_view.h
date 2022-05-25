@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/browser/brave_talk/brave_talk_service.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/label_button_border.h"
@@ -14,12 +15,15 @@ class TabStripModel;
 
 namespace brave_talk {
 
-class BraveTalkShareTabActionView : public views::LabelButton {
+class BraveTalkShareTabActionView : public views::LabelButton, public BraveTalkService::BraveTalkServiceObserver {
  public:
   explicit BraveTalkShareTabActionView(Profile* profile, TabStripModel* tab_strip_model);
   BraveTalkShareTabActionView(const BraveTalkShareTabActionView&) = delete;
   BraveTalkShareTabActionView& operator=(const BraveTalkShareTabActionView&) = delete;
   ~BraveTalkShareTabActionView() override;
+
+  // BraveTalkService::BraveTalkServiceObserver:
+  void OnIsRequestingChanged(bool requesting) override;
 
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
@@ -30,6 +34,7 @@ class BraveTalkShareTabActionView : public views::LabelButton {
 
   raw_ptr<Profile> profile_;
   raw_ptr<TabStripModel> tab_strip_model_;
+  raw_ptr<BraveTalkService> brave_talk_service_;
 };
 }  // namespace brave_talk
 

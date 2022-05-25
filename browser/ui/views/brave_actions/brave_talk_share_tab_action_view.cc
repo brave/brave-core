@@ -63,7 +63,8 @@ BraveTalkShareTabActionView::BraveTalkShareTabActionView(
                               base::Unretained(this)),
           std::u16string()),
       profile_(profile),
-      tab_strip_model_(tab_strip_model) {
+      tab_strip_model_(tab_strip_model),
+      brave_talk_service_(BraveTalkServiceFactory::GetForContext(profile)) {
   auto* ink_drop = views::InkDrop::Get(this);
   ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop->SetBaseColorCallback(base::BindRepeating(
@@ -82,9 +83,18 @@ BraveTalkShareTabActionView::BraveTalkShareTabActionView(
       gfx::CreateVectorIcon(vector_icons::kScreenShareIcon, 20, SK_ColorWHITE));
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTalkShareTabActionHighlightPathGenerator>());
+
+  SetVisible(brave_talk_service_->is_requesting_tab());
+  brave_talk_service_->AddObserver(this);
 }
 
-BraveTalkShareTabActionView::~BraveTalkShareTabActionView() = default;
+BraveTalkShareTabActionView::~BraveTalkShareTabActionView() {
+  brave_talk_service_->RemoveObserver(this);
+}
+
+void BraveTalkShareTabActionView::OnIsRequestingChanged(bool requesting) {
+  SetVisible(requesting);
+}
 
 SkPath BraveTalkShareTabActionView::GetHighlightPath() const {
   gfx::Insets highlight_insets(0, 0, 0, kBraveActionRightMargin);
@@ -99,8 +109,7 @@ SkPath BraveTalkShareTabActionView::GetHighlightPath() const {
 }
 
 void BraveTalkShareTabActionView::ButtonPressed() {
-  auto* service = BraveTalkServiceFactory::GetForContext(profile_);
-  service->PromptShareTab(tab_strip_model_->GetActiveWebContents());
+  brave_talk_service_->PromptShareTab(tab_strip_model_->GetActiveWebContents());
 }
 
 std::unique_ptr<views::LabelButtonBorder>

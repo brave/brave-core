@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_TALK_BRAVE_TALK_SERVICE_H_
 
 #include <string>
+#include <vector>
 
 #include "base/callback_forward.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -19,16 +20,23 @@ class WebContents;
 
 namespace brave_talk {
 
-// Service for managing requests to |brave.beginAdvertiseShareDisplayMedia|. Note:
-// only one frame can be actively requesting at any time (a subsequent request will replace it).
+// Service for managing requests to |brave.beginAdvertiseShareDisplayMedia|.
+// Note: only one frame can be actively requesting at any time (a subsequent
+// request will replace it).
 class BraveTalkService : public KeyedService, content::WebContentsObserver {
  public:
+  class BraveTalkServiceObserver {
+   public:
+    virtual void OnIsRequestingChanged(bool requesting) = 0;
+  };
+
   BraveTalkService();
   BraveTalkService(const BraveTalkService&) = delete;
   BraveTalkService& operator=(const BraveTalkService&) = delete;
   ~BraveTalkService() override;
 
-  // Requests a DeviceID to let a tab be shared with a specific frame in |contents|.
+  // Requests a DeviceID to let a tab be shared with a specific frame in
+  // |contents|.
   void GetDeviceID(content::WebContents* contents,
                    int owning_process_id,
                    int owning_frame_id,
@@ -43,18 +51,24 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
   // Indicates whether there is a GetDeviceID request pending.
   bool is_requesting_tab() { return !on_received_device_id_.is_null(); }
 
+  void AddObserver(BraveTalkServiceObserver* observer);
+  void RemoveObserver(BraveTalkServiceObserver* observer);
+
   // content::WebContentsObserver:
   void DidStartNavigation(content::NavigationHandle* handle) override;
 
   // Testing:
-  // Injects a callback for testing, which is called when a DeviceID has been requested. Used so tests
-  // know when to continue.
+  // Injects a callback for testing, which is called when a DeviceID has been
+  // requested. Used so tests know when to continue.
   void OnGetDeviceIDRequestedForTesting(
       base::OnceCallback<void()> callback_for_testing);
 
  private:
   void StartObserving(content::WebContents* contents);
   void StopObserving();
+  void NotifyObservers();
+
+  std::vector<BraveTalkServiceObserver*> observers_;
 
   int owning_render_frame_id_;
   int owning_render_process_id_;
