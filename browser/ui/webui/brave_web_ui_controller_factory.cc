@@ -188,7 +188,7 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
       url.host_piece() != kRewardsInternalsHost) {
     return false;
   }
-  if (!base::FeatureList::IsEnabled(features::kBraveRewards)) {
+  if (!base::FeatureList::IsEnabled(brave_rewards::features::kBraveRewards)) {
     return true;
   }
   Profile* profile = Profile::FromBrowserContext(browser_context);
