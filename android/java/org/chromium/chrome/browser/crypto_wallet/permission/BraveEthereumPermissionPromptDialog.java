@@ -10,6 +10,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +30,8 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.components.browser_ui.modaldialog.ModalDialogView;
 import org.chromium.content_public.browser.ImageDownloadCallback;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -62,6 +66,7 @@ public class BraveEthereumPermissionPromptDialog
     private KeyringService mKeyringService;
     private boolean mMojoServicesClosed;
     private BraveWalletService mBraveWalletService;
+    private View mPermissionDialogPositiveButton;
 
     @CalledByNative
     private static BraveEthereumPermissionPromptDialog create(long nativeDialogController,
@@ -114,6 +119,26 @@ public class BraveEthereumPermissionPromptDialog
         if (activity != null) {
             activity.dismissWalletPanelOrDialog();
         }
+        ViewGroup container = getPermissionModalViewContainer(customView);
+        mPermissionDialogPositiveButton =
+                container.findViewById(activity.getResources().getIdentifier(
+                        WalletConstants.PERMISSION_DIALOG_POSITIVE_BUTTON_ID,
+                        WalletConstants.RESOURCE_ID, activity.getPackageName()));
+        if (mPermissionDialogPositiveButton != null) {
+            mPermissionDialogPositiveButton.setEnabled(false);
+        }
+    }
+
+    @NonNull
+    private ViewGroup getPermissionModalViewContainer(View customView) {
+        ViewParent viewParent = customView.getParent();
+        while (viewParent.getParent() != null) {
+            viewParent = viewParent.getParent();
+            if (viewParent instanceof ModalDialogView) {
+                break;
+            }
+        }
+        return (ViewGroup) viewParent;
     }
 
     private void InitBraveWalletService() {
@@ -129,8 +154,19 @@ public class BraveEthereumPermissionPromptDialog
             if (keyringInfo == null) {
                 return;
             }
-            mAccountsListAdapter = new BraveEthereumPermissionAccountsListAdapter(
-                    keyringInfo.accountInfos, true, null);
+            mAccountsListAdapter =
+                    new BraveEthereumPermissionAccountsListAdapter(keyringInfo.accountInfos, true,
+                            new BraveEthereumPermissionAccountsListAdapter
+                                    .BraveEthereumPermissionDelegate() {
+                                        @Override
+                                        public void onAccountCheckChanged(
+                                                AccountInfo account, boolean isChecked) {
+                                            if (mPermissionDialogPositiveButton != null) {
+                                                mPermissionDialogPositiveButton.setEnabled(
+                                                        getSelectedAccounts().length > 0);
+                                            }
+                                        }
+                                    });
             mRecyclerView.setAdapter(mAccountsListAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             mRecyclerView.setLayoutManager(layoutManager);
