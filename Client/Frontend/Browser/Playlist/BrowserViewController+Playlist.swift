@@ -276,7 +276,11 @@ extension BrowserViewController: PlaylistHelperDelegate {
             on: popover,
             browser: self)
           pulseAnimation.frame = pulseAnimation.frame.insetBy(dx: 10.0, dy: 12.0)
-
+          
+          pulseAnimation.animationViewPressed = {
+            popover.dismissPopover()
+          }
+          
           popover.popoverDidDismiss = { _ in
             pulseAnimation.removeFromSuperview()
           }
