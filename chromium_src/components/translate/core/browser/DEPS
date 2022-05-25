@@ -1,3 +1,11 @@
 include_rules = [
   "+brave/components/translate/core/common",
 ]
+
+# Existing exceptions
+specific_include_rules = {
+  "translate_script.cc": [
+    "+brave/common/brave_services_key.h",
+    "+brave/common/network_constants.h",
+  ],
+}

@@ -10,6 +10,8 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/brave_services_key.h"
+#include "brave/common/network_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
@@ -137,12 +139,31 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       const net::test_server::HttpRequest& request) {
-    const auto response = backend_request_.Call(request.GetURL().path());
-
-    if (std::get<0>(response) == 0)
-      return nullptr;
     std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
         new net::test_server::BasicHttpResponse);
+
+    // Handle CORS preflights
+    if (request.method == net::test_server::METHOD_OPTIONS) {
+      http_response->set_code(net::HTTP_OK);
+      http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
+      http_response->AddCustomHeader("Access-Control-Allow-Methods",
+                                     "POST, GET");
+      http_response->AddCustomHeader("Access-Control-Allow-Headers",
+                                     kBraveServicesKeyHeader);
+      return std::move(http_response);
+    }
+
+    if (request.GetURL().path() == "/translate_a/t") {
+      const auto api_key_header = request.headers.find(kBraveServicesKeyHeader);
+      EXPECT_TRUE(api_key_header != request.headers.end() &&
+                  api_key_header->second == BUILDFLAG(BRAVE_SERVICES_KEY))
+          << "bad brave api key for request " << request.GetURL();
+    }
+
+    const auto response = backend_request_.Call(request.GetURL().path());
+    if (std::get<0>(response) == 0)
+      return nullptr;
+
     http_response->set_code(std::get<0>(response));
     http_response->set_content_type(std::get<1>(response));
     http_response->set_content(std::get<2>(response));
