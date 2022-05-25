@@ -182,6 +182,14 @@ export default function useSend () {
   }, [selectedAccount])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
+    // Do nothing if value is an empty string
+    if (toAddressOrUrl === '') {
+      setAddressWarning('')
+      setAddressError('')
+      setToAddress('')
+      return
+    }
+
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
     setToAddress(valueToLowerCase)
     if (!isValidFilAddress(valueToLowerCase)) {
@@ -189,6 +197,8 @@ export default function useSend () {
       setAddressError(getLocale('braveWalletNotValidFilAddress'))
       return
     }
+
+    // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
   }, [])
