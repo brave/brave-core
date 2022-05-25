@@ -28,6 +28,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '11.x'
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - name: Run bootstrap script
         run: ./bootstrap.sh --ci
       - name: Run tests
