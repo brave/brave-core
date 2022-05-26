@@ -23,41 +23,32 @@
 #include "content/browser/bad_message.h"
 #include "content/browser/renderer_host/frame_tree_node.h"
 #include "content/browser/renderer_host/navigation_controller_impl.h"
+#include "content/browser/renderer_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/tokens/tokens.h"
 
 namespace brave_talk {
-class FrameFinder {
- public:
-  FrameFinder(
-      const ::blink::FrameToken& token,
-      content::WebContents* contents,
-      base::OnceCallback<void(const std::string&)> on_received_device_id)
-      : token_(token),
-        contents_(contents),
-        on_received_device_id_(std::move(on_received_device_id)) {}
 
-  ~FrameFinder() {
-    if (!on_received_device_id_.is_null())
-      std::move(on_received_device_id_).Run("");
-  }
+namespace {
+content::RenderFrameHost* FindFrameForToken(
+    const absl::optional<::blink::FrameToken>& frame_token,
+    content::WebContents* contents) {
+  auto* main_frame =
+      static_cast<content::RenderFrameHostImpl*>(contents->GetMainFrame());
+  if (!frame_token)
+    return main_frame;
 
-  void OnFoundFrame(content::RenderFrameHost* frame) {
-    auto* service = BraveTalkService::GetInstance();
-    service->GetDeviceID(contents_, frame->GetProcess()->GetID(),
-                         frame->GetRoutingID(),
-                         std::move(on_received_device_id_));
-  }
+  auto* frame_tree_node = main_frame->FindAndVerifyChild(
+      frame_token.value(),
+      content::bad_message::BadMessageReason::RWH_INVALID_FRAME_TOKEN);
+  if (!frame_tree_node)
+    return nullptr;
 
-  ::blink::FrameToken token() { return token_; }
-
- private:
-  ::blink::FrameToken token_;
-  content::WebContents* contents_;
-  base::OnceCallback<void(const std::string&)> on_received_device_id_;
-};
+  return frame_tree_node->current_frame_host();
+}
+}  // namespace
 
 BraveTalkFrameHost::BraveTalkFrameHost(content::WebContents* contents,
                                        const std::string& host)
@@ -68,24 +59,14 @@ BraveTalkFrameHost::~BraveTalkFrameHost() = default;
 void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
     const absl::optional<::blink::FrameToken>& frame_token,
     BeginAdvertiseShareDisplayMediaCallback callback) {
-  // If there is no frame token, the request is for the main frame.
-  if (!frame_token) {
-    BraveTalkService::GetInstance()->GetDeviceID(
-        contents_, contents_->GetMainFrame()->GetProcess()->GetID(),
-        contents_->GetMainFrame()->GetRoutingID(), std::move(callback));
+  auto* rfh = FindFrameForToken(frame_token, contents_);
+  if (!rfh) {
+    std::move(callback).Run("");
     return;
   }
-  auto finder = std::make_unique<FrameFinder>(frame_token.value(), contents_,
-                                              std::move(callback));
 
-  contents_->ForEachRenderFrameHost(base::BindRepeating(
-      [](FrameFinder* finder, content::RenderFrameHost* rfh) {
-        if (finder->token().value() != rfh->GetFrameToken().value())
-          return content::RenderFrameHost::FrameIterationAction::kContinue;
-        finder->OnFoundFrame(rfh);
-        return content::RenderFrameHost::FrameIterationAction::kStop;
-      },
-      base::Owned(std::move(finder))));
+  BraveTalkService::GetInstance()->GetDeviceID(contents_,
+  rfh->GetProcess()->GetID(), rfh->GetRoutingID(), std::move(callback));
 }
 
 }  // namespace brave_talk
