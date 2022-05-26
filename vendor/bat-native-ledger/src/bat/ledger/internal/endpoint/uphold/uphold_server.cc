@@ -10,22 +10,26 @@
 namespace ledger {
 namespace endpoint {
 
-UpholdServer::UpholdServer(LedgerImpl* ledger):
-    post_oauth_(std::make_unique<uphold::PostOauth>(ledger)),
-    get_cards_(std::make_unique<uphold::GetCards>(ledger)),
-    get_card_(std::make_unique<uphold::GetCard>(ledger)),
-    get_me_(std::make_unique<uphold::GetMe>(ledger)),
-    post_cards_(std::make_unique<uphold::PostCards>(ledger)),
-    patch_card_(std::make_unique<uphold::PatchCard>(ledger)),
-    post_transaction_(std::make_unique<uphold::PostTransaction>(ledger)),
-    post_transaction_commit_(
-        std::make_unique<uphold::PostTransactionCommit>(ledger)) {
-}
+UpholdServer::UpholdServer(LedgerImpl* ledger)
+    : post_oauth_(std::make_unique<uphold::PostOauth>(ledger)),
+      get_capabilities_(std::make_unique<uphold::GetCapabilities>(ledger)),
+      get_cards_(std::make_unique<uphold::GetCards>(ledger)),
+      get_card_(std::make_unique<uphold::GetCard>(ledger)),
+      get_me_(std::make_unique<uphold::GetMe>(ledger)),
+      post_cards_(std::make_unique<uphold::PostCards>(ledger)),
+      patch_card_(std::make_unique<uphold::PatchCard>(ledger)),
+      post_transaction_(std::make_unique<uphold::PostTransaction>(ledger)),
+      post_transaction_commit_(
+          std::make_unique<uphold::PostTransactionCommit>(ledger)) {}
 
 UpholdServer::~UpholdServer() = default;
 
 uphold::PostOauth* UpholdServer::post_oauth() const {
   return post_oauth_.get();
+}
+
+uphold::GetCapabilities* UpholdServer::get_capabilities() const {
+  return get_capabilities_.get();
 }
 
 uphold::GetCards* UpholdServer::get_cards() const {

@@ -14,6 +14,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
+#include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
@@ -40,6 +41,7 @@ class UpholdWallet;
 using FetchBalanceCallback = std::function<void(type::Result, double)>;
 using CreateCardCallback =
     std::function<void(type::Result, const std::string&)>;
+using endpoint::uphold::GetCapabilitiesCallback;
 
 class Uphold {
  public:
@@ -71,6 +73,8 @@ class Uphold {
   void DisconnectWallet(const absl::optional<std::string>& notification);
 
   void GetUser(GetUserCallback callback);
+
+  void GetCapabilities(GetCapabilitiesCallback callback);
 
   type::ExternalWalletPtr GetWallet();
 
