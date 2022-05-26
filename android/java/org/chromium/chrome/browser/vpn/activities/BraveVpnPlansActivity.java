@@ -129,7 +129,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         } else {
             Toast.makeText(BraveVpnPlansActivity.this, R.string.purchased_failed, Toast.LENGTH_LONG)
                     .show();
-            finish();
         }
     }
 
