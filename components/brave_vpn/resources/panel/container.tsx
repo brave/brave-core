@@ -6,6 +6,7 @@ import LoadingPanel from './components/loading-panel'
 import ErrorSubscriptionExpired from './components/error-subscription-failed-panel'
 import { ViewType } from './state/component_types'
 import { useSelector } from './state/hooks'
+import PurchaseFailedPanel from './components/purchase-failed-panel'
 
 function Main () {
   const currentView = useSelector(state => state.currentView)
@@ -19,6 +20,12 @@ function Main () {
   if (currentView === ViewType.Main) {
     return (
       <MainPanel />
+    )
+  }
+
+  if (currentView === ViewType.PurchaseFailed) {
+    return (
+      <PurchaseFailedPanel />
     )
   }
 
