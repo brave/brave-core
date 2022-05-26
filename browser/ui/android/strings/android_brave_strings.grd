@@ -706,9 +706,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_WORD_COUNT_TEXT" desc="Text for Brave Sync word count message.">
 	Word count: <ph name="WORD_COUNT">%1$d</ph>
       </message>
-      <message name="IDS_BRAVE_SYNC_WORD_COUNT_ERROR" desc="Text for Brave Sync word count error.">
-	Incorrect number of words
-      </message>
       <message name="IDS_BRAVE_SYNC_WRONG_CODE_ERROR" desc="Text for wrong Brave Sync code error.">
 	Wrong sync code
       </message>

@@ -99,11 +99,11 @@ Polymer({
    */
   handleSyncPrefsChanged_: async function(syncPrefs) {
     if (this.syncStatus_ && !this.syncStatus_.firstSetupInProgress) {
-      const syncCode = await this.braveBrowserProxy_.getSyncCode()
+      const pureSyncCode = await this.braveBrowserProxy_.getPureSyncCode()
       if (syncPrefs.passphraseRequired) {
-        await this.browserProxy_.setDecryptionPassphrase(syncCode);
+        await this.browserProxy_.setDecryptionPassphrase(pureSyncCode);
       } else if (!this.isEncryptionSet_) {
-        this.browserProxy_.setEncryptionPassphrase(syncCode)
+        this.browserProxy_.setEncryptionPassphrase(pureSyncCode)
         .then(successfullySet => {
           this.isEncryptionSet_ = successfullySet
         })

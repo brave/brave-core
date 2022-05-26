@@ -43,10 +43,10 @@ Polymer({
       type: Boolean,
       value: false,
     },
-    isInvalidSyncCode_: {
-      type: Boolean,
-      value: false,
-    }
+    syncCodeValidationError_: {
+      type: String,
+      value: '',
+     }
   },
 
   /** @private {?BraveSyncBrowserProxy} */
@@ -88,13 +88,11 @@ Polymer({
     try {
       success = await this.syncBrowserProxy_.setSyncCode(syncCodeToSubmit)
     } catch (e) {
-      console.error("Error setting sync code")
+      this.syncCodeValidationError_ = e
       success = false
     }
     this.isSubmittingSyncCode_ = false
-    if (!success) {
-      this.isInvalidSyncCode_ = true
-    } else {
+    if (success) {
       this.syncCodeDialogType_ = undefined
       this.fire('setup-success')
     }
