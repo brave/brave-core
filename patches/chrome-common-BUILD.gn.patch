@@ -8,7 +8,7 @@ index ae37955102c878ac4603a7397925d859ae48cda2..5bb4aa010336927597ce75b25301c3f5
    }
 +  public_deps += [ "//brave/common:channel_info" ]
  }
-
+ 
  source_set("ini_parser") {
 @@ -517,6 +518,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
@@ -16,5 +16,5 @@ index ae37955102c878ac4603a7397925d859ae48cda2..5bb4aa010336927597ce75b25301c3f5
    ]
 +  configs += [ "//brave/common:constants_configs" ]
  }
-
+ 
  component("chrome_features") {
