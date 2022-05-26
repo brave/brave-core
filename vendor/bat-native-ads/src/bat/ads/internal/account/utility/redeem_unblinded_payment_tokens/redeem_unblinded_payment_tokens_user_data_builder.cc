@@ -7,6 +7,7 @@
 
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
+#include "bat/ads/internal/account/user_data/platform_user_data.h"
 #include "bat/ads/internal/account/user_data/totals_user_data.h"
 
 namespace ads {
@@ -25,6 +26,9 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
 
   const base::DictionaryValue odyssey_user_data = user_data::GetOdyssey();
   user_data.MergeDictionary(&odyssey_user_data);
+
+  const base::DictionaryValue platform_user_data = user_data::GetPlatform();
+  user_data.MergeDictionary(&platform_user_data);
 
   const base::DictionaryValue totals_user_data =
       user_data::GetTotals(unblinded_payment_tokens_);
