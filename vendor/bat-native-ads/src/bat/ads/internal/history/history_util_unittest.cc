@@ -43,7 +43,7 @@ TEST_F(BatAdsHistoryUtilTest, BuildAd) {
   // Assert
   HistoryItemInfo expected_history_item;
 
-  expected_history_item.time = Now();
+  expected_history_item.created_at = Now();
   expected_history_item.ad_content.type = ad.type;
   expected_history_item.ad_content.placement_id = ad.placement_id;
   expected_history_item.ad_content.creative_instance_id =

@@ -76,7 +76,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
 }
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest,
-       AllowAdIfFrequencyCapIsDisabled) {
+       AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_in_windowed_mode"] = "false";

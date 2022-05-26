@@ -35,8 +35,8 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, AllowAd) {
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
-  MarkedAsInappropriateExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  MarkedAsInappropriateExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -55,8 +55,8 @@ TEST_F(BatAdsMarkedAsInappropriateExclusionRuleTest, DoNotAllowAd) {
   Client::Get()->ToggleFlaggedAd(ad_content);
 
   // Act
-  MarkedAsInappropriateExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  MarkedAsInappropriateExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

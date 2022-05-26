@@ -99,7 +99,7 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 }
 
 TEST_F(BatAdsMediaPermissionRuleTest,
-       AlwaysAllowAdIfMediaIsPlayingOnVisibleTabIfFrequencyCapIsDisabled) {
+       AlwaysAllowAdIfMediaIsPlayingOnVisibleTabIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_if_media_is_not_playing"] = "false";

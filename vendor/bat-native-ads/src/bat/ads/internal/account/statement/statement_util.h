@@ -19,7 +19,7 @@ base::Time GetNextPaymentDate(const TransactionList& transactions);
 double GetEarningsForThisMonth(const TransactionList& transactions);
 double GetEarningsForLastMonth(const TransactionList& transactions);
 
-int GetAdsReceivedForThisMonth(const TransactionList& transactions);
+int GetAdsReceivedThisMonth(const TransactionList& transactions);
 
 }  // namespace ads
 

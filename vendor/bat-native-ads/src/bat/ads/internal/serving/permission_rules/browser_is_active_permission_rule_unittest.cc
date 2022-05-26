@@ -67,7 +67,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
 }
 
 TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
-       AllowAdIfFrequencyCapIsDisabled) {
+       AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_if_browser_is_active"] = "false";

@@ -503,7 +503,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
     const auto date =
-        [NSDate dateWithTimeIntervalSince1970:item.time.ToDoubleT()];
+        [NSDate dateWithTimeIntervalSince1970:item.created_at.ToDoubleT()];
     [dates addObject:date];
   }
 
@@ -671,9 +671,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     }
 
     NSDate* nextPaymentDate = nil;
-    if (list.next_payment_date > 0) {
-      nextPaymentDate =
-          [NSDate dateWithTimeIntervalSince1970:list.next_payment_date];
+    if (!list.next_payment_date.is_null()) {
+      nextPaymentDate = [NSDate
+          dateWithTimeIntervalSince1970:list.next_payment_date.ToDoubleT()];
     }
     completion(list.ads_received_this_month, list.earnings_this_month,
                nextPaymentDate);

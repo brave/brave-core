@@ -46,8 +46,8 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
     ASSERT_TRUE(success);
 
     StatementInfo expected_statement;
-    expected_statement.next_payment_date = TimestampFromString(
-        "5 December 2020 23:59:59.999", /* is_local */ false);
+    expected_statement.next_payment_date =
+        TimeFromString("5 December 2020 23:59:59.999", /* is_local */ false);
     expected_statement.earnings_this_month = 0.02;
     expected_statement.earnings_last_month = 0.0;
     expected_statement.ads_received_this_month = 2;
@@ -107,8 +107,8 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
     ASSERT_TRUE(success);
 
     StatementInfo expected_statement;
-    expected_statement.next_payment_date = TimestampFromString(
-        "5 January 2021 23:59:59.999", /* is_local */ false);
+    expected_statement.next_payment_date =
+        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
     expected_statement.earnings_this_month = 0.05;
     expected_statement.earnings_last_month = 0.01;
     expected_statement.ads_received_this_month = 3;
@@ -158,8 +158,8 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     ASSERT_TRUE(success);
 
     StatementInfo expected_statement;
-    expected_statement.next_payment_date = TimestampFromString(
-        "5 January 2021 23:59:59.999", /* is_local */ false);
+    expected_statement.next_payment_date =
+        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
     expected_statement.earnings_this_month = 0.04;
     expected_statement.earnings_last_month = 0.01;
     expected_statement.ads_received_this_month = 3;
@@ -179,8 +179,8 @@ TEST_F(BatAdsStatementTest, GetForNoTransactions) {
     ASSERT_TRUE(success);
 
     StatementInfo expected_statement;
-    expected_statement.next_payment_date = TimestampFromString(
-        "5 January 2021 23:59:59.999", /* is_local */ false);
+    expected_statement.next_payment_date =
+        TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
     expected_statement.earnings_this_month = 0.0;
     expected_statement.earnings_last_month = 0.0;
     expected_statement.ads_received_this_month = 0;

@@ -29,7 +29,7 @@ namespace ads {
 
 namespace {
 
-constexpr int kCatalogLifespanInDays = 1;
+constexpr base::TimeDelta kCatalogLifespan = base::Days(1);
 
 void Delete() {
   database::DeleteCampaigns();
@@ -122,8 +122,7 @@ bool HasCatalogChanged(const std::string& catalog_id) {
 }
 
 bool HasCatalogExpired() {
-  if (base::Time::Now() <
-      GetCatalogLastUpdated() + base::Days(kCatalogLifespanInDays)) {
+  if (base::Time::Now() < GetCatalogLastUpdated() + kCatalogLifespan) {
     return false;
   }
 

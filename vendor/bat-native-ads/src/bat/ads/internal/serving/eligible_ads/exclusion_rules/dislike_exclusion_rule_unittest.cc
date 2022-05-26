@@ -31,8 +31,8 @@ TEST_F(BatAdsDislikeExclusionRuleTest, AllowAd) {
   creative_ad.advertiser_id = kAdvertiserId;
 
   // Act
-  DislikeExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DislikeExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -49,8 +49,8 @@ TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   Client::Get()->ToggleAdThumbDown(ad_content);
 
   // Act
-  DislikeExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DislikeExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

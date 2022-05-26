@@ -153,7 +153,7 @@ void Client::AppendHistory(const HistoryItemInfo& history_item) {
   const auto iter =
       std::remove_if(client_->history.begin(), client_->history.end(),
                      [&distant_past](const HistoryItemInfo& history_item) {
-                       return history_item.time < distant_past;
+                       return history_item.created_at < distant_past;
                      });
 
   client_->history.erase(iter, client_->history.end());

@@ -16,18 +16,14 @@ namespace ads {
 TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
                                             const base::Time from_time,
                                             const base::Time to_time) {
-  const double from_timestamp = from_time.ToDoubleT();
-  const double to_timestamp = to_time.ToDoubleT();
-
   TransactionList filtered_transactions;
 
-  std::copy_if(
-      transactions.cbegin(), transactions.cend(),
-      std::back_inserter(filtered_transactions),
-      [from_timestamp, to_timestamp](const TransactionInfo& transaction) {
-        return transaction.created_at >= from_timestamp &&
-               transaction.created_at <= to_timestamp;
-      });
+  std::copy_if(transactions.cbegin(), transactions.cend(),
+               std::back_inserter(filtered_transactions),
+               [from_time, to_time](const TransactionInfo& transaction) {
+                 return transaction.created_at >= from_time &&
+                        transaction.created_at <= to_time;
+               });
 
   return filtered_transactions;
 }

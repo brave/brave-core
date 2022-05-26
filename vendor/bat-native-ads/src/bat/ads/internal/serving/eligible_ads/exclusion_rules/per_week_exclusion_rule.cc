@@ -5,11 +5,9 @@
 
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
 
-#include <algorithm>
-
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 
 namespace ads {
 
@@ -46,23 +44,9 @@ bool PerWeekExclusionRule::DoesRespectCap(const AdEventList& ad_events,
     return true;
   }
 
-  const base::Time now = base::Time::Now();
-
-  const base::TimeDelta time_constraint = base::Days(7);
-
-  const int count = std::count_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
-        return ad_event.confirmation_type == ConfirmationType::kServed &&
-               ad_event.creative_set_id == creative_ad.creative_set_id &&
-               now - ad_event.created_at < time_constraint;
-      });
-
-  if (count >= creative_ad.per_week) {
-    return false;
-  }
-
-  return true;
+  return DoesRespectCreativeSetCap(creative_ad, ad_events,
+                                   ConfirmationType::kServed, base::Days(7),
+                                   creative_ad.per_week);
 }
 
 }  // namespace ads

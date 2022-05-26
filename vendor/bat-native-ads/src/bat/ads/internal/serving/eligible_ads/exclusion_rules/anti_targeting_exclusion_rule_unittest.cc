@@ -41,8 +41,8 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfResourceDidNotLoad) {
                                  GURL("https://www.foo2.org")};
 
   // Act
-  AntiTargetingExclusionRule frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  AntiTargetingExclusionRule exclusion_rule(&resource, history);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -62,8 +62,8 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
                                  GURL("https://www.foo2.org")};
 
   // Act
-  AntiTargetingExclusionRule frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  AntiTargetingExclusionRule exclusion_rule(&resource, history);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -82,8 +82,8 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
                                  GURL("https://www.foo2.org")};
 
   // Act
-  AntiTargetingExclusionRule frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  AntiTargetingExclusionRule exclusion_rule(&resource, history);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -103,8 +103,8 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest,
                                  GURL("https://www.brave.com")};
 
   // Act
-  AntiTargetingExclusionRule frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  AntiTargetingExclusionRule exclusion_rule(&resource, history);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

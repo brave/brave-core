@@ -14,6 +14,10 @@
 
 namespace ads {
 
+namespace {
+constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
+}  // namespace
+
 NewTabPageAdsPerHourPermissionRule::NewTabPageAdsPerHourPermissionRule() =
     default;
 
@@ -38,11 +42,8 @@ std::string NewTabPageAdsPerHourPermissionRule::GetLastMessage() const {
 
 bool NewTabPageAdsPerHourPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const base::TimeDelta time_constraint = base::Hours(1);
-
-  const int cap = features::GetMaximumNewTabPageAdsPerHour();
-
-  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint, features::GetMaximumNewTabPageAdsPerHour());
 }
 
 }  // namespace ads

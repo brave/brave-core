@@ -1340,7 +1340,7 @@ void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
 
     base::DictionaryValue dictionary;
     dictionary.SetStringKey("uuid", base::NumberToString(uuid++));
-    const double js_time = item.time.ToJsTimeIgnoringNull();
+    const double js_time = item.created_at.ToJsTimeIgnoringNull();
     dictionary.SetDoubleKey("timestampInMilliseconds", js_time);
     dictionary.SetPath("adDetailRows", std::move(history_item_list));
 
@@ -1366,9 +1366,10 @@ void AdsServiceImpl::OnGetStatementOfAccounts(
   ads::StatementInfo statement;
   statement.FromJson(json);
 
-  std::move(callback).Run(
-      success, statement.next_payment_date, statement.ads_received_this_month,
-      statement.earnings_this_month, statement.earnings_last_month);
+  std::move(callback).Run(success, statement.next_payment_date.ToDoubleT(),
+                          statement.ads_received_this_month,
+                          statement.earnings_this_month,
+                          statement.earnings_last_month);
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,

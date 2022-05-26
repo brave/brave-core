@@ -9,7 +9,7 @@
 
 namespace ads {
 
-void ForceUnblindedTokensFrequencyCapPermission() {
+void ForceUnblindedTokensPermissionRule() {
   privacy::SetUnblindedTokens(10);
 }
 

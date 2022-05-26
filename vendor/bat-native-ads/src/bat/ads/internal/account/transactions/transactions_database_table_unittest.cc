@@ -150,7 +150,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
                         [](const bool success) { ASSERT_TRUE(success); });
 
   // Assert
-  info_2.reconciled_at = NowAsTimestamp();
+  info_2.reconciled_at = Now();
   const TransactionList& expected_transactions = {info_1, info_2};
 
   database_table.GetAll(

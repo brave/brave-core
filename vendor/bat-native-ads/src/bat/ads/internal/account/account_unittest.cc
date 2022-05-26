@@ -496,7 +496,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   TransactionList expected_transactions;
   TransactionInfo expected_transaction;
   expected_transaction.id = transaction_.id;
-  expected_transaction.created_at = NowAsTimestamp();
+  expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = info.creative_instance_id;
   expected_transaction.value = 1.0;
   expected_transaction.ad_type = AdType::kAdNotification;
@@ -538,7 +538,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
   TransactionList expected_transactions;
   TransactionInfo expected_transaction;
   expected_transaction.id = transaction_.id;
-  expected_transaction.created_at = NowAsTimestamp();
+  expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id =
       "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   expected_transaction.value = 0.0;
@@ -657,8 +657,8 @@ TEST_F(BatAdsAccountTest, GetStatement) {
         ASSERT_TRUE(success);
 
         StatementInfo expected_statement;
-        expected_statement.next_payment_date = TimestampFromString(
-            "5 January 2021 23:59:59.999", /* is_local */ false);
+        expected_statement.next_payment_date =
+            TimeFromString("5 January 2021 23:59:59.999", /* is_local */ false);
         expected_statement.earnings_this_month = 0.05;
         expected_statement.earnings_last_month = 0.01;
         expected_statement.ads_received_this_month = 3;
