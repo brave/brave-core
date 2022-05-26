@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/logging.h"
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
