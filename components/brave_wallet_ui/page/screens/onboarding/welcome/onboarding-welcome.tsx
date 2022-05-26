@@ -4,6 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+
+// actions
+import { WalletPageActions } from '../../../actions'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -26,6 +30,14 @@ import {
 } from './onboarding-welcome.style'
 
 export const OnboardingWelcome = () => {
+  // redux
+  const dispatch = useDispatch()
+
+  // effects
+  React.useEffect(() => {
+    dispatch(WalletPageActions.walletSetupComplete(false))
+  }, [])
+
   return <WalletPageLayout>
     <OnboardingWrapper>
       <PageIcon />

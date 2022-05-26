@@ -63,7 +63,9 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
   keyringService.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
-  store.dispatch(WalletPageActions.walletSetupComplete())
+  if (payload?.completeWalletSetup) {
+    store.dispatch(WalletPageActions.walletSetupComplete(payload.completeWalletSetup))
+  }
 })
 
 handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, payload: boolean) => {

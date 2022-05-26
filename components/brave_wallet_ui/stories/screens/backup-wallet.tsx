@@ -51,7 +51,7 @@ export const BackupWallet = (props: Props) => {
   // methods
   const onSubmit = React.useCallback(() => {
     dispatch(WalletPageActions.walletBackupComplete())
-    dispatch(WalletPageActions.walletSetupComplete())
+    dispatch(WalletPageActions.walletSetupComplete(true))
 
     if (isOnboarding) {
       history.push(WalletRoutes.Portfolio)

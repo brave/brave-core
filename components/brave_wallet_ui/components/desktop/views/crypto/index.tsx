@@ -43,6 +43,7 @@ export interface Props {
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
   isMetaMaskInstalled: boolean
+  sessionRoute: string | undefined
 }
 
 const CryptoView = (props: Props) => {
@@ -54,7 +55,8 @@ const CryptoView = (props: Props) => {
     defaultEthereumWallet,
     defaultSolanaWallet,
     needsBackup,
-    isMetaMaskInstalled
+    isMetaMaskInstalled,
+    sessionRoute
   } = props
 
   // state
@@ -222,7 +224,7 @@ const CryptoView = (props: Props) => {
           <Accounts />
         </Route>
 
-        <Redirect to={WalletRoutes.Portfolio} />
+        <Redirect to={sessionRoute || WalletRoutes.Portfolio} />
 
       </Switch>
 

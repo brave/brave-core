@@ -71,10 +71,13 @@ export const createPageReducer = (initialState: PageState) => {
     return newState
   })
 
-  reducer.on(Actions.walletSetupComplete, (state: PageState) => {
+  reducer.on(Actions.walletSetupComplete, (state: PageState, payload?: boolean): PageState => {
+    // complete setup unless explicitly halted
+    const setupStillInProgress = !payload
+
     const newState: PageState = {
       ...state,
-      setupStillInProgress: false
+      setupStillInProgress
     }
     delete newState.mnemonic
     return newState

@@ -98,7 +98,7 @@ export const OnboardingSuccess = () => {
 
   // methods
   const onComplete = React.useCallback(() => {
-    dispatch(WalletPageActions.walletSetupComplete())
+    dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.Portfolio)
   }, [])
 

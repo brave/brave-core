@@ -33,3 +33,29 @@ export const _DesktopWalletConcept = () => {
 _DesktopWalletConcept.story = {
   name: 'Concept'
 }
+
+export const _WalletOnboardingConcept = () => {
+  return (
+    <WalletPageStory
+      walletStateOverride={{
+        hasIncorrectPassword: false,
+        isWalletCreated: false,
+        isSolanaEnabled: true,
+        isFilecoinEnabled: true,
+        isWalletBackedUp: false
+      }}
+      pageStateOverride={{
+        hasInitialized: true,
+        mnemonic: undefined,
+        isCryptoWalletsInitialized: false,
+        setupStillInProgress: true
+      }}
+    >
+      <Container />
+    </WalletPageStory>
+  )
+}
+
+_DesktopWalletConcept.story = {
+  name: 'Concept'
+}

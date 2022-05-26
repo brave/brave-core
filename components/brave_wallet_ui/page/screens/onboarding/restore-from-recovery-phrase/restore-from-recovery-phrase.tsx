@@ -92,7 +92,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       // 12, 15, 18 or 21 long and has a space at the end.
       mnemonic: phraseInput.trimEnd(),
       password,
-      isLegacy: false
+      isLegacy: false,
+      completeWalletSetup: false // postpone until wallet onboarding success screen
     }))
 
     history.push(WalletRoutes.OnboardingComplete)
