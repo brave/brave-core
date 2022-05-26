@@ -10,6 +10,7 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
+#include "base/callback_helpers.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -17,7 +18,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
@@ -44,9 +44,23 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
     AdBlockFiltersProvider* filters_provider,
     AdBlockResourceProvider* resource_provider,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : AdBlockService::SourceProviderObserver(adblock_engine,
+                                             filters_provider,
+                                             resource_provider,
+                                             task_runner,
+                                             base::DoNothing()) {}
+
+AdBlockService::SourceProviderObserver::SourceProviderObserver(
+    base::WeakPtr<AdBlockEngine> adblock_engine,
+    AdBlockFiltersProvider* filters_provider,
+    AdBlockResourceProvider* resource_provider,
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
+    base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+        on_metadata_retrieved)
     : adblock_engine_(adblock_engine),
       filters_provider_(filters_provider),
       resource_provider_(resource_provider),
+      on_metadata_retrieved_(on_metadata_retrieved),
       task_runner_(task_runner) {
   filters_provider_->AddObserver(this);
   filters_provider_->LoadDAT(this);
@@ -75,10 +89,31 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
         FROM_HERE, base::BindOnce(&AdBlockEngine::AddResources, adblock_engine_,
                                   resources_json));
   } else {
-    task_runner_->PostTask(
-        FROM_HERE,
-        base::BindOnce(&AdBlockEngine::Load, adblock_engine_, deserialize_,
-                       std::move(dat_buf_), resources_json));
+    auto engine_load_callback = base::BindOnce(
+        [](base::WeakPtr<AdBlockEngine> engine, bool deserialize,
+           DATFileDataBuffer dat_buf, const std::string& resources_json)
+            -> absl::optional<adblock::FilterListMetadata> {
+          if (engine) {
+            return engine->Load(deserialize, std::move(dat_buf),
+                                resources_json);
+          } else {
+            return absl::nullopt;
+          }
+        },
+        adblock_engine_, deserialize_, std::move(dat_buf_), resources_json);
+    task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE, std::move(engine_load_callback),
+        base::BindOnce(&SourceProviderObserver::OnEngineReplaced,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void AdBlockService::SourceProviderObserver::OnEngineReplaced(
+    const absl::optional<adblock::FilterListMetadata> maybe_metadata) {
+  if (maybe_metadata) {
+    if (on_metadata_retrieved_) {
+      on_metadata_retrieved_.Run(*maybe_metadata);
+    }
   }
 }
 

@@ -58,6 +58,8 @@ FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
 
 FilterListMetadata::~FilterListMetadata() {}
 
+FilterListMetadata::FilterListMetadata(FilterListMetadata&&) = default;
+
 MetadataAndEngine engineWithMetadata(const std::string& rules) {
   C_FilterListMetadata* c_metadata;
   std::unique_ptr<Engine> engine = std::make_unique<Engine>(
@@ -65,7 +67,7 @@ MetadataAndEngine engineWithMetadata(const std::string& rules) {
   FilterListMetadata metadata = FilterListMetadata(c_metadata);
   filter_list_metadata_destroy(c_metadata);
 
-  return MetadataAndEngine(metadata, std::move(engine));
+  return MetadataAndEngine(std::move(metadata), std::move(engine));
 }
 
 MetadataAndEngine engineFromBufferWithMetadata(const char* data,
@@ -76,12 +78,12 @@ MetadataAndEngine engineFromBufferWithMetadata(const char* data,
   FilterListMetadata metadata = FilterListMetadata(c_metadata);
   filter_list_metadata_destroy(c_metadata);
 
-  return MetadataAndEngine(metadata, std::move(engine));
+  return MetadataAndEngine(std::move(metadata), std::move(engine));
 }
 
 MetadataAndEngine::MetadataAndEngine(FilterListMetadata metadata,
                                      std::unique_ptr<Engine> engine)
-    : metadata_(metadata), engine_(std::move(engine)) {}
+    : metadata_(std::move(metadata)), engine_(std::move(engine)) {}
 MetadataAndEngine::~MetadataAndEngine() {}
 
 Engine::Engine(C_Engine* c_engine) : raw(c_engine) {}

@@ -76,6 +76,10 @@ typedef ADBLOCK_EXPORT struct FilterListMetadata {
 
   absl::optional<std::string> homepage;
   absl::optional<std::string> title;
+
+  FilterListMetadata(FilterListMetadata&&);
+
+  FilterListMetadata(const FilterListMetadata&) = delete;
 } FilterListMetadata;
 
 class ADBLOCK_EXPORT Engine {

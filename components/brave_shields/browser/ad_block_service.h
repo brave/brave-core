@@ -38,6 +38,10 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+namespace adblock {
+struct FilterListMetadata;
+}  // namespace adblock
+
 namespace brave_shields {
 
 class AdBlockEngine;
@@ -58,6 +62,13 @@ class AdBlockService {
         AdBlockFiltersProvider* source_provider,
         AdBlockResourceProvider* resource_provider,
         scoped_refptr<base::SequencedTaskRunner> task_runner);
+    SourceProviderObserver(
+        base::WeakPtr<AdBlockEngine> adblock_engine,
+        AdBlockFiltersProvider* source_provider,
+        AdBlockResourceProvider* resource_provider,
+        scoped_refptr<base::SequencedTaskRunner> task_runner,
+        base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+            on_metadata_retrieved);
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
     ~SourceProviderObserver() override;
@@ -70,11 +81,16 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
 
+    void OnEngineReplaced(
+        const absl::optional<adblock::FilterListMetadata> maybe_metadata);
+
     bool deserialize_;
     DATFileDataBuffer dat_buf_;
     base::WeakPtr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
+    base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+        on_metadata_retrieved_;
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};

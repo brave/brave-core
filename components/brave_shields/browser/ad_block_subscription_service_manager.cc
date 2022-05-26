@@ -111,18 +111,6 @@ void SubscriptionInfo::RegisterJSONConverter(
       "title", &SubscriptionInfo::title, &ParseOptionalStringField);
 }
 
-SubscriptionEngineUpdateObserver::SubscriptionEngineUpdateObserver(
-    base::WeakPtr<AdBlockEngine> engine,
-    base::RepeatingCallback<void()> on_updated_callback)
-    : on_updated_callback_(on_updated_callback) {
-  engine->AddUpdateObserver(this);
-}
-SubscriptionEngineUpdateObserver::~SubscriptionEngineUpdateObserver() {}
-
-void SubscriptionEngineUpdateObserver::OnEngineUpdated() {
-  on_updated_callback_.Run();
-}
-
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     PrefService* local_state,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
@@ -255,13 +243,9 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
   auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
       subscription_service->AsWeakPtr(), subscription_filters_provider.get(),
-      resource_provider_, task_runner_);
-  auto engine_update_observer =
-      std::make_unique<SubscriptionEngineUpdateObserver>(
-          subscription_service->AsWeakPtr(),
-          base::BindRepeating(
-              &AdBlockSubscriptionServiceManager::OnEngineUpdated,
-              weak_ptr_factory_.GetWeakPtr(), sub_url));
+      resource_provider_, task_runner_,
+      base::BindRepeating(&AdBlockSubscriptionServiceManager::OnListMetadata,
+                          weak_ptr_factory_.GetWeakPtr(), sub_url));
 
   {
     base::AutoLock lock(subscription_services_lock_);
@@ -272,8 +256,6 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
         std::make_pair(sub_url, std::move(subscription_filters_provider)));
     subscription_source_observers_.insert(
         std::make_pair(sub_url, std::move(observer)));
-    engine_update_observers_.insert(
-        std::make_pair(sub_url, std::move(engine_update_observer)));
   }
 
   StartDownload(sub_url, true);
@@ -318,9 +300,6 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
     auto it2 = subscription_filters_providers_.find(sub_url);
     DCHECK(it2 != subscription_filters_providers_.end());
     subscription_filters_providers_.erase(it2);
-    auto it3 = engine_update_observers_.find(sub_url);
-    DCHECK(it3 != engine_update_observers_.end());
-    engine_update_observers_.erase(it3);
   }
   ClearSubscriptionPrefs(sub_url);
 
@@ -364,7 +343,9 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
       base::DoNothing());
 }
 
-void AdBlockSubscriptionServiceManager::OnEngineUpdated(const GURL& sub_url) {
+void AdBlockSubscriptionServiceManager::OnListMetadata(
+    const GURL& sub_url,
+    const adblock::FilterListMetadata& metadata) {
   // The engine will have loaded new list metadata; read it and update local
   // preferences with the new values.
 
@@ -374,26 +355,16 @@ void AdBlockSubscriptionServiceManager::OnEngineUpdated(const GURL& sub_url) {
   if (!info)
     return;
 
-  {
-    base::AutoLock lock(subscription_services_lock_);
+  // Title can only be set once - only set it if an existing title does not
+  // exist
+  if (!info->title && metadata.title) {
+    info->title = absl::make_optional(*metadata.title);
+  }
 
-    auto it = subscription_services_.find(sub_url);
-    DCHECK(it != subscription_services_.end());
-
-    const adblock::FilterListMetadata& metadata =
-        it->second->GetLastListMetadata();
-
-    // Title can only be set once - only set it if an existing title does not
-    // exist
-    if (!info->title && metadata.title) {
-      info->title = absl::make_optional(*metadata.title);
-    }
-
-    if (metadata.homepage) {
-      info->homepage = absl::make_optional(*metadata.homepage);
-    } else {
-      info->homepage = absl::nullopt;
-    }
+  if (metadata.homepage) {
+    info->homepage = absl::make_optional(*metadata.homepage);
+  } else {
+    info->homepage = absl::nullopt;
   }
 
   UpdateSubscriptionPrefs(sub_url, *info);
@@ -452,14 +423,10 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
               GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
       auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
           subscription_service->AsWeakPtr(),
-          subscription_filters_provider.get(), resource_provider_,
-          task_runner_);
-      auto engine_update_observer =
-          std::make_unique<SubscriptionEngineUpdateObserver>(
-              subscription_service->AsWeakPtr(),
-              base::BindRepeating(
-                  &AdBlockSubscriptionServiceManager::OnEngineUpdated,
-                  weak_ptr_factory_.GetWeakPtr(), sub_url));
+          subscription_filters_provider.get(), resource_provider_, task_runner_,
+          base::BindRepeating(
+              &AdBlockSubscriptionServiceManager::OnListMetadata,
+              weak_ptr_factory_.GetWeakPtr(), sub_url));
 
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
@@ -467,8 +434,6 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
           std::make_pair(sub_url, std::move(subscription_filters_provider)));
       subscription_source_observers_.insert(
           std::make_pair(sub_url, std::move(observer)));
-      engine_update_observers_.insert(
-          std::make_pair(sub_url, std::move(engine_update_observer)));
     }
   }
 }

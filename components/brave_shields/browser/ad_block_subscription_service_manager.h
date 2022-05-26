@@ -74,18 +74,6 @@ struct SubscriptionInfo {
       base::JSONValueConverter<SubscriptionInfo>*);
 };
 
-class SubscriptionEngineUpdateObserver : AdBlockEngine::EngineUpdateObserver {
- public:
-  SubscriptionEngineUpdateObserver(
-      base::WeakPtr<AdBlockEngine> engine,
-      base::RepeatingCallback<void()> on_updated_callback);
-  ~SubscriptionEngineUpdateObserver() override;
-  void OnEngineUpdated() override;
-
- private:
-  base::RepeatingCallback<void()> on_updated_callback_;
-};
-
 // The AdBlock subscription service manager, in charge of initializing and
 // managing AdBlock clients corresponding to custom filter list subscriptions.
 class AdBlockSubscriptionServiceManager {
@@ -157,7 +145,8 @@ class AdBlockSubscriptionServiceManager {
   void OnGetDownloadManager(
       AdBlockSubscriptionDownloadManager* download_manager);
 
-  void OnEngineUpdated(const GURL& sub_url);
+  void OnListMetadata(const GURL& sub_url,
+                      const adblock::FilterListMetadata& metadata);
 
   absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
@@ -180,8 +169,6 @@ class AdBlockSubscriptionServiceManager {
       subscription_filters_providers_;
   std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
       subscription_source_observers_;
-  std::map<GURL, std::unique_ptr<SubscriptionEngineUpdateObserver>>
-      engine_update_observers_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 
