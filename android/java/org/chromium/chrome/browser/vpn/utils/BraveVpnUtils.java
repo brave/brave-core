@@ -59,7 +59,7 @@ public class BraveVpnUtils {
         if ((ContextUtils.getApplicationContext().getPackageName().equals(
                      BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
                     || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())
-                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                && Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             return true;
         }
         return false;
