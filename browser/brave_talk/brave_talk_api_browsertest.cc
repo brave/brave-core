@@ -14,7 +14,6 @@
 #include "brave/browser/brave_talk/brave_talk_media_access_handler.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
-#include "brave/browser/brave_talk/brave_talk_tab_capture_registry_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -135,8 +134,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
   }
 
   brave_talk::BraveTalkTabCaptureRegistry* registry() {
-    return brave_talk::BraveTalkTabCaptureRegistryFactory::GetForContext(
-        browser()->profile());
+    return brave_talk::BraveTalkTabCaptureRegistry::GetInstance();
   }
 
   std::string GetDeviceID(const std::string& frame) {
@@ -193,7 +191,10 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
                        CanRequestCaptureForSubframeOnDifferentOrigin) {
   SetRequesterFrameOrigins("talk.brave.com", "example.com");
 
+  // ASSERT_FALSE(true);
   auto device_id = GetDeviceID("frame");
+                         ASSERT_FALSE(true);
+
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
