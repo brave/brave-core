@@ -63,8 +63,7 @@ extension BrowserViewController: WKNavigationDelegate {
       return
     }
 
-        tabManager.selectedTab?.isWalletIconVisible = false
-        updateURLBarWalletButton()
+    tabManager.selectedTab?.isWalletIconVisible = false
 
     updateFindInPageVisibility(visible: false)
     displayPageZoom(visible: false)

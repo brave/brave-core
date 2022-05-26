@@ -44,12 +44,12 @@ extension WalletStore {
 }
 
 extension BrowserViewController {
-  func presentWalletPanel() {
+  func presentWalletPanel(tab: Tab) {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
     guard let walletStore = WalletStore.from(privateMode: privateMode) else {
       return
     }
-    let origin = getOrigin()
+    let origin = tab.getOrigin()
     let controller = WalletPanelHostingController(
       walletStore: walletStore,
       origin: origin,
@@ -60,7 +60,7 @@ extension BrowserViewController {
           let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
           if permissionRequestManager.hasPendingRequest(for: origin, coinType: .eth) {
             let pendingRequests = permissionRequestManager.pendingRequests(for: origin, coinType: .eth)
-            let (accounts, status, _) = await self.allowedAccounts(false)
+            let (accounts, status, _) = await tab.allowedAccounts(false)
             if status == .success, !accounts.isEmpty {
               for request in pendingRequests {
                 // cancel the requests if `allowedAccounts` is not empty for this domain
@@ -99,24 +99,13 @@ extension BrowserViewController: BraveWalletDelegate {
   }
 }
 
-extension BrowserViewController: BraveWalletProviderDelegate {
+extension Tab: BraveWalletProviderDelegate {
   func showPanel() {
-    // only display notification when BVC is front and center & `displayWeb3Notifications` is enabled
-    guard presentedViewController == nil,
-          Preferences.Wallet.displayWeb3Notifications.value else {
-      return
-    }
-    
-    let walletNotificaton = WalletNotification(priority: .low) { [weak self] action in
-      if action == .connectWallet {
-        self?.presentWalletPanel()
-      }
-    }
-    notificationsPresenter.display(notification: walletNotificaton, from: self)
+    tabDelegate?.showWalletNotification(self)
   }
 
   func getOrigin() -> URLOrigin {
-    guard let origin = tabManager.selectedTab?.url?.origin else {
+    guard let origin = url?.origin else {
       assert(false, "We should have a valid origin to get to this point")
       return .init()
     }
@@ -166,22 +155,38 @@ extension BrowserViewController: BraveWalletProviderDelegate {
           completion([], .userRejectedRequest, "User rejected request")
         }
       })
-      
-      showPanel()
+
+      self.tabDelegate?.showWalletNotification(self)
     }
   }
 
-  func allowedAccounts(_ includeAccountsWhenLocked: Bool) async -> ([String], BraveWallet.ProviderError, String) {
-    guard let selectedTab = tabManager.selectedTab else {
+  @MainActor func allowedAccounts(_ includeAccountsWhenLocked: Bool) async -> ([String], BraveWallet.ProviderError, String) {
+    func filterAccounts(
+      _ accounts: [String],
+      selectedAccount: String?
+    ) -> [String] {
+      if let selectedAccount = selectedAccount, accounts.contains(selectedAccount) {
+        return [selectedAccount]
+      }
+      return accounts
+    }
+    // This method is called immediately upon creation of the wallet provider, which happens at tab
+    // configuration, which means it may not be selected or ready yet.
+    guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
+          let originURL = url?.origin.url else {
       return ([], .internalError, "Internal error")
     }
-    updateURLBarWalletButton()
-    return await selectedTab.allowedAccounts(includeAccountsWhenLocked)
-  }
-
-  func updateURLBarWalletButton() {
-    topToolbar.locationView.walletButton.buttonState =
-    tabManager.selectedTab?.isWalletIconVisible == true ? .active : .inactive
+    let isLocked = await keyringService.isLocked()
+    if !includeAccountsWhenLocked && isLocked {
+      return ([], .success, "")
+    }
+    let selectedAccount = await keyringService.selectedAccount(.eth)
+    let permissions = Domain.ethereumPermissions(forUrl: originURL)
+    return (
+      filterAccounts(permissions ?? [], selectedAccount: selectedAccount),
+      .success,
+      ""
+    )
   }
 }
 
@@ -212,35 +217,6 @@ extension Tab: BraveWalletEventsListener {
   func accountsChangedEvent(_ accounts: [String]) {
     emitEthereumEvent(.ethereumAccountsChanged(accounts: accounts))
     updateEthereumProperties()
-  }
-
-  @MainActor func allowedAccounts(_ includeAccountsWhenLocked: Bool) async -> ([String], BraveWallet.ProviderError, String) {
-    func filterAccounts(
-      _ accounts: [String],
-      selectedAccount: String?
-    ) -> [String] {
-      if let selectedAccount = selectedAccount, accounts.contains(selectedAccount) {
-        return [selectedAccount]
-      }
-      return accounts
-    }
-    // This method is called immediately upon creation of the wallet provider, which happens at tab
-    // configuration, which means it may not be selected or ready yet.
-    guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
-          let originURL = url?.origin.url else {
-      return ([], .internalError, "Internal error")
-    }
-    let isLocked = await keyringService.isLocked()
-    if !includeAccountsWhenLocked && isLocked {
-      return ([], .success, "")
-    }
-    let selectedAccount = await keyringService.selectedAccount(.eth)
-    let permissions = Domain.ethereumPermissions(forUrl: originURL)
-    return (
-      filterAccounts(permissions ?? [], selectedAccount: selectedAccount),
-      .success,
-      ""
-    )
   }
   
   func updateEthereumProperties() {

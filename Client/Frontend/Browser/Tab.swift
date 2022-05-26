@@ -20,7 +20,6 @@ protocol TabContentScript {
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void)
 }
 
-@objc
 protocol TabDelegate {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar)
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar)
@@ -28,10 +27,12 @@ protocol TabDelegate {
   func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String)
   /// Triggered when "Search with Brave" is selected on selected web text
   func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String)
-  @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
-  @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
+  func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
+  func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
   func showRequestRewardsPanel(_ tab: Tab)
   func stopMediaPlayback(_ tab: Tab)
+  func showWalletNotification(_ tab: Tab)
+  func updateURLBarWalletButton()
 }
 
 @objc
@@ -68,8 +69,16 @@ class Tab: NSObject {
 
   var walletProvider: BraveWalletBraveWalletProvider?
   var walletProviderJS: String?
-  var isWalletIconVisible: Bool = false
-  var walletKeyringService: BraveWalletKeyringService?
+  var isWalletIconVisible: Bool = false {
+    didSet {
+      tabDelegate?.updateURLBarWalletButton()
+    }
+  }
+  var walletKeyringService: BraveWalletKeyringService? {
+    didSet {
+      walletKeyringService?.add(self)
+    }
+  }
   // PageMetadata is derived from the page content itself, and as such lags behind the
   // rest of the tab.
   var pageMetadata: PageMetadata?
@@ -317,7 +326,7 @@ class Tab: NSObject {
         isDeAMPEnabled: Preferences.Shields.autoRedirectAMPPages.value,
         walletProviderJS: walletProviderJS
       )
-      tabDelegate?.tab?(self, didCreateWebView: webView)
+      tabDelegate?.tab(self, didCreateWebView: webView)
 
       nightMode = Preferences.General.nightModeEnabled.value
     }
@@ -399,7 +408,7 @@ class Tab: NSObject {
 
     if let webView = webView {
       webView.removeObserver(self, forKeyPath: KVOConstants.URL.rawValue)
-      tabDelegate?.tab?(self, willDeleteWebView: webView)
+      tabDelegate?.tab(self, willDeleteWebView: webView)
     }
     webView = nil
   }
