@@ -39,7 +39,9 @@ source_set("channel_info") {
 }
 
 source_set("common") {
-  visibility = brave_common_visibility_targets
+  visibility = brave_common_visibility_targets +
+               # These are layering violation and need to be fixed
+               [ "//brave/components/brave_ads/browser" ]
   if (!is_android && !is_ios) {
     visibility += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
   }
