@@ -63,6 +63,15 @@ IssuersInfo GetIssuers() {
   return issuers;
 }
 
+bool HasIssuers() {
+  if (!IssuerExistsForType(IssuerType::kConfirmations) ||
+      !IssuerExistsForType(IssuerType::kPayments)) {
+    return false;
+  }
+
+  return true;
+}
+
 bool HasIssuersChanged(const IssuersInfo& issuers) {
   const IssuersInfo& last_issuers = GetIssuers();
   if (issuers == last_issuers) {
