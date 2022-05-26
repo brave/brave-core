@@ -73,7 +73,6 @@ class BraveTalkConfirmBubbleModel : public ConfirmBubbleModel {
 BraveTalkService::BraveTalkService() = default;
 BraveTalkService::~BraveTalkService() {
   StopObserving();
-  Shutdown();
 }
 
 // static

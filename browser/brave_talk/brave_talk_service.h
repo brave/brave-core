@@ -11,7 +11,6 @@
 
 #include "base/callback_forward.h"
 #include "base/memory/singleton.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -25,7 +24,7 @@ namespace brave_talk {
 // Service for managing requests to |brave.beginAdvertiseShareDisplayMedia|.
 // Note: only one frame can be actively requesting at any time (a subsequent
 // request will replace it).
-class BraveTalkService : public KeyedService, content::WebContentsObserver {
+class BraveTalkService : public content::WebContentsObserver {
  public:
   class BraveTalkServiceObserver {
    public:
@@ -34,7 +33,6 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
 
   static BraveTalkService* GetInstance();
 
-  BraveTalkService();
   BraveTalkService(const BraveTalkService&) = delete;
   BraveTalkService& operator=(const BraveTalkService&) = delete;
   ~BraveTalkService() override;
@@ -69,6 +67,7 @@ class BraveTalkService : public KeyedService, content::WebContentsObserver {
       base::OnceCallback<void()> callback_for_testing);
 
  private:
+  BraveTalkService();
   friend struct base::DefaultSingletonTraits<BraveTalkService>;
 
   void StartObserving(content::WebContents* contents);

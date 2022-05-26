@@ -11,16 +11,14 @@
 #include <vector>
 
 #include "base/memory/singleton.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
 namespace brave_talk {
 
-class BraveTalkTabCaptureRegistry : public KeyedService {
+class BraveTalkTabCaptureRegistry {
  public:
-  explicit BraveTalkTabCaptureRegistry();
-  ~BraveTalkTabCaptureRegistry() override;
+  ~BraveTalkTabCaptureRegistry();
   BraveTalkTabCaptureRegistry(const BraveTalkTabCaptureRegistry&) = delete;
   BraveTalkTabCaptureRegistry& operator=(const BraveTalkTabCaptureRegistry&) =
       delete;
@@ -33,7 +31,9 @@ class BraveTalkTabCaptureRegistry : public KeyedService {
   bool VerifyRequest(int target_render_process_id, int target_render_frame_id);
 
  private:
+  BraveTalkTabCaptureRegistry();
   friend struct base::DefaultSingletonTraits<BraveTalkTabCaptureRegistry>;
+
   class LiveRequest;
 
   LiveRequest* FindRequest(int target_render_process_id,
