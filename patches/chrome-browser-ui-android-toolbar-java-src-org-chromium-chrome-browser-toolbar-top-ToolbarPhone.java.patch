@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index deaabb2adebb846be31daee4b6c05593aed1d6b5..ccc3d9d48ba8e527936daf4b1c55183dabb2cbd1 100644
+index 9a4554b5384f27dd1f9f07363e3307a86393537b..7868caf05e98a1241f566492f46a35f938ecfa3d 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -426,6 +426,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -430,6 +430,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          mCurrentLocationBarColor = color;
          // TODO(https://crbug.com/1239289): Change back to #setTint once our min API level is 23.
          mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -10,7 +10,7 @@ index deaabb2adebb846be31daee4b6c05593aed1d6b5..ccc3d9d48ba8e527936daf4b1c55183d
      }
  
      /**
-@@ -543,6 +544,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -544,6 +545,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -34,7 +34,7 @@ index deaabb2adebb846be31daee4b6c05593aed1d6b5..ccc3d9d48ba8e527936daf4b1c55183d
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          FrameLayout.LayoutParams locationBarLayoutParams =
                  mLocationBar.getPhoneCoordinator().getFrameLayoutParams();
-@@ -2148,6 +2152,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2162,6 +2166,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
