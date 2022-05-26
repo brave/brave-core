@@ -761,11 +761,12 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
             GetNetworkURL(&prefs, chain2.chain_id, mojom::CoinType::ETH));
 }
 
-TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
+TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
+  // GetNetworkURL for these known chains should resolve to brave subdomain.
   base::flat_set<std::string> infura_chains = {
       brave_wallet::mojom::kMainnetChainId,
       brave_wallet::mojom::kPolygonMainnetChainId,
