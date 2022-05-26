@@ -92,7 +92,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                         ? InAppPurchaseWrapper.RELEASE_YEARLY_SUBSCRIPTION
                         : InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
 
-        if (monthlySkuDetails != null || yearlySkuDetails != null) {
+        if (monthlySkuDetails != null && yearlySkuDetails != null) {
             mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
             mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
