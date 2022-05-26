@@ -129,6 +129,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if let shortcutItem = connectionOptions.shortcutItem {
       QuickActions.sharedInstance.launchedShortcutItem = shortcutItem
     }
+    
+    if let response = connectionOptions.notificationResponse {
+      if response.notification.request.identifier == BrowserViewController.defaultBrowserNotificationId {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+          log.error("Failed to unwrap iOS settings URL")
+          return
+        }
+        UIApplication.shared.open(settingsUrl)
+      } else if response.notification.request.identifier == PrivacyReportsManager.notificationID {
+        browserViewController.openPrivacyReport()
+      }
+    }
         
     PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
     PrivacyReportsManager.consolidateData()

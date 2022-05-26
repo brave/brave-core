@@ -837,7 +837,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       .store(in: &cancellables)
   }
 
-  fileprivate let defaultBrowserNotificationId = "defaultBrowserNotification"
+  static let defaultBrowserNotificationId = "defaultBrowserNotification"
 
   private func scheduleDefaultBrowserNotification() {
     let center = UNUserNotificationCenter.current()
@@ -855,7 +855,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
       center.getPendingNotificationRequests { [weak self] requests in
         guard let self = self else { return }
-        if requests.contains(where: { $0.identifier == self.defaultBrowserNotificationId }) {
+        if requests.contains(where: { $0.identifier == Self.defaultBrowserNotificationId }) {
           // Already has one scheduled no need to schedule again.
           return
         }
@@ -869,7 +869,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToShow, repeats: false)
 
         let request = UNNotificationRequest(
-          identifier: self.defaultBrowserNotificationId,
+          identifier: Self.defaultBrowserNotificationId,
           content: content,
           trigger: timeTrigger)
 
@@ -3328,7 +3328,7 @@ extension BrowserViewController {
 
 extension BrowserViewController: UNUserNotificationCenterDelegate {
   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    if response.notification.request.identifier == defaultBrowserNotificationId {
+    if response.notification.request.identifier == Self.defaultBrowserNotificationId {
       guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
         log.error("Failed to unwrap iOS settings URL")
         return
