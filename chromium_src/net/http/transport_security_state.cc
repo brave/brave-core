@@ -171,16 +171,6 @@ bool TransportSecurityState::AddHSTSHeader(const IsolationInfo& isolation_info,
   return TransportSecurityState_ChromiumImpl::AddHSTSHeader(host, value);
 }
 
-bool TransportSecurityState::GetDynamicSTSState(
-    const NetworkIsolationKey& network_isolation_key,
-    const std::string& host,
-    STSState* result) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  auto auto_reset_partition_hash = enabled_sts_hosts_.SetScopedPartitionHash(
-      GetPartitionHashForHSTS(network_isolation_key));
-  return TransportSecurityState_ChromiumImpl::GetDynamicSTSState(host, result);
-}
-
 void TransportSecurityState::AddHSTS(const std::string& host,
                                      const base::Time& expiry,
                                      bool include_subdomains) {

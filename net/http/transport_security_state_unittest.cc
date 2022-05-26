@@ -58,8 +58,6 @@ class TransportSecurityStateTestBase : public ::testing::Test,
     EXPECT_FALSE(state->ShouldSSLErrorsBeFatal(network_isolation_key, host));
     TransportSecurityState::STSState dynamic_sts_state;
     EXPECT_FALSE(state->GetDynamicSTSState(host, &dynamic_sts_state));
-    EXPECT_FALSE(state->GetDynamicSTSState(network_isolation_key, host,
-                                           &dynamic_sts_state));
   }
 
   void ExpectHasHSTS(TransportSecurityState* state,
@@ -74,13 +72,6 @@ class TransportSecurityStateTestBase : public ::testing::Test,
     {
       TransportSecurityState::STSState dynamic_sts_state;
       EXPECT_TRUE(state->GetDynamicSTSState(host, &dynamic_sts_state));
-      EXPECT_EQ(dynamic_sts_state.upgrade_mode,
-                TransportSecurityState::STSState::MODE_FORCE_HTTPS);
-    }
-    {
-      TransportSecurityState::STSState dynamic_sts_state;
-      EXPECT_TRUE(state->GetDynamicSTSState(network_isolation_key, host,
-                                            &dynamic_sts_state));
       EXPECT_EQ(dynamic_sts_state.upgrade_mode,
                 TransportSecurityState::STSState::MODE_FORCE_HTTPS);
     }
@@ -99,13 +90,6 @@ class TransportSecurityStateTestBase : public ::testing::Test,
     {
       TransportSecurityState::STSState dynamic_sts_state;
       EXPECT_FALSE(state->GetDynamicSTSState(host, &dynamic_sts_state));
-    }
-    {
-      TransportSecurityState::STSState dynamic_sts_state;
-      EXPECT_TRUE(state->GetDynamicSTSState(network_isolation_key, host,
-                                            &dynamic_sts_state));
-      EXPECT_EQ(dynamic_sts_state.upgrade_mode,
-                TransportSecurityState::STSState::MODE_FORCE_HTTPS);
     }
   }
 };

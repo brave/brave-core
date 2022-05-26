@@ -42,11 +42,8 @@ class NET_EXPORT TransportSecurityState
   bool AddHSTSHeader(const IsolationInfo& isolation_info,
                      const std::string& host,
                      const std::string& value);
-  bool GetDynamicSTSState(const NetworkIsolationKey& network_isolation_key,
-                          const std::string& host,
-                          STSState* result);
 
-  // This is used only for manual addiing via net-internals page.
+  // This is used only for manual adding via net-internals page.
   void AddHSTS(const std::string& host,
                const base::Time& expiry,
                bool include_subdomains);
