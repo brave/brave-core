@@ -82,7 +82,7 @@ export const StyledBullet = styled('label')<Props>`
   transform: ${p => `translate(${transformBullet(p)})`};
   width: ${p => p.size === 'small' ? '16px' : '20px'};
   height: ${p => p.size === 'small' ? '16px' : '20px'};
-  background-color: ${p => p.disabled && 'rgba(235,236,240,0.8)' || p.checked ? '#fb542b' : '#ebecf0'};
+  background-color: ${p => p.disabled ? 'rgba(235,236,240,0.8)' : p.checked ? '#fb542b' : '#ebecf0'};
   display: block;
   box-shadow: 0 3px 3px rgba(0,0,0,0.05);
 `
