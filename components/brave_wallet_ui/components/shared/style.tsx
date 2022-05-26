@@ -116,6 +116,8 @@ export const WalletLink = styled(Link)`
   background: none;
   border: none;
 
+  text-decoration: none;
+
   &:hover {
     cursor: pointer;
   }
