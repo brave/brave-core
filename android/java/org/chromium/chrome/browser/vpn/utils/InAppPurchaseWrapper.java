@@ -25,8 +25,9 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
@@ -88,8 +89,14 @@ public class InAppPurchaseWrapper {
         }
     }
 
-    public BillingClient getBillingClient() {
-        return mBillingClient;
+    public boolean isSubscriptionSupported() {
+        if (mBillingClient != null) {
+            BillingResult result =
+                    mBillingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS);
+            return (result.getResponseCode() == BillingClient.BillingResponseCode.OK
+                    && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS));
+        }
+        return false;
     }
 
     private void querySkuDetailsAsync(List<String> skuList) {
