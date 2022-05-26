@@ -10,6 +10,7 @@ import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/ledger/headers.gni")
+import("//brave/ios/browser/api/qr_code/headers.gni")
 import("//brave/ios/browser/api/skus/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
 import("//build/config/compiler/compiler.gni")
@@ -69,6 +70,7 @@ brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
 brave_core_public_headers += ledger_public_headers
+brave_core_public_headers += browser_api_qr_code_public_headers
 brave_core_public_headers += skus_public_headers
 brave_core_public_headers += browser_api_url_public_headers
 
