@@ -19,6 +19,7 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -154,11 +155,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kLocationBarIsWide] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kAutocompleteEnabled] =
+  (*s_brave_allowlist)[omnibox::kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kTopSiteSuggestionsEnabled] =
+  (*s_brave_allowlist)[omnibox::kTopSiteSuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kBraveSuggestedSiteSuggestionsEnabled] =
+  (*s_brave_allowlist)[omnibox::kBraveSuggestedSiteSuggestionsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[omnibox::kHistorySuggestionsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[omnibox::kBookmarkSuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

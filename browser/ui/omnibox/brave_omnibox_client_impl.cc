@@ -13,6 +13,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
@@ -87,7 +88,7 @@ BraveOmniboxClientImpl::GetSchemeClassifier() const {
 }
 
 bool BraveOmniboxClientImpl::IsAutocompleteEnabled() const {
-  return profile_->GetPrefs()->GetBoolean(kAutocompleteEnabled);
+  return profile_->GetPrefs()->GetBoolean(omnibox::kAutocompleteEnabled);
 }
 
 void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {

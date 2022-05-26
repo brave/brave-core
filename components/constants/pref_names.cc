@@ -65,10 +65,6 @@ const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
-const char kAutocompleteEnabled[] = "brave.autocomplete_enabled";
-const char kTopSiteSuggestionsEnabled[] = "brave.top_site_suggestions_enabled";
-const char kBraveSuggestedSiteSuggestionsEnabled[] =
-    "brave.brave_suggested_site_suggestions_enabled";
 const char kBraveDarkMode[] = "brave.dark_mode";
 const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";
 const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";

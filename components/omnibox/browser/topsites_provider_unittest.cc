@@ -6,8 +6,8 @@
 #include "brave/components/omnibox/browser/topsites_provider.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/omnibox/browser/fake_autocomplete_provider_client.h"
+#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/omnibox/browser/mock_autocomplete_provider_client.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/testing_pref_service.h"
@@ -31,7 +31,7 @@ class TopSitesProviderTest : public testing::Test {
 
  protected:
   TestSchemeClassifier classifier_;
-  FakeAutocompleteProviderClient client_;
+  BraveFakeAutocompleteProviderClient client_;
   scoped_refptr<TopSitesProvider> provider_;
 };
 
@@ -52,7 +52,7 @@ TEST_F(TopSitesProviderTest, SmokeTest) {
 }
 
 TEST_F(TopSitesProviderTest, NoMatchingWhenPrefIsOff) {
-  prefs()->SetBoolean(kTopSiteSuggestionsEnabled, false);
+  prefs()->SetBoolean(omnibox::kTopSiteSuggestionsEnabled, false);
   provider_->Start(CreateAutocompleteInput("dex"), false);
   EXPECT_TRUE(provider_->matches().empty());
 }

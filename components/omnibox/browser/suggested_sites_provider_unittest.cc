@@ -6,32 +6,31 @@
 #include "brave/components/omnibox/browser/suggested_sites_provider.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/omnibox/browser/fake_autocomplete_provider_client.h"
+#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class SuggestedSitesProviderTest : public testing::Test {
  public:
-  SuggestedSitesProviderTest() :
-      provider_(new SuggestedSitesProvider(&client_)) {
+  SuggestedSitesProviderTest()
+      : provider_(new SuggestedSitesProvider(&client_)) {
+    client_.GetPrefs()->SetBoolean(
+        omnibox::kBraveSuggestedSiteSuggestionsEnabled, true);
   }
 
   AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
-                            metrics::OmniboxEventProto::OTHER,
-                            classifier_);
+                            metrics::OmniboxEventProto::OTHER, classifier_);
     return input;
   }
 
-  PrefService* prefs() {
-    return client_.GetPrefs();
-  }
+  PrefService* prefs() { return client_.GetPrefs(); }
 
  protected:
   TestSchemeClassifier classifier_;
-  FakeAutocompleteProviderClient client_;
+  BraveFakeAutocompleteProviderClient client_;
   scoped_refptr<SuggestedSitesProvider> provider_;
 };
 
@@ -75,7 +74,7 @@ TEST_F(SuggestedSitesProviderTest, OnlyMatchFromStart) {
 }
 
 TEST_F(SuggestedSitesProviderTest, NoMatchingWhenPrefIsOff) {
-  prefs()->SetBoolean(kBraveSuggestedSiteSuggestionsEnabled, false);
+  prefs()->SetBoolean(omnibox::kBraveSuggestedSiteSuggestionsEnabled, false);
   provider_->Start(CreateAutocompleteInput("bitc"), false);
   EXPECT_TRUE(provider_->matches().empty());
 }
