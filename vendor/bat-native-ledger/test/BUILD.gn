@@ -81,6 +81,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/put_safetynet/put_safetynet_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/rewards/get_prefix_list/get_prefix_list_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/rewards/rewards_util_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_card/get_card_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_cards/get_cards_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_me/get_me_unittest.cc",

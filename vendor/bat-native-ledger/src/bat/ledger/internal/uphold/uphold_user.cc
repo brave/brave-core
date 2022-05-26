@@ -21,12 +21,7 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-User::User()
-    : name(""),
-      member_id(""),
-      status(UserStatus::EMPTY),
-      bat_not_allowed(true),
-      customer_due_diligence_required(false) {}
+User::User() : name(""), member_id(""), bat_not_allowed(true) {}
 
 User::~User() = default;
 

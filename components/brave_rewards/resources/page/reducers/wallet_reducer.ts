@@ -183,28 +183,13 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
-      if (action.payload.result === 38) { // type::Result::UPHOLD_BLOCKED_USER
-        state.ui.modalRedirect = 'upholdBlockedUserModal'
-        break
-      }
-
-      if (action.payload.result === 39) { // type::Result::UPHOLD_PENDING_USER
-        state.ui.modalRedirect = 'upholdPendingUserModal'
-        break
-      }
-
-      if (action.payload.result === 40) { // type::Result::UPHOLD_RESTRICTED_USER
-        state.ui.modalRedirect = 'upholdRestrictedUserModal'
-        break
-      }
-
       if (action.payload.result === 41) { // type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
         state.ui.modalRedirect = 'walletOwnershipVerificationFailureModal'
         break
       }
 
-      if (action.payload.result === 43) { // type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED
-        state.ui.modalRedirect = 'upholdCustomerDueDiligenceRequiredModal'
+      if (action.payload.result === 43) { // type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES
+        state.ui.modalRedirect = 'upholdInsufficientCapabilitiesModal'
         break
       }
 
