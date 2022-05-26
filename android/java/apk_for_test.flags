@@ -78,6 +78,7 @@
     *** mSyncEncryption;
     *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
+    *** mSyncReadingList;
     *** mTurnOffSync;
 }
 
