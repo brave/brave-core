@@ -392,6 +392,17 @@ class AdsBox extends React.Component<Props, State> {
     return false
   }
 
+  hasLikedEntries = (adHistory: Rewards.AdsHistory[]) => {
+    for (let ix = 0; ix < adHistory.length; ix++) {
+      for (let jx = 0; jx < adHistory[ix].adDetailRows.length; jx++) {
+        if (adHistory[ix].adDetailRows[jx].adContent.likeAction === 1) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   render () {
     const savedOnly = false
 
@@ -502,6 +513,7 @@ class AdsBox extends React.Component<Props, State> {
               adsPerHour={adsPerHour}
               rows={rows}
               hasSavedEntries={this.hasSavedEntries(rows)}
+              hasLikedEntries={this.hasLikedEntries(rows)}
               totalDays={30}
           />
           : null

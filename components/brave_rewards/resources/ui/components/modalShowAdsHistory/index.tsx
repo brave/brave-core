@@ -32,6 +32,7 @@ export interface Props {
   adsPerHour?: number
   totalDays?: number
   hasSavedEntries?: boolean
+  hasLikedEntries?: boolean
   onSavedFilterClick?: () => void
   onAllFilterClick?: () => void
   onThumbFilterClick?: () => void
@@ -88,7 +89,7 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
   }
 
   render () {
-    const { id, onClose, adsPerHour, hasSavedEntries, rows, totalDays } = this.props
+    const { id, onClose, adsPerHour, hasSavedEntries, hasLikedEntries, rows, totalDays } = this.props
 
     return (
       <Modal id={id} onClose={onClose} testId={'show-ads-history-modal'}>
@@ -108,55 +109,55 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
                 {adsPerHour || '0'}
               </StyledAdsPerHourText>
             </StyledAdsInfoTextWrapper>
-              {
-                rows && hasSavedEntries
-                  ? <StyledAdsSaveFiltered>
-                    <StyledText>
-                      {
-                        this.state.filterStatus !== 0
-                          ? <StyledLink onClick={this.onAllFilterClick}>
-                            {
-                              getLocale('all')
-                            }
-                          </StyledLink>
-                          : <StyledNotSelectedLink>
-                            {
-                              getLocale('all')
-                            }
-                          </StyledNotSelectedLink>
-                      }
-                    </StyledText>
-                    <StyledSeparatorText>|</StyledSeparatorText>
-                    <StyledText>
-                      {
-                        this.state.filterStatus !== 1
-                          ? <StyledLink onClick={this.onSavedFilterClick}>
-                            {
-                              getLocale('saved')
-                            }
-                          </StyledLink>
-                          : <StyledNotSelectedLink>
-                            {
-                              getLocale('saved')
-                            }
-                          </StyledNotSelectedLink>
-                      }
-                    </StyledText>
-                    <StyledSeparatorText>|</StyledSeparatorText>
-                    <StyledText>
-                      {
-                        this.state.filterStatus !== 2
-                          ? <StyledThumbDownFilter onClick={this.onThumbFilterClick}>
-                            <ThumbsupSIcon />
-                          </StyledThumbDownFilter>
-                          : <StyledThumbDownNotSelectedFilter>
-                            <ThumbsupSIcon />
-                          </StyledThumbDownNotSelectedFilter>
-                      }
-                    </StyledText>
-                  </StyledAdsSaveFiltered>
+            {
+              rows && (hasSavedEntries || hasLikedEntries || this.state.filterStatus !== 0)
+                ? <StyledAdsSaveFiltered>
+                  <StyledText>
+                    {
+                      this.state.filterStatus !== 0
+                        ? <StyledLink onClick={this.onAllFilterClick}>
+                          {
+                            getLocale('all')
+                          }
+                        </StyledLink>
+                        : <StyledNotSelectedLink>
+                          {
+                            getLocale('all')
+                          }
+                        </StyledNotSelectedLink>
+                    }
+                  </StyledText>
+                  <StyledSeparatorText>|</StyledSeparatorText>
+                  <StyledText>
+                    {
+                      this.state.filterStatus !== 1
+                        ? <StyledLink onClick={this.onSavedFilterClick}>
+                          {
+                            getLocale('saved')
+                          }
+                        </StyledLink>
+                        : <StyledNotSelectedLink>
+                          {
+                            getLocale('saved')
+                          }
+                        </StyledNotSelectedLink>
+                    }
+                  </StyledText>
+                  <StyledSeparatorText>|</StyledSeparatorText>
+                  <StyledText>
+                    {
+                      this.state.filterStatus !== 2
+                        ? <StyledThumbDownFilter onClick={this.onThumbFilterClick}>
+                          <ThumbsupSIcon />
+                        </StyledThumbDownFilter>
+                        : <StyledThumbDownNotSelectedFilter>
+                          <ThumbsupSIcon />
+                        </StyledThumbDownNotSelectedFilter>
+                    }
+                  </StyledText>
+                </StyledAdsSaveFiltered>
                 : null
-              }
+            }
           </StyledAdsHeaderWrapper>
           <TableAdsHistory
             rows={rows}
