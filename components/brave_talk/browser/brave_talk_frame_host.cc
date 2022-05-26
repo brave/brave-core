@@ -65,8 +65,9 @@ void BraveTalkFrameHost::BeginAdvertiseShareDisplayMedia(
     return;
   }
 
-  BraveTalkService::GetInstance()->GetDeviceID(contents_,
-  rfh->GetProcess()->GetID(), rfh->GetRoutingID(), std::move(callback));
+  BraveTalkService::GetInstance()->GetDeviceID(
+      contents_, rfh->GetProcess()->GetID(), rfh->GetRoutingID(),
+      std::move(callback));
 }
 
 }  // namespace brave_talk

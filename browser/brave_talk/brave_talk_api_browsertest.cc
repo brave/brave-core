@@ -144,7 +144,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
         content::ExecJs(requester_contents(), "requestCapture(" + frame + ")"));
     awaiter.Run();
 
-    ASSERT_TRUE(talk_service()->is_requesting_tab());
+    EXPECT_TRUE(talk_service()->is_requesting_tab());
     talk_service()->ShareTab(target_contents());
 
     auto result = content::EvalJs(requester_contents(), "deviceIdPromise");
@@ -192,10 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveTalkAPIBrowserTest,
                        CanRequestCaptureForSubframeOnDifferentOrigin) {
   SetRequesterFrameOrigins("talk.brave.com", "example.com");
 
-  // ASSERT_FALSE(true);
   auto device_id = GetDeviceID("frame");
-                         ASSERT_FALSE(true);
-
 
   // We should have a share request for the |target_contents()| now.
   EXPECT_TRUE(registry()->VerifyRequest(
