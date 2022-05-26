@@ -79,7 +79,8 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   auto* dns_observer_service =
       brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
           ->GetServiceForContext(context);
-  dns_observer_service->Observe(vpn_service);
+  if (dns_observer_service)
+    dns_observer_service->Observe(vpn_service);
 #endif
   return vpn_service;
 #elif BUILDFLAG(IS_ANDROID)

@@ -22,6 +22,13 @@ if (enable_brave_vpn) {
       "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.cc",
       "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.h",
     ]
+    brave_browser_brave_vpn_deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser:browser_process",
+      "//chrome/common:constants",
+      "//components/country_codes",
+      "//net",
+    ]
   }
   brave_browser_brave_vpn_deps += [
     "//base",

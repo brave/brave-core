@@ -62,8 +62,10 @@ BraveVpnDnsObserverService::BraveVpnDnsObserverService(PrefService* local_state)
 BraveVpnDnsObserverService::~BraveVpnDnsObserverService() = default;
 
 bool BraveVpnDnsObserverService::ShouldAllowExternalChanges() const {
+#if !defined(OFFICIAL_BUILD)
   if (allow_changes_for_testing_.has_value())
     return allow_changes_for_testing_.value();
+#endif
   auto* browser = chrome::FindLastActive();
   return (chrome::ShowQuestionMessageBoxSync(
               browser ? browser->window()->GetNativeWindow()
