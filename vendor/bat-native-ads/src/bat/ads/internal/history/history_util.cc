@@ -19,7 +19,7 @@ HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
                                  const std::string& description) {
   HistoryItemInfo history_item;
 
-  history_item.time = base::Time::Now();
+  history_item.created_at = base::Time::Now();
 
   history_item.ad_content.type = ad.type;
   history_item.ad_content.placement_id = ad.placement_id;

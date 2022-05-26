@@ -48,7 +48,7 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
 }
 
 TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
-       AllowAdIfFrequencyCapIsDisabled) {
+       AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_with_valid_internet_connection"] = "false";

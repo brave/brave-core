@@ -30,8 +30,8 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, AllowAd) {
   creative_ad.segment = kSegment;
 
   // Act
-  MarkedToNoLongerReceiveExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  MarkedToNoLongerReceiveExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -46,8 +46,8 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
                                 CategoryContentOptActionType::kNone);
 
   // Act
-  MarkedToNoLongerReceiveExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  MarkedToNoLongerReceiveExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

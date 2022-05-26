@@ -28,11 +28,6 @@ base::Time TimeFromString(const std::string& time_string, const bool is_local) {
   return time;
 }
 
-double TimestampFromString(const std::string& time_string,
-                           const bool is_local) {
-  return TimeFromString(time_string, is_local).ToDoubleT();
-}
-
 base::Time TimestampToTime(const double timestamp) {
   return base::Time::FromDoubleT(timestamp);
 }
@@ -45,10 +40,6 @@ base::Time MaxTime() {
   return TimestampToTime(std::numeric_limits<double>::max());
 }
 
-double DistantPastAsTimestamp() {
-  return DistantPast().ToDoubleT();
-}
-
 base::Time DistantPast() {
   return base::Time();
 }
@@ -57,20 +48,12 @@ std::string DistantPastAsISO8601() {
   return base::TimeToISO8601(DistantPast());
 }
 
-double NowAsTimestamp() {
-  return Now().ToDoubleT();
-}
-
 base::Time Now() {
   return base::Time::Now();
 }
 
 std::string NowAsISO8601() {
   return base::TimeToISO8601(Now());
-}
-
-double DistantFutureAsTimestamp() {
-  return DistantFuture().ToDoubleT();
 }
 
 base::Time DistantFuture() {

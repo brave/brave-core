@@ -62,7 +62,7 @@ mojom::SearchResultAdPtr BuildAdWithConversion(
   ad_mojom->conversion->advertiser_public_key =
       "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
   ad_mojom->conversion->observation_window = 3;
-  ad_mojom->conversion->expire_at = DistantFutureAsTimestamp();
+  ad_mojom->conversion->expire_at = DistantFuture();
 
   return ad_mojom;
 }

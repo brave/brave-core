@@ -5,7 +5,8 @@
 
 #include "bat/ads/internal/base/time_constraint_util.h"
 
-#include "base/check.h"
+#include <algorithm>
+
 #include "base/time/time.h"
 
 namespace ads {
@@ -14,15 +15,11 @@ bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     const base::TimeDelta time_constraint,
     const int cap) {
-  int count = 0;
-
-  const base::Time now = base::Time::Now();
-
-  for (const auto& time : history) {
-    if (now - time < time_constraint) {
-      count++;
-    }
-  }
+  const int count =
+      std::count_if(history.cbegin(), history.cend(),
+                    [time_constraint](const base::Time created_at) {
+                      return base::Time::Now() - created_at < time_constraint;
+                    });
 
   if (count >= cap) {
     return false;

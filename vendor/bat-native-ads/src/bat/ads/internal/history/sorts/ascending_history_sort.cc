@@ -21,7 +21,7 @@ base::circular_deque<HistoryItemInfo> AscendingHistorySort::Apply(
 
   std::sort(sorted_history.begin(), sorted_history.end(),
             [](const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
-              return lhs.time < rhs.time;
+              return lhs.created_at < rhs.created_at;
             });
 
   return sorted_history;

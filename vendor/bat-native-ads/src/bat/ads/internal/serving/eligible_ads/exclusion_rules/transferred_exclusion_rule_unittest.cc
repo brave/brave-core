@@ -44,8 +44,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   const AdEventList ad_events;
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -85,8 +85,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -140,8 +140,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -177,8 +177,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -214,8 +214,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -251,8 +251,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   task_environment_.FastForwardBy(base::Hours(48));
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -292,8 +292,8 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   task_environment_.FastForwardBy(base::Hours(48));
 
   // Act
-  TransferredExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
+  TransferredExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

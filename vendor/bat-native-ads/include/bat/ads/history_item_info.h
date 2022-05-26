@@ -26,7 +26,7 @@ struct ADS_EXPORT HistoryItemInfo final {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  base::Time time;
+  base::Time created_at;
   AdContentInfo ad_content;
   CategoryContentInfo category_content;
 };

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/export.h"
@@ -30,12 +31,12 @@ struct ADS_EXPORT TransactionInfo final {
   bool IsValid() const;
 
   std::string id;
-  double created_at = 0.0;
+  base::Time created_at;
   std::string creative_instance_id;
   double value = 0.0;
   AdType ad_type = AdType::kUndefined;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
-  double reconciled_at = 0.0;
+  base::Time reconciled_at;
 
   void ToDictionary(base::Value* dictionary) const;
   void FromDictionary(base::DictionaryValue* dictionary);

@@ -6,13 +6,14 @@
 #include "bat/ads/internal/covariates/log_entries/time_since_last_user_activity_event.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
 
 namespace ads {
 
 namespace {
-constexpr int kTimeWindowInMinutes = 30;
+constexpr base::TimeDelta kTimeWindow = base::Minutes(30);
 }  // namespace
 
 TimeSinceLastUserActivityEvent::TimeSinceLastUserActivityEvent(
@@ -34,8 +35,7 @@ TimeSinceLastUserActivityEvent::GetCovariateType() const {
 
 std::string TimeSinceLastUserActivityEvent::GetValue() const {
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::Minutes(kTimeWindowInMinutes));
+      UserActivity::Get()->GetHistoryForTimeWindow(kTimeWindow);
 
   return base::NumberToString(
       GetTimeSinceLastUserActivityEvent(events, event_type_));

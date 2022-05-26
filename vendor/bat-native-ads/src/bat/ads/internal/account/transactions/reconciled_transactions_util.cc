@@ -21,7 +21,7 @@ bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
                                            const base::Time to_time) {
   const int count =
       std::count_if(transactions.cbegin(), transactions.cend(),
-                    [&from_time, &to_time](const TransactionInfo& transaction) {
+                    [from_time, to_time](const TransactionInfo& transaction) {
                       return DidReconcileTransactionWithinDateRange(
                           transaction, from_time, to_time);
                     });
@@ -36,10 +36,7 @@ bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
 }  // namespace
 
 bool DidReconcileTransaction(const TransactionInfo& transaction) {
-  const base::Time reconciled_at =
-      base::Time::FromDoubleT(transaction.reconciled_at);
-
-  return !reconciled_at.is_null();
+  return !transaction.reconciled_at.is_null();
 }
 
 bool DidReconcileTransactionsLastMonth(const TransactionList& transactions) {
@@ -65,9 +62,8 @@ bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
     return false;
   }
 
-  const base::Time reconciled_at =
-      base::Time::FromDoubleT(transaction.reconciled_at);
-  if (reconciled_at < from_time || reconciled_at > to_time) {
+  if (transaction.reconciled_at < from_time ||
+      transaction.reconciled_at > to_time) {
     return false;
   }
 

@@ -31,8 +31,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfDaypartsIsEmpty) {
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -55,8 +55,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfRightDayAndHours) {
   creative_ad.dayparts.push_back(daypart_info);
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -78,8 +78,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowForMultipleDays) {
   creative_ad.dayparts.push_back(daypart_info);
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -117,8 +117,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, AllowIfOneMatchExists) {
   creative_ad.dayparts.push_back(daypart_info_3);
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -156,8 +156,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfNoMatches) {
   creative_ad.dayparts.push_back(daypart_info_3);
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -182,8 +182,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongDay) {
   creative_ad.dayparts.push_back(daypart_info);
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -207,8 +207,8 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
   creative_ad.dayparts.push_back(daypart_info);
 
   // Act
-  DaypartExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DaypartExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

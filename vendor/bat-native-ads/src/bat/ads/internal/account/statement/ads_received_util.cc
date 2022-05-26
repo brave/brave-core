@@ -14,15 +14,12 @@ namespace ads {
 int GetAdsReceivedForDateRange(const TransactionList& transactions,
                                const base::Time from_time,
                                const base::Time to_time) {
-  const double from_timestamp = from_time.ToDoubleT();
-  const double to_timestamp = to_time.ToDoubleT();
-
   return std::count_if(
       transactions.cbegin(), transactions.cend(),
-      [from_timestamp, to_timestamp](const TransactionInfo& transaction) {
+      [from_time, to_time](const TransactionInfo& transaction) {
         return transaction.confirmation_type == ConfirmationType::kViewed &&
-               transaction.created_at >= from_timestamp &&
-               transaction.created_at <= to_timestamp;
+               transaction.created_at >= from_time &&
+               transaction.created_at <= to_time;
       });
 }
 

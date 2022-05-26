@@ -28,13 +28,13 @@ TransactionInfo BuildTransaction(const double value,
   TransactionInfo transaction;
 
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
-  transaction.created_at = NowAsTimestamp();
+  transaction.created_at = Now();
   transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
   transaction.ad_type = AdType::kAdNotification;
   transaction.confirmation_type = confirmation_type;
-  transaction.reconciled_at = reconciled_at.ToDoubleT();
+  transaction.reconciled_at = reconciled_at;
 
   return transaction;
 }

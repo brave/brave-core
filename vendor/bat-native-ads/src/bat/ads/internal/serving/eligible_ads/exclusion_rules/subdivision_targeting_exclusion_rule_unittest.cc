@@ -25,13 +25,13 @@ class BatAdsSubdivisionTargetingExclusionRuleTest : public UnitTestBase {
   BatAdsSubdivisionTargetingExclusionRuleTest()
       : subdivision_targeting_(
             std::make_unique<geographic::SubdivisionTargeting>()),
-        frequency_cap_(std::make_unique<SubdivisionTargetingExclusionRule>(
+        exclusion_rule_(std::make_unique<SubdivisionTargetingExclusionRule>(
             subdivision_targeting_.get())) {}
 
   ~BatAdsSubdivisionTargetingExclusionRuleTest() override = default;
 
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<SubdivisionTargetingExclusionRule> frequency_cap_;
+  std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;
 };
 
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
@@ -47,7 +47,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US-FL"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -63,7 +63,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US-FL", "US-CA"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -83,7 +83,7 @@ TEST_F(
   creative_ad.geo_targets = {"US"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -99,7 +99,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US-FL"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -116,7 +116,7 @@ TEST_F(
   creative_ad.geo_targets = {"US"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -135,7 +135,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US-FL"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -151,7 +151,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US-XX"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -168,7 +168,7 @@ TEST_F(
   creative_ad.geo_targets = {"XX-DEV"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -184,7 +184,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"XX"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -201,7 +201,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US-FL"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -218,7 +218,7 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {"US"};
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(creative_ad);
+  const bool should_exclude = exclusion_rule_->ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
