@@ -2366,6 +2366,16 @@ void AdsServiceImpl::SetUint64Pref(const std::string& path,
   OnPrefChanged(path);
 }
 
+base::Time AdsServiceImpl::GetTimePref(const std::string& path) const {
+  return profile_->GetPrefs()->GetTime(path);
+}
+
+void AdsServiceImpl::SetTimePref(const std::string& path,
+                                 const base::Time value) {
+  profile_->GetPrefs()->SetTime(path, value);
+  OnPrefChanged(path);
+}
+
 void AdsServiceImpl::ClearPref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
   OnPrefChanged(path);

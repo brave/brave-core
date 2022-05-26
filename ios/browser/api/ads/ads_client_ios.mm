@@ -179,6 +179,15 @@ uint64_t AdsClientIOS::GetUint64Pref(const std::string& path) const {
   return [bridge_ getUint64Pref:path];
 }
 
+void AdsClientIOS::SetTimePref(const std::string& path,
+                               const base::Time value) {
+  [bridge_ setTimePref:path value:value];
+}
+
+base::Time AdsClientIOS::GetTimePref(const std::string& path) const {
+  return [bridge_ getTimePref:path];
+}
+
 void AdsClientIOS::ClearPref(const std::string& path) {
   [bridge_ clearPref:path];
 }

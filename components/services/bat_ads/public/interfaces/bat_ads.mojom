@@ -49,6 +49,8 @@ interface BatAdsClient {
   [Sync]
   GetUint64Pref(string path) => (uint64 value);
   [Sync]
+  GetTimePref(string path) => (mojo_base.mojom.Time value);
+  [Sync]
   HasPrefPath(string path) => (bool value);
 
   ShowNotification(string json);
@@ -74,6 +76,7 @@ interface BatAdsClient {
   SetStringPref(string path, string value);
   SetInt64Pref(string path, int64 value);
   SetUint64Pref(string path, uint64 value);
+  SetTimePref(string path, mojo_base.mojom.Time value);
   ClearPref(string path);
 };
 

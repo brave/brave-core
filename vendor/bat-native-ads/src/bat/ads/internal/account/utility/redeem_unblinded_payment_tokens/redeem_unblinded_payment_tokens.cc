@@ -159,8 +159,7 @@ void RedeemUnblindedPaymentTokens::OnFailedToRedeemUnblindedPaymentTokens() {
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
   const base::Time redeem_at = CalculateNextTokenRedemptionDate();
 
-  AdsClientHelper::Get()->SetDoublePref(prefs::kNextTokenRedemptionAt,
-                                        redeem_at.ToDoubleT());
+  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt, redeem_at);
 
   if (delegate_) {
     delegate_->OnDidScheduleNextUnblindedPaymentTokensRedemption(redeem_at);
@@ -193,8 +192,8 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
 }
 
 base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
-  const base::Time next_token_redemption_at = base::Time::FromDoubleT(
-      AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
+  const base::Time next_token_redemption_at =
+      AdsClientHelper::Get()->GetTimePref(prefs::kNextTokenRedemptionAt);
 
   const base::Time now = base::Time::Now();
 

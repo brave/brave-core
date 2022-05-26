@@ -12,6 +12,7 @@
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
+#include "base/time/time.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "url/gurl.h"
@@ -370,6 +371,16 @@ void AdsClientMojoBridge::SetUint64Pref(
     const std::string& path,
     const uint64_t value) {
   ads_client_->SetUint64Pref(path, value);
+}
+
+void AdsClientMojoBridge::GetTimePref(const std::string& path,
+                                      GetTimePrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetTimePref(path));
+}
+
+void AdsClientMojoBridge::SetTimePref(const std::string& path,
+                                      const base::Time value) {
+  ads_client_->SetTimePref(path, value);
 }
 
 void AdsClientMojoBridge::ClearPref(

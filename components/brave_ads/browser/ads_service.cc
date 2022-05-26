@@ -63,8 +63,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterStringPref(ads::prefs::kCatalogId, "");
   registry->RegisterIntegerPref(ads::prefs::kCatalogVersion, 0);
   registry->RegisterInt64Pref(ads::prefs::kCatalogPing, 0);
-  registry->RegisterDoublePref(ads::prefs::kCatalogLastUpdated,
-                               base::Time().ToDoubleT());
+  registry->RegisterTimePref(ads::prefs::kCatalogLastUpdated, base::Time());
 
   registry->RegisterIntegerPref(ads::prefs::kIssuerPing, 7200000);
 
@@ -72,8 +71,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
                                "");
 
-  registry->RegisterDoublePref(ads::prefs::kNextTokenRedemptionAt,
-                               base::Time::Now().ToDoubleT());
+  registry->RegisterTimePref(ads::prefs::kNextTokenRedemptionAt,
+                             base::Time::Now());
 
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
