@@ -36,9 +36,6 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 
-// Hooks
-import ProtectedRoute from '../components/shared/protected-routing/protected-route'
-
 export const Container = () => {
   // routing
   let history = useHistory()
@@ -128,15 +125,14 @@ export const Container = () => {
   }, [])
 
   // computed
-  const walletNotYetCreated = (!isWalletCreated || setupStillInProgress) && walletLocation !== WalletRoutes.Restore
-  const hideMainComponents =
-    (isWalletCreated && !setupStillInProgress) &&
-    !isWalletLocked &&
-    walletLocation !== WalletRoutes.Backup
+  const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
 
-  const walletUnlockNeeded = (isWalletCreated && !setupStillInProgress) && isWalletLocked &&
-    walletLocation !== WalletRoutes.Unlock &&
-    walletLocation !== WalletRoutes.Restore
+  const showBuySendSwapSidebar =
+    isWalletCreated &&
+    (
+      walletLocation.includes(WalletRoutes.Portfolio) ||
+      walletLocation.includes(WalletRoutes.Accounts)
+    )
 
   // effects
   React.useEffect(() => {
@@ -150,13 +146,13 @@ export const Container = () => {
     // store the last url before wallet lock
     // so that we can return to that page after unlock
     if (
-      !walletLocation.includes(WalletRoutes.Onboarding) &&
-      walletLocation !== WalletRoutes.Unlock &&
-      walletLocation !== WalletRoutes.Restore // can be accessed from unlock screen
+      walletLocation.includes(WalletRoutes.Backup) ||
+      walletLocation.includes(WalletRoutes.Accounts) ||
+      walletLocation.includes(WalletRoutes.Portfolio)
     ) {
       setSessionRoute(walletLocation)
     }
-  }, [walletLocation])
+  }, [walletLocation, isWalletCreated])
 
   // render
   if (!hasInitialized) {
@@ -173,80 +169,78 @@ export const Container = () => {
       <WalletSubViewLayout>
 
         <Switch>
-          <ProtectedRoute
-            path={WalletRoutes.Onboarding}
-            requirement={setupStillInProgress || walletNotYetCreated}
-            redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Portfolio}
-          >
-            <OnboardingRoutes />
-          </ProtectedRoute>
 
-          <ProtectedRoute
-            path={WalletRoutes.Restore}
-            requirement={isWalletLocked}
-            redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Unlock}
-            exact={true}
-          >
-            <OnboardingWrapper>
-              <OnboardingRestore />
-            </OnboardingWrapper>
-          </ProtectedRoute>
+          {walletNotYetCreated
+            ? <OnboardingRoutes />
 
-          <ProtectedRoute
-            path={WalletRoutes.Unlock}
-            redirectRoute={sessionRoute as WalletRoutes || WalletRoutes.Portfolio}
-            requirement={isWalletLocked && !walletNotYetCreated}
-            exact={true}
-          >
-            <OnboardingWrapper>
-              <LockScreen
-                value={inputValue}
-                onSubmit={unlockWallet}
-                disabled={inputValue === ''}
-                onPasswordChanged={handlePasswordChanged}
-                hasPasswordError={hasIncorrectPassword}
-                onShowRestore={onToggleShowRestore}
-              />
-            </OnboardingWrapper>
-          </ProtectedRoute>
+            // Post-onboarding flows
+            : <>
 
-          {/* If wallet is not yet created will Route to Onboarding */}
-          {walletNotYetCreated && <Redirect to={WalletRoutes.Onboarding} />}
+              {isWalletLocked &&
+                <Switch>
+                  <Route path={WalletRoutes.Unlock} exact={true}>
+                    <OnboardingWrapper>
+                      <LockScreen
+                        value={inputValue}
+                        onSubmit={unlockWallet}
+                        disabled={inputValue === ''}
+                        onPasswordChanged={handlePasswordChanged}
+                        hasPasswordError={hasIncorrectPassword}
+                        onShowRestore={onToggleShowRestore}
+                      />
+                    </OnboardingWrapper>
+                  </Route>
 
-          {/* Redirect to unlock screen if needed */}
-          {walletUnlockNeeded && <Redirect to={WalletRoutes.Unlock} />}
+                  <Route path={WalletRoutes.Restore} exact={true}>
+                    <OnboardingWrapper>
+                      <OnboardingRestore />
+                    </OnboardingWrapper>
+                  </Route>
 
-          <Route path={WalletRoutes.Backup} exact={true}>
-            <OnboardingWrapper>
-              <BackupWallet
-                isOnboarding={false}
-                onCancel={onHideBackup}
-              />
-            </OnboardingWrapper>
-          </Route>
+                  <Redirect to={WalletRoutes.Unlock} />
+                </Switch>
+              }
 
-          {/* Default */}
-          <ProtectedRoute
-            path={WalletRoutes.CryptoPage}
-            requirement={!walletUnlockNeeded}
-            redirectRoute={WalletRoutes.Unlock}
-          >
-            <CryptoView
-              needsBackup={!isWalletBackedUp}
-              onUpdateAccountName={onUpdateAccountName}
-              onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-              onViewPrivateKey={onViewPrivateKey}
-              defaultEthereumWallet={defaultEthereumWallet}
-              defaultSolanaWallet={defaultSolanaWallet}
-              onOpenWalletSettings={onOpenWalletSettings}
-              isMetaMaskInstalled={isMetaMaskInstalled}
-            />
-          </ProtectedRoute>
+              {!isWalletLocked &&
+                <Switch>
+                  <Route path={WalletRoutes.Backup} exact={true}>
+                    <OnboardingWrapper>
+                      <BackupWallet
+                        isOnboarding={false}
+                        onCancel={onHideBackup}
+                      />
+                    </OnboardingWrapper>
+                  </Route>
 
-          <Redirect to={WalletRoutes.Portfolio} />
+                  <Route path={WalletRoutes.Restore} exact={true}>
+                    <OnboardingWrapper>
+                      <OnboardingRestore />
+                    </OnboardingWrapper>
+                  </Route>
+
+                  <Route path={WalletRoutes.CryptoPage}>
+                    <CryptoView
+                      needsBackup={!isWalletBackedUp}
+                      onUpdateAccountName={onUpdateAccountName}
+                      onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                      onViewPrivateKey={onViewPrivateKey}
+                      defaultEthereumWallet={defaultEthereumWallet}
+                      defaultSolanaWallet={defaultSolanaWallet}
+                      onOpenWalletSettings={onOpenWalletSettings}
+                      isMetaMaskInstalled={isMetaMaskInstalled}
+                      sessionRoute={sessionRoute}
+                    />
+                  </Route>
+
+                </Switch>
+              }
+
+            </>
+          }
         </Switch>
       </WalletSubViewLayout>
-      {hideMainComponents &&
+
+      {showBuySendSwapSidebar &&
         <WalletWidgetStandIn>
           <BuySendSwap
             selectedTab={selectedWidgetTab}

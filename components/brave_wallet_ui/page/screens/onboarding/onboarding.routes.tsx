@@ -19,14 +19,14 @@ import { OnboardingRecoveryPhraseExplainer } from './explain-recovery-phrase/exp
 import { OnboardingVerifyRecoveryPhrase } from './verify-recovery-phrase/verify-recovery-phrase'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/import-or-restore-wallet'
+import { OnboardingSuccess } from './onboarding-success/onboarding-success'
+import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
 
 // actions
 import * as WalletPageActions from '../../actions/wallet_page_actions'
-import { OnboardingSuccess } from './onboarding-success/onboarding-success'
-import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 export const OnboardingRoutes = () => {
   // routing
@@ -86,8 +86,12 @@ export const OnboardingRoutes = () => {
         <OnboardingSuccess />
       </Route>
 
-      <Route path={WalletRoutes.Onboarding} exact>
+      <Route path={WalletRoutes.OnboardingWelcome} exact>
         <OnboardingWelcome />
+      </Route>
+
+      <Route path={WalletRoutes.Onboarding} exact>
+        <Redirect to={WalletRoutes.OnboardingWelcome} />
       </Route>
 
       <Redirect to={WalletRoutes.Onboarding} />

@@ -34,7 +34,7 @@ export const Onboarding = () => {
 
   // methods
   const onSkipBackup = React.useCallback(() => {
-    dispatch(WalletPageActions.walletSetupComplete())
+    dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.Portfolio)
   }, [])
 

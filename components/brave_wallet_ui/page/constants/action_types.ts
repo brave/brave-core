@@ -54,6 +54,7 @@ export type RestoreWalletPayloadType = {
   mnemonic: string
   password: string
   isLegacy: boolean
+  completeWalletSetup?: boolean
 }
 
 export type WalletCreatedPayloadType = {

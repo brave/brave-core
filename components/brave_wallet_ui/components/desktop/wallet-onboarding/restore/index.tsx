@@ -104,7 +104,8 @@ export const OnboardingRestore = () => {
       // 12, 15, 18 or 21 long and has a space at the end.
       mnemonic: recoveryPhrase.trimEnd(),
       password,
-      isLegacy: isLegacyWallet
+      isLegacy: isLegacyWallet,
+      completeWalletSetup: true
     }))
     history.push(WalletRoutes.Portfolio)
   }, [recoveryPhrase, password, isLegacyWallet])
