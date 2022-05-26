@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.vpn.activities.BraveVpnParentActivity;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
+import org.chromium.ui.widget.Toast;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
@@ -86,43 +87,49 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                         ? InAppPurchaseWrapper.RELEASE_MONTHLY_SUBSCRIPTION
                         : InAppPurchaseWrapper.NIGHTLY_MONTHLY_SUBSCRIPTION);
 
-        mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
-        mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InAppPurchaseWrapper.getInstance().purchase(
-                        BraveVpnPlansActivity.this, monthlySkuDetails);
-            }
-        });
-
-        TextView monthlySubscriptionAmountText =
-                findViewById(R.id.monthly_subscription_amount_text);
-        monthlySubscriptionAmountText.setText(
-                String.format(getResources().getString(R.string.monthly_subscription_amount),
-                        monthlySkuDetails.getPrice()));
-
         SkuDetails yearlySkuDetails = InAppPurchaseWrapper.getInstance().getSkuDetails(
                 getPackageName().equals(BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
                         ? InAppPurchaseWrapper.RELEASE_YEARLY_SUBSCRIPTION
                         : InAppPurchaseWrapper.NIGHTLY_YEARLY_SUBSCRIPTION);
 
-        mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
-        mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InAppPurchaseWrapper.getInstance().purchase(
-                        BraveVpnPlansActivity.this, yearlySkuDetails);
-            }
-        });
+        if (monthlySkuDetails != null && yearlySkuDetails != null) {
+            mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+            mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    InAppPurchaseWrapper.getInstance().purchase(
+                            BraveVpnPlansActivity.this, monthlySkuDetails);
+                }
+            });
 
-        TextView yearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
-        yearlySubscriptionAmountText.setText(
-                String.format(getResources().getString(R.string.yearly_subscription_amount),
-                        yearlySkuDetails.getPrice()));
-        BraveVpnUtils.showProgressDialog(
-                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
-        mIsVerification = true;
-        verifySubscription();
+            TextView monthlySubscriptionAmountText =
+                    findViewById(R.id.monthly_subscription_amount_text);
+            monthlySubscriptionAmountText.setText(
+                    String.format(getResources().getString(R.string.monthly_subscription_amount),
+                            monthlySkuDetails.getPrice()));
+
+            mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+            mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    InAppPurchaseWrapper.getInstance().purchase(
+                            BraveVpnPlansActivity.this, yearlySkuDetails);
+                }
+            });
+
+            TextView yearlySubscriptionAmountText =
+                    findViewById(R.id.yearly_subscription_amount_text);
+            yearlySubscriptionAmountText.setText(
+                    String.format(getResources().getString(R.string.yearly_subscription_amount),
+                            yearlySkuDetails.getPrice()));
+            BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+                    getResources().getString(R.string.vpn_connect_text));
+            mIsVerification = true;
+            verifySubscription();
+        } else {
+            Toast.makeText(BraveVpnPlansActivity.this, R.string.purchased_failed, Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
