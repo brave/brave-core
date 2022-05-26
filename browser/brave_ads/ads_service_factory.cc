@@ -8,11 +8,11 @@
 #include <memory>
 
 #include "base/threading/sequence_bound.h"
-#include "brave/browser/brave_ads/ads_service_impl.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
@@ -86,13 +86,18 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
 
-  std::unique_ptr<AdsServiceImpl> ads_service(
-      new AdsServiceImpl(profile,
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
+          profile);
+
+  std::unique_ptr<AdsServiceImpl> ads_service =
+      std::make_unique<AdsServiceImpl>(
+          profile,
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-                         brave_adaptive_captcha_service,
-                         std::make_unique<AdsTooltipsDelegateImpl>(profile),
+          brave_adaptive_captcha_service,
+          std::make_unique<AdsTooltipsDelegateImpl>(profile),
 #endif
-                         history_service, ad_notification_data_store));
+          history_service, rewards_service, ad_notification_data_store);
   return ads_service.release();
 }
 

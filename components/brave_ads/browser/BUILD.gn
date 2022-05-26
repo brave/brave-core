@@ -35,7 +35,6 @@ source_set("browser") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",
-    "//content/public/browser",
     "//sql",
     "//url",
   ]
@@ -49,6 +48,42 @@ source_set("browser") {
     sources += [ "ads_tooltips_delegate.h" ]
     deps += [ "//brave/components/brave_adaptive_captcha" ]
   }
+
+  # TODO(https://github.com/brave/brave-browser/issues/17628)
+  check_includes = false
+
+  sources += [
+    "ads_service_impl.cc",
+    "ads_service_impl.h",
+    "service_sandbox_type.h",
+  ]
+
+  deps += [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/profiles:util",
+    "//brave/common",
+    "//brave/components/brave_federated",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_today/common",
+    "//brave/components/rpill/common",
+    "//brave/components/services/bat_ads/public/cpp",
+    "//chrome/browser/notifications",
+    "//chrome/browser/profiles:profile",
+    "//components/history/core/browser",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//ui/base",
+    "//ui/message_center/public/cpp",
+  ]
+
+  public_deps += [
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//brave/vendor/bat-native-ledger",
+    "//services/network/public/mojom",
+  ]
 }
 
 source_set("test_support") {
