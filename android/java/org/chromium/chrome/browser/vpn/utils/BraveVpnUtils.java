@@ -13,6 +13,7 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -36,6 +37,7 @@ import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
+import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 
 import java.util.ArrayList;
@@ -53,16 +55,11 @@ public class BraveVpnUtils {
     public static String selectedServerRegion;
     private static ProgressDialog mProgressDialog;
 
-    public enum AlwaysOnVpnType {
-        BRAVE_VPN,
-        OTHER_VPN,
-        NONE;
-    }
-
     public static boolean isBraveVpnFeatureEnable() {
-        if (ContextUtils.getApplicationContext().getPackageName().equals(
-                    BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
-                || BraveVpnPrefUtils.isBraveVpnFeatureEnabled()) {
+        if ((ContextUtils.getApplicationContext().getPackageName().equals(
+                     BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                    || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())
+                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             return true;
         }
         return false;
