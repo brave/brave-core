@@ -394,7 +394,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     #if WALLET_DAPPS_ENABLED
     tabManager.makeWalletProvider = { [weak self] tab in
       guard let self = self,
-            let provider = self.braveCore.walletProvider(with: self, isPrivateBrowsing: tab.isPrivate) else {
+            let provider = self.braveCore.walletProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
         return nil
       }
       return (provider, js: self.braveCore.walletProviderJS)
@@ -2311,6 +2311,25 @@ extension BrowserViewController: TabDelegate {
       PlaylistHelper.stopPlayback(tab: $0)
     })
   }
+  
+  func showWalletNotification(_ tab: Tab) {
+    // only display notification when BVC is front and center
+    guard presentedViewController == nil,
+          Preferences.Wallet.displayWeb3Notifications.value else {
+      return
+    }
+    let walletNotificaton = WalletNotification(priority: .low) { [weak self] action in
+      if action == .connectWallet {
+        self?.presentWalletPanel(tab: tab)
+      }
+    }
+    notificationsPresenter.display(notification: walletNotificaton, from: self)
+  }
+
+  func updateURLBarWalletButton() {
+    topToolbar.locationView.walletButton.buttonState =
+    tabManager.selectedTab?.isWalletIconVisible == true ? .active : .inactive
+  }
 }
 
 extension BrowserViewController: SearchViewControllerDelegate {
@@ -2465,7 +2484,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     updateInContentHomePanel(selected?.url as URL?)
-        updateURLBarWalletButton()
+    updateURLBarWalletButton()
   }
 
   func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
@@ -2477,6 +2496,7 @@ extension BrowserViewController: TabManagerDelegate {
       updateToolbarUsingTabManager(tabManager)
     }
     tab.tabDelegate = self
+    tab.walletKeyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate)
     updateTabsBarVisibility()
   }
 
