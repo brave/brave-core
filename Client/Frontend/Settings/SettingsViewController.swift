@@ -442,7 +442,7 @@ class SettingsViewController: TableViewController {
               let controller = PageZoomSettingsController()
               self?.navigationController?.pushViewController(controller, animated: true)
             },
-            image: UIImage(named: "settings-page-zoom") ?? UIImage(),
+            image: UIImage(named: "settings-page-zoom")?.template ?? UIImage(),
             accessory: .disclosureIndicator,
             cellClass: MultilineValue1Cell.self)
       )
