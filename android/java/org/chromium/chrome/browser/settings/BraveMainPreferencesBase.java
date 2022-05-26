@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -176,7 +177,8 @@ public class BraveMainPreferencesBase
         int firstSectionOrder = 0;
 
         if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                && BraveVpnUtils.isBraveVpnFeatureEnable()) {
+                && BraveVpnUtils.isBraveVpnFeatureEnable()
+                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
             VpnCalloutPreference vpnCalloutPreference = new VpnCalloutPreference(getActivity());
             vpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
             vpnCalloutPreference.setOrder(firstSectionOrder);
@@ -194,7 +196,8 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()
+                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
             findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN);
