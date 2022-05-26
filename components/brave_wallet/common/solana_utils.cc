@@ -28,10 +28,45 @@ void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16) {
   }
 }
 
-bool Base58Decode(const std::string& str, std::vector<uint8_t>* ret, int len) {
+absl::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
+    const std::vector<uint8_t>& bytes,
+    size_t start_index) {
+  uint32_t val = 0;
+  for (size_t i = 0; i + start_index < bytes.size(); ++i) {
+    if (i == 3)  // TooLong error.
+      return absl::nullopt;
+    uint32_t elem = bytes[i + start_index];
+    uint32_t elem_val = elem & 0x7f;
+    uint32_t elem_done = (elem & 0x80) == 0;
+
+    if (i == 2 && !elem_done)  // ByteThreeContinues error.
+      return absl::nullopt;
+
+    // Alias error.
+    if (elem == 0 && i != 0)
+      return absl::nullopt;
+
+    val |= (elem_val) << (i * 7);
+
+    // Overflow error.
+    if (val > UINT16_MAX)
+      return absl::nullopt;
+
+    if (elem_done)
+      return std::tuple<uint16_t, size_t>(val, i + 1);
+  }
+
+  return absl::nullopt;
+}
+
+bool Base58Decode(const std::string& str,
+                  std::vector<uint8_t>* ret,
+                  int len,
+                  bool strict) {
   DCHECK(ret);
   ret->clear();
-  return DecodeBase58(str, *ret, len) && static_cast<int>(ret->size()) == len;
+  return DecodeBase58(str, *ret, len) &&
+         (!strict || static_cast<int>(ret->size()) == len);
 }
 
 std::string Base58Encode(const std::vector<uint8_t>& bytes) {

@@ -36,6 +36,10 @@ class SolanaInstruction {
 
   bool Serialize(const std::vector<SolanaAccountMeta>& message_account_metas,
                  std::vector<uint8_t>* bytes) const;
+  static absl::optional<SolanaInstruction> Deserialize(
+      const std::vector<SolanaAccountMeta>& message_account_metas,
+      const std::vector<uint8_t>& bytes,
+      size_t* bytes_index);
 
   const std::vector<SolanaAccountMeta>& GetAccounts() const {
     return accounts_;
