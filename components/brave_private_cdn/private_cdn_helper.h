@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_
 
-#include <string>
-
 #include "base/memory/singleton.h"
 #include "base/strings/string_piece.h"
 
@@ -18,9 +16,7 @@ class PrivateCdnHelper final {
   PrivateCdnHelper(const PrivateCdnHelper&) = delete;
   PrivateCdnHelper& operator=(const PrivateCdnHelper&) = delete;
 
-  static PrivateCdnHelper* GetInstance() {
-    return base::Singleton<PrivateCdnHelper>::get();
-  }
+  static PrivateCdnHelper* GetInstance();
 
   bool RemovePadding(base::StringPiece* padded_string) const;
 

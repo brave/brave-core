@@ -9,6 +9,11 @@
 
 namespace brave {
 
+// static
+PrivateCdnHelper* PrivateCdnHelper::GetInstance() {
+  return base::Singleton<PrivateCdnHelper>::get();
+}
+
 bool PrivateCdnHelper::RemovePadding(base::StringPiece* padded_string) const {
   if (!padded_string) {
     return false;

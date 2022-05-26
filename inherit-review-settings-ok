@@ -1,0 +1,2 @@
+This file allows src/PRESUBMIT.py to be executed on brave/* files.
+See presubmit_support.py for details.

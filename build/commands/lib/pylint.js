@@ -5,6 +5,7 @@
 
 const path = require('path')
 const fs = require('fs')
+const os = require('os')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const {EOL} = require('os');
@@ -65,14 +66,14 @@ const getAllFiles = (check_folders) => {
   return files.split('\n')
 }
 
-const getChangedFiles = (base_branch, check_folders) => {
-  if (!base_branch) {
+const getChangedFiles = (options, check_folders) => {
+  if (options.all) {
     return getAllFiles(check_folders)
   }
 
-  const merge_base = runGit(['merge-base', 'origin/' + base_branch, 'HEAD'])
+  const merge_base = runGit(['merge-base', options.base, 'HEAD'])
   if (!merge_base) {
-    console.error('Could not determine merge-base for branch ' + base_branch)
+    console.error('Could not determine merge-base for branch ' + options.base)
     process.exit(1)
   }
   const changed_files = runGit(['diff', '--name-only', '--diff-filter', 'drt',
@@ -114,26 +115,31 @@ const runPylintLoop = (options, args, paths, report_file) => {
       result &= doPylint(loop_args)
       currentLen = 0
       loop_args = [...args]
-    } 
+    }
     loop_args.push(pyPath)
     currentLen += pyPath.length
   }
 
   if (currentLen > 0) {
-    result &= doPylint(loop_args) 
+    result &= doPylint(loop_args)
   }
 
   return result
 }
 
 const pylint = (options = {}) => {
+  if (!options.base) {
+    options.base = 'origin/master'
+  } else if (!options.base.startsWith('origin/')) {
+    options.base = 'origin/' + options.base
+  }
   const check_folders = ['build', 'components', 'installer', 'script', 'tools']
   const report_file = 'pylint-report.txt'
 
   const description = getDescription(options.base, check_folders)
 
   // Get changed or all python files
-  const paths = getChangedFiles(options.base, check_folders)
+  const paths = getChangedFiles(options, check_folders)
   if (!paths.length) {
     console.log('No ' + description)
     if (options.report) {
@@ -142,8 +148,14 @@ const pylint = (options = {}) => {
     return
   }
 
-  // Prepare pylint args
-  let args = ['-j0', '-rn']
+  var j_value = 0
+  if (process.platform === 'win32') {
+    // Windows can't handle unrestricted -j0 value, limit it to sane value.
+    j_value = Math.min(32, os.cpus().length)
+  }
+
+  // Prepare pylint args.
+  let args = [ '-j' + j_value.toString(), '-rn']
   if (options.report) {
     args.push('-fparseable')
     // Clean previous report as we will be appending to it

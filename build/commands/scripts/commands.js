@@ -250,14 +250,26 @@ program
   .action(util.lint)
 
 program
+  .command('presubmit')
+  .option('--base <base branch>', 'set the destination branch for the PR')
+  .option('--all', 'run presubmit on all files')
+  .action(util.presubmit)
+
+program
   .command('pylint')
   .option('--base <base_branch>', 'only analyse files changed relative to base_branch')
+  .option('--all', 'run pylint on all files')
   .option('--report', 'produce a parseable report file')
   .action(pylint)
 
 program
   .command('format')
+  .option('--base <base branch>', 'set the destination branch for the PR')
   .option('--full', 'format all lines in changed files instead of only the changed lines')
+  .option('--js', 'format javascript code with clang-format')
+  .option('--rust', 'enables formatting of Rust file types using rustfmt')
+  .option('--swift',
+    'enables formatting of Swift file types using swift-format')
   .action(util.format)
 
 program

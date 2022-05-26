@@ -56,6 +56,7 @@
 
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(Profile* profile) {
+  // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Added 02/2020.
   // Must be called before ChromiumImpl because it's migrating a Chromium pref
@@ -98,10 +99,12 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   translate::MigrateBraveProfilePrefs(profile->GetPrefs());
 #endif
+  // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  // BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
   MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -115,4 +118,6 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
+
+  // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }
