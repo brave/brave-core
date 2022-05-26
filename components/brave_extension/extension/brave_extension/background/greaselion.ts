@@ -289,13 +289,18 @@ const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePu
 
   chrome.braveRewards.getPublisherInfo(
     data.publisherKey, (result: RewardsExtension.Result, info?: RewardsExtension.Publisher) => {
+      let shouldUpdate = false
       if (result === 0 && info) {
-        getPublisherPanelInfo(tabId, data.publisherKey)
-        return
+        shouldUpdate = (info.name !== data.publisherName || info.url !== data.url)
+        if (!shouldUpdate) {
+          getPublisherPanelInfo(tabId, data.publisherKey)
+          return
+        }
       }
 
-      // Failed to find publisher info corresponding to this key, so save it now
-      if (result === 9) {
+      // Failed to find the publisher info corresponding to this key or the
+      // publisher info needs to be updated, so save the info now
+      if (result === 9 || shouldUpdate) {
         savePublisherInfo(
           tabId,
           mediaType,
