@@ -18,7 +18,7 @@ if (is_official_build) {
 
 buildflag_header("brave_services_key") {
   # Please use //brave/components/constants instead
-  visibility = [":*"]
+  visibility = [ ":*" ]
 
   header = "brave_services_key.h"
   flags = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]

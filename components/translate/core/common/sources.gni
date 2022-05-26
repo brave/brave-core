@@ -14,5 +14,7 @@ brave_components_translate_core_common_sources = [
   "//brave/components/translate/core/common/brave_translate_switches.h",
 ]
 
-brave_components_translate_core_common_public_deps =
-    [ "//brave/components/translate/core/common:buildflags" ]
+brave_components_translate_core_common_public_deps = [
+  "//brave/components/constants",
+  "//brave/components/translate/core/common:buildflags",
+]

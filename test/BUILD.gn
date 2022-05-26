@@ -493,17 +493,13 @@ test("brave_unit_tests") {
       "//brave/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     ]
 
-    deps += [
-      "//brave/components/brave_referrals/browser",
-    ]
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (ethereum_remote_client_enabled) {
     sources +=
         [ "//brave/browser/extensions/ethereum_remote_client_unittest.cc" ]
-    deps += [
-      "//brave/browser/ethereum_remote_client",
-    ]
+    deps += [ "//brave/browser/ethereum_remote_client" ]
   }
 
   if (enable_brave_translate_extension) {
