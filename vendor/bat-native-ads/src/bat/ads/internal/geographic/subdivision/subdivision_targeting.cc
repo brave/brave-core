@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time_formatting_util.h"
 #include "bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
@@ -183,7 +184,7 @@ bool SubdivisionTargeting::ShouldAutoDetect() const {
 }
 
 void SubdivisionTargeting::Fetch() {
-  BLOG(1, "Fetch subdivision target");
+  BLOG(1, "FetchSubdivisionTargeting");
   BLOG(2, "GET /v1/getstate");
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
@@ -197,24 +198,25 @@ void SubdivisionTargeting::Fetch() {
 }
 
 void SubdivisionTargeting::OnFetch(const mojom::UrlResponse& url_response) {
+  BLOG(1, "OnFetchSubdivisionTargeting");
+
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  bool should_retry = false;
-
-  if (url_response.status_code / 100 == 2) {
-    BLOG(1, "Successfully fetched subdivision target");
-
-    if (!ParseJson(url_response.body)) {
-      BLOG(1, "Failed to parse subdivision target");
-      should_retry = true;
-    }
-  } else {
+  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+    BLOG(1,
+         "Failed to fetch subdivision target as a browser upgrade is required");
+    return;
+  } else if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch subdivision target");
-    should_retry = true;
+    Retry();
+    return;
   }
 
-  if (should_retry) {
+  BLOG(1, "Successfully fetched subdivision target");
+
+  if (!ParseJson(url_response.body)) {
+    BLOG(1, "Failed to parse subdivision target");
     Retry();
     return;
   }
@@ -273,11 +275,11 @@ void SubdivisionTargeting::FetchAfterDelay() {
   const base::TimeDelta delay = g_is_debug ? kDebugFetchSubdivisionTargetingPing
                                            : kFetchSubdivisionTargetingPing;
 
-  const base::Time time = timer_.StartWithPrivacy(
+  const base::Time fetch_at = timer_.StartWithPrivacy(
       delay,
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch ads subdivision target " << FriendlyDateAndTime(time));
+  BLOG(1, "Fetch ads subdivision target " << FriendlyDateAndTime(fetch_at));
 }
 
 }  // namespace geographic

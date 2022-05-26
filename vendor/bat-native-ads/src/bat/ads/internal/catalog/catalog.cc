@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time_formatting_util.h"
 #include "bat/ads/internal/catalog/catalog_constants.h"
@@ -84,48 +85,51 @@ void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
 
   is_processing_ = false;
 
-  if (url_response.status_code / 100 == 2) {
-    BLOG(1, "Successfully fetched catalog");
-
-    BLOG(1, "Parsing catalog");
-
-    const absl::optional<CatalogInfo> catalog_optional =
-        JSONReader::ReadCatalog(url_response.body);
-    if (!catalog_optional) {
-      BLOG(1, "Failed to parse catalog");
-      NotifyFailedToUpdateCatalog();
-      Retry();
-      return;
-    }
-    const CatalogInfo& catalog = catalog_optional.value();
-
-    SetCatalogLastUpdated(base::Time::Now());
-
-    if (catalog.version != kCatalogVersion) {
-      BLOG(1, "Catalog version mismatch");
-      FetchAfterDelay();
-      return;
-    }
-
-    if (!HasCatalogChanged(catalog.id)) {
-      BLOG(1, "Catalog id " << catalog.id << " is up to date");
-      FetchAfterDelay();
-      return;
-    }
-
-    SaveCatalog(catalog);
-    NotifyDidUpdateCatalog(catalog);
+  if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
+    BLOG(1, "Catalog is up to date");
     FetchAfterDelay();
     return;
-  } else if (url_response.status_code == 304) {
-    BLOG(1, "Catalog is up to date");
+  } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+    BLOG(1, "Failed to fetch catalog as a browser upgrade is required");
+    NotifyFailedToUpdateCatalog();
+    return;
+  } else if (url_response.status_code != net::HTTP_OK) {
+    BLOG(1, "Failed to fetch catalog");
+    NotifyFailedToUpdateCatalog();
+    Retry();
+  }
+
+  BLOG(1, "Successfully fetched catalog");
+
+  BLOG(1, "Parsing catalog");
+  const absl::optional<CatalogInfo> catalog_optional =
+      JSONReader::ReadCatalog(url_response.body);
+  if (!catalog_optional) {
+    BLOG(1, "Failed to parse catalog");
+    NotifyFailedToUpdateCatalog();
+    Retry();
+    return;
+  }
+  const CatalogInfo& catalog = catalog_optional.value();
+
+  if (catalog.version != kCatalogVersion) {
+    BLOG(1, "Catalog version mismatch");
+    NotifyFailedToUpdateCatalog();
+    Retry();
+    return;
+  }
+
+  SetCatalogLastUpdated(base::Time::Now());
+
+  if (!HasCatalogChanged(catalog.id)) {
+    BLOG(1, "Catalog id " << catalog.id << " is up to date");
     FetchAfterDelay();
     return;
   }
 
-  BLOG(1, "Failed to fetch catalog");
-  NotifyFailedToUpdateCatalog();
-  Retry();
+  SaveCatalog(catalog);
+  NotifyDidUpdateCatalog(catalog);
+  FetchAfterDelay();
 }
 
 void Catalog::FetchAfterDelay() {
@@ -134,10 +138,10 @@ void Catalog::FetchAfterDelay() {
   const base::TimeDelta delay =
       g_is_debug ? kDebugCatalogPing : GetCatalogPing();
 
-  const base::Time time = timer_.StartWithPrivacy(
+  const base::Time fetch_at = timer_.StartWithPrivacy(
       delay, base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
 
-  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(time));
+  BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
 }
 
 void Catalog::Retry() {

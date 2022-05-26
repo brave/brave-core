@@ -34,9 +34,11 @@ class RedeemUnblindedPaymentTokensDelegateMock
 
   MOCK_METHOD(void,
               OnDidScheduleNextUnblindedPaymentTokensRedemption,
-              (const base::Time time));
+              (const base::Time redeem_at));
 
-  MOCK_METHOD(void, OnWillRetryRedeemingUnblindedPaymentTokens, ());
+  MOCK_METHOD(void,
+              OnWillRetryRedeemingUnblindedPaymentTokens,
+              (const base::Time retry_at));
   MOCK_METHOD(void, OnDidRetryRedeemingUnblindedPaymentTokens, ());
 };
 

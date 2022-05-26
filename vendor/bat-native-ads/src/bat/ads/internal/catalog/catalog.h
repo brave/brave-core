@@ -29,7 +29,6 @@ class Catalog final {
  private:
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
-
   void FetchAfterDelay();
 
   void Retry();

@@ -8,20 +8,23 @@
 
 #include <string>
 
+#include "base/time/time.h"
+
 namespace ads {
 
 class RefillUnblindedTokensDelegate {
  public:
   virtual ~RefillUnblindedTokensDelegate() = default;
 
-  // Invoked to tell the delegate unblinded tokens were refilled
+  // Invoked to tell the delegate we successfully refilled unblinded tokens
   virtual void OnDidRefillUnblindedTokens() {}
 
   // Invoked to tell the delegate unblinded tokens failed to refill
   virtual void OnFailedToRefillUnblindedTokens() {}
 
   // Invoked to tell the delegate that we will retry refilling unblinded tokens
-  virtual void OnWillRetryRefillingUnblindedTokens() {}
+  // at the specified time
+  virtual void OnWillRetryRefillingUnblindedTokens(const base::Time retry_at) {}
 
   // Invoked to tell the delegate that we did retry refilling unblinded tokens
   virtual void OnDidRetryRefillingUnblindedTokens() {}

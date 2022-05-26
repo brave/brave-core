@@ -18,6 +18,7 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/time_formatting_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
@@ -34,7 +35,6 @@
 #include "bat/ads/internal/server/url/url_request_string_util.h"
 #include "bat/ads/internal/server/url/url_response_string_util.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
-#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -137,7 +137,11 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code != net::HTTP_CREATED) {
+  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+    BLOG(1, "Failed to request signed tokens as a browser upgrade is required");
+    OnFailedToRefillUnblindedTokens(/* should_retry */ false);
+    return;
+  } else if (url_response.status_code != net::HTTP_CREATED) {
     BLOG(1, "Failed to request signed tokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ true);
     return;
@@ -185,8 +189,12 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code != net::HTTP_OK &&
-      url_response.status_code != net::HTTP_UNAUTHORIZED) {
+  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+    BLOG(1, "Failed to get signed tokens as a browser upgrade is required");
+    OnFailedToRefillUnblindedTokens(/* should_retry */ false);
+    return;
+  } else if (url_response.status_code != net::HTTP_OK &&
+             url_response.status_code != net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Failed to get signed tokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ true);
     return;
@@ -355,15 +363,15 @@ void RefillUnblindedTokens::OnFailedToRefillUnblindedTokens(
 }
 
 void RefillUnblindedTokens::Retry() {
-  if (delegate_) {
-    delegate_->OnWillRetryRefillingUnblindedTokens();
-  }
-
-  const base::Time time = retry_timer_.StartWithPrivacy(
+  const base::Time retry_at = retry_timer_.StartWithPrivacy(
       kRetryAfter,
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
-  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(time));
+  if (delegate_) {
+    delegate_->OnWillRetryRefillingUnblindedTokens(retry_at);
+  }
+
+  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
 }
 
 void RefillUnblindedTokens::OnRetry() {

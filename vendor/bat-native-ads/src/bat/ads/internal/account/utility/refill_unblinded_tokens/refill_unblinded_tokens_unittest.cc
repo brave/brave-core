@@ -13,13 +13,13 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate_mock.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
+#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -160,7 +160,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -210,7 +210,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -257,7 +257,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -284,7 +284,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -311,7 +311,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -412,7 +412,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -455,7 +455,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -561,7 +561,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -612,7 +612,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -713,7 +713,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -814,7 +814,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -864,7 +864,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -966,7 +966,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
       .Times(1);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -996,7 +996,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
@@ -1121,7 +1121,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-              OnWillRetryRefillingUnblindedTokens())
+              OnWillRetryRefillingUnblindedTokens(_))
       .Times(0);
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
