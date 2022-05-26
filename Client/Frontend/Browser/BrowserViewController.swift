@@ -419,7 +419,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     pageZoomListener = NotificationCenter.default.addObserver(forName: PageZoomView.notificationName, object: nil, queue: .main) { [weak self] _ in
       self?.tabManager.allTabs.forEach({
         guard let url = $0.webView?.url else { return }
-        let zoomLevel = Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
+        let zoomLevel = PrivateBrowsingManager.shared.isPrivateBrowsing ? 1.0 : Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
         $0.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
       })
     }
@@ -1923,7 +1923,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     if let currentURL = tab.url {
       let domain = Domain.getPersistedDomain(for: currentURL)
       
-      let zoomLevel = domain?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
+      let zoomLevel = PrivateBrowsingManager.shared.isPrivateBrowsing ? 1.0 : domain?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
       tab.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
     }
   }
@@ -3229,7 +3229,7 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.General.defaultPageZoomLevel.key:
       tabManager.allTabs.forEach({
         guard let url = $0.webView?.url else { return }
-        let zoomLevel = Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
+        let zoomLevel = PrivateBrowsingManager.shared.isPrivateBrowsing ? 1.0 : Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
         $0.webView?.setValue(zoomLevel, forKey: PageZoomView.propertyName)
       })
     case Preferences.Shields.httpsEverywhere.key:
