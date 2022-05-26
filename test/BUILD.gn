@@ -495,7 +495,6 @@ test("brave_unit_tests") {
 
     deps += [
       "//brave/components/brave_referrals/browser",
-      "//brave/components/constants",
     ]
   }
 
@@ -504,7 +503,6 @@ test("brave_unit_tests") {
         [ "//brave/browser/extensions/ethereum_remote_client_unittest.cc" ]
     deps += [
       "//brave/browser/ethereum_remote_client",
-      "//brave/components/constants",
     ]
   }
 

@@ -4,7 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 brave_components_update_client_deps =
-    [ "//brave/components/constants:brave_services_key" ]
+    [ "//brave/components/constants" ]
 
 brave_components_update_client_public_deps =
     [ "//brave/components/update_client:buildflags" ]
