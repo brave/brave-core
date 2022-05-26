@@ -765,10 +765,8 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
     }
   }
 
-  std::vector<mojom::NetworkInfoPtr> chains;
-  GetAllKnownSolChains(&chains);
   mojom::BlockchainTokenPtr sol_token = sol_token_->Clone();
-  for (const auto& chain : chains) {
+  for (const auto& chain : GetAllKnownSolChains()) {
     std::vector<mojom::BlockchainTokenPtr> tokens;
     sol_token->chain_id = chain->chain_id;
     GetUserAssets(chain->chain_id, mojom::CoinType::SOL, &tokens);
@@ -776,10 +774,8 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
     EXPECT_EQ(sol_token, tokens[0]) << chain->chain_id;
   }
 
-  chains.clear();
-  GetAllKnownFilChains(&chains);
   mojom::BlockchainTokenPtr fil_token = fil_token_->Clone();
-  for (const auto& chain : chains) {
+  for (const auto& chain : GetAllKnownFilChains()) {
     std::vector<mojom::BlockchainTokenPtr> tokens;
     fil_token->chain_id = chain->chain_id;
     GetUserAssets(chain->chain_id, mojom::CoinType::FIL, &tokens);

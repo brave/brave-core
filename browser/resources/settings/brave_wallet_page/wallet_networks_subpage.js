@@ -128,7 +128,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.browserProxy_.getCustomNetworksList().then(payload => {
       if (!payload)
         return
-      this.networks = JSON.parse(payload)
+      this.networks = payload
       this.notifyKeylist()
     })
   }
