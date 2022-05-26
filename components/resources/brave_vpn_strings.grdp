@@ -99,11 +99,15 @@
   <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
     24/7 support
   </message>
-
+  <message name="IDS_BRAVE_VPN_SUPPORT_TICKET_FAILED" desc="Label to show failed response from support ticket creation request">
+    Failed to create support ticket, check your connection.
+  </message>
   <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
     One moment while loading…
   </message>
-
+  <message name="IDS_BRAVE_VPN_PURCHASE_FAILED " desc="Label to show when purchase status failed">
+    Unable to check the status of your purchase, probably a network problem.
+  </message>
   <message name="IDS_BRAVE_VPN_EDIT_PAYMENT" desc="Button title to update payment information">
     Edit payment method
   </message>
