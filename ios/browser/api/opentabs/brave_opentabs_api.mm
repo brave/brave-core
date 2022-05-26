@@ -23,14 +23,14 @@
 #error "This file requires ARC support."
 #endif
 
-#pragma mark - IOSOpenTabNode
+#pragma mark - IOSOpenDistantTab
 
-@implementation IOSOpenTabNode
+@implementation IOSOpenDistantTab
 
 - (instancetype)initWithURL:(NSURL*)url
                       title:(nullable NSString*)title
                       tabId:(NSInteger)tabId
-                 sessionTag:(nullable NSString*)sessionTag {
+                 sessionTag:(NSString*)sessionTag {
   if ((self = [super init])) {
     self.url = url;
     self.title = title;
@@ -42,25 +42,65 @@
 }
 
 - (id)copyWithZone:(NSZone*)zone {
-  IOSOpenTabNode* openTabNodeCopy = [[[self class] allocWithZone:zone] init];
+  IOSOpenDistantTab* openDistantTabCopy = [[[self class] allocWithZone:zone] init];
 
-  if (openTabNodeCopy) {
-    openTabNodeCopy.url = self.url;
-    openTabNodeCopy.title = self.title;
-    openTabNodeCopy.tabId = self.tabId;
-    openTabNodeCopy.sessionTag = self.sessionTag;
+  if (openDistantTabCopy) {
+    openDistantTabCopy.url = self.url;
+    openDistantTabCopy.title = self.title;
+    openDistantTabCopy.tabId = self.tabId;
+    openDistantTabCopy.sessionTag = self.sessionTag;
   }
 
-  return openTabNodeCopy;
+  return openDistantTabCopy;
 }
 
-- (void)updateOpenTabNode:(NSURL*)url
-                    title:(NSString*)title {
+- (void)updateOpenDistantTab:(NSURL*)url
+                       title:(NSString*)title {
   [self setUrl:url];
 
   if ([title length] != 0) {
     [self setTitle:title];
   }
+}
+
+@end
+
+#pragma mark - IOSOpenDistantSession
+
+@implementation IOSOpenDistantSession
+
+- (instancetype)initWithName:(nullable NSString*)name
+                  sessionTag:(NSString*)sessionTag
+                 dateCreated:(nullable NSDate*)modifiedTime
+                  deviceType:(SyncDeviceType)deviceType
+                        tabs:(NSArray<IOSOpenDistantTab*>*)tabs {
+  if ((self = [super init])) {
+    self.name = name;
+    self.sessionTag = sessionTag;
+    self.modifiedTime = modifiedTime;
+    self.deviceType = deviceType;
+    self.tabs = tabs;
+  }
+
+  return self;
+}
+
+- (id)copyWithZone:(NSZone*)zone {
+  IOSOpenDistantSession* openDistantSession = [[[self class] allocWithZone:zone] init];
+
+  if (openDistantSession) {
+    openDistantSession.name = self.name;
+    openDistantSession.sessionTag = self.sessionTag;
+    openDistantSession.modifiedTime = self.modifiedTime;
+    openDistantSession.deviceType = self.deviceType;
+    openDistantSession.tabs = self.tabs;
+  }
+
+  return openDistantSession;
+}
+
+- (void)updateOpenDistantSessionModified:(NSDate*)modifiedTime {
+    [self setModifiedTime:modifiedTime];
 }
 
 @end
@@ -86,7 +126,7 @@
 }
 
 
-- (void)getSyncedTabs:(void (^)(NSArray<IOSOpenTabNode*>* results))completion {
+- (void)getSyncedSessions:(void (^)(NSArray<IOSOpenDistantSession*>*))completion {
   // Getting SessionSyncService from BrowserState
   sync_sessions::SessionSyncService* syncService =
       SessionSyncServiceFactory::GetForBrowserState(_chromeBrowserState);
@@ -98,50 +138,19 @@
   // Getting DistantTabSet from SyncSessions
   std::vector<synced_sessions::DistantTabsSet> displayedTabs;
 
+  NSMutableArray<IOSOpenDistantSession*>* distantSessionList = [[NSMutableArray alloc] init];
+
   for (size_t s = 0; s < syncedSessions->GetSessionCount(); s++) {
     const synced_sessions::DistantSession* session =
         syncedSessions->GetSession(s);
 
+    // TODO: Fill up the session detail
     synced_sessions::DistantTabsSet distant_tabs;
     distant_tabs.session_tag = session->tag;
     displayedTabs.push_back(distant_tabs);
   }
 
-  NSArray<IOSOpenTabNode*>* tabInfoList = [self onLoginsResult:std::move(displayedTabs)];
-
-  completion(tabInfoList);
-
-  // const synced_sessions::DistantTabsSet* exampleSet = &displayedTabs[0];
-
-  // const synced_sessions::DistantTab* distantTab = exampleSet->filtered_tabs.value()[0];
-
-  // std::cout << "Title of synced Tab " << distantTab->title;
-
-  // Conversion to objc object OpenTabNode
-}
-
-- (NSArray<IOSOpenTabNode*>*)onLoginsResult:
-      (std::vector<synced_sessions::DistantTabsSet>)distantTabSet {
-  NSMutableArray<IOSOpenTabNode*>* tabNodeList = [[NSMutableArray alloc] init];
-
-  int index = 0;
-
-  for (const auto& distantTabSetItem : distantTabSet) {
-    synced_sessions::DistantTab* distantTab = 
-        distantTabSetItem.filtered_tabs.value()[index];
-
-    IOSOpenTabNode* openTabNode = [[IOSOpenTabNode alloc]
-                initWithURL:net::NSURLWithGURL(distantTab->virtual_url)
-                      title:base::SysUTF16ToNSString(distantTab->title)
-                      tabId: distantTab->tab_id.id()
-                 sessionTag:base::SysUTF8ToNSString(distantTab->session_tag)];
-    
-    [tabNodeList addObject: openTabNode];
-
-    ++index;
-  }
-
-  return tabNodeList;
+  completion([distantSessionList copy]);
 }
 
 @end

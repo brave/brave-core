@@ -10,19 +10,31 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, SyncDeviceType) {
+  SyncDeviceTypeUnset = 0,
+  SyncDeviceTypeWin,
+  SyncDeviceTypeMac,
+  SyncDeviceTypeLinux,
+  SyncDeviceTypeCros,
+  SyncDeviceTypeOther,
+  SyncDeviceTypePhone,
+  SyncDeviceTypeTablet
+};
+
 // @protocol OpenTabsSessionServiceObserver;
 // @protocol OpenTabsSessionServiceListener;
 
-@class IOSOpenTabNode;
+@class IOSOpenDistantTab;
+@class IOSOpenDistantSession;
 
-NS_SWIFT_NAME(OpenTabNode)
+NS_SWIFT_NAME(OpenDistantTab)
 OBJC_EXPORT
-@interface IOSOpenTabNode : NSObject <NSCopying>
+@interface IOSOpenDistantTab : NSObject <NSCopying>
 
 @property(nonatomic, strong) NSURL* url;
 @property(nonatomic, nullable, copy) NSString* title;
 @property(nonatomic) NSInteger tabId;
-@property(nonatomic, nullable, copy) NSString* sessionTag;
+@property(nonatomic, strong) NSString* sessionTag;
 
 /// Open Tab Constructor used with OpenTabSessionAPI
 /// @param url - Mandatory URL field for the open tab object
@@ -32,7 +44,30 @@ OBJC_EXPORT
 - (instancetype)initWithURL:(NSURL*)url
                       title:(nullable NSString*)title
                       tabId:(NSInteger)tabId
-                 sessionTag:(nullable NSString*)sessionTag;
+                 sessionTag:(NSString*)sessionTag;
+@end
+
+NS_SWIFT_NAME(OpenDistantSession)
+OBJC_EXPORT
+@interface IOSOpenDistantSession : NSObject <NSCopying>
+
+@property(nonatomic, nullable, copy) NSString* name;
+@property(nonatomic, copy) NSString* sessionTag;
+@property(nonatomic, nullable, copy) NSDate* modifiedTime;
+@property(nonatomic) SyncDeviceType deviceType;
+@property(nonatomic, strong) NSArray<IOSOpenDistantTab*>* tabs;
+
+/// Open Tab Constructor used with OpenTabSessionAPI
+/// @param name - This is the name of the device for the distant session
+/// @param sessionTag - Uniquely identifies the distant session
+/// @param modifiedTime - The time last distant session is modified
+/// @param deviceType - The type of synced device for the distant session
+/// @param tabs - The open tabs synced with the particular session
+- (instancetype)initWithName:(nullable NSString*)name
+                  sessionTag:(NSString*)sessionTag
+                 dateCreated:(nullable NSDate*)modifiedTime
+                  deviceType:(SyncDeviceType)deviceType
+                        tabs:(NSArray<IOSOpenDistantTab*>*)tabs;
 @end
 
 NS_SWIFT_NAME(BraveOpenTabsAPI)
@@ -44,7 +79,7 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (void)getSyncedTabs:(void (^)(NSArray<IOSOpenTabNode*>*))completion;
+- (void)getSyncedSessions:(void (^)(NSArray<IOSOpenDistantSession*>*))completion;
 
 @end
 
