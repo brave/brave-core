@@ -5,3 +5,7 @@ export const copyToClipboard = async (data: string) => {
     console.log(`Could not copy address ${e.toString()}`)
   }
 }
+
+export const clearClipboard = () => {
+  return copyToClipboard('')
+}

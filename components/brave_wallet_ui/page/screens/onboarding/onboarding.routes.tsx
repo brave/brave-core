@@ -26,6 +26,7 @@ import { WalletRoutes } from '../../../constants/types'
 // actions
 import * as WalletPageActions from '../../actions/wallet_page_actions'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
+import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 export const OnboardingRoutes = () => {
   // routing
@@ -67,6 +68,10 @@ export const OnboardingRoutes = () => {
 
       <Route path={WalletRoutes.OnboardingImportOrRestore} exact>
         <OnboardingImportOrRestoreWallet />
+      </Route>
+
+      <Route path={WalletRoutes.OnboardingRestoreWallet} exact>
+        <OnboardingRestoreFromRecoveryPhrase />
       </Route>
 
       {/* <Route path={WalletRoutes.OnboardingImportMetaMask} exact>

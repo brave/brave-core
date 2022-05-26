@@ -90,6 +90,12 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   }
 `
 
+export const VerticalSpace = styled.div<{ space: string }>`
+  display: block;
+  height: ${(p) => p.space};
+  width: 100%;
+`
+
 // Phrase card
 export const PhraseCard = styled.div`
   display: flex;
@@ -118,8 +124,10 @@ export const PhraseCardBody = styled.div`
   border-radius: 4px;
 `
 
-export const PhraseCardBottomRow = styled(PhraseCardTopRow)`
-  justify-content: flex-start;
+export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
+  centered?: boolean
+}>`
+  justify-content: ${(p) => p.centered ? 'center' : 'flex-start'};
   height: 40px;
   gap: 14px;
 `

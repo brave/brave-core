@@ -20,12 +20,14 @@ export interface StepsNavigationProps<T extends string> {
   readonly steps: T[]
   currentStep: T
   goBackUrl?: WalletRoutes
+  goBack?: () => void
   preventSkipAhead?: boolean
 }
 
 export const StepsNavigation: <T extends string>(
   props: StepsNavigationProps<T>
 ) => JSX.Element = ({
+  goBack,
   goBackUrl,
   preventSkipAhead,
   currentStep,
@@ -41,7 +43,7 @@ export const StepsNavigation: <T extends string>(
   const buttonProps = React.useMemo(() => {
     return goBackUrl
       ? { as: Link, to: goBackUrl } as const
-      : { onClick: history.goBack, as: 'button' } as const
+      : { onClick: goBack || history.goBack, as: 'button' } as const
   }, [goBackUrl])
 
   return (
