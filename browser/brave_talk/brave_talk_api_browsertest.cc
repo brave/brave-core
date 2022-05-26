@@ -144,6 +144,7 @@ class BraveTalkAPIBrowserTest : public InProcessBrowserTest {
         content::ExecJs(requester_contents(), "requestCapture(" + frame + ")"));
     awaiter.Run();
 
+    ASSERT_TRUE(talk_service()->is_requesting_tab());
     talk_service()->ShareTab(target_contents());
 
     auto result = content::EvalJs(requester_contents(), "deviceIdPromise");
