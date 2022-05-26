@@ -837,7 +837,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             }
         }
 
-        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()
+                && InAppPurchaseWrapper.getInstance().isSubscriptionSupported()) {
             if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
                             && (SharedPreferencesManager.getInstance().readInt(
                                         BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
