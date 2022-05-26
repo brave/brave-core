@@ -20,20 +20,10 @@ class UpholdServer;
 
 namespace uphold {
 
-enum UserStatus {
-  EMPTY = 0,
-  PENDING = 1,
-  RESTRICTED = 2,
-  BLOCKED = 3,
-  OK = 4,
-};
-
 struct User {
   std::string name;
   std::string member_id;
-  UserStatus status;
   bool bat_not_allowed;
-  bool customer_due_diligence_required;
 
   User();
   ~User();

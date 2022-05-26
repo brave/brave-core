@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
 
 #include <memory>
 
+#include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "bat/ledger/internal/endpoint/uphold/get_card/get_card.h"
 #include "bat/ledger/internal/endpoint/uphold/get_cards/get_cards.h"
 #include "bat/ledger/internal/endpoint/uphold/get_me/get_me.h"
@@ -30,6 +31,8 @@ class UpholdServer {
 
   uphold::PostOauth* post_oauth() const;
 
+  uphold::GetCapabilities* get_capabilities() const;
+
   uphold::GetCards* get_cards() const;
 
   uphold::GetCard* get_card() const;
@@ -46,6 +49,7 @@ class UpholdServer {
 
  private:
   std::unique_ptr<uphold::PostOauth> post_oauth_;
+  std::unique_ptr<uphold::GetCapabilities> get_capabilities_;
   std::unique_ptr<uphold::GetCards> get_cards_;
   std::unique_ptr<uphold::GetCard> get_card_;
   std::unique_ptr<uphold::GetMe> get_me_;
@@ -58,4 +62,4 @@ class UpholdServer {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_UPHOLD_SERVER_H_

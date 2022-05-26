@@ -83,10 +83,7 @@ declare namespace Rewards {
         | 'regionNotSupportedModal'
         | 'show'
         | 'upholdBATNotAllowedModal'
-        | 'upholdBlockedUserModal'
-        | 'upholdCustomerDueDiligenceRequiredModal'
-        | 'upholdPendingUserModal'
-        | 'upholdRestrictedUserModal'
+        | 'upholdInsufficientCapabilitiesModal'
         | 'walletOwnershipVerificationFailureModal'
       paymentIdCheck: boolean
       promosDismissed?: {

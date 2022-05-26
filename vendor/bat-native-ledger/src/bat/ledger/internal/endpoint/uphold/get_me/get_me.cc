@@ -15,30 +15,6 @@
 
 using std::placeholders::_1;
 
-namespace {
-
-ledger::uphold::UserStatus GetUserStatus(const std::string& status) {
-  if (status == "pending") {
-    return ledger::uphold::UserStatus::PENDING;
-  }
-
-  if (status == "restricted") {
-    return ledger::uphold::UserStatus::RESTRICTED;
-  }
-
-  if (status == "blocked") {
-    return ledger::uphold::UserStatus::BLOCKED;
-  }
-
-  if (status == "ok") {
-    return ledger::uphold::UserStatus::OK;
-  }
-
-  return ledger::uphold::UserStatus::EMPTY;
-}
-
-}  // namespace
-
 namespace ledger {
 namespace endpoint {
 namespace uphold {
@@ -101,16 +77,6 @@ type::Result GetMe::ParseBody(
         std::find(currencies->GetList().begin(), currencies->GetList().end(),
                   base::Value(currency));
     user->bat_not_allowed = bat_in_list == currencies->GetList().end();
-  }
-
-  const auto* status = dictionary->FindStringKey("status");
-  if (status) {
-    user->status = GetUserStatus(*status);
-  }
-
-  if (const auto* cdd_status = dictionary->FindStringPath(
-          "verifications.customerDueDiligence.status")) {
-    user->customer_due_diligence_required = *cdd_status == "required";
   }
 
   return type::Result::LEDGER_OK;
