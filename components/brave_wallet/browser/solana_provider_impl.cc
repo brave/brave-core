@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -151,6 +152,13 @@ void SolanaProviderImpl::SignMessage(
     return;
   }
   if (!IsAccountConnected(*account)) {
+    std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
+                            base::Value(base::Value::Type::DICTIONARY));
+    return;
+  }
+  // Prevent transaction payload from being signed
+  if (SolanaMessage::Deserialize(blob_msg)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
                             base::Value(base::Value::Type::DICTIONARY));

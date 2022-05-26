@@ -391,8 +391,26 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
 
   // Disconnected state will be rejcted.
   ASSERT_FALSE(IsConnected());
-  const std::string signature =
+  std::string signature =
       SignMessage({1, 2, 3, 4}, absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUnauthorized);
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
+  // transaction payload message will be rejected
+  signature = SignMessage(
+      {1,   0,   1,   3,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159,
+       171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,
+       58,  251, 215, 62,  201, 172, 159, 197, 255, 224, 228, 245, 94,  238,
+       23,  132, 206, 40,  82,  249, 219, 203, 103, 158, 110, 219, 93,  249,
+       143, 134, 207, 172, 179, 76,  67,  6,   169, 164, 149, 38,  0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+       0,   0,   131, 191, 83,  201, 108, 193, 222, 255, 176, 67,  136, 209,
+       219, 42,  6,   169, 240, 137, 142, 185, 169, 6,   17,  87,  123, 6,
+       42,  55,  162, 64,  120, 91,  1,   2,   2,   0,   1,   12,  2,   0,
+       0,   0,   128, 150, 152, 0,   0,   0,   0,   0},
+      absl::nullopt, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
