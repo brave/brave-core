@@ -1216,8 +1216,10 @@ extension TabManager: NSFetchedResultsControllerDelegate {
       // fire `accountsChanged` event on open tabs for this `Domain`
       let tabsForDomain = self.allTabs.filter { $0.url?.domainURL.absoluteString.caseInsensitiveCompare(domainURL) == .orderedSame }
       tabsForDomain.forEach { tab in
-        let accounts = domain.wallet_permittedAccounts?.split(separator: ",").map(String.init) ?? []
-        tab.accountsChangedEvent(Array(accounts))
+        Task { @MainActor in
+          let accounts = await tab.allowedAccounts(false).0
+          tab.accountsChangedEvent(Array(accounts))
+        }
       }
     }
   }
