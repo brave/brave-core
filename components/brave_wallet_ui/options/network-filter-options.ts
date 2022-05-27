@@ -1,5 +1,6 @@
 import { BraveWallet } from '../constants/types'
 import { getLocale } from '../../common/locale'
+import AllNetworksIcon from '../assets/svg-icons/all-networks-icon.svg'
 
 export const AllNetworksOption: BraveWallet.NetworkInfo = {
   blockExplorerUrls: [],
@@ -7,7 +8,7 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   chainName: getLocale('braveWalletNetworkFilterAll'),
   coin: 0,
   decimals: 0,
-  iconUrls: [],
+  iconUrls: [AllNetworksIcon],
   rpcUrls: [],
   symbol: 'all',
   symbolName: 'all',
