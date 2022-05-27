@@ -29,11 +29,13 @@
 <translation id="1146678959555564648">Pokreni VR</translation>
 <translation id="114825011539563458">Najvažnije kontrole privatnosti i sigurnosti na jednom mjestu</translation>
 <translation id="1149401351239820326">Mjesec isteka</translation>
+<translation id="7083341910267693582">Aplikacija <ph name="APP_NAME"/> otvorit će se u Braveu. Nastavljanjem prihvaćate <ph name="BEGIN_LINK1"/>Braveove uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>dodatne uvjete pružanja usluge za Brave i Chrome OS<ph name="END_LINK2"/>.</translation>
 <translation id="1154704303112745282">Stranica nije dostupna offline: <ph name="VIOLATED_URL"/></translation>
 <translation id="1171770572613082465">Dodirom na gumb "Najpopularnije web-lokacije" pogledajte popularne web-lokacije</translation>
 <translation id="1173894706177603556">Preimenuj</translation>
 <translation id="1177863135347784049">Prilagođeno</translation>
 <translation id="1181037720776840403">Ukloni</translation>
+<translation id="1193729455103054076">Upotrijebiti snažnu zaporku?</translation>
 <translation id="1197267115302279827">Premjesti oznake</translation>
 <translation id="1201402288615127009">Dalje</translation>
 <translation id="1202892408424955784">Praćeni proizvodi</translation>
@@ -88,6 +90,7 @@ Kad izbrišete svoju povijest pregledavanja, bilo svu ili za određenu web-lokac
 <translation id="1409879593029778104">Preuzimanje datoteke <ph name="FILE_NAME"/> nije uspjelo jer datoteka već postoji.</translation>
 <translation id="1853026300647876496">Kontaktiranje Bravea. To bi moglo potrajati…</translation>
 <translation id="1416550906796893042">Verzija aplikacije</translation>
+<translation id="1428770807407000502">Isključiti sinkronizaciju?</translation>
 <translation id="1430915738399379752">Ispis</translation>
 <translation id="1436784010935106834">Uklonjeno</translation>
 <translation id="1448440926884431741">Praćene proizvode organizirajte u mapi Oznake</translation>
@@ -138,7 +141,6 @@ Kad izbrišete svoju povijest pregledavanja, bilo svu ili za određenu web-lokac
 <translation id="1779766957982586368">Zatvori prozor</translation>
 <translation id="1791662854739702043">Instalirano</translation>
 <translation id="1792959175193046959">Zadanu lokaciju preuzimanja možete promijeniti kad god želite</translation>
-<translation id="2368444735104192323">Dodatni uvjeti pružanja usluge za Brave i OS Brave</translation>
 <translation id="1807246157184219062">Svijetlo</translation>
 <translation id="1810845389119482123">Početno postavljanje sinkronizacije nije dovršeno</translation>
 <translation id="1829244130665387512">Traži na stranici</translation>
@@ -175,8 +177,6 @@ Kad izbrišete svoju povijest pregledavanja, bilo svu ili za određenu web-lokac
 <translation id="2000419248597011803">Zadanoj tražilici šalje neke kolačiće i pretraživanja iz adresne trake i okvira za pretraživanje</translation>
 <translation id="6968892567705775281">Želite li uključiti okolni tekst u Brave pretraživanja?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# datoteka}one{# datoteka}few{# datoteke}other{# datoteka}}</translation>
-<translation id="2185841461857887156">Aplikacija <ph name="APP_NAME"/> otvorit će se u Braveu. Nastavljanjem prihvaćate <ph name="BEGIN_LINK1"/>Braveove uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>dodatne uvjete pružanja usluge za Brave i OS Brave<ph name="END_LINK2"/>. Primjenjuju se i <ph name="BEGIN_LINK3"/>pravila o privatnosti<ph name="END_LINK3"/>.</translation>
-<translation id="2019145049163614359">Ukloniti interes?</translation>
 <translation id="2020309681647789787">Vaša će povijest biti na svim vašim sinkroniziranim uređajima kako biste mogli nastaviti ono što radite</translation>
 <translation id="2021896219286479412">Kontrole web-lokacije na cijelom zaslonu</translation>
 <translation id="2038563949887743358">Uključivanje zahtjeva za prikaz klasične web-lokacije</translation>
@@ -201,10 +201,12 @@ Dodirnite bilo koju riječ da biste pokrenuli pretraživanje. Ako želite preciz
 <translation id="796823723482603597">Omogućuje Brave</translation>
 <translation id="2132122640199389833">Ukloni sve povezane uređaje</translation>
 <translation id="213279576345780926">Zatvorena je kartica <ph name="TAB_TITLE"/></translation>
+<translation id="6659395979197839222">Korištenjem Bravea prihvaćate <ph name="BEGIN_TOS_LINK"/>Braveove uvjete pružanja usluge<ph name="END_TOS_LINK"/> i <ph name="BEGIN_ATOS_LINK"/>dodatne uvjete pružanja usluge za Brave i Chrome OS<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="2139186145475833000">Dodaj na početni zaslon</translation>
 <translation id="2141396931810938595">Na temelju vaše upotrebe</translation>
 <translation id="6516933364477884970">Odaberite ono što želite dijeliti s Braveom. Mjerni podaci koje podijelite upotrijebit će se za poboljšanje značajki, izvedbe i stabilnosti Bravea.</translation>
 <translation id="2149973817440762519">Uredi oznaku</translation>
+<translation id="2155214902713132423">Taj način potvrde nije dostupan za ovaj uređaj. Odaberite neku drugu opciju na drugom uređaju.</translation>
 <translation id="6162454065885854378">Da biste dijelili sadržaj s telefona s nekim drugim uređajem, uključite sinkronizaciju u Braveovim postavkama na oba uređaja</translation>
 <translation id="4162910516440006395">Brave nije uspio provjeriti sve zaporke</translation>
 <translation id="2169830938017475061">Sad</translation>
@@ -379,6 +381,7 @@ Dodirnite i držite bilo koju riječ da biste pokrenuli pretraživanje. Ako žel
 <translation id="6153252609477956632">Članci o vašim interesima na Braveu</translation>
 <translation id="3066573403916685335">Premjesti dolje</translation>
 <translation id="3070005020161560471">Automatski prevedi</translation>
+<translation id="1094255666887095087">Aplikacija <ph name="APP_NAME"/> otvorit će se u Braveu. Nastavljanjem prihvaćate <ph name="BEGIN_LINK1"/>Braveove uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>dodatne uvjete pružanja usluge za Brave i Chrome OS<ph name="END_LINK2"/>. Primjenjuju se i <ph name="BEGIN_LINK3"/>pravila o privatnosti<ph name="END_LINK3"/>.</translation>
 <translation id="3091010850649238832">Prikaži sadržaj međuspremnika</translation>
 <translation id="821565628224723530">Neke se slike šalju Braveu radi poboljšanja opisa za vas</translation>
 <translation id="3114507951000454849">Pročitajte današnje vijesti <ph name="NEWS_ICON"/></translation>
@@ -447,7 +450,6 @@ Dodirnite i držite bilo koju riječ da biste pokrenuli pretraživanje. Ako žel
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o predloženom sadržaju</translation>
 <translation id="3495219333887281978">Donja tablica za prijavu otvorena na pola visine.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="5067649501056343732">Korištenjem Bravea prihvaćate <ph name="BEGIN_TOS_LINK"/>Braveove uvjete pružanja usluge<ph name="END_TOS_LINK"/> i <ph name="BEGIN_ATOS_LINK"/>dodatne uvjete pružanja usluge za Brave i OS Brave<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="3507132249039706973">Uključena je Standardna zaštita</translation>
 <translation id="8669829441518807650">Offline. Brave ne može provjeriti ima li ažuriranja.</translation>
 <translation id="3513704683820682405">Proširena stvarnost</translation>
@@ -564,8 +566,10 @@ Dodirnite i držite bilo koju riječ da biste pokrenuli pretraživanje. Ako žel
 <translation id="4269820728363426813">Kopiraj adresu veze</translation>
 <translation id="4290281343757112331">Želite li preuzeti kasnije?</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Uključite zaključavanje zaslona u postavkama Androida<ph name="END_LINK"/></translation>
+<translation id="6299940168852877221">Korištenjem Bravea prihvaćate <ph name="BEGIN_TOS_LINK"/>Braveove uvjete pružanja usluge<ph name="END_TOS_LINK"/> i <ph name="BEGIN_ATOS_LINK"/>dodatne uvjete pružanja usluge za Brave i Chrome OS<ph name="END_ATOS_LINK"/>. Primjenjuju se i <ph name="BEGIN_PRIVACY_LINK"/>pravila o privatnosti<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="4298388696830689168">Povezane web-lokacije</translation>
 <translation id="4303044213806199882">chrome_snimka_zaslona_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="4304713468139749426">Upravitelj zaporki</translation>
 <translation id="4307992518367153382">Osnove</translation>
 <translation id="4320177379694898372">Nema internetske veze</translation>
 <translation id="4321739720395210191">Kamera se ne može otvoriti. Ponovno pokrenite uređaj i pokušajte opet.</translation>
@@ -710,7 +714,6 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="4744980273298156620">Prilikom otvaranja nove kartice uskoro će se prikazivati članci s web-lokacije <ph name="SITE_NAME"/>. Web-lokacije koje pratite spremaju se na vašem Brave računu. Njima možete upravljati u postavkama Discovera.</translation>
 <translation id="5091249083535528968">Prošireni podaci o upotrebi</translation>
 <translation id="509429900233858213">Došlo je do pogreške.</translation>
-<translation id="5098190077610408701">Dodati interese?</translation>
 <translation id="225414324447409614">Ako neka web-lokacija pokuša ukrasti vašu zaporku ili ako preuzmete štetnu datoteku, Brave može sigurnom pregledavanju poslati URL-ove, uključujući dijelove sadržaja web-stranice</translation>
 <translation id="510275257476243843">Još 1 sat</translation>
 <translation id="5115811374190515607">u <ph name="PRODUCT_NAME"/></translation>
@@ -790,7 +793,6 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="5578795271662203820">Potraži sliku na usluzi <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Uvijek možete odabrati u <ph name="BEGIN_LINK1"/>postavkama<ph name="END_LINK1"/> što će se sinkronizirati.</translation>
 <translation id="5590372121997663538">Zapamti ovo računalo</translation>
-<translation id="559871659088672663">Značajka je trenutačno u razvoju</translation>
 <translation id="6157610782452852023">Brave Assistant može dovršiti radnje na web-lokacijama za vas</translation>
 <translation id="5620163320393916465">Nema spremljenih zaporki</translation>
 <translation id="5620928963363755975">Pronađite svoje datoteke i stranice u Preuzimanjima pomoću gumba Više opcija</translation>
@@ -853,6 +855,7 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="1985257319311245640">Dopustite Brave asistentu pristup URL-ovima web-lokacija kako bi vam pomogao s izvršavanjem zadataka. Asistenta možete isključiti u Braveovim postavkama.</translation>
 <translation id="5916664084637901428">Uključi</translation>
 <translation id="5919204609460789179">Ažurirajte <ph name="PRODUCT_NAME"/> za pokretanje sinkronizacije</translation>
+<translation id="5938820472109305350">Dodaj <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Za pretraživanje se upotrebljava Brave</translation>
 <translation id="5945035219773565305">Trenutačna preporuka: <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">Pregledavanje aktualne stranice</translation>
@@ -872,7 +875,6 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="6557407328070865042">Uz <ph name="BEGIN_LINK"/>Privacy Sandbox<ph name="END_LINK"/> Brave razvija nove tehnologije koje će vas štititi od praćenja na različitim web-lokacijama, a istovremeno očuvati otvorenost weba.
 
 Probe Privacy Sandboxa i dalje su u aktivnom razvoju i dostupne su u odabranim regijama. Web-lokacije trenutačno mogu isprobati Privacy Sandbox dok se istovremeno još uvijek koriste aktualnim web-tehnologijama, npr. kolačićima trećih strana.</translation>
-<translation id="6036057147555329831">Dodatni ICU</translation>
 <translation id="6039379616847168523">Preskakanje na sljedeću karticu</translation>
 <translation id="6040143037577758943">Zatvori</translation>
 <translation id="604124094241169006">Automatski</translation>
@@ -930,7 +932,6 @@ Na primjer, neke web-lokacije na taj zahtjev mogu odgovoriti tako da vam prikaž
 <translation id="6345878117466430440">Označi kao pročitano</translation>
 <translation id="6363990818884053551">Za pokretanje sinkronizacije potvrdite da ste to vi.</translation>
 <translation id="6364438453358674297">Želite li ukloniti prijedlog iz povijesti?</translation>
-<translation id="4993481112200507346">Aplikacija <ph name="APP_NAME"/> otvorit će se u Braveu. Nastavljanjem prihvaćate <ph name="BEGIN_LINK1"/>Braveove uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Dodatne uvjete pružanja usluge za Brave i OS Brave<ph name="END_LINK2"/>.</translation>
 <translation id="806493401838431801">Češće predučitava stranice za koje Brave misli da ćete ih vjerojatno posjetiti. Ta postavka može rezultirati većom potrošnjom podatkovnog prometa.</translation>
 <translation id="6395288395575013217">VEZA</translation>
 <translation id="6397616442223433927">Veza je ponovo uspostavljena</translation>
@@ -991,6 +992,7 @@ Na primjer, neke web-lokacije na taj zahtjev mogu odgovoriti tako da vam prikaž
 <translation id="2259649928554669581">Više postavki koje se odnose na privatnost, sigurnost i prikupljanje podataka dostupno je u odjeljcima <ph name="BEGIN_LINK1"/>Sinkronizacija<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Braveove usluge<ph name="END_LINK2"/></translation>
 <translation id="7939692063031538305">Radi poboljšanja aplikacije Brave šalje Braveu podatke o upotrebi i rušenju. <ph name="BEGIN_UMA_LINK"/>Upravljanje<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Blokiraj cijelo vrijeme</translation>
+<translation id="6641780377503683465">Ukloni <ph name="INTEREST"/></translation>
 <translation id="6643016212128521049">Izbriši</translation>
 <translation id="6645629752388991326">Kontrolirajte koji se uređaji mogu prijaviti koristeći ovaj uređaj kao sigurnosni ključ.</translation>
 <translation id="6678472970290886941">Vaš administrator može daljinski promijeniti postavke preglednika. Aktivnostima na ovom uređaju može se upravljati i izvan Bravea.</translation>
@@ -1015,9 +1017,9 @@ Na primjer, neke web-lokacije na taj zahtjev mogu odgovoriti tako da vam prikaž
 <translation id="6751521182688001123">Brzo otvorite novu karticu. Da biste uredili taj prečac, dodirnite ga i zadržite pritisak.</translation>
 <translation id="6756507620369789050">Pošaljite povratne informacije</translation>
 <translation id="6767294960381293877">Popis za odabir uređaja s kojim će se dijeliti kartica otvoren na pola visine.</translation>
-<translation id="6770042910635026163">Web-lokacije koje posjećujete koje definiraju vaše interese</translation>
 <translation id="6770602306803890733">Poboljšava sigurnost za vas i sve ostale na webu</translation>
 <translation id="6783942555455976443">Spremite stranicu za kasnije i postavite podsjetnik</translation>
+<translation id="8174975477247159780">Dodatni uvjeti pružanja usluge za Brave i Chrome OS</translation>
 <translation id="6795633245022906657">Brzo otvorite novu karticu. Da biste uredili prečac, otvorite Postavke.</translation>
 <translation id="6802555630140434547">Prozor će se zatvoriti</translation>
 <translation id="6811034713472274749">Stranica je spremna za prikaz</translation>
@@ -1091,7 +1093,6 @@ Na primjer, neke web-lokacije na taj zahtjev mogu odgovoriti tako da vam prikaž
 <translation id="7208109991155904980">Reakcija je premještena</translation>
 <translation id="7222235798733126207">Ograničeno dijeljenje između web-lokacija</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 preuzimanje na čekanju}one{# preuzimanje na čekanju}few{# preuzimanja na čekanju}other{# preuzimanja na čekanju}}</translation>
-<translation id="7256686223798862196">Korištenjem Bravea prihvaćate <ph name="BEGIN_TOS_LINK"/>Braveove uvjete pružanja usluge<ph name="END_TOS_LINK"/> i <ph name="BEGIN_ATOS_LINK"/>dodatne uvjete pružanja usluge za Brave i OS Brave<ph name="END_ATOS_LINK"/>. Primjenjuju se i <ph name="BEGIN_PRIVACY_LINK"/>pravila o privatnosti<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="7242755609445462077">Stilizirano isticanje <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Provjerite je li na uređaju <ph name="TARGET_DEVICE_NAME"/> uključena sinkronizacija u Braveu</translation>
 <translation id="7252076891734325316">Postavite telefon blizu računala</translation>

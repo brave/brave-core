@@ -252,6 +252,8 @@
 <translation id="3183954159462541696">Error: you need a verified account to log in</translation>
 <translation id="5260522591743022748">Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
 <translation id="5111921830714291902">Error: Different account</translation>
+<translation id="6933939911547091461">Unfortunately, your Brave Rewards cannot be verified because your region is not supported for Brave Rewards verification at this time.</translation>
+<translation id="8218538368080510976">Error: region not supported</translation>
 <translation id="5382684862562314222">BAT is not yet supported in your region on Uphold.</translation>
 <translation id="9074594632540931067">Error: BAT unavailable</translation>
 <translation id="413458922997276130">Your account at Uphold is currently blocked.</translation>
@@ -666,11 +668,11 @@
 <translation id="1164622162816276433">24HR Volume</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Enable support of Unstoppable Domains in Brave?</translation>
-<translation id="3470923752115324276">Brave can enable you to visit .crypto domains by using Cloudflare to resolve .crypto domain name lookup requests using DNS over HTTPS. If you enable this, Cloudflare will see the .crypto domain that you're trying to visit but they will not be able to see other domains. See Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domain name look-up requests. If you enable this, Infura will see those specific domains that you're trying to visit, but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Enable support of Ethereum Name Service (ENS) in Brave?</translation>
-<translation id="618766505813078707">Brave can enable you to visit .eth domains by using Cloudflare to resolve .eth domain name lookup requests using DNS over HTTPS. If you enable this, Cloudflare will see the .eth domain that you're trying to visit but they will not be able to see other domains. See Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Proceed using Cloudflare server</translation>
+<translation id="8328137586971750853">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Ethereum Name Service to resolve .eth domain name look-up requests. If you enable this, Infura will see the .eth domain that you're trying to visit, but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Proceed using Infura server</translation>
 <translation id="2356070529366658676">Ask</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -767,6 +769,7 @@
 <translation id="3600355176618429948">Estimated earnings</translation>
 <translation id="4244985009709452836">Log into your <ph name="PROVIDER"/> account</translation>
 <translation id="2613359062756190460">One-Time Tips</translation>
+<translation id="7580329715937096918">There is a temporary problem verifying with <ph name="PROVIDER"/>. Your Brave Rewards will remain in a pending state and retry automatically, but you can also try again later.</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
 <translation id="6181762795539107980">Unverified</translation>
 <translation id="3026978804849658576">View statement</translation>
@@ -796,6 +799,7 @@
 <translation id="9161147058107529840">Expected single, object parameter.</translation>
 <translation id="1875861420974447980">This Chain ID is currently used</translation>
 <translation id="167698752210114155">An internal error has occurred</translation>
+<translation id="2326876601333401685">This RPC method is not supported.</translation>
 <translation id="1128992132632883337">A response parsing error has occurred</translation>
 <translation id="1680597601664421644">The mnemonic being imported is not valid for Brave Wallet</translation>
 <translation id="4641919696349069826">A request is already in progress</translation>
@@ -806,7 +810,6 @@
 <translation id="7577623631309755655">Transaction data 'gasPrice' is not valid</translation>
 <translation id="8909404207805041979">Transaction data 'gas' is not valid</translation>
 <translation id="670444168393199227">Transaction data 'value' is not valid</translation>
-<translation id="6180576227145734714">Transaction data 'to' must be a valid address when specified</translation>
 <translation id="6916219411793555838">Transaction data 'gasPrice' or 'maxFeePerGas' must be specified</translation>
 <translation id="1406937874668963740">Transaction data 'chainId' is not valid</translation>
 <translation id="9195349857587166771">Transaction data 'maxFeePerGas' is not valid</translation>
@@ -820,8 +823,9 @@
 <translation id="1462494615260983714">Error processing the transaction</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' is not authorized to sign message</translation>
 <translation id="8719220598078667817">Failed to sign transaction</translation>
-<translation id="5486744676117070166">Failed to get next nonce value</translation>
 <translation id="875506212625074179">Invalid chain ID response from RPC service</translation>
+<translation id="5486744676117070166">Failed to get next nonce value</translation>
+<translation id="6180576227145734714">Transaction data 'to' must be a valid address when specified</translation>
 <translation id="4958950550253325418">Defi apps</translation>
 <translation id="735961408871282410">NFT marketplaces</translation>
 <translation id="7740287852186792672">Search results</translation>
@@ -869,6 +873,7 @@
 <translation id="151946611346774041">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</translation>
 <translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
 <translation id="8368540604723748428">Too many decimal places</translation>
+<translation id="6575120282593094155">You don’t yet have a <ph name="ACCOUNT_TYPE"/> account. Create one now?</translation>
 <translation id="2704606927547763573">Copied</translation>
 <translation id="1420318137760245955">Welcome to the new Brave Wallet</translation>
 <translation id="8303434745767477417">Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow and lend with DeFi. All right from the Brave privacy browser. No extensions, no download required.</translation>
@@ -994,15 +999,15 @@
 <translation id="8569380433211549748">Price in</translation>
 <translation id="2490428413101944234">Test faucet</translation>
 <translation id="3352959425838279177">Get Ether from a faucet for <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Continue to Wyre</translation>
-<translation id="2581671693710952401">Get Ether</translation>
 <translation id="8009571545960303544">Your signature is being requested</translation>
 <translation id="5294062982587710720">Note that Brave can’t verify what will happen if you sign. A signature could authorise nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</translation>
 <translation id="3474375934783434676">Sign at your own risk</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586752056660754651">Sign</translation>
 <translation id="3484981968509595506">A DApp is requesting your public encryption key</translation>
+<translation id="1915212737651531313"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</translation>
 <translation id="3340247553212049934">Provide</translation>
+<translation id="1619778919922494944">This dApp would like to read this message to complete your request</translation>
 <translation id="714506544401754321">Decrypt message</translation>
 <translation id="5039804452771397117">Allow</translation>
 <translation id="9032898664193335413">Allow this app to spend your <ph name="TOKEN_SYMBOL"/>?</translation>
@@ -1030,10 +1035,12 @@
 <translation id="3948067511324628726">Gas fee</translation>
 <translation id="7163997622278957886">Bid</translation>
 <translation id="1074360622426001342">Amount + gas</translation>
+<translation id="2186011161688824046">Amount + fee</translation>
 <translation id="7084089311475827950">No data.</translation>
 <translation id="5821668936183240062">next</translation>
 <translation id="793994607260936590">first</translation>
 <translation id="4709524402122994378">transactions</translation>
+<translation id="4591079278963448049">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.</translation>
 <translation id="523862956770478816">Site permissions</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> accounts connected</translation>
 <translation id="4305817255990598646">Switch</translation>
@@ -1084,6 +1091,7 @@
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Confirmed</translation>
 <translation id="1165039591588034296">Error</translation>
+<translation id="8373210463207847451">Dropped</translation>
 <translation id="9065572743819293042">Recent transactions</translation>
 <translation id="4235538284468006757">Transaction details</translation>
 <translation id="7488671812634887146">Speedup</translation>
@@ -1162,6 +1170,14 @@
 <translation id="1752214435563414457">Brave swap-stakes</translation>
 <translation id="7829441065063984927">7 days of crypto giveaways, ~$500k in prizes.</translation>
 <translation id="8292716346768453265">Enter now!</translation>
+<translation id="6423985584914773314">Not a valid FIL address</translation>
+<translation id="3898731124813934210">Buy with Wyre</translation>
+<translation id="5522073372365069684">Buy with Ramp</translation>
+<translation id="8528916244724490964">All networks</translation>
+<translation id="2781668117338732220">Secondary networks</translation>
+<translation id="2816106784624007524">Gas limit must be an integer greater than 0</translation>
+<translation id="3354376789153561654">Transaction data 'to' must be specified</translation>
+<translation id="8728991256628663004">Transaction data 'from' must be a valid Filecoin address</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -1180,26 +1196,33 @@
 <translation id="5799940914270080805">Changing these settings might break sites.</translation>
 <translation id="9204041448536398473">Global Shield settings</translation>
 <translation id="2108334320919763866">Global defaults</translation>
+<translation id="4516904298421534459">Filter lists</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="131231380815754440">Enable HTTPS</translation>
 <translation id="4824468494729001999">Block scripts</translation>
 <translation id="3246600097575692802">Enable scripts blocked</translation>
 <translation id="3603525299146223354">Trackers &amp; ads</translation>
 <translation id="4448697385961650078">Block trackers &amp; ads</translation>
+<translation id="8593054718053894081">Aggressively block trackers &amp; ads</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
 <translation id="4941539331405513605">Block cross-site cookies</translation>
 <translation id="6883611015375728278">Block all cookies</translation>
 <translation id="5657156137487675418">Allow all cookies</translation>
 <translation id="8366221601425141146">Fingerprinting blocked</translation>
+<translation id="6531019308847917584">Block fingerprinting</translation>
+<translation id="1899608006846124237">Aggressively block fingerprinting</translation>
 <translation id="8034285923190068220">Allow fingerprinting</translation>
 <translation id="1992750560347846445">Report site</translation>
 <translation id="2387532482048804818">Tell us if the site wasn't working properly with Shields up.</translation>
+<translation id="3795015906457257780">You are viewing this site without Brave's privacy protections.</translation>
+<translation id="7194012750329511146">Brave Shields
+<ph name="NUMBER"/> Trackers, ads and more blocked</translation>
 <translation id="1742469581923031760">Connecting…</translation>
 <translation id="1287487756047817908">Disconnecting…</translation>
 <translation id="2325196879156848326">Connection failed</translation>
 <translation id="745054660363064771">Can't connect to server</translation>
 <translation id="3936826714240735937">Choose another server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> couldn't connect to the <ph name="REGION_NAME"/> server. You can try again, or choose another</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> couldn't connect to the <ph name="REGION_NAME"/> server. You can try again, or choose another.</translation>
 <translation id="1024255913009642477">Already purchased VPN?</translation>
 <translation id="8814357473522731680">Powered by</translation>
 <translation id="5747552184818312860">Expires</translation>
@@ -1212,6 +1235,24 @@
 <translation id="1751947227857853925">Fast and unlimited up to 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 support</translation>
 <translation id="8463313539532697053">One moment while loading…</translation>
+<translation id="4613076894734402086">Edit payment method</translation>
+<translation id="1898254156730880135">Looks like your most recent payment did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.</translation>
+<translation id="1839021455997460752">Your email address</translation>
+<translation id="5154702632169343078">Subject</translation>
+<translation id="6625978880678465492">Please choose a reason</translation>
+<translation id="6687228121145903051">Cannot connect to the VPN (Other error)</translation>
+<translation id="9184988385244077767">No internet when connected</translation>
+<translation id="21570240866965662">Slow connection</translation>
+<translation id="1219475260382643267">Website doesn't work</translation>
+<translation id="7138678301420049075">Other</translation>
+<translation id="1387340358507240698">Describe your issue</translation>
+<translation id="501818585183973587">Select the info you're willing to share with us</translation>
+<translation id="3195618332367441234">The more info you share, the easier it will be for support staff to help.</translation>
+<translation id="5682143294773821728">VPN hostname:</translation>
+<translation id="24242621812020123">App version:</translation>
+<translation id="6676791921618140305">OS version:</translation>
+<translation id="1156325797949437777">Support provided in partnership with Guardian.</translation>
+<translation id="3307461350293459700">VPN connection failed. Please try connecting again, and be sure to click "Allow" to enable Brave's VPN configuration.</translation>
 <translation id="7586151660465233733">More markets on <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">View markets and trade crypto on FTX</translation>
 <translation id="5963745988819586370">Markets</translation>

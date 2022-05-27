@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24-timers volum</translation>
 <translation id="7534079972563542000">Ustoppelige domener</translation>
 <translation id="4492298165410552103">Vil du slå på støtte for ustoppelige domener i Brave?</translation>
-<translation id="3470923752115324276">Brave kan la deg besøke .crypto-domener ved å bruke Cloudflare til å utføre forespørsler om oppslag av .crypto-domenenavn med DNS over HTTPS. Hvis du slår på dette, kan Cloudflare se .crypto-domenene du prøver å besøke, men ikke andre domener. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>vilkår for bruk<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>personvernerklæring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave kommer til å bruke Infura for å sende Ethereum JSON-RPC-kall til smartkontrakten fra Unstoppable Domains for lookupforespørsler for .crypto- (og også .x-, .con-, .nft-, .dao-, .wallet-, .888-, .blockchain-, .bitcoin-)-domenenavn. Hvis du slår på dette, vil Infura se de spesifikke domenene du prøver å besøke, men ikke andre domener. Se også Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brukervilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>personvernerklæring<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum-navnetjenesten</translation>
 <translation id="4335039108389860301">Vil du slå på støtte for Ethereum-navnetjenesten (ENS) i Brave?</translation>
-<translation id="618766505813078707">Brave kan la deg besøke .eth-domener ved å bruke Cloudflare til å utføre forespørsler om oppslag av .eth-domenenavn med DNS over HTTPS. Hvis du slår på dette, kan Cloudflare se .eth-domenene du prøver å besøke, men ikke andre domener. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>vilkår for bruk<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>personvernerklæring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Gå videre ved bruk av Cloudflare-tjener</translation>
+<translation id="8328137586971750853">Brave vil bruke Infura til å sende Ethereum JSON-RPC-kall til smarkontrakten fra Ethereum Name Service for lookupforespørsler for .eth-domener. Hvis du slår på dette, vil Infura se .eth-domenet du prøver å besøke, men vil andre domener. Se også Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brukervilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>personvernerklæring<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Fortsett med Infura-serveren</translation>
 <translation id="2356070529366658676">Spør</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Forventet ett enkelt objektparameter</translation>
 <translation id="1875861420974447980">Denne blokkjeden er allerede i bruk</translation>
 <translation id="167698752210114155">Det har oppstått en intern feil</translation>
+<translation id="2326876601333401685">Denne RPC-metoden støttes ikke</translation>
 <translation id="1128992132632883337">En intern parsingfeil har oppstått</translation>
 <translation id="1680597601664421644">Huskeregelen som importeres er ikke gyldig for Brave Wallet</translation>
 <translation id="4641919696349069826">En forespørsel er allerede aktiv</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Transaksjonsdataene 'gasPrice' er ikke gyldige</translation>
 <translation id="8909404207805041979">Transaksjonsdataene 'gas' er ikke gyldige</translation>
 <translation id="670444168393199227">Transaksjonsdataene 'value' er ikke gyldige</translation>
-<translation id="6180576227145734714">Transaksjonsdataene 'to' må være en gyldig adresse når spesifisert</translation>
 <translation id="6916219411793555838">Transaksjonsdataene 'gasPrice' eller 'maxFeePerGas' må spesifiseres</translation>
 <translation id="1406937874668963740">Transaksjonsdataene 'chainId' er ikke gyldige</translation>
 <translation id="9195349857587166771">Transaksjonsdataene 'maxFeePerGas' er ikke gyldige</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Feil under behandling av transaksjonen</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' er ikke autorisert til å signere meldingen</translation>
 <translation id="8719220598078667817">Kunne ikke signere transaksjonen</translation>
-<translation id="5486744676117070166">Kunne ikke hente den neste nonce-verdien</translation>
 <translation id="875506212625074179">Ugyldig kjede-ID-svar fra RPC-tjenesten</translation>
+<translation id="5486744676117070166">Kunne ikke hente den neste nonce-verdien</translation>
+<translation id="6180576227145734714">Transaksjonsdataene 'to' må være en gyldig adresse når spesifisert</translation>
 <translation id="4958950550253325418">Defi-apper</translation>
 <translation id="735961408871282410">NFT-markedsplasser</translation>
 <translation id="7740287852186792672">Søkeresultater</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x behandler Ethereum-adressen og IP-adressen for å fullføre en transaksjon (inkludert å hente priser). 0x bruker KUN disse dataene for å behandle transaksjoner.</translation>
 <translation id="4626407663177532837">Tilbudet omfatter en Brave-avgift på 0,875 %.</translation>
 <translation id="8368540604723748428">For mange desimaler</translation>
+<translation id="6575120282593094155">Du har ikke noen <ph name="ACCOUNT_TYPE"/>-konto ennå. vil du opprette en nå?</translation>
 <translation id="2704606927547763573">Kopiert</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave-lommeboken</translation>
 <translation id="8303434745767477417">Ha et inventar av kryptoressurser. Hold øye med hvordan porteføljen din gjør det, og ha interaksjon med web 3 DApps. Handle, invester, lån og lån ut med DeFi – alt dette rett i den private Brave-nettleseren. Ingen utvidelser eller nedlastinger kreves.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Pris i</translation>
 <translation id="2490428413101944234">Test faucet</translation>
 <translation id="3352959425838279177">Få Ether fra en kran for <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Fortsett til Wyre</translation>
-<translation id="2581671693710952401">Skaff Ether</translation>
 <translation id="8009571545960303544">Det bes om signaturen din</translation>
 <translation id="5294062982587710720">Vær oppmerksom på at Brave ikke kan gå god for hva som skjer hvis du signerer. En signatur kan autorisere nesten en hvilken som helst operasjon i kontoen din eller på dine vegne, herunder blant annet å gi full kontroll over kontoen og kryptoressursene dine til siden som kommer med forespørselen, Signer bare hvis du er sikker på at du stoler på den aktuelle siden og vil gjøre denne handlingen.</translation>
 <translation id="3474375934783434676">Signer på egen risiko</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">neste</translation>
 <translation id="793994607260936590">første</translation>
 <translation id="4709524402122994378">transaksjoner</translation>
+<translation id="4591079278963448049">Den tilhørende token-kontoen finnes ikke ennå. Et lite SOL-beløp vil brukes på å opprette og finansiere en.</translation>
 <translation id="523862956770478816">Nettstedstillatelser</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> kontoer koblet til</translation>
 <translation id="4305817255990598646">Bytt</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Sendt inn</translation>
 <translation id="2331676293859649642">Bekreftet</translation>
 <translation id="1165039591588034296">Feil</translation>
+<translation id="8373210463207847451">Droppet</translation>
 <translation id="9065572743819293042">Nylige transaksjoner</translation>
 <translation id="4235538284468006757">Transaksjonsinfo</translation>
 <translation id="7488671812634887146">Speedup</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 dager med krypto-giveaways, USD 500 000 i premier</translation>
 <translation id="8292716346768453265">Bli med nå!</translation>
 <translation id="6423985584914773314">Ikke en gyldig FIL-adresse</translation>
+<translation id="3898731124813934210">Kjøp med Wyre</translation>
+<translation id="5522073372365069684">Kjøp med Ramp</translation>
 <translation id="8528916244724490964">Alle nettverk</translation>
 <translation id="2781668117338732220">Sekundære nettverk</translation>
 <translation id="2816106784624007524">«Gas»-grensen må være et heltall større enn 0</translation>
+<translation id="3354376789153561654">Transaksjonsdata 'til' må spesifiseres</translation>
+<translation id="8728991256628663004">Transaksjonsdata 'fra' må være en gyldig Filecoin-adresse</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
@@ -1215,7 +1221,7 @@
 <translation id="2325196879156848326">Tilkoblingen mislyktes</translation>
 <translation id="745054660363064771">Kan ikke koble til serveren</translation>
 <translation id="3936826714240735937">Velg en annen server</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kunne ikke koble til <ph name="REGION_NAME"/>-serveren. Du kan prøve på nytt, eller velge en annen</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> kunne ikke kobles til <ph name="REGION_NAME"/>-serveren. Du kan prøve på nytt, eller velge en annen.</translation>
 <translation id="1024255913009642477">Har du allerede kjøpt en VPN?</translation>
 <translation id="8814357473522731680">Driftet av</translation>
 <translation id="5747552184818312860">Utløper</translation>
@@ -1228,6 +1234,24 @@
 <translation id="1751947227857853925">Raskt og ubegrenset opp til 100 Mbps</translation>
 <translation id="1400240082805528049">Døgnåpen brukerstøtte</translation>
 <translation id="8463313539532697053">Vent et øyeblikk mens vi laster inn…</translation>
+<translation id="4613076894734402086">Endre betalingsmåte</translation>
+<translation id="1898254156730880135">Det ser ut til at den siste betalingen ikke gikk gjennom. Tilgangen til dette abonnementet settes på pause til problemet er løst. Prøv å endre betalingsmåte, eller kontakt Brave-brukerstøtten.</translation>
+<translation id="1839021455997460752">E-postadressen din</translation>
+<translation id="5154702632169343078">Emne</translation>
+<translation id="6625978880678465492">Velg en årsak</translation>
+<translation id="6687228121145903051">Kan ikke koble til VPN-nettverket (annen feil)</translation>
+<translation id="9184988385244077767">Ikke internett når tilkoblet</translation>
+<translation id="21570240866965662">Treg tilkobling</translation>
+<translation id="1219475260382643267">Nettsiden virker ikke</translation>
+<translation id="7138678301420049075">Annet</translation>
+<translation id="1387340358507240698">Beskriv problemet</translation>
+<translation id="501818585183973587">Velg hvilken informasjon du er villig til å dele med oss</translation>
+<translation id="3195618332367441234">Jo mer informasjon du deler, jo enklere blir det for brukerstøtten å hjelpe deg.</translation>
+<translation id="5682143294773821728">VPN-vertsnavn</translation>
+<translation id="24242621812020123">Appversjon:</translation>
+<translation id="6676791921618140305">OS-versjon:</translation>
+<translation id="1156325797949437777">Brukerstøtte gis i samarbeid med Guardian.</translation>
+<translation id="3307461350293459700">VPN-tilkoblingen mislyktes. Prøv å koble til igjen, og husk å trykke på Tillat for å aktivere Braves VPN-konfigurasjon.</translation>
 <translation id="7586151660465233733">Flere markeder på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Se markeder og handle krypto på FTX</translation>
 <translation id="5963745988819586370">Markeder</translation>

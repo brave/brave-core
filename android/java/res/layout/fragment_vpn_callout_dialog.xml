@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_marginTop="-7dp"
-        android:src="@drawable/ic_embellishments"
+        app:srcCompat="@drawable/ic_embellishments"
         android:contentDescription="@null"/>
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_vpn_shield"
+            app:srcCompat="@drawable/ic_vpn_shield"
             android:contentDescription="@null"/>
 
         <TextView
@@ -118,6 +118,6 @@
         android:layout_gravity="end|top"
         android:tint="@color/brave_stats_close_button_color"
         android:padding="16dp"
-        android:src="@drawable/btn_close"/>
+        app:srcCompat="@drawable/btn_close"/>
 
 </FrameLayout>

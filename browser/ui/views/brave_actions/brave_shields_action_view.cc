@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -122,15 +123,22 @@ BraveShieldsActionView::GetImageSource() {
   auto preferred_size = GetPreferredSize();
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
 
-  const auto* const color_provider =
-      web_contents
-          ? &web_contents->GetColorProvider()
-          : ui::ColorProviderManager::Get().GetColorProviderFor(
-                ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(
-                    nullptr));
+  auto get_color_provider_callback = base::BindRepeating(
+      [](base::WeakPtr<content::WebContents> weak_web_contents) {
+        const auto* const color_provider =
+            weak_web_contents
+                ? &weak_web_contents->GetColorProvider()
+                : ui::ColorProviderManager::Get().GetColorProviderFor(
+                      ui::NativeTheme::GetInstanceForNativeUi()
+                          ->GetColorProviderKey(nullptr));
+        return color_provider;
+      },
+      web_contents ? web_contents->GetWeakPtr()
+                   : base::WeakPtr<content::WebContents>());
 
   std::unique_ptr<IconWithBadgeImageSource> image_source(
-      new BraveActionIconWithBadgeImageSource(preferred_size, color_provider));
+      new BraveActionIconWithBadgeImageSource(
+          preferred_size, std::move(get_color_provider_callback)));
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   bool is_enabled = false;
   std::string badge_text;

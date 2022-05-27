@@ -565,6 +565,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletDeviceUnknownScheme", IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR},
     {"braveWalletApprovalTransactionIntent",
      IDS_BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT},
+    {"braveWalletLedgerFilecoinUnlockError",
+     IDS_BRAVE_WALLET_LEDGER_FILECOIN_UNLOCK_ERROR},
     {"braveWalletLedgerValidationError",
      IDS_BRAVE_WALLET_LEDGER_VALIDATION_ERROR},
     {"braveWalletHardwareAccountNotFound",

@@ -30,7 +30,7 @@
 
     <!-- Day/Night colors -->
     <color name="brave_wallet_day_night_text_color">@android:color/white</color>
-    <color name="brave_wallet_day_night_icon_color">@android:color/white</color>
+    <color name="brave_wallet_day_night_icon_color">#C2C4CF</color>
 
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#84889C</color>

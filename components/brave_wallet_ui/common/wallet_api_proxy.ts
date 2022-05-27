@@ -19,6 +19,7 @@ export default class WalletApiProxy {
   txService = new BraveWallet.TxServiceRemote()
   ethTxManagerProxy = new BraveWallet.EthTxManagerProxyRemote()
   solanaTxManagerProxy = new BraveWallet.SolanaTxManagerProxyRemote()
+  filTxManagerProxy = new BraveWallet.FilTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
 
   addJsonRpcServiceObserver (store: Store) {

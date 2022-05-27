@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24HR Volume</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">在 Brave 中啟用支援 Unstoppable Domains？</translation>
-<translation id="3470923752115324276">Brave 可使用 Cloudflare 來透過 DNS，而不是 HTTPS 處理 .crypto 域名的查詢要求，讓您造訪 .crypto 網域。如您啟用此功能，Cloudflare 將會看到您想造訪的 .crypto 網域，但無法看到其他網域。請見 Cloudflare 的<ph name="BEGIN_CF_TOU_LINK"/>使用條款<ph name="END_CF_TOU_LINK"/>與<ph name="BEGIN_CF_PRIVACY_LINK"/>隱私政策<ph name="END_CF_PRIVACY_LINK"/>。</translation>
+<translation id="2173151783558384314">Brave 將會使用 Infura 將 Ethereum JSON-RPC 呼叫發送到 Unstoppable Domains 的智能合約，以解析 .crypto (以及 .x、.coin、.nft、.dao、.wallet、.888、.blockchain、.bitcoin) 網域名稱的查詢請求。如果您啟用此功能，Infura 將能看見您嘗試造訪的特定網域，但無法看到其他網域。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
 <translation id="6513892817556267573">以太坊域名服務</translation>
 <translation id="4335039108389860301">在 Brave 中啟用支援以太坊域名服務 (ENS)？</translation>
-<translation id="618766505813078707">Brave 可使用 Cloudflare 來透過 DNS，而不是 HTTPS 處理 .eth 域名的查詢要求，讓您造訪 .eth 網域。如您啟用此功能，Cloudflare 將會看到您想造訪的 .eth 網域，但無法看到其他網域。請見 Cloudflare 的<ph name="BEGIN_CF_TOU_LINK"/>使用條款<ph name="END_CF_TOU_LINK"/>與<ph name="BEGIN_CF_PRIVACY_LINK"/>隱私政策<ph name="END_CF_PRIVACY_LINK"/>。</translation>
-<translation id="5636651007798897342">使用 Cloudflare 伺服器繼續</translation>
+<translation id="8328137586971750853">Brave 將會使用 Infura 將 Ethereum JSON-RPC 呼叫發送到 Ethereum Name Service 的智能合約，以解析 .eth 網域名稱的查詢請求。如果您啟用此功能，Infura 將能看見您嘗試造訪的 .eth 網域，但無法看到其他網域。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
+<translation id="7378412287463452336">使用 Infura 伺服器繼續操作</translation>
 <translation id="2356070529366658676">詢問</translation>
 <translation id="2218918398178303658">透過 HTTPS 的 DNS</translation>
 <translation id="1448289340149908413">以太坊</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">預期的單一物件參數。</translation>
 <translation id="1875861420974447980">此鏈 ID 已有人使用</translation>
 <translation id="167698752210114155">發生內部錯誤</translation>
+<translation id="2326876601333401685">不支援這種 RPC 方法。</translation>
 <translation id="1128992132632883337">發生回應剖析錯誤</translation>
 <translation id="1680597601664421644">匯入的助憶鍵不適用於 Brave 錢包</translation>
 <translation id="4641919696349069826">要求已在進行中</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">交易資料 'gasPrice' 無效</translation>
 <translation id="8909404207805041979">交易資料 'gas' 無效</translation>
 <translation id="670444168393199227">交易資料 'value' 無效</translation>
-<translation id="6180576227145734714">交易資料 'to' 在指定時必須為有效的位址</translation>
 <translation id="6916219411793555838">必須指定交易資料 'gasPrice' 或 'maxFeePerGas'</translation>
 <translation id="1406937874668963740">交易資料 'chainId' 無效</translation>
 <translation id="9195349857587166771">交易資料 'maxFeePerGas' 無效</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">處理交易時發生錯誤</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' 未獲授權簽署訊息</translation>
 <translation id="8719220598078667817">無法簽署交易</translation>
-<translation id="5486744676117070166">無法取得下一個 nonce 值</translation>
 <translation id="875506212625074179">來自 RPC 服務的區塊鏈 ID 回應無效</translation>
+<translation id="5486744676117070166">無法取得下一個 nonce 值</translation>
+<translation id="6180576227145734714">交易資料 'to' 在指定時必須為有效的位址</translation>
 <translation id="4958950550253325418">Defi 應用程式</translation>
 <translation id="735961408871282410">NFT 市場</translation>
 <translation id="7740287852186792672">搜尋結果</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x 將會處理 Ethereum 位址和 IP 位址以履行交易 (包括取得報價)。0x 只會將此資料用於處理交易的用途。</translation>
 <translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
 <translation id="8368540604723748428">小數位過多</translation>
+<translation id="6575120282593094155">您還沒有 <ph name="ACCOUNT_TYPE"/> 帳戶，要現在建立嗎？</translation>
 <translation id="2704606927547763573">已複製</translation>
 <translation id="1420318137760245955">歡迎使用新 Brave 錢包</translation>
 <translation id="8303434745767477417">保管加密資產。追蹤投資組合表現，並與 web 3 DApps 互動。使用 DeFi 交易、投資、借貸和貸款。所有這一切皆可在 Brave 私密瀏覽器中完成。無需延伸組件，無需下載。</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">價格</translation>
 <translation id="2490428413101944234">測試水管</translation>
 <translation id="3352959425838279177">從水管獲取 Ether 以用於 <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">繼續至 Wyre</translation>
-<translation id="2581671693710952401">取得乙太幣</translation>
 <translation id="8009571545960303544">正在請求您的簽署</translation>
 <translation id="5294062982587710720">請注意，Brave 無法驗證您簽名後會發生什麼。簽名可以授權別人進行帳戶的幾乎任何操作，包括（但不限於）將您的帳戶和加密資產的完全控制權交給提出請求的網站。因此只有在您確定要採取此操作並信任請求的網站時才簽名。</translation>
 <translation id="3474375934783434676">簽名風險自擔</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">下一步</translation>
 <translation id="793994607260936590">第一</translation>
 <translation id="4709524402122994378">交易紀錄</translation>
+<translation id="4591079278963448049">尚未與任何代幣帳戶建立關聯。您需使用小額 SOL 建立帳戶及存入資金。</translation>
 <translation id="523862956770478816">網站權限</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> 個帳戶已連線</translation>
 <translation id="4305817255990598646">切換</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">已送出</translation>
 <translation id="2331676293859649642">已確認</translation>
 <translation id="1165039591588034296">錯誤</translation>
+<translation id="8373210463207847451">丟棄</translation>
 <translation id="9065572743819293042">最近交易</translation>
 <translation id="4235538284468006757">交易詳細資訊</translation>
 <translation id="7488671812634887146">加速</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">加密貨幣贈送活動為期 7 天，獎項價值約 50 萬美元。</translation>
 <translation id="8292716346768453265">現在就參加！</translation>
 <translation id="6423985584914773314">此 FIL 地址無效</translation>
+<translation id="3898731124813934210">以 Wyre 購買</translation>
+<translation id="5522073372365069684">以 Ramp 購買</translation>
 <translation id="8528916244724490964">所有網路</translation>
 <translation id="2781668117338732220">次要網路</translation>
 <translation id="2816106784624007524">Gas 上限必須為大於 0 的整數</translation>
+<translation id="3354376789153561654">請指定「收款人」交易資料</translation>
+<translation id="8728991256628663004">「付款人」交易資料必須是有效的 Filecoin 位址</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">連線失敗</translation>
 <translation id="745054660363064771">無法連線至伺服器</translation>
 <translation id="3936826714240735937">選擇另一個伺服器</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> 無法連線至 <ph name="REGION_NAME"/> 伺服器。您可以再試一次，或選擇另一個</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> 無法與 <ph name="REGION_NAME"/> 伺服器連線。您可以再試一次，也可以選擇其他伺服器。</translation>
 <translation id="1024255913009642477">已購買 VPN？</translation>
 <translation id="8814357473522731680">技術來自</translation>
 <translation id="5747552184818312860">有效期限</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">快速且不限流量，最高 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 支援</translation>
 <translation id="8463313539532697053">正在載入 …，請稍候</translation>
+<translation id="4613076894734402086">編輯付款方式</translation>
+<translation id="1898254156730880135">您最近的一筆付款並未成功。付款問題解決之前，您將無法存取此訂閱項目。請嘗試編輯付款方式，或與 Brave 支援人員聯絡。</translation>
+<translation id="1839021455997460752">您的電子郵件地址</translation>
+<translation id="5154702632169343078">主旨</translation>
+<translation id="6625978880678465492">請選擇一項原因</translation>
+<translation id="6687228121145903051">無法連線至 VPN（其他錯誤）</translation>
+<translation id="9184988385244077767">連線時無網際網路</translation>
+<translation id="21570240866965662">連線緩慢</translation>
+<translation id="1219475260382643267">網站無法運作</translation>
+<translation id="7138678301420049075">其他</translation>
+<translation id="1387340358507240698">請說明問題</translation>
+<translation id="501818585183973587">請選取您願意與我們分享的資訊</translation>
+<translation id="3195618332367441234">您分享的資訊越多，支援人員越能為您提供協助。</translation>
+<translation id="5682143294773821728">VPN 主機名稱：</translation>
+<translation id="24242621812020123">應用程式版本：</translation>
+<translation id="6676791921618140305">作業系統版本：</translation>
+<translation id="1156325797949437777">此支援服務由 Guardian 共同提供。</translation>
+<translation id="3307461350293459700">VPN 連線失敗。請嘗試重新連線，並請務必按一下「允許」，啟用 Brave 的 VPN 設定。</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> 上的更多市場</translation>
 <translation id="952067063131306699">檢視市場並在 FTX 上交易加密貨幣</translation>
 <translation id="5963745988819586370">市場</translation>

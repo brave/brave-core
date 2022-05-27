@@ -82,7 +82,10 @@ export function ConnectWalletModal (props: Props) {
             {getString('connectWalletInfoNote')}
           </style.infoNote>
           <style.continueButton>
-            <button onClick={onContinueClick}>
+            <button
+              data-test-id='connect-continue-button'
+              onClick={onContinueClick}
+            >
               {getString('continue')}<CaretIcon direction='right' />
             </button>
           </style.continueButton>
@@ -133,7 +136,11 @@ export function ConnectWalletModal (props: Props) {
                     ])
                   }
                   <div className='login'>
-                    <a href='#' onClick={onLoginLinkClicked}>
+                    <a
+                      data-test-id='connect-login-button'
+                      href='#'
+                      onClick={onLoginLinkClicked}
+                    >
                       {getString('continueToLogin')}
                     </a>
                   </div>
@@ -165,6 +172,7 @@ export function ConnectWalletModal (props: Props) {
 
               return (
                 <button
+                  data-test-id='connect-provider-button'
                   key={provider.type}
                   onClick={onClick}
                   className={selected ? 'selected' : ''}

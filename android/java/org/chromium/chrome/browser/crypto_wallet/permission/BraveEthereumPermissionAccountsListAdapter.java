@@ -44,11 +44,16 @@ public class BraveEthereumPermissionAccountsListAdapter
     private String mSelectedAccount;
 
     public interface BraveEthereumPermissionDelegate {
-        HashSet<AccountInfo> getAccountsWithPermissions();
-        String getSelectedAccount();
-        void connectAccount(AccountInfo account);
-        void disconnectAccount(AccountInfo account);
-        void switchAccount(AccountInfo account);
+        default HashSet<AccountInfo> getAccountsWithPermissions() {
+            return null;
+        }
+        default String getSelectedAccount() {
+            return null;
+        }
+        default void connectAccount(AccountInfo account){};
+        default void disconnectAccount(AccountInfo account){};
+        default void switchAccount(AccountInfo account){};
+        default void onAccountCheckChanged(AccountInfo account, boolean isChecked){};
     }
 
     public BraveEthereumPermissionAccountsListAdapter(AccountInfo[] accountInfo,
@@ -62,8 +67,7 @@ public class BraveEthereumPermissionAccountsListAdapter
     }
 
     @Override
-    public @NonNull BraveEthereumPermissionAccountsListAdapter.ViewHolder onCreateViewHolder(
-            ViewGroup parent, int viewType) {
+    public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.brave_wallet_accounts_list_item, parent, false);
@@ -88,8 +92,7 @@ public class BraveEthereumPermissionAccountsListAdapter
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull BraveEthereumPermissionAccountsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final int arrayPosition = position;
         holder.titleText.setText(mAccountInfo[arrayPosition].name);
         holder.subTitleText.setText(stripAccountAddress(mAccountInfo[arrayPosition].address));
@@ -103,7 +106,11 @@ public class BraveEthereumPermissionAccountsListAdapter
                             if (isChecked) {
                                 mCheckedPositions.add(arrayPosition);
                             } else {
-                                mCheckedPositions.remove(arrayPosition);
+                                mCheckedPositions.remove((Integer) arrayPosition);
+                            }
+                            if (mDelegate != null) {
+                                mDelegate.onAccountCheckChanged(
+                                        mAccountInfo[arrayPosition], isChecked);
                             }
                         }
                     });

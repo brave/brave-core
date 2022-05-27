@@ -40,7 +40,10 @@ export function RewardsSummary (props: Props) {
   const { data } = props
 
   function renderRowWithNode (
-    amount: number, message: React.ReactNode, key: string) {
+    amount: number,
+    message: React.ReactNode,
+    key: string
+  ) {
     return (
       <tr>
         <td>{message}</td>
@@ -74,7 +77,10 @@ export function RewardsSummary (props: Props) {
     return (
       renderRowWithNode(data.pendingTips,
         <style.pendingAction>
-          <button onClick={props.onViewPendingTips}>
+          <button
+            data-test-id='view-pending-button'
+            onClick={props.onViewPendingTips}
+          >
             {getString('walletPendingContributions')}
           </button>
         </style.pendingAction>,

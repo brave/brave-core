@@ -266,6 +266,35 @@ void FilTxManager::GetTransactionMessageToSign(
     std::move(callback).Run(absl::nullopt);
     return;
   }
+  if (!meta->tx()->nonce()) {
+    auto from = meta->from();
+    nonce_tracker_->GetNextNonce(
+        from, base::BindOnce(&FilTxManager::OnGetNextNonceForHardware,
+                             weak_factory_.GetWeakPtr(), std::move(meta),
+                             std::move(callback)));
+  } else {
+    uint64_t nonce = meta->tx()->nonce().value();
+    OnGetNextNonceForHardware(std::move(meta), std::move(callback), true,
+                              nonce);
+  }
+}
+
+void FilTxManager::OnGetNextNonceForHardware(
+    std::unique_ptr<FilTxMeta> meta,
+    GetTransactionMessageToSignCallback callback,
+    bool success,
+    uint256_t nonce) {
+  if (!success) {
+    meta->set_status(mojom::TransactionStatus::Error);
+    tx_state_manager_->AddOrUpdateTx(*meta);
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  DCHECK_LE(nonce, static_cast<uint256_t>(UINT64_MAX));
+  meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
+  DCHECK(!keyring_service_->IsLocked());
+  meta->set_status(mojom::TransactionStatus::Approved);
+  tx_state_manager_->AddOrUpdateTx(*meta);
   std::move(callback).Run(meta->tx()->GetMessageToSign());
 }
 
@@ -331,6 +360,30 @@ void FilTxManager::OnLatestHeightUpdated(uint64_t latest_height) {
 
 FilBlockTracker* FilTxManager::GetFilBlockTracker() {
   return static_cast<FilBlockTracker*>(block_tracker_.get());
+}
+
+void FilTxManager::ProcessFilHardwareSignature(
+    const std::string& tx_meta_id,
+    const std::string& signed_tx,
+    ProcessFilHardwareSignatureCallback callback) {
+  std::unique_ptr<FilTxMeta> meta =
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
+  if (!meta) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  meta->set_status(mojom::TransactionStatus::Approved);
+  tx_state_manager_->AddOrUpdateTx(*meta);
+
+  json_rpc_service_->SendFilecoinTransaction(
+      signed_tx, base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
+                                weak_factory_.GetWeakPtr(), meta->id(),
+                                std::move(callback)));
 }
 
 }  // namespace brave_wallet

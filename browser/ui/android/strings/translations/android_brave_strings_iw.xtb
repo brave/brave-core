@@ -4,6 +4,8 @@
 <translation id="7307834434086582547">הפעל / כבה את Brave Shields</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="2278950434998763147">פותח אתרים נתמכים בצורה מאובטחת באמצעות HTTPS במקום HTTP</translation>
+<translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
+<translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
 <translation id="94154759592465111">חסום תסריטים</translation>
 <translation id="7714773920987474116">חוסם JavaScript (עלול לשבור אתרים)</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
@@ -556,7 +558,6 @@
 <translation id="1078873179929044999">בצעד הבא תראה’ ביטוי שחזור בן 12 מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
 <translation id="2359808026110333948">המשך</translation>
 <translation id="5488357322146334497">הודעה</translation>
-<translation id="7228169875515099943">נתונים</translation>
 <translation id="1904000155026201268">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="3933122286596948824">ביטוי השחזור שלך</translation>
 <translation id="5077747669435508720">יש לרשום או להעתיק את המילים האלה בסדר המדויק המוצג להלן, ולשמור אותן במקום בטוח. ביטוי השחזור שלך הוא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם ברצונך להחליף ארנק.</translation>
@@ -669,7 +670,7 @@
 <translation id="3510283489391432976">בחר את המיקום הגיאוגרפי/מדינה שלך</translation>
 <translation id="4390800080658195654">שומר על האנונימיות שלך ברשת</translation>
 <translation id="639981156979733813">תומך במהירויות של עד 100 Mbps</translation>
-<translation id="8396607116169935837">משתמש במנהרת VPN מוצפנת מאובטחת IKEv2</translation>
+<translation id="1190117345570417902">משתמש במנהרת VPN מוצפנת מאובטחת של Wireguard</translation>
 <translation id="1571230671455380494">לעולם לא נשתף או נמכור את המידע שלך</translation>
 <translation id="276866628038850725">כל התוכניות כוללות ניסיון חינם למשך 7 ימים!</translation>
 <translation id="7280825497485894053">מנוי חודשי</translation>
@@ -694,7 +695,7 @@
 אם אינך מקבל בקשה זו, VPN לא יתחבר מחדש וחיבור האינטרנט שלך לא יהיה מאובטח.</translation>
 <translation id="2429299231491852747">קבל את בקשת החיבור</translation>
 <translation id="3428909627460825679">יצירת פרופיל VPN נכשלה.  נסה שוב.</translation>
-<translation id="8584119457978684056">אימות אסימון הרכישה נכשל. בבקשה נסה שוב.</translation>
+<translation id="1326227401245340613">אימות הרכישה נכשל. יש לנסות שוב.</translation>
 <translation id="8905950042180169719">VPN פועל ברקע</translation>
 <translation id="8681480718817027245">מנוי</translation>
 <translation id="7805768142964895445">סטטוס</translation>
@@ -705,7 +706,6 @@
 <translation id="5646376287012673985">מיקום</translation>
 <translation id="8375573361134671513">איפוס תצורה</translation>
 <translation id="850405162932416400">תמיכת VPN</translation>
-<translation id="1330148827129583049">פרופיל VPN  לא נוצר. יוצר פרופיל חדש.</translation>
 <translation id="6772117549627334582">השגת מיקום השרת נכשלה. אנא נסה שוב מאוחר יותר.</translation>
 <translation id="5863914199331127413">שם מארח ל-VPN</translation>
 <translation id="5499653136178260315">סוג מנוי</translation>
@@ -715,9 +715,9 @@
 <translation id="4395361077929528480">סוג רשת</translation>
 <translation id="755448900483975096">ספק סלולר</translation>
 <translation id="1279441577056010362">המשך לדוא"ל</translation>
-<translation id="2553687444159335134">תמיכה ניתנת בעזרת צוות Guardian. אנא בחר את המידע שנוח לך לשתף איתנו. ככל שתתחיל לשתף אותנו במידע רב יותר, כך יהיה קל יותר לצוות התמיכה שלנו לעזור לך לפתור את</translation>
+<translation id="7125582363614011660">אנו מעניקים תמיכה בעזרת צוות ה-Guardian.\n\nעליך לבחור את המידע שנוח לך לשתף איתנו.\n\nככל שנקבל ממך מידע רב יותר כבר בהתחלה, כך יהיה קל יותר לצוות התמיכה שלנו לעזור לך לפתור את הבעיה.</translation>
 <translation id="7999094850625689785">אזור שרתים הקרוב אליך ביותר ייבחר באופן אוטומטי, בהתבסס על אזור הזמן של המערכת שלך. זה מומלץ על מנת להבטיח מהירות אינטרנט גבוהה.</translation>
-<translation id="8018707825009059641">בעיות אחרות</translation>
+<translation id="4397083831618200686">בחירת הבעיה.</translation>
 <translation id="6687228121145903051">לא ניתן להתחבר ל- VPN (שגיאה אחרת)</translation>
 <translation id="9184988385244077767">אין אינטרנט בזמן התחברות</translation>
 <translation id="21570240866965662">חיבור איטי</translation>
@@ -732,7 +732,7 @@
 <translation id="1187506504156101449">אישור הרכישה נכשל:</translation>
 <translation id="8420522105268941892">אתה כבר רשום כמנוי. נסה לשחזר את המנוי.</translation>
 <translation id="74771564105268111">שגיאה!!\nנגרמה עקב ביטול של תזרים הרכישה על-ידי המשתמש.</translation>
-<translation id="3851978668258201962">שגיאה! הרכישה נכשלה.</translation>
+<translation id="7312462922610983743">שגיאה!!\nהרכישה נכשלה..</translation>
 <translation id="6452181791372256707">דחה</translation>
 <translation id="8030852056903932865">אישור</translation>
 <translation id="1597199892790541240">תשלום גז</translation>
@@ -806,11 +806,13 @@
 <translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
 <translation id="8574289650879708853">הוסף נכס מותאם אישית</translation>
+<translation id="1974060860693918893">מתקדם</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="6600400596821238377">שם Token</translation>
 <translation id="4432966365400169165">כתובת חוזה אסימון</translation>
 <translation id="4092152169181928870">סמל אסימון</translation>
 <translation id="4351811224047421378">רמת דיוק עשרוני</translation>
+<translation id="547122651977318828">ID של טוקן (רק עבור ERC721)</translation>
 <translation id="8614026298974065517">הסר נכס מותאם אישית</translation>
 <translation id="4378941981362528553">האם ברצונך להסיר אסימון <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
 <translation id="4250680216510889253">לא</translation>
@@ -872,5 +874,32 @@
 <translation id="2478788592457735063">זה עשוי להחליף את הרשת לרשת שהוספה בעבר.</translation>
 <translation id="8756686998207163764">החלף רשת</translation>
 <translation id="394256914628786902">איפשור יצירה אוטומטית של קבוצות כרטיסיות</translation>
+<translation id="5242300593039211344">נעילת ארנק</translation>
+<translation id="1108298724135935307">אתרים מחוברים</translation>
+<translation id="4255623233927788178">צפה בחסימת סייר</translation>
 <translation id="8274201358637112807">דף זה מבקש לבצע אינטראקציה עם ארנק Brave</translation>
+<translation id="3355936511340229503">שגיאת חיבור</translation>
+<translation id="4891604214809245310">לא ניתן היה להגדיר את הרשת אל<ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">נראה שיש שירותי VPN אחרים במכשיר שלך המוגדרים כ"תמיד פועל". כדי להפעיל Brave Firewall + VPN, יש לכבות  תחילה את הגדרת "תמיד פועל" עבור שירותי VPN אחרים לפני ניסיון התחברות נוסף. אם הבעיה נמשכת, יש לנסות ולהסיר את ההתקנה של שירותי VPN אחרים.</translation>
+<translation id="85136472535634474">פתיחת הגדרות VPN</translation>
+<translation id="8352805003811526272">מאפס תצורה...</translation>
+<translation id="6809312301323611382">כבר בחרת באותו שרת.</translation>
+<translation id="7694991972030057904">ההרשאה בוטלה</translation>
+<translation id="9106265941552476098">דחיית עסקאות <ph name="TRANSACTION_LENGTH"/></translation>
+<translation id="523862956770478816">הרשאות אתר</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/>חשבונות חוברו</translation>
+<translation id="4305817255990598646">החלף</translation>
+<translation id="4804818685124855865">נתק</translation>
+<translation id="8009571545960303544">נדרשת חתימתך</translation>
+<translation id="1982257600591932657">שם רשת</translation>
+<translation id="5052727830821470769">כתובת URL של הרשת</translation>
+<translation id="4822132585477111396">מזהה שרשרת</translation>
+<translation id="7131971375297699539">סמל מטבע</translation>
+<translation id="7982789257301363584">רשת</translation>
+<translation id="2521480044079508357">זה יאפשר שימוש ברשת זו בתוך ה-Brave Wallet.</translation>
+<translation id="4717431746210146708">לאפשר לאתר זה להוסיף רשת?</translation>
+<translation id="3378339846292573874">הוסף אסימון מוצע</translation>
+<translation id="2322227405137827074">האם תהיה מעוניין לייבא אסימון זה?</translation>
+<translation id="1324417023773393937">דפדפן Brave</translation>
+<translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
 </translationbundle>

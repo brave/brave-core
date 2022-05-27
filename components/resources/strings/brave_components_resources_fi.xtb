@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24 tunnin volyymi</translation>
 <translation id="7534079972563542000">Pysäyttämättömät verkkotunnukset</translation>
 <translation id="4492298165410552103">Otetaanko pysäyttämättömien verkkotunnisten tuki käyttöön Bravessa?</translation>
-<translation id="3470923752115324276">Braven avulla voit vierailla .crypto-verkkotunnuksissa käyttämällä Cloudflarea selvittämään .crypto-verkkotunnuksen nimitarkistuspyynnöt käyttämällä DNS:ää HTTPS:n kautta. Jos otat tämän käyttöön, Cloudflare näkee avaamasi .crypto-verkkotunnuksen, mutta ei muita verkkotunnuksia. Lue Cloudflaren <ph name="BEGIN_CF_TOU_LINK"/>käyttöehdot<ph name="END_CF_TOU_LINK"/> ja <ph name="BEGIN_CF_PRIVACY_LINK"/>tietosuojakäytäntö<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">Brave tulee käyttämään Infuraa lähettääkseen Ethereum JSON-RPC -kutsuja älykkääseen sopimukseen pysäyttämättömistä verkkotunnuksista selvittääkseen .crypto (ja myös .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) -verkkotunnuksen nimen hakupyynnöt. Jos otat tämän käyttöön, Infura näkee ne tietyt verkkotunnukset, joissa yrität käydä, mutta se ei pysty näkemään muita verkkotunnuksia. Katso Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoja<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöä<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum-nimipalvelu</translation>
 <translation id="4335039108389860301">Haluatko ottaa ENS-palvelun (Ethereum Name Service) käyttöön Bravessa?</translation>
-<translation id="618766505813078707">Braven avulla voit vierailla .eth-verkkotunnuksissa käyttämällä Cloudflarea selvittämään .eth-verkkotunnuksen nimitarkistuspyynnöt käyttämällä DNS:ää HTTPS:n kautta. Jos otat tämän käyttöön, Cloudflare näkee avaamasi .eth-verkkotunnuksen, mutta ei muita verkkotunnuksia. Lue Cloudflaren <ph name="BEGIN_CF_TOU_LINK"/>käyttöehdot<ph name="END_CF_TOU_LINK"/> ja <ph name="BEGIN_CF_PRIVACY_LINK"/>tietosuojakäytäntö<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Jatka Cloudflare-palvelimella</translation>
+<translation id="8328137586971750853">Brave tulee käyttämään Infuraa lähettääkseen Ethereum JSON-RPC -kutsuja älykkääseen sopimukseen Ethereum-nimipalvelusta selvittääkseen .eth-verkkotunnuksen nimen hakupyynnöt. Jos otat tämän käyttöön, Infura näkee .eth-verkkotunnuksen, jossa yrität käydä, mutta se ei pysty näkemään muita verkkotunnuksia. Katso Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoja<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöä<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Jatka Infura-palvelimella</translation>
 <translation id="2356070529366658676">Kysy</translation>
 <translation id="2218918398178303658">DNS yli HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Odotti yhtä objektiparametriä.</translation>
 <translation id="1875861420974447980">Tämä ketjun tunnus on käytössä</translation>
 <translation id="167698752210114155">Tapahtui sisäinen virhe</translation>
+<translation id="2326876601333401685">Tätä RPC-menetelmää ei tueta.</translation>
 <translation id="1128992132632883337">Tapahtui vastauksen jäsennysvirhe</translation>
 <translation id="1680597601664421644">Tuotava muistisääntö ei kelpaa Brave Walletille</translation>
 <translation id="4641919696349069826">Pyyntö on jo käynnissä</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Maksutapahtumatieto 'gasPrice' on virheellinen</translation>
 <translation id="8909404207805041979">Maksutapahtumatieto 'gas' on virheellinen</translation>
 <translation id="670444168393199227">Maksutapahtumatieto 'value' on virheellinen</translation>
-<translation id="6180576227145734714">Maksutapahtumatiedon 'to' on oltava kelvollinen osoite määritettäessä</translation>
 <translation id="6916219411793555838">Maksutapahtumatieto 'gasPrice' tai 'maxFeePerGas' on määritettävä</translation>
 <translation id="1406937874668963740">Maksutapahtumatieto 'chainId' on virheellinen</translation>
 <translation id="9195349857587166771">Maksutapahtumatieto 'maxFeePerGas' on virheellinen</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Virhe maksutapahtuman käsittelyssä</translation>
 <translation id="4886059598718763020"><ph name="VALUE"/>' ei ole valtuutettu allekirjoittamaan viestiä</translation>
 <translation id="8719220598078667817">Maksutapahtuman allekirjoitus epäonnistui</translation>
-<translation id="5486744676117070166">Seuraavan nonssin arvoa ei saatu</translation>
 <translation id="875506212625074179">Virheellinen ketjun tunnuksen vastaus RPC-palvelulta</translation>
+<translation id="5486744676117070166">Seuraavan nonssin arvoa ei saatu</translation>
+<translation id="6180576227145734714">Maksutapahtumatiedon 'to' on oltava kelvollinen osoite määritettäessä</translation>
 <translation id="4958950550253325418">Defi-sovellukset</translation>
 <translation id="735961408871282410">NFT-markkinapaikat</translation>
 <translation id="7740287852186792672">Hakutulokset</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x käsittelee Ethereum-osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien hintatarjousten saaminen). 0x käyttää näitä tietoja VAIN tapahtumien käsittelyyn.</translation>
 <translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
 <translation id="8368540604723748428">Liian monta desimaalipaikkaa</translation>
+<translation id="6575120282593094155">Sinulla ei vielä ole <ph name="ACCOUNT_TYPE"/>-tiliä. Luo sellainen nyt?</translation>
 <translation id="2704606927547763573">Kopioitu</translation>
 <translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
 <translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Hinta valuutassa:</translation>
 <translation id="2490428413101944234">Ilmaisia kolikoita jakava palvelu</translation>
 <translation id="3352959425838279177">Hanki Ether-kolikkoa kolikoita jakavasta palvelusta <ph name="SELECTED_NETWORK"/> varten</translation>
-<translation id="7420359180991315365">Jatka Wyreen</translation>
-<translation id="2581671693710952401">Hanki Etheriä</translation>
 <translation id="8009571545960303544">Allekirjoitustasi pyydetään</translation>
 <translation id="5294062982587710720">Huomaa, että Brave ei voi tarkistaa, mitä tapahtuu, jos allekirjoitat. Allekirjoitus voi valtuuttaa melkein minkä tahansa toiminnon tililläsi tai puolestasi, mukaan lukien (mutta ei rajoittuen) tilin ja kryptovarojen täydellisen hallinnan antaminen pyynnön esittäneelle sivustolle. Allekirjoita vain, jos olet varma, että haluat suorittaa tämän toiminnon ja että pystyt luottamaan pyytävään sivustoon.</translation>
 <translation id="3474375934783434676">Allekirjoita omalla vastuullasi</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">seuraava</translation>
 <translation id="793994607260936590">ensimmäinen</translation>
 <translation id="4709524402122994378">tapahtumat</translation>
+<translation id="4591079278963448049">Liittyvää token-tiliä ei vielä ole olemassa. Pieni määrä SOLia käytetään sen luomiseen ja rahoittamiseen.</translation>
 <translation id="523862956770478816">Sivuston käyttöoikeudet</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> liitettyä tiliä</translation>
 <translation id="4305817255990598646">Vaihda</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Lähetetty</translation>
 <translation id="2331676293859649642">Vahvistettu</translation>
 <translation id="1165039591588034296">Virhe</translation>
+<translation id="8373210463207847451">Luovutettu</translation>
 <translation id="9065572743819293042">Äskettäiset maksutapahtumat</translation>
 <translation id="4235538284468006757">Maksutapahtuman tiedot</translation>
 <translation id="7488671812634887146">Nopeuta</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7 päivän krypto-lahjakampanja, n. $500 000 dollarin palkinnot.</translation>
 <translation id="8292716346768453265">Osallistu nyt!</translation>
 <translation id="6423985584914773314">Virheellinen FIL-osoite</translation>
+<translation id="3898731124813934210">Osta Wyren kautta</translation>
+<translation id="5522073372365069684">Osta Rampin kautta</translation>
 <translation id="8528916244724490964">Kaikki verkot</translation>
 <translation id="2781668117338732220">Toissijaiset verkot</translation>
 <translation id="2816106784624007524">Gas-rajan on oltava kokonaisluku, joka on suurempi kuin 0</translation>
+<translation id="3354376789153561654">Maksutapahtumatiedon 'to' on määritettävä</translation>
+<translation id="8728991256628663004">Maksutapahtumatiedon 'from' on oltava kelvollinen Filecoin-osoite</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Yhdistäminen epäonnistui</translation>
 <translation id="745054660363064771">Ei voitu yhdistää palvelimeen</translation>
 <translation id="3936826714240735937">Valitse toinen palvelin</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ei pystynyt muodostamaan yhteyttä <ph name="REGION_NAME"/> palvelimeen. Voit yrittää uudelleen tai valita toisen</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ei pystynyt muodostamaan yhteyttä <ph name="REGION_NAME"/>-palvelimeen. Voit yrittää uudelleen tai valita toisen palvelimen.</translation>
 <translation id="1024255913009642477">Oletko jo ostanut VPN:n?</translation>
 <translation id="8814357473522731680">Palvelun tarjoaa</translation>
 <translation id="5747552184818312860">Vanhenee</translation>
@@ -1229,6 +1235,11 @@
 <translation id="1751947227857853925">Nopea ja rajoittamaton, jopa 100 Mbit/s</translation>
 <translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
 <translation id="8463313539532697053">Odota hetki, lataus käynnissä…</translation>
+<translation id="6687228121145903051">VPN:ään ei saada yhteyttä (muu virhe)</translation>
+<translation id="9184988385244077767">Ei Internet-yhteyttä yhdistämisen jälkeen</translation>
+<translation id="21570240866965662">Hidas yhteys</translation>
+<translation id="1219475260382643267">Verkkosivusto ei toimi</translation>
+<translation id="7138678301420049075">Muu</translation>
 <translation id="7586151660465233733">Lisää markkinoita sivustolla <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Katso markkinoita ja käy kauppaa kryptolla FTX:ssä</translation>
 <translation id="5963745988819586370">Markkinat</translation>

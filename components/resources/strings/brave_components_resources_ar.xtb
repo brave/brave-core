@@ -669,11 +669,11 @@
 <translation id="1164622162816276433">حجم المعاملات خلال 24 ساعة</translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
-<translation id="3470923752115324276">يمكّنك Brave من زيارة نطاقات crypto. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم نطاق crypto. باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسوف يتعرف خادم كلاود فلير على نطاق crypto. الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام كلاود فلير <ph name="BEGIN_CF_TOU_LINK"/><ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="2173151783558384314">سيستخدم Brave منصة Infura لإصدار استدعاءات بروتوكول JSON-RPC للإيثريوم إلى العقد الذكي من النطاقات التي لا يمكن إيقافها لحل طلبات البحث عن اسم نطاق .crypto (وأيضًا .x، .coin، .nft، .dao، .wallet، .888، .blockchain، .bitcoin). إذا قمت بتمكين هذا، فستتعرف Infura على هذه النطاقات المحددة التي تحاول زيارتها ولكنها لن تتمكن من التعرف على النطاقات الأخرى. راجع <ph name="BEGIN_INFURA_TOU_LINK"/>شروط الاستخدام<ph name="END_INFURA_TOU_LINK"/> و<ph name="BEGIN_INFURA_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_INFURA_PRIVACY_LINK"/> من Infura.</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
 <translation id="4335039108389860301">هل تريد تمكين دعم خدمة اسم إيثريوم (ENS) في متصفح Brave؟</translation>
-<translation id="618766505813078707">يمكّنك Brave من زيارة نطاقات eth. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم المجال باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسيتمكن خادم كلاود فلير من التعرف على نطاق .eth.الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام <ph name="BEGIN_CF_TOU_LINK"/> كلاود فلير <ph name="END_CF_TOU_LINK"/> aو<ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">تابع باستخدام خادم كلاود فلير</translation>
+<translation id="8328137586971750853">سيستخدم Brave منصة Infura لإصدار استدعاءات بروتوكول JSON-RPC للإيثريوم إلى العقد الذكي من خدمة اسم إيثريوم لحل طلبات البحث عن اسم نطاق .eth إذا قمت بتمكين هذا، فستتمكن Infura من التعرف على نطاق .eth الذي تحاول زيارته ولكن لن تتمكن من التعرف على النطاقات الأخرى. راجع <ph name="BEGIN_INFURA_TOU_LINK"/>شروط الاستخدام<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_INFURA_PRIVACY_LINK"/> من Infura.</translation>
+<translation id="7378412287463452336">متابعة استخدام خادم Infura</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="2218918398178303658">بروتوكول DNS عبر HTTPS</translation>
 <translation id="1448289340149908413">إيثريوم</translation>
@@ -800,6 +800,7 @@
 <translation id="9161147058107529840">Expected لم تتلقّ معيار object.</translation>
 <translation id="1875861420974447980">معرّف السلسلة هذا مستخدم حاليًّا</translation>
 <translation id="167698752210114155">حدث خطأ داخلي</translation>
+<translation id="2326876601333401685">طريقة RPC هذه غير مدعومة.</translation>
 <translation id="1128992132632883337">حدث خطأ في تحليل الاستجابة</translation>
 <translation id="1680597601664421644">استيراد مساعد الذاكرة غير صالح لمحفظة Brave</translation>
 <translation id="4641919696349069826">هناك طلب قيد التقدم بالفعل</translation>
@@ -810,7 +811,6 @@
 <translation id="7577623631309755655">بيانات المعاملة "gasPrice" غير صالحة</translation>
 <translation id="8909404207805041979">بيانات المعاملة "Gas" غير صالحة</translation>
 <translation id="670444168393199227">بيانات المعاملة "value" غير صالحة</translation>
-<translation id="6180576227145734714">يجب أن تكون بيانات المعاملة "الجهة المرسل إليها" عنوانًا صالحًا عند تحديدها</translation>
 <translation id="6916219411793555838">يجب تحديد بيانات المعاملة "gasPrice" أو "maxFeePerGas"</translation>
 <translation id="1406937874668963740">بيانات المعاملة "chainId" غير صالحة</translation>
 <translation id="9195349857587166771">بيانات المعاملة "maxFeePerGas" غير صالحة</translation>
@@ -824,8 +824,9 @@
 <translation id="1462494615260983714">خطأ في معالجة المعاملة</translation>
 <translation id="4886059598718763020"><ph name="VALUE"/> غير مخول لتوقيع الرسالة</translation>
 <translation id="8719220598078667817">تعذر توقيع المعاملة</translation>
-<translation id="5486744676117070166">تعذر الحصول على القيمة لمرة واحدة التالية</translation>
 <translation id="875506212625074179">استجابة هوية سلسلة غير صالحة من خدمة RPC</translation>
+<translation id="5486744676117070166">تعذر الحصول على القيمة لمرة واحدة التالية</translation>
+<translation id="6180576227145734714">يجب أن تكون بيانات المعاملة "الجهة المرسل إليها" عنوانًا صالحًا عند تحديدها</translation>
 <translation id="4958950550253325418">تطبيقات Defi</translation>
 <translation id="735961408871282410">أسواق NFT</translation>
 <translation id="7740287852186792672">نتائج البحث</translation>
@@ -873,6 +874,7 @@
 <translation id="151946611346774041">سيجري 0x معالجة عنوان الإيثيريوم وعنوان الـ IP لتنفيذ المعاملة (بما في ذلك الحصول على عروض الأسعار). سيستخدم 0x هذه البيانات لأغراض معالجة المعاملات فقط.</translation>
 <translation id="4626407663177532837">يشمل عرض الأسعار 0.875٪ كرسوم خاصة بـ Brave.</translation>
 <translation id="8368540604723748428">عدد المنازل العشرية أكثر مما يجب</translation>
+<translation id="6575120282593094155">ليس لديك حساب <ph name="ACCOUNT_TYPE"/>. هل تريد إنشاء حساب؟</translation>
 <translation id="2704606927547763573">تم النسخ</translation>
 <translation id="1420318137760245955">مرحبًا بك في Brave Wallet الجديد</translation>
 <translation id="8303434745767477417">احتفظ بأصول التشفير. تتبع أداء الحافظة، وتفاعل مع 3 DApps على الويب. تداول واستثمر واقترض وأقرض مع DeFi. استمتع بكامل الحقوق من متصفح الخصوصية Brave. لا يوجد هناك ملحقات ولا يتطلب الأمر تنزيل أي ملف.</translation>
@@ -998,8 +1000,6 @@
 <translation id="8569380433211549748">السعر في</translation>
 <translation id="2490428413101944234">اختبار الصنبور</translation>
 <translation id="3352959425838279177">احصل على الإيثريوم من صنبور مقابل <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">الاستمرار إلى Wyre</translation>
-<translation id="2581671693710952401">احصل على إيثر</translation>
 <translation id="8009571545960303544">جاري طلب توقيعك</translation>
 <translation id="5294062982587710720">لاحظ أن Brave لا يمكنه التحقق مما سيحدث إذا قمت بالتوقيع. يمكن أن يخول التوقيع تقريبًا أي عملية في حسابك أو نيابة عنك ، بما في ذلك (على سبيل المثال لا الحصر) منح التحكم الكامل في حسابك وأصول التشفير للموقع الذي يقدم الطلب. قم بالتوقيع فقط إذا كنت متأكدًا من رغبتك في اتخاذ هذا الإجراء، وتثق في الموقع الطالب.</translation>
 <translation id="3474375934783434676">تسجيل الدخول على مسؤوليتك الخاصة</translation>
@@ -1041,6 +1041,7 @@
 <translation id="5821668936183240062">التالي</translation>
 <translation id="793994607260936590">أولا</translation>
 <translation id="4709524402122994378">المعاملات</translation>
+<translation id="4591079278963448049">حساب الرمز المرتبط غير موجود حتى الآن. سينفق مبلغ صغير من SOL لإنشائه وتمويله.</translation>
 <translation id="523862956770478816">أذونات الموقع</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> حسابات متصلة</translation>
 <translation id="4305817255990598646">تبديل</translation>
@@ -1091,6 +1092,7 @@
 <translation id="6666273175654835609">المقدمة</translation>
 <translation id="2331676293859649642">تم التأكيد</translation>
 <translation id="1165039591588034296">خطأ</translation>
+<translation id="8373210463207847451">تم الإلقاء</translation>
 <translation id="9065572743819293042">المعاملات الأخيرة</translation>
 <translation id="4235538284468006757">تفاصيل المعاملة</translation>
 <translation id="7488671812634887146">الإسراع</translation>
@@ -1170,9 +1172,13 @@
 <translation id="7829441065063984927">7 أيام من هدايا العملات المشفرة، جوائز بقيمة 500 ألف دولار تقريبًا.</translation>
 <translation id="8292716346768453265">أدخل الآن!</translation>
 <translation id="6423985584914773314">ليس عنوان FIL صالح</translation>
+<translation id="3898731124813934210">الشراء باستخدام Wyre</translation>
+<translation id="5522073372365069684">الشراء باستخدام Ramp</translation>
 <translation id="8528916244724490964">كل الشبكات</translation>
 <translation id="2781668117338732220">الشبكات الثانوية</translation>
 <translation id="2816106784624007524">حد الغاز يجب أن يكون عددًا صحيحًا أكبر من 0</translation>
+<translation id="3354376789153561654">يجب تحديد بيانات المعاملة "إلى"</translation>
+<translation id="8728991256628663004">يجب أن تكون بيانات المعاملة "من" عنوانًا صالحًا لـ Filecoin</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1217,7 +1223,7 @@
 <translation id="2325196879156848326">فشل الاتصال</translation>
 <translation id="745054660363064771">لا يمكن الاتصال بالخادم</translation>
 <translation id="3936826714240735937">اختر خادمًا آخر</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> تعذر الاتصال بخادم<ph name="REGION_NAME"/>. يمكنك المحاولة مرة أخرى، أو اختيار خيار آخر</translation>
+<translation id="1305433007676951913">تعذر على <ph name="PRODUCT_NAME"/> الاتصال بخادم <ph name="REGION_NAME"/>. يمكنك المحاولة مرة أخرى، أو اختر خادمًا آخر.</translation>
 <translation id="1024255913009642477">هل اشتريت VPN بالفعل؟</translation>
 <translation id="8814357473522731680">مشغل بواسطة</translation>
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
@@ -1230,6 +1236,24 @@
 <translation id="1751947227857853925">سريع وغير محدود حتى 100 ميجابت في الثانية</translation>
 <translation id="1400240082805528049">دعم على مدار الساعة طوال أيام الأسبوع</translation>
 <translation id="8463313539532697053">انتظر لحظات بينما يتم التحميل…</translation>
+<translation id="4613076894734402086">تحرير طريقة الدفع</translation>
+<translation id="1898254156730880135">يبدو أنه لم يتم تسديد آخر دفعة لك. سيتوقف الوصول إلى هذا الاشتراك مؤقتًا حتى يتم حل مشكلة الدفع. جرّب تعديل طريقة الدفع لديك، أو اتصل بدعم Brave.</translation>
+<translation id="1839021455997460752">عنوان بريدك الإلكتروني</translation>
+<translation id="5154702632169343078">الموضوع</translation>
+<translation id="6625978880678465492">يُرجى اختيار سبب</translation>
+<translation id="6687228121145903051">لا يمكن الاتصال بـ VPN (خطأ آخر)</translation>
+<translation id="9184988385244077767">لا يوجد إنترنت عند الاتصال</translation>
+<translation id="21570240866965662">اتصال بطيء</translation>
+<translation id="1219475260382643267">الموقع لا يعمل</translation>
+<translation id="7138678301420049075">أخرى</translation>
+<translation id="1387340358507240698">صِف مشكلتك</translation>
+<translation id="501818585183973587">حدد المعلومات التي ترغب في مشاركتها معنا</translation>
+<translation id="3195618332367441234">كلما زادت المعلومات التي تشاركها، سيسهل على موظفي الدعم تقديم المساعدة.</translation>
+<translation id="5682143294773821728">اسم مضيف VPN:</translation>
+<translation id="24242621812020123">إصدار التطبيق:</translation>
+<translation id="6676791921618140305">إصدار نظام التشغيل:</translation>
+<translation id="1156325797949437777">الدعم المُقدم بالشراكة مع Guardian.</translation>
+<translation id="3307461350293459700">فشل اتصال شبكة VPN. يُرجى محاولة الاتصال مرة أخرى، وتأكد من النقر فوق "السماح" لتمكين تهيئة شبكة VPN الخاصة بـ Brave.</translation>
 <translation id="7586151660465233733">مزيد من الأسواق على <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">عرض الأسواق وتداول العملات المشفرة على FTX</translation>
 <translation id="5963745988819586370">الأسواق</translation>

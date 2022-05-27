@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -44,6 +45,20 @@ void EqualJSONs(const std::string& current_string,
   ASSERT_TRUE(expected_string_json);
   EXPECT_EQ(*current_json, *expected_string_json);
 }
+std::string GetSignedMessage(const std::string& message,
+                             const std::string& data) {
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("Message", "{message}");
+  base::Value signature(base::Value::Type::DICTIONARY);
+  signature.SetStringKey("Data", data);
+  signature.SetIntKey("Type", 1);
+  dict.SetKey("Signature", std::move(signature));
+  std::string json;
+  EXPECT_TRUE(base::JSONWriter::Write(dict, &json));
+  base::ReplaceFirstSubstringAfterOffset(&json, 0, "\"{message}\"", message);
+  return json;
+}
+
 }  // namespace
 
 class FilTxManagerUnitTest : public testing::Test {
@@ -431,6 +446,72 @@ TEST_F(FilTxManagerUnitTest, SomeSiteOrigin) {
 TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   const std::string from_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
   const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
+  // non-empty nonce
+  {
+    auto tx_data = mojom::FilTxData::New(
+        "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
+        "4" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+    std::string meta_id;
+    AddUnapprovedTransaction(std::move(tx_data), from_account, absl::nullopt,
+                             &meta_id);
+    auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+    ASSERT_TRUE(tx_meta);
+    EXPECT_EQ(tx_meta->from(), from_account);
+    EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+    GetTransactionMessageToSign(meta_id, R"(
+    {
+        "From": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+        "GasFeeCap": "3",
+        "GasLimit": 4,
+        "GasPremium": "2",
+        "Method": 0,
+        "Nonce": 1,
+        "Params": "",
+        "To": "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy",
+        "Value": "11",
+        "Version": 0
+    }
+  )");
+  }
+  // empty nonce
+  {
+    SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                   "Filecoin.MpoolGetNonce",
+                   R"({ "jsonrpc": "2.0", "id": 1, "result": 5 })");
+
+    auto tx_data = mojom::FilTxData::New(
+        "" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
+        "4" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+    std::string meta_id;
+    AddUnapprovedTransaction(std::move(tx_data), from_account, absl::nullopt,
+                             &meta_id);
+    auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+    ASSERT_TRUE(tx_meta);
+    EXPECT_EQ(tx_meta->from(), from_account);
+    EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+    GetTransactionMessageToSign(meta_id, R"(
+    {
+        "From": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+        "GasFeeCap": "3",
+        "GasLimit": 4,
+        "GasPremium": "2",
+        "Method": 0,
+        "Nonce": 5,
+        "Params": "",
+        "To": "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy",
+        "Value": "11",
+        "Version": 0
+    }
+  )");
+  }
+
+  GetTransactionMessageToSign("unknown id", absl::nullopt);
+  GetTransactionMessageToSign("", absl::nullopt);
+}
+
+TEST_F(FilTxManagerUnitTest, ProcessHardwareSignature) {
+  const std::string from_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+  const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
 
   auto tx_data = mojom::FilTxData::New(
       "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
@@ -442,21 +523,87 @@ TEST_F(FilTxManagerUnitTest, GetTransactionMessageToSign) {
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->from(), from_account);
   EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
-  GetTransactionMessageToSign(meta_id, R"(
-    {
-        "From": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-        "GasFeeCap": "3",
-        "GasLimit": 4,
-        "GasPremium": "2",
-        "MethodNum": 0,
-        "Nonce": 1,
-        "Params": "",
-        "To": "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy",
-        "Value": "11",
-        "Version": 0
-    }
-  )");
-  GetTransactionMessageToSign("unknown id", absl::nullopt);
-  GetTransactionMessageToSign("", absl::nullopt);
+  auto signed_message =
+      GetSignedMessage(*tx_meta->tx()->GetMessageToSign(), "data");
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolPush",
+                 R"({
+            "id": 1,
+            "jsonrpc": "2.0",
+            "result":
+            {
+                "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+            }
+        })");
+  AddInterceptorResponse("Filecoin.StateSearchMsgLimited",
+                         R"({
+            "Message":
+            {
+                "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+            },
+            "Receipt":
+            {
+                "ExitCode": 0
+            }
+        })");
+  AddInterceptorResponse("Filecoin..ChainHead",
+                         R"({
+      "Blocks":[],
+      "Cids": [{
+            "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+      }],
+      "Height": 22452
+    })");
+
+  base::RunLoop run_loop;
+  fil_tx_manager()->ProcessFilHardwareSignature(
+      meta_id, signed_message,
+      base::BindLambdaForTesting([&](bool success,
+                                     mojom::ProviderErrorUnionPtr error_union,
+                                     const std::string& err_message) {
+        EXPECT_TRUE(success);
+        ASSERT_TRUE(error_union->is_filecoin_provider_error());
+        ASSERT_EQ(error_union->get_filecoin_provider_error(),
+                  mojom::FilecoinProviderError::kSuccess);
+        ASSERT_TRUE(err_message.empty());
+        auto fil_tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+        EXPECT_EQ(fil_tx_meta->status(), mojom::TransactionStatus::Submitted);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
 }
+
+TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
+  const std::string from_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+  const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
+
+  auto tx_data = mojom::FilTxData::New(
+      "1" /* nonce */, "2" /* gas_premium */, "3" /* gas_fee_cap */,
+      "4" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
+  std::string meta_id;
+  AddUnapprovedTransaction(std::move(tx_data), from_account, absl::nullopt,
+                           &meta_id);
+  auto tx_meta = fil_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->from(), from_account);
+  EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+  auto signed_message =
+      GetSignedMessage(*tx_meta->tx()->GetMessageToSign(), "data");
+  base::RunLoop run_loop;
+  fil_tx_manager()->ProcessFilHardwareSignature(
+      "fake", signed_message,
+      base::BindLambdaForTesting([&](bool success,
+                                     mojom::ProviderErrorUnionPtr error_union,
+                                     const std::string& err_message) {
+        EXPECT_FALSE(success);
+        ASSERT_TRUE(error_union->is_filecoin_provider_error());
+        ASSERT_EQ(error_union->get_filecoin_provider_error(),
+                  mojom::FilecoinProviderError::kInternalError);
+        EXPECT_EQ(err_message, l10n_util::GetStringUTF8(
+                                   IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+}
+
 }  //  namespace brave_wallet

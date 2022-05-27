@@ -163,9 +163,12 @@ function Container (props: Props) {
   const { prevNetwork } = usePrevNetwork()
 
   React.useEffect(() => {
-    if (selectedPanel === 'connectWithSite') {
+    // Checking selectedAccounts length here to ensure that
+    // we only update this once on mount.
+    if (selectedPanel === 'connectWithSite' && selectedAccounts.length === 0) {
       const foundDefaultAccountInfo = defaultAccounts.find(account => connectingAccounts.includes(account.address.toLowerCase()))
       const foundDefaultAccount = accounts.find((account) => account.address.toLowerCase() === foundDefaultAccountInfo?.address?.toLowerCase() ?? '')
+
       if (foundDefaultAccount) {
         setSelectedAccounts([foundDefaultAccount])
       }

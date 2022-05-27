@@ -231,7 +231,7 @@
     "description": ""
   },
   "walletPendingText": {
-    "message": "There is a temporary problem verifying with $provider$. Your Brave Rewards will remain in a Pending state and retry automatically, but you can also try again later.",
+    "message": "Има временен проблем при потвърждаването с $provider$. Вашите Brave Rewards ще останат в състояние на изчакване и автоматично ще се извърши повторен опит, но можете също да опитате отново по-късно.",
     "description": "",
     "placeholders": {
       "provider": {

@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">Kiwango cha Saa 24</translation>
 <translation id="7534079972563542000">Vikoa Visivyoweza Kusimamishwa</translation>
 <translation id="4492298165410552103">Wezesha utumiaji wa Vikoa Visivyoweza Kusimamishwa katika Brave?</translation>
-<translation id="3470923752115324276">Brave inaweza kukuwezesha kutembelea vikoa vya .crypto kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .crypto kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .crypto unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
+<translation id="2173151783558384314">Brave itakuwa inatumia Infura kutoa amri za Ethereum JSON-RPC kwa mkataba mahiri kutoka kwa Unstoppable Domains ili kutatua maombi ya kukagua jina la kikoa ya .crypto (na pia .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ukiwezesha hili, Infura itaona vikoa hivyo mahususi unavyojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_INFURA_TOU_LINK"/>masharti ya matumizi<ph name="END_INFURA_TOU_LINK"/> na<ph name="BEGIN_INFURA_PRIVACY_LINK"/>sera ya faragha<ph name="END_INFURA_PRIVACY_LINK"/> ya Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Wezesha utumiaji wa Ethereum Name Service (ENS) katika Brave?</translation>
-<translation id="618766505813078707">Brave inaweza kukuwezesha kutembelea vikoa vya .eth kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .eth kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .eth unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
-<translation id="5636651007798897342">Endelea kutumia seva ya Cloudflare</translation>
+<translation id="8328137586971750853">Brave itakuwa inatumia Infura kutoa amri za Ethereum JSON-RPC kwa mkataba mahiri kutoka kwa Ethereum Name Service ili kutatua maombi ya ukaguzi wa jina ya kikoa cha .eth unachojaribu kutembelea lakini hawataweza kuona vikoa vingine. Tazama <ph name="BEGIN_INFURA_TOU_LINK"/>masharti ya matumizi<ph name="END_INFURA_TOU_LINK"/> na <ph name="BEGIN_INFURA_PRIVACY_LINK"/>sera ya faragha<ph name="END_INFURA_PRIVACY_LINK"/> ya Infura.</translation>
+<translation id="7378412287463452336">Endelea ukitumia seva ya Infura</translation>
 <translation id="2356070529366658676">Uliza</translation>
 <translation id="2218918398178303658">DNS kupitia HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">Kigezo kimoja cha kipengee kinachotarajiwa.</translation>
 <translation id="1875861420974447980">Kitambulisho hiki cha Mnyororo kinatumika kwa sasa</translation>
 <translation id="167698752210114155">Hitilafu ya ndani imetokea</translation>
+<translation id="2326876601333401685">Mbinu ya RPC haitumiki.</translation>
 <translation id="1128992132632883337">Hitilafu ya uchanganuzi wa jibu imetokea</translation>
 <translation id="1680597601664421644">Kikumbusho kinachohamishwa hakitumiki kwenye Pochi ya Brave</translation>
 <translation id="4641919696349069826">Ombi tayari linaendelea</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">Data ya muamala 'gasPrice' si sahihi</translation>
 <translation id="8909404207805041979">Data ya muamala 'gas' si sahihi</translation>
 <translation id="670444168393199227">Data ya muamala 'value' si sahihi</translation>
-<translation id="6180576227145734714">Data ya muamala 'kwa' lazima iwe anwani sahihi inapobainishwa</translation>
 <translation id="6916219411793555838">Data ya muamala 'gasPrice' au 'maxFeePerGas' lazima ibainishwe</translation>
 <translation id="1406937874668963740">Data ya muamala 'chainld' si sahihi</translation>
 <translation id="9195349857587166771">Data ya muamala 'maxFeePerGas' si sahihi</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">Hitilafu imetokea wakati wa kuchakata muamala</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' hajaidhinishwa kutia sahihi ujumbe</translation>
 <translation id="8719220598078667817">Imeshindwa kusaini muamala</translation>
-<translation id="5486744676117070166">Imeshindwa kupata thamani ya nonsi inayofuata</translation>
 <translation id="875506212625074179">Jibu batili la kitambulisho cha mtungo kutoka kwa huduma ya RPC</translation>
+<translation id="5486744676117070166">Imeshindwa kupata thamani ya nonsi inayofuata</translation>
+<translation id="6180576227145734714">Data ya muamala 'kwa' lazima iwe anwani sahihi inapobainishwa</translation>
 <translation id="4958950550253325418">Programu za Defi</translation>
 <translation id="735961408871282410">Masoko ya NFT</translation>
 <translation id="7740287852186792672">Matokeo ya utafutaji</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x itachakata anwani ya Ethereum na anwani ya IP ili kutimiza muamala (ikiwa ni pamoja na kupata makadirio ya gharama). 0x itatumia data hii kwa madhumuni ya kuchakata miamala TU.</translation>
 <translation id="4626407663177532837">Ukadiriaji wa gharama unajumuisha ada ya Brave ya 0.875%.</translation>
 <translation id="8368540604723748428">Sehemu nyingi kupindukia za desimali</translation>
+<translation id="6575120282593094155">Huna akaunti ya <ph name="ACCOUNT_TYPE"/> bado. Ungependa kufungua moja sasa?</translation>
 <translation id="2704606927547763573">Imenakiliwa</translation>
 <translation id="1420318137760245955">Karibu kwenye Brave Wallet mpya</translation>
 <translation id="8303434745767477417">Zuia rasilimali za crypto. Fuatilia utendaji wa potifolio na utumie web 3 DApps. Fanya biashara, wekeza, omba na ukopeshe na DeFi. Zote kutoka kivinjari cha faragha cha Brave. Hakuna viendelezi, hakuna kipakuliwa kinachohitajika.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">Bei kwa</translation>
 <translation id="2490428413101944234">Jaribu mfereji</translation>
 <translation id="3352959425838279177">Pata Ether kutoka kwenye bilula ya <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">Endelea kwenye Wyre</translation>
-<translation id="2581671693710952401">Pata Ether</translation>
 <translation id="8009571545960303544">Saini yako inaombwa</translation>
 <translation id="5294062982587710720">Fahamu kuwa Brave haiwezi kuthibitisha kitakachotendeka ukitia sahihi. Sahihi inaweza kuidhinisha karibu shughuli yoyote katika akaunti yako au kwa niaba yako, ikiwemo (lakini si tu) kutoa udhibiti wa jumla wa rasilimali zako za akaunti na crypto kwa tovuti inayotuma ombi. Tia tu sahihi ikiwa una uhakika unataka kuchukua hatua hii na unaamini tovuti inayoomba.</translation>
 <translation id="3474375934783434676">Tia sahihi kwa tahadhari yako pekee</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">ifuatayo</translation>
 <translation id="793994607260936590">kwanza</translation>
 <translation id="4709524402122994378">miamala</translation>
+<translation id="4591079278963448049">Akunti ya tokeni inayohusishwa haipatikani bado. Kiasi kidogo cha SOL kitatumiwa kuifungua na kuifadhili.</translation>
 <translation id="523862956770478816">Ruhusa za tovuti</translation>
 <translation id="1575262454612599115">Akaunti <ph name="NUMBER_OF_ACCOUNTS"/> zimeunganishwa</translation>
 <translation id="4305817255990598646">Badilisha</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">Imewasilishwa</translation>
 <translation id="2331676293859649642">Imethibitishwa</translation>
 <translation id="1165039591588034296">Hitilafu</translation>
+<translation id="8373210463207847451">Imedondoshwa</translation>
 <translation id="9065572743819293042">Miamala ya hivi karibuni</translation>
 <translation id="4235538284468006757">Maelezo ya muamala</translation>
 <translation id="7488671812634887146">Harakisha</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">Siku 7 za zawadi za crypto, ~$500k za tuzo</translation>
 <translation id="8292716346768453265">Ingia sasa!</translation>
 <translation id="6423985584914773314">Sio anwani halali ya FIL</translation>
+<translation id="3898731124813934210">Nunua kwa Wyre</translation>
+<translation id="5522073372365069684">Nunua kwa Ramp</translation>
 <translation id="8528916244724490964">Mitandao Yote</translation>
 <translation id="2781668117338732220">Mitandao Mbadala</translation>
 <translation id="2816106784624007524">Kiwango cha gesi lazima kiwe namba kamili inayozidi 0</translation>
+<translation id="3354376789153561654">Data ya muamala ya 'kwa' lazima ibainishwe</translation>
+<translation id="8728991256628663004">Data ya muamala ya 'kutoka' lazima iwe anwani halali ya Filecoin</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">Muunganisho Haujafaulu</translation>
 <translation id="745054660363064771">Haiwezi kuunganisha kwenye seva</translation>
 <translation id="3936826714240735937">Chagua seva nyingine</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> haikuweza kuunganisha kwenye seva ya <ph name="REGION_NAME"/>. Unaweza kujaribu tena, au chagua nyingine</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> haikuweza kuunganisha kwenye seva ya <ph name="REGION_NAME"/>. Unaweza kujaribu tena au uchague nyingine.</translation>
 <translation id="1024255913009642477">Tayari umenunua VPN?</translation>
 <translation id="8814357473522731680">Inaendeshwa na</translation>
 <translation id="5747552184818312860">Muda wake unakwisha</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">Haraka na bila kikomo hadi Mbps 100</translation>
 <translation id="1400240082805528049">Usaidizi wa sa 24 kila siku</translation>
 <translation id="8463313539532697053">Subiri kidogo huku ikipakia na#8230;</translation>
+<translation id="4613076894734402086">Hariri njia ya kulipa</translation>
+<translation id="1898254156730880135">Inaonekana kwamba malipo yako ya hivi karibuni zaidi hayakufaulu. Ufikiaji kwa usajili huu utasitishwa hadi tatizo la malipo litakapotatuliwa. Jaribu kuhariri njia ya kulipa au uwasiliane na wasaidizi wa Brave.</translation>
+<translation id="1839021455997460752">Anwani yako ya barua pepe</translation>
+<translation id="5154702632169343078">Mada</translation>
+<translation id="6625978880678465492">Tafadhali chagua sababu</translation>
+<translation id="6687228121145903051">Haiwezi kuunganisha kwenye VPN (Hitilafu nyingine)</translation>
+<translation id="9184988385244077767">Hakuna intaneti inapounganishwa</translation>
+<translation id="21570240866965662">Muunganisho una kasi ya chini</translation>
+<translation id="1219475260382643267">Tovuti haifanyi kazi</translation>
+<translation id="7138678301420049075">Nyingine</translation>
+<translation id="1387340358507240698">Fafanua tatizo lako</translation>
+<translation id="501818585183973587">Chagua maelezo ambayo ungependa kushiriki nasi</translation>
+<translation id="3195618332367441234">Kadri unavyoshiriki maelezo mengi, ndivyo inavyokuwa rahisi kwa wafanyakazi wa usaidizi kukusaidia.</translation>
+<translation id="5682143294773821728">Jina la mpangishaji wa VPN:</translation>
+<translation id="24242621812020123">Toleo la programu:</translation>
+<translation id="6676791921618140305">Toleo la OS:</translation>
+<translation id="1156325797949437777">Usaidizi unatolewa kwa ushirikiano na Guardian.</translation>
+<translation id="3307461350293459700">Muunganisho wa VPN haujafaulu. Tafadhali jaribu kuunganisha tena na uhakikishe umebofya Ruhusu ili kuwezesha usanidi wa VPN wa Brave.</translation>
 <translation id="7586151660465233733">Masoko zaidi kwenye <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Tazama masoko na uuze crypto kwenye FTX</translation>
 <translation id="5963745988819586370">Masoko</translation>

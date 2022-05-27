@@ -33,15 +33,6 @@ public class VpnCalloutPreference extends Preference {
         setLayoutResource(R.layout.vpn_settings_callout_modal_layout);
     }
 
-    public VpnCalloutPreference(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public VpnCalloutPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        setLayoutResource(R.layout.vpn_settings_callout_modal_layout);
-    }
-
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);

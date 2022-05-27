@@ -201,6 +201,7 @@ public abstract class BraveVpnParentActivity
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
                     finish();
                 } catch (Exception e) {
+                    BraveVpnUtils.dismissProgressDialog();
                     Log.e(TAG, e.getMessage());
                 }
             }

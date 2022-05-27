@@ -107,6 +107,11 @@ void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
 
 void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
   DCHECK(rewards_service);
+
+  // Ensure that the utility process is started before attempting to create a
+  // rewards payment ID.
+  StartProcess(rewards_service);
+
   base::RunLoop run_loop;
   bool success = false;
   rewards_service->CreateWallet(

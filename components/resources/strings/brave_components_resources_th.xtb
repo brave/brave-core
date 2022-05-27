@@ -669,11 +669,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">เปิดใช้การรองรับ Unstoppable Domains ใน Brave หรือไม่</translation>
-<translation id="3470923752115324276">Brave ทำให้คุณเข้าชมโดเมน .crypto ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .crypto โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .crypto ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
+<translation id="2173151783558384314">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปยัง Smart Contract จาก Unstoppable Domains เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .crypto (และ .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมนดังกล่าวที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>เงื่อนไขการใช้บริการ<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">เปิดใช้การรองรับ Ethereum Name Service (ENS) ใน Brave หรือไม่</translation>
-<translation id="618766505813078707">Brave ทำให้คุณเข้าชมโดเมน .eth ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .eth โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .eth ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
-<translation id="5636651007798897342">ดำเนินการโดยใช้เซิร์ฟเวอร์ Cloudflare</translation>
+<translation id="8328137586971750853">Brave จะใช้ Infura เพื่อออกคำสั่ง Ethereum JSON-RPC ไปยัง Smart Contract จาก Ethereum Name Service เพื่อแก้ไขคำขอค้นหาชื่อโดเมน .eth หากคุณเปิดใช้งานคำสั่งนี้ Infura จะมองเห็นโดเมน .eth ที่คุณพยายามเข้าชม แต่จะไม่เห็นโดเมนอื่นๆ โปรดอ่าน<ph name="BEGIN_INFURA_TOU_LINK"/>เงื่อนไขการใช้บริการ<ph name="END_INFURA_TOU_LINK"/>และ<ph name="BEGIN_INFURA_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_INFURA_PRIVACY_LINK"/></translation>
+<translation id="7378412287463452336">ดำเนินการโดยใช้เซิร์ฟเวอร์ Infura</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="2218918398178303658">DNS ผ่านทาง HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
@@ -800,6 +800,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="9161147058107529840">หนึ่งพารามิเตอร์เป้าหมายที่คาดว่าจะได้รับ</translation>
 <translation id="1875861420974447980">ใช้ Chain ID นี้อยู่ในขณะนี้</translation>
 <translation id="167698752210114155">เกิดข้อผิดพลาดภายใน</translation>
+<translation id="2326876601333401685">ไม่รองรับวิธีการ RPC นี้</translation>
 <translation id="1128992132632883337">เกิดข้อผิดพลาดในการวิเคราะห์การตอบสนอง</translation>
 <translation id="1680597601664421644">ตัวช่วยจำที่นำเข้าสำหรับกระเป๋าเงิน Brave ไม่ถูกต้อง</translation>
 <translation id="4641919696349069826">กำลังดำเนินการตามคำขออยู่</translation>
@@ -810,7 +811,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7577623631309755655">ข้อมูลธุรกรรม 'gasPrice' ไม่ถูกต้อง</translation>
 <translation id="8909404207805041979">ข้อมูลธุรกรรม 'gas' ไม่ถูกต้อง</translation>
 <translation id="670444168393199227">ข้อมูลธุรกรรม 'value' ไม่ถูกต้อง</translation>
-<translation id="6180576227145734714">เมื่อมีการระบุ ข้อมูลธุรกรรม 'to' ต้องเป็นแอดเดรสที่ถูกต้อง</translation>
 <translation id="6916219411793555838">ต้องระบุข้อมูลธุรกรรม 'gasPrice' หรือ 'maxFeePerGas'</translation>
 <translation id="1406937874668963740">ข้อมูลธุรกรรม 'chainId' ไม่ถูกต้อง</translation>
 <translation id="9195349857587166771">ข้อมูลธุรกรรม 'maxFeePerGas' ไม่ถูกต้อง</translation>
@@ -824,8 +824,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1462494615260983714">เกิดข้อผิดพลาดในการประมวลผลธุรกรรม</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' ไม่ได้รับอนุญาตให้เซ็นข้อความ</translation>
 <translation id="8719220598078667817">เซ็นชื่อธุรกรรมล้มเหลว</translation>
-<translation id="5486744676117070166">รับค่า Nonce ถัดไปล้มเหลว</translation>
 <translation id="875506212625074179">การตอบสนอง Chain ID ไม่ถูกต้องจากบริการ RPC</translation>
+<translation id="5486744676117070166">รับค่า Nonce ถัดไปล้มเหลว</translation>
+<translation id="6180576227145734714">เมื่อมีการระบุ ข้อมูลธุรกรรม 'to' ต้องเป็นแอดเดรสที่ถูกต้อง</translation>
 <translation id="4958950550253325418">แอป DeFi</translation>
 <translation id="735961408871282410">ตลาด NFT</translation>
 <translation id="7740287852186792672">ผลการค้นหา</translation>
@@ -873,6 +874,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="151946611346774041">0x จะประมวลผลที่อยู่ Ethereum และที่อยู่ IP เพื่อดำเนินธุรกรรมให้สำเร็จ (รวมถึงการขอรับใบเสนอราคา) โดย 0x จะใช้ข้อมูลนี้เพื่อวัตถุประสงค์ในการประมวลผลธุรกรรมเท่านั้น</translation>
 <translation id="4626407663177532837">ใบเสนอราคารวมค่าธรรมเนียม Brave 0.875%</translation>
 <translation id="8368540604723748428">มีทศนิยมมากเกินไป</translation>
+<translation id="6575120282593094155">คุณยังไม่มีบัญชี <ph name="ACCOUNT_TYPE"/> ต้องการสร้างตอนนี้หรือไม่</translation>
 <translation id="2704606927547763573">คัดลอกแล้ว</translation>
 <translation id="1420318137760245955">ยินดีต้อนรับสู่ Brave วอลเล็ตใหม่</translation>
 <translation id="8303434745767477417">ถือครองสินทรัพย์คริปโตไว้ในการดูแลของคุณ ติดตามผลงานของพอร์ตโฟลิโอและโต้ตอบด้วย web3 DApps เทรด ลงทุน ยืม และให้กู้ยืมด้วย DeFi ทั้งหมดนี้ทำได้จากเบราว์เซอร์ที่มีความเป็นส่วนตัวจาก Brave โดยไม่ต้องใช้ส่วนขยาย ไม่ต้องมีการดาวน์โหลด</translation>
@@ -998,8 +1000,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8569380433211549748">ราคาใน</translation>
 <translation id="2490428413101944234">Test faucet</translation>
 <translation id="3352959425838279177">รับ Ether จาก Faucet สำหรับ <ph name="SELECTED_NETWORK"/></translation>
-<translation id="7420359180991315365">ไปที่ Wyre</translation>
-<translation id="2581671693710952401">รับอีเธอร์</translation>
 <translation id="8009571545960303544">ลายเซ็นของคุณกำลังได้รับการร้องขอ</translation>
 <translation id="5294062982587710720">โปรดทราบว่า Brave ไม่สามารถตรวจสอบได้ว่าจะเกิดอะไรขึ้นหากคุณลงชื่อ ลายเซ็นนั้นสามารถอนุญาตการดำเนินการเกือบทั้งหมดในบัญชีของคุณหรือในนามของคุณ ซึ่งรวมถึง (แต่ไม่จำกัดเพียง) ให้การควบคุมทั้งหมดในบัญชีและสินทรัพย์คริปโตของคุณแก่ไซต์ที่ส่งคำขอ ลงชื่อก็ต่อเมื่อคุณแน่ใจว่าต้องการดำเนินการนี้ และเชื่อถือไซต์ที่ร้องขอเท่านั้น</translation>
 <translation id="3474375934783434676">ลงชื่อโดยยอมรับความเสี่ยงด้วยตัวคุณเอง</translation>
@@ -1041,6 +1041,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5821668936183240062">ถัดไป</translation>
 <translation id="793994607260936590">รายการแรก</translation>
 <translation id="4709524402122994378">ธุรกรรม</translation>
+<translation id="4591079278963448049">ยังไม่มีบัญชีโทเคนที่เกี่ยวข้อง ระบบจะใช้ SOL จำนวนเล็กน้อยเพื่อสร้างและจัดหาทุนให้</translation>
 <translation id="523862956770478816">การให้สิทธิ์แก่เว็บไซต์</translation>
 <translation id="1575262454612599115">เชื่อมต่อบัญชี <ph name="NUMBER_OF_ACCOUNTS"/> แล้ว</translation>
 <translation id="4305817255990598646">สลับ</translation>
@@ -1091,6 +1092,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Confirmed</translation>
 <translation id="1165039591588034296">ข้อผิดพลาด</translation>
+<translation id="8373210463207847451">Dropped</translation>
 <translation id="9065572743819293042">ธุรกรรมล่าสุด</translation>
 <translation id="4235538284468006757">รายละเอียดธุรกรรม</translation>
 <translation id="7488671812634887146">เร่ง</translation>
@@ -1170,9 +1172,13 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7829441065063984927">แจกคริปโต 7 วัน ลุ้นรับรางวัล 5 แสนดอลลาร์</translation>
 <translation id="8292716346768453265">เข้าร่วมตอนนี้</translation>
 <translation id="6423985584914773314">ที่อยู่ FIL ไม่ถูกต้อง</translation>
+<translation id="3898731124813934210">ซื้อกับ Wyre</translation>
+<translation id="5522073372365069684">ซื้อกับ Ramp</translation>
 <translation id="8528916244724490964">ทุกเครือข่าย</translation>
 <translation id="2781668117338732220">เครือข่ายสำรอง</translation>
 <translation id="2816106784624007524">วงเงินค่าแก๊สต้องเป็นจำนวนเต็มที่มากกว่า 0</translation>
+<translation id="3354376789153561654">ต้องระบุข้อมูลการทำธุรกรรม 'ไปยัง'</translation>
+<translation id="8728991256628663004">ข้อมูลการทำธุรกรรม 'จาก' ต้องเป็นที่อยู่ Filecoin ที่ถูกต้อง</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -1217,7 +1223,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2325196879156848326">การเชื่อมต่อล้มเหลว</translation>
 <translation id="745054660363064771">ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้</translation>
 <translation id="3936826714240735937">เลือกเซิร์ฟเวอร์อื่น</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ <ph name="REGION_NAME"/> ได้ คุณสามารถลองอีกครั้งหรือเลือกเซิร์ฟเวอร์อื่น</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ <ph name="REGION_NAME"/> ได้ โปรดลองอีกครั้งหรือเลือกเซิร์ฟเวอร์อื่น</translation>
 <translation id="1024255913009642477">ซื้อ VPN แล้วใช่ไหม</translation>
 <translation id="8814357473522731680">สนับสนุนโดย</translation>
 <translation id="5747552184818312860">หมดอายุ</translation>
@@ -1230,6 +1236,24 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1751947227857853925">เร็วและไม่จำกัด สูงสุด 100 Mbps</translation>
 <translation id="1400240082805528049">การสนับสนุนทุกวันตลอด 24 ชม.</translation>
 <translation id="8463313539532697053">กรุณารอโหลดสักครู่…</translation>
+<translation id="4613076894734402086">แก้ไขวิธีการชำระเงิน</translation>
+<translation id="1898254156730880135">ดูเหมือนว่าการชำระเงินครั้งล่าสุดของคุณจะไม่สำเร็จ การเข้าถึงการสมัครนี้จะหยุดจนกว่าปัญหาการชำระเงินจะได้รับการแก้ไข โปรดลองแก้ไขวิธีการชำระเงินของคุณหรือติดต่อฝ่ายสนับสนุนของ Brave</translation>
+<translation id="1839021455997460752">ที่อยู่อีเมลของคุณ</translation>
+<translation id="5154702632169343078">หัวเรื่อง</translation>
+<translation id="6625978880678465492">โปรดเลือกเหตุผล</translation>
+<translation id="6687228121145903051">ไม่สามารถเชื่อมต่อ VPN (ข้อผิดพลาดอื่นๆ)</translation>
+<translation id="9184988385244077767">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</translation>
+<translation id="21570240866965662">การเชื่อมต่อช้า</translation>
+<translation id="1219475260382643267">เว็บไซต์ไม่ทำงาน</translation>
+<translation id="7138678301420049075">อื่นๆ</translation>
+<translation id="1387340358507240698">อธิบายปัญหาของคุณ</translation>
+<translation id="501818585183973587">เลือกข้อมูลที่คุณต้องการแบ่งปันกับเรา</translation>
+<translation id="3195618332367441234">ยิ่งคุณแบ่งปันข้อมูลกับเรามากเท่าไหร่ เจ้าหน้าที่ฝ่ายสนับสนุนของเราก็จะช่วยเหลือคุณได้ง่ายขึ้น</translation>
+<translation id="5682143294773821728">ชื่อโฮสต์ VPN:</translation>
+<translation id="24242621812020123">เวอร์ชันแอป:</translation>
+<translation id="6676791921618140305">เวอร์ชัน OS:</translation>
+<translation id="1156325797949437777">ฝ่ายสนับสนุนร่วมกับ Guardian</translation>
+<translation id="3307461350293459700">เชื่อมต่อ VPN ล้มเหลว โปรดลองเชื่อมต่ออีกครั้ง และโปรดคลิก อนุญาต เพื่อเปิดใช้งานการกำหนดค่า VPN ของ Brave</translation>
 <translation id="7586151660465233733">ตลาดซื้อขายเพิ่มเติมที่ <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">ดูตลาดซื้อขายและเทรดคริปโตบน FTX</translation>
 <translation id="5963745988819586370">ตลาดซื้อขาย</translation>

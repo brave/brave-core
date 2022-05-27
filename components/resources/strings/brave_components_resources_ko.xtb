@@ -668,11 +668,11 @@
 <translation id="1164622162816276433">24시간 거래량</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
-<translation id="3470923752115324276">Brave를 사용하면 HTTPS를 통해 DNS를 사용하는 .crypto 도메인명 조회 요청을 해결하도록 Cloudflare를 사용하여 .crypto 도메인에 방문할 수 있습니다. 이를 활성화하면 Cloudflare 측에서 사용자가 방문하려는 .crypto 도메인을 볼 수 있지만, 다른 도메인은 볼 수 없습니다. Cloudflare의 <ph name="BEGIN_CF_TOU_LINK"/>이용 약관<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>개인 정보 보호 정책<ph name="END_CF_PRIVACY_LINK"/> 보기.</translation>
+<translation id="2173151783558384314">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?</translation>
-<translation id="618766505813078707">Brave를 사용하면 HTTPS를 통해 DNS를 사용하는 .eth 도메인명 조회 요청을 해결하도록 Cloudflare를 사용하여 .eth 도메인에 방문할 수 있습니다. 이를 활성화하면 Cloudflare 측에서 사용자가 방문하려는 .eth 도메인을 볼 수 있지만, 다른 도메인은 볼 수 없습니다. Cloudflare의 <ph name="BEGIN_CF_TOU_LINK"/>이용 약관<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>개인 정보 보호 정책<ph name="END_CF_PRIVACY_LINK"/>.</translation>
-<translation id="5636651007798897342">Cloudflare 서버를 이용하여 계속 진행</translation>
+<translation id="8328137586971750853">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 이더리움 네임 서비스에서의 스마트 컨트랙트로 발행하고 .eth 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보처리방침<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="7378412287463452336">Infura 서버를 사용하여 계속하기</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="2218918398178303658">HTTPS상의 DNS</translation>
 <translation id="1448289340149908413">이더리움</translation>
@@ -799,6 +799,7 @@
 <translation id="9161147058107529840">객체 매개변수가 한 개 있어야 합니다.</translation>
 <translation id="1875861420974447980">현재 사용 중인 체인 ID</translation>
 <translation id="167698752210114155">내부 오류 발생</translation>
+<translation id="2326876601333401685">지원되지 않는 RPC 메서드입니다.</translation>
 <translation id="1128992132632883337">응답 파싱 오류 발생</translation>
 <translation id="1680597601664421644">가져오는 중인 니모닉이 Brave 월렛에 유효하지 않습니다.</translation>
 <translation id="4641919696349069826">요청 이미 진행 중</translation>
@@ -809,7 +810,6 @@
 <translation id="7577623631309755655">트랜잭션 데이터 'gasPrice'가 유효하지 않음</translation>
 <translation id="8909404207805041979">트랜잭션 데이터 'gas'가 유효하지 않음</translation>
 <translation id="670444168393199227">트랜잭션 데이터 'value'가 유효하지 않음</translation>
-<translation id="6180576227145734714">트랜잭션 데이터 'to'를 지정한 경우 유효한 주소여야 함</translation>
 <translation id="6916219411793555838">트랜잭션 데이터 'gasPrice' 또는 'maxFeePerGas'를 지정해야 함</translation>
 <translation id="1406937874668963740">트랜잭션 데이터 'chainId'가 유효하지 않음</translation>
 <translation id="9195349857587166771">트랜잭션 데이터 'maxFeePerGas'가 유효하지 않음</translation>
@@ -823,8 +823,9 @@
 <translation id="1462494615260983714">트랜잭션 처리 중 오류</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>', 메시지에 서명할 권한 없음</translation>
 <translation id="8719220598078667817">트랜잭션 서명 실패</translation>
-<translation id="5486744676117070166">다음 논스 값 가져오기 실패</translation>
 <translation id="875506212625074179">RPC 서비스에서 받은 체인 ID 응답 유효하지 않음</translation>
+<translation id="5486744676117070166">다음 논스 값 가져오기 실패</translation>
+<translation id="6180576227145734714">트랜잭션 데이터 'to'를 지정한 경우 유효한 주소여야 함</translation>
 <translation id="4958950550253325418">DeFi 앱</translation>
 <translation id="735961408871282410">NFT 마켓플레이스</translation>
 <translation id="7740287852186792672">검색 결과</translation>
@@ -872,6 +873,7 @@
 <translation id="151946611346774041">0x는 이더리움 주소와 IP 주소를 처리하여 거래를 수행합니다(견적 받기 포함). 0x는 거래 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="4626407663177532837">견적에는 Brave 수수료 0.875%가 포함됩니다.</translation>
 <translation id="8368540604723748428">소수 자릿수 너무 많음</translation>
+<translation id="6575120282593094155">아직 <ph name="ACCOUNT_TYPE"/> 계정이 없습니다. 새로 만드시겠습니까?</translation>
 <translation id="2704606927547763573">복사됨</translation>
 <translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
 <translation id="8303434745767477417">보호관리 계정에 암호화폐 자산 보유. 포트폴리오 실적 추적, web 3 DApps를 이용. DeFi로 거래, 투자, 대출, 대부까지. Brave 프라이버시 브라우저에서 모두 이용합니다. 확장 프로그램도, 다운로드도 필요하지 않습니다.</translation>
@@ -997,8 +999,6 @@
 <translation id="8569380433211549748">가격, 통화:</translation>
 <translation id="2490428413101944234">파우셋 테스트</translation>
 <translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/> 파우싯에서 이더 얻기</translation>
-<translation id="7420359180991315365">Wyre로 계속 진행</translation>
-<translation id="2581671693710952401">이더 얻기</translation>
 <translation id="8009571545960303544">서명을 요청 중입니다.</translation>
 <translation id="5294062982587710720">서명하면 어떤 일이 일어나든 Brave가 검증하지 않습니다. 서명은 요청하는 사이트에 귀하의 계정 내 거의 모든 동작에 대한 권한을 부여하며, 암호화폐 자산에 대한 전체적인 제어권도 포함하되 이에 국한되지 않습니다. 이 행동에 대한 책임을 스스로 지고 요청 사이트를 신뢰할 수 있는 경우에만 서명하세요.</translation>
 <translation id="3474375934783434676">모든 책임을 지고 서명</translation>
@@ -1040,6 +1040,7 @@
 <translation id="5821668936183240062">다음</translation>
 <translation id="793994607260936590">처음</translation>
 <translation id="4709524402122994378">트랜잭션</translation>
+<translation id="4591079278963448049">아직 연결된 토큰 계정이 존재하지 않습니다. 계정을 만들고 자금을 입금하는 데 소액의 SOL가 지출됩니다.</translation>
 <translation id="523862956770478816">사이트 권한</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>개의 계정 연결됨</translation>
 <translation id="4305817255990598646">전환</translation>
@@ -1090,6 +1091,7 @@
 <translation id="6666273175654835609">제출됨</translation>
 <translation id="2331676293859649642">승인됨</translation>
 <translation id="1165039591588034296">오류</translation>
+<translation id="8373210463207847451">중단됨</translation>
 <translation id="9065572743819293042">최근 트랜잭션</translation>
 <translation id="4235538284468006757">트랜잭션 세부정보</translation>
 <translation id="7488671812634887146">속도 높이기</translation>
@@ -1169,9 +1171,13 @@
 <translation id="7829441065063984927">7일간 암호화폐 경품, 최대 50만 $ 상금.</translation>
 <translation id="8292716346768453265">지금 응모하세요!</translation>
 <translation id="6423985584914773314">유효한 FIL 주소 아님</translation>
+<translation id="3898731124813934210">Wyre로 구매</translation>
+<translation id="5522073372365069684">Ramp로 구매</translation>
 <translation id="8528916244724490964">모든 네트워크</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="2816106784624007524">가스 한도는 0보다 큰 정수여야 합니다.</translation>
+<translation id="3354376789153561654">트랜잭션 데이터 'to'를 지정해야 함</translation>
+<translation id="8728991256628663004">트랜잭션 데이터 'from'은 유효한 Filecoin 주소여야 함</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1216,7 +1222,7 @@
 <translation id="2325196879156848326">연결 실패</translation>
 <translation id="745054660363064771">서버에 연결할 수 없음</translation>
 <translation id="3936826714240735937">다른 서버 선택</translation>
-<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>이 <ph name="REGION_NAME"/> 서버에 연결할 수 없습니다. 다시 시도하거나 다른 서버를 선택하세요.</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/>이 <ph name="REGION_NAME"/> 서버에 연결할 수 없습니다. 다시 시도하거나 다른 서버를 선택하세요.</translation>
 <translation id="1024255913009642477">VPN을 이미 구매하셨습니까?</translation>
 <translation id="8814357473522731680">제공 -</translation>
 <translation id="5747552184818312860">만료</translation>
@@ -1229,6 +1235,24 @@
 <translation id="1751947227857853925">최대 100Mbps의 빠른 속도 무제한</translation>
 <translation id="1400240082805528049">연중무휴 지원</translation>
 <translation id="8463313539532697053">로드 중이니 기다려주세요…</translation>
+<translation id="4613076894734402086">결제 수단 편집</translation>
+<translation id="1898254156730880135">최근 결제에 문제가 생긴 것 같습니다. 결제 문제가 해결될 때까지 이 구독 액세스가 일시 중지됩니다. 결제 수단을 편집해보거나 Brave 지원에 문의하세요.</translation>
+<translation id="1839021455997460752">이메일 주소</translation>
+<translation id="5154702632169343078">제목</translation>
+<translation id="6625978880678465492">이유 선택</translation>
+<translation id="6687228121145903051">VPN으로 연결할 수 없음(기타 오류)</translation>
+<translation id="9184988385244077767">연결 시 인터넷에 연결되지 않음</translation>
+<translation id="21570240866965662">연결 느림</translation>
+<translation id="1219475260382643267">웹사이트가 작동하지 않음</translation>
+<translation id="7138678301420049075">기타</translation>
+<translation id="1387340358507240698">겪은 문제에 대한 설명</translation>
+<translation id="501818585183973587">공유하고자 하는 정보 선택</translation>
+<translation id="3195618332367441234">공유해주시는 정보가 많을수록 지원팀 담당자가 쉽게 문제를 해결해드릴 수 있습니다.</translation>
+<translation id="5682143294773821728">VPN 호스트 이름:</translation>
+<translation id="24242621812020123">앱 버전:</translation>
+<translation id="6676791921618140305">OS 버전:</translation>
+<translation id="1156325797949437777">Guardian과의 제휴로 지원이 제공됩니다.</translation>
+<translation id="3307461350293459700">VPN 연결 실패. 다시 연결을 시도해보거나 허용을 클릭하여 Brave의 VPN 구성을 활성화하세요.</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/>에서 시장 더 보기</translation>
 <translation id="952067063131306699">FTX에서 시장 보기 및 암호화폐 거래</translation>
 <translation id="5963745988819586370">시장</translation>
