@@ -41,6 +41,10 @@ void FederatedInternalsPageHandler::GetDataStoreInfo() {
   auto* const ad_notification_data_store =
       data_store_service_->GetDataStore(kAdNotificationTaskName);
 
+  if (!ad_notification_data_store) {
+    return;
+  }
+
   ad_notification_data_store->LoadTrainingData(
       base::BindOnce(&FederatedInternalsPageHandler::OnDataStoreInfoAvailable,
                      weak_ptr_factory_.GetWeakPtr()));

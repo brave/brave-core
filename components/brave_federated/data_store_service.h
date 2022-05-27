@@ -65,7 +65,7 @@ class DataStoreService {
   void OnInitComplete(bool success);
 
   base::FilePath db_path_;
-  base::flat_map<std::string, AsyncDataStore*> data_stores_;
+  base::flat_map<std::string, std::unique_ptr<AsyncDataStore>> data_stores_;
   base::WeakPtrFactory<DataStoreService> weak_factory_;
 };
 

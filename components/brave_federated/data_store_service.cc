@@ -81,19 +81,22 @@ void DataStoreService::Init() {
 
   auto callback = base::BindOnce(&DataStoreService::OnInitComplete,
                                  weak_factory_.GetWeakPtr());
-  AsyncDataStore ad_timing_data_store(db_path_);
-  ad_timing_data_store.Init(kAdNotificationTaskId, kAdNotificationTaskName,
+  std::unique_ptr<AsyncDataStore> ad_timing_data_store =
+      std::make_unique<AsyncDataStore>(db_path_);
+  ad_timing_data_store->Init(kAdNotificationTaskId, kAdNotificationTaskName,
                              kMaxNumberOfRecords, kMaxRetentionDays,
                              std::move(callback));
 
-  data_stores_.emplace(kAdNotificationTaskName, &ad_timing_data_store);
+  data_stores_.emplace(kAdNotificationTaskName,
+                       std::move(ad_timing_data_store));
 }
 
 AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
-  if (data_stores_.find(name) == data_stores_.end())
+  auto it = data_stores_.find(name);
+  if (it == data_stores_.end())
     return nullptr;
 
-  return data_stores_[name];
+  return it->second.get();
 }
 
 // AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
