@@ -45,7 +45,7 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
 
   void SetDNSOverHTTPSMode(const std::string& mode,
                            const std::string& doh_providers);
-  bool active_ = false;
+  bool ignore_prefs_change_ = false;
   absl::optional<bool> allow_changes_for_testing_;
   raw_ptr<PrefService> local_state_;
   PrefChangeRegistrar pref_change_registrar_;

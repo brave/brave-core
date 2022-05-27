@@ -79,16 +79,16 @@ bool BraveVpnDnsObserverService::ShouldAllowExternalChanges() const {
 }
 
 void BraveVpnDnsObserverService::OnDNSPrefChanged() {
-  if (!active_)
+  if (!ignore_prefs_change_)
     return;
   // Reset saved config and keep user's choice.
   if (ShouldAllowExternalChanges()) {
     user_dns_config_.reset();
   } else {
-    active_ = false;
+    ignore_prefs_change_ = false;
     SetDNSOverHTTPSMode(SecureDnsConfig::kModeSecure,
                         GetDoHServers(user_dns_config_.get()));
-    active_ = true;
+    ignore_prefs_change_ = true;
   }
 }
 
@@ -111,9 +111,9 @@ void BraveVpnDnsObserverService::OnConnectionStateChanged(
                           GetDoHServers(dns_config.get()));
     }
     user_dns_config_ = std::move(dns_config);
-    active_ = true;
+    ignore_prefs_change_ = true;
   } else if (user_dns_config_) {
-    active_ = false;
+    ignore_prefs_change_ = false;
     auto* mode_to_restore =
         SecureDnsConfig::ModeToString(user_dns_config_->mode());
     auto servers = user_dns_config_->doh_servers().ToString();
