@@ -17,6 +17,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   ]
   private var defaultCurrency = CurrencyCode.usd
   private var defaultCryptocurrency = "eth"
+  private var coin: BraveWallet.CoinType = .eth
 
   func userAssets(_ chainId: String, coin: BraveWallet.CoinType, completion: @escaping ([BraveWallet.BlockchainToken]) -> Void) {
     completion(assets[chainId] ?? [])
@@ -129,20 +130,32 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     return []
   }
   
+  func showWalletTestNetworks(_ completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
   func selectedCoin(_ completion: @escaping (BraveWallet.CoinType) -> Void) {
-    completion(.eth)
+    completion(coin)
   }
   
   func setSelectedCoin(_ coin: BraveWallet.CoinType) {
-    
+    self.coin = coin
+  }
+  
+  func addPermission(_ coin: BraveWallet.CoinType, origin: URLOrigin, account: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func hasPermission(_ coin: BraveWallet.CoinType, origin: URLOrigin, account: String, completion: @escaping (Bool, Bool) -> Void) {
+    completion(false, false)
+  }
+  
+  func resetPermission(_ coin: BraveWallet.CoinType, origin: URLOrigin, account: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
   }
   
   func isBase58EncodedSolanaPubkey(_ key: String, completion: @escaping (Bool) -> Void) {
-    completion(true)
-  }
-  
-  func showWalletTestNetworks(_ completion: @escaping (Bool) -> Void) {
-    completion(true)
+    completion(false)
   }
 }
 #endif

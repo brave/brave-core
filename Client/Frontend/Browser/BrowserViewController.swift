@@ -394,10 +394,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     #if WALLET_DAPPS_ENABLED
     tabManager.makeWalletProvider = { [weak self] tab in
       guard let self = self,
-            let provider = self.braveCore.walletProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
+            let provider = self.braveCore.ethereumProvider(with: tab, isPrivateBrowsing: tab.isPrivate) else {
         return nil
       }
-      return (provider, js: self.braveCore.walletProviderJS)
+      return (provider, js: self.braveCore.providerScript(for: .eth))
     }
     #endif
     downloadQueue.delegate = self

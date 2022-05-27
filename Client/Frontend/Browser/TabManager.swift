@@ -82,7 +82,7 @@ class TabManager: NSObject {
   var selectedIndex: Int { return _selectedIndex }
   var tempTabs: [Tab]?
   private weak var rewards: BraveRewards?
-  var makeWalletProvider: ((Tab) -> (BraveWalletBraveWalletProvider, js: String)?)?
+  var makeWalletProvider: ((Tab) -> (BraveWalletEthereumProvider, js: String)?)?
   private var domainFrc = Domain.frc()
 
   init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?) {
@@ -1213,7 +1213,7 @@ extension TabManager: NSFetchedResultsControllerDelegate {
       let tabsForDomain = self.allTabs.filter { $0.url?.domainURL.absoluteString.caseInsensitiveCompare(domainURL) == .orderedSame }
       tabsForDomain.forEach { tab in
         Task { @MainActor in
-          let accounts = await tab.allowedAccounts(false).0
+          let accounts = await tab.allowedAccountsForCurrentCoin().1
           tab.accountsChangedEvent(Array(accounts))
         }
       }

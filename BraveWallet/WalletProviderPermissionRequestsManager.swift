@@ -24,7 +24,7 @@ public struct WebpagePermissionRequest: Equatable {
   let decisionHandler: (Response) -> Void
   /// A completion block from `BraveWalletProviderDelegate` that needs to be perfromed when
   /// wallet notificaiton has been ignored by users
-  public var providerHandler: BraveWalletProviderResultsCallback?
+  public var providerHandler: RequestPermissionsCallback?
   
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.requestingOrigin == rhs.requestingOrigin && lhs.coinType == rhs.coinType
@@ -50,7 +50,7 @@ public class WalletProviderPermissionRequestsManager {
   public func beginRequest(
     for origin: URLOrigin,
     coinType: BraveWallet.CoinType,
-    providerHandler: BraveWalletProviderResultsCallback?,
+    providerHandler: RequestPermissionsCallback?,
     completion: ((WebpagePermissionRequest.Response) -> Void)? = nil
   ) -> WebpagePermissionRequest {
     var request = WebpagePermissionRequest(requestingOrigin: origin, coinType: coinType) { [weak self] decision in
