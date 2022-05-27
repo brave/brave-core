@@ -6,6 +6,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl_android.h"
 
 #include <utility>
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -66,6 +67,34 @@ void BraveWalletServiceDelegateImpl::ResetPermission(
   bool success = permissions::BraveWalletPermissionContext::ResetPermission(
       *type, context_, origin, account);
   std::move(callback).Run(success);
+}
+
+void BraveWalletServiceDelegateImpl::GetWebSitesWithPermission(
+    mojom::CoinType coin,
+    GetWebSitesWithPermissionCallback callback) {
+  std::vector<std::string> result;
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(result);
+    return;
+  }
+  std::move(callback).Run(
+      permissions::BraveWalletPermissionContext::GetWebSitesWithPermission(
+          *type, context_));
+}
+
+void BraveWalletServiceDelegateImpl::ResetWebSitePermission(
+    mojom::CoinType coin,
+    const std::string& formed_website,
+    ResetWebSitePermissionCallback callback) {
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::move(callback).Run(
+      permissions::BraveWalletPermissionContext::ResetWebSitePermission(
+          *type, context_, formed_website));
 }
 
 }  // namespace brave_wallet

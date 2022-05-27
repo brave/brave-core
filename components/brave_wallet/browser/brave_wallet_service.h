@@ -117,6 +117,12 @@ class BraveWalletService : public KeyedService,
                        const url::Origin& origin,
                        const std::string& account,
                        ResetPermissionCallback callback) override;
+  void GetWebSitesWithPermission(
+      mojom::CoinType coin,
+      GetWebSitesWithPermissionCallback callback) override;
+  void ResetWebSitePermission(mojom::CoinType coin,
+                              const std::string& formed_website,
+                              ResetWebSitePermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
   void GeteTLDPlusOneFromOrigin(const url::Origin& origin,
                                 GetActiveOriginCallback callback) override;

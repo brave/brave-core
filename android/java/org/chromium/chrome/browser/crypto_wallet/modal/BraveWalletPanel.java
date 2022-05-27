@@ -127,7 +127,11 @@ public class BraveWalletPanel implements DialogInterface {
                 mBraveWalletPanelServices.getKeyringService().lock();
                 dismiss();
             } else if (item.getItemId() == R.id.action_connected_sites) {
-                //TODO needs to be implemented in another ticket
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (activity != null) {
+                    activity.openBraveConnectedSitesSettings();
+                    dismiss();
+                }
                 dismiss();
             } else if (item.getItemId() == R.id.action_settings) {
                 BraveActivity activity = BraveActivity.getBraveActivity();

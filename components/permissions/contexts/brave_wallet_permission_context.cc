@@ -334,4 +334,44 @@ bool BraveWalletPermissionContext::ResetPermission(
   return true;
 }
 
+// static
+std::vector<std::string>
+BraveWalletPermissionContext::GetWebSitesWithPermission(
+    ContentSettingsType content_settings_type,
+    content::BrowserContext* context) {
+  HostContentSettingsMap* map =
+      PermissionsClient::Get()->GetSettingsMap(context);
+  ContentSettingsForOneType settings;
+  map->GetSettingsForOneType(content_settings_type, &settings);
+
+  std::vector<std::string> result;
+  for (const auto& setting : settings) {
+    if (setting.primary_pattern.GetScheme() !=
+            ContentSettingsPattern::SchemeType::SCHEME_HTTP &&
+        setting.primary_pattern.GetScheme() !=
+            ContentSettingsPattern::SchemeType::SCHEME_HTTPS) {
+      continue;
+    }
+    result.push_back(setting.primary_pattern.ToString());
+  }
+
+  return result;
+}
+
+// static
+bool BraveWalletPermissionContext::ResetWebSitePermission(
+    ContentSettingsType content_settings_type,
+    content::BrowserContext* context,
+    const std::string& formed_website) {
+  auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
+      permissions::PermissionsClient::Get()->GetPermissionManager(context));
+  if (!permission_manager)
+    return false;
+  GURL url(formed_website);
+
+  permission_manager->ResetPermissionViaContentSetting(content_settings_type,
+                                                       url, url);
+  return true;
+}
+
 }  // namespace permissions
