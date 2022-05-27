@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -60,6 +61,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void Request(base::Value arg, RequestCallback callback) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
+
   bool IsAccountConnected(const std::string& account);
   void ContinueConnect(bool is_eagerly_connect,
                        const std::string& selected_account,

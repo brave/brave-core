@@ -180,6 +180,7 @@ source_set("unit_tests") {
     deps += [
       ":brave_wallet_delegate",
       "//brave/components/brave_wallet/common:common_constants",
+      "//brave/components/brave_wallet/common:solana_utils",
     ]
     if (enable_extensions) {
       sources += [ "external_wallets_importer_unittest.cc" ]
