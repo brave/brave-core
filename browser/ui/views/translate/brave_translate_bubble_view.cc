@@ -26,12 +26,13 @@ BraveTranslateBubbleView::BraveTranslateBubbleView(
     views::View* anchor_view,
     std::unique_ptr<TranslateBubbleModel> model,
     translate::TranslateErrors::Type error_type,
-    content::WebContents* web_contents)
+    content::WebContents* web_contents,
+    base::OnceClosure on_closing)
     : TranslateBubbleView(anchor_view,
                           std::move(model),
                           error_type,
-                          web_contents) {
-}
+                          web_contents,
+                          std::move(on_closing)) {}
 
 BraveTranslateBubbleView::~BraveTranslateBubbleView() {
 }
