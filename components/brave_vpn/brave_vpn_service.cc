@@ -200,7 +200,7 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (connection_state_ == state)
     return;
-
+#if BUILDFLAG(IS_WIN)
   // On Windows, we get disconnected status update twice.
   // When user connects to different region while connected,
   // we disconnect current connection and connect to newly selected
@@ -214,7 +214,7 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
     VLOG(2) << __func__ << ": Ignore disconnected state while connecting";
     return;
   }
-
+#endif
   // On Windows, we could get disconnected state after connect failed.
   // To make connect failed state as a last state, ignore disconnected state.
   if (!force && connection_state_ == ConnectionState::CONNECT_FAILED &&
