@@ -27,15 +27,15 @@ std::string GetDefaultDNSProvidersForCountry() {
   auto providers = secure_dns::ProvidersForCountry(
       secure_dns::SelectEnabledProviders(net::DohProviderEntry::GetList()),
       country_codes::GetCurrentCountryID());
-  std::string doh_https_templates;
-  for (const auto* entry : providers) {
-    if (!doh_https_templates.empty()) {
-      doh_https_templates += " ";
-    }
+  for (const net::DohProviderEntry* entry : net::DohProviderEntry::GetList()) {
+    if (entry->provider != "Cloudflare")
+      continue;
     net::DnsOverHttpsConfig doh_config({entry->doh_server_config});
-    doh_https_templates += doh_config.ToString();
+    return doh_config.ToString();
   }
-  return doh_https_templates;
+  NOTREACHED() << "Should not be reached as we expect cloudflare is available "
+                  "in default list.";
+  return std::string();
 }
 }  // namespace
 

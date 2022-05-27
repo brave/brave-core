@@ -28,20 +28,23 @@ namespace secure_dns = chrome_browser_net::secure_dns;
 namespace brave_vpn {
 
 namespace {
+const char kBraveVpnDnsProvider[] = "Cloudflare";
+
 std::string GetFilteredProvidersForCountry() {
-  // Use default servers for current country.
+  namespace secure_dns = chrome_browser_net::secure_dns;
+  // Use default hardcoded servers for current country.
   auto providers = secure_dns::ProvidersForCountry(
       secure_dns::SelectEnabledProviders(net::DohProviderEntry::GetList()),
       country_codes::GetCurrentCountryID());
-  std::string doh_https_templates;
-  for (const auto* entry : providers) {
-    if (!doh_https_templates.empty()) {
-      doh_https_templates += " ";
-    }
+  for (const net::DohProviderEntry* entry : net::DohProviderEntry::GetList()) {
+    if (entry->provider != kBraveVpnDnsProvider)
+      continue;
     net::DnsOverHttpsConfig doh_config({entry->doh_server_config});
-    doh_https_templates += doh_config.ToString();
+    return doh_config.ToString();
   }
-  return doh_https_templates;
+  NOTREACHED() << "Should not be reached as we expect " << kBraveVpnDnsProvider
+               << " is available in the default list.";
+  return std::string("1.1.1.1");
 }
 std::string GetDoHServers(SecureDnsConfig* dns_config) {
   return dns_config && !dns_config->doh_servers().servers().empty()
