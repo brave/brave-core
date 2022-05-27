@@ -48,6 +48,7 @@ export const _WalletOnboardingConcept = () => {
         hasInitialized: true,
         mnemonic: undefined,
         isCryptoWalletsInitialized: false,
+        isMetaMaskInitialized: true,
         setupStillInProgress: true
       }}
     >
@@ -56,6 +57,6 @@ export const _WalletOnboardingConcept = () => {
   )
 }
 
-_DesktopWalletConcept.story = {
-  name: 'Concept'
+_WalletOnboardingConcept.story = {
+  name: 'Onboarding Concept'
 }

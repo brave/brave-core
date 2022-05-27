@@ -283,6 +283,7 @@ export interface PageState {
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
+  isImportWalletsCheckComplete: boolean
 }
 
 export interface WalletPageState {

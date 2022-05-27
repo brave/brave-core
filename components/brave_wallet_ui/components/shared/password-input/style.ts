@@ -15,6 +15,21 @@ export const StyledWrapper = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   width: 100%;
+
+  & > label {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.01em;
+    color: ${(p) => p.theme.color.text03};
+
+    margin-bottom: 8px;
+  }
 `
 export const InputWrapper = styled.div`
   display: flex;

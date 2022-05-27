@@ -11,7 +11,7 @@ import {
   WarningIcon
 } from './style'
 
-export interface Props {
+export interface Props extends Partial<Pick<HTMLInputElement, 'name'>> {
   onChange: (value: string) => void
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
   autoFocus?: boolean
@@ -20,10 +20,22 @@ export interface Props {
   hasError: boolean
   error: string
   showToggleButton?: boolean
+  label?: string
+  labelName?: string
 }
 
-function PasswordInput (props: Props) {
-  const { onChange, onKeyDown, placeholder, error, hasError, autoFocus, value, showToggleButton } = props
+export function PasswordInput ({
+  onChange,
+  onKeyDown,
+  placeholder,
+  error,
+  hasError,
+  autoFocus,
+  value,
+  showToggleButton,
+  label,
+  name
+}: Props) {
   const [showPassword, setShowPassword] = React.useState(false)
 
   const inputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,8 +48,12 @@ function PasswordInput (props: Props) {
 
   return (
     <StyledWrapper>
+
+      {label && name && <label htmlFor={name}>{label}</label>}
+
       <InputWrapper>
         <Input
+          name={name}
           hasError={hasError}
           type={(showToggleButton && showPassword) ? 'text' : 'password'}
           placeholder={placeholder}
