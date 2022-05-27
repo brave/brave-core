@@ -132,7 +132,7 @@
       Theme
     </message>
   </if>
-  <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
+  <if expr="is_linux">
     <message name="IDS_SETTINGS_SYSTEM_THEME" desc="Text of the label describing the system (GTK+) browser theme on Linux">
       GTK+
     </message>
@@ -620,6 +620,9 @@
   <message name="IDS_SETTINGS_PASSWORDS_NOTE" desc="Label for the password note when viewing or editing a password.">
     Note
   </message>
+  <message name="IDS_SETTINGS_PASSWORDS_NO_NOTE_ADDED" desc="Label for the password note when the note is empty.">
+    No note added
+  </message>
   <message name="IDS_SETTINGS_PASSWORDS_NOTE_CHARACTER_COUNT" desc="Warning for the password note when the user exceeds or is about to exceed the character limit.">
     <ph name="CHARACTER_COUNT">$1<ex>950</ex></ph>/<ph name="CHARACTER_LIMIT">$2<ex>1000</ex></ph>
   </message>
@@ -777,6 +780,9 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORD_ROW_FEDERATED_MORE_ACTIONS" desc="The ARIA (accessibility) message for the More Actions button, which sits in every row of the password list. For this row does not include a password, only information of the account. It opens a menu with a list of actions, which apply to the account presented on this row.">
     More actions, saved account for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_ROW_PASSWORD_DETAIL_PAGE" desc="The ARIA (accessibility) message for the password subpage button, which sits in every row of the password list.">
+    Credential details for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_TRUSTED_VAULT_BANNER_LABEL" desc="Label for the on-device encryption banner in settings.">
     On-device encryption
@@ -1030,6 +1036,12 @@
       </message>
       <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LAST_UPDATE" desc="Label of the field that displays when a certificate provisioning process had the last update">
         Last Update
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LAST_UNSUCCESSFUL_STATUS" desc="Label of the field that is displayed when a certificate provisioning process last update was unsuccessful">
+        Last Unsuccessful Update
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_DMSERVER_ERROR_MESSAGE" desc="Status description of a certificate provisioning process that has failed while contacting the DMServer">
+        Connection to Device Management Server failed with status '<ph name="STATUS_TEXT">$1<ex>Temporary server error</ex></ph>' at <ph name="FAILURE_TIME">$2<ex>Mon, 14 Mar 2022 17:35:00 GMT</ex></ph>
       </message>
     </if>
   </if>
@@ -1573,6 +1585,9 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_SUB_HEADER" desc="A subheader shown at the top of the completion card in the 'Privacy Guide' that informs users that they can explore more settings or complete the 'Privacy Guide'.">
     Explore more settings below or finish now
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_SUB_HEADER_NO_LINKS" desc="A subheader shown at the top of the completion card in the 'Privacy Guide' that informs users that they completed the 'Privacy Guide'.">
+    You can come back anytime to take another look
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion card in the 'Privacy Guide' that leads the user back to Brave settings.">
     Done

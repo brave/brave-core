@@ -1422,7 +1422,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HELP_MENU" desc="The text label of the Help sub-menu item in the wrench menu">
         H&amp;elp
       </message>
-      <message name="IDS_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users" formatter_data="android_java">
+      <message name="IDS_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
         Managed by your organization
       </message>
       <message name="IDS_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users. MANAGER can be a domain or an email address.">
@@ -2351,6 +2351,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_DELETE" desc="Label for the Delete button on the blocked download bubble subpage.">
         Delete
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RESUME" desc="Label for the button prompting to resume a paused download">
+        Resume
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SCAN" desc="Label for the button prompting for Deep Scanning">
         Scan
@@ -3782,7 +3785,11 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_PLUGIN_BROKER_PREFIX" desc="Task Manager row for PPAPI plugin broker, which provides additional access for PPAPI plugins">
           Plugin Broker: <ph name="PLUGIN_NAME">$1<ex>Unknown Plugin</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_PRERENDER_PREFIX" desc="The prefix for a Task Manager prerender row">
+        <!-- TODO(liuwilliam): crbug/1325318 renaming the rest of existing Prerender to NoStatePrefetch -->
+        <message name="IDS_TASK_MANAGER_NO_STATE_PREFETCH_PREFIX" desc="The prefix for a Task Manager No State Prefetch row">
+          Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_PRERENDER_PREFIX" desc="The prefix for a Task Manager Prerender2 row">
           Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_SPARE_RENDERER_PREFIX" desc="Task Manager row for a 'spare' render process. That is a render process that was started in anticipation of it being needed so that when it is needed it is immediately ready for use">
@@ -3835,6 +3842,12 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
           Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_FENCED_FRAME_PREFIX" desc="The prefix for a fenced frame row in the Task Manager">
+          Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_FENCED_FRAME_INCOGNITO_PREFIX" desc="The prefix for a Private fenced frame row in the Task Manager">
+          Private Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
           App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
@@ -3937,6 +3950,18 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON" desc="The text of the button to proceed with the page refresh for running an extension.">
           Reload
+        </message>
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_SINGLE_EXTENSION_TITLE" desc="Title of the bubble to tell users that in order to run an extension, they'll need to refresh the page.">
+          Refresh the page to use "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+        </message>
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_OK_BUTTON_LABEL" desc="The label of the button to proceed with the page refresh for running an extension.">
+          Refresh
+        </message>
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_BODY_TEXT" desc="The body text of the bubble to tell users to check the checkbox to always allow the extensions to run on the current site.">
+          Always allow the extension to run on this site if you don't want to see this message again.
+        </message>
+        <message name="IDS_EXTENSION_BLOCKED_ACTION_BUBBLE_CHECKBOX_LABEL" desc="The label of the checkbox to always allow the extensions to run on the current site.">
+          Always allow on this site
         </message>
       </if>
 
@@ -4626,6 +4651,19 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           Requesting to read and change <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
         </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_SINGLE_EXTENSION_TITLE" desc="The title of the request access bubble to tell the user to accept the bubble to always run the extension on the site.">
+          Always allow "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" to run on <ph name="ORIGIN">$2<ex>google.com</ex></ph>?
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_MULTIPLE_EXTENSIONS_TITLE" desc="The title of the request access bubble to tell the user to accept the bubble to always run the extensions on the site.">
+          Always allow these extensions to run on <ph name="ORIGIN">$1<ex>google.com</ex></ph>?
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_OK_BUTTON_LABEL" desc="The label of the button to allow the extension(s) to run on the site.">
+          Always allow
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_CANCEL_BUTTON_LABEL" desc="The label of the button to don't allow the extension(s) to run on the site.">
+          No thanks
+        </message>
+
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_CANT_ACCESS_PAGE" desc="The label in an extension's context menu indicating the extension cannot access the current page. (sentence case)">
             Can't read or change site's data
@@ -5388,7 +5426,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Use Strong Password
         </message>
       </if>
-      
+
        <message name="IDS_PASSWORD_GENERATION_EDITING_SUGGESTION" desc="Notification text next to the generated password assuring the user that the password has been saved.">
         Saved password
       </message>
@@ -5755,6 +5793,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_OPEN_BROWSER" desc="about:browser-switch/internals, section URL Checker, the text shows in which browser will open the URL">
           Opens in: <ph name="OPEN_BROWSER">$1</ph>
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_OPEN_BROWSER_PROTOCOL_REASON" desc="about:browser-switch/internals, section URL Checker, the explaination reason for check result, when the entered URL are not supported, it will list out supported URL">
+          Reason: LBS only supports http://, https://, and file:// URLs.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_OPEN_BROWSER_RULE_REASON" desc="about:browser-switch/internals, section URL Checker, the explaination reason for check result, displayed when the entered URL matched the rule in provided list">
+          Reason: <ph name="RULE">$1<ex>example.com</ex></ph> was found in the "<ph name="LIST_NAME">$2<ex>Force open in</ex></ph>" list.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_OPEN_BROWSER_INVERT_RULE_REASON" desc="about:browser-switch/internals, section URL Checker, the explaination reason for check result, displayed when the entered URL matched the inverted rule in Force open in list">
+          Reason: The inverted rule <ph name="REVERT_RULE">$1<ex>!example.com</ex></ph> was found in the "Force open in" list.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_OPEN_BROWSER_DEFAULT_REASON" desc="about:browser-switch/internals, section URL Checker, the explaination reason for check result, displayed when the entered URL did not match any listed rule and default browser will not get switched">
+          Reason: LBS stays in <ph name="DEFAULT_OPEN_BROWSER">$1<ex>Brave</ex></ph> by default.
         </message>
         <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_INVALID_URL" desc="about:browser-switch/internals, section URL Checker, specific error message when the url is invalid">
           Invalid URL. Make sure it is formatted properly.
@@ -6627,6 +6677,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ADD_NEW_USER_NOTE_PLACEHOLDER_TEXT" desc="Placeholder for textarea, where users can add a new user note.">
         Add note...
       </message>
+      <message name="IDS_LEARN_MORE_USER_NOTE" desc="User note menu label, which allows users to learn more about the user note feature.">
+        Learn more
+      </message>
 
       <!-- Feed button and menu -->
       <message name="IDS_FEED_TITLE" desc="Title of the feed menu">
@@ -6750,7 +6803,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_INITIATING_ORIGIN" desc="The label for the initiating origin of the intent picker.">
           From <ph name="ORIGIN">$1<ex>https://google.com</ex></ph>
         </message>
-        <message name="IDS_INTENT_CHIP_LABEL" desc="The label of a button to open the current webpage in an installed app.">
+        <message name="IDS_INTENT_CHIP_OPEN_IN_APP" desc="The label of a button or dialog to open the current webpage in an installed app.">
           Open in app
         </message>
         <message name="IDS_INTENT_CHIP_IPH" desc="The text for the In-Product Help bubble for the Intent Chip.">
@@ -6758,12 +6811,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
 
         <if expr="chromeos_ash or chromeos_lacros">
-          <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
-            Always use the <ph name="APP">$1<ex>YouTube</ex></ph> app to open supported web links?
-          </message>
-          <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_OK_LABEL" desc="The label of a confirm button for an infobar asking if the user wants to open web links in an app. If clicked, the selected app will always be opened when clicking supported web links.">
-            Always use
-          </message>
+          <then>
+            <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
+              Always use the <ph name="APP">$1<ex>YouTube</ex></ph> app to open supported web links?
+            </message>
+            <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_OK_LABEL" desc="The label of a confirm button for an infobar asking if the user wants to open web links in an app. If clicked, the selected app will always be opened when clicking supported web links.">
+              Always use
+            </message>
+            <message name="IDS_INTENT_PICKER_SELECT_AN_APP_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
+              Select an app on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to open this link
+            </message>
+          </then>
+          <else>
+            <message name="IDS_INTENT_PICKER_SELECT_AN_APP_GENERIC_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
+              Select an app on your device to open this link
+            </message>
+          </else>
         </if>
       </if>
 
@@ -8414,7 +8477,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         Google Pay
       </message>
 
-      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
+      <if expr="is_linux">
         <message name="IDS_SHOW_WINDOW_DECORATIONS" desc="The label of a radio button in the options dialog for using the system title bar and borders.">
           Use system title bar and borders
         </message>
@@ -9199,6 +9262,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         Sync settings
       </message>
       <if expr="chromeos_lacros">
+        <message name="IDS_SYNC_CONFIRMATION_TITLE_LACROS_NON_FORCED" desc="Title of the sync confirmation dialog/screen on lacros when sync is not forced.">
+          Turn on Brave browser sync?
+        </message>
         <message name="IDS_SYNC_CONFIRMATION_TITLE_LACROS" desc="Title of the sync confirmation dialog/screen on lacros.">
           Brave browser sync is on
         </message>
@@ -9231,8 +9297,8 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
           Ok
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL_V2" desc="Label of the confirmation button in the web signin interception bubble">
-          Continue
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL_V2" desc="Label of the confirmation button in the web signin interception bubble. This action will create a new Brave profile for the intercepted account.">
+          Let's go
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
@@ -9254,6 +9320,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC_V2" desc="Description for the profile switch interception bubble">
           <ph name="NAME">$2<ex>Bob</ex></ph>'s profile is linked to <ph name="EMAIL">$1<ex>bob@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V2" desc="Title of the web signin interception bubble. 'Separate' is an action verb. The prompt is shown to let the user choose to keep the browsing activity for a new account in the same profile as an existing one or to move it to a new profile.">
+          Separate your browsing?
         </message>
       </if>
 
@@ -9496,7 +9565,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Set as default
       </message>
 
-      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
+      <if expr="is_linux">
         <message name="IDS_MINIMIZE_WINDOW_MENU" desc="The Linux browser window menu item text for minimizing the window.">
           Minimize
         </message>
@@ -11738,6 +11807,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Remove access
     </message>
 
+    <!-- File System Access file chooser. -->
+    <message name="IDS_FILE_SYSTEM_ACCESS_CHOOSER_OPEN_READABLE_DIRECTORY_TITLE" desc="Title of the chooser when opening a directory with only read permissions">
+      Select a folder this site can view
+    </message>
+    <message name="IDS_FILE_SYSTEM_ACCESS_CHOOSER_OPEN_WRITABLE_DIRECTORY_TITLE" desc="Title of the chooser when opening a directory with read and write permissions">
+      Select where this site can save changes
+    </message>
+
     <!-- File System Access restricted directory and file dialogs. -->
     <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_DIRECTORY_TITLE" desc="Title of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
       Can't open this folder
@@ -12665,22 +12742,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_INPUT_OVERLAY_EDUCATIONAL_BETA" desc="Label marking the feature as 'Beta', this has to be removed after the feature is fully approved.">
         Beta
       </message>
+      <message name="IDS_INPUT_OVERLAY_RELEASE_ALPHA" desc="Label marking the feature as 'Alpha', this will be removed after feature fully launches.">
+        Alpha
+      </message>
+      <message name="IDS_INPUT_OVERLAY_SETTINGS_NUDGE" desc="Label displayed next to the Settings UI's entry point so the user is aware.">
+        Click here to customize controls
+      </message>
     </if>
 
     <!-- Privacy Sandbox Dialog strings -->
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_TITLE" desc="CONTEXT: there are updates to the Brave browser each month. Just after the user accepts the latest update, this message will appear. The user must make a choice, and this page can’t be dismissed until they do. The title of the page. * The title needs to be framed so that clicking the accept button makes sense * “Help us” is intended to convey a sense of collaboration. Privacy Sandbox is an ongoing multi-year effort. There are sites participating to help us and we also need users to agree to these trials so that we can measure the effectiveness of the features we're building. * “build” is intended to convey that this is a process. The user is agreeing to an effort rather than a stable set of features. Something like “make” doesn't have the same nuance.* “private web” is the promise of privacy sandbox.">
       Help us build a more private web
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_TITLE" translateable="false">
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_TITLE" desc="CONTEXT: there are updates to the Brave browser each month. Just after the user accepts the latest update, this message will appear. The title of the page. * “Help us” is intended to convey a sense of collaboration. Privacy Sandbox is an ongoing multi-year effort. There are sites participating to help us and we also need users to agree to these trials so that we can measure the effectiveness of the features we're building. * “build” is intended to convey that this is a process. The user is agreeing to an effort rather than a stable set of features. Something like “make” doesn't have the same nuance. * See www.privacysandbox.com for more context">
       Help us build a better web
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_HEADER_1" desc="1 of 2 subtitles on the page. We want to write for users who skim the page. That means that the page title, the sub titles, and the button label all work well together as a mini story: 1) Help us build a more private web How? 2) Limit sharing between sites 3) More control over the ads you see 4) Yes, I’ll try it">
       Limited sharing between sites
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION" translateable="false">
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION" desc="The body text of the bubble. * “During the trials”: The trials happen in addition to today’s current system (which is based on third-party cookies). In other words, even by agreeing to or remaining in a trial, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. ">
       During trials, Brave is exploring ways to limit spam, fraud, and sharing between sites. Brave also <ph name="ESTIMATE_INTERESTS_LINK">$1<ex>estimates your interests</ex></ph> that sites can use to show you ads. You can manage your interests in settings.
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION_ESTIMATES_INTERESTS_LINK" translateable="false">
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_SETTINGS_LINK" desc="The user can choose “Go to settings” to visit chrome://settings/privacySandbox. If they do, they’ll find the toggle on for Sandbox trials, which include everything they’ve read above. They can leave trials on or turn them off on this page. Choosing “Go to settings”, the user will navigate away from this page and won’t be able to return here.">
+      Go to settings
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION_ESTIMATES_INTERESTS_LINK" desc="This will be inserted as a link in IDS_PRIVACY_SANDBOX_BUBBLE_NOTICE_DESCRIPTION instead of ESTIMATE_INTERESTS_LINK placeholder. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). ">
       estimates your interests
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_1" desc="* “restrict” means to lessen. We don’t want to suggest that we’re “eliminating” cross-site tracking. * “cross-site tracking”: An example: a user visits site A and then site B. Based on how third-party cookies work today, when that user later visits site C, site C can be aware that the user visited sites A and B, and can even have some sense for what they did on those sites. * “stop ad spam and fraud”:  This feature isn’t really related to restricting cross-site tracking but we combined these features in the same sentence / section for structural reasons.">
@@ -12716,6 +12802,28 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_OPEN_SETTINGS_BUTTON" desc="The user can choose “Settings” to visit chrome://settings/privacySandbox. If they do, they’ll find the toggle on for Sandbox trials, which include everything they’ve read above. They can leave trials on or turn them off on this page. Choosing “Settings”, the user will navigate away from this page and won’t be able to return here.">
       Settings
     </message>
+
+    <!-- Automated Password Change on Desktop strings -->
+    <if expr="not is_android">
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_TITLE" translateable="false" desc="The title for the Automated Password Change on Desktop onboarding dialog. The onboarding dialog is a modal dialog that is shown if a user has not previously consented to using Assistant features.">
+        Let Brave Assistant help you change your password
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_DESCRIPTION" translateable="false" desc="The description / sub-title of the Automated Password Change on Desktop onboarding dialog.">
+        Brave Assistant in Brave can complete actions across websites for you
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_CONSENT_TEXT" translateable="false" desc="The description of what kind of data Brave will send and process in order to enable Automated Password Change. This is shown at the bottom of the onboarding dialog.">
+        To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant. This information may be stored in your Brave sync chain. You can turn it off in Brave settings. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_LEARN_MORE" translateable="false" desc="The text displayed on a link on the onboarding dialog that a user can click to navigate to a Brave website with detailed information on how Automated Password Change on Desktop/ Assistant works and what data is collected.">
+        Learn more
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_CANCEL_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
+        Cancel
+      </message>
+      <message name="IDS_AUTOFILL_ASSISTANT_PASSWORD_CHANGE_ONBOARDING_BUTTON_ACCEPT_TEXT" translateable="false" desc="The text on the button that declines the onboarding for Automated Password Change on Desktop.">
+        I agree
+      </message>
+    </if>
   </messages>
 </release>
 </grit>

@@ -316,6 +316,9 @@ Permissions you've already given to websites and apps may apply to this account.
           </if>
         <if expr="not chromeos_lacros">
           </if>
+        <if expr="chromeos_lacros">
+          </if>
+
         </if>
 
       <if expr="chromeos_ash">

@@ -9,7 +9,7 @@
     </if>
   <if expr="is_macosx">
     </if>
-  <if expr="is_fuchsia or is_linux and not chromeos_ash and not chromeos_lacros">
+  <if expr="is_fuchsia or is_linux">
     </if>
 
   </grit-part>
