@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.h b/third_party/blink/renderer/modules/webaudio/realtime_analyser.h
-index 0784f55f351745b681de04348900bf9d1b1cfec7..e493ba981d4ee88c19ae2d53446eba86f710fb04 100644
+index cd2e0ab2e0a752f95caa6fabaf79adbb31d26b31..ce6b0033fc69470beb39436d746dd399307a7d71 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.h
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.h
 @@ -77,6 +77,7 @@ class RealtimeAnalyser final {
-   static const unsigned kMaxFFTSize;
-   static const unsigned kInputBufferSize;
+   // The audio thread writes input data here.
+   void WriteInput(AudioBus*, uint32_t frames_to_process);
  
 +  BRAVE_REALTIMEANALYSER_H
   private:

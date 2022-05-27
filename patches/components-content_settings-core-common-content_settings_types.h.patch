@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index ffa4d1c88631d4e2de85bc41d94ccd927c4fd288..ee5580e7cb01e5582045e97ea68f4f0cf8fd747b 100644
+index 9c6728a428ba0ec1fd058a7f29661c8e55a4bf9c..30f6bcc5b913e4ababb4dd3c63a3d0b4d98ddac0 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -281,6 +281,7 @@ enum class ContentSettingsType : int32_t {
-   // the browser FedCM API.
-   FEDERATED_IDENTITY_API,
+@@ -287,6 +287,7 @@ enum class ContentSettingsType : int32_t {
+   // in local time.
+   NOTIFICATION_INTERACTIONS,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,
