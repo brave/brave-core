@@ -31,6 +31,7 @@ export const ArticleLinkBubble: React.FC<ArticleLinkBubbleProps> = ({
     <Bubble
       href={url}
       target='_blank'
+      rel='noreferrer'
     >
       <BubbleIconBackground
         backgroundColor={iconBackgroundColor}
