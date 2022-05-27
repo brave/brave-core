@@ -173,6 +173,7 @@ handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Stor
 })
 
 handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
+  store.dispatch(WalletPageActions.setImportWalletsCheckComplete(false))
   const braveWalletService = getWalletPageApiProxy().braveWalletService
   const cwResult =
     await braveWalletService.isExternalWalletInitialized(
@@ -182,6 +183,7 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
       BraveWallet.ExternalWalletType.MetaMask)
   store.dispatch(WalletPageActions.setCryptoWalletsInitialized(cwResult.initialized))
   store.dispatch(WalletPageActions.setMetaMaskInitialized(mmResult.initialized))
+  store.dispatch(WalletPageActions.setImportWalletsCheckComplete(true))
 })
 
 handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {

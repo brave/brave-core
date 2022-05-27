@@ -39,36 +39,57 @@ import { NewPasswordInput, NewPasswordValues } from '../../../../components/shar
 import { WalletPageLayout } from '../../../../components/desktop'
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 import { NavButton } from '../../../../components/extension'
+import { LoadingSkeleton, PasswordInput } from '../../../../components/shared'
 
-enum RestoreFromPhraseSteps {
+enum RestoreFromOtherWalletSteps {
   phrase = 'phrase',
-  password = 'password',
+  newPassword = 'password',
+  currentPassword = 'current-password',
   complete = 'complete'
 }
 
-const RESTORE_FROM_PHRASE_STEPS: RestoreFromPhraseSteps[] = [
-  RestoreFromPhraseSteps.phrase,
-  RestoreFromPhraseSteps.password,
-  RestoreFromPhraseSteps.complete
+const RESTORE_FROM_PHRASE_STEPS: RestoreFromOtherWalletSteps[] = [
+  RestoreFromOtherWalletSteps.phrase,
+  RestoreFromOtherWalletSteps.newPassword,
+  RestoreFromOtherWalletSteps.complete
 ]
 
-export const OnboardingRestoreFromRecoveryPhrase = () => {
+const RESTORE_FROM_METAMASK_STEPS: RestoreFromOtherWalletSteps[] = [
+  RestoreFromOtherWalletSteps.currentPassword,
+  RestoreFromOtherWalletSteps.newPassword,
+  RestoreFromOtherWalletSteps.complete
+]
+
+interface Props {
+  restoreFrom: 'metamask' | 'seed' | 'metamask-seed'
+}
+
+export const OnboardingRestoreFromRecoveryPhrase = ({
+  restoreFrom = 'seed'
+}: Props) => {
   // routing
   let history = useHistory()
 
   // redux
   const dispatch = useDispatch()
   const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
-  // const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
-  // const isWalletLocked = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked)
+  const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
+  const isImportWalletsCheckComplete = useSelector(({ page }: { page: PageState }) => page.isImportWalletsCheckComplete)
+
+  // computed
+  const isImportingFromMetaMaskExtenstion = restoreFrom === 'metamask'
+  const isCheckingExtensions = restoreFrom !== 'seed' && !isImportWalletsCheckComplete
 
   // state
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
+  const [metaMaskPassword, setMetaMaskPassword] = React.useState('')
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
   const [phraseInput, setPhraseInput] = React.useState('')
-  const [currentStep, setCurrentStep] = React.useState<RestoreFromPhraseSteps>(
-    RestoreFromPhraseSteps.phrase
+  const [currentStep, setCurrentStep] = React.useState<RestoreFromOtherWalletSteps>(
+    isImportingFromMetaMaskExtenstion
+      ? RestoreFromOtherWalletSteps.currentPassword
+      : RestoreFromOtherWalletSteps.phrase
   )
 
   // methods
@@ -83,7 +104,19 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   }, [])
 
   const restoreWallet = React.useCallback(async () => {
-    if (invalidMnemonic || !isPasswordValid) {
+    if (!isPasswordValid) {
+      return
+    }
+
+    if (isImportingFromMetaMaskExtenstion) {
+      dispatch(WalletPageActions.importFromMetaMask({
+        password: metaMaskPassword,
+        newPassword: password
+      }))
+      return
+    }
+
+    if (invalidMnemonic) {
       return
     }
 
@@ -97,7 +130,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     }))
 
     history.push(WalletRoutes.OnboardingComplete)
-  }, [phraseInput, password, invalidMnemonic, isPasswordValid])
+  }, [phraseInput, password, invalidMnemonic, isPasswordValid, isImportingFromMetaMaskExtenstion])
 
   const onPhraseInputChanged = React.useCallback((event: React.ChangeEvent<
     HTMLInputElement | HTMLTextAreaElement
@@ -133,20 +166,28 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   }, [])
 
   const onContinueClicked = React.useCallback(() => {
-    if (currentStep === RestoreFromPhraseSteps.phrase && !invalidMnemonic) {
-      return setCurrentStep(RestoreFromPhraseSteps.password)
+    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && metaMaskPassword) {
+      // TODO, check import & pw?
+      return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
     }
-    if (currentStep === RestoreFromPhraseSteps.password && isPasswordValid) {
+    if (currentStep === RestoreFromOtherWalletSteps.phrase && !invalidMnemonic) {
+      return setCurrentStep(RestoreFromOtherWalletSteps.newPassword)
+    }
+    if (currentStep === RestoreFromOtherWalletSteps.newPassword && isPasswordValid) {
+      // TODO: check for MM and use alternative restore method?
       return restoreWallet()
     }
   }, [currentStep, invalidMnemonic, isPasswordValid, restoreWallet])
 
   const onGoBack = React.useCallback(() => {
-    if (currentStep === RestoreFromPhraseSteps.phrase) {
+    if (
+      currentStep === RestoreFromOtherWalletSteps.currentPassword ||
+      currentStep === RestoreFromOtherWalletSteps.phrase
+    ) {
       return history.goBack()
     }
-    if (currentStep === RestoreFromPhraseSteps.password) {
-      return setCurrentStep(RestoreFromPhraseSteps.phrase)
+    if (currentStep === RestoreFromOtherWalletSteps.newPassword) {
+      return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
     }
   }, [currentStep])
 
@@ -177,6 +218,61 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       />
   }, [isPhraseShown, phraseInput, onPhraseInputChanged, handleKeyDown])
 
+  const pageText = React.useMemo(() => {
+    switch (currentStep) {
+      // getLocale
+      case RestoreFromOtherWalletSteps.currentPassword: return {
+        title: 'We detected the MetaMask extension in your browser', // currently only for metamask import
+        description: 'By entering the password you can Import your MetaMask wallet to Brave Wallet easily.'
+      }
+
+      // getLocale
+      case RestoreFromOtherWalletSteps.newPassword: return {
+        title: getLocale('braveWalletCreatePasswordTitle'),
+        description: getLocale('braveWalletCreatePasswordDescription')
+      }
+
+      // getLocale
+      case RestoreFromOtherWalletSteps.phrase: return {
+        title: restoreFrom !== 'seed' ? 'Import from MetaMask' : getLocale('braveWalletRecoveryPhraseBackupTitle'),
+        description: restoreFrom !== 'seed' ? 'Type your MetaMask 12 words recovery phrase.' : getLocale('braveWalletRecoveryPhraseBackupWarning')
+      }
+
+      default: return { title: '', description: '' }
+    }
+  }, [currentStep, restoreFrom])
+
+  // effects
+  React.useEffect(() => {
+    if (
+      restoreFrom !== 'seed' &&
+      !isMetaMaskInitialized &&
+      !isImportWalletsCheckComplete
+    ) {
+      // check if MM is installed
+      dispatch(WalletPageActions.checkWalletsToImport())
+    }
+  }, [restoreFrom, isCheckingExtensions, isMetaMaskInitialized])
+
+  React.useEffect(() => {
+    if (
+      restoreFrom === 'seed' || // only watching during metamask import
+      !isImportWalletsCheckComplete // wait for redux store to be ready
+    ) {
+      return
+    }
+
+    // switch to phrase input if MM was not detected
+    if (currentStep === RestoreFromOtherWalletSteps.currentPassword && !isMetaMaskInitialized) {
+      return setCurrentStep(RestoreFromOtherWalletSteps.phrase)
+    }
+
+    // switch to password input if MM was detected
+    if (currentStep === RestoreFromOtherWalletSteps.phrase && isMetaMaskInitialized) {
+      return setCurrentStep(RestoreFromOtherWalletSteps.currentPassword)
+    }
+  }, [isImportWalletsCheckComplete, isImportingFromMetaMaskExtenstion, currentStep])
+
   // render
   return (
     <WalletPageLayout>
@@ -184,26 +280,33 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
         <StyledWrapper>
 
           <StepsNavigation
-            steps={RESTORE_FROM_PHRASE_STEPS}
+            steps={restoreFrom === 'metamask' ? RESTORE_FROM_METAMASK_STEPS : RESTORE_FROM_PHRASE_STEPS}
             currentStep={currentStep}
             goBack={onGoBack}
             preventSkipAhead
           />
 
-          {
-            <TitleAndDescriptionContainer>
-              <Title>
-                {currentStep === RestoreFromPhraseSteps.phrase && getLocale('braveWalletRecoveryPhraseBackupTitle')}
-                {currentStep === RestoreFromPhraseSteps.password && getLocale('braveWalletCreatePasswordTitle')}
-              </Title>
-              <Description>
-                {currentStep === RestoreFromPhraseSteps.phrase && getLocale('braveWalletRecoveryPhraseBackupWarning')}
-                {currentStep === RestoreFromPhraseSteps.password && getLocale('braveWalletCreatePasswordDescription')}
-              </Description>
-            </TitleAndDescriptionContainer>
+          <TitleAndDescriptionContainer>
+            {
+              isCheckingExtensions
+              ? <>
+                  <Title>{'checking for wallet extensions...'}</Title>
+                </>
+              : <>
+                <Title>{pageText.title}</Title>
+                <Description>{pageText.description}</Description>
+              </>
+            }
+          </TitleAndDescriptionContainer>
+
+          {isCheckingExtensions &&
+            <>
+              <LoadingSkeleton width={375} height={168} />
+              <VerticalSpace space={'100px'} />
+            </>
           }
 
-          {currentStep === RestoreFromPhraseSteps.phrase &&
+          {!isCheckingExtensions && currentStep === RestoreFromOtherWalletSteps.phrase &&
             <>
               <PhraseCard>
                 <PhraseCardTopRow>
@@ -231,7 +334,30 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             </>
           }
 
-          {currentStep === RestoreFromPhraseSteps.password &&
+          {!isCheckingExtensions && currentStep === RestoreFromOtherWalletSteps.currentPassword &&
+            <>
+              <PasswordInput
+                autoFocus={true}
+                onChange={setMetaMaskPassword}
+                value={metaMaskPassword}
+                error={''}
+                hasError={false}
+                placeholder={
+                  // getLocale
+                  'Type MataMask password'
+                }
+                name='mmPassword'
+                label={
+                  // getLocale
+                  'Password'
+                }
+              />
+
+              <VerticalSpace space='100px' />
+            </>
+          }
+
+          {currentStep === RestoreFromOtherWalletSteps.newPassword &&
             <NewPasswordInput
               autoFocus={true}
               onSubmit={restoreWallet}
@@ -239,18 +365,21 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             />
           }
 
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonContinue')}
-              onSubmit={onContinueClicked}
-              disabled={
-                !phraseInput ||
-                currentStep === RestoreFromPhraseSteps.phrase && invalidMnemonic ||
-                currentStep === RestoreFromPhraseSteps.password && !isPasswordValid
-              }
-            />
-          </NextButtonRow>
+          {!isCheckingExtensions &&
+            <NextButtonRow>
+              <NavButton
+                buttonType='primary'
+                text={getLocale('braveWalletButtonContinue')}
+                onSubmit={onContinueClicked}
+                disabled={
+                  isImportingFromMetaMaskExtenstion && currentStep === RestoreFromOtherWalletSteps.currentPassword && !metaMaskPassword ||
+                  restoreFrom === 'seed' && !phraseInput ||
+                  currentStep === RestoreFromOtherWalletSteps.phrase && invalidMnemonic ||
+                  currentStep === RestoreFromOtherWalletSteps.newPassword && !isPasswordValid
+                }
+              />
+            </NextButtonRow>
+          }
 
         </StyledWrapper>
       </MainWrapper>

@@ -4,7 +4,7 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   Redirect,
   Route,
@@ -23,28 +23,23 @@ import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 // types
-import { WalletRoutes } from '../../../constants/types'
+import { PageState, WalletRoutes } from '../../../constants/types'
 
 // actions
-import * as WalletPageActions from '../../actions/wallet_page_actions'
+// import * as WalletPageActions from '../../actions/wallet_page_actions'
 
 export const OnboardingRoutes = () => {
   // routing
   // let history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
+  const isMetaMaskInitialized = useSelector(({ page }: { page: PageState }) => page.isMetaMaskInitialized)
 
   // methods
   // const onSkipBackup = React.useCallback(() => {
   //   dispatch(WalletPageActions.walletSetupComplete())
   //   history.push(WalletRoutes.Portfolio)
   // }, [])
-
-  // effects
-  React.useEffect(() => {
-    dispatch(WalletPageActions.checkWalletsToImport())
-  }, [])
 
   // render
   return (
@@ -71,16 +66,20 @@ export const OnboardingRoutes = () => {
       </Route>
 
       <Route path={WalletRoutes.OnboardingRestoreWallet} exact>
-        <OnboardingRestoreFromRecoveryPhrase />
+        <OnboardingRestoreFromRecoveryPhrase restoreFrom='seed' />
       </Route>
 
-      {/* <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
-        <OnboardingImportMetaMaskOrLegacy />
+      <Route path={WalletRoutes.OnboardingImportMetaMask} exact>
+        <OnboardingRestoreFromRecoveryPhrase
+          restoreFrom={isMetaMaskInitialized ? 'metamask' : 'metamask-seed'}
+        />
       </Route>
 
+      {/*
       <Route path={WalletRoutes.OnboardingImportCryptoWallets} exact>
         <OnboardingImportMetaMaskOrLegacy />
-      </Route> */}
+      </Route>
+      */}
 
       <Route path={WalletRoutes.OnboardingComplete} exact>
         <OnboardingSuccess />
