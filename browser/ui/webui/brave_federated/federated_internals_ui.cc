@@ -16,7 +16,7 @@
 #include "brave/browser/resources/federated_internals/grit/federated_internals_resources_map.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/grit/generated_resources.h"

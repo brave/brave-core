@@ -34,10 +34,11 @@ source_set("preferences") {
 
 java_cpp_strings("java_pref_names_srcjar") {
   sources = [
-    "//brave/common/pref_names.cc",
     "//brave/components/brave_rewards/common/pref_names.cc",
+    "//brave/components/constants/pref_names.cc",
     "//brave/components/ntp_background_images/common/pref_names.cc",
   ]
 
-  template = "//brave/browser/preferences/android/java_templates/BravePref.java.tmpl"
+  template =
+      "//brave/browser/preferences/android/java_templates/BravePref.java.tmpl"
 }

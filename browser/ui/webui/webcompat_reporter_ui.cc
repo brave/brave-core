@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/profiles/profile.h"

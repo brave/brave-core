@@ -10,7 +10,7 @@
 
 #include "base/command_line.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/common/network_constants.h"
+#include "brave/components/constants/network_constants.h"
 #include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

@@ -11,7 +11,7 @@ source_set("unittest") {
     deps = [
       "//brave/browser",
       "//brave/common",
-      "//brave/common:pref_names",
+      "//brave/components/constants",
       "//chrome/common",
       "//chrome/test:test_support",
       "//components/prefs",

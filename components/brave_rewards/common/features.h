@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_FEATURES_H_
 
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 namespace base {
 struct Feature;
@@ -14,6 +15,10 @@ struct Feature;
 
 namespace brave_rewards {
 namespace features {
+
+#if BUILDFLAG(IS_ANDROID)
+extern const base::Feature kBraveRewards;
+#endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 extern const base::Feature kGeminiFeature;

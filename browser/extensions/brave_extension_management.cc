@@ -11,7 +11,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"

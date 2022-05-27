@@ -12,10 +12,10 @@
 
 #include "base/environment.h"
 
-#include "brave/common/extensions/api/binance.h"
-#include "brave/common/pref_names.h"
 #include "brave/browser/binance/binance_service_factory.h"
+#include "brave/common/extensions/api/binance.h"
 #include "brave/components/binance/browser/binance_service.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"

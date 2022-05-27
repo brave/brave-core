@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "brave/browser/net/url_context.h"
-#include "brave/common/network_constants.h"
+#include "brave/components/constants/network_constants.h"
 #include "net/base/net_errors.h"
 #include "net/url_request/url_request_job.h"
 #include "testing/gtest/include/gtest/gtest.h"

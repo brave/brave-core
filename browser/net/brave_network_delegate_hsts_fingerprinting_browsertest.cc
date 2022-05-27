@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

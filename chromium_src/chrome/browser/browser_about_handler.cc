@@ -8,8 +8,8 @@
 #include "src/chrome/browser/browser_about_handler.cc"
 #undef HandleChromeAboutAndChromeSyncRewrite
 
-#include "brave/common/url_constants.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 
 bool HandleChromeAboutAndChromeSyncRewrite(
     GURL* url,

@@ -11,8 +11,8 @@
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/path_service.h"
-#include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/constants/brave_paths.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

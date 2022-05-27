@@ -11,7 +11,7 @@
 #include "base/callback.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"

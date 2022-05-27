@@ -6,7 +6,7 @@
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 
 #include "base/strings/string_piece.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
 #include "url/origin.h"

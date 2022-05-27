@@ -7,8 +7,8 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"

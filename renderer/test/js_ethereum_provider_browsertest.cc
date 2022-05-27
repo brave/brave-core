@@ -5,8 +5,8 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
-#include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"

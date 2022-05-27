@@ -16,7 +16,7 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"

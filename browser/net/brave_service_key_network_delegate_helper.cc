@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "base/no_destructor.h"
-#include "brave/common/brave_services_key.h"
-#include "brave/common/network_constants.h"
+#include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
 #include "brave/components/update_client/buildflags.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"

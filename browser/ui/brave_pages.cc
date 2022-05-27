@@ -6,7 +6,7 @@
 #include "brave/browser/ui/brave_pages.h"
 
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"

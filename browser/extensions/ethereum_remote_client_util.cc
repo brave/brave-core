@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "base/environment.h"
-#include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/constants/brave_services_key.h"
 
 namespace extensions {
 

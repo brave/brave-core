@@ -9,7 +9,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"

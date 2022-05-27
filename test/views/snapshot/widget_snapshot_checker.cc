@@ -10,7 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "cc/test/pixel_comparator.h"
 #include "cc/test/pixel_test_utils.h"

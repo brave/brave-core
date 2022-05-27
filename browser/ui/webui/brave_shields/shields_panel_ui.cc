@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

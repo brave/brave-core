@@ -9,8 +9,8 @@
 
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"

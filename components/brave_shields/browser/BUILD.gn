@@ -62,11 +62,11 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_shields/common:mojom",
+    "//brave/components/constants",
     "//brave/components/content_settings/core/common",
     "//brave/components/debounce/common",
     "//brave/components/ephemeral_storage",

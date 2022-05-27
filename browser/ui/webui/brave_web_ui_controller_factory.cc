@@ -16,10 +16,10 @@
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
-#include "brave/common/brave_features.h"
-#include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -188,7 +188,7 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
       url.host_piece() != kRewardsInternalsHost) {
     return false;
   }
-  if (!base::FeatureList::IsEnabled(features::kBraveRewards)) {
+  if (!base::FeatureList::IsEnabled(brave_rewards::features::kBraveRewards)) {
     return true;
   }
   Profile* profile = Profile::FromBrowserContext(browser_context);

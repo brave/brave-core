@@ -71,7 +71,6 @@ source_set("brave_wallet_unit_tests") {
   deps = [
     ":test_support",
     "//base/test:test_support",
-    "//brave/common:brave_services_key",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:hd_keyring",
@@ -84,6 +83,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
+    "//brave/components/constants",
     "//brave/components/filecoin/rs:cxx_gen",
     "//brave/components/ipfs",
     "//brave/components/resources:strings_grit",

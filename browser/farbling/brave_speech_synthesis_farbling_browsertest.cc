@@ -5,9 +5,9 @@
 
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/common/brave_paths.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"

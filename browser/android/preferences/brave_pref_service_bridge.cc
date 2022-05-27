@@ -6,7 +6,6 @@
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 
 #include "base/android/jni_string.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -14,6 +13,7 @@
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

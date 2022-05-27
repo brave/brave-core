@@ -3,7 +3,7 @@ include_rules = [
   "+services/network/public/cpp",
   "+third_party/boringssl",
   "+third_party/re2",
-  "+brave/common/brave_services_key.h",
+  "+brave/components/constants",
   "+brave/components/version_info",
   "+brave/third_party/bitcoin-core/src/src/base58.h",
   "+brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h",

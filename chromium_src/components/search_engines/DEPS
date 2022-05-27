@@ -2,11 +2,3 @@ include_rules = [
   "+brave/components/search_engines",
   "+components/country_codes",
 ]
-
-# Existing exceptions
-specific_include_rules = {
-  "template_url_prepopulate_data.cc": [
-    "+brave/common/pref_names.h",
-  ],
-}
-

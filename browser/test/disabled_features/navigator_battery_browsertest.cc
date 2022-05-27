@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"

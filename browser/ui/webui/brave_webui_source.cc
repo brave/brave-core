@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

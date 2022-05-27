@@ -9,9 +9,9 @@
 
 #include "base/version.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
