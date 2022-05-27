@@ -12,8 +12,6 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/common/network_constants.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"

@@ -12,7 +12,6 @@
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/common/url_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
