@@ -29,8 +29,10 @@ BraveMutableProfileOAuth2TokenServiceDelegate::
     ~BraveMutableProfileOAuth2TokenServiceDelegate() {}
 
 void BraveMutableProfileOAuth2TokenServiceDelegate::LoadCredentials(
-    const CoreAccountId& primary_account_id) {
+    const CoreAccountId& primary_account_id,
+    bool is_syncing) {
   if (!account_tracker_service_->GetAccounts().size())
     return;
-  MutableProfileOAuth2TokenServiceDelegate::LoadCredentials(primary_account_id);
+  MutableProfileOAuth2TokenServiceDelegate::LoadCredentials(primary_account_id,
+                                                            is_syncing);
 }
