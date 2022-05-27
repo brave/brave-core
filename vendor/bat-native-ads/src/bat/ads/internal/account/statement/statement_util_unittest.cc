@@ -39,8 +39,8 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
-  AdsClientHelper::Get()->SetDoublePref(prefs::kNextTokenRedemptionAt,
-                                        next_token_redemption_at.ToDoubleT());
+  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                      next_token_redemption_at);
 
   const TransactionList transactions;
 

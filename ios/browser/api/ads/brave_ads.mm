@@ -1391,6 +1391,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return [self.prefs[key] unsignedLongLongValue];
 }
 
+- (void)setTimePref:(const std::string&)path value:(const base::Time)value {
+  const auto key = base::SysUTF8ToNSString(path);
+  self.prefs[key] = @(value.ToDoubleT());
+  [self savePref:key];
+}
+
+- (base::Time)getTimePref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
+}
+
 - (void)clearPref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   [self.prefs removeObjectForKey:key];

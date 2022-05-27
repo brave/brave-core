@@ -104,28 +104,24 @@ class AdsClientMock : public AdsClient {
 
   MOCK_CONST_METHOD1(GetBooleanPref, bool(const std::string& path));
   MOCK_METHOD2(SetBooleanPref, void(const std::string& path, const bool value));
-
   MOCK_CONST_METHOD1(GetIntegerPref, int(const std::string& path));
   MOCK_METHOD2(SetIntegerPref, void(const std::string& path, const int value));
-
   MOCK_CONST_METHOD1(GetDoublePref, double(const std::string& path));
   MOCK_METHOD2(SetDoublePref,
                void(const std::string& path, const double value));
-
   MOCK_CONST_METHOD1(GetStringPref, std::string(const std::string& path));
   MOCK_METHOD2(SetStringPref,
                void(const std::string& path, const std::string& value));
-
   MOCK_CONST_METHOD1(GetInt64Pref, int64_t(const std::string& path));
   MOCK_METHOD2(SetInt64Pref,
                void(const std::string& path, const int64_t value));
-
   MOCK_CONST_METHOD1(GetUint64Pref, uint64_t(const std::string& path));
   MOCK_METHOD2(SetUint64Pref,
                void(const std::string& path, const uint64_t value));
-
+  MOCK_CONST_METHOD1(GetTimePref, base::Time(const std::string& path));
+  MOCK_METHOD2(SetTimePref,
+               void(const std::string& path, const base::Time value));
   MOCK_METHOD1(ClearPref, void(const std::string& path));
-
   MOCK_CONST_METHOD1(HasPrefPath, bool(const std::string& path));
 };
 

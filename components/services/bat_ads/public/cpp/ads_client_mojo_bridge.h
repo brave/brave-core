@@ -17,6 +17,10 @@
 
 class GURL;
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace bat_ads {
 
 class AdsClientMojoBridge
@@ -143,6 +147,9 @@ class AdsClientMojoBridge
   void SetUint64Pref(
       const std::string& path,
       const uint64_t value) override;
+  void GetTimePref(const std::string& path,
+                   GetTimePrefCallback callback) override;
+  void SetTimePref(const std::string& path, const base::Time value) override;
   void ClearPref(
       const std::string& path) override;
   void HasPrefPath(const std::string& path,

@@ -285,8 +285,8 @@ void Confirmations::OnDidRedeemUnblindedToken(
   const int unblinded_payment_tokens_count =
       ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count();
 
-  const base::Time next_token_redemption_at = base::Time::FromDoubleT(
-      AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
+  const base::Time next_token_redemption_at =
+      AdsClientHelper::Get()->GetTimePref(prefs::kNextTokenRedemptionAt);
 
   BLOG(1, "Successfully redeemed unblinded token for "
               << confirmation.ad_type << " with confirmation id "
