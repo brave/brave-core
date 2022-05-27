@@ -20,8 +20,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
   public init(
     walletStore: WalletStore,
     origin: URLOrigin,
-    faviconRenderer: WalletFaviconRenderer,
-    onUnlock: (() -> Void)? = nil
+    faviconRenderer: WalletFaviconRenderer
   ) {
     gesture = WalletInteractionGestureRecognizer(
       keyringStore: walletStore.keyringStore
@@ -58,17 +57,6 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       )
       self.presentPanModal(controller)
     }
-    
-    cancellable = walletStore.keyringStore.$keyring
-      .dropFirst() // Drop initial value
-      .map(\.isLocked)
-      .removeDuplicates()
-      .dropFirst() // Drop first async fetch of keyring
-      .sink { isLocked in
-        if !isLocked {
-          onUnlock?()
-        }
-      }
   }
   
   @available(*, unavailable)
