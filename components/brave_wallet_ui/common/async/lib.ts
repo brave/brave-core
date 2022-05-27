@@ -56,6 +56,27 @@ export const getERC20Allowance = (
   })
 }
 
+export const getTransactionConfirmations = (
+  transaction: BraveWallet.TransactionInfo,
+  coin: BraveWallet.CoinType
+): Promise<string> => {
+  return new Promise(async (resolve, reject) => {
+    const { jsonRpcService } = getAPIProxy()
+    const { chainId } = await jsonRpcService.getChainId(coin)
+    const result = await jsonRpcService.getTransactionConfirmations(
+      transaction.txHash,
+      coin,
+      chainId
+    )
+
+    if (result.error === BraveWallet.ProviderError.kSuccess) {
+      resolve(Amount.normalize(result.confirmations))
+    } else {
+      reject(result.errorMessage)
+    }
+  })
+}
+
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<BraveWallet.HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
     const keyring = getHardwareKeyring(opts.hardware, opts.coin)

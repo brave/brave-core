@@ -987,6 +987,67 @@ void JsonRpcService::OnGetERC20TokenAllowance(
   std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetTransactionConfirmations(
+    const std::string& tx_hash,
+    mojom::CoinType coin,
+    const std::string& chain_id,
+    GetTransactionConfirmationsCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, coin);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  if (coin == mojom::CoinType::ETH) {
+    auto internal_callback =
+        base::BindOnce(&JsonRpcService::ContinueGetTransactionConfirmations,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+    GetTransactionReceipt(tx_hash, std::move(internal_callback));
+    return;
+  }
+
+  std::move(callback).Run("0x0", mojom::ProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+void JsonRpcService::ContinueGetTransactionConfirmations(
+    StringResultCallback callback,
+    TransactionReceipt tx_receipt,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::move(callback).Run("0x0", error, error_message);
+    return;
+  }
+
+  GetBlockNumber(base::BindOnce(&JsonRpcService::OnGetTransactionConfirmations,
+                                weak_ptr_factory_.GetWeakPtr(),
+                                tx_receipt.block_number, std::move(callback)));
+}
+
+void JsonRpcService::OnGetTransactionConfirmations(
+    uint256_t block_number,
+    StringResultCallback callback,
+    uint256_t latest_block_number,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::move(callback).Run("0x0", error, error_message);
+    return;
+  }
+
+  if (latest_block_number < block_number) {
+    std::move(callback).Run(
+        "0x0", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(Uint256ValueToHex(latest_block_number - block_number),
+                          mojom::ProviderError::kSuccess, "");
+}
+
 void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,
                                             StringResultCallback callback) {
   const std::string contract_address =
@@ -1664,7 +1725,7 @@ void JsonRpcService::GetTokenMetadata(const std::string& contract_address,
       return;
     }
   } else {
-    // Unknown inteface ID
+    // Unknown interface ID
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));

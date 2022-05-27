@@ -150,6 +150,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& spender_address,
                               GetERC20TokenAllowanceCallback callback) override;
 
+  void GetTransactionConfirmations(
+      const std::string& tx_hash,
+      mojom::CoinType coin,
+      const std::string& chain_id,
+      GetTransactionConfirmationsCallback callback) override;
+
   using UnstoppableDomainsResolveDnsCallback =
       base::OnceCallback<void(const GURL& url,
                               mojom::ProviderError error,
@@ -428,6 +434,17 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
+
+  void ContinueGetTransactionConfirmations(StringResultCallback callback,
+                                           TransactionReceipt tx_receipt,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message);
+
+  void OnGetTransactionConfirmations(uint256_t block_number,
+                                     StringResultCallback callback,
+                                     uint256_t latest_block_number,
+                                     mojom::ProviderError error,
+                                     const std::string& error_message);
 
   void OnUnstoppableDomainsResolveDns(
       const std::string& domain,

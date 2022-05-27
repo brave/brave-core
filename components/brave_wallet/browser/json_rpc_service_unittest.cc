@@ -508,6 +508,33 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
+  void SetEthGetTransactionReceiptInterceptor(
+      const std::string& chain_id,
+      mojom::CoinType coin_type,
+      const std::string& receipt,
+      const std::string& block_number_response) {
+    GURL network_url =
+        brave_wallet::GetNetworkURL(prefs(), chain_id, coin_type);
+
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url, receipt,
+         block_number_response](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("eth_getTransactionReceipt") !=
+              std::string::npos) {
+            url_loader_factory_.AddResponse(network_url.spec(), receipt);
+          } else if (request_string.find("eth_blockNumber") !=
+                     std::string::npos) {
+            url_loader_factory_.AddResponse(request.url.spec(),
+                                            block_number_response);
+          }
+        }));
+  }
+
   void SetInterceptor(const GURL& expected_url,
                       const std::string& expected_method,
                       const std::string& expected_cache_header,
@@ -1821,6 +1848,136 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetTransactionConfirmations) {
+  // Success base test case
+  // OK: confirmations = 0x65a8d0 - 0x65a8c6 = 0xa (10)
+  bool callback_called = false;
+  std::string receipt =
+      R"(
+      {
+        "jsonrpc": "2.0",
+        "id":1,
+        "result": {
+          "transactionHash": "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+          "transactionIndex":  "0x1",
+          "blockNumber": "0x65a8c6",
+          "blockHash": "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
+          "cumulativeGasUsed": "0x33bc",
+          "gasUsed": "0x4dc",
+          "contractAddress": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
+          "logs": [],
+          "logsBloom": "0x00...0",
+          "status": "0x1"
+        }
+      })";
+
+  SetEthGetTransactionReceiptInterceptor(mojom::kLocalhostChainId,
+                                         mojom::CoinType::ETH, receipt, R"(
+      {
+        "jsonrpc":"2.0",
+        "result":"0x65a8d0",
+        "id":1
+      })");
+
+  json_rpc_service_->GetTransactionConfirmations(
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+      mojom::CoinType::ETH, mojom::kLocalhostChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", "0xa"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Invalid coin type
+  // KO: confirmations = 0x0
+  callback_called = false;
+  SetEthGetTransactionReceiptInterceptor(mojom::kLocalhostChainId,
+                                         mojom::CoinType::SOL, receipt, R"(
+      {
+        "jsonrpc":"2.0",
+        "result":"0x65a8d0",
+        "id":1
+      })");
+
+  json_rpc_service_->GetTransactionConfirmations(
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+      mojom::CoinType::SOL, mojom::kLocalhostChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kInternalError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
+                     "0x0"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Chain-tip behind transaction block number
+  // KO: confirmations = 0x0
+  callback_called = false;
+  SetEthGetTransactionReceiptInterceptor(mojom::kLocalhostChainId,
+                                         mojom::CoinType::ETH, receipt, R"(
+      {
+        "jsonrpc":"2.0",
+        "result":"0x65a8bc",
+        "id":1
+      })");
+
+  json_rpc_service_->GetTransactionConfirmations(
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+      mojom::CoinType::ETH, mojom::kLocalhostChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kInternalError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
+                     "0x0"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Failed eth_blockNumber call
+  // KO: confirmations = 0x0
+  callback_called = false;
+  SetEthGetTransactionReceiptInterceptor(mojom::kLocalhostChainId,
+                                         mojom::CoinType::ETH, receipt, R"(
+      {
+        "jsonrpc":"2.0",
+        "result": null,
+        "id":1
+      })");
+
+  json_rpc_service_->GetTransactionConfirmations(
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+      mojom::CoinType::ETH, mojom::kLocalhostChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+                     "0x0"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Failed eth_getTransactionReceipt call
+  // KO: confirmations = 0x0
+  callback_called = false;
+  receipt = R"(
+      {
+        "jsonrpc": "2.0",
+        "id":1,
+        "result": null
+      })";
+  SetEthGetTransactionReceiptInterceptor(mojom::kLocalhostChainId,
+                                         mojom::CoinType::ETH, receipt, R"(
+      {
+        "jsonrpc":"2.0",
+        "result":"0x65a8d0",
+        "id":1
+      })");
+
+  json_rpc_service_->GetTransactionConfirmations(
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+      mojom::CoinType::ETH, mojom::kLocalhostChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+                     "0x0"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
