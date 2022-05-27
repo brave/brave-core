@@ -8,6 +8,7 @@ import SwiftUI
 import BraveCore
 import BraveUI
 import struct Shared.Strings
+import Data
 
 public protocol WalletSiteConnectionDelegate {
   /// A list of accounts connected to this webpage (addresses)
@@ -171,13 +172,23 @@ struct WalletPanelView: View {
     currencyFormatter.currencyCode = accountActivityStore.currencyCode
   }
   
+  @State private var permittedAccounts: [String] = []
+  
+  private var isConnected: Bool {
+    return permittedAccounts.contains(keyringStore.selectedAccount.address)
+  }
+  
   private var connectButton: some View {
     Button {
-      
+      presentWalletWithContext(.editSiteConnection(origin, handler: { accounts in
+        permittedAccounts = accounts
+      }))
     } label: {
       HStack {
-        Image(systemName: "checkmark")
-        Text("Connected…")
+        if isConnected {
+          Image(systemName: "checkmark")
+        }
+        Text(isConnected ? Strings.Wallet.walletPanelConnected : Strings.Wallet.walletPanelConnect)
           .fontWeight(.bold)
           .lineLimit(1)
       }
@@ -377,9 +388,14 @@ struct WalletPanelView: View {
     .onAppear {
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
       if let request = permissionRequestManager.pendingRequests(for: origin, coinType: .eth).first {
-        presentWalletWithContext(.requestEthererumPermissions(request))
+        presentWalletWithContext(.requestEthererumPermissions(request, onPermittedAccountsUpdated: { accounts in
+          permittedAccounts = accounts
+        }))
       } else {
         cryptoStore.prepare()
+      }
+      if let url = origin.url, let accounts = Domain.ethereumPermissions(forUrl: url) {
+        permittedAccounts = accounts
       }
       accountActivityStore.update()
     }
