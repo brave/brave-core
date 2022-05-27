@@ -6,7 +6,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/common/pref_names.h"
+#include "base/strings/escape.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
 #include "components/prefs/pref_service.h"
