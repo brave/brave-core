@@ -48,8 +48,13 @@ class BraveVPNServiceTest : public testing::Test {
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>();
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(&pref_service_,
                                                             url_loader_factory);
+    ResetVpnService();
+  }
+
+  void ResetVpnService() {
     service_ = std::make_unique<BraveVpnService>(
-        url_loader_factory, &pref_service_,
+        base::MakeRefCounted<network::TestSharedURLLoaderFactory>(),
+        &pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -80,6 +85,10 @@ class BraveVPNServiceTest : public testing::Test {
 
   void OnCredentialSummary(const std::string& summary) {
     service_->OnCredentialSummary(summary);
+  }
+
+  void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state) {
+    service_->UpdateAndNotifyConnectionStateChange(state);
   }
 
   std::vector<mojom::Region>& regions() const { return service_->regions_; }
@@ -419,6 +428,9 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
 }
 
 TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
+  // Connection state can be changed with purchased.
+  purchased_state() = PurchasedState::PURCHASED;
+
   cancel_connecting() = true;
   connection_state() = ConnectionState::CONNECTING;
   OnCreated();
@@ -465,6 +477,29 @@ TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
   EXPECT_EQ(ConnectionState::DISCONNECTED, connection_state());
 }
 
+TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
+  purchased_state() = PurchasedState::PURCHASED;
+  connection_state() = ConnectionState::CONNECTING;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
+  EXPECT_EQ(ConnectionState::CONNECTED, connection_state());
+
+  purchased_state() = PurchasedState::NOT_PURCHASED;
+  connection_state() = ConnectionState::CONNECTING;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
+  EXPECT_NE(ConnectionState::CONNECTED, connection_state());
+}
+
+TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
+  // Purchased state is not checked for fresh user.
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, purchased_state());
+
+  // Dirty region list prefs to pretend it's already cached.
+  pref_service_.Set(prefs::kBraveVPNRegionList,
+                    base::Value(base::Value::Type::LIST));
+  ResetVpnService();
+  EXPECT_EQ(PurchasedState::LOADING, purchased_state());
+}
+
 TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
   // Having skus_credential is pre-requisite before try connecting.
   skus_credential() = "test_credentials";
@@ -487,6 +522,9 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
 }
 
 TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
+  // Connection state can be changed with purchased.
+  purchased_state() = PurchasedState::PURCHASED;
+
   // Check ignore Connect() request while connecting or disconnecting is
   // in-progress.
   SetDeviceRegion("eu-es");
