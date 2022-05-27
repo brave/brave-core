@@ -6,7 +6,6 @@
 #include "bat/ads/internal/serving/permission_rules/issuers_permission_rule.h"
 
 #include "bat/ads/internal/account/account_util.h"
-#include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 
 namespace ads {
@@ -33,12 +32,7 @@ bool IssuersPermissionRule::DoesRespectCap() {
     return true;
   }
 
-  if (!IssuerExistsForType(IssuerType::kConfirmations) ||
-      !IssuerExistsForType(IssuerType::kPayments)) {
-    return false;
-  }
-
-  return true;
+  return HasIssuers();
 }
 
 }  // namespace ads

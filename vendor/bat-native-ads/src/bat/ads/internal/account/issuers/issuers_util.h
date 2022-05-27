@@ -25,10 +25,10 @@ bool IsIssuerValid(const IssuerInfo& issuer);
 void SetIssuers(const IssuersInfo& issuers);
 IssuersInfo GetIssuers();
 
+bool HasIssuers();
 bool HasIssuersChanged(const IssuersInfo& issuers);
 
 bool IssuerExistsForType(const IssuerType issuer_type);
-
 absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
                                             const IssuerType issuer_type);
 
