@@ -105,10 +105,13 @@ source_set("headers") {
     "include/bat/ledger/global_constants.h",
     "include/bat/ledger/ledger.h",
     "include/bat/ledger/ledger_client.h",
-    "include/bat/ledger/ledger_database.h",
     "include/bat/ledger/mojom_structs.h",
     "include/bat/ledger/option_keys.h",
+    "include/bat/ledger/public/ledger_database.cc",
+    "include/bat/ledger/public/ledger_database.h",
   ]
+
+  deps = [ "//sql:sql" ]
 
   public_deps = [
     ":buildflags",
@@ -442,8 +445,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/gemini/gemini_util.h",
     "src/bat/ledger/internal/gemini/gemini_wallet.cc",
     "src/bat/ledger/internal/gemini/gemini_wallet.h",
-    "src/bat/ledger/internal/ledger_database_impl.cc",
-    "src/bat/ledger/internal/ledger_database_impl.h",
     "src/bat/ledger/internal/ledger_impl.cc",
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/legacy/bat_helper.cc",
@@ -587,7 +588,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/wallet/wallet_util.cc",
     "src/bat/ledger/internal/wallet/wallet_util.h",
     "src/bat/ledger/ledger.cc",
-    "src/bat/ledger/ledger_database.cc",
   ]
 
   deps = [
