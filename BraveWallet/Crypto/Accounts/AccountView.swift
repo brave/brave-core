@@ -13,11 +13,12 @@ struct AccountView: View {
   var name: String
 
   @ScaledMetric private var avatarSize = 40.0
+  private let maxAvatarSize: CGFloat = 80.0
 
   var body: some View {
     HStack {
       Blockie(address: address)
-        .frame(width: avatarSize, height: avatarSize)
+        .frame(width: min(avatarSize, maxAvatarSize), height: min(avatarSize, maxAvatarSize))
       VStack(alignment: .leading, spacing: 2) {
         Text(name)
           .fontWeight(.semibold)

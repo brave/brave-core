@@ -24,7 +24,7 @@ public enum PresentingContext {
   /// Shows the user any pending requests made by webpages such as transaction confirmations, adding networks, switch networks, add tokens, sign message, etc.
   case pendingRequests
   /// Shows when a webpage wants to connect with the users wallet
-  case requestEthererumPermissions(_ request: WebpagePermissionRequest)
+  case requestEthererumPermissions(_ request: WebpagePermissionRequest, onPermittedAccountsUpdated: (_ permittedAccounts: [String]) -> Void)
   /// Shows the user only the unlock/setup screen then dismisses to view an unlocked panel
   case panelUnlockOrSetup
   /// Shows the user available wallet accounts to use
@@ -35,6 +35,8 @@ public enum PresentingContext {
   case buySendSwap(_ destination: BuySendSwapDestination)
   /// Shows the user the wallet settings screen
   case settings
+  /// Shows when the users want to edit connected account the the webpage
+  case editSiteConnection(_ origin: URLOrigin, handler: (_ permittedAccounts: [String]) -> Void)
 }
 
 /// The initial wallet controller to present when the user wants to view their wallet

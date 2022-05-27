@@ -31,6 +31,7 @@ public struct NewSiteConnectionView: View {
   }
 
   @ScaledMetric private var faviconSize = 48
+  private let maxFaviconSize: CGFloat = 96
   @State private var selectedAccounts: Set<BraveWallet.AccountInfo.ID> = []
   @State private var isConfirmationViewVisible: Bool = false
   
@@ -55,7 +56,19 @@ public struct NewSiteConnectionView: View {
   
   private var headerView: some View {
     VStack(spacing: 8) {
-      origin.url.map(originAndFavicon(url:))
+      Group {
+        Image(systemName: "globe")
+          .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+          .background(Color(.braveDisabled))
+          .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+        origin.url.map { url in
+          Text(verbatim: url.absoluteString)
+            .font(.subheadline)
+            .foregroundColor(Color(.braveLabel))
+            .multilineTextAlignment(.center)
+        }
+      }
+      .accessibilityElement(children: .combine)
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
         .foregroundColor(Color(.bravePrimary))
@@ -74,7 +87,7 @@ public struct NewSiteConnectionView: View {
   
   public var body: some View {
     NavigationView {
-      List {
+      Form {
         Section {
           headerView
         }
@@ -179,6 +192,7 @@ public struct NewSiteConnectionView: View {
         }
         .foregroundColor(Color(.braveLabel))
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
       } footer: {
         cautionFooterView
       }
