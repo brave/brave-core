@@ -30,7 +30,7 @@ struct HistoryInfo;
 struct AdNotificationInfo;
 
 // |g_environment| indicates whether URL requests should use the production or
-// staging environment. The "brave-ads-production" or "brave-ads-staging"
+// staging environment. "--rewards=staging=false" and "--rewards=staging=true"
 // command-line arguments allow users to override the environment.
 extern mojom::Environment g_environment;
 

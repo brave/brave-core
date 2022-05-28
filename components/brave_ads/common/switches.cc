@@ -6,13 +6,9 @@
 #include "brave/components/brave_ads/common/switches.h"
 
 namespace brave_ads {
-
 namespace switches {
 
-const char kProduction[] = "brave-ads-production";
-const char kStaging[] = "brave-ads-staging";
-const char kDebug[] = "brave-ads-debug";
+const char kRewards[] = "rewards";
 
 }  // namespace switches
-
 }  // namespace brave_ads

@@ -7,16 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_SWITCHES_H_
 
 namespace brave_ads {
-
 namespace switches {
 
-extern const char kProduction[];
-extern const char kStaging[];
-extern const char kDebug[];
-extern const char kTesting[];
+extern const char kRewards[];
 
 }  // namespace switches
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_SWITCHES_H_

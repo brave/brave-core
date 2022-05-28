@@ -247,11 +247,11 @@ class AdsServiceImpl : public AdsService,
                                    const bool success);
 
   void SetEnvironment();
+  void SetDebug();
+  void ParseCommandLineSwitches();
+  void ParseCommandLineRewardsSwitchValue(const std::string& switch_value);
 
   void SetBuildChannel();
-
-  void UpdateIsDebugFlag();
-  bool IsDebug() const;
 
   void StartCheckIdleStateTimer();
   void CheckIdleState();
