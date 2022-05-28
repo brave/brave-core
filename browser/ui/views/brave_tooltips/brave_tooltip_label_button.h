@@ -27,7 +27,7 @@ class BraveTooltipLabelButton : public views::LabelButton {
   BraveTooltipLabelButton& operator=(const BraveTooltipLabelButton&) = delete;
 
   // views::LabelButton:
-  gfx::NativeCursor GetCursor(const ui::MouseEvent& event) override;
+  ui::Cursor GetCursor(const ui::MouseEvent& event) override;
 };
 
 }  // namespace brave_tooltips
