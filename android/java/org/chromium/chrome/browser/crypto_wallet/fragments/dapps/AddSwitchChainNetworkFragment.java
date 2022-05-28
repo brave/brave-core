@@ -3,6 +3,8 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType;
@@ -34,7 +38,11 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerVie
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper.DefaultFaviconHelper;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper.FaviconImageCallback;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +58,9 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private boolean hasMultipleAddSwitchChainRequest;
     private List<TwoLineItemDataSource> networks;
     private List<TwoLineItemDataSource> details;
+    private ImageView mFavicon;
+    private FaviconHelper mFaviconHelper;
+    private DefaultFaviconHelper mDefaultFaviconHelper;
 
     public AddSwitchChainNetworkFragment(BraveWalletDAppsActivity.ActivityType panelType) {
         mPanelType = panelType;
@@ -129,7 +140,37 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                 processNextSwitchChainRequest();
             }
         });
+        mFavicon = view.findViewById(R.id.fragment_add_token_iv_domain_icon);
+        TextView siteTv = view.findViewById(R.id.fragment_add_token_tv_site);
+        GURL siteUrl = Utils.getCurentTabUrl();
+        if (siteUrl != null) {
+            getBraveWalletService().geteTldPlusOneFromOrigin(Utils.getCurrentMojomOrigin(),
+                    origin -> { siteTv.setText(Utils.geteTLD(origin.eTldPlusOne)); });
+            showFavIcon(siteUrl.getOrigin());
+        }
         return view;
+    }
+
+    private void showFavIcon(GURL url) {
+        mFaviconHelper = new FaviconHelper();
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            FaviconImageCallback imageCallback =
+                    (bitmap, iconUrl) -> setBitmapOnImageView(url, bitmap);
+            // 0 is a max bitmap size for download
+            mFaviconHelper.getLocalFaviconImageForURL(
+                    activity.getCurrentProfile(), url, 0, imageCallback);
+        }
+    }
+
+    private void setBitmapOnImageView(GURL pageUrl, Bitmap iconBitmap) {
+        if (iconBitmap == null) {
+            if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
+            iconBitmap = mDefaultFaviconHelper.getDefaultFaviconBitmap(
+                    getActivity().getResources(), pageUrl, true);
+        }
+        mFavicon.setImageBitmap(iconBitmap);
+        mFavicon.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -239,5 +280,12 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         void onAddRequestProcessed(boolean hasMoreRequests);
 
         void onSwitchRequestProcessed(boolean hasMoreRequests);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mFaviconHelper != null) mFaviconHelper.destroy();
+        if (mDefaultFaviconHelper != null) mDefaultFaviconHelper.clearCache();
     }
 }

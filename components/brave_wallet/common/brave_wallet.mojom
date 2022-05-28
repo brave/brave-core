@@ -1060,6 +1060,10 @@ interface BraveWalletService {
   // Obtains the active origin info.
   GetActiveOrigin() => (OriginInfo origin_info);
 
+  // Obtains the active origin info with eTLD+1
+  GeteTLDPlusOneFromOrigin(url.mojom.Origin origin) 
+    => (OriginInfo origin_info);
+
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id);
   // Obtains the pending sign message requests
