@@ -455,8 +455,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     // Wait for EthereumProviderImpl::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
     brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
-        user_approved, provider()->sign_message_id_ - 1, hardware_signature,
-        error_in);
+        user_approved, brave_wallet_service_->sign_message_id_ - 1,
+        hardware_signature, error_in);
     run_loop.Run();
   }
 
@@ -489,7 +489,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     if (user_approved)
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          *user_approved, provider()->sign_message_id_ - 1);
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1);
     run_loop.Run();
   }
 
@@ -552,7 +552,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
     if (user_approved)
       brave_wallet_service_->NotifySignMessageRequestProcessed(
-          *user_approved, provider()->sign_message_id_ - 1);
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1);
     run_loop.Run();
   }
 
@@ -561,7 +561,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                          const std::string& message) {
     provider()->SignMessage(address, message, base::DoNothing(), base::Value());
     base::RunLoop().RunUntilIdle();
-    return provider()->sign_message_id_ - 1;
+    return brave_wallet_service_->sign_message_id_ - 1;
   }
 
   size_t GetSignMessageQueueSize() const {

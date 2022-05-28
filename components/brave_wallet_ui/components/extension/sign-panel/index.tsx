@@ -5,7 +5,6 @@ import { BraveWallet, WalletAccountType } from '../../../constants/types'
 import { SignMessagePayload } from '../../../panel/constants/action_types'
 
 // Utils
-import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale } from '../../../../common/locale'
 
 // Components
@@ -45,8 +44,9 @@ import {
 
 export interface Props {
   accounts: WalletAccountType[]
+  defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetwork: BraveWallet.NetworkInfo
-  signMessageData: SignMessagePayload[]
+  signMessageData: BraveWallet.SignMessageRequest[]
   onSign: () => void
   onCancel: () => void
   showWarning: boolean
@@ -60,6 +60,7 @@ enum SignDataSteps {
 function SignPanel (props: Props) {
   const {
     accounts,
+    defaultNetworks,
     selectedNetwork,
     signMessageData,
     onSign,
@@ -116,10 +117,14 @@ function SignPanel (props: Props) {
     , [signMessageData, selectedQueueData]
   )
 
+  const network = React.useMemo(() => {
+    return defaultNetworks.find((n) => n.coin === signMessageData[0].coin) ?? selectedNetwork
+  }, [defaultNetworks, selectedNetwork, signMessageData])
+
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{selectedNetwork.chainName}</NetworkText>
+        <NetworkText>{network.chainName}</NetworkText>
         {signMessageQueueInfo.queueLength > 1 &&
           <QueueStepRow>
             <QueueStepText>{signMessageQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signMessageQueueInfo.queueLength}</QueueStepText>
@@ -141,7 +146,7 @@ function SignPanel (props: Props) {
           eTldPlusOne={selectedQueueData.originInfo.eTldPlusOne}
         />
       </URLText>
-      <AccountNameText>{reduceAccountDisplayName(findAccountName(selectedQueueData.address) ?? '', 14)}</AccountNameText>
+      <AccountNameText>{findAccountName(selectedQueueData.address) ?? ''}</AccountNameText>
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
       {signStep === SignDataSteps.SignRisk &&
         <WarningBox warningType='danger'>

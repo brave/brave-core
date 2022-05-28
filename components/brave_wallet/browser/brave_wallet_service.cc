@@ -926,6 +926,9 @@ void BraveWalletService::OnGetImportInfo(
 void BraveWalletService::AddSignMessageRequest(
     mojom::SignMessageRequestPtr request,
     SignMessageRequestCallback callback) {
+  if (request->id < 0) {
+    request->id = sign_message_id_++;
+  }
   sign_message_requests_.push_back(std::move(request));
   sign_message_callbacks_.push_back(std::move(callback));
 }

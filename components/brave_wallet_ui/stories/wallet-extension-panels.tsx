@@ -455,13 +455,18 @@ export const _SignData = () => {
     id: 0,
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
-    originInfo: mockOriginInfo
+    originInfo: mockOriginInfo,
+    coin: BraveWallet.CoinType.ETH,
+    isEip712: true,
+    domainHash: '',
+    primaryHash: ''
   }]
 
   return (
     <StyledExtensionWrapperLonger>
       <SignPanel
         signMessageData={signMessageDataPayload}
+        defaultNetworks={mockNetworks}
         accounts={mockAccounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}

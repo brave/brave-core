@@ -54,7 +54,7 @@ JSSolanaProvider::~JSSolanaProvider() {
 
 gin::WrapperInfo JSSolanaProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
 
-// Convert Uint8Array to base58 encoded string
+// Convert Uint8Array to blob base::Value
 bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
     v8::Local<v8::Object> value,
     std::unique_ptr<base::Value>* out,
@@ -73,8 +73,7 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
   }
   if (!bytes.size())
     return false;
-  std::unique_ptr<base::Value> new_value =
-      std::make_unique<base::Value>(Base58Encode(bytes));
+  std::unique_ptr<base::Value> new_value = std::make_unique<base::Value>(bytes);
   *out = std::move(new_value);
 
   return true;
@@ -321,9 +320,10 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
-  std::unique_ptr<base::Value> encoded_msg =
+
+  std::unique_ptr<base::Value> blob_msg =
       v8_value_converter_->FromV8Value(message, isolate->GetCurrentContext());
-  if (!encoded_msg->is_string()) {
+  if (!blob_msg->is_blob()) {
     arguments->ThrowTypeError(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
@@ -343,7 +343,7 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   solana_provider_->SignMessage(
-      encoded_msg->GetString(), display_str,
+      blob_msg->GetBlob(), display_str,
       base::BindOnce(&JSSolanaProvider::OnSignMessage,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      std::move(promise_resolver), isolate));
@@ -726,14 +726,12 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
       std::vector<v8::Local<v8::Value>>());
   if (serialized_msg.IsEmpty())
     return absl::nullopt;
-  // base58 encode Uint8Array which is defined in
-  // V8ConverterStrategy::FromV8ArrayBuffer
-  std::unique_ptr<base::Value> encoded_msg = v8_value_converter_->FromV8Value(
+  std::unique_ptr<base::Value> blob_value = v8_value_converter_->FromV8Value(
       serialized_msg.ToLocalChecked(), isolate->GetCurrentContext());
-  if (!encoded_msg->is_string())
+  if (!blob_value->is_blob())
     return absl::nullopt;
 
-  return encoded_msg->GetString();
+  return Base58Encode(blob_value->GetBlob());
 }
 
 v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(

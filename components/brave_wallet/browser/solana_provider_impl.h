@@ -20,6 +20,7 @@
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
+class BraveWalletService;
 class KeyringService;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider,
@@ -28,6 +29,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
   SolanaProviderImpl(KeyringService* keyring_service,
+                     BraveWalletService* brave_wallet_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
@@ -47,12 +49,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       SignAllTransactionsCallback callback) override;
   void SignAndSendTransaction(const std::string& encoded_serialized_msg,
                               SignAndSendTransactionCallback callback) override;
-  void SignMessage(const std::string& encoded_msg,
+  void SignMessage(const std::vector<uint8_t>& blob_msg,
                    const absl::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override;
   void Request(base::Value arg, RequestCallback callback) override;
 
  private:
+  bool IsAccountConnected(const std::string& account);
   void ContinueConnect(bool is_eagerly_connect,
                        const std::string& selected_account,
                        ConnectCallback callback,
@@ -62,6 +65,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       ConnectCallback callback,
       RequestPermissionsError error,
       const absl::optional<std::vector<std::string>>& allowed_accounts);
+
+  void OnSignMessageRequestProcessed(const std::vector<uint8_t>& blob_msg,
+                                     const std::string& account,
+                                     SignMessageCallback callback,
+                                     bool approved,
+                                     const std::string& signature,
+                                     const std::string& error);
 
   // mojom::KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override {}
@@ -85,6 +95,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   base::flat_set<std::string> connected_set_;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;

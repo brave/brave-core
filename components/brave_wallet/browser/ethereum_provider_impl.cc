@@ -827,8 +827,8 @@ void EthereumProviderImpl::ContinueSignMessage(
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(origin), sign_message_id_++, address, message, is_eip712,
-      domain_hash, primary_hash);
+      MakeOriginInfo(origin), -1, address, message, is_eip712, domain_hash,
+      primary_hash, mojom::CoinType::ETH);
 
   if (keyring_service_->IsHardwareAccount(address)) {
     brave_wallet_service_->AddSignMessageRequest(

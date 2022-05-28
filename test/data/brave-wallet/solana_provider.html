@@ -2,6 +2,7 @@
 
 <script>
   var connectedAccount = ''
+  var signMessageResult = ''
 
   function solanaConnect() {
     window.solana.connect().then(result => {
@@ -25,6 +26,22 @@
 
   function isSolanaConnected() {
     window.domAutomationController.send(window.solana.isConnected)
+  }
+
+  function solanaSignMessage(message, encoding) {
+    const encodedMessage = new TextEncoder().encode(message)
+    window.solana.signMessage(encodedMessage, encoding)
+      .then(result => {
+        signMessageResult = result.signature.join()
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        signMessageResult = error.message
+        window.domAutomationController.send('result ready')
+      })
+  }
+
+  function getSignMessageResult() {
+    window.domAutomationController.send(signMessageResult)
   }
 
 </script>

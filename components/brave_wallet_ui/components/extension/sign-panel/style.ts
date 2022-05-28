@@ -42,6 +42,9 @@ export const AccountNameText = styled.span`
   line-height: 20px;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 2px;
+  max-width: 80%;
+  word-break: break-word;
+  text-align: center;
 `
 
 export const NetworkText = styled.span`

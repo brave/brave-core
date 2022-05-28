@@ -311,11 +311,18 @@ void MaybeBindSolanaProvider(
           frame_host->GetBrowserContext());
   if (!keyring_service)
     return;
+
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+          frame_host->GetBrowserContext());
+  if (!brave_wallet_service)
+    return;
+
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::SolanaProviderImpl>(
-          keyring_service,
+          keyring_service, brave_wallet_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host)),
       std::move(receiver));

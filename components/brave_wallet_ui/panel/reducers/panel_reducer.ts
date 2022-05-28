@@ -59,7 +59,8 @@ const defaultState: PanelState = {
     message: '',
     isEip712: false,
     domainHash: '',
-    primaryHash: ''
+    primaryHash: '',
+    coin: BraveWallet.CoinType.ETH
   }],
   getEncryptionPublicKeyRequest: {
     originInfo: defaultOriginInfo,
@@ -124,13 +125,6 @@ export const createPanelReducer = (initialState: PanelState) => {
     return {
       ...state,
       decryptRequest: request
-    }
-  })
-
-  reducer.on(PanelActions.signMessage, (state: any, payload: SignMessagePayload[]) => {
-    return {
-      ...state,
-      signMessageData: payload
     }
   })
 
