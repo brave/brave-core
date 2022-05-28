@@ -6,6 +6,7 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
@@ -18,8 +19,13 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory.h"
+#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.h"
 #endif
 
 namespace brave_vpn {
@@ -40,6 +46,9 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
+#if BUILDFLAG(IS_WIN)
+  DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
+#endif
 }
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
@@ -64,8 +73,16 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       },
       context);
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-  return new BraveVpnService(shared_url_loader_factory,
-                             user_prefs::UserPrefs::Get(context), callback);
+  auto* vpn_service = new BraveVpnService(
+      shared_url_loader_factory, user_prefs::UserPrefs::Get(context), callback);
+#if BUILDFLAG(IS_WIN)
+  auto* dns_observer_service =
+      brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
+          ->GetServiceForContext(context);
+  if (dns_observer_service)
+    dns_observer_service->Observe(vpn_service);
+#endif
+  return vpn_service;
 #elif BUILDFLAG(IS_ANDROID)
   return new BraveVpnService(shared_url_loader_factory, callback);
 #endif
