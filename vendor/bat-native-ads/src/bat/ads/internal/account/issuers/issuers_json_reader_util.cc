@@ -7,7 +7,6 @@
 
 #include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace JSONReader {

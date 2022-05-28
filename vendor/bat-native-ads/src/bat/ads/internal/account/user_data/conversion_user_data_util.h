@@ -6,10 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_UTIL_H_
 
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

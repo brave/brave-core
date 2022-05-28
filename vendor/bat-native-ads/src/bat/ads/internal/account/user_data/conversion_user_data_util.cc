@@ -9,7 +9,6 @@
 #include "bat/ads/internal/conversions/conversions_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace user_data {

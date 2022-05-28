@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/user_interaction/browsing/page_transition_util.h"
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
 namespace ads {
 
 namespace {

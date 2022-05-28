@@ -13,7 +13,6 @@
 #include "base/values.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/public_key_aliases.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

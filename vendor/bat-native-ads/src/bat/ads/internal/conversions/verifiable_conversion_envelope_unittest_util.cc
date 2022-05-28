@@ -12,7 +12,6 @@
 #include "bat/ads/internal/base/base64_util.h"
 #include "bat/ads/internal/base/crypto_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "tweetnacl.h"  // NOLINT
 
 namespace ads {

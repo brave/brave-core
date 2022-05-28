@@ -9,11 +9,7 @@
 #include <string>
 
 #include "bat/ads/internal/account/issuers/issuer_types.h"
-
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

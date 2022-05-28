@@ -13,7 +13,6 @@
 #include "bat/ads/internal/legacy_migration/rewards/payment_info_aliases.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/transaction_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {

@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/transaction_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {

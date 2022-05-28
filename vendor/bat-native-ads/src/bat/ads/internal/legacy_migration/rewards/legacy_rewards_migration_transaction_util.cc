@@ -14,7 +14,6 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 #include "bat/ads/transaction_info.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {

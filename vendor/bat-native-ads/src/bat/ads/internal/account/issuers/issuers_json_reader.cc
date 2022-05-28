@@ -10,7 +10,6 @@
 #include "bat/ads/internal/account/issuers/issuer_info_aliases.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_json_reader_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace JSONReader {

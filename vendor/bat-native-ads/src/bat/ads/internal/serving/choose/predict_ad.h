@@ -12,11 +12,7 @@
 #include "bat/ads/internal/serving/choose/eligible_ads_predictor_util.h"
 #include "bat/ads/internal/serving/choose/sample_ads.h"
 #include "bat/ads/internal/serving/eligible_ads/pacing/pacing.h"
-
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

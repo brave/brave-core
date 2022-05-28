@@ -16,7 +16,6 @@
 #include "bat/ads/internal/base/database_table_util.h"
 #include "bat/ads/internal/base/database_transaction_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace database {
