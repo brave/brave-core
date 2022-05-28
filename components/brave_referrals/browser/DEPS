@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/constants",
   "+content/public/browser",
   "+content/public/common",
   "+extensions/common",
@@ -11,8 +12,6 @@ specific_include_rules = {
     "+chrome/browser/profiles/profile_manager_observer.h",
   ],
   "brave_referrals_service.cc": [
-    "+brave/common/network_constants.h",
-    "+brave/common/pref_names.h",
     "+chrome/browser/browser_process.h",
     "+chrome/browser/first_run/first_run.h",
     "+chrome/browser/net/system_network_context_manager.h",

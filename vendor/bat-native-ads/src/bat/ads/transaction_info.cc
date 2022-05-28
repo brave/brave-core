@@ -19,7 +19,8 @@ TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
-  return id == rhs.id && created_at == rhs.created_at &&
+  return id == rhs.id &&
+         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
          creative_instance_id == rhs.creative_instance_id &&
          DoubleEquals(value, rhs.value) && ad_type == rhs.ad_type &&
          confirmation_type == rhs.confirmation_type &&
@@ -34,7 +35,7 @@ bool TransactionInfo::IsValid() const {
   if (id.empty() || creative_instance_id.empty() ||
       ad_type == AdType::kUndefined ||
       confirmation_type == ConfirmationType::kUndefined ||
-      DoubleEquals(created_at, 0.0)) {
+      created_at.is_null()) {
     return false;
   }
 
@@ -47,14 +48,14 @@ void TransactionInfo::ToDictionary(base::Value* dictionary) const {
   dictionary->SetStringKey("id", id);
 
   dictionary->SetStringKey("timestamp_in_seconds",
-                           base::NumberToString(created_at));
+                           base::NumberToString(created_at.ToDoubleT()));
 
   dictionary->SetDoubleKey("estimated_redemption_value", value);
 
   dictionary->SetStringKey("confirmation_type", confirmation_type.ToString());
 
   dictionary->SetStringKey("reconciled_at",
-                           base::NumberToString(reconciled_at));
+                           base::NumberToString(reconciled_at.ToDoubleT()));
 }
 
 void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
@@ -70,7 +71,9 @@ void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
   const std::string* created_at_value =
       dictionary->FindStringKey("timestamp_in_seconds");
   if (created_at_value) {
-    base::StringToDouble(*created_at_value, &created_at);
+    double created_at_as_double = 0.0;
+    base::StringToDouble(*created_at_value, &created_at_as_double);
+    created_at = base::Time::FromDoubleT(created_at_as_double);
   }
 
   // Estimated redemption value
@@ -87,7 +90,9 @@ void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
   const std::string* reconciled_at_value =
       dictionary->FindStringKey("reconciled_at");
   if (reconciled_at_value) {
-    base::StringToDouble(*reconciled_at_value, &reconciled_at);
+    double reconciled_at_as_double = 0.0;
+    base::StringToDouble(*reconciled_at_value, &reconciled_at_as_double);
+    reconciled_at = base::Time::FromDoubleT(reconciled_at_as_double);
   }
 }
 

@@ -7,7 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "brave/browser/ntp_background_images/constants.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"

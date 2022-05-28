@@ -45,7 +45,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
@@ -63,6 +62,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/rpill/common/rpill.h"
@@ -1340,7 +1340,7 @@ void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
 
     base::DictionaryValue dictionary;
     dictionary.SetStringKey("uuid", base::NumberToString(uuid++));
-    const double js_time = item.time.ToJsTimeIgnoringNull();
+    const double js_time = item.created_at.ToJsTimeIgnoringNull();
     dictionary.SetDoubleKey("timestampInMilliseconds", js_time);
     dictionary.SetPath("adDetailRows", std::move(history_item_list));
 
@@ -1366,9 +1366,10 @@ void AdsServiceImpl::OnGetStatementOfAccounts(
   ads::StatementInfo statement;
   statement.FromJson(json);
 
-  std::move(callback).Run(
-      success, statement.next_payment_date, statement.ads_received_this_month,
-      statement.earnings_this_month, statement.earnings_last_month);
+  std::move(callback).Run(success, statement.next_payment_date.ToDoubleT(),
+                          statement.ads_received_this_month,
+                          statement.earnings_this_month,
+                          statement.earnings_last_month);
 }
 
 void AdsServiceImpl::OnGetDiagnostics(GetDiagnosticsCallback callback,
@@ -2362,6 +2363,16 @@ uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
 void AdsServiceImpl::SetUint64Pref(const std::string& path,
                                    const uint64_t value) {
   profile_->GetPrefs()->SetUint64(path, value);
+  OnPrefChanged(path);
+}
+
+base::Time AdsServiceImpl::GetTimePref(const std::string& path) const {
+  return profile_->GetPrefs()->GetTime(path);
+}
+
+void AdsServiceImpl::SetTimePref(const std::string& path,
+                                 const base::Time value) {
+  profile_->GetPrefs()->SetTime(path, value);
   OnPrefChanged(path);
 }
 

@@ -10,7 +10,7 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "testing/gtest/include/gtest/gtest.h"

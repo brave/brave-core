@@ -9,16 +9,26 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
+class BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest
+    : public UnitTestBase {
+ protected:
+  BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest() = default;
+
+  ~BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest() override = default;
+};
+
+TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
   mojom::SysInfo sys_info;
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
@@ -35,7 +45,7 @@ TEST(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
     base::JSONWriter::Write(user_data, &json);
 
     const std::string expected_json =
-        R"({"odyssey":"host","totals":[{"ad_format":"ad_notification","view":"2"}]})";
+        R"({"odyssey":"host","platform":"windows","totals":[{"ad_format":"ad_notification","view":"2"}]})";
 
     EXPECT_EQ(expected_json, json);
   });

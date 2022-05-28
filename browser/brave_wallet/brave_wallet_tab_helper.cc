@@ -9,8 +9,8 @@
 #include <utility>
 #include <vector>
 
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"

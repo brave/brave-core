@@ -39,8 +39,8 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
-  AdsClientHelper::Get()->SetDoublePref(prefs::kNextTokenRedemptionAt,
-                                        next_token_redemption_at.ToDoubleT());
+  AdsClientHelper::Get()->SetTimePref(prefs::kNextTokenRedemptionAt,
+                                      next_token_redemption_at);
 
   const TransactionList transactions;
 
@@ -125,7 +125,7 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
 }
 
-TEST_F(BatAdsStatementUtilTest, GetAdsReceivedForThisMonth) {
+TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   // Arrange
   AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
 
@@ -150,7 +150,7 @@ TEST_F(BatAdsStatementUtilTest, GetAdsReceivedForThisMonth) {
   transactions.push_back(transaction_4);
 
   // Act
-  const int ads_received = GetAdsReceivedForThisMonth(transactions);
+  const int ads_received = GetAdsReceivedThisMonth(transactions);
 
   // Assert
   const int expected_ads_received = 2;

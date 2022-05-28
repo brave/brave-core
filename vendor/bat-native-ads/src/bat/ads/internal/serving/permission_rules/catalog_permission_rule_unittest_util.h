@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForceCatalogFrequencyCapPermission();
+void ForceCatalogPermissionRule();
 
 }  // namespace ads
 

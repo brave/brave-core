@@ -66,6 +66,8 @@
 - (int64_t)getInt64Pref:(const std::string&)path;
 - (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value;
 - (uint64_t)getUint64Pref:(const std::string&)path;
+- (void)setTimePref:(const std::string&)path value:(const base::Time)value;
+- (base::Time)getTimePref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
 - (void)recordP2AEvent:(const std::string&)name

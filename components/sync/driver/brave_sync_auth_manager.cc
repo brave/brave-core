@@ -8,10 +8,10 @@
 #include "base/base64.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/common/brave_services_key.h"
-#include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/network_time_helper.h"
+#include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
 
 namespace syncer {
 

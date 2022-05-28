@@ -7,7 +7,7 @@
 
 #include "base/task/post_task.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_manager.h"

@@ -72,9 +72,9 @@ void NewTabPageAd::FireEvent(const std::string& placement_id,
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/14015): Refactor this
-  // logic to only apply frequency capping if the new tab page ad was not served
+  // logic to only apply permission rules if the new tab page ad was not served
   // by the library. |Serving::MaybeServeAd| is responsible for applying
-  // frequency caps for new tab page ads served by the library
+  // permission rules for new tab page ads served by the library
   new_tab_page_ads::PermissionRules permission_rules;
   if (event_type == mojom::NewTabPageAdEventType::kViewed &&
       !permission_rules.HasPermission()) {

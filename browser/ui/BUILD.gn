@@ -275,7 +275,6 @@ source_set("ui") {
     "//brave/browser/ui/webui/brave_federated:mojo_bindings",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
-    "//brave/common:pref_names",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
@@ -289,6 +288,7 @@ source_set("ui") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_vpn/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
     "//brave/components/ftx/browser/buildflags:buildflags",
@@ -665,7 +665,7 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/browser/ui",
-      "//brave/common:pref_names",
+      "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",

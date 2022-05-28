@@ -5,7 +5,6 @@
 
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -13,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -23,6 +23,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/embedder_support/pref_names.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"

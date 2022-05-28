@@ -100,7 +100,7 @@ class BatAdsPriorityTest : public UnitTestBase {
 
     InitializeAds();
 
-    ForceUserActivityFrequencyCapPermission();
+    ForceUserActivityPermissionRule();
   }
 
   CreativeAdNotificationInfo BuildCreativeAdNotification() {

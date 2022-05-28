@@ -5,7 +5,7 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"

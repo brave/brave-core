@@ -14,6 +14,10 @@
 
 namespace ads {
 
+namespace {
+constexpr base::TimeDelta kTimeConstraint = base::Days(1);
+}  // namespace
+
 PromotedContentAdsPerDayPermissionRule::
     PromotedContentAdsPerDayPermissionRule() = default;
 
@@ -39,11 +43,8 @@ std::string PromotedContentAdsPerDayPermissionRule::GetLastMessage() const {
 
 bool PromotedContentAdsPerDayPermissionRule::DoesRespectCap(
     const std::vector<base::Time>& history) {
-  const base::TimeDelta time_constraint = base::Days(1);
-
-  const int cap = features::GetMaximumPromotedContentAdsPerDay();
-
-  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
+  return DoesHistoryRespectRollingTimeConstraint(
+      history, kTimeConstraint, features::GetMaximumPromotedContentAdsPerDay());
 }
 
 }  // namespace ads

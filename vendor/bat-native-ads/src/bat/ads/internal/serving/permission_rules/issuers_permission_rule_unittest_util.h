@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForceIssuersFrequencyCapPermission();
+void ForceIssuersPermissionRule();
 
 }  // namespace ads
 

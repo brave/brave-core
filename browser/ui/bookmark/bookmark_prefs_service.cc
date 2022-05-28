@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/bookmark/bookmark_prefs_service.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"

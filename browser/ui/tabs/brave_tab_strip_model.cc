@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"

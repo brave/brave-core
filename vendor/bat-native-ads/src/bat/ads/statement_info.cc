@@ -17,20 +17,20 @@ namespace ads {
 
 namespace {
 
-double GetNextPaymentDateFromDictionary(base::DictionaryValue* dictionary) {
+base::Time GetNextPaymentDateFromDictionary(base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
   const std::string* value = dictionary->FindStringKey("next_payment_date");
   if (!value) {
-    return 0;
+    return base::Time();
   }
 
   double value_as_double = 0.0;
   if (!base::StringToDouble(*value, &value_as_double)) {
-    return 0.0;
+    return base::Time();
   }
 
-  return value_as_double;
+  return base::Time::FromDoubleT(value_as_double);
 }
 
 double GetEarningsThisMonthFromDictionary(base::DictionaryValue* dictionary) {
@@ -45,8 +45,7 @@ double GetEarningsLastMonthFromDictionary(base::DictionaryValue* dictionary) {
   return dictionary->FindDoubleKey("earnings_last_month").value_or(0.0);
 }
 
-int GetAdsReceivedForThisMonthFromDictionary(
-    base::DictionaryValue* dictionary) {
+int GetAdsReceivedThisMonthFromDictionary(base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
   return dictionary->FindIntKey("ads_received_this_month").value_or(0);
@@ -61,7 +60,8 @@ StatementInfo::StatementInfo(const StatementInfo& info) = default;
 StatementInfo::~StatementInfo() = default;
 
 bool StatementInfo::operator==(const StatementInfo& rhs) const {
-  return DoubleEquals(next_payment_date, rhs.next_payment_date) &&
+  return DoubleEquals(next_payment_date.ToDoubleT(),
+                      rhs.next_payment_date.ToDoubleT()) &&
          DoubleEquals(earnings_this_month, rhs.earnings_this_month) &&
          DoubleEquals(earnings_last_month, rhs.earnings_last_month) &&
          ads_received_this_month == rhs.ads_received_this_month;
@@ -76,7 +76,7 @@ std::string StatementInfo::ToJson() const {
 
   // Next payment date
   dictionary.SetStringKey("next_payment_date",
-                          base::NumberToString(next_payment_date));
+                          base::NumberToString(next_payment_date.ToDoubleT()));
 
   // Earnings this month
   dictionary.SetDoubleKey("earnings_this_month", earnings_this_month);
@@ -110,8 +110,7 @@ bool StatementInfo::FromJson(const std::string& json) {
   earnings_this_month = GetEarningsThisMonthFromDictionary(dictionary);
   earnings_last_month = GetEarningsLastMonthFromDictionary(dictionary);
 
-  ads_received_this_month =
-      GetAdsReceivedForThisMonthFromDictionary(dictionary);
+  ads_received_this_month = GetAdsReceivedThisMonthFromDictionary(dictionary);
 
   return true;
 }

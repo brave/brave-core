@@ -10,7 +10,7 @@ source_set("browser_tests") {
   sources = [ "brave_tab_strip_model_browsertest.cc" ]
 
   deps = [
-    "//brave/common:pref_names",
+    "//brave/components/constants",
     "//chrome/app:command_ids",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",

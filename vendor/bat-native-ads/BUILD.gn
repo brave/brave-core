@@ -871,6 +871,7 @@ source_set("ads") {
     "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.cc",
     "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h",
     "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h",
+    "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.cc",
     "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h",
     "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_base.cc",
     "src/bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h",
@@ -1093,7 +1094,7 @@ source_set("ads") {
 
   deps = [
     "//base",
-    "//brave/common",
+    "//brave/components/constants",
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/l10n/browser",

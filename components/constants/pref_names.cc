@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/pref_names.h"
-
-#include "build/build_config.h"
+#include "brave/components/constants/pref_names.h"
 
 const char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
@@ -51,8 +49,7 @@ const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";
-const char kShieldsStatsBadgeVisible[] =
-    "brave.shields.stats_badge_visible";
+const char kShieldsStatsBadgeVisible[] = "brave.shields.stats_badge_visible";
 const char kAdControlType[] = "brave.ad_default";
 const char kGoogleLoginControlType[] = "brave.google_login_default";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
@@ -84,15 +81,11 @@ const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 const char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 const char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
 const char kDontAskEnableWebDiscovery[] = "brave.dont_ask_enable_web_discovery";
 const char kBraveSearchVisitCount[] = "brave.brave_search_visit_count";
-#endif
 
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
-#endif
 const char kImportDialogExtensions[] = "import_dialog_extensions";
 const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";

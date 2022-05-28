@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/gcm/gcm_profile_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/gcm_driver/gcm_driver_desktop.h"

@@ -10,7 +10,7 @@ brave_browser_component_updater_sources = [
 
 brave_browser_component_updater_deps = [
   "//base",
-  "//brave/common:switches",
+  "//brave/components/constants",
   "//chrome/browser:browser_process",
   "//components/component_updater",
   "//components/crx_file",

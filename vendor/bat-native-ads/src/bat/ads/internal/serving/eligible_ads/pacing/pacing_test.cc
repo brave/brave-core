@@ -94,7 +94,7 @@ class BatAdsPacingTest : public UnitTestBase {
 
     InitializeAds();
 
-    ForceUserActivityFrequencyCapPermission();
+    ForceUserActivityPermissionRule();
   }
 
   CreativeAdNotificationInfo BuildCreativeAdNotification1() {

@@ -3,12 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMMON_PREF_NAMES_H_
-#define BRAVE_COMMON_PREF_NAMES_H_
+#ifndef BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_
 
 #include "build/build_config.h"
-#include "components/gcm_driver/gcm_buildflags.h"
-#include "extensions/buildflags/buildflags.h"
 
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
@@ -70,16 +68,12 @@ extern const char kBinanceAccessToken[];
 extern const char kBinanceRefreshToken[];
 extern const char kDefaultBrowserPromptEnabled[];
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 // Web discovery project
 extern const char kWebDiscoveryEnabled[];
 extern const char kDontAskEnableWebDiscovery[];
 extern const char kBraveSearchVisitCount[];
-#endif
 
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
-#endif
 extern const char kImportDialogExtensions[];
 extern const char kImportDialogPayments[];
 extern const char kMRUCyclingEnabled[];
@@ -106,4 +100,4 @@ extern const char kDontAskForCrashReporting[];
 // kEnableMediaRouterOnRestart on restart.
 extern const char kEnableMediaRouterOnRestart[];
 
-#endif  // BRAVE_COMMON_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_

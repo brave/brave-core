@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 #include <map>
+#include <tuple>
 #include <vector>
 
 #include "base/test/gtest_util.h"
@@ -30,6 +31,53 @@ TEST(SolanaUtilsUnitTest, CompactU16Encode) {
   }
 
   EXPECT_DCHECK_DEATH(CompactU16Encode(0x0, nullptr));
+}
+
+// Test cases are from
+// https://github.com/solana-labs/solana/blob/79df1954eb5e8d951d2dd2b5ea094475d18551db/sdk/program/src/short_vec.rs#L312
+TEST(SolanaUtilsUnitTest, CompactU16Decode) {
+  std::map<std::tuple<uint16_t, size_t>, std::vector<uint8_t>> valid_map = {
+      {std::tuple<uint16_t, size_t>(0x0000, 1), {0x00}},
+      {std::tuple<uint16_t, size_t>(0x007f, 1), {0x7f}},
+      {std::tuple<uint16_t, size_t>(0x0080, 2), {0x80, 0x01}},
+      {std::tuple<uint16_t, size_t>(0x00ff, 2), {0xff, 0x01}},
+      {std::tuple<uint16_t, size_t>(0x0100, 2), {0x80, 0x02}},
+      {std::tuple<uint16_t, size_t>(0x07ff, 2), {0xff, 0x0f}},
+      {std::tuple<uint16_t, size_t>(0x3fff, 2), {0xff, 0x7f}},
+      {std::tuple<uint16_t, size_t>(0x4000, 3), {0x80, 0x80, 0x01}},
+      {std::tuple<uint16_t, size_t>(0xffff, 3), {0xff, 0xff, 0x03}}};
+
+  for (const auto& kv : valid_map) {
+    auto out = CompactU16Decode(kv.second, 0);
+    EXPECT_EQ(*out, kv.first);
+  }
+
+  // Test start_index != 0 and extra data (not part of this u16) in the byte
+  // array.
+  std::tuple<uint16_t, size_t> expect_out = std::make_tuple(0x00ff, 2);
+  EXPECT_EQ(*CompactU16Decode({0x00, 0xff, 0x01, 0x80}, 1), expect_out);
+
+  std::vector<std::vector<uint8_t>> invalid_cases = {{0x80, 0x00},
+                                                     {0x80, 0x80, 0x00},
+                                                     {0xff, 0x00},
+                                                     {0xff, 0x80, 0x00},
+                                                     {0x80, 0x81, 0x00},
+                                                     {0xff, 0x81, 0x00},
+                                                     {0x80, 0x82, 0x00},
+                                                     {0xff, 0x8f, 0x00},
+                                                     {0xff, 0xff, 0x00},
+                                                     // too short
+                                                     {},
+                                                     {0x80},
+                                                     // too long
+                                                     {0x80, 0x80, 0x80, 0x00},
+                                                     // too large
+                                                     {0x80, 0x80, 0x04},
+                                                     {0x80, 0x80, 0x06}};
+
+  for (size_t i = 0; i < invalid_cases.size(); ++i) {
+    EXPECT_FALSE(CompactU16Decode(invalid_cases[i], 0)) << i;
+  }
 }
 
 TEST(SolanaUtilsUnitTest, Base58Decode) {
@@ -61,12 +109,15 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
                                   240, 137, 142, 185, 169, 6,   17,  87,
                                   123, 6,   42,  55,  162, 64,  120, 91}));
 
-  // Only exact length should return true.
+  // Only exact length should return true with strict default to true.
   std::string two_bytes_encoded = Base58Encode({0, 0});
   std::vector<uint8_t> bytes;
   EXPECT_TRUE(Base58Decode(two_bytes_encoded, &bytes, 2));
   EXPECT_FALSE(Base58Decode(two_bytes_encoded, &bytes, 1));
   EXPECT_FALSE(Base58Decode(two_bytes_encoded, &bytes, 3));
+
+  // Len would be treated as max_len when strict is false.
+  EXPECT_TRUE(Base58Decode(two_bytes_encoded, &bytes, 3, false));
 
   EXPECT_DCHECK_DEATH(Base58Decode(program, nullptr, kSolanaPubkeySize));
 }

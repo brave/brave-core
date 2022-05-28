@@ -4,14 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
-#include "brave/common/brave_switches.h"
-
-// switches::kDisableMachineId
-const char kDisableMachineId[] = "disable-machine-id";
+#include "brave/components/constants/brave_switches.h"
 
 namespace {
 bool IsMachineIdDisabled() {
-  return base::CommandLine::ForCurrentProcess()->HasSwitch(kDisableMachineId);
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kDisableMachineId);
 }
 
 }  // namespace

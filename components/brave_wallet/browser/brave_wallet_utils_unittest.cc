@@ -761,17 +761,27 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
             GetNetworkURL(&prefs, chain2.chain_id, mojom::CoinType::ETH));
 }
 
-TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
+TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
+  // GetNetworkURL for these known chains should resolve to brave subdomain.
+  base::flat_set<std::string> infura_chains = {
+      brave_wallet::mojom::kMainnetChainId,
+      brave_wallet::mojom::kPolygonMainnetChainId,
+      brave_wallet::mojom::kRinkebyChainId,
+      brave_wallet::mojom::kRopstenChainId,
+      brave_wallet::mojom::kGoerliChainId,
+      brave_wallet::mojom::kKovanChainId};
+
   std::vector<mojom::NetworkInfoPtr> known_chains;
   GetAllKnownEthChains(&prefs, &known_chains);
   for (const auto& chain : known_chains) {
-    auto subdomain = GetInfuraSubdomainForKnownChainId(chain->chain_id);
-    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
-    ASSERT_EQ(subdomain.empty(), expected);
+    auto network_url =
+        GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH);
+    EXPECT_EQ(base::EndsWith(network_url.host(), ".brave.com"),
+              infura_chains.contains(chain->chain_id));
   }
 }
 
@@ -996,6 +1006,55 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list2[0].FindIntKey("decimals"), 22);
   EXPECT_EQ(*asset_list2[0].FindStringKey("logo"), "");
   EXPECT_EQ(*asset_list2[0].FindBoolKey("visible"), true);
+}
+
+TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
+
+  auto get_polygon_from_all = [&] {
+    std::vector<mojom::NetworkInfoPtr> all_chains;
+    GetAllChains(&prefs, mojom::CoinType::ETH, &all_chains);
+    for (const auto& chain : all_chains) {
+      if (chain->chain_id == mojom::kPolygonMainnetChainId)
+        return chain.Clone();
+    }
+    return mojom::NetworkInfoPtr();
+  };
+
+  // Known network by default.
+  EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
+  EXPECT_EQ(
+      GetNetworkURL(&prefs, mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
+          .GetWithoutFilename(),
+      GURL("https://mainnet-polygon.brave.com/"));
+
+  mojom::NetworkInfo chain1(mojom::kPolygonMainnetChainId, "Custom Polygon",
+                            {"https://url1.com"}, {"https://url1.com"},
+                            {"https://custom-rpc.com"}, "symbol", "symbol_name",
+                            11, mojom::CoinType::ETH,
+                            mojom::NetworkInfoData::NewEthData(
+                                mojom::NetworkInfoDataETH::New(false)));
+
+  AddCustomNetwork(&prefs, chain1);
+
+  // Custom network overrides known one.
+  EXPECT_EQ(get_polygon_from_all()->chain_name, "Custom Polygon");
+  EXPECT_EQ(
+      GetNetworkURL(&prefs, mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
+          .GetWithoutFilename(),
+      GURL("https://custom-rpc.com/"));
+
+  RemoveCustomNetwork(&prefs, mojom::kPolygonMainnetChainId);
+
+  // Back to known when custom is removed.
+  EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
+  EXPECT_EQ(
+      GetNetworkURL(&prefs, mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
+          .GetWithoutFilename(),
+      GURL("https://mainnet-polygon.brave.com/"));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetFirstValidChainURL) {

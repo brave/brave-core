@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/time/time.h"
 #include "bat/ads/export.h"
 #include "bat/ads/transaction_info_aliases.h"
 
@@ -24,7 +25,7 @@ struct ADS_EXPORT StatementInfo final {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  double next_payment_date = 0;
+  base::Time next_payment_date;
   double earnings_this_month = 0.0;
   double earnings_last_month = 0.0;
   int ads_received_this_month = 0;

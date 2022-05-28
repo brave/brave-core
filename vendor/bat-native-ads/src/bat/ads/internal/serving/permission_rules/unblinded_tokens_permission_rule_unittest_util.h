@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForceUnblindedTokensFrequencyCapPermission();
+void ForceUnblindedTokensPermissionRule();
 
 }  // namespace ads
 

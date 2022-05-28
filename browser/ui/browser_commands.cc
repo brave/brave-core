@@ -9,8 +9,8 @@
 
 #include "base/files/file_path.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"

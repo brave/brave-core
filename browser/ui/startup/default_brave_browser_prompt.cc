@@ -11,7 +11,7 @@
 #include "base/logging.h"
 #include "base/version.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"

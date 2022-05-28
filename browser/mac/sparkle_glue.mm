@@ -21,7 +21,7 @@
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/common/brave_switches.h"
+#include "brave/components/constants/brave_switches.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
 

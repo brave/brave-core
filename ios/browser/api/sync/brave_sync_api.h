@@ -13,13 +13,48 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BraveSyncInternalsController;
 
+typedef NSInteger BraveSyncAPIQrCodeDataValidationResult NS_TYPED_ENUM
+    NS_SWIFT_NAME(BraveSyncAPI.QrCodeDataValidationResult);
+
+OBJC_EXPORT BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultValid;
+OBJC_EXPORT BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultNotWellFormed;
+OBJC_EXPORT BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultVersionDeprecated;
+OBJC_EXPORT BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultExpired;
+OBJC_EXPORT BraveSyncAPIQrCodeDataValidationResult const
+    BraveSyncAPIQrCodeDataValidationResultValidForTooLong;
+
+typedef NSInteger BraveSyncAPIWordsValidationStatus NS_TYPED_ENUM
+    NS_SWIFT_NAME(BraveSyncAPI.WordsValidationStatus);
+
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusValid;
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusNotValidPureWords;
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusVersionDeprecated;
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusExpired;
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusValidForTooLong;
+OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+    BraveSyncAPIWordsValidationStatusWrongWordsNumber;
+
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
-@property(nonatomic) bool syncEnabled;
+@property(nonatomic, readonly) bool canSyncFeatureStart;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
+@property(nonatomic, readonly) bool isFirstSetupComplete;
 
 - (instancetype)init NS_UNAVAILABLE;
+
+- (void)requestSync;
+
+- (void)setSetupComplete;
 
 - (void)resetSync;
 
@@ -35,6 +70,20 @@ OBJC_EXPORT
 - (NSString*)syncCodeFromHexSeed:(NSString*)hexSeed;
 
 - (NSString*)hexSeedFromSyncCode:(NSString*)syncCode;
+
+- (NSString*)qrCodeJsonFromHexSeed:(NSString*)hexSeed;
+
+- (BraveSyncAPIQrCodeDataValidationResult)getQRCodeValidationResult:
+    (NSString*)json;
+
+- (BraveSyncAPIWordsValidationStatus)getWordsValidationResult:
+    (NSString*)timeLimitedWords;
+
+- (NSString*)getWordsFromTimeLimitedWords:(NSString*)timeLimitedWords;
+
+- (NSString*)getTimeLimitedWordsFromWords:(NSString*)words;
+
+- (NSString*)getHexSeedFromQrCodeJson:(NSString*)json;
 
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
 

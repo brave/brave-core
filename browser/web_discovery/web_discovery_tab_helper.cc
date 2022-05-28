@@ -6,8 +6,8 @@
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"

@@ -9,8 +9,8 @@
 
 #include "base/bind.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"

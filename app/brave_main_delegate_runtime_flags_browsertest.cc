@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/brave_switches.h"
+#include "brave/components/constants/brave_switches.h"
 #include "build/build_config.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/test/browser_test.h"

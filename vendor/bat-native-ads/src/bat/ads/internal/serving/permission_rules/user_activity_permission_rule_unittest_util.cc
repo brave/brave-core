@@ -9,7 +9,7 @@
 
 namespace ads {
 
-void ForceUserActivityFrequencyCapPermission() {
+void ForceUserActivityPermissionRule() {
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 }

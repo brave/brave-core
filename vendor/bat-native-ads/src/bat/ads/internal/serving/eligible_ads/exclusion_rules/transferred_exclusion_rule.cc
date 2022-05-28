@@ -5,11 +5,10 @@
 
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
 
-#include <algorithm>
-#include <iterator>
-
 #include "base/strings/stringprintf.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 
 namespace ads {
 
@@ -47,24 +46,12 @@ std::string TransferredExclusionRule::GetLastMessage() const {
 bool TransferredExclusionRule::DoesRespectCap(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad) {
-  const base::Time now = base::Time::Now();
-
   const base::TimeDelta time_constraint =
       exclusion_rules::features::ExcludeAdIfTransferredWithinTimeWindow();
 
-  const int count = std::count_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
-        return ad_event.confirmation_type == ConfirmationType::kTransferred &&
-               ad_event.campaign_id == creative_ad.campaign_id &&
-               now - ad_event.created_at < time_constraint;
-      });
-
-  if (count >= kTransferredCap) {
-    return false;
-  }
-
-  return true;
+  return DoesRespectCampaignCap(creative_ad, ad_events,
+                                ConfirmationType::kTransferred, time_constraint,
+                                kTransferredCap);
 }
 
 }  // namespace ads

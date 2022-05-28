@@ -68,7 +68,7 @@ static_library("brave_test_support_unit") {
     ":test_support",
     "//brave/browser/profiles",
     "//brave/common",
-    "//brave/common:pref_names",
+    "//brave/components/constants",
     "//components/gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//mojo/core/embedder",
@@ -187,8 +187,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/autofill_assistant/browser:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
-    "//brave/common:network_constants",
-    "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/api_request_helper:api_request_helper_unit_tests",
     "//brave/components/brave_adaptive_captcha/buildflags",
@@ -221,6 +219,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_wallet/common:unit_tests",
     "//brave/components/brave_wallet/renderer/test:unit_tests",
     "//brave/components/child_process_monitor:unittests",
+    "//brave/components/constants",
     "//brave/components/de_amp/browser/test:unit_tests",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
@@ -494,19 +493,13 @@ test("brave_unit_tests") {
       "//brave/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     ]
 
-    deps += [
-      "//brave/common:pref_names",
-      "//brave/components/brave_referrals/browser",
-    ]
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (ethereum_remote_client_enabled) {
     sources +=
         [ "//brave/browser/extensions/ethereum_remote_client_unittest.cc" ]
-    deps += [
-      "//brave/browser/ethereum_remote_client",
-      "//brave/common:pref_names",
-    ]
+    deps += [ "//brave/browser/ethereum_remote_client" ]
   }
 
   if (enable_brave_translate_extension) {
@@ -810,6 +803,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ledger:publishers_proto",
       "//chrome/browser",
       "//components/commerce/core:feature_list",
+      "//components/gcm_driver:gcm_buildflags",
       "//components/history_clusters/core",
       "//components/lens",
       "//components/metrics_services_manager",
@@ -950,9 +944,6 @@ if (!is_android) {
       "//brave/browser/tor",
       "//brave/browser/ui",
       "//brave/browser/ui/tabs",
-      "//brave/common:network_constants",
-      "//brave/common:pref_names",
-      "//brave/common:switches",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
@@ -962,6 +953,7 @@ if (!is_android) {
       "//brave/components/brave_sync:prefs",
       "//brave/components/brave_wayback_machine",
       "//brave/components/brave_wayback_machine:buildflags",
+      "//brave/components/constants",
       "//brave/components/crypto_dot_com/browser",
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/browser",
@@ -1074,8 +1066,6 @@ if (!is_android) {
       "//brave/browser/net",
       "//brave/browser/partnercustomizations:delegate_public_impl_java",
       "//brave/browser/themes",
-      "//brave/common:pref_names",
-      "//brave/common:switches",
       "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_rewards/common",
@@ -1089,6 +1079,7 @@ if (!is_android) {
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wayback_machine",
+      "//brave/components/constants",
       "//brave/components/ipfs",
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/browser",
@@ -1115,6 +1106,7 @@ if (!is_android) {
       "//components/content_settings/renderer",
       "//components/embedder_support",
       "//components/externalauth/android:google_delegate_public_impl_java",
+      "//components/gcm_driver:gcm_buildflags",
       "//components/history_clusters/core",
       "//components/language/android:ulp_delegate_public_java",
       "//components/language/core/common",

@@ -9,8 +9,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/common/brave_services_key.h"
-#include "brave/common/network_constants.h"
+#include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/network_constants.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
@@ -40,7 +40,7 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
       this.realOpen(method, redirectToSecurityOrigin(url), async, user,
                     password);
       if (!useGoogleTranslateEndpoint)
-        this.setRequestHeader('%s', '%s');
+         this.setRequestHeader('%s', '%s');
     }
   };
   originalOnLoadCSS = cr.googleTranslate.onLoadCSS;

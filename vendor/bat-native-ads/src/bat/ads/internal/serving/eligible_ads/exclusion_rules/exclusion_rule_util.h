@@ -9,10 +9,34 @@
 #include <string>
 
 #include "base/check.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
+namespace base {
+class TimeDelta;
+}  // namespace base
+
 namespace ads {
+
+class ConfirmationType;
+struct CreativeAdInfo;
+
+bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
+                            const AdEventList& ad_events,
+                            const ConfirmationType& confirmation_type,
+                            const base::TimeDelta time_constraint,
+                            const int cap);
+bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
+                               const AdEventList& ad_events,
+                               const ConfirmationType& confirmation_type,
+                               const base::TimeDelta time_constraint,
+                               const int cap);
+bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
+                            const AdEventList& ad_events,
+                            const ConfirmationType& confirmation_type,
+                            const base::TimeDelta time_constraint,
+                            const int cap);
 
 template <typename T>
 bool ShouldExclude(const T& ad, ExclusionRuleInterface<T>* exclusion_rule) {

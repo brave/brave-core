@@ -29,15 +29,14 @@ void BuildStatement(StatementCallback callback) {
 
         StatementInfo statement;
 
+        statement.next_payment_date = GetNextPaymentDate(transactions);
+
         statement.earnings_this_month = GetEarningsForThisMonth(transactions);
 
         statement.earnings_last_month = GetEarningsForLastMonth(transactions);
 
-        const base::Time next_payment_date = GetNextPaymentDate(transactions);
-        statement.next_payment_date = next_payment_date.ToDoubleT();
-
         statement.ads_received_this_month =
-            GetAdsReceivedForThisMonth(transactions);
+            GetAdsReceivedThisMonth(transactions);
 
         callback(/* success */ true, statement);
       });

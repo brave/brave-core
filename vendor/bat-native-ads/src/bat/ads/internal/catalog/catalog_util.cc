@@ -29,7 +29,7 @@ namespace ads {
 
 namespace {
 
-constexpr int kCatalogLifespanInDays = 1;
+constexpr base::TimeDelta kCatalogLifespan = base::Days(1);
 
 void Delete() {
   database::DeleteCampaigns();
@@ -103,14 +103,12 @@ void SetCatalogPing(const base::TimeDelta ping) {
 }
 
 base::Time GetCatalogLastUpdated() {
-  const int64_t last_updated_at =
-      AdsClientHelper::Get()->GetDoublePref(prefs::kCatalogLastUpdated);
-  return base::Time::FromDoubleT(last_updated_at);
+  return AdsClientHelper::Get()->GetTimePref(prefs::kCatalogLastUpdated);
 }
 
 void SetCatalogLastUpdated(const base::Time last_updated_at) {
-  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
-                                        last_updated_at.ToDoubleT());
+  AdsClientHelper::Get()->SetTimePref(prefs::kCatalogLastUpdated,
+                                      last_updated_at);
 }
 
 bool DoesCatalogExist() {
@@ -122,8 +120,7 @@ bool HasCatalogChanged(const std::string& catalog_id) {
 }
 
 bool HasCatalogExpired() {
-  if (base::Time::Now() <
-      GetCatalogLastUpdated() + base::Days(kCatalogLifespanInDays)) {
+  if (base::Time::Now() < GetCatalogLastUpdated() + kCatalogLifespan) {
     return false;
   }
 

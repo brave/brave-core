@@ -11,8 +11,8 @@
 
 #include "base/environment.h"
 #include "base/strings/stringprintf.h"
-#include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

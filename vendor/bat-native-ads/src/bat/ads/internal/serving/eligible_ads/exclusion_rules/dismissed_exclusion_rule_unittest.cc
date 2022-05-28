@@ -44,8 +44,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   const AdEventList ad_events;
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -89,8 +89,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(47));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -137,8 +137,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   ad_events.push_back(ad_event_4);
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -181,8 +181,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(47));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -225,8 +225,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(48));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -269,8 +269,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(47));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -313,8 +313,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(48));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -358,8 +358,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(48));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -403,8 +403,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(47));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -448,8 +448,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(47));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -496,8 +496,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(47));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -532,8 +532,8 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   FastForwardClockBy(base::Hours(48));
 
   // Act
-  DismissedExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
+  DismissedExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

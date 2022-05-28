@@ -40,8 +40,8 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   const AdEventList ad_events;
 
   // Act
-  TotalMaxExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -61,8 +61,8 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   ad_events.push_back(ad_event);
 
   // Act
-  TotalMaxExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -87,8 +87,8 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest,
   ad_events.push_back(ad_event);
 
   // Act
-  TotalMaxExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
+  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -103,8 +103,8 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   const AdEventList ad_events;
 
   // Act
-  TotalMaxExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -125,8 +125,8 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
 
   // Act
-  TotalMaxExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  TotalMaxExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

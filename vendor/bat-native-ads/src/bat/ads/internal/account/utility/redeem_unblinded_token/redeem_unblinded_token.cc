@@ -49,8 +49,8 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 
   BLOG(1, "Redeem unblinded token");
 
-  if (ShouldRewardUser() && !IssuerExistsForType(IssuerType::kPayments)) {
-    BLOG(1, "Failed to redeem unblinded token due to missing payments issuer");
+  if (ShouldRewardUser() && !HasIssuers()) {
+    BLOG(1, "Failed to redeem unblinded token due to missing issuers");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }

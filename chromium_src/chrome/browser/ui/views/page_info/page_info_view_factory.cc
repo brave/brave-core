@@ -7,7 +7,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #if BUILDFLAG(ENABLE_IPFS)
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/l10n/common/locale_util.h"

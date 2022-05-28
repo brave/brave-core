@@ -6,9 +6,9 @@
 #include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
 
 #include "base/command_line.h"
-#include "brave/common/brave_switches.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#include "brave/components/constants/brave_switches.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 

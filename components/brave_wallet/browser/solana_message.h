@@ -32,6 +32,8 @@ class SolanaMessage {
 
   absl::optional<std::vector<uint8_t>> Serialize(
       std::vector<std::string>* signers) const;
+  static absl::optional<SolanaMessage> Deserialize(
+      const std::vector<uint8_t>& bytes);
 
   void set_recent_blockhash(const std::string& recent_blockhash) {
     recent_blockhash_ = recent_blockhash;
@@ -42,6 +44,7 @@ class SolanaMessage {
     last_valid_block_height_ = last_valid_block_height;
   }
   uint64_t last_valid_block_height() const { return last_valid_block_height_; }
+  std::string fee_payer() const { return fee_payer_; }
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
   base::Value ToValue() const;

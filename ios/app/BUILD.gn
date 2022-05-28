@@ -23,11 +23,11 @@ source_set("app") {
 
   deps = [
     "//base",
-    "//brave/common:pref_names",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/constants",
     "//brave/components/skus/browser",
     "//brave/components/update_client:buildflags",
     "//brave/ios/app/resources",
@@ -40,6 +40,7 @@ source_set("app") {
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/ledger",
     "//brave/ios/browser/api/password",
+    "//brave/ios/browser/api/qr_code",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
     "//brave/ios/browser/api/sync/driver",
     "//brave/ios/browser/brave_wallet",

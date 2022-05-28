@@ -28,9 +28,8 @@ if (!is_android) {
   brave_browser_themes_deps += [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/common:pref_names",
-    "//brave/common:switches",
     "//brave/components/brave_vpn/buildflags",
+    "//brave/components/constants",
     "//brave/components/sidebar/buildflags",
     "//chrome/common",
     "//components/pref_registry",

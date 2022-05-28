@@ -13,10 +13,10 @@
 namespace ads {
 
 void ForcePermissionRules() {
-  ForceCatalogFrequencyCapPermission();
-  ForceIssuersFrequencyCapPermission();
-  ForceUnblindedTokensFrequencyCapPermission();
-  ForceUserActivityFrequencyCapPermission();
+  ForceCatalogPermissionRule();
+  ForceIssuersPermissionRule();
+  ForceUnblindedTokensPermissionRule();
+  ForceUserActivityPermissionRule();
 }
 
 }  // namespace ads

@@ -7,7 +7,7 @@
 
 #include "base/logging.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"

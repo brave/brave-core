@@ -14,9 +14,10 @@ source_set("gcm_driver") {
 
     deps = [
       "//base",
-      "//brave/common:pref_names",
-      "//components/prefs",
+      "//brave/components/constants",
       "//components/pref_registry",
+      "//components/prefs",
+
       # For profile.h
       "//content/public/browser",
     ]

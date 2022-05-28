@@ -41,8 +41,8 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfNoFieldTrialAndNoAdGroup) {
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
-  SplitTestExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  SplitTestExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -55,8 +55,8 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   creative_ad.split_test_group = "GroupA";
 
   // Act
-  SplitTestExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  SplitTestExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -71,8 +71,8 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   trial->AppendGroup(kGroup, 100);
 
   // Act
-  SplitTestExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  SplitTestExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -88,8 +88,8 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   trial->AppendGroup(kGroup, 100);
 
   // Act
-  SplitTestExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  SplitTestExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -106,8 +106,8 @@ TEST_F(BatAdsSplitTestExclusionRuleTest,
   trial->AppendGroup(kGroup, 100);
 
   // Act
-  SplitTestExclusionRule frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  SplitTestExclusionRule exclusion_rule;
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

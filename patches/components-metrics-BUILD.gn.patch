@@ -1,0 +1,12 @@
+diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
+index 9c08e218f90bf44d5e53b40d5607534b1a0ac4f7..1e5d46bae375c2f640c14533b6d884587a68a218 100644
+--- a/components/metrics/BUILD.gn
++++ b/components/metrics/BUILD.gn
+@@ -192,6 +192,7 @@ static_library("metrics") {
+   if (is_fuchsia) {
+     sources += [ "drive_metrics_provider_fuchsia.cc" ]
+   }
++  import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
+ }
+ 
+ if (is_android) {

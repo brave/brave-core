@@ -34,8 +34,8 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   const AdEventList ad_events;
 
   // Act
-  PerWeekExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  PerWeekExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -50,8 +50,8 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfZero) {
   const AdEventList ad_events;
 
   // Act
-  PerWeekExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  PerWeekExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -71,8 +71,8 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   ad_events.push_back(ad_event);
 
   // Act
-  PerWeekExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  PerWeekExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -95,8 +95,8 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   FastForwardClockBy(base::Days(7));
 
   // Act
-  PerWeekExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  PerWeekExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -119,8 +119,8 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   FastForwardClockBy(base::Days(6));
 
   // Act
-  PerWeekExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  PerWeekExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -141,8 +141,8 @@ TEST_F(BatAdsPerWeekExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
 
   // Act
-  PerWeekExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
+  PerWeekExclusionRule exclusion_rule(ad_events);
+  const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

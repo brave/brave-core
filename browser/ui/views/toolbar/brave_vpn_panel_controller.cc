@@ -6,7 +6,7 @@
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/grit/brave_components_strings.h"

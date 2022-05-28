@@ -21,11 +21,12 @@ base::circular_deque<HistoryItemInfo> DateRangeHistoryFilter::Apply(
     const base::circular_deque<HistoryItemInfo>& history) const {
   base::circular_deque<HistoryItemInfo> filtered_history = history;
 
-  const auto iter = std::remove_if(
-      filtered_history.begin(), filtered_history.end(),
-      [=](HistoryItemInfo& history_item) {
-        return history_item.time < from_time_ || history_item.time > to_time_;
-      });
+  const auto iter =
+      std::remove_if(filtered_history.begin(), filtered_history.end(),
+                     [=](HistoryItemInfo& history_item) {
+                       return history_item.created_at < from_time_ ||
+                              history_item.created_at > to_time_;
+                     });
 
   filtered_history.erase(iter, filtered_history.end());
 

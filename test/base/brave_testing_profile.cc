@@ -6,7 +6,7 @@
 #include "brave/test/base/brave_testing_profile.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 

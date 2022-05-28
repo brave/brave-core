@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "brave/common/url_constants.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 

@@ -96,7 +96,7 @@ class BatAdsInlineContentServingTest : public UnitTestBase {
 
 TEST_F(BatAdsInlineContentServingTest, ServeAd) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   CreativeInlineContentAdList creative_ads;
   CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
@@ -121,7 +121,7 @@ TEST_F(BatAdsInlineContentServingTest, ServeAd) {
 
 TEST_F(BatAdsInlineContentServingTest, DoNotServeAdForUnavailableDimensions) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   CreativeInlineContentAdList creative_ads;
   CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();

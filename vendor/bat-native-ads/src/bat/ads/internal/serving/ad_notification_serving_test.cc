@@ -115,7 +115,7 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
 
 TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   CreativeAdNotificationList creative_ads;
   CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
@@ -134,7 +134,7 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
 
 TEST_F(BatAdsAdNotificationServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
@@ -146,7 +146,7 @@ TEST_F(BatAdsAdNotificationServingTest, DoNotServeAdIfNoEligibleAdsFound) {
 
 TEST_F(BatAdsAdNotificationServingTest, DoNotServeInvalidAd) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
@@ -174,7 +174,7 @@ TEST_F(BatAdsAdNotificationServingTest,
 
 TEST_F(BatAdsAdNotificationServingTest, ServeAdWithServingVersion2) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   CreativeAdNotificationList creative_ads;
   const CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();

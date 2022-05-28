@@ -82,6 +82,8 @@ bool Account::SetWallet(const std::string& id, const std::string& seed) {
 
   NotifyWalletDidUpdate(wallet);
 
+  TopUpUnblindedTokens();
+
   return true;
 }
 

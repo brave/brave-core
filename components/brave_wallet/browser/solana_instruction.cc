@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 
 #include <limits>
+#include <tuple>
 #include <utility>
 
 #include "base/base64.h"
@@ -84,6 +85,51 @@ bool SolanaInstruction::Serialize(
   CompactU16Encode(data_.size(), bytes);
   bytes->insert(bytes->end(), data_.begin(), data_.end());
   return true;
+}
+
+// static
+absl::optional<SolanaInstruction> SolanaInstruction::Deserialize(
+    const std::vector<SolanaAccountMeta>& message_account_metas,
+    const std::vector<uint8_t>& bytes,
+    size_t* bytes_index) {
+  DCHECK(bytes_index);
+  if (*bytes_index >= bytes.size())
+    return absl::nullopt;
+
+  uint8_t program_id_index = bytes[(*bytes_index)++];
+  if (program_id_index >= message_account_metas.size())
+    return absl::nullopt;
+  const std::string program_id = message_account_metas[program_id_index].pubkey;
+
+  auto ret = CompactU16Decode(bytes, *bytes_index);
+  if (!ret)
+    return absl::nullopt;
+  const uint16_t num_of_accounts = std::get<0>(*ret);
+  *bytes_index += std::get<1>(*ret);
+
+  std::vector<SolanaAccountMeta> account_metas;
+  for (size_t i = 0; i < num_of_accounts; ++i) {
+    if (*bytes_index >= bytes.size())
+      return absl::nullopt;
+    uint8_t account_index = bytes[(*bytes_index)++];
+    if (account_index >= message_account_metas.size())
+      return absl::nullopt;
+    account_metas.push_back(
+        SolanaAccountMeta(message_account_metas[account_index]));
+  }
+
+  ret = CompactU16Decode(bytes, *bytes_index);
+  if (!ret)
+    return absl::nullopt;
+  const uint16_t num_of_data_bytes = std::get<0>(*ret);
+  *bytes_index += std::get<1>(*ret);
+  if (*bytes_index + num_of_data_bytes > bytes.size())
+    return absl::nullopt;
+  std::vector<uint8_t> data(bytes.begin() + *bytes_index,
+                            bytes.begin() + *bytes_index + num_of_data_bytes);
+  *bytes_index += num_of_data_bytes;
+
+  return SolanaInstruction(program_id, std::move(account_metas), data);
 }
 
 mojom::SolanaInstructionPtr SolanaInstruction::ToMojomSolanaInstruction()

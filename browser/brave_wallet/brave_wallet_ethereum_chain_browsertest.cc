@@ -10,11 +10,11 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -32,6 +32,7 @@
 namespace {
 
 const char kEmbeddedTestServerDirectory[] = "brave-wallet";
+const char kSomeChainId[] = "0xabcde";
 
 const char kScriptWaitForEvent[] = R"(
     function waitForEvent() {
@@ -144,7 +145,7 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_code(net::HTTP_OK);
-    auto chain_id = params.size() ? params["id"] : "0x38";
+    auto chain_id = params.size() ? params["id"] : kSomeChainId;
     http_response->set_content("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" +
                                chain_id + "\"}");
     return http_response;
@@ -198,7 +199,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
 
   ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
                   ->IsShowingBubble());
-  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x38", true);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted(kSomeChainId, true);
   base::RunLoop().RunUntilIdle();  // For FirePendingRequestCompleted
   GetJsonRpcService()->NotifySwitchChainRequestProcessed(
       true, url::Origin::Create(url));
@@ -207,9 +208,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
   EXPECT_EQ(base::Value(true), result_first.value);
   brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
-  EXPECT_EQ(result.front()->chain_id, "0x38");
+  EXPECT_EQ(result.front()->chain_id, kSomeChainId);
   EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
-            "0x38");
+            kSomeChainId);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainRejected) {
@@ -225,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainRejected) {
   loop.Run();
   ASSERT_TRUE(brave_wallet::BraveWalletTabHelper::FromWebContents(contents)
                   ->IsShowingBubble());
-  GetJsonRpcService()->AddEthereumChainRequestCompleted("0x38", false);
+  GetJsonRpcService()->AddEthereumChainRequestCompleted(kSomeChainId, false);
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result_first.value);

@@ -38,12 +38,12 @@ int BindParameters(mojom::DBCommand* command,
   int index = 0;
   for (const auto& transaction : transactions) {
     BindString(command, index++, transaction.id);
-    BindDouble(command, index++, transaction.created_at);
+    BindDouble(command, index++, transaction.created_at.ToDoubleT());
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
     BindString(command, index++, transaction.ad_type.ToString());
     BindString(command, index++, transaction.confirmation_type.ToString());
-    BindDouble(command, index++, transaction.reconciled_at);
+    BindDouble(command, index++, transaction.reconciled_at.ToDoubleT());
 
     count++;
   }
@@ -57,12 +57,12 @@ TransactionInfo GetFromRecord(mojom::DBRecord* record) {
   TransactionInfo transaction;
 
   transaction.id = ColumnString(record, 0);
-  transaction.created_at = ColumnDouble(record, 1);
+  transaction.created_at = base::Time::FromDoubleT(ColumnDouble(record, 1));
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.ad_type = AdType(ColumnString(record, 4));
   transaction.confirmation_type = ConfirmationType(ColumnString(record, 5));
-  transaction.reconciled_at = ColumnDouble(record, 6);
+  transaction.reconciled_at = base::Time::FromDoubleT(ColumnDouble(record, 6));
 
   return transaction;
 }

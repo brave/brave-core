@@ -12,7 +12,7 @@
 #include "extensions/browser/test_extension_registry_observer.h"
 #include "extensions/common/mojom/manifest.mojom.h"
 
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/ui_test_utils.h"
 
 namespace extensions {

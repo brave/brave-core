@@ -1,0 +1,47 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+import("//build/util/branding.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+declare_args() {
+  brave_services_key = ""
+}
+
+if (is_official_build) {
+  assert(brave_services_key != "")
+}
+
+buildflag_header("brave_services_key") {
+  # Please use //brave/components/constants instead.
+  visibility = [ ":*" ]
+
+  header = "brave_services_key.h"
+  flags = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
+}
+
+source_set("constants") {
+  sources = [
+    "brave_constants.cc",
+    "brave_constants.h",
+    "brave_paths.cc",
+    "brave_paths.h",
+    "brave_switches.cc",
+    "brave_switches.h",
+    "network_constants.cc",
+    "network_constants.h",
+    "pref_names.cc",
+    "pref_names.h",
+    "url_constants.cc",
+    "url_constants.h",
+    "webui_url_constants.cc",
+    "webui_url_constants.h",
+  ]
+
+  public_deps = [ ":brave_services_key" ]
+  deps = [ "//base" ]
+}

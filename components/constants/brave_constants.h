@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMMON_BRAVE_CONSTANTS_H_
-#define BRAVE_COMMON_BRAVE_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_CONSTANTS_BRAVE_CONSTANTS_H_
+#define BRAVE_COMPONENTS_CONSTANTS_BRAVE_CONSTANTS_H_
 
 #include "base/files/file_path.h"
 
@@ -14,4 +14,4 @@ extern const base::FilePath::CharType kSessionProfileDir[];
 
 }  // namespace brave
 
-#endif  // BRAVE_COMMON_BRAVE_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_CONSTANTS_BRAVE_CONSTANTS_H_

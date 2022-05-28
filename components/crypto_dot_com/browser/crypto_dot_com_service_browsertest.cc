@@ -5,7 +5,7 @@
 
 #include "base/path_service.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
-#include "brave/common/brave_paths.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -13,8 +13,8 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "net/dns/mock_host_resolver.h"
 #include "net/base/url_util.h"
+#include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 

@@ -96,7 +96,7 @@ class BatAdsNewTabPageServingTest : public UnitTestBase {
 
 TEST_F(BatAdsNewTabPageServingTest, ServeAd) {
   // Arrange
-  ForceUserActivityFrequencyCapPermission();
+  ForceUserActivityPermissionRule();
 
   CreativeNewTabPageAdList creative_ads;
   const CreativeNewTabPageAdInfo& creative_ad = BuildCreativeNewTabPageAd();

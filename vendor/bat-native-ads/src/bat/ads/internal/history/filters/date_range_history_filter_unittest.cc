@@ -24,15 +24,15 @@ base::circular_deque<HistoryItemInfo> GetHistory() {
   base::circular_deque<HistoryItemInfo> history;
 
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(333333333);
+  history_item.created_at = TimestampToTime(333333333);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(444444444);
+  history_item.created_at = TimestampToTime(444444444);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(222222222);
+  history_item.created_at = TimestampToTime(222222222);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(666666666);
+  history_item.created_at = TimestampToTime(666666666);
   history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(555555555);
+  history_item.created_at = TimestampToTime(555555555);
   history.push_back(history_item);
 
   return history;
@@ -56,11 +56,11 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   base::circular_deque<HistoryItemInfo> expected_history;
 
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(444444444);
+  history_item.created_at = TimestampToTime(444444444);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(666666666);
+  history_item.created_at = TimestampToTime(666666666);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(555555555);
+  history_item.created_at = TimestampToTime(555555555);
   expected_history.push_back(history_item);
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -99,11 +99,11 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   // Assert
   base::circular_deque<HistoryItemInfo> expected_history;
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(333333333);
+  history_item.created_at = TimestampToTime(333333333);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(444444444);
+  history_item.created_at = TimestampToTime(444444444);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(222222222);
+  history_item.created_at = TimestampToTime(222222222);
   expected_history.push_back(history_item);
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));
@@ -142,15 +142,15 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   // Assert
   base::circular_deque<HistoryItemInfo> expected_history;
   HistoryItemInfo history_item;
-  history_item.time = base::Time::FromDoubleT(333333333);
+  history_item.created_at = TimestampToTime(333333333);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(444444444);
+  history_item.created_at = TimestampToTime(444444444);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(222222222);
+  history_item.created_at = TimestampToTime(222222222);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(666666666);
+  history_item.created_at = TimestampToTime(666666666);
   expected_history.push_back(history_item);
-  history_item.time = base::Time::FromDoubleT(555555555);
+  history_item.created_at = TimestampToTime(555555555);
   expected_history.push_back(history_item);
 
   EXPECT_TRUE(IsEqualContainers(expected_history, history));

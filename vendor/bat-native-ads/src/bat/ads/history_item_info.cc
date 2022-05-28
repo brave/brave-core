@@ -18,7 +18,7 @@ HistoryItemInfo::HistoryItemInfo(const HistoryItemInfo& info) = default;
 HistoryItemInfo::~HistoryItemInfo() = default;
 
 bool HistoryItemInfo::operator==(const HistoryItemInfo& rhs) const {
-  return DoubleEquals(time.ToDoubleT(), rhs.time.ToDoubleT()) &&
+  return DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
          ad_content == rhs.ad_content &&
          category_content == rhs.category_content;
 }
@@ -43,7 +43,7 @@ bool HistoryItemInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
-    time =
+    created_at =
         base::Time::FromDoubleT(document["timestamp_in_seconds"].GetDouble());
   }
 
@@ -73,7 +73,7 @@ void SaveToJson(JsonWriter* writer, const HistoryItemInfo& info) {
   writer->StartObject();
 
   writer->String("timestamp_in_seconds");
-  writer->Double(info.time.ToDoubleT());
+  writer->Double(info.created_at.ToDoubleT());
 
   writer->String("ad_content");
   SaveToJson(writer, info.ad_content);

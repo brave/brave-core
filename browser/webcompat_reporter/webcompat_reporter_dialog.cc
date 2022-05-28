@@ -12,7 +12,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"

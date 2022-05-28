@@ -11,9 +11,9 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
-#include "brave/common/brave_paths.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -129,7 +129,7 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_code(net::HTTP_OK);
     http_response->set_content(
-        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x38\"}");
+        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xabcde\"}");
     return http_response;
   }
   GURL GetWalletEthereumChainPageURL() {

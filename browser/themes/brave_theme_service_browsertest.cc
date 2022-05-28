@@ -6,7 +6,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/brave_theme_helper_utils.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"

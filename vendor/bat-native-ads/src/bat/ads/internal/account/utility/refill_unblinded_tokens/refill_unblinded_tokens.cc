@@ -63,8 +63,18 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
     return;
   }
 
-  if (!IssuerExistsForType(IssuerType::kPayments)) {
-    BLOG(0, "Failed to refill unblinded tokens due to missing payments issuer");
+  if (!wallet.IsValid()) {
+    BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
+
+    if (delegate_) {
+      delegate_->OnFailedToRefillUnblindedTokens();
+    }
+
+    return;
+  }
+
+  if (!HasIssuers()) {
+    BLOG(0, "Failed to refill unblinded tokens due to missing issuers");
 
     if (delegate_) {
       delegate_->OnFailedToRefillUnblindedTokens();
@@ -78,16 +88,6 @@ void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
                 << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
                 << " unblinded tokens which is above the minimum threshold of "
                 << kMinimumUnblindedTokens);
-    return;
-  }
-
-  if (!wallet.IsValid()) {
-    BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
-
-    if (delegate_) {
-      delegate_->OnFailedToRefillUnblindedTokens();
-    }
-
     return;
   }
 

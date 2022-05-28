@@ -9,7 +9,7 @@
 #include "base/notreached.h"
 #include "brave/browser/metrics/brave_metrics_service_accessor.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/common/channel_info.h"

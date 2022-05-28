@@ -4,6 +4,7 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module ads.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
 enum Environment {
@@ -34,7 +35,7 @@ struct Conversion {
   string url_pattern;
   string advertiser_public_key;
   int32 observation_window;
-  double expire_at;
+  mojo_base.mojom.Time expire_at;
 };
 
 enum AdNotificationEventType {

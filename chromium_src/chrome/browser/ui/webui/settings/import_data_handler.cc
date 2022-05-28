@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/importer/brave_external_process_importer_host.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 
 #define ExternalProcessImporterHost BraveExternalProcessImporterHost
 
