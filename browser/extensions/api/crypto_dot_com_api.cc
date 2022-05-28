@@ -71,7 +71,7 @@ void CryptoDotComGetTickerInfoFunction::OnInfoResult(
     result.SetStringKey(att.first, att.second);
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction
@@ -100,18 +100,17 @@ CryptoDotComGetChartDataFunction::Run() {
 
 void CryptoDotComGetChartDataFunction::OnChartDataResult(
     const CryptoDotComChartData& data) {
-  base::ListValue result;
+  base::Value::List result;
 
   for (const auto& data_point : data) {
-    auto point = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    base::Value::Dict point;
     for (const auto& att : data_point) {
-      point->SetStringKey(att.first, att.second);
+      point.Set(att.first, att.second);
     }
     result.Append(std::move(point));
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction
@@ -136,18 +135,17 @@ CryptoDotComGetSupportedPairsFunction::Run() {
 
 void CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult(
     const CryptoDotComSupportedPairs& pairs) {
-  base::ListValue result;
+  base::Value::List result;
 
   for (const auto& pair : pairs) {
-    auto instrument = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    base::Value::Dict instrument;
     for (const auto& item : pair) {
-      instrument->SetStringKey(item.first, item.second);
+      instrument.Set(item.first, item.second);
     }
     result.Append(std::move(instrument));
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction
@@ -172,22 +170,21 @@ CryptoDotComGetAssetRankingsFunction::Run() {
 
 void CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult(
     const CryptoDotComAssetRankings& rankings) {
-  base::Value result(base::Value::Type::DICTIONARY);
+  base::Value::Dict result;
 
   for (const auto& ranking : rankings) {
-    base::ListValue ranking_list;
+    base::Value::List ranking_list;
     for (const auto& asset : ranking.second) {
-      auto asset_dict = std::make_unique<base::Value>(
-          base::Value::Type::DICTIONARY);
+      base::Value::Dict asset_dict;
       for (const auto& att : asset) {
-        asset_dict->SetStringKey(att.first, att.second);
+        asset_dict.Set(att.first, att.second);
       }
       ranking_list.Append(std::move(asset_dict));
     }
-    result.SetKey(ranking.first, std::move(ranking_list));
+    result.Set(ranking.first, std::move(ranking_list));
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(OneArgument(base::Value(std::move(result))));
 }
 
 ExtensionFunction::ResponseAction
@@ -241,11 +238,11 @@ CryptoDotComGetInteractionsFunction::Run() {
   bool has_interacted = profile->GetPrefs()->GetBoolean(
       kCryptoDotComHasInteracted);
 
-  base::DictionaryValue interactions;
-  interactions.SetBoolean("boughtCrypto", has_bought);
-  interactions.SetBoolean("interacted", has_interacted);
+  base::Value::Dict interactions;
+  interactions.Set("boughtCrypto", has_bought);
+  interactions.Set("interacted", has_interacted);
 
-  return RespondNow(OneArgument(std::move(interactions)));
+  return RespondNow(OneArgument(base::Value(std::move(interactions))));
 }
 
 }  // namespace api

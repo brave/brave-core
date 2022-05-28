@@ -83,11 +83,11 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   }
 
   // Create the manifest
-  std::unique_ptr<base::DictionaryValue> root(new base::DictionaryValue);
+  base::Value::Dict root;
 
   // manifest version is always 2
   // see kModernManifestVersion in src/extensions/common/extension.cc
-  root->SetIntPath(extensions::manifest_keys::kManifestVersion, 2);
+  root.SetByDottedPath(extensions::manifest_keys::kManifestVersion, 2);
 
   // Create the public key.
   // Greaselion scripts are not signed, but the public key for an extension
@@ -110,12 +110,12 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   }
   base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &key);
 
-  root->SetStringPath(extensions::manifest_keys::kName, script_name);
-  root->SetStringPath(extensions::manifest_keys::kVersion, "1.0");
-  root->SetStringPath(extensions::manifest_keys::kDescription, "");
-  root->SetStringPath(extensions::manifest_keys::kPublicKey, key);
-  root->SetStringPath("incognito",
-                      extensions::manifest_values::kIncognitoNotAllowed);
+  root.SetByDottedPath(extensions::manifest_keys::kName, script_name);
+  root.SetByDottedPath(extensions::manifest_keys::kVersion, "1.0");
+  root.SetByDottedPath(extensions::manifest_keys::kDescription, "");
+  root.SetByDottedPath(extensions::manifest_keys::kPublicKey, key);
+  root.SetByDottedPath("incognito",
+                       extensions::manifest_values::kIncognitoNotAllowed);
 
   std::vector<std::string> matches;
   matches.reserve(rule.url_patterns().size());
@@ -136,14 +136,14 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
           : extensions::api::content_scripts::RUN_AT_DOCUMENT_END;
 
   if (!rule.messages().empty()) {
-    root->SetStringPath(extensions::manifest_keys::kDefaultLocale, "en_US");
+    root.SetByDottedPath(extensions::manifest_keys::kDefaultLocale, "en_US");
   }
 
-  auto content_scripts = std::make_unique<base::ListValue>();
-  content_scripts->Append(content_script.ToValue());
+  base::Value::List content_scripts;
+  content_scripts.Append(std::move(*content_script.ToValue()));
 
-  root->Set(extensions::api::content_scripts::ManifestKeys::kContentScripts,
-            std::move(content_scripts));
+  root.Set(extensions::api::content_scripts::ManifestKeys::kContentScripts,
+           std::move(content_scripts));
 
   base::FilePath manifest_path =
       temp_dir.GetPath().Append(extensions::kManifestFilename);
@@ -153,7 +153,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // just want to assure you that it's okay. We want to write to disk here, and
   // we're already on a task runner specifically for writing extension-related
   // files to disk.
-  if (!serializer.Serialize(*root)) {
+  if (!serializer.Serialize(base::Value(std::move(root)))) {
     LOG(ERROR) << "Could not write Greaselion manifest";
     return absl::nullopt;
   }

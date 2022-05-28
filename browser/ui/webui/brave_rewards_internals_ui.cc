@@ -222,32 +222,31 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     return;
   }
 
-  base::Value list(base::Value::Type::LIST);
+  base::Value::List list;
   for (const auto& item : contributions) {
-    base::Value contribution(base::Value::Type::DICTIONARY);
-    contribution.SetStringKey("id", item->contribution_id);
-    contribution.SetDoubleKey("amount", item->amount);
-    contribution.SetIntKey("type", static_cast<int>(item->type));
-    contribution.SetIntKey("step", static_cast<int>(item->step));
-    contribution.SetIntKey("retryCount", item->retry_count);
-    contribution.SetIntKey("createdAt", item->created_at);
-    contribution.SetIntKey("processor", static_cast<int>(item->processor));
-    base::Value publishers(base::Value::Type::LIST);
+    base::Value::Dict contribution;
+    contribution.Set("id", item->contribution_id);
+    contribution.Set("amount", item->amount);
+    contribution.Set("type", static_cast<int>(item->type));
+    contribution.Set("step", static_cast<int>(item->step));
+    contribution.Set("retryCount", item->retry_count);
+    contribution.Set("createdAt", static_cast<int>(item->created_at));
+    contribution.Set("processor", static_cast<int>(item->processor));
+    base::Value::List publishers;
     for (const auto& publisher_item : item->publishers) {
-      base::Value publisher(base::Value::Type::DICTIONARY);
-      publisher.SetStringKey("contributionId", publisher_item->contribution_id);
-      publisher.SetStringKey("publisherKey", publisher_item->publisher_key);
-      publisher.SetDoubleKey("totalAmount", publisher_item->total_amount);
-      publisher.SetDoubleKey("contributedAmount",
-                             publisher_item->contributed_amount);
+      base::Value::Dict publisher;
+      publisher.Set("contributionId", publisher_item->contribution_id);
+      publisher.Set("publisherKey", publisher_item->publisher_key);
+      publisher.Set("totalAmount", publisher_item->total_amount);
+      publisher.Set("contributedAmount", publisher_item->contributed_amount);
       publishers.Append(std::move(publisher));
     }
-    contribution.SetPath("publishers", std::move(publishers));
+    contribution.Set("publishers", std::move(publishers));
     list.Append(std::move(contribution));
   }
 
   CallJavascriptFunction("brave_rewards_internals.contributions",
-                         std::move(list));
+                         base::Value(std::move(list)));
 }
 
 void RewardsInternalsDOMHandler::GetPromotions(const base::Value::List& args) {
@@ -268,23 +267,23 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
     return;
   }
 
-  base::ListValue promotions;
+  base::Value::List promotions;
   for (const auto& item : list) {
-    auto dict = std::make_unique<base::DictionaryValue>();
-    dict->SetDouble("amount", item->approximate_value);
-    dict->SetString("promotionId", item->id);
-    dict->SetInteger("expiresAt", item->expires_at);
-    dict->SetInteger("type", static_cast<int>(item->type));
-    dict->SetInteger("status", static_cast<int>(item->status));
-    dict->SetInteger("claimedAt", item->claimed_at);
-    dict->SetBoolean("legacyClaimed", item->legacy_claimed);
-    dict->SetString("claimId", item->claim_id);
-    dict->SetInteger("version", item->version);
+    base::Value::Dict dict;
+    dict.Set("amount", item->approximate_value);
+    dict.Set("promotionId", item->id);
+    dict.Set("expiresAt", static_cast<int>(item->expires_at));
+    dict.Set("type", static_cast<int>(item->type));
+    dict.Set("status", static_cast<int>(item->status));
+    dict.Set("claimedAt", static_cast<int>(item->claimed_at));
+    dict.Set("legacyClaimed", item->legacy_claimed);
+    dict.Set("claimId", item->claim_id);
+    dict.Set("version", static_cast<int>(item->version));
     promotions.Append(std::move(dict));
   }
 
   CallJavascriptFunction("brave_rewards_internals.promotions",
-                         std::move(promotions));
+                         base::Value(std::move(promotions)));
 }
 
 void RewardsInternalsDOMHandler::GetPartialLog(const base::Value::List& args) {
@@ -372,20 +371,21 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetIntKey("result", static_cast<int>(result));
-  base::Value wallet_dict(base::Value::Type::DICTIONARY);
+  base::Value::Dict data;
+  data.Set("result", static_cast<int>(result));
+  base::Value::Dict wallet_dict;
 
   if (wallet) {
-    wallet_dict.SetStringKey("address", wallet->address);
-    wallet_dict.SetStringKey("memberId", wallet->member_id);
-    wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
-    wallet_dict.SetStringKey("type", wallet->type);
+    wallet_dict.Set("address", wallet->address);
+    wallet_dict.Set("memberId", wallet->member_id);
+    wallet_dict.Set("status", static_cast<int>(wallet->status));
+    wallet_dict.Set("type", wallet->type);
   }
 
-  data.SetKey("wallet", std::move(wallet_dict));
+  data.Set("wallet", std::move(wallet_dict));
 
-  CallJavascriptFunction("brave_rewards_internals.externalWallet", data);
+  CallJavascriptFunction("brave_rewards_internals.externalWallet",
+                         base::Value(std::move(data)));
 }
 
 void RewardsInternalsDOMHandler::GetEventLogs(const base::Value::List& args) {
@@ -405,18 +405,19 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
     return;
   }
 
-  base::Value data(base::Value::Type::LIST);
+  base::Value::List data;
 
   for (const auto& log : logs) {
-    base::Value item(base::Value::Type::DICTIONARY);
-    item.SetStringKey("id", log->event_log_id);
-    item.SetStringKey("key", log->key);
-    item.SetStringKey("value", log->value);
-    item.SetIntKey("createdAt", log->created_at);
+    base::Value::Dict item;
+    item.Set("id", log->event_log_id);
+    item.Set("key", log->key);
+    item.Set("value", log->value);
+    item.Set("createdAt", static_cast<int>(log->created_at));
     data.Append(std::move(item));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.eventLogs", std::move(data));
+  CallJavascriptFunction("brave_rewards_internals.eventLogs",
+                         base::Value(std::move(data)));
 }
 
 void RewardsInternalsDOMHandler::GetAdDiagnostics(
