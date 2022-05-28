@@ -100,11 +100,7 @@ impl Display for InternalError {
                 write!(f, "Future was cancelled")
             }
             InternalError::InvalidCall(reason) => {
-                write!(
-                    f,
-                    "Caller did not follow required call convention: {}",
-                    reason
-                )
+                write!(f, "Caller did not follow required call convention: {}", reason)
             }
         }
     }

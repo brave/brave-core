@@ -67,9 +67,8 @@ where
                             .get_single_use_item_creds(&item.id)
                             .await?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
-                        let unblinded_creds = creds
-                            .unblinded_creds
-                            .ok_or(InternalError::ItemCredentialsMissing)?;
+                        let unblinded_creds =
+                            creds.unblinded_creds.ok_or(InternalError::ItemCredentialsMissing)?;
 
                         // retrieve the next unspent token
                         let (i, cred) = unblinded_creds
@@ -83,9 +82,8 @@ where
                         let verification_key =
                             cred.unblinded_cred.derive_verification_key::<Sha512>();
                         // FIXME change the payload we're creating the binding with
-                        let signature = verification_key
-                            .sign::<HmacSha512>(issuer.as_bytes())
-                            .encode_base64();
+                        let signature =
+                            verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
 
                         let redemption = json!({
                             "issuer": issuer,
@@ -102,6 +100,40 @@ where
                         let cred = self
                             .matching_time_limited_credential(&item.id)
                             .await?
+                            .map(|cred| match cred {
+                                Credential::TimeLimited(tl) => Some(tl),
+                                _ => None,
+                            })
+                            .ok_or(InternalError::ItemCredentialsMissing)?
+                            .ok_or(InternalError::ItemCredentialsMissing)?;
+
+                        if Utc::now().naive_utc() > cred.expires_at {
+                            return Err(InternalError::ItemCredentialsExpired.into());
+                        }
+
+                        let presentation = json!({
+                            "issuedAt": cred.issued_at.date().to_string(),
+                            "expiresAt": cred.expires_at.date().to_string(),
+                            "token": cred.token,
+                        });
+
+                        (
+                            Some(format!(
+                                "{}",
+                                cred.expires_at.format("%a, %d %b %Y %H:%M:%S GMT")
+                            )),
+                            base64::encode(&serde_json::to_vec(&presentation)?),
+                        )
+                    }
+                    CredentialType::TimeLimitedV2 => {
+                        let cred = self
+                            .matching_time_limited_credential(&item.id)
+                            .await?
+                            .map(|maybe_cred| match maybe_cred {
+                                Credential::TimeLimitedV2(cred) => Some(cred),
+                                _ => None,
+                            })
+                            .ok_or(InternalError::ItemCredentialsMissing)?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
 
                         if Utc::now().naive_utc() > cred.expires_at {
@@ -163,9 +195,7 @@ where
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {
-                    match self
-                        .prepare_order_credentials_presentation(&order.id, domain, path)
-                        .await
+                    match self.prepare_order_credentials_presentation(&order.id, domain, path).await
                     {
                         Ok(Some(value)) => return Ok(Some(value)),
                         Ok(None) => continue,
@@ -190,9 +220,8 @@ where
         domain: &str,
         path: &str,
     ) -> Result<Option<String>, SkusError> {
-        if let Some(value) = self
-            .prepare_order_credentials_presentation(order_id, domain, path)
-            .await?
+        if let Some(value) =
+            self.prepare_order_credentials_presentation(order_id, domain, path).await?
         {
             // NOTE web server which recieves the cookie should unset it
             self.client.set_cookie(&value);

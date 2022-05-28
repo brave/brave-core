@@ -27,10 +27,7 @@ pub struct CacheNode<T> {
 
 impl<T> Default for CacheNode<T> {
     fn default() -> Self {
-        CacheNode {
-            children: HashMap::new(),
-            data: None,
-        }
+        CacheNode { children: HashMap::new(), data: None }
     }
 }
 
@@ -63,10 +60,7 @@ impl<T> CacheNode<T> {
         for path in key.into_iter() {
             node = node.children.get(path)?;
         }
-        node.data
-            .as_ref()
-            .filter(|d| !d.is_expired())
-            .map(|d| &d.value)
+        node.data.as_ref().filter(|d| !d.is_expired()).map(|d| &d.value)
     }
 
     pub fn remove_path<'a, I>(&mut self, key: I)
@@ -74,11 +68,7 @@ impl<T> CacheNode<T> {
         I: IntoIterator<Item = &'a str>,
     {
         if let Some(node) = key.into_iter().try_fold(self, |node, path| {
-            if node.data.is_none() {
-                node.children.get_mut(path)
-            } else {
-                Some(node)
-            }
+            if node.data.is_none() { node.children.get_mut(path) } else { Some(node) }
         }) {
             if node.data.is_some() {
                 node.data = None;
@@ -93,9 +83,7 @@ fn cache_path_from_method_and_uri<'a>(
     method: &'a http::Method,
     uri: &'a http::Uri,
 ) -> iter::Chain<iter::Take<iter::Repeat<&'a str>>, std::str::Split<'a, &'a str>> {
-    iter::repeat(method.as_str())
-        .take(1)
-        .chain(uri.path().split("/"))
+    iter::repeat(method.as_str()).take(1).chain(uri.path().split("/"))
 }
 
 impl<U> SDK<U> {
@@ -128,10 +116,11 @@ impl<U> SDK<U> {
             // Cache 429 responses so we don't exceed advised retry-after
             http::StatusCode::TOO_MANY_REQUESTS => {
                 if let Some(delay) = delay_from_response(resp) {
-                    self.cache
-                        .try_borrow_mut()
-                        .or(Err(InternalError::RetryLater(None)))?
-                        .insert(cache_key, clone_resp(resp), delay);
+                    self.cache.try_borrow_mut().or(Err(InternalError::RetryLater(None)))?.insert(
+                        cache_key,
+                        clone_resp(resp),
+                        delay,
+                    );
                 }
             }
             // Cache 200 OK on GET requests for 1 second.

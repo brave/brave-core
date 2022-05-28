@@ -14,9 +14,10 @@ use tracing::{event, instrument, Level};
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 #[serde(tag = "type")]
-enum Credentials {
+pub enum Credentials {
     SingleUse(SingleUseCredentials),
     TimeLimited(TimeLimitedCredentials),
+    TimeLimitedV2(TimeLimitedCredentialsV2),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -119,9 +120,7 @@ where
     async fn get_orders(&self) -> Result<Option<Vec<Order>>, InternalError> {
         let mut store = self.get_store()?;
         let state: KVState = store.get_state()?;
-        let orders = state
-            .orders
-            .map(|os| os.into_iter().map(|(_, order)| order).collect());
+        let orders = state.orders.map(|os| os.into_iter().map(|(_, order)| order).collect());
         event!(Level::DEBUG, orders = ?orders, "got orders");
         Ok(orders)
     }
@@ -192,9 +191,7 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState {
-                items: HashMap::new(),
-            });
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -204,11 +201,7 @@ where
                 unblinded_creds: None,
                 issuer_id: None,
             });
-            if credentials
-                .items
-                .insert(item_id.to_string(), creds)
-                .is_some()
-            {
+            if credentials.items.insert(item_id.to_string(), creds).is_some() {
                 return Err(InternalError::StorageWriteFailed(
                     "Item credentials were already initialized".to_string(),
                 ));
@@ -246,15 +239,13 @@ where
                     _ => {
                         return Err(InternalError::StorageWriteFailed(
                             "Item is not single use".to_string(),
-                        ))
+                        ));
                     }
                 }
                 return store.set_state(&state);
             }
         }
-        Err(InternalError::StorageWriteFailed(
-            "Item credentials were not initiated".to_string(),
-        ))
+        Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
     }
 
     #[instrument]
@@ -279,41 +270,41 @@ where
                     _ => {
                         return Err(InternalError::StorageWriteFailed(
                             "Item is not single use".to_string(),
-                        ))
+                        ));
                     }
                 }
             }
         }
-        Err(InternalError::StorageWriteFailed(
-            "Item credentials were not completed".to_string(),
-        ))
+        Err(InternalError::StorageWriteFailed("Item credentials were not completed".to_string()))
     }
 
     #[instrument]
     async fn get_time_limited_creds(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredentials>, InternalError> {
+    ) -> Result<Option<Credentials>, InternalError> {
         let mut store = self.get_store()?;
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState {
-                items: HashMap::new(),
-            });
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.remove(item_id) {
                 match item_credentials {
-                    Credentials::TimeLimited(credentials) => {
-                        event!(Level::DEBUG, credentials = ?credentials, "got credentials");
-                        return Ok(Some(credentials));
+                    Credentials::TimeLimited(other_credentials) => {
+                        event!(Level::DEBUG, other_credentials = ?other_credentials, "got credentials");
+                        return Ok(Some(Credentials::TimeLimited(other_credentials)));
+                    }
+                    Credentials::TimeLimitedV2(other_credentials) => {
+                        event!(Level::DEBUG, other_credentials = ?other_credentials, "got credentials");
+                        return Ok(Some(Credentials::TimeLimitedV2(other_credentials)));
                     }
                     _ => {
                         return Err(InternalError::StorageReadFailed(
                             "Item is not time limited".to_string(),
-                        ))
+                        ));
                     }
                 }
             }
@@ -333,13 +324,38 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState {
-                items: HashMap::new(),
-            });
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
             let creds = Credentials::TimeLimited(TimeLimitedCredentials {
+                item_id: item_id.to_string(),
+                creds,
+            });
+
+            // assume that the credentials provided supercede the ones
+            // we may already have, so always overwrite the credentials
+            credentials.items.insert(item_id.to_string(), creds);
+        }
+
+        store.set_state(&state)
+    }
+
+    #[instrument]
+    async fn store_time_limited_creds_v2(
+        &self,
+        item_id: &str,
+        creds: Vec<TimeLimitedCredentialV2>,
+    ) -> Result<(), InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if state.credentials.is_none() {
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
+        }
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            let creds = Credentials::TimeLimitedV2(TimeLimitedCredentialsV2 {
                 item_id: item_id.to_string(),
                 creds,
             });

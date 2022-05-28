@@ -14,6 +14,7 @@ use crate::errors::{InternalError, SkusError};
 use crate::http::HttpHandler;
 use crate::models::*;
 use crate::sdk::SDK;
+use crate::storage::Credentials;
 use crate::{HTTPClient, StorageClient};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -44,6 +45,16 @@ enum ItemCredentialsResponse {
         issued_at: String,
         order_id: String,
         token: String,
+    },
+    #[serde(rename_all = "camelCase")]
+    TimeLimitedV2 {
+        id: String,
+        issuer_id: String,
+        order_id: String,
+        credentials: String, // this needs to be TimeAwareSubIssuedCreds?
+        expires_at: String,
+        issued_at: String,
+        token: Token,
     },
 }
 
@@ -81,17 +92,12 @@ where
                                 let blinded_creds: Vec<BlindedToken> =
                                     creds.iter().map(|t| t.blind()).collect();
 
-                                self.client
-                                    .init_single_use_item_creds(&item.id, creds)
-                                    .await?;
+                                self.client.init_single_use_item_creds(&item.id, creds).await?;
                                 blinded_creds
                             }
                         };
 
-                    let claim_req = ItemCredentialsRequest {
-                        item_id: item.id,
-                        blinded_creds,
-                    };
+                    let claim_req = ItemCredentialsRequest { item_id: item.id, blinded_creds };
 
                     let request_with_retries = FutureRetry::new(
                         || async {
@@ -121,7 +127,58 @@ where
                     );
                     request_with_retries.await?;
                 }
-                CredentialType::TimeLimited => (), // Time limited credentials do not require a submission step
+                CredentialType::TimeLimitedV2 => {
+                    // TODO combine this and above if there's a 3rd instancee
+                    let blinded_creds: Vec<BlindedToken> =
+                        match self.client.get_time_limited_creds(&item.id).await? {
+                            Some(Credentials::TimeLimitedV2(item_creds)) => {
+                                item_creds.creds.into_iter().map(|t| t.token.blind()).collect()
+                            }
+                            _ => {
+                                let creds: Vec<Token> =
+                                    iter::repeat_with(|| Token::random::<Sha512, _>(&mut csprng))
+                                        .take(item.quantity as usize)
+                                        .collect();
+
+                                let blinded_creds: Vec<BlindedToken> =
+                                    creds.iter().map(|t| t.blind()).collect();
+
+                                self.client.init_single_use_item_creds(&item.id, creds).await?;
+                                blinded_creds
+                            }
+                        };
+
+                    let claim_req = ItemCredentialsRequest { item_id: item.id, blinded_creds };
+
+                    let request_with_retries = FutureRetry::new(
+                        || async {
+                            let body = serde_json::to_vec(&claim_req)
+                                .or(Err(InternalError::SerializationFailed))?;
+
+                            let req = http::Request::builder()
+                                .method("POST")
+                                .uri(format!(
+                                    "{}/v2/orders/{}/credentials",
+                                    self.base_url, order_id
+                                ))
+                                .body(body)
+                                .unwrap();
+                            let resp = self.fetch(req).await?;
+
+                            match resp.status() {
+                                http::StatusCode::OK => Ok(()),
+                                http::StatusCode::CONFLICT => {
+                                    Err(InternalError::BadRequest(http::StatusCode::CONFLICT))
+                                }
+                                http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
+                                _ => Err(resp.into()),
+                            }
+                        },
+                        HttpHandler::new(3, "Sign order item credentials request", &self.client),
+                    );
+                    request_with_retries.await?;
+                }
+                _ => (), // Time limited credentials do not require a submission step
             }
         }
         Ok(())
@@ -146,13 +203,17 @@ where
     pub async fn fetch_order_credentials(&self, order_id: &str) -> Result<(), SkusError> {
         self.submit_order_credentials_to_sign(order_id).await?;
 
+        let order = self.client.get_order(order_id).await?;
+        let orders = order.ok_or(InternalError::NotFound)?;
+        let order_item = orders.items.first().ok_or(InternalError::NotFound)?;
+
         let request_with_retries = FutureRetry::new(
             || async move {
                 let mut builder = http::Request::builder();
                 builder.method("GET");
                 builder.uri(format!(
-                    "{}/v1/orders/{}/credentials",
-                    self.base_url, order_id
+                    "{}/v{}/orders/{}/credentials",
+                    self.base_url, order_item.credential_version, order_id
                 ));
 
                 let req = builder.body(vec![]).unwrap();
@@ -174,6 +235,8 @@ where
         let resp: Vec<ItemCredentialsResponse> = serde_json::from_slice(resp.body())?;
 
         let mut time_limited_creds: HashMap<String, Vec<TimeLimitedCredential>> = HashMap::new();
+        let mut time_limited_creds_v2: HashMap<String, Vec<TimeLimitedCredentialV2>> =
+            HashMap::new();
 
         for item_cred in resp {
             match item_cred {
@@ -237,13 +300,51 @@ where
                         time_limited_creds.insert(item_id, vec![cred]);
                     }
                 }
+                ItemCredentialsResponse::TimeLimitedV2 {
+                    id,
+                    order_id,
+                    issuer_id,
+                    credentials,
+                    issued_at,
+                    expires_at,
+                    token,
+                } => {
+                    let cred = TimeLimitedCredentialV2 {
+                        id: id.clone(),
+                        order_id,
+                        issuer_id,
+                        credentials,
+                        issued_at: NaiveDate::parse_from_str(&issued_at, "%Y-%m-%d")
+                            .map_err(|_| {
+                                InternalError::InvalidResponse(
+                                    "Could not parse issued at".to_string(),
+                                )
+                            })?
+                            .and_hms(0, 0, 0),
+                        expires_at: NaiveDate::parse_from_str(&expires_at, "%Y-%m-%d")
+                            .map_err(|_| {
+                                InternalError::InvalidResponse(
+                                    "Could not parse expires at".to_string(),
+                                )
+                            })?
+                            .and_hms(0, 0, 0),
+                        token,
+                    };
+                    if let Some(item_creds) = time_limited_creds_v2.get_mut(&id) {
+                        item_creds.push(cred);
+                    } else {
+                        time_limited_creds_v2.insert(id, vec![cred]);
+                    }
+                }
             }
         }
 
+        for (item_id, item_creds) in time_limited_creds_v2.into_iter() {
+            self.client.store_time_limited_creds_v2(&item_id, item_creds).await?;
+        }
+
         for (item_id, item_creds) in time_limited_creds.into_iter() {
-            self.client
-                .store_time_limited_creds(&item_id, item_creds)
-                .await?;
+            self.client.store_time_limited_creds(&item_id, item_creds).await?;
         }
 
         Ok(())
