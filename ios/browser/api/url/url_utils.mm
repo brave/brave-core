@@ -37,6 +37,10 @@ std::string GetRegistry(const GURL& url) {
                      registry_length);
 }
 
++ (NSURL*)URLFromIDNString:(NSString*)idnString {
+  return net::NSURLWithGURL(GURL(base::SysNSStringToUTF8(idnString)));
+}
+
 - (NSString*)brave_registry {
   return base::SysUTF8ToNSString(GetRegistry(net::GURLWithNSURL(self)));
 }
