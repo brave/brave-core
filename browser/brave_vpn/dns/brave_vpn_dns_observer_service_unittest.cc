@@ -5,7 +5,10 @@
 
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.h"
 
+#include <unordered_map>
+
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/secure_dns_util.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"
@@ -14,6 +17,7 @@
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/country_codes/country_codes.h"
+#include "components/policy/policy_constants.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/dns/public/doh_provider_entry.h"
 #include "net/dns/public/secure_dns_mode.h"
@@ -45,12 +49,23 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
       : local_state_(TestingBrowserProcess::GetGlobal()) {}
 
   void SetUp() override {
-    dns_service_.reset(new BraveVpnDnsObserverService(local_state()));
+    dns_service_.reset(new BraveVpnDnsObserverService(
+        local_state(),
+        base::BindRepeating(
+            &BraveVpnDnsObserverServiceUnitTest::ReadDNSPolicyValue,
+            base::Unretained(this))));
     stub_resolver_config_reader_ =
         std::make_unique<StubResolverConfigReader>(local_state_.Get());
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
+    SetPolicyValue(policy::key::kDnsOverHttpsMode, "");
   }
+
+  std::string ReadDNSPolicyValue(const std::string& name) {
+    EXPECT_TRUE(policy_map_.count(name));
+    return policy_map_.at(name);
+  }
+
   void TearDown() override {
     // BraveVpnDnsObserverService destructor must be called before the task
     // runner is destroyed.
@@ -61,6 +76,13 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     dns_service_->OnConnectionStateChanged(state);
   }
 
+  bool ShowPolicyNotification(mojom::ConnectionState state) {
+    bool callback_called = false;
+    dns_service_->SetPolicyNotificationCallbackForTesting(
+        base::BindLambdaForTesting([&]() { callback_called = true; }));
+    FireBraveVPNStateChange(state);
+    return callback_called;
+  }
   void SetDNSMode(const std::string& mode, const std::string& doh_providers) {
     local_state()->SetString(prefs::kDnsOverHttpsTemplates, doh_providers);
     local_state()->SetString(prefs::kDnsOverHttpsMode, mode);
@@ -75,8 +97,12 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   void AllowUsersChange(bool value) {
     dns_service_->SetAllowExternalChangesForTesting(value);
   }
+  void SetPolicyValue(const std::string& name, const std::string& value) {
+    policy_map_[name] = value;
+  }
 
  private:
+  std::unordered_map<std::string, std::string> policy_map_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVpnDnsObserverService> dns_service_;
   ScopedTestingLocalState local_state_;
@@ -219,6 +245,35 @@ TEST_F(BraveVpnDnsObserverServiceUnitTest, DisallowUsersChange) {
     FireBraveVPNStateChange(mojom::ConnectionState::DISCONNECTING);
     ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
     FireBraveVPNStateChange(mojom::ConnectionState::DISCONNECTED);
+    ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
+  }
+}
+
+TEST_F(BraveVpnDnsObserverServiceUnitTest, DohDisabledByPolicy) {
+  SetPolicyValue(policy::key::kDnsOverHttpsMode, SecureDnsConfig::kModeOff);
+  {
+    SetDNSMode(SecureDnsConfig::kModeOff, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::CONNECTING));
+    ExpectDNSMode(SecureDnsConfig::kModeOff, "");
+    EXPECT_TRUE(ShowPolicyNotification(mojom::ConnectionState::CONNECTED));
+    ExpectDNSMode(SecureDnsConfig::kModeOff, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::DISCONNECTING));
+    ExpectDNSMode(SecureDnsConfig::kModeOff, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::DISCONNECTED));
+    ExpectDNSMode(SecureDnsConfig::kModeOff, "");
+  }
+
+  SetPolicyValue(policy::key::kDnsOverHttpsMode,
+                 SecureDnsConfig::kModeAutomatic);
+  {
+    SetDNSMode(SecureDnsConfig::kModeAutomatic, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::CONNECTING));
+    ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
+    EXPECT_TRUE(ShowPolicyNotification(mojom::ConnectionState::CONNECTED));
+    ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::DISCONNECTING));
+    ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::DISCONNECTED));
     ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
   }
 }

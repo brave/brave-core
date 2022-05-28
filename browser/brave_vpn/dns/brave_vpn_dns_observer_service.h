@@ -21,12 +21,20 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
+namespace policy {
+class CloudPolicyStore;
+}  // namespace policy
+
 namespace brave_vpn {
 
 class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
                                    public KeyedService {
  public:
-  explicit BraveVpnDnsObserverService(PrefService* local_state);
+  using DnsPolicyReaderCallback =
+      base::RepeatingCallback<std::string(const std::string&)>;
+
+  explicit BraveVpnDnsObserverService(PrefService* local_state,
+                                      DnsPolicyReaderCallback callback);
   ~BraveVpnDnsObserverService() override;
   BraveVpnDnsObserverService(const BraveVpnDnsObserverService&) = delete;
   BraveVpnDnsObserverService operator=(const BraveVpnDnsObserverService&) =
@@ -40,11 +48,21 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
     allow_changes_for_testing_ = allow;
   }
 
+  void SetPolicyNotificationCallbackForTesting(base::OnceClosure callback) {
+    policy_callback_ = std::move(callback);
+  }
+
+  bool IsDnsModeConfiguredByPolicy() const;
+
  private:
   void OnDNSPrefChanged();
 
   void SetDNSOverHTTPSMode(const std::string& mode,
                            const std::string& doh_providers);
+  void ShowPolicyWarningMessage();
+
+  base::OnceClosure policy_callback_;
+  DnsPolicyReaderCallback policy_reader_;
   bool ignore_prefs_change_ = true;
   absl::optional<bool> allow_changes_for_testing_;
   raw_ptr<PrefService> local_state_;

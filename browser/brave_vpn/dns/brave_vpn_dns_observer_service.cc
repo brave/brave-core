@@ -17,6 +17,7 @@
 #include "chrome/grit/chromium_strings.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "net/dns/public/dns_over_https_config.h"
 #include "net/dns/public/doh_provider_entry.h"
@@ -51,10 +52,13 @@ std::string GetDoHServers(SecureDnsConfig* dns_config) {
              ? dns_config->doh_servers().ToString()
              : GetFilteredProvidersForCountry();
 }
+
 }  // namespace
 
-BraveVpnDnsObserverService::BraveVpnDnsObserverService(PrefService* local_state)
-    : local_state_(local_state) {
+BraveVpnDnsObserverService::BraveVpnDnsObserverService(
+    PrefService* local_state,
+    DnsPolicyReaderCallback callback)
+    : policy_reader_(std::move(callback)), local_state_(local_state) {
   pref_change_registrar_.Init(local_state);
   pref_change_registrar_.Add(
       prefs::kDnsOverHttpsMode,
@@ -75,6 +79,25 @@ bool BraveVpnDnsObserverService::ShouldAllowExternalChanges() const {
               l10n_util::GetStringUTF16(IDS_PRODUCT_NAME),
               l10n_util::GetStringUTF16(IDS_BRAVE_VPN_DNS_CHANGE_ALERT)) ==
           chrome::MESSAGE_BOX_RESULT_YES);
+}
+
+bool BraveVpnDnsObserverService::IsDnsModeConfiguredByPolicy() const {
+  return policy_reader_ &&
+         !policy_reader_.Run(policy::key::kDnsOverHttpsMode).empty();
+}
+
+void BraveVpnDnsObserverService::ShowPolicyWarningMessage() {
+#if !defined(OFFICIAL_BUILD)
+  if (policy_callback_) {
+    std::move(policy_callback_).Run();
+    return;
+  }
+#endif
+  auto* browser = chrome::FindLastActive();
+  chrome::ShowWarningMessageBox(
+      browser ? browser->window()->GetNativeWindow() : gfx::kNullNativeWindow,
+      l10n_util::GetStringUTF16(IDS_PRODUCT_NAME),
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_DNS_POLICY_ALERT));
 }
 
 void BraveVpnDnsObserverService::OnDNSPrefChanged() {
@@ -106,6 +129,12 @@ void BraveVpnDnsObserverService::OnConnectionStateChanged(
             ->GetSecureDnsConfiguration(false));
     if (local_state_->GetString(prefs::kDnsOverHttpsMode) !=
         SecureDnsConfig::kModeSecure) {
+      // If DNS mode configured by policies we notify user that DNS may leak
+      // via configured DNS gateway.
+      if (IsDnsModeConfiguredByPolicy()) {
+        ShowPolicyWarningMessage();
+        return;
+      }
       SetDNSOverHTTPSMode(SecureDnsConfig::kModeSecure,
                           GetDoHServers(dns_config.get()));
     }
