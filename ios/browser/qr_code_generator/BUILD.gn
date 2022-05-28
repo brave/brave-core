@@ -1,0 +1,21 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("qr_code_generator") {
+  sources = [
+    "qrcode_generator_service.cc",
+    "qrcode_generator_service.h",
+    "qrcode_models.cc",
+    "qrcode_models.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/qr_code_generator",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//ui/gfx",
+  ]
+}
