@@ -18,8 +18,8 @@ ConversionList ConversionsDescendingSort::Apply(
   auto sorted_list = list;
 
   std::sort(sorted_list.begin(), sorted_list.end(),
-            [](const ConversionInfo& a, const ConversionInfo& b) {
-              return a.type == "postclick" && b.type == "postview";
+            [](const ConversionInfo& lhs, const ConversionInfo& rhs) {
+              return lhs.type == "postclick" && rhs.type == "postview";
             });
 
   return sorted_list;

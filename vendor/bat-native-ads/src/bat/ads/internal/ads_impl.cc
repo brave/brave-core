@@ -27,6 +27,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/platform_helper.h"
+#include "bat/ads/internal/base/search_engine_results_page_util.h"
 #include "bat/ads/internal/base/search_engine_util.h"
 #include "bat/ads/internal/base/string_util.h"
 #include "bat/ads/internal/base/time_formatting_util.h"
@@ -174,12 +175,12 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
 
   const uint32_t hash = base::FastHash(html);
   if (hash == last_html_loaded_hash_) {
-    BLOG(1, "HTML content has not changed");
     return;
   }
   last_html_loaded_hash_ = hash;
 
   transfer_->MaybeTransferAd(tab_id, redirect_chain);
+
   conversions_->MaybeConvert(
       redirect_chain, html,
       conversions_resource_->get()->conversion_id_patterns);
@@ -196,7 +197,6 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
 
   const uint32_t hash = base::FastHash(text);
   if (hash == last_text_loaded_hash_) {
-    BLOG(1, "Text content has not changed");
     return;
   }
   last_text_loaded_hash_ = hash;
@@ -204,7 +204,7 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
   const GURL& url = redirect_chain.back();
 
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    BLOG(1, "Visited URL is not supported");
+    BLOG(1, url.scheme() << " scheme is not supported for text content");
     return;
   }
 
@@ -215,12 +215,14 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
     purchase_intent_processor_->Process(url);
   }
 
-  if (IsSearchEngine(url)) {
-    BLOG(1, "Search engine pages are not supported for text classification");
-  } else {
-    const std::string stripped_text = StripNonAlphaCharacters(text);
-    text_classification_processor_->Process(stripped_text);
+  if (IsSearchEngine(url) && !IsSearchEngineResultsPage(url)) {
+    BLOG(1,
+         "Search engine landing page is not supported for text classification");
+    return;
   }
+
+  const std::string stripped_text = StripNonAlphaCharacters(text);
+  text_classification_processor_->Process(stripped_text);
 }
 
 void AdsImpl::OnUserGesture(const int32_t page_transition_type) {

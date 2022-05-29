@@ -13,6 +13,8 @@ class GURL;
 
 namespace ads {
 
+GURL GetUrlWithEmptyQuery(const GURL& url);
+
 bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern);
 
 bool SameDomainOrHost(const GURL& lhs, const GURL& rhs);

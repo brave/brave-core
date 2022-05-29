@@ -9,14 +9,12 @@ namespace ads {
 
 SearchEngineInfo::SearchEngineInfo() = default;
 
-SearchEngineInfo::SearchEngineInfo(const std::string& name,
-                                   const std::string& hostname,
-                                   const std::string& query,
-                                   bool is_always_classed_as_a_search)
-    : name(name),
-      hostname(hostname),
-      query(query),
-      is_always_classed_as_a_search(is_always_classed_as_a_search) {}
+SearchEngineInfo::SearchEngineInfo(const std::string& url_pattern,
+                                   const std::string& result_page_url_pattern,
+                                   const std::string& search_term_query_key)
+    : url_pattern(url_pattern),
+      result_page_url_pattern(result_page_url_pattern),
+      search_term_query_key(search_term_query_key) {}
 
 SearchEngineInfo::SearchEngineInfo(const SearchEngineInfo& info) = default;
 

@@ -6,15 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_SEARCH_ENGINE_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_SEARCH_ENGINE_UTIL_H_
 
-#include <string>
-
 class GURL;
 
 namespace ads {
 
 bool IsSearchEngine(const GURL& url);
-
-std::string ExtractSearchQueryKeywords(const GURL& url);
 
 }  // namespace ads
 

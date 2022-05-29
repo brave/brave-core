@@ -5,13 +5,18 @@
 
 #include "bat/ads/internal/base/url_util.h"
 
-#include "base/check.h"
+#include "base/strings/strcat.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
 namespace ads {
+
+GURL GetUrlWithEmptyQuery(const GURL& url) {
+  return GURL(base::StrCat(
+      {url.scheme(), url::kStandardSchemeSeparator, url.host(), url.path()}));
+}
 
 bool DoesUrlMatchPattern(const GURL& url, const std::string& pattern) {
   if (!url.is_valid() || pattern.empty()) {
