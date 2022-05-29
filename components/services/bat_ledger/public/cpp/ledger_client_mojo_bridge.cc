@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -398,6 +398,14 @@ void LedgerClientMojoBridge::EncryptString(const std::string& value,
 void LedgerClientMojoBridge::DecryptString(const std::string& value,
                                            DecryptStringCallback callback) {
   std::move(callback).Run(ledger_client_->DecryptString(value));
+}
+
+void LedgerClientMojoBridge::BackUpVgBodies() {
+  ledger_client_->BackUpVgBodies();
+}
+
+void LedgerClientMojoBridge::BackUpVgSpendStatuses() {
+  ledger_client_->BackUpVgSpendStatuses();
 }
 
 }  // namespace bat_ledger
