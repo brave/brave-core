@@ -102,14 +102,14 @@ class TabManager: NSObject {
     Preferences.General.blockPopups.observe(from: self)
     Preferences.General.nightModeEnabled.observe(from: self)
     
-    #if WALLET_DAPPS_ENABLED
-    domainFrc.delegate = self
-    do {
-      try domainFrc.performFetch()
-    } catch {
-      log.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error)")
+    if !AppConstants.buildChannel.isPublic {
+      domainFrc.delegate = self
+      do {
+        try domainFrc.performFetch()
+      } catch {
+        log.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error)")
+      }
     }
-    #endif
   }
 
   func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
