@@ -35,6 +35,7 @@ class ConfirmationsState final {
   static bool HasInstance();
 
   void Initialize(InitializeCallback callback);
+  bool IsInitialized() const;
 
   void Load();
   void Save();
