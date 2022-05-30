@@ -272,6 +272,17 @@ public class CryptoStore: ObservableObject {
       return nil
     }
   }
+  
+  /// Determines if a pending request is available. We cannot simply check `pendingRequest` as it will be nil when the request is dismissed without accept/reject.
+  @MainActor
+  public func isPendingRequestAvailable() async -> Bool {
+    let pendingTransactions = await fetchPendingTransactions()
+    if !pendingTransactions.isEmpty {
+      return true
+    }
+    let pendingRequest = await fetchPendingWebpageRequest()
+    return pendingRequest != nil
+  }
 
   func handleWebpageRequestResponse(_ response: WebpageRequestResponse) {
     switch response {

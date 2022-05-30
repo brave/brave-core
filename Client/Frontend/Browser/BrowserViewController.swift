@@ -24,6 +24,7 @@ import NetworkExtension
 import FeedKit
 import SwiftUI
 import class Combine.AnyCancellable
+import BraveWallet
 
 private let log = Logger.browserLogger
 
@@ -77,6 +78,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
 
   private var privateModeCancellable: AnyCancellable?
+  var onPendingRequestUpdatedCancellable: AnyCancellable?
 
   /// Custom Search Engine
   var openSearchEngine: OpenSearchReference?
@@ -2327,8 +2329,29 @@ extension BrowserViewController: TabDelegate {
   }
 
   func updateURLBarWalletButton() {
-    topToolbar.locationView.walletButton.buttonState =
-    tabManager.selectedTab?.isWalletIconVisible == true ? .active : .inactive
+    let shouldShowWalletButton = tabManager.selectedTab?.isWalletIconVisible == true
+    if shouldShowWalletButton {
+      Task { @MainActor in
+        let isPendingRequestAvailable = await isPendingRequestAvailable()
+        topToolbar.locationView.walletButton.buttonState = isPendingRequestAvailable ? .activeWithPendingRequest : .active
+      }
+    } else {
+      topToolbar.locationView.walletButton.buttonState = .inactive
+    }
+  }
+
+  @MainActor
+  private func isPendingRequestAvailable() async -> Bool {
+    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+    guard let cryptoStore = CryptoStore.from(privateMode: privateMode) else {
+      return false
+    }
+    if await cryptoStore.isPendingRequestAvailable() {
+      return true
+    } else if let selectedTabOrigin = tabManager.selectedTab?.url?.origin {
+      return WalletProviderPermissionRequestsManager.shared.hasPendingRequest(for: selectedTabOrigin, coinType: .eth)
+    }
+    return false
   }
 }
 

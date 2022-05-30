@@ -12,10 +12,13 @@ public class WalletStore {
 
   public let keyringStore: KeyringStore
   public var cryptoStore: CryptoStore?
+  
+  public let onPendingRequestUpdated = PassthroughSubject<Void, Never>()
 
   // MARK: -
 
   private var cancellable: AnyCancellable?
+  private var onPendingRequestCancellable: AnyCancellable?
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -68,6 +71,10 @@ public class WalletStore {
             txService: txService,
             ethTxManagerProxy: ethTxManagerProxy
           )
+          self.onPendingRequestCancellable = self.cryptoStore?.$pendingRequest
+            .sink { [weak self] _ in
+              self?.onPendingRequestUpdated.send()
+            }
         }
       }
   }
