@@ -35,7 +35,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -44,6 +43,7 @@
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefetch/prefetch_prefs.h"
@@ -144,7 +144,6 @@ using extensions::FeatureSwitch;
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #endif
-
 
 namespace brave {
 
