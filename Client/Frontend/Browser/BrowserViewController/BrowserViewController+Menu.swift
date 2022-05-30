@@ -185,29 +185,14 @@ extension BrowserViewController {
 
   private func presentWallet() {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard
-      let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
-      let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
-      let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(privateMode: privateMode),
-      let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-      let swapService = BraveWallet.SwapServiceFactory.get(privateMode: privateMode),
-      let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
-      let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode)
-    else {
+    guard let walletStore = WalletStore.from(privateMode: privateMode) else {
       log.error("Failed to load wallet. One or more services were unavailable")
       return
     }
-
-    let walletStore = WalletStore(
-      keyringService: keyringService,
-      rpcService: rpcService,
-      walletService: walletService,
-      assetRatioService: assetRatioService,
-      swapService: swapService,
-      blockchainRegistry: BraveCoreMain.blockchainRegistry,
-      txService: txService,
-      ethTxManagerProxy: ethTxManagerProxy
-    )
+    self.onPendingRequestUpdatedCancellable = walletStore.onPendingRequestUpdated
+      .sink { [weak self] _ in
+        self?.updateURLBarWalletButton()
+      }
 
     let vc = WalletHostingViewController(walletStore: walletStore, faviconRenderer: FavIconImageRenderer())
     vc.delegate = self

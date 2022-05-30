@@ -11,6 +11,7 @@ class WalletURLBarButton: UIButton {
   enum ButtonState {
     case inactive
     case active
+    case activeWithPendingRequest
   }
   
   var buttonState: ButtonState = .inactive {
@@ -18,8 +19,16 @@ class WalletURLBarButton: UIButton {
       isHidden = buttonState == .inactive
       // We may end up having different states here where active is actually blurple
       tintColor = .braveLabel
+
+      if buttonState == .activeWithPendingRequest {
+        addBadgeIfNeeded()
+      }
+      badgeView.isHidden = buttonState != .activeWithPendingRequest
     }
   }
+  
+  private let badgeView = UIView()
+  private let badgeSize = 10.0
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -39,5 +48,27 @@ class WalletURLBarButton: UIButton {
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
+  }
+  
+  func addBadgeIfNeeded() {
+    guard badgeView.superview == nil else { return }
+
+    badgeView.backgroundColor = .braveErrorBorder
+    badgeView.layer.cornerRadius = badgeView.frame.height / 2
+    badgeView.layer.masksToBounds = true
+    addSubview(badgeView)
+    
+    if let imageView = imageView {
+      badgeView.snp.makeConstraints { make in
+        make.size.equalTo(badgeSize)
+        make.centerX.equalTo(imageView.snp.trailing)
+        make.top.equalTo(imageView.snp.top)
+      }
+    }
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    badgeView.layer.cornerRadius = badgeView.frame.height / 2
   }
 }
