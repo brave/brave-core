@@ -9,6 +9,9 @@ export class BraveSyncBrowserProxy {
   getSyncCode() {
     return sendWithPromise('SyncSetupGetSyncCode');
   }
+  getPureSyncCode() {
+    return sendWithPromise('SyncSetupGetPureSyncCode');
+  }
   getQRCode(syncCode) {
     return sendWithPromise('SyncGetQRCode', syncCode);
   }

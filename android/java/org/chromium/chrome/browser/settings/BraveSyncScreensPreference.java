@@ -546,6 +546,31 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         textView.setText(formatedText);
     }
 
+    private String getWordsValidationString(String words) {
+        int validationResult = getBraveSyncWorker().GetWordsValidationResult(words);
+        Log.v(TAG, "validationResult is " + validationResult);
+        switch (validationResult) {
+            case 0:
+                // kValid, empty string indicates there is no error
+                return "";
+            case 2:
+                // kVersionDeprecated
+                return getResources().getString(R.string.brave_sync_code_from_deprecated_version);
+            case 3:
+                // kExpired
+                return getResources().getString(R.string.brave_sync_code_expired);
+            case 4:
+                // kValidForTooLong
+                return getResources().getString(R.string.brave_sync_code_valid_for_too_long);
+
+            default:
+                // These three different types of errors have the same message
+                // kWrongWordsNumber
+                // kNotValidPureWords
+                return getResources().getString(R.string.brave_sync_wrong_code_error);
+        }
+    }
+
     /** OnClickListener for the clear button. We show an alert dialog to confirm the action */
     @Override
     public void onClick(View v) {
@@ -568,7 +593,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             setJoinExistingChainLayout();
         } else if (mStartNewChainButton == v) {
             // Creating a new chain
-            GetCodephrase();
+            GetPureWords();
             setNewChainLayout();
             seedWordsReceived(mCodephrase);
         } else if (mMobileButton == v) {
@@ -613,27 +638,18 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                      .replace("   ", " ")
                                      .replace("\n", " ")
                                      .split(" ");
-            if (BIP39_WORD_COUNT != words.length) {
-                Log.e(TAG, "Confirm code words - wrong words count " + words.length);
-                onSyncError(getResources().getString(R.string.brave_sync_word_count_error));
-                return;
-            }
 
-            String hexString = getBraveSyncWorker().GetSeedHexFromWords(
-                    TextUtils.join(" ", words));
-            if (hexString == null || hexString.isEmpty()) {
+            String trimmedWords = TextUtils.join(" ", words);
+            String validationError = getWordsValidationString(trimmedWords);
+            if (!validationError.isEmpty()) {
                 Log.e(TAG, "Confirm code words - wrong codephrase");
-                onSyncError(getResources().getString(R.string.brave_sync_wrong_code_error));
+                onSyncError(validationError);
                 return;
             }
 
-            String codephraseCandidate = TextUtils.join(" ", words);
-            // Validate the code words with GetSeedHexFromWords
-            String seedHex = getBraveSyncWorker().GetSeedHexFromWords(codephraseCandidate);
-            if (null == seedHex || seedHex.isEmpty()) {
-                onSyncError(getResources().getString(R.string.brave_sync_wrong_code_error));
-                return;
-            }
+            String codephraseCandidate =
+                    getBraveSyncWorker().GetPureWordsFromTimeLimited(trimmedWords);
+            assert codephraseCandidate != null && !codephraseCandidate.isEmpty();
 
             showFinalSecurityWarning(FinalWarningFor.CODE_WORDS, () -> {
                 // We have the confirmation from user
@@ -1218,9 +1234,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
   }
 
   private String mCodephrase;
-  public String GetCodephrase() {
+  public String GetPureWords() {
       if (mCodephrase == null || mCodephrase.isEmpty()) {
-          mCodephrase = getBraveSyncWorker().GetCodephrase();
+          mCodephrase = getBraveSyncWorker().GetPureWords();
       }
       return mCodephrase;
   }
@@ -1266,7 +1282,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       getActivity().runOnUiThread(new Runnable() {
           @Override
           public void run() {
-              String seedHex = getBraveSyncWorker().GetSeedHexFromWords(GetCodephrase());
+              String seedHex = getBraveSyncWorker().GetSeedHexFromWords(GetPureWords());
               if (null == seedHex || seedHex.isEmpty()) {
                   // Give up, seed must be valid
                   Log.e(TAG, "setAddMobileDeviceLayout seedHex is empty");
@@ -1345,9 +1361,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       getActivity().runOnUiThread(new Runnable() {
           @Override
           public void run() {
-              String codePhrase = GetCodephrase();
+              String codePhrase = GetPureWords();
               assert codePhrase != null && !codePhrase.isEmpty();
-              mBraveSyncAddDeviceCodeWords.setText(codePhrase);
+              String timeLimitedWords =
+                      getBraveSyncWorker().GetTimeLimitedWordsFromPure(codePhrase);
+              assert timeLimitedWords != null && !timeLimitedWords.isEmpty();
+              mBraveSyncAddDeviceCodeWords.setText(timeLimitedWords);
           }
       });
   }
