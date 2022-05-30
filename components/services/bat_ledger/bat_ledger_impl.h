@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 
 namespace bat_ledger {
 
@@ -244,6 +245,15 @@ class BatLedgerImpl :
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void BackUpVgBodies(BackUpVgBodiesCallback callback) override;
+
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) override;
+
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
@@ -447,6 +457,19 @@ class BatLedgerImpl :
   static void OnGetEventLogs(
       CallbackHolder<GetEventLogsCallback>* holder,
       ledger::type::EventLogs logs);
+
+  static void OnBackUpVgBodies(
+      CallbackHolder<BackUpVgBodiesCallback>* holder,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies);
+
+  static void OnBackUpVgSpendStatuses(
+      CallbackHolder<BackUpVgSpendStatusesCallback>* holder,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
+
+  static void OnRestoreVgs(CallbackHolder<RestoreVgsCallback>* holder,
+                           ledger::type::Result result);
 
   static void OnGetBraveWallet(
       CallbackHolder<GetBraveWalletCallback>* holder,
