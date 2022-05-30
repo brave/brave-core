@@ -177,10 +177,8 @@ const util = {
     let out = 'solutions = ' + JSON.stringify(solutions, replacer, 2)
       .replace(/"%None%"/g, "None").replace(/"%False%"/g, "False").replace(/"%True%"/g, "True") + cache_dir
 
-    if (config.targetOS === 'android') {
-      out = out + "target_os = [ 'android' ]"
-    } else if (config.targetOS === 'ios') {
-      out = out + "target_os = [ 'ios' ]"
+    if (config.targetOS) {
+      out = out + "target_os = [ '" + config.targetOS + "' ]"
     }
 
     fs.writeFileSync(config.defaultGClientFile, out)

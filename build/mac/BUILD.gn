@@ -105,7 +105,7 @@ dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
 action("generate_dsa_sig_for_dmg") {
   script = "generate_sig.py"
 
-  sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+  sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
 
@@ -129,16 +129,13 @@ action("generate_dsa_sig_for_dmg") {
 
   outputs = [ "$output_dmg_dsa_path" ]
 
-  deps = [
-    ":copy_dmg_pkg",
-    "//brave/vendor/sparkle:copy_old_sign_update",
-  ]
+  deps = [ ":copy_dmg_pkg" ]
 }
 
 action("generate_eddsa_sig_for_dmg") {
   script = "generate_sig.py"
 
-  sign_update_path = "$root_out_dir/sign_update"
+  sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
 
@@ -162,16 +159,13 @@ action("generate_eddsa_sig_for_dmg") {
 
   outputs = [ "$output_dmg_eddsa_path" ]
 
-  deps = [
-    ":copy_dmg_pkg",
-    "//brave/vendor/sparkle:build_sparkle_framework",
-  ]
+  deps = [ ":copy_dmg_pkg" ]
 }
 
 action("build_delta_installer") {
   script = "build_delta_installer.py"
 
-  binary_delta_path = "$root_out_dir/BinaryDelta"
+  binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
   target_dmg_path = "$root_out_dir/$brave_dmg"
   output_delta_path = "$root_out_dir/$brave_delta"
 
@@ -196,16 +190,13 @@ action("build_delta_installer") {
 
   outputs = [ "$output_delta_path" ]
 
-  deps = [
-    ":copy_dmg_pkg",
-    "//brave/vendor/sparkle:build_sparkle_framework",
-  ]
+  deps = [ ":copy_dmg_pkg" ]
 }
 
 action("generate_eddsa_sig_for_delta") {
   script = "generate_sig.py"
 
-  sign_update_path = "$root_out_dir/sign_update"
+  sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
   target_delta_path = "$root_out_dir/$brave_delta"
   output_delta_eddsa_path = "$root_out_dir/$brave_delta.eddsa"
 
@@ -229,10 +220,7 @@ action("generate_eddsa_sig_for_delta") {
 
   outputs = [ "$output_delta_eddsa_path" ]
 
-  deps = [
-    ":build_delta_installer",
-    "//brave/vendor/sparkle:build_sparkle_framework",
-  ]
+  deps = [ ":build_delta_installer" ]
 }
 
 group("finalize_app") {

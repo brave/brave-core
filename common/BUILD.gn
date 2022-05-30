@@ -116,7 +116,7 @@ config("constants_configs") {
                # These are layering violation and need to be fixed
                [ "//chrome/tools/build/mac:infoplist_strings_util" ]
   defines = []
-  if (is_mac) {
+  if (target_os == "mac") {
     defines += [ "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"" ]
   }
 }

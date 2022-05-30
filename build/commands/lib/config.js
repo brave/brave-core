@@ -361,7 +361,7 @@ Config.prototype.buildArgs = function () {
     args.last_chrome_installer = this.last_chrome_installer
   }
 
-  if (process.platform === 'darwin') {
+  if (this.targetOS === 'mac' || this.targetOS === 'ios') {
     args.allow_runtime_configurable_key_storage = true
     // always use hermetic xcode for macos when available
     if (this.targetOS !== 'ios' && fs.existsSync(path.join(
@@ -398,14 +398,17 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.targetArch === 'x64' &&
-    process.platform === 'linux' &&
+    (this.targetOS || process.platform) === 'linux' &&
     this.targetOS !== 'android') {
     // Include vaapi support
     args.use_vaapi = true
   }
 
+  if (this.targetOS) {
+    args.target_os = this.targetOS;
+  }
+
   if (this.targetOS === 'android') {
-    args.target_os = 'android'
     args.android_channel = this.channel
     args.enable_jdk_library_desugaring = false
     if (!this.isOfficialBuild()) {
@@ -462,7 +465,6 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.targetOS === 'ios') {
-    args.target_os = 'ios'
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }

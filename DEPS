@@ -7,7 +7,6 @@ deps = {
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": "https://github.com/brave/omaha.git@3fe2f833fabd91f943a0babd5c69c4a55b1570cf",
-  "vendor/sparkle": "https://github.com/brave/Sparkle.git@57fb153bea4c71ed10102d50e68ead89ca483b49",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@60b7e4574cebdd79f441bdd6f0f3ab469fd7e04c",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
@@ -36,31 +35,45 @@ hooks = [
     # Download hermetic xcode for goma
     'name': 'download_hermetic_xcode',
     'pattern': '.',
-    'condition': 'host_os == "mac"',
+    'condition': 'checkout_mac or checkout_ios',
     'action': ['vpython3', 'build/mac/download_hermetic_xcode.py'],
   },
   {
-    # Download rust deps if necessary for Android
+    'name': 'download_sparkle',
+    'pattern': '.',
+    'condition': 'checkout_mac',
+    'action': ['vpython3', 'build/mac/download_sparkle.py',
+               'd174520929863876733fa6eb1985b92fe15d0131'],
+  },
+  {
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_android',
-    'action': ['vpython3', 'script/download_rust_deps.py',
-        '--platform', 'android'],
+    'action': ['vpython3', 'script/download_rust_deps.py', 'android'],
   },
   {
-    # Download rust deps if necessary for iOS
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_ios',
-    'action': ['vpython3', 'script/download_rust_deps.py',
-        '--platform', 'ios'],
+    'action': ['vpython3', 'script/download_rust_deps.py', 'ios'],
   },
   {
-    # Download rust deps if necessary for Windows, Linux, and macOS
     'name': 'download_rust_deps',
     'pattern': '.',
-    'condition': 'not checkout_android and not checkout_ios',
-    'action': ['vpython3', 'script/download_rust_deps.py'],
+    'condition': 'checkout_win',
+    'action': ['vpython3', 'script/download_rust_deps.py', 'win32'],
+  },
+  {
+    'name': 'download_rust_deps',
+    'pattern': '.',
+    'condition': 'checkout_mac',
+    'action': ['vpython3', 'script/download_rust_deps.py', 'darwin'],
+  },
+  {
+    'name': 'download_rust_deps',
+    'pattern': '.',
+    'condition': 'checkout_linux',
+    'action': ['vpython3', 'script/download_rust_deps.py', 'linux'],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS

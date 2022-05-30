@@ -51,7 +51,7 @@ def download_and_unpack_rust_deps(platform):
     if not should_download():
         return 0
 
-    url = get_url(platform)
+    url = get_url('ios' if platform == 'ios' else sys.platform)
 
     try:
         deps.DownloadAndUnpack(url, RUSTUP_PATH)
@@ -122,27 +122,14 @@ def make_standalone_toolchain_for_android():
 def parse_args():
     parser = argparse.ArgumentParser(description='Download rust deps')
 
-    parser.add_argument('--platform')
+    parser.add_argument('platform')
 
     args = parser.parse_args()
     return args
 
 
 def cargo_install(tool):
-    # Set environment variables for rustup
-    env = os.environ.copy()
-    env['RUSTUP_HOME'] = RUSTUP_HOME
-    env['CARGO_HOME'] = RUSTUP_HOME
-
-    rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
-    cargo_bin = os.path.join(
-        rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
-
-    # Install the tool
-    cargo_args = []
-    cargo_args.append(cargo_bin)
-    cargo_args.append("install")
-    cargo_args.append(tool["name"])
+    cargo_args = ["install", tool["name"]]
     if "path" in tool:
         cargo_args.append("--path")
         cargo_args.append(tool["path"])
@@ -155,8 +142,24 @@ def cargo_install(tool):
         cargo_args.append("--features")
         cargo_args.append(tool["features"])
 
+    run_rust_tool('cargo', cargo_args)
+
+
+def rustup_add_target(target):
+    run_rust_tool('rustup', ['target', 'add', target])
+
+
+def run_rust_tool(tool, args):
+    env = os.environ.copy()
+    env['RUSTUP_HOME'] = RUSTUP_HOME
+    env['CARGO_HOME'] = RUSTUP_HOME
+
+    rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
+    tool_path = os.path.join(
+        rustup_bin, tool + (".exe" if sys.platform == "win32" else ""))
+
     try:
-        subprocess.check_call(cargo_args, env=env)
+        subprocess.check_call([tool_path] + args, env=env)
     except subprocess.CalledProcessError as e:
         print(e.output)
         raise e
@@ -165,13 +168,13 @@ def cargo_install(tool):
 def main():
     args = parse_args()
 
-    if args.platform == 'ios':
-        download_and_unpack_rust_deps('ios')
-    else:
-        download_and_unpack_rust_deps(sys.platform)
-
     if args.platform == 'android':
+        download_and_unpack_rust_deps(sys.platform)
         make_standalone_toolchain_for_android()
+    else:
+        download_and_unpack_rust_deps(args.platform)
+
+    rustup_add_target('x86_64-apple-darwin')
 
     cxx_path = os.path.abspath(
         os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))

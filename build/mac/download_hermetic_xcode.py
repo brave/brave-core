@@ -18,7 +18,7 @@ from urllib.error import URLError  # pylint: disable=no-name-in-module,import-er
 import pkg_resources
 
 import deps
-from deps_config import DEPS_PACKAGES_URL
+from deps_config import DEPS_PACKAGES_URL, MAC_TOOLCHAIN_ROOT
 
 
 def LoadPList(path):
@@ -40,20 +40,18 @@ HERMETIC_XCODE_BINARY = (
 # the OS minimum through Xcode 12.4, still seems to work.
 MAC_MINIMUM_OS_VERSION = [19, 4]
 
-BASE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..', '..', 'build'))
-TOOLCHAIN_ROOT = os.path.join(BASE_DIR, 'mac_files')
-TOOLCHAIN_BUILD_DIR = os.path.join(TOOLCHAIN_ROOT, 'Xcode.app')
+TOOLCHAIN_BUILD_DIR = os.path.join(MAC_TOOLCHAIN_ROOT, 'Xcode.app')
 
 
 def PlatformMeetsHermeticXcodeRequirements():
-    if sys.platform != 'darwin':
-        return False
-    needed = MAC_MINIMUM_OS_VERSION
-    major_version = [
-        int(v) for v in platform.release().split('.')[:len(needed)]
-    ]
-    return major_version >= needed
+    if sys.platform == 'darwin':
+        needed = MAC_MINIMUM_OS_VERSION
+        major_version = [
+            int(v) for v in platform.release().split('.')[:len(needed)]
+        ]
+        return major_version >= needed
+    # We are cross-compiling.
+    return True
 
 
 def GetHermeticXcodeVersion(binaries_root):
@@ -76,7 +74,7 @@ def InstallXcodeBinaries():
         print("Goma server host is not configured for Brave")
         return 0
 
-    binaries_root = os.path.join(TOOLCHAIN_ROOT, 'xcode_binaries')
+    binaries_root = os.path.join(MAC_TOOLCHAIN_ROOT, 'xcode_binaries')
     if (XCODE_VERSION == GetHermeticXcodeVersion(binaries_root) and
             not os.path.islink(binaries_root)):
         print(f"Hermetic Xcode {XCODE_VERSION} already installed")
