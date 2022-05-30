@@ -12,6 +12,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -96,4 +97,6 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // Added 4/2021.
   tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
 #endif
+
+  decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
 }

@@ -61,7 +61,6 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void IsWidevineEnabled(const base::Value::List& args);
   void OnWidevineEnabledChanged();
   void OnWalletTypeChanged();
-  void IsDecentralizedDnsEnabled(const base::Value::List& args);
   void GetDecentralizedDnsResolveMethodList(const base::Value::List& args);
 
   void InitializePrefCallbacks();

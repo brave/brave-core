@@ -16,8 +16,6 @@ constexpr char kUnstoppableDomainsDoHResolver[] =
 
 constexpr char kEthDomain[] = ".eth";
 constexpr char kDNSForEthDomain[] = ".eth.link";
-constexpr char kENSDoHResolver[] =
-    "https://resolver.cloudflare-eth.com/dns-query{?brave_ENS}";
 
 }  // namespace decentralized_dns
 

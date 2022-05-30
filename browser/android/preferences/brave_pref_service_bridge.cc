@@ -15,7 +15,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
 #include "build/build_config.h"
@@ -37,10 +37,6 @@
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
-#endif
-
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-#include "brave/components/decentralized_dns/pref_names.h"
 #endif
 
 using base::android::ConvertUTF8ToJavaString;
@@ -87,15 +83,11 @@ std::string GetWebRTCIPHandlingPreference(WebRTCIPHandlingPolicy policy) {
 namespace chrome {
 namespace android {
 
-void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
+void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(JNIEnv* env,
+                                                 jboolean enabled) {
   brave_shields::SetHTTPSEverywhereEnabled(
-      HostContentSettingsMapFactory::GetForProfile(
-          GetOriginalProfile()),
-      enabled,
-      GURL(),
-      g_browser_process->local_state());
+      HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
+      enabled, GURL(), g_browser_process->local_state());
 }
 
 void JNI_BravePrefServiceBridge_SetDeAmpEnabled(JNIEnv* env, jboolean enabled) {
@@ -142,15 +134,12 @@ void JNI_BravePrefServiceBridge_SetThirdPartyLinkedinEmbedEnabled(
       brave_shields::prefs::kLinkedInEmbedControlType, enabled);
 }
 
-void JNI_BravePrefServiceBridge_SetAdBlockEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
+void JNI_BravePrefServiceBridge_SetAdBlockEnabled(JNIEnv* env,
+                                                  jboolean enabled) {
   brave_shields::SetAdControlType(
-      HostContentSettingsMapFactory::GetForProfile(
-          GetOriginalProfile()),
+      HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       static_cast<bool>(enabled) ? ControlType::BLOCK : ControlType::ALLOW,
-      GURL(),
-      g_browser_process->local_state());
+      GURL(), g_browser_process->local_state());
 }
 
 void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
@@ -303,8 +292,7 @@ void JNI_BravePrefServiceBridge_SetBackgroundVideoPlaybackEnabled(
     JNIEnv* env,
     jboolean enabled) {
   return GetOriginalProfile()->GetPrefs()->SetBoolean(
-      kBackgroundVideoPlaybackEnabled,
-      enabled);
+      kBackgroundVideoPlaybackEnabled, enabled);
 }
 
 jboolean JNI_BravePrefServiceBridge_GetBackgroundVideoPlaybackEnabled(
@@ -313,15 +301,13 @@ jboolean JNI_BravePrefServiceBridge_GetBackgroundVideoPlaybackEnabled(
       kBackgroundVideoPlaybackEnabled);
 }
 
-void JNI_BravePrefServiceBridge_SetDesktopModeEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
+void JNI_BravePrefServiceBridge_SetDesktopModeEnabled(JNIEnv* env,
+                                                      jboolean enabled) {
   return GetOriginalProfile()->GetPrefs()->SetBoolean(kDesktopModeEnabled,
                                                       enabled);
 }
 
-jboolean JNI_BravePrefServiceBridge_GetDesktopModeEnabled(
-    JNIEnv* env) {
+jboolean JNI_BravePrefServiceBridge_GetDesktopModeEnabled(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(kDesktopModeEnabled);
 }
 
@@ -348,42 +334,45 @@ jlong JNI_BravePrefServiceBridge_GetDataSaved(
   return 0;
 }
 
-void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile,
-    jlong count) {
-  if (count <= 0) {
-    return;
-  }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  profile->GetPrefs()->SetUint64(kTrackersBlocked,
-    count + profile->GetPrefs()->GetUint64(kTrackersBlocked));
-}
-
-void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile,
-    jlong count) {
-  if (count <= 0) {
-    return;
-  }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  profile->GetPrefs()->SetUint64(kAdsBlocked,
-    count + profile->GetPrefs()->GetUint64(kAdsBlocked));
-}
-
-void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile,
-    jlong count) {
-  if (count <= 0) {
-    return;
-  }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  profile->GetPrefs()->SetUint64(kHttpsUpgrades,
-    count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
-}
-
-void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(
+void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(
     JNIEnv* env,
-    jboolean value) {
+    const base::android::JavaParamRef<jobject>& j_profile,
+    jlong count) {
+  if (count <= 0) {
+    return;
+  }
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  profile->GetPrefs()->SetUint64(
+      kTrackersBlocked,
+      count + profile->GetPrefs()->GetUint64(kTrackersBlocked));
+}
+
+void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile,
+    jlong count) {
+  if (count <= 0) {
+    return;
+  }
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  profile->GetPrefs()->SetUint64(
+      kAdsBlocked, count + profile->GetPrefs()->GetUint64(kAdsBlocked));
+}
+
+void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile,
+    jlong count) {
+  if (count <= 0) {
+    return;
+  }
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  profile->GetPrefs()->SetUint64(
+      kHttpsUpgrades, count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
+}
+
+void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(JNIEnv* env,
+                                                        jboolean value) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(kSafetynetCheckFailed, value);
 }
 
@@ -398,9 +387,8 @@ void JNI_BravePrefServiceBridge_SetSafetynetStatus(
       kSafetynetStatus, ConvertJavaStringToUTF8(env, status));
 }
 
-void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(
-    JNIEnv* env,
-    jboolean enabled) {
+void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(JNIEnv* env,
+                                                           jboolean enabled) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(
       brave_rewards::prefs::kUseRewardsStagingServer, enabled);
 }
@@ -416,11 +404,11 @@ jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
 }
 
 jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
-    jint type) {
+                                                                jint type) {
   HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile());
   switch (content_settings->GetDefaultContentSetting((ContentSettingsType)type,
-      nullptr)) {
+                                                     nullptr)) {
     case CONTENT_SETTING_ALLOW:
       return true;
     case CONTENT_SETTING_BLOCK:
@@ -445,11 +433,10 @@ void JNI_BravePrefServiceBridge_SetReferralCheckedForPromoCodeFile(
       kReferralCheckedForPromoCodeFile, value);
 }
 
-void JNI_BravePrefServiceBridge_SetReferralInitialization(
-    JNIEnv* env,
-    jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(
-      kReferralInitialization, value);
+void JNI_BravePrefServiceBridge_SetReferralInitialization(JNIEnv* env,
+                                                          jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(kReferralInitialization,
+                                                      value);
 }
 
 void JNI_BravePrefServiceBridge_SetReferralPromoCode(
@@ -479,35 +466,28 @@ void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
 }
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-void JNI_BravePrefServiceBridge_SetP3AEnabled(
-    JNIEnv* env,
-    jboolean value) {
+void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {
   /* Saving pref value to the disk as soon as the pref value
    * is set to avoid delay in pref value update.*/
-  g_browser_process->local_state()->SetBoolean(
-       brave::kP3AEnabled, value);
+  g_browser_process->local_state()->SetBoolean(brave::kP3AEnabled, value);
   g_browser_process->local_state()->CommitPendingWrite();
 }
 
 static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(
-      brave::kP3AEnabled);
+  return g_browser_process->local_state()->GetBoolean(brave::kP3AEnabled);
 }
 
-jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(
-    JNIEnv* env) {
+jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {
   return g_browser_process->local_state()->HasPrefPath(brave::kP3AEnabled);
 }
 
-void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(
-    JNIEnv* env,
-    jboolean value) {
+void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
+                                                         jboolean value) {
   return g_browser_process->local_state()->SetBoolean(
       brave::kP3ANoticeAcknowledged, value);
 }
 
-jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(
-    JNIEnv* env) {
+jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
   return g_browser_process->local_state()->GetBoolean(
       brave::kP3ANoticeAcknowledged);
 }
@@ -523,7 +503,7 @@ static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
 jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {}
 
 void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
-    jboolean value) {}
+                                                         jboolean value) {}
 
 jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
   return false;
@@ -542,36 +522,24 @@ jboolean JNI_BravePrefServiceBridge_GetStatsReportingEnabled(JNIEnv* env) {
 void JNI_BravePrefServiceBridge_SetUnstoppableDomainsResolveMethod(
     JNIEnv* env,
     jint method) {
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   g_browser_process->local_state()->SetInteger(
       decentralized_dns::kUnstoppableDomainsResolveMethod, method);
-#endif
 }
 
 jint JNI_BravePrefServiceBridge_GetUnstoppableDomainsResolveMethod(
     JNIEnv* env) {
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   return g_browser_process->local_state()->GetInteger(
       decentralized_dns::kUnstoppableDomainsResolveMethod);
-#else
-  return 0;
-#endif
 }
 
 void JNI_BravePrefServiceBridge_SetENSResolveMethod(JNIEnv* env, jint method) {
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   g_browser_process->local_state()->SetInteger(
       decentralized_dns::kENSResolveMethod, method);
-#endif
 }
 
 jint JNI_BravePrefServiceBridge_GetENSResolveMethod(JNIEnv* env) {
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   return g_browser_process->local_state()->GetInteger(
       decentralized_dns::kENSResolveMethod);
-#else
-  return 0;
-#endif
 }
 
 void JNI_BravePrefServiceBridge_SetNewsOptIn(JNIEnv* env, jboolean value) {
