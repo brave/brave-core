@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -150,6 +150,9 @@ class MockLedgerClient : public LedgerClient {
       type::DBTransactionPtr,
       client::RunDBTransactionCallback));
 
+  MOCK_METHOD2(RunDBTransaction,
+               void(type::DBTransactionPtr, client::RunDBTransactionCallback2));
+
   MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 
   MOCK_METHOD1(PendingContributionSaved, void(const type::Result result));
@@ -161,6 +164,13 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
+
+  MOCK_METHOD2(OnBackUpVgBodies,
+               void(type::Result, std::vector<sync_pb::VgBodySpecifics>));
+
+  MOCK_METHOD2(OnBackUpVgSpendStatuses,
+               void(type::Result,
+                    std::vector<sync_pb::VgSpendStatusSpecifics>));
 };
 
 }  // namespace ledger

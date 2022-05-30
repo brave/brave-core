@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -102,6 +102,10 @@ class BatLedgerClientMojoBridge :
       ledger::type::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
 
@@ -121,6 +125,16 @@ class BatLedgerClientMojoBridge :
   absl::optional<std::string> EncryptString(const std::string& name) override;
 
   absl::optional<std::string> DecryptString(const std::string& name) override;
+
+  void OnBackUpVgBodies(
+      bool delay,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
+
+  void OnBackUpVgSpendStatuses(
+      bool delay,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
 
  private:
   bool Connected() const;

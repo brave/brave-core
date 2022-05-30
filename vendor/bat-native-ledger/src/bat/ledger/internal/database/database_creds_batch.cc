@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -288,13 +288,39 @@ void DatabaseCredsBatch::UpdateStatus(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
+  auto transaction_callback =
+      std::bind(&OnResultCallback, _1,
+                trigger_type == type::CredsBatchType::PROMOTION &&
+                        status == type::CredsBatchStatus::FINISHED
+                    ? std::bind(&DatabaseCredsBatch::TriggerBackup, this, _1,
+                                std::vector{trigger_id}, std::move(callback))
+                    : std::move(callback));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(std::move(transaction),
+                                             std::move(transaction_callback));
+}
+
+void DatabaseCredsBatch::TriggerBackup(
+    type::Result result,
+    const std::vector<std::string>& trigger_ids,
+    ledger::ResultCallback callback) {
+  if (result == type::Result::LEDGER_OK) {
+    ledger_->database()->BackUpVgBodies(
+        base::BindOnce(&LedgerClient::OnBackUpVgBodies,
+                       base::Unretained(ledger_->ledger_client()), true),
+        trigger_ids);
+
+    ledger_->database()->GetTokenIdsByTriggers(
+        type::CredsBatchType::PROMOTION, trigger_ids,
+        [this](const absl::optional<std::vector<std::string>>& token_ids) {
+          ledger_->database()->BackUpVgSpendStatuses(
+              base::BindOnce(&LedgerClient::OnBackUpVgSpendStatuses,
+                             base::Unretained(ledger_->ledger_client()), true),
+              token_ids);
+        });
+  }
+
+  callback(result);
 }
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
@@ -324,13 +350,16 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
+  auto transaction_callback =
+      std::bind(&OnResultCallback, _1,
+                trigger_type == type::CredsBatchType::PROMOTION &&
+                        status == type::CredsBatchStatus::FINISHED
+                    ? std::bind(&DatabaseCredsBatch::TriggerBackup, this, _1,
+                                trigger_ids, std::move(callback))
+                    : std::move(callback));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(std::move(transaction),
+                                             std::move(transaction_callback));
 }
 
 void DatabaseCredsBatch::GetRecordsByTriggers(
