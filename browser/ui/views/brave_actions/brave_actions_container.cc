@@ -281,7 +281,7 @@ void BraveActionsContainer::AddActionViewForShareTab() {
   share_tab_action_btn_ =
       AddChildViewAt(std::make_unique<brave_talk::BraveTalkShareTabActionView>(
                          browser_->profile(), browser_->tab_strip_model()),
-                     1);
+                     0);
   share_tab_action_btn_->SetPreferredSize(GetToolbarActionSize());
 }
 
