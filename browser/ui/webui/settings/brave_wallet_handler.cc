@@ -10,11 +10,13 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -69,8 +71,17 @@ void BraveWalletHandler::GetCustomNetworksList(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value list(base::Value::Type::LIST);
-  for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
-    list.Append(brave_wallet::EthNetworkInfoToValue(*it));
+
+  if (base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletEditKnownNetworksFeature)) {
+    for (const auto& it : brave_wallet::GetAllChains(
+             prefs, brave_wallet::mojom::CoinType::ETH)) {
+      list.Append(brave_wallet::EthNetworkInfoToValue(*it));
+    }
+  } else {
+    for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
+      list.Append(brave_wallet::EthNetworkInfoToValue(*it));
+    }
   }
   AllowJavascript();
   ResolveJavascriptCallback(args[0], std::move(list));

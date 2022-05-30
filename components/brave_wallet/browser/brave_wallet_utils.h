@@ -77,6 +77,8 @@ GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
+GURL AddInfuraProjectId(const GURL& url);
+GURL MaybeAddInfuraProjectId(const GURL& url);
 mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id);
 

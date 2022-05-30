@@ -285,6 +285,14 @@ const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kGoerliChainId, "goerli"},
     {brave_wallet::mojom::kKovanChainId, "kovan"}};
 
+const base::flat_set<std::string> kInfuraChains = {
+    brave_wallet::mojom::kMainnetChainId,
+    brave_wallet::mojom::kPolygonMainnetChainId,
+    brave_wallet::mojom::kRinkebyChainId,
+    brave_wallet::mojom::kRopstenChainId,
+    brave_wallet::mojom::kGoerliChainId,
+    brave_wallet::mojom::kKovanChainId};
+
 const base::flat_map<std::string, std::string> kSolanaSubdomains = {
     {brave_wallet::mojom::kSolanaMainnet, "mainnet"},
     {brave_wallet::mojom::kSolanaTestnet, "testnet"},
@@ -308,14 +316,13 @@ constexpr const char kEnsRegistryContractAddress[] =
 
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
   if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    return kPolygonMainnetEndpoint + GetInfuraProjectID();
+    return kPolygonMainnetEndpoint;
   }
 
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
   if (subdomain.empty())
     return std::string();
-  return base::StringPrintf("https://%s-infura.brave.com/%s", subdomain.c_str(),
-                            GetInfuraProjectID().c_str());
+  return base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str());
 }
 
 const base::Value::List* GetEthCustomNetworksList(PrefService* prefs) {
@@ -351,6 +358,24 @@ std::vector<mojom::NetworkInfoPtr> MergeEthChains(
 }
 
 }  // namespace
+
+GURL AddInfuraProjectId(const GURL& url) {
+  DCHECK(url.is_valid()) << url.possibly_invalid_spec();
+  GURL::Replacements replacements;
+  auto path = GetInfuraProjectID();
+  replacements.SetPathStr(path);
+  return url.ReplaceComponents(replacements);
+}
+
+GURL MaybeAddInfuraProjectId(const GURL& url) {
+  DCHECK(url.is_valid()) << url.possibly_invalid_spec();
+  for (const auto& infura_chain_id : kInfuraChains) {
+    if (GetInfuraURLForKnownChainId(infura_chain_id) == url) {
+      return AddInfuraProjectId(url);
+    }
+  }
+  return url;
+}
 
 mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id) {
@@ -840,11 +865,11 @@ GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
-    // TODO(apaymyshev): reorder
     if (auto custom_chain = GetCustomEthChain(prefs, chain_id)) {
-      return GetFirstValidChainURL(custom_chain->rpc_urls);
+      return MaybeAddInfuraProjectId(
+          GetFirstValidChainURL(custom_chain->rpc_urls));
     } else if (auto known_chain = GetKnownEthChain(prefs, chain_id)) {
-      return GURL(known_chain->rpc_urls.front());
+      return MaybeAddInfuraProjectId(GURL(known_chain->rpc_urls.front()));
     }
   } else if (coin == mojom::CoinType::SOL) {
     for (const auto& network : kKnownSolNetworks) {
@@ -1053,7 +1078,7 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
   if (chain_id == brave_wallet::mojom::kMainnetChainId ||
       chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    return GURL(GetInfuraURLForKnownChainId(chain_id));
+    return AddInfuraProjectId(GURL(GetInfuraURLForKnownChainId(chain_id)));
   }
 
   NOTREACHED();

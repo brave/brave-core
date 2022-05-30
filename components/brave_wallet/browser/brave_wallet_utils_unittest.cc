@@ -747,7 +747,12 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, &values);
   for (const auto& chain : GetAllKnownEthChains(&prefs)) {
-    EXPECT_EQ(GURL(chain->rpc_urls.front()),
+    // Brave proxies should have infura key added to path.
+    GURL rpc_url(chain->rpc_urls.front());
+    if (base::EndsWith(rpc_url.host(), "brave.com"))
+      rpc_url = AddInfuraProjectId(rpc_url);
+
+    EXPECT_EQ(rpc_url,
               GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH));
   }
   EXPECT_EQ(GURL(chain1.rpc_urls.front()),

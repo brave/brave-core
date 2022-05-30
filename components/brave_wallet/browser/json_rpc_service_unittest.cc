@@ -398,8 +398,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void SetUDENSInterceptor(const std::string& chain_id) {
-    GURL network_url =
-        brave_wallet::GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
+    GURL network_url = AddInfuraProjectId(
+        GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH));
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, network_url](const network::ResourceRequest& request) {
@@ -458,8 +458,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
       net::HttpStatusCode supports_interface_status = net::HTTP_OK,
       net::HttpStatusCode token_uri_status = net::HTTP_OK,
       net::HttpStatusCode metadata_status = net::HTTP_OK) {
-    GURL network_url =
-        brave_wallet::GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
+    GURL network_url = GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, interface_id, supports_interface_provider_response,
@@ -1867,12 +1866,12 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   void SetResponse(const GURL& rpc_url, const std::string& response) {
     if (response.empty()) {
       EXPECT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
-          rpc_url.spec(), "", net::HTTP_REQUEST_TIMEOUT));
+          AddInfuraProjectId(rpc_url).spec(), "", net::HTTP_REQUEST_TIMEOUT));
       return;
     }
 
     EXPECT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
-        rpc_url.spec(), response, net::HTTP_OK));
+        AddInfuraProjectId(rpc_url).spec(), response, net::HTTP_OK));
   }
 };
 

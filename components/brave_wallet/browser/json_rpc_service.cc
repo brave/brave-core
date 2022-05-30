@@ -253,7 +253,7 @@ void JsonRpcService::GetPendingAddChainRequests(
 void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
                                       AddEthereumChainCallback callback) {
   auto chain_id = chain->chain_id;
-  GURL url = GetFirstValidChainURL(chain->rpc_urls);
+  GURL url = MaybeAddInfuraProjectId(GetFirstValidChainURL(chain->rpc_urls));
 
   if (!url.is_valid()) {
     std::move(callback).Run(
@@ -314,7 +314,7 @@ void JsonRpcService::AddEthereumChainForOrigin(
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
-  GURL url = GetFirstValidChainURL(chain->rpc_urls);
+  GURL url = MaybeAddInfuraProjectId(GetFirstValidChainURL(chain->rpc_urls));
   if (!url.is_valid()) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
