@@ -11,7 +11,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "brave/components/constants/network_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
@@ -49,10 +48,12 @@ namespace translate {
 
 namespace {
 const char kTestScript[] = R"(
+var api_key = undefined;
 var google = {};
 google.translate = (function() {
   return {
-    TranslateService: function() {
+    TranslateService: function(params) {
+      api_key = params.key;
       return {
         isAvailable : function() {
           return true;
@@ -71,10 +72,10 @@ google.translate = (function() {
     }
   };
 })();
-cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/static/translateelement.css");
+cr.googleTranslate.onLoadCSS("https://translate.brave.com/static/translateelement.css");
 
 // Will call cr.googleTranslate.onTranslateElementLoad():
-cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/static/main.js");
+cr.googleTranslate.onLoadJavascript("https://translate.brave.com/static/main.js");
 )";
 
 const char kXhrPromiseTemplate[] = R"(
@@ -82,7 +83,10 @@ const char kXhrPromiseTemplate[] = R"(
     const xhr = new XMLHttpRequest();
     xhr.onload = () => resolve(xhr.%s);
     xhr.onerror = () => resolve(false);
-    xhr.open("GET", '%s');
+    let url = '%s';
+    if (%s && typeof api_key !== 'undefined') /* see kTestScript*/
+      url += '&key=' + api_key;
+    xhr.open('GET', url);
     xhr.send();
   })
 )";
@@ -142,21 +146,14 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
         new net::test_server::BasicHttpResponse);
 
-    // Handle CORS preflights
-    if (request.method == net::test_server::METHOD_OPTIONS) {
-      http_response->set_code(net::HTTP_OK);
-      http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
-      http_response->AddCustomHeader("Access-Control-Allow-Methods",
-                                     "POST, GET");
-      http_response->AddCustomHeader("Access-Control-Allow-Headers",
-                                     kBraveServicesKeyHeader);
-      return std::move(http_response);
-    }
+    // We don't support CORS preflights on the backend.
+    EXPECT_NE(request.method, net::test_server::METHOD_OPTIONS);
 
-    if (request.GetURL().path() == "/translate_a/t") {
-      const auto api_key_header = request.headers.find(kBraveServicesKeyHeader);
-      EXPECT_TRUE(api_key_header != request.headers.end() &&
-                  api_key_header->second == BUILDFLAG(BRAVE_SERVICES_KEY))
+    if (request.GetURL().path() == "/translate") {
+      const auto query = request.GetURL().query();
+      EXPECT_NE(query.find(base::StringPrintf("&key=%s",
+                                              BUILDFLAG(BRAVE_SERVICES_KEY))),
+                std::string::npos)
           << "bad brave api key for request " << request.GetURL();
     }
 
@@ -273,16 +270,16 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
             EvalTranslateJs("getComputedStyle(document.body).getPropertyValue('"
                             "background-color')"));
 
-  // Simulate a translate request to googleapis.com and check that the
-  // redirections works well.
-  EXPECT_CALL(backend_request_, Call("/translate_a/t"))
+  // Simulate a translate request to translate.brave.com and check that it works
+  // well.
+  EXPECT_CALL(backend_request_, Call("/translate"))
       .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                        "application/json", "[\"This\"]")));
   EXPECT_EQ(
       "[\"This\"]",
       EvalTranslateJs(base::StringPrintf(
           kXhrPromiseTemplate, "response",
-          "https://translate.googleapis.com/translate_a/t?query=something")));
+          "https://translate.brave.com/translate?query=something", "true")));
 
   // Check that we haven't tried to update the language lists.
   auto* language_list =
@@ -338,7 +335,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
                                              "image/svg+xml", kTestSvg)));
 
   const auto do_xhr_and_get_final_url =
-      base::StringPrintf(kXhrPromiseTemplate, "responseURL", kTestURL);
+      base::StringPrintf(kXhrPromiseTemplate, "responseURL", kTestURL, "false");
 
   // Check that a page request is unaffected by the js redirections.
   EXPECT_EQ(kTestURL, content::EvalJs(
