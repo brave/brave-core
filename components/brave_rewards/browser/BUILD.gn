@@ -41,6 +41,7 @@ static_library("browser") {
     "//brave/components/resources",
     "//brave/components/services/bat_ledger/public/cpp",
     "//brave/vendor/bat-native-ads",
+    "//brave/vendor/brave_base",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/cpp",
