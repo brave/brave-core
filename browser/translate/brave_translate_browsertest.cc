@@ -299,6 +299,10 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   // Check no bad flags infobar is shown (about the different translate
   // script/origin).
   EXPECT_TRUE(HasNoBadFlagsInfobar());
+
+  // Brave language list should be used by default (kBraveDefaultLanguageList).
+  EXPECT_FALSE(TranslateDownloadManager::IsSupportedLanguage("ar"));
+  EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("vi"));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 

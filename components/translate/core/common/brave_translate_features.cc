@@ -19,7 +19,7 @@ const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};
 
 const base::FeatureParam<bool> kUseBergamotLanguageList{
-    &kUseBraveTranslateGo, "use-bergamot-language-list", true};
+    &kUseBraveTranslateGo, "use-bergamot-language-list", false};
 
 }  // namespace features
 

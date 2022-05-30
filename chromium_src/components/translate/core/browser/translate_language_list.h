@@ -8,20 +8,20 @@
 
 namespace translate {
 class TranslateLanguageList;
-using BraveTranslateLanguageList = TranslateLanguageList;
+using TranslateLanguageList_BraveImpl = TranslateLanguageList;
 }  // namespace translate
 
-#define TranslateLanguageList ChromiumTranslateLanguageList
+#define TranslateLanguageList TranslateLanguageList_ChromiumImpl
 #define resource_requests_allowed_ \
   resource_requests_allowed_;      \
-  friend BraveTranslateLanguageList
+  friend TranslateLanguageList_BraveImpl
 #include "src/components/translate/core/browser/translate_language_list.h"
 #undef resource_requests_allowed_
 #undef TranslateLanguageList
 
 namespace translate {
 
-class TranslateLanguageList : public ChromiumTranslateLanguageList {
+class TranslateLanguageList : public TranslateLanguageList_ChromiumImpl {
  public:
   TranslateLanguageList();
 };

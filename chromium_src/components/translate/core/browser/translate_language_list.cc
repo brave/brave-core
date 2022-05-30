@@ -5,7 +5,7 @@
 
 #include "components/translate/core/browser/translate_language_list.h"
 
-#define TranslateLanguageList ChromiumTranslateLanguageList
+#define TranslateLanguageList TranslateLanguageList_ChromiumImpl
 #include "src/components/translate/core/browser/translate_language_list.cc"
 #undef TranslateLanguageList
 
