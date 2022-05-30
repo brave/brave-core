@@ -29,6 +29,7 @@
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_language_list.h"
 #include "components/translate/core/browser/translate_manager.h"
+#include "components/translate/core/browser/translate_pref_names.h"
 #include "components/translate/core/browser/translate_script.h"
 #include "components/translate/core/common/translate_util.h"
 #include "content/public/test/browser_test.h"
@@ -39,6 +40,7 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 using ::testing::_;
@@ -370,6 +372,54 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
   EXPECT_CALL(backend_request_, Call(_)).Times(0);
   EXPECT_EQ(false, EvalTranslateJs(load_image));
 }
+
+class BraveTranslateBrowserMigrationTest : public InProcessBrowserTest {
+ public:
+  BraveTranslateBrowserMigrationTest() {
+    const char* test_name =
+        ::testing::UnitTest::GetInstance()->current_test_info()->name();
+    if (!base::StartsWith(test_name, "PRE_PRE_")) {
+      scoped_feature_list_.InitAndEnableFeature(features::kUseBraveTranslateGo);
+    }
+  }
+
+  bool TranslateIsAvailable() const {
+    auto* client = ChromeTranslateClient::FromWebContents(
+        browser()->tab_strip_model()->GetActiveWebContents());
+    return TranslateManager::IsAvailable(client->GetTranslatePrefs().get());
+  }
+
+  void DisableTranslation() {
+    auto* prefs = browser()->profile()->GetPrefs();
+    prefs->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserMigrationTest,
+                       PRE_PRE_MigrationToInternalTranslation) {
+  ASSERT_FALSE(IsBraveTranslateGoAvailable());
+  EXPECT_TRUE(TranslateIsAvailable());
+  DisableTranslation();
+  EXPECT_FALSE(TranslateIsAvailable());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserMigrationTest,
+                       PRE_MigrationToInternalTranslation) {
+  ASSERT_TRUE(IsBraveTranslateGoAvailable());
+  EXPECT_TRUE(TranslateIsAvailable());
+  DisableTranslation();
+  EXPECT_FALSE(TranslateIsAvailable());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserMigrationTest,
+                       MigrationToInternalTranslation) {
+  ASSERT_TRUE(IsBraveTranslateGoAvailable());
+  EXPECT_FALSE(TranslateIsAvailable());
+}
+
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
 class BraveTranslateBrowserDisabledFeatureTest

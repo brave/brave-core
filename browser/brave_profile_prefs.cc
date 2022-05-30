@@ -35,6 +35,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -139,6 +140,11 @@ using extensions::FeatureSwitch;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#include "brave/browser/translate/brave_translate_prefs_migration.h"
+#endif
+
 
 namespace brave {
 
@@ -442,6 +448,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   BraveFarblingService::RegisterProfilePrefs(registry);
 
   RegisterProfilePrefsForMigration(registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  translate::RegisterBraveProfilePrefsForMigration(registry);
+#endif
 }
 
 }  // namespace brave
