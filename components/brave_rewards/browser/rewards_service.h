@@ -370,6 +370,8 @@ class RewardsService : public KeyedService {
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
+  virtual void BackUpVgs() = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 };
