@@ -23,24 +23,28 @@ namespace {
 const char* kRedirectAllRequestsToSecurityOrigin = R"(
   const useGoogleTranslateEndpoint = %s;
   const securityOriginHost = new URL(securityOrigin).host;
-  const redirectToSecurityOrigin = (url) => {
-    let new_url = new URL(url);
-    if (useGoogleTranslateEndpoint && new_url.pathname === '/translate') {
-      new_url.host = 'translate.googleapis.com';
-      new_url.pathname = '/translate_a/t';
-      return new_url.toString();
-    }
-    new_url.host = securityOriginHost;
-    return new_url.toString();
-  };
   if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
     XMLHttpRequest.prototype.realOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function (method, url, async = true,
                                      user = "", password = "") {
-      this.realOpen(method, redirectToSecurityOrigin(url), async, user,
+      let new_url = new URL(url);
+      let add_api_key = false
+      if (new_url.pathname === '/translate') {
+        if (useGoogleTranslateEndpoint) {
+          new_url.host = 'translate.googleapis.com';
+          new_url.pathname = '/translate_a/t';
+        } else {
+          add_api_key = true;
+        }
+      } else {
+        // Redirect all other request to securityOrigin just in case.
+        new_url.host = securityOriginHost;
+      }
+
+      this.realOpen(method, new_url.toString(), async, user,
                     password);
-      if (!useGoogleTranslateEndpoint)
-         this.setRequestHeader('%s', '%s');
+      if (add_api_key)
+        this.setRequestHeader('%s', '%s');
     }
   };
   originalOnLoadCSS = cr.googleTranslate.onLoadCSS;

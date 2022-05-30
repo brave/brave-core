@@ -146,18 +146,25 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     if (request.method == net::test_server::METHOD_OPTIONS) {
       http_response->set_code(net::HTTP_OK);
       http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
-      http_response->AddCustomHeader("Access-Control-Allow-Methods",
-                                     "POST, GET");
-      http_response->AddCustomHeader("Access-Control-Allow-Headers",
-                                     kBraveServicesKeyHeader);
+      if (request.GetURL().path() == "/translate") {
+        // Only /translate endpoint supports BraveServicesKey on the backend.
+        http_response->AddCustomHeader("Access-Control-Allow-Methods",
+                                       "POST, GET");
+        http_response->AddCustomHeader("Access-Control-Allow-Headers",
+                                       kBraveServicesKeyHeader);
+      }
       return std::move(http_response);
     }
 
-    if (request.GetURL().path() == "/translate_a/t") {
-      const auto api_key_header = request.headers.find(kBraveServicesKeyHeader);
+    const auto api_key_header = request.headers.find(kBraveServicesKeyHeader);
+    if (request.GetURL().path() == "/translate") {
       EXPECT_TRUE(api_key_header != request.headers.end() &&
                   api_key_header->second == BUILDFLAG(BRAVE_SERVICES_KEY))
           << "bad brave api key for request " << request.GetURL();
+    } else if (request.GetURL().path() != "/static/element.js") {
+      EXPECT_EQ(api_key_header, request.headers.end())
+          << "brave api key shouldn't be used for static files. Url "
+          << request.GetURL();
     }
 
     const auto response = backend_request_.Call(request.GetURL().path());
@@ -275,14 +282,14 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   // Simulate a translate request to googleapis.com and check that the
   // redirections works well.
-  EXPECT_CALL(backend_request_, Call("/translate_a/t"))
+  EXPECT_CALL(backend_request_, Call("/translate"))
       .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                        "application/json", "[\"This\"]")));
   EXPECT_EQ(
       "[\"This\"]",
       EvalTranslateJs(base::StringPrintf(
           kXhrPromiseTemplate, "response",
-          "https://translate.googleapis.com/translate_a/t?query=something")));
+          "https://translate.brave.com/translate?query=something")));
 
   // Check that we haven't tried to update the language lists.
   auto* language_list =
