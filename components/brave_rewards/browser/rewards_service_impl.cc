@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -24,6 +24,7 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -38,6 +39,8 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/public/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_sync_service_factory.h"
+#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
@@ -53,6 +56,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -65,6 +69,10 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_user_settings.h"
+#include "components/sync_device_info/device_info_sync_service.h"
+#include "components/sync_device_info/local_device_info_provider.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -314,6 +322,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
+      sync_service_(static_cast<syncer::BraveSyncServiceImpl*>(
+          RewardsSyncServiceFactory::GetForProfile(profile_))),
+      vg_sync_service_(VgSyncServiceFactory::GetForProfile(profile_)),
       bat_ledger_client_receiver_(new bat_ledger::LedgerClientMojoBridge(this)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -341,10 +352,31 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     greaselion_service_->AddObserver(this);
   }
 #endif
+
+  if (vg_sync_service_) {
+    vg_sync_service_->SetObserver(this);
+  }
+
+  if (sync_service_) {
+    sync_service_->AddObserver(this);
+    sync_service_->GetDeviceInfoSyncService()
+        ->GetDeviceInfoTracker()
+        ->AddObserver(this);
+  }
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (sync_service_) {
+    sync_service_->GetDeviceInfoSyncService()
+        ->GetDeviceInfoTracker()
+        ->RemoveObserver(this);
+  }
+
+  if (vg_sync_service_) {
+    vg_sync_service_->SetObserver(nullptr);
+  }
 
 #if BUILDFLAG(ENABLE_GREASELION)
   if (greaselion_service_) {
@@ -842,6 +874,12 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
   }
 
   if (IsRewardsEnabled()) {
+    // Normally, we enable Rewards Sync when Rewards itself is enabled.
+    // This is only necessary when someone has Rewards enabled on a
+    // version where we don't have Rewards Sync yet, and upgrades to a version
+    // where we do.
+    EnableSync();
+
     RecordBackendP3AStats();
   } else {
     p3a::RecordRewardsDisabledForSomeMetrics();
@@ -1290,6 +1328,8 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
 }
 
 void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
+  ResetSync(base::BindOnce(&RewardsServiceImpl::EnableSync, AsWeakPtr()));
+
   // Fetch balance after recovering wallet in order to initiate P3A
   // stats collection
   FetchBalance(base::DoNothing());
@@ -1394,6 +1434,42 @@ void RewardsServiceImpl::OnRulesReady(
   EnableGreaseLion();
 }
 #endif
+
+void RewardsServiceImpl::OnStateChanged(syncer::SyncService* sync) {
+  if (auto* sync_service = static_cast<syncer::BraveSyncServiceImpl*>(sync);
+      sync_service &&
+      sync_service->IsEngineInitialized()) {  // sync engine has started up
+    if (auto [decrypt_successful, passphrase] = sync_service->GetSyncCode();
+        decrypt_successful && !passphrase.empty()) {
+      auto* sync_user_settings = sync_service->GetUserSettings();
+
+      // see PeopleHandler::HandleSetDecryptionPassphrase()
+      if (sync_user_settings->IsPassphraseRequired()) {
+        static_cast<void>(
+            sync_user_settings->SetDecryptionPassphrase(passphrase));
+      }
+
+      // see PeopleHandler::HandleSetEncryptionPassphrase()
+      if (sync_user_settings->IsCustomPassphraseAllowed() &&
+          !sync_user_settings->IsUsingExplicitPassphrase() &&
+          !sync_user_settings->IsPassphraseRequired() &&
+          !sync_user_settings->IsTrustedVaultKeyRequired()) {
+        sync_user_settings->SetEncryptionPassphrase(passphrase);
+      }
+    }
+  }
+}
+
+void RewardsServiceImpl::OnSyncConfigurationCompleted(
+    syncer::SyncService*) {
+    BackUpVgs();
+}
+
+void RewardsServiceImpl::OnSyncShutdown(syncer::SyncService* sync) {
+  if (sync && sync->HasObserver(this)) {
+    sync->RemoveObserver(this);
+  }
+}
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -3088,8 +3164,11 @@ void RewardsServiceImpl::RunDBTransaction(
   DCHECK(ledger_database_);
   ledger_database_.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
-      .Then(base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                           std::move(callback)));
+      .Then(base::BindOnce(static_cast<void (RewardsServiceImpl::*)(
+                               ledger::client::RunDBTransactionCallback,
+                               ledger::type::DBCommandResponsePtr)>(
+                               &RewardsServiceImpl::OnRunDBTransaction),
+                           AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(
@@ -3097,6 +3176,26 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::type::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   callback(std::move(response));
+}
+
+void RewardsServiceImpl::RunDBTransaction(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::client::RunDBTransactionCallback2 callback) {
+  DCHECK(ledger_database_);
+  ledger_database_.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(base::BindOnce(static_cast<void (RewardsServiceImpl::*)(
+                               ledger::client::RunDBTransactionCallback2,
+                               ledger::type::DBCommandResponsePtr)>(
+                               &RewardsServiceImpl::OnRunDBTransaction),
+                           AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnRunDBTransaction(
+    ledger::client::RunDBTransactionCallback2 callback,
+    ledger::type::DBCommandResponsePtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::move(callback).Run(std::move(response));
 }
 
 void RewardsServiceImpl::GetCreateScript(
@@ -3183,6 +3282,11 @@ void RewardsServiceImpl::ClearAllNotifications() {
 void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
   resetting_rewards_ = true;
 
+  ResetSync(base::BindOnce(&RewardsServiceImpl::OnResetSync, AsWeakPtr(),
+                           std::move(callback)));
+}
+
+void RewardsServiceImpl::OnResetSync(SuccessCallback callback) {
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
     ads_service->ResetAllState(/* should_shutdown */ true);
@@ -3356,6 +3460,8 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
   if (ads_service) {
     ads_service->SetEnabled(ads_service->IsSupportedLocale());
   }
+
+  EnableSync();
 }
 
 bool RewardsServiceImpl::IsBitFlyerRegion() const {
@@ -3405,6 +3511,133 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
 void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
   if (IsValidWalletType(wallet_type)) {
     profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
+  }
+}
+
+void RewardsServiceImpl::EnableSync() {
+  if (!sync_service_->GetUserSettings()->IsFirstSetupComplete()) {
+    GetWalletPassphrase(
+        base::BindOnce(&RewardsServiceImpl::SetSyncCode, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::SetSyncCode(const std::string& sync_code) {
+  if (sync_code.empty()) {
+    BLOG(0,
+         "Wallet passphrase is empty - failed to set sync code for Rewards "
+         "Sync!");
+    return;
+  }
+
+  sync_service_->GetUserSettings()->SetSyncRequested(true);
+  sync_service_->SetSyncCode(sync_code);
+  sync_service_->GetUserSettings()->SetFirstSetupComplete(
+      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+}
+
+void RewardsServiceImpl::ResetSync(base::OnceClosure on_reset_done) {
+  brave_sync::ResetSync(sync_service_,
+                        sync_service_->GetDeviceInfoSyncService(),
+                        std::move(on_reset_done));
+}
+
+void RewardsServiceImpl::BackUpVgs() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgBodies(
+        base::BindOnce(&RewardsServiceImpl::OnBackUpVgBodies, AsWeakPtr()));
+    bat_ledger_->BackUpVgSpendStatuses(base::BindOnce(
+        &RewardsServiceImpl::OnBackUpVgSpendStatuses, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::BackUpVgBodies() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgBodies(
+        base::BindOnce(&RewardsServiceImpl::OnBackUpVgBodies, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgBodies(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    backup_vg_bodies_timer_.Start(
+        FROM_HERE, base::Seconds(base::RandInt(1, 5)),
+        base::BindOnce(&VgSyncService::BackUpVgBodies, vg_sync_service_,
+                       std::move(vg_bodies)));
+  } else {
+    BLOG(0, "BackUpVgBodies() failed!");
+  }
+}
+
+void RewardsServiceImpl::BackUpVgSpendStatuses() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgSpendStatuses(base::BindOnce(
+        &RewardsServiceImpl::OnBackUpVgSpendStatuses, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    backup_vg_spend_statuses_timer_.Start(
+        FROM_HERE, base::Seconds(base::RandInt(1, 5)),
+        base::BindOnce(&VgSyncService::BackUpVgSpendStatuses, vg_sync_service_,
+                       std::move(vg_spend_statuses)));
+  } else {
+    BLOG(0, "BackUpVgSpendStatuses() failed!");
+  }
+}
+
+void RewardsServiceImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (Connected()) {
+    bat_ledger_->RestoreVgs(
+        std::move(vg_bodies), std::move(vg_spend_statuses),
+        base::BindOnce(&RewardsServiceImpl::OnRestoreVgs, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    VLOG(0) << "RestoreVgs was successful";
+    UnblindedTokensReady();
+  } else {
+    VLOG(0) << "RestoreVgs failed";
+  }
+}
+
+void RewardsServiceImpl::OnDeviceInfoChange() {
+  auto* device_info_sync_service = sync_service_->GetDeviceInfoSyncService();
+  auto* device_info_tracker = device_info_sync_service->GetDeviceInfoTracker();
+
+  if (auto devices = device_info_tracker->GetAllDeviceInfo();
+      devices.size() > 1) {
+    std::sort(devices.begin(), devices.end(),
+              [](const auto& device1, const auto& device2) {
+                return device1->last_updated_timestamp() <
+                       device2->last_updated_timestamp();
+              });
+
+    auto* local_device_info_provider =
+        device_info_sync_service->GetLocalDeviceInfoProvider();
+    auto* local_device_info = local_device_info_provider->GetLocalDeviceInfo();
+
+    if (devices[0]->guid() == local_device_info->guid()) {
+      BLOG(1, "Restore on another device detected - resetting Rewards.");
+      CompleteReset(base::BindOnce(
+          &RewardsServiceImpl::OnCompleteResetAfterRestoreOnTargetDevice,
+          AsWeakPtr()));
+    }
+  }
+}
+
+void RewardsServiceImpl::OnCompleteResetAfterRestoreOnTargetDevice(
+    bool success) {
+  if (success) {
+    profile_->GetPrefs()->SetBoolean(prefs::kEnabled, true);
   }
 }
 
