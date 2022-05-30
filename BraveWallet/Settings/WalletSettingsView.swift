@@ -5,6 +5,7 @@
 
 import SwiftUI
 import struct Shared.Strings
+import struct Shared.AppConstants
 import BraveUI
 import BraveShared
 
@@ -99,49 +100,49 @@ public struct WalletSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      #if WALLET_DAPPS_ENABLED
-      Section(
-        header: Text(Strings.Wallet.web3PreferencesSectionTitle)
-          .foregroundColor(Color(.secondaryBraveLabel))
-      ) {
-        HStack {
-          Text(Strings.Wallet.web3PreferencesDefaultWallet)
-            .foregroundColor(Color(.braveLabel))
-          Spacer()
-          Menu {
-            Picker("", selection: $defaultWallet.value) {
-              ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
-                Text(walletType.name)
-                  .tag(walletType)
-              }
-            }
-            .pickerStyle(.inline)
-          } label: {
-            let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
-            Text(wallet.name)
-              .foregroundColor(Color(.braveBlurpleTint))
-          }
-        }
-        Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)
-          .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-        Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
-          .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
-        NavigationLink(
-          destination: ManageSiteConnectionsView(
-            siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
-          )
-          .onDisappear {
-            settingsStore.closeManageSiteConnectionStore()
-          }
+      if !AppConstants.buildChannel.isPublic {
+        Section(
+          header: Text(Strings.Wallet.web3PreferencesSectionTitle)
+            .foregroundColor(Color(.secondaryBraveLabel))
         ) {
-          Text(Strings.Wallet.web3PreferencesManageSiteConnections)
+          HStack {
+            Text(Strings.Wallet.web3PreferencesDefaultWallet)
+              .foregroundColor(Color(.braveLabel))
+            Spacer()
+            Menu {
+              Picker("", selection: $defaultWallet.value) {
+                ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
+                  Text(walletType.name)
+                    .tag(walletType)
+                }
+              }
+              .pickerStyle(.inline)
+            } label: {
+              let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
+              Text(wallet.name)
+                .foregroundColor(Color(.braveBlurpleTint))
+            }
+          }
+          Toggle(Strings.Wallet.web3PreferencesAllowSiteToRequestAccounts, isOn: $allowDappsRequestAccounts.value)
             .foregroundColor(Color(.braveLabel))
+            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+          Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
+            .foregroundColor(Color(.braveLabel))
+            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+          NavigationLink(
+            destination: ManageSiteConnectionsView(
+              siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+            )
+            .onDisappear {
+              settingsStore.closeManageSiteConnectionStore()
+            }
+          ) {
+            Text(Strings.Wallet.web3PreferencesManageSiteConnections)
+              .foregroundColor(Color(.braveLabel))
+          }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      #endif
       Section(
         footer: Text(Strings.Wallet.settingsResetTransactionFooter)
           .foregroundColor(Color(.secondaryBraveLabel))
