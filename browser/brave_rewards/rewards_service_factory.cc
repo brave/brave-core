@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,6 +8,8 @@
 
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 
+#include "brave/browser/brave_rewards/rewards_sync_service_factory.h"
+#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
@@ -73,32 +75,41 @@ RewardsServiceFactory::RewardsServiceFactory()
 #if BUILDFLAG(ENABLE_GREASELION)
   DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
 #endif
+  DependsOn(RewardsSyncServiceFactory::GetInstance());
+  DependsOn(VgSyncServiceFactory::GetInstance());
 }
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
-  std::unique_ptr<RewardsServicePrivateObserver> private_observer = nullptr;
-  std::unique_ptr<RewardsNotificationServiceObserver> notification_observer =
-      nullptr;
+  Profile* profile = Profile::FromBrowserContext(context);
+
+  std::unique_ptr<RewardsServiceObserver> extension_observer;
+  std::unique_ptr<RewardsServicePrivateObserver> private_observer;
+  std::unique_ptr<RewardsNotificationServiceObserver> notification_observer;
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  extension_observer = std::make_unique<ExtensionRewardsServiceObserver>(
-      Profile::FromBrowserContext(context));
-  private_observer = std::make_unique<ExtensionRewardsServiceObserver>(
-      Profile::FromBrowserContext(context));
+  extension_observer =
+      std::make_unique<ExtensionRewardsServiceObserver>(profile);
+  private_observer = std::make_unique<ExtensionRewardsServiceObserver>(profile);
   notification_observer =
-      std::make_unique<ExtensionRewardsNotificationServiceObserver>(
-          Profile::FromBrowserContext(context));
+      std::make_unique<ExtensionRewardsNotificationServiceObserver>(profile);
 #endif
+
+  auto* rewards_sync_service = static_cast<syncer::BraveSyncServiceImpl*>(
+      RewardsSyncServiceFactory::GetForProfile(profile));
+  auto* vg_sync_service = VgSyncServiceFactory::GetForProfile(profile);
+
 #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionService* greaselion_service =
+  auto* greaselion_service =
       greaselion::GreaselionServiceFactory::GetForBrowserContext(context);
-  std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
-      Profile::FromBrowserContext(context), greaselion_service));
+
+  auto rewards_service = std::make_unique<RewardsServiceImpl>(
+      profile, greaselion_service, rewards_sync_service, vg_sync_service);
 #else
-  std::unique_ptr<RewardsServiceImpl> rewards_service(
-      new RewardsServiceImpl(Profile::FromBrowserContext(context)));
+  auto rewards_service = std::make_unique<RewardsServiceImpl>(
+      profile, rewards_sync_service, vg_sync_service);
 #endif
+
   rewards_service->Init(std::move(extension_observer),
                         std::move(private_observer),
                         std::move(notification_observer));
