@@ -66,7 +66,7 @@ import LockPanel from '../components/extension/lock-panel'
 import { getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useSwap, useSend, useHasAccount, usePrevNetwork } from '../common/hooks'
-import { getUniqueAssets } from '../utils/asset-utils'
+import { getRampAssetSymbol, getUniqueAssets } from '../utils/asset-utils'
 import { getBuyAssetUrl } from '../common/async/lib'
 
 type Props = {
@@ -187,8 +187,11 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = () => {
+    const asset = selectedBuyOption === BraveWallet.OnRampProvider.kRamp
+      ? { ...selectedBuyAsset, symbol: getRampAssetSymbol(selectedBuyAsset) }
+      : selectedBuyAsset
     getBuyAssetUrl({
-      asset: selectedBuyAsset,
+      asset,
       onRampProvider: selectedBuyOption,
       chainId: selectedNetwork.chainId,
       address: selectedAccount.address,
