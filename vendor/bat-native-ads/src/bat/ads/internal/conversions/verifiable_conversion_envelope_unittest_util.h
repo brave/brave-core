@@ -8,10 +8,7 @@
 
 #include <string>
 
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Value;

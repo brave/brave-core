@@ -9,11 +9,7 @@
 #include <string>
 
 #include "bat/ads/transaction_info_aliases.h"
-
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {

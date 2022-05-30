@@ -8,7 +8,6 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_unblinded_payment_tokens_json_reader_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {

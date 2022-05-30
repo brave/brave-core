@@ -12,13 +12,9 @@
 #include "base/observer_list.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
-
-namespace absl {
-template <typename T>
-class optional;
-}  // namespace absl
 
 namespace ads {
 

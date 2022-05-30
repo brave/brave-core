@@ -14,7 +14,6 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/pref_names.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 

@@ -17,7 +17,6 @@
 #include "bat/ads/internal/catalog/campaign/catalog_campaign_info.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace ads {
