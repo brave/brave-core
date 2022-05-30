@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { getRampNetworkPrefix } from './string-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -19,4 +20,14 @@ export const isSelectedAssetInAssetOptions = (selectedAsset: BraveWallet.Blockch
       asset.chainId === selectedAsset.chainId &&
       asset.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase()
   }) !== -1
+}
+
+export const getRampAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
+  if (asset.symbol.toUpperCase() === 'BAT') {
+    // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
+    return 'ETH_BAT'
+  }
+
+  const rampNetworkPrefix = getRampNetworkPrefix(asset.chainId)
+  return rampNetworkPrefix !== '' ? `${rampNetworkPrefix}_${asset.symbol.toUpperCase()}` : asset.symbol
 }

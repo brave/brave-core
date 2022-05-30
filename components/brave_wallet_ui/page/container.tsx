@@ -42,6 +42,9 @@ import {
 // Hooks
 import { useAssets } from '../common/hooks'
 
+// Utils
+import { getRampAssetSymbol } from '../utils/asset-utils'
+
 type Props = {
   wallet: WalletState
   page: PageState
@@ -178,9 +181,10 @@ function Container (props: Props) {
     }
   }
 
-  const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
+  const onSubmitBuy = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    const buyAsset = selectedBuyOption === BraveWallet.OnRampProvider.kRamp ? { ...asset, symbol: getRampAssetSymbol(asset) } : asset
     getBuyAssetUrl({
-      asset,
+      asset: buyAsset,
       onRampProvider: selectedBuyOption,
       chainId: selectedNetwork.chainId,
       address: selectedAccount.address,
@@ -188,7 +192,7 @@ function Container (props: Props) {
     })
       .then(url => window.open(url, '_blank'))
       .catch(e => console.error(e))
-  }
+  }, [getBuyAssetUrl, selectedBuyOption, selectedNetwork, selectedAccount, buyAmount])
 
   const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {
     props.walletPageActions.addHardwareAccounts(selected)
