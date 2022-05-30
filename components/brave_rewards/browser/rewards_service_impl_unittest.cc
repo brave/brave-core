@@ -77,9 +77,10 @@ class RewardsServiceTest : public testing::Test {
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_.get() != NULL);
 #if BUILDFLAG(ENABLE_GREASELION)
-    auto* rewards_ = new RewardsServiceImpl(profile(), nullptr);
+    auto* rewards_ =
+        new RewardsServiceImpl(profile(), nullptr, nullptr, nullptr);
 #else
-    auto* rewards_ = new RewardsServiceImpl(profile());
+    auto* rewards_ = new RewardsServiceImpl(profile(), nullptr, nullptr);
 #endif
     RewardsServiceFactory::SetServiceForTesting(std::move(rewards_));
     rewards_service_ = static_cast<RewardsServiceImpl*>(

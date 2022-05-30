@@ -31,6 +31,12 @@ static_library("browser") {
     "rewards_service_observer.h",
     "service_sandbox_type.h",
     "static_values.h",
+    "vg_body_sync_bridge.cc",
+    "vg_body_sync_bridge.h",
+    "vg_spend_status_sync_bridge.cc",
+    "vg_spend_status_sync_bridge.h",
+    "vg_sync_service.cc",
+    "vg_sync_service.h",
   ]
 
   deps = [
@@ -41,6 +47,7 @@ static_library("browser") {
     "//brave/components/resources",
     "//brave/components/services/bat_ledger/public/cpp",
     "//brave/vendor/bat-native-ads",
+    "//brave/vendor/brave_base",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/cpp",
