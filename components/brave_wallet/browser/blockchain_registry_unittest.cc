@@ -356,7 +356,7 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
       mojom::OnRampProvider::kWyre, mojom::kPolygonMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_EQ(token_list.size(), 0UL);
+            EXPECT_EQ(token_list.size(), 2UL);
             run_loop2.Quit();
           }));
   run_loop2.Run();
