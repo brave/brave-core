@@ -19,14 +19,22 @@ public class DAU {
   private let pingRefreshDuration = 5.minutes
 
   /// We always use gregorian calendar for DAU pings. This also adds more anonymity to the server call.
-  fileprivate static var calendar: Calendar { return Calendar(identifier: .gregorian) }
+  fileprivate static var calendar: Calendar {
+    var cal = Calendar(identifier: .gregorian)
+    cal.locale = .init(identifier: "en_US")
+    if let timezone = TimeZone(abbreviation: "GMT") {
+      cal.timeZone = timezone
+    }
+    
+    return cal
+  }
 
   private var launchTimer: Timer?
-  private let today: Date
+  
   /// Whether a current ping attempt is being made
   private var processingPing = false
-  private var todayComponents: DateComponents {
-    return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: today)
+  private func todayComponents(from date: Date) -> DateComponents {
+    return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: date)
   }
 
   /// Date formatted used for passing date strings to the DAU server.
@@ -42,10 +50,8 @@ public class DAU {
   private let braveCoreStats: BraveStats?
 
   public init(
-    date: Date = Date(),
     braveCoreStats: BraveStats?
   ) {
-    today = date
     self.braveCoreStats = braveCoreStats
     apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
   }
@@ -76,8 +82,9 @@ public class DAU {
   }
 
   @objc public func sendPingToServerInternal() {
-    guard let paramsAndPrefs = paramsAndPrefsSetup() else {
+    guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
       log.debug("dau, no changes detected, no server ping")
+      UrpLog.log("dau, no changes detected, no server ping")
       return
     }
 
@@ -97,6 +104,7 @@ public class DAU {
     }
 
     log.debug("send ping to server, url: \(pingRequestUrl)")
+    UrpLog.log("send ping to server, url: \(pingRequestUrl)")
 
     var request = URLRequest(url: pingRequestUrl)
     for (key, value) in paramsAndPrefs.headers {
@@ -110,6 +118,7 @@ public class DAU {
 
       if let e = error {
         log.error("status update error: \(e)")
+        UrpLog.log("status update error: \(e)")
         return
       }
 
@@ -137,7 +146,7 @@ public class DAU {
 
   /// Return params query or nil if no ping should be send to server and also preference values to set
   /// after a succesful ing.
-  func paramsAndPrefsSetup() -> ParamsAndPrefs? {
+  func paramsAndPrefsSetup(for date: Date) -> ParamsAndPrefs? {
     var params = [channelParam(), versionParam()]
 
     let firstLaunch = Preferences.DAU.firstPingParam.value
@@ -149,10 +158,10 @@ public class DAU {
 
     // This could lead to an upgraded device having no `woi`, and that's fine
     if firstLaunch {
-      Preferences.DAU.weekOfInstallation.value = today.mondayOfCurrentWeekFormatted
+      Preferences.DAU.weekOfInstallation.value = date.mondayOfCurrentWeekFormatted
     }
 
-    guard let dauStatParams = dauStatParams(firstPing: firstLaunch) else {
+    guard let dauStatParams = dauStatParams(for: date, firstPing: firstLaunch) else {
       return nil
     }
 
@@ -170,7 +179,7 @@ public class DAU {
     // Installation date for `dtoi` param has a limited lifetime.
     // After that we clear the install date from the app and always send null `dtoi` param.
     if let installationDate = Preferences.DAU.installationDate.value,
-      retentionMeasureDatePassed(since: installationDate) {
+      retentionMeasureDatePassed(todayDate: date, installDate: installationDate) {
       Preferences.DAU.installationDate.value = nil
     }
 
@@ -182,7 +191,7 @@ public class DAU {
       UrpLog.log("DAU ping with added ref, params: \(params)")
     }
 
-    let lastPingTimestamp = [Int((today).timeIntervalSince1970)]
+    let lastPingTimestamp = [Int((date).timeIntervalSince1970)]
 
     var headers: [String: String] = [:]
 
@@ -193,9 +202,9 @@ public class DAU {
     return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
   }
   
-  private func retentionMeasureDatePassed(since date: Date) -> Bool {
-    guard let referenceDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: date),
-      let currentDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: today)
+  private func retentionMeasureDatePassed(todayDate: Date, installDate: Date) -> Bool {
+    guard let referenceDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: installDate),
+      let currentDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: todayDate)
     else {
       assertionFailure()
       // This should never happen but we fallback to true here to avoid sending `dtoi` param
@@ -265,13 +274,13 @@ public class DAU {
     return URLQueryItem(name: paramName, value: DAU.dateFormatter.string(from: installationDate))
   }
 
-  private enum PingType: CaseIterable {
+  public enum PingType: CaseIterable {
     case daily
     case weekly
     case monthly
   }
 
-  private func getPings(forDate date: Date, lastPingDate: Date) -> Set<PingType> {
+  public func getPings(forDate date: Date, lastPingDate: Date) -> Set<PingType> {
     let calendar = DAU.calendar
     var pings = Set<PingType>()
 
@@ -284,11 +293,15 @@ public class DAU {
 
     if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate), nowDay > lastPingDay {
       pings.insert(.daily)
+    } else {
+      // Not a new day, no need to check for weekly or monthly stats.
+      return pings
     }
 
     let mondayWeekday = 2
     if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)), date >= nextMonday {
       pings.insert(.weekly)
+      // Adding daily stat here for safety, see #2572.
       pings.insert(.daily)
     }
     if let nextFirstOfMonth = nextDate(matching: DateComponents(day: 1)), date >= nextFirstOfMonth {
@@ -305,7 +318,8 @@ public class DAU {
 
   /// Returns nil if no dau changes detected.
   func dauStatParams(
-    _ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
+    for date: Date,
+    dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
     firstPing: Bool,
     channel: AppBuildChannel = AppConstants.buildChannel
   ) -> [URLQueryItem]? {
@@ -332,7 +346,7 @@ public class DAU {
 
     let lastPingDate = Date(timeIntervalSince1970: TimeInterval(lastPingStat))
 
-    let pings = getPings(forDate: today, lastPingDate: lastPingDate)
+    let pings = getPings(forDate: date, lastPingDate: lastPingDate)
 
     // No changes, no ping
     if pings.isEmpty {
