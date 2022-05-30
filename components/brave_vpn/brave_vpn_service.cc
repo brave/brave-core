@@ -214,7 +214,7 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
     VLOG(2) << __func__ << ": Ignore disconnected state while connecting";
     return;
   }
-#endif
+
   // On Windows, we could get disconnected state after connect failed.
   // To make connect failed state as a last state, ignore disconnected state.
   if (!force && connection_state_ == ConnectionState::CONNECT_FAILED &&
@@ -222,7 +222,7 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
     VLOG(2) << __func__ << ": Ignore disconnected state after connect failed";
     return;
   }
-
+#endif  // BUILDFLAG(IS_WIN)
   VLOG(2) << __func__ << " : changing from " << connection_state_ << " to "
           << state;
 
