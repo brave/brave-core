@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -17,6 +17,7 @@
 
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::Matcher;
 
 namespace ledger {
 namespace database {
@@ -57,19 +58,18 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
       "tip_recurring, tip) "
       "VALUES (?, ?, ?, ?, ?, ?)";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_,
+          RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::RUN);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::RUN);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
+          }));
 
   balance_report_->InsertOrUpdate(
       std::move(info),
@@ -77,33 +77,36 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_,
+              RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
+      .Times(1);
 
   const std::string query =
     "SELECT balance_report_id, grants_ugp, grants_ads, "
     "auto_contribute, tip_recurring, tip "
     "FROM balance_report_info";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_,
+          RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::READ);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::READ);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
+          }));
 
   balance_report_->GetAllRecords([](type::BalanceReportInfoList) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_,
+              RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
+      .Times(1);
 
   const std::string query =
     "SELECT balance_report_id, grants_ugp, grants_ads, "
@@ -111,20 +114,19 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
     "FROM balance_report_info "
     "WHERE balance_report_id = ?";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_,
+          RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 2u);
-          ASSERT_EQ(
-              transaction->commands[1]->type,
-              type::DBCommand::Type::READ);
-          ASSERT_EQ(transaction->commands[1]->command, query);
-          ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
-          ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 2u);
+            ASSERT_EQ(transaction->commands[1]->type,
+                      type::DBCommand::Type::READ);
+            ASSERT_EQ(transaction->commands[1]->command, query);
+            ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
+            ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
+          }));
 
   balance_report_->GetRecord(
       type::ActivityMonth::MAY,
@@ -133,25 +135,26 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_,
+              RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
+      .Times(1);
 
   const std::string query =
     "DELETE FROM balance_report_info";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_,
+          RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
       .WillByDefault(
-        Invoke([&](
-            type::DBTransactionPtr transaction,
-            ledger::client::RunDBTransactionCallback callback) {
-          ASSERT_TRUE(transaction);
-          ASSERT_EQ(transaction->commands.size(), 1u);
-          ASSERT_EQ(
-              transaction->commands[0]->type,
-              type::DBCommand::Type::EXECUTE);
-          ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
-          ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
-        }));
+          Invoke([&](type::DBTransactionPtr transaction,
+                     ledger::client::RunDBTransactionCallback callback) {
+            ASSERT_TRUE(transaction);
+            ASSERT_EQ(transaction->commands.size(), 1u);
+            ASSERT_EQ(transaction->commands[0]->type,
+                      type::DBCommand::Type::EXECUTE);
+            ASSERT_EQ(transaction->commands[0]->command, query);
+            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
+            ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
+          }));
 
   balance_report_->DeleteAllRecords([](type::Result) {});
 }
