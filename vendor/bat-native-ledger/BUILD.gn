@@ -1,4 +1,4 @@
-# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -263,6 +263,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_unblinded_token.h",
     "src/bat/ledger/internal/database/database_util.cc",
     "src/bat/ledger/internal/database/database_util.h",
+    "src/bat/ledger/internal/database/database_vg_backup_restore.cc",
+    "src/bat/ledger/internal/database/database_vg_backup_restore.h",
     "src/bat/ledger/internal/database/migration/migration_v1.h",
     "src/bat/ledger/internal/database/migration/migration_v10.h",
     "src/bat/ledger/internal/database/migration/migration_v11.h",
@@ -577,6 +579,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/uphold/uphold_util.h",
     "src/bat/ledger/internal/uphold/uphold_wallet.cc",
     "src/bat/ledger/internal/uphold/uphold_wallet.h",
+    "src/bat/ledger/internal/vg/backup_restore.cc",
+    "src/bat/ledger/internal/vg/backup_restore.h",
     "src/bat/ledger/internal/wallet/wallet.cc",
     "src/bat/ledger/internal/wallet/wallet.h",
     "src/bat/ledger/internal/wallet/wallet_balance.cc",

@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -43,6 +43,7 @@ Database::Database(LedgerImpl* ledger) :
   sku_order_ = std::make_unique<DatabaseSKUOrder>(ledger_);
   unblinded_token_ =
       std::make_unique<DatabaseUnblindedToken>(ledger_);
+  vg_backup_restore_ = std::make_unique<DatabaseVgBackupRestore>(ledger_);
 }
 
 Database::~Database() = default;
@@ -630,10 +631,10 @@ void Database::MarkUnblindedTokensAsSpendable(
       callback);
 }
 
-void Database::GetSpendableUnblindedTokensByTriggerIds(
-    const std::vector<std::string>& trigger_ids,
-    GetUnblindedTokenListCallback callback) {
-  unblinded_token_->GetSpendableRecordsByTriggerIds(trigger_ids, callback);
+void Database::GetSpendableUnblindedTokens(
+    GetUnblindedTokenListCallback callback,
+    const absl::optional<std::vector<std::string>>& trigger_ids) {
+  unblinded_token_->GetSpendableRecords(trigger_ids, std::move(callback));
 }
 
 void Database::GetReservedUnblindedTokens(
@@ -646,6 +647,37 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
     const std::vector<type::CredsBatchType>& batch_types,
     GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetSpendableRecordListByBatchTypes(batch_types, callback);
+}
+
+void Database::GetTokenIdsByTriggers(
+    type::CredsBatchType trigger_type,
+    const std::vector<std::string>& trigger_ids,
+    GetTokenIdsByTriggersCallback callback) {
+  unblinded_token_->GetTokenIdsByTriggers(trigger_type, trigger_ids,
+                                          std::move(callback));
+}
+
+/**
+ * VIRTUAL GRANT BACKUP & RESTORE
+ */
+void Database::BackUpVgBodies(
+    BackUpVgBodiesCallback callback,
+    const absl::optional<std::vector<std::string>>& trigger_ids) {
+  vg_backup_restore_->BackUpVgBodies(std::move(callback), trigger_ids);
+}
+
+void Database::BackUpVgSpendStatuses(
+    BackUpVgSpendStatusesCallback callback,
+    const absl::optional<std::vector<std::string>>& token_ids) {
+  vg_backup_restore_->BackUpVgSpendStatuses(std::move(callback), token_ids);
+}
+
+void Database::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    RestoreVgsCallback callback) {
+  vg_backup_restore_->RestoreVgs(
+      std::move(vg_bodies), std::move(vg_spend_statuses), std::move(callback));
 }
 
 }  // namespace database

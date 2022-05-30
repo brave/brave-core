@@ -1,10 +1,10 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PROMOTION_TRANSFER_H_
-#define BRAVELEDGER_PROMOTION_TRANSFER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_TRANSFER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_TRANSFER_H_
 
 #include <map>
 #include <memory>
@@ -38,8 +38,9 @@ class PromotionTransfer {
       type::PromotionList promotions,
       GetEligibleTokensCallback callback);
 
-  void OnGetEligibleTokens(type::UnblindedTokenList list,
-                           ledger::PostSuggestionsClaimCallback callback);
+  void OnGetSpendableUnblindedTokens(
+      type::UnblindedTokenList list,
+      ledger::PostSuggestionsClaimCallback callback);
 
   std::vector<type::PromotionType> GetEligiblePromotions();
 
@@ -50,4 +51,4 @@ class PromotionTransfer {
 }  // namespace promotion
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PROMOTION_TRANSFER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_TRANSFER_H_

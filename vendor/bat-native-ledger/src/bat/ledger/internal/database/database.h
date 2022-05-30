@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -32,8 +32,10 @@
 #include "bat/ledger/internal/database/database_sku_order.h"
 #include "bat/ledger/internal/database/database_sku_transaction.h"
 #include "bat/ledger/internal/database/database_unblinded_token.h"
+#include "bat/ledger/internal/database/database_vg_backup_restore.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -416,9 +418,10 @@ class Database {
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
-  void GetSpendableUnblindedTokensByTriggerIds(
-      const std::vector<std::string>& trigger_ids,
-      GetUnblindedTokenListCallback callback);
+  void GetSpendableUnblindedTokens(
+      GetUnblindedTokenListCallback callback,
+      const absl::optional<std::vector<std::string>>& trigger_ids =
+          absl::nullopt);
 
   void GetReservedUnblindedTokens(
       const std::string& redeem_id,
@@ -427,6 +430,26 @@ class Database {
   void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<type::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
+
+  void GetTokenIdsByTriggers(type::CredsBatchType trigger_type,
+                             const std::vector<std::string>& trigger_ids,
+                             GetTokenIdsByTriggersCallback callback);
+
+  /**
+   * VIRTUAL GRANT BACKUP & RESTORE
+   */
+  void BackUpVgBodies(BackUpVgBodiesCallback callback,
+                      const absl::optional<std::vector<std::string>>&
+                          trigger_ids = absl::nullopt);
+
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback,
+                             const absl::optional<std::vector<std::string>>&
+                                 token_ids = absl::nullopt);
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback);
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
@@ -448,6 +471,7 @@ class Database {
   std::unique_ptr<DatabaseSKUOrder> sku_order_;
   std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
+  std::unique_ptr<DatabaseVgBackupRestore> vg_backup_restore_;
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
