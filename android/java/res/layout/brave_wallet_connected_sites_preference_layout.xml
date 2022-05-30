@@ -18,7 +18,8 @@
        android:paddingTop="15dp"
        android:paddingBottom="25dp"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content" />
+       android:layout_height="wrap_content"
+       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </LinearLayout>

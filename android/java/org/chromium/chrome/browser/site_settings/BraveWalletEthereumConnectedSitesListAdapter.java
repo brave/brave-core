@@ -38,8 +38,7 @@ public class BraveWalletEthereumConnectedSitesListAdapter
     }
 
     @Override
-    public @NonNull BraveWalletEthereumConnectedSitesListAdapter.ViewHolder onCreateViewHolder(
-            ViewGroup parent, int viewType) {
+    public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view =
@@ -49,8 +48,7 @@ public class BraveWalletEthereumConnectedSitesListAdapter
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull BraveWalletEthereumConnectedSitesListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.webSite.setText(mWebSites[position]);
         holder.iconTrash.setOnClickListener(v -> {
             if (mDelegate != null) {
@@ -70,8 +68,8 @@ public class BraveWalletEthereumConnectedSitesListAdapter
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.webSite = itemView.findViewById(R.id.web_site);
-            this.iconTrash = itemView.findViewById(R.id.icon_trash);
+            webSite = itemView.findViewById(R.id.web_site);
+            iconTrash = itemView.findViewById(R.id.icon_trash);
         }
     }
 }

@@ -132,7 +132,6 @@ public class BraveWalletPanel implements DialogInterface {
                     activity.openBraveConnectedSitesSettings();
                     dismiss();
                 }
-                dismiss();
             } else if (item.getItemId() == R.id.action_settings) {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 if (activity != null) {

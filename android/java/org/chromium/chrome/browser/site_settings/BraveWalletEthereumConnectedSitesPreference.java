@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -41,8 +40,6 @@ public class BraveWalletEthereumConnectedSitesPreference
         initBraveWalletService();
 
         mRecyclerView = (RecyclerView) holder.findViewById(R.id.connected_sites_list);
-        LinearLayoutManager layoutMangager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(layoutMangager);
         updateWebSitestList();
     }
 
