@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -275,6 +275,7 @@ struct ServerPublisherInfo {
 };
 
 enum RewardsType {
+  NONE = 0,
   AUTO_CONTRIBUTE = 2,
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,
@@ -563,4 +564,30 @@ struct EventLog {
 struct BraveWallet {
   string payment_id;
   array<uint8> recovery_seed;
+};
+
+struct VgBodyToken {
+  uint64 token_id;
+  string token_value;
+  double value;
+  uint64 expires_at;
+};
+
+struct VgBody {
+  string creds_id;
+  string trigger_id;
+  CredsBatchType trigger_type;
+  string creds;
+  string blinded_creds;
+  string signed_creds;
+  string public_key;
+  string batch_proof;
+  CredsBatchStatus status;
+  array<VgBodyToken> tokens;
+};
+
+struct VgSpendStatus {
+  uint64 token_id;
+  uint64 redeemed_at;
+  RewardsType redeem_type;
 };
