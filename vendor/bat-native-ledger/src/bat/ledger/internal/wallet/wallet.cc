@@ -128,6 +128,7 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
   if (wallet_type == constant::kWalletUphold) {
     if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
       switch (uphold_wallet->status) {
+        case type::WalletStatus::NOT_CONNECTED:
         case type::WalletStatus::DISCONNECTED_VERIFIED:
           DCHECK(uphold_wallet->token.empty());
           DCHECK(uphold_wallet->address.empty());
@@ -142,7 +143,8 @@ void Wallet::DisconnectWallet(const std::string& wallet_type,
           break;
         default:
           BLOG(0,
-               "Wallet status should have been either DISCONNECTED_VERIFIED, "
+               "Wallet status should have been either NOT_CONNECTED, "
+               "DISCONNECTED_VERIFIED, "
                "PENDING, or VERIFIED!");
       }
     } else {

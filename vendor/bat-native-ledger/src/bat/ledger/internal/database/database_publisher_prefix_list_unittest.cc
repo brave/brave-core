@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -20,6 +20,7 @@
 
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::Matcher;
 
 namespace ledger {
 namespace database {
@@ -99,7 +100,8 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
     callback(std::move(response));
   };
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_,
+          RunDBTransaction(_, Matcher<client::RunDBTransactionCallback>(_)))
       .WillByDefault(Invoke(on_run_db_transaction));
 
   database_prefix_list_->Reset(
