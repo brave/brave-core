@@ -37,6 +37,7 @@ TEST(FilAddressUnitTest, From) {
   EXPECT_EQ(fil_address.EncodeAsString(), address);
   EXPECT_FALSE(fil_address.IsEmpty());
   EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::SECP256K1);
+  EXPECT_EQ(fil_address.network(), mojom::kFilecoinTestnet);
 
   // Valid secp256k1 address Mainnet
   address = "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
@@ -44,6 +45,7 @@ TEST(FilAddressUnitTest, From) {
   EXPECT_EQ(fil_address.EncodeAsString(), address);
   EXPECT_FALSE(fil_address.IsEmpty());
   EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::SECP256K1);
+  EXPECT_EQ(fil_address.network(), mojom::kFilecoinMainnet);
 
   // Valid BLS address Testnet
   address =
