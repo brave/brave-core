@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -286,8 +286,25 @@ void TestLedgerClient::RunDBTransaction(
       FROM_HERE,
       base::BindOnce(RunDBTransactionInTask, std::move(transaction),
                      ledger_database_.get()),
-      base::BindOnce(&TestLedgerClient::RunDBTransactionCompleted,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(
+          static_cast<void (TestLedgerClient::*)(
+              client::RunDBTransactionCallback, mojom::DBCommandResponsePtr)>(
+              &TestLedgerClient::RunDBTransactionCompleted),
+          weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void TestLedgerClient::RunDBTransaction(
+    mojom::DBTransactionPtr transaction,
+    client::RunDBTransactionCallback2 callback) {
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(RunDBTransactionInTask, std::move(transaction),
+                     ledger_database_.get()),
+      base::BindOnce(
+          static_cast<void (TestLedgerClient::*)(
+              client::RunDBTransactionCallback2, mojom::DBCommandResponsePtr)>(
+              &TestLedgerClient::RunDBTransactionCompleted),
+          weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TestLedgerClient::GetCreateScript(
@@ -314,6 +331,14 @@ absl::optional<std::string> TestLedgerClient::DecryptString(
     const std::string& value) {
   return FakeEncryption::DecryptString(value);
 }
+
+void TestLedgerClient::OnBackUpVgBodies(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {}
+
+void TestLedgerClient::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {}
 
 void TestLedgerClient::SetOptionForTesting(const std::string& name,
                                            base::Value&& value) {
@@ -358,6 +383,12 @@ void TestLedgerClient::RunDBTransactionCompleted(
     client::RunDBTransactionCallback callback,
     mojom::DBCommandResponsePtr response) {
   callback(std::move(response));
+}
+
+void TestLedgerClient::RunDBTransactionCompleted(
+    client::RunDBTransactionCallback2 callback,
+    mojom::DBCommandResponsePtr response) {
+  std::move(callback).Run(std::move(response));
 }
 
 }  // namespace ledger
