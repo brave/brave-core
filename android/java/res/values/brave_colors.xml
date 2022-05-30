@@ -48,6 +48,14 @@
     <color name="onboarding_indicator_selected_color">#FF7654</color>
     <color name="onboarding_indicator_default_color">#C2C4CF</color>
 
+    <color name="onboarding_welcome_text_color">#F0F2FF</color>
+    <color name="onboarding_card_bg_color">@android:color/white</color>
+    <color name="onboarding_card_text_color">#212529</color>
+    <color name="onboarding_negative_button_color">#4C54D2</color>
+    <color name="onboarding_p3a_checkbox_color">#FF5722</color>
+    <color name="onboarding_search_highlight_color">#737ADE</color>
+    <color name="onboarding_arrow_color">#4D54D3</color>
+
     <!-- Set Default Browser colors -->
     <color name="set_default_bottom_sheet_bg_color">@android:color/white</color>
     <color name="set_default_text_color">#212529</color>
@@ -104,7 +112,7 @@
     <color name="section_divider_color">#c8c7cc</color>
     <color name="shield_title_color">@android:color/black</color>
     <color name="shield_text_color">#212529</color>
-
+    <color name="shields_tooltip_text_bg_color">#1A000000</color>
     <color name="shield_bg_color">#FFFFFF</color>
     <color name="shield_back_button_tint">@color/brave_theme_color</color>
 
@@ -161,7 +169,6 @@
     <color name="brave_blue_tint_color">#4C54D2</color>
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>
-    <color name="shields_tooltip_arrow_color_2">#2673DD</color>
 
     <color name="wallet_text_color">#212529</color>
     <color name="wallet_secondary_text_color">#686978</color>

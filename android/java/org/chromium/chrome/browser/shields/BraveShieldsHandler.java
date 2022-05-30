@@ -32,6 +32,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -61,7 +62,10 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.widget.TextViewCompat;
 
-import org.chromium.base.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
@@ -77,13 +81,16 @@ import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.url.GURL;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -98,6 +105,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             mHTTPSUpgrades = 0;
             mScriptsBlocked = 0;
             mFingerprintsBlocked = 0;
+            mBlockerNames = new ArrayList<String>();
         }
 
         public int mAdsBlocked;
@@ -105,6 +113,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         public int mHTTPSUpgrades;
         public int mScriptsBlocked;
         public int mFingerprintsBlocked;
+        public ArrayList<String> mBlockerNames;
     }
 
     private final Context mContext;
@@ -114,7 +123,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private View mHardwareButtonMenuAnchor;
     private final Map<Integer, BlockersInfo> mTabsStat =
         Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
-
+    private ArrayList<Pair<String, String>> mResourceToCompanyNameList = new ArrayList<>();
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
     private SwitchCompat mBraveShieldsHTTPSEverywhereSwitch;
     private OnCheckedChangeListener mBraveShieldsHTTPSEverywhereChangeListener;
@@ -142,6 +151,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private String mTitle;
     private int mTabId;
     private Profile mProfile;
+    public boolean isDisconnectEntityLoaded;
 
     private static Context scanForActivity(Context cont) {
         if (cont == null)
@@ -170,6 +180,44 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
+    public void loadDisconnectEntityList() {
+        try {
+            JSONObject obj = new JSONObject(loadDisconnectEntityJSONFromAsset());
+            JSONObject entities = obj.getJSONObject("entities");
+            Iterator<String> keysItr = entities.keys();
+            while (keysItr.hasNext()) {
+                String key = keysItr.next();
+                Object value = entities.get(key);
+                JSONArray jsonProperties = ((JSONObject) value).getJSONArray("properties");
+                JSONArray jsonResources = ((JSONObject) value).getJSONArray("resources");
+
+                for (int i = 0; i < jsonResources.length(); i++) {
+                    // Pair<String, String> resourceCompanyName = new Pair<String,
+                    // String>(jsonResources.getString(i), key);
+                    mResourceToCompanyNameList.add(new Pair(jsonResources.getString(i), key));
+                }
+            }
+            isDisconnectEntityLoaded = true;
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private String loadDisconnectEntityJSONFromAsset() {
+        String json = null;
+        try (InputStream inputStream = mContext.getAssets().open("disconnect_entitylist.json")) {
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
     public void addStat(int tabId, String block_type, String subresource) {
         if (!mTabsStat.containsKey(tabId)) {
             mTabsStat.put(tabId, new BlockersInfo());
@@ -177,8 +225,14 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
         if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
             blockersInfo.mAdsBlocked++;
+            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
+                blockersInfo = addBlockerNames(blockersInfo, subresource);
+            }
         } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
             blockersInfo.mTrackersBlocked++;
+            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
+                blockersInfo = addBlockerNames(blockersInfo, subresource);
+            }
         } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             blockersInfo.mHTTPSUpgrades++;
         } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
@@ -186,6 +240,26 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             blockersInfo.mFingerprintsBlocked++;
         }
+    }
+
+    private BlockersInfo addBlockerNames(BlockersInfo blockersInfo, String subresource) {
+        GURL gurl = new GURL(subresource);
+        if (!GURL.isEmptyOrInvalid(gurl)) {
+            String companyName = getBlockerCompanyName(gurl);
+            if (!blockersInfo.mBlockerNames.contains(companyName)) {
+                blockersInfo.mBlockerNames.add(companyName);
+            }
+        }
+        return blockersInfo;
+    }
+
+    private String getBlockerCompanyName(GURL gurl) {
+        for (Pair<String, String> resourceToCompanyName : mResourceToCompanyNameList) {
+            if (gurl.domainIs(resourceToCompanyName.first)) {
+                return resourceToCompanyName.second;
+            }
+        }
+        return gurl.getHost();
     }
 
     public void removeStat(int tabId) {
@@ -345,6 +419,15 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
         return blockersInfo.mHTTPSUpgrades;
+    }
+
+    public ArrayList<String> getBlockerNamesList(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return new ArrayList<String>();
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mBlockerNames;
     }
 
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {

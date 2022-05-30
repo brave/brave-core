@@ -42,9 +42,6 @@ public class RetentionNotificationUtil {
     public static final String DAY_10 = "day_10";
     public static final String DAY_30 = "day_30";
     public static final String DAY_35 = "day_35";
-    public static final String BRAVE_STATS_ADS_TRACKERS = "brave_stats_ads_trackers";
-    public static final String BRAVE_STATS_DATA = "brave_stats_data";
-    public static final String BRAVE_STATS_TIME = "brave_stats_time";
     public static final String DEFAULT_BROWSER_1 = "default_browser_1";
     public static final String DEFAULT_BROWSER_2 = "default_browser_2";
     public static final String DEFAULT_BROWSER_3 = "default_browser_3";
@@ -65,10 +62,9 @@ public class RetentionNotificationUtil {
             put(EVERY_SUNDAY, new RetentionNotification(7, -1, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DAY_10, new RetentionNotification(10, 10 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DAY_30, new RetentionNotification(30, 30 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DAY_35, new RetentionNotification(35, 35 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(BRAVE_STATS_ADS_TRACKERS, new RetentionNotification(14, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(BRAVE_STATS_DATA, new RetentionNotification(15, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(BRAVE_STATS_TIME, new RetentionNotification(16, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DAY_35,
+                    new RetentionNotification(35, 35 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DEFAULT_BROWSER_1,
                     new RetentionNotification(17, 3 * 24 * 60,
                             BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
@@ -161,12 +157,6 @@ public class RetentionNotificationUtil {
         case DAY_30:
         case DAY_35:
             return context.getResources().getString(R.string.notification_rewards);
-        case BRAVE_STATS_ADS_TRACKERS:
-            return context.getResources().getString(R.string.notification_brave_stats_trackers);
-        case BRAVE_STATS_DATA:
-            return context.getResources().getString(R.string.notification_brave_stats_data);
-        case BRAVE_STATS_TIME:
-            return context.getResources().getString(R.string.notification_brave_stats_time);
         case DEFAULT_BROWSER_1:
         case DEFAULT_BROWSER_2:
         case DEFAULT_BROWSER_3:
@@ -182,16 +172,6 @@ public class RetentionNotificationUtil {
                     R.string.dormant_users_engagement_notification_body_3);
         }
         return "";
-    }
-
-    private static PendingIntent getRetentionNotificationActionIntent(Context context, String notificationType) {
-        Intent intent = new Intent(context, RetentionNotificationPublisher.class);
-        intent.setAction(RetentionNotificationPublisher.RETENTION_NOTIFICATION_ACTION);
-        intent.putExtra(NOTIFICATION_TYPE, notificationType);
-        return PendingIntent.getBroadcast(context,
-                getNotificationObject(notificationType).getNotificationId(), intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-                        | IntentUtils.getPendingIntentMutabilityFlag(true));
     }
 
     public static void scheduleNotification(Context context, String notificationType) {
