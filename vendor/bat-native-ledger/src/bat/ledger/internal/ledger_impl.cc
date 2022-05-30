@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -37,7 +37,8 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
       recovery_(std::make_unique<recovery::Recovery>(this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
       gemini_(std::make_unique<gemini::Gemini>(this)),
-      uphold_(std::make_unique<uphold::Uphold>(this)) {
+      uphold_(std::make_unique<uphold::Uphold>(this)),
+      backup_restore_(std::make_unique<vg::BackupRestore>(this)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_);
 }
@@ -98,6 +99,10 @@ gemini::Gemini* LedgerImpl::gemini() const {
 
 uphold::Uphold* LedgerImpl::uphold() const {
   return uphold_.get();
+}
+
+vg::BackupRestore* LedgerImpl::backup_restore() const {
+  return backup_restore_.get();
 }
 
 void LedgerImpl::LoadURL(
@@ -860,6 +865,31 @@ void LedgerImpl::OnAllDone(type::Result result, ResultCallback callback) {
 
 void LedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
   WhenReady([this, callback]() { database()->GetLastEventLogs(callback); });
+}
+
+void LedgerImpl::BackUpVgBodies(BackUpVgBodiesCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    backup_restore()->BackUpVgBodies(std::move(callback));
+  });
+}
+
+void LedgerImpl::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    backup_restore()->BackUpVgSpendStatuses(std::move(callback));
+  });
+}
+
+void LedgerImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    RestoreVgsCallback callback) {
+  WhenReady([this, vg_bodies = std::move(vg_bodies),
+             vg_spend_statuses = std::move(vg_spend_statuses),
+             callback = std::move(callback)]() mutable {
+    backup_restore()->RestoreVgs(std::move(vg_bodies),
+                                 std::move(vg_spend_statuses),
+                                 std::move(callback));
+  });
 }
 
 bool LedgerImpl::IsShuttingDown() const {
