@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -328,7 +328,29 @@ void BatLedgerClientMojoBridge::RunDBTransaction(
     ledger::client::RunDBTransactionCallback callback) {
   bat_ledger_client_->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnRunDBTransaction, std::move(callback)));
+      base::BindOnce(
+          static_cast<void (*)(const ledger::client::RunDBTransactionCallback&,
+                               ledger::type::DBCommandResponsePtr)>(
+              &OnRunDBTransaction),
+          std::move(callback)));
+}
+
+void OnRunDBTransaction(
+    ledger::client::RunDBTransactionCallback2&& callback,
+    ledger::type::DBCommandResponsePtr response) {
+  std::move(callback).Run(std::move(response));
+}
+
+void BatLedgerClientMojoBridge::RunDBTransaction(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::client::RunDBTransactionCallback2 callback) {
+  bat_ledger_client_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(
+          static_cast<void (*)(ledger::client::RunDBTransactionCallback2&&,
+                               ledger::type::DBCommandResponsePtr)>(
+              &OnRunDBTransaction),
+          std::move(callback)));
 }
 
 void OnGetCreateScript(
@@ -382,6 +404,21 @@ absl::optional<std::string> BatLedgerClientMojoBridge::DecryptString(
   absl::optional<std::string> result;
   bat_ledger_client_->DecryptString(value, &result);
   return result;
+}
+
+void BatLedgerClientMojoBridge::OnBackUpVgBodies(
+    bool delay,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  bat_ledger_client_->OnBackUpVgBodies(delay, result, std::move(vg_bodies));
+}
+
+void BatLedgerClientMojoBridge::OnBackUpVgSpendStatuses(
+    bool delay,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  bat_ledger_client_->OnBackUpVgSpendStatuses(delay, result,
+                                              std::move(vg_spend_statuses));
 }
 
 }  // namespace bat_ledger

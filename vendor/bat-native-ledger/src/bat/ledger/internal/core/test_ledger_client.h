@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -142,6 +142,9 @@ class TestLedgerClient : public LedgerClient {
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(client::GetCreateScriptCallback callback) override;
 
   void PendingContributionSaved(const mojom::Result result) override;
@@ -155,6 +158,14 @@ class TestLedgerClient : public LedgerClient {
   absl::optional<std::string> EncryptString(const std::string& value) override;
 
   absl::optional<std::string> DecryptString(const std::string& value) override;
+
+  void OnBackUpVgBodies(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
+
+  void OnBackUpVgSpendStatuses(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
 
   // Test environment setup methods:
 
@@ -175,6 +186,9 @@ class TestLedgerClient : public LedgerClient {
 
   void RunDBTransactionAfterDelay(mojom::DBTransactionPtr transaction,
                                   client::RunDBTransactionCallback callback);
+
+  void RunDBTransactionAfterDelay(mojom::DBTransactionPtr transaction,
+                                  client::RunDBTransactionCallback2 callback);
 
   LedgerDatabase ledger_database_;
   base::Value state_store_;

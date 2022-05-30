@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -28,6 +28,9 @@ using OnLoadCallback =
 
 using RunDBTransactionCallback =
     std::function<void(type::DBCommandResponsePtr)>;
+
+using RunDBTransactionCallback2 =
+    base::OnceCallback<void(type::DBCommandResponsePtr)>;
 
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
@@ -144,6 +147,10 @@ class LEDGER_EXPORT LedgerClient {
       type::DBTransactionPtr transaction,
       client::RunDBTransactionCallback callback) = 0;
 
+  virtual void RunDBTransaction(
+      type::DBTransactionPtr transaction,
+      client::RunDBTransactionCallback2 callback) = 0;
+
   virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 
   virtual void PendingContributionSaved(const type::Result result) = 0;
@@ -159,6 +166,16 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual absl::optional<std::string> DecryptString(
       const std::string& value) = 0;
+
+  virtual void OnBackUpVgBodies(
+      bool delay,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) = 0;
+
+  virtual void OnBackUpVgSpendStatuses(
+      bool delay,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) = 0;
 };
 
 }  // namespace ledger
