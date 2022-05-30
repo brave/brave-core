@@ -1034,7 +1034,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void viewOnBlockExplorer(String address) {
-        Utils.openAddress("/address/"+address, mJsonRpcService, this);
+        Utils.openAddress("/address/" + address, mJsonRpcService, this);
     }
 
     // should only be called if the wallet is setup and unlocked

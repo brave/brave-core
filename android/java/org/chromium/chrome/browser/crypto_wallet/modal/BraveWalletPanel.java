@@ -119,7 +119,7 @@ public class BraveWalletPanel implements DialogInterface {
         setUpViews();
     }
 
-    public void showPopupMenu(){
+    public void showPopupMenu() {
         PopupMenu menu = new PopupMenu(mOptionsImage.getContext(), (View) mOptionsImage);
         menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
         menu.setOnMenuItemClickListener(item -> {
@@ -141,10 +141,11 @@ public class BraveWalletPanel implements DialogInterface {
             } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 if (activity != null) {
-                    mBraveWalletPanelServices.getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
-                        activity.viewOnBlockExplorer(address);
-                        dismiss();
-                    });
+                    mBraveWalletPanelServices.getKeyringService().getSelectedAccount(
+                            CoinType.ETH, address -> {
+                                activity.viewOnBlockExplorer(address);
+                                dismiss();
+                            });
                 }
             }
             return true;
