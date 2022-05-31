@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "chrome/browser/media/capture_access_handler_base.h"
+#include "content/public/browser/desktop_media_id.h"
 #include "content/public/browser/media_stream_request.h"
 
 class MediaStreamUI;
@@ -49,6 +50,7 @@ class BraveTalkMediaAccessHandler : public CaptureAccessHandlerBase {
  private:
   void AcceptRequest(content::WebContents* web_contents,
                      const content::MediaStreamRequest& request,
+                     const content::DesktopMediaID& media_id,
                      content::MediaResponseCallback callback);
 
   BraveTalkTabCaptureRegistry* GetRegistry(content::WebContents* contents);

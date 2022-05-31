@@ -7,57 +7,27 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_talk/brave_talk_service.h"
 #include "brave/browser/brave_talk/brave_talk_tab_capture_registry.h"
 #include "chrome/browser/media/webrtc/capture_policy_utils.h"
+#include "chrome/browser/media/webrtc/desktop_capture_devices_util.h"
 #include "chrome/browser/media/webrtc/desktop_media_list.h"
 #include "chrome/browser/media/webrtc/media_stream_capture_indicator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/tab_sharing/tab_sharing_ui.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/desktop_media_id.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_media_capture_id.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
 namespace brave_talk {
-
-namespace {
-// Returns an instance of MediaStreamUI to be passed to content layer and stores
-// the list of media stream devices for tab capture in |out_devices|.
-std::unique_ptr<content::MediaStreamUI> GetMediaStreamUI(
-    const content::MediaStreamRequest& request,
-    content::WebContents* web_contents,
-    blink::MediaStreamDevices* out_devices) {
-  content::DesktopMediaID media_id(
-      content::DesktopMediaID::TYPE_WEB_CONTENTS,
-      content::DesktopMediaID::kNullId,
-      content::WebContentsMediaCaptureId(
-          web_contents->GetMainFrame()->GetProcess()->GetID(),
-          web_contents->GetMainFrame()->GetRoutingID()));
-  if (request.audio_type ==
-      blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE) {
-    out_devices->emplace_back(blink::MediaStreamDevice(
-        blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE,
-        /*id=*/media_id.ToString(),
-        /*name=*/media_id.ToString()));
-  }
-
-  if (request.video_type ==
-      blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE) {
-    out_devices->emplace_back(blink::MediaStreamDevice(
-        blink::mojom::MediaStreamType::GUM_TAB_VIDEO_CAPTURE,
-        /*id=*/media_id.ToString(),
-        /*name=*/media_id.ToString()));
-  }
-
-  return MediaCaptureDevicesDispatcher::GetInstance()
-      ->GetMediaStreamCaptureIndicator()
-      ->RegisterMediaStream(web_contents, *out_devices);
-}
-
-}  // namespace
 
 BraveTalkMediaAccessHandler::BraveTalkMediaAccessHandler() = default;
 BraveTalkMediaAccessHandler::~BraveTalkMediaAccessHandler() = default;
@@ -129,19 +99,35 @@ void BraveTalkMediaAccessHandler::HandleRequest(
     return;
   }
 
-  AcceptRequest(web_contents, request, std::move(callback));
+  content::DesktopMediaID media_id(
+      content::DesktopMediaID::TYPE_WEB_CONTENTS,
+      content::DesktopMediaID::kNullId,
+      content::WebContentsMediaCaptureId(
+          web_contents->GetMainFrame()->GetProcess()->GetID(),
+          web_contents->GetMainFrame()->GetRoutingID()));
+  AcceptRequest(web_contents, request, media_id, std::move(callback));
 }
 
 void BraveTalkMediaAccessHandler::AcceptRequest(
     content::WebContents* web_contents,
     const content::MediaStreamRequest& request,
+    const content::DesktopMediaID& media_id,
     content::MediaResponseCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(web_contents);
 
   blink::MediaStreamDevices devices;
+
+  // TODO: Work out how to get the sender origin.
+  std::u16string application_title =
+      base::UTF8ToUTF16(BraveTalkService::GetInstance()
+                            ->web_contents()
+                            ->GetMainFrame()
+                            ->GetLastCommittedOrigin()
+                            .Serialize());
   std::unique_ptr<content::MediaStreamUI> ui =
-      GetMediaStreamUI(request, web_contents, &devices);
+      GetDevicesForDesktopCapture(request, BraveTalkService::GetInstance()->web_contents(), media_id, false, true,
+                                  true, application_title, &devices);
   DCHECK(!devices.empty());
 
   std::move(callback).Run(devices, blink::mojom::MediaStreamRequestResult::OK,
