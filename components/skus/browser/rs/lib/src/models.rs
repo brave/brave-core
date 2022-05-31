@@ -145,6 +145,12 @@ pub struct Order {
     pub last_paid_at: Option<NaiveDateTime>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct SubmitReceipt {
+    pub external_id: String,
+    pub vendor: String,
+}
+
 impl Order {
     pub fn location_matches(&self, environment: &Environment, domain: &str) -> bool {
         if *environment != Environment::Local && *environment != Environment::Testing {

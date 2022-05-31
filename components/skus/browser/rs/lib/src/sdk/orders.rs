@@ -125,6 +125,17 @@ struct SubmitReceiptResponse {
     vendor: String,
 }
 
+impl TryFrom<SubmitReceiptResponse> for SubmitReceipt {
+    type Error = SkusError;
+
+    fn try_from(sr_resp: SubmitReceiptResponse) -> Result<Self, Self::Error> {
+        Ok(SubmitReceipt {
+            external_id: sr_resp.external_id,
+            vendor: sr_resp.vendor,
+        })
+    }
+}
+
 impl<U> SDK<U>
 where
     U: HTTPClient + StorageClient,
@@ -219,7 +230,7 @@ where
         &self,
         order_id: &str,
         receipt: &str,
-    ) -> Result<SubmitReceiptResponse, SkusError> {
+    ) -> Result<SubmitReceipt, SkusError> {
         let request_with_retries = FutureRetry::new(
             || async {
                 let mut builder = http::Request::builder();
@@ -229,7 +240,8 @@ where
                     self.base_url, order_id
                 ));
 
-                let req = builder.body(receipt.as_bytes()).unwrap();
+                let receipt_bytes : Vec<u8> = receipt.as_bytes().to_vec();
+                let req = builder.body(receipt_bytes).unwrap();
                 let resp = self.fetch(req).await?;
 
                 match resp.status() {
@@ -241,7 +253,11 @@ where
             HttpHandler::new(3, "Submit order receipt", &self.client),
         );
         let (resp, _) = request_with_retries.await?;
-        Ok(resp)
+
+        let sr_resp: SubmitReceiptResponse = serde_json::from_slice(resp.body())?;
+        let sr_resp: SubmitReceipt = sr_resp.try_into()?;
+
+        Ok(sr_resp)
     }
 
     #[instrument]

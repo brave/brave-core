@@ -89,6 +89,12 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   void CredentialSummary(
       const std::string& domain,
       skus::mojom::SkusService::CredentialSummaryCallback callback) override;
+  void SubmitReceipt(
+      const std::string& domain,
+      const std::string& order_id,
+      const std::string& receipt,
+      skus::mojom::SkusService::SubmitReceiptCallback callback) override;
+
   ::rust::Box<skus::CppSDK>& GetOrCreateSDK(const std::string& domain);
 
  private:
