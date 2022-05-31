@@ -79,8 +79,8 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
   const base::Time kNow = base::Time::Now();
   const base::Time k1DaysOld = kNow - base::Days(1);
 
-  // Check current shields settings count is 2 and zero after clearing 1 day
-  // time range.
+  // Check current shields settings count is the defaults plus 2 and zero after
+  // clearing 1 day time range.
   EXPECT_EQ(2 + start_count, GetShieldsSettingsCount());
   delegate()->ClearShieldsSettings(k1DaysOld, kNow);
   EXPECT_EQ(start_count, GetShieldsSettingsCount());

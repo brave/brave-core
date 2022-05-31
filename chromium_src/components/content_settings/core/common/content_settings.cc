@@ -85,7 +85,7 @@ void RendererContentSettingRules::FilterRulesByOutermostMainFrameURL(
       outermost_main_frame_url);
   FilterRulesForType(autoplay_rules, outermost_main_frame_url);
   FilterRulesForType(brave_shields_rules, outermost_main_frame_url);
-  // FilterRulesForType has a DHCECK on the size and these fail (for now)
+  // FilterRulesForType has a DCHECK on the size and these fail (for now)
   // because they incorrectly use CONTENT_SETTINGS_DEFAULT as a distinct setting
   base::EraseIf(
       cosmetic_filtering_rules,
