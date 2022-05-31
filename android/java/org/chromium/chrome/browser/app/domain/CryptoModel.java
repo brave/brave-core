@@ -101,7 +101,8 @@ public class CryptoModel {
     }
 
     public void refreshTransactions() {
-        mPendingTxHelper.fetchTransactions(null);
+        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID,
+                keyringInfo -> { mPendingTxHelper.setAccountInfos(keyringInfo.accountInfos); });
     }
 
     public LiveData<TransactionInfo> getSelectedPendingRequest() {
@@ -139,7 +140,7 @@ public class CryptoModel {
 
         @Override
         public String getChainId() {
-            if (mNetworkModel.mChainId == null) {
+            if (mNetworkModel.mChainId.getValue() == null) {
                 return BraveWalletConstants.MAINNET_CHAIN_ID;
             }
             return mNetworkModel.mChainId.getValue();
