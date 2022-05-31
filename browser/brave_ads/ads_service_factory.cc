@@ -29,6 +29,10 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
+namespace tricks {
+bool g_rewards_sync_initializing = false;
+}
+
 namespace brave_ads {
 
 // static
@@ -86,9 +90,11 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
 
+  tricks::g_rewards_sync_initializing = true;
   auto* rewards_service =
       brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
           profile);
+  tricks::g_rewards_sync_initializing = false;
 
   std::unique_ptr<AdsServiceImpl> ads_service =
       std::make_unique<AdsServiceImpl>(
