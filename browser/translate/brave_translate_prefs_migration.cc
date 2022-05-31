@@ -14,7 +14,7 @@ namespace translate {
 
 namespace prefs {
 const char kMigratedToInternalTranslation[] =
-    "translate_migrated_to_internal_translation";
+    "brave.translate_migrated_from_extension";
 }  // namespace prefs
 
 void RegisterBraveProfilePrefsForMigration(PrefRegistrySimple* registry) {
