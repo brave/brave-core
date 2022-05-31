@@ -41,7 +41,7 @@ public struct NewSiteConnectionView: View {
         Image(uiImage: image)
           .resizable()
           .scaledToFit()
-          .frame(width: faviconSize, height: faviconSize)
+          .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
           .background(Color(.braveDisabled))
           .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
       } else {
@@ -56,19 +56,10 @@ public struct NewSiteConnectionView: View {
   
   private var headerView: some View {
     VStack(spacing: 8) {
-      Group {
-        Image(systemName: "globe")
-          .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-          .background(Color(.braveDisabled))
-          .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-        origin.url.map { url in
-          Text(verbatim: url.absoluteString)
-            .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
-            .multilineTextAlignment(.center)
-        }
+      origin.url.map { url in
+        originAndFavicon(url: url)
+          .accessibilityElement(children: .combine)
       }
-      .accessibilityElement(children: .combine)
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
         .foregroundColor(Color(.bravePrimary))
