@@ -92,11 +92,19 @@ struct EditSiteConnectionView: View {
     }
   }
   
-  @ViewBuilder private var connectionInfo: some View {
-    Image(systemName: "globe")
-      .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-      .background(Color(.braveDisabled))
-      .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+  @ViewBuilder private func connectionInfo(url: URL) -> some View {
+    FaviconReader(url: url) { image in
+      if let image = image {
+        Image(uiImage: image)
+          .resizable()
+          .scaledToFit()
+          .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+          .background(Color(.braveDisabled))
+          .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+      } else {
+        ProgressView()
+      }
+    }
     VStack(alignment: sizeCategory.isAccessibilityCategory ? .center : .leading, spacing: 2) {
       origin.url.map { url in
         Text(verbatim: url.absoluteString)
@@ -132,20 +140,22 @@ struct EditSiteConnectionView: View {
             }
           }
         } header: {
-          Group {
-            if sizeCategory.isAccessibilityCategory {
-              VStack(spacing: 12) {
-                connectionInfo
-              }
-            } else {
-              HStack(spacing: 12) {    
-                connectionInfo
+          origin.url.map { url in
+            Group {
+              if sizeCategory.isAccessibilityCategory {
+                VStack(spacing: 12) {
+                  connectionInfo(url: url)
+                }
+              } else {
+                HStack(spacing: 12) {
+                  connectionInfo(url: url)
+                }
               }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .resetListHeaderStyle()
+            .padding(.vertical)
           }
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .resetListHeaderStyle()
-          .padding(.vertical)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
