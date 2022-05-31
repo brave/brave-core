@@ -10,3 +10,8 @@ brave_components_content_settings_renderer_sources += [
   "//brave/components/content_settings/renderer/brave_content_settings_agent_impl.cc",
   "//brave/components/content_settings/renderer/brave_content_settings_agent_impl.h",
 ]
+
+if (is_android) {
+  brave_components_content_settings_renderer_deps +=
+      [ "//brave/components/brave_shields/common:mojom" ]
+}
