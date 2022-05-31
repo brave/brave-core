@@ -7,7 +7,10 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/json/json_reader.h"
 #include "base/strings/string_piece.h"
+#include "base/values.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 #include "url/third_party/mozilla/url_parse.h"
 
@@ -15,35 +18,81 @@ namespace brave_ads {
 
 namespace {
 
-constexpr auto kSearchAdsConfirmationVettedHosts =
+constexpr auto kSearchResultAdsConfirmationVettedHosts =
     base::MakeFixedFlatSet<base::StringPiece>(
         {"search.anonymous.brave.com", "search.anonymous.bravesoftware.com"});
-constexpr char kSearchAdsViewedPath[] = "/v10/view";
+constexpr char kSearchResultAdsViewedPath[] = "/v3/confirmation";
 constexpr char kCreativeInstanceIdParameterName[] = "creativeInstanceId";
+constexpr char kTypeParameterName[] = "type";
+constexpr char kTypeViewParameterValue[] = "view";
 
-}  // namespace
-
-std::string GetCreativeInstanceIdFromSearchAdsViewedUrl(const GURL& url) {
+bool IsSearchResultAdConfirmationUrl(const GURL& url, base::StringPiece path) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
-      url.path_piece() != kSearchAdsViewedPath || !url.has_query()) {
-    return std::string();
+      url.path_piece() != path) {
+    return false;
   }
 
-  if (!base::Contains(kSearchAdsConfirmationVettedHosts, url.host_piece())) {
-    return std::string();
+  if (!base::Contains(kSearchResultAdsConfirmationVettedHosts,
+                      url.host_piece())) {
+    return false;
   }
 
-  base::StringPiece query_str = url.query_piece();
-  url::Component query(0, static_cast<int>(query_str.length())), key, value;
-  while (url::ExtractQueryKeyValue(query_str.data(), &query, &key, &value)) {
-    base::StringPiece key_str = query_str.substr(key.begin, key.len);
-    if (key_str == kCreativeInstanceIdParameterName) {
-      base::StringPiece value_str = query_str.substr(value.begin, value.len);
-      return static_cast<std::string>(value_str);
+  return true;
+}
+
+std::string GetUploadData(const network::ResourceRequest& request) {
+  std::string upload_data;
+  if (!request.request_body) {
+    return {};
+  }
+  const auto* elements = request.request_body->elements();
+  for (const network::DataElement& element : *elements) {
+    if (element.type() == network::mojom::DataElementDataView::Tag::kBytes) {
+      const auto& bytes = element.As<network::DataElementBytes>().bytes();
+      upload_data.append(bytes.begin(), bytes.end());
     }
   }
 
-  return std::string();
+  return upload_data;
+}
+
+}  // namespace
+
+bool IsSearchResultAdViewedConfirmationUrl(const GURL& url) {
+  return IsSearchResultAdConfirmationUrl(url, kSearchResultAdsViewedPath);
+}
+
+std::string GetViewedSearchResultAdCreativeInstanceId(
+    const network::ResourceRequest& request) {
+  if (!IsSearchResultAdViewedConfirmationUrl(request.url) ||
+      request.method != net::HttpRequestHeaders::kPostMethod) {
+    return {};
+  }
+
+  const std::string payload_json = GetUploadData(request);
+  const absl::optional<base::Value> payload_value =
+      base::JSONReader::Read(payload_json);
+  if (!payload_value) {
+    return {};
+  }
+
+  const base::Value::Dict* payload_dict = payload_value->GetIfDict();
+  if (!payload_dict) {
+    return {};
+  }
+
+  const std::string* type = payload_dict->FindString(kTypeParameterName);
+  if (!type || *type != kTypeViewParameterValue) {
+    return {};
+  }
+
+  const std::string* creative_instance_id =
+      payload_dict->FindString(kCreativeInstanceIdParameterName);
+  if (!creative_instance_id) {
+    return {};
+  }
+
+  return *creative_instance_id;
 }
 
 }  // namespace brave_ads

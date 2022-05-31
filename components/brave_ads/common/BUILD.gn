@@ -18,6 +18,7 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//services/network/public/cpp",
     "//url",
   ]
 }

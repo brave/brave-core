@@ -51,9 +51,7 @@ SearchResultAdRendererThrottle::MaybeCreateThrottle(
   }
 
   const GURL url = static_cast<GURL>(request.Url());
-  std::string creative_instance_id =
-      GetCreativeInstanceIdFromSearchAdsViewedUrl(url);
-  if (creative_instance_id.empty()) {
+  if (!IsSearchResultAdViewedConfirmationUrl(url)) {
     return nullptr;
   }
 
@@ -68,19 +66,16 @@ SearchResultAdRendererThrottle::MaybeCreateThrottle(
       brave_ads_pending_remote.InitWithNewPipeAndPassReceiver());
 
   auto throttle = std::make_unique<SearchResultAdRendererThrottle>(
-      std::move(brave_ads_pending_remote), std::move(creative_instance_id));
+      std::move(brave_ads_pending_remote));
 
   return throttle;
 }
 
 SearchResultAdRendererThrottle::SearchResultAdRendererThrottle(
     mojo::PendingRemote<brave_ads::mojom::BraveAdsHost>
-        brave_ads_pending_remote,
-    std::string creative_instance_id)
-    : brave_ads_pending_remote_(std::move(brave_ads_pending_remote)),
-      creative_instance_id_(std::move(creative_instance_id)) {
+        brave_ads_pending_remote)
+    : brave_ads_pending_remote_(std::move(brave_ads_pending_remote)) {
   DCHECK(brave_ads_pending_remote_);
-  DCHECK(!creative_instance_id_.empty());
 }
 
 SearchResultAdRendererThrottle::~SearchResultAdRendererThrottle() = default;
@@ -92,12 +87,17 @@ void SearchResultAdRendererThrottle::WillStartRequest(
     bool* defer) {
   DCHECK(request);
   DCHECK(request->request_initiator);
-  DCHECK_EQ(creative_instance_id_,
-            GetCreativeInstanceIdFromSearchAdsViewedUrl(request->url));
   DCHECK(brave_search::IsAllowedHost(request->request_initiator->GetURL()));
   DCHECK_EQ(request->resource_type,
             static_cast<int>(blink::mojom::ResourceType::kXhr));
   DCHECK(request->is_fetch_like_api);
+
+  const std::string creative_instance_id =
+      GetViewedSearchResultAdCreativeInstanceId(*request);
+  if (creative_instance_id.empty()) {
+    brave_ads_pending_remote_.reset();
+    return;
+  }
 
   mojo::Remote<brave_ads::mojom::BraveAdsHost> brave_ads_remote(
       std::move(brave_ads_pending_remote_));
@@ -106,7 +106,7 @@ void SearchResultAdRendererThrottle::WillStartRequest(
 
   brave_ads::mojom::BraveAdsHost* raw_brave_ads_remote = brave_ads_remote.get();
   raw_brave_ads_remote->MaybeTriggerAdViewedEvent(
-      creative_instance_id_,
+      creative_instance_id,
       base::BindOnce(
           &SearchResultAdRendererThrottle::OnMaybeTriggerAdViewedEvent,
           weak_factory_.GetWeakPtr(), std::move(brave_ads_remote)));
