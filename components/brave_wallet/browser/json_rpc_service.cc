@@ -30,8 +30,8 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/json_request_helper.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -179,7 +179,7 @@ void JsonRpcService::RequestInternal(
 
   base::flat_map<std::string, std::string> request_headers;
   std::string id, method, params;
-  if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
+  if (GetJsonRequestInfo(json_payload, nullptr, &method, &params)) {
     request_headers["X-Eth-Method"] = method;
     if (method == kEthGetBlockByNumber) {
       std::string cleaned_params;

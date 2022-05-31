@@ -10,13 +10,13 @@
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/json_request_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-TEST(EthRequestHelperUnitTest, CommonParseErrors) {
+TEST(JsonRequestHelperUnitTest, CommonParseErrors) {
   // Invalid things to pass in for parsing
   const std::vector<std::string> error_cases(
       {"not json data", "{\"params\":[{},{}]}", "{\"params\":[0]}", "{}", "[]",
@@ -48,7 +48,7 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
   }
 }
 
-TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
+TEST(JsonRequestHelperUnitTest, ParseEthSendTransactionParams) {
   std::string json(
       R"({
         "params": [{
@@ -73,7 +73,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   EXPECT_TRUE(tx_data->nonce.empty());  // Should be ignored.
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
+TEST(JsonRequestHelperUnitTest, ParseEthSendTransaction1559Params) {
   std::string json(
       R"({
         "params": [{
@@ -126,7 +126,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
   EXPECT_TRUE(tx_data->max_fee_per_gas.empty());
 }
 
-TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
+TEST(JsonRequestHelperUnitTest, ShouldCreate1559Tx) {
   const std::string ledger_address =
       "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C9";
   const std::string trezor_address =
@@ -274,7 +274,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
                                   base::ToLowerASCII(hw_address)));
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
+TEST(JsonRequestHelperUnitTest, ParseEthSignParams) {
   const std::string json(
       R"({
         "params": [
@@ -305,7 +305,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
       ParseEthSignParams("{\"params\":[\"123\",123]}", &address, &message));
 }
 
-TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
+TEST(JsonRequestHelperUnitTest, ParsePersonalSignParams) {
   const std::string json(
       R"({
         "params": [
@@ -417,7 +417,7 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
                                        &message));
 }
 
-TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
+TEST(JsonRequestHelperUnitTest, ParsePersonalEcRecoverParams) {
   const std::string json(
       R"({
         "params": [
@@ -472,7 +472,7 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
       "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
+TEST(JsonRequestHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
   const std::string json(
       R"({
         "params": [
@@ -497,7 +497,7 @@ TEST(EthResponseHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
+TEST(JsonRequestHelperUnitTest, ParseEthDecryptParams) {
   const std::string json(
       R"({
         "params": [
@@ -541,7 +541,7 @@ TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
       ParseEthDecryptParams(json_extra_first_entry, &untrusted_json, &address));
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
+TEST(JsonRequestHelperUnitTest, ParseEthDecryptData) {
   const std::string json(
       R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
 
@@ -559,7 +559,7 @@ TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
             "KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg==");
 }
 
-TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
+TEST(JsonRequestHelperUnitTest, GetJsonRequestInfo) {
   // Happy path
   std::string json = R"({
     "id": "1",
@@ -569,7 +569,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   })";
   base::Value id;
   std::string method, params;
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value("1"));
   EXPECT_EQ(method, "eth_blockNumber");
   EXPECT_EQ(params, "[]");
@@ -582,7 +582,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   })";
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value());
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
@@ -596,7 +596,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   id = base::Value();
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, &params));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
@@ -604,26 +604,26 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   // Can pass nullptr for id
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, nullptr, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(json, nullptr, &method, &params));
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
 
   // Can pass nullptr for method
   id = base::Value();
   params.clear();
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, nullptr, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(json, &id, nullptr, &params));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
 
   // Can pass nullptr for params
   id = base::Value();
   method.clear();
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, &id, &method, nullptr));
+  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, nullptr));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(method, "eth_getBlockByNumber");
 
   // Can pass nullptr for all params
-  EXPECT_TRUE(GetEthJsonRequestInfo(json, nullptr, nullptr, nullptr));
+  EXPECT_TRUE(GetJsonRequestInfo(json, nullptr, nullptr, nullptr));
 
   // Can omit id but ask for id return
   std::string missing_id_json = R"({
@@ -633,7 +633,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   id = base::Value("something");
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetEthJsonRequestInfo(missing_id_json, &id, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(missing_id_json, &id, &method, &params));
   EXPECT_EQ(id, base::Value());
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
@@ -644,8 +644,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
     "jsonrpc": "2.0",
     "params": []
   })";
-  EXPECT_FALSE(
-      GetEthJsonRequestInfo(missing_method_json, &id, &method, &params));
+  EXPECT_FALSE(GetJsonRequestInfo(missing_method_json, &id, &method, &params));
 
   // Invalid method type
   std::string wrong_type_method_json = R"({
@@ -655,7 +654,7 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
     "params": []
   })";
   EXPECT_FALSE(
-      GetEthJsonRequestInfo(wrong_type_method_json, &id, &method, &params));
+      GetJsonRequestInfo(wrong_type_method_json, &id, &method, &params));
 
   // Invalid params type
   std::string wrong_type_params_json = R"({
@@ -665,20 +664,20 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
     "params": 1
   })";
   EXPECT_FALSE(
-      GetEthJsonRequestInfo(wrong_type_params_json, &id, &method, &params));
+      GetJsonRequestInfo(wrong_type_params_json, &id, &method, &params));
 
   // Not even JSON
   std::string invalid_input = "Your sound card works perfectly!";
-  EXPECT_FALSE(GetEthJsonRequestInfo(invalid_input, &id, &method, &params));
+  EXPECT_FALSE(GetJsonRequestInfo(invalid_input, &id, &method, &params));
 }
 
-TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
+TEST(JsonRequestHelperUnitTest, NormalizeJsonRequest) {
   // Identity works
   std::string full_json =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":"
       "[]}";
   std::string output_json;
-  EXPECT_TRUE(NormalizeEthRequest(full_json, &output_json));
+  EXPECT_TRUE(NormalizeJsonRequest(full_json, &output_json));
   EXPECT_EQ(full_json, output_json);
 
   // Fills missing id and jsonrpc values
@@ -686,15 +685,15 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
   std::string expected_full_json_no_id =
       "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\","
       "\"params\":[]}";
-  EXPECT_TRUE(NormalizeEthRequest(partial_json, &output_json));
+  EXPECT_TRUE(NormalizeJsonRequest(partial_json, &output_json));
   EXPECT_EQ(expected_full_json_no_id, output_json);
 
   // Invalid input
-  EXPECT_FALSE(NormalizeEthRequest(
+  EXPECT_FALSE(NormalizeJsonRequest(
       "There is only one thing we say to death: Not today.", &output_json));
 }
 
-TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
+TEST(JsonRequestHelperUnitTest, ParseSwitchEthereumChainParams) {
   std::string chain_id;
   EXPECT_TRUE(ParseSwitchEthereumChainParams(
       "{\"params\": [{\"chainId\": \"0x1\"}]}", &chain_id));
@@ -717,7 +716,7 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
   EXPECT_FALSE(ParseSwitchEthereumChainParams("{\"params\": [{}]}", &chain_id));
 }
 
-TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
+TEST(JsonRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   const std::string json = R"({
     "params": [
       "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
@@ -803,7 +802,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
 }
 
-TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
+TEST(JsonRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   std::string json = R"({
     "id": "1",
     "jsonrpc": "2.0",
@@ -1097,7 +1096,7 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
   EXPECT_TRUE(error_message.empty());
 }
 
-TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
+TEST(JsonRequestHelperUnitTest, ParseRequestPermissionsParams) {
   std::vector<std::string> restricted_methods;
 
   std::string json =
