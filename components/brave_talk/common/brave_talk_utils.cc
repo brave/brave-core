@@ -12,7 +12,6 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/strings/string_piece_forward.h"
-#include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_talk/common/features.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
