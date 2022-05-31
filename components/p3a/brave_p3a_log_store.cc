@@ -10,6 +10,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/p3a/metric_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -66,7 +67,7 @@ void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
 }
 
 void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
-  DCHECK(delegate_->IsActualMetric(histogram_name));
+  DCHECK(p3a::IsValidMetric(histogram_name));
   log_.erase(histogram_name);
   unsent_entries_.erase(histogram_name);
 
@@ -212,7 +213,7 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
     LogEntry entry;
     const std::string name = dict_item.first;
     // Check if the metric is obsolete.
-    if (!delegate_->IsActualMetric(name)) {
+    if (!p3a::IsValidMetric(name)) {
       // Drop it from the local state.
       list->RemoveKey(name);
       continue;

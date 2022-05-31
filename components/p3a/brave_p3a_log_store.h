@@ -41,8 +41,6 @@ class BraveP3ALogStore : public metrics::LogStore {
     // Prepares a string representaion of an entry.
     virtual LogForJsonMigration Serialize(base::StringPiece histogram_name,
                                           uint64_t value) = 0;
-    // Returns false if the metric is obsolete and should be cleaned up.
-    virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 

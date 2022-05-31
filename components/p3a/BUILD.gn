@@ -24,6 +24,7 @@ static_library("p3a") {
     "brave_p3a_utils.h",
     "histograms_braveizer.cc",
     "histograms_braveizer.h",
+    "metric_names.cc",
     "metric_names.h",
     "p3a_message.cc",
     "p3a_message.h",

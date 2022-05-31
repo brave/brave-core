@@ -16,7 +16,6 @@
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/metrics_hashes.h"
 #include "base/metrics/sample_vector.h"
-#include "base/metrics/statistics_recorder.h"
 #include "base/no_destructor.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -113,13 +112,8 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
 }
 
 void BraveP3AService::InitCallbacks() {
-  for (base::StringPiece histogram_name : p3a::kCollectedHistograms) {
-    histogram_sample_callbacks_.push_back(
-        std::make_unique<
-            base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-            std::string(histogram_name),
-            base::BindRepeating(&BraveP3AService::OnHistogramChanged, this)));
-  }
+  histogram_sample_callbacks_ = p3a::RegisterMetricObservers(
+      base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
 }
 
 void BraveP3AService::Init(
@@ -208,11 +202,6 @@ BraveP3ALogStore::LogForJsonMigration BraveP3AService::Serialize(
   DCHECK(ok);
 
   return {message.SerializeAsString(), p3a_json_message};
-}
-
-bool
-BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
-  return p3a::kCollectedHistograms.contains(histogram_name);
 }
 
 void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {

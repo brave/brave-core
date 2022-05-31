@@ -10,13 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "url/gurl.h"
 
@@ -60,9 +60,6 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   BraveP3ALogStore::LogForJsonMigration Serialize(
       base::StringPiece histogram_name,
       uint64_t value) override;
-
-  // May be accessed from multiple threads, so this is thread-safe.
-  bool IsActualMetric(base::StringPiece histogram_name) const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveP3AService>;
@@ -127,9 +124,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Once fired we restart the overall uploading process.
   base::WallClockTimer rotation_timer_;
 
-  std::vector<
-      std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
-      histogram_sample_callbacks_;
+  p3a::MetricObserverList histogram_sample_callbacks_;
 };
 
 }  // namespace brave
