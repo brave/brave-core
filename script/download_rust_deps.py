@@ -6,10 +6,11 @@
 """Script to download rust_deps."""
 
 import argparse
-import deps
 import os
 import subprocess
 import sys
+
+import deps
 
 try:
     from urllib2 import URLError
@@ -24,7 +25,7 @@ RUSTUP_HOME = os.path.join(RUSTUP_PATH, RUST_DEPS_PACKAGE_VERSION)
 
 
 def get_url(platform):
-    if platform == "win32" or platform == "cygwin":
+    if platform in ("win32", "cygwin"):
         filename = "rust_deps_win_" + RUST_DEPS_PACKAGE_VERSION + ".zip"
     elif platform == 'darwin':
         filename = "rust_deps_mac_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
@@ -49,7 +50,7 @@ def should_download():
 
 def download_and_unpack_rust_deps(platform):
     if not should_download():
-        return 0
+        return
 
     url = get_url('ios' if platform == 'ios' else sys.platform)
 

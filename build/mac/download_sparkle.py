@@ -32,7 +32,7 @@ def get_current_revision():
         with open(os.path.join(SPARKLE_BINARIES_DIR, '.revision')) as f:
             return f.read()
     except FileNotFoundError:
-        pass
+        return None
 
 
 def set_current_revision(value):
