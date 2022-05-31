@@ -91,6 +91,7 @@ export const MessageText = styled.span`
   text-align: left;
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
+  white-space: pre-wrap;
 `
 
 export const ButtonRow = styled.div`
