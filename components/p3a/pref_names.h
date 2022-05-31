@@ -12,10 +12,10 @@ extern const char kP3AEnabled[];
 extern const char kP3AOptIn[];
 extern const char kP3ANoticeAcknowledged[];
 
-enum P3AOptInStage {
+enum P3AOptIn {
   kUnSet = 0,
-  kDefault,
-  kOptIn,
+  kDefault,   // Leave kP3AEnabled unchanged.
+  kRequired,  // Require user opt-in to enable reporting.
 };
 
 }  // namespace brave

@@ -99,19 +99,19 @@ base::Time NextMonday(base::Time time) {
 
 // Determine if this installation is opt-in or opt-out for reporting.
 void InitOptInStatus(PrefService* local_state) {
-  if (local_state->GetInteger(kP3AOptIn) == P3AOptInStage::kUnSet) {
+  if (local_state->GetInteger(kP3AOptIn) == P3AOptIn::kUnSet) {
     bool enable_for_testing = base::FeatureList::IsEnabled(kP3AOptInFeature);
     // Hard-code enrollment criteria. We can't use a Griffin study
     // to determine participation because we need to decide at first-run
     // when the seed hasn't been downloaded yet.
     if (base::RandDouble() < 0.05 || enable_for_testing) {
       // Turn P3A off and require user opt-in to enable it.
-      local_state->SetInteger(kP3AOptIn, P3AOptInStage::kOptIn);
+      local_state->SetInteger(kP3AOptIn, P3AOptIn::kRequired);
       local_state->SetDefaultPrefValue(kP3AEnabled, base::Value(false));
     } else {
       // Leave things as the default, but update kP3AOptIn so we
       // know an enrollment decision has been made.
-      local_state->SetInteger(kP3AOptIn, P3AOptInStage::kDefault);
+      local_state->SetInteger(kP3AOptIn, P3AOptIn::kDefault);
     }
   }
 }
@@ -134,10 +134,15 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
   // Declare a placeholder for opt-in study participation.
-  registry->RegisterIntegerPref(kP3AOptIn, P3AOptInStage::kUnSet);
+  registry->RegisterIntegerPref(kP3AOptIn, P3AOptIn::kUnSet);
 
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
+}
+
+void BraveP3AService::MaybeOptIn(PrefService* local_state) {
+  // Decide whether to participate in the opt-in study, if necessary.
+  InitOptInStatus(local_state);
 }
 
 void BraveP3AService::InitCallbacks() {

@@ -47,6 +47,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   BraveP3AService& operator=(const BraveP3AService&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
+  static void MaybeOptIn(PrefService* local_state);
 
   // Should be called right after constructor to subscribe to histogram
   // updates. Can't call it in constructor because of refcounted peculiarities.
