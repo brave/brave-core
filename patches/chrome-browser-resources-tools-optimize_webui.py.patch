@@ -1,21 +1,14 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index ce857d278f507425b2fd11d8929c8103a1f8957b..9c80ac61eb47aa51fcbeff41db09a4299c654cad 100755
+index ce857d278f507425b2fd11d8929c8103a1f8957b..4a26b2c2f1bc2e602a640bd7afd65519334f9ec0 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
-@@ -24,6 +24,7 @@ import node_modules
- 
- # These files are already combined and minified.
- _BASE_EXCLUDES = []
-+_BASE_EXCLUDES += [ 'chrome://brave-resources/fonts/muli.css', 'chrome://brave-resources/fonts/poppins.css' ]; _BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
- for excluded_file in [
-     'resources/polymer/v1_0/web-animations-js/web-animations-next-lite.min.js',
-     'resources/mojo/mojo/public/mojom/base/time.mojom-lite.js',
-@@ -44,6 +45,8 @@ def _request_list_path(out_path, target_name):
+@@ -44,6 +44,9 @@ def _request_list_path(out_path, target_name):
  
  
  def _get_dep_path(dep, host_url, in_path):
++  br_resources_path = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
 +  for brave_host_url in ['chrome://brave-resources/', '//brave-resources/']:
-+    if dep.startswith(brave_host_url): return dep.replace(brave_host_url, os.path.relpath(_BR_RESOURCES_PATH, _CWD))
++    if dep.startswith(brave_host_url): return dep.replace(brave_host_url, os.path.relpath(br_resources_path, _CWD))
    if dep.startswith(host_url):
      return dep.replace(host_url, os.path.relpath(in_path, _CWD))
    elif not (dep.startswith('chrome://') or dep.startswith('//')):
