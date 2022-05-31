@@ -34,6 +34,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/url_util.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
@@ -149,12 +150,13 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     // We don't support CORS preflights on the backend.
     EXPECT_NE(request.method, net::test_server::METHOD_OPTIONS);
 
-    if (request.GetURL().path() == "/translate") {
-      const auto query = request.GetURL().query();
-      EXPECT_NE(query.find(base::StringPrintf("&key=%s",
-                                              BUILDFLAG(BRAVE_SERVICES_KEY))),
-                std::string::npos)
-          << "bad brave api key for request " << request.GetURL();
+    const auto url = request.GetURL();
+    if (url.path() == "/translate") {
+      std::string key;
+      EXPECT_TRUE(net::GetValueForKeyInQuery(url, "key", &key))
+          << "no brave api key for request " << url;
+      EXPECT_EQ(key, BUILDFLAG(BRAVE_SERVICES_KEY))
+          << "bad brave api key for request " << url;
     }
 
     const auto response = backend_request_.Call(request.GetURL().path());
