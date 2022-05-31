@@ -26,6 +26,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_media_capture_id.h"
 #include "src/chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
+#include "third_party/blink/public/mojom/mediastream/media_stream.mojom-shared.h"
 
 namespace brave_talk {
 
@@ -118,7 +119,6 @@ void BraveTalkMediaAccessHandler::AcceptRequest(
 
   blink::MediaStreamDevices devices;
 
-  // TODO: Work out how to get the sender origin.
   std::u16string application_title =
       base::UTF8ToUTF16(BraveTalkService::GetInstance()
                             ->web_contents()
@@ -126,7 +126,7 @@ void BraveTalkMediaAccessHandler::AcceptRequest(
                             ->GetLastCommittedOrigin()
                             .Serialize());
   std::unique_ptr<content::MediaStreamUI> ui =
-      GetDevicesForDesktopCapture(request, BraveTalkService::GetInstance()->web_contents(), media_id, false, true,
+      GetDevicesForDesktopCapture(request, BraveTalkService::GetInstance()->web_contents(), media_id, request.audio_type == blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE, true,
                                   true, application_title, &devices);
   DCHECK(!devices.empty());
 
