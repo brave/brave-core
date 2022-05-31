@@ -677,6 +677,59 @@ TEST(BraveWalletUtilsUnitTest, GetAllEthCustomChainsTest) {
   EXPECT_EQ(chain2, *GetAllEthCustomChains(&prefs)[1]);
 }
 
+TEST(BraveWalletUtilsUnitTest, KnownEthChainExists) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+
+  std::vector<base::Value> values;
+  mojom::NetworkInfo chain("chain_id", "chain_name", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"},
+                           "symbol_name", "symbol", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
+  values.push_back(EthNetworkInfoToValue(chain));
+  UpdateCustomNetworks(&prefs, &values);
+
+  auto known_chains = GetAllKnownEthChains(&prefs);
+  EXPECT_EQ(known_chains.size(), 12u);
+  for (auto& known_chain : known_chains) {
+    EXPECT_TRUE(KnownEthChainExists(known_chain->chain_id));
+  }
+
+  EXPECT_TRUE(CustomEthChainExists(&prefs, chain.chain_id));
+  EXPECT_FALSE(KnownEthChainExists(chain.chain_id));
+}
+
+TEST(BraveWalletUtilsUnitTest, CustomEthChainExists) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+
+  std::vector<base::Value> values;
+  mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
+                            {"https://url1.com"}, {"https://url1.com"},
+                            "symbol_name", "symbol", 11, mojom::CoinType::ETH,
+                            mojom::NetworkInfoData::NewEthData(
+                                mojom::NetworkInfoDataETH::New(false)));
+  values.push_back(EthNetworkInfoToValue(chain1));
+
+  mojom::NetworkInfo chain2(
+      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
+      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  values.push_back(EthNetworkInfoToValue(chain2));
+
+  EXPECT_FALSE(CustomEthChainExists(&prefs, chain1.chain_id));
+  EXPECT_FALSE(CustomEthChainExists(&prefs, chain2.chain_id));
+  EXPECT_EQ(GetAllEthCustomChains(&prefs).size(), 0u);
+  UpdateCustomNetworks(&prefs, &values);
+
+  EXPECT_TRUE(CustomEthChainExists(&prefs, chain1.chain_id));
+  EXPECT_TRUE(CustomEthChainExists(&prefs, chain2.chain_id));
+  EXPECT_EQ(GetAllEthCustomChains(&prefs).size(), 2u);
+}
+
 TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -830,6 +883,27 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthChain) {
   EXPECT_EQ(network->data->get_eth_data()->is_eip1559, true);
 }
 
+TEST(BraveWalletUtilsUnitTest, GetCustomEthChain) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+
+  EXPECT_FALSE(GetCustomEthChain(&prefs, "0x5566"));
+
+  std::vector<base::Value> values;
+  mojom::NetworkInfo chain("0x5566", "chain_name", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"},
+                           "symbol_name", "symbol", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
+  values.push_back(EthNetworkInfoToValue(chain));
+  UpdateCustomNetworks(&prefs, &values);
+
+  auto network = GetCustomEthChain(&prefs, chain.chain_id);
+  ASSERT_TRUE(network);
+  EXPECT_EQ(*network, chain);
+}
+
 TEST(BraveWalletUtilsUnitTest, GetChain) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -842,6 +916,12 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   values.push_back(EthNetworkInfoToValue(chain1));
+  mojom::NetworkInfo chain2("0x89", "CustomPolygon", {"https://url1.com"},
+                            {"https://url1.com"}, {"https://url1.com"},
+                            "symbol_name", "symbol", 123, mojom::CoinType::ETH,
+                            mojom::NetworkInfoData::NewEthData(
+                                mojom::NetworkInfoDataETH::New(false)));
+  values.push_back(EthNetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, &values);
 
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ETH));
@@ -851,6 +931,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   EXPECT_EQ(GetChain(&prefs, "0x539", mojom::CoinType::ETH),
             GetKnownEthChain(&prefs, "0x539"));
 
+  EXPECT_EQ(*GetChain(&prefs, "0x89", mojom::CoinType::ETH), chain2);
   // Solana
 
   mojom::NetworkInfo sol_mainnet(

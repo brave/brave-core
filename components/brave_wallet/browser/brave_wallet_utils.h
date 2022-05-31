@@ -81,6 +81,8 @@ GURL AddInfuraProjectId(const GURL& url);
 GURL MaybeAddInfuraProjectId(const GURL& url);
 mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id);
+mojom::NetworkInfoPtr GetCustomEthChain(PrefService* prefs,
+                                        const std::string& chain_id);
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
 std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
