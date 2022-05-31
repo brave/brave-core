@@ -83,6 +83,10 @@ void ConfirmationsState::Initialize(InitializeCallback callback) {
   Load();
 }
 
+bool ConfirmationsState::IsInitialized() const {
+  return is_initialized_;
+}
+
 void ConfirmationsState::Load() {
   BLOG(3, "Loading confirmations state");
 
