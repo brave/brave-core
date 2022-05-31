@@ -10,6 +10,7 @@
 #include "base/path_service.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
+#include "content/public/test/browser_task_environment.h"
 #include "sql/statement.h"
 #include "sql/test/scoped_error_expecter.h"
 #include "sql/test/test_helpers.h"
@@ -37,6 +38,8 @@ namespace brave_federated {
 
 class DataStoreTest : public testing::Test {
  public:
+  DataStoreTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   void SetUp() override;
   void TearDown() override;
 
@@ -46,9 +49,10 @@ class DataStoreTest : public testing::Test {
 
   DataStore::TrainingData TrainingDataFromTestInfo();
 
-  bool AddTrainingInstance(std::vector<mojom::Covariate> covariates);
+  bool AddTrainingInstance(std::vector<mojom::CovariatePtr> covariates);
   void AddAll();
 
+  content::BrowserTaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   DataStore* test_data_store_;
 };
@@ -95,26 +99,20 @@ DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
     covariate->data_type = (mojom::DataType)entry.feature_type;
     covariate->value = entry.feature_value;
 
-    if (!base::Contains(training_data, training_instance_id)) {
-      std::vector<mojom::Covariate> covariates;
-      covariates.push_back(*covariate);
-      training_data.insert(std::make_pair(training_instance_id, covariates));
-    } else {
-      training_data[training_instance_id].push_back(*covariate);
-    }
+    training_data[training_instance_id].push_back(std::move(covariate));
   }
 
   return training_data;
 }
 
 bool DataStoreTest::AddTrainingInstance(
-    std::vector<mojom::Covariate> covariates) {
+    std::vector<mojom::CovariatePtr> covariates) {
   mojom::TrainingInstancePtr training_instance = mojom::TrainingInstance::New();
   for (size_t j = 0; j < std::size(covariates); ++j) {
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->covariate_type = covariates[j].covariate_type;
-    covariate->data_type = covariates[j].data_type;
-    covariate->value = covariates[j].value;
+    covariate->covariate_type = covariates[j]->covariate_type;
+    covariate->data_type = covariates[j]->data_type;
+    covariate->value = covariates[j]->value;
     training_instance->covariates.push_back(std::move(covariate));
   }
   return test_data_store_->AddTrainingInstance(std::move(training_instance));
@@ -124,7 +122,7 @@ void DataStoreTest::AddAll() {
   ClearDB();
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
   for (size_t i = 0; i < std::size(training_data); ++i) {
-    AddTrainingInstance(training_data[i]);
+    AddTrainingInstance(std::move(training_data[i]));
   }
   EXPECT_EQ(std::size(training_data_test_db), CountRecords());
   EXPECT_EQ(std::size(training_data), CountTrainingInstances());
@@ -137,9 +135,9 @@ TEST_F(DataStoreTest, AddTrainingInstance) {
   ClearDB();
   EXPECT_EQ(0U, CountRecords());
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
-  EXPECT_TRUE(AddTrainingInstance(training_data[0]));
+  EXPECT_TRUE(AddTrainingInstance(std::move(training_data[0])));
   EXPECT_EQ(1U, CountTrainingInstances());
-  EXPECT_TRUE(AddTrainingInstance(training_data[1]));
+  EXPECT_TRUE(AddTrainingInstance(std::move(training_data[1])));
   EXPECT_EQ(2U, CountTrainingInstances());
 }
 
@@ -167,17 +165,15 @@ TEST_F(DataStoreTest, DeleteLogs) {
   EXPECT_EQ(0U, CountRecords());
 }
 
-// TEST_F(DataStoreTest, EnforceRetentionPolicy) {
-//   AddAll();
-//   EXPECT_EQ(4U, CountRecords());
+TEST_F(DataStoreTest, EnforceRetentionPolicy) {
+  AddAll();
+  EXPECT_EQ(4U, CountRecords());
+  task_environment_.AdvanceClock(base::Days(31));
 
-//   test_data_store_->EnforceRetentionPolicy();
+  test_data_store_->EnforceRetentionPolicy();
 
-//   DataStore::TrainingData training_data =
-//   test_data_store_->LoadTrainingData(); EXPECT_EQ(3U, CountRecords());
-
-//   auto it = training_data.find(1);
-//   EXPECT_TRUE(it == training_data.end());
-// }
+  DataStore::TrainingData training_data = test_data_store_->LoadTrainingData();
+  EXPECT_EQ(0U, CountRecords());
+}
 
 }  // namespace brave_federated

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORE_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORE_SERVICE_H_
 
+#include <memory>
 #include <string>
 #include <utility>
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_federated/data_store_service.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
@@ -14,8 +15,7 @@
 #include "brave/components/brave_federated/data_stores/data_store.h"
 
 namespace {
-constexpr char kAdNotificationTaskName[] =
-    "ad_notification_timing_task";
+constexpr char kAdNotificationTaskName[] = "ad_notification_timing_task";
 constexpr int kAdNotificationTaskId = 0;
 constexpr int kMaxNumberOfRecords = 50;
 constexpr int kMaxRetentionDays = 30;
@@ -63,8 +63,7 @@ void AsyncDataStore::EnforceRetentionPolicy() {
 // -------------- DataStoreService --------------------
 
 DataStoreService::DataStoreService(const base::FilePath& database_path)
-    : db_path_(database_path),
-      weak_factory_(this) {}
+    : db_path_(database_path), weak_factory_(this) {}
 
 DataStoreService::~DataStoreService() {
   EnforceRetentionPolicies();
@@ -99,12 +98,10 @@ AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
   return it->second.get();
 }
 
-// AsyncDataStore* DataStoreService::GetDataStore(const std::string& name) {
-//   return &ad_timing_data_store_;
-// }
-
 void DataStoreService::EnforceRetentionPolicies() {
-  // ad_notification_timing_data_store_.EnforceRetentionPolicy();
+  for (const auto& data_store : data_stores_) {
+    data_store.second->EnforceRetentionPolicy();
+  }
 }
 
 }  // namespace brave_federated

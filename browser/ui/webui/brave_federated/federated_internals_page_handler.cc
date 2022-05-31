@@ -18,8 +18,7 @@
 #include "chrome/browser/profiles/profile.h"
 
 namespace {
-constexpr char kAdNotificationTaskName[] =
-    "ad_notification_timing_task";
+constexpr char kAdNotificationTaskName[] = "ad_notification_timing_task";
 }  // namespace
 
 FederatedInternalsPageHandler::FederatedInternalsPageHandler(
