@@ -26,6 +26,8 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task/sequenced_task_runner.h"
@@ -731,8 +733,9 @@ bool AdsServiceImpl::StartService() {
   }
 
   SetEnvironment();
+  SetDebug();
+  ParseCommandLineSwitches();
   SetBuildChannel();
-  UpdateIsDebugFlag();
 
   return true;
 }
@@ -908,25 +911,85 @@ void AdsServiceImpl::SetEnvironment() {
 
 #if defined(OFFICIAL_BUILD)
   environment = ads::mojom::Environment::kProduction;
-#else
+#else   // OFFICIAL_BUILD
   environment = ads::mojom::Environment::kStaging;
-#endif
+#endif  // !OFFICIAL_BUILD
 
 #if BUILDFLAG(IS_ANDROID)
   if (GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer)) {
     environment = ads::mojom::Environment::kStaging;
   }
-#else
-  const auto& command_line = *base::CommandLine::ForCurrentProcess();
-
-  if (command_line.HasSwitch(switches::kProduction)) {
-    environment = ads::mojom::Environment::kProduction;
-  } else if (command_line.HasSwitch(switches::kStaging)) {
-    environment = ads::mojom::Environment::kStaging;
-  }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
   bat_ads_service_->SetEnvironment(environment, base::NullCallback());
+}
+
+void AdsServiceImpl::SetDebug() {
+  bool is_debug;
+
+#if defined(NDEBUG)
+  is_debug = false;
+#else   // NDEBUG
+  is_debug = true;
+#endif  // !NDEBUG
+
+  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
+}
+
+void AdsServiceImpl::ParseCommandLineSwitches() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kRewards)) {
+    return;
+  }
+
+  const std::string switch_value =
+      command_line.GetSwitchValueASCII(switches::kRewards);
+  ParseCommandLineRewardsSwitchValue(switch_value);
+}
+
+void AdsServiceImpl::ParseCommandLineRewardsSwitchValue(
+    const std::string& switch_value) {
+  if (switch_value.empty()) {
+    return;
+  }
+
+  const std::vector<std::string> flags =
+      base::SplitString(base::ToLowerASCII(switch_value), ",",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  for (const auto& flag : flags) {
+    const std::vector<std::string> components = base::SplitString(
+        flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    if (components.size() != 2) {
+      continue;
+    }
+
+    const std::string& name = components.at(0);
+    const std::string& value = components.at(1);
+
+    if (name == "staging") {
+      ads::mojom::Environment environment;
+
+      if (value == "true" || value == "1") {
+        environment = ads::mojom::Environment::kStaging;
+      } else {
+        environment = ads::mojom::Environment::kProduction;
+      }
+
+      bat_ads_service_->SetEnvironment(environment, base::NullCallback());
+    } else if (name == "debug") {
+      bool is_debug;
+
+      if (value == "true" || value == "1") {
+        is_debug = true;
+      } else {
+        is_debug = false;
+      }
+
+      bat_ads_service_->SetDebug(is_debug, base::NullCallback());
+    }
+  }
 }
 
 void AdsServiceImpl::SetBuildChannel() {
@@ -936,20 +999,6 @@ void AdsServiceImpl::SetBuildChannel() {
 
   bat_ads_service_->SetBuildChannel(std::move(build_channel),
                                     base::NullCallback());
-}
-
-void AdsServiceImpl::UpdateIsDebugFlag() {
-  auto is_debug = IsDebug();
-  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
-}
-
-bool AdsServiceImpl::IsDebug() const {
-#if defined(NDEBUG)
-  const auto& command_line = *base::CommandLine::ForCurrentProcess();
-  return command_line.HasSwitch(switches::kDebug);
-#else
-  return true;
-#endif
 }
 
 void AdsServiceImpl::StartCheckIdleStateTimer() {
