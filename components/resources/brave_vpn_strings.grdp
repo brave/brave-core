@@ -191,8 +191,8 @@
   <message name="IDS_BRAVE_VPN_DNS_CHANGE_ALERT" desc="A text shown to user when he changed DNS settings with Brave VPN enabled">
     Turning off secure DNS or using default servers on Windows may reveal the names of the sites you visit to your Internet service provider. Brave does not recommend doing this. Do you want to do it anyways?
   </message>
+
   <message name="IDS_BRAVE_VPN_DNS_POLICY_ALERT" desc="A text shown to user when he enabled Brave VPN with disabled DoH by policies">
-    Your DoH is disabled by policies. Using Brave VPN with disabled DoH may reveal the names of the sites you visit to your Internet service provider. Brave does not recommend doing this.
+    Secure DNS is disabled by your organization's policies. Using Brave VPN without Secure DNS may reveal the names of the sites you visit to your Internet service provider or organization.
   </message>
-  
 </grit-part>
