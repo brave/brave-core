@@ -167,20 +167,20 @@ void BraveP3AService::Init(
   }
 
   // Init other components.
-  uploader_.reset(new BraveP3AUploader(
+  uploader_ = std::make_unique<BraveP3AUploader>(
       url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
-      base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this)));
+      base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this));
 
-  new_uploader_.reset(new BraveP3ANewUploader(
-      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl)));
+  new_uploader_ = std::make_unique<BraveP3ANewUploader>(
+      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl));
 
-  upload_scheduler_.reset(new BraveP3AScheduler(
+  upload_scheduler_ = std::make_unique<BraveP3AScheduler>(
       base::BindRepeating(&BraveP3AService::StartScheduledUpload, this),
       (randomize_upload_interval_
            ? base::BindRepeating(GetRandomizedUploadInterval,
                                  average_upload_interval_)
            : base::BindRepeating([](base::TimeDelta x) { return x; },
-                                 average_upload_interval_))));
+                                 average_upload_interval_)));
 
   upload_scheduler_->Start();
   if (!rotation_timer_.IsRunning()) {

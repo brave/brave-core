@@ -85,8 +85,6 @@ void BraveP3ANewUploader::UploadLog(const std::string& compressed_log_data,
   if (upload_type == "p2a") {
     resource_request->url = p2a_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
-    // TODO(issues/20478): Re-enable once backend is ready.
-    return;
   } else if (upload_type == "p3a") {
     resource_request->url = p3a_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P3A", "?1");
