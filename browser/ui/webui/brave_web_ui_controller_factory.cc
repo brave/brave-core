@@ -37,6 +37,7 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -114,6 +115,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == chrome::kChromeUISettingsHost) {
     return new BraveSettingsUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
+    if (profile->IsIncognitoProfile() || profile->IsTor() ||
+        profile->IsGuestSession()) {
+      return new BravePrivateNewTabUI(web_ui, url.host());
+    }
     return new BraveNewTabUI(web_ui, url.host());
   } else if (host == kShieldsPanelHost) {
     if (base::FeatureList::IsEnabled(

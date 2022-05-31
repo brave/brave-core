@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_PRIVATE_NEW_TAB_HTML" file="../brave_private_new_tab_ui/resources/page/private_new_tab.html" type="BINDATA" />
+</grit-part>

@@ -126,6 +126,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
+#include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -341,6 +342,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
+
+// Private New Tab Page
+#if !BUILDFLAG(IS_ANDROID)
+  brave_private_new_tab::prefs::RegisterProfilePrefs(registry);
+#endif
 
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,
