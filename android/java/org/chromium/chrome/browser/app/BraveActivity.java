@@ -1017,7 +1017,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public void openBraveWalletSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-        settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);   
+        settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
     }
 
     public void openBraveWallet(boolean fromDapp) {
