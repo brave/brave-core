@@ -16,7 +16,6 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -25,7 +24,6 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -51,7 +49,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/service_sandbox_type.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
-#include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -490,16 +487,7 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   SetDebug(false);
 
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-
-  if (command_line.HasSwitch(switches::kRewards)) {
-    std::string options = command_line.GetSwitchValueASCII(switches::kRewards);
-
-    if (!options.empty()) {
-      HandleFlags(options);
-    }
-  }
+  HandleFlags(RewardsFlags::ForCurrentProcess());
 
   bat_ledger_service_->Create(
       bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
@@ -2347,119 +2335,51 @@ void RewardsServiceImpl::Log(
 }
 
 // static
-void RewardsServiceImpl::HandleFlags(const std::string& options) {
-  std::vector<std::string> flags = base::SplitString(
-      options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  for (const auto& flag : flags) {
-    if (flag.empty()) {
-      continue;
-    }
-
-    std::vector<std::string> values = base::SplitString(
-      flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-    if (values.size() != 2) {
-      continue;
-    }
-
-    std::string name = base::ToLowerASCII(values[0]);
-    std::string value = values[1];
-
-    if (value.empty()) {
-      continue;
-    }
-
-    if (name == "staging") {
-      ledger::type::Environment environment;
-      std::string lower = base::ToLowerASCII(value);
-
-      if (lower == "true" || lower == "1") {
-        environment = ledger::type::Environment::STAGING;
-      } else {
-        environment = ledger::type::Environment::PRODUCTION;
-      }
-
-      SetEnvironment(environment);
-      continue;
-    }
-
-    if (name == "debug") {
-      bool is_debug;
-      std::string lower = base::ToLowerASCII(value);
-
-      if (lower == "true" || lower == "1") {
-        is_debug = true;
-      } else {
-        is_debug = false;
-      }
-
-      SetDebug(is_debug);
-      continue;
-    }
-
-    if (name == "reconcile-interval") {
-      int reconcile_int;
-      bool success = base::StringToInt(value, &reconcile_int);
-
-      if (success && reconcile_int > 0) {
-        SetReconcileInterval(reconcile_int);
-      }
-
-      continue;
-    }
-
-    if (name == "retry-interval") {
-      int retry_interval;
-      bool success = base::StringToInt(value, &retry_interval);
-
-      if (success && retry_interval > 0) {
-        SetRetryInterval(retry_interval);
-      }
-
-      continue;
-    }
-
-    if (name == "development") {
-      ledger::type::Environment environment;
-      std::string lower = base::ToLowerASCII(value);
-
-      if (lower == "true" || lower == "1") {
-        environment = ledger::type::Environment::DEVELOPMENT;
-        SetEnvironment(environment);
-      }
-
-      continue;
-    }
-
-    if (name == "gemini-retries") {
-      int retries;
-      bool success = base::StringToInt(value, &retries);
-
-      if (success && retries >= 0) {
-        SetGeminiRetries(retries);
-      }
-
-      continue;
-    }
-
-    // The "persist-logs" command-line flag is deprecated and will be removed
-    // in a future version. Use --enable-features=BraveRewardsVerboseLogging
-    // instead.
-    if (name == "persist-logs") {
-      const std::string lower = base::ToLowerASCII(value);
-      if (lower == "true" || lower == "1") {
-        persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
-      }
-    }
-
-    if (name == "countryid") {
-      int country_id;
-      if (base::StringToInt(value, &country_id)) {
-        country_id_ = country_id;
-      }
+void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
+  if (flags.environment) {
+    switch (*flags.environment) {
+      case RewardsFlags::Environment::kDevelopment:
+        SetEnvironment(ledger::type::Environment::DEVELOPMENT);
+        break;
+      case RewardsFlags::Environment::kStaging:
+        SetEnvironment(ledger::type::Environment::STAGING);
+        break;
+      case RewardsFlags::Environment::kProduction:
+        SetEnvironment(ledger::type::Environment::PRODUCTION);
+        break;
     }
   }
+
+  if (flags.debug) {
+    SetDebug(true);
+  }
+
+  if (flags.reconcile_interval) {
+    SetReconcileInterval(*flags.reconcile_interval);
+  }
+
+  if (flags.retry_interval) {
+    SetRetryInterval(*flags.retry_interval);
+  }
+
+  if (flags.gemini_retries) {
+    SetGeminiRetries(*flags.gemini_retries);
+  }
+
+  // The "persist-logs" command-line flag is deprecated and will be removed
+  // in a future version. Use --enable-features=BraveRewardsVerboseLogging
+  // instead.
+  if (flags.persist_logs) {
+    persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
+  }
+
+  if (flags.country_id) {
+    country_id_ = *flags.country_id;
+  }
+}
+
+void RewardsServiceImpl::HandleFlagsForTesting(const std::string& input) {
+  return HandleFlags(RewardsFlags::Parse(input));
 }
 
 void RewardsServiceImpl::SetBackupCompleted() {

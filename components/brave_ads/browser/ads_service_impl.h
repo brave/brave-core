@@ -249,7 +249,6 @@ class AdsServiceImpl : public AdsService,
   void SetEnvironment();
   void SetDebug();
   void ParseCommandLineSwitches();
-  void ParseCommandLineRewardsSwitchValue(const std::string& switch_value);
 
   void SetBuildChannel();
 

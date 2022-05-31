@@ -25,6 +25,8 @@
 
 namespace rewards_browsertest {
 
+// TODO(https://github.com/brave/brave-browser/issues/23185): Move to unit tests
+// for RewardsFlags type.
 class RewardsFlagBrowserTest : public InProcessBrowserTest {
  public:
   RewardsFlagBrowserTest() {
@@ -184,19 +186,19 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("staging=true");
+  rewards_service_->HandleFlagsForTesting("staging=true");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("staging=1");
+  rewards_service_->HandleFlagsForTesting("staging=1");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
-  rewards_service_->HandleFlags("staging=false");
+  rewards_service_->HandleFlagsForTesting("staging=false");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
-  rewards_service_->HandleFlags("staging=werwe");
+  rewards_service_->HandleFlagsForTesting("staging=werwe");
   GetEnvironment();
 }
 
@@ -211,19 +213,19 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
   GetDebug();
 
   rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlags("debug=true");
+  rewards_service_->HandleFlagsForTesting("debug=true");
   GetDebug();
 
   rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlags("debug=1");
+  rewards_service_->HandleFlagsForTesting("debug=1");
   GetDebug();
 
-  rewards_service_->SetDebug(true);
-  rewards_service_->HandleFlags("debug=false");
+  rewards_service_->SetDebug(false);
+  rewards_service_->HandleFlagsForTesting("debug=false");
   GetDebug();
 
-  rewards_service_->SetDebug(true);
-  rewards_service_->HandleFlags("debug=werwe");
+  rewards_service_->SetDebug(false);
+  rewards_service_->HandleFlagsForTesting("debug=werwe");
   GetDebug();
 }
 
@@ -240,19 +242,19 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=true");
+  rewards_service_->HandleFlagsForTesting("development=true");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=1");
+  rewards_service_->HandleFlagsForTesting("development=1");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=false");
+  rewards_service_->HandleFlagsForTesting("development=false");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=werwe");
+  rewards_service_->HandleFlagsForTesting("development=werwe");
   GetEnvironment();
 }
 
@@ -264,15 +266,15 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
   testing::InSequence s;
 
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlags("reconcile-interval=10");
+  rewards_service_->HandleFlagsForTesting("reconcile-interval=10");
   GetReconcileInterval();
 
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlags("reconcile-interval=-1");
+  rewards_service_->HandleFlagsForTesting("reconcile-interval=-1");
   GetReconcileInterval();
 
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlags("reconcile-interval=sdf");
+  rewards_service_->HandleFlagsForTesting("reconcile-interval=sdf");
   GetReconcileInterval();
 }
 
@@ -284,15 +286,15 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
   testing::InSequence s;
 
   rewards_service_->SetRetryInterval(0);
-  rewards_service_->HandleFlags("retry-interval=10");
+  rewards_service_->HandleFlagsForTesting("retry-interval=10");
   GetRetryInterval();
 
   rewards_service_->SetRetryInterval(0);
-  rewards_service_->HandleFlags("retry-interval=-1");
+  rewards_service_->HandleFlagsForTesting("retry-interval=-1");
   GetRetryInterval();
 
   rewards_service_->SetRetryInterval(0);
-  rewards_service_->HandleFlags("retry-interval=sdf");
+  rewards_service_->HandleFlagsForTesting("retry-interval=sdf");
   GetRetryInterval();
 }
 
@@ -305,15 +307,15 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsGeminiRetries) {
   testing::InSequence s;
 
   rewards_service_->SetGeminiRetries(0);
-  rewards_service_->HandleFlags("gemini-retries=2");
+  rewards_service_->HandleFlagsForTesting("gemini-retries=2");
   GetGeminiRetries();
 
   rewards_service_->SetGeminiRetries(0);
-  rewards_service_->HandleFlags("gemini-retries=10");
+  rewards_service_->HandleFlagsForTesting("gemini-retries=10");
   GetGeminiRetries();
 
   rewards_service_->SetGeminiRetries(0);
-  rewards_service_->HandleFlags("gemini-retries=-1");
+  rewards_service_->HandleFlagsForTesting("gemini-retries=-1");
   GetGeminiRetries();
 }
 
@@ -331,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetRetryInterval(0);
 
-  rewards_service_->HandleFlags(
+  rewards_service_->HandleFlagsForTesting(
       "staging=true,debug=true,retry-interval=1,reconcile-interval=10,gemini-"
       "retries=2");
 
@@ -357,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   rewards_service_->SetRetryInterval(0);
   rewards_service_->SetGeminiRetries(3);
 
-  rewards_service_->HandleFlags(
+  rewards_service_->HandleFlagsForTesting(
       "staging=,debug=,retryinterval=true,reconcile-interval,gemini-retries");
 
   GetReconcileInterval();
