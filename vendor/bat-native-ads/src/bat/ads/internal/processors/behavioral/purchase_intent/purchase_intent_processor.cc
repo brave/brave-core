@@ -12,7 +12,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/search_engine_util.h"
+#include "bat/ads/internal/base/search_engine_results_page_util.h"
 #include "bat/ads/internal/base/string_util.h"
 #include "bat/ads/internal/base/url_util.h"
 #include "bat/ads/internal/deprecated/client/client.h"
@@ -21,6 +21,7 @@
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace processor {
@@ -113,9 +114,11 @@ targeting::PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
     const GURL& url) const {
   targeting::PurchaseIntentSignalInfo signal_info;
 
-  const std::string search_query = ExtractSearchQueryKeywords(url);
+  const absl::optional<std::string> search_query_optional =
+      ExtractSearchTermQueryValue(url);
+  if (search_query_optional) {
+    const std::string& search_query = search_query_optional.value();
 
-  if (!search_query.empty()) {
     const SegmentList keyword_segments =
         GetSegmentsForSearchQuery(search_query);
 

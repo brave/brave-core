@@ -13,17 +13,15 @@ namespace ads {
 struct SearchEngineInfo final {
  public:
   SearchEngineInfo();
-  SearchEngineInfo(const std::string& name,
-                   const std::string& hostname,
-                   const std::string& query,
-                   bool is_always_classed_as_a_search);
+  SearchEngineInfo(const std::string& url_pattern,
+                   const std::string& result_page_url_pattern,
+                   const std::string& search_term_query_key);
   SearchEngineInfo(const SearchEngineInfo& info);
   ~SearchEngineInfo();
 
-  std::string name;
-  std::string hostname;
-  std::string query;
-  bool is_always_classed_as_a_search = false;
+  std::string url_pattern;
+  std::string result_page_url_pattern;
+  std::string search_term_query_key;
 };
 
 }  // namespace ads

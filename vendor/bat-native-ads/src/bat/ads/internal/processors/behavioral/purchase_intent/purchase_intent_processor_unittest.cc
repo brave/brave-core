@@ -225,7 +225,8 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   FastForwardClockBy(base::Minutes(5));
 
   const base::Time now_2 = Now();
-  const GURL url_2 = GURL("https://google.com/?q=segment+keyword+1&bar=foo");
+  const GURL url_2 =
+      GURL("https://www.google.com/search?q=segment+keyword+1&bar=foo");
   processor.Process(url_2);
 
   // Assert
