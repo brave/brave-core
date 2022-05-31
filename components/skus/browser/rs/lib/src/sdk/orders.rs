@@ -118,6 +118,13 @@ impl TryFrom<OrderResponse> for Order {
     }
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SubmitReceiptResponse {
+    external_id: String,
+    vendor: String,
+}
+
 impl<U> SDK<U>
 where
     U: HTTPClient + StorageClient,
@@ -204,6 +211,37 @@ where
         let order: Order = order.try_into()?;
 
         Ok(order)
+    }
+
+    #[instrument]
+    // submit_receipt allows for order proof of payment
+    pub async fn submit_receipt(
+        &self,
+        order_id: &str,
+        receipt: &str,
+    ) -> Result<SubmitReceiptResponse, SkusError> {
+        let request_with_retries = FutureRetry::new(
+            || async {
+                let mut builder = http::Request::builder();
+                builder.method("POST");
+                builder.uri(format!(
+                    "{}/v1/orders/{}/submit-receipt",
+                    self.base_url, order_id
+                ));
+
+                let req = builder.body(receipt.as_bytes()).unwrap();
+                let resp = self.fetch(req).await?;
+
+                match resp.status() {
+                    http::StatusCode::OK => Ok(resp),
+                    http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
+                    _ => Err(resp.into()),
+                }
+            },
+            HttpHandler::new(3, "Submit order receipt", &self.client),
+        );
+        let (resp, _) = request_with_retries.await?;
+        Ok(resp)
     }
 
     #[instrument]
