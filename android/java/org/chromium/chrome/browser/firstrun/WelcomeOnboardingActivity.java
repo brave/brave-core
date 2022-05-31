@@ -324,8 +324,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     public void onBackPressed() {}
 
     @Override
-    protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this) {
+    public void triggerLayoutInflation() {
+        super.triggerLayoutInflation();
+
+        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this, getChildAccountStatusSupplier()) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();
