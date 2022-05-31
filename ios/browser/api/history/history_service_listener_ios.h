@@ -25,13 +25,12 @@ class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
   ~HistoryServiceListenerIOS() override;
 
  private:
-  // HistoryServiceListener implementation.
+  // HistoryServiceObserver implementation.
   void OnHistoryServiceLoaded(history::HistoryService* service) override;
   void HistoryServiceBeingDeleted(history::HistoryService* service) override;
   void OnURLVisited(history::HistoryService* service,
                     ui::PageTransition transition,
                     const history::URLRow& row,
-                    const history::RedirectList& redirects,
                     base::Time visit_time) override;
   void OnURLsModified(history::HistoryService* history_service,
                       const history::URLRows& changed_urls) override;
