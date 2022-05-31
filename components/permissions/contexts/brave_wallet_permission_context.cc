@@ -19,6 +19,7 @@
 #include "components/permissions/permissions_client.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 #include "url/origin.h"
 
@@ -163,9 +164,12 @@ void BraveWalletPermissionContext::RequestPermissions(
   }
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  // Fail the request came from 3p origin.
-  if (web_contents->GetMainFrame()->GetLastCommittedOrigin() !=
-      rfh->GetLastCommittedOrigin()) {
+  // Fail the request came from a different eTLD+1 origin.
+  if (rfh->GetParent() &&
+      !net::registry_controlled_domains::SameDomainOrHost(
+          web_contents->GetMainFrame()->GetLastCommittedOrigin(),
+          rfh->GetLastCommittedOrigin(),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     std::move(callback).Run(std::vector<ContentSetting>());
     return;
   }
@@ -211,9 +215,13 @@ void BraveWalletPermissionContext::GetAllowedAccounts(
   }
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  // Fail the request came from 3p origin.
-  if (web_contents->GetMainFrame()->GetLastCommittedOrigin() !=
-      rfh->GetLastCommittedOrigin()) {
+  // Fail the request came from a different eTLD+1 origin. is missing for this
+  // function
+  if (rfh->GetParent() &&
+      !net::registry_controlled_domains::SameDomainOrHost(
+          web_contents->GetMainFrame()->GetLastCommittedOrigin(),
+          rfh->GetLastCommittedOrigin(),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     std::move(callback).Run(false, std::vector<std::string>());
     return;
   }

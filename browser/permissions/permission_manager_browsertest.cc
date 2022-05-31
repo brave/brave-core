@@ -7,6 +7,7 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -29,6 +30,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -81,7 +83,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
 
@@ -96,6 +98,21 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 
   HostContentSettingsMap* host_content_settings_map() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   content::WebContents* web_contents() {
@@ -119,11 +136,12 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   raw_ptr<PermissionManager> permission_manager_ = nullptr;
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
-  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
+  const GURL& url = https_server()->GetURL("a.com", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto* permission_request_manager = GetPermissionRequestManager();
@@ -238,7 +256,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
                        RequestPermissionsTabClosed) {
-  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
+  const GURL& url = https_server()->GetURL("a.com", "/empty.html");
 
   struct {
     std::vector<std::string> addresses;
@@ -321,9 +339,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
                  "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
                 ContentSettingsType::BRAVE_SOLANA}};
 
-  GURL top_url(https_server()->GetURL("a.test", "/iframe.html"));
+  GURL top_url(https_server()->GetURL("a.com", "/iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
-  GURL iframe_url(https_server()->GetURL("b.test", "/"));
+  GURL iframe_url(https_server()->GetURL("b.com", "/"));
   EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
 
   auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
@@ -341,8 +359,59 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   }
 }
 
+IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
+                       RequestPermissionsAllowETLDP1) {
+  struct {
+    std::vector<std::string> addresses;
+    ContentSettingsType type;
+  } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+                 "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
+                ContentSettingsType::BRAVE_ETHEREUM},
+               {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                 "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
+                ContentSettingsType::BRAVE_SOLANA}};
+
+  GURL top_url(https_server()->GetURL("a.com", "/iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
+  GURL iframe_url(https_server()->GetURL("c.b.a.com", "/"));
+  EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
+  WaitForLoadStop(web_contents());
+
+  auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
+  auto* permission_request_manager = GetPermissionRequestManager();
+
+  for (const auto& current_case : cases) {
+    SCOPED_TRACE(testing::PrintToString(current_case.addresses));
+    auto observer = std::make_unique<PermissionRequestManagerObserver>(
+        permission_request_manager);
+
+    base::RunLoop run_loop;
+    BraveWalletPermissionContext::RequestPermissions(
+        current_case.type, iframe_rfh, current_case.addresses,
+        // This callback is not called until after a response is given
+        base::BindLambdaForTesting(
+            [&](const std::vector<ContentSetting>& responses) {
+              EXPECT_FALSE(responses.empty());
+              run_loop.Quit();
+            }));
+
+    RequestType request_type =
+        ContentSettingsTypeToRequestType(current_case.type);
+    // Needed for the request to be considered to be in progress
+    content::RunAllTasksUntilIdle();
+    EXPECT_TRUE(BraveWalletPermissionContext::HasRequestsInProgress(
+        iframe_rfh, request_type));
+    EXPECT_TRUE(observer->IsShowingBubble());
+    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(current_case.type));
+    permissions::BraveWalletPermissionContext::Cancel(web_contents());
+    run_loop.Run();
+    EXPECT_FALSE(BraveWalletPermissionContext::HasRequestsInProgress(
+        iframe_rfh, request_type));
+  }
+}
+
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
-  const GURL& url = https_server()->GetURL("a.test", "/empty.html");
+  const GURL& url = https_server()->GetURL("a.com", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   struct {

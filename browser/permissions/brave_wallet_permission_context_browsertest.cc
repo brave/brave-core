@@ -174,4 +174,25 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
   EXPECT_TRUE(was_called);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
+                       GetAllowedAccountsAllowETLDP1Iframe) {
+  std::vector<std::string> addresses = {
+      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
+
+  GURL top_url(https_server()->GetURL("a.com", "/iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
+  GURL iframe_url(https_server()->GetURL("c.b.a.com", "/"));
+  EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
+
+  bool was_called = false;
+  auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
+  BraveWalletPermissionContext::GetAllowedAccounts(
+      ContentSettingsType::BRAVE_ETHEREUM, iframe_rfh, addresses,
+      base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
+                     std::vector<std::string>()));
+  content::RunAllTasksUntilIdle();
+  EXPECT_TRUE(was_called);
+}
+
 }  // namespace permissions

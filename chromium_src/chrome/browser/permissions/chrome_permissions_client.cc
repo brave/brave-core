@@ -15,6 +15,7 @@
 #include "build/build_config.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -39,7 +40,9 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
           permissions::ContentSettingsTypeToRequestType(type),
           url::Origin::Create(requesting_origin), &original_requesting_origin,
           nullptr) &&
-      original_requesting_origin == url::Origin::Create(embedding_origin)) {
+      net::registry_controlled_domains::SameDomainOrHost(
+          original_requesting_origin, url::Origin::Create(embedding_origin),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return true;
   }
 

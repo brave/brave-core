@@ -227,4 +227,11 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Block3PIframe) {
   iframe_rfh = ChildFrameAt(main_frame(), 0);
   ASSERT_TRUE(iframe_rfh);
   EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalEthereum).ExtractBool());
+
+  // same eTLD+1
+  GURL iframe_url_etldp1(https_server_.GetURL("c.b.a.com", "/"));
+  EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url_etldp1));
+  iframe_rfh = ChildFrameAt(main_frame(), 0);
+  ASSERT_TRUE(iframe_rfh);
+  EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalEthereum).ExtractBool());
 }

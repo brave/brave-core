@@ -11,6 +11,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
@@ -45,9 +46,14 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     js_ethereum_provider_.reset();
     return;
   }
-  // Wallet provider objects won't be generated for third party iframe
+
+  // Wallet provider objects won't be generated for different eTLD+1s
   if (!render_frame()->IsMainFrame() &&
-      render_frame()->GetWebFrame()->IsCrossOriginToOutermostMainFrame()) {
+      !net::registry_controlled_domains::SameDomainOrHost(
+          url::Origin(
+              render_frame()->GetWebFrame()->Top()->GetSecurityOrigin()),
+          url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin()),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return;
   }
 

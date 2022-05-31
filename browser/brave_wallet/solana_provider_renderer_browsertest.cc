@@ -1033,4 +1033,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Block3PIframe) {
   iframe_rfh = ChildFrameAt(main_frame, 0);
   ASSERT_TRUE(iframe_rfh);
   EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalSolana).ExtractBool());
+
+  // same eTLD+1
+  GURL iframe_url_etldp1(
+      embedded_test_server()->GetURL("dapps.please.a.com", "/"));
+  EXPECT_TRUE(
+      NavigateIframeToURL(web_contents(browser()), "test", iframe_url_etldp1));
+  iframe_rfh = ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(iframe_rfh);
+  EXPECT_FALSE(content::EvalJs(iframe_rfh, kEvalSolana).ExtractBool());
 }
