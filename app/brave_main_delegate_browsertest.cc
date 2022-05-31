@@ -116,9 +116,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kNavigationRequestPreconnect,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
-#if BUILDFLAG(IS_WIN)
-    &features::kPrewarmSearchResultsPageFonts,
-#endif
     &features::kPrivacyGuide2,
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSignedExchangeSubresourcePrefetch,
