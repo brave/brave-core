@@ -8,9 +8,8 @@
 
 namespace brave_search_conversion {
 
-// TODO(simonhong): Update url if prod one is ready.
 constexpr char kBraveSearchConversionPromotionURL[] =
-    "https://search.brave.com/search?q={SearchTerms}";
+    "https://search.brave.com/search?q={SearchTerms}&action=makeDefault";
 constexpr char kSearchTermsParameter[] = "{SearchTerms}";
 
 }  // namespace brave_search_conversion

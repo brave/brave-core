@@ -12,12 +12,16 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_search_conversion",
+    "//brave/components/constants",
+    "//brave/components/l10n/browser",
     "//brave/components/search_engines",
     "//components/omnibox/browser",
     "//components/omnibox/browser:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/search_engines",
+    "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }

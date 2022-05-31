@@ -104,6 +104,9 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER:
       return SkColorSetRGB(0xE2, 0xE3, 0xF8);
     case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED:
+      return SkColorSetRGB(0x83, 0x89, 0xE0);
+    case BraveThemeProperties::
         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM:
       return SkColorSetARGB(104, 0xFF, 0xFF, 0xFF);
     case BraveThemeProperties::
@@ -222,6 +225,9 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case BraveThemeProperties::
         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER:
       return SkColorSetRGB(0x1F, 0x25, 0x7A);
+    case BraveThemeProperties::
+        COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED:
+      return SkColorSetRGB(0x5F, 0x67, 0xD7);
     case BraveThemeProperties::
         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_FROM:
       return SkColorSetARGB(104, 0x17, 0x19, 0x1E);

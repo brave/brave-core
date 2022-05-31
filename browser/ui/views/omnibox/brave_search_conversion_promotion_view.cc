@@ -86,6 +86,8 @@ class HorizontalGradientBackground : public views::Background {
               COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_GRADIENT_TO);
     }
 
+    // Gradient background from design.
+    //  - linear-gradient(90deg, from_color, 19.6%, to_color, 100%).
     cc::PaintFlags flags;
     SkPoint points[2] = {SkPoint::Make(0, 0), SkPoint::Make(view->width(), 0)};
     SkColor colors[2] = {from_color, to_color};
@@ -93,7 +95,7 @@ class HorizontalGradientBackground : public views::Background {
     flags.setShader(cc::PaintShader::MakeLinearGradient(
         points, colors, positions, 2, SkTileMode::kClamp));
     flags.setStyle(cc::PaintFlags::kFill_Style);
-    gfx::RectF bounds(view->GetLocalBounds());
+    gfx::RectF bounds(view->GetContentsBounds());
     canvas->DrawRect(bounds, flags);
 
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
@@ -101,7 +103,8 @@ class HorizontalGradientBackground : public views::Background {
         ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
             ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
             : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC);
-    canvas->DrawImageInt(*graphic, bounds.width() - graphic->width(), 0);
+    canvas->DrawImageInt(*graphic, bounds.right() - graphic->width(),
+                         bounds.y());
   }
 };
 
@@ -191,7 +194,7 @@ class BraveOmniboxResultSelectionIndicator : public views::View {
   explicit BraveOmniboxResultSelectionIndicator(
       BraveSearchConversionPromotionView* parent_view)
       : parent_view_(parent_view) {
-    SetPreferredSize({kStrokeThickness, 0});
+    SetPreferredSize(gfx::Size(kStrokeThickness, 0));
   }
 
   // views::View:
@@ -248,6 +251,7 @@ BraveSearchConversionPromotionView::BraveSearchConversionPromotionView(
           &BraveSearchConversionPromotionView::UpdateHoverState,
           base::Unretained(this))) {
   SetLayoutManager(std::make_unique<views::FlexLayout>());
+  mouse_enter_exit_handler_.ObserveMouseEnterExitOn(this);
 }
 
 BraveSearchConversionPromotionView::~BraveSearchConversionPromotionView() =
@@ -314,7 +318,7 @@ void BraveSearchConversionPromotionView::UpdateButtonTypeState() {
   if (auto* tp = GetThemeProvider()) {
     auto desc_color_id =
         BraveThemeProperties::COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_NORMAL;
-    if (IsMouseHovered()) {
+    if (IsMouseHovered() || selected_) {
       desc_color_id = BraveThemeProperties::
           COLOR_SEARCH_CONVERSION_BUTTON_TYPE_DESC_HOVERED;
     }
@@ -334,16 +338,31 @@ void BraveSearchConversionPromotionView::UpdateBannerTypeState() {
   banner_type_container_->SetVisible(true);
   SkColor desc_color = gfx::kPlaceholderColor;
   SkColor border_color = gfx::kPlaceholderColor;
+  const bool is_selected_or_hovered = selected_ || IsMouseHovered();
   if (auto* tp = GetThemeProvider()) {
     desc_color = tp->GetColor(
         BraveThemeProperties::COLOR_SEARCH_CONVERSION_BANNER_TYPE_DESC_TEXT);
-    border_color =
-        tp->GetColor(BraveThemeProperties::
-                         COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER);
+    const int border_id =
+        is_selected_or_hovered
+            ? BraveThemeProperties::
+                  COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED
+            : BraveThemeProperties::
+                  COLOR_SEARCH_CONVERSION_BANNER_TYPE_BACKGROUND_BORDER_HOVERED;
+    border_color = tp->GetColor(border_id);
   }
-  banner_type_container_->SetBorder(
-      views::CreateRoundedRectBorder(1, kBannerTypeRadius, border_color));
+  const int border_thickness = is_selected_or_hovered ? 2 : 1;
+  banner_type_container_->SetBorder(views::CreateRoundedRectBorder(
+      border_thickness, kBannerTypeRadius, border_color));
   banner_type_description_->SetEnabledColor(desc_color);
+
+  gfx::Insets container_margin =
+      gfx::Insets::TLBR(kBannerTypeMargin, kBannerTypeMargin,
+                        kBannerTypeMarginBottom, kBannerTypeMargin);
+  // By adjusting only container's margin when border thickness is changed, all
+  // children can use same layout value.
+  if (is_selected_or_hovered)
+    container_margin += gfx::Insets(-1);
+  banner_type_container_->SetProperty(views::kMarginsKey, container_margin);
 
   SetBackground(views::CreateSolidBackground(
       GetOmniboxColor(GetThemeProvider(), OmniboxPart::RESULTS_BACKGROUND)));
@@ -389,7 +408,7 @@ void BraveSearchConversionPromotionView::ConfigureForButtonType() {
   auto* input_container =
       contents_container->AddChildView(std::make_unique<views::View>());
   input_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 8));
+      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 4));
 
   // Use 14px font size for input text.
   views::Label::CustomFont emphasized_font = {
@@ -432,7 +451,7 @@ void BraveSearchConversionPromotionView::ConfigureForButtonType() {
       std::make_unique<TryButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::OpenMatch,
                               base::Unretained(this)))));
-  try_button->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(17, 0, 17, 0));
+  try_button->SetProperty(views::kMarginsKey, gfx::Insets::VH(17, 0));
   try_button->SetProminent(true);
   try_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
@@ -451,8 +470,6 @@ void BraveSearchConversionPromotionView::ConfigureForButtonType() {
   dismiss_button->SetProperty(views::kMarginsKey, gfx::Insets::VH(25, 8));
   dismiss_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON_TOOLTIP));
-
-  mouse_enter_exit_handler_.ObserveMouseEnterExitOn(button_type_container_);
 }
 
 void BraveSearchConversionPromotionView::ConfigureForBannerType() {
@@ -485,7 +502,7 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
                                views::MaximumFlexSizeRule::kUnbounded)
           .WithOrder(2));
   banner_contents->SetProperty(views::kMarginsKey,
-                               gfx::Insets::TLBR(16, 16, 0, 0));
+                               gfx::Insets::TLBR(13, 13, 0, 0));
 
   const std::u16string title_label =
       brave_l10n::GetLocalizedResourceUTF16String(
@@ -513,13 +530,14 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred));
-  button_row->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(12, 0, 0, 0));
+  button_row->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 13, 0));
   button_row->SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kHorizontal);
   auto* try_button = button_row->AddChildView(
       std::make_unique<TryButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::OpenMatch,
                               base::Unretained(this)))));
+  try_button->SetPreferredSize(gfx::Size(151, 32));
   try_button->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
@@ -558,7 +576,7 @@ BraveSearchConversionPromotionView::GetButtonTypeBackground() {
   if (auto* tp = GetThemeProvider()) {
     auto bg_color_id = BraveThemeProperties::
         COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_NORMAL;
-    if (IsMouseHovered()) {
+    if (IsMouseHovered() || selected_) {
       bg_color_id = BraveThemeProperties::
           COLOR_SEARCH_CONVERSION_BUTTON_TYPE_BACKGROUND_HOVERED;
     }
@@ -569,8 +587,14 @@ BraveSearchConversionPromotionView::GetButtonTypeBackground() {
 }
 
 gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
-  const int height = type_ == ConversionType::kButton ? 66 : 132;
-  return gfx::Size(0, height);
+  views::View* active_child = (type_ == ConversionType::kButton)
+                                  ? button_type_container_
+                                  : banner_type_container_;
+  auto size = active_child->GetPreferredSize();
+  if (type_ == ConversionType::kBanner) {
+    size.Enlarge(0, kBannerTypeMargin + kBannerTypeMarginBottom);
+  }
+  return size;
 }
 
 void BraveSearchConversionPromotionView::OnThemeChanged() {

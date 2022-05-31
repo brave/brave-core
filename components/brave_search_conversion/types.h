@@ -9,9 +9,9 @@
 namespace brave_search_conversion {
 
 enum class ConversionType {
+  kNone = 0,
   kButton,
   kBanner,
-  kNone,
 };
 
 }  // namespace brave_search_conversion

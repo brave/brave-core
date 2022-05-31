@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_
 
-#define SortAndCull                                \
-  MoveMatch(size_t from, size_t to);               \
-  void RemoveMatch(const ACMatches::iterator& it); \
+#define SortAndCull                                       \
+  ReorderMatch(const ACMatches::iterator& it, int index); \
+  void RemoveMatch(const ACMatches::iterator& it);        \
   void SortAndCull
 
 #include "src/components/omnibox/browser/autocomplete_result.h"

@@ -11,8 +11,13 @@ namespace brave_search_conversion {
 
 namespace features {
 
+// Brave search promotion match located at last low in omnibox popup.
+// This type seems more like ads banner.
 const base::Feature kOmniboxBanner{"BraveSearchOmniboxBanner",
                                    base::FEATURE_DISABLED_BY_DEFAULT};
+
+// Brave search promotion match located at second low in omnibox popup.
+// This looks very similar with other normal matches.
 const base::Feature kOmniboxButton{"BraveSearchOmniboxButton",
                                    base::FEATURE_DISABLED_BY_DEFAULT};
 

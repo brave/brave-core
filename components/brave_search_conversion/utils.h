@@ -17,12 +17,13 @@ namespace brave_search_conversion {
 
 enum class ConversionType;
 
-ConversionType GetConversionType(PrefService* prefs = nullptr,
-                                 TemplateURLService* service = nullptr);
+ConversionType GetConversionType(PrefService* prefs,
+                                 TemplateURLService* service);
 void RegisterPrefs(PrefRegistrySimple* registry);
 void SetDismissed(PrefService* prefs);
 GURL GetPromoURL(const std::u16string& search_term);
 bool IsPromotionEnabledCountry(const std::string& country_code);
+bool IsBraveSearchConversionFetureEnabled();
 
 }  // namespace brave_search_conversion
 

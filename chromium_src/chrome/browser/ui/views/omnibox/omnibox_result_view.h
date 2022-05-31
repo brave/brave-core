@@ -6,10 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_RESULT_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_RESULT_VIEW_H_
 
-#define SetMatch                                    \
-  virtual SetMatch(const AutocompleteMatch& match); \
-  friend class BraveOmniboxResultView;              \
-  void SetMatchUnUsed
+#define SetMatch                       \
+  UnUsed() {}                          \
+  friend class BraveOmniboxResultView; \
+  virtual void SetMatch
 #define OnSelectionStateChanged virtual OnSelectionStateChanged
 
 #include "src/chrome/browser/ui/views/omnibox/omnibox_result_view.h"

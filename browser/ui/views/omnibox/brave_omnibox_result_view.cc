@@ -24,14 +24,14 @@
 #include "ui/views/controls/button/image_button.h"
 
 using brave_search_conversion::ConversionType;
-using brave_search_conversion::GetConversionType;
+using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
 using brave_search_conversion::SetDismissed;
 
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
 
 void BraveOmniboxResultView::ResetChildrenVisibility() {
   // Reset children visibility. Their visibility could be configured later
-  // based on |match_| and current input.
+  // based on |match_| and the current input.
   suggestion_container_->SetVisible(true);
   button_row_->SetVisible(true);
   if (brave_search_promotion_view_) {
@@ -40,6 +40,11 @@ void BraveOmniboxResultView::ResetChildrenVisibility() {
 }
 
 void BraveOmniboxResultView::SetMatch(const AutocompleteMatch& match) {
+  if (!IsBraveSearchConversionFetureEnabled()) {
+    OmniboxResultView::SetMatch(match);
+    return;
+  }
+
   ResetChildrenVisibility();
   OmniboxResultView::SetMatch(match);
 
@@ -68,7 +73,7 @@ void BraveOmniboxResultView::Dismiss() {
 }
 
 void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
-  if (brave_search_promotion_view_ && IsBraveSearchPromotion()) {
+  if (brave_search_promotion_view_ && IsBraveSearchPromotionMatch(match_)) {
     brave_search_promotion_view_->OnSelectionStateChanged(
         GetMatchSelected() && popup_contents_view_->GetSelection().state ==
                                   OmniboxPopupSelection::NORMAL);
@@ -76,8 +81,7 @@ void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
 }
 
 void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
-  const bool is_brave_search_promotion = IsBraveSearchPromotion();
-  if (!is_brave_search_promotion)
+  if (!IsBraveSearchPromotionMatch(match_))
     return;
 
   // Hide upstream children and show our promotion view.
@@ -91,12 +95,8 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
 
   brave_search_promotion_view_->SetVisible(true);
   brave_search_promotion_view_->SetTypeAndInput(
-      GetConversionType(), model_->autocomplete_controller()->input().text());
-}
-
-bool BraveOmniboxResultView::IsBraveSearchPromotion() const {
-  const auto input = model_->autocomplete_controller()->input();
-  return IsBraveSearchPromotionMatch(match_, input.text());
+      GetConversionTypeFromMatch(match_),
+      model_->autocomplete_controller()->input().text());
 }
 
 BEGIN_METADATA(BraveOmniboxResultView, OmniboxResultView)

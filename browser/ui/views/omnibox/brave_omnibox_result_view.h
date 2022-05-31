@@ -12,7 +12,7 @@
 
 class BraveSearchConversionPromotionView;
 
-// This will render brave specific matches such as braver search conversion
+// This will render brave specific matches such as the braver search conversion
 // promotion.
 class BraveOmniboxResultView : public OmniboxResultView {
  public:
@@ -30,7 +30,6 @@ class BraveOmniboxResultView : public OmniboxResultView {
   void Dismiss();
 
  private:
-  bool IsBraveSearchPromotion() const;
   void ResetChildrenVisibility();
   void UpdateForBraveSearchConversion();
   void HandleSelectionStateChangedForPromotionView();

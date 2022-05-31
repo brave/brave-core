@@ -58,6 +58,14 @@ class BraveSearchConversionPromotionView : public views::View {
 
   raw_ptr<BraveOmniboxResultView> result_view_ = nullptr;
 
+  // Children for button or banner type promotion.
+  // Promotion view is implemented w/o using existing omnibox view controls
+  // because our promotion view's layout, bg and text colors are slightly
+  // different. |button_type_container_| is child view that holds whole UI for
+  // buton type and |banner_type_container_| is for banner type. When current
+  // promotion type is button, |button_type_container_| is only visible.
+  // Otherwise, |banner_type_container_| is only visible view.
+
   // Children for button type promotion.
   raw_ptr<views::View> button_type_container_ = nullptr;
   raw_ptr<views::View> button_type_selection_indicator_ = nullptr;

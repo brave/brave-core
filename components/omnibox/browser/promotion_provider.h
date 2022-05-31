@@ -11,13 +11,13 @@
 #include "base/memory/raw_ptr.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 
+class AutocompleteProviderClient;
 class PrefService;
 class TemplateURLService;
 
 class PromotionProvider : public AutocompleteProvider {
  public:
-  PromotionProvider(PrefService* prefs,
-                    TemplateURLService* template_url_service);
+  explicit PromotionProvider(AutocompleteProviderClient* client);
   PromotionProvider(const PromotionProvider&) = delete;
   PromotionProvider& operator=(const PromotionProvider&) = delete;
 

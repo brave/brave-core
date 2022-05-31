@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "components/omnibox/browser/autocomplete_input.h"
@@ -14,20 +15,22 @@
 #include "components/omnibox/browser/autocomplete_result.h"
 
 using brave_search_conversion::ConversionType;
+using brave_search_conversion::GetPromoURL;
 
-void SortBraveSearchPromotionMatch(
-    AutocompleteResult* result,
-    const AutocompleteInput& input,
-    brave_search_conversion::ConversionType type) {
+namespace {
+constexpr char kBraveSearchPromotionTypeProperty[] =
+    "brave_search_promotion_type_property";
+}  // namespace
+
+void SortBraveSearchPromotionMatch(AutocompleteResult* result) {
+  DCHECK(result);
+
   if (result->size() == 0)
-    return;
-
-  if (brave_search_conversion::ConversionType::kNone == type)
     return;
 
   ACMatches::iterator brave_search_conversion_match = std::find_if(
       result->begin(), result->end(), [&](const AutocompleteMatch& m) {
-        return IsBraveSearchPromotionMatch(m, input.text());
+        return IsBraveSearchPromotionMatch(m);
       });
 
   // Early return when |result| doesn't include promotion match.
@@ -35,23 +38,43 @@ void SortBraveSearchPromotionMatch(
     return;
 
   // If first match is not from search query with default provider,
-  // it means there is more proper match from other providers.
-  // In this case, remove promotion match from |result|.
-  // NOTE: SEARCH_WHAT_YOU_TYPED : The input as a search query (with the
+  // it means there are better matches from other providers.
+  // In this case, remove the promotion match from |result|.
+  // NOTE: SEARCH_WHAT_YOU_TYPED : The input is a search query (with the
   // default engine).
   if (result->begin()->type != AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED) {
     result->RemoveMatch(brave_search_conversion_match);
     return;
   }
 
-  const size_t from_index = brave_search_conversion_match - result->begin();
   // Put as a second match for button type. Otherwise, put at last.
-  const size_t to_index = type == ConversionType::kButton ? 1 : result->size();
-  result->MoveMatch(from_index, to_index);
+  const int target_index =
+      GetConversionTypeFromMatch(*brave_search_conversion_match) ==
+              ConversionType::kButton
+          ? 1
+          : -1;
+  result->ReorderMatch(brave_search_conversion_match, target_index);
 }
 
-bool IsBraveSearchPromotionMatch(const AutocompleteMatch& match,
-                                 const std::u16string& input) {
-  return match.type == AutocompleteMatchType::NAVSUGGEST &&
-         match.destination_url == brave_search_conversion::GetPromoURL(input);
+bool IsBraveSearchPromotionMatch(const AutocompleteMatch& match) {
+  return GetConversionTypeFromMatch(match) != ConversionType::kNone;
+}
+
+ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
+  const std::string type_string =
+      match.GetAdditionalInfo(kBraveSearchPromotionTypeProperty);
+  // |match| doesn't have type info.
+  if (type_string.empty())
+    return ConversionType::kNone;
+  int type_int;
+  if (!base::StringToInt(type_string, &type_int))
+    return ConversionType::kNone;
+  const ConversionType type = static_cast<ConversionType>(type_int);
+  DCHECK(type == ConversionType::kButton || type == ConversionType::kBanner);
+  return type;
+}
+
+void SetConversionTypeToMatch(ConversionType type, AutocompleteMatch* match) {
+  match->RecordAdditionalInfo(kBraveSearchPromotionTypeProperty,
+                              static_cast<int>(type));
 }

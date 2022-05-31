@@ -34,10 +34,12 @@ source_set("unit_tests") {
     ":brave_search_conversion",
     "//base",
     "//base/test:test_support",
+    "//brave/components/l10n/browser",
     "//brave/components/search_engines",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/search_engines",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }

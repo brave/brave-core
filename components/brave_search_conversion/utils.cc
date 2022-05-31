@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_search_conversion/utils.h"
 
-#include "base/containers/flat_set.h"
+#include <algorithm>
+
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -25,33 +27,31 @@
 namespace brave_search_conversion {
 
 bool IsPromotionEnabledCountry(const std::string& country_code) {
-  static const base::flat_set<std::string> supported_country{"US", "CA", "DE",
-                                                             "FR", "GB"};
-  return supported_country.find(country_code) != supported_country.end();
+  constexpr base::StringPiece kSupportedCountries[] = {"US", "CA", "DE", "FR",
+                                                       "GB"};
+  return base::Contains(kSupportedCountries, country_code);
 }
 
 ConversionType GetConversionType(PrefService* prefs,
                                  TemplateURLService* service) {
+  DCHECK(prefs);
+  DCHECK(service);
+
+  if (prefs->GetBoolean(prefs::kDismissed))
+    return ConversionType::kNone;
+
+  // Don't need to ask conversion if user uses brave as a default provider.
+  auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
+  if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
+      id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
+    return ConversionType::kNone;
+  }
+
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const std::string country_code = brave_l10n::GetCountryCode(locale);
-
   if (!IsPromotionEnabledCountry(country_code))
     return ConversionType::kNone;
-
-  // Skip |prefs| or |service| if they are null.
-  // If both are null, only check each feature's state.
-  if (prefs && prefs->GetBoolean(prefs::kDismissed))
-    return ConversionType::kNone;
-
-  if (service) {
-    // Don't need to ask conversion if user uses brave as a default provider.
-    auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
-    if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
-        id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
-      return ConversionType::kNone;
-    }
-  }
 
   if (base::FeatureList::IsEnabled(features::kOmniboxButton))
     return ConversionType::kButton;
@@ -75,6 +75,11 @@ GURL GetPromoURL(const std::u16string& search_term) {
   base::ReplaceSubstringsAfterOffset(&promo_url, 0, kSearchTermsParameter,
                                      base::UTF16ToUTF8(search_term));
   return GURL(promo_url);
+}
+
+bool IsBraveSearchConversionFetureEnabled() {
+  return base::FeatureList::IsEnabled(features::kOmniboxButton) ||
+         base::FeatureList::IsEnabled(features::kOmniboxBanner);
 }
 
 }  // namespace brave_search_conversion
