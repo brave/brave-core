@@ -19,6 +19,7 @@
 #include "chrome/browser/media/webrtc/media_stream_capture_indicator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tab_sharing/tab_sharing_ui.h"
+#include "components/url_formatter/elide_url.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/desktop_media_id.h"
 #include "content/public/browser/global_routing_id.h"
@@ -120,14 +121,14 @@ void BraveTalkMediaAccessHandler::AcceptRequest(
   blink::MediaStreamDevices devices;
 
   std::u16string application_title =
-      base::UTF8ToUTF16(BraveTalkService::GetInstance()
-                            ->web_contents()
-                            ->GetMainFrame()
-                            ->GetLastCommittedOrigin()
-                            .Serialize());
-  std::unique_ptr<content::MediaStreamUI> ui =
-      GetDevicesForDesktopCapture(request, BraveTalkService::GetInstance()->web_contents(), media_id, request.audio_type == blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE, true,
-                                  true, application_title, &devices);
+      url_formatter::FormatOriginForSecurityDisplay(
+          web_contents->GetMainFrame()->GetLastCommittedOrigin(),
+          url_formatter::SchemeDisplay::OMIT_CRYPTOGRAPHIC);
+  std::unique_ptr<content::MediaStreamUI> ui = GetDevicesForDesktopCapture(
+      request, BraveTalkService::GetInstance()->web_contents(), media_id,
+      request.audio_type ==
+          blink::mojom::MediaStreamType::GUM_TAB_AUDIO_CAPTURE,
+      true, true, application_title, &devices);
   DCHECK(!devices.empty());
 
   std::move(callback).Run(devices, blink::mojom::MediaStreamRequestResult::OK,
