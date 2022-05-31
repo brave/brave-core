@@ -82,6 +82,13 @@ class BraveWalletPermissionContext : public PermissionContextBase {
                               const url::Origin& origin,
                               const std::string& account);
 
+  static std::vector<std::string> GetWebSitesWithPermission(
+      ContentSettingsType content_settings_type,
+      content::BrowserContext* context);
+  static bool ResetWebSitePermission(ContentSettingsType content_settings_type,
+                                     content::BrowserContext* context,
+                                     const std::string& formed_website);
+
  protected:
   bool IsRestrictedToSecureOrigins() const override;
 

@@ -129,6 +129,7 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
+import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -977,6 +978,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);   
     }
 
+    public void openBraveConnectedSitesSettings() {
+        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        settingsLauncher.launchSettingsActivity(this, BraveWalletEthereumConnectedSites.class);
+    }
+
     public void openBraveWallet(boolean fromDapp) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
         braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
@@ -985,7 +991,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void viewOnBlockExplorer(String address) {
-        Utils.openAddress("/address/"+address, mJsonRpcService, this);
+        Utils.openAddress("/address/" + address, mJsonRpcService, this);
     }
 
     // should only be called if the wallet is setup and unlocked

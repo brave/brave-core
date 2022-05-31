@@ -21,4 +21,10 @@
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.components.browser_ui.site_settings.SingleCategorySettings"
         android:key="autoplay" />
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites"
+        android:key="ethereum_connected_sites"
+        android:title="@string/settings_ethereum_title"
+        android:icon="@drawable/settings_all_sites"
+        app:iconTint="@macro/default_icon_color" />
 </PreferenceScreen>

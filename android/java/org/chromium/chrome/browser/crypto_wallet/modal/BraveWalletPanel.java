@@ -119,7 +119,7 @@ public class BraveWalletPanel implements DialogInterface {
         setUpViews();
     }
 
-    public void showPopupMenu(){
+    public void showPopupMenu() {
         PopupMenu menu = new PopupMenu(mOptionsImage.getContext(), (View) mOptionsImage);
         menu.getMenuInflater().inflate(R.menu.menu_dapps_panel, menu.getMenu());
         menu.setOnMenuItemClickListener(item -> {
@@ -127,8 +127,11 @@ public class BraveWalletPanel implements DialogInterface {
                 mBraveWalletPanelServices.getKeyringService().lock();
                 dismiss();
             } else if (item.getItemId() == R.id.action_connected_sites) {
-                //TODO needs to be implemented in another ticket
-                dismiss();
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (activity != null) {
+                    activity.openBraveConnectedSitesSettings();
+                    dismiss();
+                }
             } else if (item.getItemId() == R.id.action_settings) {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 if (activity != null) {
@@ -138,10 +141,11 @@ public class BraveWalletPanel implements DialogInterface {
             } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 if (activity != null) {
-                    mBraveWalletPanelServices.getKeyringService().getSelectedAccount(CoinType.ETH, address -> {
-                        activity.viewOnBlockExplorer(address);
-                        dismiss();
-                    });
+                    mBraveWalletPanelServices.getKeyringService().getSelectedAccount(
+                            CoinType.ETH, address -> {
+                                activity.viewOnBlockExplorer(address);
+                                dismiss();
+                            });
                 }
             }
             return true;
