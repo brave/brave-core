@@ -24,6 +24,7 @@ cargo_build("rust_lib") {
     "//brave/components/challenge_bypass_ristretto:rust_lib",
     "//brave/components/filecoin:rust_lib",
     "//brave/components/json:rust_lib",
+    "//brave/components/nested_star:rust_lib",
     "//brave/components/skus/browser/rs:rust_lib",
     "//brave/components/speedreader/rust/lib",
   ]

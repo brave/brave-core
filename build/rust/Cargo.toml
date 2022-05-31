@@ -12,6 +12,7 @@ skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 brave-news-cxx = { path = "../../components/brave_today/rust" }
 json-cxx = { path = "../../components/json/rs" }
 filecoin-cxx = { path = "../../components/filecoin/rs" }
+nested-star-cxx = { path = "../../components/nested_star" }
 
 [lib]
 crate-type = [ "staticlib" ]
