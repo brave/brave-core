@@ -8,6 +8,8 @@ static_library("brave_search_conversion") {
     "constants.h",
     "features.cc",
     "features.h",
+    "p3a.cc",
+    "p3a.h",
     "pref_names.h",
     "types.h",
     "utils.cc",
@@ -28,7 +30,10 @@ static_library("brave_search_conversion") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_search_conversion_unittest.cc" ]
+  sources = [
+    "brave_search_conversion_unittest.cc",
+    "p3a_unittest.cc",
+  ]
 
   deps = [
     ":brave_search_conversion",

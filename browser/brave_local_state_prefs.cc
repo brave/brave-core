@@ -11,6 +11,7 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
@@ -107,6 +108,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   decentralized_dns::RegisterLocalStatePrefs(registry);
 
   RegisterLocalStatePrefsForMigration(registry);
+
+  brave_search_conversion::p3a::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave

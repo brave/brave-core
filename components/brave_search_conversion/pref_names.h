@@ -13,6 +13,15 @@ namespace prefs {
 
 constexpr char kDismissed[] = "brave.brave_search_conversion.dismissed";
 
+constexpr char kP3ABannerShown[] = "brave.brave_search_conversion.banner_shown";
+constexpr char kP3AButtonShown[] = "brave.brave_search_conversion.button_shown";
+constexpr char kP3ABannerTriggered[] =
+    "brave.brave_search_conversion.banner_triggered";
+constexpr char kP3AButtonTriggered[] =
+    "brave.brave_search_conversion.button_triggered";
+constexpr char kP3ADefaultEngineChanged[] =
+    "brave.brave_search_conversion.default_changed";
+
 }  // namespace prefs
 }  // namespace brave_search_conversion
 
