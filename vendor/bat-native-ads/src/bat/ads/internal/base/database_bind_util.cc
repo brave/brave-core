@@ -38,6 +38,42 @@ std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
   return base::JoinString(values, ", ");
 }
 
+void Bind(sql::Statement* statement, const mojom::DBCommandBinding& binding) {
+  DCHECK(statement);
+
+  switch (binding.value->which()) {
+    case mojom::DBValue::Tag::NULL_VALUE: {
+      statement->BindNull(binding.index);
+      break;
+    }
+
+    case mojom::DBValue::Tag::INT_VALUE: {
+      statement->BindInt(binding.index, binding.value->get_int_value());
+      break;
+    }
+
+    case mojom::DBValue::Tag::INT64_VALUE: {
+      statement->BindInt64(binding.index, binding.value->get_int64_value());
+      break;
+    }
+
+    case mojom::DBValue::Tag::DOUBLE_VALUE: {
+      statement->BindDouble(binding.index, binding.value->get_double_value());
+      break;
+    }
+
+    case mojom::DBValue::Tag::BOOL_VALUE: {
+      statement->BindBool(binding.index, binding.value->get_bool_value());
+      break;
+    }
+
+    case mojom::DBValue::Tag::STRING_VALUE: {
+      statement->BindString(binding.index, binding.value->get_string_value());
+      break;
+    }
+  }
+}
+
 void BindNull(mojom::DBCommand* command, const int_fast16_t index) {
   DCHECK(command);
 

@@ -17,6 +17,7 @@
 #include "bat/ads/internal/base/platform_helper_mock.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/covariates/covariate_logs.h"
+#include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
@@ -111,6 +112,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<Database> database_;
   std::unique_ptr<Diagnostics> diagnostics_;
+  std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;

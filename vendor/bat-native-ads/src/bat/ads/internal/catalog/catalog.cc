@@ -22,6 +22,7 @@
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 #include "bat/ads/internal/catalog/catalog_url_request_builder.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
+#include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/server/url/url_request_string_util.h"
 #include "bat/ads/internal/server/url/url_response_string_util.h"
 
@@ -35,9 +36,13 @@ constexpr base::TimeDelta kDebugCatalogPing = base::Minutes(15);
 
 }  // namespace
 
-Catalog::Catalog() = default;
+Catalog::Catalog() {
+  DatabaseManager::Get()->AddObserver(this);
+}
 
-Catalog::~Catalog() = default;
+Catalog::~Catalog() {
+  DatabaseManager::Get()->RemoveObserver(this);
+}
 
 void Catalog::AddObserver(CatalogObserver* observer) {
   DCHECK(observer);
@@ -167,6 +172,11 @@ void Catalog::NotifyFailedToUpdateCatalog() const {
   for (CatalogObserver& observer : observers_) {
     observer.OnFailedToUpdateCatalog();
   }
+}
+
+void Catalog::OnDidMigrateDatabase(const int from_version,
+                                   const int to_version) {
+  ResetCatalog();
 }
 
 }  // namespace ads
