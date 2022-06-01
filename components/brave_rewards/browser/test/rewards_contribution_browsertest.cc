@@ -659,6 +659,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
 }
 
+// TODO(zenparsing): Why is this failing on MacOS?
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        SplitProcessorAutoContribution) {
   response_->SetVerifiedWallet(true);
