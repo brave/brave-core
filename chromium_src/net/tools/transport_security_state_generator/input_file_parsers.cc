@@ -483,6 +483,17 @@ bool ParseJSON(base::StringPiece json,
       { "name": "static.ads.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "static.ads.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
+      // Search
+      { "name": "search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "cdn.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "fg.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "imgs.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "tiles.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "collector.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "patterns.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "quorum.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "star.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+
       // Premium
       { "name": "account.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "account.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
