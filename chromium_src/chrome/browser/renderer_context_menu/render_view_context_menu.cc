@@ -380,7 +380,6 @@ void BraveRenderViewContextMenu::InitMenu() {
   }
 
 #if BUILDFLAG(ENABLE_TOR)
-  index = -1;
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled() &&
       !params_.link_url.is_empty()) {
