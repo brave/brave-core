@@ -99,18 +99,22 @@ base::Time NextMonday(base::Time time) {
 
 // Determine if this installation is opt-in or opt-out for reporting.
 void InitOptInStatus(PrefService* local_state) {
+  DLOG(INFO) << "InitOptInStatus";
   if (local_state->GetInteger(kP3AOptIn) == P3AOptIn::kUnSet) {
+    DLOG(INFO) << "P3AOptIn::kUnSet FIRST RUN";
     bool enable_for_testing = base::FeatureList::IsEnabled(kP3AOptInFeature);
     // Hard-code enrollment criteria. We can't use a Griffin study
     // to determine participation because we need to decide at first-run
     // when the seed hasn't been downloaded yet.
     if (base::RandDouble() < 0.05 || enable_for_testing) {
+      DLOG(INFO) << "P3AOptIn::kRequired set";
       // Turn P3A off and require user opt-in to enable it.
       local_state->SetInteger(kP3AOptIn, P3AOptIn::kRequired);
       local_state->SetDefaultPrefValue(kP3AEnabled, base::Value(false));
     } else {
       // Leave things as the default, but update kP3AOptIn so we
       // know an enrollment decision has been made.
+      DLOG(INFO) << "P3AOptIn::kDefault set";
       local_state->SetInteger(kP3AOptIn, P3AOptIn::kDefault);
     }
   }
@@ -141,6 +145,7 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
 }
 
 void BraveP3AService::MaybeOptIn(PrefService* local_state) {
+  DLOG(INFO) << "Checking opt-in status";
   // Decide whether to participate in the opt-in study, if necessary.
   InitOptInStatus(local_state);
 }
