@@ -17,8 +17,6 @@
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #import "third_party/google_toolbox_for_mac/src/AppKit/GTMUILocalizerAndLayoutTweaker.h"
-#include "ui/base/cocoa/controls/button_utils.h"
-#include "ui/base/cocoa/controls/textfield_utils.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 
 @implementation FirstRunDialogViewController {
@@ -44,17 +42,17 @@
   constexpr int kButtonSpacing = 3;
 
   NSButton* maybeLaterButton =
-      [ButtonUtils buttonWithTitle:l10n_util::GetNSString(
-                                       IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL)
-                            action:@selector(cancel:)
-                            target:self];
+      [NSButton buttonWithTitle:l10n_util::GetNSString(
+                                    IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL)
+                         target:self
+                         action:@selector(cancel:)];
   [maybeLaterButton setKeyEquivalent:kKeyEquivalentEscape];
   [maybeLaterButton sizeToFit];
 
-  NSButton* makeDefaultButton = [ButtonUtils
+  NSButton* makeDefaultButton = [NSButton
       buttonWithTitle:l10n_util::GetNSString(IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL)
-               action:@selector(ok:)
-               target:self];
+               target:self
+               action:@selector(ok:)];
   [makeDefaultButton setKeyEquivalent:kKeyEquivalentReturn];
   [makeDefaultButton sizeToFit];
 
@@ -71,7 +69,7 @@
       brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&headerString);
   NSTextField* headerLabel =
-      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(headerString)];
+      [NSTextField labelWithString:base::SysUTF16ToNSString(headerString)];
   [headerLabel setFont:[NSFont systemFontOfSize:16.0
                                          weight:NSFontWeightSemibold]];
   [headerLabel sizeToFit];
@@ -85,7 +83,7 @@
       IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&contentsString);
   NSTextField* contentsLabel =
-      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(contentsString)];
+      [NSTextField labelWithString:base::SysUTF16ToNSString(contentsString)];
   [contentsLabel setFont:[NSFont systemFontOfSize:15.0
                                            weight:NSFontWeightRegular]];
   [contentsLabel sizeToFit];
