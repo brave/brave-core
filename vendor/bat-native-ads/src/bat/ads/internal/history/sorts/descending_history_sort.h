@@ -17,6 +17,8 @@ class DescendingHistorySort final : public HistorySortInterface {
  public:
   DescendingHistorySort();
   ~DescendingHistorySort() override;
+  DescendingHistorySort(const DescendingHistorySort&) = delete;
+  DescendingHistorySort& operator=(const DescendingHistorySort&) = delete;
 
   base::circular_deque<HistoryItemInfo> Apply(
       const base::circular_deque<HistoryItemInfo>& history) const override;

@@ -10,10 +10,11 @@ namespace ads {
 
 class PermissionRulesBase {
  public:
-  PermissionRulesBase();
   virtual ~PermissionRulesBase();
 
  protected:
+  PermissionRulesBase();
+
   bool HasPermission() const;
 
  private:

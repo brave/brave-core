@@ -20,6 +20,8 @@ class NotificationAd final : public NotificationAdObserver {
  public:
   NotificationAd();
   ~NotificationAd() override;
+  NotificationAd(const NotificationAd& info) = delete;
+  NotificationAd& operator=(const NotificationAd& info) = delete;
 
   void AddObserver(NotificationAdObserver* observer);
   void RemoveObserver(NotificationAdObserver* observer);

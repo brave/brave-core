@@ -22,6 +22,8 @@ class ADS_EXPORT AdEventHistory final {
  public:
   AdEventHistory();
   ~AdEventHistory();
+  AdEventHistory(const AdEventHistory&) = delete;
+  AdEventHistory& operator=(const AdEventHistory&) = delete;
 
   void RecordForId(const std::string& id,
                    const std::string& ad_type,

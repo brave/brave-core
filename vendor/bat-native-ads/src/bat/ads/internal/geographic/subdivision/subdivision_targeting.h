@@ -20,6 +20,8 @@ class SubdivisionTargeting final {
  public:
   SubdivisionTargeting();
   ~SubdivisionTargeting();
+  SubdivisionTargeting(const SubdivisionTargeting&) = delete;
+  SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
 
   void OnPrefChanged(const std::string& path);
 

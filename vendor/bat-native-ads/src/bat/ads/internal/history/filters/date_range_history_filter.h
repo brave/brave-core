@@ -18,6 +18,8 @@ class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
   DateRangeHistoryFilter(const base::Time from_time, const base::Time to_time);
   ~DateRangeHistoryFilter() override;
+  DateRangeHistoryFilter(const DateRangeHistoryFilter&) = delete;
+  DateRangeHistoryFilter& operator=(const DateRangeHistoryFilter&) = delete;
 
   base::circular_deque<HistoryItemInfo> Apply(
       const base::circular_deque<HistoryItemInfo>& history) const override;

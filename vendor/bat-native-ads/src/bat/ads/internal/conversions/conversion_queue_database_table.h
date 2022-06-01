@@ -34,6 +34,8 @@ class ConversionQueue final : public TableInterface {
  public:
   ConversionQueue();
   ~ConversionQueue() override;
+  ConversionQueue(const ConversionQueue&) = delete;
+  ConversionQueue& operator=(const ConversionQueue&) = delete;
 
   void Save(const ConversionQueueItemList& conversion_queue_items,
             ResultCallback callback);

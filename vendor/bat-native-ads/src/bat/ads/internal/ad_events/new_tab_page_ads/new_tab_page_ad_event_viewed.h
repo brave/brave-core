@@ -16,6 +16,8 @@ class AdEventViewed final : public AdEventInterface<NewTabPageAdInfo> {
  public:
   AdEventViewed();
   ~AdEventViewed() override;
+  AdEventViewed(const AdEventViewed&) = delete;
+  AdEventViewed& operator=(const AdEventViewed&) = delete;
 
   void FireEvent(const NewTabPageAdInfo& ad) override;
 };

@@ -19,6 +19,8 @@ class EpsilonGreedyBandit final : public ResourceInterface<SegmentList> {
  public:
   EpsilonGreedyBandit();
   ~EpsilonGreedyBandit() override;
+  EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
+  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
 
   bool IsInitialized() const override;
 

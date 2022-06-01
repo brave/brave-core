@@ -22,6 +22,8 @@ class BackoffTimer final {
  public:
   BackoffTimer();
   ~BackoffTimer();
+  BackoffTimer(const BackoffTimer&) = delete;
+  BackoffTimer& operator=(const BackoffTimer&) = delete;
 
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
   // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +

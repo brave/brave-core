@@ -16,6 +16,8 @@ class AdEventClicked final : public AdEventInterface<NotificationAdInfo> {
  public:
   AdEventClicked();
   ~AdEventClicked() override;
+  AdEventClicked(const AdEventClicked&) = delete;
+  AdEventClicked& operator=(const AdEventClicked&) = delete;
 
   void FireEvent(const NotificationAdInfo& ad) override;
 };
