@@ -81,7 +81,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
+    &autofill::features::kAutofillSaveCardUiExperiment,
     &autofill::features::kAutofillServerCommunication,
+    &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kBrowsingTopics,
     &blink::features::kAllowURNsInIframes,
@@ -94,6 +96,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
     &blink::features::kPrivacySandboxAdsAPIs,
+    &blink::features::kSharedStorageAPI,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
     &commerce::kCommerceDeveloper,
@@ -106,6 +109,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kDigitalGoodsApi,
+    &features::kEarlyHintsPreloadForNavigation,
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
@@ -119,6 +123,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
+#if !BUILDFLAG(IS_ANDROID)
+    &features::kTrustSafetySentimentSurvey,
+#endif
     &features::kWebOTP,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::internal::kHistoryClustersInternalsPage,
@@ -154,12 +161,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
-    &media::kEnableTabMuting,
+    &autofill::features::kAutofillDisableShadowHeuristics,
     &blink::features::kPrefetchPrivacyChanges,
     &blink::features::kReducedReferrerGranularity,
 #if BUILDFLAG(IS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
+    &media::kEnableTabMuting,
     &net::features::kPartitionConnectionsByNetworkIsolationKey,
     &net::features::kPartitionExpectCTStateByNetworkIsolationKey,
     &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
