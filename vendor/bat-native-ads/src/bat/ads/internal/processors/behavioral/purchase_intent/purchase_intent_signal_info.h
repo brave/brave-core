@@ -18,6 +18,7 @@ struct PurchaseIntentSignalInfo final {
  public:
   PurchaseIntentSignalInfo();
   PurchaseIntentSignalInfo(const PurchaseIntentSignalInfo& info);
+  PurchaseIntentSignalInfo& operator=(const PurchaseIntentSignalInfo& info);
   ~PurchaseIntentSignalInfo();
 
   base::Time created_at;

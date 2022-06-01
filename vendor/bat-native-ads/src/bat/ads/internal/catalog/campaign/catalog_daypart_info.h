@@ -15,6 +15,7 @@ namespace ads {
 struct CatalogDaypartInfo final {
   CatalogDaypartInfo();
   CatalogDaypartInfo(const CatalogDaypartInfo& info);
+  CatalogDaypartInfo& operator=(const CatalogDaypartInfo& info);
   ~CatalogDaypartInfo();
 
   bool operator==(const CatalogDaypartInfo& rhs) const;

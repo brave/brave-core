@@ -13,6 +13,9 @@ UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo() = default;
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo(
     const UnblindedPaymentTokenInfo& unblinded_payment_token) = default;
 
+UnblindedPaymentTokenInfo& UnblindedPaymentTokenInfo::operator=(
+    const UnblindedPaymentTokenInfo& info) = default;
+
 UnblindedPaymentTokenInfo::~UnblindedPaymentTokenInfo() = default;
 
 bool UnblindedPaymentTokenInfo::operator==(

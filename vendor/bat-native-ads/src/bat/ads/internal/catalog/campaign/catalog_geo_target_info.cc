@@ -12,6 +12,9 @@ CatalogGeoTargetInfo::CatalogGeoTargetInfo() = default;
 CatalogGeoTargetInfo::CatalogGeoTargetInfo(const CatalogGeoTargetInfo& info) =
     default;
 
+CatalogGeoTargetInfo& CatalogGeoTargetInfo::operator=(
+    const CatalogGeoTargetInfo& info) = default;
+
 CatalogGeoTargetInfo::~CatalogGeoTargetInfo() = default;
 
 bool CatalogGeoTargetInfo::operator==(const CatalogGeoTargetInfo& rhs) const {

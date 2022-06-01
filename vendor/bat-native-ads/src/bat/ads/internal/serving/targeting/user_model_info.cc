@@ -12,6 +12,8 @@ UserModelInfo::UserModelInfo() = default;
 
 UserModelInfo::UserModelInfo(const UserModelInfo& info) = default;
 
+UserModelInfo& UserModelInfo::operator=(const UserModelInfo& info) = default;
+
 UserModelInfo::~UserModelInfo() = default;
 
 }  // namespace targeting

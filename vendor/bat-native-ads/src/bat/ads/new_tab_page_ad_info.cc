@@ -14,6 +14,9 @@ NewTabPageAdInfo::NewTabPageAdInfo() = default;
 
 NewTabPageAdInfo::NewTabPageAdInfo(const NewTabPageAdInfo& info) = default;
 
+NewTabPageAdInfo& NewTabPageAdInfo::operator=(const NewTabPageAdInfo& info) =
+    default;
+
 NewTabPageAdInfo::~NewTabPageAdInfo() = default;
 
 bool NewTabPageAdInfo::IsValid() const {

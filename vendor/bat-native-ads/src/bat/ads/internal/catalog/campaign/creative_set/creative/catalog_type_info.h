@@ -14,6 +14,7 @@ namespace ads {
 struct CatalogTypeInfo final {
   CatalogTypeInfo();
   CatalogTypeInfo(const CatalogTypeInfo& info);
+  CatalogTypeInfo& operator=(const CatalogTypeInfo& info);
   ~CatalogTypeInfo();
 
   bool operator==(const CatalogTypeInfo& rhs) const;

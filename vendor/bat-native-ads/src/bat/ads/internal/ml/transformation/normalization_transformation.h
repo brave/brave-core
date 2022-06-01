@@ -16,6 +16,8 @@ namespace ml {
 class NormalizationTransformation final : public Transformation {
  public:
   NormalizationTransformation();
+  NormalizationTransformation(
+      const NormalizationTransformation& transformation);
   ~NormalizationTransformation() override;
 
   std::unique_ptr<Data> Apply(

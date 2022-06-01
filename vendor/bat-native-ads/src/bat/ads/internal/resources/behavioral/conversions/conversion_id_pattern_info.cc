@@ -12,6 +12,9 @@ ConversionIdPatternInfo::ConversionIdPatternInfo() = default;
 ConversionIdPatternInfo::ConversionIdPatternInfo(
     const ConversionIdPatternInfo& info) = default;
 
+ConversionIdPatternInfo& ConversionIdPatternInfo::operator=(
+    const ConversionIdPatternInfo& info) = default;
+
 ConversionIdPatternInfo::~ConversionIdPatternInfo() = default;
 
 bool ConversionIdPatternInfo::operator==(

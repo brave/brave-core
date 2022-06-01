@@ -24,6 +24,7 @@ namespace ads {
 struct ADS_EXPORT AdContentInfo final {
   AdContentInfo();
   AdContentInfo(const AdContentInfo& info);
+  AdContentInfo& operator=(const AdContentInfo& info);
   ~AdContentInfo();
 
   bool operator==(const AdContentInfo& rhs) const;

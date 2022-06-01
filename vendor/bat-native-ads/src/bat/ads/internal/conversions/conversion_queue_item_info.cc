@@ -14,6 +14,9 @@ ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
 ConversionQueueItemInfo::ConversionQueueItemInfo(
     const ConversionQueueItemInfo& info) = default;
 
+ConversionQueueItemInfo& ConversionQueueItemInfo::operator=(
+    const ConversionQueueItemInfo& info) = default;
+
 ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::operator==(

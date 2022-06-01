@@ -13,6 +13,10 @@ CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo() =
 CatalogCreativeInlineContentAdInfo::CatalogCreativeInlineContentAdInfo(
     const CatalogCreativeInlineContentAdInfo& info) = default;
 
+CatalogCreativeInlineContentAdInfo&
+CatalogCreativeInlineContentAdInfo::operator=(
+    const CatalogCreativeInlineContentAdInfo& info) = default;
+
 CatalogCreativeInlineContentAdInfo::~CatalogCreativeInlineContentAdInfo() =
     default;
 

@@ -42,6 +42,8 @@ BlindedToken::BlindedToken(
 
 BlindedToken::BlindedToken(const BlindedToken& other) = default;
 
+BlindedToken& BlindedToken::operator=(const BlindedToken& info) = default;
+
 BlindedToken::~BlindedToken() = default;
 
 bool BlindedToken::operator==(const BlindedToken& rhs) const {

@@ -14,6 +14,10 @@ CatalogNewTabPageAdWallpaperFocalPointInfo::
     CatalogNewTabPageAdWallpaperFocalPointInfo(
         const CatalogNewTabPageAdWallpaperFocalPointInfo& info) = default;
 
+CatalogNewTabPageAdWallpaperFocalPointInfo&
+CatalogNewTabPageAdWallpaperFocalPointInfo::operator=(
+    const CatalogNewTabPageAdWallpaperFocalPointInfo& info) = default;
+
 CatalogNewTabPageAdWallpaperFocalPointInfo::
     ~CatalogNewTabPageAdWallpaperFocalPointInfo() = default;
 

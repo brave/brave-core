@@ -16,6 +16,7 @@ namespace ads {
 struct ConversionQueueItemInfo final {
   ConversionQueueItemInfo();
   ConversionQueueItemInfo(const ConversionQueueItemInfo& info);
+  ConversionQueueItemInfo& operator=(const ConversionQueueItemInfo& info);
   ~ConversionQueueItemInfo();
 
   bool operator==(const ConversionQueueItemInfo& rhs) const;

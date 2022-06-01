@@ -15,6 +15,7 @@ namespace security {
 struct KeyPairInfo final {
   KeyPairInfo();
   KeyPairInfo(const KeyPairInfo& info);
+  KeyPairInfo& operator=(const KeyPairInfo& info);
   ~KeyPairInfo();
 
   bool operator==(const KeyPairInfo& rhs) const;

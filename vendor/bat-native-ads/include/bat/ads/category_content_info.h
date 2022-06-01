@@ -21,6 +21,7 @@ namespace ads {
 struct ADS_EXPORT CategoryContentInfo final {
   CategoryContentInfo();
   CategoryContentInfo(const CategoryContentInfo& info);
+  CategoryContentInfo& operator=(const CategoryContentInfo& info);
   ~CategoryContentInfo();
 
   bool operator==(const CategoryContentInfo& rhs) const;

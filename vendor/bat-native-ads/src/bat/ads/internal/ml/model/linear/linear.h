@@ -19,8 +19,9 @@ namespace model {
 class Linear final {
  public:
   Linear();
-  Linear(const Linear& other);
   explicit Linear(const std::string& model);
+  Linear(const Linear& other);
+  Linear& operator=(const Linear& other);
   Linear(const std::map<std::string, VectorData>& weights,
          const std::map<std::string, double>& biases);
   ~Linear();

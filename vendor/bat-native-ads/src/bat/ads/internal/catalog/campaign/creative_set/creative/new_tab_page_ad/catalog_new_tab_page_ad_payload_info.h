@@ -16,6 +16,8 @@ namespace ads {
 struct CatalogNewTabPageAdPayloadInfo final {
   CatalogNewTabPageAdPayloadInfo();
   CatalogNewTabPageAdPayloadInfo(const CatalogNewTabPageAdPayloadInfo& info);
+  CatalogNewTabPageAdPayloadInfo& operator=(
+      const CatalogNewTabPageAdPayloadInfo& info);
   ~CatalogNewTabPageAdPayloadInfo();
 
   bool operator==(const CatalogNewTabPageAdPayloadInfo& rhs) const;

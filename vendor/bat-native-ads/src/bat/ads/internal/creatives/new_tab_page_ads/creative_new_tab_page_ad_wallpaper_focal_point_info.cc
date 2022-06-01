@@ -11,6 +11,14 @@ CreativeNewTabPageAdWallpaperFocalPointInfo::
     CreativeNewTabPageAdWallpaperFocalPointInfo() = default;
 
 CreativeNewTabPageAdWallpaperFocalPointInfo::
+    CreativeNewTabPageAdWallpaperFocalPointInfo(
+        const CreativeNewTabPageAdWallpaperFocalPointInfo& info) = default;
+
+CreativeNewTabPageAdWallpaperFocalPointInfo&
+CreativeNewTabPageAdWallpaperFocalPointInfo::operator=(
+    const CreativeNewTabPageAdWallpaperFocalPointInfo& info) = default;
+
+CreativeNewTabPageAdWallpaperFocalPointInfo::
     ~CreativeNewTabPageAdWallpaperFocalPointInfo() = default;
 
 bool CreativeNewTabPageAdWallpaperFocalPointInfo::operator==(

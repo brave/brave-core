@@ -29,6 +29,7 @@ class VerificationSignature {
       const challenge_bypass_ristretto::VerificationSignature&
           verification_signature);
   VerificationSignature(const VerificationSignature& other);
+  VerificationSignature& operator=(const VerificationSignature& other);
   ~VerificationSignature();
 
   bool operator==(const VerificationSignature& rhs) const;

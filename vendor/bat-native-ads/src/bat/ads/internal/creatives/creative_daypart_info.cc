@@ -9,6 +9,12 @@ namespace ads {
 
 CreativeDaypartInfo::CreativeDaypartInfo() = default;
 
+CreativeDaypartInfo::CreativeDaypartInfo(const CreativeDaypartInfo& info) =
+    default;
+
+CreativeDaypartInfo& CreativeDaypartInfo::operator=(
+    const CreativeDaypartInfo& info) = default;
+
 CreativeDaypartInfo::~CreativeDaypartInfo() = default;
 
 bool CreativeDaypartInfo::operator==(const CreativeDaypartInfo& rhs) const {

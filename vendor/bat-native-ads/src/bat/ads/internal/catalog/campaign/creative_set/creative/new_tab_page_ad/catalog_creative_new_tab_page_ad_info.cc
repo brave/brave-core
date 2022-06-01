@@ -12,6 +12,9 @@ CatalogCreativeNewTabPageAdInfo::CatalogCreativeNewTabPageAdInfo() = default;
 CatalogCreativeNewTabPageAdInfo::CatalogCreativeNewTabPageAdInfo(
     const CatalogCreativeNewTabPageAdInfo& info) = default;
 
+CatalogCreativeNewTabPageAdInfo& CatalogCreativeNewTabPageAdInfo::operator=(
+    const CatalogCreativeNewTabPageAdInfo& info) = default;
+
 CatalogCreativeNewTabPageAdInfo::~CatalogCreativeNewTabPageAdInfo() = default;
 
 bool CatalogCreativeNewTabPageAdInfo::operator==(

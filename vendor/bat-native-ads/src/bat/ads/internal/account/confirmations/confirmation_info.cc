@@ -13,6 +13,9 @@ ConfirmationInfo::ConfirmationInfo() = default;
 
 ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
 
+ConfirmationInfo& ConfirmationInfo::operator=(const ConfirmationInfo& info) =
+    default;
+
 ConfirmationInfo::~ConfirmationInfo() = default;
 
 bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {

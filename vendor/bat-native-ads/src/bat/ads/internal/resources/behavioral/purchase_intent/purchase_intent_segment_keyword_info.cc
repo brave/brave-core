@@ -18,6 +18,9 @@ PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
     const PurchaseIntentSegmentKeywordInfo& info) = default;
 
+PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
+    const PurchaseIntentSegmentKeywordInfo& info) = default;
+
 PurchaseIntentSegmentKeywordInfo::~PurchaseIntentSegmentKeywordInfo() = default;
 
 }  // namespace targeting

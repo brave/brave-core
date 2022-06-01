@@ -16,6 +16,7 @@ struct UserActivityEventInfo;
 struct UserActivityEventInfo final {
   UserActivityEventInfo();
   UserActivityEventInfo(const UserActivityEventInfo& info);
+  UserActivityEventInfo& operator=(const UserActivityEventInfo& info);
   ~UserActivityEventInfo();
 
   bool operator==(const UserActivityEventInfo& rhs) const;

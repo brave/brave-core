@@ -16,6 +16,9 @@ NotificationAdInfo::NotificationAdInfo() = default;
 NotificationAdInfo::NotificationAdInfo(const NotificationAdInfo& info) =
     default;
 
+NotificationAdInfo& NotificationAdInfo::operator=(
+    const NotificationAdInfo& info) = default;
+
 NotificationAdInfo::~NotificationAdInfo() = default;
 
 bool NotificationAdInfo::IsValid() const {

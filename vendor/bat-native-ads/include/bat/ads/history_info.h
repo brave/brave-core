@@ -18,6 +18,7 @@ struct HistoryItemInfo;
 struct ADS_EXPORT HistoryInfo final {
   HistoryInfo();
   HistoryInfo(const HistoryInfo& info);
+  HistoryInfo& operator=(const HistoryInfo& info);
   ~HistoryInfo();
 
   std::string ToJson() const;

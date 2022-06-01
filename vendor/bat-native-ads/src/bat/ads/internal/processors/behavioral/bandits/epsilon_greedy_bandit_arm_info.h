@@ -14,6 +14,7 @@ namespace targeting {
 struct EpsilonGreedyBanditArmInfo final {
   EpsilonGreedyBanditArmInfo();
   EpsilonGreedyBanditArmInfo(const EpsilonGreedyBanditArmInfo& info);
+  EpsilonGreedyBanditArmInfo& operator=(const EpsilonGreedyBanditArmInfo& info);
   ~EpsilonGreedyBanditArmInfo();
 
   bool operator==(const EpsilonGreedyBanditArmInfo& rhs) const;

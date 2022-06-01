@@ -13,6 +13,7 @@ namespace ads {
 struct ConversionIdPatternInfo final {
   ConversionIdPatternInfo();
   ConversionIdPatternInfo(const ConversionIdPatternInfo& info);
+  ConversionIdPatternInfo& operator=(const ConversionIdPatternInfo& info);
   ~ConversionIdPatternInfo();
 
   bool operator==(const ConversionIdPatternInfo& rhs) const;

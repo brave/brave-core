@@ -236,9 +236,9 @@ void Deposits::OnGetForCreativeInstanceId(
 
   mojom::DBRecordPtr record =
       std::move(response->result->get_records().front());
-  const DepositInfo& deposit = GetFromRecord(record.get());
+  DepositInfo deposit = GetFromRecord(record.get());
 
-  callback(/* success */ true, deposit);
+  callback(/* success */ true, std::move(deposit));
 }
 
 void Deposits::MigrateToV24(mojom::DBTransaction* transaction) {

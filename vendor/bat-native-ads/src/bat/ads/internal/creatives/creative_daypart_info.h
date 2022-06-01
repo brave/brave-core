@@ -14,6 +14,8 @@ namespace ads {
 
 struct CreativeDaypartInfo final {
   CreativeDaypartInfo();
+  CreativeDaypartInfo(const CreativeDaypartInfo& info);
+  CreativeDaypartInfo& operator=(const CreativeDaypartInfo& info);
   ~CreativeDaypartInfo();
 
   bool operator==(const CreativeDaypartInfo& rhs) const;

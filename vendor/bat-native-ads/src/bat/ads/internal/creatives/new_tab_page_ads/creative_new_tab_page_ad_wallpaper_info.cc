@@ -10,6 +10,12 @@ namespace ads {
 CreativeNewTabPageAdWallpaperInfo::CreativeNewTabPageAdWallpaperInfo() =
     default;
 
+CreativeNewTabPageAdWallpaperInfo::CreativeNewTabPageAdWallpaperInfo(
+    const CreativeNewTabPageAdWallpaperInfo& info) = default;
+
+CreativeNewTabPageAdWallpaperInfo& CreativeNewTabPageAdWallpaperInfo::operator=(
+    const CreativeNewTabPageAdWallpaperInfo& info) = default;
+
 CreativeNewTabPageAdWallpaperInfo::~CreativeNewTabPageAdWallpaperInfo() =
     default;
 

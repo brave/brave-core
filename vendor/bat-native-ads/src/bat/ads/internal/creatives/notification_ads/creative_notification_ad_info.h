@@ -16,7 +16,7 @@ struct CreativeNotificationAdInfo final : CreativeAdInfo {
   CreativeNotificationAdInfo();
   explicit CreativeNotificationAdInfo(const CreativeAdInfo& creative_ad);
   CreativeNotificationAdInfo(
-      const CreativeAdNotificationInfo& creative_ad_notification);
+      const CreativeNotificationAdInfo& creative_ad_notification);
   CreativeNotificationAdInfo& operator=(
       const CreativeNotificationAdInfo& creative_ad_notification);
   ~CreativeNotificationAdInfo();

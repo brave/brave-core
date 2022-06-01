@@ -29,7 +29,9 @@ class ConfirmationType final {
     kConversion
   };
 
-  ConfirmationType() = default;
+  ConfirmationType();
+  ConfirmationType(const ConfirmationType&);
+  ConfirmationType& operator=(const ConfirmationType&);
 
   // Allow implicit conversion of the enum value to this wrapper
   constexpr ConfirmationType(const Value& value)  // NOLINT(runtime/explicit)

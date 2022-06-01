@@ -28,6 +28,7 @@ class Token {
   Token();
   explicit Token(const std::string& token_base64);
   Token(const Token& other);
+  Token& operator=(const Token& other);
   ~Token();
 
   bool operator==(const Token& rhs) const;

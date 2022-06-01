@@ -25,6 +25,8 @@ Linear::Linear(const std::map<std::string, VectorData>& weights,
 
 Linear::Linear(const Linear& linear_model) = default;
 
+Linear& Linear::operator=(const Linear& info) = default;
+
 Linear::~Linear() = default;
 
 PredictionMap Linear::Predict(const VectorData& x) const {

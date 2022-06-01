@@ -14,6 +14,9 @@ namespace ml {
 NormalizationTransformation::NormalizationTransformation()
     : Transformation(TransformationType::kNormalization) {}
 
+NormalizationTransformation::NormalizationTransformation(
+    const NormalizationTransformation& transformation) = default;
+
 NormalizationTransformation::~NormalizationTransformation() = default;
 
 std::unique_ptr<Data> NormalizationTransformation::Apply(

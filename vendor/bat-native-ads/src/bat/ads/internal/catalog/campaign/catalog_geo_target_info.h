@@ -13,6 +13,7 @@ namespace ads {
 struct CatalogGeoTargetInfo final {
   CatalogGeoTargetInfo();
   CatalogGeoTargetInfo(const CatalogGeoTargetInfo& info);
+  CatalogGeoTargetInfo& operator=(const CatalogGeoTargetInfo& info);
   ~CatalogGeoTargetInfo();
 
   bool operator==(const CatalogGeoTargetInfo& rhs) const;

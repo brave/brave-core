@@ -14,7 +14,7 @@ CreativeNotificationAdInfo::CreativeNotificationAdInfo(
     : CreativeAdInfo(creative_ad) {}
 
 CreativeNotificationAdInfo::CreativeNotificationAdInfo(
-      const CreativeAdNotificationInfo& creative_ad_notification) = default;
+    const CreativeNotificationAdInfo& creative_ad_notification) = default;
 
 CreativeNotificationAdInfo& CreativeNotificationAdInfo::operator=(
     const CreativeNotificationAdInfo& creative_ad_notification) = default;

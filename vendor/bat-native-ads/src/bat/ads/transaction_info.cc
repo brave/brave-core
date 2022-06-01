@@ -16,6 +16,9 @@ TransactionInfo::TransactionInfo() = default;
 
 TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 
+TransactionInfo& TransactionInfo::operator=(const TransactionInfo& info) =
+    default;
+
 TransactionInfo::~TransactionInfo() = default;
 
 bool TransactionInfo::operator==(const TransactionInfo& rhs) const {

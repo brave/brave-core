@@ -42,6 +42,8 @@ TokenPreimage::TokenPreimage(
 
 TokenPreimage::TokenPreimage(const TokenPreimage& other) = default;
 
+TokenPreimage& TokenPreimage::operator=(const TokenPreimage& info) = default;
+
 TokenPreimage::~TokenPreimage() = default;
 
 bool TokenPreimage::operator==(const TokenPreimage& rhs) const {

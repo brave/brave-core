@@ -18,6 +18,10 @@ template <typename T>
 AdPredictorInfo<T>::AdPredictorInfo(const AdPredictorInfo<T>& info) = default;
 
 template <typename T>
+AdPredictorInfo<T>& AdPredictorInfo<T>::operator=(
+    const AdPredictorInfo<T>& info) = default;
+
+template <typename T>
 AdPredictorInfo<T>::~AdPredictorInfo() = default;
 
 template struct AdPredictorInfo<CreativeNotificationAdInfo>;

@@ -14,6 +14,9 @@ UserActivityEventInfo::UserActivityEventInfo() = default;
 UserActivityEventInfo::UserActivityEventInfo(
     const UserActivityEventInfo& info) = default;
 
+UserActivityEventInfo& UserActivityEventInfo::operator=(
+    const UserActivityEventInfo& info) = default;
+
 UserActivityEventInfo::~UserActivityEventInfo() = default;
 
 bool UserActivityEventInfo::operator==(const UserActivityEventInfo& rhs) const {

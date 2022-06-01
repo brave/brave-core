@@ -15,6 +15,8 @@ namespace ads {
 struct DepositInfo final {
   DepositInfo();
   ~DepositInfo();
+  DepositInfo(DepositInfo&&) noexcept;
+  DepositInfo& operator=(DepositInfo&&) noexcept;
 
   bool IsValid() const;
 

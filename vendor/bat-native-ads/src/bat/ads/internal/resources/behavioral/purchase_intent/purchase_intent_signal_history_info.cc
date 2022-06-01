@@ -52,6 +52,9 @@ PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const PurchaseIntentSignalHistoryInfo& info) = default;
 
+PurchaseIntentSignalHistoryInfo& PurchaseIntentSignalHistoryInfo::operator=(
+    const PurchaseIntentSignalHistoryInfo& info) = default;
+
 PurchaseIntentSignalHistoryInfo::~PurchaseIntentSignalHistoryInfo() = default;
 
 bool PurchaseIntentSignalHistoryInfo::operator==(

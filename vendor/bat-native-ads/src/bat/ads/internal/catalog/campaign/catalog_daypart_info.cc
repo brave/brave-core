@@ -12,6 +12,9 @@ CatalogDaypartInfo::CatalogDaypartInfo() = default;
 CatalogDaypartInfo::CatalogDaypartInfo(const CatalogDaypartInfo& info) =
     default;
 
+CatalogDaypartInfo& CatalogDaypartInfo::operator=(
+    const CatalogDaypartInfo& info) = default;
+
 CatalogDaypartInfo::~CatalogDaypartInfo() = default;
 
 bool CatalogDaypartInfo::operator==(const CatalogDaypartInfo& rhs) const {
