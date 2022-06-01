@@ -29,7 +29,10 @@
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using testing::HasSubstr;
 
 // npm run test -- brave_unit_tests --filter=BraveStatsUpdaterTest.*
 
@@ -66,10 +69,11 @@ class BraveStatsUpdaterTest : public testing::Test {
     task_environment_.AdvanceClock(base::Minutes(30));
 
     profile_ = CreateBraveAdsProfile();
-    EXPECT_TRUE(profile_.get() != NULL);
+    EXPECT_TRUE(profile_.get());
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
+    SetCurrentTimeForTest(base::Time());
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
@@ -655,9 +659,8 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   GURL url;
 
   url = params->GetUpdateURL(base_url, "", "", "");
-  EXPECT_TRUE(url.query().find("daily=true&weekly=true&monthly=true") !=
-              std::string::npos);
-  EXPECT_TRUE(url.query().find("wallet2=0") != std::string::npos);
+  EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=true&monthly=true"));
+  EXPECT_THAT(url.query(), HasSubstr("wallet2=0"));
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
@@ -665,27 +668,24 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
 
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
-  EXPECT_NE(url.query().find("daily=true&weekly=false&monthly=false"),
-            std::string::npos);
-  EXPECT_NE(url.query().find("wallet2=7"), std::string::npos);
+  EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=false&monthly=false"));
+  EXPECT_THAT(url.query(), HasSubstr("wallet2=7"));
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(6));
   GetProfilePrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
-  EXPECT_NE(url.query().find("daily=true&weekly=true&monthly=false"),
-            std::string::npos);
-  EXPECT_NE(url.query().find("wallet2=3"), std::string::npos);
+  EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=true&monthly=false"));
+  EXPECT_THAT(url.query(), HasSubstr("wallet2=3"));
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
   GetProfilePrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
-  EXPECT_NE(url.query().find("daily=true&weekly=false&monthly=false"),
-            std::string::npos);
-  EXPECT_NE(url.query().find("wallet2=1"), std::string::npos);
+  EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=false&monthly=false"));
+  EXPECT_THAT(url.query(), HasSubstr("wallet2=1"));
   params->SavePrefs();
 }
 
@@ -716,20 +716,20 @@ TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
 
   // daily, monthly, weekly ping
   task_environment_.FastForwardBy(base::Hours(1));
-  EXPECT_NE(last_url.query().find("daily=true&weekly=true&monthly=true"),
-            std::string::npos);
+  EXPECT_THAT(last_url.query(),
+              HasSubstr("daily=true&weekly=true&monthly=true"));
 
   // daily ping
   task_environment_.AdvanceClock(base::Days(1));
   task_environment_.FastForwardBy(base::Seconds(1));
-  EXPECT_NE(last_url.query().find("daily=true&weekly=false&monthly=false"),
-            std::string::npos);
+  EXPECT_THAT(last_url.query(),
+              HasSubstr("daily=true&weekly=false&monthly=false"));
 
   // daily, weekly ping
   task_environment_.AdvanceClock(base::Days(7));
   task_environment_.FastForwardBy(base::Seconds(1));
-  EXPECT_NE(last_url.query().find("daily=true&weekly=true&monthly=false"),
-            std::string::npos);
+  EXPECT_THAT(last_url.query(),
+              HasSubstr("daily=true&weekly=true&monthly=false"));
 
   ASSERT_EQ(ping_count, 3);
 }

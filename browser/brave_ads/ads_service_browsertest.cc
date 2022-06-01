@@ -281,9 +281,6 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     locale_helper_mock_ =
         std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>();
 
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
-
     ON_CALL(*locale_helper_mock_, GetLocale()).WillByDefault(Return(locale));
   }
 
