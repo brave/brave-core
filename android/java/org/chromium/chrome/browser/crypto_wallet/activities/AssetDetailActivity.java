@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -294,20 +295,13 @@ public class AssetDetailActivity
     private void getBlockchainToken() {
         if (mAsset != null || !mNativeInitialized) return;
 
-        TokenUtils.getUserAssetsFiltered(
-                mBraveWalletService, mChainId, TokenUtils.TokenType.ALL, (userAssets) -> {
-                    for (BlockchainToken userAsset : userAssets) {
-                        if (mChainId.equals(userAsset.chainId)
-                                && mAssetSymbol.equals(userAsset.symbol)
-                                && mAssetName.equals(userAsset.name)
-                                && (mAssetId.isEmpty() || mAssetId.equals(userAsset.tokenId))
-                                && mContractAddress.equals(userAsset.contractAddress)
-                                && mAssetDecimals == userAsset.decimals) {
-                            mAsset = userAsset;
-                        }
+        Utils.getExactUserAsset(getBraveWalletService(), mChainId, mAssetSymbol, mAssetName,
+                mAssetId, mContractAddress, mAssetDecimals, new Callback<BlockchainToken>() {
+                    @Override
+                    public void onResult(BlockchainToken token) {
+                        assert token != null;
+                        mAsset = token;
                     }
-
-                    assert mAsset != null;
                 });
     }
 

@@ -131,6 +131,16 @@ public class PortfolioHelper {
                                 contexts.add(context);
                                 mJsonRpcService.getBalance(
                                         accountInfo.address, CoinType.ETH, mChainId, context);
+                            } else if (userAsset.isErc721) {
+                                AsyncUtils.GetErc721TokenBalanceResponseContext context =
+                                        new AsyncUtils.GetErc721TokenBalanceResponseContext(
+                                                balancesMultiResponse.singleResponseComplete);
+                                context.userAsset = userAsset;
+                                contexts.add(context);
+                                mJsonRpcService.getErc721TokenBalance(
+                                        Utils.getContractAddress(mChainId, userAsset.symbol,
+                                                userAsset.contractAddress),
+                                        userAsset.tokenId, accountInfo.address, mChainId, context);
                             } else {
                                 AsyncUtils.GetErc20TokenBalanceResponseContext context =
                                         new AsyncUtils.GetErc20TokenBalanceResponseContext(
@@ -149,18 +159,23 @@ public class PortfolioHelper {
                         for (AsyncUtils.GetBalanceResponseBaseContext context : contexts) {
                             String currentAssetSymbol =
                                     context.userAsset.symbol.toLowerCase(Locale.getDefault());
+                            String currentAssetKey = context.userAsset.isErc721
+                                    ? Utils.formatErc721TokenTitle(
+                                            currentAssetSymbol, context.userAsset.tokenId)
+                                    : currentAssetSymbol;
 
                             // Update crypto balances first
-                            int decimals = (context.userAsset.decimals != 0)
+                            int decimals =
+                                    (context.userAsset.decimals != 0 || context.userAsset.isErc721)
                                     ? context.userAsset.decimals
                                     : 18;
                             Double thisBalanceCryptoPart = (context.error == ProviderError.SUCCESS)
                                     ? fromHexWei(context.balance, decimals)
                                     : 0.0d;
 
-                            Double prevThisTokenCryptoSum = Utils.getOrDefault(
-                                    mPerTokenCryptoSum, currentAssetSymbol, 0.0d);
-                            mPerTokenCryptoSum.put(currentAssetSymbol,
+                            Double prevThisTokenCryptoSum =
+                                    Utils.getOrDefault(mPerTokenCryptoSum, currentAssetKey, 0.0d);
+                            mPerTokenCryptoSum.put(currentAssetKey,
                                     prevThisTokenCryptoSum + thisBalanceCryptoPart);
                         }
 
@@ -226,13 +241,17 @@ public class PortfolioHelper {
                             for (BlockchainToken userAsset : mUserAssets) {
                                 String currentAssetSymbol =
                                         userAsset.symbol.toLowerCase(Locale.getDefault());
+                                String currentAssetKey = userAsset.isErc721
+                                        ? Utils.formatErc721TokenTitle(
+                                                currentAssetSymbol, userAsset.tokenId)
+                                        : currentAssetSymbol;
                                 Double usdPerThisToken = Utils.getOrDefault(
                                         tokenToUsdRatios, currentAssetSymbol, 0.0d);
                                 Double currentAssetBalance = Utils.getOrDefault(
-                                        mPerTokenCryptoSum, currentAssetSymbol, 0.0d);
+                                        mPerTokenCryptoSum, currentAssetKey, 0.0d);
                                 Double thisTokenFiatSum = usdPerThisToken * currentAssetBalance;
 
-                                mPerTokenFiatSum.put(currentAssetSymbol, thisTokenFiatSum);
+                                mPerTokenFiatSum.put(currentAssetKey, thisTokenFiatSum);
 
                                 mTotalFiatSum += thisTokenFiatSum;
                             }

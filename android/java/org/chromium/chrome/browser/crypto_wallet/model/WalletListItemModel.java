@@ -143,13 +143,15 @@ public class WalletListItemModel {
         return mIcon;
     }
 
+    // ERC721 has format [Title #ID]
     public String getTitle() {
-        // ERC721 has format [Title #ID]
-        return mTitle + (isErc721() ? "#" + Utils.hexToIntString(mId) : "");
+        return isErc721() ? Utils.formatErc721TokenTitle(mTitle, Utils.hexToIntString(mId))
+                          : mTitle;
     }
 
     public String getSubTitle() {
-        return mSubTitle;
+        return isErc721() ? Utils.formatErc721TokenTitle(mSubTitle, Utils.hexToIntString(mId))
+                          : mSubTitle;
     }
 
     public String getText1() {
