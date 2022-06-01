@@ -664,6 +664,9 @@
   <message name="IDS_BRAVE_SYNC_RESET_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok with leaving sync">
     If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
   </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON" desc="The Sync button that leads to permanently delete Sync account">
+    Permanently delete account
+  </message>
   <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
     Are you sure you want to remove the selected device from the sync chain?
   </message>

@@ -125,6 +125,10 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     router.navigateTo((router.getRoutes() as {BRAVE_SYNC: Route}).BRAVE_SYNC);
   }
 
+  async onPermanentlyDeleteSyncAccount_(e: Event) {
+    alert('onPermanentlyDeleteSyncAccount_')
+  }
+
   async onDeleteDevice_(e: Event) {
     const messageText = this.i18n('braveSyncDeleteDeviceConfirmation')
     const shouldDeleteDevice = confirm(messageText)
