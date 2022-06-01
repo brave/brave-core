@@ -20,6 +20,12 @@ extern const char kAccountsChangedEvent[];
 
 namespace solana {
 extern const char kAccountChangedEvent[];
+constexpr char kConnect[] = "connect";
+constexpr char kDisconnect[] = "disconnect";
+constexpr char kSignTransaction[] = "signTransaction";
+constexpr char kSignAndSendTransaction[] = "signAndSendTransaction";
+constexpr char kSignAllTransactions[] = "signAllTransactions";
+constexpr char kSignMessage[] = "signMessage";
 }  // namespace solana
 
 constexpr char kEthAccounts[] = "eth_accounts";
