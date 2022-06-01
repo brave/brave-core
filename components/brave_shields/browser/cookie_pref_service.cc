@@ -9,9 +9,7 @@
 
 #include "base/bind.h"
 #include "base/notreached.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -23,26 +21,11 @@ namespace brave_shields {
 
 namespace {
 
-ControlType CookieControlsModeToControlType(
-    content_settings::CookieControlsMode mode) {
-  switch (mode) {
-    case content_settings::CookieControlsMode::kOff:
-      return ControlType::ALLOW;
-    case content_settings::CookieControlsMode::kBlockThirdParty:
-      return ControlType::BLOCK_THIRD_PARTY;
-    // There shouldn't be a way to set kIncognitoOnly in Brave.
-    case content_settings::CookieControlsMode::kIncognitoOnly:
-    default:
-      NOTREACHED() << "Unexpected cookie controls mode.";
-      return ControlType::ALLOW;
-  }
-}
-
 void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
                                    PrefService* prefs,
                                    PrefService* local_state) {
   auto control_type = ControlType::ALLOW;
-  control_type = CookieControlsModeToControlType(
+  control_type = CookiePrefService::CookieControlsModeToControlType(
       static_cast<content_settings::CookieControlsMode>(
           prefs->GetInteger(prefs::kCookieControlsMode)));
 
@@ -126,6 +109,21 @@ CookiePrefService::CookiePrefService(
 
 CookiePrefService::~CookiePrefService() {
   host_content_settings_map_->RemoveObserver(this);
+}
+
+ControlType CookiePrefService::CookieControlsModeToControlType(
+    content_settings::CookieControlsMode mode) {
+  switch (mode) {
+    case content_settings::CookieControlsMode::kOff:
+      return ControlType::ALLOW;
+    case content_settings::CookieControlsMode::kBlockThirdParty:
+      return ControlType::BLOCK_THIRD_PARTY;
+    // There shouldn't be a way to set kIncognitoOnly in Brave.
+    case content_settings::CookieControlsMode::kIncognitoOnly:
+    default:
+      NOTREACHED() << "Unexpected cookie controls mode.";
+      return ControlType::ALLOW;
+  }
 }
 
 void CookiePrefService::OnPreferenceChanged() {

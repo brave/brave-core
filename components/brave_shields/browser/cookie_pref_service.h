@@ -9,7 +9,9 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -28,6 +30,9 @@ class CookiePrefService : public KeyedService,
   CookiePrefService(const CookiePrefService&) = delete;
   CookiePrefService& operator=(const CookiePrefService&) = delete;
   ~CookiePrefService() override;
+
+  static ControlType CookieControlsModeToControlType(
+      content_settings::CookieControlsMode mode);
 
  private:
   class Lock {

@@ -19,13 +19,21 @@ source_set("content_settings") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_content_settings_default_provider_unittest.cc" ]
+  sources = [
+    "brave_content_settings_default_provider_unittest.cc",
+    "brave_content_settings_registry_unittest.cc",
+  ]
 
   deps = [
-    "//base/test:test_support",
+    "//base",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/pref_registry",
     "//components/prefs",
+    "//components/prefs:test_support",
     "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }
