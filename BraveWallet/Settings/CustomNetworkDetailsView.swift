@@ -23,7 +23,7 @@ struct NetworkTextField: View {
       TextField(placeholder, text: $item.input)
         .autocapitalization(.none)
         .disableAutocorrection(true)
-        .foregroundColor(.black)
+        .foregroundColor(Color(.braveLabel))
       if let error = item.error {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
           Image(systemName: "exclamationmark.circle.fill")
