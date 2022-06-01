@@ -57,7 +57,7 @@ bool IsP3AOptInEnabled() {
   // Check the local_state pref for study status.
   PrefService* local_state = g_browser_process->local_state();
   if (local_state->GetInteger(brave::kP3AOptIn) ==
-      brave::P3AOptInStage::kOptIn) {
+      brave::P3AOptIn::kRequired) {
     enabled = true;
   }
   VLOG(1) << "IsP3AOptInEnabled: " << enabled;
