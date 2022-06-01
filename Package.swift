@@ -283,11 +283,10 @@ let package = Package(
     ),
     .target(name: "BraveSharedTestUtils", path: "BraveSharedTestUtils"),
     .target(name: "DataTestsUtils", dependencies: ["Data", "BraveShared"], path: "DataTestsUtils"),
-    .testTarget(name: "SharedTests", dependencies: ["Shared"], path: "SharedTests"),
+    .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",
       dependencies: ["BraveShared", "BraveSharedTestUtils"],
-      path: "BraveSharedTests",
       exclude: [ "Certificates/self-signed.conf" ],
       resources: [
         .copy("Certificates/root.cer"),
@@ -305,14 +304,13 @@ let package = Package(
         .copy("Certificates/certviewer/github.com.cer"),
       ]
     ),
-    .testTarget(name: "BraveWalletTests", dependencies: ["BraveWallet", "DataTestsUtils"], path: "BraveWalletTests"),
-    .testTarget(name: "StorageTests", dependencies: ["Storage", "BraveSharedTestUtils"], path: "StorageTests", resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]),
-    .testTarget(name: "DataTests", dependencies: ["Data", "DataTestsUtils"], path: "DataTests"),
-    .testTarget(name: "SPMLibrariesTests", dependencies: ["GCDWebServers"], path: "SPMLibrariesTests"),
+    .testTarget(name: "BraveWalletTests", dependencies: ["BraveWallet", "DataTestsUtils"]),
+    .testTarget(name: "StorageTests", dependencies: ["Storage", "BraveSharedTestUtils"], resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]),
+    .testTarget(name: "DataTests", dependencies: ["Data", "DataTestsUtils"]),
+    .testTarget(name: "SPMLibrariesTests", dependencies: ["GCDWebServers"]),
     .testTarget(
       name: "ClientTests",
       dependencies: ["Brave", "BraveSharedTestUtils"],
-      path: "ClientTests",
       resources: [
         .copy("Resources/debouncing.json"),
         .copy("Resources/google-search-plugin.xml"),
