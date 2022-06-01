@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/menu_button_controller.h"
+#include "ui/views/widget/widget.h"
 
 class TabStripModel;
 class IconWithBadgeImageSource;
@@ -36,6 +37,9 @@ class BraveShieldsActionView
       const override;
   std::u16string GetTooltipText(const gfx::Point& p) const override;
   SkPath GetHighlightPath() const;
+  views::Widget* GetBubbleWidget() {
+    return webui_bubble_manager_->GetBubbleWidget();
+  }
 
  private:
   void ButtonPressed();

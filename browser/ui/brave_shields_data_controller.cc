@@ -75,10 +75,8 @@ void BraveShieldsDataController::OnFaviconUpdated(
     const GURL& icon_url,
     bool icon_url_changed,
     const gfx::Image& image) {
-  if (icon_url_changed) {
-    for (Observer& obs : observer_list_)
-      obs.OnFaviconUpdated();
-  }
+  for (Observer& obs : observer_list_)
+    obs.OnFaviconUpdated();
 }
 
 void BraveShieldsDataController::ReloadWebContents() {

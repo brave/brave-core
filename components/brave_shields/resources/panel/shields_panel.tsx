@@ -39,8 +39,7 @@ function App () {
       if (document.visibilityState === 'visible') {
         getPanelBrowserAPI().panelHandler.showUI()
         getPanelBrowserAPI().dataHandler.updateFavicon()
-        // Reset the view type back to main panel
-        setViewType(ViewType.Main)
+        setViewType(ViewType.Main) /* Reset the view back to main panel */
       }
     }
 

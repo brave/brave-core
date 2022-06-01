@@ -25,6 +25,10 @@
     Trackers, ads, and more blocked <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_NOT_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are not being blocked. Do not translate Brave SHields.">
+    Not protected by Brave Shields <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
     Advanced controls
   </message>
@@ -120,5 +124,9 @@
   <message name="IDS_BRAVE_SHIELDS_ICON_TOOLTIP" desc="The message shown on hover of the shields lion icon">
     Brave Shields
 <ph name="NUMBER">$1</ph> Trackers, ads, and more blocked
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts">
+    Blocked scripts
   </message>
 </grit-part>

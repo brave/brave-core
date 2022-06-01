@@ -15,7 +15,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
-class TabStripModel;
+class Browser;
 
 class ShieldsPanelUI : public ui::MojoBubbleWebUIController,
                        public brave_shields::mojom::PanelHandlerFactory {
@@ -44,7 +44,7 @@ class ShieldsPanelUI : public ui::MojoBubbleWebUIController,
       panel_factory_receiver_{this};
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

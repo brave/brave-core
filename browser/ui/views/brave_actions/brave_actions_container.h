@@ -103,6 +103,8 @@ class BraveActionsContainer : public views::View,
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override;
 
+  BraveShieldsActionView* GetShieldsActionView() { return shields_action_btn_; }
+
  private:
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;

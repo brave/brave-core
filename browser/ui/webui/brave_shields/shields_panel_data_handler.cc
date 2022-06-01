@@ -157,8 +157,6 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetHttpRedirectsList();
   site_block_info_.is_shields_enabled =
       active_shields_data_controller_->GetBraveShieldsEnabled();
-  site_block_info_.favicon_url =
-      active_shields_data_controller_->GetFaviconURL(false);
 
   // This method gets called from various callsites. Constantly updating favicon
   // url will replace the hashed version too. So, we update this once only
