@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_JSON_REQUEST_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_JSON_REQUEST_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_HELPER_H_
 
 #include <string>
 #include <vector>
@@ -15,11 +15,10 @@
 
 namespace brave_wallet {
 
-bool GetJsonRequestInfo(const std::string& json,
-                        base::Value* id,
-                        std::string* method,
-                        std::string* params,
-                        mojom::CoinType coin);
+bool GetEthJsonRequestInfo(const std::string& json,
+                           base::Value* id,
+                           std::string* method,
+                           std::string* params);
 mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
                                                std::string* from);
 mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
@@ -29,8 +28,8 @@ bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
                         const std::vector<mojom::AccountInfoPtr>& account_infos,
                         const std::string& address);
 
-bool NormalizeJsonRequest(const std::string& input_json,
-                          std::string* output_json);
+bool NormalizeEthRequest(const std::string& input_json,
+                         std::string* output_json);
 
 bool ParseEthSignParams(const std::string& json,
                         std::string* address,
@@ -74,4 +73,4 @@ bool ParseRequestPermissionsParams(
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_JSON_REQUEST_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_HELPER_H_

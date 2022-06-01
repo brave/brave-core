@@ -8,8 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
@@ -21,7 +19,6 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/json_request_helper.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/grit/brave_components_strings.h"
@@ -427,55 +424,38 @@ void SolanaProviderImpl::SignMessage(
 }
 
 void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
-  std::string input_json;
-  if (!base::JSONWriter::Write(arg, &input_json) || input_json.empty()) {
+  DCHECK(arg.is_dict());
+  const std::string* method = arg.GetDict().FindString("method");
+  if (!method) {
     std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                             base::Value(base::Value::Type::DICTIONARY));
     return;
   }
+  base::Value::Dict* params = arg.GetDict().FindDict("params");
 
-  std::string normalized_json_request;
-  if (!NormalizeJsonRequest(input_json, &normalized_json_request)) {
-    std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
-                            base::Value(base::Value::Type::DICTIONARY));
-    return;
-  }
-
-  std::string method;
-  std::string params;
-  if (!GetJsonRequestInfo(normalized_json_request, nullptr, &method, &params,
-                          mojom::CoinType::SOL)) {
-    std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
-                            base::Value(base::Value::Type::DICTIONARY));
-    return;
-  }
-
-  auto params_value =
-      base::JSONReader::Read(params, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                         base::JSON_ALLOW_TRAILING_COMMAS);
   // params is optional for connect and disconnect doesn't need it
-  if (!params_value && method != solana::kConnect &&
-      method != solana::kDisconnect) {
+  if (!params && *method != solana::kConnect &&
+      *method != solana::kDisconnect) {
     std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                             base::Value(base::Value::Type::DICTIONARY));
     return;
   }
 
-  if (method == solana::kConnect) {
-    Connect(std::move(params_value),
+  if (*method == solana::kConnect) {
+    absl::optional<base::Value> option = absl::nullopt;
+    if (params)
+      option = base::Value(std::move(*params));
+    Connect(std::move(option),
             base::BindOnce(&SolanaProviderImpl::OnRequestConnect,
                            weak_factory_.GetWeakPtr(), std::move(callback)));
-  } else if (method == solana::kDisconnect) {
+  } else if (*method == solana::kDisconnect) {
     Disconnect();
     std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                             base::Value(base::Value::Type::DICTIONARY));
-  } else if (method == solana::kSignTransaction) {
-    DCHECK(params_value->is_dict());
-    const std::string* message = params_value->GetDict().FindString(kMessage);
+  } else if (*method == solana::kSignTransaction) {
+    const std::string* message = params->FindString(kMessage);
     if (!message) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kParsingError,
@@ -490,9 +470,8 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
         *message, base::BindOnce(&SolanaProviderImpl::OnRequestSignTransaction,
                                  weak_factory_.GetWeakPtr(),
                                  std::move(callback), account ? *account : ""));
-  } else if (method == solana::kSignAndSendTransaction) {
-    DCHECK(params_value->is_dict());
-    const std::string* message = params_value->GetDict().FindString(kMessage);
+  } else if (*method == solana::kSignAndSendTransaction) {
+    const std::string* message = params->FindString(kMessage);
     if (!message) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kParsingError,
@@ -501,10 +480,8 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
       return;
     }
     SignAndSendTransaction(*message, std::move(callback));
-  } else if (method == solana::kSignAllTransactions) {
-    DCHECK(params_value->is_dict());
-    const base::Value::List* messages =
-        params_value->GetDict().FindList(kMessage);
+  } else if (*method == solana::kSignAllTransactions) {
+    const base::Value::List* messages = params->FindList(kMessage);
     if (!messages) {
       std::move(callback).Run(
           mojom::SolanaProviderError::kParsingError,
@@ -526,12 +503,20 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
         base::BindOnce(&SolanaProviderImpl::OnRequestSignAllTransactions,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        account ? *account : ""));
-  } else if (method == solana::kSignMessage) {
-    // TODO(darkdh): handle binary message field in renderer
-    std::move(callback).Run(
-        mojom::SolanaProviderError::kMethodNotFound,
-        l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR),
-        base::Value(base::Value::Type::DICTIONARY));
+  } else if (*method == solana::kSignMessage) {
+    const auto* message = params->FindBlob(kMessage);
+    if (!message) {
+      std::move(callback).Run(
+          mojom::SolanaProviderError::kParsingError,
+          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+          base::Value(base::Value::Type::DICTIONARY));
+      return;
+    }
+    const std::string* display_str = params->FindString("display");
+    absl::optional<std::string> display = absl::nullopt;
+    if (display_str)
+      display = *display_str;
+    SignMessage(*message, std::move(display), std::move(callback));
   } else {
     std::move(callback).Run(
         mojom::SolanaProviderError::kMethodNotFound,

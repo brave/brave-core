@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/common/json_request_helper.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <memory>
 #include <tuple>
@@ -185,11 +185,10 @@ bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
   return true;
 }
 
-bool GetJsonRequestInfo(const std::string& json,
-                        base::Value* id,
-                        std::string* method,
-                        std::string* params,
-                        mojom::CoinType coin) {
+bool GetEthJsonRequestInfo(const std::string& json,
+                           base::Value* id,
+                           std::string* method,
+                           std::string* params) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
@@ -220,29 +219,17 @@ bool GetJsonRequestInfo(const std::string& json,
   }
 
   if (params) {
-    const base::Value* found_params = nullptr;
-    if (coin == mojom::CoinType::SOL) {
-      // params is optional
-      if (!response_dict->HasKey(kParams))
-        return true;
-      found_params = response_dict->FindDictPath(kParams);
-      // Not dict
-      if (!found_params)
-        return false;
-    } else {
-      found_params = response_dict->FindListPath(kParams);
-      // Not list
-      if (!found_params)
-        return false;
-    }
+    const base::Value* found_params = response_dict->FindListPath(kParams);
+    if (!found_params)
+      return false;
     base::JSONWriter::Write(*found_params, params);
   }
 
   return true;
 }
 
-bool NormalizeJsonRequest(const std::string& input_json,
-                          std::string* output_json) {
+bool NormalizeEthRequest(const std::string& input_json,
+                         std::string* output_json) {
   CHECK(output_json);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(

@@ -23,9 +23,9 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/json_request_helper.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -986,7 +986,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
   }
 
   std::string normalized_json_request;
-  if (!NormalizeJsonRequest(input_json, &normalized_json_request)) {
+  if (!NormalizeEthRequest(input_json, &normalized_json_request)) {
     SendErrorOnRequest(error, error_message, std::move(callback),
                        base::Value());
     return;
@@ -994,8 +994,7 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
 
   base::Value id;
   std::string method;
-  if (!GetJsonRequestInfo(normalized_json_request, &id, &method, nullptr,
-                          mojom::CoinType::ETH)) {
+  if (!GetEthJsonRequestInfo(normalized_json_request, &id, &method, nullptr)) {
     SendErrorOnRequest(error, error_message, std::move(callback),
                        base::Value());
     return;
