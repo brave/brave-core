@@ -515,9 +515,6 @@ bool BraveActionsContainer::ShowToolbarActionPopupForAPICall(
 void BraveActionsContainer::ShowToolbarActionBubble(
     std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
 
-void BraveActionsContainer::ShowToolbarActionBubbleAsync(
-    std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) {}
-
 void BraveActionsContainer::ToggleExtensionsMenu() {}
 
 bool BraveActionsContainer::HasAnyExtensions() const {
