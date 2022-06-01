@@ -50,6 +50,9 @@ export class BraveSyncBrowserProxy {
   getSyncStatus(): Promise<BraveSyncStatus> {
     return sendWithPromise('SyncSetupGetSyncStatus');
   }
+  permanentlyDeleteSyncAccount(): Promise<boolean>  {
+    return sendWithPromise('SyncPermanentlyDeleteAccount');
+  }
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }
