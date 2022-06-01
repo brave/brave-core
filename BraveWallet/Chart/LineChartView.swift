@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import struct Shared.Strings
+import Strings
 
 /// A data point for a chart
 protocol DataPoint {

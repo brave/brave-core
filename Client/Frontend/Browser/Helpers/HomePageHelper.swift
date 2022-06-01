@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import XCGLogger
+import UIKit
 
 private let log = Logger.browserLogger
 

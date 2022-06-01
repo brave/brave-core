@@ -1,5 +1,8 @@
 // Lookup time is O(maxDicts)
 // Very basic implementation of a recent item collection class, stored as groups of items in dictionaries, oldest items are deleted as blocks of items since their entire containing dictionary is deleted.
+
+import Foundation
+
 class FifoDict {
   var fifoArrayOfDicts: [NSMutableDictionary] = []
   let maxDicts = 5

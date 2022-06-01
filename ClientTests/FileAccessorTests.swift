@@ -11,11 +11,11 @@ class FileAccessorTests: XCTestCase {
   fileprivate var files: FileAccessor!
 
   override func setUp() {
-    let docPath: NSString = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0] as NSString
+    let docPath: NSString = NSTemporaryDirectory() as NSString
     files = FileAccessor(rootPath: docPath.appendingPathComponent("filetest"))
 
     testDir = try! files.getAndEnsureDirectory()
-    try! files.removeFilesInDirectory()
+    try? files.removeFilesInDirectory()
   }
 
   func testFileAccessor() {

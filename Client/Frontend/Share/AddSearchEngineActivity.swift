@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class AddSearchEngineActivity: UIActivity {
   fileprivate let callback: () -> Void
@@ -18,7 +19,7 @@ class AddSearchEngineActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "AddSearch").template
+    return UIImage(named: "AddSearch", in: .current, compatibleWith: nil)!.template
   }
 
   override func perform() {

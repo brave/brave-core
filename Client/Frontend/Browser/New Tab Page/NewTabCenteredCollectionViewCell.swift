@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import UIKit
 
 /// A new tab collection view cell where the view is horizontally centered and themeable.
 class NewTabCenteredCollectionViewCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {

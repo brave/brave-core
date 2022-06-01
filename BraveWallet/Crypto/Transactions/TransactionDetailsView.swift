@@ -8,7 +8,7 @@ import BraveCore
 import BraveUI
 import SwiftUI
 import Swift
-import struct Shared.Strings
+import Strings
 
 struct TransactionDetailsView: View {
   

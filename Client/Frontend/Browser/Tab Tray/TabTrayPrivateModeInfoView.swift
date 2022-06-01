@@ -6,6 +6,7 @@
 import Foundation
 import Shared
 import BraveShared
+import UIKit
 
 extension TabTrayController {
   class TabTrayPrivateModeInfoView: UIView {
@@ -59,7 +60,7 @@ extension TabTrayController {
       $0.titleLabel?.numberOfLines = 0
     }
 
-    let iconImageView = UIImageView(image: #imageLiteral(resourceName: "private_glasses").template).then {
+    let iconImageView = UIImageView(image: UIImage(named: "private_glasses", in: .current, compatibleWith: nil)!.template).then {
       $0.contentMode = .center
       $0.setContentHuggingPriority(.required, for: .vertical)
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

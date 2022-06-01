@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class FindInPageActivity: UIActivity {
   fileprivate let callback: () -> Void
@@ -17,7 +18,7 @@ class FindInPageActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "shareFindInPage")
+    return UIImage(named: "shareFindInPage", in: .current, compatibleWith: nil)!
   }
 
   override func perform() {

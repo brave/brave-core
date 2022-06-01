@@ -627,7 +627,7 @@ extension BrowserViewController: ToolbarDelegate {
 }
 
 extension BrowserViewController: UIContextMenuInteractionDelegate {
-  func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+  public func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
     return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
       var actionMenuChildren: [UIAction] = []
 

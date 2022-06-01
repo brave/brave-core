@@ -5,7 +5,7 @@
 
 import Foundation
 import XCTest
-@testable import Client
+@testable import Brave
 
 // Tests things that all fill strategies should do the same
 class CommonFillStrategyTests: XCTestCase {

@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import Storage
+import UIKit
 
 private let log = Logger.browserLogger
 

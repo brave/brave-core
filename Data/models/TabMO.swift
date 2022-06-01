@@ -6,6 +6,7 @@ import Foundation
 import Shared
 import WebKit
 import XCGLogger
+import Strings
 
 /// Properties we want to extract from Tab/TabManager and save in TabMO
 public struct SavedTab {

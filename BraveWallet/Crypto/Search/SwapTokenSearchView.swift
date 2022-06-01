@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveCore
-import Shared
+import Strings
 
 struct SwapTokenSearchView: View {
   @ObservedObject var swapTokenStore: SwapTokenStore

@@ -14,8 +14,8 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-class PlaylistManager: NSObject {
-  static let shared = PlaylistManager()
+public class PlaylistManager: NSObject {
+  public static let shared = PlaylistManager()
 
   private var assetInformation = [PlaylistAssetFetcher]()
   private let downloadManager = PlaylistDownloadManager()
@@ -233,7 +233,7 @@ class PlaylistManager: NSObject {
     }
   }
 
-  func restoreSession() {
+  public func restoreSession() {
     if !didRestoreSession {
       didRestoreSession = true
 
@@ -516,16 +516,16 @@ extension PlaylistManager: PlaylistDownloadManagerDelegate {
 }
 
 extension PlaylistManager: NSFetchedResultsControllerDelegate {
-  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
     onObjectChange.send((object: anObject, indexPath: indexPath, type: type, newIndexPath: newIndexPath))
   }
 
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     onContentDidChange.send(())
   }
 
-  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     onContentWillChange.send(())
   }
 }

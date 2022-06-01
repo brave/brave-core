@@ -38,7 +38,7 @@ class SiteReportedView: UIStackView {
           $0.spacing = 16
           $0.addStackViewItems(
             .view(
-              UIImageView(image: UIImage(imageLiteralResourceName: "check-circle")).then {
+              UIImageView(image: UIImage(named: "check-circle", in: .current, compatibleWith: nil)!).then {
                 $0.setContentHuggingPriority(.required, for: .horizontal)
                 $0.setContentHuggingPriority(.required, for: .vertical)
               }),

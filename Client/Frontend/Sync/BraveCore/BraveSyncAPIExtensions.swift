@@ -16,10 +16,10 @@ extension BraveSyncAPI {
   }
 
   @discardableResult
-  func joinSyncGroup(codeWords: String) -> Bool {
+  func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS) -> Bool {
     if self.setSyncCode(codeWords) {
       Preferences.Chromium.syncEnabled.value = true
-      enableSyncTypes()
+      enableSyncTypes(syncProfileService: syncProfileService)
 
       return true
     }
@@ -38,15 +38,7 @@ extension BraveSyncAPI {
     Preferences.Chromium.syncEnabled.value = false
   }
 
-  func enableSyncTypes() {
-    // TODO: Handle fetching syncProfileService from using AppDelegate IOS-4170
-    guard
-      let syncProfileService =
-        (UIApplication.shared.delegate as? AppDelegate)?.braveCore.syncProfileService
-    else {
-      return
-    }
-
+  func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {
     syncProfileService.userSelectedTypes = []
 
     if Preferences.Chromium.syncBookmarksEnabled.value {
@@ -84,7 +76,7 @@ extension BraveSyncAPI {
     return deviceStateListener
   }
 
-  func removeAllObservers() {
+  public func removeAllObservers() {
     serviceObservers.objectEnumerator().forEach({
       ($0 as? BraveSyncServiceListener)?.observer = nil
     })

@@ -55,64 +55,16 @@ public struct AppConstants {
   public static let isRunningTest = NSClassFromString("XCTestCase") != nil || ProcessInfo.processInfo.arguments.contains(LaunchArguments.test)
 
   /// Build Channel.
-  public static let buildChannel: AppBuildChannel = {
-    #if MOZ_CHANNEL_RELEASE
-    return AppBuildChannel.release
-    #elseif MOZ_CHANNEL_BETA
-    return AppBuildChannel.beta
-    #elseif MOZ_CHANNEL_DEV
-    return AppBuildChannel.dev
-    #elseif MOZ_CHANNEL_ENTERPRISE
-    return AppBuildChannel.enterprise
-    #elseif MOZ_CHANNEL_DEBUG
-    return AppBuildChannel.debug
-    #endif
-  }()
+  public static var buildChannel: AppBuildChannel = .release
 
   public static func iOSVersionGreaterThanOrEqual(to version: Int) -> Bool {
     ProcessInfo().operatingSystemVersion.majorVersion >= version
   }
 
-  public static let scheme: String = {
-    guard let identifier = Bundle.main.bundleIdentifier else {
-      return "unknown"
-    }
-
-    let scheme = identifier.replacingOccurrences(of: "com.brave.ios.", with: "")
-    if scheme == "FirefoxNightly.enterprise" {
-      return "FirefoxNightly"
-    }
-    return scheme
-  }()
-
   public static let webServerPort: Int = {
     AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
   }()
 
-  public static let prefSendUsageData = "settings.sendUsageData"
-
-  /// Whether we just mirror (false) or actively do a full bookmark merge and upload (true).
-  public static var shouldMergeBookmarks = false
-
-  /// Should we send a repair request to other clients when the bookmarks buffer validation fails.
-  public static let MOZ_BOOKMARKS_REPAIR_REQUEST: Bool = {
-    #if MOZ_CHANNEL_RELEASE
-    return false
-    #elseif MOZ_CHANNEL_BETA
-    return true
-    #elseif MOZ_CHANNEL_DEBUG
-    return true
-    #else
-    return true
-    #endif
-  }()
-
   /// The maximum length of a URL stored by Firefox. Shared with Places on desktop.
   public static let DB_URL_LENGTH_MAX = 65536
-
-  /// The maximum length of a page title stored by Firefox. Shared with Places on desktop.
-  public static let DB_TITLE_LENGTH_MAX = 4096
-
-  /// The maximum length of a bookmark description stored by Firefox. Shared with Places on desktop.
-  public static let DB_DESCRIPTION_LENGTH_MAX = 1024
 }

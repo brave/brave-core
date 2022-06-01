@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class RequestDesktopSiteActivity: UIActivity {
   private weak var tab: Tab?
@@ -19,7 +20,7 @@ class RequestDesktopSiteActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    tab?.isDesktopSite == true ? #imageLiteral(resourceName: "shareRequestMobileSite") : #imageLiteral(resourceName: "shareRequestDesktopSite")
+    tab?.isDesktopSite == true ? UIImage(named: "shareRequestMobileSite", in: .current, compatibleWith: nil)! : UIImage(named: "shareRequestDesktopSite", in: .current, compatibleWith: nil)!
   }
 
   override func perform() {

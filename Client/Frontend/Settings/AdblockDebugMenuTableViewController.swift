@@ -129,7 +129,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
     var rows = [Row]()
 
     names.forEach {
-      if let bundlePath = Bundle.main.path(forResource: $0, ofType: "json") {
+      if let bundlePath = Bundle.current.path(forResource: $0, ofType: "json") {
         guard let jsonData = fm.contents(atPath: bundlePath),
           let json = try? JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]]
         else { return }
@@ -147,7 +147,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
       }
 
       if $0 == "block-ads",
-        let bundlePath = Bundle.main.path(
+        let bundlePath = Bundle.current.path(
           forResource: "ABPFilterParserData",
           ofType: "dat"),
         let data = fm.contents(atPath: bundlePath) {

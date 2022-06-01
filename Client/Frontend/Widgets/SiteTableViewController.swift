@@ -48,7 +48,7 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
  * Provides base shared functionality for site rows and headers.
  */
 @objcMembers
-class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITableViewDataSource {
+public class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITableViewDataSource {
   fileprivate let CellIdentifier = "CellIdentifier"
   fileprivate let HeaderIdentifier = "HeaderIdentifier"
   var profile: Profile! {
@@ -60,7 +60,7 @@ class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITab
   var data = [Site]()
   var tableView = UITableView()
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
 
     view.addSubview(tableView)
@@ -102,11 +102,11 @@ class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITab
     self.tableView.reloadData()
   }
 
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return data.count
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath)
     if self.tableView(tableView, hasFullWidthSeparatorForRowAtIndexPath: indexPath) {
       cell.separatorInset = .zero
@@ -114,28 +114,28 @@ class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITab
     return cell
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderIdentifier)
   }
 
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return SiteTableViewControllerUX.headerHeight
   }
 
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+  public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return SiteTableViewControllerUX.rowHeight
   }
 
-  func tableView(_ tableView: UITableView, hasFullWidthSeparatorForRowAtIndexPath indexPath: IndexPath) -> Bool {
+  public func tableView(_ tableView: UITableView, hasFullWidthSeparatorForRowAtIndexPath indexPath: IndexPath) -> Bool {
     return false
   }
 
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+  public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     true
   }
 }
 
-class LoadingViewController: UIViewController {
+public class LoadingViewController: UIViewController {
 
   let spinner = UIActivityIndicatorView().then {
     $0.snp.makeConstraints { make in

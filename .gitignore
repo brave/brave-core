@@ -1,4 +1,5 @@
 # Xcode
+.swiftpm/xcode 
 build/
 *.pbxuser
 !default.pbxuser
@@ -89,6 +90,7 @@ BraveCore/BraveRewards.xcframework
 BraveCore/MaterialComponents.xcframework
 
 Client/Configuration/Local/
+App/Configuration/Local/
 
 adblock-regions.txt
 yubikit.log
@@ -105,4 +107,6 @@ Client/Assets/MainFrameAtDocumentStart.js
 Client/Assets/MainFrameAtDocumentEnd.js
 Client/Assets/AllFramesAtDocumentStartSandboxed.js
 Client/Assets/AllFramesAtDocumentEndSandboxed.js
+Client/Assets/MainFrameAtDocumentStartSandboxed.js
+Client/Assets/MainFrameAtDocumentEndSandboxed.js
 Client/Assets/*LICENSE.txt

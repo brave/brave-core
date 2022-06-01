@@ -27,7 +27,7 @@ class AdvancedControlsBarView: UIControl {
   }
 
   private let imageView = UIImageView().then {
-    $0.image = UIImage(named: "advanced-bar-chevron")?
+    $0.image = UIImage(named: "advanced-bar-chevron", in: .current, compatibleWith: nil)?
       .withRenderingMode(.alwaysOriginal)
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }

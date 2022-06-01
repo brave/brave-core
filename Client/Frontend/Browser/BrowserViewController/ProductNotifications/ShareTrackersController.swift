@@ -223,9 +223,9 @@ private class ShareTrackersView: UIView {
       let imageAttachment = NSTextAttachment().then {
         switch trackingType {
         case .domainSpecificDataSaved:
-          $0.image = #imageLiteral(resourceName: "data-saved-domain")
+          $0.image = UIImage(named: "data-saved-domain", in: .current, compatibleWith: nil)!
         default:
-          $0.image = #imageLiteral(resourceName: "share-bubble-shield")
+          $0.image = UIImage(named: "share-bubble-shield", in: .current, compatibleWith: nil)!
         }
       }
 
@@ -244,7 +244,7 @@ private class ShareTrackersView: UIView {
     switch trackingType {
     case .trackerCountShare:
       actionButton.setTitle(Strings.ShieldEducation.shareTheNewsTitle, for: .normal)
-      actionButton.addTrailingImageIcon(image: #imageLiteral(resourceName: "shields-share"))
+      actionButton.addTrailingImageIcon(image: UIImage(named: "shields-share", in: .current, compatibleWith: nil)!)
     case .domainSpecificDataSaved:
       actionButton.setTitle(Strings.ShieldEducation.dontShowThisTitle, for: .normal)
     default:

@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 class CertificateErrorPageHandler: InterstitialPageHandler {
   func canHandle(error: NSError) -> Bool {
@@ -14,7 +15,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   func response(for model: ErrorPageModel) -> (URLResponse, Data)? {
     let hasCertificate = model.components.valueForQuery("certerror") != nil
 
-    guard let asset = Bundle.main.path(forResource: "CertificateError", ofType: "html") else {
+    guard let asset = Bundle.current.path(forResource: "CertificateError", ofType: "html") else {
       assert(false)
       return nil
     }

@@ -8,8 +8,8 @@ import Foundation
 /// A property wrapper which notifies observers when it's wrapped value changes
 ///
 /// TODO: Replace usages of this with Combine/@Published when minimum deployment target is iOS 13
-@propertyWrapper struct Observable<ValueType> {
-  typealias Handler = (_ oldValue: ValueType, _ newValue: ValueType) -> Void
+@propertyWrapper public struct Observable<ValueType> {
+  public typealias Handler = (_ oldValue: ValueType, _ newValue: ValueType) -> Void
 
   private class Observer {
     let closure: Handler
@@ -21,7 +21,7 @@ import Foundation
   }
   private var observers = NSMapTable<AnyObject, Observer>.weakToStrongObjects()
 
-  mutating func observe(
+  mutating public func observe(
     from object: AnyObject,
     on queue: DispatchQueue = .main,
     _ handler: @escaping Handler
@@ -29,11 +29,11 @@ import Foundation
     observers.setObject(Observer(queue, handler), forKey: object)
   }
 
-  init(wrappedValue: ValueType) {
+  public init(wrappedValue: ValueType) {
     self.wrappedValue = wrappedValue
   }
 
-  var wrappedValue: ValueType {
+  public var wrappedValue: ValueType {
     didSet {
       guard let iterator = observers.objectEnumerator() else { return }
       let newValue = wrappedValue

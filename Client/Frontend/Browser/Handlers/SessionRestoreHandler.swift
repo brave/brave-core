@@ -75,10 +75,10 @@ extension InternalSchemeResponse {
 }
 
 /// Handles requests to /about/sessionrestore to restore session history.
-class SessionRestoreHandler: InternalSchemeResponse {
-  static let path = "sessionrestore"
+public class SessionRestoreHandler: InternalSchemeResponse {
+  public static let path = "sessionrestore"
 
-  func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let _url = request.url, let url = InternalURL(_url) else { return nil }
 
     // Handle the 'url='query param
@@ -88,7 +88,7 @@ class SessionRestoreHandler: InternalSchemeResponse {
 
     // From here on, handle 'history=' query param
     let response = InternalSchemeHandler.response(forUrl: url.url)
-    guard let sessionRestorePath = Bundle.main.path(forResource: "SessionRestore", ofType: "html"),
+    guard let sessionRestorePath = Bundle.current.path(forResource: "SessionRestore", ofType: "html"),
       var html = try? String(contentsOfFile: sessionRestorePath)
     else {
       assert(false)
@@ -105,4 +105,6 @@ class SessionRestoreHandler: InternalSchemeResponse {
 
     return (response, data)
   }
+  
+  public init() { }
 }

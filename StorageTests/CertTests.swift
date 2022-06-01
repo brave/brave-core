@@ -39,7 +39,7 @@ class CertTests: XCTestCase {
   }
 
   fileprivate func getCertificate(_ file: String) -> SecCertificate {
-    let path = Bundle(for: type(of: self)).path(forResource: file, ofType: "pem")
+    let path = Bundle.module.path(forResource: file, ofType: "pem")
     let data = try? Data(contentsOf: URL(fileURLWithPath: path!))
     return SecCertificateCreateWithData(nil, data! as CFData)!
   }

@@ -8,6 +8,7 @@ import Shared
 import BraveShared
 import Data
 import BraveUI
+import UIKit
 
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {

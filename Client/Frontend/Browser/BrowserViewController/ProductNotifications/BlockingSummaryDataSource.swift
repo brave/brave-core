@@ -58,7 +58,7 @@ class BlockingSummaryDataSource {
 
   // MARK: Lifecycle
 
-  init(with fileName: String = "blocking-summary", bundle: Bundle = Bundle.main) {
+  init(with fileName: String = "blocking-summary", bundle: Bundle = Bundle.current) {
     blockingSummaryList = fetchBlockingSummaryObjects(with: fileName, for: bundle)
   }
 

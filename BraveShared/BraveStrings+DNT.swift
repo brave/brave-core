@@ -4,11 +4,18 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
+import Strings
 
 // MARK: - SSL Certificate Viewer
 
 extension Strings.CertificateViewer {
   public static let sha256Title = "SHA-256"
   public static let sha1Title = "SHA-1"
+}
+
+extension Strings {
+  /// "BAT" or "BAT Points" depending on the region
+  public static var BAT: String {
+    return Preferences.Rewards.isUsingBAP.value == true ? "BAP" : "BAT"
+  }
 }

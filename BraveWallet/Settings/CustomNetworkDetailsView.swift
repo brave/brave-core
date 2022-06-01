@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import Shared
+import Strings
 
 struct NetworkInputItem: Identifiable {
   var input: String

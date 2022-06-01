@@ -5,7 +5,7 @@
 import XCTest
 import BraveShared
 @testable import Data
-@testable import Client
+@testable import Brave
 
 class SafeBrowsingTests: XCTestCase {
 

@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import UIKit
 
 class PartnerCardView: FeedCardBackgroundButton, FeedCardContent {
   var actionHandler: ((Int, FeedItemAction) -> Void)?

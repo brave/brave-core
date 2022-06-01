@@ -8,6 +8,7 @@ import Storage
 import Shared
 import SwiftKeychainWrapper
 import BraveCore
+import UIKit
 
 private let log = Logger.browserLogger
 

@@ -472,7 +472,7 @@ class PlaylistCarplayController: NSObject {
       $0.handler = { [unowned self] listItem, completion in
         let enableGridView = Preferences.Playlist.enableCarPlayRestartPlayback.value
         let title = enableGridView ? Strings.PlayList.playlistCarplayRestartPlaybackButtonStateEnabled : Strings.PlayList.playlistCarplayRestartPlaybackButtonStateDisabled
-        let icon = enableGridView ? #imageLiteral(resourceName: "checkbox_on") : #imageLiteral(resourceName: "loginUnselected")
+        let icon = enableGridView ? UIImage(named: "checkbox_on", in: .current, compatibleWith: nil)! : UIImage(named: "loginUnselected", in: .current, compatibleWith: nil)!
         let button = CPGridButton(titleVariants: [title], image: icon) { [unowned self] button in
           Preferences.Playlist.enableCarPlayRestartPlayback.value = !enableGridView
           self.interfaceController.popTemplate(

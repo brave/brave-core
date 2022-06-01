@@ -9,6 +9,7 @@ import SwiftKeychainWrapper
 import Shared
 import BraveUI
 import BraveShared
+import UIKit
 
 class PasscodeSettingsViewController: TableViewController {
 

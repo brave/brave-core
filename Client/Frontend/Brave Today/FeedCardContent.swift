@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 
 /// The content of a card placed in the Brave News section on the NTP
 protocol FeedCardContent {

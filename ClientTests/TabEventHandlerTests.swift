@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-@testable import Client
+@testable import Brave
 import WebKit
 
 import XCTest

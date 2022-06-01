@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum OnboardingState: Int {
+public enum OnboardingState: Int {
   /// Unknown, this can happen for upgrading users where other information
   /// (e.g. `firstLaunch` is used to determine the onboarding state.
   case undetermined
@@ -16,7 +16,7 @@ enum OnboardingState: Int {
   case skipped
 }
 
-enum OnboardingProgress: Int {
+public enum OnboardingProgress: Int {
   /// The user has never started any onboarding.
   case none
   /// The user has completed the privacy consent

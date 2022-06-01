@@ -59,7 +59,7 @@ class SyncWelcomeViewController: SyncViewController {
   }()
 
   lazy var syncImage: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "sync-art"))
+    let imageView = UIImageView(image: UIImage(named: "sync-art", in: .current, compatibleWith: nil))
     // Shrinking image a bit on smaller devices.
     imageView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .vertical)
     imageView.contentMode = .scaleAspectFit
@@ -130,9 +130,11 @@ class SyncWelcomeViewController: SyncViewController {
   }()
 
   private let syncAPI: BraveSyncAPI
+  private let syncProfileServices: BraveSyncProfileServiceIOS
 
-  init(syncAPI: BraveSyncAPI) {
+  init(syncAPI: BraveSyncAPI, syncProfileServices: BraveSyncProfileServiceIOS) {
     self.syncAPI = syncAPI
+    self.syncProfileServices = syncProfileServices
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -234,7 +236,7 @@ class SyncWelcomeViewController: SyncViewController {
         pushAddDeviceVC()
       }
 
-      self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode())
+      self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices)
       self.syncAPI.syncEnabled = true
     }
 
@@ -254,7 +256,7 @@ class SyncWelcomeViewController: SyncViewController {
       return
     }
 
-    let syncSettingsVC = SyncSettingsTableViewController(showDoneButton: true, syncAPI: syncAPI)
+    let syncSettingsVC = SyncSettingsTableViewController(showDoneButton: true, syncAPI: syncAPI, syncProfileService: syncProfileServices)
     navigationController?.pushViewController(syncSettingsVC, animated: true)
   }
 }
@@ -274,7 +276,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
       self.pushSettings()
     }
 
-    syncAPI.joinSyncGroup(codeWords: codeWords)
+    syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices)
     syncAPI.syncEnabled = true
   }
 }

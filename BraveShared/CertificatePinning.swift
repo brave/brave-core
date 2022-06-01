@@ -30,7 +30,7 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
     self.certificates = {
       let paths = Set(
         [".cer", ".CER", ".crt", ".CRT", ".der", ".DER"].map {
-          Bundle.main.paths(forResourcesOfType: $0, inDirectory: nil)
+          Bundle.current.paths(forResourcesOfType: $0, inDirectory: nil)
         }.joined())
 
       return paths.compactMap({ path -> SecCertificate? in

@@ -8,7 +8,7 @@ import SwiftUI
 import BraveCore
 import SnapKit
 import Introspect
-import struct Shared.Strings
+import Strings
 
 struct PortfolioView: View {
   var cryptoStore: CryptoStore

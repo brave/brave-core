@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 
 /// This is for conformance only, but in the future we might add custom NTP theming that doesn't change background images.
 protocol NTPThemeable {}
@@ -79,7 +80,7 @@ class NTPWallpaper: Codable {
     // Remote resources are downloaded files, so must be loaded differently
     if packaged == true {
       // Load without cache if possible
-      if let path = Bundle.main.path(forResource: imageUrl, ofType: nil) {
+      if let path = Bundle.current.path(forResource: imageUrl, ofType: nil) {
         return UIImage(contentsOfFile: path)
       }
 

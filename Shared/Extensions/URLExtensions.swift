@@ -26,7 +26,7 @@ private struct ETLDEntry: CustomStringConvertible {
 private typealias TLDEntryMap = [String: ETLDEntry]
 
 private func loadEntriesFromDisk() -> TLDEntryMap? {
-  if let data = String.contentsOfFileWithResourceName("effective_tld_names", ofType: "dat", fromBundle: Bundle(identifier: "com.brave.Shared")!, encoding: .utf8, error: nil) {
+  if let data = String.contentsOfFileWithResourceName("effective_tld_names", ofType: "dat", fromBundle: .module, encoding: .utf8, error: nil) {
     let lines = data.components(separatedBy: "\n")
     let trimmedLines = lines.filter { !$0.hasPrefix("//") && $0 != "\n" && $0 != "" }
 
@@ -457,7 +457,6 @@ extension URL {
     
     return siteList.contains(where: host.contains)
   }
-
 
   // Check if the website is supporting showing Add To playlist toast
   public var isPlaylistSupportedSiteURL: Bool {

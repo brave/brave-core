@@ -159,7 +159,6 @@ class TabTrayController: LoadingViewController {
     setNeedsStatusBarAppearanceUpdate()
   }
 
-
   private var initialScrollCompleted = false
 
   override func viewDidLayoutSubviews() {

@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class AddToFavoritesActivity: UIActivity {
   fileprivate let callback: () -> Void
@@ -17,7 +18,7 @@ class AddToFavoritesActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "add_to_favorites_share_action")
+    return UIImage(named: "add_to_favorites_share_action", in: .current, compatibleWith: nil)!
   }
 
   override func perform() {

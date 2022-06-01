@@ -57,8 +57,8 @@ struct ErrorPageModel {
   }
 }
 
-class ErrorPageHandler: InternalSchemeResponse {
-  static let path = InternalURL.Path.errorpage.rawValue
+public class ErrorPageHandler: InternalSchemeResponse {
+  public static let path = InternalURL.Path.errorpage.rawValue
 
   private let errorHandlers: [InterstitialPageHandler] = [
     CertificateErrorPageHandler(),
@@ -66,7 +66,7 @@ class ErrorPageHandler: InternalSchemeResponse {
     GenericErrorPageHandler(),
   ]
 
-  func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let model = ErrorPageModel(request: request) else {
       return nil
     }
@@ -79,6 +79,8 @@ class ErrorPageHandler: InternalSchemeResponse {
 
     return nil
   }
+  
+  public init() { }
 }
 
 class ErrorPageHelper {

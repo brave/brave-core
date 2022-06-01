@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 @objc public protocol MenuHelperInterface {
   /// Triggered when "Copy" menu item is selected

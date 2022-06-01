@@ -7,7 +7,7 @@ import Foundation
 import SwiftUI
 import BraveCore
 import Security
-import struct Shared.Strings
+import Strings
 import LocalAuthentication
 import Combine
 

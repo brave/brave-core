@@ -7,7 +7,7 @@ import SwiftUI
 import BraveCore
 import BraveUI
 import BigNumber
-import Shared
+import Strings
 
 struct TransactionConfirmationView: View {
 

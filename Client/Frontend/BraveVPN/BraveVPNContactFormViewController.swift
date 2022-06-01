@@ -10,6 +10,7 @@ import Static
 import MessageUI
 // To get cellular carrier name
 import CoreTelephony
+import UIKit
 
 private let log = Logger.browserLogger
 

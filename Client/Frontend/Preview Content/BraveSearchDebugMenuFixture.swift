@@ -5,6 +5,7 @@
 
 import Foundation
 
+#if DEBUG
 struct BraveSearchDebugMenuFixture {
   static let loggingSample = BraveSearchLogEntry(isEnabled: true, logs: [sample, sample])
 
@@ -53,3 +54,4 @@ struct BraveSearchDebugMenuFixture {
     </html>
     """
 }
+#endif

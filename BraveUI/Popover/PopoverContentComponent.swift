@@ -4,7 +4,7 @@
 
 import Foundation
 import UIKit
-import Shared
+import Strings
 
 /// Defines behavior of a component which will be used with a `PopoverController`
 public protocol PopoverContentComponent {

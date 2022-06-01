@@ -14,11 +14,11 @@ import SwiftKeychainWrapper
 
 private let log = Logger.browserLogger
 
-class WindowProtection {
+public class WindowProtection {
 
   private class LockedViewController: UIViewController {
     let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThickMaterial))
-    let lockImageView = UIImageView(image: UIImage(imageLiteralResourceName: "browser-lock-icon"))
+    let lockImageView = UIImageView(image: UIImage(named: "browser-lock-icon", in: .current, compatibleWith: nil)!)
     let unlockButton = FilledActionButton(type: .system).then {
       $0.setTitle("Unlock", for: .normal)
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
@@ -78,7 +78,7 @@ class WindowProtection {
     return true
   }
 
-  init?(window: UIWindow) {
+  public init?(window: UIWindow) {
     guard let scene = window.windowScene else { return nil }
     protectedWindow = window
 

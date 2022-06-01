@@ -4,10 +4,11 @@
 
 import Foundation
 import Storage
+import UIKit
 
 @available(iOS 11.0, *)
 extension BrowserViewController: UIDropInteractionDelegate {
-  func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
+  public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
     // Prevent tabs from being dragged and dropped into the address bar.
     if let localDragSession = session.localDragSession, let item = localDragSession.items.first, let _ = item.localObject {
       return false
@@ -16,11 +17,11 @@ extension BrowserViewController: UIDropInteractionDelegate {
     return session.canLoadObjects(ofClass: URL.self)
   }
 
-  func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+  public func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
     return UIDropProposal(operation: .copy)
   }
 
-  func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+  public func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
     _ = session.loadObjects(ofClass: URL.self) { urls in
       guard let url = urls.first else {
         return

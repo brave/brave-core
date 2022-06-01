@@ -6,9 +6,9 @@ import Foundation
 import Data
 import Combine
 
-final class PrivateBrowsingManager: ObservableObject {
+public final class PrivateBrowsingManager: ObservableObject {
 
-  @Published var isPrivateBrowsing = false {
+  @Published public var isPrivateBrowsing = false {
     didSet {
       if oldValue != isPrivateBrowsing {
         if !isPrivateBrowsing {
@@ -18,5 +18,5 @@ final class PrivateBrowsingManager: ObservableObject {
     }
   }
 
-  static let shared = PrivateBrowsingManager()
+  public static let shared = PrivateBrowsingManager()
 }

@@ -11,7 +11,7 @@ import BraveCore
 private let log = Logger.browserLogger
 
 /// An helper class that manages the debouncing list and offers convenience methods
-class DebouncingResourceDownloader {
+public class DebouncingResourceDownloader {
   /// Object representing an item in the debouncing.json file found here:
   /// https://github.com/brave/adblock-lists/blob/master/brave-lists/debounce.json
   struct MatcherRule: Decodable {
@@ -247,7 +247,7 @@ class DebouncingResourceDownloader {
     URL(string: "/ios/debounce.json", relativeTo: baseResourceURL)!
   }()
 
-  static let shared = DebouncingResourceDownloader()
+  public static let shared = DebouncingResourceDownloader()
   private let networkManager: NetworkManager
   private let servicesKeyName = "SERVICES_KEY"
   private let servicesKeyHeaderValue = "BraveServiceKey"
@@ -277,7 +277,7 @@ class DebouncingResourceDownloader {
   }
 
   /// Downloads the required resources if they are not available. Loads any cached data if it already exists.
-  func startLoading() {
+  public func startLoading() {
     let now = Date()
     let resourceURL = self.resourceURL
     let cacheFileName = [self.cacheFileName, "json"].joined(separator: ".")

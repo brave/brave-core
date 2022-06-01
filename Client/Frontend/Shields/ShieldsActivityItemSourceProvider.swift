@@ -24,7 +24,7 @@ final class ShieldsActivityItemSourceProvider {
   static let shared = ShieldsActivityItemSourceProvider()
 
   func setupGlobalShieldsActivityController() -> UIActivityViewController {
-    let backgroundImage = #imageLiteral(resourceName: "share-activity-background")
+    let backgroundImage = UIImage(named: "share-activity-background", in: .current, compatibleWith: nil)!
 
     let statsView = UIView(frame: CGRect(size: backgroundImage.size)).then {
       let backgroundImageView = UIImageView(image: backgroundImage)

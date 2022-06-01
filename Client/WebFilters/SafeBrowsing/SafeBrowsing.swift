@@ -10,8 +10,10 @@ import Data
 
 private let log = Logger.browserLogger
 
-class SafeBrowsing {
-  static func isSafeBrowsingEnabledForURL(_ url: URL) -> Bool {
+public class SafeBrowsing {
+  public init() {}
+  
+  public static func isSafeBrowsingEnabledForURL(_ url: URL) -> Bool {
     guard url.baseDomain != nil else {
       log.error("url: \(url) host is nil")
       return false

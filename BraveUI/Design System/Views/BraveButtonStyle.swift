@@ -100,7 +100,7 @@ struct BraveButtonStyle_Previews: PreviewProvider {
       HStack {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
-            ForEach(defaultSizes.indices) { index in
+            ForEach(defaultSizes.indices, id: \.self) { index in
               Button(action: {}) {
                 Text(verbatim: "Button text")
               }
@@ -114,7 +114,7 @@ struct BraveButtonStyle_Previews: PreviewProvider {
       HStack {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
-            ForEach(defaultSizes.indices) { index in
+            ForEach(defaultSizes.indices, id: \.self) { index in
               Button(action: {}) {
                 Text(verbatim: "Button text")
               }

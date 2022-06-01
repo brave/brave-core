@@ -7,6 +7,7 @@ import Foundation
 import BraveUI
 import BraveShared
 import Shared
+import UIKit
 
 class BraveNewsErrorView: UIView, FeedCardContent {
 
@@ -59,7 +60,7 @@ class BraveNewsErrorView: UIView, FeedCardContent {
     }
 
     stackView.addStackViewItems(
-      .view(UIImageView(image: UIImage(imageLiteralResourceName: "brave-today-error"))),
+      .view(UIImageView(image: UIImage(named: "brave-today-error", in: .current, compatibleWith: nil)!)),
       .customSpace(12),
       .view(titleLabel),
       .view(errorMessageLabel),

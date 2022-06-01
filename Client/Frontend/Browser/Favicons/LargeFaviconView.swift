@@ -6,6 +6,7 @@
 import Foundation
 import BraveShared
 import Data
+import UIKit
 
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {

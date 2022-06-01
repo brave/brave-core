@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import UIKit
 
 class PlaylistURLBarButton: UIButton {
   enum State {
@@ -17,12 +18,12 @@ class PlaylistURLBarButton: UIButton {
     didSet {
       switch buttonState {
       case .addToPlaylist:
-        setImage(#imageLiteral(resourceName: "playlist_toolbar_add_button"), for: .normal)
+        setImage(UIImage(named: "playlist_toolbar_add_button", in: .current, compatibleWith: nil)!, for: .normal)
         gradientView.isHidden = false
         backgroundView.isHidden = true
         isHidden = false
       case .addedToPlaylist:
-        setImage(#imageLiteral(resourceName: "playlist_toolbar_added_button"), for: .normal)
+        setImage(UIImage(named: "playlist_toolbar_added_button", in: .current, compatibleWith: nil)!, for: .normal)
         gradientView.isHidden = true
         backgroundView.isHidden = false
         isHidden = false

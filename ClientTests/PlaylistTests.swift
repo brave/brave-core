@@ -5,7 +5,7 @@
 
 import XCTest
 import CoreMedia
-@testable import Client
+@testable import Brave
 @testable import Data
 
 class PlaylistTests: XCTestCase {
@@ -16,15 +16,6 @@ class PlaylistTests: XCTestCase {
     XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60.0, preferredTimescale: 1)) == "01:00")  //mm:ss
     XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60 * 60, preferredTimescale: 1)) == "01:00:00")  //hh:mm:ss
     XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60 * 60 * 24, preferredTimescale: 1)) == "1d 00:00:00")  //dd hh:mm:ss
-  }
-
-  func testVideoPlayerTrackBarTimeManualFormatter() throws {
-    XCTAssert(VideoTrackerBar.timeToString(.zero) == "00:00")  //mm:ss
-    XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(1.0, preferredTimescale: 1)) == "00:01")  //mm:ss
-    XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(30.0, preferredTimescale: 1)) == "00:30")  //mm:ss
-    XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60.0, preferredTimescale: 1)) == "01:00")  //mm:ss
-    XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60 * 60, preferredTimescale: 1)) == "01:00:00")  //hh:mm:ss
-    XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60 * 60 * 24, preferredTimescale: 1)) == "01:00:00:00")  //dd:hh:mm:ss
   }
 
   func testSchemelessURLNormalization() throws {

@@ -16,7 +16,7 @@ class FeedSectionHeaderView: UIView {
     $0.font = .systemFont(ofSize: 18, weight: .semibold)
   }
   let settingsButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings"), for: .normal)
+    $0.setImage(UIImage(named: "brave-today-settings", in: .current, compatibleWith: nil)!, for: .normal)
     $0.tintColor = .white
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.accessibilityLabel = Strings.BraveNews.sourcesAndSettings

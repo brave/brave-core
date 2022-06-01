@@ -5,6 +5,7 @@
 
 import XCTest
 import CoreData
+import DataTestsUtils
 @testable import Data
 
 class DataSavedTests: CoreDataTestCase {

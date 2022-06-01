@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveUI
-import struct Shared.Strings
+import Strings
 import LocalAuthentication
 
 struct UnlockWalletView: View {
@@ -70,7 +70,7 @@ struct UnlockWalletView: View {
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {
-        Image("graphic-lock")
+        Image("graphic-lock", bundle: .current)
           .padding(.bottom)
           .accessibilityHidden(true)
         VStack {

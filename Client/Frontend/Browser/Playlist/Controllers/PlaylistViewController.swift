@@ -253,9 +253,9 @@ class PlaylistViewController: UIViewController {
   private func updatePlayerUI() {
     // Update play/pause button
     if isPlaying {
-      playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+      playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .current, compatibleWith: nil)!, for: .normal)
     } else {
-      playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+      playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
     }
 
     // Update play-backrate button
@@ -273,11 +273,11 @@ class PlaylistViewController: UIViewController {
     // Update repeatMode button
     switch repeatMode {
     case .none:
-      playerView.controlsView.repeatButton.setImage(#imageLiteral(resourceName: "playlist_repeat"), for: .normal)
+      playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat", in: .current, compatibleWith: nil)!, for: .normal)
     case .repeatOne:
-      playerView.controlsView.repeatButton.setImage(#imageLiteral(resourceName: "playlist_repeat_one"), for: .normal)
+      playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat_one", in: .current, compatibleWith: nil)!, for: .normal)
     case .repeatAll:
-      playerView.controlsView.repeatButton.setImage(#imageLiteral(resourceName: "playlist_repeat_all"), for: .normal)
+      playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat_all", in: .current, compatibleWith: nil)!, for: .normal)
     }
 
     if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
@@ -290,7 +290,7 @@ class PlaylistViewController: UIViewController {
   private func observePlayerStates() {
     player.publisher(for: .play).sink { [weak self] event in
       guard let self = self else { return }
-      self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+      self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .current, compatibleWith: nil)!, for: .normal)
 
       if !PlaylistCarplayManager.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().playbackState = .playing
@@ -303,7 +303,7 @@ class PlaylistViewController: UIViewController {
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .pause).sink { [weak self] event in
-      self?.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+      self?.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
 
       if !PlaylistCarplayManager.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().playbackState = .paused
@@ -313,7 +313,7 @@ class PlaylistViewController: UIViewController {
 
     player.publisher(for: .stop).sink { [weak self] _ in
       guard let self = self else { return }
-      self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+      self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
       self.playerView.resetVideoInfo()
       PlaylistMediaStreamer.clearNowPlayingInfo()
 
@@ -348,11 +348,11 @@ class PlaylistViewController: UIViewController {
       guard let self = self else { return }
       switch self.repeatMode {
       case .none:
-        self.playerView.controlsView.repeatButton.setImage(#imageLiteral(resourceName: "playlist_repeat"), for: .normal)
+        self.playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat", in: .current, compatibleWith: nil)!, for: .normal)
       case .repeatOne:
-        self.playerView.controlsView.repeatButton.setImage(#imageLiteral(resourceName: "playlist_repeat_one"), for: .normal)
+        self.playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat_one", in: .current, compatibleWith: nil)!, for: .normal)
       case .repeatAll:
-        self.playerView.controlsView.repeatButton.setImage(#imageLiteral(resourceName: "playlist_repeat_all"), for: .normal)
+        self.playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat_all", in: .current, compatibleWith: nil)!, for: .normal)
       }
     }.store(in: &playerStateObservers)
 
@@ -365,7 +365,7 @@ class PlaylistViewController: UIViewController {
       // CarPlay will do all of that. So, just update the UI only.
       if PlaylistCarplayManager.shared.isCarPlayAvailable {
         self.playerView.controlsView.playPauseButton.isEnabled = false
-        self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+        self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .current, compatibleWith: nil)!, for: .normal)
 
         let endTime = CMTimeConvertScale(currentItem.asset.duration, timescale: event.mediaPlayer.currentTime.timescale, method: .roundHalfAwayFromZero)
 
@@ -373,7 +373,7 @@ class PlaylistViewController: UIViewController {
         event.mediaPlayer.seek(to: .zero)
 
         self.playerView.controlsView.playPauseButton.isEnabled = true
-        self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+        self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
 
         self.playerView.toggleOverlays(showOverlay: true)
       } else {
@@ -384,7 +384,7 @@ class PlaylistViewController: UIViewController {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
 
         self.playerView.controlsView.playPauseButton.isEnabled = false
-        self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+        self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .current, compatibleWith: nil)!, for: .normal)
 
         event.mediaPlayer.pause()
 
@@ -394,7 +394,7 @@ class PlaylistViewController: UIViewController {
         event.mediaPlayer.seek(to: .zero)
 
         self.playerView.controlsView.playPauseButton.isEnabled = true
-        self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+        self.playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
 
         self.playerView.toggleOverlays(showOverlay: true)
         self.onNextTrack(self.playerView, isUserInitiated: false)
@@ -740,7 +740,7 @@ extension PlaylistViewController: VideoViewDelegate {
     if isPlaying {
       playerView.toggleOverlays(showOverlay: playerView.isOverlayDisplayed)
     } else {
-      playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+      playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .current, compatibleWith: nil)!, for: .normal)
       playerView.toggleOverlays(showOverlay: false)
       playerView.isOverlayDisplayed = false
 
@@ -750,7 +750,7 @@ extension PlaylistViewController: VideoViewDelegate {
 
   func pause(_ videoView: VideoView) {
     if isPlaying {
-      playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+      playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
       playerView.toggleOverlays(showOverlay: true)
       playerView.isOverlayDisplayed = true
 
@@ -761,7 +761,7 @@ extension PlaylistViewController: VideoViewDelegate {
   }
 
   func stop(_ videoView: VideoView) {
-    playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+    playerView.controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
     playerView.toggleOverlays(showOverlay: true)
     playerView.isOverlayDisplayed = true
 

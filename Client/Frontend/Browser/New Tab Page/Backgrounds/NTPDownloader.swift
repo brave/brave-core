@@ -15,8 +15,8 @@ protocol NTPDownloaderDelegate: AnyObject {
   func preloadCustomTheme(theme: CustomTheme?)
 }
 
-class NTPDownloader {
-  enum ResourceType {
+public class NTPDownloader {
+  public enum ResourceType {
     /// Downloaded only when users installs the app via special referral code.
     case superReferral(code: String)
     /// Downloaded for all users if a sponsor is available in their region.

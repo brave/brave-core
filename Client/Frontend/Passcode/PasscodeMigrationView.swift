@@ -60,7 +60,7 @@ private struct PasscodeMigrationView: View {
 
   var body: some View {
     VStack(spacing: 60) {
-      Image("pin-migration-graphic")
+      Image("pin-migration-graphic", bundle: .module)
         .resizable()
         .aspectRatio(contentMode: .fit)
         .frame(maxWidth: 343.5, maxHeight: 317)

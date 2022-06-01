@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 /// A helper class that aids in the creation of share sheets
 class ShareExtensionHelper {

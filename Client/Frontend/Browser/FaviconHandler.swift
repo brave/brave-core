@@ -7,6 +7,7 @@ import Shared
 import Storage
 import SDWebImage
 import class Data.FaviconMO
+import UIKit
 
 class FaviconHandler {
   static let maximumFaviconSize = 1 * 1024 * 1024  // 1 MiB file size limit

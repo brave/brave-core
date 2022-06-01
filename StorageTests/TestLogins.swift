@@ -6,6 +6,7 @@ import Foundation
 import Shared
 @testable import Storage
 import XCGLogger
+import BraveSharedTestUtils
 
 import XCTest
 

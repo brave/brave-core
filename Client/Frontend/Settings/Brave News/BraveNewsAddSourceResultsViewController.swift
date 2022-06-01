@@ -6,6 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
+import UIKit
 
 class BraveNewsAddSourceResultsViewController: UITableViewController {
 
@@ -103,7 +104,7 @@ class BraveNewsAddSourceResultsViewController: UITableViewController {
       return UITableViewCell()
     }
     let cell = tableView.dequeueReusableCell(for: indexPath) as FeedLocationCell
-    cell.imageView?.image = indexPath.section == 0 ? #imageLiteral(resourceName: "lock_verified").template : #imageLiteral(resourceName: "insecure-site-icon")
+    cell.imageView?.image = indexPath.section == 0 ? UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template : UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!
     cell.imageView?.tintColor = .braveLabel
     cell.textLabel?.text = location.title
     cell.detailTextLabel?.text = location.url.absoluteString

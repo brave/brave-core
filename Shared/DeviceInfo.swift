@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import Strings
 
 open class DeviceInfo {
   // List of device names that don't support advanced visual settings
@@ -76,8 +77,4 @@ open class DeviceInfo {
       return false
     }
   }
-}
-
-extension Strings {
-  public static let appAndDeviceNameFormat = NSLocalizedString("AppAndDeviceNameFormat", tableName: "Shared", bundle: Bundle.shared, value: "%@ on %@", comment: "A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name.")
 }

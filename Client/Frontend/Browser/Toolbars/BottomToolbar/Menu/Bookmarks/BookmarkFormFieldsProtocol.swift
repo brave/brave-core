@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 protocol BookmarkFormFieldsProtocol: UIView {
   var titleTextField: UITextField { get }

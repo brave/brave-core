@@ -11,7 +11,7 @@ import BraveShared
 extension BraveTalkOptInSuccessViewController {
   class View: UIView {
 
-    private let image = UIImageView(image: #imageLiteral(resourceName: "optin_check_circle")).then {
+    private let image = UIImageView(image: UIImage(named: "optin_check_circle", in: .current, compatibleWith: nil)!).then {
       $0.contentMode = .scaleAspectFit
     }
 
@@ -33,7 +33,7 @@ extension BraveTalkOptInSuccessViewController {
       $0.textAlignment = .center
     }
 
-    private let optinBackground = UIImageView(image: #imageLiteral(resourceName: "optin_bg")).then {
+    private let optinBackground = UIImageView(image: UIImage(named: "optin_bg", in: .current, compatibleWith: nil)!).then {
       $0.contentMode = .scaleAspectFit
     }
 

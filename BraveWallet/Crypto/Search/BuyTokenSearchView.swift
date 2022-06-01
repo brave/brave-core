@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveCore
-import struct Shared.Strings
+import Strings
 
 struct BuyTokenSearchView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore

@@ -4,6 +4,7 @@
 
 import Foundation
 import Static
+import UIKit
 
 /// Defines something that be used as an option type where theres usually a static set of options in a selectable list
 public protocol RepresentableOptionType: Equatable {

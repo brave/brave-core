@@ -63,10 +63,10 @@ class TabLocationView: UIView {
   var loading: Bool = false {
     didSet {
       if loading {
-        reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
+        reloadButton.setImage(UIImage(named: "nav-stop", in: .current, compatibleWith: nil)!.template, for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarStopButtonAccessibilityLabel
       } else {
-        reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
+        reloadButton.setImage(UIImage(named: "nav-refresh", in: .current, compatibleWith: nil)!.template, for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
       }
     }
@@ -79,9 +79,9 @@ class TabLocationView: UIView {
     case .localHost:
       lockImageView.isHidden = true
     case .insecure:
-      lockImageView.setImage(#imageLiteral(resourceName: "insecure-site-icon"), for: .normal)
+      lockImageView.setImage(UIImage(named: "insecure-site-icon", in: .current, compatibleWith: nil)!, for: .normal)
     case .secure, .unknown:
-      lockImageView.setImage(#imageLiteral(resourceName: "lock_verified").template, for: .normal)
+      lockImageView.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
     }
   }
 
@@ -142,7 +142,7 @@ class TabLocationView: UIView {
   }()
 
   private(set) lazy var lockImageView = ToolbarButton(top: true).then {
-    $0.setImage(#imageLiteral(resourceName: "lock_verified").template, for: .normal)
+    $0.setImage(UIImage(named: "lock_verified", in: .current, compatibleWith: nil)!.template, for: .normal)
     $0.isHidden = true
     $0.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
     $0.isAccessibilityElement = true
@@ -189,7 +189,7 @@ class TabLocationView: UIView {
     $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
-    $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
+    $0.setImage(UIImage(named: "nav-refresh", in: .current, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .braveLabel
     let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
     $0.addGestureRecognizer(longPressGestureStopReloadButton)
@@ -198,7 +198,7 @@ class TabLocationView: UIView {
 
   lazy var shieldsButton: ToolbarButton = {
     let button = ToolbarButton(top: true)
-    button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
+    button.setImage(UIImage(named: "shields-menu-icon", in: .current, compatibleWith: nil)!, for: .normal)
     button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
     button.imageView?.contentMode = .center
     button.accessibilityLabel = Strings.bravePanel

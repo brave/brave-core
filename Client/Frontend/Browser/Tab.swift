@@ -719,7 +719,7 @@ class Tab: NSObject {
     guard let webView = self.webView else {
       return
     }
-    if let path = Bundle.main.path(forResource: fileName, ofType: type),
+    if let path = Bundle.current.path(forResource: fileName, ofType: type),
       let source = try? String(contentsOfFile: path) {
       let userScript = WKUserScript.create(source: source, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly, in: contentWorld)
       webView.configuration.userContentController.addUserScript(userScript)
@@ -883,8 +883,8 @@ class TabWebView: BraveWebView, MenuHelperInterface {
 // that it is a UIView subclass to access its superview.
 //
 
-class TabWebViewMenuHelper: UIView {
-  @objc func swizzledMenuHelperFindInPage() {
+public class TabWebViewMenuHelper: UIView {
+  @objc public func swizzledMenuHelperFindInPage() {
     if let tabWebView = superview?.superview as? TabWebView {
       tabWebView.evaluateSafeJavaScript(functionName: "getSelection().toString", contentWorld: .defaultClient) { result, _ in
         let selectedText = result as? String ?? ""

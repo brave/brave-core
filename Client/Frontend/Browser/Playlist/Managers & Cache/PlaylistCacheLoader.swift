@@ -341,7 +341,7 @@ class PlaylistWebLoader: UIView {
   }
 
   private let playlistDetectorScript: WKUserScript? = {
-    guard let path = Bundle.main.path(forResource: "PlaylistDetector", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+    guard let path = Bundle.current.path(forResource: "PlaylistDetector", ofType: "js"), let source = try? String(contentsOfFile: path) else {
       log.error("Failed to load PlaylistDetector.js")
       return nil
     }

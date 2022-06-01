@@ -3,6 +3,7 @@
 import Shared
 import BraveShared
 import Data
+import UIKit
 
 class SyncCodewordsView: UIView, UITextViewDelegate {
   lazy var field: UITextView = {

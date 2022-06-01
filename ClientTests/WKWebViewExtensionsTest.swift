@@ -7,7 +7,7 @@ import XCTest
 import Shared
 import BraveShared
 import WebKit
-@testable import Client
+@testable import Brave
 
 class WKWebViewExtensionsTest: XCTestCase {
   func testGenerateJavascriptFunctionString() {

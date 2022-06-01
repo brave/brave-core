@@ -15,7 +15,7 @@ import BraveCore
 private let logger = Logger.browserLogger
 
 /// Powers the Brave News feed.
-class FeedDataSource {
+public class FeedDataSource {
   /// The current view state of the data source
   enum State {
     /// Nothing has happened yet
@@ -149,7 +149,7 @@ class FeedDataSource {
   }
 
   /// A list of the supported languages
-  static let supportedLanguages = [
+  public static let supportedLanguages = [
     "en",
     "ja",
   ]

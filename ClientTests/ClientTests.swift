@@ -8,13 +8,41 @@ import XCTest
 import Shared
 import Storage
 import WebKit
-@testable import Client
+@testable import Brave
 
 class ClientTests: XCTestCase {
-
+  override func setUpWithError() throws {
+    super.setUp()
+    
+    // TODO: Move this code into some module that is shared so it doesn't require AppDelegate/host application
+    
+    let server = WebServer.sharedInstance
+    guard !server.server.isRunning else { return }
+    
+    let responders: [(String, InternalSchemeResponse)] =
+    [
+      (AboutHomeHandler.path, AboutHomeHandler()),
+      (AboutLicenseHandler.path, AboutLicenseHandler()),
+      (SessionRestoreHandler.path, SessionRestoreHandler()),
+      (ErrorPageHandler.path, ErrorPageHandler()),
+    ]
+    responders.forEach { (path, responder) in
+      InternalSchemeHandler.responders[path] = responder
+    }
+    
+    ReaderModeHandlers.register(server, profile: BrowserProfile(localName: "test"))  // TODO: PORT TO InternalSchemeHandler
+    BookmarksInterstitialPageHandler.register(server)  // TODO: PORT TO InternalSchemeHandler
+    
+    // Bug 1223009 was an issue whereby CGDWebserver crashed when moving to a background task
+    // catching and handling the error seemed to fix things, but we're not sure why.
+    // Either way, not implicitly unwrapping a try is not a great way of doing things
+    // so this is better anyway.
+    try server.start()
+  }
+  
   /// Our local server should only accept whitelisted hosts (localhost and 127.0.0.1).
   /// All other localhost equivalents should return 403.
-  func testDisallowLocalhostAliases() {
+  func testDisallowLocalhostAliases() throws {
     // Allowed local hosts. The first two are equivalent since iOS forwards an
     // empty host to localhost.
     [
@@ -71,7 +99,7 @@ class ClientTests: XCTestCase {
       expectation.fulfill()
     }.resume()
 
-    waitForExpectations(timeout: 100, handler: nil)
+    waitForExpectations(timeout: 200, handler: nil)
     return response?.statusCode == 200
   }
 }

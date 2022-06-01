@@ -5,7 +5,7 @@
 
 import BraveCore
 import BraveUI
-import struct Shared.Strings
+import Strings
 import SwiftUI
 
 struct EditPermissionsView: View {

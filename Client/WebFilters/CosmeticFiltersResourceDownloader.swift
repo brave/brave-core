@@ -33,9 +33,9 @@ private struct CosmeticFilterNetworkResource {
   let type: CosmeticFiltersResourceDownloader.CosmeticFilterType
 }
 
-class CosmeticFiltersResourceDownloader {
+public class CosmeticFiltersResourceDownloader {
   private static let queue = DispatchQueue(label: "com.brave.cosmecitc-filters-dispatch-queue")
-  static let shared = CosmeticFiltersResourceDownloader()
+  public static let shared = CosmeticFiltersResourceDownloader()
 
   private let networkManager: NetworkManager
 
@@ -60,7 +60,7 @@ class CosmeticFiltersResourceDownloader {
   /// Initialized with year 1970 to force adblock fetch at first launch.
   private(set) var lastFetchDate = Date(timeIntervalSince1970: 0)
 
-  func startLoading() {
+  public func startLoading() {
     let now = Date()
     let fetchInterval = AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
 

@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Shared
+import Foundation
+import UIKit
 
 // Naming functions: use the suffix 'KeyCommand' for an additional level of namespacing (bug 1415830)
 extension BrowserViewController {
@@ -166,7 +168,7 @@ extension BrowserViewController {
     searchController.handleKeyCommands(sender: sender)
   }
 
-  override var keyCommands: [UIKeyCommand]? {
+  override public var keyCommands: [UIKeyCommand]? {
     let isEditingText = tabManager.selectedTab?.isEditing ?? false
       
     var navigationCommands = [

@@ -7,14 +7,14 @@ import Foundation
 import SwiftUI
 import Introspect
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
 
   var body: some View {
     VStack(spacing: 46) {
-      Image("setup-welcome")
+      Image("setup-welcome", bundle: .current)
       VStack(spacing: 14) {
         Text(Strings.Wallet.setupCryptoTitle)
           .foregroundColor(.primary)

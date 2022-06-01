@@ -5,6 +5,7 @@
 import XCTest
 import CoreData
 import Shared
+import DataTestsUtils
 @testable import Data
 
 class TabMOTests: CoreDataTestCase {

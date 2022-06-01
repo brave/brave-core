@@ -65,7 +65,9 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - StorageTests/
   - ClientTests/
   - BraveSharedTests/
+  - BraveSharedTestUtils/
   - DataTests/
+  - DataTestsUtils/
   - fastlane/
   - SharedTests/
   - Client/Assets/Search/get_supported_locales.swift

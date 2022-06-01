@@ -5,7 +5,7 @@
 import XCTest
 import WebKit
 import Combine
-@testable import Client
+@testable import Brave
 
 class ContentBlockerTests: XCTestCase {
 
@@ -16,7 +16,7 @@ class ContentBlockerTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    let testBundle = Bundle(for: type(of: self))
+    let testBundle = Bundle.module
     let bundleURL = testBundle.bundleURL
     store = WKContentRuleListStore(url: bundleURL)!
 
@@ -106,7 +106,9 @@ class ContentBlockerTests: XCTestCase {
       .sink(receiveCompletion: { res in
         switch res {
         case .failure(let error):
-          XCTFail("Error Compiling Content Blocker Rules: \(error)")
+          if expectSuccess {
+            XCTFail("Error Compiling Content Blocker Rules: \(error)")
+          }
         default:
           exp.fulfill()
         }

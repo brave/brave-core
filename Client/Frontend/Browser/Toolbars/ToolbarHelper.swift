@@ -13,31 +13,31 @@ class ToolbarHelper: NSObject {
     self.toolbar = toolbar
     super.init()
 
-    toolbar.backButton.setImage(#imageLiteral(resourceName: "nav-back").template, for: .normal)
+    toolbar.backButton.setImage(UIImage(named: "nav-back", in: .current, compatibleWith: nil)!.template, for: .normal)
     toolbar.backButton.accessibilityLabel = Strings.tabToolbarBackButtonAccessibilityLabel
     let longPressGestureBackButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBack))
     toolbar.backButton.addGestureRecognizer(longPressGestureBackButton)
     toolbar.backButton.addTarget(self, action: #selector(didClickBack), for: .touchUpInside)
 
-    toolbar.shareButton.setImage(#imageLiteral(resourceName: "nav-share").template, for: .normal)
+    toolbar.shareButton.setImage(UIImage(named: "nav-share", in: .current, compatibleWith: nil)!.template, for: .normal)
     toolbar.shareButton.accessibilityLabel = Strings.tabToolbarShareButtonAccessibilityLabel
     toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControl.Event.touchUpInside)
 
     toolbar.tabsButton.addTarget(self, action: #selector(didClickTabs), for: .touchUpInside)
 
-    toolbar.addTabButton.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
+    toolbar.addTabButton.setImage(UIImage(named: "add_tab", in: .current, compatibleWith: nil)!.template, for: .normal)
     toolbar.addTabButton.accessibilityLabel = Strings.tabToolbarAddTabButtonAccessibilityLabel
     toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControl.Event.touchUpInside)
 
-    toolbar.searchButton.setImage(#imageLiteral(resourceName: "ntp-search").template, for: .normal)
+    toolbar.searchButton.setImage(UIImage(named: "ntp-search", in: .current, compatibleWith: nil)!.template, for: .normal)
     // Accessibility label not needed, since overriden in the bottom tool bar class.
     toolbar.searchButton.addTarget(self, action: #selector(didClickSearch), for: UIControl.Event.touchUpInside)
 
-    toolbar.menuButton.setImage(#imageLiteral(resourceName: "menu_more").template, for: .normal)
+    toolbar.menuButton.setImage(UIImage(named: "menu_more", in: .current, compatibleWith: nil)!.template, for: .normal)
     toolbar.menuButton.accessibilityLabel = Strings.tabToolbarMenuButtonAccessibilityLabel
     toolbar.menuButton.addTarget(self, action: #selector(didClickMenu), for: UIControl.Event.touchUpInside)
 
-    toolbar.forwardButton.setImage(#imageLiteral(resourceName: "nav-forward").template, for: .normal)
+    toolbar.forwardButton.setImage(UIImage(named: "nav-forward", in: .current, compatibleWith: nil)!.template, for: .normal)
     toolbar.forwardButton.accessibilityLabel = Strings.tabToolbarForwardButtonAccessibilityLabel
     let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
     toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)

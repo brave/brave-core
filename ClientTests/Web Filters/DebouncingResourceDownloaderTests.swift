@@ -4,13 +4,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
-@testable import Client
+@testable import Brave
 
 class DebouncingResourceDownloaderTests: XCTestCase {
   private let downloader = DebouncingResourceDownloader()
 
   override func setUpWithError() throws {
-    let bundle = Bundle(for: Self.self)
+    let bundle = Bundle.module
     let resourceURL = bundle.url(forResource: "debouncing", withExtension: "json")
     let data = try Data(contentsOf: resourceURL!)
     try downloader.setup(withRulesJSON: data)

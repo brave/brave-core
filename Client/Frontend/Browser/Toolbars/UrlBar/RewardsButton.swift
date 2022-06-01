@@ -20,7 +20,7 @@ class RewardsButton: UIButton {
     }
   }
 
-  private let lookAtMeBadge = UIImageView(image: #imageLiteral(resourceName: "rewards-look-at-me")).then {
+  private let lookAtMeBadge = UIImageView(image: UIImage(named: "rewards-look-at-me", in: .current, compatibleWith: nil)!).then {
     $0.isHidden = true
     $0.isUserInteractionEnabled = false
     $0.frame = CGRect(x: 17, y: 7, width: 16, height: 16)
@@ -43,13 +43,13 @@ class RewardsButton: UIButton {
   private func updateView() {
     switch iconState {
     case .initial:
-      setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
+      setImage(UIImage(named: "brave_rewards_button_enabled", in: .current, compatibleWith: nil)!, for: .normal)
       lookAtMeBadge.isHidden = false
     case .enabled:
-      setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
+      setImage(UIImage(named: "brave_rewards_button_enabled", in: .current, compatibleWith: nil)!, for: .normal)
       lookAtMeBadge.isHidden = true
     case .disabled:
-      setImage(#imageLiteral(resourceName: "brave_rewards_button_disabled"), for: .normal)
+      setImage(UIImage(named: "brave_rewards_button_disabled", in: .current, compatibleWith: nil)!, for: .normal)
       lookAtMeBadge.isHidden = true
     }
   }

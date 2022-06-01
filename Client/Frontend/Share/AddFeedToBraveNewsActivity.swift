@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class AddFeedToBraveNewsActivity: UIActivity {
   fileprivate let callback: () -> Void
@@ -18,7 +19,7 @@ class AddFeedToBraveNewsActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "settings-brave-today")
+    return UIImage(named: "settings-brave-today", in: .current, compatibleWith: nil)!
   }
 
   override func perform() {

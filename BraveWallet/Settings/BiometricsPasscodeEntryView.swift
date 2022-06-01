@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveUI
-import struct Shared.Strings
+import Strings
 import SwiftUI
 
 struct BiometricsPasscodeEntryView: View {
@@ -59,7 +59,7 @@ struct BiometricsPasscodeEntryView: View {
     NavigationView {
       ScrollView(.vertical) {
         VStack(spacing: 36) {
-          Image("graphic-lock")
+          Image("graphic-lock", bundle: .current)
             .accessibilityHidden(true)
           VStack {
             Text(Strings.Wallet.enterPasswordForBiometricsTitle)

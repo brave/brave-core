@@ -4,6 +4,7 @@
 
 import Foundation
 import SnapKit
+import UIKit
 
 struct ButtonToastUX {
   static let toastHeight: CGFloat = 55.0
@@ -56,7 +57,7 @@ class ButtonToast: Toast {
     horizontalStackView.spacing = ButtonToastUX.toastPadding
 
     if let imageName = imageName {
-      let icon = UIImageView(image: UIImage(imageLiteralResourceName: imageName).template)
+      let icon = UIImageView(image: UIImage(named: imageName, in: .current, compatibleWith: nil)!.template)
       icon.tintColor = .white
       horizontalStackView.addArrangedSubview(icon)
     }

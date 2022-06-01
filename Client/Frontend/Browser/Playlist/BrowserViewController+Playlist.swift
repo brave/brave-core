@@ -8,6 +8,7 @@ import Data
 import Shared
 import BraveShared
 import BraveUI
+import UIKit
 
 private let log = Logger.browserLogger
 
@@ -271,7 +272,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
 
           let pulseAnimation = RadialPulsingAnimation(ringCount: 3)
           pulseAnimation.present(
-            icon: #imageLiteral(resourceName: "welcome-view-playlist-button-icon"),
+            icon: UIImage(named: "welcome-view-playlist-button-icon", in: .current, compatibleWith: nil)!,
             from: self.topToolbar.locationView.playlistButton,
             on: popover,
             browser: self)

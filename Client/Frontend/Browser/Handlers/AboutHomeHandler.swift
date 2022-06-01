@@ -3,12 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import BraveUI
+import Foundation
+import UIKit
 
-class AboutHomeHandler: InternalSchemeResponse {
-  static let path = "about/home"
+public class AboutHomeHandler: InternalSchemeResponse {
+  public static let path = "about/home"
 
   // Return a blank page, the webview delegate will look at the current URL and load the home panel based on that
-  func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
     let bg = UIColor.braveBackground.toHexString()
@@ -24,19 +26,23 @@ class AboutHomeHandler: InternalSchemeResponse {
     }
     return (response, data)
   }
+  
+  public init() { }
 }
 
-class AboutLicenseHandler: InternalSchemeResponse {
-  static let path = "about/license"
+public class AboutLicenseHandler: InternalSchemeResponse {
+  public static let path = "about/license"
 
-  func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    guard let path = Bundle.main.path(forResource: "Licenses", ofType: "html"), let html = try? String(contentsOfFile: path, encoding: .utf8),
+    guard let path = Bundle.current.path(forResource: "Licenses", ofType: "html"), let html = try? String(contentsOfFile: path, encoding: .utf8),
       let data = html.data(using: .utf8)
     else {
       return nil
     }
     return (response, data)
   }
+  
+  public init() { }
 }

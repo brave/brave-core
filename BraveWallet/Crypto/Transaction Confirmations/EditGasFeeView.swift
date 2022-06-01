@@ -7,7 +7,7 @@ import Foundation
 import BraveCore
 import BraveUI
 import SwiftUI
-import struct Shared.Strings
+import Strings
 import BigNumber
 
 /// Allows the user to edit the gas fee structure of an regular transaction before confirming it

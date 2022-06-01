@@ -7,6 +7,7 @@ import Foundation
 import BraveUI
 import Shared
 import BraveShared
+import UIKit
 
 class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
@@ -78,7 +79,7 @@ private class DefaultBrowserCalloutView: SpringButton {
   var closeHaandler: (() -> Void)?
   
   private let closeButton = UIButton().then {
-    $0.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
+    $0.setImage(UIImage(named: "close_tab_bar", in: .current, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .lightGray
     $0.contentEdgeInsets = UIEdgeInsets(equalInset: 4)
     $0.accessibilityLabel = Strings.defaultBrowserCalloutCloseAccesabilityLabel

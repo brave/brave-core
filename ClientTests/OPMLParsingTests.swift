@@ -4,12 +4,12 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
-@testable import Client
+@testable import Brave
 
 class OPMLParsingTests: XCTestCase {
 
   func loadTestData(named testFileName: String) -> Data {
-    try! Data(contentsOf: URL(fileURLWithPath: Bundle(for: OPMLParsingTests.self).path(forResource: testFileName, ofType: "opml")!))
+    try! Data(contentsOf: URL(fileURLWithPath: Bundle.module.path(forResource: testFileName, ofType: "opml")!))
   }
 
   func testBasicParsing() throws {

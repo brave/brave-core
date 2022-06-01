@@ -17,7 +17,7 @@ struct PrivacyEverywhereView: View {
       Button {
         dismiss?()
       } label: {
-        Image(uiImage: #imageLiteral(resourceName: "privacy-everywhere-exit-icon"))
+        Image(uiImage: UIImage(named: "privacy-everywhere-exit-icon", in: .current, compatibleWith: nil)!)
       }
       .frame(maxWidth: .infinity, alignment: .trailing)
       VStack(spacing: 10) {
@@ -25,7 +25,7 @@ struct PrivacyEverywhereView: View {
           .font(.title3.weight(.medium))
           .foregroundColor(Color(.bravePrimary))
           .multilineTextAlignment(.center)
-        Image(uiImage: #imageLiteral(resourceName: "privacy-everywhere-image"))
+        Image(uiImage: UIImage(named: "privacy-everywhere-image", in: .current, compatibleWith: nil)!)
           .resizable()
           .aspectRatio(contentMode: .fit)
         Text(Strings.Callout.privacyEverywhereCalloutDescription)

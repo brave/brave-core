@@ -10,20 +10,20 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-final class WebImageCache: ImageCacheProtocol {
+final public class WebImageCache: ImageCacheProtocol {
 
   private let webImageManager: SDWebImageManager
 
   private let isPrivate: Bool
 
-  typealias ReturnAssociatedType = SDWebImageOperation
+  public typealias ReturnAssociatedType = SDWebImageOperation
 
   deinit {
     clearMemoryCache()
     clearDiskCache()
   }
 
-  init(isPrivate: Bool, sandbox: String? = nil) {
+  public init(isPrivate: Bool, sandbox: String? = nil) {
     self.isPrivate = isPrivate
 
     var imageCache: SDImageCache
@@ -40,7 +40,7 @@ final class WebImageCache: ImageCacheProtocol {
   }
 
   @discardableResult
-  func load(
+  public func load(
     from url: URL, options: ImageCacheOptions = [], progress: ImageCacheProgress = nil,
     completion: ImageCacheCompletion = nil
   ) -> SDWebImageOperation? {
@@ -82,25 +82,25 @@ final class WebImageCache: ImageCacheProtocol {
     return imageOperation
   }
 
-  func cacheImage(image: UIImage, data: Data, url: URL) {
+  public func cacheImage(image: UIImage, data: Data, url: URL) {
     let key = self.webImageManager.cacheKey(for: url)
     webImageManager.imageCache.store(image, imageData: data, forKey: key, cacheType: .all)
   }
 
-  func isCached(_ url: URL) -> Bool {
+  public func isCached(_ url: URL) -> Bool {
     return webImageManager.cacheKey(for: url) != nil
   }
 
-  func remove(fromCache url: URL) {
+  public func remove(fromCache url: URL) {
     let key = webImageManager.cacheKey(for: url)
     webImageManager.imageCache.removeImage(forKey: key, cacheType: .all)
   }
 
-  func clearMemoryCache() {
+  public func clearMemoryCache() {
     webImageManager.imageCache.clear(with: .memory)
   }
 
-  func clearDiskCache() {
+  public func clearDiskCache() {
     if !isPrivate {
       webImageManager.imageCache.clear(with: .disk)
     }

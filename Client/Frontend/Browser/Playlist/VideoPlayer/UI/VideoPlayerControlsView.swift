@@ -18,29 +18,29 @@ class VideoPlayerControlsView: UIView {
 
   let repeatButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(#imageLiteral(resourceName: "playlist_repeat"), for: .normal)
+    $0.setImage(UIImage(named: "playlist_repeat", in: .current, compatibleWith: nil)!, for: .normal)
   }
 
   let skipBackButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(#imageLiteral(resourceName: "playlist_rewind"), for: .normal)
+    $0.setImage(UIImage(named: "playlist_rewind", in: .current, compatibleWith: nil)!, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 10.0)
   }
 
   let skipForwardButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(#imageLiteral(resourceName: "playlist_forward"), for: .normal)
+    $0.setImage(UIImage(named: "playlist_forward", in: .current, compatibleWith: nil)!, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 10.0)
   }
 
   let playPauseButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+    $0.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
   }
 
   let nextButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(#imageLiteral(resourceName: "playlist_next"), for: .normal)
+    $0.setImage(UIImage(named: "playlist_next", in: .current, compatibleWith: nil)!, for: .normal)
   }
 
   let playbackRateButton = UIButton().then {
@@ -52,7 +52,7 @@ class VideoPlayerControlsView: UIView {
 
   let castButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(#imageLiteral(resourceName: "playlist_airplay"), for: .normal)
+    $0.setImage(UIImage(named: "playlist_airplay", in: .current, compatibleWith: nil)!, for: .normal)
 
     let routePicker = AVRoutePickerView()
     routePicker.tintColor = .clear

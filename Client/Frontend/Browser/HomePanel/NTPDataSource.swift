@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 import BraveCore
 
-class NTPDataSource {
+public class NTPDataSource {
 
   var initializeFavorites: ((_ sites: [CustomTheme.TopSite]?) -> Void)?
 
@@ -68,14 +68,14 @@ class NTPDataSource {
     }
   }()
 
-  init() {
+  public init() {
     downloader.delegate = self
 
     Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
   }
 
-  func startFetching() {
+  public func startFetching() {
     let downloadType = downloader.currentResourceType
     // For super referrer we want to load assets from cache first, then check if new resources
     // are on the server.
@@ -91,7 +91,7 @@ class NTPDataSource {
     }
   }
 
-  func fetchSpecificResource(_ type: NTPDownloader.ResourceType) {
+  public func fetchSpecificResource(_ type: NTPDownloader.ResourceType) {
     if downloader.delegate != nil {
       downloader.notifyObservers(for: type)
     }
@@ -207,7 +207,7 @@ class NTPDataSource {
   }
 
   private func loadData(file: String) -> Data? {
-    guard let filePath = Bundle.main.path(forResource: file, ofType: "json") else {
+    guard let filePath = Bundle.current.path(forResource: file, ofType: "json") else {
       return nil
     }
 
@@ -256,7 +256,7 @@ extension NTPDataSource: NTPDownloaderDelegate {
 }
 
 extension NTPDataSource: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
+  public func preferencesDidChange(for key: String) {
     let sponsoredPref = Preferences.NewTabPage.backgroundSponsoredImages
     let customThemePref = Preferences.NewTabPage.selectedCustomTheme
     let installedThemesPref = Preferences.NewTabPage.installedCustomThemes

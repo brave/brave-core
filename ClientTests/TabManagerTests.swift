@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@testable import Client
+@testable import Brave
 @testable import Data
 import Shared
 import Storage
@@ -111,6 +111,7 @@ class TabManagerTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
+    DataController.shared.initializeOnce()
     let profile = MockProfile()
     manager = TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil)
     PrivateBrowsingManager.shared.isPrivateBrowsing = false

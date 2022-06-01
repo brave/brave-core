@@ -56,7 +56,7 @@ extension PrivacyReportsView {
     var body: some View {
       HStack(alignment: .top) {
         if let category = vpnAlert.categoryEnum {
-          Image(assetName(for: category))
+          Image(assetName(for: category), bundle: .current)
         }
         
         VStack(alignment: .leading) {

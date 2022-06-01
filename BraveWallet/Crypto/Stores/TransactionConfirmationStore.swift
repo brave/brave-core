@@ -6,7 +6,7 @@
 import Foundation
 import BraveCore
 import BigNumber
-import struct Shared.Strings
+import Strings
 
 public class TransactionConfirmationStore: ObservableObject {
   struct State {

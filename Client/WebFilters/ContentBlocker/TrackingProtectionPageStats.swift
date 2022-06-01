@@ -8,6 +8,7 @@
 import Shared
 import BraveShared
 import Data
+import Foundation
 
 struct TPPageStats {
   let adCount: Int

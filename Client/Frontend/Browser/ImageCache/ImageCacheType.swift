@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum ImageCacheType: Int, CustomDebugStringConvertible {
+public enum ImageCacheType: Int, CustomDebugStringConvertible {
 
   /// The image was not available in the cache, but was downloaded from the web.
   case none
@@ -15,7 +15,7 @@ enum ImageCacheType: Int, CustomDebugStringConvertible {
   /// The image was obtained from the disk cache.
   case disk
 
-  var debugDescription: String {
+  public var debugDescription: String {
     switch self {
     case .none:
       return "Image was not available in the cache, but was downloaded from the web"

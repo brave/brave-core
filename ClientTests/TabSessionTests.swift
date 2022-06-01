@@ -9,7 +9,7 @@ import Storage
 import Data
 import WebKit
 import ObjectiveC.runtime
-@testable import Client
+@testable import Brave
 
 private extension WKWebView {
   class func swizzleMe() {
@@ -86,6 +86,7 @@ class TabSessionTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
+    DataController.shared.initializeOnce()
     tabManager = { () -> TabManager in
       let profile = BrowserProfile(localName: "profile")
       return TabManager(prefs: profile.prefs, imageStore: nil, rewards: nil)

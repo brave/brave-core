@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 //import GCDWebServers
-@testable import Client
+@testable import Brave
 import UIKit
 import Shared
 
@@ -12,7 +12,7 @@ import XCTest
 class SearchTests: XCTestCase {
   func testParsing() {
     let parser = OpenSearchParser(pluginMode: true)
-    let file = Bundle.main.path(forResource: "google", ofType: "xml", inDirectory: "SearchPlugins/")
+    let file = Bundle.module.path(forResource: "google-search-plugin", ofType: "xml")
     let engine: OpenSearchEngine! = parser.parse(file!, engineID: "google", referenceURL: "google.com")
     XCTAssertEqual(engine.shortName, "Google")
 
@@ -98,7 +98,7 @@ class SearchTests: XCTestCase {
 
   func testExtractingOfSearchTermsFromURL() {
     let parser = OpenSearchParser(pluginMode: true)
-    var file = Bundle.main.path(forResource: "google", ofType: "xml", inDirectory: "SearchPlugins/")
+    var file = Bundle.module.path(forResource: "google-search-plugin", ofType: "xml")
     let googleEngine: OpenSearchEngine! = parser.parse(file!, engineID: "google", referenceURL: "google.com")
 
     // create URL
@@ -115,7 +115,7 @@ class SearchTests: XCTestCase {
     XCTAssertNil(googleEngine.queryForSearchURL(invalidSearchURL))
 
     // check that it matches given a different configuration
-    file = Bundle.main.path(forResource: "duckduckgo", ofType: "xml", inDirectory: "SearchPlugins/")
+    file = Bundle.module.path(forResource: "duckduckgo-search-plugin", ofType: "xml")
     let duckDuckGoEngine: OpenSearchEngine! = parser.parse(file!, engineID: "duckduckgo", referenceURL: "duckduckgo.com/opensearch")
     XCTAssertEqual(searchTerm, duckDuckGoEngine.queryForSearchURL(duckDuckGoSearchURL))
 

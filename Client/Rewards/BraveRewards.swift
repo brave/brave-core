@@ -7,12 +7,13 @@ import Foundation
 import BraveCore
 import BraveShared
 import Combine
+import DeviceCheck
 
 class BraveRewards: NSObject {
 
   /// Whether or not Brave Rewards is available/can be enabled
   public static var isAvailable: Bool {
-    #if MOZ_CHANNEL_DEBUG
+    #if DEBUG
     return true
     #else
     return DCDevice.current.isSupported

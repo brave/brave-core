@@ -7,7 +7,7 @@ import Foundation
 import SwiftUI
 import BraveCore
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 extension BraveWallet.AssetTimePrice: DataPoint {
   var value: CGFloat {
