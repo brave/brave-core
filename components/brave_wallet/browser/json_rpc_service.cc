@@ -179,7 +179,8 @@ void JsonRpcService::RequestInternal(
 
   base::flat_map<std::string, std::string> request_headers;
   std::string id, method, params;
-  if (GetJsonRequestInfo(json_payload, nullptr, &method, &params)) {
+  if (GetJsonRequestInfo(json_payload, nullptr, &method, &params,
+                         mojom::CoinType::ETH)) {
     request_headers["X-Eth-Method"] = method;
     if (method == kEthGetBlockByNumber) {
       std::string cleaned_params;

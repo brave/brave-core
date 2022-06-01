@@ -188,7 +188,8 @@ bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
 bool GetJsonRequestInfo(const std::string& json,
                         base::Value* id,
                         std::string* method,
-                        std::string* params) {
+                        std::string* params,
+                        mojom::CoinType coin) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
@@ -219,9 +220,21 @@ bool GetJsonRequestInfo(const std::string& json,
   }
 
   if (params) {
-    const base::Value* found_params = response_dict->FindListPath(kParams);
-    if (!found_params)
-      return false;
+    const base::Value* found_params = nullptr;
+    if (coin == mojom::CoinType::SOL) {
+      // params is optional
+      if (!response_dict->HasKey(kParams))
+        return true;
+      found_params = response_dict->FindDictPath(kParams);
+      // Not dict
+      if (!found_params)
+        return false;
+    } else {
+      found_params = response_dict->FindListPath(kParams);
+      // Not list
+      if (!found_params)
+        return false;
+    }
     base::JSONWriter::Write(*found_params, params);
   }
 

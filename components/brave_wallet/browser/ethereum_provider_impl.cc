@@ -993,7 +993,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
 
   base::Value id;
   std::string method;
-  if (!GetJsonRequestInfo(normalized_json_request, &id, &method, nullptr)) {
+  if (!GetJsonRequestInfo(normalized_json_request, &id, &method, nullptr,
+                          mojom::CoinType::ETH)) {
     SendErrorOnRequest(error, error_message, std::move(callback),
                        base::Value());
     return;

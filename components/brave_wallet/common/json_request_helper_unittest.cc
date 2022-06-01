@@ -569,7 +569,11 @@ TEST(JsonRequestHelperUnitTest, GetJsonRequestInfo) {
   })";
   base::Value id;
   std::string method, params;
-  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, &params));
+  // wrong params format for SOL
+  EXPECT_FALSE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::SOL));
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::ETH));
   EXPECT_EQ(id, base::Value("1"));
   EXPECT_EQ(method, "eth_blockNumber");
   EXPECT_EQ(params, "[]");
@@ -582,7 +586,8 @@ TEST(JsonRequestHelperUnitTest, GetJsonRequestInfo) {
   })";
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, &params));
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::ETH));
   EXPECT_EQ(id, base::Value());
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
@@ -596,7 +601,8 @@ TEST(JsonRequestHelperUnitTest, GetJsonRequestInfo) {
   id = base::Value();
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, &params));
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::ETH));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
@@ -604,26 +610,26 @@ TEST(JsonRequestHelperUnitTest, GetJsonRequestInfo) {
   // Can pass nullptr for id
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetJsonRequestInfo(json, nullptr, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(json, nullptr, &method, &params,
+                                 mojom::CoinType::ETH));
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
 
   // Can pass nullptr for method
   id = base::Value();
   params.clear();
-  EXPECT_TRUE(GetJsonRequestInfo(json, &id, nullptr, &params));
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, nullptr, &params, mojom::CoinType::ETH));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
 
   // Can pass nullptr for params
   id = base::Value();
   method.clear();
-  EXPECT_TRUE(GetJsonRequestInfo(json, &id, &method, nullptr));
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, &method, nullptr, mojom::CoinType::ETH));
   EXPECT_EQ(id, base::Value(2));
   EXPECT_EQ(method, "eth_getBlockByNumber");
-
-  // Can pass nullptr for all params
-  EXPECT_TRUE(GetJsonRequestInfo(json, nullptr, nullptr, nullptr));
 
   // Can omit id but ask for id return
   std::string missing_id_json = R"({
@@ -633,42 +639,82 @@ TEST(JsonRequestHelperUnitTest, GetJsonRequestInfo) {
   id = base::Value("something");
   method.clear();
   params.clear();
-  EXPECT_TRUE(GetJsonRequestInfo(missing_id_json, &id, &method, &params));
+  EXPECT_TRUE(GetJsonRequestInfo(missing_id_json, &id, &method, &params,
+                                 mojom::CoinType::ETH));
   EXPECT_EQ(id, base::Value());
   EXPECT_EQ(method, "eth_getBlockByNumber");
   EXPECT_EQ(params, "[\"0x5BaD55\",true]");
 
-  // Missing method
-  std::string missing_method_json = R"({
+  // Can pass nullptr for all params
+  EXPECT_TRUE(GetJsonRequestInfo(json, nullptr, nullptr, nullptr,
+                                 mojom::CoinType::ETH));
+
+  // optional params only for SOL
+  json = R"({
+    "id": 2,
+    "jsonrpc": "2.0",
+    "method": "connect"
+  })";
+  id = base::Value();
+  method.clear();
+  params.clear();
+  EXPECT_FALSE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::ETH));
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::SOL));
+  EXPECT_EQ(id, base::Value(2));
+  EXPECT_EQ(method, "connect");
+  EXPECT_TRUE(params.empty());
+
+  json = R"({
+    "id": 2,
+    "jsonrpc": "2.0",
+    "method": "connect",
+    "params": { "onlyIfTrusted": true }
+  })";
+  method.clear();
+  params.clear();
+  EXPECT_TRUE(
+      GetJsonRequestInfo(json, &id, &method, &params, mojom::CoinType::SOL));
+  EXPECT_EQ(id, base::Value(2));
+  EXPECT_EQ(method, "connect");
+  EXPECT_EQ(params, "{\"onlyIfTrusted\":true}");
+
+  for (const auto& coin : {mojom::CoinType::ETH, mojom::CoinType::SOL}) {
+    // Missing method
+    std::string missing_method_json = R"({
     "id": "1",
     "jsonrpc": "2.0",
     "params": []
   })";
-  EXPECT_FALSE(GetJsonRequestInfo(missing_method_json, &id, &method, &params));
+    EXPECT_FALSE(
+        GetJsonRequestInfo(missing_method_json, &id, &method, &params, coin));
 
-  // Invalid method type
-  std::string wrong_type_method_json = R"({
+    // Invalid method type
+    std::string wrong_type_method_json = R"({
     "id": "1",
     "jsonrpc": "2.0",
     "method": 1,
     "params": []
   })";
-  EXPECT_FALSE(
-      GetJsonRequestInfo(wrong_type_method_json, &id, &method, &params));
+    EXPECT_FALSE(GetJsonRequestInfo(wrong_type_method_json, &id, &method,
+                                    &params, coin));
 
-  // Invalid params type
-  std::string wrong_type_params_json = R"({
+    // Invalid params type
+    std::string wrong_type_params_json = R"({
     "id": "1",
     "jsonrpc": "2.0",
     "method": "eth_getBlockByNumber",
     "params": 1
   })";
-  EXPECT_FALSE(
-      GetJsonRequestInfo(wrong_type_params_json, &id, &method, &params));
+    EXPECT_FALSE(GetJsonRequestInfo(wrong_type_params_json, &id, &method,
+                                    &params, coin));
 
-  // Not even JSON
-  std::string invalid_input = "Your sound card works perfectly!";
-  EXPECT_FALSE(GetJsonRequestInfo(invalid_input, &id, &method, &params));
+    // Not even JSON
+    std::string invalid_input = "Your sound card works perfectly!";
+    EXPECT_FALSE(
+        GetJsonRequestInfo(invalid_input, &id, &method, &params, coin));
+  }
 }
 
 TEST(JsonRequestHelperUnitTest, NormalizeJsonRequest) {
