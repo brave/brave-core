@@ -138,7 +138,7 @@ auto CreateProfileInvalidationProvider(Profile* profile) {
 
 namespace browser_sync {
 RewardsChromeSyncClient::RewardsChromeSyncClient(Profile* profile)
-    : ChromeSyncClient(profile),
+    : ChromeSyncClient(profile, true),
       scoped_pref_service_syncable_(CreateScopedPrefServiceSyncable(
           ChromeSyncClient::GetPrefServiceSyncable())),
       model_type_store_service_(CreateModelTypeStoreService(profile)),

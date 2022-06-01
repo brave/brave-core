@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/sync/chrome_sync_client.h b/chrome/browser/sync/chrome_sync_client.h
-index 7b5e1b73b3c84ec537560d83033f2bb8157e7f7f..5e00b4cfd3431069efcf8bd81fee3a52e54c0a1e 100644
+index 7b5e1b73b3c84ec537560d83033f2bb8157e7f7f..0db4dfc12394372fe984a5f31b7c43ca50a13edb 100644
 --- a/chrome/browser/sync/chrome_sync_client.h
 +++ b/chrome/browser/sync/chrome_sync_client.h
+@@ -39,7 +39,7 @@ class SyncApiComponentFactoryImpl;
+ 
+ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
+  public:
+-  explicit ChromeSyncClient(Profile* profile);
++  explicit ChromeSyncClient(Profile* profile, bool is_rewards_chrome_sync_client = false);
+ 
+   ChromeSyncClient(const ChromeSyncClient&) = delete;
+   ChromeSyncClient& operator=(const ChromeSyncClient&) = delete;
 @@ -69,6 +69,7 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
    syncer::SyncApiComponentFactory* GetSyncApiComponentFactory() override;
    syncer::SyncTypePreferenceProvider* GetPreferenceProvider() override;
