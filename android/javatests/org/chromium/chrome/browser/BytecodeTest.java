@@ -30,6 +30,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -44,7 +45,6 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
-import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
@@ -65,6 +65,7 @@ import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
+import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNTPCreator;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -430,12 +431,11 @@ public class BytecodeTest {
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
                 OneshotSupplier.class, OneshotSupplier.class, ObservableSupplier.class,
                 WebFeedSnackbarController.FeedLauncher.class, ModalDialogManager.class,
-                SnackbarManager.class));
+                SnackbarManager.class, OneshotSupplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
-                WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
-                ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class,
-                Supplier.class, Supplier.class));
+                WindowAndroid.class, Supplier.class, boolean.class, OverviewNTPCreator.class,
+                AsyncTabParamsManager.class, Supplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
@@ -451,7 +451,7 @@ public class BytecodeTest {
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
                 SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
-                OmniboxPedalDelegate.class, Supplier.class, boolean.class));
+                OmniboxPedalDelegate.class, Supplier.class, boolean.class, BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -462,7 +462,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                OneshotSupplier.class, ObservableSupplier.class));
+                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
@@ -548,7 +548,8 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
-                Context.class, String.class, String.class, BottomSheetController.class));
+                Context.class, String.class, String.class, BottomSheetController.class,
+                List.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",

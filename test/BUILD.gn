@@ -1244,6 +1244,7 @@ if (is_android) {
       "//chrome/android:chrome_apk_pak_assets",
       "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/browser/android/lifecycle:java",
+      "//chrome/browser/back_press/android:java",
       "//chrome/browser/browser_controls/android:java",
       "//chrome/browser/feed/android:java",
       "//chrome/browser/flags:java",
