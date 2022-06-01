@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class AddToPlaylistActivity: UIActivity {
   fileprivate let callback: () -> Void
@@ -17,7 +18,7 @@ class AddToPlaylistActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "playlist_menu")
+    return UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!
   }
 
   override func perform() {
@@ -42,7 +43,7 @@ class OpenInPlaylistActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "playlist_menu")
+    return UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!
   }
 
   override func perform() {

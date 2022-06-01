@@ -7,6 +7,7 @@ import Foundation
 import BraveShared
 import BraveUI
 import Shared
+import UIKit
 
 extension BraveRewardsViewController {
   class BraveRewardsView: UIView {

@@ -88,7 +88,7 @@ class BraveShieldStatsView: SpringButton {
   }
   
   private let privacyReportLabel = UILabel().then {
-    let image = #imageLiteral(resourceName: "privacy_reports_shield").template
+    let image = UIImage(named: "privacy_reports_shield", in: .current, compatibleWith: nil)!.template
     $0.textColor = .white
     $0.textAlignment = .center
     
@@ -129,7 +129,7 @@ class BraveShieldStatsView: SpringButton {
         $0.edges.equalToSuperview()
       }
       
-      let image = UIImageView(image: #imageLiteral(resourceName: "privacy_reports_3dots").template)
+      let image = UIImageView(image: UIImage(named: "privacy_reports_3dots", in: .current, compatibleWith: nil)!.template)
       image.tintColor = .white
       topStackView.addStackViewItems(.view(privacyReportLabel), .view(image))
     }

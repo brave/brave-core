@@ -35,6 +35,8 @@
 import UIKit
 import Shared
 import XCGLogger
+import sqlcipher
+import FSUtils
 
 private let DatabaseBusyTimeout: Int32 = 3 * 1000
 private let log = Logger.syncLogger

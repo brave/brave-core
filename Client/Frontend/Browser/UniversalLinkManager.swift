@@ -6,18 +6,18 @@
 import Foundation
 
 /// A helper structure to deal with universal link handling.
-struct UniversalLinkManager {
-  enum LinkType: CaseIterable {
+public struct UniversalLinkManager {
+  public enum LinkType: CaseIterable {
     // https://vpn.brave.com/.well-known/apple-app-site-association
     case buyVPN
 
-    var associatedDomain: String {
+    public var associatedDomain: String {
       switch self {
       case .buyVPN: return "vpn.brave.com"
       }
     }
 
-    var path: String {
+    public var path: String {
       switch self {
       case .buyVPN: return "/dl/"
       }
@@ -31,7 +31,7 @@ struct UniversalLinkManager {
   /// This is because we have to handle universal link from 2 places. When a user opens it from another app, path checking is not needed
   /// since this is handled by the `AppDelegate`. If the link is opened from the Brave app itself and it matches the associated domain
   /// app delegate doesn't handle such case, it must be handled manually.
-  static func universalLinkType(for url: URL, checkPath: Bool) -> LinkType? {
+  public static func universalLinkType(for url: URL, checkPath: Bool) -> LinkType? {
     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
       let host = components.host
     else { return nil }

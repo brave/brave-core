@@ -6,6 +6,7 @@ import XCTest
 import CoreData
 import BraveShared
 @testable import Data
+import DataTestsUtils
 
 class DomainTests: CoreDataTestCase {
   let fetchRequest = NSFetchRequest<Domain>(entityName: String(describing: Domain.self))
@@ -58,7 +59,7 @@ class DomainTests: CoreDataTestCase {
     XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
 
     XCTAssertEqual(domain.bookmarks?.count, 0)
     XCTAssertEqual(domain.historyItems?.count, 0)
@@ -86,7 +87,7 @@ class DomainTests: CoreDataTestCase {
     XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
   }
 
   /// Tests non-HTTPSE shields

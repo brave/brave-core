@@ -5,13 +5,14 @@
 import Foundation
 import BraveShared
 import Shared
+import UIKit
 
-enum DefaultTheme: String, RepresentableOptionType {
+public enum DefaultTheme: String, RepresentableOptionType {
   case system = "Z71ED37E-EC3E-436E-AD5F-B22748306A6B"
   case light = "ACE618A3-D6FC-45A4-94F2-1793C40AE927"
   case dark = "B900A41F-2C02-4664-9DE4-C170956339AC"
 
-  static var normalThemesOptions = [
+  public static var normalThemesOptions = [
     DefaultTheme.system,
     DefaultTheme.light,
     DefaultTheme.dark,

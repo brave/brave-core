@@ -23,7 +23,7 @@ protocol SearchViewControllerDelegate: AnyObject {
 
 // MARK: - SearchViewController
 
-class SearchViewController: SiteTableViewController, LoaderListener {
+public class SearchViewController: SiteTableViewController, LoaderListener {
 
   // MARK: SearchViewControllerUX
 
@@ -80,7 +80,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
   private var suggestions = [String]()
   private lazy var suggestionLongPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSuggestionLongPressed(_:)))
 
-  static var userAgent: String?
+  public static var userAgent: String?
   var searchDelegate: SearchViewControllerDelegate?
 
   var searchEngines: SearchEngines? {
@@ -161,7 +161,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
   }
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     view.addSubview(blur)
 
@@ -190,13 +190,13 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
   }
 
-  override func viewWillAppear(_ animated: Bool) {
+  override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     reloadSearchEngines()
     reloadData()
   }
 
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     // The height of the suggestions row may change, so call reloadData() to recalculate cell heights.
     coordinator.animate(
@@ -281,7 +281,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
 
     // search settings icon
     let searchButton = UIButton()
-    searchButton.setImage(#imageLiteral(resourceName: "quickSearch").template, for: [])
+    searchButton.setImage(UIImage(named: "quickSearch", in: .current, compatibleWith: nil)!.template, for: [])
     searchButton.imageView?.contentMode = .center
     searchButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
     searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
@@ -378,7 +378,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
       })
   }
 
-  func loader(dataLoaded data: [Site]) {
+  public func loader(dataLoaded data: [Site]) {
     self.data = Array(data.prefix(5))
     tableView.reloadData()
   }
@@ -453,7 +453,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+  override public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if let currentSection = availableSections[safe: indexPath.section] {
       switch currentSection {
       case .quickBar:
@@ -497,7 +497,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     guard let searchSection = availableSections[safe: section] else { return 0 }
     let headerHeight: CGFloat = 22
 
@@ -535,7 +535,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let section = availableSections[safe: indexPath.section] else {
       return UITableViewCell()
     }
@@ -545,7 +545,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
       let cell = TwoLineTableViewCell()
       cell.textLabel?.text = searchQuery
       cell.textLabel?.textColor = .bravePrimary
-      cell.imageView?.image = #imageLiteral(resourceName: "search_bar_find_in_page_icon")
+      cell.imageView?.image = UIImage(named: "search_bar_find_in_page_icon", in: .current, compatibleWith: nil)!
       cell.imageView?.contentMode = .center
       cell.backgroundColor = .secondaryBraveBackground
 
@@ -638,7 +638,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     guard let section = availableSections[safe: section] else {
       return 0
     }
@@ -682,11 +682,11 @@ class SearchViewController: SiteTableViewController, LoaderListener {
 // MARK: - KeyboardHelperDelegate
 
 extension SearchViewController: KeyboardHelperDelegate {
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
     animateSearchEnginesWithKeyboard(state)
   }
 
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
     animateSearchEnginesWithKeyboard(state)
   }
 }

@@ -7,6 +7,7 @@ import Foundation
 import BraveShared
 import Shared
 import BraveUI
+import UIKit
 
 struct OnboardingCommon {
   struct UX {

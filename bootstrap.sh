@@ -29,6 +29,13 @@ else
   npm install
 fi
 
+# Codesign BraveCore + MaterialComponents to pass library validation on unit tests on M1 machines
+echo "${COLOR_ORANGE}Signing BraveCore frameworks…${COLOR_NONE}"
+find "node_modules/brave-core-ios" -name '*.framework' -print0 | while read -d $'\0' framework
+do
+  codesign --force --deep --sign "-" --preserve-metadata=identifier,entitlements --timestamp=none "${framework}"
+done
+
 npm run build
 
 # Setup local git config
@@ -37,11 +44,24 @@ git config --local blame.ignoreRevsFile .git-blame-ignore-revs
 # Sets up local configurations from the tracked .template files
 
 # Checking the `Local` Directory
-CONFIG_PATH="Client/Configuration"
+CONFIG_PATH="App/Configuration"
+OLD_CONFIG_PATH="Client/Configuration"
+
 if [ ! -d "$CONFIG_PATH/Local/" ]; then
   echo "${COLOR_ORANGE}Creating 'Local' directory${COLOR_NONE}"
 
   (cd $CONFIG_PATH && mkdir Local)
+fi
+
+if [ -d "$OLD_CONFIG_PATH/Local" ]; then
+  echo "${COLOR_ORANGE}Copying configurations from old configuration directory${COLOR_NONE}"
+  for CONFIG_FILE in $OLD_CONFIG_PATH/Local/*.xcconfig
+  do
+    if cp -n $CONFIG_FILE $CONFIG_PATH/Local/ ; then
+      rm $CONFIG_FILE
+    fi
+  done
+  rm -rf "$OLD_CONFIG_PATH"
 fi
 
 # Copying over any necessary files into `Local`

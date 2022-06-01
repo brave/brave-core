@@ -17,7 +17,7 @@ class IndentedImageTableViewCell: UITableViewCell {
   }
 
   let customImage = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "shields-menu-icon")
+    $0.image = UIImage(named: "shields-menu-icon", in: .current, compatibleWith: nil)!
     $0.tintColor = .braveLabel
     $0.contentMode = .scaleAspectFit
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

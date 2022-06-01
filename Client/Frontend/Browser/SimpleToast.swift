@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 struct SimpleToastUX {
   static let toastHeight = bottomToolbarHeight

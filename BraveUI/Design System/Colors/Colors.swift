@@ -61,11 +61,9 @@ enum DesignSystemColor: String {
   case gradient05_step1 = "gradient05-step1"
   
   var color: UIColor {
-    return UIColor(named: rawValue, in: Bundle(for: BraveUI.self), compatibleWith: nil)!
+    return UIColor(named: rawValue, in: .current, compatibleWith: nil)!
   }
 }
-
-final private class BraveUI {}
 
 // MARK: - Design System Colors
 

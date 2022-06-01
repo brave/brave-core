@@ -6,7 +6,7 @@
 import SwiftUI
 import BraveUI
 import BraveCore
-import struct Shared.Strings
+import Strings
 
 struct EditNonceView: View {
   var confirmationStore: TransactionConfirmationStore

@@ -98,7 +98,7 @@ extension BrowserViewController {
 extension WalletPanelHostingController: PopoverContentComponent {}
 
 extension BrowserViewController: BraveWalletDelegate {
-  func openWalletURL(_ destinationURL: URL) {
+  public func openWalletURL(_ destinationURL: URL) {
     if presentedViewController != nil {
       // dismiss to show the new tab
       self.dismiss(animated: true)
@@ -127,7 +127,7 @@ extension Tab: BraveWalletProviderDelegate {
     return origin
   }
 
-  func requestPermissions(_ type: BraveWallet.CoinType, accounts: [String], completion: @escaping RequestPermissionsCallback) {
+  public func requestPermissions(_ type: BraveWallet.CoinType, accounts: [String], completion: @escaping RequestPermissionsCallback) {
     Task { @MainActor in
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
       let origin = getOrigin()

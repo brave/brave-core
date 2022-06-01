@@ -7,6 +7,7 @@ import Shared
 import BraveShared
 import BraveCore
 import Lottie
+import UIKit
 
 private let log = Logger.browserLogger
 
@@ -99,7 +100,7 @@ extension OnboardingRewardsAgreementViewController {
       $0.spacing = OnboardingCommon.UX.negativeSpacing
     }
 
-    private let imageView = AnimationView(name: "onboarding-rewards").then {
+    private let imageView = AnimationView(name: "onboarding-rewards", bundle: .current).then {
       $0.contentMode = .scaleAspectFit
       $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
       $0.backgroundBehavior = .pauseAndRestore

@@ -8,6 +8,8 @@ import Static
 import BraveShared
 import Shared
 import BraveCore
+import UIKit
+import DeviceCheck
 
 /// A place where all rewards debugging information will live.
 class RewardsInternalsDebugViewController: TableViewController {

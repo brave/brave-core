@@ -394,7 +394,7 @@ extension SearchCustomEngineViewController {
     fetcher?.load { [weak self] _, attributes in
       guard let self = self else { return }
 
-      self.faviconImage = attributes.image ?? #imageLiteral(resourceName: "defaultFavicon")
+      self.faviconImage = attributes.image ?? UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
       self.openSearchEngine = searchEngineDetails
     }
   }
@@ -460,7 +460,7 @@ extension SearchCustomEngineViewController {
       return
     }
 
-    var engineImage = #imageLiteral(resourceName: "defaultFavicon")
+    var engineImage = UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
 
     guard let hostUrl = host else {
       let engine = OpenSearchEngine(shortName: name, image: engineImage, searchTemplate: template, isCustomEngine: true)

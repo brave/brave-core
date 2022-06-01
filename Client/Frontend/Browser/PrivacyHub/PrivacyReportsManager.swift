@@ -7,18 +7,19 @@ import Foundation
 import Shared
 import BraveShared
 import Data
+import UIKit
 
 private let log = Logger.browserLogger
 
-struct PrivacyReportsManager {
+public struct PrivacyReportsManager {
 
   // MARK: - Data processing
   
   /// For performance reasons the blocked requests are not persisted in the database immediately.
   /// Instead a periodic timer is run and all requests gathered during this timeframe are saved in one database transaction.
-  static var pendingBlockedRequests: [(host: String, domain: URL, date: Date)] = []
+  public static var pendingBlockedRequests: [(host: String, domain: URL, date: Date)] = []
   
-  static func processBlockedRequests() {
+  public static func processBlockedRequests() {
     if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
     
     let itemsToSave = pendingBlockedRequests
@@ -34,7 +35,7 @@ struct PrivacyReportsManager {
   private static var saveBlockedResourcesTimer: Timer?
   private static var vpnAlertsTimer: Timer?
 
-  static func scheduleProcessingBlockedRequests() {
+  public static func scheduleProcessingBlockedRequests() {
     saveBlockedResourcesTimer?.invalidate()
     
     let timeInterval = AppConstants.buildChannel.isPublic ? 60.0 : 10.0
@@ -44,7 +45,7 @@ struct PrivacyReportsManager {
     }
   }
   
-  static func scheduleVPNAlertsTask() {
+  public static func scheduleVPNAlertsTask() {
     vpnAlertsTimer?.invalidate()
     
     // Because fetching VPN alerts involves making a url request,
@@ -55,12 +56,12 @@ struct PrivacyReportsManager {
     }
   }
   
-  static func clearAllData() {
+  public static func clearAllData() {
     BraveVPNAlert.clearData()
     BlockedResource.clearData()
   }
   
-  static func consolidateData(dayRange range: Int = 30) {
+  public static func consolidateData(dayRange range: Int = 30) {
     if Date() < Preferences.PrivacyReports.nextConsolidationDate.value {
       return
     }
@@ -84,9 +85,9 @@ struct PrivacyReportsManager {
 
   // MARK: - Notifications
 
-  static let notificationID = "privacy-report-weekly-notification"
+  public static let notificationID = "privacy-report-weekly-notification"
 
-  static func scheduleNotification(debugMode: Bool) {
+  public static func scheduleNotification(debugMode: Bool) {
     let notificationCenter = UNUserNotificationCenter.current()
 
     if debugMode {

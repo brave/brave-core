@@ -10,7 +10,7 @@ import CoreImage
 // For some reason SwiftLint thinks this is a duplicate import
 // swiftlint:disable:next duplicate_imports
 import CoreImage.CIFilterBuiltins
-import struct Shared.Strings
+import Strings
 import BraveShared
 
 struct AccountDetailsView: View {

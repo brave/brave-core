@@ -6,6 +6,7 @@
 import XCTest
 import CoreData
 import Shared
+import DataTestsUtils
 @testable import Data
 
 class FeedSourceOverrideTests: CoreDataTestCase {

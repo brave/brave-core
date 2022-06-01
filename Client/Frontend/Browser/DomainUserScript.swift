@@ -48,16 +48,16 @@ enum DomainUserScript: CaseIterable {
   var associatedDomains: Set<String> {
     switch self {
     case .youtubeAdBlock:
-      return Set(arrayLiteral: "youtube.com")
+      return Set(["youtube.com"])
     case .archive:
-      return Set(arrayLiteral: "archive.is", "archive.today", "archive.vn", "archive.fo")
+      return Set(["archive.is", "archive.today", "archive.vn", "archive.fo"])
     case .braveSearchHelper:
-      return Set(arrayLiteral: "search.brave.com", "search-dev.brave.com")
+      return Set(["search.brave.com", "search-dev.brave.com"])
     case .braveTalkHelper:
-      return Set(arrayLiteral: "talk.brave.com", "beta.talk.brave.com",
-                   "talk.bravesoftware.com", "beta.talk.bravesoftware.com",
-                   "dev.talk.brave.software", "beta.talk.brave.software",
-                   "talk.brave.software")
+      return Set(["talk.brave.com", "beta.talk.brave.com",
+                 "talk.bravesoftware.com", "beta.talk.bravesoftware.com",
+                 "dev.talk.brave.software", "beta.talk.brave.software",
+                 "talk.brave.software"])
     }
   }
 }

@@ -5,6 +5,7 @@
 import Foundation
 import SnapKit
 import BraveUI
+import UIKit
 
 private struct ErrorToastDefaultUX {
   static let cornerRadius: CGFloat = 40

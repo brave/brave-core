@@ -56,7 +56,7 @@ extension BrowserViewController {
       )
 
       MenuItemButton(
-        icon: #imageLiteral(resourceName: "playlist_menu").template,
+        icon: UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!.template,
         title: Strings.OptionsMenu.bravePlaylistItemTitle,
         subtitle: Strings.OptionsMenu.bravePlaylistItemDescription
       ) { [weak self] in
@@ -70,7 +70,7 @@ extension BrowserViewController {
         // Show Brave News if it is first launch and after first launch If the new is enabled
         if Preferences.General.isFirstLaunch.value || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value) {
           MenuItemButton(
-            icon: #imageLiteral(resourceName: "menu_brave_news").template,
+            icon: UIImage(named: "menu_brave_news", in: .current, compatibleWith: nil)!.template,
             title: Strings.OptionsMenu.braveNewsItemTitle,
             subtitle: Strings.OptionsMenu.braveNewsItemDescription
           ) { [weak self] in
@@ -84,7 +84,7 @@ extension BrowserViewController {
         }
 
         MenuItemButton(
-          icon: #imageLiteral(resourceName: "menu-brave-talk").template,
+          icon: UIImage(named: "menu-brave-talk", in: .current, compatibleWith: nil)!.template,
           title: Strings.OptionsMenu.braveTalkItemTitle,
           subtitle: Strings.OptionsMenu.braveTalkItemDescription
         ) { [weak self] in
@@ -96,7 +96,7 @@ extension BrowserViewController {
       }
 
       MenuItemButton(
-        icon: #imageLiteral(resourceName: "menu-crypto").template,
+        icon: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
         title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))",
         subtitle: Strings.OptionsMenu.braveWalletItemDescription
       ) { [unowned self] in
@@ -110,7 +110,7 @@ extension BrowserViewController {
 
   func destinationMenuSection(_ menuController: MenuViewController, isShownOnWebPage: Bool) -> some View {
     VStack(spacing: 0) {
-      MenuItemButton(icon: #imageLiteral(resourceName: "menu_bookmarks").template, title: Strings.bookmarksMenuItem) { [unowned self, unowned menuController] in
+      MenuItemButton(icon: UIImage(named: "menu_bookmarks", in: .current, compatibleWith: nil)!.template, title: Strings.bookmarksMenuItem) { [unowned self, unowned menuController] in
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
@@ -119,7 +119,7 @@ extension BrowserViewController {
         menuController.presentInnerMenu(vc)
       }
 
-      MenuItemButton(icon: #imageLiteral(resourceName: "menu-history").template, title: Strings.historyMenuItem) { [unowned self, unowned menuController] in
+      MenuItemButton(icon: UIImage(named: "menu-history", in: .current, compatibleWith: nil)!.template, title: Strings.historyMenuItem) { [unowned self, unowned menuController] in
         let vc = HistoryViewController(
           isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing,
           historyAPI: braveCore.historyAPI,
@@ -127,7 +127,7 @@ extension BrowserViewController {
         vc.toolbarUrlActionsDelegate = self
         menuController.pushInnerMenu(vc)
       }
-      MenuItemButton(icon: #imageLiteral(resourceName: "menu-downloads").template, title: Strings.downloadsMenuItem) { [unowned self] in
+      MenuItemButton(icon: UIImage(named: "menu-downloads", in: .current, compatibleWith: nil)!.template, title: Strings.downloadsMenuItem) { [unowned self] in
         FileManager.default.openBraveDownloadsFolder { success in
           if !success {
             self.displayOpenDownloadsError()
@@ -136,17 +136,17 @@ extension BrowserViewController {
       }
       if isShownOnWebPage {
         MenuItemButton(
-          icon: #imageLiteral(resourceName: "menu-crypto").template,
+          icon: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
           title: "\(Strings.Wallet.wallet) (\(Strings.Wallet.betaLabel))"
         ) { [weak self] in
           self?.presentWallet()
         }
-        MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
+        MenuItemButton(icon: UIImage(named: "playlist_menu", in: .current, compatibleWith: nil)!.template, title: Strings.playlistMenuItem) { [weak self] in
           guard let self = self else { return }
           self.presentPlaylistController()
         }
       }
-      MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
+      MenuItemButton(icon: UIImage(named: "menu-settings", in: .current, compatibleWith: nil)!.template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
         var settingsStore: SettingsStore?
         if let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
           let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
@@ -267,14 +267,14 @@ extension BrowserViewController {
             }
             .animation(.default, value: playlistItemAdded)
           }
-          MenuItemButton(icon: #imageLiteral(resourceName: "nav-share").template, title: Strings.shareWithMenuItem) {
+          MenuItemButton(icon: UIImage(named: "nav-share", in: .current, compatibleWith: nil)!.template, title: Strings.shareWithMenuItem) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)
           })
-          MenuItemButton(icon: #imageLiteral(resourceName: "menu-add-bookmark").template, title: Strings.addToMenuItem) {
+          MenuItemButton(icon: UIImage(named: "menu-add-bookmark", in: .current, compatibleWith: nil)!.template, title: Strings.addToMenuItem) {
             browserViewController.dismiss(animated: true) {
               browserViewController.openAddBookmark()
             }

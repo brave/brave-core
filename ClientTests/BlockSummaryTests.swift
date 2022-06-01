@@ -7,14 +7,14 @@ import Foundation
 import XCTest
 import Storage
 
-@testable import Client
+@testable import Brave
 
 class BlockSummaryTests: XCTestCase {
 
   override func setUp() {
     // The test json is loaded from Client Tests Target
 
-    subject = BlockingSummaryDataSource(with: "blocking-summary-test", bundle: Bundle(for: BlockSummaryTests.self))
+    subject = BlockingSummaryDataSource(with: "blocking-summary-test", bundle: Bundle.module)
   }
 
   override func tearDown() {

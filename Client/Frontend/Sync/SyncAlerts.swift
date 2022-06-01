@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 struct SyncAlerts {
   static var noConnection: UIAlertController {

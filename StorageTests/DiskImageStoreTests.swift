@@ -5,6 +5,7 @@
 import Shared
 @testable import Storage
 import UIKit
+import BraveSharedTestUtils
 
 import XCTest
 

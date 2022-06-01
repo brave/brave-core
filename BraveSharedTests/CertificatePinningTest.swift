@@ -7,7 +7,7 @@ import XCTest
 
 extension CertificatePinningTest {
   private func certificate(named: String) -> SecCertificate {
-    let path = Bundle(for: CertificatePinningTest.self).path(forResource: named, ofType: ".cer")!
+    let path = Bundle.module.path(forResource: named, ofType: ".cer")!
     let certificateData = try! Data(contentsOf: URL(fileURLWithPath: path)) as CFData
     return SecCertificateCreateWithData(nil, certificateData)!
   }

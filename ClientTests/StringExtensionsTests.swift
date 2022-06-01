@@ -4,7 +4,7 @@
 
 import Foundation
 import XCTest
-@testable import Client
+@testable import Brave
 
 class StringExtensionsTests: XCTestCase {
 

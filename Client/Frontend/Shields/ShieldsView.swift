@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import UIKit
 
 extension ShieldsViewController {
   class View: UIView {

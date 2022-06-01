@@ -23,7 +23,7 @@ private struct AutocompleteTextFieldUX {
   static let highlightColor = UIColor.braveInfoBackground
 }
 
-class AutocompleteTextField: UITextField, UITextFieldDelegate {
+public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   var autocompleteDelegate: AutocompleteTextFieldDelegate?
 
   // AutocompleteTextLabel repersents the actual autocomplete text.
@@ -48,14 +48,14 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
 
   var highlightColor = AutocompleteTextFieldUX.highlightColor
 
-  override var text: String? {
+  override public var text: String? {
     didSet {
       super.text = text
       self.textDidChange(self)
     }
   }
 
-  override var accessibilityValue: String? {
+  override public var accessibilityValue: String? {
     get {
       return (self.text ?? "") + (self.autocompleteTextLabel?.text ?? "")
     }
@@ -98,7 +98,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
       })
   }
 
-  override var keyCommands: [UIKeyCommand]? {
+  override public var keyCommands: [UIKeyCommand]? {
     return [
       UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(self.handleKeyCommand(sender:))),
       UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(self.handleKeyCommand(sender:))),
@@ -188,7 +188,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
   // `shouldChangeCharactersInRange` is called before the text changes, and textDidChange is called after.
   // Since the text has changed, remove the completion here, and textDidChange will fire the callback to
   // get the new autocompletion.
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+  public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     lastReplacement = string
     return true
   }
@@ -219,7 +219,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
   }
 
-  override func caretRect(for position: UITextPosition) -> CGRect {
+  override public  func caretRect(for position: UITextPosition) -> CGRect {
     return hideCursor ? CGRect.zero : super.caretRect(for: position)
   }
 
@@ -244,26 +244,26 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     return label
   }
 
-  func textFieldDidBeginEditing(_ textField: UITextField) {
+  public func textFieldDidBeginEditing(_ textField: UITextField) {
     autocompleteDelegate?.autocompleteTextFieldDidBeginEditing(self)
   }
 
-  func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+  public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
     applyCompletion()
     return true
   }
 
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     applyCompletion()
     return autocompleteDelegate?.autocompleteTextFieldShouldReturn(self) ?? true
   }
 
-  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+  public func textFieldShouldClear(_ textField: UITextField) -> Bool {
     removeCompletion()
     return autocompleteDelegate?.autocompleteTextFieldShouldClear(self) ?? true
   }
 
-  override func setMarkedText(_ markedText: String?, selectedRange: NSRange) {
+  override public func setMarkedText(_ markedText: String?, selectedRange: NSRange) {
     // Clear the autocompletion if any provisionally inserted text has been
     // entered (e.g., a partial composition from a Japanese keyboard).
     removeCompletion()
@@ -297,7 +297,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     selectedTextRange = textRange(from: endOfDocument, to: endOfDocument)
   }
 
-  override func deleteBackward() {
+  override public func deleteBackward() {
     lastReplacement = ""
     hideCursor = false
     if isSelectionActive {
@@ -309,7 +309,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
   }
 
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     applyCompletion()
     super.touchesBegan(touches, with: event)
   }

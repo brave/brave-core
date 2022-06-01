@@ -5,7 +5,7 @@
 
 import Foundation
 import BraveCore
-import Shared
+import Strings
 import BigNumber
 
 /// A store contains data for sending tokens

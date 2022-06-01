@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -15,7 +15,7 @@ struct BackupWalletView: View {
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {
-        Image("graphic-save")
+        Image("graphic-save", bundle: .current)
           .padding(.top)
         VStack(spacing: 14) {
           Text(Strings.Wallet.backupWalletTitle)

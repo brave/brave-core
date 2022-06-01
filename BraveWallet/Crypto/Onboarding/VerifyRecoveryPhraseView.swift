@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore

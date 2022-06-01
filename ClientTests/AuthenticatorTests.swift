@@ -5,7 +5,8 @@
 import Foundation
 import XCTest
 import Shared
-@testable import Client
+import BraveSharedTestUtils
+@testable import Brave
 @testable import Storage
 
 class MockFiles: FileAccessor {

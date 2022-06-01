@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-@testable import Client
+@testable import Brave
 import WebKit
 import BraveShared
 import XCTest
@@ -23,10 +23,7 @@ class NavigationRouterTests: XCTestCase {
   }
 
   var appScheme: String {
-    let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as! [AnyObject]
-    let urlType = urlTypes.first as! [String: AnyObject]
-    let urlSchemes = urlType["CFBundleURLSchemes"] as! [String]
-    return urlSchemes.first(where: { $0.hasPrefix("brave") })!
+    "brave"
   }
 
   func testOpenURLScheme() {

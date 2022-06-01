@@ -2,6 +2,7 @@
 
 import CoreData
 import Shared
+import Strings
 import BraveShared
 
 func getDate(_ dayOffset: Int) -> Date {

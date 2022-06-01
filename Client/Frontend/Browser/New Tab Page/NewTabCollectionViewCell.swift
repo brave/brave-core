@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import UIKit
 
 /// A self-sizing new tab collection view which just holds a themable view
 class NewTabCollectionViewCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {

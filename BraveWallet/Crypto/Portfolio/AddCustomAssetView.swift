@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveCore
-import Shared
+import Strings
 
 struct AddCustomAssetView: View {
   @ObservedObject var userAssetStore: UserAssetsStore

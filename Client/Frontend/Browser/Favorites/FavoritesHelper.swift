@@ -5,6 +5,7 @@ import CoreData
 import Shared
 import Storage
 import Data
+import UIKit
 
 private let log = Logger.browserLogger
 

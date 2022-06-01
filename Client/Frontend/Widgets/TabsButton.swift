@@ -5,6 +5,7 @@
 import Foundation
 import SnapKit
 import Shared
+import UIKit
 
 private struct TabsButtonUX {
   static let cornerRadius: CGFloat = 3

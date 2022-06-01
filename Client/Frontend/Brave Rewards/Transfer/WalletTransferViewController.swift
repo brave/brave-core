@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import Shared
 import BraveShared
+import UIKit
 
 class WalletTransferViewController: UIViewController {
 

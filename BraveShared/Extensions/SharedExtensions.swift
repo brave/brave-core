@@ -9,6 +9,7 @@
  * This allows easy merging at a later point, or even the ability to abstract to a separate framework.
  */
 
+import Foundation
 import Shared
 
 extension Date {

@@ -49,7 +49,7 @@ protocol BrowserViewControllerDelegate: AnyObject {
   func openInNewTab(_ url: URL, isPrivate: Bool)
 }
 
-class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
+public class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   var webViewContainer: UIView!
   var topToolbar: TopToolbarView!
   var tabsBar: TabsBarViewController!
@@ -69,7 +69,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   private var pageZoomListener: NSObjectProtocol?
 
   // Single data source used for all favorites vcs
-  let backgroundDataSource = NTPDataSource()
+  public let backgroundDataSource = NTPDataSource()
   let feedDataSource = FeedDataSource()
 
   private var postSetupTasks: [() -> Void] = []
@@ -164,7 +164,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   let vpnProductInfo = VPNProductInfo()
 
   /// Window Protection instance which will be used for controller requires biometric authentication
-  var windowProtection: WindowProtection?
+  public var windowProtection: WindowProtection?
 
   // Product Notification Related Properties
 
@@ -195,7 +195,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   var widgetFaviconFetchers: [FaviconFetcher] = []
   let deviceCheckClient: DeviceCheckClient?
 
-  init(
+  public init(
     profile: Profile,
     diskImageStore: DiskImageStore?,
     braveCore: BraveCoreMain,
@@ -348,7 +348,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+  override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
     if UIDevice.current.userInterfaceIdiom == .phone {
       return .allButUpsideDown
     } else {
@@ -356,7 +356,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
   }
 
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
 
     dismissVisibleMenus()
@@ -378,7 +378,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       })
   }
 
-  override func didReceiveMemoryWarning() {
+  override public func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     ScriptFactory.shared.clearCaches()
 
@@ -390,6 +390,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   private var rewardsEnabledObserveration: NSKeyValueObservation?
 
   fileprivate func didInit() {
+    updateApplicationShortcuts()
     screenshotHelper = ScreenshotHelper(tabManager: tabManager)
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
@@ -596,7 +597,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     updateTabsBarVisibility()
   }
 
-  override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+  override public func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
     super.willTransition(to: newCollection, with: coordinator)
 
     // During split screen launching on iPad, this callback gets fired before viewDidLoad gets a chance to
@@ -621,7 +622,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       })
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+  override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
     if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
@@ -687,7 +688,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     scrollController.showToolbars(animated: false)
   }
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
     NotificationCenter.default.do {
       $0.addObserver(
@@ -839,7 +840,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       .store(in: &cancellables)
   }
 
-  static let defaultBrowserNotificationId = "defaultBrowserNotification"
+  public static let defaultBrowserNotificationId = "defaultBrowserNotification"
 
   private func scheduleDefaultBrowserNotification() {
     let center = UNUserNotificationCenter.current()
@@ -855,8 +856,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         return
       }
 
-      center.getPendingNotificationRequests { [weak self] requests in
-        guard let self = self else { return }
+      center.getPendingNotificationRequests { requests in
         if requests.contains(where: { $0.identifier == Self.defaultBrowserNotificationId }) {
           // Already has one scheduled no need to schedule again.
           return
@@ -939,7 +939,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
   }
 
-  override func viewDidLayoutSubviews() {
+  override public func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     statusBarOverlay.snp.remakeConstraints { make in
       make.top.left.right.equalTo(self.view)
@@ -947,16 +947,16 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
   }
 
-  override var canBecomeFirstResponder: Bool {
+  override public var canBecomeFirstResponder: Bool {
     return true
   }
 
-  override func becomeFirstResponder() -> Bool {
+  override public func becomeFirstResponder() -> Bool {
     // Make the web view the first responder so that it can show the selection menu.
     return tabManager.selectedTab?.webView?.becomeFirstResponder() ?? false
   }
 
-  override func viewWillAppear(_ animated: Bool) {
+  override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     checkCrashRestoration()
@@ -1004,7 +1004,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     return !TabMO.getAll().compactMap({ $0.url }).isEmpty
   }
 
-  override func viewDidAppear(_ animated: Bool) {
+  override public func viewDidAppear(_ animated: Bool) {
     // Passcode Migration has highest priority, it should be presented over everything else
     presentPassCodeMigration()
 
@@ -1044,14 +1044,14 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  override public func viewWillDisappear(_ animated: Bool) {
     screenshotHelper.viewIsVisible = false
     super.viewWillDisappear(animated)
 
     rewards.ledger?.selectedTabId = 0
   }
 
-  override func viewDidDisappear(_ animated: Bool) {
+  override public func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
   }
 
@@ -1069,7 +1069,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   /// A layout guide defining where the favorites and NTP overlay are placed
   let pageOverlayLayoutGuide = UILayoutGuide()
 
-  override func updateViewConstraints() {
+  override public func updateViewConstraints() {
     webViewContainer.snp.remakeConstraints { make in
       make.left.right.equalTo(self.view)
 
@@ -1204,7 +1204,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   }
 
   /// Shows a vpn screen based on vpn state.
-  func presentCorrespondingVPNViewController() {
+  public func presentCorrespondingVPNViewController() {
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
     let nav = SettingsNavigationController(rootViewController: vc)
     nav.navigationBar.topItem?.leftBarButtonItem =
@@ -1281,9 +1281,28 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   }
 
   private func updateApplicationShortcuts() {
-    if let delegate = UIApplication.shared.delegate as? AppDelegate {
-      delegate.updateShortcutItems(UIApplication.shared)
-    }
+    let newTabItem = UIMutableApplicationShortcutItem(
+      type: "\(Bundle.main.bundleIdentifier ?? "").NewTab",
+      localizedTitle: Strings.quickActionNewTab,
+      localizedSubtitle: nil,
+      icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_tab"),
+      userInfo: [:])
+    
+    let privateTabItem = UIMutableApplicationShortcutItem(
+      type: "\(Bundle.main.bundleIdentifier ?? "").NewPrivateTab",
+      localizedTitle: Strings.quickActionNewPrivateTab,
+      localizedSubtitle: nil,
+      icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_private_tab"),
+      userInfo: [:])
+    
+    let scanQRCodeItem = UIMutableApplicationShortcutItem(
+      type: "\(Bundle.main.bundleIdentifier ?? "").ScanQRCode",
+      localizedTitle: Strings.scanQRCodeViewTitle,
+      localizedSubtitle: nil,
+      icon: UIApplicationShortcutIcon(templateImageName: "recent-search-qrcode"),
+      userInfo: [:])
+    
+    UIApplication.shared.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem, scanQRCodeItem] : [newTabItem, privateTabItem, scanQRCodeItem]
   }
 
   func finishEditingAndSubmit(_ url: URL, visitType: VisitType) {
@@ -1324,7 +1343,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
   }
 
-  override func accessibilityPerformEscape() -> Bool {
+  override public func accessibilityPerformEscape() -> Bool {
     if topToolbar.inOverlayMode {
       topToolbar.didClickCancel()
       return true
@@ -1339,7 +1358,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   // to report internal page load to Rewards lib
   var rewardsXHRLoadURL: URL?
 
-  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+  override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 
     guard let webView = object as? WKWebView else {
       log.error("An object of type: \(String(describing: object)) is being observed instead of a WKWebView")
@@ -1578,7 +1597,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     updateWebViewPageZoom(tab: tab)
   }
 
-  func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool, isExternal: Bool = false) {
+  public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool, isExternal: Bool = false) {
     if !isExternal {
       popToBVC()
     }
@@ -1618,7 +1637,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
   }
 
-  func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool, searchFor searchText: String? = nil, isExternal: Bool = false) {
+  public func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool, searchFor searchText: String? = nil, isExternal: Bool = false) {
     if !isExternal {
       popToBVC()
     }
@@ -2645,7 +2664,7 @@ extension BrowserViewController: TabManagerDelegate {
       let duplicateActiveTab = UIAction(
         title: Strings.duplicateActiveTab,
         image: UIImage(systemName: "plus.square.on.square"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
+        handler: UIAction.deferredActionHandler { _ in
           tabManager.addTabAndSelect(
                URLRequest(url: url),
                afterTab: selectedTab,
@@ -2721,7 +2740,7 @@ extension BrowserViewController: TabManagerDelegate {
 private let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about", "whatsapp"]
 
 extension BrowserViewController: WKUIDelegate {
-  func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+  public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
     guard let parentTab = tabManager[webView] else { return nil }
 
     guard !navigationAction.isInternalUnprivileged,
@@ -2763,21 +2782,21 @@ extension BrowserViewController: WKUIDelegate {
     return ((tabManager.selectedTab == nil ? false : tabManager.selectedTab!.webView == webView)) && (self.presentedViewController == nil)
   }
 
-  func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+  public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
     var messageAlert = MessageAlert(message: message, frame: frame, completionHandler: completionHandler, suppressHandler: nil)
     handleAlert(webView: webView, alert: &messageAlert) {
       completionHandler()
     }
   }
 
-  func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
+  public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
     var confirmAlert = ConfirmPanelAlert(message: message, frame: frame, completionHandler: completionHandler, suppressHandler: nil)
     handleAlert(webView: webView, alert: &confirmAlert) {
       completionHandler(false)
     }
   }
 
-  func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
+  public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
     var textInputAlert = TextInputAlert(message: prompt, frame: frame, completionHandler: completionHandler, defaultText: defaultText, suppressHandler: nil)
     handleAlert(webView: webView, alert: &textInputAlert) {
       completionHandler(nil)
@@ -2838,7 +2857,7 @@ extension BrowserViewController: WKUIDelegate {
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.
-  func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+  public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
     // will be that we switch to the external app, for example the app store, while keeping the
@@ -2883,7 +2902,7 @@ extension BrowserViewController: WKUIDelegate {
     return false
   }
 
-  func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+  public func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
 
     guard let url = elementInfo.linkURL else { return completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)) }
 
@@ -2908,7 +2927,7 @@ extension BrowserViewController: WKUIDelegate {
 
         let openNewPrivateTabAction = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
-          image: #imageLiteral(resourceName: "private_glasses").template
+          image: UIImage(named: "private_glasses", in: .current, compatibleWith: nil)!.template
         ) { _ in
           self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
         }
@@ -2981,7 +3000,7 @@ extension BrowserViewController: WKUIDelegate {
     completionHandler(config)
   }
 
-  func webView(_ webView: WKWebView, contextMenuForElement elementInfo: WKContextMenuElementInfo, willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating) {
+  public func webView(_ webView: WKWebView, contextMenuForElement elementInfo: WKContextMenuElementInfo, willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating) {
     guard let url = elementInfo.linkURL else { return }
     webView.load(URLRequest(url: url))
   }
@@ -3008,7 +3027,7 @@ extension BrowserViewController: WKUIDelegate {
 // MARK: - UIPopoverPresentationControllerDelegate
 
 extension BrowserViewController: UIPopoverPresentationControllerDelegate {
-  func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+  public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
     displayedPopoverController = nil
     updateDisplayedPopoverProperties = nil
   }
@@ -3017,7 +3036,7 @@ extension BrowserViewController: UIPopoverPresentationControllerDelegate {
 extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   // Returning None here makes sure that the Popover is actually presented as a Popover and
   // not as a full-screen modal, which is the default on compact device classes.
-  func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+  public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
     return .none
   }
 }
@@ -3248,7 +3267,7 @@ extension BrowserViewController: NewTabPageDelegate {
 }
 
 extension BrowserViewController: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
+  public func preferencesDidChange(for key: String) {
     switch key {
     case Preferences.General.tabBarVisibility.key:
       updateTabsBarVisibility()
@@ -3336,13 +3355,13 @@ extension BrowserViewController: PreferencesObserver {
 }
 
 extension BrowserViewController {
-  func openReferralLink(url: URL) {
+  public func openReferralLink(url: URL) {
     postSetupTasks.append({
       self.openURLInNewTab(url, isPrivileged: false)
     })
   }
 
-  func handleNavigationPath(path: NavigationPath) {
+  public func handleNavigationPath(path: NavigationPath) {
     postSetupTasks.append({
       NavigationPath.handle(nav: path, with: self)
     })
@@ -3350,7 +3369,7 @@ extension BrowserViewController {
 }
 
 extension BrowserViewController: UNUserNotificationCenterDelegate {
-  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+  public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
     if response.notification.request.identifier == Self.defaultBrowserNotificationId {
       guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
         log.error("Failed to unwrap iOS settings URL")
@@ -3366,7 +3385,7 @@ extension BrowserViewController: UNUserNotificationCenterDelegate {
 
 // Privacy reports
 extension BrowserViewController {
-  func openPrivacyReport() {
+  public func openPrivacyReport() {
     if PrivateBrowsingManager.shared.isPrivateBrowsing {
       return
     }

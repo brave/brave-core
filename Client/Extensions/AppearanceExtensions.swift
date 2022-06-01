@@ -5,8 +5,9 @@
 import Foundation
 import BraveShared
 import BraveUI
+import UIKit
 
-extension AppDelegate {
+extension UIView {
   /// Setup basic control defaults based on Brave design system colors
   ///
   /// Only set values here that should be universally accepted as a default color for said
@@ -14,7 +15,7 @@ extension AppDelegate {
   /// a color multiple times.
   ///
   /// - warning: Be careful adjusting colors here, and make sure impact is well known
-  func applyAppearanceDefaults() {
+  public static func applyAppearanceDefaults() {
     UIToolbar.appearance().do {
       $0.tintColor = .braveOrange
       let appearance: UIToolbarAppearance = {

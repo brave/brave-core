@@ -8,6 +8,7 @@ import BraveUI
 import Data
 import CoreData
 import Shared
+import UIKit
 
 private let log = Logger.browserLogger
 

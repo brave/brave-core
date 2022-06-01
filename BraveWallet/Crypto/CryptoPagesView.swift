@@ -9,7 +9,7 @@ import SwiftUI
 import BraveCore
 import PanModal
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct CryptoPagesView: View {
   @ObservedObject var cryptoStore: CryptoStore

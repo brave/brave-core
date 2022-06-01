@@ -6,6 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
+import UIKit
 
 class BraveRewardsPublisherView: UIStackView {
 

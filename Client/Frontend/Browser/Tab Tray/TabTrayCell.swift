@@ -6,6 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
+import UIKit
 
 class TabCell: UICollectionViewCell {
 
@@ -46,7 +47,7 @@ class TabCell: UICollectionViewCell {
     }
 
     titleLabel.text = tab.displayTitle
-    favicon.image = #imageLiteral(resourceName: "defaultFavicon")
+    favicon.image = UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
 
     if !tab.displayTitle.isEmpty {
       accessibilityLabel = tab.displayTitle
@@ -73,7 +74,7 @@ class TabCell: UICollectionViewCell {
     } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
       favicon.loadFavicon(for: url)
     } else {
-      favicon.image = #imageLiteral(resourceName: "defaultFavicon")
+      favicon.image = UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
     }
 
     screenshotView.image = tab.screenshot
@@ -103,7 +104,7 @@ class TabCell: UICollectionViewCell {
     self.titleLabel.backgroundColor = .clear
 
     self.closeButton = UIButton()
-    self.closeButton.setImage(#imageLiteral(resourceName: "tab_close"), for: [])
+    self.closeButton.setImage(UIImage(named: "tab_close", in: .current, compatibleWith: nil)!, for: [])
     self.closeButton.imageView?.contentMode = .scaleAspectFit
     self.closeButton.contentMode = .center
     self.closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 7)

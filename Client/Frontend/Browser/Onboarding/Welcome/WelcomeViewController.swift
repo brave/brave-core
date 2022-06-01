@@ -52,12 +52,12 @@ class WelcomeViewController: UIViewController {
   }
 
   private let backgroundImageView = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "welcome-view-background")
+    $0.image = UIImage(named: "welcome-view-background", in: .current, compatibleWith: nil)!
     $0.contentMode = .scaleAspectFill
   }
 
   private let topImageView = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "welcome-view-top-image")
+    $0.image = UIImage(named: "welcome-view-top-image", in: .current, compatibleWith: nil)!
     $0.contentMode = .scaleAspectFill
     $0.setContentHuggingPriority(.required, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -75,18 +75,18 @@ class WelcomeViewController: UIViewController {
   private let calloutView = WelcomeViewCallout()
 
   private let iconView = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "welcome-view-icon")
+    $0.image = UIImage(named: "welcome-view-icon", in: .current, compatibleWith: nil)!
     $0.contentMode = .scaleAspectFit
     $0.setContentCompressionResistancePriority(.init(rawValue: 100), for: .vertical)
   }
 
   private let iconBackgroundView = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "welcome-view-icon-background")
+    $0.image = UIImage(named: "welcome-view-icon-background", in: .current, compatibleWith: nil)!
     $0.contentMode = .scaleAspectFit
   }
 
   private let bottomImageView = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "welcome-view-bottom-image")
+    $0.image = UIImage(named: "welcome-view-bottom-image", in: .current, compatibleWith: nil)!
     $0.contentMode = .scaleAspectFill
     $0.setContentHuggingPriority(.required, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -313,7 +313,7 @@ class WelcomeViewController: UIViewController {
 
       topImageView.transform = topTransform
       bottomImageView.transform = bottomTransform
-      iconView.image = #imageLiteral(resourceName: "welcome-view-phone")
+      iconView.image = UIImage(named: "welcome-view-phone", in: .current, compatibleWith: nil)!
       contentContainer.spacing = 0.0
       iconBackgroundView.alpha = 0.0
       iconView.snp.remakeConstraints {

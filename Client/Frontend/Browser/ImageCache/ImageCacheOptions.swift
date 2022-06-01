@@ -4,13 +4,16 @@
 
 import Foundation
 
-struct ImageCacheOptions: OptionSet {
-
-  let rawValue: Int
+public struct ImageCacheOptions: OptionSet {
+  public let rawValue: Int
+  
+  public init(rawValue: Int) {
+    self.rawValue = rawValue
+  }
 
   /*
      * Low priority download.
      */
-  static let lowPriority = ImageCacheOptions(rawValue: 1 << 0)
+  public static let lowPriority = ImageCacheOptions(rawValue: 1 << 0)
 
 }

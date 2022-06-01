@@ -433,10 +433,10 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
     if wasPlaying {
       delegate.play(self)
-      controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+      controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .current, compatibleWith: nil)!, for: .normal)
     } else {
       delegate.pause(self)
-      controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
+      controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .current, compatibleWith: nil)!, for: .normal)
     }
   }
 

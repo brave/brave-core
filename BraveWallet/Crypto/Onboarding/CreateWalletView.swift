@@ -7,7 +7,7 @@ import Foundation
 import SwiftUI
 import LocalAuthentication
 import BraveUI
-import struct Shared.Strings
+import Strings
 import struct Shared.AppConstants
 
 struct CreateWalletContainerView: View {
@@ -102,7 +102,7 @@ private struct CreateWalletView: View {
   var body: some View {
     VStack(spacing: 0) {
       VStack(spacing: 46) {
-        Image("graphic-lock")
+        Image("graphic-lock", bundle: .current)
           .padding(.bottom)
         VStack {
           Text(Strings.Wallet.createWalletTitle)

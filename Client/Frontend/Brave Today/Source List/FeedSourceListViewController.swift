@@ -82,7 +82,7 @@ class FeedSourceListViewController: UITableViewController {
     if category != nil {
       // TODO(iOS14): Replace with context menu primary action
       navigationItem.rightBarButtonItem = .init(
-        image: UIImage(imageLiteralResourceName: "menu_more"),
+        image: UIImage(named: "menu_more", in: .current, compatibleWith: nil)!,
         style: .plain,
         target: self,
         action: #selector(tappedMenu(_:))

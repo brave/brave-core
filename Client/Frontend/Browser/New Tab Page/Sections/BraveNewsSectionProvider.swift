@@ -436,11 +436,11 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       var disableSource: UIAction {
-        .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
+        .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source", in: .current, compatibleWith: nil), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
       }
 
       var enableSource: UIAction {
-        .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
+        .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source", in: .current, compatibleWith: nil), handler: mapDeferredHandler(toggleSourceHandler))
       }
 
       let openActions: [UIAction] = [

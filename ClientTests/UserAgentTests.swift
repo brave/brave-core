@@ -6,7 +6,7 @@ import XCTest
 import Shared
 import BraveShared
 import WebKit
-@testable import Client
+@testable import Brave
 
 class UserAgentTests: XCTestCase {
 

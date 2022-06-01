@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 
 class FeedCardFooterButton: UIControl {
   let label = UILabel().then {
@@ -11,7 +12,7 @@ class FeedCardFooterButton: UIControl {
     $0.font = .systemFont(ofSize: 14, weight: .semibold)
     $0.isAccessibilityElement = false
   }
-  private let disclosureIcon = UIImageView(image: UIImage(imageLiteralResourceName: "disclosure-arrow").template).then {
+  private let disclosureIcon = UIImageView(image: UIImage(named: "disclosure-arrow", in: .current, compatibleWith: nil)!.template).then {
     $0.tintColor = .white
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }

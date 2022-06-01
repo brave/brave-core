@@ -6,7 +6,7 @@
 import Foundation
 import BraveCore
 import SwiftUI
-import Shared
+import Strings
 
 /// An interface that helps you interact with a json-rpc service
 ///

@@ -23,7 +23,7 @@ private struct FaviconImage: View {
   }
   
   var body: some View {
-    Image(uiImage: faviconLoader.image ?? .init(imageLiteralResourceName: "defaultFavicon"))
+    Image(uiImage: faviconLoader.image ?? .init(named: "defaultFavicon", in: .current, compatibleWith: nil)!)
       .resizable()
       .aspectRatio(contentMode: .fit)
       .frame(width: 30, height: 30)

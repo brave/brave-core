@@ -5,7 +5,7 @@
 
 import XCTest
 import CryptoKit
-@testable import Client
+@testable import Brave
 
 class RandomConfigurationTests: XCTestCase {
   func testSameResultsForSameETLDAndSessionKey() throws {

@@ -8,7 +8,7 @@ import CoreData
 import BraveShared
 
 extension BrowserViewController: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     updateWidgetFavoritesData()
   }
 

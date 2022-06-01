@@ -159,7 +159,7 @@ extension BrowserViewController {
   func downloadOpenSearchXML(_ url: URL, reference: String, title: String, iconURL: String?) {
     customSearchEngineButton.action = .loading
 
-    var searchEngineIcon = #imageLiteral(resourceName: "defaultFavicon")
+    var searchEngineIcon = UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
 
     if let faviconURLString = tabManager.selectedTab?.displayFavicon?.url,
       let iconURL = URL(string: faviconURLString) {
@@ -246,7 +246,7 @@ extension BrowserViewController {
 // MARK: - KeyboardHelperDelegate
 
 extension BrowserViewController: KeyboardHelperDelegate {
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
     keyboardState = state
     updateViewConstraints()
 
@@ -260,7 +260,7 @@ extension BrowserViewController: KeyboardHelperDelegate {
     self.evaluateWebsiteSupportOpenSearchEngine(webView)
   }
 
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
     keyboardState = nil
     updateViewConstraints()
 

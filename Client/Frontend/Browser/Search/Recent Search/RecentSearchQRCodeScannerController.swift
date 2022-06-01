@@ -7,6 +7,7 @@ import Foundation
 import AVFoundation
 import Shared
 import BraveShared
+import UIKit
 
 class RecentSearchQRCodeScannerController: UIViewController {
 

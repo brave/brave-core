@@ -5,7 +5,7 @@
 
 import SwiftUI
 import BraveCore
-import struct Shared.Strings
+import Strings
 
 struct TokenList<Content: View>: View {
   var tokens: [BraveWallet.BlockchainToken]

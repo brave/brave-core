@@ -7,7 +7,7 @@ import Foundation
 import SwiftUI
 import WebKit
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct ManageWebsiteDataView: View {
   @State private var isLoading: Bool = false

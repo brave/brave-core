@@ -5,7 +5,7 @@
 
 import XCTest
 
-@testable import Client
+@testable import Brave
 
 class DownloadQueueTests: XCTestCase {
 

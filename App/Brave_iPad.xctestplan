@@ -1,0 +1,70 @@
+{
+  "configurations" : [
+    {
+      "id" : "B360D002-AA9A-450B-99E4-F48566469CC5",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "AdblockRustTests",
+        "AuthenticatorTests",
+        "BlockSummaryTests",
+        "CategoryFillStrategyTests",
+        "ClientTests",
+        "CommonFillStrategyTests",
+        "ContentBlockerTests",
+        "DebouncingResourceDownloaderTests",
+        "DefaultFillStrategyTests",
+        "DisplayTextFieldTest",
+        "DomainUserScriptTests",
+        "DownloadQueueTests",
+        "FarblingProtectionHelperTests",
+        "FileAccessorTests",
+        "FilteredFillStrategyTests",
+        "FingerprintProtectionTest",
+        "HttpCookieExtensionTest",
+        "InitialSearchEnginesTests",
+        "LoginsHelperTests",
+        "NTPDownloaderTests",
+        "NavigationRouterTests",
+        "NetworkManagerTests",
+        "OPMLParsingTests",
+        "PlaylistTests",
+        "PrefsTests",
+        "ProfileTest",
+        "RandomConfigurationTests",
+        "RollingFileLoggerTests",
+        "SafeBrowsingTests",
+        "SchemePermissionTests",
+        "ScriptFactoryTests",
+        "SearchEnginesTests",
+        "SearchTests",
+        "StringExtensionsTests",
+        "SyncTests",
+        "TabEventHandlerTests",
+        "TabManagerTests",
+        "TabSessionTests",
+        "TestFavicons",
+        "TestHashExtensions",
+        "UniversalLinkManagerTests",
+        "UserScriptHelperTests",
+        "UserScriptManagerTest",
+        "WKWebViewExtensionsTest"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "ClientTests",
+        "name" : "ClientTests"
+      }
+    }
+  ],
+  "version" : 1
+}

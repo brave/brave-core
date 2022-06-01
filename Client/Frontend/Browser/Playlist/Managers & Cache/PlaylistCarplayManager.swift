@@ -15,7 +15,7 @@ private let log = Logger.browserLogger
 
 /// Lightweight class that manages a single MediaPlayer item
 /// The MediaPlayer is then passed to any controller that needs to use it.
-class PlaylistCarplayManager: NSObject {
+public class PlaylistCarplayManager: NSObject {
   private var carPlayStatusObservers = [Any]()
   private weak var mediaPlayer: MediaPlayer?
   private(set) var isCarPlayAvailable = false
@@ -25,7 +25,7 @@ class PlaylistCarplayManager: NSObject {
   private var carplaySessionConfiguration: CPSessionConfiguration?
   let onCarplayUIChangedToRoot = PassthroughSubject<Void, Never>()
 
-  var browserController: BrowserViewController?
+  public var browserController: BrowserViewController?
 
   var currentlyPlayingItemIndex = -1
   var currentPlaylistItem: PlaylistInfo?
@@ -51,7 +51,7 @@ class PlaylistCarplayManager: NSObject {
   // There can only ever be one instance of this class
   // Because there can only be a single AudioSession and MediaPlayer
   // in use at any given moment
-  static let shared = PlaylistCarplayManager()
+  public static let shared = PlaylistCarplayManager()
 
   func getCarPlayController() -> PlaylistCarplayController? {
     // On iOS 14, we use CPTemplate (Custom UI)
@@ -195,7 +195,7 @@ extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
     }
   }
 
-  func sessionConfiguration(
+  public func sessionConfiguration(
     _ sessionConfiguration: CPSessionConfiguration,
     limitedUserInterfacesChanged limitedUserInterfaces: CPLimitableUserInterface
   ) {

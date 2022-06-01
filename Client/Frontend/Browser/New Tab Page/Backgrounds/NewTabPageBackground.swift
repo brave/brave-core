@@ -6,6 +6,7 @@
 import Foundation
 import BraveShared
 import BraveUI
+import UIKit
 
 /// The current background for a given New Tab Page.
 ///

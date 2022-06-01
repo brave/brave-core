@@ -4,6 +4,7 @@
 
 import Foundation
 import SnapKit
+import UIKit
 
 class Toast: UIView {
   var animationConstraint: Constraint?

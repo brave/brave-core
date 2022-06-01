@@ -4,6 +4,7 @@ import AVFoundation
 import Shared
 import BraveShared
 import Data
+import UIKit
 
 class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
   var captureSession: AVCaptureSession?
@@ -29,7 +30,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    cameraOverlayView = UIImageView(image: UIImage(named: "camera-overlay"))
+    cameraOverlayView = UIImageView(image: UIImage(named: "camera-overlay", in: .current, compatibleWith: nil))
     cameraOverlayView.contentMode = .center
     addSubview(cameraOverlayView)
     addSubview(cameraAccessButton)

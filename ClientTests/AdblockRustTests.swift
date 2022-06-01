@@ -4,7 +4,7 @@
 
 import XCTest
 import BraveCore
-@testable import Client
+@testable import Brave
 
 class AdblockRustTests: XCTestCase {
 
@@ -20,6 +20,7 @@ class AdblockRustTests: XCTestCase {
       """
 
     let engine = AdblockEngine(rules: rules)
+    AdblockEngine.setDomainResolver(AdblockEngine.defaultDomainResolver)
 
     XCTAssert(engine.shouldBlock(requestUrl: "http://example.com/-advertisement-icon.", requestHost: "example.com", sourceHost: "example.com"))
 

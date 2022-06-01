@@ -7,7 +7,7 @@ import Foundation
 import SwiftUI
 import BraveCore
 import Swift
-import struct Shared.Strings
+import Strings
 
 /// Displays a summary of a given transaction
 struct TransactionView: View {
@@ -205,6 +205,8 @@ extension BraveWallet.TransactionStatus {
       return Strings.Wallet.transactionStatusSubmitted
     case .error:
       return Strings.Wallet.transactionStatusError
+    case .dropped:
+      return Strings.Wallet.transactionStatusDropped
     @unknown default:
       return Strings.Wallet.transactionStatusUnknown
     }
@@ -213,7 +215,7 @@ extension BraveWallet.TransactionStatus {
     switch self {
     case .confirmed, .approved:
       return Color(.braveSuccessLabel)
-    case .rejected, .error:
+    case .rejected, .error, .dropped:
       return Color(.braveErrorLabel)
     case .submitted:
       return Color(.braveWarningLabel)

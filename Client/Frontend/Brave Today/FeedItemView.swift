@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveUI
+import UIKit
 
 /// Defines the view for displaying a specific feed item given a specific layout
 ///
@@ -176,7 +177,7 @@ extension FeedItemView {
 
   class PromotedButton: UIControl {
 
-    private let image = UIImageView(image: UIImage(imageLiteralResourceName: "graph-up").template).then {
+    private let image = UIImageView(image: UIImage(named: "graph-up", in: .current, compatibleWith: nil)!.template).then {
       $0.setContentHuggingPriority(.required, for: .horizontal)
       $0.setContentCompressionResistancePriority(.required, for: .horizontal)
       $0.tintColor = UIColor(white: 1.0, alpha: 0.8)

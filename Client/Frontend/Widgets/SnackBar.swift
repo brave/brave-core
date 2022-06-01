@@ -5,6 +5,7 @@
 import Foundation
 import SnapKit
 import Shared
+import UIKit
 import BraveUI
 
 class SnackBarUX {
@@ -104,7 +105,7 @@ class SnackBar: UIView {
   init(text: String, img: UIImage?) {
     super.init(frame: .zero)
 
-    imageView.image = img ?? #imageLiteral(resourceName: "defaultFavicon")
+    imageView.image = img ?? UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!
     textLabel.text = text
     setup()
   }
@@ -220,7 +221,7 @@ class TimerSnackBar: SnackBar {
   }
 
   static func showAppStoreConfirmationBar(forTab tab: Tab, appStoreURL: URL) {
-    let bar = TimerSnackBar(text: Strings.externalLinkAppStoreConfirmationTitle, img: #imageLiteral(resourceName: "defaultFavicon"))
+    let bar = TimerSnackBar(text: Strings.externalLinkAppStoreConfirmationTitle, img: UIImage(named: "defaultFavicon", in: .current, compatibleWith: nil)!)
     let openAppStore = SnackButton(title: Strings.OKString, accessibilityIdentifier: "ConfirmOpenInAppStore") { bar in
       tab.removeSnackbar(bar)
       UIApplication.shared.open(appStoreURL)

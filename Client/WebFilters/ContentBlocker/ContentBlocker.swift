@@ -80,7 +80,7 @@ extension ContentBlocker {
     Combine.Deferred {
       Future { completion in
         do {
-          guard let path = Bundle.main.path(forResource: file, ofType: "json") else {
+          guard let path = Bundle.current.path(forResource: file, ofType: "json") else {
             assert(false)
             completion(.failure("Failed to Load JSON From Bundle - Resource: \(file)"))
             return

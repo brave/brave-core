@@ -6,7 +6,7 @@
 import SwiftUI
 import BraveCore
 import BraveUI
-import struct Shared.Strings
+import Strings
 import BigNumber
 
 /// Allows the user to edit the gas fee structure of an EIP-1559 transaction before confirming it

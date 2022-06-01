@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import UIKit
 
 private class EmptyCollectionViewCell: UICollectionViewCell, CollectionViewReusable {
 }

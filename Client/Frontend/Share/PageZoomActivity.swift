@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 class PageZoomActivity: UIActivity {
   fileprivate let callback: () -> Void
@@ -18,7 +19,7 @@ class PageZoomActivity: UIActivity {
   }
 
   override var activityImage: UIImage? {
-    return #imageLiteral(resourceName: "settings-page-zoom")
+    return UIImage(named: "settings-page-zoom", in: .current, compatibleWith: nil)
   }
 
   override func perform() {

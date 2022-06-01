@@ -15,7 +15,7 @@ protocol IAPObserverDelegate: AnyObject {
   func purchaseFailed(error: IAPObserver.PurchaseError)
 }
 
-class IAPObserver: NSObject, SKPaymentTransactionObserver {
+public class IAPObserver: NSObject, SKPaymentTransactionObserver {
 
   enum PurchaseError {
     case transactionError(error: SKError?)
@@ -24,7 +24,7 @@ class IAPObserver: NSObject, SKPaymentTransactionObserver {
 
   weak var delegate: IAPObserverDelegate?
 
-  func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+  public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
     transactions.forEach { transaction in
       switch transaction.transactionState {
       case .purchased, .restored:
@@ -54,7 +54,7 @@ class IAPObserver: NSObject, SKPaymentTransactionObserver {
     }
   }
 
-  func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+  public func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
     log.debug("Restoring transaction failed")
     self.delegate?.purchaseFailed(error: .transactionError(error: error as? SKError))
   }

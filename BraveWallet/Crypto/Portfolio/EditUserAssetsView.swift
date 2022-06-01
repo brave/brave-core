@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import struct Shared.Strings
+import Strings
 import BraveShared
 import BraveCore
 

@@ -13,9 +13,10 @@ class SyncSettingsTableViewController: UITableViewController {
 
   // MARK: Lifecycle
 
-  init(showDoneButton: Bool = false, syncAPI: BraveSyncAPI) {
+  init(showDoneButton: Bool = false, syncAPI: BraveSyncAPI, syncProfileService: BraveSyncProfileServiceIOS) {
     self.showDoneButton = showDoneButton
     self.syncAPI = syncAPI
+    self.syncProfileService = syncProfileService
     super.init(style: .grouped)
   }
 
@@ -33,7 +34,7 @@ class SyncSettingsTableViewController: UITableViewController {
     }
 
     let codeWords = syncAPI.getSyncCode()
-    syncAPI.joinSyncGroup(codeWords: codeWords)
+    syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileService)
     syncAPI.syncEnabled = true
 
     self.updateDeviceList()
@@ -59,6 +60,7 @@ class SyncSettingsTableViewController: UITableViewController {
   // MARK: Private
 
   private let syncAPI: BraveSyncAPI
+  private let syncProfileService: BraveSyncProfileServiceIOS
 
   private struct BraveSyncDevice: Codable {
     let chromeVersion: String
@@ -181,7 +183,7 @@ class SyncSettingsTableViewController: UITableViewController {
       return
     }
 
-    syncAPI.enableSyncTypes()
+    syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
   }
 }
 
@@ -406,8 +408,8 @@ extension SyncSettingsTableViewController {
           // When that happens, we get `devices.count == 0` and we're removing observers and setting
           // syncEnabled to false. What happens if we get 0 devices (including our own device), but the user is still on the chain??? This should not be possible afaik, because there has to be ONE device (our own) / this device at minimum.
           // If this fixes it for users, it means someone changed something without telling us (same as 1.34.x).
-          //syncAPI.removeAllObservers()
-          //Preferences.Chromium.syncEnabled.value = false
+          // syncAPI.removeAllObservers()
+          // Preferences.Chromium.syncEnabled.value = false
           self.navigationController?.popToRootViewController(animated: true)
         } else {
           self.tableView.reloadData()

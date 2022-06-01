@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 /// Handles displaying controllers such as settings, bookmarks, etc. on top of
 /// the browser.

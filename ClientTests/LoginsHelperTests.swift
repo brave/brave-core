@@ -7,7 +7,7 @@ import Foundation
 import XCTest
 import BraveCore
 
-@testable import Client
+@testable import Brave
 import WebKit
 
 class LoginsHelperTests: XCTestCase {

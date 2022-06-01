@@ -6,7 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
-import struct Shared.Strings
+import Strings
 
 struct AssetSearchView: View {
   var keyringStore: KeyringStore

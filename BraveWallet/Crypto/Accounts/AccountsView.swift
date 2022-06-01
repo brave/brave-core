@@ -8,7 +8,7 @@ import BraveCore
 import Combine
 import SwiftUI
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct AccountsView: View {
   var cryptoStore: CryptoStore

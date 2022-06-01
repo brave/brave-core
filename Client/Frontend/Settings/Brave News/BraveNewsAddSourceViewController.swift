@@ -9,6 +9,7 @@ import BraveShared
 import BraveUI
 import Fuzi
 import FeedKit
+import UIKit
 
 class BraveNewsAddSourceViewController: UITableViewController {
 

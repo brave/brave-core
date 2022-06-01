@@ -5,7 +5,7 @@
 
 import XCTest
 import WebKit
-@testable import Client
+@testable import Brave
 
 class UserScriptHelperTests: XCTestCase {
   func testGetDomainScriptTypes() throws {

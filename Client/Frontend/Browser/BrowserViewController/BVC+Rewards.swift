@@ -94,7 +94,7 @@ extension BrowserViewController {
     rewards.ledger?.fetchPromotions(nil)
   }
 
-  func showWalletTransferExpiryPanelIfNeeded() {
+  public func showWalletTransferExpiryPanelIfNeeded() {
     func _show() {
       let controller = WalletTransferExpiredViewController()
       let popover = PopoverController(contentController: controller)
@@ -224,7 +224,7 @@ extension BrowserViewController {
 
   /// Removes any scheduled or delivered ad grant reminders which may have been added prior to
   /// removal of those reminders.
-  func removeScheduledAdGrantReminders() {
+  public func removeScheduledAdGrantReminders() {
     let idPrefix = "rewards.notification.monthly-claim"
     let center = UNUserNotificationCenter.current()
     center.getPendingNotificationRequests { requests in

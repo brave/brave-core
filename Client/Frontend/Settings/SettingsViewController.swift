@@ -63,6 +63,7 @@ class SettingsViewController: TableViewController {
   private let historyAPI: BraveHistoryAPI
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
+  private let syncProfileServices: BraveSyncProfileServiceIOS
   private let walletSettingsStore: SettingsStore?
   private let walletNetworkStore: NetworkStore?
   private let keyringStore: KeyringStore?
@@ -92,6 +93,7 @@ class SettingsViewController: TableViewController {
     self.historyAPI = braveCore.historyAPI
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
+    self.syncProfileServices = braveCore.syncProfileService
     self.walletSettingsStore = walletSettingsStore
     self.walletNetworkStore = walletNetworkStore
     self.keyringStore = keyringStore
@@ -225,7 +227,7 @@ class SettingsViewController: TableViewController {
               feedDataSource: self.feedDataSource,
               historyAPI: self.historyAPI)
             self.navigationController?.pushViewController(controller, animated: true)
-          }, image: #imageLiteral(resourceName: "settings-shields"), accessory: .disclosureIndicator)
+          }, image: UIImage(named: "settings-shields", in: .current, compatibleWith: nil)!, accessory: .disclosureIndicator)
       ],
       uuid: featureSectionUUID.uuidString
     )
@@ -245,7 +247,7 @@ class SettingsViewController: TableViewController {
               }
             }
             self.navigationController?.pushViewController(rewardsVC, animated: true)
-          }, image: #imageLiteral(resourceName: "settings-brave-rewards"), accessory: .disclosureIndicator)
+          }, image: UIImage(named: "settings-brave-rewards", in: .current, compatibleWith: nil)!, accessory: .disclosureIndicator)
       ]
     }
 
@@ -256,7 +258,7 @@ class SettingsViewController: TableViewController {
         selection: {
           let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource, rewards: self.rewards)
           self.navigationController?.pushViewController(todaySettings, animated: true)
-        }, image: #imageLiteral(resourceName: "settings-brave-today").template, accessory: .disclosureIndicator)
+        }, image: UIImage(named: "settings-brave-today", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )
     #endif
 
@@ -271,7 +273,7 @@ class SettingsViewController: TableViewController {
         selection: { [unowned self] in
           let playlistSettings = PlaylistSettingsViewController()
           self.navigationController?.pushViewController(playlistSettings, animated: true)
-        }, image: #imageLiteral(resourceName: "settings-playlist").template, accessory: .disclosureIndicator)
+        }, image: UIImage(named: "settings-playlist", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )
 
     return section
@@ -286,7 +288,7 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             let viewController = SearchSettingsTableViewController(profile: self.profile)
             self.navigationController?.pushViewController(viewController, animated: true)
-          }, image: #imageLiteral(resourceName: "settings-search").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          }, image: UIImage(named: "settings-search", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
           text: Strings.sync,
           selection: { [unowned self] in
@@ -297,18 +299,18 @@ class SettingsViewController: TableViewController {
               }
 
               self.navigationController?
-                .pushViewController(SyncSettingsTableViewController(syncAPI: syncAPI), animated: true)
+                .pushViewController(SyncSettingsTableViewController(syncAPI: syncAPI, syncProfileService: syncProfileServices), animated: true)
             } else {
-              self.navigationController?.pushViewController(SyncWelcomeViewController(syncAPI: syncAPI), animated: true)
+              self.navigationController?.pushViewController(SyncWelcomeViewController(syncAPI: syncAPI, syncProfileServices: syncProfileServices), animated: true)
             }
-          }, image: #imageLiteral(resourceName: "settings-sync").template, accessory: .disclosureIndicator,
+          }, image: UIImage(named: "settings-sync", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self),
-        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: #imageLiteral(resourceName: "menu_folder_open").template),
+        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: UIImage(named: "menu_folder_open", in: .current, compatibleWith: nil)!.template),
         Row(
           text: Strings.Shortcuts.shortcutSettingsTitle,
           selection: { [unowned self] in
             self.navigationController?.pushViewController(ShortcutSettingsViewController(), animated: true)
-          }, image: #imageLiteral(resourceName: "settings-siri-shortcuts").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          }, image: UIImage(named: "settings-siri-shortcuts", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
       ]
     )
 
@@ -317,7 +319,7 @@ class SettingsViewController: TableViewController {
         .boolRow(
           title: Strings.alwaysRequestDesktopSite,
           option: Preferences.General.alwaysRequestDesktopSite,
-          image: #imageLiteral(resourceName: "settings-desktop-always").template)
+          image: UIImage(named: "settings-desktop-always", in: .current, compatibleWith: nil)!.template)
       )
     }
 
@@ -325,11 +327,11 @@ class SettingsViewController: TableViewController {
       .boolRow(
         title: Strings.enablePullToRefresh,
         option: Preferences.General.enablePullToRefresh,
-        image: #imageLiteral(resourceName: "settings-pull-to-refresh").template),
+        image: UIImage(named: "settings-pull-to-refresh", in: .current, compatibleWith: nil)!.template),
       .boolRow(
         title: Strings.mediaAutoBackgrounding,
         option: Preferences.General.mediaAutoBackgrounding,
-        image: #imageLiteral(resourceName: "background_play_settings_icon").template),
+        image: UIImage(named: "background_play_settings_icon", in: .current, compatibleWith: nil)!.template),
     ])
 
     return general
@@ -342,7 +344,7 @@ class SettingsViewController: TableViewController {
     )
 
     let themeSubtitle = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
-    var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, image: #imageLiteral(resourceName: "settings-appearance").template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+    var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, image: UIImage(named: "settings-appearance", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
     row.selection = { [unowned self] in
       let optionsViewController = OptionSelectionViewController<DefaultTheme>(
         options: DefaultTheme.normalThemesOptions,
@@ -381,17 +383,17 @@ class SettingsViewController: TableViewController {
         selection: { [unowned self] in
           self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
         },
-        image: #imageLiteral(resourceName: "settings-ntp").template,
+        image: UIImage(named: "settings-ntp", in: .current, compatibleWith: nil)!.template,
         accessory: .disclosureIndicator,
         cellClass: MultilineValue1Cell.self
       ))
 
     if UIDevice.current.userInterfaceIdiom == .pad {
       display.rows.append(
-        Row(text: Strings.showTabsBar, image: #imageLiteral(resourceName: "settings-show-tab-bar").template, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
+        Row(text: Strings.showTabsBar, image: UIImage(named: "settings-show-tab-bar", in: .current, compatibleWith: nil)!.template, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
       )
     } else {
-      var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: #imageLiteral(resourceName: "settings-show-tab-bar").template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+      var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: UIImage(named: "settings-show-tab-bar", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
       row.selection = { [unowned self] in
         // Show options for tab bar visibility
         let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
@@ -414,7 +416,7 @@ class SettingsViewController: TableViewController {
     var autoCloseTabsRow =
       Row(
         text: Strings.Settings.autocloseTabsSetting,
-        detailText: autoCloseSetting, image: #imageLiteral(resourceName: "settings-autoclose-tabs").template,
+        detailText: autoCloseSetting, image: UIImage(named: "settings-autoclose-tabs", in: .current, compatibleWith: nil)!.template,
         accessory: .disclosureIndicator,
         cellClass: MultilineSubtitleCell.self)
     autoCloseTabsRow.selection = { [unowned self] in
@@ -442,7 +444,7 @@ class SettingsViewController: TableViewController {
               let controller = PageZoomSettingsController()
               self?.navigationController?.pushViewController(controller, animated: true)
             },
-            image: UIImage(named: "settings-page-zoom")?.template ?? UIImage(),
+            image: UIImage(named: "settings-page-zoom", in: .current, compatibleWith: nil)!.template,
             accessory: .disclosureIndicator,
             cellClass: MultilineValue1Cell.self)
       )
@@ -452,11 +454,11 @@ class SettingsViewController: TableViewController {
       .boolRow(
         title: Strings.showBookmarkButtonInTopToolbar,
         option: Preferences.General.showBookmarkToolbarShortcut,
-        image: #imageLiteral(resourceName: "settings-bookmarks-shortcut").template),
+        image: UIImage(named: "settings-bookmarks-shortcut", in: .current, compatibleWith: nil)!.template),
       .boolRow(
         title: Strings.hideRewardsIcon,
         option: Preferences.Rewards.hideRewardsIcon,
-        image: #imageLiteral(resourceName: "settings-rewards-icon").template),
+        image: UIImage(named: "settings-rewards-icon", in: .current, compatibleWith: nil)!.template),
     ])
 
     return display
@@ -501,7 +503,7 @@ class SettingsViewController: TableViewController {
 
         guard let vcToShow = vc else { return }
         self.navigationController?.pushViewController(vcToShow, animated: true)
-      }, image: #imageLiteral(resourceName: "settings-vpn").template, accessory: .disclosureIndicator,
+      }, image: UIImage(named: "settings-vpn", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator,
       cellClass: ColoredDetailCell.self, context: [ColoredDetailCell.colorKey: color], uuid: "vpnrow")
   }
 
@@ -509,7 +511,7 @@ class SettingsViewController: TableViewController {
     return Section(
       header: .title(Strings.security),
       rows: [
-        .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template),
+        .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: UIImage(named: "settings-passcode", in: .current, compatibleWith: nil)!.template),
         Row(
           text: Strings.Login.loginListNavigationTitle,
           selection: { [unowned self] in
@@ -518,7 +520,7 @@ class SettingsViewController: TableViewController {
               windowProtection: self.windowProtection)
             loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
             self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
-          }, image: #imageLiteral(resourceName: "settings-save-logins").template, accessory: .disclosureIndicator),
+          }, image: UIImage(named: "settings-save-logins", in: .current, compatibleWith: nil)!.template, accessory: .disclosureIndicator),
       ]
     )
   }()
@@ -533,7 +535,7 @@ class SettingsViewController: TableViewController {
             self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveCommunityURL)
             self.dismiss(animated: true)
           },
-          image: #imageLiteral(resourceName: "settings-report-bug").template,
+          image: UIImage(named: "settings-report-bug", in: .current, compatibleWith: nil)!.template,
           cellClass: MultilineValue1Cell.self),
         Row(
           text: Strings.rateBrave,
@@ -544,7 +546,7 @@ class SettingsViewController: TableViewController {
             UIApplication.shared.open(writeReviewURL)
             self.dismiss(animated: true)
           },
-          image: #imageLiteral(resourceName: "settings-rate").template,
+          image: UIImage(named: "settings-rate", in: .current, compatibleWith: nil)!.template,
           cellClass: MultilineValue1Cell.self),
       ]
     )
@@ -709,7 +711,7 @@ class SettingsViewController: TableViewController {
                   let vc = UIHostingController(rootView: walletSettingsView)
                   self.navigationController?.pushViewController(vc, animated: true)
                 },
-                image: #imageLiteral(resourceName: "menu-crypto").template,
+                image: UIImage(named: "menu-crypto", in: .current, compatibleWith: nil)!.template,
                 accessory: .disclosureIndicator,
                 uuid: self.walletRowUUID.uuidString)
             )

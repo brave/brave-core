@@ -5,10 +5,17 @@
 import Foundation
 import XCTest
 import Storage
-@testable import Client
+@testable import Brave
 import Shared
+import Data
 
 class TestFavicons: ProfileTest {
+  
+  override func setUp() {
+    super.setUp()
+    
+    DataController.shared.initializeOnce()
+  }
 
   func testBundledFavicons() {
     let fetcher = FaviconFetcher(siteURL: URL(string: "http://www.google.de")!, kind: .favicon)

@@ -15,8 +15,8 @@ private struct AdBlockNetworkResource {
   let type: AdblockerType
 }
 
-class AdblockResourceDownloader {
-  static let shared = AdblockResourceDownloader()
+public class AdblockResourceDownloader {
+  public static let shared = AdblockResourceDownloader()
 
   private let networkManager: NetworkManager
   private let locale: String
@@ -41,7 +41,7 @@ class AdblockResourceDownloader {
   private(set) var lastFetchDate = Date(timeIntervalSince1970: 0)
   private var adblockResourceDownloader: AnyCancellable?
 
-  func startLoading() {
+  public func startLoading() {
     let now = Date()
     let fetchInterval = AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
 
@@ -242,7 +242,7 @@ class AdblockResourceDownloader {
 }
 
 extension AdblockResourceDownloader: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
+  public func preferencesDidChange(for key: String) {
     let regionalAdblockPref = Preferences.Shields.useRegionAdBlock
     if key == regionalAdblockPref.key {
       var cancellable: AnyCancellable?

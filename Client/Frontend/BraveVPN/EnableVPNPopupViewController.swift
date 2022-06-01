@@ -66,7 +66,7 @@ private class ContentView: UIView {
     $0.spacing = 24
   }
 
-  private let image = UIImageView(image: #imageLiteral(resourceName: "vpn_popup_shield")).then {
+  private let image = UIImageView(image: UIImage(named: "vpn_popup_shield", in: .current, compatibleWith: nil)!).then {
     $0.contentMode = .scaleAspectFit
   }
 
@@ -129,7 +129,7 @@ private class ContentView: UIView {
   }
 
   let closeButton = UIButton().then {
-    $0.setImage(#imageLiteral(resourceName: "close_popup").template, for: .normal)
+    $0.setImage(UIImage(named: "close_popup", in: .current, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .lightGray
   }
 

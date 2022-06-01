@@ -7,7 +7,7 @@ import UIKit
 import BraveCore
 import SwiftUI
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct AccountActivityView: View {
   @ObservedObject var keyringStore: KeyringStore

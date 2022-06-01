@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 
 /// ImageCacheProgress A block called while the image is downloading.
 ///
@@ -12,7 +13,7 @@ import Foundation
 ///
 /// The last parameter is the original image URL.
 
-typealias ImageCacheProgress = ((Int, Int, URL) -> Void)?
+public typealias ImageCacheProgress = ((Int, Int, URL) -> Void)?
 
 /// ImageCacheCompletion A block called when the operation has completed.
 ///
@@ -25,9 +26,9 @@ typealias ImageCacheProgress = ((Int, Int, URL) -> Void)?
 ///
 /// The last parameter is the original image URL.
 
-typealias ImageCacheCompletion = ((UIImage?, Data?, Error?, ImageCacheType, URL) -> Void)?
+public typealias ImageCacheCompletion = ((UIImage?, Data?, Error?, ImageCacheType, URL) -> Void)?
 
-protocol ImageCacheProtocol {
+public protocol ImageCacheProtocol {
 
   associatedtype ReturnAssociatedType
 

@@ -169,7 +169,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
   // MARK: Layout
 
   private var applicationWindow: UIWindow? {
-    return (UIApplication.shared.delegate as? AppDelegate)?.window
+    return UIApplication.shared.delegate?.window as? UIWindow
   }
 
   override func layoutSubviews() {

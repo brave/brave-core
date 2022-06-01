@@ -6,11 +6,12 @@
 import Foundation
 import Shared
 import BraveUI
+import UIKit
 
 class LegacyWalletTransferStatusButton: UIControl {
 
   let dismissButton = BraveButton(type: .system).then {
-    $0.setImage(UIImage(imageLiteralResourceName: "close-medium").template, for: .normal)
+    $0.setImage(UIImage(named: "close-medium", in: .current, compatibleWith: nil)!.template, for: .normal)
     $0.tintColor = .white
     $0.hitTestSlop = UIEdgeInsets(equalInset: -10)
     $0.setContentHuggingPriority(.required, for: .horizontal)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="BlockedResource" representedClassName=".BlockedResource" syncable="YES">
+    <entity name="BlockedResource" representedClassName="Data.BlockedResource" syncable="YES">
         <attribute name="domain" optional="YES" attributeType="String"/>
         <attribute name="faviconUrl" optional="YES" attributeType="String"/>
         <attribute name="host" optional="YES" attributeType="String"/>
@@ -12,7 +12,7 @@
             <fetchIndexElement property="domain" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="Bookmark" representedClassName=".Favorite" syncable="YES">
+    <entity name="Bookmark" representedClassName="Data.Favorite" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="customTitle" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -39,7 +39,7 @@
             <fetchIndexElement property="visits" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="BraveVPNAlert" representedClassName=".BraveVPNAlert" syncable="YES">
+    <entity name="BraveVPNAlert" representedClassName="Data.BraveVPNAlert" syncable="YES">
         <attribute name="action" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="category" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="host" optional="YES" attributeType="String"/>
@@ -60,7 +60,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="DataSaved" representedClassName=".DataSaved" syncable="YES">
+    <entity name="DataSaved" representedClassName="Data.DataSaved" syncable="YES">
         <attribute name="amount" optional="YES" attributeType="String"/>
         <attribute name="savedUrl" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
@@ -69,7 +69,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="Device" representedClassName=".Device" syncable="YES">
+    <entity name="Device" representedClassName="Data.Device" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="deviceDisplayId" optional="YES" attributeType="String"/>
         <attribute name="isCurrentDevice" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -78,7 +78,7 @@
         <attribute name="syncDisplayUUID" optional="YES" attributeType="String"/>
         <relationship name="tabs" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TabMO" inverseName="device" inverseEntity="TabMO"/>
     </entity>
-    <entity name="Domain" representedClassName=".Domain" syncable="YES">
+    <entity name="Domain" representedClassName="Data.Domain" syncable="YES">
         <attribute name="blockedFromTopSites" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="shield_adblockAndTp" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="shield_allOff" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
@@ -104,14 +104,14 @@
             <fetchIndexElement property="visits" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="Favicon" representedClassName=".FaviconMO" syncable="YES">
+    <entity name="Favicon" representedClassName="Data.FaviconMO" syncable="YES">
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="url" optional="YES" attributeType="String"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="favicon" inverseEntity="Domain"/>
     </entity>
-    <entity name="FeedSourceOverride" representedClassName=".FeedSourceOverride" syncable="YES">
+    <entity name="FeedSourceOverride" representedClassName="Data.FeedSourceOverride" syncable="YES">
         <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="publisherID" attributeType="String"/>
         <fetchIndex name="byPublisherID">
@@ -123,7 +123,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="History" representedClassName=".History" syncable="YES">
+    <entity name="History" representedClassName="Data.History" syncable="YES">
         <attribute name="sectionIdentifier" optional="YES" transient="YES" attributeType="String"/>
         <attribute name="syncUUID" optional="YES" attributeType="Transformable"/>
         <attribute name="title" optional="YES" attributeType="String"/>
@@ -131,14 +131,14 @@
         <attribute name="visitedOn" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="historyItems" inverseEntity="Domain"/>
     </entity>
-    <entity name="PlaylistFolder" representedClassName=".PlaylistFolder" syncable="YES">
+    <entity name="PlaylistFolder" representedClassName="Data.PlaylistFolder" syncable="YES">
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="uuid" attributeType="String"/>
         <relationship name="playlistItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PlaylistItem" inverseName="playlistFolder" inverseEntity="PlaylistItem"/>
     </entity>
-    <entity name="PlaylistItem" representedClassName=".PlaylistItem" syncable="YES">
+    <entity name="PlaylistItem" representedClassName="Data.PlaylistItem" syncable="YES">
         <attribute name="cachedData" optional="YES" attributeType="Binary"/>
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -150,13 +150,13 @@
         <attribute name="pageTitle" optional="YES" attributeType="String"/>
         <relationship name="playlistFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaylistFolder" inverseName="playlistItems" inverseEntity="PlaylistFolder"/>
     </entity>
-    <entity name="RecentSearch" representedClassName="RecentSearch" syncable="YES">
+    <entity name="RecentSearch" representedClassName="Data.RecentSearch" syncable="YES">
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="searchType" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
         <attribute name="websiteUrl" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="RSSFeedSource" representedClassName=".RSSFeedSource" syncable="YES">
+    <entity name="RSSFeedSource" representedClassName="Data.RSSFeedSource" syncable="YES">
         <attribute name="feedUrl" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
@@ -165,7 +165,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="TabMO" representedClassName=".TabMO" syncable="YES">
+    <entity name="TabMO" representedClassName="Data.TabMO" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
         <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -182,18 +182,18 @@
     </entity>
     <elements>
         <element name="BlockedResource" positionX="-360" positionY="-279" width="128" height="89"/>
-        <element name="Bookmark" positionX="0" positionY="-450" width="155" height="285"/>
+        <element name="Bookmark" positionX="0" positionY="-450" width="155" height="269"/>
         <element name="BraveVPNAlert" positionX="-351" positionY="-270" width="128" height="134"/>
         <element name="DataSaved" positionX="-378.8814697265625" positionY="-320.8398132324219" width="128" height="59"/>
         <element name="Device" positionX="-314.8486938476562" positionY="-207" width="128" height="150"/>
         <element name="Domain" positionX="225" positionY="-321" width="128" height="254"/>
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="104"/>
-        <element name="FeedSourceOverride" positionX="-530.2741088867188" positionY="-324.5160522460938" width="128" height="28"/>
-        <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
+        <element name="FeedSourceOverride" positionX="-530.2741088867188" positionY="-324.5160522460938" width="128" height="59"/>
+        <element name="History" positionX="493" positionY="-150" width="128" height="119"/>
         <element name="PlaylistFolder" positionX="-207.20556640625" positionY="-430.9707641601562" width="128" height="104"/>
         <element name="PlaylistItem" positionX="-146.2350463867188" positionY="-301.473388671875" width="128" height="179"/>
         <element name="RecentSearch" positionX="-573.386474609375" positionY="-432.0953826904297" width="128" height="89"/>
-        <element name="RSSFeedSource" positionX="-413.9057006835938" positionY="-436.2492065429688" width="128" height="73"/>
+        <element name="RSSFeedSource" positionX="-413.9057006835938" positionY="-436.2492065429688" width="128" height="59"/>
         <element name="TabMO" positionX="-488" positionY="-229" width="128" height="224"/>
     </elements>
 </model>

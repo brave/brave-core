@@ -12,6 +12,18 @@ private let log = Logger.browserLogger
 
 class BuyVPNViewController: UIViewController {
 
+  var iapObserver: IAPObserver
+  
+  init(iapObserver: IAPObserver) {
+    self.iapObserver = iapObserver
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+  
   private var buyVPNView: View {
     return view as! View  // swiftlint:disable:this force_cast
   }
@@ -77,7 +89,7 @@ class BuyVPNViewController: UIViewController {
     buyVPNView.yearlySubButton
       .addTarget(self, action: #selector(yearlySubscriptionAction), for: .touchUpInside)
 
-    (UIApplication.shared.delegate as? AppDelegate)?.iapObserver.delegate = self
+    iapObserver.delegate = self
 
     Preferences.VPN.popupShowed.value = true
   }

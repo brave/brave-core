@@ -9,7 +9,7 @@ import XCTest
 
 class CertificateUtilsTest: XCTestCase {
   private func certificate(named: String) -> SecCertificate {
-    let path = Bundle(for: CertificateUtilsTest.self).path(forResource: named, ofType: ".cer")!
+    let path = Bundle.module.path(forResource: named, ofType: ".cer")!
     let certificateData = try! Data(contentsOf: URL(fileURLWithPath: path)) as CFData
     return SecCertificateCreateWithData(nil, certificateData)!
   }

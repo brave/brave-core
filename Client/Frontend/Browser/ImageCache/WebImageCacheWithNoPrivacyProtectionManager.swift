@@ -4,11 +4,11 @@
 
 import Foundation
 
-final class WebImageCacheWithNoPrivacyProtectionManager {
+final public class WebImageCacheWithNoPrivacyProtectionManager {
 
   private let webImageCache: WebImageCache
 
-  static let shared: WebImageCache = {
+  public static let shared: WebImageCache = {
     let webImageCacheManager = WebImageCacheWithNoPrivacyProtectionManager(isPrivate: false)
     return webImageCacheManager.webImageCache
   }()

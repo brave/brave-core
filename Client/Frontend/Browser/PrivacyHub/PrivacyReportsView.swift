@@ -47,7 +47,7 @@ struct PrivacyReportsView: View {
     Button(action: {
       showClearDataPrompt = true
     }, label: {
-      Image(uiImage: .init(imageLiteralResourceName: "playlist_delete_item").template)
+      Image(uiImage: .init(named: "playlist_delete_item", in: .current, compatibleWith: nil)!.template)
     })
       .accessibility(label: Text(Strings.PrivacyHub.clearAllDataAccessibility))
       .foregroundColor(Color(.braveOrange))

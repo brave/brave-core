@@ -50,6 +50,19 @@ module.exports = {
     filename: "[name].js",
     path: path.resolve(__dirname, "Client/Assets")
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+      }),
+    ],
+  },
   module: {
     rules: []
   },

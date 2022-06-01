@@ -7,6 +7,7 @@ import Foundation
 import BraveUI
 import BraveShared
 import Shared
+import UIKit
 
 class BraveNewsEmptyFeedView: UIView, FeedCardContent {
 
@@ -58,7 +59,7 @@ class BraveNewsEmptyFeedView: UIView, FeedCardContent {
     }
 
     stackView.addStackViewItems(
-      .view(UIImageView(image: UIImage(imageLiteralResourceName: "brave-today-error"))),
+      .view(UIImageView(image: UIImage(named: "brave-today-error", in: .current, compatibleWith: nil)!)),
       .customSpace(16),
       .view(titleLabel),
       .view(messageLabel),

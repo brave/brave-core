@@ -50,7 +50,7 @@ public class PopoverController: UIViewController {
   public struct ContentSizeConfiguration {
     /// The custom width determined by configuration type
     var preferredWidth: CGFloat?
-    ///The custom height determined by configuration type
+    /// The custom height determined by configuration type
     var preferredHeight: CGFloat?
     /// The configuration which sets popover width to phone width under max amount
     public static var phoneWidth: Self {

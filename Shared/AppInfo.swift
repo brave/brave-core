@@ -15,7 +15,8 @@ open class AppInfo {
       // .../Client.app/PlugIns/SendTo.appex
       return Bundle(url: bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent())!
     default:
-      fatalError("Unable to get application Bundle (Bundle.main.bundlePath=\(bundle.bundlePath))")
+      return Bundle.module
+//      fatalError("Unable to get application Bundle (Bundle.main.bundlePath=\(bundle.bundlePath))")
     }
   }
 

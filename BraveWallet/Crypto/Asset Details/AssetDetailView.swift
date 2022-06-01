@@ -8,7 +8,7 @@ import UIKit
 import SwiftUI
 import BraveCore
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 struct AssetDetailView: View {
   @ObservedObject var assetDetailStore: AssetDetailStore

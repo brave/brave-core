@@ -6,7 +6,7 @@
 import SwiftUI
 import BraveUI
 import BraveCore
-import Shared
+import Strings
 
 struct BuyTokenView: View {
   @ObservedObject var keyringStore: KeyringStore

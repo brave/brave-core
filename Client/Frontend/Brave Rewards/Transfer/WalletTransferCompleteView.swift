@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import UIKit
 
 extension WalletTransferCompleteViewController {
   class WalletTransferCompleteView: UIView {

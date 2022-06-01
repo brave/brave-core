@@ -68,12 +68,12 @@ class EnableVPNSettingHeader: UIView {
     $0.backgroundColor = BraveVPNCommonUI.UX.purpleBackgroundColor
   }
 
-  private let backgroundImage = UIImageView(image: #imageLiteral(resourceName: "enable_vpn_settings_banner")).then {
+  private let backgroundImage = UIImageView(image: UIImage(named: "enable_vpn_settings_banner", in: .current, compatibleWith: nil)!).then {
     $0.contentMode = .scaleAspectFill
   }
 
   private let closeButton = UIButton().then {
-    $0.setImage(#imageLiteral(resourceName: "card_close"), for: .normal)
+    $0.setImage(UIImage(named: "card_close", in: .current, compatibleWith: nil)!, for: .normal)
     $0.tintColor = .white
   }
 

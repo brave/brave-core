@@ -6,14 +6,14 @@
 import Foundation
 import UIKit
 import BraveUI
-import struct Shared.Strings
+import Strings
 
 class SwapButton: SpringButton {
   private let gradientView = BraveGradientView.alternateGradient02.then {
     $0.isUserInteractionEnabled = false
     $0.clipsToBounds = true
   }
-  private let imageView = UIImageView(image: UIImage(imageLiteralResourceName: "swap")).then {
+  private let imageView = UIImageView(image: UIImage(named: "swap", in: .current, compatibleWith: nil)).then {
     $0.isUserInteractionEnabled = false
   }
 
