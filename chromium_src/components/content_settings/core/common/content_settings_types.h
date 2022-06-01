@@ -8,7 +8,8 @@
 
 // clang-format off
 #define BRAVE_CONTENT_SETTINGS_TYPES_LIST                                      \
-  BRAVE_ADS,                                                                   \
+  BRAVE_START,                                                                 \
+  BRAVE_ADS = BRAVE_START,                                                     \
   BRAVE_COSMETIC_FILTERING,                                                    \
   BRAVE_TRACKERS,                                                              \
   BRAVE_HTTP_UPGRADABLE_RESOURCES,                                             \

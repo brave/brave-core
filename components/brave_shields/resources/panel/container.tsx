@@ -36,7 +36,7 @@ function Container () {
       return (<TreeList
         data={siteBlockInfo?.jsList}
         totalBlockedCount={siteBlockInfo?.jsList.length}
-        blockedCountTitle={getLocale('braveShieldsScriptsBlocked')}
+        blockedCountTitle={getLocale('braveShieldsBlockedScriptsLabel')}
       />)
     }
 

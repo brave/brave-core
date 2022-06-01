@@ -224,7 +224,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
         ContentSettingsType::BRAVE_REFERRERS, &settings);
-    EXPECT_EQ(settings.size(), 1u);
+    // default plus new setting
+    EXPECT_EQ(settings.size(), 2u);
   }
 
   void AllowReferrers() {
@@ -234,7 +235,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
         ContentSettingsType::BRAVE_REFERRERS, &settings);
-    EXPECT_EQ(settings.size(), 1u);
+    // default plus new setting
+    EXPECT_EQ(settings.size(), 2u);
   }
 
   void Block3PCookies() {
@@ -605,7 +607,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
       ContentSettingsType::BRAVE_REFERRERS, &settings);
-  EXPECT_EQ(settings.size(), 0u)
+  // default setting
+  EXPECT_EQ(settings.size(), 1u)
       << "There should not be any visible referrer rules.";
 
   // The initial navigation doesn't have a referrer.
@@ -662,7 +665,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
       ContentSettingsType::BRAVE_REFERRERS, &settings);
-  EXPECT_EQ(settings.size(), 0u)
+  // default setting
+  EXPECT_EQ(settings.size(), 1u)
       << "There should not be any visible referrer rules.";
 
   // The initial navigation doesn't have a referrer.

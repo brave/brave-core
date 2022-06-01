@@ -120,7 +120,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
 
   /* DEFAULT */
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
-            CONTENT_SETTING_DEFAULT);
+            CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_DEFAULT);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
@@ -184,7 +184,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
 
   /* DEFAULT */
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
-            CONTENT_SETTING_DEFAULT);
+            CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_DEFAULT);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
@@ -248,7 +248,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
 
   /* DEFAULT */
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
-            CONTENT_SETTING_DEFAULT);
+            CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING),
             CONTENT_SETTING_DEFAULT);
   EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_COSMETIC_FILTERING,

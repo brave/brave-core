@@ -32,6 +32,11 @@ class BraveBrowserWindow : public BrowserWindow {
       speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled);
 
+  // Returns the rectangle info of the Shield's panel.
+  // Renderers will call this to check if the bottom of the panel exceeds
+  // the overall screen's height
+  virtual gfx::Rect GetShieldsBubbleRect();
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
   virtual sidebar::Sidebar* InitSidebar();
 #endif

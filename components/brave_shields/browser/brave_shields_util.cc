@@ -360,8 +360,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
 
   RecordShieldsSettingChanged(local_state);
 }
-// TODO(bridiver) - convert cookie settings to ContentSettingsType::COOKIES
-// while maintaining read backwards compat
+
 ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
   ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_COOKIES);

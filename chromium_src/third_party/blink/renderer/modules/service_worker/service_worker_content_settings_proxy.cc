@@ -7,9 +7,8 @@
 
 namespace blink {
 
-bool ServiceWorkerContentSettingsProxy::AllowFingerprinting(
-    bool enabled_per_settings) {
-  bool result = false;
+bool ServiceWorkerContentSettingsProxy::AllowFingerprinting() {
+  bool result = true;
   GetService()->AllowFingerprinting(&result);
   return result;
 }

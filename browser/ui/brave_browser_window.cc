@@ -14,6 +14,10 @@ speedreader::SpeedreaderBubbleView* BraveBrowserWindow::ShowSpeedreaderBubble(
   return nullptr;
 }
 
+gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
+  return gfx::Rect();
+}
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
 sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
   return nullptr;

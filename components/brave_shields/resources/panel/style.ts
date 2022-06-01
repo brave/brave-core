@@ -4,5 +4,5 @@ export const PanelWrapper = styled.div`
   width: 388px;
   min-height: 290px;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 `

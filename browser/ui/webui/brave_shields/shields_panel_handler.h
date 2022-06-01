@@ -18,11 +18,14 @@ namespace content {
 class WebUI;
 }  // namespace content
 
+class BraveBrowserWindow;
+
 class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
  public:
   ShieldsPanelHandler(
       mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
-      ui::MojoBubbleWebUIController* webui_controller);
+      ui::MojoBubbleWebUIController* webui_controller,
+      BraveBrowserWindow* brave_browser_window);
 
   ShieldsPanelHandler(const ShieldsPanelHandler&) = delete;
   ShieldsPanelHandler& operator=(const ShieldsPanelHandler&) = delete;
@@ -31,10 +34,12 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
   // brave_shields::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void GetPosition(GetPositionCallback callback) override;
 
  private:
   mojo::Receiver<brave_shields::mojom::PanelHandler> receiver_;
-  ui::MojoBubbleWebUIController* const webui_controller_;
+  raw_ptr<ui::MojoBubbleWebUIController> const webui_controller_;
+  raw_ptr<BraveBrowserWindow> brave_browser_window_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_HANDLER_H_

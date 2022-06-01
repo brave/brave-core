@@ -63,6 +63,7 @@ class BraveBrowserView : public BrowserView {
   views::View* GetWalletButtonAnchorView();
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
+  gfx::Rect GetShieldsBubbleRect() override;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   views::View* sidebar_host_view() { return sidebar_host_view_; }

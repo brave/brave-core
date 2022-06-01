@@ -101,8 +101,8 @@ TEST_F(SpeedreaderThrottleTest, ToggleThrottle) {
   throttle = speedreader_throttle(url(), true /* check_disabled_sites */);
   EXPECT_EQ(throttle.get(), nullptr);
   // no other domains are affected by the rule.
-  throttle =
-      speedreader_throttle(GURL("kevin.com"), true /* check_disabled_sites */);
+  throttle = speedreader_throttle(GURL("http://kevin.com"),
+                                  true /* check_disabled_sites */);
   EXPECT_NE(throttle.get(), nullptr);
 
   speedreader::SetEnabledForSite(content_settings(), url(), true);
