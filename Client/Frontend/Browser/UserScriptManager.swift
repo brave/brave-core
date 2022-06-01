@@ -174,7 +174,7 @@ class UserScriptManager {
   /// The first part is handled by an ad-block rule and enabled via a `deAmpEnabled` boolean in `AdBlockStats`
   /// The third part is handled by debouncing amp links and handled by debouncing logic in `DebouncingResourceDownloader`
   private let deAMPUserScript: WKUserScript? = {
-    guard let path = Bundle.main.path(forResource: "DeAMP", ofType: "js"), let source: String = try? String(contentsOfFile: path) else {
+    guard let path = Bundle.current.path(forResource: "DeAMP", ofType: "js"), let source: String = try? String(contentsOfFile: path) else {
       log.error("Failed to load cookie control user script")
       return nil
     }
