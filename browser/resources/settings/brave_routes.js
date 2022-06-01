@@ -23,6 +23,7 @@ export default function addBraveRoutes(r) {
     }
   }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
+  r.SHIELDS_ADBLOCK = r.SHIELDS.createChild('/shields/content-filters')
   r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')

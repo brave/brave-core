@@ -112,6 +112,7 @@ preprocess_if_expr("preprocess") {
     "brave_reset_page/brave_reset_profile_dialog_behavior.js",
     "brave_routes.js",
     "brave_sync_page/brave_sync_browser_proxy.js",
+    "default_brave_shields_page/brave_adblock_browser_proxy.js",
   ]
 }
 
@@ -164,7 +165,10 @@ preprocess_if_expr("preprocess_generated") {
     "brave_wallet_page/brave_wallet_page.js",
     "brave_wallet_page/wallet_networks_subpage.js",
     "default_brave_shields_page/default_brave_shields_browser_proxy.m.js",
-    "default_brave_shields_page/default_brave_shields_page.m.js",
+    "default_brave_shields_page/default_brave_shields_page.js",
+    "default_brave_shields_page/brave_adblock_subpage.js",
+    "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.js",
+    "default_brave_shields_page/components/brave_adblock_editor.js",
     "getting_started_page/getting_started.js",
     "social_blocking_page/social_blocking_page.m.js",
   ]

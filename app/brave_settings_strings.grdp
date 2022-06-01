@@ -202,6 +202,72 @@
     Advanced view
   </message>
 
+  <!-- Settings / Shields / ContentFilters -->
+  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_LABEL" desc="Label for Content Filtering">
+    Content Filtering
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION" desc="Long description describing what Content Filtering does">
+    Enable custom filters that block regional and language-specific trackers and Annoyances.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC" desc="Long description describing what Content Filtering does">
+    Enable custom filters that block regional and language-specific trackers and 
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Annoyances<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL" desc="Label for custom filters lists section">
+    Add custom filter lists
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_DESC" desc="Description for custom filters lists section">
+    Add additional lists created and maintained by your trusted community.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_NOTE" desc="Note for custom filters lists section">
+    Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_LABEL" desc="Label for custom filters section">
+    Custom Filters
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_DESC" desc="Description for custom filters section">
+    Get technical by adding your own specific filters, one by line, in <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Adblock filter syntax<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_ADD_LISTS_BUTTON_LABEL" desc="Label for button that adds filter lists URL">
+    Add
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER" desc="List URL header label for custom filters table">
+    List URL
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_UPDATED_HEADER" desc="Last updated header label for custom filters table">
+    Last updated
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_NOW_BUTTON_LABEL" desc="Button label to update the custom filter lists item">
+    Update now
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_VIEW_SOURCE_BUTTON_LABEL" desc="Button label to view custom filter lists item source">
+    View source
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UNSUBSCRIBE_BUTTON_LABEL" desc="Button label to delete custom filter lists item from the table">
+    Unsubscribe
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_SAVE_BUTTON_LABEL" desc="Button label to save custom filters text">
+    Save changes
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_TRACKING_FILTERS_LABEL" desc="Title for tracking filters">
+    Brave's tracking filters
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_TRACKING_FILTERS_DESC" desc="Description for tracking filters section">
+    View the filters that come <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>enabled by default<ph name="END_LINK">&lt;/a&gt;</ph> as part of Brave Shields.
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_DOWNLOAD_FAILED" desc="A label shown when a subscription has failed to download for the first time">
+   Download failed
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_UPDATE_FAILED" desc="A label shown when a subscription has failed to download on a subsquent update">
+   Update failed
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_LISTS_LABEL" desc="A label to indicate custom lists table">
+   Custom lists
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_SHOW_FULL_LISTS_BUTTON_LABEL" desc="A button label to expand full custom filter lists">
+    Show full lists
+  </message>
+
   <!-- Settings / Brave Rewards -->
   <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
     Brave Rewards
