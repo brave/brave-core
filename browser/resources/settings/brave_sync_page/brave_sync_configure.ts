@@ -126,7 +126,7 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
   }
 
   async onPermanentlyDeleteSyncAccount_(e: Event) {
-    alert('onPermanentlyDeleteSyncAccount_')
+    await this.browserProxy_.permanentlyDeleteSyncAccount();
   }
 
   async onDeleteDevice_(e: Event) {

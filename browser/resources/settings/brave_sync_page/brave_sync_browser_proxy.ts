@@ -38,6 +38,9 @@ export class BraveSyncBrowserProxy {
   deleteDevice(deviceId: string): Promise<boolean> {
     return sendWithPromise('SyncDeleteDevice', deviceId);
   }
+  permanentlyDeleteSyncAccount() {
+    return sendWithPromise('SyncPermanentlyDeleteAccount');
+  }
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }

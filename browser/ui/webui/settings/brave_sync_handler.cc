@@ -89,6 +89,11 @@ void BraveSyncHandler::RegisterMessages() {
       "SyncDeleteDevice",
       base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,
                           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "SyncPermanentlyDeleteAccount",
+      base::BindRepeating(&BraveSyncHandler::HandlePermanentlyDeleteAccount,
+                          base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
@@ -253,6 +258,16 @@ void BraveSyncHandler::HandleReset(const base::Value::List& args) {
                         base::BindOnce(&BraveSyncHandler::OnResetDone,
                                        weak_ptr_factory_.GetWeakPtr(),
                                        std::move(callback_id_arg)));
+}
+
+void BraveSyncHandler::HandlePermanentlyDeleteAccount(
+    const base::Value::List& args) {
+  DLOG(ERROR) << "[BraveSync] " << __func__;
+  AllowJavascript();
+  CHECK_EQ(1U, args.size());
+
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
+  return;
 }
 
 void BraveSyncHandler::HandleDeleteDevice(const base::Value::List& args) {
