@@ -89,12 +89,12 @@ def InstallXcodeBinaries():
         return 1
 
     if sys.platform == 'darwin':
-        AcceptXcodeLicense()
+        AcceptXcodeLicense(binaries_root)
 
     return 0
 
 
-def AcceptXcodeLicense():
+def AcceptXcodeLicense(binaries_root):
     # Accept the license for this version of Xcode if it's newer than the
     # currently accepted version.
     hermetic_xcode_version = GetHermeticXcodeVersion(binaries_root)
