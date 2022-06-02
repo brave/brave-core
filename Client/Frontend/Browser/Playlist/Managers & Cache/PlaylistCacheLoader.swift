@@ -588,19 +588,19 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     self.handler(nil)
   }
 
-  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
     guard let url = navigationAction.request.url else {
-      decisionHandler(.cancel)
+      decisionHandler(.cancel, preferences)
       return
     }
 
     if url.scheme == "about" || url.isBookmarklet {
-      decisionHandler(.cancel)
+      decisionHandler(.cancel, preferences)
       return
     }
 
     if navigationAction.isInternalUnprivileged && navigationAction.navigationType != .backForward {
-      decisionHandler(.cancel)
+      decisionHandler(.cancel, preferences)
       return
     }
 
@@ -611,7 +611,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true) {
       switch universalLink {
       case .buyVPN:
-        decisionHandler(.cancel)
+        decisionHandler(.cancel, preferences)
         return
       }
     }
@@ -619,7 +619,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
     if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" || url.scheme == "mailto" || isAppleMapsURL(url) || isStoreURL(url) {
-      decisionHandler(.cancel)
+      decisionHandler(.cancel, preferences)
       return
     }
 
@@ -642,9 +642,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       pendingRequests[url.absoluteString] = navigationAction.request
 
       // TODO: Downgrade to 14.5 once api becomes available.
-      if #available(iOS 15, *) {
-        // do nothing, use Apple's https solution.
-      } else {
+      if #unavailable(iOS 15.0) {
         if Preferences.Shields.httpsEverywhere.value,
           url.scheme == "http",
           let urlHost = url.normalizedHost() {
@@ -677,7 +675,8 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         on.compactMap { $0.rule }.forEach(controller.add)
         off.compactMap { $0.rule }.forEach(controller.remove)
 
-        webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
+        let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
+        preferences.allowsContentJavaScript = isScriptsEnabled
       }
 
       // Cookie Blocking code below
@@ -691,11 +690,11 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         }
       }
 
-      decisionHandler(.allow)
+      decisionHandler(.allow, preferences)
       return
     }
 
-    decisionHandler(.cancel)
+    decisionHandler(.cancel, preferences)
   }
 
   func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
@@ -742,13 +741,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     }
 
     decisionHandler(.allow)
-  }
-
-  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-
-    self.webView(webView, decidePolicyFor: navigationAction) {
-      decisionHandler($0, preferences)
-    }
   }
 
   func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

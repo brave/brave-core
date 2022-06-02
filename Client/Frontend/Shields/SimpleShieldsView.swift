@@ -78,9 +78,7 @@ class SimpleShieldsView: UIView {
         return string
       }()
       $0.backgroundColor = .clear
-      if #available(iOS 15.0, *) {
-        // do nothing
-      } else {
+      if #unavailable(iOS 15.0) {
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
       }
 

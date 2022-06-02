@@ -5,6 +5,8 @@
 
 import Foundation
 
+// swiftlint:disable legacy_random
+
 /// A class that helps in creating farbling data
 class FarblingProtectionHelper {
   /// Represents `JSON` data that needs to be passed to `FarblingProtection.js`
@@ -161,3 +163,5 @@ private extension Array {
     return self[randomIndex]
   }
 }
+
+// swiftlint:enable legacy_random

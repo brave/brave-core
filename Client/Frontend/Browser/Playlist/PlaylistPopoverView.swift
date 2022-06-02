@@ -155,7 +155,7 @@ struct PlaylistPopoverView_Previews: PreviewProvider {
 }
 #endif
 
-class PlaylistPopoverViewController: UIHostingController<PlaylistPopoverView> & PopoverContentComponent {
+class PlaylistPopoverViewController: UIHostingController<PlaylistPopoverView>, PopoverContentComponent {
 
   init(state: PlaylistPopoverState) {
     super.init(rootView: PlaylistPopoverView(state: state))

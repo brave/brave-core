@@ -190,6 +190,6 @@ private class MaskedNewLabel: UIView {
   }
   override var accessibilityLabel: String? {
     get { label.accessibilityLabel }
-    set {}  // swiftlint:disable:this unused_setter_value
+    set {}
   }
 }

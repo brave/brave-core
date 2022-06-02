@@ -59,7 +59,7 @@ struct PlaylistOnboardingView_Previews: PreviewProvider {
 }
 #endif
 
-class PlaylistOnboardingViewController: UIHostingController<PlaylistOnboardingView> & PopoverContentComponent {
+class PlaylistOnboardingViewController: UIHostingController<PlaylistOnboardingView>, PopoverContentComponent {
 
   init() {
     super.init(rootView: PlaylistOnboardingView())

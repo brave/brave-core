@@ -267,9 +267,7 @@ extension BrowserViewController: WKNavigationDelegate {
       pendingRequests[url.absoluteString] = navigationAction.request
 
       // TODO: Downgrade to 14.5 once api becomes available.
-      if #available(iOS 15, *) {
-        // do nothing, use Apple's https solution.
-      } else {
+      if #unavailable(iOS 15.0) {
         if Preferences.Shields.httpsEverywhere.value,
           url.scheme == "http",
           let urlHost = url.normalizedHost() {
@@ -306,7 +304,7 @@ extension BrowserViewController: WKNavigationDelegate {
         off.compactMap { $0.rule }.forEach(controller.remove)
 
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
-          preferences.allowsContentJavaScript = isScriptsEnabled
+        preferences.allowsContentJavaScript = isScriptsEnabled
       }
 
       // Cookie Blocking code below

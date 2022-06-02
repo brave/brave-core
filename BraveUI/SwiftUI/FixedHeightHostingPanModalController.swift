@@ -67,6 +67,6 @@ public class FixedHeightHostingPanModalController<Content: View>: UIViewControll
       let containerSize = CGSize(width: min(375, view.bounds.width), height: view.bounds.height)
       return .init(width: containerSize.width, height: hostingControllerIntrinsicHeight(for: containerSize))
     }
-    set {} // swiftlint:disable:this unused_setter_value
+    set {}
   }
 }
