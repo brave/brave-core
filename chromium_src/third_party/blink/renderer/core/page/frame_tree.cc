@@ -15,7 +15,6 @@
 namespace blink {
 
 void FrameTree::CrossSiteCrossBrowsingContextGroupSetNulledName() {
-  LOG(ERROR) << "1";
   SetName(g_null_atom, kReplicate);
   CrossSiteCrossBrowsingContextGroupSetNulledName_ChromiumImpl();
 }
