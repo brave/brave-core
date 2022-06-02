@@ -437,7 +437,7 @@ void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
 
 void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, ShowNotification(_))
-      .WillByDefault(Invoke([](const AdNotificationInfo& ad_notification) {}));
+      .WillByDefault(Invoke([](const NotificationAdInfo& notification_ad) {}));
 }
 
 void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock) {

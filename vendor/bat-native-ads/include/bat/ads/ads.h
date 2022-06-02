@@ -27,7 +27,7 @@ namespace ads {
 
 class AdsClient;
 struct HistoryInfo;
-struct AdNotificationInfo;
+struct NotificationAdInfo;
 
 // |g_environment| indicates whether URL requests should use the production or
 // staging environment. "--rewards=staging=false" and "--rewards=staging=true"
@@ -142,21 +142,21 @@ class ADS_EXPORT Ads {
   // |brave_ads::ResourceComponent|.
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
-  // Called to get the ad notification specified by |placement_id|. Returns
-  // |true| if the ad notification was found otherwise |false|.
-  // |ad_notification| containing the info of the ad.
-  virtual bool GetAdNotification(const std::string& placement_id,
-                                 AdNotificationInfo* ad_notification) = 0;
+  // Called to get the notification ad specified by |placement_id|. Returns
+  // |true| if the notification ad was found otherwise |false|.
+  // |notification_ad| containing the info of the ad.
+  virtual bool GetNotificationAd(const std::string& placement_id,
+                                 NotificationAdInfo* notification_ad) = 0;
 
-  // Called when a user views or interacts with an ad notification or the ad
+  // Called when a user views or interacts with a notification ad or the ad
   // notification times out to trigger an |event_type| event for the specified
   // |placement_id|. |placement_id| should be a 128-bit random GUID in the form
   // of version 4. See RFC 4122, section 4.4. The same |placement_id| generated
   // for the viewed event should be used for all other events for the same ad
   // placement.
-  virtual void TriggerAdNotificationEvent(
+  virtual void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      const mojom::AdNotificationEventType event_type) = 0;
+      const mojom::NotificationAdEventType event_type) = 0;
 
   // Should be called to get a new tab page ad. The callback takes two arguments
   // - |bool| is set to |true| if successful otherwise |false| and

@@ -7,9 +7,9 @@
 
 #include <memory>
 
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/base/unittest_base.h"
 #include "bat/ads/internal/history/history.h"
+#include "bat/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
 
@@ -53,10 +53,10 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
-  const AdNotificationInfo ad;
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kClicked);
-  history::AddAdNotification(ad, ConfirmationType::kClicked);
+  const NotificationAdInfo ad;
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kClicked);
+  history::AddNotificationAd(ad, ConfirmationType::kClicked);
 
   // Act
   const std::string value = entry->GetValue();
@@ -71,10 +71,10 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
-  const AdNotificationInfo ad;
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kClicked);
+  const NotificationAdInfo ad;
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kClicked);
 
   AdvanceClock(base::Days(2));
 
@@ -91,8 +91,8 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
-  const AdNotificationInfo ad;
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
+  const NotificationAdInfo ad;
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
 
   // Act
   const std::string value = entry->GetValue();
@@ -107,9 +107,9 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest,
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
-  const AdNotificationInfo ad;
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kClicked);
+  const NotificationAdInfo ad;
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kClicked);
 
   // Act
   const std::string value = entry->GetValue();
@@ -123,11 +123,11 @@ TEST_F(BatAdsFederatedLogEntriesAverageClickthroughRateTest, GetValue) {
   std::unique_ptr<CovariateLogEntryInterface> entry =
       std::make_unique<AverageClickthroughRate>(base::Days(1));
 
-  const AdNotificationInfo ad;
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kClicked);
+  const NotificationAdInfo ad;
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kClicked);
 
   // Act
   const std::string value = entry->GetValue();

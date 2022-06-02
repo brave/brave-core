@@ -16,7 +16,6 @@
 #include "bat/ads/internal/base/database_transaction_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/creatives/campaigns_database_table.h"
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"
 #include "bat/ads/internal/creatives/dayparts_database_table.h"
@@ -24,6 +23,7 @@
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
@@ -81,8 +81,8 @@ void Migration::ToVersion(mojom::DBTransaction* transaction,
   table::Deposits deposits_database_table;
   deposits_database_table.Migrate(transaction, to_version);
 
-  table::CreativeAdNotifications creative_ad_notifications_database_table;
-  creative_ad_notifications_database_table.Migrate(transaction, to_version);
+  table::CreativeNotificationAds creative_notification_ads_database_table;
+  creative_notification_ads_database_table.Migrate(transaction, to_version);
 
   table::CreativeInlineContentAds creative_inline_content_ads_database_table;
   creative_inline_content_ads_database_table.Migrate(transaction, to_version);

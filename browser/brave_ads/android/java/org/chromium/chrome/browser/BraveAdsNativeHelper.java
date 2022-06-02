@@ -26,17 +26,17 @@ public class BraveAdsNativeHelper {
         return BraveAdsNativeHelperJni.get().isSupportedLocale(profile);
     };
 
-    public static void nativeOnShowAdNotification(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().onShowAdNotification(profile, j_notification_id);
+    public static void nativeOnShowNotificationAd(Profile profile, String j_notification_id) {
+        BraveAdsNativeHelperJni.get().onShowNotificationAd(profile, j_notification_id);
     };
 
-    public static void nativeOnCloseAdNotification(
+    public static void nativeOnCloseNotificationAd(
             Profile profile, String j_notification_id, boolean j_by_user) {
-        BraveAdsNativeHelperJni.get().onCloseAdNotification(profile, j_notification_id, j_by_user);
+        BraveAdsNativeHelperJni.get().onCloseNotificationAd(profile, j_notification_id, j_by_user);
     };
 
-    public static void nativeOnClickAdNotification(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().onClickAdNotification(profile, j_notification_id);
+    public static void nativeOnClickNotificationAd(Profile profile, String j_notification_id) {
+        BraveAdsNativeHelperJni.get().onClickNotificationAd(profile, j_notification_id);
     };
 
     @NativeMethods
@@ -44,8 +44,8 @@ public class BraveAdsNativeHelper {
         boolean isBraveAdsEnabled(Profile profile);
         void setAdsEnabled(Profile profile);
         boolean isSupportedLocale(Profile profile);
-        void onShowAdNotification(Profile profile, String j_notification_id);
-        void onCloseAdNotification(Profile profile, String j_notification_id, boolean j_by_user);
-        void onClickAdNotification(Profile profile, String j_notification_id);
+        void onShowNotificationAd(Profile profile, String j_notification_id);
+        void onCloseNotificationAd(Profile profile, String j_notification_id, boolean j_by_user);
+        void onClickNotificationAd(Profile profile, String j_notification_id);
     }
 }

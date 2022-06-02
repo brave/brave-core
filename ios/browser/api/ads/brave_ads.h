@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class AdNotificationIOS, InlineContentAdIOS;
+@class NotificationAdIOS, InlineContentAdIOS;
 
 OBJC_EXPORT
 @protocol BraveAdsNotificationHandler
@@ -21,7 +21,7 @@ OBJC_EXPORT
 /// to the user.
 - (BOOL)shouldShowNotifications;
 /// Show the given notification to the user (or add it to the queue)
-- (void)showNotification:(AdNotificationIOS*)notification;
+- (void)showNotification:(NotificationAdIOS*)notification;
 /// Remove a pending notification from the queue or remove an already shown
 /// notification from view
 - (void)clearNotificationWithIdentifier:(NSString*)identifier;
@@ -95,7 +95,7 @@ OBJC_EXPORT
 
 #pragma mark - Notificiations
 
-- (nullable AdNotificationIOS*)adsNotificationForIdentifier:
+- (nullable NotificationAdIOS*)notificationAdForIdentifier:
     (NSString*)identifier;
 
 #pragma mark - History
@@ -134,9 +134,9 @@ OBJC_EXPORT
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
     NS_SWIFT_NAME(reportTabClosed(tabId:));
 
-/// Report that an ad notification event type was triggered for a given id
-- (void)reportAdNotificationEvent:(NSString*)placementId
-                        eventType:(AdsAdNotificationEventType)eventType;
+/// Report that a notification ad event type was triggered for a given id
+- (void)reportNotificationAdEvent:(NSString*)placementId
+                        eventType:(AdsNotificationAdEventType)eventType;
 
 /// Get inline content ad for the given dimensions
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions

@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/hash/hash.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
@@ -19,9 +18,9 @@
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ad_events/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -43,7 +42,7 @@
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
-#include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/deprecated/creatives/notification_ads/notification_ads.h"
 #include "bat/ads/internal/diagnostics/diagnostics.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/internal/features/features_util.h"
@@ -65,9 +64,9 @@
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/language_components.h"
-#include "bat/ads/internal/serving/ad_notification_serving.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving.h"
+#include "bat/ads/internal/serving/notification_ad_serving.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/studies/studies_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
@@ -76,6 +75,7 @@
 #include "bat/ads/internal/user_interaction/browsing/user_activity.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_time.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/statement_info.h"
@@ -95,8 +95,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
 AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
-  ad_notification_->RemoveObserver(this);
-  ad_notification_serving_->RemoveObserver(this);
+  notification_ad_->RemoveObserver(this);
+  notification_ad_serving_->RemoveObserver(this);
   catalog_->RemoveObserver(this);
   database_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
@@ -142,7 +142,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
     return;
   }
 
-  ad_notifications_->CloseAndRemoveAll();
+  notification_ads_->CloseAndRemoveAll();
 
   callback(/* success */ true);
 }
@@ -157,11 +157,11 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
 
 void AdsImpl::OnPrefChanged(const std::string& path) {
   if (path == prefs::kEnabled) {
-    MaybeServeAdNotificationsAtRegularIntervals();
+    MaybeServeNotificationAdsAtRegularIntervals();
   }
 
   account_->OnPrefChanged(path);
-  ad_notification_serving_->OnPrefChanged(path);
+  notification_ad_serving_->OnPrefChanged(path);
   subdivision_targeting_->OnPrefChanged(path);
 }
 
@@ -256,16 +256,16 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
   }
 
   if (WasLocked(was_locked)) {
-    BLOG(1, "Ad notification not served: Screen was locked");
+    BLOG(1, "Notification ad not served: Screen was locked");
     return;
   }
 
   if (HasExceededMaximumIdleTime(idle_time)) {
-    BLOG(1, "Ad notification not served: Exceeded maximum idle time");
+    BLOG(1, "Notification ad not served: Exceeded maximum idle time");
     return;
   }
 
-  MaybeServeAdNotification();
+  MaybeServeNotificationAd();
 }
 
 void AdsImpl::OnBrowserDidEnterForeground() {
@@ -273,13 +273,13 @@ void AdsImpl::OnBrowserDidEnterForeground() {
 
   MaybeFetchCatalog();
 
-  MaybeServeAdNotificationsAtRegularIntervals();
+  MaybeServeNotificationAdsAtRegularIntervals();
 }
 
 void AdsImpl::OnBrowserDidEnterBackground() {
   BrowserManager::Get()->OnDidEnterBackground();
 
-  MaybeServeAdNotificationsAtRegularIntervals();
+  MaybeServeNotificationAdsAtRegularIntervals();
 }
 
 void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
@@ -341,16 +341,16 @@ void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
   }
 }
 
-bool AdsImpl::GetAdNotification(const std::string& placement_id,
-                                AdNotificationInfo* notification) {
+bool AdsImpl::GetNotificationAd(const std::string& placement_id,
+                                NotificationAdInfo* notification) {
   DCHECK(notification);
-  return ad_notifications_->Get(placement_id, notification);
+  return notification_ads_->Get(placement_id, notification);
 }
 
-void AdsImpl::TriggerAdNotificationEvent(
+void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::AdNotificationEventType event_type) {
-  ad_notification_->FireEvent(placement_id, event_type);
+    const mojom::NotificationAdEventType event_type) {
+  notification_ad_->FireEvent(placement_id, event_type);
 }
 
 void AdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
@@ -566,12 +566,12 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   subdivision_targeting_ = std::make_unique<geographic::SubdivisionTargeting>();
 
-  ad_notification_serving_ = std::make_unique<ad_notifications::Serving>(
+  notification_ad_serving_ = std::make_unique<notification_ads::Serving>(
       subdivision_targeting_.get(), anti_targeting_resource_.get());
-  ad_notification_serving_->AddObserver(this);
-  ad_notification_ = std::make_unique<AdNotification>();
-  ad_notification_->AddObserver(this);
-  ad_notifications_ = std::make_unique<AdNotifications>();
+  notification_ad_serving_->AddObserver(this);
+  notification_ad_ = std::make_unique<NotificationAd>();
+  notification_ad_->AddObserver(this);
+  notification_ads_ = std::make_unique<NotificationAds>();
 
   catalog_ = std::make_unique<Catalog>();
   catalog_->AddObserver(this);
@@ -670,12 +670,12 @@ void AdsImpl::LoadConfirmationsState(InitializeCallback callback) {
       return;
     }
 
-    LoadAdNotificationsState(callback);
+    LoadNotificationAdsState(callback);
   });
 }
 
-void AdsImpl::LoadAdNotificationsState(InitializeCallback callback) {
-  ad_notifications_->Initialize([=](const bool success) {
+void AdsImpl::LoadNotificationAdsState(InitializeCallback callback) {
+  notification_ads_->Initialize([=](const bool success) {
     if (!success) {
       callback(/* success */ false);
       return;
@@ -705,10 +705,10 @@ void AdsImpl::Start() {
   LogActiveStudies();
 
 #if BUILDFLAG(IS_ANDROID)
-  // Ad notifications do not sustain a reboot or update, so we should remove
-  // orphaned ad notifications
-  ad_notifications_->RemoveAllAfterReboot();
-  ad_notifications_->RemoveAllAfterUpdate();
+  // Notification ads do not sustain a reboot or update, so we should remove
+  // orphaned notification ads
+  notification_ads_->RemoveAllAfterReboot();
+  notification_ads_->RemoveAllAfterUpdate();
 #endif
 
   CleanupAdEvents();
@@ -724,7 +724,7 @@ void AdsImpl::Start() {
 
   catalog_->MaybeFetch();
 
-  MaybeServeAdNotificationsAtRegularIntervals();
+  MaybeServeNotificationAdsAtRegularIntervals();
 }
 
 void AdsImpl::CleanupAdEvents() {
@@ -746,22 +746,22 @@ void AdsImpl::MaybeFetchCatalog() {
   catalog_->MaybeFetch();
 }
 
-void AdsImpl::MaybeServeAdNotification() {
+void AdsImpl::MaybeServeNotificationAd() {
   if (PlatformHelper::GetInstance()->IsMobile()) {
     return;
   }
 
-  ad_notification_serving_->MaybeServeAd();
+  notification_ad_serving_->MaybeServeAd();
 }
 
-bool AdsImpl::ShouldServeAdNotificationsAtRegularIntervals() const {
+bool AdsImpl::ShouldServeNotificationAdsAtRegularIntervals() const {
   return ShouldRewardUser() &&
          (BrowserManager::Get()->IsActive() ||
           AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
          settings::GetAdsPerHour() > 0;
 }
 
-void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
+void AdsImpl::MaybeServeNotificationAdsAtRegularIntervals() {
   if (!IsInitialized()) {
     return;
   }
@@ -770,10 +770,10 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if (ShouldServeAdNotificationsAtRegularIntervals()) {
-    ad_notification_serving_->StartServingAdsAtRegularIntervals();
+  if (ShouldServeNotificationAdsAtRegularIntervals()) {
+    notification_ad_serving_->StartServingAdsAtRegularIntervals();
   } else {
-    ad_notification_serving_->StopServingAdsAtRegularIntervals();
+    notification_ad_serving_->StopServingAdsAtRegularIntervals();
   }
 }
 
@@ -798,7 +798,7 @@ void AdsImpl::OnFailedToMigrateDatabase(const int from_version,
 void AdsImpl::OnWalletDidUpdate(const WalletInfo& wallet) {
   BLOG(1, "Successfully set wallet");
 
-  MaybeServeAdNotificationsAtRegularIntervals();
+  MaybeServeNotificationAdsAtRegularIntervals();
 }
 
 void AdsImpl::OnWalletDidChange(const WalletInfo& wallet) {
@@ -836,54 +836,54 @@ void AdsImpl::OnDidUpdateCatalog(const CatalogInfo& catalog) {
   epsilon_greedy_bandit_resource_->LoadFromCatalog(catalog);
 }
 
-void AdsImpl::OnDidServeAdNotification(const AdNotificationInfo& ad) {
-  ad_notification_->FireEvent(ad.placement_id,
-                              mojom::AdNotificationEventType::kServed);
+void AdsImpl::OnDidServeNotificationAd(const NotificationAdInfo& ad) {
+  notification_ad_->FireEvent(ad.placement_id,
+                              mojom::NotificationAdEventType::kServed);
 }
 
-void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
+void AdsImpl::OnNotificationAdViewed(const NotificationAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 
-  covariate_logs_->SetAdNotificationServedAt(base::Time::Now());
+  covariate_logs_->SetNotificationAdServedAt(base::Time::Now());
 }
 
-void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
+void AdsImpl::OnNotificationAdClicked(const NotificationAdInfo& ad) {
   transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kClicked);
 
   epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, mojom::AdNotificationEventType::kClicked});
+      {ad.segment, mojom::NotificationAdEventType::kClicked});
 
-  covariate_logs_->SetAdNotificationClicked(true);
+  covariate_logs_->SetNotificationAdClicked(true);
   covariate_logs_->LogTrainingInstance();
 }
 
-void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
+void AdsImpl::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kDismissed);
 
   epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, mojom::AdNotificationEventType::kDismissed});
+      {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
-  covariate_logs_->SetAdNotificationClicked(false);
+  covariate_logs_->SetNotificationAdClicked(false);
   covariate_logs_->LogTrainingInstance();
 }
 
-void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
+void AdsImpl::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, mojom::AdNotificationEventType::kTimedOut});
+      {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
-  covariate_logs_->SetAdNotificationClicked(false);
+  covariate_logs_->SetNotificationAdClicked(false);
   covariate_logs_->LogTrainingInstance();
 }
 
-void AdsImpl::OnAdNotificationEventFailed(
+void AdsImpl::OnNotificationAdEventFailed(
     const std::string& placement_id,
-    const mojom::AdNotificationEventType event_type) {
-  BLOG(1, "Failed to fire ad notification "
+    const mojom::NotificationAdEventType event_type) {
+  BLOG(1, "Failed to fire notification ad "
               << event_type << " event for placement id " << placement_id);
 }
 

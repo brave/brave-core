@@ -91,9 +91,9 @@ bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
 
-bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
+bool NotificationHelperAndroid::ShowMyFirstNotificationAd() {
   const bool should_show_custom_notifications =
-      features::IsCustomAdNotificationsEnabled();
+      features::IsCustomNotificationAdsEnabled();
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(

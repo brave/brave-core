@@ -41,7 +41,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
         ASSERT_TRUE(success);
 
         ConversionQueueItemInfo conversion_queue_item;
-        conversion_queue_item.ad_type = AdType::kAdNotification;
+        conversion_queue_item.ad_type = AdType::kNotificationAd;
         conversion_queue_item.campaign_id =
             "6ee347d9-acec-4a80-b108-e9335a5cbd39";
         conversion_queue_item.creative_set_id =

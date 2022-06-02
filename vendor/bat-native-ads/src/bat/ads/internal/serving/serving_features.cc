@@ -15,13 +15,13 @@ namespace {
 
 constexpr char kFeatureName[] = "AdServing";
 
-constexpr char kFieldTrialParameterDefaultAdNotificationsPerHour[] =
+constexpr char kFieldTrialParameterDefaultNotificationAdsPerHour[] =
     "default_ad_notifications_per_hour";
-constexpr int kDefaultDefaultAdNotificationsPerHour =
-    kDefaultAdNotificationsPerHour;
-constexpr char kFieldTrialParameterMaximumAdNotificationsPerDay[] =
+constexpr int kDefaultDefaultNotificationAdsPerHour =
+    kDefaultNotificationAdsPerHour;
+constexpr char kFieldTrialParameterMaximumNotificationAdsPerDay[] =
     "maximum_ad_notifications_per_day";
-constexpr int kDefaultMaximumAdNotificationsPerDay = 40;
+constexpr int kDefaultMaximumNotificationAdsPerDay = 40;
 
 constexpr char kFieldTrialParameterMaximumInlineContentAdsPerHour[] =
     "maximum_inline_content_ads_per_hour";
@@ -74,16 +74,16 @@ int GetServingVersion() {
       kServing, kFieldTrialParameterServingVersion, kDefaultServingVersion);
 }
 
-int GetDefaultAdNotificationsPerHour() {
+int GetDefaultNotificationAdsPerHour() {
   return GetFieldTrialParamByFeatureAsInt(
-      kServing, kFieldTrialParameterDefaultAdNotificationsPerHour,
-      kDefaultDefaultAdNotificationsPerHour);
+      kServing, kFieldTrialParameterDefaultNotificationAdsPerHour,
+      kDefaultDefaultNotificationAdsPerHour);
 }
 
-int GetMaximumAdNotificationsPerDay() {
+int GetMaximumNotificationAdsPerDay() {
   return GetFieldTrialParamByFeatureAsInt(
-      kServing, kFieldTrialParameterMaximumAdNotificationsPerDay,
-      kDefaultMaximumAdNotificationsPerDay);
+      kServing, kFieldTrialParameterMaximumNotificationAdsPerDay,
+      kDefaultMaximumNotificationAdsPerDay);
 }
 
 int GetMaximumInlineContentAdsPerHour() {

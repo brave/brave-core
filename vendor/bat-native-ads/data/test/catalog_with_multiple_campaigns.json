@@ -15,9 +15,9 @@
                 "version": 1
               },
               "payload": {
-                "body": "Test Ad Notification Campaign 1 Body",
-                "title": "Test Ad Notification Campaign 1 Title",
-                "targetUrl": "https://brave.com/1/ad_notification"
+                "body": "Test Notification Ad Campaign 1 Body",
+                "title": "Test Notification Ad Campaign 1 Title",
+                "targetUrl": "https://brave.com/1/notification_ad"
               }
             },
             {
@@ -166,9 +166,9 @@
                 "version": 1
               },
               "payload": {
-                "body": "Test Ad Notification Campaign 2 Body",
-                "title": "Test Ad Notification Campaign 2 Title",
-                "targetUrl": "https://brave.com/2/ad_notification"
+                "body": "Test Notification Ad Campaign 2 Body",
+                "title": "Test Notification Ad Campaign 2 Title",
+                "targetUrl": "https://brave.com/2/notification_ad"
               }
             },
             {

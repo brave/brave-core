@@ -5,10 +5,10 @@
 
 source_set("brave_ads") {
   sources = [
-    "ad_notification.cc",
-    "ad_notification.h",
-    "ad_notification_delegate.h",
-    "ad_notification_popup_handler.h",
+    "notification_ad.cc",
+    "notification_ad.h",
+    "notification_ad_delegate.h",
+    "notification_ad_popup_handler.h",
   ]
 
   deps = [

@@ -17,13 +17,13 @@
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/platform_helper.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_info.h"
 #include "bat/ads/internal/creatives/creative_daypart_info_aliases.h"
 #include "bat/ads/internal/creatives/creatives_info.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
 namespace ads {
@@ -72,9 +72,9 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         continue;
       }
 
-      // Ad notification creatives
-      for (const auto& creative : creative_set.creative_ad_notifications) {
-        CreativeAdNotificationInfo info;
+      // Notification ad creatives
+      for (const auto& creative : creative_set.creative_notification_ads) {
+        CreativeNotificationAdInfo info;
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
@@ -120,7 +120,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           }
 
           info.segment = segment_name;
-          creatives.ad_notifications.push_back(info);
+          creatives.notification_ads.push_back(info);
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
@@ -128,7 +128,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
-            creatives.ad_notifications.push_back(info);
+            creatives.notification_ads.push_back(info);
             entries++;
           }
         }

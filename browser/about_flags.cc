@@ -542,13 +542,13 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
      kOsAll,                                                                \
-     FEATURE_VALUE_TYPE(brave_ads::features::kCustomAdNotifications)},      \
+     FEATURE_VALUE_TYPE(brave_ads::features::kCustomNotificationAds)},      \
     {"brave-ads-allowed-to-fallback-to-custom-push-notification-ads",       \
      flag_descriptions::kBraveAdsCustomNotificationsFallbackName,           \
      flag_descriptions::kBraveAdsCustomNotificationsFallbackDescription,    \
      kOsAll,                                                                \
      FEATURE_VALUE_TYPE(                                                    \
-       brave_ads::features::kAllowedToFallbackToCustomAdNotifications)},    \
+       brave_ads::features::kAllowedToFallbackToCustomNotificationAds)},    \
     {"brave-sync-v2",                                                       \
       flag_descriptions::kBraveSyncName,                                    \
       flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \

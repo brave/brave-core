@@ -33,7 +33,7 @@ bool MinimumWaitTimePermissionRule::ShouldAllow() {
   }
 
   const std::vector<base::Time>& history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
+      GetAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "Ad cannot be shown as minimum wait time has not passed";

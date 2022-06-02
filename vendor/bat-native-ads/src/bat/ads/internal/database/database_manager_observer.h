@@ -12,18 +12,24 @@ namespace ads {
 
 class DatabaseManagerObserver : public base::CheckedObserver {
  public:
+  // Invoked when about to create or open the database.
   virtual void OnWillCreateOrOpenDatabase() {}
 
+  // Invoked when the database was created or opened.
   virtual void OnDidCreateOrOpenDatabase() {}
 
+  // Invoked when the database cannot be created or opened.
   virtual void OnFailedToCreateOrOpenDatabase() {}
 
+  // Invoked when about to migrate the database |from_version| |to_version|.
   virtual void OnWillMigrateDatabase(const int from_version,
                                      const int to_version) {}
 
+  // Invoked when the database was migrated |from_version| |to_version|.
   virtual void OnDidMigrateDatabase(const int from_version,
                                     const int to_version) {}
 
+  // Invoked when the database cannot be migrated |from_version| |to_version|.
   virtual void OnFailedToMigrateDatabase(const int from_version,
                                          const int to_version) {}
 

@@ -60,7 +60,7 @@ bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
-    const ads::AdNotificationInfo& info) {
+    const ads::NotificationAdInfo& info) {
   if (!connected()) {
     return;
   }

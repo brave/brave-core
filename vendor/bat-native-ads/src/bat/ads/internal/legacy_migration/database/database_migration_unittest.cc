@@ -43,7 +43,7 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
   const CreativeAdInfo& creative_ad = BuildCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
 
   // Act
   LogAdEvent(ad_event, [=](const bool success) {

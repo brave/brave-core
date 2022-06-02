@@ -583,11 +583,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_UTILITY_PROCESS_LEDGER_NAME" desc="The utility process running ledger">
         Bat Ledger Service
       </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON" desc="Text to be spoken for the ad notification close button">
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON" desc="Text to be spoken for the notification ad close button">
         Close
       </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME" desc="Text to be spoken when an ad notification is shown">
-        Brave Ad Notification
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME" desc="Text to be spoken when a notification ad is shown">
+        Brave Notification Ad
       </message>
 
       <!-- Brave Search -->

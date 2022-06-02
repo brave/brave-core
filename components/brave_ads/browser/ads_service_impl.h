@@ -126,10 +126,10 @@ class AdsServiceImpl : public AdsService,
   void SnoozeScheduledCaptcha() override;
 #endif
 
-  void OnShowAdNotification(const std::string& notification_id) override;
-  void OnCloseAdNotification(const std::string& notification_id,
+  void OnShowNotificationAd(const std::string& notification_id) override;
+  void OnCloseNotificationAd(const std::string& notification_id,
                              const bool by_user) override;
-  void OnClickAdNotification(const std::string& notification_id) override;
+  void OnClickNotificationAd(const std::string& notification_id) override;
 
   void ChangeLocale(const std::string& locale) override;
 
@@ -258,7 +258,7 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(const ui::IdleState idle_state, const int idle_time);
   int GetIdleTimeThreshold();
 
-  bool ShouldShowCustomAdNotifications();
+  bool ShouldShowCustomNotificationAds();
 
   void MaybeOpenNewTabWithAd();
   void OpenNewTabWithAd(const std::string& placement_id);
@@ -352,8 +352,8 @@ class AdsServiceImpl : public AdsService,
       const std::string& country_code,
       const std::vector<std::string>& country_codes);
 
-  void MaybeShowMyFirstAdNotification();
-  bool ShouldShowMyFirstAdNotification();
+  void MaybeShowMyFirstNotificationAd();
+  bool ShouldShowMyFirstNotificationAd();
 
   bool PrefExists(const std::string& path) const;
   void OnPrefsChanged(const std::string& pref);
@@ -381,7 +381,7 @@ class AdsServiceImpl : public AdsService,
 
   bool CanShowBackgroundNotifications() const override;
 
-  void ShowNotification(const ads::AdNotificationInfo& info) override;
+  void ShowNotification(const ads::NotificationAdInfo& info) override;
 
   void CloseNotification(const std::string& placement_id) override;
 

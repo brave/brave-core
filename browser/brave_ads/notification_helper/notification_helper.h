@@ -21,7 +21,7 @@ class NotificationHelper {
 
   virtual bool CanShowBackgroundNotifications() const;
 
-  virtual bool ShowMyFirstAdNotification();
+  virtual bool ShowMyFirstNotificationAd();
 
  protected:
   friend class NotificationHelperHolder;

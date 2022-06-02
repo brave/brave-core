@@ -17,7 +17,7 @@ class AdType final {
  public:
   enum Value {
     kUndefined,
-    kAdNotification,
+    kNotificationAd,
     kNewTabPageAd,
     kPromotedContentAd,
     kInlineContentAd,

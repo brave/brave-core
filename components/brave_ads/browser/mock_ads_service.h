@@ -47,9 +47,9 @@ class MockAdsService : public AdsService {
   MOCK_METHOD0(SnoozeScheduledCaptcha, void());
 #endif
 
-  MOCK_METHOD1(OnShowAdNotification, void(const std::string&));
-  MOCK_METHOD2(OnCloseAdNotification, void(const std::string&, bool));
-  MOCK_METHOD1(OnClickAdNotification, void(const std::string&));
+  MOCK_METHOD1(OnShowNotificationAd, void(const std::string&));
+  MOCK_METHOD2(OnCloseNotificationAd, void(const std::string&, bool));
+  MOCK_METHOD1(OnClickNotificationAd, void(const std::string&));
 
   MOCK_METHOD1(ChangeLocale, void(const std::string&));
 

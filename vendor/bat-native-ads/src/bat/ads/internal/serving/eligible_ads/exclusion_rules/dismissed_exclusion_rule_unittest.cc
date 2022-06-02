@@ -79,7 +79,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -118,7 +118,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_1);
 
@@ -171,7 +171,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -215,7 +215,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -259,7 +259,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -303,7 +303,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -348,7 +348,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -393,7 +393,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -438,7 +438,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -486,7 +486,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad_2, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 
@@ -522,7 +522,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEvent(
-        creative_ad_2, AdType::kAdNotification, confirmation_type, Now());
+        creative_ad_2, AdType::kNotificationAd, confirmation_type, Now());
 
     ad_events.push_back(ad_event);
 

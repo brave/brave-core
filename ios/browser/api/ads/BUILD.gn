@@ -18,8 +18,6 @@ source_set("ads") {
   ]
 
   sources = [
-    "ad_notification_ios.h",
-    "ad_notification_ios.mm",
     "ads_client_bridge.h",
     "ads_client_ios.h",
     "ads_client_ios.mm",
@@ -27,6 +25,8 @@ source_set("ads") {
     "brave_ads.mm",
     "inline_content_ad_ios.h",
     "inline_content_ad_ios.mm",
+    "notification_ad_ios.h",
+    "notification_ad_ios.mm",
   ]
 
   deps = [

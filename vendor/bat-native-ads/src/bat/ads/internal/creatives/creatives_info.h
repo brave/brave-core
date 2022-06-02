@@ -7,9 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_CREATIVES_INFO_H_
 
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
-#include "bat/ads/internal/creatives/ad_notifications/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info_aliases.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info_aliases.h"
 
 namespace ads {
@@ -19,7 +19,7 @@ struct CreativesInfo final {
   CreativesInfo(const CreativesInfo& info);
   ~CreativesInfo();
 
-  CreativeAdNotificationList ad_notifications;
+  CreativeNotificationAdList notification_ads;
   CreativeInlineContentAdList inline_content_ads;
   CreativeNewTabPageAdList new_tab_page_ads;
   CreativePromotedContentAdList promoted_content_ads;

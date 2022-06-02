@@ -16,7 +16,7 @@ class Time;
 namespace ads {
 
 class ConfirmationType;
-struct AdNotificationInfo;
+struct NotificationAdInfo;
 struct HistoryInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
@@ -30,7 +30,7 @@ HistoryInfo Get(const HistoryFilterType filter_type,
                 const base::Time from_time,
                 const base::Time to_time);
 
-void AddAdNotification(const AdNotificationInfo& ad,
+void AddNotificationAd(const NotificationAdInfo& ad,
                        const ConfirmationType& confirmation_type);
 
 void AddNewTabPageAd(const NewTabPageAdInfo& ad,

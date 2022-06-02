@@ -15,7 +15,7 @@ namespace processor {
 
 struct BanditFeedbackInfo final {
   std::string segment;
-  mojom::AdNotificationEventType ad_event_type;
+  mojom::NotificationAdEventType ad_event_type;
 };
 
 }  // namespace processor

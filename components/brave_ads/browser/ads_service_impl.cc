@@ -34,16 +34,16 @@
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
-#include "brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h"
+#include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
@@ -125,7 +125,7 @@ constexpr unsigned int kRetriesCountOnNetworkChange = 1;
 
 constexpr int kHttpUpgradeRequiredStatusCode = 426;
 
-constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
+constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
 const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
@@ -280,8 +280,8 @@ void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
 }
 
 void AdsServiceImpl::SetAdsPerHour(const int64_t ads_per_hour) {
-  DCHECK(ads_per_hour >= ads::kMinimumAdNotificationsPerHour &&
-         ads_per_hour <= ads::kMaximumAdNotificationsPerHour);
+  DCHECK(ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
+         ads_per_hour <= ads::kMaximumNotificationAdsPerHour);
   SetInt64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
 }
 
@@ -525,12 +525,12 @@ int64_t AdsServiceImpl::GetAdsPerHour() const {
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kServing, "default_ad_notifications_per_hour",
-        ads::kDefaultAdNotificationsPerHour);
+        ads::kDefaultNotificationAdsPerHour);
   }
 
   return base::clamp(ads_per_hour,
-                     static_cast<int64_t>(ads::kMinimumAdNotificationsPerHour),
-                     static_cast<int64_t>(ads::kMaximumAdNotificationsPerHour));
+                     static_cast<int64_t>(ads::kMinimumNotificationAdsPerHour),
+                     static_cast<int64_t>(ads::kMaximumNotificationAdsPerHour));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
@@ -903,7 +903,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const uint32_t number_of_start,
 
   OnWalletUpdated();
 
-  MaybeShowMyFirstAdNotification();
+  MaybeShowMyFirstNotificationAd();
 }
 
 void AdsServiceImpl::SetEnvironment() {
@@ -1061,16 +1061,16 @@ void AdsServiceImpl::SnoozeScheduledCaptcha() {
 }
 #endif
 
-void AdsServiceImpl::OnShowAdNotification(const std::string& notification_id) {
+void AdsServiceImpl::OnShowNotificationAd(const std::string& notification_id) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->TriggerAdNotificationEvent(
-      notification_id, ads::mojom::AdNotificationEventType::kViewed);
+  bat_ads_->TriggerNotificationAdEvent(
+      notification_id, ads::mojom::NotificationAdEventType::kViewed);
 }
 
-void AdsServiceImpl::OnCloseAdNotification(const std::string& notification_id,
+void AdsServiceImpl::OnCloseNotificationAd(const std::string& notification_id,
                                            const bool by_user) {
   StopNotificationTimeoutTimer(notification_id);
 
@@ -1078,50 +1078,50 @@ void AdsServiceImpl::OnCloseAdNotification(const std::string& notification_id,
     return;
   }
 
-  const ads::mojom::AdNotificationEventType event_type =
-      by_user ? ads::mojom::AdNotificationEventType::kDismissed
-              : ads::mojom::AdNotificationEventType::kTimedOut;
+  const ads::mojom::NotificationAdEventType event_type =
+      by_user ? ads::mojom::NotificationAdEventType::kDismissed
+              : ads::mojom::NotificationAdEventType::kTimedOut;
 
-  bat_ads_->TriggerAdNotificationEvent(notification_id, event_type);
+  bat_ads_->TriggerNotificationAdEvent(notification_id, event_type);
 }
 
-void AdsServiceImpl::OnClickAdNotification(const std::string& notification_id) {
+void AdsServiceImpl::OnClickNotificationAd(const std::string& notification_id) {
   if (!connected()) {
     return;
   }
 
   OpenNewTabWithAd(notification_id);
 
-  bat_ads_->TriggerAdNotificationEvent(
-      notification_id, ads::mojom::AdNotificationEventType::kClicked);
+  bat_ads_->TriggerNotificationAdEvent(
+      notification_id, ads::mojom::NotificationAdEventType::kClicked);
 }
 
-bool AdsServiceImpl::ShouldShowCustomAdNotifications() {
+bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
   const bool can_show_native_notifications =
       NotificationHelper::GetInstance()->CanShowNativeNotifications();
 
-  bool can_fallback_to_custom_ad_notifications =
-      features::CanFallbackToCustomAdNotifications();
-  if (!can_fallback_to_custom_ad_notifications) {
-    ClearPref(prefs::kAdNotificationDidFallbackToCustom);
+  bool can_fallback_to_custom_notification_ads =
+      features::CanFallbackToCustomNotificationAds();
+  if (!can_fallback_to_custom_notification_ads) {
+    ClearPref(prefs::kNotificationAdDidFallbackToCustom);
   } else {
-    const bool allowed_to_fallback_to_custom_ad_notifications =
-        features::IsAllowedToFallbackToCustomAdNotificationsEnabled();
-    if (!allowed_to_fallback_to_custom_ad_notifications) {
-      can_fallback_to_custom_ad_notifications = false;
+    const bool allowed_to_fallback_to_custom_notification_ads =
+        features::IsAllowedToFallbackToCustomNotificationAdsEnabled();
+    if (!allowed_to_fallback_to_custom_notification_ads) {
+      can_fallback_to_custom_notification_ads = false;
     }
   }
 
-  const bool should_show = features::IsCustomAdNotificationsEnabled();
+  const bool should_show = features::IsCustomNotificationAdsEnabled();
 
   const bool should_fallback =
-      !can_show_native_notifications && can_fallback_to_custom_ad_notifications;
+      !can_show_native_notifications && can_fallback_to_custom_notification_ads;
   if (should_fallback) {
-    SetBooleanPref(prefs::kAdNotificationDidFallbackToCustom, true);
+    SetBooleanPref(prefs::kNotificationAdDidFallbackToCustom, true);
   }
 
   const bool did_fallback =
-      GetBooleanPref(prefs::kAdNotificationDidFallbackToCustom);
+      GetBooleanPref(prefs::kNotificationAdDidFallbackToCustom);
 
   return should_show || should_fallback || did_fallback;
 }
@@ -1138,7 +1138,7 @@ void AdsServiceImpl::MaybeOpenNewTabWithAd() {
 
 void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
   if (StopNotificationTimeoutTimer(placement_id)) {
-    VLOG(1) << "Cancelled timeout for ad notification with placement id "
+    VLOG(1) << "Cancelled timeout for notification ad with placement id "
             << placement_id;
   }
 
@@ -1147,13 +1147,13 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
     return;
   }
 
-  bat_ads_->GetAdNotification(
+  bat_ads_->GetNotificationAd(
       placement_id,
       base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
 }
 
 void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
-  ads::AdNotificationInfo notification;
+  ads::NotificationAdInfo notification;
   notification.FromJson(json);
 
   OpenNewTabWithUrl(notification.target_url);
@@ -1777,7 +1777,7 @@ void AdsServiceImpl::MigratePrefsVersion9To10() {
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
-    // |kDefaultAdNotificationsPerHour|
+    // |kDefaultNotificationAdsPerHour|
     profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
   }
 }
@@ -1790,7 +1790,7 @@ void AdsServiceImpl::MigratePrefsVersion10To11() {
   const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
-    // |kDefaultAdNotificationsPerHour|
+    // |kDefaultNotificationAdsPerHour|
     profile_->GetPrefs()->ClearPref(ads::prefs::kAdsPerHour);
   }
 }
@@ -1850,23 +1850,23 @@ void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
   SetEnabled(false);
 }
 
-void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
-  if (!ShouldShowMyFirstAdNotification()) {
+void AdsServiceImpl::MaybeShowMyFirstNotificationAd() {
+  if (!ShouldShowMyFirstNotificationAd()) {
     return;
   }
 
-  if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
+  if (!NotificationHelper::GetInstance()->ShowMyFirstNotificationAd()) {
     return;
   }
 
-  SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
+  SetBooleanPref(prefs::kShouldShowMyFirstNotificationAd, false);
 }
 
-bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
-  const bool should_show_my_first_ad_notification =
-      GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
+bool AdsServiceImpl::ShouldShowMyFirstNotificationAd() {
+  const bool should_show_my_first_notification_ad =
+      GetBooleanPref(prefs::kShouldShowMyFirstNotificationAd);
   return IsEnabled() && ShouldShowNotifications() &&
-         should_show_my_first_ad_notification;
+         should_show_my_first_notification_ad;
 }
 
 bool AdsServiceImpl::PrefExists(const std::string& path) const {
@@ -1942,10 +1942,10 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
   return data_resource;
 }
 
-void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
-  if (ShouldShowCustomAdNotifications()) {
-    std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
-        std::make_unique<AdNotificationPlatformBridge>(profile_);
+void AdsServiceImpl::ShowNotification(const ads::NotificationAdInfo& info) {
+  if (ShouldShowCustomNotificationAds()) {
+    std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
+        std::make_unique<NotificationAdPlatformBridge>(profile_);
 
     std::u16string title;
     if (base::IsStringUTF8(info.title)) {
@@ -1957,10 +1957,10 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
       body = base::UTF8ToUTF16(info.body);
     }
 
-    const AdNotification ad_notification(info.placement_id, title, body,
+    const NotificationAd notification_ad(info.placement_id, title, body,
                                          nullptr);
 
-    platform_bridge->ShowAdNotification(ad_notification);
+    platform_bridge->ShowNotificationAd(notification_ad);
   } else {
     std::u16string title;
     if (base::IsStringUTF8(info.title)) {
@@ -1975,7 +1975,7 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
     message_center::RichNotificationData notification_data;
     notification_data.context_message = u" ";
 
-    const GURL url = GURL(kAdNotificationUrlPrefix + info.placement_id);
+    const GURL url = GURL(kNotificationAdUrlPrefix + info.placement_id);
 
     std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
@@ -2002,12 +2002,12 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
 void AdsServiceImpl::StartNotificationTimeoutTimer(
     const std::string& placement_id) {
 #if BUILDFLAG(IS_ANDROID)
-  if (!ShouldShowCustomAdNotifications()) {
+  if (!ShouldShowCustomNotificationAds()) {
     return;
   }
 #endif
 
-  const int timeout_in_seconds = features::AdNotificationTimeout();
+  const int timeout_in_seconds = features::NotificationAdTimeout();
   if (timeout_in_seconds == 0) {
     // Never time out
     return;
@@ -2021,7 +2021,7 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(
       base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
                      placement_id));
 
-  VLOG(1) << "Timeout ad notification with placement id " << placement_id
+  VLOG(1) << "Timeout notification ad with placement id " << placement_id
           << " in " << timeout_in_seconds << " seconds";
 }
 
@@ -2038,27 +2038,27 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(
 }
 
 bool AdsServiceImpl::ShouldShowNotifications() {
-  if (!features::IsAdNotificationsEnabled()) {
+  if (!features::IsNotificationAdsEnabled()) {
     LOG(INFO) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
 
   if (!NotificationHelper::GetInstance()->CanShowNativeNotifications()) {
-    return ShouldShowCustomAdNotifications();
+    return ShouldShowCustomNotificationAds();
   }
 
   return true;
 }
 
 void AdsServiceImpl::CloseNotification(const std::string& placement_id) {
-  if (ShouldShowCustomAdNotifications()) {
-    std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
-        std::make_unique<AdNotificationPlatformBridge>(profile_);
+  if (ShouldShowCustomNotificationAds()) {
+    std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
+        std::make_unique<NotificationAdPlatformBridge>(profile_);
 
-    platform_bridge->CloseAdNotification(placement_id);
+    platform_bridge->CloseNotificationAd(placement_id);
   } else {
 #if BUILDFLAG(IS_ANDROID)
-    const std::string brave_ads_url_prefix = kAdNotificationUrlPrefix;
+    const std::string brave_ads_url_prefix = kNotificationAdUrlPrefix;
     const GURL url =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
     BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(

@@ -32,7 +32,7 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
 
   MOCK_METHOD1(ShowNotification,
-               void(const AdNotificationInfo& ad_notification));
+               void(const NotificationAdInfo& notification_ad));
 
   MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
 

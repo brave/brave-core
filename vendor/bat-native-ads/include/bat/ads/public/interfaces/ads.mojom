@@ -23,7 +23,7 @@ struct BuildChannel {
 
 enum AdType {
   kUndefined = 0,
-  kAdNotification,
+  kNotificationAd,
   kNewTabPageAd,
   kPromotedContentAd,
   kInlineContentAd,
@@ -38,7 +38,7 @@ struct Conversion {
   mojo_base.mojom.Time expire_at;
 };
 
-enum AdNotificationEventType {
+enum NotificationAdEventType {
   kServed = 0,
   kViewed,
   kClicked,

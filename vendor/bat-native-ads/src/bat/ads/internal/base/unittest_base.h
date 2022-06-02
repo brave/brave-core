@@ -20,7 +20,7 @@
 #include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
-#include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/deprecated/creatives/notification_ads/notification_ads.h"
 #include "bat/ads/internal/diagnostics/diagnostics.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity.h"
@@ -108,7 +108,7 @@ class UnitTestBase : public testing::Test {
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<Client> client_;
-  std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<NotificationAds> notification_ads_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<Database> database_;
   std::unique_ptr<Diagnostics> diagnostics_;

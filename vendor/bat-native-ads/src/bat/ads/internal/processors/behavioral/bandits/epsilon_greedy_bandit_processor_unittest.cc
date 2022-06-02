@@ -94,10 +94,10 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   // Act
   // rewards: [0, 0, 0, 0] => value: 0.0
   std::string segment = "travel";
-  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
-  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
 
   // Assert
   std::string json =
@@ -123,10 +123,10 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   // Act
   // rewards: [1, 0, 1, 0] => value: 0.5
   std::string segment = "travel";
-  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   std::string json =
@@ -152,10 +152,10 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   // Act
   // rewards: [1, 1, 1, 1] => value: 1.0
   std::string segment = "travel";
-  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment, mojom::NotificationAdEventType::kClicked});
 
   // Assert
   std::string json =
@@ -179,7 +179,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
 
   // Act
   std::string segment = "foobar";
-  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   std::string json =
@@ -198,7 +198,7 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   // Act
   std::string segment = "travel-child";
   std::string parent_segment = "travel";
-  processor.Process({segment, mojom::AdNotificationEventType::kTimedOut});
+  processor.Process({segment, mojom::NotificationAdEventType::kTimedOut});
 
   // Assert
   std::string json =

@@ -55,7 +55,7 @@ TransactionList GetAllUnreconciledTransactions(
     // |created_at|, |value| and |confirmation_type| are set from legacy state
     transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
     transaction.creative_instance_id = kMigrationUnreconciledTransactionId;
-    transaction.ad_type = AdType::kAdNotification;
+    transaction.ad_type = AdType::kNotificationAd;
   }
 
   return unreconciled_transactions;
@@ -88,7 +88,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   reconciled_transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
   reconciled_transaction.value = payment.balance;
-  reconciled_transaction.ad_type = AdType::kAdNotification;
+  reconciled_transaction.ad_type = AdType::kNotificationAd;
   reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
   reconciled_transaction.reconciled_at = time;
   reconciled_transactions.push_back(reconciled_transaction);
@@ -103,7 +103,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
     reconciled_transaction.creative_instance_id =
         base::GUID::GenerateRandomV4().AsLowercaseString();
     reconciled_transaction.value = 0.0;
-    reconciled_transaction.ad_type = AdType::kAdNotification;
+    reconciled_transaction.ad_type = AdType::kNotificationAd;
     reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
     reconciled_transaction.reconciled_at = time;
     reconciled_transactions.push_back(reconciled_transaction);
@@ -136,7 +136,7 @@ BuildTransactionForReconciledTransactionsLastMonth(
   reconciled_transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
   reconciled_transaction.value = payment.balance;
-  reconciled_transaction.ad_type = AdType::kAdNotification;
+  reconciled_transaction.ad_type = AdType::kNotificationAd;
   reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
   reconciled_transaction.reconciled_at = time;
 

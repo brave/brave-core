@@ -47,7 +47,7 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
 
   unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
 
-  unblinded_payment_token.ad_type = AdType::kAdNotification;
+  unblinded_payment_token.ad_type = AdType::kNotificationAd;
 
   return unblinded_payment_token;
 }

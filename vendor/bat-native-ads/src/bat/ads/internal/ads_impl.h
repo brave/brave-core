@@ -15,17 +15,17 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
-#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ad_events/inline_content_ads/inline_content_ad_observer.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/ad_events/notification_ads/notification_ad_observer.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
-#include "bat/ads/internal/serving/ad_notification_serving_observer.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
+#include "bat/ads/internal/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -37,9 +37,9 @@ class Time;
 
 namespace ads {
 
-namespace ad_notifications {
+namespace notification_ads {
 class Serving;
-}  // namespace ad_notifications
+}  // namespace notification_ads
 
 namespace inline_content_ads {
 class Serving;
@@ -74,8 +74,8 @@ class TokenGeneratorInterface;
 
 class Account;
 class Diagnostics;
-class AdNotification;
-class AdNotifications;
+class NotificationAd;
+class NotificationAds;
 class Transfer;
 class AdsClientHelper;
 class BrowserManager;
@@ -92,7 +92,7 @@ class SearchResultAd;
 class TabManager;
 class UserActivity;
 struct AdInfo;
-struct AdNotificationInfo;
+struct NotificationAdInfo;
 struct CatalogInfo;
 struct HistoryInfo;
 struct ConversionQueueItemInfo;
@@ -104,8 +104,8 @@ struct WalletInfo;
 
 class AdsImpl final : public Ads,
                       public AccountObserver,
-                      public AdNotificationObserver,
-                      public AdNotificationServingObserver,
+                      public NotificationAdObserver,
+                      public NotificationAdServingObserver,
                       public CatalogObserver,
                       public DatabaseManagerObserver,
                       public TransferObserver,
@@ -166,11 +166,11 @@ class AdsImpl final : public Ads,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  bool GetAdNotification(const std::string& placement_id,
-                         AdNotificationInfo* ad_notification) override;
-  void TriggerAdNotificationEvent(
+  bool GetNotificationAd(const std::string& placement_id,
+                         NotificationAdInfo* notification_ad) override;
+  void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      const mojom::AdNotificationEventType event_type) override;
+      const mojom::NotificationAdEventType event_type) override;
 
   void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
@@ -231,7 +231,7 @@ class AdsImpl final : public Ads,
   void MigrateRewards(InitializeCallback callback);
   void LoadClientState(InitializeCallback callback);
   void LoadConfirmationsState(InitializeCallback callback);
-  void LoadAdNotificationsState(InitializeCallback callback);
+  void LoadNotificationAdsState(InitializeCallback callback);
   void Initialized(InitializeCallback callback);
 
   void Start();
@@ -240,10 +240,10 @@ class AdsImpl final : public Ads,
 
   void MaybeFetchCatalog();
 
-  void MaybeServeAdNotification();
+  void MaybeServeNotificationAd();
 
-  bool ShouldServeAdNotificationsAtRegularIntervals() const;
-  void MaybeServeAdNotificationsAtRegularIntervals();
+  bool ShouldServeNotificationAdsAtRegularIntervals() const;
+  void MaybeServeNotificationAdsAtRegularIntervals();
 
   // DatabaseManagerObserver:
   void OnWillMigrateDatabase(const int from_version,
@@ -267,17 +267,17 @@ class AdsImpl final : public Ads,
   // CatalogObserver:
   void OnDidUpdateCatalog(const CatalogInfo& catalog) override;
 
-  // AdNotificationServingObserver:
-  void OnDidServeAdNotification(const AdNotificationInfo& ad) override;
+  // NotificationAdServingObserver:
+  void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
-  // AdNotificationObserver:
-  void OnAdNotificationViewed(const AdNotificationInfo& ad) override;
-  void OnAdNotificationClicked(const AdNotificationInfo& ad) override;
-  void OnAdNotificationDismissed(const AdNotificationInfo& ad) override;
-  void OnAdNotificationTimedOut(const AdNotificationInfo& ad) override;
-  void OnAdNotificationEventFailed(
+  // NotificationAdObserver:
+  void OnNotificationAdViewed(const NotificationAdInfo& ad) override;
+  void OnNotificationAdClicked(const NotificationAdInfo& ad) override;
+  void OnNotificationAdDismissed(const NotificationAdInfo& ad) override;
+  void OnNotificationAdTimedOut(const NotificationAdInfo& ad) override;
+  void OnNotificationAdEventFailed(
       const std::string& placement_id,
-      const mojom::AdNotificationEventType event_type) override;
+      const mojom::NotificationAdEventType event_type) override;
 
   // NewTabPageServingObserver:
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
@@ -346,9 +346,9 @@ class AdsImpl final : public Ads,
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<resource::Conversions> conversions_resource_;
   std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<ad_notifications::Serving> ad_notification_serving_;
-  std::unique_ptr<AdNotification> ad_notification_;
-  std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<notification_ads::Serving> notification_ad_serving_;
+  std::unique_ptr<NotificationAd> notification_ad_;
+  std::unique_ptr<NotificationAds> notification_ads_;
   std::unique_ptr<Catalog> catalog_;
   std::unique_ptr<Transfer> transfer_;
   std::unique_ptr<inline_content_ads::Serving> inline_content_ad_serving_;

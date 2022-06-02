@@ -111,7 +111,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
     unblinded_payment_token.public_key = cbr::PublicKey(public_key_base64);
     ASSERT_TRUE(unblinded_payment_token.public_key.has_value());
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
-    unblinded_payment_token.ad_type = AdType::kAdNotification;
+    unblinded_payment_token.ad_type = AdType::kNotificationAd;
 
     EXPECT_TRUE(
         get_unblinded_payment_tokens()->TokenExists(unblinded_payment_token));
@@ -192,7 +192,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromList) {
         cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
     ASSERT_TRUE(unblinded_payment_token.public_key.has_value());
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
-    unblinded_payment_token.ad_type = AdType::kAdNotification;
+    unblinded_payment_token.ad_type = AdType::kNotificationAd;
 
     expected_unblinded_payment_tokens.push_back(unblinded_payment_token);
   }

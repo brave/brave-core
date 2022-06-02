@@ -32,7 +32,7 @@ TransactionInfo BuildTransaction(const double value,
   transaction.creative_instance_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
-  transaction.ad_type = AdType::kAdNotification;
+  transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = confirmation_type;
   transaction.reconciled_at = reconciled_at;
 

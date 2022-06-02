@@ -9,7 +9,6 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
@@ -21,6 +20,7 @@
 #include "bat/ads/internal/history/history_util.h"
 #include "bat/ads/internal/history/sorts/history_sort_factory.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
@@ -56,7 +56,7 @@ HistoryInfo Get(const HistoryFilterType filter_type,
   return normalized_history;
 }
 
-void AddAdNotification(const AdNotificationInfo& ad,
+void AddNotificationAd(const NotificationAdInfo& ad,
                        const ConfirmationType& confirmation_type) {
   const HistoryItemInfo& history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.body);
