@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerComponentBehaviors, RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js'
-import {routes} from '../route.js'
-import {Router} from '../router.js'
+import { RegisterPolymerComponentBehaviors, RegisterPolymerTemplateModifications } from 'chrome://brave-resources/polymer_overriding.js'
+import { I18nBehavior } from 'chrome://resources/js/i18n_behavior.m.js'
+import { loadTimeData } from 'chrome://resources/js/load_time_data.m.js'
+import { routes } from '../route.js'
+import { Router } from '../router.js'
 import '../brave_privacy_page/brave_tor_subpage.js'
 
 
@@ -31,8 +31,8 @@ RegisterPolymerTemplateModifications({
     } else {
       securityLinkRow.insertAdjacentHTML('afterend',
         `<cr-link-row id="torLinkRow" start-icon="cr:security"
-            class="hr" label="${I18nBehavior.i18n('securityPageTitle')}"
-            sub-label="${I18nBehavior.i18n('securityPageDescription')}"
+            class="hr" label="${I18nBehavior.i18n('torConnectionSettingsTitle')}"
+            sub-label="${I18nBehavior.i18n('torConnectionSettingsDesc')}"
             on-click="onTorClick_"
             role-description="${I18nBehavior.i18n('subpageArrowRoleDescription')}">
          </cr-link-row>`)
@@ -102,11 +102,11 @@ RegisterPolymerTemplateModifications({
           </settings-subpage>
           </template>
         `)
-        pages.insertAdjacentHTML('beforeend',`
+        pages.insertAdjacentHTML('beforeend', `
           <template is="dom-if" route-path="/privacy/tor">
-          <settings-subpage id="tor" page-title="${I18nBehavior.i18n('securityPageTitle')}"
+          <settings-subpage id="tor" page-title="${I18nBehavior.i18n('torConnectionSettingsTitle')}"
               associated-control="[[$$('#torLinkRow')]]"
-              learn-more-url="${I18nBehavior.i18n('safeBrowsingHelpCenterURL')}">
+              learn-more-url="${I18nBehavior.i18n('torConnectionSettingsDesc')}">
             <settings-brave-tor-subpage prefs="{{prefs}}"
             </settings-brave-tor-subpage>
           </settings-subpage>

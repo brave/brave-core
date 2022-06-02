@@ -667,6 +667,45 @@
   <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
     Tor hides your IP address from the sites you visit.
   </message>
+  <message name="IDS_SETTINGS_TOR_USE_BRIDGES_TITLE" desc="">
+    Use Bridges
+  </message>
+  <message name="IDS_SETTINGS_TOR_USE_BRIDGES_DESC" desc="">
+    Bridges help you access the Tor Network in place where Tor is blocked. Depending on where you are, one bridge may work better than another.
+  </message>
+  <message name="IDS_SETTINGS_TOR_CONNECTION_SETTINGS_TITLE" desc="">
+    Tor connection settings
+  </message>
+  <message name="IDS_SETTINGS_TOR_CONNECTION_SETTINGS_DESC" desc="">
+    Controls how Private Windows with Tor connect to the Tor network
+  </message>
+  <message name="IDS_SETTINGS_TOR_SELECT_BUILT_IN_RADIO" desc="">
+    Select a built-in bridge
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGES_RADIO" desc="">
+    Request a bridge from torproject.org
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_NEW_BRIDGE_BUTTON" desc="">
+    Request a New Bridge...
+  </message>
+  <message name="IDS_SETTINGS_TOR_PROVIDE_BRIDGES_RADIO" desc="">
+    Provide a bridge
+  </message>
+  <message name="IDS_SETTINGS_TOR_ENTER_BRIDGE_INFO_LABEL" desc="">
+    Enter bridge information from a trusted source.
+  </message>
+  <message name="IDS_SETTINGS_TOR_APPLY_CHANGES_BUTTON" desc="">
+    Apply changes
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE" desc="">
+    Request Bridge
+  </message>
+  <message name="IDS_SETTINGS_TOR_SUBMIT_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
+    Submit
+  </message>
+  <message name="IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
+    Cancel
+  </message>
   <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
     Automatically redirect .onion sites
   </message>

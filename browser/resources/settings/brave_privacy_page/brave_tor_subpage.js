@@ -33,9 +33,11 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
       builtInBridgesTypes_: {
         type: Array,
-        value: [{ name: "snowflake", value: 0 },
-        { name: "obfs4", value: 1 },
-        { name: "meek-azure", value: 2 }]
+        value: [
+          { name: "snowflake", value: 0 },
+          { name: "obfs4", value: 1 },
+          { name: "meek-azure", value: 2 }
+        ]
       },
 
       builtinBridges_: Number,

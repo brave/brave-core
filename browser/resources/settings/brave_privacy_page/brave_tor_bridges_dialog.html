@@ -2,20 +2,24 @@
   #captcha {
     min-height: 125px;
   }
+
+  #captchaInputBox {
+    display: flex;
+  }
 </style>
 <cr-dialog id="dialog" show-close-button show-on-attach>
-  <div slot="title">Request Bridge</div>
+  <div slot="title">$i18n{torRequestBridgeDialogTitle}</div>
   <div slot="body">
     <div>
       <img id="captchaImage">
     </div>
-    <div>
+    <div id="captchaInputBox">
       <cr-input id="captchaResolve"></cr-input>
       <cr-button id="renewCaptcha">Renew</cr-button>
     </div>
   </div>
   <div slot="button-container">
-    <cr-button class="action-button" id="submit" on-click="submitClicked_">Submit</cr-button>
-    <cr-button class="cancel-button" id="cancel" on-click="cancelClicked_">Cancel</cr-button>
+    <cr-button class="action-button" id="submit" on-click="submitClicked_">$i18n{torSubmitDialogButton}</cr-button>
+    <cr-button class="cancel-button" id="cancel" on-click="cancelClicked_">$i18n{torCancelDialogButton}</cr-button>
   </div>
 </cr-dialog>
