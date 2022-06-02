@@ -2,7 +2,7 @@ import * as React from 'react'
 import Button from '$web-components/button'
 
 import * as S from './style'
-import { ButtonText, IconBox } from '../styles/style'
+import { ButtonText, IconBox } from '../general'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { useSelector, useDispatch } from '../../state/hooks'
