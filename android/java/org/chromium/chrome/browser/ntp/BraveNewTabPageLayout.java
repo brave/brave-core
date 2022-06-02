@@ -738,7 +738,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
 
     private void keepPosition(int prevScrollPosition, int prevRecyclerViewPosition,
             int prevRecyclerViewItemPosition) {
-        if (!mIsNewsOn || !mIsShowNewsOn || (mIsNewsOn && mIsShowOptin)) {
+        if (!mIsNewsOn || !mIsShowNewsOn || (mIsNewsOn && mIsShowOptin && !mIsShowNewsOn)) {
             return;
         }
         processFeed();
@@ -1363,6 +1363,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     sharedPreferencesEditor.apply();
                     BravePrefServiceBridge.getInstance().setNewsOptIn(true);
                     BravePrefServiceBridge.getInstance().setShowNews(true);
+                    mIsNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
+                    mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
                     if (BraveActivity.getBraveActivity() != null) {
                         BraveActivity.getBraveActivity().inflateNewsSettingsBar();
                         mSettingsBar =
