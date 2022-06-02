@@ -16,8 +16,14 @@ class PrefService;
 namespace tor {
 
 struct BridgesConfig {
+  enum class Usage {
+    kNotUsed,
+    kBuiltIn,
+    kRequest,
+    kProvide,
+  };
+
   enum class BuiltinType {
-    kNone,
     kSnowflake,
     kObfs4,
     kMeekAzure,
@@ -37,8 +43,9 @@ struct BridgesConfig {
   base::Value::Dict ToDict() const;
   base::Value ToValue() const;
 
-  bool use_bridges = false;
-  BuiltinType use_builtin = BuiltinType::kNone;
+  Usage use_bridges = Usage::kNotUsed;
+  BuiltinType use_builtin = BuiltinType::kObfs4;
+  std::vector<std::string> requested_bridges;
   std::vector<std::string> bridges;
 };
 

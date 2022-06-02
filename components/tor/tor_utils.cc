@@ -21,7 +21,37 @@
 namespace {
 constexpr const char kUseBridgesKey[] = "use_bridges";
 constexpr const char kUseBuiltinBridgesKey[] = "use_builtin_bridges";
+constexpr const char kRequestedBriges[] = "requested_bridges";
 constexpr const char kBridgesKey[] = "bridges";
+
+template<typename Enum>
+struct MinMaxTraits;
+
+template <>
+struct MinMaxTraits<tor::BridgesConfig::Usage> {
+  static constexpr tor::BridgesConfig::Usage kMin =
+      tor::BridgesConfig::Usage::kNotUsed;
+  static constexpr tor::BridgesConfig::Usage kMax =
+      tor::BridgesConfig::Usage::kProvide;
+};
+
+template <>
+struct MinMaxTraits<tor::BridgesConfig::BuiltinType> {
+  static constexpr tor::BridgesConfig::BuiltinType kMin =
+      tor::BridgesConfig::BuiltinType::kSnowflake;
+  static constexpr tor::BridgesConfig::BuiltinType kMax =
+      tor::BridgesConfig::BuiltinType::kMeekAzure;
+};
+
+template <typename Enum>
+Enum CastToEnum(const int value) {
+  if (value >= static_cast<int>(MinMaxTraits<Enum>::kMin) &&
+      value <= static_cast<int>(MinMaxTraits<Enum>::kMax)) {
+    return static_cast<Enum>(value);
+  }
+  return MinMaxTraits<Enum>::kMin;
+}
+
 }  // namespace
 
 namespace tor {
@@ -34,8 +64,6 @@ BridgesConfig& BridgesConfig::operator=(BridgesConfig&&) noexcept = default;
 
 // clang-format off
 const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
-  static const base::NoDestructor<std::vector<std::string>> kNoneBridges;
-
   static const base::NoDestructor<std::vector<std::string>> kSnowflakeBridges(
       {"snowflake 192.0.2.3:1 2B280B23E1107BB62ABFC40DDCC8824814F80A72"});
 
@@ -62,8 +90,6 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
       "url=https://meek.azureedge.net/ front=ajax.aspnetcdn.com"});
 
   switch (use_builtin) {
-    case BuiltinType::kNone:
-      return *kNoneBridges;
     case BuiltinType::kSnowflake:
       return *kSnowflakeBridges;
     case BuiltinType::kObfs4:
@@ -82,13 +108,11 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   const auto& dict = v->GetDict();
 
   BridgesConfig result;
-  result.use_bridges = dict.FindBool(kUseBridgesKey).value_or(false);
+  result.use_bridges =
+      CastToEnum<Usage>(dict.FindInt(kUseBridgesKey).value_or(0));
 
-  const int use_builtin = dict.FindInt(kUseBuiltinBridgesKey).value_or(0);
-  if (use_builtin >= static_cast<int>(BuiltinType::kNone) &&
-      use_builtin <= static_cast<int>(BuiltinType::kMeekAzure)) {
-    result.use_builtin = static_cast<BuiltinType>(use_builtin);
-  }
+  result.use_builtin =
+      CastToEnum<BuiltinType>(dict.FindInt(kUseBuiltinBridgesKey).value_or(0));
 
   if (auto* bridges = dict.FindList(kBridgesKey)) {
     for (const auto& bridge : *bridges) {
@@ -97,20 +121,34 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
       result.bridges.push_back(bridge.GetString());
     }
   }
+  if (auto* requested_bridges = dict.FindList(kRequestedBriges)) {
+    for (const auto& bridge : *requested_bridges) {
+      if (!bridge.is_string())
+        continue;
+      result.requested_bridges.push_back((bridge.GetString()));
+    }
+  }
 
   return result;
 }
 
 base::Value::Dict BridgesConfig::ToDict() const {
   base::Value::Dict result;
-  result.Set(kUseBridgesKey, use_bridges);
+  result.Set(kUseBridgesKey, static_cast<int>(use_bridges));
   result.Set(kUseBuiltinBridgesKey, static_cast<int>(use_builtin));
 
   base::Value::List list;
-  for (const auto& bridge : this->bridges) {
+  for (const auto& bridge : bridges) {
     list.Append(bridge);
   }
   result.Set(kBridgesKey, std::move(list));
+
+  list = base::Value::List();
+  for (const auto& bridge : requested_bridges) {
+    list.Append(bridge);
+  }
+  result.Set(kRequestedBriges, std::move(list));
+
   return result;
 }
 

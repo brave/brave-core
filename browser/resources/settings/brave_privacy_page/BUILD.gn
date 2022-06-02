@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
@@ -13,6 +14,7 @@ group("web_modules") {
   public_deps = [
     ":brave_personalization_options_module",
     ":modules",
+    ":templatize",
   ]
 }
 
@@ -29,6 +31,14 @@ polymer_modulizer("brave_personalization_options") {
 js_modulizer("modules") {
   input_files = [
     "brave_privacy_page_browser_proxy.js",
+    "brave_tor_browser_proxy.js",
   ]
   namespace_rewrites = settings_namespace_rewrites
+}
+
+html_to_js("templatize") {
+  js_files = [
+    "brave_tor_bridges_dialog.js",
+    "brave_tor_subpage.js",
+  ]
 }

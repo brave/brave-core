@@ -1,0 +1,64 @@
+<style include="settings-shared md-select">
+  img {
+    width: 100%;
+  }
+
+  #torBridgesControls {
+    padding: 0 var(--cr-section-padding);
+  }
+
+  #requestedBridges,
+  #providedBridges {
+    width: 90%;
+    min-height: 70px;
+    height: auto;
+    resize: vertical;
+  }
+
+  textarea {
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: scroll;
+  }
+</style>
+<div id="torBridgesControls">
+  <settings-toggle-button id="useBridges" class="hr" label="Use Bridges"
+    sub-label="Bridges help you access the Tor Network in place where Tor is blocked. Depending on where you are, one bridge may work better than another."
+    checked="[[isUsingBridges_]]" on-change="onUseBridgesChange_">
+  </settings-toggle-button>
+  <settings-radio-group id="brigdesGroup" no-set-pref selectable-elements="settings-collapse-radio-button"
+    on-change="onUsageSelect_" hidden="[[!isUsingBridges_]]">
+    <settings-collapse-radio-button id="useBuiltIn" name="useBuiltIn" label="Select a built-in bridge" no-collapse
+      no-automatic-collapse>
+      <div slot="collapse">
+        <select id="builtInBridgesType" class="md-select" on-change="OnBuiltInBridgesSelect_">
+          <template is="dom-repeat" items="[[builtInBridgesTypes_]]">
+            <option value="[[item.value]]">
+              [[item.name]]
+            </option>
+          </template>
+        </select>
+      </div>
+    </settings-collapse-radio-button>
+    <settings-collapse-radio-button id="useRequestedBridges" name="useRequestedBridges"
+      label="Request a bridge from torproject.org" no-collapse no-automatic-collapse>
+      <div slot="collapse">
+        <textarea id="requestedBridges" multiline="true" rows="3" readonly="true"></textarea>
+        <cr-button on-click="requestBridges_">Request a New Brigde...</cr-button>
+      </div>
+    </settings-collapse-radio-button>
+    <settings-collapse-radio-button id="useProvidedBridges" name="useProvidedBridges" label="Provide a bridge"
+      no-collapse no-automatic-collapse>
+      <div slot="collapse">
+        <div>Enter bridge information from a trusted source.</div>
+        <textarea id="providedBridges" multiline="true" rows="3"></textarea>
+      </div>
+    </settings-collapse-radio-button>
+  </settings-radio-group>
+  <br>
+  <cr-button id="apply" on-click="setBridgesConfig_" hidden="true">Apply changes</cr-button>
+</div>
+<template is="dom-if" if="[[showRequestBridgesDialog_]]" restamp>
+  <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">
+  </request-bridges-dialog>
+</template>

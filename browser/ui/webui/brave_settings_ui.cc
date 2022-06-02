@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 
+#include <memory>
 #include <string>
 
 #include "base/feature_list.h"
@@ -40,6 +41,10 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/webui/settings/brave_tor_handler.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
@@ -54,9 +59,12 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
+#if BUILDFLAG(ENABLE_TOR)
+  web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
+#endif
 }
 
-BraveSettingsUI::~BraveSettingsUI() {}
+BraveSettingsUI::~BraveSettingsUI() = default;
 
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,

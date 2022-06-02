@@ -3,12 +3,41 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
+import {RegisterPolymerComponentBehaviors, RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js'
+import {routes} from '../route.js'
+import {Router} from '../router.js'
+import '../brave_privacy_page/brave_tor_subpage.js'
+
+
+const TorOptionsBehaviour = {
+  onTorClick_: function () {
+    Router.getInstance().navigateTo(routes.TOR)
+  },
+}
+
+RegisterPolymerComponentBehaviors({
+  'settings-privacy-page': [
+    TorOptionsBehaviour
+  ]
+})
 
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
+    const securityLinkRow = templateContent.getElementById('securityLinkRow')
+    if (!securityLinkRow) {
+      console.error('[Brave Settings Overrides] Could not find securityLinkRow id on privacy page.')
+    } else {
+      securityLinkRow.insertAdjacentHTML('afterend',
+        `<cr-link-row id="torLinkRow" start-icon="cr:security"
+            class="hr" label="${I18nBehavior.i18n('securityPageTitle')}"
+            sub-label="${I18nBehavior.i18n('securityPageDescription')}"
+            on-click="onTorClick_"
+            role-description="${I18nBehavior.i18n('subpageArrowRoleDescription')}">
+         </cr-link-row>`)
+    }
+
     const pages = templateContent.getElementById('pages')
     if (!pages) {
       console.error(`[Brave Settings Overrides] Couldn't find privacy_page #pages`)
@@ -73,6 +102,15 @@ RegisterPolymerTemplateModifications({
           </settings-subpage>
           </template>
         `)
+        pages.insertAdjacentHTML('beforeend',`
+          <template is="dom-if" route-path="/privacy/tor">
+          <settings-subpage id="tor" page-title="${I18nBehavior.i18n('securityPageTitle')}"
+              associated-control="[[$$('#torLinkRow')]]"
+              learn-more-url="${I18nBehavior.i18n('safeBrowsingHelpCenterURL')}">
+            <settings-brave-tor-subpage prefs="{{prefs}}"
+            </settings-brave-tor-subpage>
+          </settings-subpage>
+         </template>`)
       }
     }
 

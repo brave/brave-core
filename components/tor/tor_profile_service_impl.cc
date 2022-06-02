@@ -176,7 +176,7 @@ void TorProfileServiceImpl::OnBridgesConfigChanged() {
                     .value_or(tor::BridgesConfig());
   if (!tor_pluggable_transport_updater_ ||
       !tor_pluggable_transport_updater_->IsReady()) {
-    if (config.use_bridges)
+    if (config.use_bridges != tor::BridgesConfig::Usage::kNotUsed)
       tor_pluggable_transport_updater_->Register();
     return;
   }

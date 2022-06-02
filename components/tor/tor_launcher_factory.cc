@@ -155,14 +155,22 @@ void TorLauncherFactory::SetupPluggableTransport(
 
 void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!bridges_config.use_bridges) {
-    control_->SetupBridges({}, base::DoNothing());
-  } else if (bridges_config.use_builtin !=
-             tor::BridgesConfig::BuiltinType::kNone) {
-    control_->SetupBridges(bridges_config.GetBuiltinBridges(),
-                           base::DoNothing());
-  } else {
-    control_->SetupBridges(bridges_config.bridges, base::DoNothing());
+
+  switch (bridges_config.use_bridges) {
+    case tor::BridgesConfig::Usage::kNotUsed:
+      control_->SetupBridges({}, base::DoNothing());
+      break;
+    case tor::BridgesConfig::Usage::kBuiltIn:
+      control_->SetupBridges(bridges_config.GetBuiltinBridges(),
+                             base::DoNothing());
+      break;
+    case tor::BridgesConfig::Usage::kRequest:
+      control_->SetupBridges(bridges_config.requested_bridges,
+                             base::DoNothing());
+      break;
+    case tor::BridgesConfig::Usage::kProvide:
+      control_->SetupBridges(bridges_config.bridges, base::DoNothing());
+      break;
   }
 }
 

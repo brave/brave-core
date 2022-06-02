@@ -164,6 +164,13 @@ source_set("ui") {
       ]
     }
 
+    if (enable_tor) {
+      sources += [
+        "webui/settings/brave_tor_handler.cc",
+        "webui/settings/brave_tor_handler.h",
+      ]
+    }
+
     public_deps += [ "//brave/vendor/bat-native-ads" ]
   }  # !is_android
 
