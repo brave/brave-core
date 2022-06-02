@@ -1126,6 +1126,28 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
       GURL("https://mainnet-polygon.brave.com/"));
 }
 
+TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
+
+  mojom::NetworkInfo chain("some_id", "Custom Polygon", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://custom-rpc.com"},
+                           "symbol", "symbol_name", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
+
+  AddCustomNetwork(&prefs, chain);
+  EXPECT_TRUE(CustomEthChainExists(&prefs, chain.chain_id));
+
+  RemoveCustomNetwork(&prefs, chain.chain_id);
+  EXPECT_FALSE(CustomEthChainExists(&prefs, chain.chain_id));
+
+  // Should not crash.
+  RemoveCustomNetwork(&prefs, "unknown network");
+}
+
 TEST(BraveWalletUtilsUnitTest, GetFirstValidChainURL) {
   std::vector<std::string> urls = {
       "https://goerli.infura.io/v3/${INFURA_API_KEY}",
