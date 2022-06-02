@@ -165,8 +165,6 @@ void BraveP3AService::Init(
   // Init basic prefs.
   initialized_ = true;
 
-  InitOptInStatus(local_state_);
-
   average_upload_interval_ = base::Seconds(kDefaultUploadIntervalSeconds);
 
   upload_server_url_ = GURL(kP3AServerUrl);
