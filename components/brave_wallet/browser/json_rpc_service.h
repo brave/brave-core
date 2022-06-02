@@ -207,7 +207,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
 
-  GURL GetBlockTrackerUrlFromNetwork(std::string chain_id);
+  GURL GetBlockTrackerUrlFromNetwork(const std::string& chain_id);
   using GetFilEstimateGasCallback =
       base::OnceCallback<void(const std::string& gas_premium,
                               const std::string& gas_fee_cap,
@@ -513,11 +513,16 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       mojom::NetworkInfoPtr chain,
       const url::Origin& origin,
       AddEthereumChainForOriginCallback callback,
-      bool success);
+      const int http_code,
+      const std::string& response,
+      const base::flat_map<std::string, std::string>& headers);
 
-  void OnEthChainIdValidated(mojom::NetworkInfoPtr chain,
-                             AddEthereumChainCallback callback,
-                             bool success);
+  void OnEthChainIdValidated(
+      mojom::NetworkInfoPtr chain,
+      AddEthereumChainCallback callback,
+      const int http_code,
+      const std::string& response,
+      const base::flat_map<std::string, std::string>& headers);
 
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidUnstoppableDomain);

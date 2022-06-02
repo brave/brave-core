@@ -20,7 +20,9 @@
 // Common JSON RPC response parsing functions across different blockchains.
 namespace brave_wallet {
 
+// TODO(apaymyshev): fix callers with the function below.
 bool ParseSingleStringResult(const std::string& json, std::string* result);
+absl::optional<std::string> ParseSingleStringResult(const std::string& json);
 
 template <typename Error>
 void ParseErrorResult(const std::string& json,
