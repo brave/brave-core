@@ -15,7 +15,7 @@ LocaleHelper::LocaleHelper() = default;
 LocaleHelper::~LocaleHelper() = default;
 
 /*static*/
-void LocaleHelper::SetLocaleHelperForTesting(LocaleHelper* locale_helper) {
+void LocaleHelper::SetForTesting(LocaleHelper* locale_helper) {
   g_locale_helper_for_testing = locale_helper;
 }
 

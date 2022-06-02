@@ -8,11 +8,11 @@
 namespace brave_l10n {
 
 LocaleHelperMock::LocaleHelperMock() {
-  brave_l10n::LocaleHelper::SetLocaleHelperForTesting(this);
+  brave_l10n::LocaleHelper::SetForTesting(this);
 }
 
 LocaleHelperMock::~LocaleHelperMock() {
-  brave_l10n::LocaleHelper::SetLocaleHelperForTesting(nullptr);
+  brave_l10n::LocaleHelper::SetForTesting(nullptr);
 }
 
 }  // namespace brave_l10n

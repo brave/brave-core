@@ -22,7 +22,7 @@ class LocaleHelper {
 
   static LocaleHelper* GetInstance();
 
-  static void SetLocaleHelperForTesting(LocaleHelper* locale_helper);
+  static void SetForTesting(LocaleHelper* locale_helper);
 
   // Should return the locale based upon the tagging conventions of RFC 4646
   virtual std::string GetLocale() const;
