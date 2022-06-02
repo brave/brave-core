@@ -23,7 +23,7 @@ export const isSelectedAssetInAssetOptions = (selectedAsset: BraveWallet.Blockch
 }
 
 export const getRampAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
-  if (asset.symbol.toUpperCase() === 'BAT') {
+  if (asset.symbol.toUpperCase() === 'BAT' && asset.chainId === BraveWallet.MAINNET_CHAIN_ID) {
     // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
     return 'ETH_BAT'
   }
