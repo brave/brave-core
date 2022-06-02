@@ -1,0 +1,30 @@
+diff --git a/tools/git/move_source_file.py b/tools/git/move_source_file.py
+index ab57ae721179f77bb92b808e65dfe1ced8cf605f..4536e3c8d8def51553be568f4332802a936f30e7 100755
+--- a/tools/git/move_source_file.py
++++ b/tools/git/move_source_file.py
+@@ -30,7 +30,9 @@ if __name__ == '__main__':
+   # Need to add the directory containing sort_sources.py to the Python
+   # classpath.
+   sys.path.append(os.path.abspath(os.path.join(sys.path[0], '..')))
++  sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, 'brave', 'script'))
+ import sort_sources
++from move_source_fille_utils import to_src_relative_path, to_cwd_relative_path
+ 
+ 
+ HANDLED_EXTENSIONS = ['.cc', '.mm', '.h', '.hh', '.cpp', '.mojom']
+@@ -186,6 +188,7 @@ def UpdateIncludeGuard(old_path, new_path):
+   old_guard = MakeIncludeGuardName(old_path)
+   new_guard = MakeIncludeGuardName(new_path)
+ 
++  old_path, new_path = to_cwd_relative_path(old_path), to_cwd_relative_path(new_path)
+   with open(new_path) as f:
+     contents = f.read()
+ 
+@@ -244,6 +247,7 @@ def main():
+     to_path = MakeDestinationPath(from_path, orig_to_path)
+     if not opts.already_moved:
+       MoveFile(from_path, to_path)
++    from_path, to_path = to_src_relative_path(from_path), to_src_relative_path(to_path)
+     UpdatePostMove(from_path, to_path)
+   return 0
+ 
