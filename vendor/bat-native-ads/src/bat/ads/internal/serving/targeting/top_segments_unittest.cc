@@ -13,8 +13,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
@@ -94,7 +93,7 @@ class BatAdsTopSegmentsTest
     text_classification_resource_ =
         std::make_unique<resource::TextClassification>();
     text_classification_resource_->Load();
-    task_environment()->RunUntilIdle();
+    task_environment_.RunUntilIdle();
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
             text_classification_resource_.get());

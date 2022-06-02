@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database_table_util.h"
-#include "bat/ads/internal/base/database_transaction_util.h"
+#include "bat/ads/internal/base/database/database_table_util.h"
+#include "bat/ads/internal/base/database/database_transaction_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {

@@ -6,9 +6,8 @@
 #include "bat/ads/internal/account/transactions/reconciled_transactions_util.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -24,7 +23,7 @@ class BatAdsReconciledTransactionsUtilTest : public UnitTestBase {
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionsThisMonth) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
   const TransactionInfo& transaction =
@@ -42,14 +41,14 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        DoesNotHaveReconciledTransactionsForThisMonth) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   // Act
   const bool did_reconcile_transactions =
@@ -62,14 +61,14 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionsLastMonth) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   // Act
   const bool did_reconcile_transactions =
@@ -82,7 +81,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        DoesNotHaveReconciledTransactionsForPreviousMonth) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
   const TransactionInfo& transaction =
@@ -99,7 +98,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 
 TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
@@ -113,7 +112,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
 
 TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -128,7 +127,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionWithinDateRange) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
@@ -144,7 +143,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 TEST_F(BatAdsReconciledTransactionsUtilTest,
        HasTransactionNotReconciledForDateRange) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction =
       BuildTransaction(0.01, ConfirmationType::kViewed);

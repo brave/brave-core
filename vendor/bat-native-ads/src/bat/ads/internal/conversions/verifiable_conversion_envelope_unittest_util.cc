@@ -8,9 +8,10 @@
 #include <cstdint>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/base64_util.h"
-#include "bat/ads/internal/base/crypto_util.h"
+#include "bat/ads/internal/base/crypto/crypto_unittest_util.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
@@ -66,24 +67,43 @@ absl::optional<std::string> OpenEnvelope(
     return absl::nullopt;
   }
 
-  std::vector<uint8_t> ciphertext =
-      Base64ToBytes(verifiable_conversion_envelope.ciphertext);
+  const absl::optional<std::vector<uint8_t>> ciphertext_optional =
+      base::Base64Decode(verifiable_conversion_envelope.ciphertext);
+  if (!ciphertext_optional) {
+    return absl::nullopt;
+  }
+  std::vector<uint8_t> ciphertext = ciphertext_optional.value();
+
   // API requires 16 leading zero-padding bytes
   ciphertext.insert(ciphertext.cbegin(), kCryptoBoxZeroBytes, 0);
 
-  const std::vector<uint8_t> nonce =
-      Base64ToBytes(verifiable_conversion_envelope.nonce);
-  const std::vector<uint8_t> ephemeral_public_key =
-      Base64ToBytes(verifiable_conversion_envelope.ephemeral_public_key);
-  const std::vector<uint8_t> advertiser_secret_key =
-      Base64ToBytes(advertiser_secret_key_base64);
+  const absl::optional<std::vector<uint8_t>> nonce_optional =
+      base::Base64Decode(verifiable_conversion_envelope.nonce);
+  if (!nonce_optional) {
+    return absl::nullopt;
+  }
+  const std::vector<uint8_t>& nonce = nonce_optional.value();
+
+  const absl::optional<std::vector<uint8_t>> ephemeral_public_key_optional =
+      base::Base64Decode(verifiable_conversion_envelope.ephemeral_public_key);
+  if (!ephemeral_public_key_optional) {
+    return absl::nullopt;
+  }
+  std::vector<uint8_t> ephemeral_public_key =
+      ephemeral_public_key_optional.value();
+
+  const absl::optional<std::vector<uint8_t>> advertiser_secret_key_optional =
+      base::Base64Decode(advertiser_secret_key_base64);
+  if (!advertiser_secret_key_optional) {
+    return absl::nullopt;
+  }
+  const std::vector<uint8_t>& advertiser_secret_key =
+      advertiser_secret_key_optional.value();
 
   const std::vector<uint8_t> plaintext =
       Decrypt(ciphertext, nonce, ephemeral_public_key, advertiser_secret_key);
 
-  const std::string message = (const char*)&plaintext.front();
-
-  return message;
+  return (const char*)&plaintext.front();
 }
 
 absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(

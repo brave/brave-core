@@ -23,8 +23,10 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
@@ -32,8 +34,6 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {

@@ -10,8 +10,8 @@
 
 namespace ads {
 
-struct InlineContentAdInfo;
 struct CreativeInlineContentAdInfo;
+struct InlineContentAdInfo;
 
 InlineContentAdInfo BuildInlineContentAd(
     const CreativeInlineContentAdInfo& creative_ad);

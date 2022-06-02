@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
 
@@ -24,7 +23,7 @@ class BatAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {
 
 TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   // Arrange
-  AdvanceClock(
+  AdvanceClockTo(
       TimeFromString("Wed, 18 Nov 1970 12:34:56", /* is_local */ false));
 
   SetCatalogLastUpdated(Now());

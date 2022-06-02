@@ -14,7 +14,7 @@
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/history/filters/date_range_history_filter.h"
 #include "bat/ads/internal/history/filters/history_filter_factory.h"
 #include "bat/ads/internal/history/history_util.h"
@@ -30,7 +30,8 @@ HistoryInfo Get(const HistoryFilterType filter_type,
                 const HistorySortType sort_type,
                 const base::Time from_time,
                 const base::Time to_time) {
-  base::circular_deque<HistoryItemInfo> history = Client::Get()->GetHistory();
+  base::circular_deque<HistoryItemInfo> history =
+      ClientStateManager::Get()->GetHistory();
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
@@ -61,7 +62,7 @@ void AddNotificationAd(const NotificationAdInfo& ad,
   const HistoryItemInfo& history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.body);
 
-  Client::Get()->AppendHistory(history_item);
+  ClientStateManager::Get()->AppendHistory(history_item);
 }
 
 void AddNewTabPageAd(const NewTabPageAdInfo& ad,
@@ -69,7 +70,7 @@ void AddNewTabPageAd(const NewTabPageAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.company_name, ad.alt);
 
-  Client::Get()->AppendHistory(history_item);
+  ClientStateManager::Get()->AppendHistory(history_item);
 }
 
 void AddPromotedContentAd(const PromotedContentAdInfo& ad,
@@ -77,7 +78,7 @@ void AddPromotedContentAd(const PromotedContentAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.description);
 
-  Client::Get()->AppendHistory(history_item);
+  ClientStateManager::Get()->AppendHistory(history_item);
 }
 
 void AddInlineContentAd(const InlineContentAdInfo& ad,
@@ -85,7 +86,7 @@ void AddInlineContentAd(const InlineContentAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.title, ad.description);
 
-  Client::Get()->AppendHistory(history_item);
+  ClientStateManager::Get()->AppendHistory(history_item);
 }
 
 void AddSearchResultAd(const SearchResultAdInfo& ad,
@@ -93,7 +94,7 @@ void AddSearchResultAd(const SearchResultAdInfo& ad,
   const HistoryItemInfo history_item =
       BuildHistoryItem(ad, confirmation_type, ad.headline_text, ad.description);
 
-  Client::Get()->AppendHistory(history_item);
+  ClientStateManager::Get()->AppendHistory(history_item);
 }
 
 }  // namespace history

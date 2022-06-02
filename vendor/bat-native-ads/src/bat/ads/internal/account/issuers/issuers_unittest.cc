@@ -11,11 +11,10 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -76,7 +75,6 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const IssuersInfo& expected_issuers =
@@ -104,7 +102,6 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
       {// Issuers request
        R"(/v1/issuers/)",
        {{net::HTTP_OK, "FOOBAR"}, {net::HTTP_OK, "FOOBAR"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
@@ -115,7 +112,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Act
   issuers_->MaybeFetch();
 
-  FastForwardClockBy(NextPendingTaskDelay());
+  FastForwardClockToNextPendingTask();
 
   // Assert
   const IssuersInfo expected_issuers;
@@ -128,7 +125,6 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
       {// Issuers request
        R"(/v1/issuers/)",
        {{net::HTTP_NOT_FOUND, ""}, {net::HTTP_NOT_FOUND, ""}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);
@@ -139,7 +135,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Act
   issuers_->MaybeFetch();
 
-  FastForwardClockBy(NextPendingTaskDelay());
+  FastForwardClockToNextPendingTask();
 
   // Assert
   const IssuersInfo expected_issuers;
@@ -151,7 +147,6 @@ TEST_F(BatAdsIssuersTest, FetchIssuersHttpUpgradeRequiredResponse) {
   const URLEndpoints& endpoints = {{// Issuers request
                                     R"(/v1/issuers/)",
                                     {{net::HTTP_UPGRADE_REQUIRED, ""}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);

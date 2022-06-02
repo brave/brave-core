@@ -6,15 +6,12 @@
 #include "bat/ads/internal/account/statement/statement.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/statement_info.h"
 #include "bat/ads/transaction_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
-
-using ::testing::NiceMock;
 
 namespace ads {
 
@@ -27,7 +24,7 @@ class BatAdsStatementTest : public UnitTestBase {
 
 TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
   // Arrange
-  AdvanceClock(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   TransactionList transactions;
 
@@ -62,7 +59,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClock(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -72,7 +69,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClock(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -82,7 +79,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -123,7 +120,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClock(TimeFromString("31 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 December 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -133,7 +130,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClock(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
 
   const TransactionInfo& transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -172,7 +169,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
 TEST_F(BatAdsStatementTest, GetForNoTransactions) {
   // Arrange
-  AdvanceClock(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   // Act
   BuildStatement([](const bool success, const StatementInfo& statement) {

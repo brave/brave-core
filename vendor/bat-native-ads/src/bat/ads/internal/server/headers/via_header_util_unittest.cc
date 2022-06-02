@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/server/headers/via_header_util.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -21,9 +21,7 @@ class BatAdsViaHeaderUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
   // Arrange
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = true;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = true;
 
   // Act
   const std::string via_header = server::BuildViaHeader();
@@ -37,9 +35,7 @@ TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForUncertainFuture) {
 
 TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForABrightFuture) {
   // Arrange
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = false;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = false;
 
   // Act
   const std::string via_header = server::BuildViaHeader();

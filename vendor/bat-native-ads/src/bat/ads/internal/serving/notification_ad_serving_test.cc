@@ -9,15 +9,16 @@
 
 #include "base/guid.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
 #include "bat/ads/internal/serving/serving_features.h"
+#include "bat/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -40,19 +41,21 @@ Matcher<const NotificationAdInfo&> DoesMatchCreativeInstanceId(
 
 }  // namespace
 
-class BatAdsNotificationAdServingTest : public UnitTestBase {
+class BatAdsNotificationAdServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsNotificationAdServingTest()
+  BatAdsNotificationAdServingIntegrationTest()
       : database_table_(
             std::make_unique<database::table::CreativeNotificationAds>()) {}
 
-  ~BatAdsNotificationAdServingTest() override = default;
+  ~BatAdsNotificationAdServingIntegrationTest() override = default;
 
   void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
-        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
-
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+  }
+
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
+                                   kConfirmationsFilename);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -92,8 +95,6 @@ class BatAdsNotificationAdServingTest : public UnitTestBase {
         }
         )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
-
-    InitializeAds();
   }
 
   void ServeAd() {
@@ -113,7 +114,7 @@ class BatAdsNotificationAdServingTest : public UnitTestBase {
   std::unique_ptr<database::table::CreativeNotificationAds> database_table_;
 };
 
-TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
+TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAd) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -132,7 +133,8 @@ TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
   // Assert
 }
 
-TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
+TEST_F(BatAdsNotificationAdServingIntegrationTest,
+       DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -144,7 +146,7 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Assert
 }
 
-TEST_F(BatAdsNotificationAdServingTest, DoNotServeInvalidAd) {
+TEST_F(BatAdsNotificationAdServingIntegrationTest, DoNotServeInvalidAd) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -156,7 +158,7 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeInvalidAd) {
   // Assert
 }
 
-TEST_F(BatAdsNotificationAdServingTest,
+TEST_F(BatAdsNotificationAdServingIntegrationTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeNotificationAdList creative_ads;
@@ -172,7 +174,7 @@ TEST_F(BatAdsNotificationAdServingTest,
   // Assert
 }
 
-TEST_F(BatAdsNotificationAdServingTest, ServeAdWithServingVersion2) {
+TEST_F(BatAdsNotificationAdServingIntegrationTest, ServeAdWithServingVersion2) {
   // Arrange
   ForceUserActivityPermissionRule();
 

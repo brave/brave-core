@@ -8,7 +8,7 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/pref_names.h"
 
@@ -26,13 +26,13 @@ void ResetRewards(ResetRewardsCallback callback) {
       return;
     }
 
-    ConfirmationsState::Get()->reset_failed_confirmations();
+    ConfirmationStateManager::Get()->reset_failed_confirmations();
 
     privacy::UnblindedPaymentTokens* unblinded_payment_tokens =
-        ConfirmationsState::Get()->get_unblinded_payment_tokens();
+        ConfirmationStateManager::Get()->get_unblinded_payment_tokens();
     unblinded_payment_tokens->RemoveAllTokens();
 
-    ConfirmationsState::Get()->Save();
+    ConfirmationStateManager::Get()->Save();
 
     callback(/* success */ true);
   });

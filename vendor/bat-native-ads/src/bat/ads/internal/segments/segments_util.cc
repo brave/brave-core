@@ -12,7 +12,7 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_category_info.h"
 
 namespace ads {
@@ -113,7 +113,7 @@ bool ShouldFilterSegment(const std::string& segment) {
   DCHECK(!segment.empty());
 
   const FilteredCategoryList filtered_segments =
-      Client::Get()->GetFilteredCategories();
+      ClientStateManager::Get()->GetFilteredCategories();
 
   if (filtered_segments.empty()) {
     return false;

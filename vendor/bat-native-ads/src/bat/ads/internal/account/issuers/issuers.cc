@@ -16,11 +16,11 @@
 #include "bat/ads/internal/account/issuers/issuers_json_reader.h"
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -132,7 +132,8 @@ void Issuers::FetchAfterDelay() {
   DCHECK(!retry_timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
-      GetFetchDelay(), base::BindOnce(&Issuers::Fetch, base::Unretained(this)));
+      GetFetchDelay(), base::BindOnce(&Issuers::Fetch, base::Unretained(this)),
+      FROM_HERE);
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
 }
@@ -146,7 +147,8 @@ void Issuers::RetryAfterDelay() {
   DCHECK(!timer_.IsRunning());
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter, base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
+      kRetryAfter, base::BindOnce(&Issuers::OnRetry, base::Unretained(this)),
+      FROM_HERE);
 
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);

@@ -17,8 +17,10 @@ namespace ads {
 namespace user_data {
 
 namespace {
+
 constexpr char kCountryCodeKey[] = "countryCode";
 constexpr char kOtherCountryCode[] = "??";
+
 }  // namespace
 
 base::DictionaryValue GetLocale() {

@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 
 namespace ads {
 
@@ -27,7 +27,7 @@ bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
          creative_instance_id == rhs.creative_instance_id &&
          DoubleEquals(value, rhs.value) && ad_type == rhs.ad_type &&
          confirmation_type == rhs.confirmation_type &&
-         reconciled_at == rhs.reconciled_at;
+         DoubleEquals(reconciled_at.ToDoubleT(), rhs.reconciled_at.ToDoubleT());
 }
 
 bool TransactionInfo::operator!=(const TransactionInfo& rhs) const {

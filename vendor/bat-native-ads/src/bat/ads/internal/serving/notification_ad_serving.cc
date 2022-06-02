@@ -12,12 +12,12 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/platform_helper.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
+#include "bat/ads/internal/base/platform/platform_helper.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/privacy/p2a/opportunities/p2a_opportunity.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -86,7 +86,7 @@ void Serving::StartServingAdsAtRegularIntervals() {
 
   if (!HasPreviouslyServedAnAd()) {
     const base::Time serve_ad_at = base::Time::Now() + delay;
-    Client::Get()->SetServeAdAt(serve_ad_at);
+    ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
   }
 
   const base::Time serve_ad_at = MaybeServeAdAfter(delay);
@@ -191,11 +191,11 @@ bool Serving::ShouldServeAdsAtRegularIntervals() const {
 }
 
 bool Serving::HasPreviouslyServedAnAd() const {
-  return !Client::Get()->GetServeAdAt().is_null();
+  return !ClientStateManager::Get()->GetServeAdAt().is_null();
 }
 
 bool Serving::ShouldServeAd() const {
-  const base::Time serve_ad_at = Client::Get()->GetServeAdAt();
+  const base::Time serve_ad_at = ClientStateManager::Get()->GetServeAdAt();
   if (base::Time::Now() < serve_ad_at) {
     return false;
   }
@@ -212,7 +212,8 @@ base::TimeDelta Serving::CalculateDelayBeforeServingAnAd() const {
     return kMinimumDelayBeforeServingAnAd;
   }
 
-  base::TimeDelta delay = Client::Get()->GetServeAdAt() - base::Time::Now();
+  base::TimeDelta delay =
+      ClientStateManager::Get()->GetServeAdAt() - base::Time::Now();
   if (delay.is_negative()) {
     delay = base::TimeDelta();
   }
@@ -247,10 +248,11 @@ void Serving::RetryServingAdAtNextInterval() {
 
 base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
   const base::Time serve_ad_at = base::Time::Now() + delay;
-  Client::Get()->SetServeAdAt(serve_ad_at);
+  ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
 
   return timer_.Start(
-      delay, base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)));
+      delay, base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)),
+      FROM_HERE);
 }
 
 bool Serving::ServeAd(const NotificationAdInfo& ad) const {

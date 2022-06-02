@@ -7,7 +7,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
 
 namespace ads {
@@ -28,14 +28,14 @@ brave_federated::mojom::DataType TimeSinceLastUserActivityEvent::GetDataType()
   return brave_federated::mojom::DataType::kInt;
 }
 
-brave_federated::mojom::CovariateType
-TimeSinceLastUserActivityEvent::GetCovariateType() const {
+brave_federated::mojom::CovariateType TimeSinceLastUserActivityEvent::GetType()
+    const {
   return covariate_type_;
 }
 
 std::string TimeSinceLastUserActivityEvent::GetValue() const {
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(kTimeWindow);
+      UserActivityManager::Get()->GetHistoryForTimeWindow(kTimeWindow);
 
   return base::NumberToString(
       GetTimeSinceLastUserActivityEvent(events, event_type_));

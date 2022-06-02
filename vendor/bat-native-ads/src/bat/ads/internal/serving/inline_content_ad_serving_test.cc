@@ -6,9 +6,9 @@
 #include "bat/ads/internal/serving/inline_content_ad_serving.h"
 
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
@@ -20,9 +20,9 @@
 
 namespace ads {
 
-class BatAdsInlineContentServingTest : public UnitTestBase {
+class BatAdsInlineContentServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsInlineContentServingTest()
+  BatAdsInlineContentServingIntegrationTest()
       : subdivision_targeting_(
             std::make_unique<geographic::SubdivisionTargeting>()),
         anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
@@ -32,13 +32,15 @@ class BatAdsInlineContentServingTest : public UnitTestBase {
         database_table_(
             std::make_unique<database::table::CreativeInlineContentAds>()) {}
 
-  ~BatAdsInlineContentServingTest() override = default;
+  ~BatAdsInlineContentServingIntegrationTest() override = default;
 
   void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
-        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
-
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+  }
+
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
+                                   kConfirmationsFilename);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -78,8 +80,6 @@ class BatAdsInlineContentServingTest : public UnitTestBase {
         }
         )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
-
-    InitializeAds();
   }
 
   void Save(const CreativeInlineContentAdList& creative_ads) {
@@ -94,7 +94,7 @@ class BatAdsInlineContentServingTest : public UnitTestBase {
   std::unique_ptr<database::table::CreativeInlineContentAds> database_table_;
 };
 
-TEST_F(BatAdsInlineContentServingTest, ServeAd) {
+TEST_F(BatAdsInlineContentServingIntegrationTest, ServeAd) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -119,7 +119,8 @@ TEST_F(BatAdsInlineContentServingTest, ServeAd) {
   // Assert
 }
 
-TEST_F(BatAdsInlineContentServingTest, DoNotServeAdForUnavailableDimensions) {
+TEST_F(BatAdsInlineContentServingIntegrationTest,
+       DoNotServeAdForUnavailableDimensions) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -136,7 +137,7 @@ TEST_F(BatAdsInlineContentServingTest, DoNotServeAdForUnavailableDimensions) {
   // Assert
 }
 
-TEST_F(BatAdsInlineContentServingTest,
+TEST_F(BatAdsInlineContentServingIntegrationTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeInlineContentAdList creative_ads;

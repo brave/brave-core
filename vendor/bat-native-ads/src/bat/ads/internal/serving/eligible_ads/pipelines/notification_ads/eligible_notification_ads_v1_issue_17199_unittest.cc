@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v1.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/serving/targeting/user_model_builder_unittest_util.h"
@@ -23,20 +22,17 @@ class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
 
   ~BatAdsEligibleNotificationAdsV1Issue17199Test() override = default;
 
-  void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir("database_issue_17199.sqlite",
-                                              "database.sqlite"));
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("database_issue_17199.sqlite",
+                                   kDatabaseFilename);
 
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir("client_issue_17199.json",
-                                              "client.json"));
-
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ false);
+    CopyFileFromTestPathToTempPath("client_issue_17199.json", kClientFilename);
   }
 };
 
 TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Arrange
-  AdvanceClock(TimeFromString("4 July 2021", /* is_local */ false));
+  AdvanceClockTo(TimeFromString("4 July 2021", /* is_local */ false));
 
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;

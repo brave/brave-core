@@ -7,9 +7,8 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/legacy_migration/database/database_constants.h"
@@ -25,15 +24,10 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
 
   ~BatAdsDatabaseMigrationTest() override = default;
 
-  void SetUp() override {
-    const std::string source_filename =
+  void SetUpMocks() override {
+    const std::string database_filename =
         base::StringPrintf("database_schema_%d.sqlite", GetSchemaVersion());
-
-    ASSERT_TRUE(
-        CopyFileFromTestPathToTempDir(source_filename, "database.sqlite"))
-        << "Failed to copy " << source_filename;
-
-    UnitTestBase::SetUpForTesting(/* is_integration_test */ false);
+    CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename);
   }
 
   int GetSchemaVersion() { return GetParam() + 1; }

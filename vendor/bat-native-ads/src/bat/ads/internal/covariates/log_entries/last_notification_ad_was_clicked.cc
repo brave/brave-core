@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/covariates/covariates_constants.h"
+#include "bat/ads/internal/covariates/covariate_constants.h"
 #include "bat/ads/internal/history/history.h"
 
 namespace ads {
@@ -31,8 +31,8 @@ brave_federated::mojom::DataType LastNotificationAdWasClicked::GetDataType()
   return brave_federated::mojom::DataType::kBool;
 }
 
-brave_federated::mojom::CovariateType
-LastNotificationAdWasClicked::GetCovariateType() const {
+brave_federated::mojom::CovariateType LastNotificationAdWasClicked::GetType()
+    const {
   return brave_federated::mojom::CovariateType::kLastNotificationAdWasClicked;
 }
 

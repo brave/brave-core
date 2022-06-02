@@ -5,26 +5,17 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest
-    : public UnitTestBase {
- protected:
-  BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest() = default;
-
-  ~BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest() override = default;
-};
-
-TEST_F(BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
+TEST(BatAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
   // Arrange
+  database::table::CreativeNewTabPageAdWallpapers database_table;
 
   // Act
-  database::table::CreativeNewTabPageAdWallpapers database_table;
   const std::string& table_name = database_table.GetTableName();
 
   // Assert

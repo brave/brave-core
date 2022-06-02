@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 
 namespace ads {
@@ -40,7 +40,7 @@ std::string DislikeExclusionRule::GetLastMessage() const {
 
 bool DislikeExclusionRule::DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const FilteredAdvertiserList& filtered_advertisers =
-      Client::Get()->GetFilteredAdvertisers();
+      ClientStateManager::Get()->GetFilteredAdvertisers();
   if (filtered_advertisers.empty()) {
     return true;
   }

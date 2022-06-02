@@ -31,9 +31,9 @@ struct HistoryItemInfo;
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
 void SaveToJson(JsonWriter* writer, const AdContentInfo& info);
-void SaveToJson(JsonWriter* writer, const HistoryItemInfo& info);
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info);
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info);
+void SaveToJson(JsonWriter* writer, const HistoryItemInfo& info);
 
 template <typename T>
 void SaveToJson(const T& t, std::string* json) {

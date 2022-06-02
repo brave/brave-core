@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/serving/new_tab_page_ad_serving.h"
 
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
@@ -20,9 +20,9 @@
 
 namespace ads {
 
-class BatAdsNewTabPageServingTest : public UnitTestBase {
+class BatAdsNewTabPageServingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsNewTabPageServingTest()
+  BatAdsNewTabPageServingIntegrationTest()
       : subdivision_targeting_(
             std::make_unique<geographic::SubdivisionTargeting>()),
         anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
@@ -32,13 +32,15 @@ class BatAdsNewTabPageServingTest : public UnitTestBase {
         database_table_(
             std::make_unique<database::table::CreativeNewTabPageAds>()) {}
 
-  ~BatAdsNewTabPageServingTest() override = default;
+  ~BatAdsNewTabPageServingIntegrationTest() override = default;
 
   void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
-        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
-
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+  }
+
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
+                                   kConfirmationsFilename);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -78,8 +80,6 @@ class BatAdsNewTabPageServingTest : public UnitTestBase {
         }
         )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
-
-    InitializeAds();
   }
 
   void Save(const CreativeNewTabPageAdList& creative_ads) {
@@ -94,7 +94,7 @@ class BatAdsNewTabPageServingTest : public UnitTestBase {
   std::unique_ptr<database::table::CreativeNewTabPageAds> database_table_;
 };
 
-TEST_F(BatAdsNewTabPageServingTest, ServeAd) {
+TEST_F(BatAdsNewTabPageServingIntegrationTest, ServeAd) {
   // Arrange
   ForceUserActivityPermissionRule();
 
@@ -117,7 +117,7 @@ TEST_F(BatAdsNewTabPageServingTest, ServeAd) {
   // Assert
 }
 
-TEST_F(BatAdsNewTabPageServingTest,
+TEST_F(BatAdsNewTabPageServingIntegrationTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;

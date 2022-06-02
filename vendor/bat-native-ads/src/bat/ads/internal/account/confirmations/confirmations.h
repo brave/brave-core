@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
-#include "bat/ads/internal/base/backoff_timer.h"
+#include "bat/ads/internal/base/timer/backoff_timer.h"
 
 namespace base {
 class Time;
@@ -21,15 +21,15 @@ class Value;
 
 namespace ads {
 
-class AdType;
-class ConfirmationType;
-class RedeemUnblindedToken;
-struct TransactionInfo;
-
 namespace privacy {
 class TokenGeneratorInterface;
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
+
+class AdType;
+class ConfirmationType;
+class RedeemUnblindedToken;
+struct TransactionInfo;
 
 class Confirmations final : public RedeemUnblindedTokenDelegate {
  public:

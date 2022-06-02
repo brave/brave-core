@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -14,6 +14,7 @@
 #include "bat/ads/internal/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "bat/ads/internal/serving/notification_ad_serving.h"
 #include "bat/ads/internal/serving/permission_rules/user_activity_permission_rule_unittest_util.h"
+#include "bat/ads/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -39,19 +40,23 @@ std::vector<double> GetPacingRandomNumberList() {
 
 }  // namespace
 
-class BatAdsPacingTest : public UnitTestBase {
+class BatAdsPacingIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsPacingTest()
+  BatAdsPacingIntegrationTest()
       : database_table_(
             std::make_unique<database::table::CreativeNotificationAds>()) {}
 
-  ~BatAdsPacingTest() override = default;
+  ~BatAdsPacingIntegrationTest() override = default;
 
   void SetUp() override {
-    ASSERT_TRUE(CopyFileFromTestPathToTempDir(
-        "confirmations_with_unblinded_tokens.json", "confirmations.json"));
-
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
+
+    ForceUserActivityPermissionRule();
+  }
+
+  void SetUpMocks() override {
+    CopyFileFromTestPathToTempPath("confirmations_with_unblinded_tokens.json",
+                                   kConfirmationsFilename);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
@@ -91,10 +96,6 @@ class BatAdsPacingTest : public UnitTestBase {
         }
         )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
-
-    InitializeAds();
-
-    ForceUserActivityPermissionRule();
   }
 
   CreativeNotificationAdInfo BuildCreativeNotificationAd1() {
@@ -172,7 +173,7 @@ class BatAdsPacingTest : public UnitTestBase {
   std::unique_ptr<database::table::CreativeNotificationAds> database_table_;
 };
 
-TEST_F(BatAdsPacingTest, PacingDisableDelivery) {
+TEST_F(BatAdsPacingIntegrationTest, PacingDisableDelivery) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -193,7 +194,7 @@ TEST_F(BatAdsPacingTest, PacingDisableDelivery) {
   // Assert
 }
 
-TEST_F(BatAdsPacingTest, NoPacing) {
+TEST_F(BatAdsPacingIntegrationTest, NoPacing) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -215,7 +216,7 @@ TEST_F(BatAdsPacingTest, NoPacing) {
   // Assert
 }
 
-TEST_F(BatAdsPacingTest, SimplePacing) {
+TEST_F(BatAdsPacingIntegrationTest, SimplePacing) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -243,7 +244,7 @@ TEST_F(BatAdsPacingTest, SimplePacing) {
   // Assert
 }
 
-TEST_F(BatAdsPacingTest, NoPacingPrioritized) {
+TEST_F(BatAdsPacingIntegrationTest, NoPacingPrioritized) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -269,7 +270,7 @@ TEST_F(BatAdsPacingTest, NoPacingPrioritized) {
   // Assert
 }
 
-TEST_F(BatAdsPacingTest, PacingDisableDeliveryPrioritized) {
+TEST_F(BatAdsPacingIntegrationTest, PacingDisableDeliveryPrioritized) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -295,7 +296,7 @@ TEST_F(BatAdsPacingTest, PacingDisableDeliveryPrioritized) {
   // Assert
 }
 
-TEST_F(BatAdsPacingTest, PacingAndPrioritization) {
+TEST_F(BatAdsPacingIntegrationTest, PacingAndPrioritization) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 

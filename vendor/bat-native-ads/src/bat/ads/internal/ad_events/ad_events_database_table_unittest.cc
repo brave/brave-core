@@ -5,30 +5,18 @@
 
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
 
-#include <memory>
-
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsAdEventsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsAdEventsDatabaseTableTest()
-      : database_table_(std::make_unique<database::table::AdEvents>()) {}
-
-  ~BatAdsAdEventsDatabaseTableTest() override = default;
-
-  std::unique_ptr<database::table::AdEvents> database_table_;
-};
-
-TEST_F(BatAdsAdEventsDatabaseTableTest, TableName) {
+TEST(BatAdsAdEventsDatabaseTableTest, TableName) {
   // Arrange
+  database::table::AdEvents database_table;
 
   // Act
-  const std::string table_name = database_table_->GetTableName();
+  const std::string table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "ad_events";

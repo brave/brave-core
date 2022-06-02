@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -55,7 +54,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
 
   resource::AntiTargeting resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                  GURL("https://www.brave.com"),
@@ -76,7 +75,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
 
   resource::AntiTargeting resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                  GURL("https://www.foo2.org")};
@@ -97,7 +96,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest,
 
   resource::AntiTargeting resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   BrowsingHistoryList history = {GURL("https://www.foo1.org"),
                                  GURL("https://www.brave.com")};

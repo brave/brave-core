@@ -9,7 +9,7 @@
 
 #include "base/guid.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -39,7 +39,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd();
 
-  const base::Time event_time = base::Time::Now() - base::Hours(12);
+  const base::Time event_time = Now() - base::Hours(12);
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,
                    ConfirmationType::kViewed, event_time);
@@ -59,13 +59,13 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
   // Arrange
   AdEventList ad_events;
 
-  const base::Time now = base::Time::Now();
-
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd();
 
   const CreativeNotificationAdInfo creative_ad_2 =
       BuildCreativeNotificationAd();
+
+  const base::Time now = Now();
 
   const AdEventInfo ad_event_4 =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,
@@ -117,10 +117,9 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
   const CreativeNotificationAdInfo creative_ad_1 =
       BuildCreativeNotificationAd();
 
-  const base::Time event_time = base::Time::Now() - base::Hours(12);
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,
-                   ConfirmationType::kViewed, event_time);
+                   ConfirmationType::kViewed, Now() - base::Hours(12));
   ad_events.push_back(ad_event);
 
   // Act
@@ -151,7 +150,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
 
   AdEventList ad_events;
 
-  const base::Time now = base::Time::Now();
+  const base::Time now = Now();
 
   const AdEventInfo ad_event_4 =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,

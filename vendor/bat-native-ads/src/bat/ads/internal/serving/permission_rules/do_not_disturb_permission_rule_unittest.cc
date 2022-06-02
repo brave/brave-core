@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -28,12 +27,12 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   BrowserManager::Get()->OnDidResignActive();
   BrowserManager::Get()->OnDidEnterBackground();
 
-  AdvanceClockToMidnightUTC();
+  AdvanceClockToMidnight(/* is_local */ true);
 
   // Act
   {
     // Verify 5:59 AM
-    AdvanceClock(base::Hours(5) + base::Minutes(59));
+    AdvanceClockBy(base::Hours(5) + base::Minutes(59));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -43,7 +42,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
   {
     // Verify 6:00 AM
-    AdvanceClock(base::Minutes(1));
+    AdvanceClockBy(base::Minutes(1));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -53,7 +52,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
   {
     // Verify 8:59 PM
-    AdvanceClock(base::Hours(14) + base::Minutes(59));
+    AdvanceClockBy(base::Hours(14) + base::Minutes(59));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -63,7 +62,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
   {
     // Verify 9:00 PM
-    AdvanceClock(base::Minutes(1));
+    AdvanceClockBy(base::Minutes(1));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -80,12 +79,12 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   BrowserManager::Get()->OnDidBecomeActive();
   BrowserManager::Get()->OnDidEnterForeground();
 
-  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
+  AdvanceClockToMidnight(/* is_local */ true);
 
   // Act
   {
     // Verify 5:59 AM
-    AdvanceClock(base::Hours(5) + base::Minutes(59));
+    AdvanceClockBy(base::Hours(5) + base::Minutes(59));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -95,7 +94,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
   {
     // Verify 6:00 AM
-    AdvanceClock(base::Minutes(1));
+    AdvanceClockBy(base::Minutes(1));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -105,7 +104,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
   {
     // Verify 8:59 PM
-    AdvanceClock(base::Hours(14) + base::Minutes(59));
+    AdvanceClockBy(base::Hours(14) + base::Minutes(59));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -115,7 +114,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
 
   {
     // Verify 9:00 PM
-    AdvanceClock(base::Minutes(1));
+    AdvanceClockBy(base::Minutes(1));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -131,7 +130,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   BrowserManager::Get()->OnDidBecomeActive();
   BrowserManager::Get()->OnDidEnterForeground();
 
-  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
+  AdvanceClockToMidnight(/* is_local */ true);
 
   // Act
   {
@@ -145,7 +144,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::Hours(12));
+    AdvanceClockBy(base::Hours(12));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -161,7 +160,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   BrowserManager::Get()->OnDidBecomeActive();
   BrowserManager::Get()->OnDidEnterForeground();
 
-  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
+  AdvanceClockToMidnight(/* is_local */ true);
 
   // Act
   {
@@ -175,7 +174,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::Hours(12));
+    AdvanceClockBy(base::Hours(12));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -191,7 +190,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   BrowserManager::Get()->OnDidBecomeActive();
   BrowserManager::Get()->OnDidEnterForeground();
 
-  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
+  AdvanceClockToMidnight(/* is_local */ true);
 
   // Act
   {
@@ -205,7 +204,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::Hours(12));
+    AdvanceClockBy(base::Hours(12));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;
@@ -221,7 +220,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
   BrowserManager::Get()->OnDidBecomeActive();
   BrowserManager::Get()->OnDidEnterForeground();
 
-  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
+  AdvanceClockToMidnight(/* is_local */ true);
 
   // Act
   {
@@ -235,7 +234,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
 
   {
     // Verify 12:00 PM
-    AdvanceClock(base::Hours(12));
+    AdvanceClockBy(base::Hours(12));
 
     // Assert
     DoNotDisturbPermissionRule permission_rule;

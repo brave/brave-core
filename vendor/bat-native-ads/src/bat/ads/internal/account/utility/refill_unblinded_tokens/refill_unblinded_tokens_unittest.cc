@@ -13,9 +13,9 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate_mock.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
@@ -192,7 +192,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
                 "captcha_id": "captcha-id"
               }
             )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -225,14 +224,13 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 #endif
 
 TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   // Arrange
   const URLEndpoints& endpoints = GetValidUrlRequestEndPoints();
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -268,7 +266,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
@@ -295,7 +293,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
@@ -322,7 +320,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidWallet) {
   refill_unblinded_tokens_->MaybeRefill(invalid_wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest,
@@ -396,7 +394,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -426,7 +423,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   const WalletInfo& wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
-  FastForwardClockBy(NextPendingTaskDelay());
+  FastForwardClockToNextPendingTask();
 
   // Assert
   EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
@@ -437,7 +434,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   const URLEndpoints& endpoints = {
       {R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_CREATED, ""}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -466,7 +462,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest,
@@ -545,7 +541,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -575,7 +570,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   const WalletInfo& wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
-  FastForwardClockBy(NextPendingTaskDelay());
+  FastForwardClockToNextPendingTask();
 
   // Assert
   EXPECT_EQ(50, privacy::get_unblinded_tokens()->Count());
@@ -594,7 +589,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
       {// Get signed tokens
        R"(/v2/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
        {{net::HTTP_OK, "invalid_json"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -623,7 +617,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
@@ -695,7 +689,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
               ]
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -724,7 +717,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
@@ -796,7 +789,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -825,7 +817,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
@@ -846,7 +838,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -875,7 +866,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
@@ -948,7 +939,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<privacy::cbr::Token> tokens = GetTokens();
@@ -977,7 +967,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
-  EXPECT_EQ(0, privacy::get_unblinded_tokens()->Count());
+  EXPECT_TRUE(privacy::get_unblinded_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
@@ -1063,7 +1053,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
               "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   const std::vector<std::string> tokens_base64 = {

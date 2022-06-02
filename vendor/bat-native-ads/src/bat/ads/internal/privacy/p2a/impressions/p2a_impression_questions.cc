@@ -7,7 +7,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/string_util.h"
+#include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/segments/segments_util.h"
 
 namespace ads {

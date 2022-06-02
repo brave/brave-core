@@ -14,7 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/backoff_timer.h"
+#include "bat/ads/internal/base/timer/backoff_timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {

@@ -9,9 +9,9 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/pref_names.h"
 
@@ -20,11 +20,9 @@
 namespace ads {
 
 namespace {
-
 const std::vector<std::string> kCreativeSetIds = {
     "654f10df-fbc4-4a92-8d43-2edf73734a60",
     "465f10df-fbc4-4a92-8d43-4edf73734a60"};
-
 }  // namespace
 
 class BatAdsConversionExclusionRuleTest : public UnitTestBase {

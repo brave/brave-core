@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/covariates/log_entries/notification_ad_clicked.h"
 
-#include "bat/ads/internal/base/string_util.h"
+#include "bat/ads/internal/base/strings/string_conversions_util.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {
@@ -22,8 +22,7 @@ brave_federated::mojom::DataType NotificationAdClicked::GetDataType() const {
   return brave_federated::mojom::DataType::kBool;
 }
 
-brave_federated::mojom::CovariateType NotificationAdClicked::GetCovariateType()
-    const {
+brave_federated::mojom::CovariateType NotificationAdClicked::GetType() const {
   return brave_federated::mojom::CovariateType::kNotificationAdClicked;
 }
 

@@ -7,12 +7,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_file_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -119,8 +118,8 @@ TEST_F(BatAdsTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOut("parent-child",
-                                CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("parent-child");
@@ -132,8 +131,8 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOut("parent-child",
-                                CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("foo-bar");
@@ -144,7 +143,8 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
 
 TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      "parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("parent");
@@ -156,7 +156,8 @@ TEST_F(BatAdsTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      "parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("foo");
@@ -168,7 +169,8 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      "parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("parent-child");
@@ -180,7 +182,8 @@ TEST_F(BatAdsTargetingSegmentUtilTest,
 TEST_F(BatAdsTargetingSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      "parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("foo-bar");

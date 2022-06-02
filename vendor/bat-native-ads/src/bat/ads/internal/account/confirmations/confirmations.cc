@@ -21,8 +21,8 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
@@ -85,23 +85,25 @@ void Confirmations::ProcessRetryQueue() {
 
 void Confirmations::Retry() {
   const ConfirmationList& failed_confirmations =
-      ConfirmationsState::Get()->GetFailedConfirmations();
+      ConfirmationStateManager::Get()->GetFailedConfirmations();
   if (failed_confirmations.empty()) {
     BLOG(1, "No failed confirmations to retry");
     return;
   }
 
   DCHECK(!retry_timer_.IsRunning());
-  const base::Time time = retry_timer_.StartWithPrivacy(
+  const base::Time retry_at = retry_timer_.StartWithPrivacy(
       kRetryAfter,
-      base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
+      base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)),
+      FROM_HERE);
 
-  BLOG(1, "Retry sending failed confirmations " << FriendlyDateAndTime(time));
+  BLOG(1,
+       "Retry sending failed confirmations " << FriendlyDateAndTime(retry_at));
 }
 
 void Confirmations::OnRetry() {
   const ConfirmationList& failed_confirmations =
-      ConfirmationsState::Get()->GetFailedConfirmations();
+      ConfirmationStateManager::Get()->GetFailedConfirmations();
   DCHECK(!failed_confirmations.empty());
 
   const ConfirmationInfo& confirmation = failed_confirmations.front();
@@ -137,9 +139,9 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.created_at = time;
 
   if (ShouldRewardUser() &&
-      !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+      !ConfirmationStateManager::Get()->get_unblinded_tokens()->IsEmpty()) {
     const privacy::UnblindedTokenInfo& unblinded_token =
-        ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
+        ConfirmationStateManager::Get()->get_unblinded_tokens()->GetToken();
 
     confirmation.unblinded_token = unblinded_token;
 
@@ -160,9 +162,9 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& payload = CreateConfirmationRequestDTO(confirmation);
     confirmation.credential = CreateCredential(unblinded_token, payload);
 
-    ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
+    ConfirmationStateManager::Get()->get_unblinded_tokens()->RemoveToken(
         unblinded_token);
-    ConfirmationsState::Get()->Save();
+    ConfirmationStateManager::Get()->Save();
   }
 
   return confirmation;
@@ -172,7 +174,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
-  if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+  if (ConfirmationStateManager::Get()->get_unblinded_tokens()->IsEmpty()) {
     AppendToRetryQueue(confirmation);
     return;
   }
@@ -193,8 +195,8 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
-  ConfirmationsState::Get()->AppendFailedConfirmation(confirmation);
-  ConfirmationsState::Get()->Save();
+  ConfirmationStateManager::Get()->AppendFailedConfirmation(confirmation);
+  ConfirmationStateManager::Get()->Save();
 
   BLOG(1, "Added " << confirmation.type << " confirmation for "
                    << confirmation.ad_type << " with id " << confirmation.id
@@ -207,7 +209,8 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
-  if (!ConfirmationsState::Get()->RemoveFailedConfirmation(confirmation)) {
+  if (!ConfirmationStateManager::Get()->RemoveFailedConfirmation(
+          confirmation)) {
     BLOG(0, "Failed to remove " << confirmation.type << " confirmation for "
                                 << confirmation.ad_type << " with id "
                                 << confirmation.id << ", transaction id "
@@ -226,7 +229,7 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
                      << confirmation.creative_instance_id
                      << " from the confirmations queue");
 
-  ConfirmationsState::Get()->Save();
+  ConfirmationStateManager::Get()->Save();
 }
 
 void Confirmations::OnDidSendConfirmation(
@@ -271,19 +274,20 @@ void Confirmations::OnFailedToSendConfirmation(
 void Confirmations::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
-  if (ConfirmationsState::Get()->get_unblinded_payment_tokens()->TokenExists(
-          unblinded_payment_token)) {
+  if (ConfirmationStateManager::Get()
+          ->get_unblinded_payment_tokens()
+          ->TokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
     return;
   }
 
-  ConfirmationsState::Get()->get_unblinded_payment_tokens()->AddTokens(
+  ConfirmationStateManager::Get()->get_unblinded_payment_tokens()->AddTokens(
       {unblinded_payment_token});
-  ConfirmationsState::Get()->Save();
+  ConfirmationStateManager::Get()->Save();
 
   const int unblinded_payment_tokens_count =
-      ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count();
+      ConfirmationStateManager::Get()->get_unblinded_payment_tokens()->Count();
 
   const base::Time next_token_redemption_at =
       AdsClientHelper::Get()->GetTimePref(prefs::kNextTokenRedemptionAt);

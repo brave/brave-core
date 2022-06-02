@@ -10,8 +10,8 @@
 
 namespace ads {
 
-struct NewTabPageAdInfo;
 struct CreativeNewTabPageAdInfo;
+struct NewTabPageAdInfo;
 
 NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad);
 

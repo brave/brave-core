@@ -6,9 +6,8 @@
 #include "bat/ads/internal/catalog/catalog_util.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -90,7 +89,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
   SetCatalogLastUpdated(Now());
 
   // Act
-  AdvanceClock(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();
@@ -102,7 +101,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
   SetCatalogLastUpdated(Now());
 
   // Act
-  AdvanceClock(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();

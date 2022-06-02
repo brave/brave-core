@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
@@ -20,7 +20,7 @@ namespace ads {
 namespace privacy {
 
 UnblindedPaymentTokens* get_unblinded_payment_tokens() {
-  return ConfirmationsState::Get()->get_unblinded_payment_tokens();
+  return ConfirmationStateManager::Get()->get_unblinded_payment_tokens();
 }
 
 UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count) {

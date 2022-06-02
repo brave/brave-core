@@ -22,7 +22,7 @@ class AverageClickthroughRate final : public CovariateLogEntryInterface {
 
   // CovariateLogEntryInterface:
   brave_federated::mojom::DataType GetDataType() const override;
-  brave_federated::mojom::CovariateType GetCovariateType() const override;
+  brave_federated::mojom::CovariateType GetType() const override;
   std::string GetValue() const override;
 
  private:

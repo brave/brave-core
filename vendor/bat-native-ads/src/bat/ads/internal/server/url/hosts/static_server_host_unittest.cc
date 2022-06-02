@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/server/url/hosts/static_server_host.h"
 
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_types.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -16,7 +16,7 @@ namespace ads {
 
 TEST(BatAdsStaticServerHostTest, GetProductionHost) {
   // Arrange
-  SetEnvironment(mojom::Environment::kProduction);
+  MockEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = server::GetStaticHost();
@@ -28,7 +28,7 @@ TEST(BatAdsStaticServerHostTest, GetProductionHost) {
 
 TEST(BatAdsStaticServerHostTest, GetStagingHost) {
   // Arrange
-  SetEnvironment(mojom::Environment::kStaging);
+  MockEnvironment(mojom::Environment::kStaging);
 
   // Act
   const std::string host = server::GetStaticHost();

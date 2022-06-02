@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
@@ -63,7 +63,8 @@ void TextClassification::Process(const std::string& text) {
   DCHECK(!segment.empty());
   BLOG(1, "Classified text with the top segment as " << segment);
 
-  Client::Get()->AppendTextClassificationProbabilitiesToHistory(probabilities);
+  ClientStateManager::Get()->AppendTextClassificationProbabilitiesToHistory(
+      probabilities);
 }
 
 }  // namespace processor
