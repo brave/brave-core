@@ -279,7 +279,7 @@ export function createHost (): Host {
         name = '@' + dialogArgs.url.replace(/^.*\//, '')
       }
 
-      chrome.send('tweetTip', [name, postId])
+      chrome.send('tweetTip', [name, postId, publisherInfo.status])
       chrome.send('dialogClose')
     },
 

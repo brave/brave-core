@@ -11,9 +11,11 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -371,16 +373,28 @@ void TipMessageHandler::SetAdsPerHour(const base::Value::List& args) {
 }
 
 void TipMessageHandler::TweetTip(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 2U);
+  CHECK_EQ(args.size(), 3U);
   const std::string name = args[0].GetString();
   const std::string tweet_id = args[1].GetString();
+  const ledger::mojom::PublisherStatus status =
+      static_cast<ledger::mojom::PublisherStatus>(args[2].GetInt());
 
   if (name.empty() || !rewards_service_) {
     return;
   }
 
-  const std::string comment = l10n_util::GetStringFUTF8(
-      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
+  std::string comment;
+  if (status == ledger::mojom::PublisherStatus::NOT_VERIFIED) {
+    const std::u16string date =
+        base::TimeFormatShortDate(base::Time::Now() + base::Days(90));
+    const std::u16string hashtag = u"%23";
+    comment = l10n_util::GetStringFUTF8(
+        IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_UNVERIFIED_PUBLISHER, hashtag,
+        base::UTF8ToUTF16(name), hashtag, date);
+  } else {
+    comment = l10n_util::GetStringFUTF8(
+        IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
+  }
 
   const std::string hashtag = l10n_util::GetStringUTF8(
       IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG);
