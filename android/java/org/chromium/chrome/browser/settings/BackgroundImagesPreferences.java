@@ -31,14 +31,14 @@ public class BackgroundImagesPreferences
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
+    public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_NON_DISRUPTIVE_BANNER = "show_non_disruptive_banner";
     public static final String PREF_SHOW_BRE_BANNER = "show_bre_banner";
 
-    private ChromeSwitchPreference showBackgroundImagesPref;
-    private ChromeSwitchPreference showSponsoredImagesPref;
-
-    private SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-    private SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    private ChromeSwitchPreference mShowBackgroundImagesPref;
+    private ChromeSwitchPreference mShowSponsoredImagesPref;
+    private ChromeSwitchPreference mShowBraveStatsPref;
+    private ChromeSwitchPreference mShowTopSitesPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,24 +58,41 @@ public class BackgroundImagesPreferences
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showBackgroundImagesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BACKGROUND_IMAGES);
-        if (showBackgroundImagesPref != null) {
-            showBackgroundImagesPref.setEnabled(true);
-            showBackgroundImagesPref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
-            showBackgroundImagesPref.setOnPreferenceChangeListener(this);
+        mShowBackgroundImagesPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_BACKGROUND_IMAGES);
+        if (mShowBackgroundImagesPref != null) {
+            mShowBackgroundImagesPref.setEnabled(true);
+            mShowBackgroundImagesPref.setChecked(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
+            mShowBackgroundImagesPref.setOnPreferenceChangeListener(this);
         }
-        showSponsoredImagesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
-        if (showSponsoredImagesPref != null) {
-            showSponsoredImagesPref.setEnabled(UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
-            showSponsoredImagesPref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
-            showSponsoredImagesPref.setOnPreferenceChangeListener(this);
+        mShowSponsoredImagesPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
+        if (mShowSponsoredImagesPref != null) {
+            mShowSponsoredImagesPref.setEnabled(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
+            mShowSponsoredImagesPref.setChecked(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(
+                                    BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
+            mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
+        }
+        mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
+        if (mShowTopSitesPref != null) {
+            mShowTopSitesPref.setEnabled(true);
+            mShowTopSitesPref.setChecked(
+                    ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_TOP_SITES, true));
+            mShowTopSitesPref.setOnPreferenceChangeListener(this);
         }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (PREF_SHOW_BACKGROUND_IMAGES.equals(preference.getKey()) && showSponsoredImagesPref != null) {
-            showSponsoredImagesPref.setEnabled((boolean)newValue);
+        if (PREF_SHOW_BACKGROUND_IMAGES.equals(preference.getKey())
+                && mShowSponsoredImagesPref != null) {
+            mShowSponsoredImagesPref.setEnabled((boolean) newValue);
         }
         setOnPreferenceValue(preference.getKey(), (boolean)newValue);
         BraveRelaunchUtils.askForRelaunch(getActivity());
