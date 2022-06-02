@@ -160,3 +160,10 @@ extension BraveWallet {
   /// The address that is expected when you are swapping ETH via SwapService APIs
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 }
+
+extension BraveWallet.OriginInfo {
+  /// If the current OriginInfo matches the Brave Wallet origin
+  var isBraveWalletOrigin: Bool {
+    origin == WalletConstants.braveWalletOrigin
+  }
+}

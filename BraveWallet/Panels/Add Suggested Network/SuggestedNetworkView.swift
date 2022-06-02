@@ -82,6 +82,9 @@ struct SuggestedNetworkView: View {
   
   private var globeFavicon: some View {
     Image(systemName: "globe")
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+      .padding(8)
       .background(Color(.braveDisabled))
   }
   

@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import BraveCore
 
 struct WalletConstants {
   /// The Brave swap fee as a % value
@@ -13,4 +14,7 @@ struct WalletConstants {
 
   /// The wei value used for unlimited allowance in an ERC 20 transaction.
   static let MAX_UINT256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  
+  /// The origin used for transactions/requests from Brave Wallet.
+  static let braveWalletOrigin: URLOrigin = .init(url: URL(string: "chrome://wallet")!)
 }

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Strings
 import SwiftUI
 
@@ -12,7 +13,7 @@ struct TransactionHeader: View {
   let fromAccountName: String
   let toAccountAddress: String
   let toAccountName: String
-  
+  let originInfo: BraveWallet.OriginInfo?
   let transactionType: String
   let value: String
   let fiat: String?
@@ -21,7 +22,7 @@ struct TransactionHeader: View {
   
   var body: some View {
     VStack(spacing: 8) {
-      VStack {
+      VStack(spacing: 8) {
         BlockieGroup(
           fromAddress: fromAccountAddress,
           toAddress: toAccountAddress,
@@ -52,6 +53,12 @@ struct TransactionHeader: View {
           Strings.Wallet.transactionFromToAccessibilityLabel, fromAccountName, toAccountName
         ))
       )
+      if let originInfo = originInfo {
+        OriginText(urlOrigin: originInfo.origin)
+          .foregroundColor(Color(.braveLabel))
+          .font(.subheadline)
+          .padding(.top, 8) // match vertical padding for tx type, value & fiat VStack
+      }
       VStack(spacing: 4) {
         Text(transactionType)
           .font(.footnote)

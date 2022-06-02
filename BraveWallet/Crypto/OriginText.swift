@@ -5,6 +5,7 @@
 
 import BraveCore
 import SwiftUI
+import Strings
 
 /// View used to display a URLOrigin, bolding the eTLD+1.
 struct OriginText: View {
@@ -12,15 +13,19 @@ struct OriginText: View {
   let urlOrigin: URLOrigin
   
   var body: some View {
-    let origin = urlOrigin.url?.absoluteString ?? ""
-    let eTldPlusOne = urlOrigin.url?.baseDomain ?? ""
-    if let range = origin.range(of: eTldPlusOne) {
-      let originStart = origin[origin.startIndex..<range.lowerBound]
-      let etldPlusOne = origin[range.lowerBound..<range.upperBound]
-      let originEnd = origin[range.upperBound...]
-      Text(originStart) + Text(etldPlusOne).bold() + Text(originEnd)
+    if urlOrigin == WalletConstants.braveWalletOrigin {
+      Text(Strings.Wallet.braveWallet)
     } else {
-      Text(origin)
+      let origin = urlOrigin.url?.absoluteString ?? ""
+      let eTldPlusOne = urlOrigin.url?.baseDomain ?? ""
+      if let range = origin.range(of: eTldPlusOne) {
+        let originStart = origin[origin.startIndex..<range.lowerBound]
+        let etldPlusOne = origin[range.lowerBound..<range.upperBound]
+        let originEnd = origin[range.upperBound...]
+        Text(originStart) + Text(etldPlusOne).bold() + Text(originEnd)
+      } else {
+        Text(origin)
+      }
     }
   }
 }
