@@ -106,7 +106,7 @@
     One moment while loading…
   </message>
   <message name="IDS_BRAVE_VPN_PURCHASE_FAILED " desc="Label to show when purchase status failed">
-    Unable to check the status of your purchase, probably a network problem.
+    Unable to check the status of your purchase. This could be caused by a network problem.
   </message>
   <message name="IDS_BRAVE_VPN_EDIT_PAYMENT" desc="Button title to update payment information">
     Edit payment method

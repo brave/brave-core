@@ -5,7 +5,7 @@ import TextInput, { Textarea } from '$web-components/input'
 import Toggle from '$web-components/toggle'
 import { getLocale } from '../../../../../common/locale'
 import * as S from './style'
-import { ErrorLabel } from '../styles/style'
+import { ErrorLabel } from '../general'
 import getPanelBrowserAPI, * as BraveVPN from '../../api/panel_browser_api'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 

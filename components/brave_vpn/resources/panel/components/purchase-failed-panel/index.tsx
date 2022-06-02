@@ -1,19 +1,24 @@
 import * as React from 'react'
 
 import { getLocale } from '../../../../../common/locale'
-import * as S from '../styles/style'
+import * as S from '../general'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import ContactSupport from '../contact-support'
 
 function PurchaseFailedPanel () {
   const [isContactSupportVisible, setContactSupportVisible] = React.useState(false)
   const closeContactSupport = () => {
-    console.log('isContactSupportVisible', isContactSupportVisible)
     setContactSupportVisible(false)
   }
   const showContactSupport = () => {
     setContactSupportVisible(!isContactSupportVisible)
   }
+  if (isContactSupportVisible) {
+    return <ContactSupport
+      onCloseContactSupport={closeContactSupport}
+    />
+  }
+
   return (
     <S.Box>
       <S.PanelContent>
@@ -24,11 +29,6 @@ function PurchaseFailedPanel () {
         {!isContactSupportVisible && <S.ButtonText onClick={showContactSupport}>
             {getLocale('braveVpnContactSupport')}
         </S.ButtonText>
-        }
-        {isContactSupportVisible &&
-          <ContactSupport
-            onCloseContactSupport={closeContactSupport}
-          />
         }
       </S.PanelContent>
     </S.Box>
