@@ -131,6 +131,8 @@ const build = (buildConfig = config.defaultBuildConfig, options) => {
 
   if (config.xcode_gen_target) {
     util.generateXcodeWorkspace()
+  } else if (config.ide_gen_target) {
+    util.generateIde()
   } else {
     util.generateNinjaFiles()
     util.buildTarget()

@@ -615,6 +615,22 @@ const util = {
     util.run('gn', genArgs, options)
   },
 
+  generateIde: (options = config.defaultOptions) => {
+    console.log('generating ide for "' + config.ide_gen_target + '"...')
+
+    const args = util.buildArgsToString(config.buildArgs())
+
+    const genArgs = [
+      'gen', config.outputDir,
+      '--args="' + args + '"',
+      '--ide="' + config.ide_gen_target + '"',
+      '--filters=//brave/*;//base',
+      '--no-deps'
+    ]
+
+    util.run('gn', genArgs, options)
+  },
+
   lint: (options = {}) => {
     if (!options.base) {
       options.base = 'origin/master'

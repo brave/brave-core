@@ -99,6 +99,7 @@ program
   .option('--ignore_compile_failure', 'Keep compiling regardless of error')
   .option('--skip_signing', 'skip signing binaries')
   .option('--xcode_gen <target>', 'Generate an Xcode workspace ("ios" or a list of semi-colon separated label patterns, run `gn help label_pattern` for more info.')
+  .option('--ide_gen <target>', 'Generate an ide ("vs", "qtcreator", "xcode" etc.')
   .option('--gn <arg>', 'Additional gn args, in the form <key>:<value>', collect, [])
   .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')

@@ -858,6 +858,10 @@ Config.prototype.update = function (options) {
     }
   }
 
+  if (options.ide_gen) {
+    this.ide_gen_target = options.ide_gen
+  }
+
   if (options.gn) {
     parseExtraInputs(options.gn, this.extraGnArgs, (args, key, value) => {
       try {
