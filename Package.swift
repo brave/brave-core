@@ -25,6 +25,7 @@ let package = Package(
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
+    .plugin(name: "CurrentBundleGenPlugin", targets: ["CurrentBundleGenPlugin"]),
   ],
   dependencies: [
     .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.11"),
@@ -177,7 +178,8 @@ let package = Package(
         .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
         .copy("WebFilters/SafeBrowsing/SafeBrowsingError.html"),
         .copy("WebFilters/ShieldStats/Httpse/httpse.leveldb.tgz"),
-      ]
+      ],
+      plugins: ["CurrentBundleGenPlugin"]
     ),
     .target(name: "GuardianVPN", path: "Client/Frontend/BraveVPN/GRDAPI", publicHeadersPath: "."),
     .target(
@@ -223,7 +225,8 @@ let package = Package(
         .copy("Certificates/ISRGRootCA_X1.cer"),
         .copy("Certificates/ISRGRootCA_X2.cer"),
         .copy("Certificates/SFSRootCAG2.cer"),
-      ]
+      ],
+      plugins: ["CurrentBundleGenPlugin"]
     ),
     .target(
       name: "BraveUI",
@@ -238,7 +241,8 @@ let package = Package(
         "Then",
         "XCGLogger"
       ],
-      path: "BraveUI"
+      path: "BraveUI",
+      plugins: ["CurrentBundleGenPlugin"]
     ),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
@@ -250,7 +254,12 @@ let package = Package(
       path: "Storage",
       cSettings: [.define("SQLITE_HAS_CODEC")]
     ),
-    .target(name: "Data", dependencies: ["BraveShared", "Storage", "Strings"], path: "Data"),
+    .target(
+      name: "Data",
+      dependencies: ["BraveShared", "Storage", "Strings"],
+      path: "Data",
+      plugins: ["CurrentBundleGenPlugin"]
+    ),
     .target(
       name: "BraveWallet",
       dependencies: [
@@ -267,7 +276,8 @@ let package = Package(
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
       ],
-      path: "BraveWallet"
+      path: "BraveWallet",
+      plugins: ["CurrentBundleGenPlugin"]
     ),
     .target(
       name: "BrowserIntentsModels",
@@ -321,7 +331,8 @@ let package = Package(
       ]
     ),
     .target(name: "Strings", path: "App/l10n", exclude: ["tools", "Resources/Info.plist", "README.md"]),
-    .plugin(name: "IntentBuilderPlugin", capability: .buildTool())
+    .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
+    .plugin(name: "CurrentBundleGenPlugin", capability: .buildTool()),
   ],
   cxxLanguageStandard: .cxx17
 )
