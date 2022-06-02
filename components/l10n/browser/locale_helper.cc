@@ -12,13 +12,10 @@ namespace brave_l10n {
 LocaleHelper* g_locale_helper_for_testing = nullptr;
 
 LocaleHelper::LocaleHelper() = default;
-
 LocaleHelper::~LocaleHelper() = default;
 
-void LocaleHelper::set_for_testing(
-    LocaleHelper* locale_helper) {
-  DCHECK(locale_helper);
-
+/*static*/
+void LocaleHelper::SetForTesting(LocaleHelper* locale_helper) {
   g_locale_helper_for_testing = locale_helper;
 }
 
