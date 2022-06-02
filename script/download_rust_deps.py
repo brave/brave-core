@@ -175,7 +175,8 @@ def main():
     else:
         download_and_unpack_rust_deps(args.platform)
 
-    rustup_add_target('x86_64-apple-darwin')
+    if args.platform == 'darwin':
+        rustup_add_target('x86_64-apple-darwin')
 
     cxx_path = os.path.abspath(
         os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
