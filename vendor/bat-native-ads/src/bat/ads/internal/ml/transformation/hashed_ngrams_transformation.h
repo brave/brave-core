@@ -20,9 +20,12 @@ class HashVectorizer;
 class HashedNGramsTransformation final : public Transformation {
  public:
   HashedNGramsTransformation();
-  HashedNGramsTransformation(const HashedNGramsTransformation& hashed_ngrams);
   HashedNGramsTransformation(const int bucket_count,
                              const std::vector<int>& subgrams);
+  HashedNGramsTransformation(
+      HashedNGramsTransformation&& hashed_ngrams) noexcept;
+  HashedNGramsTransformation& operator=(
+      HashedNGramsTransformation&& hashed_ngrams) = delete;
   ~HashedNGramsTransformation() override;
 
   explicit HashedNGramsTransformation(const std::string& parameters);

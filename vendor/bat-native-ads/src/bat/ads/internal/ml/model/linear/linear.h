@@ -20,10 +20,10 @@ class Linear final {
  public:
   Linear();
   explicit Linear(const std::string& model);
-  Linear(const Linear& other);
-  Linear& operator=(const Linear& other);
-  Linear(const std::map<std::string, VectorData>& weights,
-         const std::map<std::string, double>& biases);
+  Linear(Linear&& other) noexcept;
+  Linear& operator=(Linear&& other) noexcept;
+  Linear(std::map<std::string, VectorData> weights,
+         std::map<std::string, double> biases);
   ~Linear();
 
   PredictionMap Predict(const VectorData& x) const;

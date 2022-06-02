@@ -36,11 +36,6 @@ HashVectorizer::HashVectorizer(const int bucket_count,
   bucket_count_ = bucket_count;
 }
 
-HashVectorizer::HashVectorizer(const HashVectorizer& hash_vectorizer) {
-  bucket_count_ = hash_vectorizer.GetBucketCount();
-  substring_sizes_ = hash_vectorizer.GetSubstringSizes();
-}
-
 std::vector<uint32_t> HashVectorizer::GetSubstringSizes() const {
   return substring_sizes_;
 }

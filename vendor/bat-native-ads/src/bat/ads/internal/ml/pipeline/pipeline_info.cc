@@ -5,7 +5,8 @@
 
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
-#include "bat/ads/internal/ml/ml_transformation_util.h"
+#include <utility>
+
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
@@ -14,26 +15,22 @@ namespace pipeline {
 
 PipelineInfo::PipelineInfo() = default;
 
-PipelineInfo::PipelineInfo(const PipelineInfo& info) {
-  version = info.version;
-  timestamp = info.timestamp;
-  locale = info.locale;
-  linear_model = info.linear_model;
-  transformations = GetTransformationVectorDeepCopy(info.transformations);
-}
+PipelineInfo::PipelineInfo(PipelineInfo&& info) noexcept = default;
+
+PipelineInfo& PipelineInfo::operator=(PipelineInfo&& info) noexcept = default;
 
 PipelineInfo::~PipelineInfo() = default;
 
-PipelineInfo::PipelineInfo(const int& version,
+PipelineInfo::PipelineInfo(const int version,
                            const std::string& timestamp,
                            const std::string& locale,
-                           const TransformationVector& new_transformations,
-                           const model::Linear& linear_model)
+                           TransformationVector new_transformations,
+                           model::Linear linear_model)
     : version(version),
       timestamp(timestamp),
       locale(locale),
-      linear_model(linear_model) {
-  transformations = GetTransformationVectorDeepCopy(new_transformations);
+      linear_model(std::move(linear_model)) {
+  transformations = std::move(new_transformations);
 }
 
 }  // namespace pipeline

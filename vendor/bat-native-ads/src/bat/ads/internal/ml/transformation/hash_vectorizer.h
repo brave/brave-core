@@ -17,9 +17,10 @@ namespace ml {
 class HashVectorizer final {
  public:
   HashVectorizer();
-  HashVectorizer(const HashVectorizer& other);
   HashVectorizer(const int n_buckets, const std::vector<int>& subgrams);
   ~HashVectorizer();
+  HashVectorizer(const HashVectorizer& info) = delete;
+  HashVectorizer& operator=(const HashVectorizer& info) = delete;
 
   std::map<uint32_t, double> GetFrequencies(const std::string& html) const;
 

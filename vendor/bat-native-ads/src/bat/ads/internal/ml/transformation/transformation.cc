@@ -10,8 +10,6 @@ namespace ml {
 
 Transformation::Transformation(const TransformationType& type) : type_(type) {}
 
-Transformation::Transformation(const Transformation& t) = default;
-
 Transformation::~Transformation() = default;
 
 TransformationType Transformation::GetType() const {

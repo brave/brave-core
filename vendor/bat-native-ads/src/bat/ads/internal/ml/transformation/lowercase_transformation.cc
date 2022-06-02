@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 
 #include <string>
+#include <utility>
 
 #include "base/check.h"
 #include "base/strings/string_util.h"
@@ -19,7 +20,7 @@ LowercaseTransformation::LowercaseTransformation()
     : Transformation(TransformationType::kLowercase) {}
 
 LowercaseTransformation::LowercaseTransformation(
-    const LowercaseTransformation& transformation) = default;
+    LowercaseTransformation&& transformation) noexcept = default;
 
 LowercaseTransformation::~LowercaseTransformation() = default;
 
