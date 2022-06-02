@@ -339,7 +339,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 mSiteSectionView.setLayoutParams(layoutParams);
                 mSiteSectionView.requestLayout();
                 mainLayout.addView(mSiteSectionView, insertionPoint);
-        }
+            }
     }
 
     protected void updateTileGridPlaceholderVisibility() {
