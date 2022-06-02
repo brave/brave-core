@@ -136,6 +136,18 @@ BraveVpnService::BraveVpnService(
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
+
+  // To get proper connection state, we need to load purchased state.
+  // Connection state will be checked after we confirm that this profile
+  // is purchased user.
+  // However, purchased state loading makes additional network request.
+  // We should not make this network request for fresh user.
+  // To prevent this, we load purchased state at startup only
+  // when profile has cached region list because region list is fetched
+  // and cached only when user purchased at least once.
+  auto* preference = prefs_->FindPreference(prefs::kBraveVPNRegionList);
+  if (preference && !preference->IsDefaultValue())
+    LoadPurchasedState();
 }
 #endif
 
@@ -198,6 +210,11 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
     bool force) {
   // this is a simple state machine for handling connection state
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Ignore connection state change request for non purchased user.
+  // This can be happened when user controls vpn via os settings.
+  if (!is_purchased_user())
+    return;
+
   if (connection_state_ == state)
     return;
 #if BUILDFLAG(IS_WIN)
