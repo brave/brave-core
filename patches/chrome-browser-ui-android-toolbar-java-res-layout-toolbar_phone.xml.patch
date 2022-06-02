@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
-index 93f598090272745ce4f3ece70593c9628e08a1ea..5b791488bd1c521088ad599e091d54cec524af0b 100644
+index 93f598090272745ce4f3ece70593c9628e08a1ea..da7644460322ca032aa654c7dfe4fd186d860eb8 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
-@@ -39,6 +39,7 @@
+@@ -36,6 +36,7 @@
+         android:orientation="horizontal"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:layout_marginEnd="8dp"
          android:layout_gravity="top|end"
          android:focusable="true"
          android:focusableInTouchMode="true">
-+        android:layout_marginEnd="8dp"
- 
-         <ViewStub
-             android:id="@+id/optional_button_stub"
 @@ -47,6 +48,7 @@
              style="@style/ToolbarButton"
              android:paddingStart="@dimen/toolbar_phone_optional_button_padding"
