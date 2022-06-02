@@ -1,5 +1,4 @@
 # Xcode
-.swiftpm/xcode 
 build/
 *.pbxuser
 !default.pbxuser
