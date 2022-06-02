@@ -34,6 +34,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
                      const std::u16string& user_text,
                      const AutocompleteResult& result,
                      bool has_focus) override;
+  void OnURLOpenedFromOmnibox(OmniboxLog* log) override;
 
  private:
   std::u16string user_text_;

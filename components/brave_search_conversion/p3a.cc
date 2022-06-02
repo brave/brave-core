@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/notreached.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -23,6 +24,7 @@ const char* GetOmniboxShownPrefName(ConversionType type) {
     case ConversionType::kButton:
       return prefs::kP3AButtonShown;
     default:
+      NOTREACHED();
       return nullptr;
   }
 }
@@ -34,6 +36,7 @@ const char* GetOmniboxTriggeredPrefName(ConversionType type) {
     case ConversionType::kButton:
       return prefs::kP3AButtonTriggered;
     default:
+      NOTREACHED();
       return nullptr;
   }
 }
@@ -45,6 +48,7 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
     case ConversionType::kButton:
       return kSearchPromoButtonHistogramName;
     default:
+      NOTREACHED();
       return nullptr;
   }
 }
@@ -52,6 +56,9 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
 void UpdateHistograms(PrefService* prefs) {
   const ConversionType types[] = {ConversionType::kBanner,
                                   ConversionType::kButton};
+
+  VLOG(1) << "SearchConversionP3A: updating histograms";
+
   const bool default_engine_triggered =
       prefs->GetBoolean(prefs::kP3ADefaultEngineChanged);
   for (const auto type : types) {
@@ -95,12 +102,12 @@ void RecordOmniboxPromoShown(PrefService* prefs, ConversionType type) {
   const char* pref_name = GetOmniboxShownPrefName(type);
   DCHECK(pref_name);
 
+  VLOG(1) << "SearchConversionP3A: omnibox promo shown, pref = " << pref_name;
+
   const bool prev_setting = prefs->GetBoolean(pref_name);
   if (prev_setting) {
     return;
   }
-
-  VLOG(1) << "SearchConversionP3A: omnibox promo shown, pref = " << pref_name;
   prefs->SetBoolean(pref_name, true);
   UpdateHistograms(prefs);
 }
@@ -109,13 +116,13 @@ void RecordOmniboxPromoTrigger(PrefService* prefs, ConversionType type) {
   const char* pref_name = GetOmniboxTriggeredPrefName(type);
   DCHECK(pref_name);
 
+  VLOG(1) << "SearchConversionP3A: omnibox promo triggered, pref = "
+          << pref_name;
+
   const bool prev_setting = prefs->GetBoolean(pref_name);
   if (prev_setting) {
     return;
   }
-
-  VLOG(1) << "SearchConversionP3A: omnibox promo triggered, pref = "
-          << pref_name;
   prefs->SetBoolean(pref_name, true);
   UpdateHistograms(prefs);
 }

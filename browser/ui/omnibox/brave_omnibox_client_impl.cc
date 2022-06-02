@@ -11,7 +11,6 @@
 #include "base/values.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/components/brave_search_conversion/p3a.h"
-#include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
@@ -21,6 +20,8 @@
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_edit_controller.h"
 #include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/autocomplete_result.h"
+#include "components/omnibox/browser/omnibox_log.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -90,12 +91,6 @@ bool BraveOmniboxClientImpl::IsAutocompleteEnabled() const {
 }
 
 void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {
-  if (!user_text_.empty() && IsBraveSearchPromotionMatch(match, user_text_)) {
-    DCHECK_NE(ConversionType::kNone, GetConversionType());
-    brave_search_conversion::p3a::RecordOmniboxPromoTrigger(
-        g_browser_process->local_state(), GetConversionType());
-  }
-
   if (IsSearchEvent(match)) {
     // TODO(iefremov): Optimize this.
     WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
@@ -113,4 +108,14 @@ void BraveOmniboxClientImpl::OnTextChanged(
   // Cache current input for checking whether current match is search promotion
   // match or not when current input is accepted.
   user_text_ = user_text;
+}
+
+void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
+  if (log->selected_index > 0 &&
+      IsBraveSearchPromotionMatch(log->result.match_at(log->selected_index),
+                                  user_text_)) {
+    brave_search_conversion::p3a::RecordOmniboxPromoTrigger(
+        g_browser_process->local_state(),
+        brave_search_conversion::GetConversionType());
+  }
 }

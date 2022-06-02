@@ -27,9 +27,8 @@ class BraveSearchConversionPromotionView : public views::View {
  public:
   METADATA_HEADER(BraveSearchConversionPromotionView);
 
-  explicit BraveSearchConversionPromotionView(
-      BraveOmniboxResultView* result_view,
-      PrefService* local_state);
+  BraveSearchConversionPromotionView(BraveOmniboxResultView* result_view,
+                                     PrefService* local_state);
   BraveSearchConversionPromotionView(
       const BraveSearchConversionPromotionView&) = delete;
   BraveSearchConversionPromotionView& operator=(
