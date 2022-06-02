@@ -74,7 +74,7 @@ AdEventInfo BuildAdEvent(const std::string& placement_id,
                          const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
-  ad_event.type = AdType::kAdNotification;
+  ad_event.type = AdType::kNotificationAd;
   ad_event.confirmation_type = confirmation_type;
   ad_event.placement_id = placement_id;
   ad_event.campaign_id = "604df73f-bc6e-4583-a56d-ce4e243c8537";

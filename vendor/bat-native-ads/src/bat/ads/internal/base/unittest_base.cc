@@ -197,8 +197,8 @@ void UnitTestBase::Initialize() {
   client_ = std::make_unique<Client>();
   client_->Initialize([](const bool success) { ASSERT_TRUE(success); });
 
-  ad_notifications_ = std::make_unique<AdNotifications>();
-  ad_notifications_->Initialize(
+  notification_ads_ = std::make_unique<NotificationAds>();
+  notification_ads_->Initialize(
       [](const bool success) { ASSERT_TRUE(success); });
 
   confirmations_state_ = std::make_unique<ConfirmationsState>();

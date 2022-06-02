@@ -21,12 +21,12 @@ int GetAdsPerHour() {
 
   if (ads_per_hour == -1) {
     ads_per_hour =
-        static_cast<uint64_t>(features::GetDefaultAdNotificationsPerHour());
+        static_cast<uint64_t>(features::GetDefaultNotificationAdsPerHour());
   }
 
   const int64_t clamped_ads_per_hour = base::clamp(
-      ads_per_hour, static_cast<int64_t>(kMinimumAdNotificationsPerHour),
-      static_cast<int64_t>(kMaximumAdNotificationsPerHour));
+      ads_per_hour, static_cast<int64_t>(kMinimumNotificationAdsPerHour),
+      static_cast<int64_t>(kMaximumNotificationAdsPerHour));
 
   return static_cast<int>(clamped_ads_per_hour);
 }

@@ -31,7 +31,7 @@ class NotificationHelperMac
 
   bool CanShowBackgroundNotifications() const override;
 
-  bool ShowMyFirstAdNotification() override;
+  bool ShowMyFirstNotificationAd() override;
 };
 
 }  // namespace brave_ads

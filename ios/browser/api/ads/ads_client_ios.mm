@@ -33,7 +33,7 @@ bool AdsClientIOS::CanShowBackgroundNotifications() const {
   return [bridge_ canShowBackgroundNotifications];
 }
 
-void AdsClientIOS::ShowNotification(const ads::AdNotificationInfo& info) {
+void AdsClientIOS::ShowNotification(const ads::NotificationAdInfo& info) {
   [bridge_ showNotification:info];
 }
 

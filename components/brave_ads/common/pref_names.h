@@ -15,15 +15,15 @@ extern const char kHasAdsP3AState[];
 
 extern const char kP2AStoragePrefNamePrefix[];
 
-extern const char kShouldShowMyFirstAdNotification[];
+extern const char kShouldShowMyFirstNotificationAd[];
 
 extern const char kSupportedCountryCodesLastSchemaVersion[];
 extern const char kSupportedCountryCodesSchemaVersion[];
 extern const int kSupportedCountryCodesSchemaVersionNumber;
 
-extern const char kAdNotificationLastScreenPositionX[];
-extern const char kAdNotificationLastScreenPositionY[];
-extern const char kAdNotificationDidFallbackToCustom[];
+extern const char kNotificationAdLastScreenPositionX[];
+extern const char kNotificationAdLastScreenPositionY[];
+extern const char kNotificationAdDidFallbackToCustom[];
 
 extern const char kVersion[];
 extern const int kCurrentVersionNumber;

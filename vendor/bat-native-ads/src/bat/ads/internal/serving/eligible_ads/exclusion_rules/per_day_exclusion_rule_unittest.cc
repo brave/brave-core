@@ -66,7 +66,7 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
 
@@ -87,7 +87,7 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -111,7 +111,7 @@ TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -135,7 +135,7 @@ TEST_F(BatAdsPerDayExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

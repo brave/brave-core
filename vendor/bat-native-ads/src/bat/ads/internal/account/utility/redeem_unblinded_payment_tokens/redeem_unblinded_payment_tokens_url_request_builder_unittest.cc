@@ -60,7 +60,7 @@ privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
 
     unblinded_payment_token.confirmation_type = ConfirmationType::kViewed;
 
-    unblinded_payment_token.ad_type = AdType::kAdNotification;
+    unblinded_payment_token.ad_type = AdType::kNotificationAd;
 
     unblinded_payment_tokens.push_back(unblinded_payment_token);
   }

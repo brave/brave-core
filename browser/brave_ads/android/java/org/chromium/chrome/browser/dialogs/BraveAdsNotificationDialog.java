@@ -80,7 +80,7 @@ public class BraveAdsNotificationDialog {
                     if (Math.abs(deltaXDp) > MIN_DISTANCE_FOR_DISMISS) {
                         mAdsDialog.dismiss();
                         mAdsDialog = null;
-                        BraveAdsNativeHelper.nativeOnCloseAdNotification(
+                        BraveAdsNativeHelper.nativeOnCloseNotificationAd(
                                 Profile.getLastUsedRegularProfile(), mNotificationId, true);
                         mNotificationId = null;
                     } else if (Math.abs(deltaXDp) <= MAX_DISTANCE_FOR_TAP) {
@@ -118,7 +118,7 @@ public class BraveAdsNotificationDialog {
         }
     };
 
-    public static void showAdNotification(Context context, final String notificationId,
+    public static void showNotificationAd(Context context, final String notificationId,
             final String origin, final String title, final String body) {
         try {
             if (mAdsDialog != null) {
@@ -140,7 +140,7 @@ public class BraveAdsNotificationDialog {
         mAdsDialog = b.create();
 
         if (mNotificationId != null) {
-            BraveAdsNativeHelper.nativeOnShowAdNotification(
+            BraveAdsNativeHelper.nativeOnShowNotificationAd(
                     Profile.getLastUsedRegularProfile(), mNotificationId);
         }
 
@@ -182,14 +182,14 @@ public class BraveAdsNotificationDialog {
         } else {
             mAdsDialog.dismiss();
             mAdsDialog = null;
-            BraveAdsNativeHelper.nativeOnClickAdNotification(
+            BraveAdsNativeHelper.nativeOnClickNotificationAd(
                     Profile.getLastUsedRegularProfile(), mNotificationId);
         }
         mNotificationId = null;
     }
 
     @CalledByNative
-    public static void showAdNotification(final String notificationId, final String origin,
+    public static void showNotificationAd(final String notificationId, final String origin,
             final String title, final String body) {
         Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
         assert activity != null;
@@ -199,17 +199,17 @@ public class BraveAdsNotificationDialog {
         if (activity == null || (state != ActivityState.STARTED && state != ActivityState.RESUMED))
             return;
 
-        BraveAdsNotificationDialog.showAdNotification(
+        BraveAdsNotificationDialog.showNotificationAd(
                 activity, notificationId, origin, title, body);
     }
 
     @CalledByNative
-    private static void closeAdsNotification(final String notificationId) {
+    private static void closeNotificationAd(final String notificationId) {
         try {
             if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
                 mAdsDialog.dismiss();
                 mAdsDialog = null;
-                BraveAdsNativeHelper.nativeOnCloseAdNotification(
+                BraveAdsNativeHelper.nativeOnCloseNotificationAd(
                         Profile.getLastUsedRegularProfile(), mNotificationId, false);
             }
         } catch (IllegalArgumentException e) {

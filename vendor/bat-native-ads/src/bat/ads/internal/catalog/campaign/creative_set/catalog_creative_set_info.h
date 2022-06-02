@@ -11,9 +11,9 @@
 #include "bat/ads/internal/base/platform_helper.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_os_info_aliases.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_segment_info_aliases.h"
-#include "bat/ads/internal/catalog/campaign/creative_set/creative/ad_notification/catalog_creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info_aliases.h"
+#include "bat/ads/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info_aliases.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 
@@ -38,7 +38,7 @@ struct CatalogCreativeSetInfo final {
   std::string split_test_group;
   CatalogSegmentList segments;
   CatalogOsList oses;
-  CatalogCreativeAdNotificationList creative_ad_notifications;
+  CatalogCreativeNotificationAdList creative_notification_ads;
   CatalogCreativeInlineContentAdList creative_inline_content_ads;
   CatalogCreativeNewTabPageAdList creative_new_tab_page_ads;
   CatalogCreativePromotedContentAdList creative_promoted_content_ads;

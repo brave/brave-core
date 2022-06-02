@@ -405,8 +405,8 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       confirmation.ad_type = AdType(*ad_type);
     } else {
       // Migrate legacy confirmations, this value is not used right now so safe
-      // to set to |kAdNotification|
-      confirmation.ad_type = AdType::kAdNotification;
+      // to set to |kNotificationAd|
+      confirmation.ad_type = AdType::kNotificationAd;
     }
 
     // Token info

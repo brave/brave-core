@@ -78,7 +78,7 @@ AdEventList DismissedExclusionRule::FilterAdEvents(
       [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.confirmation_type == ConfirmationType::kClicked ||
                 ad_event.confirmation_type == ConfirmationType::kDismissed) &&
-               ad_event.type == AdType::kAdNotification &&
+               ad_event.type == AdType::kNotificationAd &&
                ad_event.campaign_id == creative_ad.campaign_id &&
                now - ad_event.created_at < time_constraint;
       });

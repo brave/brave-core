@@ -1,6 +1,6 @@
 ads_public_headers = [
   "//brave/ios/browser/api/ads/brave_ads.h",
-  "//brave/ios/browser/api/ads/ad_notification_ios.h",
+  "//brave/ios/browser/api/ads/notification_ad_ios.h",
   "//brave/ios/browser/api/ads/inline_content_ad_ios.h",
   "$root_gen_dir/brave/ios/browser/api/ads/ads.mojom.objc.h",
 ]

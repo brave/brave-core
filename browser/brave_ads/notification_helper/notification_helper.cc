@@ -23,7 +23,7 @@ bool NotificationHelper::CanShowBackgroundNotifications() const {
   return true;
 }
 
-bool NotificationHelper::ShowMyFirstAdNotification() {
+bool NotificationHelper::ShowMyFirstNotificationAd() {
   return false;
 }
 

@@ -94,7 +94,7 @@ bool NotificationHelperWin::CanShowBackgroundNotifications() const {
   return true;
 }
 
-bool NotificationHelperWin::ShowMyFirstAdNotification() {
+bool NotificationHelperWin::ShowMyFirstNotificationAd() {
   return false;
 }
 

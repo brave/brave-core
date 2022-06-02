@@ -155,7 +155,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
         std::string code = type["code"].GetString();
         if (code == "notification_all_v1") {
-          CatalogCreativeAdNotificationInfo creative;
+          CatalogCreativeNotificationAdInfo creative;
           creative.creative_instance_id = creative_instance_id;
 
           // Type
@@ -175,7 +175,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
             continue;
           }
 
-          creative_set.creative_ad_notifications.push_back(creative);
+          creative_set.creative_notification_ads.push_back(creative);
         } else if (code == "inline_content_all_v1") {
           CatalogCreativeInlineContentAdInfo creative;
           creative.creative_instance_id = creative_instance_id;

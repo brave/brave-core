@@ -31,7 +31,7 @@ bool NotificationHelperLinux::CanShowBackgroundNotifications() const {
   return true;
 }
 
-bool NotificationHelperLinux::ShowMyFirstAdNotification() {
+bool NotificationHelperLinux::ShowMyFirstNotificationAd() {
   return false;
 }
 

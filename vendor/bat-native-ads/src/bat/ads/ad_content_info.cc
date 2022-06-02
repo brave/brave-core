@@ -179,7 +179,7 @@ bool AdContentInfo::FromJson(const std::string& json) {
   if (document.HasMember("type") && document["type"].IsString()) {
     type = AdType(document["type"].GetString());
   } else {
-    type = AdType::kAdNotification;
+    type = AdType::kNotificationAd;
   }
 
   if (document.HasMember("uuid")) {

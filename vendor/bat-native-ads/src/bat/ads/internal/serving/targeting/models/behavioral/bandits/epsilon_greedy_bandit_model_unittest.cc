@@ -88,9 +88,9 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   processor::EpsilonGreedyBandit processor;
 
   const std::string segment_1 = "travel";
-  processor.Process({segment_1, mojom::AdNotificationEventType::kDismissed});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kDismissed});
   const std::string segment_2 = "personal finance";
-  processor.Process({segment_2, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
 
   // Act
   EpsilonGreedyBandit model;
@@ -113,23 +113,23 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // optimistic initial values for arms
   processor::EpsilonGreedyBandit processor;
   for (const auto& segment : kSegments) {
-    processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
+    processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
   }
 
   std::string segment_1 = "science";
-  processor.Process({segment_1, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment_1, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment_1, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
 
   std::string segment_2 = "travel";
-  processor.Process({segment_2, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment_2, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment_2, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
 
   std::string segment_3 = "technology & computing";
-  processor.Process({segment_3, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment_3, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment_3, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
 
   // Act
   EpsilonGreedyBandit model;
@@ -156,23 +156,23 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // optimistic initial values for arms
   processor::EpsilonGreedyBandit processor;
   for (const auto& segment : kSegments) {
-    processor.Process({segment, mojom::AdNotificationEventType::kDismissed});
+    processor.Process({segment, mojom::NotificationAdEventType::kDismissed});
   }
 
   std::string segment_1 = "science";
-  processor.Process({segment_1, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment_1, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment_1, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment_1, mojom::NotificationAdEventType::kClicked});
 
   std::string segment_2 = "travel";
-  processor.Process({segment_2, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment_2, mojom::AdNotificationEventType::kClicked});
-  processor.Process({segment_2, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
+  processor.Process({segment_2, mojom::NotificationAdEventType::kClicked});
 
   std::string segment_3 = "technology & computing";
-  processor.Process({segment_3, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment_3, mojom::AdNotificationEventType::kDismissed});
-  processor.Process({segment_3, mojom::AdNotificationEventType::kClicked});
+  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor.Process({segment_3, mojom::NotificationAdEventType::kClicked});
 
   // Act
   EpsilonGreedyBandit model;

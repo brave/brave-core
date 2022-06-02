@@ -28,7 +28,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
   registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
 
-  registry->RegisterBooleanPref(prefs::kShouldShowMyFirstAdNotification, true);
+  registry->RegisterBooleanPref(prefs::kShouldShowMyFirstNotificationAd, true);
 
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
                                 0);
@@ -41,9 +41,9 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(ads::prefs::kEnabled, false);
 
-  registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionX, 0);
-  registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionY, 0);
-  registry->RegisterBooleanPref(prefs::kAdNotificationDidFallbackToCustom,
+  registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionX, 0);
+  registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionY, 0);
+  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowConversionTracking,

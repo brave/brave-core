@@ -90,19 +90,19 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   DCHECK(!segment.empty());
 
   switch (feedback.ad_event_type) {
-    case mojom::AdNotificationEventType::kTimedOut:
-    case mojom::AdNotificationEventType::kDismissed: {
+    case mojom::NotificationAdEventType::kTimedOut:
+    case mojom::NotificationAdEventType::kDismissed: {
       UpdateArm(/* reward */ 0, segment);
       break;
     }
 
-    case mojom::AdNotificationEventType::kClicked: {
+    case mojom::NotificationAdEventType::kClicked: {
       UpdateArm(/* reward */ 1, segment);
       break;
     }
 
-    case mojom::AdNotificationEventType::kServed:
-    case mojom::AdNotificationEventType::kViewed: {
+    case mojom::NotificationAdEventType::kServed:
+    case mojom::NotificationAdEventType::kViewed: {
       NOTREACHED();
       break;
     }

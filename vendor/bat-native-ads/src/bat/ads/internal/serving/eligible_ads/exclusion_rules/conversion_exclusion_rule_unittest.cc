@@ -61,7 +61,7 @@ TEST_F(BatAdsConversionExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);
@@ -82,7 +82,7 @@ TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);
@@ -116,7 +116,7 @@ TEST_F(BatAdsConversionExclusionRuleTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad, AdType::kAdNotification,
+      BuildAdEvent(creative_ad, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);
@@ -140,7 +140,7 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event =
-      BuildAdEvent(creative_ad_2, AdType::kAdNotification,
+      BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                    ConfirmationType::kConversion, Now());
 
   ad_events.push_back(ad_event);

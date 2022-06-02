@@ -27,7 +27,7 @@ class BatAdsHistoryUtilTest : public UnitTestBase {
 TEST_F(BatAdsHistoryUtilTest, BuildAd) {
   // Arrange
   AdInfo ad;
-  ad.type = AdType::kAdNotification;
+  ad.type = AdType::kNotificationAd;
   ad.placement_id = "56b604b7-5eeb-4b7f-84cc-bf965556a550";
   ad.creative_instance_id = "c7a368fd-572d-4af8-be4c-3966475a29b3";
   ad.creative_set_id = "121e5e50-4397-4128-ae38-47525bc1d421";

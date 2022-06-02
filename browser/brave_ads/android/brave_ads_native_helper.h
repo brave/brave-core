@@ -22,18 +22,18 @@ static jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android);
 
-static void JNI_BraveAdsNativeHelper_OnShowAdNotification(
+static void JNI_BraveAdsNativeHelper_OnShowNotificationAd(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id);
 
-static void JNI_BraveAdsNativeHelper_OnCloseAdNotification(
+static void JNI_BraveAdsNativeHelper_OnCloseNotificationAd(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id,
     jboolean j_by_user);
 
-static void JNI_BraveAdsNativeHelper_OnClickAdNotification(
+static void JNI_BraveAdsNativeHelper_OnClickNotificationAd(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id);

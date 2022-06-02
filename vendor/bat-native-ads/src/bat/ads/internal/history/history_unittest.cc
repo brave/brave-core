@@ -6,7 +6,6 @@
 #include "bat/ads/internal/history/history.h"
 
 #include "base/containers/circular_deque.h"
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/history_info.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
@@ -16,6 +15,7 @@
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/notification_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -35,12 +35,12 @@ class BatAdsHistoryTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsHistoryTest, AddAdNotification) {
+TEST_F(BatAdsHistoryTest, AddNotificationAd) {
   // Arrange
-  AdNotificationInfo ad;
+  NotificationAdInfo ad;
 
   // Act
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
@@ -48,13 +48,13 @@ TEST_F(BatAdsHistoryTest, AddAdNotification) {
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsHistoryTest, AddAdNotificationsToHistory) {
+TEST_F(BatAdsHistoryTest, AddNotificationAdsToHistory) {
   // Arrange
-  AdNotificationInfo ad;
+  NotificationAdInfo ad;
 
   // Act
-  history::AddAdNotification(ad, ConfirmationType::kViewed);
-  history::AddAdNotification(ad, ConfirmationType::kClicked);
+  history::AddNotificationAd(ad, ConfirmationType::kViewed);
+  history::AddNotificationAd(ad, ConfirmationType::kClicked);
 
   // Assert
   const base::circular_deque<HistoryItemInfo> history =
@@ -174,8 +174,8 @@ TEST_F(BatAdsHistoryTest, AddMultipleAdTypesToHistory) {
   // Arrange
 
   // Act
-  AdNotificationInfo ad_notification;
-  history::AddAdNotification(ad_notification, ConfirmationType::kViewed);
+  NotificationAdInfo notification_ad;
+  history::AddNotificationAd(notification_ad, ConfirmationType::kViewed);
 
   NewTabPageAdInfo new_tab_page_ad;
   history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);

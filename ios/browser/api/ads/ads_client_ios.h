@@ -25,7 +25,7 @@ class AdsClientIOS : public ads::AdsClient {
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
   bool CanShowBackgroundNotifications() const override;
-  void ShowNotification(const ads::AdNotificationInfo& info) override;
+  void ShowNotification(const ads::NotificationAdInfo& info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(const std::string& uuid) override;
   void RecordAdEventForId(const std::string& id,

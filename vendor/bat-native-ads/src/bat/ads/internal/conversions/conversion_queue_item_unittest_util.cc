@@ -37,7 +37,7 @@ ConversionQueueItemInfo BuildConversionQueueItem(
   conversion_queue_item.advertiser_id = kAdvertiserId;
   conversion_queue_item.conversion_id = conversion_id;
   conversion_queue_item.advertiser_public_key = advertiser_public_key;
-  conversion_queue_item.ad_type = AdType::kAdNotification;
+  conversion_queue_item.ad_type = AdType::kNotificationAd;
   conversion_queue_item.process_at = Now();
 
   return conversion_queue_item;

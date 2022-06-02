@@ -123,17 +123,17 @@ void BatAdsImpl::OnTabClosed(
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GetAdNotification(const std::string& placement_id,
-                                   GetAdNotificationCallback callback) {
-  ads::AdNotificationInfo notification;
-  ads_->GetAdNotification(placement_id, &notification);
-  std::move(callback).Run(notification.ToJson());
+void BatAdsImpl::GetNotificationAd(const std::string& placement_id,
+                                   GetNotificationAdCallback callback) {
+  ads::NotificationAdInfo notification_ad;
+  ads_->GetNotificationAd(placement_id, &notification_ad);
+  std::move(callback).Run(notification_ad.ToJson());
 }
 
-void BatAdsImpl::TriggerAdNotificationEvent(
+void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const ads::mojom::AdNotificationEventType event_type) {
-  ads_->TriggerAdNotificationEvent(placement_id, event_type);
+    const ads::mojom::NotificationAdEventType event_type) {
+  ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
 
 void BatAdsImpl::TriggerNewTabPageAdEvent(

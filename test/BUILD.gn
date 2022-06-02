@@ -906,7 +906,7 @@ if (!is_android) {
     }
 
     if (toolkit_views) {
-      sources += [ "//brave/browser/ui/views/brave_ads/ad_notfication_popup_browsertest.cc" ]
+      sources += [ "//brave/browser/ui/views/brave_ads/notification_ad_popup_browsertest.cc" ]
       deps += [
         "//brave/browser/ui/views/brave_ads",
         "//brave/test/views/snapshot",

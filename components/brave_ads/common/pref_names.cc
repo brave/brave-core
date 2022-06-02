@@ -19,8 +19,8 @@ const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 // Prefix for preference names pertaining to p2a weekly metrics
 const char kP2AStoragePrefNamePrefix[] = "brave.weekly_storage.";
 
-// Stores whether we should show the My First Ad notification
-const char kShouldShowMyFirstAdNotification[] =
+// Stores whether we should show the My First notification ad
+const char kShouldShowMyFirstNotificationAd[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 
 // Stores the supported country codes current schema version number
@@ -30,14 +30,14 @@ const char kSupportedCountryCodesSchemaVersion[] =
     "brave.brave_ads.supported_regions_schema_version_number";
 const int kSupportedCountryCodesSchemaVersionNumber = 9;
 
-// Stores the last screen position of custom ad notifications and whether to
-// fallback from native to custom ad notifications if native notifications are
+// Stores the last screen position of custom notification ads and whether to
+// fallback from native to custom notification ads if native notifications are
 // disabled
-const char kAdNotificationLastScreenPositionX[] =
+const char kNotificationAdLastScreenPositionX[] =
     "brave.brave_ads.ad_notification.last_screen_position_x";
-const char kAdNotificationLastScreenPositionY[] =
+const char kNotificationAdLastScreenPositionY[] =
     "brave.brave_ads.ad_notification.last_screen_position_y";
-const char kAdNotificationDidFallbackToCustom[] =
+const char kNotificationAdDidFallbackToCustom[] =
     "brave.brave_ads.ad_notification.did_fallback_to_custom";
 
 // Stores the preferences version number

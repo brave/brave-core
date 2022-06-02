@@ -88,13 +88,13 @@ TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
 }
 
 TEST_F(BatAdsConversionsTest,
-       DoNotConvertViewedAdNotificationWhenAdsAreDisabled) {
+       DoNotConvertViewedNotificationAdWhenAdsAreDisabled) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo& creative_ad = BuildCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
   ConversionList conversions;
@@ -123,13 +123,13 @@ TEST_F(BatAdsConversionsTest,
       });
 }
 
-TEST_F(BatAdsConversionsTest, ConvertViewedAdNotificationWhenAdsAreEnabled) {
+TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
 
   const CreativeAdInfo& creative_ad = BuildCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
 
   ConversionList conversions;
@@ -163,16 +163,16 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdNotificationWhenAdsAreEnabled) {
 }
 
 TEST_F(BatAdsConversionsTest,
-       DoNotConvertClickedAdNotificationWhenAdsAreDisabled) {
+       DoNotConvertClickedNotificationAdWhenAdsAreDisabled) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
 
   const CreativeAdInfo& creative_ad = BuildCreativeAd();
   const AdEventInfo& ad_event_1 = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
   const AdEventInfo& ad_event_2 = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kClicked, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
   ConversionList conversions;
@@ -201,16 +201,16 @@ TEST_F(BatAdsConversionsTest,
       });
 }
 
-TEST_F(BatAdsConversionsTest, ConvertClickedAdNotificationWhenAdsAreEnabled) {
+TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
 
   const CreativeAdInfo& creative_ad = BuildCreativeAd();
   const AdEventInfo& ad_event_1 = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
   const AdEventInfo& ad_event_2 = BuildAdEvent(
-      creative_ad, AdType::kAdNotification, ConfirmationType::kClicked, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kClicked, Now());
   FireAdEvent(ad_event_2);
 
   ConversionList conversions;

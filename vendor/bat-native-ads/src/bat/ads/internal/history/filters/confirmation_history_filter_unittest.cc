@@ -18,43 +18,43 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
   // Arrange
   HistoryItemInfo ad1;  // Ad 1 (Viewed)
   ad1.ad_content.placement_id = "b7a0aa61-7c3a-40f8-aa29-d416b64cebd9";
-  ad1.ad_content.type = AdType::kAdNotification;
+  ad1.ad_content.type = AdType::kNotificationAd;
   ad1.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
   ad1.ad_content.confirmation_type = ConfirmationType::kViewed;
 
   HistoryItemInfo ad2;  // Ad 2 (Viewed)
   ad2.ad_content.placement_id = "137c7cc0-7923-428a-8598-faee87159d99";
-  ad2.ad_content.type = AdType::kAdNotification;
+  ad2.ad_content.type = AdType::kNotificationAd;
   ad2.ad_content.creative_instance_id = "a577e7fe-d86c-4997-bbaa-4041dfd4075c";
   ad2.ad_content.confirmation_type = ConfirmationType::kViewed;
 
   HistoryItemInfo ad3;  // Ad 1 (Clicked)
   ad3.ad_content.placement_id = "b7a0aa61-7c3a-40f8-aa29-d416b64cebd9";
-  ad3.ad_content.type = AdType::kAdNotification;
+  ad3.ad_content.type = AdType::kNotificationAd;
   ad3.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
   ad3.ad_content.confirmation_type = ConfirmationType::kClicked;
 
   HistoryItemInfo ad4;  // Ad 3 (Dismissed)
   ad4.ad_content.placement_id = "fc5c8d59-ba66-443c-8721-f06161e73f23";
-  ad4.ad_content.type = AdType::kAdNotification;
+  ad4.ad_content.type = AdType::kNotificationAd;
   ad4.ad_content.creative_instance_id = "4424ff92-fa91-4ca9-a651-96b59cf1f68b";
   ad4.ad_content.confirmation_type = ConfirmationType::kDismissed;
 
   HistoryItemInfo ad5;  // Ad 3 (Viewed)
   ad5.ad_content.placement_id = "fc5c8d59-ba66-443c-8721-f06161e73f23";
-  ad5.ad_content.type = AdType::kAdNotification;
+  ad5.ad_content.type = AdType::kNotificationAd;
   ad5.ad_content.creative_instance_id = "4424ff92-fa91-4ca9-a651-96b59cf1f68b";
   ad5.ad_content.confirmation_type = ConfirmationType::kViewed;
 
   HistoryItemInfo ad6;  // Ad 4 (Viewed)
   ad6.ad_content.placement_id = "6cbda0fa-5c00-4a49-985a-b76318b404c1";
-  ad6.ad_content.type = AdType::kAdNotification;
+  ad6.ad_content.type = AdType::kNotificationAd;
   ad6.ad_content.creative_instance_id = "d9253022-b023-4414-a85d-96b78d36435d";
   ad6.ad_content.confirmation_type = ConfirmationType::kViewed;
 
   HistoryItemInfo ad7;  // Ad 5 (Viewed)
   ad7.ad_content.placement_id = "09a30dc0-6645-4bda-ad30-f607e6f43306";
-  ad7.ad_content.type = AdType::kAdNotification;
+  ad7.ad_content.type = AdType::kNotificationAd;
   ad7.ad_content.creative_instance_id = "dc540882-6927-4e22-8597-aa80f339f0fd";
   ad7.ad_content.confirmation_type = ConfirmationType::kViewed;
 
@@ -81,7 +81,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   // Arrange
   HistoryItemInfo ad1;  // Unsupported
   ad1.ad_content.placement_id = "54ee85b3-b84e-4e80-a6db-8954b554f466";
-  ad1.ad_content.type = AdType::kAdNotification;
+  ad1.ad_content.type = AdType::kNotificationAd;
   ad1.ad_content.creative_instance_id = "69b684d7-d893-4f4e-b156-859919a0fcc9";
   ad1.ad_content.confirmation_type = ConfirmationType::kTransferred;
 
@@ -93,7 +93,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
 
   HistoryItemInfo ad3;  // Unsupported
   ad3.ad_content.placement_id = "445fae45-c9f5-4cfe-abfb-85e23c7bd1c7";
-  ad3.ad_content.type = AdType::kAdNotification;
+  ad3.ad_content.type = AdType::kNotificationAd;
   ad3.ad_content.creative_instance_id = "9390f66a-d4f2-4c8a-8315-1baed4aae612";
   ad3.ad_content.confirmation_type = ConfirmationType::kUpvoted;
 
@@ -105,7 +105,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
 
   HistoryItemInfo ad5;  // Unsupported
   ad5.ad_content.placement_id = "fc82694e-b518-4fb0-84ca-5cb7a055416a";
-  ad5.ad_content.type = AdType::kAdNotification;
+  ad5.ad_content.type = AdType::kNotificationAd;
   ad5.ad_content.creative_instance_id = "b7e1314c-73b0-4291-9cdd-6c5d2374c28f";
   ad5.ad_content.confirmation_type = ConfirmationType::kConversion;
 

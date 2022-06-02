@@ -62,26 +62,26 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_os_3.name = "windows";
     catalog_oses.push_back(catalog_os_3);
 
-    // Creative Ad Notifications
-    CatalogCreativeAdNotificationList catalog_creative_ad_notifications;
+    // Creative Notification Ads
+    CatalogCreativeNotificationAdList catalog_creative_notification_ads;
 
-    CatalogCreativeAdNotificationInfo catalog_creative_ad_notification;
-    catalog_creative_ad_notification.creative_instance_id =
+    CatalogCreativeNotificationAdInfo catalog_creative_notification_ad;
+    catalog_creative_notification_ad.creative_instance_id =
         "87c775ca-919b-4a87-8547-94cf0c3161a2";
-    CatalogTypeInfo catalog_ad_notification_type;
-    catalog_ad_notification_type.code = "notification_all_v1";
-    catalog_ad_notification_type.name = "notification";
-    catalog_ad_notification_type.platform = "all";
-    catalog_ad_notification_type.version = 1;
-    catalog_creative_ad_notification.type = catalog_ad_notification_type;
-    catalog_creative_ad_notification.payload.body =
-        "Test Ad Notification Campaign 1 Body";
-    catalog_creative_ad_notification.payload.title =
-        "Test Ad Notification Campaign 1 Title";
-    catalog_creative_ad_notification.payload.target_url =
-        GURL("https://brave.com/1/ad_notification");
-    catalog_creative_ad_notifications.push_back(
-        catalog_creative_ad_notification);
+    CatalogTypeInfo catalog_notification_ad_type;
+    catalog_notification_ad_type.code = "notification_all_v1";
+    catalog_notification_ad_type.name = "notification";
+    catalog_notification_ad_type.platform = "all";
+    catalog_notification_ad_type.version = 1;
+    catalog_creative_notification_ad.type = catalog_notification_ad_type;
+    catalog_creative_notification_ad.payload.body =
+        "Test Notification Ad Campaign 1 Body";
+    catalog_creative_notification_ad.payload.title =
+        "Test Notification Ad Campaign 1 Title";
+    catalog_creative_notification_ad.payload.target_url =
+        GURL("https://brave.com/1/notification_ad");
+    catalog_creative_notification_ads.push_back(
+        catalog_creative_notification_ad);
 
     // Creative New Tab Page Ads
     CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
@@ -192,8 +192,8 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.value = 0.05;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
-    catalog_creative_set.creative_ad_notifications =
-        catalog_creative_ad_notifications;
+    catalog_creative_set.creative_notification_ads =
+        catalog_creative_notification_ads;
     catalog_creative_set.creative_inline_content_ads =
         catalog_creative_inline_content_ads;
     catalog_creative_set.creative_new_tab_page_ads =
@@ -265,26 +265,26 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_os_2.name = "ios";
     catalog_oses.push_back(catalog_os_2);
 
-    // Creative Ad Notifications
-    CatalogCreativeAdNotificationList catalog_creative_ad_notifications;
+    // Creative Notification Ads
+    CatalogCreativeNotificationAdList catalog_creative_notification_ads;
 
-    CatalogCreativeAdNotificationInfo catalog_creative_ad_notification;
-    catalog_creative_ad_notification.creative_instance_id =
+    CatalogCreativeNotificationAdInfo catalog_creative_notification_ad;
+    catalog_creative_notification_ad.creative_instance_id =
         "17206fbd-0282-4759-ad28-d5e040ee1ff7";
-    CatalogTypeInfo catalog_ad_notification_type;
-    catalog_ad_notification_type.code = "notification_all_v1";
-    catalog_ad_notification_type.name = "notification";
-    catalog_ad_notification_type.platform = "all";
-    catalog_ad_notification_type.version = 1;
-    catalog_creative_ad_notification.type = catalog_ad_notification_type;
-    catalog_creative_ad_notification.payload.body =
-        "Test Ad Notification Campaign 2 Body";
-    catalog_creative_ad_notification.payload.title =
-        "Test Ad Notification Campaign 2 Title";
-    catalog_creative_ad_notification.payload.target_url =
-        GURL("https://brave.com/2/ad_notification");
-    catalog_creative_ad_notifications.push_back(
-        catalog_creative_ad_notification);
+    CatalogTypeInfo catalog_notification_ad_type;
+    catalog_notification_ad_type.code = "notification_all_v1";
+    catalog_notification_ad_type.name = "notification";
+    catalog_notification_ad_type.platform = "all";
+    catalog_notification_ad_type.version = 1;
+    catalog_creative_notification_ad.type = catalog_notification_ad_type;
+    catalog_creative_notification_ad.payload.body =
+        "Test Notification Ad Campaign 2 Body";
+    catalog_creative_notification_ad.payload.title =
+        "Test Notification Ad Campaign 2 Title";
+    catalog_creative_notification_ad.payload.target_url =
+        GURL("https://brave.com/2/notification_ad");
+    catalog_creative_notification_ads.push_back(
+        catalog_creative_notification_ad);
 
     // Creative New Tab Page Ads
     CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
@@ -395,8 +395,8 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.value = 0.1;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
-    catalog_creative_set.creative_ad_notifications =
-        catalog_creative_ad_notifications;
+    catalog_creative_set.creative_notification_ads =
+        catalog_creative_notification_ads;
     catalog_creative_set.creative_new_tab_page_ads =
         catalog_creative_new_tab_page_ads;
     catalog_creative_set.creative_promoted_content_ads =

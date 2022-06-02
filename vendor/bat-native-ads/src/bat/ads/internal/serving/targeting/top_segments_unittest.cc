@@ -102,19 +102,19 @@ class BatAdsTopSegmentsTest
 
   void ProcessBandit() {
     const std::vector<processor::BanditFeedbackInfo> feedbacks = {
-        {"science", mojom::AdNotificationEventType::kClicked},
-        {"science", mojom::AdNotificationEventType::kClicked},
-        {"science", mojom::AdNotificationEventType::kClicked},
-        {"travel", mojom::AdNotificationEventType::kDismissed},
-        {"travel", mojom::AdNotificationEventType::kClicked},
-        {"travel", mojom::AdNotificationEventType::kClicked},
-        {"technology & computing", mojom::AdNotificationEventType::kDismissed},
-        {"technology & computing", mojom::AdNotificationEventType::kDismissed},
-        {"technology & computing", mojom::AdNotificationEventType::kClicked}};
+        {"science", mojom::NotificationAdEventType::kClicked},
+        {"science", mojom::NotificationAdEventType::kClicked},
+        {"science", mojom::NotificationAdEventType::kClicked},
+        {"travel", mojom::NotificationAdEventType::kDismissed},
+        {"travel", mojom::NotificationAdEventType::kClicked},
+        {"travel", mojom::NotificationAdEventType::kClicked},
+        {"technology & computing", mojom::NotificationAdEventType::kDismissed},
+        {"technology & computing", mojom::NotificationAdEventType::kDismissed},
+        {"technology & computing", mojom::NotificationAdEventType::kClicked}};
 
     for (const auto& segment : kSegments) {
       bandit_processor_->Process(
-          {segment, mojom::AdNotificationEventType::kDismissed});
+          {segment, mojom::NotificationAdEventType::kDismissed});
     }
 
     for (const auto& feedback : feedbacks) {

@@ -21,7 +21,7 @@ class NotificationHelperMock : public NotificationHelper {
 
   MOCK_METHOD0(CanShowNativeNotifications, bool());
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
-  MOCK_METHOD0(ShowMyFirstAdNotification, bool());
+  MOCK_METHOD0(ShowMyFirstNotificationAd, bool());
 };
 
 }  // namespace brave_ads

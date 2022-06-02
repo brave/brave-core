@@ -6,7 +6,6 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
-#import "ad_notification_ios.h"
 #import "ads_client_bridge.h"
 #import "ads_client_ios.h"
 #include "base/base64.h"
@@ -21,7 +20,6 @@
 #include "bat/ads/ad_content_action_types.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_event_history.h"
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_aliases.h"
 #include "bat/ads/database.h"
@@ -30,6 +28,7 @@
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/notification_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/statement_info.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
@@ -37,6 +36,7 @@
 #import "brave_ads.h"
 #import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
+#import "notification_ad_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -99,8 +99,8 @@ ads::mojom::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 }  // namespace
 
-@interface AdNotificationIOS ()
-- (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
+@interface NotificationAdIOS ()
+- (instancetype)initWithNotificationInfo:(const ads::NotificationAdInfo&)info;
 @end
 
 @interface InlineContentAdIOS ()
@@ -587,14 +587,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportAdNotificationEvent:(NSString*)placementId
-                        eventType:(AdsAdNotificationEventType)eventType {
+- (void)reportNotificationAdEvent:(NSString*)placementId
+                        eventType:(AdsNotificationAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->TriggerAdNotificationEvent(
+  ads->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
-      static_cast<ads::mojom::AdNotificationEventType>(eventType));
+      static_cast<ads::mojom::NotificationAdEventType>(eventType));
 }
 
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
@@ -688,7 +688,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads::AdContentInfo info;
   info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  info.type = ads::AdType::kAdNotification;
+  info.type = ads::AdType::kNotificationAd;
   ads->ToggleAdThumbUp(info.ToJson());
 }
 
@@ -700,7 +700,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads::AdContentInfo info;
   info.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   info.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  info.type = ads::AdType::kAdNotification;
+  info.type = ads::AdType::kNotificationAd;
   ads->ToggleAdThumbDown(info.ToJson());
 }
 
@@ -1213,14 +1213,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - Notifications
 
-- (nullable AdNotificationIOS*)adsNotificationForIdentifier:
+- (nullable NotificationAdIOS*)notificationAdForIdentifier:
     (NSString*)identifier {
   if (![self isAdsServiceRunning]) {
     return nil;
   }
-  ads::AdNotificationInfo info;
-  if (ads->GetAdNotification(identifier.UTF8String, &info)) {
-    return [[AdNotificationIOS alloc] initWithNotificationInfo:info];
+  ads::NotificationAdInfo info;
+  if (ads->GetNotificationAd(identifier.UTF8String, &info)) {
+    return [[NotificationAdIOS alloc] initWithNotificationInfo:info];
   }
   return nil;
 }
@@ -1229,9 +1229,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return [self.notificationsHandler shouldShowNotifications];
 }
 
-- (void)showNotification:(const ads::AdNotificationInfo&)info {
+- (void)showNotification:(const ads::NotificationAdInfo&)info {
   const auto notification =
-      [[AdNotificationIOS alloc] initWithNotificationInfo:info];
+      [[NotificationAdIOS alloc] initWithNotificationInfo:info];
   [self.notificationsHandler showNotification:notification];
 }
 

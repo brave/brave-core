@@ -19,7 +19,7 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/notification_helper/notification_helper.h",
   "//brave/browser/brave_ads/notification_helper/notification_helper_holder.cc",
   "//brave/browser/brave_ads/notification_helper/notification_helper_holder.h",
-  "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h",
+  "//brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h",
   "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.cc",
   "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h",
 ]
@@ -49,7 +49,7 @@ brave_browser_brave_ads_deps = [
 ]
 
 if (!is_android) {
-  brave_browser_brave_ads_sources += [ "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge.cc" ]
+  brave_browser_brave_ads_sources += [ "//brave/browser/brave_ads/notifications/notification_ad_platform_bridge.cc" ]
 
   if (enable_extensions) {
     brave_browser_brave_ads_sources += [
@@ -76,7 +76,7 @@ if (is_android) {
     "//brave/browser/brave_ads/brave_ads_host_android.h",
     "//brave/browser/brave_ads/notification_helper/notification_helper_android.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_android.h",
-    "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge_android.cc",
+    "//brave/browser/brave_ads/notifications/notification_ad_platform_bridge_android.cc",
   ]
 
   brave_browser_brave_ads_deps += [

@@ -77,11 +77,11 @@ class BatAdsImpl :
   void OnTabClosed(
       const int32_t tab_id) override;
 
-  void GetAdNotification(const std::string& placement_id,
-                         GetAdNotificationCallback callback) override;
-  void TriggerAdNotificationEvent(
+  void GetNotificationAd(const std::string& placement_id,
+                         GetNotificationAdCallback callback) override;
+  void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      const ads::mojom::AdNotificationEventType event_type) override;
+      const ads::mojom::NotificationAdEventType event_type) override;
 
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,

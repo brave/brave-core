@@ -56,7 +56,7 @@ jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
 }
 
 // static
-void JNI_BraveAdsNativeHelper_OnShowAdNotification(
+void JNI_BraveAdsNativeHelper_OnShowNotificationAd(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
@@ -68,11 +68,11 @@ void JNI_BraveAdsNativeHelper_OnShowAdNotification(
 
   const std::string notification_id =
       base::android::ConvertJavaStringToUTF8(env, j_notification_id);
-  ads_service->OnShowAdNotification(notification_id);
+  ads_service->OnShowNotificationAd(notification_id);
 }
 
 // static
-void JNI_BraveAdsNativeHelper_OnCloseAdNotification(
+void JNI_BraveAdsNativeHelper_OnCloseNotificationAd(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id,
@@ -85,11 +85,11 @@ void JNI_BraveAdsNativeHelper_OnCloseAdNotification(
 
   const std::string notification_id =
       base::android::ConvertJavaStringToUTF8(env, j_notification_id);
-  ads_service->OnCloseAdNotification(notification_id, j_by_user);
+  ads_service->OnCloseNotificationAd(notification_id, j_by_user);
 }
 
 // static
-void JNI_BraveAdsNativeHelper_OnClickAdNotification(
+void JNI_BraveAdsNativeHelper_OnClickNotificationAd(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
@@ -101,7 +101,7 @@ void JNI_BraveAdsNativeHelper_OnClickAdNotification(
 
   const std::string notification_id =
       base::android::ConvertJavaStringToUTF8(env, j_notification_id);
-  ads_service->OnClickAdNotification(notification_id);
+  ads_service->OnClickNotificationAd(notification_id);
 }
 
 }  // namespace brave_ads
