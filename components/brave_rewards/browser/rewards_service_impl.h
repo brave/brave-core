@@ -29,6 +29,7 @@
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
@@ -204,7 +205,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
 
-  void HandleFlags(const std::string& options);
+  void HandleFlags(const RewardsFlags& flags);
+  void HandleFlagsForTesting(const std::string& input);
   void SetEnvironment(ledger::type::Environment environment);
   void GetEnvironment(GetEnvironmentCallback callback);
   void SetDebug(bool debug);
