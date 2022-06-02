@@ -7,7 +7,6 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -68,7 +67,7 @@ void BraveStartupBrowserCreatorImpl::Launch(
   }
 #endif
 
-  brave::BraveP3AService::MaybeOptIn(g_browser_process->local_state());
+  brave::BraveP3AService::MaybeOptIn();
   StartupBrowserCreatorImpl::Launch(profile, process_startup,
                                     std::move(launch_mode_recorder));
 }

@@ -37,6 +37,7 @@
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/vendor/brave_base/random.h"
+#include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -97,29 +98,6 @@ base::Time NextMonday(base::Time time) {
   return result;
 }
 
-// Determine if this installation is opt-in or opt-out for reporting.
-void InitOptInStatus(PrefService* local_state) {
-  DLOG(INFO) << "InitOptInStatus";
-  if (local_state->GetInteger(kP3AOptIn) == P3AOptIn::kUnSet) {
-    DLOG(INFO) << "P3AOptIn::kUnSet FIRST RUN";
-    bool enable_for_testing = base::FeatureList::IsEnabled(kP3AOptInFeature);
-    // Hard-code enrollment criteria. We can't use a Griffin study
-    // to determine participation because we need to decide at first-run
-    // when the seed hasn't been downloaded yet.
-    if (base::RandDouble() < 0.05 || enable_for_testing) {
-      DLOG(INFO) << "P3AOptIn::kRequired set";
-      // Turn P3A off and require user opt-in to enable it.
-      local_state->SetInteger(kP3AOptIn, P3AOptIn::kRequired);
-      local_state->SetDefaultPrefValue(kP3AEnabled, base::Value(false));
-    } else {
-      // Leave things as the default, but update kP3AOptIn so we
-      // know an enrollment decision has been made.
-      DLOG(INFO) << "P3AOptIn::kDefault set";
-      local_state->SetInteger(kP3AOptIn, P3AOptIn::kDefault);
-    }
-  }
-}
-
 }  // namespace
 
 BraveP3AService::BraveP3AService(PrefService* local_state,
@@ -144,10 +122,29 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
 }
 
-void BraveP3AService::MaybeOptIn(PrefService* local_state) {
-  DLOG(INFO) << "Checking opt-in status";
+void BraveP3AService::MaybeOptIn() {
+  DLOG(INFO) << "MaybeOptIn: Checking enrollment status";
   // Decide whether to participate in the opt-in study, if necessary.
-  InitOptInStatus(local_state);
+  PrefService* local_state = g_browser_process->local_state();
+  DCHECK(local_state);
+  if (local_state->GetInteger(kP3AOptIn) == P3AOptIn::kUnSet) {
+    DLOG(INFO) << "P3AOptIn::kUnSet FIRST RUN";
+    bool enable_for_testing = base::FeatureList::IsEnabled(kP3AOptInFeature);
+    // Hard-code enrollment criteria. We can't use a Griffin study
+    // to determine participation because we need to decide at first-run
+    // when the seed hasn't been downloaded yet.
+    if (base::RandDouble() < 0.05 || enable_for_testing) {
+      DLOG(INFO) << "P3AOptIn::kRequired set";
+      // Turn P3A off and require user opt-in to enable it.
+      local_state->SetInteger(kP3AOptIn, P3AOptIn::kRequired);
+      local_state->SetDefaultPrefValue(kP3AEnabled, base::Value(false));
+    } else {
+      // Leave things as the default, but update kP3AOptIn so we
+      // know an enrollment decision has been made.
+      DLOG(INFO) << "P3AOptIn::kDefault set";
+      local_state->SetInteger(kP3AOptIn, P3AOptIn::kDefault);
+    }
+  }
 }
 
 void BraveP3AService::InitCallbacks() {

@@ -47,7 +47,11 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   BraveP3AService& operator=(const BraveP3AService&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
-  static void MaybeOptIn(PrefService* local_state);
+
+  // Determine if reporting is opt-in or opt-out.
+  // This must be called after local_state is initialized, but before
+  // any user-visible pages are loaded.
+  static void MaybeOptIn();
 
   // Should be called right after constructor to subscribe to histogram
   // updates. Can't call it in constructor because of refcounted peculiarities.
