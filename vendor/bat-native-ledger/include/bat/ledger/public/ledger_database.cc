@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/ledger_database_impl.h"
+#include "bat/ledger/public/ledger_database.h"
 
 #include <utility>
 #include <vector>
 
 #include "base/bind.h"
-#include "bat/ledger/internal/logging/logging.h"
+#include "base/logging.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -100,26 +100,22 @@ mojom::DBRecordPtr CreateRecord(
 
 }  // namespace
 
-LedgerDatabaseImpl::LedgerDatabaseImpl(const base::FilePath& path)
-    : db_path_(path) {
+LedgerDatabase::LedgerDatabase(const base::FilePath& path) : db_path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
-LedgerDatabaseImpl::~LedgerDatabaseImpl() = default;
+LedgerDatabase::~LedgerDatabase() = default;
 
-void LedgerDatabaseImpl::RunTransaction(
-    mojom::DBTransactionPtr transaction,
-    mojom::DBCommandResponse* command_response) {
+mojom::DBCommandResponsePtr LedgerDatabase::RunTransaction(
+    mojom::DBTransactionPtr transaction) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!command_response) {
-    return;
-  }
+  auto command_response = mojom::DBCommandResponse::New();
 
   if (!db_.is_open() && !db_.Open(db_path_)) {
     command_response->status =
         mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
-    return;
+    return command_response;
   }
 
   // Close command must always be sent as single command in transaction
@@ -128,14 +124,14 @@ void LedgerDatabaseImpl::RunTransaction(
     db_.Close();
     initialized_ = false;
     command_response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
-    return;
+    return command_response;
   }
 
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
     command_response->status =
         mojom::DBCommandResponse::Status::TRANSACTION_ERROR;
-    return;
+    return command_response;
   }
 
   bool vacuum_requested = false;
@@ -143,16 +139,15 @@ void LedgerDatabaseImpl::RunTransaction(
   for (auto const& command : transaction->commands) {
     mojom::DBCommandResponse::Status status;
 
-    BLOG(8, "Query: " << command->command);
-
     switch (command->type) {
       case mojom::DBCommand::Type::INITIALIZE: {
-        status = Initialize(transaction->version,
-                            transaction->compatible_version, command_response);
+        status =
+            Initialize(transaction->version, transaction->compatible_version,
+                       command_response.get());
         break;
       }
       case mojom::DBCommand::Type::READ: {
-        status = Read(command.get(), command_response);
+        status = Read(command.get(), command_response.get());
         break;
       }
       case mojom::DBCommand::Type::EXECUTE: {
@@ -182,27 +177,28 @@ void LedgerDatabaseImpl::RunTransaction(
     if (status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
       committer.Rollback();
       command_response->status = status;
-      return;
+      return command_response;
     }
   }
 
   if (!committer.Commit()) {
     command_response->status =
         mojom::DBCommandResponse::Status::TRANSACTION_ERROR;
-    return;
+    return command_response;
   }
 
   if (vacuum_requested) {
-    BLOG(8, "Performing database vacuum");
     if (!db_.Execute("VACUUM")) {
       // If vacuum was not successful, log an error but do not
       // prevent forward progress.
-      BLOG(0, "Error executing VACUUM: " << db_.GetErrorMessage());
+      LOG(ERROR) << "Error executing VACUUM: " << db_.GetErrorMessage();
     }
   }
+
+  return command_response;
 }
 
-mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
+mojom::DBCommandResponse::Status LedgerDatabase::Initialize(
     const int32_t version,
     const int32_t compatible_version,
     mojom::DBCommandResponse* command_response) {
@@ -229,7 +225,7 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
 
     initialized_ = true;
     memory_pressure_listener_.reset(new base::MemoryPressureListener(
-        FROM_HERE, base::BindRepeating(&LedgerDatabaseImpl::OnMemoryPressure,
+        FROM_HERE, base::BindRepeating(&LedgerDatabase::OnMemoryPressure,
                                        base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();
@@ -244,7 +240,7 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponse::Status LedgerDatabaseImpl::Execute(
+mojom::DBCommandResponse::Status LedgerDatabase::Execute(
     mojom::DBCommand* command) {
   if (!initialized_) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
@@ -257,14 +253,14 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Execute(
   bool result = db_.Execute(command->command.c_str());
 
   if (!result) {
-    BLOG(0, "DB Execute error: " << db_.GetErrorMessage());
+    LOG(ERROR) << "DB Execute error: " << db_.GetErrorMessage();
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponse::Status LedgerDatabaseImpl::Run(
+mojom::DBCommandResponse::Status LedgerDatabase::Run(
     mojom::DBCommand* command) {
   if (!initialized_) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
@@ -281,15 +277,15 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Run(
   }
 
   if (!statement.Run()) {
-    BLOG(0, "DB Run error: " << db_.GetErrorMessage() << " ("
-                             << db_.GetErrorCode() << ")");
+    LOG(ERROR) << "DB Run error: " << db_.GetErrorMessage() << " ("
+               << db_.GetErrorCode() << ")";
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponse::Status LedgerDatabaseImpl::Read(
+mojom::DBCommandResponse::Status LedgerDatabase::Read(
     mojom::DBCommand* command,
     mojom::DBCommandResponse* command_response) {
   if (!initialized_) {
@@ -317,7 +313,7 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Read(
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-mojom::DBCommandResponse::Status LedgerDatabaseImpl::Migrate(
+mojom::DBCommandResponse::Status LedgerDatabase::Migrate(
     const int32_t version,
     const int32_t compatible_version) {
   if (!initialized_) {
@@ -330,7 +326,7 @@ mojom::DBCommandResponse::Status LedgerDatabaseImpl::Migrate(
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-void LedgerDatabaseImpl::OnMemoryPressure(
+void LedgerDatabase::OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   db_.TrimMemory();

@@ -3,31 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_DATABASE_IMPL_H_
-#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_DATABASE_IMPL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_PUBLIC_LEDGER_DATABASE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_PUBLIC_LEDGER_DATABASE_H_
 
 #include <memory>
 
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
-#include "bat/ledger/ledger_database.h"
+#include "bat/ledger/public/interfaces/ledger_database.mojom.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 
 namespace ledger {
 
-class LedgerDatabaseImpl : public LedgerDatabase {
+class LedgerDatabase {
  public:
-  explicit LedgerDatabaseImpl(const base::FilePath& path);
+  explicit LedgerDatabase(const base::FilePath& path);
 
-  LedgerDatabaseImpl(const LedgerDatabaseImpl&) = delete;
-  LedgerDatabaseImpl& operator=(const LedgerDatabaseImpl&) = delete;
+  LedgerDatabase(const LedgerDatabase&) = delete;
+  LedgerDatabase& operator=(const LedgerDatabase&) = delete;
 
-  ~LedgerDatabaseImpl() override;
+  ~LedgerDatabase();
 
-  void RunTransaction(mojom::DBTransactionPtr transaction,
-                      mojom::DBCommandResponse* command_response) override;
+  mojom::DBCommandResponsePtr RunTransaction(
+      mojom::DBTransactionPtr transaction);
 
   sql::Database* GetInternalDatabaseForTesting() { return &db_; }
 
@@ -63,4 +63,4 @@ class LedgerDatabaseImpl : public LedgerDatabase {
 
 }  // namespace ledger
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_DATABASE_IMPL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_PUBLIC_LEDGER_DATABASE_H_
