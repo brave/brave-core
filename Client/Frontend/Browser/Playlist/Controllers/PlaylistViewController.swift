@@ -1010,7 +1010,6 @@ extension PlaylistViewController: VideoViewDelegate {
                 completion?(.none)
               }
             ).store(in: &self.assetLoadingStateObservers)
-            log.debug("Playing Live Video: \(self.player.isLiveMedia)")
           } else {
             PlaylistMediaStreamer.clearNowPlayingInfo()
             completion?(.expired)
