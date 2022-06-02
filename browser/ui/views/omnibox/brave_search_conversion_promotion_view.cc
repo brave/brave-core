@@ -295,10 +295,6 @@ void BraveSearchConversionPromotionView::SetTypeAndInput(
 void BraveSearchConversionPromotionView::OnSelectionStateChanged(
     bool selected) {
   selected_ = selected;
-  if (selected) {
-    brave_search_conversion::p3a::RecordOmniboxPromoTrigger(local_state_,
-                                                            type_);
-  }
   UpdateState();
 }
 

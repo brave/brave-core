@@ -10,8 +10,13 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/values.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/components/brave_search_conversion/p3a.h"
+#include "brave/components/brave_search_conversion/types.h"
+#include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_edit_controller.h"
@@ -20,6 +25,9 @@
 #include "components/prefs/pref_service.h"
 
 namespace {
+
+using brave_search_conversion::ConversionType;
+using brave_search_conversion::GetConversionType;
 
 constexpr char kSearchCountPrefName[] = "brave.weekly_storage.search_count";
 
@@ -82,10 +90,27 @@ bool BraveOmniboxClientImpl::IsAutocompleteEnabled() const {
 }
 
 void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {
+  if (!user_text_.empty() && IsBraveSearchPromotionMatch(match, user_text_)) {
+    DCHECK_NE(ConversionType::kNone, GetConversionType());
+    brave_search_conversion::p3a::RecordOmniboxPromoTrigger(
+        g_browser_process->local_state(), GetConversionType());
+  }
+
   if (IsSearchEvent(match)) {
     // TODO(iefremov): Optimize this.
     WeeklyStorage storage(profile_->GetPrefs(), kSearchCountPrefName);
     storage.AddDelta(1);
     RecordSearchEventP3A(storage.GetWeeklySum());
   }
+}
+
+void BraveOmniboxClientImpl::OnTextChanged(
+    const AutocompleteMatch& current_match,
+    bool user_input_in_progress,
+    const std::u16string& user_text,
+    const AutocompleteResult& result,
+    bool has_focus) {
+  // Cache current input for checking whether current match is search promotion
+  // match or not when current input is accepted.
+  user_text_ = user_text;
 }
