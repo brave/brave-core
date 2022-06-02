@@ -176,7 +176,11 @@ def main():
         download_and_unpack_rust_deps(args.platform)
 
     if args.platform == 'darwin':
+        # It would be nice to conditionally only add the target we actually
+        # need for building. However, DEPS (which we are called from) does not
+        # seem to support making this distinction.
         rustup_add_target('x86_64-apple-darwin')
+        rustup_add_target('aarch64-apple-darwin')
 
     cxx_path = os.path.abspath(
         os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
