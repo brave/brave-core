@@ -361,7 +361,7 @@ Config.prototype.buildArgs = function () {
     args.last_chrome_installer = this.last_chrome_installer
   }
 
-  if (process.platform === 'darwin' || this.targetOS === 'mac' || this.targetOS === 'ios') {
+  if (process.platform === 'darwin' || this.targetOS === 'mac') {
     args.allow_runtime_configurable_key_storage = true
     // always use hermetic xcode for macos when available
     if (this.targetOS !== 'ios' && fs.existsSync(path.join(
