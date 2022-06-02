@@ -59,14 +59,9 @@ class VgSpendStatusSyncBridge : public syncer::ModelTypeSyncBridge {
   void ApplyStopSyncChanges(std::unique_ptr<syncer::MetadataChangeList>
                                 delete_metadata_change_list) override;
 
-  struct Observer {
-    virtual ~Observer() = default;
-
-    virtual void RestoreVgSpendStatuses(
-        std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) = 0;
-  };
-
-  void SetObserver(Observer* observer);
+  void SetCallback(
+      base::OnceCallback<void(std::vector<sync_pb::VgSpendStatusSpecifics>)>
+          vg_spend_statuses_cb);
 
  private:
   void OnStoreCreated(const absl::optional<syncer::ModelError>& error,
@@ -94,7 +89,8 @@ class VgSpendStatusSyncBridge : public syncer::ModelTypeSyncBridge {
   void OnDeleteAllDataAndMetadata(
       const absl::optional<syncer::ModelError>& error);
 
-  Observer* observer_;  // NOT OWNED
+  base::OnceCallback<void(std::vector<sync_pb::VgSpendStatusSpecifics>)>
+      vg_spend_statuses_cb_;
   std::unique_ptr<syncer::ModelTypeStore> store_;
   base::WeakPtrFactory<VgSpendStatusSyncBridge> weak_ptr_factory_{this};
 };

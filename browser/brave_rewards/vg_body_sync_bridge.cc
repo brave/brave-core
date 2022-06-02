@@ -36,8 +36,7 @@ namespace brave_rewards {
 VgBodySyncBridge::VgBodySyncBridge(
     std::unique_ptr<syncer::ModelTypeChangeProcessor> change_processor,
     syncer::OnceModelTypeStoreFactory store_factory)
-    : syncer::ModelTypeSyncBridge(std::move(change_processor)),
-      observer_(nullptr) {
+    : syncer::ModelTypeSyncBridge(std::move(change_processor)) {
   std::move(store_factory)
       .Run(syncer::VG_BODIES, base::BindOnce(&VgBodySyncBridge::OnStoreCreated,
                                              weak_ptr_factory_.GetWeakPtr()));
@@ -156,8 +155,10 @@ void VgBodySyncBridge::ApplyStopSyncChanges(
   }
 }
 
-void VgBodySyncBridge::SetObserver(Observer* observer) {
-  observer_ = observer;
+void VgBodySyncBridge::SetCallback(
+    base::OnceCallback<void(std::vector<sync_pb::VgBodySpecifics>)>
+        vg_bodies_cb) {
+  vg_bodies_cb_ = std::move(vg_bodies_cb);
 }
 
 void VgBodySyncBridge::OnStoreCreated(
@@ -188,9 +189,8 @@ void VgBodySyncBridge::OnCommitWriteBatch(
   if (error) {
     change_processor()->ReportError(*error);
   } else {
-    if (vg_bodies && !vg_bodies->empty() /* this might be removed */ &&
-        observer_) {
-      observer_->RestoreVgBodies(std::move(*vg_bodies));
+    if (vg_bodies && !vg_bodies->empty() /* this might be removed */) {
+      std::move(vg_bodies_cb_).Run(std::move(*vg_bodies));
     }
   }
 }

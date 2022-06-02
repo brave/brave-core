@@ -18,9 +18,7 @@
 #include "components/sync/model/model_type_controller_delegate.h"
 
 namespace brave_rewards {
-class VgSyncService : public KeyedService,
-                      public VgBodySyncBridge::Observer,
-                      public VgSpendStatusSyncBridge::Observer {
+class VgSyncService : public KeyedService {
  public:
   explicit VgSyncService(
       std::unique_ptr<VgBodySyncBridge> vg_body_sync_bridge,
@@ -41,32 +39,17 @@ class VgSyncService : public KeyedService,
 
   void BackUpVgBodies(std::vector<sync_pb::VgBodySpecifics> vg_bodies);
 
-  void RestoreVgBodies(
-      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
-
   void BackUpVgSpendStatuses(
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
-  void RestoreVgSpendStatuses(
-      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
-
-  struct Observer {
-    virtual ~Observer() = default;
-
-    virtual void RestoreVgs(
-        std::vector<sync_pb::VgBodySpecifics> vg_bodies,
-        std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) = 0;
-  };
-
-  void SetObserver(Observer* observer);
+  void SetCallback(
+      base::OnceCallback<void(std::vector<sync_pb::VgBodySpecifics>,
+                              std::vector<sync_pb::VgSpendStatusSpecifics>)>
+          restore_vgs);
 
  private:
   std::unique_ptr<VgBodySyncBridge> vg_body_sync_bridge_;
   std::unique_ptr<VgSpendStatusSyncBridge> vg_spend_status_sync_bridge_;
-  Observer* observer_;
-  absl::optional<std::vector<sync_pb::VgBodySpecifics>> vg_bodies_;
-  absl::optional<std::vector<sync_pb::VgSpendStatusSpecifics>>
-      vg_spend_statuses_;
 };
 }  // namespace brave_rewards
 

@@ -355,8 +355,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
   }
 #endif
 
+  vg_sync_service_->SetCallback(
+      base::BindOnce(&RewardsServiceImpl::RestoreVgs, AsWeakPtr()));
   sync_service_->AddObserver(this);
-  vg_sync_service_->SetObserver(this);
   sync_service_->GetDeviceInfoSyncService()
       ->GetDeviceInfoTracker()
       ->AddObserver(this);
@@ -371,7 +372,6 @@ RewardsServiceImpl::~RewardsServiceImpl() {
   }
 #endif
 
-  vg_sync_service_->SetObserver(nullptr);
   sync_service_->GetDeviceInfoSyncService()
       ->GetDeviceInfoTracker()
       ->RemoveObserver(this);

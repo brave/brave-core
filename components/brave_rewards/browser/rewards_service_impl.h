@@ -106,7 +106,6 @@ class RewardsServiceImpl : public RewardsService,
                            public greaselion::GreaselionService::Observer,
 #endif
                            public syncer::SyncServiceObserver,
-                           public VgSyncService::Observer,
                            public syncer::DeviceInfoTracker::Observer,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
@@ -807,7 +806,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void RestoreVgs(
       std::vector<sync_pb::VgBodySpecifics> vg_bodies,
-      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
   void OnRestoreVgs(ledger::type::Result result);
 

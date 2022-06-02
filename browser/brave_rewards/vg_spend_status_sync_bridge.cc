@@ -37,8 +37,7 @@ namespace brave_rewards {
 VgSpendStatusSyncBridge::VgSpendStatusSyncBridge(
     std::unique_ptr<syncer::ModelTypeChangeProcessor> change_processor,
     syncer::OnceModelTypeStoreFactory store_factory)
-    : syncer::ModelTypeSyncBridge(std::move(change_processor)),
-      observer_(nullptr) {
+    : syncer::ModelTypeSyncBridge(std::move(change_processor)) {
   std::move(store_factory)
       .Run(syncer::VG_SPEND_STATUSES,
            base::BindOnce(&VgSpendStatusSyncBridge::OnStoreCreated,
@@ -161,8 +160,10 @@ void VgSpendStatusSyncBridge::ApplyStopSyncChanges(
   }
 }
 
-void VgSpendStatusSyncBridge::SetObserver(Observer* observer) {
-  observer_ = observer;
+void VgSpendStatusSyncBridge::SetCallback(
+    base::OnceCallback<void(std::vector<sync_pb::VgSpendStatusSpecifics>)>
+        vg_spend_statuses_cb) {
+  vg_spend_statuses_cb_ = std::move(vg_spend_statuses_cb);
 }
 
 void VgSpendStatusSyncBridge::OnStoreCreated(
@@ -196,8 +197,8 @@ void VgSpendStatusSyncBridge::OnCommitWriteBatch(
     change_processor()->ReportError(*error);
   } else {
     if (vg_spend_statuses &&
-        !vg_spend_statuses->empty() /* this might be removed */ && observer_) {
-      observer_->RestoreVgSpendStatuses(std::move(*vg_spend_statuses));
+        !vg_spend_statuses->empty() /* this might be removed */) {
+      std::move(vg_spend_statuses_cb_).Run(std::move(*vg_spend_statuses));
     }
   }
 }
