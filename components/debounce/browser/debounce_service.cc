@@ -19,8 +19,9 @@
 namespace debounce {
 
 DebounceService::DebounceService(
-    DebounceComponentInstaller* component_installer)
-    : component_installer_(component_installer) {}
+    DebounceComponentInstaller* component_installer,
+    PrefService* prefs)
+    : component_installer_(component_installer), prefs_(prefs) {}
 
 DebounceService::~DebounceService() {}
 
@@ -31,7 +32,7 @@ bool DebounceService::Debounce(const GURL& original_url,
   const base::flat_set<std::string>& host_cache =
       component_installer_->host_cache();
   const std::string etldp1 =
-      component_installer_->GetETLDForDebounce(original_url.host());
+      DebounceRule::GetETLDForDebounce(original_url.host());
   if (!base::Contains(host_cache, etldp1))
     return false;
 
@@ -45,7 +46,7 @@ bool DebounceService::Debounce(const GURL& original_url,
   // to apply the rest of the rules to the new URL. Previously checked rules are
   // not reapplied; i.e. we never restart the loop.
   for (const std::unique_ptr<DebounceRule>& rule : rules) {
-    if (rule->Apply(current_url, final_url)) {
+    if (rule->Apply(current_url, final_url, prefs_)) {
       if (current_url != *final_url) {
         changed = true;
         current_url = *final_url;

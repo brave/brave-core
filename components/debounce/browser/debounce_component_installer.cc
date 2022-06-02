@@ -55,22 +55,7 @@ void DebounceComponentInstaller::OnDATFileDataReady(
   }
   rules_.clear();
   host_cache_.clear();
-  std::vector<std::string> hosts;
-  base::JSONValueConverter<DebounceRule> converter;
-  for (base::Value& it : root->GetList()) {
-    std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
-    if (!converter.Convert(it, rule.get()))
-      continue;
-    for (const URLPattern& pattern : rule->include_pattern_set()) {
-      if (!pattern.host().empty()) {
-        const std::string etldp1 = GetETLDForDebounce(pattern.host());
-        if (!etldp1.empty())
-          hosts.push_back(std::move(etldp1));
-      }
-    }
-    rules_.push_back(std::move(rule));
-  }
-  host_cache_ = std::move(hosts);
+  DebounceRule::ParseRules(std::move(root->GetList()), &rules_, &host_cache_);
   for (Observer& observer : observers_)
     observer.OnRulesReady(this);
 }
@@ -81,13 +66,6 @@ void DebounceComponentInstaller::OnComponentReady(
     const std::string& manifest) {
   resource_dir_ = install_dir.AppendASCII(kDebounceConfigFileVersion);
   LoadDirectlyFromResourcePath();
-}
-
-const std::string DebounceComponentInstaller::GetETLDForDebounce(
-    const std::string& host) const {
-  return net::registry_controlled_domains::GetDomainAndRegistry(
-      host, net::registry_controlled_domains::PrivateRegistryFilter::
-                EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace debounce
