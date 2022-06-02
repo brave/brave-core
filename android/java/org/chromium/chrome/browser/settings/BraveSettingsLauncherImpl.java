@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,16 @@ public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
             Context context, @Nullable String fragmentName, @Nullable Bundle fragmentArgs) {
         Intent intent = super.createSettingsActivityIntent(context, fragmentName, fragmentArgs);
         intent.setClass(context, BraveSettingsActivity.class);
+        if (!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+        if (fragmentName != null) {
+            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, fragmentName);
+        }
+        if (fragmentArgs != null) {
+            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);
+        }
         return intent;
     }
 }
