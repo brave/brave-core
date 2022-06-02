@@ -5,105 +5,19 @@
 
 #include "bat/ads/database.h"
 
-#include <cstdint>
 #include <utility>
 #include <vector>
 
 #include "base/bind.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
-#include "base/notreached.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/base/database_bind_util.h"
+#include "bat/ads/internal/base/database_record_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 #include "third_party/sqlite/sqlite3.h"
 
 namespace ads {
-
-namespace {
-
-void Bind(sql::Statement* statement, const mojom::DBCommandBinding& binding) {
-  DCHECK(statement);
-
-  switch (binding.value->which()) {
-    case mojom::DBValue::Tag::STRING_VALUE: {
-      statement->BindString(binding.index, binding.value->get_string_value());
-      return;
-    }
-
-    case mojom::DBValue::Tag::INT_VALUE: {
-      statement->BindInt(binding.index, binding.value->get_int_value());
-      return;
-    }
-
-    case mojom::DBValue::Tag::INT64_VALUE: {
-      statement->BindInt64(binding.index, binding.value->get_int64_value());
-      return;
-    }
-
-    case mojom::DBValue::Tag::DOUBLE_VALUE: {
-      statement->BindDouble(binding.index, binding.value->get_double_value());
-      return;
-    }
-
-    case mojom::DBValue::Tag::BOOL_VALUE: {
-      statement->BindBool(binding.index, binding.value->get_bool_value());
-      return;
-    }
-
-    case mojom::DBValue::Tag::NULL_VALUE: {
-      statement->BindNull(binding.index);
-      return;
-    }
-  }
-}
-
-mojom::DBRecordPtr CreateRecord(
-    sql::Statement* statement,
-    const std::vector<mojom::DBCommand::RecordBindingType>& bindings) {
-  DCHECK(statement);
-
-  mojom::DBRecordPtr record = mojom::DBRecord::New();
-
-  int column = 0;
-
-  for (const auto& binding : bindings) {
-    mojom::DBValuePtr value = mojom::DBValue::New();
-    switch (binding) {
-      case mojom::DBCommand::RecordBindingType::STRING_TYPE: {
-        value->set_string_value(statement->ColumnString(column));
-        break;
-      }
-
-      case mojom::DBCommand::RecordBindingType::INT_TYPE: {
-        value->set_int_value(statement->ColumnInt(column));
-        break;
-      }
-
-      case mojom::DBCommand::RecordBindingType::INT64_TYPE: {
-        value->set_int64_value(statement->ColumnInt64(column));
-        break;
-      }
-
-      case mojom::DBCommand::RecordBindingType::DOUBLE_TYPE: {
-        value->set_double_value(statement->ColumnDouble(column));
-        break;
-      }
-
-      case mojom::DBCommand::RecordBindingType::BOOL_TYPE: {
-        value->set_bool_value(statement->ColumnBool(column));
-        break;
-      }
-    }
-
-    record->fields.push_back(std::move(value));
-    column++;
-  }
-
-  return record;
-}
-
-}  // namespace
 
 Database::Database(const base::FilePath& path) : db_path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
@@ -136,8 +50,6 @@ void Database::RunTransaction(mojom::DBTransactionPtr transaction,
 
   for (const auto& command : transaction->commands) {
     mojom::DBCommandResponse::Status status;
-
-    BLOG(8, "Database query: " << command->command);
 
     switch (command->type) {
       case mojom::DBCommand::Type::INITIALIZE: {
@@ -231,7 +143,7 @@ mojom::DBCommandResponse::Status Database::Execute(mojom::DBCommand* command) {
   }
 
   if (!db_.Execute(command->command.c_str())) {
-    BLOG(0, "Database error: " << db_.GetErrorMessage());
+    VLOG(0) << "Database store error: " << db_.GetErrorMessage();
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
@@ -248,12 +160,12 @@ mojom::DBCommandResponse::Status Database::Run(mojom::DBCommand* command) {
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
   if (!statement.is_valid()) {
-    NOTREACHED();
+    VLOG(0) << "Database store error: Invalid statement";
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
   for (const auto& binding : command->bindings) {
-    Bind(&statement, *binding.get());
+    database::Bind(&statement, *binding.get());
   }
 
   if (!statement.Run()) {
@@ -276,12 +188,12 @@ mojom::DBCommandResponse::Status Database::Read(
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
   if (!statement.is_valid()) {
-    NOTREACHED();
+    VLOG(0) << "Database store error: Invalid statement";
     return mojom::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
   for (const auto& binding : command->bindings) {
-    Bind(&statement, *binding.get());
+    database::Bind(&statement, *binding.get());
   }
 
   mojom::DBCommandResultPtr result = mojom::DBCommandResult::New();
@@ -291,7 +203,7 @@ mojom::DBCommandResponse::Status Database::Read(
 
   while (statement.Step()) {
     command_response->result->get_records().push_back(
-        CreateRecord(&statement, command->record_bindings));
+        database::CreateRecord(&statement, command->record_bindings));
   }
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
@@ -311,7 +223,7 @@ mojom::DBCommandResponse::Status Database::Migrate(
 }
 
 void Database::OnErrorCallback(const int error, sql::Statement* statement) {
-  BLOG(0, "Database error: " << db_.GetDiagnosticInfo(error, statement));
+  VLOG(0) << "Database error: " << db_.GetDiagnosticInfo(error, statement);
 }
 
 void Database::OnMemoryPressure(

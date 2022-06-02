@@ -147,7 +147,7 @@ void AdNotificationPopup::OnDisplayMetricsChanged(
 void AdNotificationPopup::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   node_data->role = ax::mojom::Role::kAlertDialog;
   node_data->SetName(
-      l10n_util::GetStringUTF8(IDS_BRAVE_ADS_AD_NOTIFICATION_ACCESSIBLE_NAME));
+      l10n_util::GetStringUTF8(IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME));
 }
 
 void AdNotificationPopup::OnDisplayChanged() {

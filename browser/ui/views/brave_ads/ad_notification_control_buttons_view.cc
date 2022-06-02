@@ -102,7 +102,7 @@ void AdNotificationControlButtonsView::CreateCloseButton() {
                           base::Unretained(ad_notification_view_))));
 
   close_button_->SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_ADS_AD_NOTIFICATION_CLOSE_BUTTON));
+      IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON));
 }
 
 void AdNotificationControlButtonsView::UpdateCloseButton() {

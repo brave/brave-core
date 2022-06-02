@@ -40,7 +40,7 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/covariates/covariate_logs.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
-#include "bat/ads/internal/database/database_util.h"
+#include "bat/ads/internal/database/database_manager.h"
 #include "bat/ads/internal/deprecated/client/client.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
 #include "bat/ads/internal/deprecated/creatives/ad_notifications/ad_notifications.h"
@@ -98,6 +98,7 @@ AdsImpl::~AdsImpl() {
   ad_notification_->RemoveObserver(this);
   ad_notification_serving_->RemoveObserver(this);
   catalog_->RemoveObserver(this);
+  database_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   inline_content_ad_->RemoveObserver(this);
@@ -534,6 +535,9 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   diagnostics_ = std::make_unique<Diagnostics>();
 
+  database_manager_ = std::make_unique<DatabaseManager>();
+  database_manager_->AddObserver(this);
+
   browser_manager_ = std::make_unique<BrowserManager>();
 
   tab_manager_ = std::make_unique<TabManager>();
@@ -613,9 +617,9 @@ void AdsImpl::InitializeBrowserManager() {
 }
 
 void AdsImpl::InitializeDatabase(InitializeCallback callback) {
-  database::CreateOrOpen([=](const bool success) {
+  DatabaseManager::Get()->CreateOrOpen([=](const bool success) {
     if (!success) {
-      BLOG(0, "Failed to initialize database");
+      BLOG(0, "Failed to create or open database");
       callback(/* success */ false);
       return;
     }
@@ -771,6 +775,24 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
   } else {
     ad_notification_serving_->StopServingAdsAtRegularIntervals();
   }
+}
+
+void AdsImpl::OnWillMigrateDatabase(const int from_version,
+                                    const int to_version) {
+  BLOG(1, "Migrating database from schema version "
+              << from_version << " to schema version " << to_version);
+}
+
+void AdsImpl::OnDidMigrateDatabase(const int from_version,
+                                   const int to_version) {
+  BLOG(1, "Migrated database from schema version "
+              << from_version << " to schema version " << to_version);
+}
+
+void AdsImpl::OnFailedToMigrateDatabase(const int from_version,
+                                        const int to_version) {
+  BLOG(1, "Failed to migrate database from schema version "
+              << from_version << " to schema version " << to_version);
 }
 
 void AdsImpl::OnWalletDidUpdate(const WalletInfo& wallet) {

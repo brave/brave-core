@@ -12,7 +12,7 @@
 #include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
-#include "bat/ads/internal/legacy_migration/database/database_version.h"
+#include "bat/ads/internal/legacy_migration/database/database_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -47,9 +47,9 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
 
   // Act
   LogAdEvent(ad_event, [=](const bool success) {
-    EXPECT_TRUE(success) << "Failed to migrate database from schema "
-                         << GetSchemaVersion() << " to schema "
-                         << database::version();
+    EXPECT_TRUE(success) << "Failed to migrate database from schema version "
+                         << GetSchemaVersion() << " to schema version "
+                         << database::kVersion;
   });
 
   // Assert
@@ -57,12 +57,12 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
 
 std::string TestParamToString(::testing::TestParamInfo<int> param_info) {
   return base::StringPrintf("%d_to_%d", param_info.param + 1,
-                            database::version());
+                            database::kVersion);
 }
 
 INSTANTIATE_TEST_SUITE_P(BatAdsDatabaseMigration,
                          BatAdsDatabaseMigrationTest,
-                         testing::Range(0, database::version()),
+                         testing::Range(0, database::kVersion),
                          TestParamToString);
 
 }  // namespace ads

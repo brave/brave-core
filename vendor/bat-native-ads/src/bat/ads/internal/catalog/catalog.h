@@ -10,16 +10,17 @@
 #include "bat/ads/internal/base/backoff_timer.h"
 #include "bat/ads/internal/base/timer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
+#include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct CatalogInfo;
 
-class Catalog final {
+class Catalog final : public DatabaseManagerObserver {
  public:
   Catalog();
-  ~Catalog();
+  ~Catalog() override;
 
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);
@@ -36,6 +37,10 @@ class Catalog final {
 
   void NotifyDidUpdateCatalog(const CatalogInfo& catalog) const;
   void NotifyFailedToUpdateCatalog() const;
+
+  // DatabaseManagerObserver:
+  void OnDidMigrateDatabase(const int from_version,
+                            const int to_version) override;
 
   base::ObserverList<CatalogObserver> observers_;
 

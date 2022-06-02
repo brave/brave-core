@@ -22,6 +22,7 @@
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
+#include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/internal/serving/ad_notification_serving_observer.h"
 #include "bat/ads/internal/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/serving/new_tab_page_ad_serving_observer.h"
@@ -66,10 +67,6 @@ class PurchaseIntent;
 class TextClassification;
 }  // namespace resource
 
-namespace database {
-class Initialize;
-}  // namespace database
-
 namespace privacy {
 class TokenGenerator;
 class TokenGeneratorInterface;
@@ -87,6 +84,7 @@ class Client;
 class Conversions;
 class ConfirmationsState;
 class CovariateLogs;
+class DatabaseManager;
 class InlineContentAd;
 class NewTabPageAd;
 class PromotedContentAd;
@@ -109,6 +107,7 @@ class AdsImpl final : public Ads,
                       public AdNotificationObserver,
                       public AdNotificationServingObserver,
                       public CatalogObserver,
+                      public DatabaseManagerObserver,
                       public TransferObserver,
                       public InlineContentAdObserver,
                       public InlineContentServingObserver,
@@ -246,6 +245,14 @@ class AdsImpl final : public Ads,
   bool ShouldServeAdNotificationsAtRegularIntervals() const;
   void MaybeServeAdNotificationsAtRegularIntervals();
 
+  // DatabaseManagerObserver:
+  void OnWillMigrateDatabase(const int from_version,
+                             const int to_version) override;
+  void OnDidMigrateDatabase(const int from_version,
+                            const int to_version) override;
+  void OnFailedToMigrateDatabase(const int from_version,
+                                 const int to_version) override;
+
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
   void OnWalletDidChange(const WalletInfo& wallet) override;
@@ -323,6 +330,7 @@ class AdsImpl final : public Ads,
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<Diagnostics> diagnostics_;
+  std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;

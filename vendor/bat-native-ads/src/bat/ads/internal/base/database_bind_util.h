@@ -10,25 +10,21 @@
 #include <string>
 
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "sql/statement.h"
 
 namespace ads {
 namespace database {
 
 std::string BuildBindingParameterPlaceholder(const size_t parameters_count);
-
 std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
                                               const size_t values_count);
 
+void Bind(sql::Statement* statement, const mojom::DBCommandBinding& binding);
 void BindNull(mojom::DBCommand* command, const int index);
-
 void BindInt(mojom::DBCommand* command, const int index, const int32_t value);
-
 void BindInt64(mojom::DBCommand* command, const int index, const int64_t value);
-
 void BindDouble(mojom::DBCommand* command, const int index, const double value);
-
 void BindBool(mojom::DBCommand* command, const int index, const bool value);
-
 void BindString(mojom::DBCommand* command,
                 const int index,
                 const std::string& value);

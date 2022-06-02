@@ -14,8 +14,6 @@
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database_transaction_util.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/ad_notifications/creative_ad_notifications_database_table.h"
@@ -28,7 +26,7 @@
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/segments_database_table.h"
-#include "bat/ads/internal/legacy_migration/database/database_version.h"
+#include "bat/ads/internal/legacy_migration/database/database_constants.h"
 
 namespace ads {
 namespace database {
@@ -38,29 +36,19 @@ Migration::Migration() = default;
 Migration::~Migration() = default;
 
 void Migration::FromVersion(const int from_version, ResultCallback callback) {
-  const int to_version = version();
-  if (to_version == from_version) {
-    callback(/* success */ true);
-    return;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/14728): Decouple catalog
-  // business logic once we have implemented database observers
-  ResetCatalog();
+  const int to_version = database::kVersion;
+  DCHECK(from_version < to_version);
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   for (int i = from_version + 1; i <= to_version; i++) {
     ToVersion(transaction.get(), i);
   }
 
-  BLOG(1, "Migrated database from version " << from_version << " to version "
-                                            << to_version);
-
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::MIGRATE;
 
   transaction->version = to_version;
-  transaction->compatible_version = compatible_version();
+  transaction->compatible_version = database::kCompatibleVersion;
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::Get()->RunDBTransaction(
