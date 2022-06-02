@@ -24,6 +24,7 @@ struct TransactionConfirmationView: View {
   @ScaledMetric private var blockieSize = 24
   /// Favicon size for ERC 20 Approve transactions
   @ScaledMetric private var faviconSize = 48
+  private let maxFaviconSize: CGFloat = 96
 
   private enum ViewMode: Int {
     case transaction
@@ -94,21 +95,57 @@ struct TransactionConfirmationView: View {
       EmptyView()
     }
   }
+  
+  private var globeFavicon: some View {
+    Image(systemName: "globe")
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+      .padding(8)
+      .background(Color(.braveDisabled))
+  }
+  
+  @ViewBuilder private var faviconAndOrigin: some View {
+    VStack(spacing: 8) {
+      if let originInfo = confirmationStore.state.originInfo {
+        Group {
+          if originInfo.isBraveWalletOrigin {
+            Image("wallet-brave-icon", bundle: .current)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .padding(4)
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .background(Color(.braveDisabled))
+          } else {
+            if let url = originInfo.origin.url {
+              FaviconReader(url: url) { image in
+                if let image = image {
+                  Image(uiImage: image)
+                    .resizable()
+                } else {
+                  globeFavicon
+                }
+              }
+            } else {
+              globeFavicon
+            }
+          }
+        }
+        .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+        .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+        OriginText(urlOrigin: originInfo.origin)
+          .font(.subheadline)
+          .foregroundColor(Color(.braveLabel))
+          .multilineTextAlignment(.center)
+      }
+    }
+    .accessibilityElement(children: .combine)
+  }
 
   /// The header displayed for an `erc20Approve` txType transaction
   @ViewBuilder private var erc20ApproveHeader: some View {
     VStack(spacing: 20) {
       VStack(spacing: 8) {
-        if let origin = confirmationStore.state.origin {
-          Image(systemName: "globe")
-            .frame(width: faviconSize, height: faviconSize)
-            .background(Color(.braveDisabled))
-            .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-          Text(verbatim: origin.absoluteString)
-            .font(.subheadline)
-            .foregroundColor(Color(.braveLabel))
-            .multilineTextAlignment(.center)
-        }
+        faviconAndOrigin
         VStack(spacing: 10) {
           Text(String.localizedStringWithFormat(Strings.Wallet.confirmationViewAllowSpendTitle, confirmationStore.state.symbol))
             .fontWeight(.semibold)
@@ -141,7 +178,8 @@ struct TransactionConfirmationView: View {
           .foregroundColor(Color(.braveBlurpleTint))
       }
     }
-    .padding()
+    .padding(.horizontal)
+    .padding(.bottom)
   }
 
   @ViewBuilder private var editGasFeeButton: some View {
@@ -199,6 +237,7 @@ struct TransactionConfirmationView: View {
               fromAccountName: fromAccountName,
               toAccountAddress: confirmationStore.activeTransaction.ethTxToAddress,
               toAccountName: toAccountName,
+              originInfo: confirmationStore.state.originInfo,
               transactionType: transactionType,
               value: "\(confirmationStore.state.value) \(confirmationStore.state.symbol)",
               fiat: confirmationStore.state.fiat

@@ -163,6 +163,7 @@ struct TransactionDetailsView: View {
       fromAccountName: namedAddress(for: info.fromAddress),
       toAccountAddress: info.ethTxToAddress,
       toAccountName: namedAddress(for: info.ethTxToAddress),
+      originInfo: info.originInfo,
       transactionType: title,
       value: value,
       fiat: fiat
