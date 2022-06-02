@@ -6,10 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_WALLET_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_UPHOLD_UPHOLD_WALLET_H_
 
+#include <map>
 #include <memory>
 #include <string>
 
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
+#include "bat/ledger/internal/uphold/uphold_capabilities.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
@@ -30,6 +32,10 @@ class UpholdWallet {
   void OnGetUser(const type::Result result,
                  const User& user,
                  ledger::ResultCallback callback) const;
+
+  void OnGetCapabilities(type::Result result,
+                         ledger::uphold::Capabilities capabilities,
+                         ledger::ResultCallback callback) const;
 
   void OnCreateCard(const type::Result result,
                     const std::string& id,

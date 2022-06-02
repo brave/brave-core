@@ -521,22 +521,8 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
-    // NOLINTNEXTLINE
-    GetUserParamType{  // Customer due diligence is required for the user! (PENDING)
-      "02_PENDING_customer_due_diligence_is_required_for_the_user",
-      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "verifications": { "customerDueDiligence": { "status": "required" } } })",
-        {}
-      },
-      type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED,
-      type::WalletStatus::NOT_CONNECTED
-    },
     GetUserParamType{  // BAT is not allowed for the user! (PENDING)
-      "03_PENDING_bat_is_not_allowed_for_the_user",
+      "02_PENDING_bat_is_not_allowed_for_the_user",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -548,47 +534,8 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::UPHOLD_BAT_NOT_ALLOWED,
       type::WalletStatus::NOT_CONNECTED
     },
-    GetUserParamType{  // Account is blocked at Uphold. (PENDING)
-      "04_PENDING_account_is_blocked_at_uphold",
-      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "blocked" })",
-        {}
-      },
-      type::Result::UPHOLD_BLOCKED_USER,
-      type::WalletStatus::NOT_CONNECTED
-    },
-    GetUserParamType{  // Account is pending at Uphold. (PENDING)
-      "05_PENDING_account_is_pending_at_uphold",
-      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "pending" })",
-        {}
-      },
-      type::Result::UPHOLD_PENDING_USER,
-      type::WalletStatus::NOT_CONNECTED
-    },
-    GetUserParamType{  // Account is restricted at Uphold. (PENDING)
-      "06_PENDING_account_is_restricted_at_uphold",
-      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "restricted" })",
-        {}
-      },
-      type::Result::UPHOLD_RESTRICTED_USER,
-      type::WalletStatus::NOT_CONNECTED
-    },
     GetUserParamType{  // Access token expired! (VERIFIED)
-      "07_VERIFIED_access_token_expired",
+      "03_VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -601,7 +548,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (VERIFIED)
-      "08_VERIFIED_couldn_t_get_the_user_object_from_uphold",
+      "04_VERIFIED_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -613,22 +560,8 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
-    // NOLINTNEXTLINE
-    GetUserParamType{  // Customer due diligence is required for the user! (VERIFIED)
-      "09_VERIFIED_customer_due_diligence_is_required_for_the_user",
-      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "verifications": { "customerDueDiligence": { "status": "required" } } })",
-        {}
-      },
-      type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED,
-      type::WalletStatus::DISCONNECTED_VERIFIED
-    },
     GetUserParamType{  // BAT is not allowed for the user! (VERIFIED)
-      "10_VERIFIED_bat_is_not_allowed_for_the_user",
+      "05_VERIFIED_bat_is_not_allowed_for_the_user",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -639,58 +572,6 @@ INSTANTIATE_TEST_SUITE_P(
       },
       type::Result::UPHOLD_BAT_NOT_ALLOWED,
       type::WalletStatus::DISCONNECTED_VERIFIED
-    },
-    GetUserParamType{  // Account is blocked at Uphold. (VERIFIED)
-      "11_VERIFIED_account_is_blocked_at_uphold",
-      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "blocked" })",
-        {}
-      },
-      type::Result::UPHOLD_BLOCKED_USER,
-      type::WalletStatus::DISCONNECTED_VERIFIED
-    },
-    GetUserParamType{  // Account is pending at Uphold. (VERIFIED)
-      "12_VERIFIED_account_is_pending_at_uphold",
-      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "pending" })",
-        {}
-      },
-      type::Result::UPHOLD_PENDING_USER,
-      type::WalletStatus::DISCONNECTED_VERIFIED
-    },
-    GetUserParamType{  // Account is restricted at Uphold. (VERIFIED)
-      "13_VERIFIED_account_is_restricted_at_uphold",
-      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "restricted" })",
-        {}
-      },
-      type::Result::UPHOLD_RESTRICTED_USER,
-      type::WalletStatus::DISCONNECTED_VERIFIED
-    },
-    GetUserParamType{  // Happy path. (VERIFIED)
-      "14_VERIFIED_happy_path",
-      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
-      type::UrlResponse{
-        {},
-        {},
-        net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
-        {}
-      },
-      type::Result::LEDGER_OK,
-      type::WalletStatus::VERIFIED
     }),
   NameSuffixGenerator<GetUserParamType>
 );
@@ -722,6 +603,338 @@ TEST_P(GetUser, Paths) {
   ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(Return(mock_database_.get()));
 
+  uphold_->GenerateWallet(
+      [&](type::Result result) { ASSERT_EQ(result, expected_result); });
+
+  const auto status = GetStatusFromJSON(uphold_wallet);
+  if (status && expected_status) {
+    ASSERT_EQ(*status, *expected_status);
+  } else {
+    ASSERT_TRUE(!status && !expected_status);
+  }
+}
+
+// clang-format off
+using GetCapabilitiesParamType = std::tuple<
+    std::string,                        // test name suffix
+    std::string,                        // input Uphold wallet
+    type::UrlResponse,                  // Uphold Get User response
+    type::UrlResponse,                  // Uphold Get Capabilities response
+    type::Result,                       // expected result
+    absl::optional<type::WalletStatus>  // expected status
+>;
+
+struct GetCapabilities : UpholdTest,
+                         WithParamInterface<GetCapabilitiesParamType> {};
+
+INSTANTIATE_TEST_SUITE_P(
+  UpholdTest,
+  GetCapabilities,
+  Values(
+    GetCapabilitiesParamType{  // Access token expired! (PENDING)
+      "00_PENDING_access_token_expired",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_UNAUTHORIZED,
+        {},
+        {}
+      },
+      type::Result::EXPIRED_TOKEN,
+      type::WalletStatus::NOT_CONNECTED
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
+      "01_PENDING_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
+        {},
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::PENDING
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
+      "02_PENDING_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        {},
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::PENDING
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
+      "03_PENDING_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "sends", "enabled": true } ])",
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::PENDING
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (PENDING)
+      "04_PENDING_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true } ])",
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::PENDING
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // User doesn't have the required Uphold capabilities! (PENDING)
+      "05_PENDING_user_doesnt_have_the_required_uphold_capabilities",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": false } ])",
+        {}
+      },
+      type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
+      type::WalletStatus::NOT_CONNECTED
+    },
+    GetCapabilitiesParamType{  // Access token expired! (VERIFIED)
+      "06_VERIFIED_access_token_expired",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_UNAUTHORIZED,
+        {},
+        {}
+      },
+      type::Result::EXPIRED_TOKEN,
+      type::WalletStatus::DISCONNECTED_VERIFIED
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
+      "07_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR,
+        {},
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::VERIFIED
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
+      "08_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        {},
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::VERIFIED
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
+      "09_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "sends", "enabled": true } ])",
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::VERIFIED
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // Couldn't get capabilities from Uphold! (VERIFIED)
+      "10_VERIFIED_couldn_t_get_capabilities_from_uphold",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true } ])",
+        {}
+      },
+      type::Result::CONTINUE,
+      type::WalletStatus::VERIFIED
+    },
+    // NOLINTNEXTLINE
+    GetCapabilitiesParamType{  // User doesn't have the required Uphold capabilities! (VERIFIED)
+      "11_VERIFIED_user_doesnt_have_the_required_uphold_capabilities",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": false } ])",
+        {}
+      },
+      type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES,
+      type::WalletStatus::DISCONNECTED_VERIFIED
+    },
+    GetCapabilitiesParamType{  // Happy path. (VERIFIED)
+      "12_VERIFIED_happy_path",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
+        {}
+      },
+      type::Result::LEDGER_OK,
+      type::WalletStatus::VERIFIED
+    }),
+  NameSuffixGenerator<GetCapabilitiesParamType>
+);
+// clang-format on
+
+TEST_P(GetCapabilities, Paths) {
+  const auto& params = GetParam();
+  std::string uphold_wallet = std::get<1>(params);
+  const auto& uphold_get_user_response = std::get<2>(params);
+  const auto& uphold_get_capabilities_response = std::get<3>(params);
+  const auto expected_result = std::get<4>(params);
+  const auto expected_status = std::get<5>(params);
+
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(
+          [&] { return FakeEncryption::Base64EncryptString(uphold_wallet); });
+
+  ON_CALL(*mock_ledger_client_, SetStringState(state::kWalletUphold, _))
+      .WillByDefault([&](const std::string&, const std::string& value) {
+        uphold_wallet = *FakeEncryption::Base64DecryptString(value);
+        return true;
+      });
+
+  EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .Times(AtMost(2))
+      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(uphold_get_user_response);
+      })
+      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(uphold_get_capabilities_response);
+      });
+
+  ON_CALL(*mock_ledger_impl_, database())
+      .WillByDefault(Return(mock_database_.get()));
+
   ON_CALL(*mock_ledger_impl_, promotion())
       .WillByDefault(Return(mock_promotion_.get()));
 
@@ -741,6 +954,7 @@ using GetCardIDParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
     type::UrlResponse,                  // Uphold Get User response
+    type::UrlResponse,                  // Uphold Get Capabilities response
     type::UrlResponse,                  // Uphold List Cards response
     type::UrlResponse,                  // Uphold Create Card response
     type::UrlResponse,                  // Uphold Update Card response
@@ -762,7 +976,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -785,7 +1006,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -813,7 +1041,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -841,7 +1076,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -870,7 +1112,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -904,7 +1153,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -939,11 +1195,12 @@ TEST_P(GetCardID, Paths) {
   const auto& params = GetParam();
   std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
-  const auto& uphold_list_cards_response = std::get<3>(params);
-  const auto& uphold_create_card_response = std::get<4>(params);
-  const auto& uphold_update_card_response = std::get<5>(params);
-  const auto expected_result = std::get<6>(params);
-  const auto expected_status = std::get<7>(params);
+  const auto& uphold_get_capabilities_response = std::get<3>(params);
+  const auto& uphold_list_cards_response = std::get<4>(params);
+  const auto& uphold_create_card_response = std::get<5>(params);
+  const auto& uphold_update_card_response = std::get<6>(params);
+  const auto expected_result = std::get<7>(params);
+  const auto expected_status = std::get<8>(params);
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -956,9 +1213,12 @@ TEST_P(GetCardID, Paths) {
       });
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .Times(AtMost(4))
+      .Times(AtMost(5))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_get_user_response);
+      })
+      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_list_cards_response);
@@ -990,6 +1250,7 @@ using GetAnonFundsParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
     type::UrlResponse,                  // Uphold Get User response
+    type::UrlResponse,                  // Uphold Get Capabilities response
     type::UrlResponse,                  // Uphold List Cards response
     bool,                               // fetch_old_balance
     std::string,                        // input Rewards wallet
@@ -1012,7 +1273,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1035,7 +1303,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1065,13 +1340,14 @@ TEST_P(GetAnonFunds, Paths) {
   const auto& params = GetParam();
   std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
-  const auto& uphold_list_cards_response = std::get<3>(params);
-  const auto fetch_old_balance = std::get<4>(params);
-  const auto& input_rewards_wallet = std::get<5>(params);
+  const auto& uphold_get_capabilities_response = std::get<3>(params);
+  const auto& uphold_list_cards_response = std::get<4>(params);
+  const auto fetch_old_balance = std::get<5>(params);
+  const auto& input_rewards_wallet = std::get<6>(params);
   const auto& rewards_services_get_wallet_balance_response =
-      std::get<6>(params);
-  const auto expected_result = std::get<7>(params);
-  const auto expected_status = std::get<8>(params);
+      std::get<7>(params);
+  const auto expected_result = std::get<8>(params);
+  const auto expected_status = std::get<9>(params);
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -1084,9 +1360,12 @@ TEST_P(GetAnonFunds, Paths) {
       });
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .Times(AtMost(3))
+      .Times(AtMost(4))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_get_user_response);
+      })
+      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_list_cards_response);
@@ -1121,6 +1400,7 @@ using LinkWalletParamType = std::tuple<
     std::string,                        // test name suffix
     std::string,                        // input Uphold wallet
     type::UrlResponse,                  // Uphold Get User response
+    type::UrlResponse,                  // Uphold Get Capabilities response
     type::UrlResponse,                  // Uphold List Cards response
     bool,                               // fetch_old_balance
     std::string,                        // input Rewards wallet
@@ -1143,7 +1423,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1172,7 +1459,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1206,7 +1500,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1240,7 +1541,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1274,7 +1582,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1308,7 +1623,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1342,7 +1664,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1371,7 +1700,14 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_OK,
-        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        R"({ "currencies": [ "BAT" ] })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "key": "receives", "enabled": true }, { "key": "sends", "enabled": true } ])",
         {}
       },
       type::UrlResponse{
@@ -1401,12 +1737,13 @@ TEST_P(LinkWallet, Paths) {
   const auto& params = GetParam();
   std::string uphold_wallet = std::get<1>(params);
   const auto& uphold_get_user_response = std::get<2>(params);
-  const auto& uphold_list_cards_response = std::get<3>(params);
-  const auto fetch_old_balance = std::get<4>(params);
-  const auto& input_rewards_wallet = std::get<5>(params);
-  const auto& rewards_link_wallet_response = std::get<6>(params);
-  const auto expected_result = std::get<7>(params);
-  const auto expected_status = std::get<8>(params);
+  const auto& uphold_get_capabilities_response = std::get<3>(params);
+  const auto& uphold_list_cards_response = std::get<4>(params);
+  const auto fetch_old_balance = std::get<5>(params);
+  const auto& input_rewards_wallet = std::get<6>(params);
+  const auto& rewards_link_wallet_response = std::get<7>(params);
+  const auto expected_result = std::get<8>(params);
+  const auto expected_status = std::get<9>(params);
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(
@@ -1419,9 +1756,12 @@ TEST_P(LinkWallet, Paths) {
       });
 
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .Times(AtMost(3))
+      .Times(AtMost(4))
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_get_user_response);
+      })
+      .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
+        callback(uphold_get_capabilities_response);
       })
       .WillOnce([&](type::UrlRequestPtr, client::LoadURLCallback callback) {
         callback(uphold_list_cards_response);

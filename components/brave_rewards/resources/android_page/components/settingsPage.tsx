@@ -303,52 +303,12 @@ class SettingsPage extends React.Component<Props, State> {
             onClick={this.actions.hideRedirectModal}
           />
         )
-      case 'upholdBlockedUserModal':
+      case 'upholdInsufficientCapabilitiesModal':
         return (
           <ModalRedirect
-            id={'redirect-modal-uphold-blocked-user'}
-            errorText={[getLocale('redirectModalUpholdBlockedUserText')]}
-            titleText={getLocale('redirectModalUpholdBlockedUserTitle')}
-            learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
-            buttonText={getLocale('redirectModalClose')}
-            walletType={walletType}
-            isMobile={true}
-            onClick={this.actions.hideRedirectModal}
-          />
-        )
-      case 'upholdCustomerDueDiligenceRequiredModal':
-        return (
-          <ModalRedirect
-            id={'redirect-modal-uphold-customer-due-diligence-required'}
-            errorText={[getLocale('redirectModalUpholdCustomerDueDiligenceRequiredText')]}
-            titleText={getLocale('redirectModalUpholdCustomerDueDiligenceRequiredTitle')}
-            learnMore={'https://wallet.uphold.com/customer-due-diligence'}
-            buttonText={getLocale('redirectModalClose')}
-            walletType={walletType}
-            isMobile={true}
-            onClick={this.actions.hideRedirectModal}
-          />
-        )
-      case 'upholdPendingUserModal':
-        return (
-          <ModalRedirect
-            id={'redirect-modal-uphold-pending-user'}
-            errorText={[getLocale('redirectModalUpholdPendingUserText')]}
-            titleText={getLocale('redirectModalUpholdPendingUserTitle')}
-            learnMore={'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'}
-            buttonText={getLocale('redirectModalClose')}
-            walletType={walletType}
-            isMobile={true}
-            onClick={this.actions.hideRedirectModal}
-          />
-        )
-      case 'upholdRestrictedUserModal':
-        return (
-          <ModalRedirect
-            id={'redirect-modal-uphold-restricted-user'}
-            errorText={[getLocale('redirectModalUpholdRestrictedUserText')]}
-            titleText={getLocale('redirectModalUpholdRestrictedUserTitle')}
-            learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
+            id={'redirect-modal-uphold-insufficient-capabilities'}
+            errorText={[getLocale('redirectModalUpholdInsufficientCapabilitiesText')]}
+            titleText={getLocale('redirectModalUpholdInsufficientCapabilitiesTitle')}
             buttonText={getLocale('redirectModalClose')}
             walletType={walletType}
             isMobile={true}
