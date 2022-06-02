@@ -17,6 +17,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class SecureDnsConfig;
+class PrefService;
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -51,12 +52,15 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
   void SetPolicyNotificationCallbackForTesting(base::OnceClosure callback) {
     policy_callback_ = std::move(callback);
   }
-
+  void SetPrefServiceForTesting(PrefService* service) {
+    pref_service_for_testing_ = service;
+  }
   bool IsDnsModeConfiguredByPolicy() const;
 
  private:
+  PrefService* GetPrefService();
   void OnDNSPrefChanged();
-
+  void OnDNSDialogDismissed(bool checked);
   void SetDNSOverHTTPSMode(const std::string& mode,
                            const std::string& doh_providers);
   void ShowPolicyWarningMessage();
@@ -66,6 +70,7 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
   bool ignore_prefs_change_ = true;
   absl::optional<bool> allow_changes_for_testing_;
   raw_ptr<PrefService> local_state_;
+  raw_ptr<PrefService> pref_service_for_testing_;
   PrefChangeRegistrar pref_change_registrar_;
   std::unique_ptr<SecureDnsConfig> user_dns_config_;
   base::WeakPtrFactory<BraveVpnDnsObserverService> weak_ptr_factory_{this};

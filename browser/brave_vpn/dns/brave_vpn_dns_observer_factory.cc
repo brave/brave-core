@@ -22,7 +22,7 @@
 namespace brave_vpn {
 
 namespace {
-std::string GetDnsPolicyValue(const std::string& name) {
+std::string GetPolicyValue(const std::string& name) {
   auto* service = g_browser_process->policy_service();
   if (!service)
     return std::string();
@@ -50,9 +50,8 @@ BraveVpnDnsObserverFactory::BraveVpnDnsObserverFactory()
 
 KeyedService* BraveVpnDnsObserverFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveVpnDnsObserverService(
-      g_browser_process->local_state(),
-      base::BindRepeating(&GetDnsPolicyValue));
+  return new BraveVpnDnsObserverService(g_browser_process->local_state(),
+                                        base::BindRepeating(&GetPolicyValue));
 }
 
 // static

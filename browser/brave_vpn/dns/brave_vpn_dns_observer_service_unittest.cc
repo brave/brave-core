@@ -9,6 +9,7 @@
 
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_vpn/pref_names.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/secure_dns_util.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"
@@ -18,6 +19,8 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/country_codes/country_codes.h"
 #include "components/policy/policy_constants.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/dns/public/doh_provider_entry.h"
 #include "net/dns/public/secure_dns_mode.h"
@@ -59,6 +62,8 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
         stub_resolver_config_reader_.get());
     SetPolicyValue(policy::key::kDnsOverHttpsMode, "");
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+    dns_service_->SetPrefServiceForTesting(pref_service());
   }
 
   std::string ReadDNSPolicyValue(const std::string& name) {
@@ -72,6 +77,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     dns_service_.reset();
   }
   PrefService* local_state() { return local_state_.Get(); }
+  PrefService* pref_service() { return &pref_service_; }
   void FireBraveVPNStateChange(mojom::ConnectionState state) {
     dns_service_->OnConnectionStateChanged(state);
   }
@@ -84,14 +90,14 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
     return callback_called;
   }
   void SetDNSMode(const std::string& mode, const std::string& doh_providers) {
-    local_state()->SetString(prefs::kDnsOverHttpsTemplates, doh_providers);
-    local_state()->SetString(prefs::kDnsOverHttpsMode, mode);
+    local_state()->SetString(::prefs::kDnsOverHttpsTemplates, doh_providers);
+    local_state()->SetString(::prefs::kDnsOverHttpsMode, mode);
   }
 
   void ExpectDNSMode(const std::string& mode,
                      const std::string& doh_providers) {
-    EXPECT_EQ(local_state()->GetString(prefs::kDnsOverHttpsMode), mode);
-    EXPECT_EQ(local_state()->GetString(prefs::kDnsOverHttpsTemplates),
+    EXPECT_EQ(local_state()->GetString(::prefs::kDnsOverHttpsMode), mode);
+    EXPECT_EQ(local_state()->GetString(::prefs::kDnsOverHttpsTemplates),
               doh_providers);
   }
   void AllowUsersChange(bool value) {
@@ -105,6 +111,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   std::unordered_map<std::string, std::string> policy_map_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVpnDnsObserverService> dns_service_;
+  sync_preferences::TestingPrefServiceSyncable pref_service_;
   ScopedTestingLocalState local_state_;
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 };
@@ -275,6 +282,15 @@ TEST_F(BraveVpnDnsObserverServiceUnitTest, DohDisabledByPolicy) {
     ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
     EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::DISCONNECTED));
     ExpectDNSMode(SecureDnsConfig::kModeAutomatic, "");
+  }
+
+  // Do not show dialog option enabled
+  SetPolicyValue(policy::key::kDnsOverHttpsMode, SecureDnsConfig::kModeOff);
+  {
+    pref_service()->SetBoolean(prefs::kBraveVPNShowDNSPolicyWarningDialog,
+                               false);
+    SetDNSMode(SecureDnsConfig::kModeOff, "");
+    EXPECT_FALSE(ShowPolicyNotification(mojom::ConnectionState::CONNECTED));
   }
 }
 
