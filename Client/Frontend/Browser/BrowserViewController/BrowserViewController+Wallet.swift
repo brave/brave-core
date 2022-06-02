@@ -112,6 +112,25 @@ extension BrowserViewController: BraveWalletDelegate {
       )
     }
   }
+  
+  public func walletPanel(_ panel: WalletPanelHostingController, presentWalletWithContext: PresentingContext, walletStore: WalletStore) {
+    let walletHostingController = WalletHostingViewController(
+      walletStore: walletStore,
+      presentingContext: presentWalletWithContext,
+      faviconRenderer: FavIconImageRenderer()
+    )
+    walletHostingController.delegate = self
+    
+    switch presentWalletWithContext {
+    case .default, .settings:
+      // Dismiss Wallet Panel first, then present Wallet
+      self.dismiss(animated: true) { [weak self] in
+        self?.present(walletHostingController, animated: true)
+      }
+    default:
+      panel.present(walletHostingController, animated: true)
+    }
+  }
 }
 
 extension Tab: BraveWalletProviderDelegate {
