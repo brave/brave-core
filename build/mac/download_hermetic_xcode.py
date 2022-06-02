@@ -89,6 +89,13 @@ def InstallXcodeBinaries():
         print("Exiting.")
         return 1
 
+    if sys.platform == 'darwin':
+        AcceptXcodeLicense()
+
+    return 0
+
+
+def AcceptXcodeLicense():
     # Accept the license for this version of Xcode if it's newer than the
     # currently accepted version.
     hermetic_xcode_version = GetHermeticXcodeVersion(binaries_root)
@@ -110,7 +117,7 @@ def InstallXcodeBinaries():
             should_overwrite_license = False
 
     if not should_overwrite_license:
-        return 0
+        return
 
     # Use puppet's sudoers script to accept the license if its available.
     license_accept_script = '/usr/local/bin/xcode_accept_license.py'
@@ -121,7 +128,7 @@ def InstallXcodeBinaries():
             hermetic_xcode_license_version
         ]
         subprocess.check_call(args)
-        return 0
+        return
 
     # Otherwise manually accept the license. This will prompt for sudo.
     print('Accepting new Xcode license. Requires sudo.')
@@ -139,7 +146,7 @@ def InstallXcodeBinaries():
     args = ['sudo', 'plutil', '-convert', 'xml1', current_license_path]
     subprocess.check_call(args)
 
-    return 0
+    return
 
 
 def main():
