@@ -31,15 +31,23 @@ SolanaTransaction::SolanaTransaction(
 SolanaTransaction::SolanaTransaction(SolanaMessage&& message)
     : message_(std::move(message)) {}
 
+SolanaTransaction::SolanaTransaction(SolanaMessage&& message,
+                                     const std::vector<uint8_t>& signatures)
+    : message_(std::move(message)), signatures_(signatures) {}
+
 SolanaTransaction::SolanaTransaction(const SolanaTransaction&) = default;
 SolanaTransaction::~SolanaTransaction() = default;
 
 bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
-  return message_ == tx.message_ &&
+  return message_ == tx.message_ && signatures_ == tx.signatures_ &&
          to_wallet_address_ == tx.to_wallet_address_ &&
          spl_token_mint_address_ == tx.spl_token_mint_address_ &&
          tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
          amount_ == tx.amount_;
+}
+
+bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
+  return !operator==(tx);
 }
 
 // Get serialized and signed transaction.
@@ -188,6 +196,32 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
   tx->set_lamports(solana_tx_data->lamports);
   tx->set_amount(solana_tx_data->amount);
   return tx;
+}
+
+// static
+absl::optional<SolanaTransaction> SolanaTransaction::FromSignedTransactionBytes(
+    const std::vector<uint8_t>& bytes) {
+  if (bytes.empty() || bytes.size() > kSolanaMaxTxSize)
+    return absl::nullopt;
+
+  size_t index = 0;
+  auto ret = CompactU16Decode(bytes, index);
+  if (!ret)
+    return absl::nullopt;
+  const uint16_t num_of_signatures = std::get<0>(*ret);
+  index += std::get<1>(*ret);
+  if (index + num_of_signatures * kSolanaSignatureSize > bytes.size())
+    return absl::nullopt;
+  const std::vector<uint8_t> signatures(
+      bytes.begin() + index,
+      bytes.begin() + index + num_of_signatures * kSolanaSignatureSize);
+  index += num_of_signatures * kSolanaSignatureSize;
+  auto message = SolanaMessage::Deserialize(
+      std::vector<uint8_t>(bytes.begin() + index, bytes.end()));
+  if (!message)
+    return absl::nullopt;
+
+  return SolanaTransaction(std::move(*message), signatures);
 }
 
 }  // namespace brave_wallet

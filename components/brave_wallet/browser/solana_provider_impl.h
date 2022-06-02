@@ -101,13 +101,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                         const std::string& error_message,
                         const std::string& public_key);
   void OnRequestSignTransaction(RequestCallback callback,
-                                const std::string& account,
                                 mojom::SolanaProviderError error,
                                 const std::string& error_message,
                                 const std::vector<uint8_t>& serialized_tx);
   void OnRequestSignAllTransactions(
       RequestCallback callback,
-      const std::string& account,
       mojom::SolanaProviderError error,
       const std::string& error_message,
       const std::vector<std::vector<uint8_t>>& serialized_tx);
