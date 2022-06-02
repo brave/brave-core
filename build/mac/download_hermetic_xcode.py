@@ -50,8 +50,7 @@ def PlatformMeetsHermeticXcodeRequirements():
             int(v) for v in platform.release().split('.')[:len(needed)]
         ]
         return major_version >= needed
-    # We are cross-compiling.
-    return True
+    return sys.platform.startswith('linux')
 
 
 def GetHermeticXcodeVersion(binaries_root):
