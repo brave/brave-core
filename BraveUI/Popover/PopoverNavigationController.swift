@@ -52,7 +52,7 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
 
   public override var additionalSafeAreaInsets: UIEdgeInsets {
     get { return UIEdgeInsets(top: PopoverArrowHeight, left: 0, bottom: 0, right: 0) }
-    set {}  // swiftlint:disable:this unused_setter_value
+    set {}
   }
 
   open override func viewDidLoad() {

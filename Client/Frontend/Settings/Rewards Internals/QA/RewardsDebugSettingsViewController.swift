@@ -377,7 +377,7 @@ class RewardsDebugSettingsViewController: TableViewController {
   }
 
   private func tappedImportRewardsDatabase() {
-    let docPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeData), String(kUTTypeDatabase)], in: .import)
+    let docPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.data, .database])
     docPicker.shouldShowFileExtensions = true
     docPicker.delegate = self
     self.present(docPicker, animated: true)

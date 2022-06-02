@@ -188,7 +188,8 @@ let package = Package(
       cxxSettings: [
         .headerSearchPath("include"),
         .headerSearchPath("ThirdParty/**"),
-        .headerSearchPath("Cpp")
+        .headerSearchPath("Cpp"),
+        .unsafeFlags(["-w"]),
       ]
     ),
     .target(

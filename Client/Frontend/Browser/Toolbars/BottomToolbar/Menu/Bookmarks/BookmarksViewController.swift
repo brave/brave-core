@@ -249,7 +249,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     let alert = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     alert.popoverPresentationController?.barButtonItem = sender
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) { [weak self] _ in
-      let vc = UIDocumentPickerViewController(documentTypes: [String(kUTTypeHTML)], in: .import)
+      let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html])
       vc.delegate = self
       self?.present(vc, animated: true)
     }

@@ -790,7 +790,8 @@ public class BrowserViewController: UIViewController, BrowserViewControllerDeleg
     if AppConstants.buildChannel.isPublic && AppReview.shouldRequestReview() {
       // Request Review when the main-queue is free or on the next cycle.
       DispatchQueue.main.async {
-        SKStoreReviewController.requestReview()
+        guard let windowScene = self.currentScene else { return }
+        SKStoreReviewController.requestReview(in: windowScene)
       }
     }
 

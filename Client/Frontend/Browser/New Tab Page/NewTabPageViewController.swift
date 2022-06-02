@@ -27,7 +27,7 @@ enum NTPLandscapeSizingBehavior {
 
 /// A section that will be shown in the NTP. Sections are responsible for the
 /// layout and interaction of their own items
-protocol NTPSectionProvider: NSObject, UICollectionViewDelegateFlowLayout & UICollectionViewDataSource {
+protocol NTPSectionProvider: NSObject, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
   /// Register cells and supplimentary views for your section to
   /// `collectionView`
   func registerCells(to collectionView: UICollectionView)

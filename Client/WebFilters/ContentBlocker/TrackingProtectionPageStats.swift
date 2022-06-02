@@ -104,9 +104,7 @@ class TPStatsBlocklistChecker {
       }
 
       // TODO: Downgrade to 14.5 once api becomes available.
-      if #available(iOS 15, *) {
-        // do nothing
-      } else {
+      if #unavailable(iOS 15.0) {
         HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldUpgrade in
           DispatchQueue.main.async {
             if enabledLists.contains(.https) && shouldUpgrade {

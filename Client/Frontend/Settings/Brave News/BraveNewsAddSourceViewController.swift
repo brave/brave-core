@@ -83,7 +83,7 @@ class BraveNewsAddSourceViewController: UITableViewController {
   }
 
   private func tappedImportOPML() {
-    let picker = UIDocumentPickerViewController(documentTypes: ["public.opml"], in: .import)
+    let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.init("public.opml")!])
     picker.delegate = self
     picker.allowsMultipleSelection = false
     if #available(iOS 13.0, *) {

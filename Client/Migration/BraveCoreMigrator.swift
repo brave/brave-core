@@ -494,7 +494,7 @@ extension BraveCoreMigrator {
 
 extension BraveCoreMigrator {
 
-  class BookmarksModelLoadedObserver: NSObject & BookmarkModelObserver {
+  class BookmarksModelLoadedObserver: NSObject, BookmarkModelObserver {
     private let onModelLoaded: () -> Void
 
     init(_ onModelLoaded: @escaping () -> Void) {
@@ -506,7 +506,7 @@ extension BraveCoreMigrator {
     }
   }
 
-  class HistoryServiceLoadedObserver: NSObject & HistoryServiceObserver {
+  class HistoryServiceLoadedObserver: NSObject, HistoryServiceObserver {
     private let onServiceLoaded: () -> Void
 
     init(_ onModelLoaded: @escaping () -> Void) {

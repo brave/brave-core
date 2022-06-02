@@ -8,7 +8,7 @@ import UIKit
 import SnapKit
 import BraveUI
 
-class WelcomeNTPOnboardingController: UIViewController & PopoverContentComponent {
+class WelcomeNTPOnboardingController: UIViewController, PopoverContentComponent {
   private let textStackView = UIStackView().then {
     $0.spacing = 8.0
     $0.alignment = .top
@@ -125,7 +125,7 @@ class WelcomeNTPOnboardingController: UIViewController & PopoverContentComponent
   }
 }
 
-class WelcomeOmniBoxOnboardingController: UIViewController & PopoverContentComponent {
+class WelcomeOmniBoxOnboardingController: UIViewController, PopoverContentComponent {
   
   private let stackView = UIStackView().then {
     $0.spacing = 20.0
