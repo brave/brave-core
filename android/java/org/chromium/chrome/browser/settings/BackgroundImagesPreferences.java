@@ -31,7 +31,6 @@ public class BackgroundImagesPreferences
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
-    public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_NON_DISRUPTIVE_BANNER = "show_non_disruptive_banner";
     public static final String PREF_SHOW_BRE_BANNER = "show_bre_banner";
@@ -79,13 +78,6 @@ public class BackgroundImagesPreferences
                             .getBoolean(
                                     BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
-        }
-        mShowBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_STATS);
-        if (mShowBraveStatsPref != null) {
-            mShowBraveStatsPref.setEnabled(true);
-            mShowBraveStatsPref.setChecked(
-                    ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_BRAVE_STATS, true));
-            mShowBraveStatsPref.setOnPreferenceChangeListener(this);
         }
         mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
         if (mShowTopSitesPref != null) {

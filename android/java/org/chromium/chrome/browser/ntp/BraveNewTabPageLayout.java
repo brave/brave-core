@@ -302,12 +302,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
-        if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, true)) {
-            if (mBraveStatsViewFallBackLayout != null
-                    && mBraveStatsViewFallBackLayout.getParent() != null) {
-                ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
-                        .removeView(mBraveStatsViewFallBackLayout);
+        if (mBraveStatsViewFallBackLayout != null
+                && mBraveStatsViewFallBackLayout.getParent() != null) {
+            ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
+                    .removeView(mBraveStatsViewFallBackLayout);
             }
             LayoutInflater inflater =
                     (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -329,18 +327,18 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             });
             BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
             mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
-        }
 
-        if (ContextUtils.getAppSharedPreferences().getBoolean(
-                    BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true)) {
-            int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
-            if (mSiteSectionView.getParent() != null) {
-                ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
-            }
-            mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-            mSiteSectionView.setLayoutParams(layoutParams);
-            mSiteSectionView.requestLayout();
-            mainLayout.addView(mSiteSectionView, insertionPoint);
+            if (ContextUtils.getAppSharedPreferences().getBoolean(
+                        BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true)) {
+                int insertionPoint =
+                        mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
+                if (mSiteSectionView.getParent() != null) {
+                    ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
+                }
+                mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+                mSiteSectionView.setLayoutParams(layoutParams);
+                mSiteSectionView.requestLayout();
+                mainLayout.addView(mSiteSectionView, insertionPoint);
         }
     }
 
