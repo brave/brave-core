@@ -116,8 +116,8 @@ class SentViewedEventsWaiter final {
   bool URLLoaderInterceptorCallback(
       content::URLLoaderInterceptor::RequestParams* params) {
     const std::string creative_instance_id =
-        brave_ads::GetCreativeInstanceIdFromSearchAdsViewedUrl(
-            params->url_request.url);
+        brave_ads::GetViewedSearchResultAdCreativeInstanceId(
+            params->url_request);
     if (!creative_instance_id.empty()) {
       auto it = std::find(sent_viewed_creative_instance_ids_.begin(),
                           sent_viewed_creative_instance_ids_.end(),
