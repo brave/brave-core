@@ -317,11 +317,10 @@ TEST(TestBraveWalletHandler, GetNetworkList) {
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
-  ASSERT_TRUE(data.arg3()->is_list());
-  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(data.arg3()->GetList()[0]),
-            chain1);
-  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(data.arg3()->GetList()[1]),
-            chain2);
+  ASSERT_TRUE(data.arg3()->is_dict());
+  auto& networks = data.arg3()->FindListKey("networks")->GetList();
+  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[0]), chain1);
+  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[1]), chain2);
 }
 
 // TODO(apaymyshev): temporarily copypasted from test above.
@@ -354,20 +353,17 @@ TEST(TestBraveWalletHandler, GetNetworkListWithAllKnown) {
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
-  ASSERT_TRUE(data.arg3()->is_list());
+  ASSERT_TRUE(data.arg3()->is_dict());
+  auto& networks = data.arg3()->FindListKey("networks")->GetList();
+
   size_t index = 0u;
   for (auto& known_chain :
        brave_wallet::GetAllKnownEthChains(handler.prefs())) {
-    EXPECT_EQ(
-        *brave_wallet::ValueToEthNetworkInfo(data.arg3()->GetList()[index++]),
-        *known_chain);
+    EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[index++]),
+              *known_chain);
   }
-  EXPECT_EQ(
-      *brave_wallet::ValueToEthNetworkInfo(data.arg3()->GetList()[index++]),
-      chain1);
-  EXPECT_EQ(
-      *brave_wallet::ValueToEthNetworkInfo(data.arg3()->GetList()[index++]),
-      chain2);
+  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[index++]), chain1);
+  EXPECT_EQ(*brave_wallet::ValueToEthNetworkInfo(networks[index++]), chain2);
 }
 
 TEST(TestBraveWalletHandler, SetActiveNetwork) {

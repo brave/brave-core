@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
+#include "base/values.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -38,6 +39,10 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::RemoveEthereumChain,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "resetEthereumChain",
+      base::BindRepeating(&BraveWalletHandler::ResetEthereumChain,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getCustomNetworksList",
       base::BindRepeating(&BraveWalletHandler::GetCustomNetworksList,
                           base::Unretained(this)));
@@ -53,38 +58,60 @@ void BraveWalletHandler::RegisterMessages() {
 
 void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   AllowJavascript();
   ResolveJavascriptCallback(
-      args[0], base::Value(prefs->GetInteger(kBraveWalletAutoLockMinutes)));
+      args[0],
+      base::Value(GetPrefs()->GetInteger(kBraveWalletAutoLockMinutes)));
 }
 
 void BraveWalletHandler::RemoveEthereumChain(const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   AllowJavascript();
+  brave_wallet::RemoveCustomNetwork(GetPrefs(), args[1].GetString());
+  ResolveJavascriptCallback(args[0], base::Value(true));
+}
+
+void BraveWalletHandler::ResetEthereumChain(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 2U);
+  PrefService* prefs = GetPrefs();
+  AllowJavascript();
+  DCHECK(brave_wallet::CustomEthChainExists(prefs, args[1].GetString()));
   brave_wallet::RemoveCustomNetwork(prefs, args[1].GetString());
+  DCHECK(brave_wallet::KnownEthChainExists(args[1].GetString()));
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
 void BraveWalletHandler::GetCustomNetworksList(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  base::Value list(base::Value::Type::LIST);
+  PrefService* prefs = GetPrefs();
+
+  base::Value::Dict result;
+  auto& networks = result.Set("networks", base::Value::List())->GetList();
+  auto& knownNetworks =
+      result.Set("knownNetworks", base::Value::List())->GetList();
+  auto& customNetworks =
+      result.Set("customNetworks", base::Value::List())->GetList();
 
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletEditKnownNetworksFeature)) {
     for (const auto& it : brave_wallet::GetAllChains(
              prefs, brave_wallet::mojom::CoinType::ETH)) {
-      list.Append(brave_wallet::EthNetworkInfoToValue(*it));
+      networks.Append(brave_wallet::EthNetworkInfoToValue(*it));
+    }
+    for (const auto& it : brave_wallet::GetAllKnownEthChains(prefs)) {
+      knownNetworks.Append(it->chain_id);
+    }
+    for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
+      customNetworks.Append(it->chain_id);
     }
   } else {
     for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
-      list.Append(brave_wallet::EthNetworkInfoToValue(*it));
+      networks.Append(brave_wallet::EthNetworkInfoToValue(*it));
     }
   }
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], std::move(list));
+
+  ResolveJavascriptCallback(args[0], base::Value(std::move(result)));
 }
 
 void BraveWalletHandler::OnAddEthereumChain(
@@ -137,4 +164,8 @@ void BraveWalletHandler::SetActiveNetwork(const base::Value::List& args) {
                                        brave_wallet::mojom::CoinType::ETH)
                                  : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+PrefService* BraveWalletHandler::GetPrefs() {
+  return Profile::FromWebUI(web_ui())->GetPrefs();
 }

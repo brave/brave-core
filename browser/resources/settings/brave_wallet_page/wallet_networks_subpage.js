@@ -35,6 +35,20 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         },
       },
 
+      knownNetworks: {
+        type: Array,
+        value() {
+          return [];
+        },
+      },
+
+      customNetworks: {
+        type: Array,
+        value() {
+          return [];
+        },
+      },
+
       showAddWalletNetworkDialog_: {
         type: Boolean,
         value: false,
@@ -47,6 +61,14 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
       isActiveNetwork: {
         type: Boolean,
         value: true
+      },
+      canRemoveNetwork: {
+        type: Boolean,
+        value: true,
+      },
+      canResetNetwork: {
+        type: Boolean,
+        value: true,
       }
     }
   }
@@ -78,6 +100,21 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   isDefaultNetwork(chainId) {
     return (chainId ===
         this.getPref('brave.wallet.selected_networks').value['ethereum'])
+  }
+
+  canRemoveNetwork_(item) {
+    if (this.isActiveNetwork) return false
+
+    return this.knownNetworks.indexOf(item.chainId) == -1
+  }
+
+  canResetNetwork_(item) {
+    if (!this.knownNetworks.length) return false
+
+    return (
+      this.knownNetworks.indexOf(item.chainId) > -1 &&
+      this.customNetworks.indexOf(item.chainId) > -1
+    )
   }
 
   hideNativeCurrencyInfo(item) {
@@ -115,6 +152,19 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         then(success => { this.updateNetworks() })
   }
 
+  onResetActionTapped_(event) {
+    const chainId = this.selectedNetwork.chainId
+    const chainName = this.selectedNetwork.chainName
+    this.selectedNetwork = {}
+    this.$$("cr-action-menu").close()
+    var message = this.i18n("walletResetNetworkConfirmation", chainName)
+    if (!window.confirm(message)) return
+
+    this.browserProxy_.resetEthereumChain(chainId).then((success) => {
+      this.updateNetworks()
+    })
+  }
+
   onAddNetworkTap_(item) {
     this.showAddWalletNetworkDialog_ = true
   }
@@ -128,7 +178,9 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.browserProxy_.getCustomNetworksList().then(payload => {
       if (!payload)
         return
-      this.networks = payload
+      this.networks = payload.networks
+      this.knownNetworks = payload.knownNetworks
+      this.customNetworks = payload.customNetworks
       this.notifyKeylist()
     })
   }
@@ -142,6 +194,8 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   onNetworkMenuTapped_(event) {
     this.selectedNetwork = event.model.item
     this.isActiveNetwork = this.isDefaultNetwork(this.selectedNetwork.chainId)
+    this.canRemoveNetwork = this.canRemoveNetwork_(this.selectedNetwork)
+    this.canResetNetwork = this.canResetNetwork_(this.selectedNetwork)
     const actionMenu =
         /** @type {!CrActionMenuElement} */ (this.$$('#network-menu').get());
     actionMenu.showAt(event.target);

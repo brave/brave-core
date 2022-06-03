@@ -799,8 +799,11 @@
   <message name="IDS_SETTINGS_WALLET_NETWORKS_ERROR" desc="The text of error message on wallet networks page">
     Unable to add network
   </message>
-  <message name="IDS_SETTINGS_WALLET_NETWORKS_CONFIRMATION" desc="The text of confirmation to delete wallet network">
+  <message name="IDS_SETTINGS_WALLET_DELETE_NETWORK_CONFIRMATION" desc="The text of confirmation to delete wallet network">
     Do you really want to delete <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
+  </message>
+  <message name="IDS_SETTINGS_WALLET_RESET_NETWORK_CONFIRMATION" desc="The text of confirmation to reset wallet network">
+    Do you really want to reset <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_REPLACE" desc="The message for the wallet networks page to replace existing network">
     Do you want to update the existing network?

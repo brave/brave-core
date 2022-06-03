@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
+class PrefService;
 class Profile;
 class TestBraveWalletHandler;
 
@@ -34,9 +35,12 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
   void GetAutoLockMinutes(const base::Value::List& args);
   void RemoveEthereumChain(const base::Value::List& args);
+  void ResetEthereumChain(const base::Value::List& args);
   void GetCustomNetworksList(const base::Value::List& args);
   void AddEthereumChain(const base::Value::List& args);
   void SetActiveNetwork(const base::Value::List& args);
+
+  PrefService* GetPrefs();
 
   BraveWalletHandler(const BraveWalletHandler&) = delete;
   BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;

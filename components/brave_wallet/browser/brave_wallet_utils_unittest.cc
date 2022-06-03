@@ -736,9 +736,10 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<base::Value> values;
-  mojom::NetworkInfo chain1("chain_id", "chain_name", {"https://url1.com"},
+  mojom::NetworkInfo chain1(mojom::kPolygonMainnetChainId, "chain_name",
                             {"https://url1.com"}, {"https://url1.com"},
-                            "symbol_name", "symbol", 11, mojom::CoinType::ETH,
+                            {"https://url1.com"}, "symbol_name", "symbol", 11,
+                            mojom::CoinType::ETH,
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   values.push_back(EthNetworkInfoToValue(chain1));
@@ -752,15 +753,19 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
 
   auto known_chains = GetAllKnownEthChains(&prefs);
   auto custom_chains = GetAllEthCustomChains(&prefs);
+  EXPECT_EQ(*custom_chains[0], chain1);
+  EXPECT_EQ(*custom_chains[1], chain2);
 
+  // Custom Polygon chain takes place of known one.
+  // Custom unknown chain becomes last.
   auto expected_chains = std::move(known_chains);
-  std::move(custom_chains.begin(), custom_chains.end(),
-            std::back_inserter(expected_chains));
+  EXPECT_EQ(expected_chains[1]->chain_id, mojom::kPolygonMainnetChainId);
+  expected_chains[1] = chain1.Clone();
+  expected_chains.push_back(chain2.Clone());
 
   auto all_chains = GetAllChains(&prefs, mojom::CoinType::ETH);
 
   EXPECT_EQ(expected_chains.size(), all_chains.size());
-
   for (size_t i = 0; i < all_chains.size(); i++) {
     ASSERT_TRUE(all_chains.at(i).Equals(expected_chains.at(i)));
   }
