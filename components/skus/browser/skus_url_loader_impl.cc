@@ -88,11 +88,8 @@ void SkusUrlLoaderImpl::OnFetchComplete(
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);
 
   std::vector<uint8_t> body_bytes;
-  if (response_body) {
-    const uint8_t* begin =
-        reinterpret_cast<const uint8_t*>(response_body->data());
-    const uint8_t* end = begin + response_body->size();
-    body_bytes.assign(begin, end);
+  if (response_body && response_body->size()) {
+    body_bytes.assign(response_body->begin(), response_body->end());
   }
 
   skus::HttpResponse resp = {
