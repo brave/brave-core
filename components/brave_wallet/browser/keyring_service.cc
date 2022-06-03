@@ -69,17 +69,46 @@
  *         }
  *     },
  *     "selected_account": "t1....ac",
- *     "imported_accounts": [
- *       {
+ *     "imported_accounts": {
+ *       "f": [
+ *         {
+ *           "account_address": "f3abc....ugdaa",
+ *           "account_name": "Filecoin",
+ *           "encrypted_private_key": "1X/E...V5AS",
+ *           "coin_type": 461 // Enum mojom::CoinType
+ *         }
+ *       ],
+ *       "t":[
+ *         {
  *           "account_address": "t3vmv....ughsa",
  *           "account_name": "Filecoin",
  *           "encrypted_private_key": "9/Xb...X4IL",
  *           "coin_type": 461 // Enum mojom::CoinType
- *       }
- *     ],
- *     "hardware":  {
- *        ...
- *     }
+ *         }
+ *       ]
+ *     },
+ *     "hardware": {
+ *       "t": {
+ *          "device1": {
+ *             "t1h3n....jvg33q": {
+ *                 "account_name": "name 1",
+ *                 "coin_type": 461,
+ *                 "derivation_path": "m/44'/461'/0'/0/0",
+ *                 "hardware_vendor": "Ledger"
+ *            }
+ *          },
+ *        },
+ *        "f": {
+ *           "device2": {
+ *             "f3h4n....vg33q": {
+ *                 "account_name": "filecoin 1",
+ *                 "coin_type": 461,
+ *                 "derivation_path": "m/44'/461'/0'/0/0",
+ *                 "hardware_vendor": "Ledger"
+ *             },
+ *           },
+ *        },
+ *     },
  *     "password_encryptor_nonce": "xxx"
  * },
  * "default":
@@ -358,6 +387,82 @@ void KeyringService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
                       mojom::kDefaultKeyringId);
     update->RemovePath(kHardwareAccounts);
   }
+  // Moving Filecoin imported and hardware accounts under network layer.
+  if (IsFilecoinEnabled()) {
+    auto* keyring_pref = update->FindDictKey(mojom::kFilecoinKeyringId);
+    if (keyring_pref) {
+      MigrateObosoleteFilecoinImportedPrefs(keyring_pref);
+      MigrateObosoleteFilecoinHardwarePrefs(keyring_pref);
+    }
+  }
+}
+
+// Migrate hardware accounts.
+// static
+void KeyringService::MigrateObosoleteFilecoinHardwarePrefs(
+    base::Value* keyring_pref) {
+  auto* obsolete_hardware_accounts =
+      keyring_pref->FindDictKey(kHardwareAccounts);
+  if (!obsolete_hardware_accounts)
+    return;
+  base::Value new_hardware_accounts(base::Value::Type::DICT);
+  for (const auto [device, value] : obsolete_hardware_accounts->GetDict()) {
+    base::Value f_meta(base::Value::Type::DICT);
+    base::Value t_meta(base::Value::Type::DICT);
+
+    for (const auto [address, meta] : value.GetDict()) {
+      auto network = FilAddress::FromAddress(address).network();
+      if (network == mojom::kFilecoinMainnet) {
+        f_meta.SetKey(address, std::move(meta));
+      } else {
+        t_meta.SetKey(address, std::move(meta));
+      }
+    }
+    if (!f_meta.DictEmpty()) {
+      base::Value f_network(base::Value::Type::DICT);
+      f_network.SetKey(device, std::move(f_meta));
+      new_hardware_accounts.SetKey(mojom::kFilecoinMainnet,
+                                   std::move(f_network));
+    }
+    if (!t_meta.DictEmpty()) {
+      base::Value t_network(base::Value::Type::DICT);
+      t_network.SetKey(device, std::move(t_meta));
+      new_hardware_accounts.SetKey(mojom::kFilecoinTestnet,
+                                   std::move(t_network));
+    }
+  }
+  if (!new_hardware_accounts.DictEmpty()) {
+    keyring_pref->SetKey(kHardwareAccounts, std::move(new_hardware_accounts));
+  }
+}
+
+// Migrate imported accounts.
+// static
+void KeyringService::MigrateObosoleteFilecoinImportedPrefs(
+    base::Value* keyring_pref) {
+  DCHECK(keyring_pref);
+  auto* obsolete_imported_accounts =
+      keyring_pref->FindListKey(kImportedAccounts);
+  if (!obsolete_imported_accounts)
+    return;
+  base::Value f_list(base::Value::Type::LIST);
+  base::Value t_list(base::Value::Type::LIST);
+  for (const auto& account : obsolete_imported_accounts->GetList()) {
+    auto* account_address = account.FindStringKey(kAccountAddress);
+    if (!account_address)
+      continue;
+    auto network = FilAddress::FromAddress(*account_address).network();
+    if (network == mojom::kFilecoinMainnet) {
+      f_list.Append(account.Clone());
+    } else {
+      t_list.Append(account.Clone());
+    }
+  }
+  keyring_pref->RemovePath(kImportedAccounts);
+  base::Value new_imported_accounts(base::Value::Type::DICTIONARY);
+  new_imported_accounts.SetKey(mojom::kFilecoinMainnet, std::move(f_list));
+  new_imported_accounts.SetKey(mojom::kFilecoinTestnet, std::move(t_list));
+  keyring_pref->SetKey(kImportedAccounts, std::move(new_imported_accounts));
 }
 
 // static
@@ -379,6 +484,36 @@ std::vector<std::string> KeyringService::GetAvailableKeyringsFromPrefs(
     keyrings.push_back(it.first);
   }
   return keyrings;
+}
+
+// static
+const base::Value* KeyringService::GetImportedAccountsPrefForKeyring(
+    PrefService* prefs,
+    const std::string& id) {
+  const base::Value* imported_accounts =
+      GetPrefForKeyring(prefs, kImportedAccounts, id);
+  if (!imported_accounts)
+    return nullptr;
+  if (id == mojom::kFilecoinKeyringId) {
+    auto prefix = GetCurrentFilecoinNetworkPrefix(prefs);
+    return imported_accounts->FindKey(prefix);
+  }
+  return imported_accounts;
+}
+
+// static
+const base::Value* KeyringService::GetHardwareAccountsPrefForKeyring(
+    PrefService* prefs,
+    const std::string& id) {
+  const base::Value* hardware_accounts =
+      GetPrefForKeyring(prefs, kHardwareAccounts, id);
+  if (!hardware_accounts)
+    return nullptr;
+  if (id == mojom::kFilecoinKeyringId) {
+    auto prefix = GetCurrentFilecoinNetworkPrefix(prefs);
+    return hardware_accounts->FindKey(prefix);
+  }
+  return hardware_accounts;
 }
 
 // static
@@ -414,6 +549,43 @@ base::Value* KeyringService::GetPrefForKeyringUpdate(PrefService* prefs,
     pref =
         keyring_dict->SetKey(key, base::Value(base::Value::Type::DICTIONARY));
   return pref;
+}
+
+// static
+base::Value* KeyringService::GetHardwareAccountsPrefForKeyringUpdate(
+    PrefService* prefs,
+    const std::string& id) {
+  base::Value* hardware_accounts =
+      GetPrefForKeyringUpdate(prefs, kHardwareAccounts, id);
+  if (!hardware_accounts) {
+    hardware_accounts = hardware_accounts->SetKey(
+        kHardwareAccounts, base::Value(base::Value::Type::DICTIONARY));
+  }
+  if (id == mojom::kFilecoinKeyringId) {
+    std::string prefix = GetCurrentFilecoinNetworkPrefix(prefs);
+    if (!hardware_accounts->FindKey(prefix))
+      return hardware_accounts->SetKey(
+          prefix, base::Value(base::Value::Type::DICTIONARY));
+    return hardware_accounts->FindKey(prefix);
+  }
+  return hardware_accounts;
+}
+
+// static
+void KeyringService::SetImportedAccountsPrefForKeyring(PrefService* prefs,
+                                                       base::Value value,
+                                                       const std::string& id) {
+  if (id == mojom::kFilecoinKeyringId) {
+    base::Value* imported_accounts =
+        GetPrefForKeyringUpdate(prefs, kImportedAccounts, id);
+    if (!imported_accounts)
+      return;
+
+    std::string prefix = GetCurrentFilecoinNetworkPrefix(prefs);
+    imported_accounts->SetKey(prefix, std::move(value));
+    return;
+  }
+  SetPrefForKeyring(prefs, kImportedAccounts, std::move(value), id);
 }
 
 // static
@@ -539,12 +711,12 @@ void KeyringService::SetImportedAccountForKeyring(
   imported_account.SetIntKey(kCoinType, static_cast<int>(info.coin));
 
   base::Value imported_accounts(base::Value::Type::LIST);
-  const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
+  const base::Value* value = GetImportedAccountsPrefForKeyring(prefs, id);
+
   if (value)
     imported_accounts = value->Clone();
   imported_accounts.Append(std::move(imported_account));
-
-  SetPrefForKeyring(prefs, kImportedAccounts, std::move(imported_accounts), id);
+  SetImportedAccountsPrefForKeyring(prefs, std::move(imported_accounts), id);
 }
 
 // static
@@ -553,7 +725,7 @@ KeyringService::GetImportedAccountsForKeyring(PrefService* prefs,
                                               const std::string& id) {
   std::vector<ImportedAccountInfo> result;
   const base::Value* imported_accounts =
-      GetPrefForKeyring(prefs, kImportedAccounts, id);
+      GetImportedAccountsPrefForKeyring(prefs, id);
   if (!imported_accounts)
     return result;
   for (const auto& imported_account : imported_accounts->GetList()) {
@@ -583,7 +755,7 @@ void KeyringService::RemoveImportedAccountForKeyring(PrefService* prefs,
                                                      const std::string& address,
                                                      const std::string& id) {
   base::Value imported_accounts(base::Value::Type::LIST);
-  const base::Value* value = GetPrefForKeyring(prefs, kImportedAccounts, id);
+  const base::Value* value = GetImportedAccountsPrefForKeyring(prefs, id);
   if (!value)
     return;
   imported_accounts = value->Clone();
@@ -597,7 +769,7 @@ void KeyringService::RemoveImportedAccountForKeyring(PrefService* prefs,
     }
   }
 
-  SetPrefForKeyring(prefs, kImportedAccounts, std::move(imported_accounts), id);
+  SetImportedAccountsPrefForKeyring(prefs, std::move(imported_accounts), id);
 }
 
 HDKeyring* KeyringService::CreateKeyring(const std::string& keyring_id,
@@ -1266,13 +1438,11 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
 std::vector<mojom::AccountInfoPtr> KeyringService::GetHardwareAccountsSync(
     const std::string& keyring_id) const {
   std::vector<mojom::AccountInfoPtr> accounts;
-  base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
   const base::Value* value =
-      GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
+      GetHardwareAccountsPrefForKeyring(prefs_, keyring_id);
   if (!value) {
     return {};
   }
-
   for (const auto hw_keyring : value->DictItems()) {
     std::string device_id = hw_keyring.first;
     const base::Value* account_value = hw_keyring.second.FindKey(kAccountMetas);
@@ -1304,7 +1474,7 @@ void KeyringService::AddHardwareAccounts(
     auto keyring_id = GetKeyringIdForCoin(info->coin);
 
     base::Value* hardware_keyrings =
-        GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
+        GetHardwareAccountsPrefForKeyringUpdate(prefs_, keyring_id);
     base::Value* device_value = hardware_keyrings->FindKey(device_id);
     if (!device_value) {
       device_value = hardware_keyrings->SetKey(
@@ -1327,7 +1497,7 @@ void KeyringService::RemoveHardwareAccount(const std::string& address,
                                            mojom::CoinType coin) {
   auto keyring_id = GetKeyringIdForCoin(coin);
   base::Value* hardware_keyrings =
-      GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
+      GetHardwareAccountsPrefForKeyringUpdate(prefs_, keyring_id);
   for (auto devices : hardware_keyrings->DictItems()) {
     base::Value* account_metas = devices.second.FindKey(kAccountMetas);
     if (!account_metas)
@@ -1791,7 +1961,7 @@ bool KeyringService::UpdateNameForHardwareAccountSync(
     mojom::CoinType coin) {
   auto keyring_id = GetKeyringIdForCoin(coin);
   base::Value* hardware_keyrings =
-      GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
+      GetHardwareAccountsPrefForKeyringUpdate(prefs_, keyring_id);
   for (auto devices : hardware_keyrings->DictItems()) {
     base::Value* account_metas = devices.second.FindKey(kAccountMetas);
     if (!account_metas)
@@ -1833,7 +2003,7 @@ void KeyringService::SetKeyringImportedAccountName(
 
   base::Value imported_accounts(base::Value::Type::LIST);
   const base::Value* value =
-      GetPrefForKeyring(prefs_, kImportedAccounts, keyring_id);
+      GetImportedAccountsPrefForKeyring(prefs_, keyring_id);
   if (!value) {
     std::move(callback).Run(false);
     return;
@@ -1848,8 +2018,8 @@ void KeyringService::SetKeyringImportedAccountName(
         imported_accounts_list[i].FindStringKey(kAccountAddress);
     if (account_address && *account_address == address) {
       imported_accounts_list[i].SetStringKey(kAccountName, name);
-      SetPrefForKeyring(prefs_, kImportedAccounts, std::move(imported_accounts),
-                        keyring_id);
+      SetImportedAccountsPrefForKeyring(prefs_, std::move(imported_accounts),
+                                        keyring_id);
       NotifyAccountsChanged();
       name_updated = true;
       break;
