@@ -18,6 +18,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "base/thread_annotations.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
@@ -201,8 +202,11 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (base::Contains(subscription_services_, sub_url)) {
-    return;
+  {
+    base::AutoLock lock(subscription_services_lock_);
+    if (base::Contains(subscription_services_, sub_url)) {
+      return;
+    }
   }
 
   SubscriptionInfo info;
@@ -241,6 +245,8 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
 std::vector<SubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetSubscriptions() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AutoLock lock(subscription_services_lock_);
+
   auto infos = std::vector<SubscriptionInfo>();
 
   for (const auto& subscription_service : subscription_services_) {
@@ -458,6 +464,8 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
 void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
                                                   bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AutoLock lock(subscription_services_lock_);
+
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->EnableTag(tag, enabled);
   }
@@ -466,6 +474,8 @@ void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
 void AdBlockSubscriptionServiceManager::AddResources(
     const std::string& resources) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AutoLock lock(subscription_services_lock_);
+
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->AddResources(resources);
   }
