@@ -44,7 +44,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         SWITCH_ETHEREUM_CHAIN(2),
         ADD_TOKEN(3),
         CONNECT_ACCOUNT(4),
-        CONFIRM_TRANSACTION(5);
+        CONFIRM_TRANSACTION(5),
+        DECRYPT_REQUEST(6),
+        GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7);
 
         private int value;
         private static Map map = new HashMap<>();
@@ -187,6 +189,15 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
         } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
             mFragment = new ConnectAccountFragment();
+        } else if (mActivityType == ActivityType.DECRYPT_REQUEST) {
+            // TODO(sergz): Implement decrypt request screen
+        } else if (mActivityType == ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST) {
+            // TODO(sergz): Implement get encryption public key request screen
+            // We will need to use the below construction for a message
+            // SpannableStringBuilder spBuilder = new SpannableStringBuilder();
+            // spBuilder.append(Utils.geteTLD(mCurrentSignMessageRequest.originInfo.eTldPlusOne));
+            // spBuilder.append(" ");
+            // spBuilder.append(getString(R.string.brave_wallet_provide_encryption_key_description));
         }
         showCurrentFragment();
     }
