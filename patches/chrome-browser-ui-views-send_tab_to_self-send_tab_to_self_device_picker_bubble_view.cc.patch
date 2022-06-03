@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc
-index 0e36cfd96a36dd9cab1482584e43c6eafb798bf5..204b31a9651b6affbe1cad481e8f8ecd1fe6711c 100644
+index 3909b5e2ab16168dffac1c3f0e9abae07634a0ce..a15ebbf4bb4315a00acc793698829c008f0d4bc4 100644
 --- a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc
 +++ b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_device_picker_bubble_view.cc
-@@ -140,6 +140,7 @@ void SendTabToSelfDevicePickerBubbleView::Init() {
+@@ -122,6 +122,7 @@ void SendTabToSelfDevicePickerBubbleView::Init() {
    CreateHintTextLabel();
    CreateDevicesScrollView();
  
 +  BRAVE_SEND_TAB_TO_SELFDEVICE_PICKER_BUBBLE_VIEW_INIT
-   AddChildView(std::make_unique<views::Separator>());
-   CreateManageDevicesLink();
+   AddChildView(BuildManageAccountDevicesLinkView(controller_));
  }
+ 
