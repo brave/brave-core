@@ -154,7 +154,7 @@ class AdBlockSubscriptionServiceManager {
   std::unique_ptr<base::DictionaryValue> subscriptions_;
 
   std::map<GURL, std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
-      subscription_services_;
+      subscription_services_ GUARDED_BY(subscription_services_lock_);
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
       subscription_filters_providers_;
   std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
