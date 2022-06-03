@@ -15,7 +15,7 @@
 #include "ui/gfx/scoped_canvas.h"
 
 // static
-const gfx::Size BraveNewTabButton::kButtonSize{20, 20};
+const gfx::Size BraveNewTabButton::kButtonSize{24, 24};
 
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   // Overriden so that we use Brave's custom button size
