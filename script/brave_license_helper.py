@@ -163,7 +163,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
 def CheckBraveMissingLicense(target_os, path, error):
     # Skip chekcing for temp dirs from gclient.
     # This is workaround fix. Temp dir should not be existed in vendor dir.
-    if path.startswith('brave/vendor/_gclient'):
+    if path.replace('\\', '/').startswith('brave/vendor/_gclient'):
         return
 
     if path.startswith('brave'):
