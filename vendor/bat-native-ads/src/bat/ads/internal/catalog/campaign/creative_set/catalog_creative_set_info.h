@@ -22,6 +22,7 @@ namespace ads {
 struct CatalogCreativeSetInfo final {
   CatalogCreativeSetInfo();
   CatalogCreativeSetInfo(const CatalogCreativeSetInfo& info);
+  CatalogCreativeSetInfo& operator=(const CatalogCreativeSetInfo& info);
   ~CatalogCreativeSetInfo();
 
   bool operator==(const CatalogCreativeSetInfo& rhs) const;

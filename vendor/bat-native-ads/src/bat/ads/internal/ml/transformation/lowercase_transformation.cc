@@ -18,6 +18,9 @@ namespace ml {
 LowercaseTransformation::LowercaseTransformation()
     : Transformation(TransformationType::kLowercase) {}
 
+LowercaseTransformation::LowercaseTransformation(
+    const LowercaseTransformation& transformation) = default;
+
 LowercaseTransformation::~LowercaseTransformation() = default;
 
 std::unique_ptr<Data> LowercaseTransformation::Apply(

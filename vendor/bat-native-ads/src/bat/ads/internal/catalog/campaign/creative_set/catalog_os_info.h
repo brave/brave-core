@@ -13,6 +13,7 @@ namespace ads {
 struct CatalogOsInfo final {
   CatalogOsInfo();
   CatalogOsInfo(const CatalogOsInfo& info);
+  CatalogOsInfo& operator=(const CatalogOsInfo& info);
   ~CatalogOsInfo();
 
   bool operator==(const CatalogOsInfo& rhs) const;

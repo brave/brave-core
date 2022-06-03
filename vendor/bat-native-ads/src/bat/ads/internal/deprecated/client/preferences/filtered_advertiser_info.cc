@@ -15,6 +15,9 @@ FilteredAdvertiserInfo::FilteredAdvertiserInfo() = default;
 FilteredAdvertiserInfo::FilteredAdvertiserInfo(
     const FilteredAdvertiserInfo& info) = default;
 
+FilteredAdvertiserInfo& FilteredAdvertiserInfo::operator=(
+    const FilteredAdvertiserInfo& info) = default;
+
 FilteredAdvertiserInfo::~FilteredAdvertiserInfo() = default;
 
 std::string FilteredAdvertiserInfo::ToJson() const {

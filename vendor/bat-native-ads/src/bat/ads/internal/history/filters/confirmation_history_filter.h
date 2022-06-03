@@ -17,6 +17,9 @@ class ConfirmationHistoryFilter final : public HistoryFilterInterface {
  public:
   ConfirmationHistoryFilter();
   ~ConfirmationHistoryFilter() override;
+  ConfirmationHistoryFilter(const ConfirmationHistoryFilter&) = delete;
+  ConfirmationHistoryFilter& operator=(const ConfirmationHistoryFilter&) =
+      delete;
 
   base::circular_deque<HistoryItemInfo> Apply(
       const base::circular_deque<HistoryItemInfo>& history) const override;

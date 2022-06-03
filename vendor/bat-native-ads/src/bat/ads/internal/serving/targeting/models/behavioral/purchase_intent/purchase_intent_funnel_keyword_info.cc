@@ -18,6 +18,9 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
     const PurchaseIntentFunnelKeywordInfo& info) = default;
 
+PurchaseIntentFunnelKeywordInfo& PurchaseIntentFunnelKeywordInfo::operator=(
+    const PurchaseIntentFunnelKeywordInfo& info) = default;
+
 PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
 
 }  // namespace targeting

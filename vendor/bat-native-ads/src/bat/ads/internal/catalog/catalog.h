@@ -21,6 +21,8 @@ class Catalog final : public DatabaseManagerObserver {
  public:
   Catalog();
   ~Catalog() override;
+  Catalog(const Catalog&) = delete;
+  Catalog& operator=(const Catalog&) = delete;
 
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);

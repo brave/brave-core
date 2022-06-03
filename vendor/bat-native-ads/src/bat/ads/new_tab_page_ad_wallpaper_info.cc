@@ -12,6 +12,9 @@ NewTabPageAdWallpaperInfo::NewTabPageAdWallpaperInfo() = default;
 NewTabPageAdWallpaperInfo::NewTabPageAdWallpaperInfo(
     const NewTabPageAdWallpaperInfo& info) = default;
 
+NewTabPageAdWallpaperInfo& NewTabPageAdWallpaperInfo::operator=(
+    const NewTabPageAdWallpaperInfo& info) = default;
+
 NewTabPageAdWallpaperInfo::~NewTabPageAdWallpaperInfo() = default;
 
 }  // namespace ads

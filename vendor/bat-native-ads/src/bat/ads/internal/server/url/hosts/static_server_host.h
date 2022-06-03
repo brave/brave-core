@@ -16,6 +16,8 @@ class StaticServerHost final : public ServerHostInterface {
  public:
   StaticServerHost();
   ~StaticServerHost() override;
+  StaticServerHost(const StaticServerHost&) = delete;
+  StaticServerHost& operator=(const StaticServerHost&) = delete;
 
   std::string Get() const override;
 };

@@ -13,6 +13,10 @@ NewTabPageAdWallpaperFocalPointInfo::NewTabPageAdWallpaperFocalPointInfo() =
 NewTabPageAdWallpaperFocalPointInfo::NewTabPageAdWallpaperFocalPointInfo(
     const NewTabPageAdWallpaperFocalPointInfo& info) = default;
 
+NewTabPageAdWallpaperFocalPointInfo&
+NewTabPageAdWallpaperFocalPointInfo::operator=(
+    const NewTabPageAdWallpaperFocalPointInfo& info) = default;
+
 NewTabPageAdWallpaperFocalPointInfo::~NewTabPageAdWallpaperFocalPointInfo() =
     default;
 

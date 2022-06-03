@@ -15,6 +15,8 @@ HistoryInfo::HistoryInfo() = default;
 
 HistoryInfo::HistoryInfo(const HistoryInfo& info) = default;
 
+HistoryInfo& HistoryInfo::operator=(const HistoryInfo& info) = default;
+
 HistoryInfo::~HistoryInfo() = default;
 
 std::string HistoryInfo::ToJson() const {

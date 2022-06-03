@@ -20,6 +20,8 @@ class InlineContentAd final : public InlineContentAdObserver {
  public:
   InlineContentAd();
   ~InlineContentAd() override;
+  InlineContentAd(const InlineContentAd&) = delete;
+  InlineContentAd& operator=(const InlineContentAd&) = delete;
 
   void AddObserver(InlineContentAdObserver* observer);
   void RemoveObserver(InlineContentAdObserver* observer);

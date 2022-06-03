@@ -16,6 +16,7 @@ namespace ads {
 struct ADS_EXPORT NotificationAdInfo final : AdInfo {
   NotificationAdInfo();
   NotificationAdInfo(const NotificationAdInfo& info);
+  NotificationAdInfo& operator=(const NotificationAdInfo& info);
   ~NotificationAdInfo();
 
   bool IsValid() const;

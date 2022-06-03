@@ -12,6 +12,8 @@ KeyPairInfo::KeyPairInfo() = default;
 
 KeyPairInfo::KeyPairInfo(const KeyPairInfo& info) = default;
 
+KeyPairInfo& KeyPairInfo::operator=(const KeyPairInfo& info) = default;
+
 KeyPairInfo::~KeyPairInfo() = default;
 
 bool KeyPairInfo::operator==(const KeyPairInfo& rhs) const {

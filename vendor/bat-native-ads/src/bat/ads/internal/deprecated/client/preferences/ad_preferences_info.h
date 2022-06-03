@@ -18,6 +18,7 @@ namespace ads {
 struct AdPreferencesInfo final {
   AdPreferencesInfo();
   AdPreferencesInfo(const AdPreferencesInfo& info);
+  AdPreferencesInfo& operator=(const AdPreferencesInfo& info);
   ~AdPreferencesInfo();
 
   std::string ToJson() const;

@@ -15,6 +15,7 @@ namespace ads {
 struct SearchResultAdInfo final : AdInfo {
   SearchResultAdInfo();
   SearchResultAdInfo(const SearchResultAdInfo& info);
+  SearchResultAdInfo& operator=(const SearchResultAdInfo& info);
   ~SearchResultAdInfo();
 
   bool IsValid() const;

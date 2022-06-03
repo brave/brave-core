@@ -16,6 +16,8 @@ class PurchaseIntent final : public ModelInterface {
  public:
   PurchaseIntent();
   ~PurchaseIntent() override;
+  PurchaseIntent(const PurchaseIntent&) = delete;
+  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
   SegmentList GetSegments() const override;
 };

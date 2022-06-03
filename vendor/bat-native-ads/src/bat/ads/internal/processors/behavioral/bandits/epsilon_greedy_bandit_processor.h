@@ -20,6 +20,8 @@ class EpsilonGreedyBandit final
  public:
   EpsilonGreedyBandit();
   ~EpsilonGreedyBandit() override;
+  EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
+  EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
 
   void Process(const BanditFeedbackInfo& feedback) override;
 

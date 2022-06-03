@@ -23,6 +23,8 @@ class TextClassification final : public ProcessorInterface<std::string> {
  public:
   explicit TextClassification(resource::TextClassification* resource);
   ~TextClassification() override;
+  TextClassification(const TextClassification&) = delete;
+  TextClassification& operator=(const TextClassification&) = delete;
 
   void Process(const std::string& text) override;
 

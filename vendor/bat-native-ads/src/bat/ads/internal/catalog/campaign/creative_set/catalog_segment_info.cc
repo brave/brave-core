@@ -12,6 +12,9 @@ CatalogSegmentInfo::CatalogSegmentInfo() = default;
 CatalogSegmentInfo::CatalogSegmentInfo(const CatalogSegmentInfo& info) =
     default;
 
+CatalogSegmentInfo& CatalogSegmentInfo::operator=(
+    const CatalogSegmentInfo& info) = default;
+
 CatalogSegmentInfo::~CatalogSegmentInfo() = default;
 
 bool CatalogSegmentInfo::operator==(const CatalogSegmentInfo& rhs) const {

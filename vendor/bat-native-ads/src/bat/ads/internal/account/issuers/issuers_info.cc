@@ -11,6 +11,8 @@ IssuersInfo::IssuersInfo() = default;
 
 IssuersInfo::IssuersInfo(const IssuersInfo& info) = default;
 
+IssuersInfo& IssuersInfo::operator=(const IssuersInfo& info) = default;
+
 IssuersInfo::~IssuersInfo() = default;
 
 bool IssuersInfo::operator==(const IssuersInfo& rhs) const {

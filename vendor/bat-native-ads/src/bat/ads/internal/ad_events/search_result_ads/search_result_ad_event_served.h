@@ -16,6 +16,8 @@ class AdEventServed final : public AdEventInterface<SearchResultAdInfo> {
  public:
   AdEventServed();
   ~AdEventServed() override;
+  AdEventServed(const AdEventServed&) = delete;
+  AdEventServed& operator=(const AdEventServed&) = delete;
 
   void FireEvent(const SearchResultAdInfo& ad) override;
 };

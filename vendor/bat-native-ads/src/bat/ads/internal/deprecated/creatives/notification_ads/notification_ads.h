@@ -25,6 +25,8 @@ class NotificationAds final {
  public:
   NotificationAds();
   ~NotificationAds();
+  NotificationAds(const NotificationAds&) = delete;
+  NotificationAds& operator=(const NotificationAds&) = delete;
 
   static NotificationAds* Get();
 

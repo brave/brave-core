@@ -15,6 +15,9 @@ EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo() = default;
 EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo(
     const EpsilonGreedyBanditArmInfo& info) = default;
 
+EpsilonGreedyBanditArmInfo& EpsilonGreedyBanditArmInfo::operator=(
+    const EpsilonGreedyBanditArmInfo& info) = default;
+
 EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;
 
 bool EpsilonGreedyBanditArmInfo::operator==(

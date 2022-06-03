@@ -15,6 +15,9 @@ FilteredCategoryInfo::FilteredCategoryInfo() = default;
 FilteredCategoryInfo::FilteredCategoryInfo(const FilteredCategoryInfo& info) =
     default;
 
+FilteredCategoryInfo& FilteredCategoryInfo::operator=(
+    const FilteredCategoryInfo& info) = default;
+
 FilteredCategoryInfo::~FilteredCategoryInfo() = default;
 
 std::string FilteredCategoryInfo::ToJson() const {

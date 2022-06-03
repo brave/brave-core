@@ -28,6 +28,8 @@ class Conversions final {
  public:
   Conversions();
   ~Conversions();
+  Conversions(const Conversions&) = delete;
+  Conversions& operator=(const Conversions&) = delete;
 
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);

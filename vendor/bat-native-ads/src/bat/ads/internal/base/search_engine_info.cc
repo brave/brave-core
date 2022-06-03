@@ -18,6 +18,9 @@ SearchEngineInfo::SearchEngineInfo(const std::string& url_pattern,
 
 SearchEngineInfo::SearchEngineInfo(const SearchEngineInfo& info) = default;
 
+SearchEngineInfo& SearchEngineInfo::operator=(const SearchEngineInfo& info) =
+    default;
+
 SearchEngineInfo::~SearchEngineInfo() = default;
 
 }  // namespace ads

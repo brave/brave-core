@@ -57,6 +57,8 @@ StatementInfo::StatementInfo() = default;
 
 StatementInfo::StatementInfo(const StatementInfo& info) = default;
 
+StatementInfo& StatementInfo::operator=(const StatementInfo& info) = default;
+
 StatementInfo::~StatementInfo() = default;
 
 bool StatementInfo::operator==(const StatementInfo& rhs) const {

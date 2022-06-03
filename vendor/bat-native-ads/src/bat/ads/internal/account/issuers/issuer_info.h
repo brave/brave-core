@@ -14,6 +14,7 @@ namespace ads {
 struct IssuerInfo final {
   IssuerInfo();
   IssuerInfo(const IssuerInfo& info);
+  IssuerInfo& operator=(const IssuerInfo& info);
   ~IssuerInfo();
 
   bool operator==(const IssuerInfo& rhs) const;

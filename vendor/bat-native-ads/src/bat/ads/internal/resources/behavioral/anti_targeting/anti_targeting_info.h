@@ -23,6 +23,7 @@ struct AntiTargetingInfo final {
  public:
   AntiTargetingInfo();
   AntiTargetingInfo(const AntiTargetingInfo& info);
+  AntiTargetingInfo& operator=(const AntiTargetingInfo& info);
   ~AntiTargetingInfo();
 
   static std::unique_ptr<AntiTargetingInfo> CreateFromValue(

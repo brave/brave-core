@@ -25,6 +25,7 @@ class PublicKey {
   explicit PublicKey(const std::string& public_key_base64);
   explicit PublicKey(const challenge_bypass_ristretto::PublicKey& public_key);
   PublicKey(const PublicKey& other);
+  PublicKey& operator=(const PublicKey& other);
   ~PublicKey();
 
   bool operator==(const PublicKey& rhs) const;

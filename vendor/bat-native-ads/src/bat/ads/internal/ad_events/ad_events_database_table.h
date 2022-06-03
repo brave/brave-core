@@ -24,6 +24,8 @@ class AdEvents final : public TableInterface {
  public:
   AdEvents();
   ~AdEvents() override;
+  AdEvents(const AdEvents&) = delete;
+  AdEvents& operator=(const AdEvents&) = delete;
 
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 

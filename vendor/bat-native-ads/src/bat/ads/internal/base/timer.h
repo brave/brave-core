@@ -22,6 +22,8 @@ class Timer final {
  public:
   Timer();
   ~Timer();
+  Timer(const Timer&) = delete;
+  Timer& operator=(const Timer&) = delete;
 
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
   // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +

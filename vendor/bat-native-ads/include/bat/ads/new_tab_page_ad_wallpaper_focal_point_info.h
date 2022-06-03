@@ -14,6 +14,8 @@ struct ADS_EXPORT NewTabPageAdWallpaperFocalPointInfo final {
   NewTabPageAdWallpaperFocalPointInfo();
   NewTabPageAdWallpaperFocalPointInfo(
       const NewTabPageAdWallpaperFocalPointInfo& info);
+  NewTabPageAdWallpaperFocalPointInfo& operator=(
+      const NewTabPageAdWallpaperFocalPointInfo& info);
   ~NewTabPageAdWallpaperFocalPointInfo();
 
   int x;

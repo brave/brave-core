@@ -11,6 +11,10 @@ DepositInfo::DepositInfo() = default;
 
 DepositInfo::~DepositInfo() = default;
 
+DepositInfo::DepositInfo(DepositInfo&&) noexcept = default;
+
+DepositInfo& DepositInfo::operator=(DepositInfo&&) noexcept = default;
+
 bool DepositInfo::IsValid() const {
   if (creative_instance_id.empty()) {
     return false;

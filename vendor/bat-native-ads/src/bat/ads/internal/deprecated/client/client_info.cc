@@ -18,6 +18,8 @@ ClientInfo::ClientInfo() = default;
 
 ClientInfo::ClientInfo(const ClientInfo& info) = default;
 
+ClientInfo& ClientInfo::operator=(const ClientInfo& info) = default;
+
 ClientInfo::~ClientInfo() = default;
 
 std::string ClientInfo::ToJson() {

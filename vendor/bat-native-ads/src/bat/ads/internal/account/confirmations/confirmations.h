@@ -36,6 +36,9 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
   ~Confirmations() override;
 
+  Confirmations(const Confirmations&) = delete;
+  Confirmations& operator=(const Confirmations&) = delete;
+
   void set_delegate(ConfirmationsDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);
     delegate_ = delegate;

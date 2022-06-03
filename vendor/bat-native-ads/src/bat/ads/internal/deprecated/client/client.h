@@ -42,6 +42,8 @@ class Client final {
  public:
   Client();
   ~Client();
+  Client(const Client&) = delete;
+  Client& operator=(const Client&) = delete;
 
   static Client* Get();
 

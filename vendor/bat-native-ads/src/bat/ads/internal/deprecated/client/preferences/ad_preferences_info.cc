@@ -14,6 +14,9 @@ AdPreferencesInfo::AdPreferencesInfo() = default;
 
 AdPreferencesInfo::AdPreferencesInfo(const AdPreferencesInfo& info) = default;
 
+AdPreferencesInfo& AdPreferencesInfo::operator=(const AdPreferencesInfo& info) =
+    default;
+
 AdPreferencesInfo::~AdPreferencesInfo() = default;
 
 std::string AdPreferencesInfo::ToJson() const {

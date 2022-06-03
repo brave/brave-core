@@ -16,6 +16,9 @@ CategoryContentInfo::CategoryContentInfo() = default;
 CategoryContentInfo::CategoryContentInfo(const CategoryContentInfo& info) =
     default;
 
+CategoryContentInfo& CategoryContentInfo::operator=(
+    const CategoryContentInfo& info) = default;
+
 CategoryContentInfo::~CategoryContentInfo() = default;
 
 bool CategoryContentInfo::operator==(const CategoryContentInfo& rhs) const {

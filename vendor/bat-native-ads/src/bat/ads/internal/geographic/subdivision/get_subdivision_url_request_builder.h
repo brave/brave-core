@@ -13,10 +13,15 @@
 namespace ads {
 namespace geographic {
 
-class GetSubdivisionUrlRequestBuilder final : UrlRequestBuilderInterface {
+class GetSubdivisionUrlRequestBuilder final
+    : public UrlRequestBuilderInterface {
  public:
   GetSubdivisionUrlRequestBuilder();
   ~GetSubdivisionUrlRequestBuilder() override;
+  GetSubdivisionUrlRequestBuilder(const GetSubdivisionUrlRequestBuilder&) =
+      delete;
+  GetSubdivisionUrlRequestBuilder& operator=(
+      const GetSubdivisionUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

@@ -18,6 +18,7 @@ namespace ads {
 struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdInfo();
   NewTabPageAdInfo(const NewTabPageAdInfo& info);
+  NewTabPageAdInfo& operator=(const NewTabPageAdInfo& info);
   ~NewTabPageAdInfo();
 
   bool IsValid() const;

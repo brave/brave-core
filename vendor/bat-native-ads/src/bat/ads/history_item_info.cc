@@ -15,6 +15,9 @@ HistoryItemInfo::HistoryItemInfo() = default;
 
 HistoryItemInfo::HistoryItemInfo(const HistoryItemInfo& info) = default;
 
+HistoryItemInfo& HistoryItemInfo::operator=(const HistoryItemInfo& info) =
+    default;
+
 HistoryItemInfo::~HistoryItemInfo() = default;
 
 bool HistoryItemInfo::operator==(const HistoryItemInfo& rhs) const {

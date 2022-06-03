@@ -11,6 +11,8 @@ CreativesInfo::CreativesInfo() = default;
 
 CreativesInfo::CreativesInfo(const CreativesInfo& info) = default;
 
+CreativesInfo& CreativesInfo::operator=(const CreativesInfo& info) = default;
+
 CreativesInfo::~CreativesInfo() = default;
 
 }  // namespace ads

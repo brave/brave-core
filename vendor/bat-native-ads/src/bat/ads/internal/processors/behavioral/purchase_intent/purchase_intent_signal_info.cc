@@ -13,6 +13,9 @@ PurchaseIntentSignalInfo::PurchaseIntentSignalInfo() = default;
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(
     const PurchaseIntentSignalInfo& info) = default;
 
+PurchaseIntentSignalInfo& PurchaseIntentSignalInfo::operator=(
+    const PurchaseIntentSignalInfo& info) = default;
+
 PurchaseIntentSignalInfo::~PurchaseIntentSignalInfo() = default;
 
 }  // namespace targeting

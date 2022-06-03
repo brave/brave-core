@@ -13,6 +13,9 @@ VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo() = default;
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo(
     const VerifiableConversionEnvelopeInfo& info) = default;
 
+VerifiableConversionEnvelopeInfo& VerifiableConversionEnvelopeInfo::operator=(
+    const VerifiableConversionEnvelopeInfo& info) = default;
+
 VerifiableConversionEnvelopeInfo::~VerifiableConversionEnvelopeInfo() = default;
 
 bool VerifiableConversionEnvelopeInfo::operator==(

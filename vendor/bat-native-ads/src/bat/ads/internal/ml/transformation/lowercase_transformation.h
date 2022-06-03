@@ -18,6 +18,7 @@ class Data;
 class LowercaseTransformation final : public Transformation {
  public:
   LowercaseTransformation();
+  LowercaseTransformation(const LowercaseTransformation& transformation);
   ~LowercaseTransformation() override;
 
   std::unique_ptr<Data> Apply(

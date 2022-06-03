@@ -14,6 +14,9 @@ UserActivityTriggerInfo::UserActivityTriggerInfo() = default;
 UserActivityTriggerInfo::UserActivityTriggerInfo(
     const UserActivityTriggerInfo& info) = default;
 
+UserActivityTriggerInfo& UserActivityTriggerInfo::operator=(
+    const UserActivityTriggerInfo& info) = default;
+
 UserActivityTriggerInfo::~UserActivityTriggerInfo() = default;
 
 bool UserActivityTriggerInfo::operator==(

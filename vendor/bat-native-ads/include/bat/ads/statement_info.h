@@ -17,6 +17,7 @@ namespace ads {
 struct ADS_EXPORT StatementInfo final {
   StatementInfo();
   StatementInfo(const StatementInfo& info);
+  StatementInfo& operator=(const StatementInfo& info);
   ~StatementInfo();
 
   bool operator==(const StatementInfo& rhs) const;

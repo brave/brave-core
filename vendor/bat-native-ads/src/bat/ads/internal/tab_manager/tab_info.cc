@@ -11,6 +11,8 @@ TabInfo::TabInfo() = default;
 
 TabInfo::TabInfo(const TabInfo& info) = default;
 
+TabInfo& TabInfo::operator=(const TabInfo& info) = default;
+
 TabInfo::~TabInfo() = default;
 
 bool TabInfo::operator==(const TabInfo& rhs) const {

@@ -26,6 +26,9 @@ class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
   ~RedeemUnblindedPaymentTokens();
+  RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens&) = delete;
+  RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
+      delete;
 
   void set_delegate(RedeemUnblindedPaymentTokensDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

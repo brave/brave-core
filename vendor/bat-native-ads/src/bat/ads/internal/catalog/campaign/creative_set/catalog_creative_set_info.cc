@@ -14,6 +14,9 @@ CatalogCreativeSetInfo::CatalogCreativeSetInfo() = default;
 CatalogCreativeSetInfo::CatalogCreativeSetInfo(
     const CatalogCreativeSetInfo& info) = default;
 
+CatalogCreativeSetInfo& CatalogCreativeSetInfo::operator=(
+    const CatalogCreativeSetInfo& info) = default;
+
 CatalogCreativeSetInfo::~CatalogCreativeSetInfo() = default;
 
 bool CatalogCreativeSetInfo::operator==(

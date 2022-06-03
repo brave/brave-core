@@ -11,6 +11,8 @@ WalletInfo::WalletInfo() = default;
 
 WalletInfo::WalletInfo(const WalletInfo& info) = default;
 
+WalletInfo& WalletInfo::operator=(const WalletInfo& info) = default;
+
 WalletInfo::~WalletInfo() = default;
 
 bool WalletInfo::IsValid() const {

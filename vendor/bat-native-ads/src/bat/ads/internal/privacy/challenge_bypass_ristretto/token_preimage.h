@@ -28,6 +28,7 @@ class TokenPreimage {
   explicit TokenPreimage(
       const challenge_bypass_ristretto::TokenPreimage& token_preimage);
   TokenPreimage(const TokenPreimage& other);
+  TokenPreimage& operator=(const TokenPreimage& other);
   ~TokenPreimage();
 
   bool operator==(const TokenPreimage& rhs) const;

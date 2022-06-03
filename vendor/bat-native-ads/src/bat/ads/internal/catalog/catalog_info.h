@@ -16,6 +16,7 @@ namespace ads {
 struct CatalogInfo final {
   CatalogInfo();
   CatalogInfo(const CatalogInfo& info);
+  CatalogInfo& operator=(const CatalogInfo& info);
   ~CatalogInfo();
 
   std::string id;

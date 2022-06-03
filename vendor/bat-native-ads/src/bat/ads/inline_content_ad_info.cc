@@ -17,6 +17,9 @@ InlineContentAdInfo::InlineContentAdInfo() = default;
 InlineContentAdInfo::InlineContentAdInfo(const InlineContentAdInfo& info) =
     default;
 
+InlineContentAdInfo& InlineContentAdInfo::operator=(
+    const InlineContentAdInfo& info) = default;
+
 InlineContentAdInfo::~InlineContentAdInfo() = default;
 
 bool InlineContentAdInfo::operator==(const InlineContentAdInfo& rhs) const {

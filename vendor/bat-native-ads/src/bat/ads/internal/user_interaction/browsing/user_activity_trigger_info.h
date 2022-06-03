@@ -13,6 +13,7 @@ namespace ads {
 struct UserActivityTriggerInfo final {
   UserActivityTriggerInfo();
   UserActivityTriggerInfo(const UserActivityTriggerInfo& info);
+  UserActivityTriggerInfo& operator=(const UserActivityTriggerInfo& info);
   ~UserActivityTriggerInfo();
 
   bool operator==(const UserActivityTriggerInfo& rhs) const;

@@ -21,6 +21,8 @@ class UnblindedTokens final {
  public:
   UnblindedTokens();
   ~UnblindedTokens();
+  UnblindedTokens(const UnblindedTokens&) = delete;
+  UnblindedTokens& operator=(const UnblindedTokens&) = delete;
 
   UnblindedTokenInfo GetToken() const;
   UnblindedTokenList GetAllTokens() const;

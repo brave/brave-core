@@ -13,6 +13,10 @@ namespace ads {
 
 struct CreativeNewTabPageAdWallpaperInfo final {
   CreativeNewTabPageAdWallpaperInfo();
+  CreativeNewTabPageAdWallpaperInfo(
+      const CreativeNewTabPageAdWallpaperInfo& info);
+  CreativeNewTabPageAdWallpaperInfo& operator=(
+      const CreativeNewTabPageAdWallpaperInfo& info);
   ~CreativeNewTabPageAdWallpaperInfo();
 
   bool operator==(const CreativeNewTabPageAdWallpaperInfo& rhs) const;

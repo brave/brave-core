@@ -14,6 +14,7 @@ namespace targeting {
 struct UserModelInfo final {
   UserModelInfo();
   UserModelInfo(const UserModelInfo& info);
+  UserModelInfo& operator=(const UserModelInfo& info);
   ~UserModelInfo();
 
   SegmentList interest_segments;

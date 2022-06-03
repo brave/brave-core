@@ -17,6 +17,7 @@ namespace ads {
 struct CatalogCampaignInfo final {
   CatalogCampaignInfo();
   CatalogCampaignInfo(const CatalogCampaignInfo& info);
+  CatalogCampaignInfo& operator=(const CatalogCampaignInfo& info);
   ~CatalogCampaignInfo();
 
   bool operator==(const CatalogCampaignInfo& rhs) const;

@@ -21,6 +21,7 @@ struct PurchaseIntentSiteInfo final {
                          const GURL& url_netloc,
                          const uint16_t weight);
   PurchaseIntentSiteInfo(const PurchaseIntentSiteInfo& info);
+  PurchaseIntentSiteInfo& operator=(const PurchaseIntentSiteInfo& info);
   ~PurchaseIntentSiteInfo();
 
   bool operator==(const PurchaseIntentSiteInfo& rhs) const;

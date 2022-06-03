@@ -21,6 +21,8 @@ class Dayparts final : public TableInterface {
  public:
   Dayparts();
   ~Dayparts() override;
+  Dayparts(const Dayparts&) = delete;
+  Dayparts& operator=(const Dayparts&) = delete;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const CreativeAdList& creative_ads);

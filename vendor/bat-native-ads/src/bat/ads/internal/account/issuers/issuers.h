@@ -21,6 +21,8 @@ class Issuers {
  public:
   Issuers();
   ~Issuers();
+  Issuers(const Issuers&) = delete;
+  Issuers& operator=(const Issuers&) = delete;
 
   void set_delegate(IssuersDelegate* delegate) {
     DCHECK_EQ(delegate_, nullptr);

@@ -12,10 +12,12 @@
 
 namespace ads {
 
-class CatalogUrlRequestBuilder final : UrlRequestBuilderInterface {
+class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
  public:
   CatalogUrlRequestBuilder();
   ~CatalogUrlRequestBuilder() override;
+  CatalogUrlRequestBuilder(const CatalogUrlRequestBuilder&) = delete;
+  CatalogUrlRequestBuilder& operator=(const CatalogUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

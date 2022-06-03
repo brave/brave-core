@@ -22,12 +22,17 @@ class BlindedToken;
 }  // namespace cbr
 }  // namespace privacy
 
-class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilderInterface {
+class RequestSignedTokensUrlRequestBuilder final
+    : public UrlRequestBuilderInterface {
  public:
   RequestSignedTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const std::vector<privacy::cbr::BlindedToken>& tokens);
   ~RequestSignedTokensUrlRequestBuilder() override;
+  RequestSignedTokensUrlRequestBuilder(
+      const RequestSignedTokensUrlRequestBuilder&) = delete;
+  RequestSignedTokensUrlRequestBuilder& operator=(
+      const RequestSignedTokensUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

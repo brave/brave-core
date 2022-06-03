@@ -13,6 +13,7 @@ namespace ads {
 struct FlaggedAdInfo final {
   FlaggedAdInfo();
   FlaggedAdInfo(const FlaggedAdInfo& info);
+  FlaggedAdInfo& operator=(const FlaggedAdInfo& info);
   ~FlaggedAdInfo();
 
   std::string ToJson() const;

@@ -10,11 +10,14 @@ namespace ads {
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo() = default;
 
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
-    const CreativeInlineContentAdInfo& info) = default;
-
-CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
     const CreativeAdInfo& creative_ad)
     : CreativeAdInfo(creative_ad) {}
+
+CreativeInlineContentAdInfo::CreativeInlineContentAdInfo(
+    const CreativeInlineContentAdInfo& info) = default;
+
+CreativeInlineContentAdInfo& CreativeInlineContentAdInfo::operator=(
+    const CreativeInlineContentAdInfo& info) = default;
 
 CreativeInlineContentAdInfo::~CreativeInlineContentAdInfo() = default;
 

@@ -23,13 +23,17 @@ struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
 class RedeemUnblindedPaymentTokensUrlRequestBuilder final
-    : UrlRequestBuilderInterface {
+    : public UrlRequestBuilderInterface {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
       const base::Value& user_data);
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
+  RedeemUnblindedPaymentTokensUrlRequestBuilder(
+      const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
+  RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
+      const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
 
   mojom::UrlRequestPtr Build() override;
 

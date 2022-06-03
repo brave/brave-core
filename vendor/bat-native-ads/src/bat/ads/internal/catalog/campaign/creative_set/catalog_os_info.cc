@@ -11,6 +11,8 @@ CatalogOsInfo::CatalogOsInfo() = default;
 
 CatalogOsInfo::CatalogOsInfo(const CatalogOsInfo& info) = default;
 
+CatalogOsInfo& CatalogOsInfo::operator=(const CatalogOsInfo& info) = default;
+
 CatalogOsInfo::~CatalogOsInfo() = default;
 
 bool CatalogOsInfo::operator==(const CatalogOsInfo& rhs) const {

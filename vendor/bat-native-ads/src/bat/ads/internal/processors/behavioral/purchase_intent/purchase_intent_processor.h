@@ -31,6 +31,8 @@ class PurchaseIntent final : public ProcessorInterface<GURL> {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
   ~PurchaseIntent() override;
+  PurchaseIntent(const PurchaseIntent&) = delete;
+  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
   void Process(const GURL& url) override;
 
