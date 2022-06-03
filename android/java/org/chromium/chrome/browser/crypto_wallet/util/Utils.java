@@ -385,7 +385,7 @@ public class Utils {
                 strNetwork = activity.getText(R.string.localhost);
                 break;
             case BraveWalletConstants.POLYGON_CHAIN_ID:
-                strNetwork = activity.getText(R.string.polygon_short;
+                strNetwork = activity.getText(R.string.polygon_short);
                 break;
             case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
                 strNetwork = activity.getText(R.string.binance_short);
