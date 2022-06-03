@@ -400,6 +400,31 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
                 return;
             }
+            maybeShowGetEncryptionPublicKeyRequestLayout();
+        });
+    }
+
+    private void maybeShowGetEncryptionPublicKeyRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+
+                return;
+            }
+            maybeShowDecryptRequestLayout();
+        });
+    }
+
+    private void maybeShowDecryptRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingDecryptRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+
+                return;
+            }
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
             if (layout != null) {
                 layout.showWalletPanel();
