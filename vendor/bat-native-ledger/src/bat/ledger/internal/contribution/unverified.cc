@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "base/guid.h"
+#include "base/numerics/safe_conversions.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -23,6 +24,12 @@ Unverified::Unverified(LedgerImpl* ledger) :
 Unverified::~Unverified() = default;
 
 void Unverified::Contribute() {
+  if (processing_start_time_) {
+    BLOG(1, "Pending tips already processing");
+    return;
+  }
+  BLOG(1, "Pending tips processing starting");
+  processing_start_time_ = base::Time::Now();
   ledger_->database()->GetUnverifiedPublishersForPendingContributions(
       std::bind(&Unverified::FetchInfoForUnverifiedPublishers, this, _1));
 }
@@ -38,9 +45,14 @@ void Unverified::FetchInfoForUnverifiedPublishers(
           FetchInfoForUnverifiedPublishers(std::move(publisher_keys));
         });
   } else {
-    ledger_->wallet()->FetchBalance(
-        std::bind(&Unverified::OnContributeUnverifiedBalance, this, _1, _2));
+    ProcessNext();
   }
+}
+
+void Unverified::ProcessNext() {
+  DCHECK(processing_start_time_);
+  ledger_->wallet()->FetchBalance(
+      std::bind(&Unverified::OnContributeUnverifiedBalance, this, _1, _2));
 }
 
 void Unverified::OnContributeUnverifiedBalance(
@@ -48,7 +60,7 @@ void Unverified::OnContributeUnverifiedBalance(
     type::BalancePtr properties) {
   if (result != type::Result::LEDGER_OK || !properties) {
     BLOG(0, "Balance is null");
-    return;
+    return ProcessingCompleted();
   }
 
   ledger_->database()->GetPendingContributions(
@@ -63,7 +75,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     const type::PendingContributionInfoList& list) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    return;
+    return ProcessingCompleted();
   }
 
   if (balance == 0) {
@@ -72,8 +84,15 @@ void Unverified::OnContributeUnverifiedPublishers(
         type::Result::PENDING_NOT_ENOUGH_FUNDS,
         "",
         "");
-    return;
+    return ProcessingCompleted();
   }
+
+  // NOTE: `PendingContribution::added_date` is stored as a uint64_t of ms from
+  // Unix epoch, with the subsecond interval truncated. For correct comparison
+  // with that value, convert the processing start time to uin64_t and truncate.
+  DCHECK(processing_start_time_);
+  uint64_t processing_cutoff =
+      base::ClampFloor<uint64_t>(processing_start_time_->ToDoubleT());
 
   const auto now = util::GetCurrentTimeStamp();
 
@@ -87,6 +106,11 @@ void Unverified::OnContributeUnverifiedPublishers(
           std::bind(&Unverified::OnRemovePendingContribution,
                     this,
                     _1));
+      continue;
+    }
+
+    // If the pending entry was added after we started processing, then skip it.
+    if (item->added_date >= processing_cutoff) {
       continue;
     }
 
@@ -104,7 +128,7 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   if (!current) {
     BLOG(1, "Nothing to process");
-    return;
+    return ProcessingCompleted();
   }
 
   auto get_callback = std::bind(&Unverified::WasPublisherProcessed,
@@ -123,7 +147,7 @@ void Unverified::OnContributeUnverifiedPublishers(
         type::Result::PENDING_NOT_ENOUGH_FUNDS,
         "",
         "");
-    return;
+    return ProcessingCompleted();
   }
 
   type::ContributionQueuePublisherList queue_list;
@@ -168,8 +192,9 @@ void Unverified::QueueSaved(
 
   BLOG(1, "Unverified contribution timer set for " << delay);
 
-  unverified_publishers_timer_.Start(FROM_HERE, delay,
-      base::BindOnce(&Unverified::Contribute, base::Unretained(this)));
+  unverified_publishers_timer_.Start(
+      FROM_HERE, delay,
+      base::BindOnce(&Unverified::ProcessNext, base::Unretained(this)));
 }
 
 void Unverified::WasPublisherProcessed(
@@ -211,13 +236,18 @@ void Unverified::OnRemovePendingContribution(
     type::Result result) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Problem removing pending contribution");
-    return;
+    return ProcessingCompleted();
   }
 
   ledger_->ledger_client()->OnContributeUnverifiedPublishers(
       type::Result::PENDING_PUBLISHER_REMOVED,
       "",
       "");
+}
+
+void Unverified::ProcessingCompleted() {
+  BLOG(1, "Pending tips processing completed");
+  processing_start_time_ = {};
 }
 
 }  // namespace contribution
