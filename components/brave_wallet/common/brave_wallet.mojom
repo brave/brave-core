@@ -1064,6 +1064,12 @@ interface BraveWalletService {
   GeteTLDPlusOneFromOrigin(url.mojom.Origin origin) 
     => (OriginInfo origin_info);
 
+  // Gets all websites with a permission of coin
+  GetWebSitesWithPermission(CoinType coin) => (array<string> web_sites);
+  // Resets the permission of coin for the formed website
+  ResetWebSitePermission(CoinType coin, string formed_website)
+    => (bool success);
+
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id);
   // Obtains the pending sign message requests

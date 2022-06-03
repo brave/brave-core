@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 
 #include <utility>
+#include <vector>
+
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
@@ -54,6 +56,19 @@ void BraveWalletServiceDelegate::ResetPermission(
 void BraveWalletServiceDelegate::GetActiveOrigin(
     GetActiveOriginCallback callback) {
   std::move(callback).Run(MakeOriginInfo(url::Origin()));
+}
+
+void BraveWalletServiceDelegate::GetWebSitesWithPermission(
+    mojom::CoinType coin,
+    GetWebSitesWithPermissionCallback callback) {
+  std::move(callback).Run(std::vector<std::string>());
+}
+
+void BraveWalletServiceDelegate::ResetWebSitePermission(
+    mojom::CoinType coin,
+    const std::string& formed_website,
+    ResetWebSitePermissionCallback callback) {
+  std::move(callback).Run(false);
 }
 
 }  // namespace brave_wallet

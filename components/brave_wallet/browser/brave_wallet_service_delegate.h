@@ -36,6 +36,10 @@ class BraveWalletServiceDelegate {
       mojom::BraveWalletService::ResetPermissionCallback;
   using GetActiveOriginCallback =
       mojom::BraveWalletService::GetActiveOriginCallback;
+  using GetWebSitesWithPermissionCallback =
+      mojom::BraveWalletService::GetWebSitesWithPermissionCallback;
+  using ResetWebSitePermissionCallback =
+      mojom::BraveWalletService::ResetWebSitePermissionCallback;
 
   BraveWalletServiceDelegate() = default;
   BraveWalletServiceDelegate(const BraveWalletServiceDelegate&) = delete;
@@ -70,6 +74,12 @@ class BraveWalletServiceDelegate {
                                const url::Origin& origin,
                                const std::string& account,
                                ResetPermissionCallback callback);
+  virtual void GetWebSitesWithPermission(
+      mojom::CoinType coin,
+      GetWebSitesWithPermissionCallback callback);
+  virtual void ResetWebSitePermission(mojom::CoinType coin,
+                                      const std::string& formed_website,
+                                      ResetWebSitePermissionCallback callback);
 
   virtual void GetActiveOrigin(GetActiveOriginCallback callback);
 
