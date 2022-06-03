@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
+          set -eux -o pipefail
           unchecked=$(gh api "$ISSUE" --jq '.body' | awk '/## Reviewer Checklist/,/## After-merge Checklist/' | grep '\[ \]')
           echo "$unchecked"
           [ -n "$unchecked" ] && echo "Found unchecked reviewer items. Failing..." && exit 1
