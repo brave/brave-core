@@ -3,7 +3,7 @@ name: Require Reviewer Checklist
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
-    branches: [master]
+    branches: [master, 1.*]
 
 jobs:
   require-reviewer-checklist:
