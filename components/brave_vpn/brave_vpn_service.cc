@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "net/base/network_change_notifier.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/parsed_cookie.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -282,8 +283,11 @@ void BraveVpnService::OnConnectFailed() {
 void BraveVpnService::OnDisconnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
-
-  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+  bool network_unavailable = net::NetworkChangeNotifier::GetConnectionType() ==
+                             net::NetworkChangeNotifier::CONNECTION_NONE;
+  UpdateAndNotifyConnectionStateChange(network_unavailable
+                                           ? ConnectionState::CONNECT_FAILED
+                                           : ConnectionState::DISCONNECTED);
 
   if (needs_connect_) {
     needs_connect_ = false;
