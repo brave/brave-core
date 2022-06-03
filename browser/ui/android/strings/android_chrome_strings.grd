@@ -1068,7 +1068,7 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
         Help us build a better web
       </message>
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_DESCRIPTION" desc="" translateable="false">
-        During trials, Brave is exploring ways to limit spam, fraud, and sharing between sites. Brave also estimates your interests that sites can use to show you ads. You can manage your interests in settings.
+        During trials, Brave is exploring ways to limit spam, fraud, and sharing between sites. Brave also <ph name="BEGIN_LINK">&lt;link&gt;</ph>estimates your interests<ph name="END_LINK">&lt;/link&gt;</ph> that sites can use to show you ads. You can manage your interests in settings.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -5388,17 +5388,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_ON_NO_WIFI" desc="Content for a toast that will appear when a user enables the image descriptions feature with the wifi only requirement while the user is not currently on a wifi connection.">
         Image descriptions will resume when you connect to Wi-Fi
-      </message>
-
-      <!-- Page Zoom -->
-      <message name="IDS_PAGE_ZOOM_TITLE" desc="Title of the preference that allows the user to update the accessibility page zoom feature that applies to the web contents." translateable="false">
-        Zoom
-      </message>
-      <message name="IDS_PAGE_ZOOM_DECREASE_ZOOM_BUTTON_TEXT" desc="Accessibility label for button to allow user to decrease page zoom" translateable="false">
-        Decrease zoom
-      </message>
-      <message name="IDS_PAGE_ZOOM_INCREASE_ZOOM_BUTTON_TEXT" desc="Accessibility label for button to allow user to increase page zoom" translateable="false">
-        Increase zoom
       </message>
 
       <!-- Assistant voice search consent ui. -->

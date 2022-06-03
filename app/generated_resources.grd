@@ -5152,6 +5152,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_NO_EXTENSIONS_HAVE_ACCESS_TEXT" desc="Text on the site access tab when no extensions have requested access to the current site's data. $1 is replaced with the current site.">
         No extensions have requested to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_RESTRICTED_SITE_TEXT" desc="Text on the site access tab when the current site has restricted site access. $1 is replaced with the current site.">
+        No extensions are allowed to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_TITLE" desc="Title of the button in the site access tab used to show/hide the user settings options.">
         Choose your default setting
       </message>
@@ -12538,6 +12541,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_NAME_WINDOW_PROMPT_TITLE" desc="Title of the prompt to choose a new name for a window.">
       Name this window
     </message>
+    <message name="IDS_NAME_WINDOW_PROMPT_FIELD_LABEL" desc="Label of the text field used to enter the new window name.">
+      Window name
+    </message>
     <message name="IDS_QUICK_COMMANDS_LABEL" desc="Label to identify the Quick Commands feature in Task Manager">
       Quick Commands
     </message>
@@ -12747,6 +12753,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_INPUT_OVERLAY_SETTINGS_NUDGE" desc="Label displayed next to the Settings UI's entry point so the user is aware.">
         Click here to customize controls
+      </message>
+      <message name="IDS_INPUT_OVERLAY_CLOSE_MENU" desc="Accessibility name tied to the close button.">
+        Close menu
       </message>
     </if>
 
