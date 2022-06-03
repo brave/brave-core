@@ -6,17 +6,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="4dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp">
+        android:layout_marginBottom="12dp"
+        app:cardElevation="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_constraint_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/wallet_toolbar_panel_gradient_bg"
@@ -26,9 +28,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
+                android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="vertical">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/iv_dapp_panel_expand"
@@ -36,12 +38,12 @@
                     android:layout_height="40dp"
                     android:layout_marginHorizontal="6dp"
                     android:contentDescription="@string/accessibility_wallet_dapp_panel_expand"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:paddingVertical="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:srcCompat="@drawable/ic_expand_arrows"
-                    android:paddingVertical="10dp"
-                    android:foreground="?android:attr/selectableItemBackground"
                     app:tint="@color/brave_white" />
 
                 <TextView
@@ -54,21 +56,21 @@
                     android:textColor="@color/brave_white"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dapp_panel_menu"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="8dp"
                     android:layout_marginHorizontal="9dp"
                     android:contentDescription="@string/accessibility_wallet_dapp_panel_menu"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:srcCompat="@drawable/ic_menu"
                     app:tint="@color/brave_white" />
 
@@ -78,28 +80,29 @@
                 android:id="@+id/view_dapps_panel_top_separator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/brave_white"
+                android:background="#4AFFFFFF"
                 android:contentDescription="@null"
                 app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/wallet_toolbar_panel_gradient_bg"
+                android:layout_margin="8dp"
                 android:orientation="vertical"
                 android:paddingBottom="16dp"
-                android:layout_margin="8dp"
                 app:layout_constraintTop_toBottomOf="@id/view_dapps_panel_top_separator">
 
 
                 <android.widget.Button
                     android:id="@+id/sp_dapps_panel_state"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:background="@drawable/white_rounded_holo_button"
+                    android:layout_height="26dp"
+                    android:background="@drawable/white_rounded_holo_button_thin"
                     android:minHeight="0dp"
-                    android:paddingHorizontal="8dp"
+                    android:paddingHorizontal="12dp"
                     android:text="@string/dapp_wallet_panel_connectivity_status"
+                    android:textAllCaps="false"
+                    android:drawablePadding="6dp"
                     android:textColor="@android:color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -107,13 +110,16 @@
                 <android.widget.Button
                     android:id="@+id/btn_dapps_panel_networks"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:background="@drawable/white_rounded_holo_button"
+                    android:layout_height="26dp"
+                    android:background="@drawable/white_rounded_holo_button_thin"
+                    android:drawableEnd="@drawable/ic_arrow_down_circular_filled_transparent"
                     android:minHeight="0dp"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="2dp"
+                    android:textAllCaps="false"
+                    tools:text="Ethereum"
+                    android:drawablePadding="6dp"
                     android:textColor="@android:color/white"
-                    android:drawableEnd="@drawable/ic_arrow_down_circular_filled_transparent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/sp_dapps_panel_state" />
 
@@ -135,6 +141,7 @@
                         android:innerRadius="0dp"
                         android:shape="ring"
                         android:thicknessRatio="1.9"
+                        android:translationZ="2dp"
                         app:cardBackgroundColor="@color/brave_theme_color"
                         app:cardCornerRadius="40dp"
                         app:strokeColor="@color/brave_white"
@@ -148,21 +155,22 @@
                             android:layout_alignBottom="@+id/cv_dapps_image_container"
                             android:layout_centerHorizontal="true"
                             android:contentDescription="@string/accessibility_wallet_dapp_panel_account"
+                            android:translationZ="2dp"
                             app:cardBackgroundColor="@android:color/transparent"
                             tools:srcCompat="@drawable/ic_brave_logo" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <ImageView
                         android:id="@+id/iv_dapps_panel_down_arrow_anchor"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
                         android:layout_alignStart="@id/cv_dapps_panel_image_container"
                         android:layout_alignBottom="@id/cv_dapps_panel_image_container"
                         android:layout_centerHorizontal="true"
                         android:contentDescription="@string/accessibility_wallet_dapp_panel_account_anchor"
+                        android:translationZ="10dp"
                         app:layout_anchorGravity="left"
-                        app:srcCompat="@drawable/ic_arrow_down_circular_filled"
-                        app:tint="@color/brave_white" />
+                        app:srcCompat="@drawable/ic_arrow_down_circular_filled" />
 
                 </RelativeLayout>
 
@@ -172,10 +180,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="4dp"
                     android:gravity="center"
                     android:textColor="@color/brave_white"
                     android:textSize="16sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:lineSpacingExtra="0sp"
+                    android:letterSpacing="0.01"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rl_dapps_panel__account_container"
@@ -185,25 +195,25 @@
                     android:id="@+id/tv_dapps_panel_account_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:gravity="center"
                     android:textColor="@color/brave_white"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_dapps_panel_from_to"
-                    tools:text="$872.48" />
+                    tools:text="0x1052...bba44" />
 
                 <TextView
                     android:id="@+id/tv_dapps_panel_amount_asset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="2dp"
                     android:gravity="center"
                     android:textColor="@color/brave_white"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:letterSpacing=".02"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_dapps_panel_account_address"
@@ -217,7 +227,7 @@
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
                     android:textColor="@color/brave_white"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_dapps_panel_amount_asset"
@@ -230,8 +240,8 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="60dp"
                     android:layout_marginEnd="12dp"
-                    android:visibility="gone"
                     android:padding="32dp"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
@@ -278,5 +288,5 @@
                 </com.google.android.material.card.MaterialCardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </ScrollView>
