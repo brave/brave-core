@@ -14,7 +14,7 @@ let package = Package(
     .library(name: "Brave", targets: ["Brave"]),
     .library(name: "GuardianVPN", targets: ["GuardianVPN"]),
     .library(name: "HTTPSE", targets: ["HTTPSE"]),
-    .library(name: "Shared", targets: ["Shared", "FSUtils"]),
+    .library(name: "Shared", targets: ["Shared"]),
     .library(name: "BraveCore", targets: ["BraveCore", "MaterialComponents"]),
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveUI", targets: ["BraveUI"]),
@@ -196,18 +196,14 @@ let package = Package(
       name: "Shared",
       dependencies: [
         "BraveCore",
-        "FSUtils",
         "Strings",
         "SDWebImage",
         "SwiftKeychainWrapper",
         "SwiftyJSON",
         "XCGLogger",
       ],
-      path: "Shared",
-      exclude: ["FSUtils"],
       resources: [.copy("effective_tld_names.dat")]
     ),
-    .target(name: "FSUtils", path: "Shared/FSUtils", publicHeadersPath: "."),
     .target(
       name: "BraveShared",
       dependencies: ["SDWebImage", "Shared", "Strings", "SnapKit", "XCGLogger"],
@@ -242,7 +238,6 @@ let package = Package(
         "Then",
         "XCGLogger"
       ],
-      path: "BraveUI",
       plugins: ["CurrentBundleGenPlugin"]
     ),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
@@ -252,13 +247,11 @@ let package = Package(
     .target(
       name: "Storage",
       dependencies: ["Shared", "sqlcipher", "SDWebImage", "XCGLogger"],
-      path: "Storage",
       cSettings: [.define("SQLITE_HAS_CODEC")]
     ),
     .target(
       name: "Data",
       dependencies: ["BraveShared", "Storage", "Strings"],
-      path: "Data",
       plugins: ["CurrentBundleGenPlugin"]
     ),
     .target(
@@ -282,18 +275,16 @@ let package = Package(
     ),
     .target(
       name: "BrowserIntentsModels",
-      path: "BrowserIntentsModels",
       sources: ["BrowserIntents.intentdefinition", "CustomIntentHandler.swift"],
       plugins: ["IntentBuilderPlugin"]
     ),
     .target(
       name: "BraveWidgetsModels",
-      path: "BraveWidgetsModels",
       sources: ["BraveWidgets.intentdefinition", "Empty.swift"],
       plugins: ["IntentBuilderPlugin"]
     ),
-    .target(name: "BraveSharedTestUtils", path: "BraveSharedTestUtils"),
-    .target(name: "DataTestsUtils", dependencies: ["Data", "BraveShared"], path: "DataTestsUtils"),
+    .target(name: "BraveSharedTestUtils"),
+    .target(name: "DataTestsUtils", dependencies: ["Data", "BraveShared"]),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",

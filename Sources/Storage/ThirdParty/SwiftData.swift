@@ -36,7 +36,6 @@ import UIKit
 import Shared
 import XCGLogger
 import sqlcipher
-import FSUtils
 
 private let DatabaseBusyTimeout: Int32 = 3 * 1000
 private let log = Logger.syncLogger
@@ -1048,6 +1047,25 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
     return FilledSQLiteCursor<T>(statement: statement!, factory: factory)
   }
+  
+  private func openFileDescriptors() -> [Int32: String] {
+    var buf = [CChar](repeating: 0, count: Int(MAXPATHLEN))
+    var result: [Int32: String] = [:]
+    
+    for fd in 0..<FD_SETSIZE {
+      errno = 0
+      if fcntl(fd, F_GETFD, 0) == -1 && errno != 0 {
+        if errno != EBADF {
+          return [:]
+        } else {
+          continue
+        }
+      }
+      _ = fcntl(fd, F_GETPATH, &buf)
+      result[fd] = String(cString: buf, encoding: .utf8)
+    }
+    return result
+  }
 
   func writeCorruptionInfoForDBNamed(_ dbFilename: String, toLogger logger: XCGLogger) {
     DispatchQueue.global(qos: DispatchQoS.default.qosClass).sync {
@@ -1081,7 +1099,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
       logger.error("----")
 
       // Write open file handles.
-      let openDescriptors = FSUtils.openFileDescriptors()
+      let openDescriptors = openFileDescriptors()
       logger.error("Open file descriptors: ")
       for (k, v) in openDescriptors {
         logger.error("  \(k): \(v)")
