@@ -10,9 +10,9 @@ jobs:
     steps:
       - run: |
           set -eux -o pipefail
-          unchecked=$(gh api repos/"$REPOFULLNAME"/issues/"$PRNUM" --jq '.body' | awk '/## Reviewer Checklist/,/## After-merge Checklist/' | grep '\[ \]')
+          unchecked=x$(gh api repos/"$REPOFULLNAME"/issues/"$PRNUM" --jq '.body' | awk '/## Reviewer Checklist/,/## After-merge Checklist/' | grep '\[ \]')
           echo "$unchecked"
-          [ -n "$unchecked" ] && echo "Found unchecked reviewer items. Failing..." && exit 1
+          [ "$unchecked" != "x" ] && echo "Found unchecked reviewer items. Failing..." && exit 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOFULLNAME: ${{ github.event.repository.full_name }}
