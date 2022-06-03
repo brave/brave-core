@@ -1,16 +1,16 @@
 diff --git a/tools/git/move_source_file.py b/tools/git/move_source_file.py
-index ab57ae721179f77bb92b808e65dfe1ced8cf605f..ba5bea39efb977398649ebe5c60e6952cd798705 100755
+index ab57ae721179f77bb92b808e65dfe1ced8cf605f..affc0ac8142d6575176675b413d0920a1c2139ec 100755
 --- a/tools/git/move_source_file.py
 +++ b/tools/git/move_source_file.py
 @@ -115,6 +115,7 @@ def UpdatePostMove(from_path, to_path):
    mffr.MultiFileFindReplace(
        r'(//.*)%s' % re.escape(from_path),
        r'\1%s' % to_path,
-+      ['*.gni'] + # Brave uses sources.gni to add files to original targets
++      ['*.gni', '*.gn'] + # Brave uses full paths (start with //) to add files
        ['*.cc', '*.h', '*.m', '*.mm', '*.cpp'])
  
    # Update references in GYP and BUILD.gn files.
-@@ -152,11 +153,13 @@ def UpdatePostMove(from_path, to_path):
+@@ -152,6 +153,7 @@ def UpdatePostMove(from_path, to_path):
    visiting_directory = ''
    from_rest = from_path
    to_rest = to_path
@@ -18,13 +18,7 @@ index ab57ae721179f77bb92b808e65dfe1ced8cf605f..ba5bea39efb977398649ebe5c60e6952
    while True:
      files_with_changed_sources = mffr.MultiFileFindReplace(
          r'([\'"])%s([\'"])' % from_rest,
-         r'\1%s\2' % to_rest,
-         [os.path.join(visiting_directory, 'BUILD.gn'),
-+         os.path.join(visiting_directory, 'sources.gni'),
-          os.path.join(visiting_directory, '*.gyp*')])
-     for changed_file in files_with_changed_sources:
-       sort_sources.ProcessFile(changed_file, should_confirm=False)
-@@ -186,6 +189,7 @@ def UpdateIncludeGuard(old_path, new_path):
+@@ -186,6 +188,7 @@ def UpdateIncludeGuard(old_path, new_path):
    old_guard = MakeIncludeGuardName(old_path)
    new_guard = MakeIncludeGuardName(new_path)
  
@@ -32,7 +26,7 @@ index ab57ae721179f77bb92b808e65dfe1ced8cf605f..ba5bea39efb977398649ebe5c60e6952
    with open(new_path) as f:
      contents = f.read()
  
-@@ -244,6 +248,7 @@ def main():
+@@ -244,6 +247,7 @@ def main():
      to_path = MakeDestinationPath(from_path, orig_to_path)
      if not opts.already_moved:
        MoveFile(from_path, to_path)

@@ -637,7 +637,7 @@ const util = {
   massRename: (options = {}) => {
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
-    util.run('vpython3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
+    util.run('python3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
   },
 
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
