@@ -2,6 +2,7 @@ name: Require Reviewer Checklist
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
+    branches: [ master ]
 jobs:
   require-reviewer-checklist:
     runs-on: ubuntu-latest
