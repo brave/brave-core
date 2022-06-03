@@ -43,7 +43,7 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_mac',
     'action': ['vpython3', 'build/mac/download_sparkle.py',
-               'd174520929863876733fa6eb1985b92fe15d0131'],
+               'cfa83300c2466f4e19f345ae583e1fb0cbfca31c'],
   },
   {
     'name': 'download_rust_deps',
