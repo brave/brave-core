@@ -5,7 +5,7 @@
 
 import styled, { css } from 'styled-components'
 
-export const TileTitle = styled('p')<{}>`
+export const TileTitle = styled('p') <{}>`
   margin: 0;
   font-family: Poppins;
   font-weight: 400;
@@ -72,29 +72,61 @@ export const AddSiteTile = styled('button')<AddSiteTileProps>`
   }
 `
 
-export interface ListProps {
-  blockNumber: number
-}
-
-export const List = styled('div')<ListProps>`
-  justify-self: start;
-  align-items: normal;
+export const List = styled('div')`
   height: 100%;
+  justify-self: start;
+
+  // Add right padding of one column, so there's a nice gap between pages.
+  padding-right: var(--grid-column-width);
+  
   display: grid;
-  grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 86px);
   justify-content: var(--ntp-item-justify, start);
-  padding: 24px 56px 24px 24px;
+  grid-template-columns: repeat(var(--grid-columns), var(--grid-column-width));
+
+  scroll-snap-align: start;
+`
+
+export const PagesContainer = styled('div')`
+  max-width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 24px;
+
+  --grid-columns: 6;
+  --grid-column-width: 86px;
 
   @media screen and (max-width: 700px) {
-    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 86px);
+    --grid-columns: 4;
   }
 
-  @media screen and (max-width: 390px) {
-    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 2).toString()}, 86px);
+  @media screen and (max-width: 360px) {
+    --grid-columns: 3;
   }
 `
 
-export const TileActionsContainer = styled('nav')<{}>`
+export const GridPagesContainer = styled('div') <{ customLinksEnabled: boolean }>`
+  display: flex;
+  flex-direction: row;
+
+  padding: 24px 24px 0 24px;
+  max-width: calc((var(--grid-columns) + 1) * var(--grid-column-width));
+  overflow-x: ${p => p.customLinksEnabled ? 'auto' : 'hidden'};
+
+  scroll-snap-type: x mandatory;
+
+  @media screen and (max-width: 870px) {
+    margin-left: var(--grid-column-width);
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+export const TileActionsContainer = styled('nav') <{}>`
   box-sizing: border-box;
   opacity: 0;
   visibility: hidden;
@@ -108,10 +140,10 @@ export const TileActionsContainer = styled('nav')<{}>`
   display: flex;
 `
 
-export const TileMenu = styled('div')<{}>`
+export const TileMenu = styled('div') <{}>`
   position: absolute;
-  top: 15px;
-  left: 80px;
+  margin-left: -12px;
+  margin-top: -12px;
   min-width: 185px;
   height: 72px;
   padding: 8px 0;
@@ -119,7 +151,7 @@ export const TileMenu = styled('div')<{}>`
   flex-direction: column;
   border-radius: 4px;
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3);
-  z-index: 2;
+  z-index: 10;
 
   background: white;
   @media (prefers-color-scheme: dark) {
@@ -127,7 +159,7 @@ export const TileMenu = styled('div')<{}>`
   }
 `
 
-export const TileMenuItem = styled('button')<{}>`
+export const TileMenuItem = styled('button') <{}>`
   width: 100%;
   height: 30px;
   font-family: Poppins;
@@ -182,7 +214,7 @@ export const TileAction = styled('button')<{}>`
   }
 `
 
-export const TileFavicon = styled('img')<{}>`
+export const TileFavicon = styled('img') <{}>`
   display: block;
   padding: 16px;
   width: 70px;
@@ -202,7 +234,7 @@ interface TileProps {
   isMenuShowing: boolean
 }
 
-export const Tile = styled('a')<TileProps>`
+export const Tile = styled('a') <TileProps>`
   position: relative;
   text-decoration: none;
   display: flex;
