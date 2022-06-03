@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <random>
 #include <vector>
 
@@ -24,9 +23,9 @@ Model::Model(int num_iterations, float learning_rate, int num_params)
     this->pred_weights_.push_back(distr(mt));
   }
 
-  this->pred_b_ = 0.0;
+  this->pred_b_ = distr(mt);
   this->batch_size_ = 64;
-  this->threshold_ = 0.7;
+  this->threshold_ = 0.5;
 }
 
 Model::~Model() {}
@@ -62,7 +61,6 @@ std::vector<float> Model::Predict(std::vector<std::vector<float>> X) {
 
     prediction[i] = this->Activation(z);
   }
-
   return prediction;
 }
 
@@ -117,17 +115,8 @@ std::tuple<size_t, float, float> Model::Train(
 
     if (iteration % 250 == 0) {
       training_error = this->ComputeNLL(y, Predict(X));
-      std::cout << "Iteration: " << iteration
-                << "  Training error: " << training_error << '\n';
     }
   }
-  std::cout << "Local model:" << std::endl;
-  for (size_t i = 0; i < pred_weights_.size(); i++) {
-    std::cout << "  m" << i << "_local = " << std::fixed << pred_weights_[i]
-              << std::endl;
-  }
-  std::cout << "  b_local = " << std::fixed << pred_b_ << std::endl
-            << std::endl;
 
   float accuracy = training_error;
   return std::make_tuple(dataset.size(), training_error, accuracy);
@@ -175,7 +164,6 @@ std::tuple<size_t, float, float> Model::Evaluate(
     }
   }
   float accuracy = total_correct * 1.0 / test_dataset.size();
-
   float test_loss = ComputeNLL(y, Predict(X));
   return std::make_tuple(test_dataset.size(), test_loss, accuracy);
 }

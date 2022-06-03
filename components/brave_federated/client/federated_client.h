@@ -25,7 +25,7 @@ class FederatedClient : public flwr::Client {
   Model* GetModel();
 
   void Start();
-  // TODO() : Stop client
+
   void Stop();
 
   void SetTrainingData(std::vector<std::vector<float>> training_data);
