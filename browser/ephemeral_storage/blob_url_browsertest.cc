@@ -12,6 +12,7 @@
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_frame_navigation_observer.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/base/features.h"
@@ -89,6 +90,16 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     EXPECT_EQ(fetch_result.value, fetch_via_webworker_result.value);
     EXPECT_EQ(fetch_result.error, fetch_via_webworker_result.error);
     return fetch_result;
+  }
+
+  static void NavigateToBlob(content::RenderFrameHost* render_frame_host,
+                             const GURL& url) {
+    std::string script = content::JsReplace("location = $1", url.spec());
+    content::TestFrameNavigationObserver observer(render_frame_host);
+    EXPECT_TRUE(ExecJs(render_frame_host, script));
+    observer.Wait();
+    EXPECT_EQ(url, render_frame_host->GetLastCommittedURL());
+    EXPECT_FALSE(render_frame_host->IsErrorDocument());
   }
 
   static void EnsureBlobsAreCrossAvailable(
@@ -188,6 +199,16 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
       auto* rfh = a_com2_registered_blobs[idx].rfh;
       EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
     }
+
+    // Ensure blobs are navigatable in same iframes.
+    for (size_t idx = 1; idx < a_com2_registered_blobs.size(); ++idx) {
+      NavigateToBlob(a_com2_registered_blobs[idx].rfh,
+                     a_com2_registered_blobs[idx].blob_url);
+    }
+    for (size_t idx = 1; idx < b_com_registered_blobs.size(); ++idx) {
+      NavigateToBlob(b_com_registered_blobs[idx].rfh,
+                     b_com_registered_blobs[idx].blob_url);
+    }
   }
 
   void TestBlobsAreNotPartitioned() {
@@ -254,6 +275,16 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
       auto* rfh = a_com2_registered_blobs[idx].rfh;
       EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
+    }
+
+    // Ensure blobs are navigatable in same iframes.
+    for (size_t idx = 1; idx < a_com2_registered_blobs.size(); ++idx) {
+      NavigateToBlob(a_com2_registered_blobs[idx].rfh,
+                     a_com2_registered_blobs[idx].blob_url);
+    }
+    for (size_t idx = 1; idx < b_com_registered_blobs.size(); ++idx) {
+      NavigateToBlob(b_com_registered_blobs[idx].rfh,
+                     b_com_registered_blobs[idx].blob_url);
     }
   }
 };
