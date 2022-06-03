@@ -125,6 +125,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
 #endif
 
@@ -156,6 +157,9 @@ void RegisterProfilePrefsForMigration(
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
 #if !BUILDFLAG(IS_ANDROID)
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
+
+  // Added 06/2022
+  brave::RegisterSearchEngineProviderPrefsForMigration(registry);
 #endif
 
   brave_wallet::RegisterProfilePrefsForMigration(registry);

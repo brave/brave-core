@@ -22,7 +22,13 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
       delete;
 
  private:
+  // SearchEnginesHandler overrides:
+  void RegisterMessages() override;
+  void OnModelChanged() override;
   std::unique_ptr<base::DictionaryValue> GetSearchEnginesList() override;
+
+  base::Value GetPrivateSearchEnginesList();
+  void HandleGetPrivateSearchEnginesList(const base::Value::List& args);
 };
 
 }  // namespace settings

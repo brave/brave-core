@@ -13,9 +13,9 @@ class Profile;
 class SearchEngineProviderService;
 
 // The purpose of this factory is to configure proper search engine provider to
-// private/guest/tor profile before it is referenced.
+// private/tor profile before it is referenced.
 // Also, this factory doesn't have public api. Instead, service is instantiated
-// when profile is inistialized.
+// when profile is initialized.
 class SearchEngineProviderServiceFactory
     : public BrowserContextKeyedServiceFactory {
  public:
@@ -27,8 +27,6 @@ class SearchEngineProviderServiceFactory
   static SearchEngineProviderServiceFactory* GetInstance();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
-                           GuestWindowControllerTest);
   // Only for test.
   static SearchEngineProviderService* GetForProfile(Profile* profile);
 

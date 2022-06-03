@@ -22,6 +22,10 @@
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/search_engines/search_engine_provider_util.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_utils.h"
 #endif
@@ -69,9 +73,12 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 12/2019.
   dark_mode::MigrateBraveDarkModePrefs(profile);
 
-  // Added 9/2020
 #if !BUILDFLAG(IS_ANDROID)
+  // Added 9/2020
   new_tab_page::MigrateNewTabPagePrefs(profile);
+
+  // Added 06/2022
+  brave::MigrateSearchEngineProviderPrefs(profile);
 #endif
 
   brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(

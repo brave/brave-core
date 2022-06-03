@@ -6,11 +6,10 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 
-#include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_member.h"
 
 class Profile;
 class TemplateURL;
@@ -26,30 +25,19 @@ class SearchEngineProviderService : public KeyedService {
       delete;
 
  protected:
-  // If subclass want to know and configure according to prefs change, override
-  // this.
-  virtual void OnUseAlternativeSearchEngineProviderChanged() {}
-
-  bool UseAlternativeSearchEngineProvider() const;
-  void ChangeToAlternativeSearchEngineProvider();
-  void ChangeToNormalWindowSearchEngineProvider();
-
   bool ShouldUseExtensionSearchProvider() const;
   void UseExtensionSearchProvider();
 
   // Points off the record profile.
-  Profile* otr_profile_ = nullptr;
+  raw_ptr<Profile> otr_profile_ = nullptr;
   // Service for original profile of |otr_profile_|.
-  TemplateURLService* original_template_url_service_ = nullptr;
+  raw_ptr<TemplateURLService> original_template_url_service_ = nullptr;
   // Service for off the record profile.
-  TemplateURLService* otr_template_url_service_ = nullptr;
+  raw_ptr<TemplateURLService> otr_template_url_service_ = nullptr;
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
   bool CouldAddExtensionTemplateURL(const TemplateURL* url);
-
-  std::unique_ptr<TemplateURL> alternative_search_engine_url_;
-  BooleanPrefMember use_alternative_search_engine_provider_;
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_

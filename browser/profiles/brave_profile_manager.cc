@@ -39,6 +39,10 @@
 #include "content/public/browser/url_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/search_engines/search_engine_provider_util.h"
+#endif
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
@@ -105,6 +109,8 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
     auto enabled = pref_service->GetBoolean(kEnableMediaRouterOnRestart);
     pref_service->SetBoolean(::prefs::kEnableMediaRouter, enabled);
   }
+
+  brave::SetDefaultPrivateSearchProvider(profile);
 #endif
 
   ProfileManager::InitProfileUserPrefs(profile);

@@ -253,6 +253,8 @@ if (is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/p3a/p3a_core_metrics.cc",
     "//brave/browser/p3a/p3a_core_metrics.h",
+    "//brave/browser/profile_resetter/brave_profile_resetter.cc",
+    "//brave/browser/profile_resetter/brave_profile_resetter.h",
   ]
 
   brave_chrome_browser_deps += [

@@ -458,7 +458,10 @@ void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
     const base::Value::List& args) {
-  brave::ToggleUseAlternativeSearchEngineProvider(profile_);
+  // Alternative search related code will not be used.
+  // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
+  // deleted from NTP Webui.
+  NOTREACHED();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
