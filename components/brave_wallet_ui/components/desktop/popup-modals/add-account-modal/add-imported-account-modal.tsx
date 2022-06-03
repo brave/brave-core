@@ -16,7 +16,6 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // types
 import { BraveWallet, CreateAccountOptionsType, PageState, WalletRoutes, WalletState } from '../../../../constants/types'
-import { FilecoinNetwork } from '../../../../common/hardware/types'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -78,8 +77,7 @@ export const ImportAccountModal = () => {
     return wallet.defaultNetworks.find((network) => { return network.coin === BraveWallet.CoinType.FIL })
 })
   const [accountName, setAccountName] = React.useState<string>('')
-  const networkSymbol = selectedFilecoinNetwork?.chainId === BraveWallet.FILECOIN_MAINNET ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
-  const [filecoinNetwork] = React.useState<FilecoinNetwork>(networkSymbol)
+  const networkSymbol = selectedFilecoinNetwork?.chainId.toLowerCase() === BraveWallet.FILECOIN_MAINNET.toLowerCase() ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
   const [importOption, setImportOption] = React.useState<string>('key')
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
@@ -141,7 +139,7 @@ export const ImportAccountModal = () => {
   const onClickCreateAccount = React.useCallback(() => {
     if (importOption === 'key') {
       if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-        importFilecoinAccount(accountName, privateKey, filecoinNetwork)
+        importFilecoinAccount(accountName, privateKey, networkSymbol)
       } else {
         importAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
       }

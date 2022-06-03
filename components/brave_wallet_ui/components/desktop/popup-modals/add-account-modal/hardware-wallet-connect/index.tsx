@@ -84,7 +84,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   )
 
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-  const filecoinNetwork = selectedFilecoinNetwork?.chainId === BraveWallet.FILECOIN_MAINNET ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
+  const filecoinNetwork = selectedFilecoinNetwork?.chainId.toLowerCase() === BraveWallet.FILECOIN_MAINNET.toLowerCase() ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
 
   // methods
   const onAddHardwareAccounts = React.useCallback((selected: BraveWallet.HardwareWalletAccount[]) => {
