@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+"""This utils is used in chromium tools/git/move_source_file.py."""
+
 import os
 
 BRAVE_DIR_NAME = 'brave'
