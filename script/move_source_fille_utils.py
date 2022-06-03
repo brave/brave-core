@@ -20,5 +20,5 @@ def to_src_relative_path(dir):
 
 def to_cwd_relative_path(dir):
   if is_in_brave_dir():
-    return os.path.normpath(os.path.join(os.pardir, dir))
+    return os.path.relpath(dir, BRAVE_DIR_NAME)
   return dir

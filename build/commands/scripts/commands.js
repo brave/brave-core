@@ -261,4 +261,8 @@ program
   .action(util.format)
 
 program
+  .command('mass-rename')
+  .action(util.massRename)
+
+program
   .parse(process.argv)

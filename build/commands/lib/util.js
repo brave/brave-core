@@ -634,6 +634,11 @@ const util = {
     util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'format.py'), options.full ? '--full' : ''], cmd_options)
   },
 
+  massRename: (options = {}) => {
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    util.run('vpython3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmd_options)
+  },
 
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
     const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
