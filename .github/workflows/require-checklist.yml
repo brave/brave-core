@@ -1,21 +1,23 @@
 name: Require Reviewer Checklist
+
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
-    branches: [ master ]
+    branches: [master]
+
 jobs:
   require-reviewer-checklist:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: ${{ github.event.repository.full_name }}
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
           function grep_no_match_ok() {
             local exit_code
             grep "$@" || exit_code=$?
             return $((exit_code == 1 ? 0 : exit_code))
           }
-          unchecked=$(gh api repos/"$REPOFULLNAME"/issues/"$PRNUM" --jq '.body' | awk '/## Reviewer Checklist/,/## After-merge Checklist/' | grep_no_match_ok '\[ \]')
+          unchecked=$(gh api repos/"$REPO_NAME"/issues/"$PR_NUMBER" --jq '.body' | awk '/## Reviewer Checklist/,/## After-merge Checklist/' | grep_no_match_ok '\[ \]')
           [ -n "$unchecked" ] && echo "Found unchecked reviewer items. Failing..." && echo "$unchecked" && exit 1 || :
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOFULLNAME: ${{ github.event.repository.full_name }}
-          PRNUM: ${{ github.event.number }}
