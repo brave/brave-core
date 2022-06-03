@@ -52,8 +52,6 @@ BraveMainDelegate::~BraveMainDelegate() {}
 
 void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
-  command_line->AppendSwitch(switches::kDisableEnterprisePolicy);
-
   if (!command_line->HasSwitch(switches::kComponentUpdater)) {
     std::string source = "url-source=" + ::GetUpdateURLHost();
     command_line->AppendSwitchASCII(switches::kComponentUpdater,
