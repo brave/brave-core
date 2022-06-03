@@ -8,6 +8,7 @@ settings_namespace_rewrites = [
   "settings.BraveNewTabBrowserProxyImpl|BraveNewTabBrowserProxyImpl",
   "settings.BravePrivacyBrowserProxyImpl|BravePrivacyBrowserProxyImpl",
   "settings.BraveRewardsBrowserProxyImpl|BraveRewardsBrowserProxyImpl",
+  "settings.BraveSearchEnginesPageBrowserProxyImpl|BraveSearchEnginesPageBrowserProxyImpl",
   "settings.BraveSyncBrowserProxy|BraveSyncBrowserProxy",
   "settings.DefaultBraveShieldsBrowserProxyImpl|DefaultBraveShieldsBrowserProxyImpl",
   "settings.SocialBlockingPageProxyImpl|SocialBlockingPageProxyImpl",

@@ -1,23 +1,25 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<script type="module" src="../settings_shared_css.js"></script>
-<script type="module" src="../settings_vars_css.js"></script>
-
-<dom-module id="settings-brave-search-page">
-  <template>
-    <style include="settings-shared iron-flex">
-      .settings-box {
-        display: flex;
-        justify-content: space-between;
-      }
-    </style>
-    <settings-toggle-button id="otherSearchEnginesEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.other_search_engines_enabled}}"
-        label="$i18n{otherSearchEnginesControlLabel}"
-        sub-label="$i18n{otherSearchEnginesControlDesc}">
-    </settings-toggle-button>
-  </template>
-  <script src="brave_search_engines_page.js"></script>
-</dom-module>
+<style include="settings-shared iron-flex"></style>
+<template is="dom-if" if="[[shouldShowPrivateSearchProvider_]]">
+  <div class="settings-box">
+    <div class="label flex">$i18n{privateSearchExplanation}</div>
+    <settings-dropdown-menu
+      pref="{{prefs.brave.default_private_search_provider_guid}}"
+      menu-options="[[privateSearchEngines_]]">
+    </settings-dropdown-menu>
+  </div>
+</template>
+<if expr="enable_extensions">
+<settings-toggle-button id="webDiscoveryEnabled"
+    class="cr-row"
+    pref="{{prefs.brave.web_discovery_enabled}}"
+    label="$i18n{braveWebDiscoveryLabel}"
+    sub-label="$i18n{braveWebDiscoverySubLabel}"
+    learn-more-url="$i18n{webDiscoveryLearnMoreURL}">
+</settings-toggle-button>
+</if>
+<settings-toggle-button id="otherSearchEnginesEnabled"
+    class="cr-row"
+    pref="{{prefs.brave.other_search_engines_enabled}}"
+    label="$i18n{otherSearchEnginesControlLabel}"
+    sub-label="$i18n{otherSearchEnginesControlDesc}">
+</settings-toggle-button>

@@ -6,8 +6,11 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_PRIVATE_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 
+#include <string>
+
 #include "base/scoped_observation.h"
 #include "brave/browser/search_engines/search_engine_provider_service.h"
+#include "components/prefs/pref_member.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 
@@ -23,16 +26,19 @@ class PrivateWindowSearchEngineProviderService
       const PrivateWindowSearchEngineProviderService&) = delete;
 
  private:
-  // Configure appropriate provider according to prefs.
-  void ConfigureSearchEngineProvider();
+  // Configure appropriate provider and prefs.
+  void UpdateExtensionPrefsAndProvider();
 
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
   // SearchEngineProviderService overrides:
-  void OnUseAlternativeSearchEngineProviderChanged() override;
   void Shutdown() override;
 
+  void OnPreferenceChanged(const std::string& pref_name);
+  void ConfigurePrivateWindowSearchEngineProvider();
+
+  StringPrefMember private_search_provider_guid_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observation_{this};
 };

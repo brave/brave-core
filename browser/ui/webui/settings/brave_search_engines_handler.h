@@ -15,14 +15,20 @@ namespace settings {
 
 class BraveSearchEnginesHandler : public SearchEnginesHandler {
  public:
-  using SearchEnginesHandler::SearchEnginesHandler;
+  explicit BraveSearchEnginesHandler(Profile* profile);
   ~BraveSearchEnginesHandler() override;
   BraveSearchEnginesHandler(const BraveSearchEnginesHandler&) = delete;
   BraveSearchEnginesHandler& operator=(const BraveSearchEnginesHandler&) =
       delete;
 
  private:
+  // SearchEnginesHandler overrides:
+  void RegisterMessages() override;
+  void OnModelChanged() override;
   std::unique_ptr<base::DictionaryValue> GetSearchEnginesList() override;
+
+  base::Value GetPrivateSearchEnginesList();
+  void HandleGetPrivateSearchEnginesList(const base::Value::List& args);
 };
 
 }  // namespace settings

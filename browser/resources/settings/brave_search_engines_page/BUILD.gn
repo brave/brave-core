@@ -3,19 +3,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//tools/polymer/polymer.gni")
+import("//tools/polymer/html_to_js.gni")
+import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
 
-# ES Module conversion from HTML Imports code
-
 group("web_modules") {
-  public_deps = [ ":brave_search_engines_page_module" ]
+  public_deps = [
+    ":modules",
+    ":templatize",
+  ]
 }
 
-polymer_modulizer("brave_search_engines_page") {
-  js_file = "brave_search_engines_page.js"
-  html_file = "brave_search_engines_page.html"
-  html_type = "dom-module"
-  auto_imports = settings_auto_imports
+js_modulizer("modules") {
+  input_files = [ "brave_search_engines_page_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
+}
+
+html_to_js("templatize") {
+  js_files = [ "brave_search_engines_page.js" ]
 }

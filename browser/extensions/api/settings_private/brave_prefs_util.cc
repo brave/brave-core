@@ -146,6 +146,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Search engine prefs
   (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[prefs::kSyncedDefaultPrivateSearchProviderGUID] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
 
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] =
