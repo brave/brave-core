@@ -1420,6 +1420,9 @@ Are you sure you want to do this?
       <message name="IDS_RETRY" desc="Retry button text.">
         Retry
       </message>
+      <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
+        Privacy Stats
+      </message>
       <message name="IDS_SUMMARY" desc="Binance detail section title.">
         Summary
       </message>
