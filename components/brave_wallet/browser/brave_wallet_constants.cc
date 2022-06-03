@@ -11,9 +11,14 @@ const char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
 
 const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
   static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
-      {{"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+      {{"", "Avalanche", "", false, false, "AVAX", 18, true, "", "",
+        mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
+       {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
         "bat.png", true, false, "BAT", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
+       {"0x4829043Fc625FdA139523b2ceB99D95354e2b359", "Avalanche C-Chain",
+        "avax.png", true, false, "AVAXC", 18, true, "", "",
+        mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
        {"", "Ethereum", "", false, false, "ETH", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "USD Coin", "usdc.png",
@@ -34,9 +39,15 @@ const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
        {"0xD533a949740bb3306d119CC777fa900bA034cd52", "Curve", "curve.png",
         true, false, "CRV", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
+       {"0xbf0f3ccb8fa385a287106fba22e6bb722f94d686", "Digital USD", "", true,
+        false, "ZUSD", 6, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
        {"0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd", "Gemini Dollar",
         "gusd.png", true, false, "GUSD", 2, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
+       {"0xC08512927D12348F6620a698105e1BAac6EcD911", "Digital JPY", "", true,
+        false, "GYEN", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
        {"0x514910771AF9Ca656af840dff83E8264EcF986CA", "Chainlink",
         "chainlink.png", true, false, "LINK", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
@@ -52,6 +63,17 @@ const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
        {"0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "Uniswap", "uni.png",
         true, false, "UNI", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
+       {"0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", "USD Coin", "usdc.png",
+        true, false, "USDC", 6, true, "", "", mojom::kPolygonMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E", "USD Coin", "usdc.png",
+        true, false, "USDC", 6, true, "", "", mojom::kAvalancheMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0x8e870d67f660d95d5be530380d0ec0bd388289e1", "Pax Dollar", "usdp.png",
+        true, false, "PAX", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"", "Polygon", "", false, false, "MATIC", 18, true, "", "",
+        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
        {"0xA4Bdb11dc0a2bEC88d24A3aa1E6Bb17201112eBe", "Stably Dollar",
         "usds.png", true, false, "USDS", 6, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
@@ -66,6 +88,9 @@ const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
         mojom::CoinType::ETH},
        {"0x9043d4d51C9d2e31e3F169de4551E416970c27Ef", "Palm DAI", "pdai.png",
         true, false, "PDAI", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919", "Rai Reflex Index",
+        "rai.png", true, false, "RAI", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH}});
   return *tokens;
 }
@@ -117,7 +142,10 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
         mojom::CoinType::ETH},
        {"0x0d8775f648430679a709e98d2b0cb6250d2887ef", "Basic Attention Token",
         "bat.png", true, false, "BAT", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH}});
+        mojom::CoinType::ETH},
+       {"EPeUFDgHRxs9xxEPVaL6kfGQvCon7jmAWKVUHuux1Tpz", "Basic Attention Token",
+        "bat.png", true, false, "BAT", 18, true, "", "", mojom::kSolanaMainnet,
+        mojom::CoinType::SOL}});
   return *tokens;
 }
 
