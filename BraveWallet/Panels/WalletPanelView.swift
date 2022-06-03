@@ -216,7 +216,38 @@ struct WalletPanelView: View {
     Button(action: { presentWalletWithContext(.pendingRequests) }) {
       Image("brave.bell.badge")
         .foregroundColor(.white)
+        .frame(minWidth: 30, minHeight: 44)
+        .contentShape(Rectangle())
     }
+  }
+  
+  private var fullscreenButton: some View {
+    Button {
+      presentWalletWithContext(.default)
+    } label: {
+      Image(systemName: "arrow.up.left.and.arrow.down.right")
+        .rotationEffect(.init(degrees: 90))
+        .frame(minWidth: 30, minHeight: 44)
+        .contentShape(Rectangle())
+    }
+    .accessibilityLabel(Strings.Wallet.walletFullScreenAccessibilityTitle)
+  }
+  
+  private var menuButton: some View {
+    Menu {
+      Button(action: { keyringStore.lock() }) {
+        Label(Strings.Wallet.lock, image: "brave.lock")
+      }
+      Divider()
+      Button(action: { presentWalletWithContext(.settings) }) {
+        Label(Strings.Wallet.settings, image: "brave.gear")
+      }
+    } label: {
+      Image(systemName: "ellipsis")
+        .frame(minWidth: 30, minHeight: 44)
+        .contentShape(Rectangle())
+    }
+    .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
   }
   
   var body: some View {
@@ -230,33 +261,17 @@ struct WalletPanelView: View {
                 Color.clear
               )
             HStack {
-              Button {
-                presentWalletWithContext(.default)
-              } label: {
-                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                  .rotationEffect(.init(degrees: 90))
-              }
-              .accessibilityLabel(Strings.Wallet.walletFullScreenAccessibilityTitle)
+              fullscreenButton
               Spacer()
               if cryptoStore.pendingRequest != nil {
                 pendingRequestsButton
                 Spacer()
               }
-              Menu {
-                Button(action: { keyringStore.lock() }) {
-                  Label(Strings.Wallet.lock, image: "brave.lock")
-                }
-                Divider()
-                Button(action: { presentWalletWithContext(.settings) }) {
-                  Label(Strings.Wallet.settings, image: "brave.gear")
-                }
-              } label: {
-                Image(systemName: "ellipsis")
-              }
-              .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
+              menuButton
             }
           }
-          .padding(16)
+          .padding(.horizontal, 16)
+          .padding(.vertical, 4)
           .overlay(
             Color.white.opacity(0.3) // Divider
               .frame(height: pixelLength),
@@ -264,13 +279,7 @@ struct WalletPanelView: View {
           )
         } else {
           HStack {
-            Button {
-              presentWalletWithContext(.default)
-            } label: {
-              Image(systemName: "arrow.up.left.and.arrow.down.right")
-                .rotationEffect(.init(degrees: 90))
-            }
-            .accessibilityLabel(Strings.Wallet.walletFullScreenAccessibilityTitle)
+            fullscreenButton
             if cryptoStore.pendingRequest != nil {
               // fake bell icon for layout
               pendingRequestsButton
@@ -286,20 +295,10 @@ struct WalletPanelView: View {
             if cryptoStore.pendingRequest != nil {
               pendingRequestsButton
             }
-            Menu {
-              Button(action: { keyringStore.lock() }) {
-                Label(Strings.Wallet.lock, image: "brave.lock")
-              }
-              Divider()
-              Button(action: { presentWalletWithContext(.settings) }) {
-                Label(Strings.Wallet.settings, image: "brave.gear")
-              }
-            } label: {
-              Image(systemName: "ellipsis")
-            }
-            .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
+            menuButton
           }
-          .padding(16)
+          .padding(.horizontal, 16)
+          .padding(.vertical, 4)
           .overlay(
             Color.white.opacity(0.3) // Divider
               .frame(height: pixelLength),
