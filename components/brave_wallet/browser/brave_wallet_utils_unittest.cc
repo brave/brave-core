@@ -871,7 +871,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   // Filecoin
   mojom::NetworkInfo fil_mainnet(
       brave_wallet::mojom::kFilecoinMainnet, "Filecoin Mainnet",
-      {"https://api.node.glif.io/rpc/v0"}, {},
+      {"https://filscan.io/tipset/message-detail"}, {},
       {"https://api.node.glif.io/rpc/v0"}, "FIL", "Filecoin", 18,
       brave_wallet::mojom::CoinType::FIL, nullptr);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::FIL));
