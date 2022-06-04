@@ -5937,7 +5937,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <if expr="use_titlecase">
         <message name="IDS_CONTEXT_MENU_SHOW_FULL_URLS" desc="In Title Case: The text label of the omnibox context menu option to show full URLs">
-          Always Show Full URLs
+          Always show full URLs
         </message>
       </if>
       <if expr="not use_titlecase">
