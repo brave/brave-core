@@ -102,7 +102,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   // https://github.com/urbit/argon2-wasm/blob/c9e73723cebe3d76cf286f5c7709b64edb25c684/index.js#L73
   size_t character_count = 0;
   for (int32_t i = 0; i < (int32_t)salt_str->size(); ++i) {
-    uint32_t code_point;
+    base_icu::UChar32 code_point;
     if (base::ReadUnicodeCharacter((const char*)salt_str->data(),
                                    salt_str->size(), &i, &code_point))
       ++character_count;
@@ -129,7 +129,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   // because js implementation forcibly utf8 decode sub_key
   // https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L547
   for (int32_t i = 0; i < (int32_t)sub_key.size(); ++i) {
-    uint32_t code_point;
+    base_icu::UChar32 code_point;
     if (!base::ReadUnicodeCharacter((const char*)sub_key.data(), sub_key.size(),
                                     &i, &code_point) ||
         !base::IsValidCodepoint(code_point)) {
