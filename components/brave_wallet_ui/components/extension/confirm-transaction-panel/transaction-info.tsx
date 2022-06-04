@@ -9,6 +9,7 @@ import {
   TransactionTypeText,
   TransactionText, Divider,
   SectionRow,
+  SectionColumn,
   EditButton
 } from './style'
 import { WarningBoxTitleRow } from '../shared-panel-styles'
@@ -24,6 +25,7 @@ export const TransactionInfo = ({
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
     isSolanaTransaction,
+    isFilecoinTransaction,
     transactionsNetwork
   } = usePendingTransactions()
 
@@ -62,21 +64,60 @@ export const TransactionInfo = ({
 
   // render
   return <>
-    <SectionRow>
-      <TransactionTitle>
-        {
-          isSolanaTransaction
-            ? getLocale('braveWalletConfirmTransactionTransactionFee')
-            : getLocale('braveWalletConfirmTransactionGasFee')
-        }
-      </TransactionTitle>
+    {!isFilecoinTransaction &&
+      <SectionRow>
+        <TransactionTitle>
+          {
+            isSolanaTransaction
+              ? getLocale('braveWalletConfirmTransactionTransactionFee')
+              : getLocale('braveWalletConfirmTransactionGasFee')
+          }
+        </TransactionTitle>
 
-      {!isSolanaTransaction &&
-        <EditButton onClick={onToggleEditGas}>
-          {getLocale('braveWalletAllowSpendEditButton')}
-        </EditButton>
-      }
-    </SectionRow>
+        {!isSolanaTransaction &&
+          <EditButton onClick={onToggleEditGas}>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </EditButton>
+        }
+      </SectionRow>
+    }
+
+    {isFilecoinTransaction &&
+      <>
+        {transactionDetails.gasPremium &&
+          <SectionColumn>
+            <TransactionTitle>Gas Premium</TransactionTitle>
+            <TransactionTypeText>
+              {new Amount(transactionDetails.gasPremium)
+                .divideByDecimals(transactionsNetwork.decimals)
+                .formatAsAsset(6, transactionsNetwork.symbol)}
+            </TransactionTypeText>
+          </SectionColumn>
+        }
+
+        {transactionDetails.gasLimit &&
+          <SectionColumn>
+            <TransactionTitle>Gas Limit</TransactionTitle>
+            <TransactionTypeText>
+              {new Amount(transactionDetails.gasLimit)
+                .divideByDecimals(transactionsNetwork.decimals)
+                .formatAsAsset(6, transactionsNetwork.symbol)}
+            </TransactionTypeText>
+          </SectionColumn>
+        }
+
+        {transactionDetails.gasFeeCap &&
+          <SectionColumn>
+            <TransactionTitle>Gas Fee Cap</TransactionTitle>
+            <TransactionTypeText>
+              {new Amount(transactionDetails.gasFeeCap)
+                .divideByDecimals(transactionsNetwork.decimals)
+                .formatAsAsset(6, transactionsNetwork.symbol)}
+            </TransactionTypeText>
+          </SectionColumn>
+        }
+      </>
+    }
 
     <TransactionTypeText>
       {new Amount(transactionDetails.gasFee)
@@ -95,22 +136,28 @@ export const TransactionInfo = ({
       <TransactionTitle>
         {getLocale('braveWalletConfirmTransactionTotal')}
         {' '}
-        ({
-          isSolanaTransaction
-            ? getLocale('braveWalletConfirmTransactionAmountFee')
-            : getLocale('braveWalletConfirmTransactionAmountGas')
-        })
+        {!isFilecoinTransaction &&
+          <>
+            ({
+              isSolanaTransaction
+                ? getLocale('braveWalletConfirmTransactionAmountFee')
+                : getLocale('braveWalletConfirmTransactionAmountGas')
+            })
+          </>
+        }
       </TransactionTitle>
     </WarningBoxTitleRow>
 
     <TransactionTypeText>
-      {transactionValueText} {transactionDetails.symbol} +
+      {transactionValueText} {transactionDetails.symbol}
     </TransactionTypeText>
-    <TransactionTypeText>
-      {new Amount(transactionDetails.gasFee)
-        .divideByDecimals(transactionsNetwork.decimals)
-        .formatAsAsset(6, transactionsNetwork.symbol)}
-    </TransactionTypeText>
+    {!isFilecoinTransaction &&
+      <TransactionTypeText>
+        + {new Amount(transactionDetails.gasFee)
+          .divideByDecimals(transactionsNetwork.decimals)
+          .formatAsAsset(6, transactionsNetwork.symbol)}
+      </TransactionTypeText>
+    }
 
     <TransactionText hasError={false}>
       {transactionDetails.fiatTotal.formatAsFiat(defaultCurrencies.fiat)}
