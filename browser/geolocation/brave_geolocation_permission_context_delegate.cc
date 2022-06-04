@@ -23,7 +23,6 @@ BraveGeolocationPermissionContextDelegate::
     ~BraveGeolocationPermissionContextDelegate() {}
 
 bool BraveGeolocationPermissionContextDelegate::DecidePermission(
-    content::WebContents* web_contents,
     const permissions::PermissionRequestID& id,
     const GURL& requesting_origin,
     bool user_gesture,
@@ -35,5 +34,5 @@ bool BraveGeolocationPermissionContextDelegate::DecidePermission(
   }
 
   return GeolocationPermissionContextDelegate::DecidePermission(
-      web_contents, id, requesting_origin, user_gesture, callback, context);
+      id, requesting_origin, user_gesture, callback, context);
 }
