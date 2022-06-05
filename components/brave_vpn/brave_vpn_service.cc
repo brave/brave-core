@@ -104,7 +104,12 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
   return subscriber_credential == nullptr ? ""
                                           : subscriber_credential->GetString();
 }
-
+#if !BUILDFLAG(IS_ANDROID)
+bool IsNetworkAvailable() {
+  return net::NetworkChangeNotifier::GetConnectionType() !=
+         net::NetworkChangeNotifier::CONNECTION_NONE;
+}
+#endif
 }  // namespace
 
 namespace brave_vpn {
@@ -283,9 +288,7 @@ void BraveVpnService::OnConnectFailed() {
 void BraveVpnService::OnDisconnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
-  bool network_unavailable = net::NetworkChangeNotifier::GetConnectionType() ==
-                             net::NetworkChangeNotifier::CONNECTION_NONE;
-  UpdateAndNotifyConnectionStateChange(network_unavailable
+  UpdateAndNotifyConnectionStateChange(!IsNetworkAvailable()
                                            ? ConnectionState::CONNECT_FAILED
                                            : ConnectionState::DISCONNECTED);
 
@@ -321,6 +324,11 @@ void BraveVpnService::RemoveVPNConnnection() {
 
 void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!IsNetworkAvailable()) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
   if (connection_state_ == ConnectionState::DISCONNECTING ||
       connection_state_ == ConnectionState::CONNECTING) {
     VLOG(2) << __func__ << ": Current state: " << connection_state_

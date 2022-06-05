@@ -557,6 +557,14 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   OnDisconnected();
   EXPECT_FALSE(needs_connect());
   EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
+
+  // Handle connect without network.
+  connection_state() = ConnectionState::DISCONNECTED;
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
+  Connect();
+  EXPECT_FALSE(needs_connect());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 
 TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
