@@ -64,30 +64,27 @@ void Account::OnPrefChanged(const std::string& path) {
   }
 }
 
-bool Account::SetWallet(const std::string& id, const std::string& seed) {
-  const WalletInfo& last_wallet = wallet_->Get();
+void Account::SetWallet(const std::string& id, const std::string& seed) {
+  const WalletInfo last_wallet_copy = GetWallet();
 
   if (!wallet_->Set(id, seed)) {
     NotifyInvalidWallet();
-    return false;
+    return;
   }
 
-  const WalletInfo& wallet = wallet_->Get();
-
-  if (last_wallet.IsValid() && last_wallet != wallet) {
-    NotifyWalletDidChange(wallet);
-
-    Reset();
-  }
+  const WalletInfo& wallet = GetWallet();
 
   NotifyWalletDidUpdate(wallet);
 
-  TopUpUnblindedTokens();
+  if (wallet.HasChanged(last_wallet_copy)) {
+    WalletDidChange(wallet);
+    return;
+  }
 
-  return true;
+  TopUpUnblindedTokens();
 }
 
-WalletInfo Account::GetWallet() const {
+const WalletInfo& Account::GetWallet() const {
   return wallet_->Get();
 }
 
@@ -101,7 +98,7 @@ void Account::MaybeGetIssuers() const {
 
 void Account::Deposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
-                      const ConfirmationType& confirmation_type) {
+                      const ConfirmationType& confirmation_type) const {
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(AdType::kUndefined, ad_type.value());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
@@ -129,7 +126,7 @@ void Account::GetStatement(StatementCallback callback) const {
       });
 }
 
-void Account::ProcessClearingCycle() {
+void Account::ProcessClearingCycle() const {
   confirmations_->ProcessRetryQueue();
 
   if (ShouldRewardUser()) {
@@ -139,7 +136,7 @@ void Account::ProcessClearingCycle() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Account::OnEnabledPrefChanged() {
+void Account::OnEnabledPrefChanged() const {
   MaybeGetIssuers();
 }
 
@@ -164,21 +161,14 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
       });
 }
 
-void Account::ProcessUnclearedTransactions() {
+void Account::ProcessUnclearedTransactions() const {
   const WalletInfo& wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
-void Account::TopUpUnblindedTokens() {
-  if (!ShouldRewardUser()) {
-    return;
-  }
+void Account::WalletDidChange(const WalletInfo& wallet) const {
+  NotifyWalletDidChange(wallet);
 
-  const WalletInfo& wallet = GetWallet();
-  refill_unblinded_tokens_->MaybeRefill(wallet);
-}
-
-void Account::Reset() {
   ResetRewards([=](const bool success) {
     if (!success) {
       BLOG(0, "Failed to reset rewards state");
@@ -188,7 +178,18 @@ void Account::Reset() {
     BLOG(3, "Successfully reset rewards state");
 
     NotifyStatementOfAccountsDidChange();
+
+    TopUpUnblindedTokens();
   });
+}
+
+void Account::TopUpUnblindedTokens() const {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
+  const WalletInfo& wallet = GetWallet();
+  refill_unblinded_tokens_->MaybeRefill(wallet);
 }
 
 void Account::NotifyWalletDidUpdate(const WalletInfo& wallet) const {

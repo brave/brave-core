@@ -18,6 +18,8 @@ struct WalletInfo final {
 
   bool IsValid() const;
 
+  bool HasChanged(const WalletInfo& rhs) const;
+
   bool operator==(const WalletInfo& rhs) const;
   bool operator!=(const WalletInfo& rhs) const;
 

@@ -38,7 +38,7 @@ bool Wallet::Set(const std::string& id, const std::string& seed) {
   return true;
 }
 
-WalletInfo Wallet::Get() const {
+const WalletInfo& Wallet::Get() const {
   return wallet_;
 }
 
