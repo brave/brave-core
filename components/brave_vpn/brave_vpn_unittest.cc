@@ -24,6 +24,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/base/mock_network_change_notifier.h"
 #include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -544,6 +545,26 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   OnDisconnected();
   EXPECT_FALSE(needs_connect());
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
+
+  // Handle connect after disconnect current connection.
+  connection_state() = ConnectionState::CONNECTED;
+  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
+  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
+  mock_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
+  OnDisconnected();
+  EXPECT_FALSE(needs_connect());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
+
+  // Handle connect without network.
+  connection_state() = ConnectionState::DISCONNECTED;
+  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
+            net::NetworkChangeNotifier::GetConnectionType());
+  Connect();
+  EXPECT_FALSE(needs_connect());
+  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 
 TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
