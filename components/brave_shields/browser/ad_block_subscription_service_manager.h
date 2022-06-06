@@ -148,27 +148,31 @@ class AdBlockSubscriptionServiceManager {
   void OnListMetadata(const GURL& sub_url,
                       const adblock::FilterListMetadata& metadata);
 
-  absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
+  // static to enforce locking on `subscriptions_`
+  static absl::optional<SubscriptionInfo> GetInfo(
+      const std::unique_ptr<base::DictionaryValue>& subscriptions,
+      const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
   void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,
                                     base::TimeDelta* retry_interval);
 
-  raw_ptr<PrefService> local_state_;
+  raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
   raw_ptr<brave_component_updater::BraveComponent::Delegate>
       delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
-  std::unique_ptr<base::DictionaryValue> subscriptions_;
+  std::unique_ptr<base::DictionaryValue> subscriptions_
+      GUARDED_BY(subscription_services_lock_);
 
   std::map<GURL, std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
       subscription_services_ GUARDED_BY(subscription_services_lock_);
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
-      subscription_filters_providers_;
+      subscription_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
-      subscription_source_observers_;
+      subscription_source_observers_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 
