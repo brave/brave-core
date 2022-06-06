@@ -435,8 +435,10 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
   base::Value::Dict* params = arg.GetDict().FindDict("params");
 
   // params is optional for connect and disconnect doesn't need it
-  if (!params && *method != solana::kConnect &&
-      *method != solana::kDisconnect) {
+  if (!params && (*method == solana::kSignTransaction ||
+                  *method == solana::kSignAndSendTransaction ||
+                  *method == solana::kSignAllTransactions ||
+                  *method == solana::kSignMessage)) {
     std::move(callback).Run(mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                             base::Value(base::Value::Type::DICTIONARY));
