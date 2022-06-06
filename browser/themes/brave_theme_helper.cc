@@ -93,7 +93,6 @@ SkColor BraveThemeHelper::GetDefaultColor(
     }
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER:
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED:
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED: {
       const auto toolbar_color =
