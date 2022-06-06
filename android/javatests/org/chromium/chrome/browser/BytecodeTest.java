@@ -105,6 +105,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation.
@@ -496,7 +497,7 @@ public class BytecodeTest {
                 ActivityLifecycleDispatcher.class, TabModelSelector.class, boolean.class,
                 NewTabPageUma.class, boolean.class, NativePageHost.class, Tab.class, String.class,
                 BottomSheetController.class, Supplier.class, WindowAndroid.class, JankTracker.class,
-                Supplier.class, CrowButtonDelegate.class));
+                Supplier.class, SettingsLauncher.class, CrowButtonDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
@@ -586,6 +587,8 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mToolbarSupplier"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mTabModelSelector"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/ntp/NewTabPage", "mBottomSheetController"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "mHasClearedOmniboxForFocus"));
