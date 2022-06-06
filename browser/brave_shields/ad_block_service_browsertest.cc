@@ -167,6 +167,10 @@ void AdBlockServiceTest::AssertTagExists(const std::string& tag,
       g_brave_browser_process->ad_block_service()->TagExistsForTest(tag);
   ASSERT_EQ(exists_default, expected_exists);
 
+  base::AutoLock lock(g_brave_browser_process->ad_block_service()
+                          ->regional_service_manager()
+                          ->regional_services_lock_);
+
   for (const auto& regional_service :
        g_brave_browser_process->ad_block_service()
            ->regional_service_manager()
@@ -268,6 +272,9 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()
         ->EnableFilterList(uuid, true);
+    base::AutoLock lock(g_brave_browser_process->ad_block_service()
+                            ->regional_service_manager()
+                            ->regional_services_lock_);
     EXPECT_EQ(g_brave_browser_process->ad_block_service()
                   ->regional_service_manager()
                   ->regional_services_.size(),
