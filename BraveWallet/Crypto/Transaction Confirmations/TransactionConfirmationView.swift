@@ -434,7 +434,7 @@ struct TransactionConfirmationView: View {
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button(action: {
       confirmationStore.reject(transaction: confirmationStore.activeTransaction) { success in
-        if confirmationStore.transactions.count == 1 {
+        if confirmationStore.transactions.count <= 1 {
           onDismiss()
         }
       }
@@ -444,7 +444,7 @@ struct TransactionConfirmationView: View {
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button(action: {
       confirmationStore.confirm(transaction: confirmationStore.activeTransaction) { error in
-        if confirmationStore.transactions.count == 1 {
+        if confirmationStore.transactions.count <= 1 {
           onDismiss()
         }
       }
