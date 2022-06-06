@@ -11,8 +11,8 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
-#include "bat/ads/internal/tab_manager/tab_info.h"
-#include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/tabs/tab_info.h"
+#include "bat/ads/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 

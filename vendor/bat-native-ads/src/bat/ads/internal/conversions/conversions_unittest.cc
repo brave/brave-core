@@ -56,8 +56,8 @@ class BatAdsConversionsTest : public UnitTestBase {
 
 TEST_F(BatAdsConversionsTest, ShouldNotAllowConversionTracking) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowConversionTracking,
-                                   false);
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kShouldAllowConversionTracking,
+                                         false);
 
   ConversionList conversions;
 

@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_MANAGER_BROWSER_MANAGER_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_MANAGER_BROWSER_MANAGER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_BROWSER_MANAGER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_BROWSER_MANAGER_H_
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/browser_manager/browser_manager_observer.h"
+#include "bat/ads/internal/browser/browser_manager_observer.h"
 
 namespace ads {
 
@@ -57,4 +57,4 @@ class BrowserManager final {
 
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_MANAGER_BROWSER_MANAGER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BROWSER_BROWSER_MANAGER_H_
