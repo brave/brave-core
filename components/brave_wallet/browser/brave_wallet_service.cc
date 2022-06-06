@@ -881,6 +881,67 @@ void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
   std::move(callback).Run(approved, signature, error);
 }
 
+void BraveWalletService::GetPendingSignTransactionRequests(
+    GetPendingSignTransactionRequestsCallback callback) {
+  std::vector<mojom::SignTransactionRequestPtr> requests;
+  if (sign_transaction_requests_.empty()) {
+    std::move(callback).Run(std::move(requests));
+    return;
+  }
+
+  for (const auto& request : sign_transaction_requests_) {
+    requests.push_back(request.Clone());
+  }
+
+  std::move(callback).Run(std::move(requests));
+}
+
+void BraveWalletService::NotifySignTransactionRequestProcessed(bool approved,
+                                                               int id) {
+  if (sign_transaction_requests_.empty() ||
+      sign_transaction_requests_.front()->id != id) {
+    VLOG(1) << "id: " << id << " is not expected, should be "
+            << sign_transaction_requests_.front()->id;
+    return;
+  }
+  auto callback = std::move(sign_transaction_callbacks_.front());
+  sign_transaction_requests_.pop_front();
+  sign_transaction_callbacks_.pop_front();
+
+  std::move(callback).Run(approved);
+}
+
+void BraveWalletService::GetPendingSignAllTransactionsRequests(
+    GetPendingSignAllTransactionsRequestsCallback callback) {
+  std::vector<mojom::SignAllTransactionsRequestPtr> requests;
+  if (sign_all_transactions_requests_.empty()) {
+    std::move(callback).Run(std::move(requests));
+    return;
+  }
+
+  for (const auto& request : sign_all_transactions_requests_) {
+    requests.push_back(request.Clone());
+  }
+
+  std::move(callback).Run(std::move(requests));
+}
+
+void BraveWalletService::NotifySignAllTransactionsRequestProcessed(
+    bool approved,
+    int id) {
+  if (sign_all_transactions_requests_.empty() ||
+      sign_all_transactions_requests_.front()->id != id) {
+    VLOG(1) << "id: " << id << " is not expected, should be "
+            << sign_all_transactions_requests_.front()->id;
+    return;
+  }
+  auto callback = std::move(sign_all_transactions_callbacks_.front());
+  sign_all_transactions_requests_.pop_front();
+  sign_all_transactions_callbacks_.pop_front();
+
+  std::move(callback).Run(approved);
+}
+
 void BraveWalletService::AddObserver(
     ::mojo::PendingRemote<mojom::BraveWalletServiceObserver> observer) {
   observers_.Add(std::move(observer));
@@ -951,6 +1012,26 @@ void BraveWalletService::AddSignMessageRequest(
   }
   sign_message_requests_.push_back(std::move(request));
   sign_message_callbacks_.push_back(std::move(callback));
+}
+
+void BraveWalletService::AddSignTransactionRequest(
+    mojom::SignTransactionRequestPtr request,
+    SignTransactionRequestCallback callback) {
+  if (request->id < 0) {
+    request->id = sign_transaction_id_++;
+  }
+  sign_transaction_requests_.push_back(std::move(request));
+  sign_transaction_callbacks_.push_back(std::move(callback));
+}
+
+void BraveWalletService::AddSignAllTransactionsRequest(
+    mojom::SignAllTransactionsRequestPtr request,
+    SignAllTransactionsRequestCallback callback) {
+  if (request->id < 0) {
+    request->id = sign_all_transactions_id_++;
+  }
+  sign_all_transactions_requests_.push_back(std::move(request));
+  sign_all_transactions_callbacks_.push_back(std::move(callback));
 }
 
 void BraveWalletService::AddSuggestTokenRequest(
@@ -1229,6 +1310,24 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
   }
 }
 
+void BraveWalletService::CancelAllSignTransactionCallbacks() {
+  while (!sign_transaction_requests_.empty()) {
+    auto callback = std::move(sign_transaction_callbacks_.front());
+    sign_transaction_requests_.pop_front();
+    sign_transaction_callbacks_.pop_front();
+    std::move(callback).Run(false);
+  }
+}
+
+void BraveWalletService::CancelAllSignAllTransactionsCallbacks() {
+  while (!sign_all_transactions_requests_.empty()) {
+    auto callback = std::move(sign_all_transactions_callbacks_.front());
+    sign_all_transactions_requests_.pop_front();
+    sign_all_transactions_callbacks_.pop_front();
+    std::move(callback).Run(false);
+  }
+}
+
 void BraveWalletService::CancelAllGetEncryptionPublicKeyCallbacks() {
   add_get_encryption_public_key_requests_.clear();
   std::unique_ptr<base::Value> formed_response;
@@ -1275,6 +1374,8 @@ void BraveWalletService::Reset() {
   ClearBraveWalletServicePrefs(prefs_);
   CancelAllSuggestedTokenCallbacks();
   CancelAllSignMessageCallbacks();
+  CancelAllSignTransactionCallbacks();
+  CancelAllSignAllTransactionsCallbacks();
   CancelAllGetEncryptionPublicKeyCallbacks();
   CancelAllDecryptCallbacks();
 

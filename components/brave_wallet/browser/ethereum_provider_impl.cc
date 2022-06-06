@@ -1458,7 +1458,7 @@ void EthereumProviderImpl::OnTransactionStatusChanged(
   } else if (tx_status == mojom::TransactionStatus::Error) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_ERROR));
     reject = true;
   }
   std::move(add_tx_callbacks_[tx_meta_id])
