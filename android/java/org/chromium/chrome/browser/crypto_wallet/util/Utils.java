@@ -264,6 +264,12 @@ public class Utils {
             case BraveWalletConstants.KOVAN_CHAIN_ID:
             case BraveWalletConstants.LOCALHOST_CHAIN_ID:
             case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
                 return false;
             default:
                 break;
@@ -275,10 +281,17 @@ public class Utils {
     public static String[] getNetworksList(Activity activity, NetworkInfo[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet).toString());
+        categories.add(activity.getText(R.string.polygon).toString());
+        categories.add(activity.getText(R.string.binance).toString());
+        categories.add(activity.getText(R.string.celo).toString());
+        categories.add(activity.getText(R.string.avalanche).toString());
+        categories.add(activity.getText(R.string.fantom).toString());
+        categories.add(activity.getText(R.string.optimism).toString());
         categories.add(activity.getText(R.string.rinkeby).toString());
         categories.add(activity.getText(R.string.ropsten).toString());
         categories.add(activity.getText(R.string.goerli).toString());
         categories.add(activity.getText(R.string.kovan).toString());
+
         // Disables localhost on Release builds
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
@@ -293,10 +306,17 @@ public class Utils {
     public static String[] getNetworksAbbrevList(Activity activity, NetworkInfo[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet_short).toString());
+        categories.add(activity.getText(R.string.polygon_short).toString());
+        categories.add(activity.getText(R.string.binance_short).toString());
+        categories.add(activity.getText(R.string.celo_short).toString());
+        categories.add(activity.getText(R.string.avalanche_short).toString());
+        categories.add(activity.getText(R.string.fantom_short).toString());
+        categories.add(activity.getText(R.string.optimism_short).toString());
         categories.add(activity.getText(R.string.rinkeby_short).toString());
         categories.add(activity.getText(R.string.ropsten_short).toString());
         categories.add(activity.getText(R.string.goerli_short).toString());
         categories.add(activity.getText(R.string.kovan_short).toString());
+
         // Disables localhost on Release builds
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
@@ -330,6 +350,24 @@ public class Utils {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
                 strNetwork = activity.getText(R.string.mainnet);
                 break;
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.polygon);
+                break;
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.binance);
+                break;
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.celo);
+                break;
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.avalanche);
+                break;
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.fantom);
+                break;
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.optimism);
+                break;
             default:
                 for (NetworkInfo chain : customNetworks) {
                     if (chain_id.equals(chain.chainId)) {
@@ -359,6 +397,24 @@ public class Utils {
                 break;
             case BraveWalletConstants.LOCALHOST_CHAIN_ID:
                 strNetwork = activity.getText(R.string.localhost);
+                break;
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.polygon_short);
+                break;
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.binance_short);
+                break;
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.celo_short);
+                break;
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.avalanche_short);
+                break;
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.fantom_short);
+                break;
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                strNetwork = activity.getText(R.string.optimism_short);
                 break;
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             default:
@@ -408,6 +464,18 @@ public class Utils {
             return BraveWalletConstants.KOVAN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.localhost).toString())) {
             return BraveWalletConstants.LOCALHOST_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.polygon).toString())) {
+            return BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.binance).toString())) {
+            return BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.celo).toString())) {
+            return BraveWalletConstants.CELO_MAINNET_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.avalanche).toString())) {
+            return BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.fantom).toString())) {
+            return BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID;
+        } else if (network.equals(activity.getText(R.string.optimism).toString())) {
+            return BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID;
         }
 
         for (NetworkInfo chain : customNetworks) {

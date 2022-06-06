@@ -1423,9 +1423,6 @@ Are you sure you want to do this?
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
       </message>
-      <message name="IDS_BINANCE" desc="Binance title text.">
-        Binance
-      </message>
       <message name="IDS_SUMMARY" desc="Binance detail section title.">
         Summary
       </message>
@@ -1930,6 +1927,24 @@ Are you sure you want to do this?
     <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Kovan Test Network
     </message>
+    <message name="IDS_POLYGON" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Polygon Mainnet
+    </message>
+    <message name="IDS_BINANCE" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Binance Smart Chain Mainnet
+    </message>
+    <message name="IDS_CELO" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Celo Mainnet
+    </message>
+    <message name="IDS_AVALANCHE" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Avalanche C-Chain
+    </message>
+    <message name="IDS_FANTOM" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Fantom Opera
+    </message>
+    <message name="IDS_OPTIMISM" desc="Brave Wallet network selection button text(network name)" translateable="false">
+      Optimism
+    </message>
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
     </message>
@@ -1947,6 +1962,24 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_KOVAN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
       Kovan
+    </message>
+    <message name="IDS_POLYGON_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Polygon
+    </message>
+    <message name="IDS_BINANCE_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Binance
+    </message>
+    <message name="IDS_CELO_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Celo
+    </message>
+    <message name="IDS_AVALANCHE_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Avalanche
+    </message>
+    <message name="IDS_FANTOM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Fantom
+    </message>
+    <message name="IDS_OPTIMISM_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Optimism
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
