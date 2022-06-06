@@ -1086,6 +1086,8 @@ void RemoveCustomNetwork(PrefService* prefs,
   base::Value* dict = update.Get();
   CHECK(dict);
   base::Value* list = dict->FindKey(kEthereumPrefKey);
+  if (!list)
+    return;
   list->EraseListValueIf([&](const base::Value& v) {
     auto* chain_id_value = v.FindStringKey("chainId");
     if (!chain_id_value)
