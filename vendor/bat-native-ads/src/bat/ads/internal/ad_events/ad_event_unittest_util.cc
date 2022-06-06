@@ -17,7 +17,7 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/instance_id_util.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

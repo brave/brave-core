@@ -6,7 +6,7 @@
 #include "bat/ads/internal/serving/delivery/notification_ads/notification_ad_delivery.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/deprecated/creatives/notification_ads/notification_ads.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
 
 namespace ads {
@@ -15,7 +15,7 @@ namespace notification_ads {
 namespace {
 
 void DeliverAd(const NotificationAdInfo& ad) {
-  NotificationAds::Get()->PushBack(ad);
+  NotificationAdManager::Get()->PushBack(ad);
 
   AdsClientHelper::Get()->ShowNotification(ad);
 }

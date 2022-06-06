@@ -37,11 +37,11 @@ TEST(BatAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   EXPECT_TRUE(public_key_optional);
   const PublicKey& public_key = public_key_optional.value();
 
-  // Client prepares a random token and blinding scalar.
+  // ClientStateManager prepares a random token and blinding scalar.
   Token token;
   EXPECT_TRUE(token.has_value());
 
-  // Client blinds the token.
+  // ClientStateManager blinds the token.
   const absl::optional<BlindedToken> blinded_token_optional = token.Blind();
   EXPECT_TRUE(blinded_token_optional);
   const BlindedToken& blinded_token = blinded_token_optional.value();
@@ -56,7 +56,7 @@ TEST(BatAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   DLEQProof dleq_proof(blinded_token, signed_token, signing_key);
   EXPECT_TRUE(dleq_proof.has_value());
 
-  // Client verifies the DLEQ proof using the public key.
+  // ClientStateManager verifies the DLEQ proof using the public key.
   EXPECT_TRUE(dleq_proof.Verify(blinded_token, signed_token, public_key));
 
   // Server returns a batch DLEQ proof.
@@ -65,8 +65,8 @@ TEST(BatAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   BatchDLEQProof batch_dleq_proof(blinded_tokens, signed_tokens, signing_key);
   EXPECT_TRUE(batch_dleq_proof.has_value());
 
-  // Client verifies the batch DLEQ proof and uses the blinding scalar to
-  // unblind the returned signed tokens.
+  // ClientStateManager verifies the batch DLEQ proof and uses the blinding
+  // scalar to unblind the returned signed tokens.
   const std::vector<Token> tokens = {token};
   const absl::optional<std::vector<UnblindedToken>> unblinded_tokens_optional =
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, signed_tokens,

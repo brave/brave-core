@@ -16,10 +16,10 @@ class Time;
 namespace ads {
 
 class ConfirmationType;
-struct NotificationAdInfo;
 struct HistoryInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
+struct NotificationAdInfo;
 struct PromotedContentAdInfo;
 struct SearchResultAdInfo;
 

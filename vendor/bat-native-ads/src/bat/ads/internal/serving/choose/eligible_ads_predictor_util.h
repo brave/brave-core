@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_util.h"
-#include "bat/ads/internal/base/container_util.h"
+#include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/serving/choose/ad_predictor_aliases.h"
 #include "bat/ads/internal/serving/choose/ad_predictor_info.h"

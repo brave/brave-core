@@ -5,34 +5,34 @@
 
 #include "bat/ads/internal/serving/permission_rules/catalog_permission_rule.h"
 
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsCatalogPermissionRuleTest : public UnitTestBase {
+class BatAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
  protected:
-  BatAdsCatalogPermissionRuleTest() = default;
+  BatAdsCatalogPermissionRuleIntegrationTest() = default;
 
-  ~BatAdsCatalogPermissionRuleTest() override = default;
+  ~BatAdsCatalogPermissionRuleIntegrationTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
   }
+
+  void SetUpMocks() override {
+    const URLEndpoints endpoints = {
+        {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+    MockUrlRequest(ads_client_mock_, endpoints);
+  }
 };
 
-TEST_F(BatAdsCatalogPermissionRuleTest, AllowAd) {
+TEST_F(BatAdsCatalogPermissionRuleIntegrationTest, AllowAd) {
   // Arrange
-  const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  InitializeAds();
 
   // Act
   CatalogPermissionRule permission_rule;
@@ -42,17 +42,10 @@ TEST_F(BatAdsCatalogPermissionRuleTest, AllowAd) {
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogPermissionRuleTest,
+TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
-  const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  InitializeAds();
-
-  AdvanceClock(base::Hours(23) + base::Minutes(59));
+  AdvanceClockBy(base::Days(1) - base::Seconds(1));
 
   // Act
   CatalogPermissionRule permission_rule;
@@ -62,17 +55,10 @@ TEST_F(BatAdsCatalogPermissionRuleTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogPermissionRuleTest,
+TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
        DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
-  const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  InitializeAds();
-
-  AdvanceClock(base::Days(1));
+  AdvanceClockBy(base::Days(1));
 
   // Act
   CatalogPermissionRule permission_rule;
@@ -82,7 +68,8 @@ TEST_F(BatAdsCatalogPermissionRuleTest,
   EXPECT_FALSE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogPermissionRuleTest, DoNotAllowAdIfCatalogDoesNotExist) {
+TEST_F(BatAdsCatalogPermissionRuleIntegrationTest,
+       DoNotAllowAdIfCatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
 

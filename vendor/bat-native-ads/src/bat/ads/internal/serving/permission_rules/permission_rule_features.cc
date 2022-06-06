@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/field_trial_params_util.h"
+#include "bat/ads/internal/base/metrics/field_trial_params_util.h"
 
 namespace ads {
 namespace permission_rules {

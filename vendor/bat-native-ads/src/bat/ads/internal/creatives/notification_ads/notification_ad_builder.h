@@ -10,8 +10,8 @@
 
 namespace ads {
 
-struct NotificationAdInfo;
 struct CreativeNotificationAdInfo;
+struct NotificationAdInfo;
 
 NotificationAdInfo BuildNotificationAd(
     const CreativeNotificationAdInfo& creative_ad);

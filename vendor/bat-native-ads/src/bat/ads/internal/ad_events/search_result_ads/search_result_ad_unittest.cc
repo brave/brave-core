@@ -11,9 +11,8 @@
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
@@ -363,7 +362,7 @@ TEST_F(BatAdsSearchResultAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
-  AdvanceClock(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);
@@ -389,7 +388,7 @@ TEST_F(BatAdsSearchResultAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
 
   FireAdEvents(ad_event, ads_per_day);
 
-  AdvanceClock(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   // Act
   FireEvent(ad_mojom, mojom::SearchResultAdEventType::kViewed);

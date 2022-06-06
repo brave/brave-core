@@ -24,8 +24,8 @@ AdPredictorInfo<T>& AdPredictorInfo<T>::operator=(
 template <typename T>
 AdPredictorInfo<T>::~AdPredictorInfo() = default;
 
-template struct AdPredictorInfo<CreativeNotificationAdInfo>;
 template struct AdPredictorInfo<CreativeInlineContentAdInfo>;
 template struct AdPredictorInfo<CreativeNewTabPageAdInfo>;
+template struct AdPredictorInfo<CreativeNotificationAdInfo>;
 
 }  // namespace ads

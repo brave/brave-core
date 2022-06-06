@@ -16,10 +16,10 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
@@ -204,7 +204,6 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -272,7 +271,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -339,7 +337,6 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -386,7 +383,6 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
           ]
         }
         )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   account_->MaybeGetIssuers();
@@ -440,7 +436,6 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
               }
             }
           )"}}}};
-
   MockUrlRequest(ads_client_mock_, endpoints);
 
   BuildAndSetIssuers();
@@ -615,7 +610,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClock(TimeFromString("31 October 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("31 October 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_1 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -625,7 +620,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
-  AdvanceClock(TimeFromString("18 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("18 November 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_3 =
       BuildTransaction(0.01, ConfirmationType::kViewed);
@@ -635,7 +630,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_5 =
       BuildTransaction(0.01, ConfirmationType::kViewed);

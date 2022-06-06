@@ -6,7 +6,7 @@
 #include "bat/ads/internal/serving/permission_rules/unblinded_tokens_permission_rule.h"
 
 #include "bat/ads/internal/account/account_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads {
@@ -37,7 +37,8 @@ bool UnblindedTokensPermissionRule::DoesRespectCap() {
     return true;
   }
 
-  const int count = ConfirmationsState::Get()->get_unblinded_tokens()->Count();
+  const int count =
+      ConfirmationStateManager::Get()->get_unblinded_tokens()->Count();
   if (count < kUnblindedTokensMinimumThreshold) {
     return false;
   }

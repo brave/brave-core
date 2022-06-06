@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/subdivision_code_util.h"
+#include "bat/ads/internal/base/locale/subdivision_code_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 

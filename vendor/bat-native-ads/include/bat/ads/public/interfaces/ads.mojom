@@ -84,14 +84,14 @@ enum SearchResultAdEventType {
   kClicked
 };
 
+enum P2AEventType {
+  kListType = 0
+};
+
 enum UrlRequestMethod {
   kGet = 0,
   kPut,
   kPost
-};
-
-enum P2AEventType {
-  kListType = 0
 };
 
 struct UrlRequest {
@@ -104,7 +104,7 @@ struct UrlRequest {
 
 struct UrlResponse {
   url.mojom.Url url;
-  int32 status_code;
+  int32 status_code = -1;
   string body;
   map<string, string> headers;
 };

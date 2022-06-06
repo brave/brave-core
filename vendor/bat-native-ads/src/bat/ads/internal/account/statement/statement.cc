@@ -9,7 +9,7 @@
 #include "bat/ads/internal/account/statement/statement_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_util.h"
+#include "bat/ads/internal/base/time/time_util.h"
 #include "bat/ads/statement_info.h"
 
 namespace ads {

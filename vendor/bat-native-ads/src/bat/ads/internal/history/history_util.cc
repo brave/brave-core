@@ -9,7 +9,7 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 namespace ads {
 
@@ -32,10 +32,12 @@ HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
   history_item.ad_content.brand_display_url = ad.target_url.host();
   history_item.ad_content.brand_url = ad.target_url;
   history_item.ad_content.like_action_type =
-      Client::Get()->GetAdContentLikeActionTypeForAdvertiser(ad.advertiser_id);
+      ClientStateManager::Get()->GetAdContentLikeActionTypeForAdvertiser(
+          ad.advertiser_id);
   history_item.ad_content.confirmation_type = confirmation_type;
   history_item.category_content.opt_action_type =
-      Client::Get()->GetCategoryContentOptActionTypeForSegment(ad.segment);
+      ClientStateManager::Get()->GetCategoryContentOptActionTypeForSegment(
+          ad.segment);
   history_item.category_content.category = ad.segment;
 
   return history_item;

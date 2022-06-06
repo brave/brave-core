@@ -13,11 +13,11 @@
 
 namespace ads {
 
-struct ConfirmationInfo;
-
 namespace privacy {
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
+
+struct ConfirmationInfo;
 
 class RedeemUnblindedToken final {
  public:

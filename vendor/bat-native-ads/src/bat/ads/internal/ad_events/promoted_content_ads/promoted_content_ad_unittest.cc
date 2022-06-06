@@ -13,9 +13,8 @@
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
@@ -317,7 +316,7 @@ TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
-  AdvanceClock(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -344,7 +343,7 @@ TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
 
   FireAdEvents(ad_event, ads_per_day);
 
-  AdvanceClock(base::Hours(1));
+  AdvanceClockBy(base::Hours(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();

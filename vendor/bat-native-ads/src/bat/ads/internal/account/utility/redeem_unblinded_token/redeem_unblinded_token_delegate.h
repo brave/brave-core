@@ -8,11 +8,11 @@
 
 namespace ads {
 
-struct ConfirmationInfo;
-
 namespace privacy {
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
+
+struct ConfirmationInfo;
 
 class RedeemUnblindedTokenDelegate {
  public:

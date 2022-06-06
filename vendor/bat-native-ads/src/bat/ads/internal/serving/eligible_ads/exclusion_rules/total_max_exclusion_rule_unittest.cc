@@ -8,20 +8,17 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
 namespace {
-
 const std::vector<std::string> kCreativeSetIds = {
     "654f10df-fbc4-4a92-8d43-2edf73734a60",
     "465f10df-fbc4-4a92-8d43-4edf73734a60"};
-
 }  // namespace
 
 class BatAdsTotalMaxExclusionRuleTest : public UnitTestBase {

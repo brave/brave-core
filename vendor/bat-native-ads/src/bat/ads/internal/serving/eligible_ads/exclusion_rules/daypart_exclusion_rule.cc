@@ -8,8 +8,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/calendar_util.h"
-#include "bat/ads/internal/base/time_util.h"
+#include "bat/ads/internal/base/calendar/calendar_util.h"
+#include "bat/ads/internal/base/time/time_util.h"
 
 namespace ads {
 

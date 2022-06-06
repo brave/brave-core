@@ -6,7 +6,7 @@
 #include "bat/ads/history_item_info.h"
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/number_util.h"
+#include "bat/ads/internal/base/numbers/number_util.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 
 namespace ads {

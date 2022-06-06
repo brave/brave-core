@@ -9,9 +9,8 @@
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 #include "bat/ads/pref_names.h"
@@ -62,7 +61,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
                         "8b742869-6e4a-490c-ac31-31b49130098a",
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kNotificationAd);
-  ConfirmationsState::Get()->AppendFailedConfirmation(confirmation);
+  ConfirmationStateManager::Get()->AppendFailedConfirmation(confirmation);
 
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       privacy::GetRandomUnblindedPaymentTokens(1);
@@ -80,7 +79,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
         });
 
     const ConfirmationList& confirmations =
-        ConfirmationsState::Get()->GetFailedConfirmations();
+        ConfirmationStateManager::Get()->GetFailedConfirmations();
     EXPECT_TRUE(confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
@@ -106,7 +105,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
         });
 
     const ConfirmationList& confirmations =
-        ConfirmationsState::Get()->GetFailedConfirmations();
+        ConfirmationStateManager::Get()->GetFailedConfirmations();
     EXPECT_TRUE(confirmations.empty());
 
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =

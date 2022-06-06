@@ -6,7 +6,7 @@
 #include "bat/ads/internal/covariates/log_entries/notification_ad_served_at.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/covariates/covariates_constants.h"
+#include "bat/ads/internal/covariates/covariate_constants.h"
 
 namespace ads {
 
@@ -22,8 +22,7 @@ brave_federated::mojom::DataType NotificationAdServedAt::GetDataType() const {
   return brave_federated::mojom::DataType::kDouble;
 }
 
-brave_federated::mojom::CovariateType NotificationAdServedAt::GetCovariateType()
-    const {
+brave_federated::mojom::CovariateType NotificationAdServedAt::GetType() const {
   return brave_federated::mojom::CovariateType::kNotificationAdServedAt;
 }
 

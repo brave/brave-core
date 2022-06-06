@@ -9,8 +9,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -151,8 +150,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensWithEmptyList) {
   get_unblinded_payment_tokens()->SetTokens(unblinded_payment_tokens);
 
   // Assert
-  const int count = get_unblinded_payment_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromList) {
@@ -208,8 +206,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokensFromListWithEmptyList) {
   get_unblinded_payment_tokens()->SetTokensFromList(list);
 
   // Assert
-  const int count = get_unblinded_payment_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, AddTokens) {
@@ -376,8 +373,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokens) {
   get_unblinded_payment_tokens()->RemoveAllTokens();
 
   // Assert
-  const int count = get_unblinded_payment_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokensWithEmptyList) {
@@ -387,8 +383,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, RemoveAllTokensWithEmptyList) {
   get_unblinded_payment_tokens()->RemoveAllTokens();
 
   // Assert
-  const int count = get_unblinded_payment_tokens()->Count();
-  EXPECT_EQ(0, count);
+  EXPECT_TRUE(privacy::get_unblinded_payment_tokens()->IsEmpty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, TokenExists) {

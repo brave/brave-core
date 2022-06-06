@@ -7,9 +7,8 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
 
@@ -61,11 +60,11 @@ TEST_F(BatAdsFederatedLogEntriesTimeSinceLastUserActivityEventTest, GetValue) {
       UserActivityEventType::kOpenedNewTab,
       brave_federated::mojom::CovariateType::kTimeSinceLastOpenedNewTabEvent);
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
-  AdvanceClock(base::Minutes(2));
+  AdvanceClockBy(base::Minutes(2));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   // Act
   const std::string value = entry->GetValue();

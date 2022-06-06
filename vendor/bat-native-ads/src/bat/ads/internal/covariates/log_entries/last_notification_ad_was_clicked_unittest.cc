@@ -7,8 +7,7 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/history/history.h"
 #include "bat/ads/notification_ad_info.h"
 
@@ -59,7 +58,7 @@ TEST_F(BatAdsFederatedLogEntriesLastNotificationAdWasClickedTest,
   history::AddNotificationAd(ad, ConfirmationType::kViewed);
   history::AddNotificationAd(ad, ConfirmationType::kClicked);
 
-  AdvanceClock(base::Days(31));
+  AdvanceClockBy(base::Days(31));
 
   // Act
   const std::string value = entry->GetValue();

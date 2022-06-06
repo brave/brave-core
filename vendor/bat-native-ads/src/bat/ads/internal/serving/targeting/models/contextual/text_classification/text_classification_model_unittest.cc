@@ -8,8 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
@@ -29,7 +28,7 @@ class BatAdsTextClassificationModelTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     resource_.Load();
-    task_environment()->RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   resource::TextClassification resource_;

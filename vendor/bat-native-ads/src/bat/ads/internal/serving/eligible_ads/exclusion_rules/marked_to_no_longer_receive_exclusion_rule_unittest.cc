@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -42,8 +41,8 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
 
-  Client::Get()->ToggleAdOptOut(creative_ad.segment,
-                                CategoryContentOptActionType::kNone);
+  ClientStateManager::Get()->ToggleAdOptOut(
+      creative_ad.segment, CategoryContentOptActionType::kNone);
 
   // Act
   MarkedToNoLongerReceiveExclusionRule exclusion_rule;

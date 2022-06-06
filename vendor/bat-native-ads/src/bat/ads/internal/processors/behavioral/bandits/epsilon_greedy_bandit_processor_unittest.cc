@@ -6,9 +6,8 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/container_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/containers/container_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/pref_names.h"
 

@@ -5,20 +5,13 @@
 
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsDepositsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsDepositsDatabaseTableTest() = default;
-  ~BatAdsDepositsDatabaseTableTest() override = default;
-};
-
-TEST_F(BatAdsDepositsDatabaseTableTest, TableName) {
+TEST(BatAdsDepositsDatabaseTableTest, TableName) {
   // Arrange
   database::table::Deposits database_table;
 

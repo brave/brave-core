@@ -6,9 +6,9 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
 #include "base/check.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
@@ -77,9 +77,7 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
 
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   // Arrange
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = true;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = true;
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
@@ -117,9 +115,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
 
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   // Arrange
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = false;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = false;
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";

@@ -10,10 +10,10 @@
 
 #include "base/guid.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info_aliases.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -9,7 +9,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/ads.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -32,9 +32,7 @@ std::string GetOdysseyAsJson() {
 
 TEST(BatAdsOdysseyUserDataTest, GetOdysseyForGuest) {
   // Arrange
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = true;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = true;
 
   // Act
   const std::string json = GetOdysseyAsJson();
@@ -47,9 +45,7 @@ TEST(BatAdsOdysseyUserDataTest, GetOdysseyForGuest) {
 
 TEST(BatAdsOdysseyUserDataTest, GetOdysseyForHost) {
   // Arrange
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = false;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = false;
 
   // Act
   const std::string json = GetOdysseyAsJson();

@@ -7,9 +7,8 @@
 
 #include <string>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_file_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

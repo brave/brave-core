@@ -9,8 +9,9 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -29,9 +30,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  mojom::SysInfo sys_info;
-  sys_info.is_uncertain_future = false;
-  SetSysInfo(sys_info);
+  SysInfo().is_uncertain_future = false;
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(2);

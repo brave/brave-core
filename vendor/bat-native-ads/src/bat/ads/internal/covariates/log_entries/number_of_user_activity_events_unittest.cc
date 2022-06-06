@@ -7,9 +7,8 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsFederatedLogEntries*
 
@@ -59,17 +58,17 @@ TEST_F(BatAdsFederatedLogEntriesNumberOfUserActivityEventsTest, GetValue) {
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kBrowserDidResignActive);
 
-  AdvanceClock(base::Minutes(31));
+  AdvanceClockBy(base::Minutes(31));
 
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kBrowserDidBecomeActive);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
   // Act
   const std::string value = entry->GetValue();

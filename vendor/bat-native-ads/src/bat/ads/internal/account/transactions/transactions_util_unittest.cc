@@ -6,9 +6,8 @@
 #include "bat/ads/internal/account/transactions/transactions_util.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -23,7 +22,7 @@ class BatAdsTransactionsUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
 
@@ -31,7 +30,7 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   const TransactionInfo& transaction_2 =
       BuildTransaction(0.03, ConfirmationType::kClicked);
@@ -53,7 +52,7 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
 
 TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
 
@@ -65,7 +64,7 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   const base::Time from_time = Now();
   const base::Time to_time = DistantFuture();

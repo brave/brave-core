@@ -6,11 +6,9 @@
 #include "bat/ads/internal/user_interaction/browsing/user_activity_scoring.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/covariates/covariates_constants.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/covariates/covariate_constants.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_trigger_info.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
@@ -28,11 +26,11 @@ class BatAdsUserActivityUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsUserActivityUtilTest, NoTabsOpened) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int number_of_tabs_opened = GetNumberOfTabsOpened(events);
 
   // Assert
@@ -41,18 +39,18 @@ TEST_F(BatAdsUserActivityUtilTest, NoTabsOpened) {
 
 TEST_F(BatAdsUserActivityUtilTest, TabsOpened) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
-  AdvanceClock(base::Minutes(30));
+  AdvanceClockBy(base::Minutes(30));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int number_of_tabs_opened = GetNumberOfTabsOpened(events);
 
   // Assert
@@ -61,22 +59,22 @@ TEST_F(BatAdsUserActivityUtilTest, TabsOpened) {
 
 TEST_F(BatAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
-  AdvanceClock(base::Minutes(30));
+  AdvanceClockBy(base::Minutes(30));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
-  AdvanceClock(base::Minutes(5));
+  AdvanceClockBy(base::Minutes(5));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int number_of_tabs_opened = GetNumberOfUserActivityEvents(
       events, UserActivityEventType::kClickedLink);
 
@@ -87,11 +85,11 @@ TEST_F(BatAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
 TEST_F(BatAdsUserActivityUtilTest,
        GetNumberOfUserActivityEventsForMissingEvent) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int number_of_tabs_opened =
       GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
 
@@ -105,7 +103,7 @@ TEST_F(BatAdsUserActivityUtilTest,
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int number_of_tabs_opened =
       GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
 
@@ -115,30 +113,30 @@ TEST_F(BatAdsUserActivityUtilTest,
 
 TEST_F(BatAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  AdvanceClock(base::Minutes(30));
+  AdvanceClockBy(base::Minutes(30));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  AdvanceClock(base::Minutes(5));
+  AdvanceClockBy(base::Minutes(5));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  AdvanceClock(base::Minutes(5));
+  AdvanceClockBy(base::Minutes(5));
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  AdvanceClock(base::Minutes(1));
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  AdvanceClockBy(base::Minutes(1));
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
       events, UserActivityEventType::kTabStartedPlayingMedia);
 
@@ -150,11 +148,11 @@ TEST_F(BatAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
 TEST_F(BatAdsUserActivityUtilTest,
        GetTimeSinceLastUserActivityEventForMissingEvent) {
   // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
       events, UserActivityEventType::kTabStartedPlayingMedia);
 
@@ -168,7 +166,7 @@ TEST_F(BatAdsUserActivityUtilTest,
 
   // Act
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
   const int64_t time = GetTimeSinceLastUserActivityEvent(
       events, UserActivityEventType::kTabStartedPlayingMedia);
 

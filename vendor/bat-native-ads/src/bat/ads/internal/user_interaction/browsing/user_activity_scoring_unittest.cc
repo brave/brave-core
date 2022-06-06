@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/user_interaction/browsing/user_activity_scoring.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
 
@@ -26,18 +25,19 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScore) {
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
+      UserActivityEventType::kClickedReloadButton);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -51,19 +51,20 @@ TEST_F(BatAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0D1406=1.0;0D14=0.5");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  AdvanceClock(base::Hours(2));
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  AdvanceClockBy(base::Hours(2));
+  UserActivityManager::Get()->RecordEvent(
+      UserActivityEventType::kClickedReloadButton);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -77,18 +78,19 @@ TEST_F(BatAdsUserActivityScoringTest,
   // Arrange
   const UserActivityTriggerList triggers = ToUserActivityTriggers("INVALID");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
+      UserActivityEventType::kClickedReloadButton);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -103,18 +105,19 @@ TEST_F(BatAdsUserActivityScoringTest,
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=1;0D1406=1.0;=0.5");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
+      UserActivityEventType::kClickedReloadButton);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -129,18 +132,19 @@ TEST_F(BatAdsUserActivityScoringTest,
   const UserActivityTriggerList triggers =
       ToUserActivityTriggers("06=.3;0d1406=1.0;0D14=0.5");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
+      UserActivityEventType::kClickedReloadButton);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);
@@ -154,18 +158,19 @@ TEST_F(BatAdsUserActivityScoringTest,
   // Arrange
   const UserActivityTriggerList triggers = ToUserActivityTriggers("");
 
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedReloadButton);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(
+      UserActivityEventType::kClickedReloadButton);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(
       UserActivityEventType::kTabStartedPlayingMedia);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedLink);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kTypedUrl);
+  UserActivityManager::Get()->RecordEvent(UserActivityEventType::kClickedLink);
 
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   // Act
   const double score = GetUserActivityScore(triggers, events);

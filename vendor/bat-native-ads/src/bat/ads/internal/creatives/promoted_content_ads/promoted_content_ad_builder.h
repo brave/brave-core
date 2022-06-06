@@ -10,8 +10,8 @@
 
 namespace ads {
 
-struct PromotedContentAdInfo;
 struct CreativePromotedContentAdInfo;
+struct PromotedContentAdInfo;
 
 PromotedContentAdInfo BuildPromotedContentAd(
     const CreativePromotedContentAdInfo& creative_promoted_content_ad);

@@ -8,9 +8,8 @@
 #include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -106,7 +105,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Hours(23));
+  FastForwardClockBy(base::Hours(23));
 
   // Act
   DailyCapExclusionRule exclusion_rule(ad_events);
@@ -129,7 +128,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::Days(1));
+  FastForwardClockBy(base::Days(1));
 
   // Act
   DailyCapExclusionRule exclusion_rule(ad_events);

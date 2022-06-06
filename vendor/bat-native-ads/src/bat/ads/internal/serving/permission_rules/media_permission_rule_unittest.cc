@@ -8,8 +8,7 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

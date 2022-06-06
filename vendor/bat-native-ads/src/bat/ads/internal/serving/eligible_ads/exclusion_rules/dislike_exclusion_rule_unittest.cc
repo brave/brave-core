@@ -6,9 +6,8 @@
 #include "bat/ads/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
 #include "bat/ads/ad_content_info.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
-#include "bat/ads/internal/deprecated/client/client.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -46,7 +45,7 @@ TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   AdContentInfo ad_content;
   ad_content.advertiser_id = kAdvertiserId;
   ad_content.like_action_type = AdContentLikeActionType::kNeutral;
-  Client::Get()->ToggleAdThumbDown(ad_content);
+  ClientStateManager::Get()->ToggleAdThumbDown(ad_content);
 
   // Act
   DislikeExclusionRule exclusion_rule;

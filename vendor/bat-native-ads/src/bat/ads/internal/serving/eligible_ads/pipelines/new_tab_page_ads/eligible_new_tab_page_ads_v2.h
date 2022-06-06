@@ -14,10 +14,6 @@
 
 namespace ads {
 
-namespace targeting {
-struct UserModelInfo;
-}  // namespace targeting
-
 namespace geographic {
 class SubdivisionTargeting;
 }  // namespace geographic
@@ -25,6 +21,10 @@ class SubdivisionTargeting;
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
+
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
 
 namespace new_tab_page_ads {
 

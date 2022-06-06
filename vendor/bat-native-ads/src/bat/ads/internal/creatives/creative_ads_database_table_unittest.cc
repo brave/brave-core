@@ -5,30 +5,18 @@
 
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"
 
-#include <memory>
-
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsCreativeAdsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsCreativeAdsDatabaseTableTest()
-      : database_table_(std::make_unique<database::table::CreativeAds>()) {}
-
-  ~BatAdsCreativeAdsDatabaseTableTest() override = default;
-
-  std::unique_ptr<database::table::CreativeAds> database_table_;
-};
-
-TEST_F(BatAdsCreativeAdsDatabaseTableTest, TableName) {
+TEST(BatAdsCreativeAdsDatabaseTableTest, TableName) {
   // Arrange
+  database::table::CreativeAds database_table;
 
   // Act
-  const std::string table_name = database_table_->GetTableName();
+  const std::string table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "creative_ads";

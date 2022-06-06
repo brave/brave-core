@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_factory.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/creatives/notification_ads/notification_ads.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
 
 namespace ads {
@@ -33,7 +33,7 @@ void NotificationAd::FireEvent(
   DCHECK(!placement_id.empty());
 
   NotificationAdInfo ad;
-  if (!NotificationAds::Get()->Get(placement_id, &ad)) {
+  if (!NotificationAdManager::Get()->GetForPlacementId(placement_id, &ad)) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
     NotifyNotificationAdEventFailed(placement_id, event_type);

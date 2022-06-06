@@ -11,9 +11,9 @@
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
@@ -903,7 +903,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
                    conversion_1.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_1);
 
-  AdvanceClock(base::Minutes(1));
+  AdvanceClockBy(base::Minutes(1));
 
   const AdEventInfo& ad_event_2 =
       BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
@@ -1188,7 +1188,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  task_environment_.FastForwardBy(base::Days(3) - base::Minutes(1));
+  FastForwardClockBy(base::Days(3) - base::Minutes(1));
 
   // Act
   conversions_->MaybeConvert({GURL("https://foo.bar.com/qux")}, "", {});
@@ -1228,7 +1228,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  task_environment_.FastForwardBy(base::Days(3));
+  FastForwardClockBy(base::Days(3));
 
   // Act
   conversions_->MaybeConvert({GURL("https://www.foo.com/bar/qux")}, "", {});
@@ -1373,7 +1373,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1423,7 +1423,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1475,7 +1475,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   ConversionList conversions;
 

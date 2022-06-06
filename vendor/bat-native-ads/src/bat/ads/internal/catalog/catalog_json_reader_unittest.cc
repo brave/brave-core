@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/catalog/catalog_json_reader.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_file_util.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
@@ -175,7 +175,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.type = "postview";
     conversion.url_pattern = "https://www.brave.com/1/*";
     conversion.observation_window = 30;
-    conversion.expire_at = TimestampToTime(4105036799);
+    conversion.expire_at = base::Time::FromDoubleT(4105036799);
     conversions.push_back(conversion);
 
     // Creative Sets
@@ -379,7 +379,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     conversion.url_pattern = "https://www.brave.com/2/*";
     conversion.observation_window = 7;
     conversion.advertiser_public_key = "";
-    conversion.expire_at = TimestampToTime(4103049599);
+    conversion.expire_at = base::Time::FromDoubleT(4103049599);
     conversions.push_back(conversion);
 
     // Creative Sets

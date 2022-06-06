@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/values.h"
-#include "bat/ads/internal/deprecated/client/client.h"
-#include "bat/ads/internal/deprecated/confirmations/confirmations_state.h"
+#include "bat/ads/internal/deprecated/client/client_state_manager.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 
 namespace ads {
 namespace user_data {
@@ -21,7 +21,8 @@ constexpr char kMutatedKey[] = "mutated";
 base::DictionaryValue GetMutated() {
   base::DictionaryValue user_data;
 
-  if (ConfirmationsState::Get()->is_mutated() || Client::Get()->is_mutated()) {
+  if (ConfirmationStateManager::Get()->is_mutated() ||
+      ClientStateManager::Get()->is_mutated()) {
     user_data.SetBoolKey(kMutatedKey, true);
   }
 

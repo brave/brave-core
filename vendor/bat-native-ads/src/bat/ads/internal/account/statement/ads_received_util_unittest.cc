@@ -6,9 +6,8 @@
 #include "bat/ads/internal/account/statement/ads_received_util.h"
 
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -23,7 +22,7 @@ class BatAdsAdsReceivedUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
 
@@ -31,7 +30,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       BuildTransaction(0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
-  AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /* is_local */ true));
 
   const base::Time from_time = Now();
 
@@ -43,7 +42,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
-  AdvanceClock(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
 
   const TransactionInfo& transaction_4 =
       BuildTransaction(0.02, ConfirmationType::kViewed);
@@ -62,7 +61,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
 
 TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
 
@@ -74,7 +73,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
       BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
-  AdvanceClock(TimeFromString("1 January 2021", /* is_local */ true));
+  AdvanceClockTo(TimeFromString("1 January 2021", /* is_local */ true));
 
   const base::Time from_time = Now();
   const base::Time to_time = DistantFuture();

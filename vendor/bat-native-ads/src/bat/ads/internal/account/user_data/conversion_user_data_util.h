@@ -10,11 +10,11 @@
 
 namespace ads {
 
-struct ConversionQueueItemInfo;
-
 namespace security {
 struct VerifiableConversionEnvelopeInfo;
 }  // namespace security
+
+struct ConversionQueueItemInfo;
 
 namespace user_data {
 

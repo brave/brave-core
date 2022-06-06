@@ -10,9 +10,8 @@
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -43,7 +42,7 @@ TEST_F(BatAdsSystemTimestampUserDataTest, GetSystemTimestamp) {
   // Arrange
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
-  AdvanceClock(time);
+  AdvanceClockTo(time);
 
   // Act
   const std::string json = GetSystemTimestampAsJson();

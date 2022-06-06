@@ -14,13 +14,13 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/http_status_code.h"
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time_formatting_util.h"
+#include "bat/ads/internal/base/net/http/http_status_code.h"
+#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/base/url/url_request_string_util.h"
+#include "bat/ads/internal/base/url/url_response_string_util.h"
 #include "bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
-#include "bat/ads/internal/server/url/url_request_string_util.h"
-#include "bat/ads/internal/server/url/url_response_string_util.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -264,11 +264,13 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
 }
 
 void SubdivisionTargeting::Retry() {
-  const base::Time time = retry_timer_.StartWithPrivacy(
+  const base::Time retry_at = retry_timer_.StartWithPrivacy(
       kRetryAfter,
-      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
+      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)),
+      FROM_HERE);
 
-  BLOG(1, "Retry fetching subdivision target " << FriendlyDateAndTime(time));
+  BLOG(1,
+       "Retry fetching subdivision target " << FriendlyDateAndTime(retry_at));
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
@@ -277,7 +279,8 @@ void SubdivisionTargeting::FetchAfterDelay() {
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       delay,
-      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
+      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)),
+      FROM_HERE);
 
   BLOG(1, "Fetch ads subdivision target " << FriendlyDateAndTime(fetch_at));
 }

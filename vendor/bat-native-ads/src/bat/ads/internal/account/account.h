@@ -20,6 +20,10 @@
 
 namespace ads {
 
+namespace privacy {
+class TokenGeneratorInterface;
+}  // namespace privacy
+
 class AdType;
 class Confirmations;
 class ConfirmationType;
@@ -29,10 +33,6 @@ class RefillUnblindedTokens;
 class Wallet;
 struct IssuersInfo;
 struct WalletInfo;
-
-namespace privacy {
-class TokenGeneratorInterface;
-}  // namespace privacy
 
 class Account final : public ConfirmationsDelegate,
                       public IssuersDelegate,

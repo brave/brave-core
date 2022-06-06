@@ -6,7 +6,7 @@
 #include "bat/ads/internal/covariates/log_entries/number_of_user_activity_events.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/user_interaction/browsing/user_activity.h"
+#include "bat/ads/internal/user_interaction/browsing/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/browsing/user_activity_util.h"
 
 namespace ads {
@@ -23,14 +23,14 @@ brave_federated::mojom::DataType NumberOfUserActivityEvents::GetDataType()
   return brave_federated::mojom::DataType::kInt;
 }
 
-brave_federated::mojom::CovariateType
-NumberOfUserActivityEvents::GetCovariateType() const {
+brave_federated::mojom::CovariateType NumberOfUserActivityEvents::GetType()
+    const {
   return covariate_type_;
 }
 
 std::string NumberOfUserActivityEvents::GetValue() const {
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(base::Minutes(30));
+      UserActivityManager::Get()->GetHistoryForTimeWindow(base::Minutes(30));
 
   return base::NumberToString(
       GetNumberOfUserActivityEvents(events, event_type_));

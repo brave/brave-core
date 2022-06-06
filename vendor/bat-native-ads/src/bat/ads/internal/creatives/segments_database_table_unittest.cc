@@ -5,30 +5,18 @@
 
 #include "bat/ads/internal/creatives/segments_database_table.h"
 
-#include <memory>
-
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsSegmentsDatabaseTableTest : public UnitTestBase {
- protected:
-  BatAdsSegmentsDatabaseTableTest()
-      : database_table_(std::make_unique<database::table::Segments>()) {}
-
-  ~BatAdsSegmentsDatabaseTableTest() override = default;
-
-  std::unique_ptr<database::table::Segments> database_table_;
-};
-
-TEST_F(BatAdsSegmentsDatabaseTableTest, TableName) {
+TEST(BatAdsSegmentsDatabaseTableTest, TableName) {
   // Arrange
+  database::table::Segments database_table;
 
   // Act
-  const std::string table_name = database_table_->GetTableName();
+  const std::string table_name = database_table.GetTableName();
 
   // Assert
   const std::string expected_table_name = "segments";

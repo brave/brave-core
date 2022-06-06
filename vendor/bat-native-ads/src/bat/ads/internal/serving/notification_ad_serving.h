@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/base/timer.h"
+#include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/serving/notification_ad_serving_observer.h"
 
 namespace base {

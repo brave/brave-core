@@ -5,16 +5,18 @@
 
 #include "bat/ads/ad_event_history.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_time_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
 namespace {
+
 constexpr char kID1[] = "26330bea-9b8c-4cd3-b04a-1c74cbdf701e";
 constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
+
 }  // namespace
 
 class BatAdsAdEventHistoryTest : public UnitTestBase {

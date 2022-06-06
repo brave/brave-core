@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -26,7 +25,7 @@ TEST_F(BatAdsAntiTargetingResourceTest, Load) {
 
   // Act
   resource.Load();
-  task_environment()->RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Assert
   const bool is_initialized = resource.IsInitialized();

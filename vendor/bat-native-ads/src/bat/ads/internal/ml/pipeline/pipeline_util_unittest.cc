@@ -10,9 +10,8 @@
 
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest_base.h"
-#include "bat/ads/internal/base/unittest_file_util.h"
-#include "bat/ads/internal/base/unittest_util.h"
+#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/base/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -21,10 +20,8 @@ namespace ads {
 namespace ml {
 
 namespace {
-
 constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
-
 }  // namespace
 
 class BatAdsPipelineUtilTest : public UnitTestBase {

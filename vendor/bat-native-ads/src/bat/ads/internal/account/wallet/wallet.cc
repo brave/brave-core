@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/base/crypto_util.h"
+#include "bat/ads/internal/base/crypto/crypto_util.h"
 
 namespace ads {
 
@@ -18,9 +18,8 @@ Wallet::Wallet() = default;
 Wallet::~Wallet() = default;
 
 bool Wallet::Set(const std::string& id, const std::string& seed) {
-  const std::vector<uint8_t>& secret_key =
+  const std::vector<uint8_t> secret_key =
       security::GenerateSecretKeyFromSeed(seed);
-
   if (secret_key.empty()) {
     return false;
   }

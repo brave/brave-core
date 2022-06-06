@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ad_events/notification_ads/notification_ad_event_timed_out.h"
 
 #include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/deprecated/creatives/notification_ads/notification_ads.h"
+#include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 
 namespace ads {
 namespace notification_ads {
@@ -20,7 +20,7 @@ void AdEventTimedOut::FireEvent(const NotificationAdInfo& ad) {
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  NotificationAds::Get()->Remove(ad.placement_id);
+  NotificationAdManager::Get()->Remove(ad.placement_id);
 }
 
 }  // namespace notification_ads
