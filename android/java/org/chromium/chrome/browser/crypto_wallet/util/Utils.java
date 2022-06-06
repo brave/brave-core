@@ -281,10 +281,17 @@ public class Utils {
     public static String[] getNetworksList(Activity activity, NetworkInfo[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet).toString());
+        categories.add(activity.getText(R.string.polygon).toString());
+        categories.add(activity.getText(R.string.binance).toString());
+        categories.add(activity.getText(R.string.celo).toString());
+        categories.add(activity.getText(R.string.avalanche).toString());
+        categories.add(activity.getText(R.string.fantom).toString());
+        categories.add(activity.getText(R.string.optimism).toString());
         categories.add(activity.getText(R.string.rinkeby).toString());
         categories.add(activity.getText(R.string.ropsten).toString());
         categories.add(activity.getText(R.string.goerli).toString());
         categories.add(activity.getText(R.string.kovan).toString());
+
         // Disables localhost on Release builds
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
@@ -299,10 +306,17 @@ public class Utils {
     public static String[] getNetworksAbbrevList(Activity activity, NetworkInfo[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet_short).toString());
+        categories.add(activity.getText(R.string.polygon_short).toString());
+        categories.add(activity.getText(R.string.binance_short).toString());
+        categories.add(activity.getText(R.string.celo_short).toString());
+        categories.add(activity.getText(R.string.avalanche_short).toString());
+        categories.add(activity.getText(R.string.fantom_short).toString());
+        categories.add(activity.getText(R.string.optimism_short).toString());
         categories.add(activity.getText(R.string.rinkeby_short).toString());
         categories.add(activity.getText(R.string.ropsten_short).toString());
         categories.add(activity.getText(R.string.goerli_short).toString());
         categories.add(activity.getText(R.string.kovan_short).toString());
+
         // Disables localhost on Release builds
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
