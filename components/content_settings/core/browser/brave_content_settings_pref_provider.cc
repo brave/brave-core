@@ -16,6 +16,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
