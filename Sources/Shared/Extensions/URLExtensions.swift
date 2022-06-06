@@ -436,12 +436,22 @@ extension URL {
     }
 
     /// Site domains that should not inject night mode
-    let siteList = ["twitter", "youtube", "twitch",
-                    "macrumors", "9to5mac", "soundcloud",
-                    "netflix", "github", "developer.apple",
-                    "search.brave", "wowhead"]
-
-    return siteList.contains(where: host.contains)
+    let majorsiteList = ["twitter", "youtube", "twitch",
+                         "soundcloud", "github", "netflix",
+                         "imdb"]
+    
+    let searchSiteList = ["search.brave", "google", "qwant",
+                          "startpage", "duckduckgo"]
+    
+    let devSiteList = ["macrumors", "9to5mac", "developer.apple"]
+                    
+    let casualSiteList = ["wowhead", "xbox", "thegamer",
+                          "cineplex", "starwars"]
+    
+    let darkModeEnabledSiteList =
+      majorsiteList + searchSiteList + devSiteList + casualSiteList
+    
+    return darkModeEnabledSiteList.contains(where: host.contains)
   }
   
   // Check if the website is search engine
