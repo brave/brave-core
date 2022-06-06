@@ -75,6 +75,7 @@ public class BraveWalletPanel implements DialogInterface {
     private Handler mHandler;
     private BraveWalletPanelServices mBraveWalletPanelServices;
     private ImageView mAccountChangeAnchor;
+    private View mContainerConstraintLayout;
 
     public interface BraveWalletPanelServices {
         AssetRatioService getAssetRatioService();
@@ -251,6 +252,8 @@ public class BraveWalletPanel implements DialogInterface {
 
     private void updateAccountInfo(String selectedAccount) {
         Utils.setBlockiesBitmapResource(mExecutor, mHandler, mAccountImage, selectedAccount, true);
+        Utils.setBlockiesBackground(
+                mExecutor, mHandler, mContainerConstraintLayout, selectedAccount, true);
         for (AccountInfo accountInfo : mAccountInfos) {
             if (accountInfo.address.equals(selectedAccount)) {
                 mAccountName.setText(accountInfo.name);
@@ -352,6 +355,7 @@ public class BraveWalletPanel implements DialogInterface {
             }
         });
         mPopupWindow.setContentView(mPopupView);
+        mContainerConstraintLayout = mPopupView.findViewById(R.id.container_constraint_panel);
         mAccountImage = mPopupView.findViewById(R.id.iv_dapps_panel_account_image);
         mAccountName = mPopupView.findViewById(R.id.tv_dapps_panel_from_to);
         mAccountAddress = mPopupView.findViewById(R.id.tv_dapps_panel_account_address);

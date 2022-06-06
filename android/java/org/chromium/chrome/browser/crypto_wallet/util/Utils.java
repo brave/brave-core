@@ -23,6 +23,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.biometrics.BiometricManager;
 import android.net.Uri;
 import android.os.Build;
@@ -874,6 +875,18 @@ public class Utils {
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);
+                }
+            });
+        });
+    }
+
+    public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,
+            String source, boolean makeLowerCase) {
+        executor.execute(() -> {
+            final Drawable background = Blockies.createBackground(source, makeLowerCase);
+            handler.post(() -> {
+                if (view != null) {
+                    view.setBackground(background);
                 }
             });
         });
