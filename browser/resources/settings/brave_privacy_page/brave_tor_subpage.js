@@ -12,6 +12,13 @@ import './brave_tor_bridges_dialog.js'
 
 const SettingBraveTorPageElementBase = RouteObserverMixin(WebUIListenerMixin(PrefsMixin(PolymerElement)))
 
+const Usage = Object.freeze({
+  NOT_USED: 0,
+  USE_BUILT_IN: 1,
+  USE_REQUESTED: 2,
+  USE_PROVIDED: 3,
+})
+
 /**
  * 'settings-brave-tor-page' is the settings page containing
  * brave's Tor settings.
@@ -68,14 +75,14 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       this.$.builtInBridgesType.value = this.builtinBridges_
 
       switch (this.useBridges_) {
-        case 0:
-        case 1:
+        case Usage.NOT_USED:
+        case Usage.USE_BUILT_IN:
           this.$.brigdesGroup.selected = 'useBuiltIn'
           break
-        case 2:
+        case Usage.USE_REQUESTED:
           this.$.brigdesGroup.selected = 'useRequestedBridges'
           break
-        case 3:
+        case Usage.USE_PROVIDED:
           this.$.brigdesGroup.selected = 'useProvidedBridges'
           break
       }
@@ -106,12 +113,12 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   UpdateUseBridges_(value) {
     this.useBridges_ = value
-    this.isUsingBridges_ = value != 0
+    this.isUsingBridges_ = value != Usage.NOT_USED
   }
 
   onUseBridgesChange_() {
     if (!this.$.useBridges.checked) {
-      this.UpdateUseBridges_(0)
+      this.UpdateUseBridges_(Usage.NOT_USED)
     } else {
       this.onUsageSelect_()
     }
@@ -121,14 +128,14 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   onUsageSelect_() {
     switch (this.$.brigdesGroup.selected) {
       case 'useBuiltIn':
-        this.UpdateUseBridges_(1)
+        this.UpdateUseBridges_(Usage.USE_BUILT_IN)
         this.OnBuiltInBridgesSelect_()
         break
       case 'useRequestedBridges':
-        this.UpdateUseBridges_(2)
+        this.UpdateUseBridges_(Usage.USE_REQUESTED)
         break
       case 'useProvidedBridges':
-        this.UpdateUseBridges_(3)
+        this.UpdateUseBridges_(Usage.USE_PROVIDED)
         break
     }
     this.handleChanged_()

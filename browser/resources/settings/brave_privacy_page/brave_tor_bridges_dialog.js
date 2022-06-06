@@ -54,16 +54,27 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
   }
 
   requestCaptcha_() {
+    this.$.captchaResolve.value = ''
+    this.$.status.textContent = this.i18n('torRequestBridgeDialogWaiting')
+    this.$.captchaImage.src = ''
     this.enableSubmit_(false)
     this.browserProxy_.requestBridgesCaptcha().then((result) => {
       this.$.captchaImage.src = result.captcha
+      this.$.status.textContent = this.i18n('torRequestBridgeDialogSolve')
       this.enableSubmit_(true)
+    }, () => {
+      this.$.status.textContent = this.i18n('torRequestBridgeDialogError')
+      this.$.renew.disabled = false
     })
   }
 
   enableSubmit_(enabled) {
     this.$.captchaResolve.disabled = !enabled
     this.$.submit.disabled = !enabled
+    this.$.renew.disabled = !enabled
+    if (enabled) {
+      this.$.captchaResolve.focus()
+    }
   }
 }
 

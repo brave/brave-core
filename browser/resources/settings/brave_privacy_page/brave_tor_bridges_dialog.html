@@ -1,21 +1,49 @@
 <style include="settings-shared">
+  div[slot=body] {
+    overflow: hidden;
+  }
+
+  #status {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
   #captcha {
+    display: flex;
+    justify-content: center;
+  }
+
+  #captchaImage {
+    min-width: 400px;
     min-height: 125px;
   }
 
   #captchaInputBox {
     display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    height: 32px;
+  }
+
+  #captchaResolve {
+    width: 80%;
+  }
+
+  #renew {
+    --cr-icon-button-size: 32px;
+    --cr-icon-image: url(chrome://resources/images/icon_refresh.svg);
   }
 </style>
 <cr-dialog id="dialog" show-close-button show-on-attach>
   <div slot="title">$i18n{torRequestBridgeDialogTitle}</div>
   <div slot="body">
-    <div>
+    <div id="status">$i18n{torRequestBridgeDialogWaiting}</div>
+    <div id="captcha">
       <img id="captchaImage">
     </div>
     <div id="captchaInputBox">
       <cr-input id="captchaResolve"></cr-input>
-      <cr-button id="renewCaptcha">Renew</cr-button>
+      <cr-icon-button id="renew" on-click="requestCaptcha_"></cr-icon-button>
     </div>
   </div>
   <div slot="button-container">

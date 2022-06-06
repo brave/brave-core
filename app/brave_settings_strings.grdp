@@ -700,6 +700,15 @@
   <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE" desc="">
     Request Bridge
   </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_WAITING" desc="">
+    Contacting BridgeDB. Please wait.
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_SOLVE" desc="">
+    Solve the CAPTHCA to request a bridge.
+  </message>
+  <message name="IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_ERROR" desc="">
+    Can't request a CAPTCHA. Try again later.
+  </message>
   <message name="IDS_SETTINGS_TOR_SUBMIT_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
     Submit
   </message>
