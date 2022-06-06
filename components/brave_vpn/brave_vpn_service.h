@@ -22,6 +22,7 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -245,7 +246,7 @@ class BraveVpnService :
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-
+  mojom::PurchasedState GetPurchasedStateSync() const;
   void SetPurchasedState(mojom::PurchasedState state);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
@@ -278,7 +279,7 @@ class BraveVpnService :
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
-  mojom::PurchasedState purchased_state_ = mojom::PurchasedState::NOT_PURCHASED;
+  absl::optional<mojom::PurchasedState> purchased_state_;
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;
