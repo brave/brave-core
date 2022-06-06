@@ -308,6 +308,12 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
                        subscription.last_update_attempt.ToJsTime());
     dict->SetDoubleKey("last_successful_update_attempt",
                        subscription.last_successful_update_attempt.ToJsTime());
+    if (subscription.homepage) {
+      dict->SetStringKey("homepage", *subscription.homepage);
+    }
+    if (subscription.title) {
+      dict->SetStringKey("title", *subscription.title);
+    }
     list_value->Append(std::move(dict));
   }
   CallJavascriptFunction("brave_adblock.onGetListSubscriptions", *list_value);

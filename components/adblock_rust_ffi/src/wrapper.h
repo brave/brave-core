@@ -5,11 +5,14 @@
 
 #ifndef BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_WRAPPER_H_
 #define BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_WRAPPER_H_
+
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 extern "C" {
 #include "lib.h"  // NOLINT
@@ -66,9 +69,23 @@ class ADBLOCK_EXPORT FilterList {
   static std::vector<FilterList> regional_list;
 };
 
+typedef ADBLOCK_EXPORT struct FilterListMetadata {
+  FilterListMetadata();
+  explicit FilterListMetadata(C_FilterListMetadata* metadata);
+  ~FilterListMetadata();
+
+  absl::optional<std::string> homepage;
+  absl::optional<std::string> title;
+
+  FilterListMetadata(FilterListMetadata&&);
+
+  FilterListMetadata(const FilterListMetadata&) = delete;
+} FilterListMetadata;
+
 class ADBLOCK_EXPORT Engine {
  public:
   Engine();
+  explicit Engine(C_Engine* c_engine);
   explicit Engine(const std::string& rules);
   Engine(const char* data, size_t data_size);
   void matches(const std::string& url,
@@ -100,11 +117,18 @@ class ADBLOCK_EXPORT Engine {
       const std::vector<std::string>& exceptions);
   ~Engine();
 
+  Engine(Engine&&) = default;
+
  private:
   Engine(const Engine&) = delete;
   void operator=(const Engine&) = delete;
   raw_ptr<C_Engine> raw = nullptr;
 };
+
+std::pair<FilterListMetadata, std::unique_ptr<Engine>> engineWithMetadata(
+    const std::string& rules);
+std::pair<FilterListMetadata, std::unique_ptr<Engine>>
+engineFromBufferWithMetadata(const char* data, size_t data_size);
 
 }  // namespace adblock
 

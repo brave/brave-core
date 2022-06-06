@@ -26,5 +26,7 @@ declare namespace AdBlock {
     last_update_attempt: number
     last_successful_update_attempt: number
     enabled: boolean
+    title?: string
+    homepage?: string
   }
 }
