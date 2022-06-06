@@ -21,17 +21,14 @@ class PlaylistURLBarButton: UIButton {
         setImage(UIImage(named: "playlist_toolbar_add_button", in: .current, compatibleWith: nil)!, for: .normal)
         gradientView.isHidden = false
         backgroundView.isHidden = true
-        isHidden = false
       case .addedToPlaylist:
         setImage(UIImage(named: "playlist_toolbar_added_button", in: .current, compatibleWith: nil)!, for: .normal)
         gradientView.isHidden = true
         backgroundView.isHidden = false
-        isHidden = false
       case .none:
         setImage(nil, for: .normal)
         gradientView.isHidden = true
         backgroundView.isHidden = true
-        isHidden = true
       }
     }
   }
