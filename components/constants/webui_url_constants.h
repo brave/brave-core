@@ -17,6 +17,8 @@ extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kTipHost[];
 extern const char kBraveNewTabJS[];
+extern const char kBraveRewardsPanelURL[];
+extern const char kBraveRewardsPanelHost[];
 extern const char kBraveUIRewardsURL[];
 extern const char kBraveUIAdblockURL[];
 extern const char kBraveUIWebcompatReporterURL[];

@@ -131,6 +131,15 @@ void LedgerClientMojoBridge::PublisherListNormalized(
   ledger_client_->PublisherListNormalized(std::move(list));
 }
 
+void LedgerClientMojoBridge::OnPublisherRegistryUpdated() {
+  ledger_client_->OnPublisherRegistryUpdated();
+}
+
+void LedgerClientMojoBridge::OnPublisherUpdated(
+    const std::string& publisher_id) {
+  ledger_client_->OnPublisherUpdated(publisher_id);
+}
+
 void LedgerClientMojoBridge::SetBooleanState(const std::string& name,
                                              bool value,
                                              SetBooleanStateCallback callback) {

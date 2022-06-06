@@ -29,6 +29,7 @@
 
 class BraveActionViewController;
 class BraveActionsContainerTest;
+class BraveRewardsActionView;
 class BraveShieldsActionView;
 class RewardsBrowserTest;
 
@@ -161,6 +162,7 @@ class BraveActionsContainer : public views::View,
   void AddAction(const std::string& id);
   bool ShouldShowBraveRewardsAction() const;
   void AddActionStubForRewards();
+  void AddActionViewForRewards();
   void AddActionViewForShields();
   void RemoveAction(const std::string& id);
   void UpdateActionVisibility(const std::string& id);
@@ -168,6 +170,8 @@ class BraveActionsContainer : public views::View,
   bool IsActionShown(const std::string& id) const;
   void UpdateActionState(const std::string& id);
   void AttachAction(const std::string& id);
+
+  void UpdateVisibility();
 
   // BraveActionAPI::Observer
   void OnBraveActionShouldTrigger(const std::string& extension_id,
@@ -208,7 +212,8 @@ class BraveActionsContainer : public views::View,
                           extensions::BraveActionAPI::Observer>
       brave_action_observer_{this};
 
-  BraveShieldsActionView* shields_action_btn_ = nullptr;
+  raw_ptr<BraveShieldsActionView> shields_action_btn_ = nullptr;
+  raw_ptr<BraveRewardsActionView> rewards_action_btn_ = nullptr;
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;

@@ -27,17 +27,25 @@ function Loading () {
 
 export function App (props: Props) {
   const [loading, setLoading] = React.useState(props.host.state.loading)
+  const [openTime, setOpenTime] = React.useState(props.host.state.openTime)
 
   useHostListener(props.host, (state) => {
     setLoading(state.loading)
+    setOpenTime(state.openTime)
   })
+
+  React.useEffect(() => { props.host.onAppRendered() }, [props.host, openTime])
+
+  // This component key is used to reset the internal view state of the
+  // component tree when a cached panel is reopened.
+  const panelKey = `panel-${openTime}`
 
   return (
     <HostContext.Provider value={props.host}>
       <LocaleContext.Provider value={props.host}>
         <WithThemeVariables>
           <style.root>
-            {loading ? <Loading /> : <Panel />}
+            {loading ? <Loading /> : <Panel key={panelKey} />}
           </style.root>
         </WithThemeVariables>
       </LocaleContext.Provider>

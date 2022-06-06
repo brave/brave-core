@@ -12,15 +12,12 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "content/public/common/referrer.h"
 
 namespace brave_rewards {
 
-RewardsService::RewardsService() {
-}
+RewardsService::RewardsService() = default;
 
-RewardsService::~RewardsService() {
-}
+RewardsService::~RewardsService() = default;
 
 void RewardsService::AddObserver(RewardsServiceObserver* observer) {
   observers_.AddObserver(observer);

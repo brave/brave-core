@@ -42,6 +42,16 @@ export function MonthlyTipView (props: Props) {
     setShowActions(!showActions)
   }
 
+  function onUpdateClick () {
+    setShowActions(false)
+    props.onUpdateClick()
+  }
+
+  function onCancelClick () {
+    setShowActions(false)
+    props.onCancelClick()
+  }
+
   return (
     <style.root>
       <style.amountBox>
@@ -62,7 +72,7 @@ export function MonthlyTipView (props: Props) {
               <style.actionBubbleContent>
                 <style.action>
                   <button
-                    onClick={props.onUpdateClick}
+                    onClick={onUpdateClick}
                     data-test-id='change-monthly-tip-button'
                   >
                     {getString('changeAmount')}
@@ -70,7 +80,7 @@ export function MonthlyTipView (props: Props) {
                 </style.action>
                 <style.action>
                   <button
-                    onClick={props.onCancelClick}
+                    onClick={onCancelClick}
                     data-test-id='cancel-monthly-tip-button'
                   >
                     {getString('cancel')}

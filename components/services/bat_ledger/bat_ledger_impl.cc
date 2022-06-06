@@ -595,6 +595,26 @@ void BatLedgerImpl::UpdateMediaDuration(
 }
 
 // static
+void BatLedgerImpl::OnIsPublisherRegistered(
+    CallbackHolder<IsPublisherRegisteredCallback>* holder,
+    bool is_registered) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(is_registered);
+  delete holder;
+}
+
+void BatLedgerImpl::IsPublisherRegistered(
+    const std::string& publisher_id,
+    IsPublisherRegisteredCallback callback) {
+  auto* holder = new CallbackHolder<IsPublisherRegisteredCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->IsPublisherRegistered(
+      publisher_id,
+      std::bind(BatLedgerImpl::OnIsPublisherRegistered, holder, _1));
+}
+
+// static
 void BatLedgerImpl::OnPublisherInfo(
     CallbackHolder<GetPublisherInfoCallback>* holder,
     const ledger::type::Result result,

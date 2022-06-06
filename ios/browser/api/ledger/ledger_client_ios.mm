@@ -47,6 +47,8 @@ void LedgerClientIOS::OnPanelPublisherInfo(
                   publisherInfo:std::move(publisher_info)
                        windowId:windowId];
 }
+void LedgerClientIOS::OnPublisherRegistryUpdated() {}
+void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {}
 void LedgerClientIOS::OnReconcileComplete(
     ledger::type::Result result,
     ledger::type::ContributionInfoPtr contribution) {

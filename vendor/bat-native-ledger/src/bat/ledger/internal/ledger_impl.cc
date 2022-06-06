@@ -642,6 +642,17 @@ void LedgerImpl::UpdateMediaDuration(uint64_t window_id,
   });
 }
 
+void LedgerImpl::IsPublisherRegistered(const std::string& publisher_id,
+                                       std::function<void(bool)> callback) {
+  WhenReady([this, publisher_id, callback]() {
+    publisher()->GetServerPublisherInfo(
+        publisher_id, true /* use_prefix_list */,
+        [callback](type::ServerPublisherInfoPtr info) {
+          callback(info && info->status != type::PublisherStatus::NOT_VERIFIED);
+        });
+  });
+}
+
 void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
                                   PublisherInfoCallback callback) {
   WhenReady([this, publisher_key, callback]() {

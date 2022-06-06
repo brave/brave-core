@@ -164,7 +164,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
   ready() {
     super.ready()
     this.openRewardsPanel_ = () => {
-      chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html')
+      chrome.braveRewards.openRewardsPanel()
       this.isAutoContributeSupported_()
     }
     this.browserProxy_.getRewardsEnabled().then((enabled) => {

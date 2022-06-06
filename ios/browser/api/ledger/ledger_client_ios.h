@@ -35,6 +35,8 @@ class LedgerClientIOS : public ledger::LedgerClient {
   void OnPanelPublisherInfo(ledger::type::Result result,
                             ledger::type::PublisherInfoPtr publisher_info,
                             uint64_t windowId) override;
+  void OnPublisherRegistryUpdated() override;
+  void OnPublisherUpdated(const std::string& publisher_id) override;
   void OnReconcileComplete(
       ledger::type::Result result,
       ledger::type::ContributionInfoPtr contribution) override;

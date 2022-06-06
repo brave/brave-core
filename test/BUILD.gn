@@ -163,6 +163,7 @@ test("brave_unit_tests") {
     "//brave/base:base_unittests",
     "//brave/browser",
     "//brave/browser:unit_tests",
+    "//brave/browser/brave_rewards/rewards_panel:unit_tests",
     "//brave/browser/brave_vpn/test:unit_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:unit_tests",
@@ -204,6 +205,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_referrals/common",
+    "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
@@ -759,6 +761,7 @@ if (!is_android) {
 
     deps = [
       "//brave/browser/autoplay:browser_tests",
+      "//brave/browser/brave_rewards/rewards_panel",
       "//brave/browser/brave_wallet",
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/browsing_data:browser_tests",

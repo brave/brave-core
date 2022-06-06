@@ -220,6 +220,11 @@ constexpr char kBraveRewardsGeminiDescription[] =
     "Enables support for Gemini as an external wallet provider for Brave";
 #endif
 
+constexpr char kBraveRewardsWebUIPanelName[] = "Use WebUI Rewards Panel";
+constexpr char kBraveRewardsWebUIPanelDescription[] =
+    "When enabled, the Brave Rewards panel will be displayed using WebUI "
+    "instead of the built-in Rewards extension.";
+
 constexpr char kBraveRewardsVerboseLoggingName[] =
     "Enable Brave Rewards verbose logging";
 constexpr char kBraveRewardsVerboseLoggingDescription[] =
@@ -536,6 +541,11 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-rewards-webui-panel",                                           \
+     flag_descriptions::kBraveRewardsWebUIPanelName,                        \
+     flag_descriptions::kBraveRewardsWebUIPanelDescription,                 \
+     kOsDesktop,                                                            \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kWebUIPanelFeature)},      \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \

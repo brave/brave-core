@@ -219,6 +219,9 @@ class LedgerImpl : public Ledger {
                            uint64_t duration,
                            bool first_visit) override;
 
+  void IsPublisherRegistered(const std::string& publisher_id,
+                             std::function<void(bool)> callback) override;
+
   void GetPublisherInfo(const std::string& publisher_key,
                         PublisherInfoCallback callback) override;
 

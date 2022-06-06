@@ -15,6 +15,8 @@ static_library("browser") {
     "logging.h",
     "net/network_delegate_helper.cc",
     "net/network_delegate_helper.h",
+    "publisher_utils.cc",
+    "publisher_utils.h",
     "rewards_notification_service.cc",
     "rewards_notification_service.h",
     "rewards_notification_service_impl.cc",
