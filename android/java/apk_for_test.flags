@@ -469,14 +469,14 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.share.send_tab_to_self.DevicePickerBottomSheetContent {
+-keep class org.chromium.chrome.browser.share.send_tab_to_self.ManageAccountDevicesLinkView {
     public <init>(...);
-    *** createManageDevicesLink(...);
+    *** inflateIfVisible(...);
 }
 
--keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveDevicePickerBottomSheetContent {
+-keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveManageAccountDevicesLinkView {
     public <init>(...);
-    *** createManageDevicesLink(...);
+    *** inflateIfVisible(...);
 }
 
 -keep class org.chromium.chrome.browser.ChromeApplicationImpl

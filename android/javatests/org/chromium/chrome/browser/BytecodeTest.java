@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -88,6 +89,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
@@ -105,7 +107,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
-import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation.
@@ -233,13 +234,15 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
         Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent"));
+                "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView"));
     }
 
     @Test
@@ -363,8 +366,8 @@ public class BytecodeTest {
                 methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
                         "get", false, null));
         Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
-                "createManageDevicesLink", true, void.class, ListView.class));
+                "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
+                "inflateIfVisible", true, void.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "updateTileGridPlaceholderVisibility", true, void.class));
@@ -547,10 +550,9 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
                 "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
         Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
-                "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
-                Context.class, String.class, String.class, BottomSheetController.class,
-                List.class));
+                "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
+                "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
+                Context.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
