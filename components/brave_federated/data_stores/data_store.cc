@@ -67,7 +67,7 @@ DataStore::DataStore(const base::FilePath& database_path)
     : db_({.exclusive_locking = true, .page_size = 4096, .cache_size = 500}),
       database_path_(database_path) {}
 
-DataStore::~DataStore() {}
+DataStore::~DataStore() = default;
 
 bool DataStore::Init(int task_id,
                      const std::string& task_name,
@@ -87,24 +87,24 @@ bool DataStore::Init(int task_id,
       base::BindRepeating(&DatabaseErrorCallback, &db_, database_path_));
 
   // Attach the database to our index file.
-  return db_.Open(database_path_) && EnsureTable();
+  return db_.Open(database_path_) && EnsureTableExists();
 }
 
 bool DataStore::AddTrainingInstance(
     const mojom::TrainingInstancePtr training_instance) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  sql::Statement s1(db_.GetUniqueStatement(
+  sql::Statement max_statement(db_.GetUniqueStatement(
       base::StringPrintf("SELECT MAX(training_instance_id) FROM %s",
                          task_name_.c_str())
           .c_str()));
-  s1.Step();
-  int training_instance_id = s1.ColumnInt(0) + 1;
+  max_statement.Step();
+  int training_instance_id = max_statement.ColumnInt(0) + 1;
 
   base::Time created_at = base::Time::Now();
 
   for (const auto& covariate : training_instance->covariates) {
-    sql::Statement s(db_.GetUniqueStatement(
+    sql::Statement insert_statement(db_.GetUniqueStatement(
         base::StringPrintf(
             "INSERT INTO %s (training_instance_id, feature_name, feature_type, "
             "feature_value, created_at) "
@@ -112,8 +112,8 @@ bool DataStore::AddTrainingInstance(
             task_name_.c_str())
             .c_str()));
 
-    BindCovariateToStatement(*covariate, training_instance_id, created_at, &s);
-    s.Run();
+    BindCovariateToStatement(*covariate, training_instance_id, created_at, &insert_statement);
+    insert_statement.Run();
   }
 
   return true;
@@ -123,7 +123,7 @@ DataStore::TrainingData DataStore::LoadTrainingData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DataStore::TrainingData training_instances;
-  sql::Statement s(db_.GetUniqueStatement(
+  sql::Statement load_statement(db_.GetUniqueStatement(
       base::StringPrintf("SELECT id, training_instance_id, feature_name, "
                          "feature_type, feature_value, "
                          "created_at FROM %s",
@@ -131,12 +131,12 @@ DataStore::TrainingData DataStore::LoadTrainingData() {
           .c_str()));
 
   training_instances.clear();
-  while (s.Step()) {
-    int training_instance_id = s.ColumnInt(1);
+  while (load_statement.Step()) {
+    int training_instance_id = load_statement.ColumnInt(1);
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->covariate_type = (mojom::CovariateType)s.ColumnInt(2);
-    covariate->data_type = (mojom::DataType)s.ColumnInt(3);
-    covariate->value = s.ColumnString(4);
+    covariate->covariate_type = (mojom::CovariateType)load_statement.ColumnInt(2);
+    covariate->data_type = (mojom::DataType)load_statement.ColumnInt(3);
+    covariate->value = load_statement.ColumnString(4);
 
     training_instances[training_instance_id].push_back(std::move(covariate));
   }
@@ -158,19 +158,19 @@ bool DataStore::DeleteTrainingData() {
 void DataStore::EnforceRetentionPolicy() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  sql::Statement s(db_.GetUniqueStatement(
+  sql::Statement delete_statement(db_.GetUniqueStatement(
       base::StringPrintf(" DELETE FROM %s WHERE created_at < ? OR id NOT IN "
                          "(SELECT id FROM %s ORDER BY id DESC LIMIT ?)",
                          task_name_.c_str(), task_name_.c_str())
           .c_str()));
   base::Time expiration_threshold =
       base::Time::Now() - base::Seconds(max_retention_days_ * 24 * 60 * 60);
-  s.BindInt64(0, expiration_threshold.ToInternalValue());
-  s.BindInt(1, max_number_of_records_);
-  s.Run();
+  delete_statement.BindInt64(0, expiration_threshold.ToInternalValue());
+  delete_statement.BindInt(1, max_number_of_records_);
+  delete_statement.Run();
 }
 
-bool DataStore::EnsureTable() {
+bool DataStore::EnsureTableExists() {
   if (db_.DoesTableExist(task_name_))
     return true;
 
@@ -185,18 +185,6 @@ bool DataStore::EnsureTable() {
                  task_name_.c_str())
                  .c_str()) &&
          transaction.Commit();
-}
-
-void DataStore::AddTrainingInstancesForTesting() {
-  mojom::TrainingInstancePtr training_instance = mojom::TrainingInstance::New();
-  mojom::CovariatePtr covariate = mojom::Covariate::New();
-  covariate->covariate_type = (mojom::CovariateType)3;
-  covariate->data_type = (mojom::DataType)4;
-  covariate->value = "42.0";
-
-  training_instance->covariates.push_back(std::move(covariate));
-
-  AddTrainingInstance(std::move(training_instance));
 }
 
 }  // namespace brave_federated

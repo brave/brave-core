@@ -12,4 +12,8 @@ mojom("mojo_bindings") {
     "//mojo/public/mojom/base",
     "//ui/base/mojom",
   ]
+
+  deps = [
+    "//brave/components/brave_federated/public/interfaces:mojom"
+  ]
 }

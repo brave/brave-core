@@ -15,11 +15,8 @@
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+#include "brave/components/brave_federated/tasks.h"
 #include "chrome/browser/profiles/profile.h"
-
-namespace {
-constexpr char kAdNotificationTaskName[] = "ad_notification_timing_task";
-}  // namespace
 
 FederatedInternalsPageHandler::FederatedInternalsPageHandler(
     mojo::PendingReceiver<federated_internals::mojom::PageHandler> receiver,
@@ -32,12 +29,12 @@ FederatedInternalsPageHandler::FederatedInternalsPageHandler(
               profile)
               ->GetDataStoreService()) {}
 
-FederatedInternalsPageHandler::~FederatedInternalsPageHandler() {}
+FederatedInternalsPageHandler::~FederatedInternalsPageHandler() = default;
 
 void FederatedInternalsPageHandler::GetDataStoreInfo() {
   if (!data_store_service_)
     return;
-  auto* const ad_notification_data_store =
+  const auto* ad_notification_data_store =
       data_store_service_->GetDataStore(kAdNotificationTaskName);
 
   if (!ad_notification_data_store) {
@@ -51,21 +48,18 @@ void FederatedInternalsPageHandler::GetDataStoreInfo() {
 
 void FederatedInternalsPageHandler::OnDataStoreInfoAvailable(
     brave_federated::DataStore::TrainingData training_data) {
-  std::vector<federated_internals::mojom::TrainingInstancePtr>
-      training_instances;
-  for (auto const& object : training_data) {
-    auto training_instance =
+  std::vector<federated_internals::mojom::InternalsTrainingInstancePtr>
+      internals_training_instances;
+  for (const auto& training_instance : training_data) {
+    auto internals_training_instance =
         federated_internals::mojom::TrainingInstance::New();
-    for (auto const& cov : object.second) {
-      auto covariate = federated_internals::mojom::Covariate::New();
-      covariate->training_instance_id = object.first;
-      covariate->feature_name = static_cast<int>(cov->covariate_type);
-      covariate->data_type = static_cast<int>(cov->data_type);
-      covariate->value = cov->value;
-      training_instance->covariates.push_back(std::move(covariate));
+    for (const auto& covariate : training_instance.second) {
+      auto internals_covariate = federated_internals::mojom::InternalsCovariate::New();
+      internals_covariate->training_instance_id = training_instance.first;
+      internals_covariate->covariate = covariate;
     }
 
-    training_instances.push_back(std::move(training_instance));
+    internals_training_instances.push_back(std::move(internals_training_instance));
   }
-  page_->OnDataStoreInfoAvailable(std::move(training_instances));
+  page_->OnDataStoreInfoAvailable(std::move(internals_training_instances));
 }

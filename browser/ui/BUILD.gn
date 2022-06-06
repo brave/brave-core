@@ -284,6 +284,7 @@ source_set("ui") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_federated",
+    "//brave/components/brave_federated/public/interfaces:mojom",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",
@@ -387,7 +388,6 @@ source_set("ui") {
     deps += [
       "//brave/browser/resources/sidebar:resources",
       "//brave/browser/ui/sidebar",
-      "//brave/browser/ui/webui/brave_federated:mojo_bindings",
       "//brave/browser/ui/webui/sidebar:mojo_bindings",
       "//brave/components/sidebar",
       "//chrome/app:generated_resources",

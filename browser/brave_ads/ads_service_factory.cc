@@ -29,6 +29,10 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #endif
 
+namespace {
+  constexpr char kAdNotificationTimingTask[] = "ad_notification_timing_task";
+}
+
 namespace brave_ads {
 
 // static
@@ -71,14 +75,14 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
           ->GetForProfile(profile);
 #endif
-  brave_federated::AsyncDataStore* ad_notification_data_store = nullptr;
+  brave_federated::AsyncDataStore* ad_notification_async_data_store = nullptr;
   auto* federated_service =
       brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
           profile);
   if (federated_service) {
-    ad_notification_data_store =
+    ad_notification_async_data_store =
         federated_service->GetDataStoreService()->GetDataStore(
-            "ad_notification_timing_task");
+            kAdNotificationTimingTask);
   }
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(
@@ -95,7 +99,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
           brave_adaptive_captcha_service,
           std::make_unique<AdsTooltipsDelegateImpl>(profile),
 #endif
-          history_service, rewards_service, ad_notification_data_store);
+          history_service, rewards_service, ad_notification_async_data_store);
   return ads_service.release();
 }
 

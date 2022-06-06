@@ -40,8 +40,6 @@ class DataStore {
   TrainingData LoadTrainingData();
   void EnforceRetentionPolicy();
 
-  void AddTrainingInstancesForTesting();
-
  protected:
   friend class DataStoreTest;
   friend class AdNotificationTimingDataStoreTest;
@@ -57,7 +55,7 @@ class DataStore {
   int max_retention_days_;
 
  private:
-  bool EnsureTable();
+  bool EnsureTableExists();
 
   SEQUENCE_CHECKER(sequence_checker_);
 };
