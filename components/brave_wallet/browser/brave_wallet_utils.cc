@@ -520,6 +520,11 @@ bool IsFilecoinEnabled() {
       brave_wallet::features::kBraveWalletFilecoinFeature);
 }
 
+bool IsDappsSupportEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletDappsSupportFeature);
+}
+
 bool IsSolanaEnabled() {
   return base::FeatureList::IsEnabled(
       brave_wallet::features::kBraveWalletSolanaFeature);
