@@ -94,7 +94,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER:
-      return SkColorSetRGB(0xE1, 0xE1, 0xE1);
+      return SkColorSetRGB(0xD0, 0xD3, 0xD6);
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED:
       return SkColorSetRGB(0x21, 0x25, 0x29);
     case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED:

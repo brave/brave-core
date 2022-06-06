@@ -179,7 +179,7 @@ void BraveVPNButton::UpdateColorsAndInsets() {
     std::unique_ptr<views::Border> border = views::CreateRoundedRectBorder(
         1, kButtonRadius, gfx::Insets(),
         tp->GetColor(BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER));
-    constexpr auto kTargetInsets = gfx::Insets::VH(4, 6);
+    constexpr auto kTargetInsets = gfx::Insets::VH(3, 7);
     const gfx::Insets extra_insets = kTargetInsets - border->GetInsets();
     SetBorder(views::CreatePaddedBorder(std::move(border), extra_insets));
   }
