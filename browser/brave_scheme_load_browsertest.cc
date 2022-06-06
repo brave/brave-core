@@ -205,7 +205,18 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 }
 
 // Check renderer crash happened by observing related notification.
-IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, CrashURLTest) {
+// Some tests are failing for Windows x86 CI,
+// See https://github.com/brave/brave-browser/issues/22767
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_CrashURLTest DISABLED_CrashURLTest
+#else
+#define MAYBE_CrashURLTest CrashURLTest
+#endif
+// NOTE: the actual crash functionality is covered upstream in
+// chrome/browser/crash_recovery_browsertest.cc
+// This test is for the brave:// scheme. This is a regression test added with:
+// https://github.com/brave/brave-core/pull/2229)
+IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, MAYBE_CrashURLTest) {
   content::RenderProcessHostWatcher crash_observer(
       browser()->tab_strip_model()->GetActiveWebContents(),
       content::RenderProcessHostWatcher::WATCH_FOR_PROCESS_EXIT);
