@@ -373,10 +373,9 @@ void BraveRenderViewContextMenu::InitMenu() {
   index = menu_model_.GetIndexOfCommandId(
       IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
   if (index != -1) {
-    menu_model_.InsertItemWithStringIdAt(
-          index + 1,
-          IDC_CONTENT_CONTEXT_FORCE_PASTE,
-          IDS_CONTENT_CONTEXT_FORCE_PASTE);
+    menu_model_.InsertItemWithStringIdAt(index + 1,
+                                         IDC_CONTENT_CONTEXT_FORCE_PASTE,
+                                         IDS_CONTENT_CONTEXT_FORCE_PASTE);
   }
 
 #if BUILDFLAG(ENABLE_TOR)
