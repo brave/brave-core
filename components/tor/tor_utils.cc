@@ -24,7 +24,7 @@ constexpr const char kUseBuiltinBridgesKey[] = "use_builtin_bridges";
 constexpr const char kRequestedBriges[] = "requested_bridges";
 constexpr const char kBridgesKey[] = "bridges";
 
-template<typename Enum>
+template <typename Enum>
 struct MinMaxTraits;
 
 template <>

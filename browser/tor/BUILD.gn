@@ -105,6 +105,7 @@ source_set("browser_tests") {
       "//brave/browser/ui",
       "//brave/common",
       "//brave/components/brave_ads/browser",
+      "//brave/components/brave_component_updater/browser",
       "//brave/components/constants",
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/common",

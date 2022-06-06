@@ -6,6 +6,8 @@
 #include "brave/browser/ui/webui/settings/brave_tor_handler.h"
 
 #include <memory>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "base/bind.h"
