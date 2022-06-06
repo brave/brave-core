@@ -443,7 +443,6 @@ void BraveVpnService::FetchRegionData(bool background_fetch) {
 
 void BraveVpnService::LoadCachedRegionData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK_EQ(PurchasedState::LOADING, purchased_state_);
 
   // Already loaded from cache.
   if (!regions_.empty())
@@ -886,18 +885,25 @@ void BraveVpnService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
+mojom::PurchasedState BraveVpnService::GetPurchasedStateSync() const {
+  return purchased_state_.has_value() ? purchased_state_.value()
+                                      : mojom::PurchasedState::NOT_PURCHASED;
+}
+
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
-  std::move(callback).Run(purchased_state_);
+  auto value = GetPurchasedStateSync();
+  VLOG(2) << __func__ << " : " << static_cast<int>(value);
+  std::move(callback).Run(value);
 }
 
 void BraveVpnService::LoadPurchasedState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (purchased_state_ == PurchasedState::LOADING)
+  if (GetPurchasedStateSync() == PurchasedState::LOADING)
     return;
 
-  SetPurchasedState(PurchasedState::LOADING);
+  if (!purchased_state_.has_value())
+    SetPurchasedState(PurchasedState::LOADING);
 
 #if !BUILDFLAG(IS_ANDROID) && !defined(OFFICIAL_BUILD)
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -1017,14 +1023,14 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 
 void BraveVpnService::SetPurchasedState(PurchasedState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (purchased_state_ == state)
+  if (GetPurchasedStateSync() == state)
     return;
 
   purchased_state_ = state;
-  VLOG(1) << "SetPurchasedState: " << purchased_state_;
+  VLOG(1) << "SetPurchasedState: " << purchased_state_.value();
 
   for (const auto& obs : observers_)
-    obs->OnPurchasedStateChanged(purchased_state_);
+    obs->OnPurchasedStateChanged(purchased_state_.value());
 }
 
 void BraveVpnService::EnsureMojoConnected() {

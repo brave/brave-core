@@ -124,6 +124,7 @@ source_set("unit_tests") {
       "//net:test_support",
       "//services/network:test_support",
       "//testing/gtest",
+      "//third_party/abseil-cpp:absl",
     ]
   }
 }
