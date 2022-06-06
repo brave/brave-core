@@ -101,8 +101,22 @@ void BlobURLStoreImpl::ResolveForNavigation(
     const GURL& url,
     mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
     ResolveForNavigationCallback callback) {
-  BlobURLStoreImpl_ChromiumImpl::ResolveForNavigation(
-      GetPartitionedOrOriginalUrl(url), std::move(token), std::move(callback));
+  if (!registry_) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  // Use modified URL only for accessing blob registry. Original URL is passed
+  // as is into BlobURLTokenImpl.
+  const GURL& ephemeral_url = GetPartitionedOrOriginalUrl(url);
+  mojo::PendingRemote<blink::mojom::Blob> blob =
+      registry_->GetBlobFromUrl(ephemeral_url);
+  if (!blob) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  new BlobURLTokenImpl(registry_, url, std::move(blob), std::move(token));
+  std::move(callback).Run(registry_->GetUnsafeAgentClusterID(ephemeral_url));
 }
 
 GURL BlobURLStoreImpl::GetPartitionedOrOriginalUrl(const GURL& url) const {
