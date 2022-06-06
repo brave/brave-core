@@ -86,17 +86,13 @@ extension BrowserViewController: PlaylistHelperDelegate {
 
       let shouldShowPlaylistURLBarButton = tab.url?.isPlaylistSupportedSiteURL == true && Preferences.Playlist.enablePlaylistURLBarButton.value
 
-      let playlistButton = topToolbar.locationView.playlistButton
       switch state {
       case .none:
-        playlistButton.buttonState = .none
+        topToolbar.updatePlaylistButtonState(.none)
         topToolbar.menuButton.removeBadge(.playlist, animated: true)
         toolbar?.menuButton.removeBadge(.playlist, animated: true)
       case .newItem:
-        if shouldShowPlaylistURLBarButton {
-          topToolbar.locationView.readerModeState = .unavailable
-        }
-        playlistButton.buttonState = shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
+        topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addToPlaylist : .none)
         if Preferences.Playlist.enablePlaylistMenuBadge.value {
           topToolbar.menuButton.addBadge(.playlist, animated: true)
           toolbar?.menuButton.addBadge(.playlist, animated: true)
@@ -105,10 +101,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
           toolbar?.menuButton.removeBadge(.playlist, animated: true)
         }
       case .existingItem:
-        if shouldShowPlaylistURLBarButton {
-          topToolbar.locationView.readerModeState = .unavailable
-        }
-        playlistButton.buttonState = shouldShowPlaylistURLBarButton ? .addedToPlaylist : .none
+        topToolbar.updatePlaylistButtonState(shouldShowPlaylistURLBarButton ? .addedToPlaylist : .none)
         topToolbar.menuButton.removeBadge(.playlist, animated: true)
         toolbar?.menuButton.removeBadge(.playlist, animated: true)
       }

@@ -2364,10 +2364,10 @@ extension BrowserViewController: TabDelegate {
     if shouldShowWalletButton {
       Task { @MainActor in
         let isPendingRequestAvailable = await isPendingRequestAvailable()
-        topToolbar.locationView.walletButton.buttonState = isPendingRequestAvailable ? .activeWithPendingRequest : .active
+        topToolbar.updateWalletButtonState(isPendingRequestAvailable ? .activeWithPendingRequest : .active)
       }
     } else {
-      topToolbar.locationView.walletButton.buttonState = .inactive
+      topToolbar.updateWalletButtonState(.inactive)
     }
   }
 

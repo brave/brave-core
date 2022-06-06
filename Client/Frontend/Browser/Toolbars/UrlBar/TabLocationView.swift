@@ -98,8 +98,7 @@ class TabLocationView: UIView {
       if newReaderModeState != self.readerModeButton.readerModeState {
         let wasHidden = readerModeButton.isHidden
         self.readerModeButton.readerModeState = newReaderModeState
-        readerModeButton.isHidden = (newReaderModeState == ReaderModeState.unavailable)
-        if wasHidden != readerModeButton.isHidden {
+        if wasHidden != (newReaderModeState == ReaderModeState.unavailable) {
           UIAccessibility.post(notification: .layoutChanged, argument: nil)
           if !readerModeButton.isHidden {
             // Delay the Reader Mode accessibility announcement briefly to prevent interruptions.
@@ -153,7 +152,7 @@ class TabLocationView: UIView {
     $0.addTarget(self, action: #selector(didTapLockImageView), for: .touchUpInside)
   }
 
-  fileprivate lazy var readerModeButton: ReaderModeButton = {
+  private(set) lazy var readerModeButton: ReaderModeButton = {
     let readerModeButton = ReaderModeButton(frame: .zero)
     readerModeButton.addTarget(self, action: #selector(tapReaderModeButton), for: .touchUpInside)
     readerModeButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressReaderModeButton)))
@@ -169,7 +168,7 @@ class TabLocationView: UIView {
     return readerModeButton
   }()
 
-  lazy var playlistButton = PlaylistURLBarButton(frame: .zero).then {
+  private(set) lazy var playlistButton = PlaylistURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.playlistButton"
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarPlaylistButtonAccessibilityLabel
@@ -178,7 +177,7 @@ class TabLocationView: UIView {
     $0.addTarget(self, action: #selector(didClickPlaylistButton), for: .touchUpInside)
   }
   
-  lazy var walletButton = WalletURLBarButton(frame: .zero).then {
+  private(set) lazy var walletButton = WalletURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.walletButton"
     $0.isAccessibilityElement = true
     $0.buttonState = .inactive
