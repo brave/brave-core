@@ -23,6 +23,8 @@ public struct WalletPanelContainerView: View {
   var origin: URLOrigin
   var presentWalletWithContext: ((PresentingContext) -> Void)?
   var presentBuySendSwap: (() -> Void)?
+  /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
+  var buySendSwapBackground: InvisibleUIView = .init()
   
   // When the screen first apperas the keyring is set as the default value
   // which causes an unnessary animation
@@ -109,7 +111,8 @@ public struct WalletPanelContainerView: View {
             },
             presentBuySendSwap: {
               self.presentBuySendSwap?()
-            }
+            },
+            buySendSwapBackground: buySendSwapBackground
           )
           .transition(.asymmetric(insertion: .identity, removal: .opacity))
         }
@@ -145,6 +148,7 @@ struct WalletPanelView: View {
   var origin: URLOrigin
   var presentWalletWithContext: (PresentingContext) -> Void
   var presentBuySendSwap: () -> Void
+  var buySendSwapBackground: InvisibleUIView
   
   @Environment(\.pixelLength) private var pixelLength
   @Environment(\.sizeCategory) private var sizeCategory
@@ -159,7 +163,8 @@ struct WalletPanelView: View {
     accountActivityStore: AccountActivityStore,
     origin: URLOrigin,
     presentWalletWithContext: @escaping (PresentingContext) -> Void,
-    presentBuySendSwap: @escaping () -> Void
+    presentBuySendSwap: @escaping () -> Void,
+    buySendSwapBackground: InvisibleUIView
   ) {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
@@ -168,6 +173,7 @@ struct WalletPanelView: View {
     self.origin = origin
     self.presentWalletWithContext = presentWalletWithContext
     self.presentBuySendSwap = presentBuySendSwap
+    self.buySendSwapBackground = buySendSwapBackground
     
     currencyFormatter.currencyCode = accountActivityStore.currencyCode
   }
@@ -358,6 +364,7 @@ struct WalletPanelView: View {
                 .padding(.horizontal, 44)
                 .padding(.vertical, 8)
             }
+            .background(buySendSwapBackground)
             Color.white.opacity(0.6)
               .frame(width: pixelLength)
             Button {
@@ -401,6 +408,16 @@ struct WalletPanelView: View {
   }
 }
 
+struct InvisibleUIView: UIViewRepresentable {
+  let uiView = UIView()
+  func makeUIView(context: Context) -> UIView {
+    uiView.backgroundColor = .clear
+    return uiView
+  }
+  func updateUIView(_ uiView: UIView, context: Context) {
+  }
+}
+
 #if DEBUG
 struct WalletPanelView_Previews: PreviewProvider {
   static var previews: some View {
@@ -412,7 +429,8 @@ struct WalletPanelView_Previews: PreviewProvider {
         accountActivityStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
         presentWalletWithContext: { _ in },
-        presentBuySendSwap: {}
+        presentBuySendSwap: {},
+        buySendSwapBackground: InvisibleUIView()
       )
       WalletPanelView(
         keyringStore: .previewStore,
@@ -421,7 +439,8 @@ struct WalletPanelView_Previews: PreviewProvider {
         accountActivityStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
         presentWalletWithContext: { _ in },
-        presentBuySendSwap: {}
+        presentBuySendSwap: {},
+        buySendSwapBackground: InvisibleUIView()
       )
       WalletPanelView(
         keyringStore: {
@@ -434,7 +453,8 @@ struct WalletPanelView_Previews: PreviewProvider {
         accountActivityStore: .previewStore,
         origin: .init(url: URL(string: "https://app.uniswap.org")!),
         presentWalletWithContext: { _ in },
-        presentBuySendSwap: {}
+        presentBuySendSwap: {},
+        buySendSwapBackground: InvisibleUIView()
       )
     }
     .fixedSize(horizontal: false, vertical: true)

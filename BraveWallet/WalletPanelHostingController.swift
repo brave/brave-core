@@ -49,8 +49,20 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
               })
           })
       )
-      self.presentPanModal(controller)
+      self.presentPanModal(controller, sourceView: self.rootView.buySendSwapBackground.uiView, sourceRect: self.rootView.buySendSwapBackground.uiView.bounds)
     }
+    
+    // Dismiss Buy/Send/Swap Menu when Wallet becomes locked
+    cancellable = walletStore.keyringStore.$keyring
+      .dropFirst() // Drop initial value
+      .map(\.isLocked)
+      .removeDuplicates()
+      .dropFirst() // Drop first async fetch of keyring
+      .sink { [weak self] isLocked in
+        if let self = self, isLocked, self.presentedViewController != nil {
+          self.dismiss(animated: true)
+        }
+      }
   }
   
   @available(*, unavailable)

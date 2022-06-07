@@ -32,7 +32,10 @@ struct AccountPicker: View {
       }
     }
     .sheet(isPresented: $isPresentingPicker) {
-      AccountListView(keyringStore: keyringStore)
+      AccountListView(
+        keyringStore: keyringStore,
+        onDismiss: { isPresentingPicker = false }
+      )
     }
   }
 

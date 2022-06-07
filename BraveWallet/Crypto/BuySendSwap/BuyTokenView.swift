@@ -15,10 +15,9 @@ struct BuyTokenView: View {
 
   @State private var amountInput = ""
 
-  @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
   
-  var onDismiss: (() -> Void)?
+  var onDismiss: (() -> Void)
 
   var body: some View {
     NavigationView {
@@ -117,10 +116,7 @@ struct BuyTokenView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
-            onDismiss?()
-            presentationMode.dismiss()
-          }) {
+          Button(action: { onDismiss() }) {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
@@ -130,6 +126,7 @@ struct BuyTokenView: View {
         buyTokenStore.fetchBuyTokens()
       }
     }
+    .navigationViewStyle(.stack)
   }
 }
 
@@ -139,7 +136,8 @@ struct BuyTokenView_Previews: PreviewProvider {
     BuyTokenView(
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      buyTokenStore: .previewStore
+      buyTokenStore: .previewStore,
+      onDismiss: {}
     )
     .previewColorSchemes()
   }
