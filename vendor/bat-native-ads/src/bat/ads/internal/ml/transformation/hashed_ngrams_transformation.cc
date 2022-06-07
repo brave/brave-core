@@ -17,15 +17,11 @@ namespace ml {
 
 HashedNGramsTransformation::HashedNGramsTransformation()
     : Transformation(TransformationType::kHashedNGrams) {
-  hash_vectorizer = std::make_unique<HashVectorizer>(HashVectorizer());
+  hash_vectorizer = std::make_unique<HashVectorizer>();
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
-    const HashedNGramsTransformation& hashed_ngrams)
-    : Transformation(TransformationType::kHashedNGrams) {
-  HashVectorizer hash_vectorizer_copy = *(hashed_ngrams.hash_vectorizer);
-  hash_vectorizer = std::make_unique<HashVectorizer>(hash_vectorizer_copy);
-}
+    HashedNGramsTransformation&& hashed_ngrams) noexcept = default;
 
 HashedNGramsTransformation::~HashedNGramsTransformation() = default;
 
@@ -33,8 +29,7 @@ HashedNGramsTransformation::HashedNGramsTransformation(
     const int bucket_count,
     const std::vector<int>& subgrams)
     : Transformation(TransformationType::kHashedNGrams) {
-  hash_vectorizer =
-      std::make_unique<HashVectorizer>(HashVectorizer(bucket_count, subgrams));
+  hash_vectorizer = std::make_unique<HashVectorizer>(bucket_count, subgrams);
 }
 
 std::unique_ptr<Data> HashedNGramsTransformation::Apply(
@@ -47,7 +42,7 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
       hash_vectorizer->GetFrequencies(text_data->GetText());
   int dimension_count = hash_vectorizer->GetBucketCount();
 
-  return std::make_unique<VectorData>(VectorData(dimension_count, frequences));
+  return std::make_unique<VectorData>(dimension_count, frequences);
 }
 
 }  // namespace ml

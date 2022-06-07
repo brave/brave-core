@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 
@@ -15,7 +17,7 @@ NormalizationTransformation::NormalizationTransformation()
     : Transformation(TransformationType::kNormalization) {}
 
 NormalizationTransformation::NormalizationTransformation(
-    const NormalizationTransformation& transformation) = default;
+    NormalizationTransformation&& transformation) noexcept = default;
 
 NormalizationTransformation::~NormalizationTransformation() = default;
 
@@ -27,7 +29,7 @@ std::unique_ptr<Data> NormalizationTransformation::Apply(
 
   VectorData vector_data_copy = *vector_data;
   vector_data_copy.Normalize();
-  return std::make_unique<VectorData>(vector_data_copy);
+  return std::make_unique<VectorData>(std::move(vector_data_copy));
 }
 
 }  // namespace ml

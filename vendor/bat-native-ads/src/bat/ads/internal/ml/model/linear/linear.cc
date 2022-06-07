@@ -17,15 +17,15 @@ namespace model {
 
 Linear::Linear() {}
 
-Linear::Linear(const std::map<std::string, VectorData>& weights,
-               const std::map<std::string, double>& biases) {
-  weights_ = weights;
-  biases_ = biases;
+Linear::Linear(std::map<std::string, VectorData> weights,
+               std::map<std::string, double> biases) {
+  weights_ = std::move(weights);
+  biases_ = std::move(biases);
 }
 
-Linear::Linear(const Linear& linear_model) = default;
+Linear::Linear(Linear&& linear_model) noexcept = default;
 
-Linear& Linear::operator=(const Linear& info) = default;
+Linear& Linear::operator=(Linear&& linear_model) noexcept = default;
 
 Linear::~Linear() = default;
 

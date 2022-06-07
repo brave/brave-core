@@ -17,7 +17,9 @@ class NormalizationTransformation final : public Transformation {
  public:
   NormalizationTransformation();
   NormalizationTransformation(
-      const NormalizationTransformation& transformation);
+      NormalizationTransformation&& transformation) noexcept;
+  NormalizationTransformation& operator=(
+      NormalizationTransformation&& transformation) = delete;
   ~NormalizationTransformation() override;
 
   std::unique_ptr<Data> Apply(

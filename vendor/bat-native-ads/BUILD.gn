@@ -693,8 +693,6 @@ source_set("ads") {
     "src/bat/ads/internal/ml/ml_aliases.h",
     "src/bat/ads/internal/ml/ml_prediction_util.cc",
     "src/bat/ads/internal/ml/ml_prediction_util.h",
-    "src/bat/ads/internal/ml/ml_transformation_util.cc",
-    "src/bat/ads/internal/ml/ml_transformation_util.h",
     "src/bat/ads/internal/ml/model/linear/linear.cc",
     "src/bat/ads/internal/ml/model/linear/linear.h",
     "src/bat/ads/internal/ml/pipeline/pipeline_info.cc",
