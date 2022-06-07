@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
 
 export const CodeSnippet = styled.pre`
@@ -47,6 +52,11 @@ export const DetailRow = styled.div`
   margin-bottom: 14px;
 `
 
+export const DetailColumn = styled(DetailRow)`
+  flex-direction: column;
+  gap: 8px;
+`
+
 export const DetailText = styled.span`
   font-family: Poppins;
   font-size: 12px;
@@ -54,6 +64,7 @@ export const DetailText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-left: 10px;
+  word-break: break-all;
 `
 
 export const CodeSnippetText = styled.p`
