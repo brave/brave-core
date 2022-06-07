@@ -74,7 +74,7 @@ public class InAppPurchaseWrapper {
         return result;
     }
 
-    public static boolean isMonthlySubscription(String productId) {
+    public boolean isMonthlySubscription(String productId) {
         return productId.equals(NIGHTLY_MONTHLY_SUBSCRIPTION)
                 || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
     }
