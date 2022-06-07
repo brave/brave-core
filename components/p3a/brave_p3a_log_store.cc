@@ -10,6 +10,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/p3a/metric_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -32,6 +33,10 @@ void RecordP3A(uint64_t answers_count) {
     answer = 3;
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.P3A.SentAnswersCount", answer, 3);
+}
+
+bool IsActualMetric(base::StringPiece histogram_name) {
+  return p3a::kCollectedHistograms.contains(histogram_name);
 }
 
 }  // namespace
@@ -66,7 +71,7 @@ void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
 }
 
 void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
-  DCHECK(delegate_->IsActualMetric(histogram_name));
+  DCHECK(IsActualMetric(histogram_name));
   log_.erase(histogram_name);
   unsent_entries_.erase(histogram_name);
 
@@ -119,15 +124,7 @@ const std::string& BraveP3ALogStore::staged_log() const {
   auto iter = log_.find(staged_entry_key_);
   DCHECK(iter != log_.end());
 
-  return staged_log_.legacy_log;
-}
-
-const std::string& BraveP3ALogStore::staged_json_log() const {
-  DCHECK(!staged_entry_key_.empty());
-  auto iter = log_.find(staged_entry_key_);
-  DCHECK(iter != log_.end());
-
-  return staged_log_.json_log;
+  return staged_log_;
 }
 
 std::string BraveP3ALogStore::staged_log_type() const {
@@ -165,7 +162,7 @@ void BraveP3ALogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-  staged_log_ = delegate_->Serialize(staged_entry_key_, staged_entry_value);
+  staged_log_ = delegate_->SerializeLog(staged_entry_key_, staged_entry_value);
 
   VLOG(2) << "BraveP3ALogStore::StageNextLog: staged " << staged_entry_key_;
 }
@@ -212,7 +209,7 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
     LogEntry entry;
     const std::string name = dict_item.first;
     // Check if the metric is obsolete.
-    if (!delegate_->IsActualMetric(name)) {
+    if (!IsActualMetric(name)) {
       // Drop it from the local state.
       list->RemoveKey(name);
       continue;

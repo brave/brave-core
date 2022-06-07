@@ -22,6 +22,8 @@ constexpr char kP3ARotationIntervalSeconds[] = "p3a-rotation-interval-seconds";
 // P3A cloud backend URL.
 constexpr char kP3AUploadServerUrl[] = "p3a-upload-server-url";
 
+constexpr char kP2AUploadServerUrl[] = "p2a-upload-server-url";
+
 // Do not try to resent values even if a cloud returned an HTTP error, just
 // continue the normal process.
 constexpr char kP3AIgnoreServerErrors[] = "p3a-ignore-server-errors";

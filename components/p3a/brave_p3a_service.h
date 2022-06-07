@@ -15,12 +15,9 @@
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/strings/string_piece_forward.h"
-#include "base/timer/wall_clock_timer.h"
-#include "brave/components/p3a/brave_p3a_log_store.h"
-#include "brave/components/p3a/p3a_message.h"
-#include "url/gurl.h"
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -28,16 +25,13 @@ class SharedURLLoaderFactory;
 
 namespace brave {
 
-class BraveP3AScheduler;
-class BraveP3AUploader;
-class BraveP3ANewUploader;
+class BraveP3AMessageManager;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
 // on any thread.
 // TODO(iefremov): It should be possible to get rid of refcounted here.
-class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
-                        public BraveP3ALogStore::Delegate {
+class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService> {
  public:
   BraveP3AService(PrefService* local_state,
                   std::string channel,
@@ -56,26 +50,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   void Init(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  // BraveP3ALogStore::Delegate
-  BraveP3ALogStore::LogForJsonMigration Serialize(
-      base::StringPiece histogram_name,
-      uint64_t value) override;
-
-  // May be accessed from multiple threads, so this is thread-safe.
-  bool IsActualMetric(base::StringPiece histogram_name) const override;
-
  private:
   friend class base::RefCountedThreadSafe<BraveP3AService>;
-  ~BraveP3AService() override;
-
-  void MaybeOverrideSettingsFromCommandLine();
-
-  void InitMessageMeta();
-
-  // Updates things that change over time: week of survey, etc.
-  void UpdateMessageMeta();
-
-  void StartScheduledUpload();
+  ~BraveP3AService();
 
   // Invoked by callbacks registered by our service. Since these callbacks
   // can fire on any thread, this method reposts everything to UI thread.
@@ -90,42 +67,14 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Updates or removes a metric from the log.
   void HandleHistogramChange(base::StringPiece histogram_name, size_t bucket);
 
-  void OnLogUploadComplete(int response_code, int error_code, bool was_https);
-
-  // Restart the uploading process (i.e. mark all values as unsent).
-  void DoRotation();
-
-  void UpdateRotationTimer();
-
   // General prefs:
   bool initialized_ = false;
-  PrefService* local_state_ = nullptr;
 
-  const std::string channel_;
-  const std::string week_of_install_;
-
-  // The average interval between uploading different values.
-  base::TimeDelta average_upload_interval_;
-  bool randomize_upload_interval_ = true;
-  // Interval between rotations, only used for testing from the command line.
-  base::TimeDelta rotation_interval_;
-  GURL upload_server_url_;
-
-  MessageMetainfo message_meta_;
-
-  // Components:
-  std::unique_ptr<BraveP3ALogStore> log_store_;
-  std::unique_ptr<BraveP3AUploader> uploader_;
-  // See `brave_p3a_new_uploader.h`
-  std::unique_ptr<BraveP3ANewUploader> new_uploader_;
-  std::unique_ptr<BraveP3AScheduler> upload_scheduler_;
+  std::unique_ptr<BraveP3AMessageManager> message_manager_;
 
   // Used to store histogram values that are produced between constructing
   // the service and its initialization.
   base::flat_map<base::StringPiece, size_t> histogram_values_;
-
-  // Once fired we restart the overall uploading process.
-  base::WallClockTimer rotation_timer_;
 
   std::vector<
       std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
