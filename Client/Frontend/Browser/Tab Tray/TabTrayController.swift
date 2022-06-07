@@ -283,7 +283,9 @@ class TabTrayController: LoadingViewController {
 
   private func remove(tab: Tab) {
     tabManager.removeTab(tab)
-    applySnapshot()
+    
+    let query = isTabTrayBeingSearched ? tabTraySearchQuery : nil
+    applySnapshot(for: query)
   }
 
   func removeAllTabs() {
