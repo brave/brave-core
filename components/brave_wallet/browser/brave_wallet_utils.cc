@@ -252,7 +252,7 @@ const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
 const brave_wallet::mojom::NetworkInfo kKnownFilNetworks[] = {
     {brave_wallet::mojom::kFilecoinMainnet,
      "Filecoin Mainnet",
-     {"https://api.node.glif.io/rpc/v0"},
+     {"https://filscan.io/tipset/message-detail"},
      {},
      {"https://api.node.glif.io/rpc/v0"},
      "FIL",
@@ -262,7 +262,7 @@ const brave_wallet::mojom::NetworkInfo kKnownFilNetworks[] = {
      nullptr},
     {brave_wallet::mojom::kFilecoinTestnet,
      "Filecoin Testnet",
-     {"https://calibration.node.glif.io/rpc/v0"},
+     {"https://calibration.filscan.io/tipset/message-detail"},
      {},
      {"https://calibration.node.glif.io/rpc/v0"},
      "FIL",
