@@ -44,3 +44,4 @@ venv/
 *.exe
 .storybook-out
 test_get_pkgs
+*.csv

@@ -12,10 +12,10 @@ void start::start_client(std::string server_address,
   grpc::ChannelArguments args;
   args.SetMaxReceiveMessageSize(grpc_max_message_length);
   args.SetMaxSendMessageSize(grpc_max_message_length);
+  args.SetInt(GRPC_ARG_USE_LOCAL_SUBCHANNEL_POOL, true);
 
   int sleep_duration = 0;
   bool is_connected = true;
-  std::cout << "In the start function" << std::endl;
   while (client->is_communicating() && is_connected) {
     // Establish an insecure gRPC connection to a gRPC server
     std::shared_ptr<Channel> channel = grpc::CreateCustomChannel(
@@ -29,9 +29,7 @@ void start::start_client(std::string server_address,
     std::shared_ptr<ClientReaderWriter<ClientMessage, ServerMessage>>
         reader_writer(stub_->Join(&context));
     ServerMessage sm;
-
     while (reader_writer->Read(&sm)) {
-      std::cout<<"in the read loop";
       std::tuple<ClientMessage, int, bool> receive = handle(client, sm);
       sleep_duration = std::get<1>(receive);
       reader_writer->Write(std::get<0>(receive));
