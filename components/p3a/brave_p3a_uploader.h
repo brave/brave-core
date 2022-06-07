@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -13,12 +13,15 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/metric_log_type.h"
-#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
+
+namespace net {
+class HttpResponseHeaders;
+}  // namespace net
 
 namespace brave {
 
@@ -26,20 +29,21 @@ constexpr char kP2AUploadType[] = "p2a";
 constexpr char kP3AUploadType[] = "p3a";
 constexpr char kP3ACreativeUploadType[] = "p3a_creative";
 
+struct BraveP3AConfig;
+
 // Handle uploading logged metrics to the correct endpoints.
 class BraveP3AUploader {
  public:
-  using UploadCallback = base::RepeatingCallback<void(int response_code,
-                                                      int error_code,
-                                                      bool was_https,
-                                                      MetricLogType log_type)>;
+  using UploadCompleteCallback =
+      base::RepeatingCallback<void(bool is_ok,
+                                   int response_code,
+                                   bool is_star,
+                                   MetricLogType log_type)>;
 
   BraveP3AUploader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      const GURL& p3a_endpoint,
-      const GURL& p3a_creative_endpoint,
-      const GURL& p2a_endpoint,
-      const UploadCallback& on_upload_complete);
+      UploadCompleteCallback upload_callback,
+      BraveP3AConfig* config);
 
   BraveP3AUploader(const BraveP3AUploader&) = delete;
   BraveP3AUploader& operator=(const BraveP3AUploader&) = delete;
@@ -49,19 +53,23 @@ class BraveP3AUploader {
   // From metrics::MetricsLogUploader
   void UploadLog(const std::string& compressed_log_data,
                  const std::string& upload_type,
+                 bool is_star,
                  MetricLogType log_type);
 
-  void OnUploadComplete(MetricLogType log_type,
-                        std::unique_ptr<std::string> response_body);
+  void OnUploadComplete(bool is_star,
+                        MetricLogType log_type,
+                        scoped_refptr<net::HttpResponseHeaders> headers);
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  const GURL p3a_endpoint_;
-  const GURL p3a_creative_endpoint_;
-  const GURL p2a_endpoint_;
-  const UploadCallback on_upload_complete_;
   base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>
       url_loaders_;
+
+  BraveP3AConfig* config_;
+
+  UploadCompleteCallback upload_callback_;
+
+  std::unique_ptr<network::SimpleURLLoader> url_loader_;
 };
 
 }  // namespace brave

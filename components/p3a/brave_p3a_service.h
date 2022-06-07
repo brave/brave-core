@@ -16,13 +16,12 @@
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/strings/string_piece_forward.h"
-#include "base/timer/wall_clock_timer.h"
-#include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/brave_p3a_message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
-#include "brave/components/p3a/p3a_message.h"
-#include "url/gurl.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -30,15 +29,14 @@ class SharedURLLoaderFactory;
 
 namespace brave {
 
-class BraveP3AScheduler;
-class BraveP3AUploader;
+struct BraveP3AConfig;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
 // on any thread.
 // TODO(iefremov): It should be possible to get rid of refcounted here.
 class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
-                        public BraveP3ALogStore::Delegate {
+                        public BraveP3AMessageManager::Delegate {
  public:
   BraveP3AService(PrefService* local_state,
                   std::string channel,
@@ -59,36 +57,28 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                              MetricLogType log_type,
                              bool should_be_on_ui_thread = true);
   void RemoveDynamicMetric(const std::string& histogram_name);
-  bool IsDynamicMetricRegistered(const std::string& histogram_name);
 
   // Callbacks are invoked after rotation for a particular log type,
   // before metrics are sent. Useful for just-in-time metrics collection
   base::CallbackListSubscription RegisterRotationCallback(
-      base::RepeatingCallback<void(bool is_express)> callback);
-  // Callbacks are invoked for each metric uploaded to the P3A server.
-  base::CallbackListSubscription RegisterMetricSentCallback(
-      base::RepeatingCallback<void(const std::string& histogram_name)>
-          callback);
+      base::RepeatingCallback<void(bool is_express, bool is_star)> callback);
+  // Callbacks are invoked for each metric is sent to the P3A JSON server,
+  // or STAR message preparation.
+  base::CallbackListSubscription RegisterMetricCycledCallback(
+      base::RepeatingCallback<void(const std::string& histogram_name,
+                                   bool is_star)> callback);
 
-  bool IsP3AEnabled();
+  bool IsP3AEnabled() const;
 
   // Needs a living browser process to complete the initialization.
   void Init(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  // BraveP3ALogStore::Delegate
-  std::string Serialize(base::StringPiece histogram_name,
-                        uint64_t value,
-                        const std::string& upload_type) override;
-
-  // May be accessed from multiple threads, so this is thread-safe.
-  bool IsActualMetric(base::StringPiece histogram_name) const override;
-
-  // Invoked by callbacks registered by our service. Since these callbacks
-  // can fire on any thread, this method reposts everything to UI thread.
-  void OnHistogramChanged(const char* histogram_name,
-                          uint64_t name_hash,
-                          base::HistogramBase::Sample sample);
+  // BraveP3AMessageManager::Delegate
+  void OnRotation(bool is_express, bool is_star) override;
+  void OnMetricCycled(const std::string& histogram_name, bool is_star) override;
+  absl::optional<MetricLogType> GetDynamicMetricLogType(
+      const std::string& histogram_name) const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveP3AService>;
@@ -96,14 +86,11 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void LoadDynamicMetrics();
 
-  void MaybeOverrideSettingsFromCommandLine();
-
-  void InitMessageMeta();
-
-  // Updates things that change over time: week of survey, etc.
-  void UpdateMessageMeta();
-
-  void StartScheduledUpload(MetricLogType log_type);
+  // Invoked by callbacks registered by our service. Since these callbacks
+  // can fire on any thread, this method reposts everything to UI thread.
+  void OnHistogramChanged(const char* histogram_name,
+                          uint64_t name_hash,
+                          base::HistogramBase::Sample sample);
 
   void OnHistogramChangedOnUI(const char* histogram_name,
                               base::HistogramBase::Sample sample,
@@ -112,42 +99,11 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Updates or removes a metric from the log.
   void HandleHistogramChange(base::StringPiece histogram_name, size_t bucket);
 
-  void OnLogUploadComplete(int response_code,
-                           int error_code,
-                           bool was_https,
-                           MetricLogType log_type);
-
-  void DoRotationAtInitIfNeeded(MetricLogType log_type);
-
-  // Restart the uploading process (i.e. mark all values as unsent).
-  void DoRotation(MetricLogType log_type);
-  void UpdateRotationTimer(MetricLogType log_type);
-
   // General prefs:
   bool initialized_ = false;
-  PrefService* local_state_ = nullptr;
 
-  const std::string channel_;
-  const std::string week_of_install_;
-
-  // The average interval between uploading different values.
-  base::TimeDelta average_upload_interval_;
-  bool randomize_upload_interval_ = true;
-  // Interval between rotations, only used for testing from the command line.
-  // "Typical" is for weekly metrics, "express" is for daily metrics (i.e. NTP
-  // SI)
-  GURL upload_server_url_;
-
-  MessageMetainfo message_meta_;
-
-  base::flat_map<MetricLogType, base::TimeDelta> rotation_intervals_;
-  base::flat_map<MetricLogType, std::unique_ptr<BraveP3ALogStore>> log_stores_;
-  base::flat_map<MetricLogType, std::unique_ptr<BraveP3AScheduler>>
-      upload_schedulers_;
-
-  // Once fired we restart the overall uploading process.
-  base::flat_map<MetricLogType, std::unique_ptr<base::WallClockTimer>>
-      rotation_timers_;
+  PrefService* local_state_;
+  std::unique_ptr<BraveP3AConfig> config_;
 
   // Contains metrics added via `RegisterDynamicMetric`
   base::flat_map<std::string, MetricLogType> dynamic_metric_log_types_;
@@ -156,7 +112,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
       std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
       dynamic_metric_sample_callbacks_;
 
-  std::unique_ptr<BraveP3AUploader> uploader_;
+  std::unique_ptr<BraveP3AMessageManager> message_manager_;
 
   // Used to store histogram values that are produced between constructing
   // the service and its initialization.
@@ -167,14 +123,12 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
       histogram_sample_callbacks_;
 
   // Contains callbacks registered via `RegisterRotationCallback`
-  base::RepeatingCallbackList<void(bool is_express)> rotation_callbacks_;
-  // Contains callbacks registered via `RegisterMetricSentCallback`
-  base::RepeatingCallbackList<void(const std::string& histogram_name)>
-      metric_sent_callbacks_;
-
-  // Contains last rotation times for each metric log type.
-  // Used to delay uploads for a short period after rotations.
-  base::flat_map<MetricLogType, base::Time> last_rotation_times_;
+  base::RepeatingCallbackList<void(bool is_express, bool is_star)>
+      rotation_callbacks_;
+  // Contains callbacks registered via `RegisterMetricCycledCallback`
+  base::RepeatingCallbackList<void(const std::string& histogram_name,
+                                   bool is_star)>
+      metric_cycled_callbacks_;
 };
 
 }  // namespace brave

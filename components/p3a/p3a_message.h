@@ -12,11 +12,23 @@
 #include "base/time/time.h"
 #include "base/values.h"
 
+class PrefService;
+
 namespace brave {
 
-struct MessageMetainfo {
+constexpr const char* kP3AMessageStarKeyValueSeparator = "|";
+constexpr const char* kP3AMessageStarLayerSeparator = ";";
+
+class MessageMetainfo {
+ public:
   MessageMetainfo();
   ~MessageMetainfo();
+
+  void Init(PrefService* local_state,
+            std::string channel,
+            std::string week_of_install);
+
+  void Update();
 
   std::string platform;
   std::string version;
@@ -27,6 +39,11 @@ struct MessageMetainfo {
   int wos;  // Week of survey.
   std::string country_code;
   std::string refcode;
+
+ private:
+  // Ensures that country/refcode represent the big enough cohort that will not
+  // let anybody identify the sender.
+  void MaybeStripRefcodeAndCountry();
 };
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
@@ -34,9 +51,9 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-// Ensures that country/refcode represent the big enough cohort that will not
-// let anybody identify the sender.
-void MaybeStripRefcodeAndCountry(MessageMetainfo* meta);
+std::string GenerateP3AStarMessage(base::StringPiece metric_name,
+                                   uint64_t metric_value,
+                                   const MessageMetainfo& meta);
 
 }  // namespace brave
 

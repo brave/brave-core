@@ -12,6 +12,7 @@ skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 brave-news-cxx = { path = "../../components/brave_today/rust" }
 json-cxx = { path = "../../components/json/rs" }
 filecoin-cxx = { path = "../../components/filecoin/rs" }
+nested-star-cxx = { path = "../../components/nested_star" }
 
 [patch.crates-io.link-cplusplus_v1]
 path = "../../../third_party/rust/link_cplusplus/v1/crate"

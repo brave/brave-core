@@ -51,8 +51,8 @@ NTPP3AHelperImpl::NTPP3AHelperImpl(PrefService* local_state,
   DCHECK(local_state);
   DCHECK(p3a_service);
   metric_sent_subscription_ =
-      p3a_service->RegisterMetricSentCallback(base::BindRepeating(
-          &NTPP3AHelperImpl::OnP3AMetricSent, base::Unretained(this)));
+      p3a_service->RegisterMetricCycledCallback(base::BindRepeating(
+          &NTPP3AHelperImpl::OnP3AMetricCycled, base::Unretained(this)));
   rotation_subscription_ =
       p3a_service->RegisterRotationCallback(base::BindRepeating(
           &NTPP3AHelperImpl::OnP3ARotation, base::Unretained(this)));
@@ -87,8 +87,8 @@ void NTPP3AHelperImpl::SetLastTabURL(const GURL& url) {
   last_tab_hostname_ = url.host();
 }
 
-void NTPP3AHelperImpl::OnP3ARotation(bool is_express) {
-  if (!is_express) {
+void NTPP3AHelperImpl::OnP3ARotation(bool is_express, bool is_star) {
+  if (!is_express || is_star) {
     return;
   }
   DictionaryPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
@@ -116,7 +116,13 @@ void NTPP3AHelperImpl::OnP3ARotation(bool is_express) {
   }
 }
 
-void NTPP3AHelperImpl::OnP3AMetricSent(const std::string& histogram_name) {
+void NTPP3AHelperImpl::OnP3AMetricCycled(const std::string& histogram_name,
+                                         bool is_star) {
+  if (is_star) {
+    // TODO(djandries): Monitor both STAR and JSON metric cycles once STAR is
+    // supported for express metrics
+    return;
+  }
   if (!base::StartsWith(histogram_name, brave::kCreativeMetricPrefix)) {
     return;
   }

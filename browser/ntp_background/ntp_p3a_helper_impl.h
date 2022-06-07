@@ -38,9 +38,9 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
 
   void SetLastTabURL(const GURL& url) override;
 
-  void OnP3ARotation(bool is_express);
+  void OnP3ARotation(bool is_express, bool is_star);
 
-  void OnP3AMetricSent(const std::string& histogram_name);
+  void OnP3AMetricCycled(const std::string& histogram_name, bool is_star);
 
  private:
   std::string BuildHistogramName(const std::string& creative_instance_id,

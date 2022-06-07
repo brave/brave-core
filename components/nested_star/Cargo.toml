@@ -1,0 +1,19 @@
+[package]
+name = "nested-star-cxx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nested-sta-rs = { path = "../../../../../nested-sta-rs" }
+cxx = { path = "../../../third_party/rust/cxx/v1/crate" }
+# Use following cxx dep if compiling example via Makefile
+# cxx = "1.0"
+
+[build-dependencies]
+cxx-build = "1.0"
+
+[lib]
+name = "nested_star_cxx"
+crate-type = ["rlib"]
+# Use following crate type setting if compiling example via Makefile
+# crate-type = ["staticlib"]

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/brave_p3a_metric_log_store.h"
 
 #include <vector>
 
@@ -21,8 +21,9 @@
 namespace brave {
 
 namespace {
-constexpr char kTypicalLogPrefName[] = "p3a.logs";
-constexpr char kExpressLogPrefName[] = "p3a.logs_express";
+constexpr char kTypicalJsonLogPrefName[] = "p3a.logs";
+constexpr char kExpressJsonLogPrefName[] = "p3a.logs_express";
+constexpr char kStarPrepPrefName[] = "p3a.logs.star_prep";
 constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
@@ -39,15 +40,6 @@ void RecordSentAnswersCount(uint64_t answers_count) {
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.P3A.SentAnswersCount", answer, 3);
 }
 
-const char* GetPrefName(MetricLogType type) {
-  switch (type) {
-    case MetricLogType::kTypical:
-      return kTypicalLogPrefName;
-    case MetricLogType::kExpress:
-      return kExpressLogPrefName;
-  }
-}
-
 std::string GetUploadType(const std::string& histogram_name) {
   if (base::StartsWith(histogram_name, "Brave.P2A",
                        base::CompareCase::SENSITIVE)) {
@@ -61,23 +53,41 @@ std::string GetUploadType(const std::string& histogram_name) {
 
 }  // namespace
 
-BraveP3ALogStore::BraveP3ALogStore(Delegate* delegate,
-                                   PrefService* local_state,
-                                   MetricLogType type)
-    : delegate_(delegate), local_state_(local_state), type_(type) {
+BraveP3AMetricLogStore::BraveP3AMetricLogStore(Delegate* delegate,
+                                               PrefService* local_state,
+                                               bool is_star,
+                                               MetricLogType type)
+    : delegate_(delegate),
+      local_state_(local_state),
+      type_(type),
+      is_star_(is_star) {
   DCHECK(delegate_);
   DCHECK(local_state);
 }
 
-BraveP3ALogStore::~BraveP3ALogStore() = default;
+BraveP3AMetricLogStore::~BraveP3AMetricLogStore() = default;
 
-void BraveP3ALogStore::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(kExpressLogPrefName);
-  registry->RegisterDictionaryPref(kTypicalLogPrefName);
+void BraveP3AMetricLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(kTypicalJsonLogPrefName);
+  registry->RegisterDictionaryPref(kExpressJsonLogPrefName);
+  registry->RegisterDictionaryPref(kStarPrepPrefName);
 }
 
-void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
-                                   uint64_t value) {
+const char* BraveP3AMetricLogStore::GetPrefName() const {
+  if (is_star_) {
+    return kStarPrepPrefName;
+  } else {
+    switch (type_) {
+      case MetricLogType::kTypical:
+        return kTypicalJsonLogPrefName;
+      case MetricLogType::kExpress:
+        return kExpressJsonLogPrefName;
+    }
+  }
+}
+
+void BraveP3AMetricLogStore::UpdateValue(const std::string& histogram_name,
+                                         uint64_t value) {
   LogEntry& entry = log_[histogram_name];
   entry.value = value;
 
@@ -87,19 +97,19 @@ void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
   }
 
   // Update the persistent value.
-  DictionaryPrefUpdate update(local_state_, GetPrefName(type_));
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   update->SetPath({histogram_name, kLogValueKey},
                   base::Value(base::NumberToString(value)));
   update->SetPath({histogram_name, kLogSentKey}, base::Value(entry.sent));
 }
 
-void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
-  DCHECK(delegate_->IsActualMetric(histogram_name));
+void BraveP3AMetricLogStore::RemoveValueIfExists(
+    const std::string& histogram_name) {
   log_.erase(histogram_name);
   unsent_entries_.erase(histogram_name);
 
   // Update the persistent value.
-  DictionaryPrefUpdate(local_state_, GetPrefName(type_))
+  DictionaryPrefUpdate(local_state_, GetPrefName())
       ->GetDict()
       .Remove(histogram_name);
 
@@ -109,9 +119,9 @@ void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
   }
 }
 
-void BraveP3ALogStore::ResetUploadStamps() {
+void BraveP3AMetricLogStore::ResetUploadStamps() {
   // Clear log entries flags.
-  DictionaryPrefUpdate update(local_state_, GetPrefName(type_));
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   for (auto& pair : log_) {
     if (pair.second.sent) {
       DCHECK(!pair.second.sent_timestamp.is_null());
@@ -138,19 +148,15 @@ void BraveP3ALogStore::ResetUploadStamps() {
   }
 }
 
-const std::string& BraveP3ALogStore::staged_log_key() const {
-  return staged_entry_key_;
-}
-
-bool BraveP3ALogStore::has_unsent_logs() const {
+bool BraveP3AMetricLogStore::has_unsent_logs() const {
   return !unsent_entries_.empty();
 }
 
-bool BraveP3ALogStore::has_staged_log() const {
+bool BraveP3AMetricLogStore::has_staged_log() const {
   return !staged_entry_key_.empty();
 }
 
-const std::string& BraveP3ALogStore::staged_log() const {
+const std::string& BraveP3AMetricLogStore::staged_log() const {
   DCHECK(!staged_entry_key_.empty());
   auto iter = log_.find(staged_entry_key_);
   DCHECK(iter != log_.end());
@@ -158,7 +164,7 @@ const std::string& BraveP3ALogStore::staged_log() const {
   return staged_log_;
 }
 
-std::string BraveP3ALogStore::staged_log_type() const {
+std::string BraveP3AMetricLogStore::staged_log_type() const {
   DCHECK(!staged_entry_key_.empty());
   auto iter = log_.find(staged_entry_key_);
   DCHECK(iter != log_.end());
@@ -166,22 +172,28 @@ std::string BraveP3ALogStore::staged_log_type() const {
   return GetUploadType(iter->first);
 }
 
-const std::string& BraveP3ALogStore::staged_log_hash() const {
+const std::string& BraveP3AMetricLogStore::staged_log_key() const {
+  DCHECK(!staged_entry_key_.empty());
+
+  return staged_entry_key_;
+}
+
+const std::string& BraveP3AMetricLogStore::staged_log_hash() const {
   NOTREACHED();
   return staged_log_hash_;
 }
 
-const std::string& BraveP3ALogStore::staged_log_signature() const {
+const std::string& BraveP3AMetricLogStore::staged_log_signature() const {
   NOTREACHED();
   return staged_log_signature_;
 }
 
-absl::optional<uint64_t> BraveP3ALogStore::staged_log_user_id() const {
+absl::optional<uint64_t> BraveP3AMetricLogStore::staged_log_user_id() const {
   NOTREACHED();
   return absl::nullopt;
 }
 
-void BraveP3ALogStore::StageNextLog() {
+void BraveP3AMetricLogStore::StageNextLog() {
   // Stage the next item.
   DCHECK(has_unsent_logs());
   uint64_t rand_idx = base::RandGenerator(unsent_entries_.size());
@@ -189,13 +201,15 @@ void BraveP3ALogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-  staged_log_ = delegate_->Serialize(staged_entry_key_, staged_entry_value,
-                                     GetUploadType(staged_entry_key_));
+  staged_log_ =
+      delegate_->SerializeLog(staged_entry_key_, staged_entry_value, is_star_,
+                              GetUploadType(staged_entry_key_));
 
-  VLOG(2) << "BraveP3ALogStore::StageNextLog: staged " << staged_entry_key_;
+  VLOG(2) << "BraveP3AMetricLogStore::StageNextLog: staged "
+          << staged_entry_key_;
 }
 
-void BraveP3ALogStore::DiscardStagedLog() {
+void BraveP3AMetricLogStore::DiscardStagedLog() {
   if (!has_staged_log()) {
     return;
   }
@@ -206,7 +220,7 @@ void BraveP3ALogStore::DiscardStagedLog() {
   log_iter->second.MarkAsSent();
 
   // Update the persistent value.
-  DictionaryPrefUpdate update(local_state_, GetPrefName(type_));
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   update->SetPath({log_iter->first, kLogSentKey},
                   base::Value(log_iter->second.sent));
   update->SetPath({log_iter->first, kLogTimestampKey},
@@ -221,20 +235,20 @@ void BraveP3ALogStore::DiscardStagedLog() {
   staged_log_.clear();
 }
 
-void BraveP3ALogStore::MarkStagedLogAsSent() {}
+void BraveP3AMetricLogStore::MarkStagedLogAsSent() {}
 
-void BraveP3ALogStore::TrimAndPersistUnsentLogs(
+void BraveP3AMetricLogStore::TrimAndPersistUnsentLogs(
     bool overwrite_in_memory_store) {
   NOTREACHED();
 }
 
-void BraveP3ALogStore::LoadPersistedUnsentLogs() {
+void BraveP3AMetricLogStore::LoadPersistedUnsentLogs() {
   DCHECK(log_.empty());
   DCHECK(unsent_entries_.empty());
 
   std::vector<std::string> metrics_to_remove;
 
-  DictionaryPrefUpdate update(local_state_, GetPrefName(type_));
+  DictionaryPrefUpdate update(local_state_, GetPrefName());
   base::Value* list = update.Get();
   for (auto dict_item : list->DictItems()) {
     LogEntry entry;
