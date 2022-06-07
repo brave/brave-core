@@ -56,13 +56,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static const base::Value* GetPrefForKeyring(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static const base::Value* GetImportedAccountsPrefForKeyring(
-      PrefService* prefs,
-      const std::string& id);
-  static void SetImportedAccountsPrefForKeyring(PrefService* prefs,
-                                                base::Value value,
-                                                const std::string& id);
-
   static base::Value* GetPrefForKeyringUpdate(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
@@ -112,18 +105,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
       PrefService* prefs,
       const std::string& id);
-  static const base::Value* GetHardwareAccountsPrefForKeyring(
-      PrefService* prefs,
-      const std::string& id);
   static void RemoveImportedAccountForKeyring(PrefService* prefs,
                                               const std::string& address,
                                               const std::string& id);
-  static base::Value* GetHardwareAccountsPrefForKeyringUpdate(
-      PrefService* prefs,
-      const std::string& id);
 
-  static void MigrateObosoleteFilecoinImportedPrefs(base::Value* keyring_pref);
-  static void MigrateObosoleteFilecoinHardwarePrefs(base::Value* keyring_pref);
   mojo::PendingRemote<mojom::KeyringService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
