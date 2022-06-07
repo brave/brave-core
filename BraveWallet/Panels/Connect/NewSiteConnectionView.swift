@@ -35,20 +35,22 @@ public struct NewSiteConnectionView: View {
   @State private var selectedAccounts: Set<BraveWallet.AccountInfo.ID> = []
   @State private var isConfirmationViewVisible: Bool = false
   
-  @ViewBuilder private func originAndFavicon(url: URL) -> some View {
-    FaviconReader(url: url) { image in
-      if let image = image {
-        Image(uiImage: image)
-          .resizable()
-          .scaledToFit()
-          .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-          .background(Color(.braveDisabled))
-          .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-      } else {
-        ProgressView()
+  @ViewBuilder private func originAndFavicon(urlOrigin: URLOrigin) -> some View {
+    urlOrigin.url.map { url in
+      FaviconReader(url: url) { image in
+        if let image = image {
+          Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+            .background(Color(.braveDisabled))
+            .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+        } else {
+          ProgressView()
+        }
       }
     }
-    Text(verbatim: url.absoluteString)
+    OriginText(urlOrigin: urlOrigin)
       .font(.subheadline)
       .foregroundColor(Color(.braveLabel))
       .multilineTextAlignment(.center)
@@ -56,10 +58,8 @@ public struct NewSiteConnectionView: View {
   
   private var headerView: some View {
     VStack(spacing: 8) {
-      origin.url.map { url in
-        originAndFavicon(url: url)
-          .accessibilityElement(children: .combine)
-      }
+      originAndFavicon(urlOrigin: origin)
+        .accessibilityElement(children: .combine)
       Text(Strings.Wallet.newSiteConnectMessage)
         .font(.headline)
         .foregroundColor(Color(.bravePrimary))
@@ -78,7 +78,7 @@ public struct NewSiteConnectionView: View {
   
   public var body: some View {
     NavigationView {
-      Form {
+      List {
         Section {
           headerView
         }
@@ -136,6 +136,7 @@ public struct NewSiteConnectionView: View {
         }
         .listRowBackground(Color(.braveGroupedBackground))
       }
+      .listStyle(InsetGroupedListStyle())
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
       .toolbar {
@@ -202,6 +203,7 @@ public struct NewSiteConnectionView: View {
       }
       .listRowBackground(Color(.braveGroupedBackground))
     }
+    .listStyle(InsetGroupedListStyle())
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

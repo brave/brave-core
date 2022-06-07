@@ -92,26 +92,26 @@ struct EditSiteConnectionView: View {
     }
   }
   
-  @ViewBuilder private func connectionInfo(url: URL) -> some View {
-    FaviconReader(url: url) { image in
-      if let image = image {
-        Image(uiImage: image)
-          .resizable()
-          .scaledToFit()
-          .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-          .background(Color(.braveDisabled))
-          .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-      } else {
-        ProgressView()
+  @ViewBuilder private func connectionInfo(urlOrigin: URLOrigin) -> some View {
+    urlOrigin.url.map { url in
+      FaviconReader(url: url) { image in
+        if let image = image {
+          Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
+            .background(Color(.braveDisabled))
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        } else {
+          ProgressView()
+        }
       }
     }
     VStack(alignment: sizeCategory.isAccessibilityCategory ? .center : .leading, spacing: 2) {
-      origin.url.map { url in
-        Text(verbatim: url.absoluteString)
-          .font(.subheadline.weight(.semibold))
-          .multilineTextAlignment(.center)
-          .foregroundColor(Color(.bravePrimary))
-      }
+      OriginText(urlOrigin: urlOrigin)
+        .font(.subheadline)
+        .multilineTextAlignment(.center)
+        .foregroundColor(Color(.bravePrimary))
       Text(connectedAddresses)
         .font(.footnote)
         .multilineTextAlignment(.center)
@@ -140,22 +140,20 @@ struct EditSiteConnectionView: View {
             }
           }
         } header: {
-          origin.url.map { url in
-            Group {
-              if sizeCategory.isAccessibilityCategory {
-                VStack(spacing: 12) {
-                  connectionInfo(url: url)
-                }
-              } else {
-                HStack(spacing: 12) {
-                  connectionInfo(url: url)
-                }
+          Group {
+            if sizeCategory.isAccessibilityCategory {
+              VStack(spacing: 12) {
+                connectionInfo(urlOrigin: origin)
+              }
+            } else {
+              HStack(spacing: 12) {
+                connectionInfo(urlOrigin: origin)
               }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .resetListHeaderStyle()
-            .padding(.vertical)
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .resetListHeaderStyle()
+          .padding(.vertical)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -177,6 +175,7 @@ struct EditSiteConnectionView: View {
         }
       }
     }
+    .navigationViewStyle(.stack)
   }
 }
 

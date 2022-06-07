@@ -109,13 +109,22 @@ public struct CryptoView: View {
             case .panelUnlockOrSetup:
               EmptyView()
             case .accountSelection:
-              AccountListView(keyringStore: keyringStore)
-            case .transactionHistory:
-              AccountTransactionListView(
-                keyringStore: walletStore.keyringStore,
-                activityStore: store.accountActivityStore(for: walletStore.keyringStore.selectedAccount),
-                networkStore: store.networkStore
+              AccountListView(
+                keyringStore: keyringStore,
+                onDismiss: { dismissAction?() }
               )
+            case .transactionHistory:
+              NavigationView {
+                AccountTransactionListView(
+                  keyringStore: walletStore.keyringStore,
+                  activityStore: store.accountActivityStore(for: walletStore.keyringStore.selectedAccount),
+                  networkStore: store.networkStore
+                )
+                .toolbar {
+                  dismissButtonToolbarContents
+                }
+              }
+              .navigationViewStyle(.stack)
             case .buySendSwap(let destination):
               switch destination.kind {
               case .buy:
@@ -125,6 +134,7 @@ public struct CryptoView: View {
                   buyTokenStore: store.openBuyTokenStore(destination.initialToken),
                   onDismiss: {
                     store.closeBSSStores()
+                    dismissAction?()
                   }
                 )
               case .send:
@@ -139,6 +149,7 @@ public struct CryptoView: View {
                   },
                   onDismiss: {
                     store.closeBSSStores()
+                    dismissAction?()
                   }
                 )
               case .swap:
@@ -153,6 +164,7 @@ public struct CryptoView: View {
                   },
                   onDismiss: {
                     store.closeBSSStores()
+                    dismissAction?()
                   }
                 )
               }
@@ -167,6 +179,7 @@ public struct CryptoView: View {
                   dismissButtonToolbarContents
                 }
               }
+              .navigationViewStyle(.stack)
             case .editSiteConnection(let origin, let handler):
               EditSiteConnectionView(
                 keyringStore: keyringStore,
@@ -239,19 +252,22 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
             BuyTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              buyTokenStore: cryptoStore.openBuyTokenStore(action.initialToken)
+              buyTokenStore: cryptoStore.openBuyTokenStore(action.initialToken),
+              onDismiss: { cryptoStore.buySendSwapDestination = nil }
             )
           case .send:
             SendTokenView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
-              sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken)
+              sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken),
+              onDismiss: { cryptoStore.buySendSwapDestination = nil }
             )
           case .swap:
             SwapCryptoView(
               keyringStore: keyringStore,
               ethNetworkStore: cryptoStore.networkStore,
-              swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken)
+              swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
+              onDismiss: { cryptoStore.buySendSwapDestination = nil }
             )
           }
         }

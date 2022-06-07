@@ -13,7 +13,6 @@ struct AccountTransactionListView: View {
   @ObservedObject var networkStore: NetworkStore
   
   @Environment(\.openWalletURLAction) private var openWalletURL
-  @Environment(\.presentationMode) @Binding private var presentationMode
   
   @State private var transactionDetails: BraveWallet.TransactionInfo?
   
@@ -29,65 +28,56 @@ struct AccountTransactionListView: View {
     let assetRatios = activityStore.assets.reduce(into: [String: Double](), {
       $0[$1.token.symbol.lowercased()] = Double($1.price)
     })
-    NavigationView {
-      List {
-        Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
-        ) {
-          if activityStore.transactions.isEmpty {
-            emptyTextView(Strings.Wallet.noTransactions)
-          } else {
-            ForEach(activityStore.transactions) { tx in
-              Button(action: { self.transactionDetails = tx }) {
-                TransactionView(
-                  info: tx,
-                  keyringStore: keyringStore,
-                  networkStore: networkStore,
-                  visibleTokens: activityStore.assets.map(\.token),
-                  allTokens: activityStore.allTokens,
-                  displayAccountCreator: false,
-                  assetRatios: assetRatios,
-                  currencyCode: activityStore.currencyCode
-                )
-              }
-              .contextMenu {
-                if !tx.txHash.isEmpty {
-                  Button(action: {
-                    if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                       let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
-                      openWalletURL?(url)
-                    }
-                  }) {
-                    Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
+    List {
+      Section(
+        header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
+      ) {
+        if activityStore.transactions.isEmpty {
+          emptyTextView(Strings.Wallet.noTransactions)
+        } else {
+          ForEach(activityStore.transactions) { tx in
+            Button(action: { self.transactionDetails = tx }) {
+              TransactionView(
+                info: tx,
+                keyringStore: keyringStore,
+                networkStore: networkStore,
+                visibleTokens: activityStore.assets.map(\.token),
+                allTokens: activityStore.allTokens,
+                displayAccountCreator: false,
+                assetRatios: assetRatios,
+                currencyCode: activityStore.currencyCode
+              )
+            }
+            .contextMenu {
+              if !tx.txHash.isEmpty {
+                Button(action: {
+                  if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
+                     let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                    openWalletURL?(url)
                   }
+                }) {
+                  Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
                 }
               }
             }
           }
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .navigationTitle(Strings.Wallet.transactionsTitle)
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItemGroup(placement: .confirmationAction) {
-          Button(action: { presentationMode.dismiss() }) {
-            Text(Strings.done)
-              .foregroundColor(Color(.braveOrange))
-          }
-        }
-      }
-      .sheet(item: $transactionDetails) { tx in
-        TransactionDetailsView(
-          info: tx,
-          networkStore: networkStore,
-          keyringStore: keyringStore,
-          visibleTokens: activityStore.assets.map(\.token),
-          allTokens: [],
-          assetRatios: assetRatios,
-          currencyCode: activityStore.currencyCode
-        )
-      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+    .listStyle(InsetGroupedListStyle())
+    .navigationTitle(Strings.Wallet.transactionsTitle)
+    .navigationBarTitleDisplayMode(.inline)
+    .sheet(item: $transactionDetails) { tx in
+      TransactionDetailsView(
+        info: tx,
+        networkStore: networkStore,
+        keyringStore: keyringStore,
+        visibleTokens: activityStore.assets.map(\.token),
+        allTokens: activityStore.allTokens,
+        assetRatios: assetRatios,
+        currencyCode: activityStore.currencyCode
+      )
     }
   }
 }

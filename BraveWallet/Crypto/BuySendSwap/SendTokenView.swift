@@ -13,15 +13,13 @@ struct SendTokenView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var sendTokenStore: SendTokenStore
 
-  @Environment(\.presentationMode) @Binding private var presentationMode
-
   @State private var isShowingScanner = false
   @State private var isShowingError = false
 
   @ScaledMetric private var length: CGFloat = 16.0
   
   var completion: ((_ success: Bool) -> Void)?
-  var onDismiss: (() -> Void)?
+  var onDismiss: () -> Void
 
   private var isSendDisabled: Bool {
     guard let sendAmount = BDouble(sendTokenStore.sendAmount),
@@ -191,10 +189,7 @@ struct SendTokenView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
-            onDismiss?()
-            presentationMode.dismiss()
-          }) {
+          Button(action: { onDismiss() }) {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
@@ -204,6 +199,7 @@ struct SendTokenView: View {
     .onAppear {
       sendTokenStore.fetchAssets()
     }
+    .navigationViewStyle(.stack)
   }
 }
 
@@ -213,7 +209,8 @@ struct SendTokenView_Previews: PreviewProvider {
     SendTokenView(
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      sendTokenStore: .previewStore
+      sendTokenStore: .previewStore,
+      onDismiss: {}
     )
     .previewColorSchemes()
   }
