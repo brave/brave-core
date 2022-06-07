@@ -144,16 +144,16 @@ void Catalog::FetchAfterDelay() {
       g_is_debug ? kDebugCatalogPing : GetCatalogPing();
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
-      delay, base::BindOnce(&Catalog::Fetch, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, delay,
+      base::BindOnce(&Catalog::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch catalog " << FriendlyDateAndTime(fetch_at));
 }
 
 void Catalog::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter, base::BindOnce(&Catalog::OnRetry, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, kRetryAfter,
+      base::BindOnce(&Catalog::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry fetching catalog " << FriendlyDateAndTime(retry_at));
 }

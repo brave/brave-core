@@ -63,10 +63,9 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
   wallet_ = wallet;
 
   const base::Time redeem_at =
-      timer_.Start(CalculateTokenRedemptionDelay(),
+      timer_.Start(FROM_HERE, CalculateTokenRedemptionDelay(),
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
-                                  base::Unretained(this)),
-                   FROM_HERE);
+                                  base::Unretained(this)));
 
   BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(redeem_at));
 }
@@ -174,10 +173,9 @@ void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
 
 void RedeemUnblindedPaymentTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter,
+      FROM_HERE, kRetryAfter,
       base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
-                     base::Unretained(this)),
-      FROM_HERE);
+                     base::Unretained(this)));
 
   if (delegate_) {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens(retry_at);

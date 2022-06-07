@@ -251,8 +251,8 @@ base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
   ClientStateManager::Get()->SetServeAdAt(serve_ad_at);
 
   return timer_.Start(
-      delay, base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, delay,
+      base::BindOnce(&Serving::MaybeServeAd, base::Unretained(this)));
 }
 
 bool Serving::ServeAd(const NotificationAdInfo& ad) const {
