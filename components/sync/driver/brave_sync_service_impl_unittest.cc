@@ -18,6 +18,8 @@
 #include "components/sync/driver/fake_data_type_controller.h"
 #include "components/sync/driver/fake_sync_api_component_factory.h"
 #include "components/sync/driver/sync_service_impl_bundle.h"
+#include "components/sync/engine/nigori/key_derivation_params.h"
+#include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/test/engine/fake_sync_engine.h"
 #include "components/sync/test/engine/fake_sync_manager.h"
 #include "content/public/test/browser_task_environment.h"
@@ -35,6 +37,24 @@ const char kValidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
     "exotic ill sure question trial squirrel glove celery "
     "awkward push jelly logic broccoli almost grocery drift";
+
+// Taken from anonimous namespace from sync_service_crypto_unittest.cc
+sync_pb::EncryptedData MakeEncryptedData(
+    const std::string& passphrase,
+    const KeyDerivationParams& derivation_params) {
+  std::unique_ptr<Nigori> nigori =
+      Nigori::CreateByDerivation(derivation_params, passphrase);
+
+  std::string nigori_name;
+  EXPECT_TRUE(
+      nigori->Permute(Nigori::Type::Password, kNigoriKeyName, &nigori_name));
+
+  const std::string unencrypted = "test";
+  sync_pb::EncryptedData encrypted;
+  encrypted.set_key_name(nigori_name);
+  EXPECT_TRUE(nigori->Encrypt(unencrypted, encrypted.mutable_blob()));
+  return encrypted;
+}
 
 }  // namespace
 
@@ -98,8 +118,10 @@ class BraveSyncServiceImplTest : public testing::Test {
     return component_factory()->last_created_engine();
   }
 
- private:
+ protected:
   content::BrowserTaskEnvironment task_environment_;
+
+ private:
   SyncServiceImplBundle sync_service_impl_bundle_;
   brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
@@ -214,6 +236,37 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
   bool failed_to_decrypt = false;
   EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
   EXPECT_FALSE(failed_to_decrypt);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  brave_sync_service_impl()->GetUserSettings()->SetFirstSetupComplete(
+      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+
+  // Pretend we need the passphrase by triggering OnPassphraseRequired and
+  // supplying the encrypted portion of data, as it is done in
+  // sync_service_crypto_unittest.cc
+  brave_sync_service_impl()->GetCryptoForTests()->OnPassphraseRequired(
+      KeyDerivationParams::CreateForPbkdf2(),
+      MakeEncryptedData(kValidSyncCode,
+                        KeyDerivationParams::CreateForPbkdf2()));
+
+  EXPECT_TRUE(
+      brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
+
+  brave_sync_service_impl()->OnEngineInitialized(
+      WeakHandle<DataTypeDebugInfoListener>(), true, false);
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
 
   OSCryptMocker::TearDown();
 }
