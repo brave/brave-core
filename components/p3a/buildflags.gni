@@ -1,3 +1,10 @@
 declare_args() {
   brave_p3a_enabled = true
+  p3a_json_upload_url = "https://p3a-json.brave.com/"
+  p3a_creative_upload_url = "https://p3a-creative.brave.com/"
+  p2a_json_upload_url = "https://p2a-json.brave.com/"
+  p3a_star_upload_url = "https://p3a-star.brave.com/"
+  p2a_star_upload_url = "https://p2a-star.brave.com/"
+  star_randomness_upload_url = "https://star-randomness.brave.com/randomness"
+  star_randomness_info_url = "https://star-randomness.brave.com/info"
 }

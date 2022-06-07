@@ -13,11 +13,25 @@
 #include "base/values.h"
 #include "brave/components/p3a/metric_log_type.h"
 
+class PrefService;
+
 namespace brave {
 
-struct MessageMetainfo {
+constexpr const char* kP3AMessageStarKeyValueSeparator = "|";
+constexpr const char* kP3AMessageStarLayerSeparator = ";";
+
+class MessageMetainfo {
+ public:
   MessageMetainfo();
   ~MessageMetainfo();
+
+  void Init(PrefService* local_state,
+            std::string brave_channel,
+            std::string week_of_install);
+
+  void Update();
+
+  void MaybeStripCountry();
 
   std::string platform;
   std::string version;
@@ -33,6 +47,10 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          MetricLogType log_type,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
+
+std::string GenerateP3AStarMessage(base::StringPiece metric_name,
+                                   uint64_t metric_value,
+                                   const MessageMetainfo& meta);
 
 // Ensures that country code represents a big enough cohort that
 // no one can identify the sender.
