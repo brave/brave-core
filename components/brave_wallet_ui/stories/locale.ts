@@ -296,6 +296,7 @@ provideStrings({
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
   braveWalletSignTransactionButton: 'Sign',
+  braveWalletApproveTransaction: 'Approve transaction',
 
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',

@@ -621,6 +621,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletBuyWyreDescription", IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION},
     {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
     {"braveWalletEditGasLimitError", IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR},
+    {"braveWalletApproveTransaction", IDS_BRAVE_WALLET_APPROVE_TRANSACTION},
     {"braveWalletNetworkFilterSecondary",
      IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY}};
 

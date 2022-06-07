@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { create } from 'ethereum-blockies'
@@ -5,13 +10,15 @@ import { create } from 'ethereum-blockies'
 // actions
 import * as WalletActions from '../actions/wallet_actions'
 
-// assets
-import { AssetIcon } from '../../components/buy-send-swap/select-asset-item/style'
-
 // utils
 import Amount from '../../utils/amount'
 import { reduceAccountDisplayName } from '../../utils/reduce-account-name'
+import { findAccountName } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
+import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
+
+// components
+import { AssetIcon } from '../../components/buy-send-swap/select-asset-item/style'
 import { withPlaceholderIcon } from '../../components/shared'
 
 // Custom Hooks
@@ -20,9 +27,14 @@ import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
 
+// types
 import { WalletState, BraveWallet } from '../../constants/types'
-import { UpdateUnapprovedTransactionGasFieldsType, UpdateUnapprovedTransactionNonceType } from '../constants/action_types'
-import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
+import {
+  UpdateUnapprovedTransactionGasFieldsType,
+  UpdateUnapprovedTransactionNonceType
+} from '../constants/action_types'
+
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
 
 export const usePendingTransactions = () => {
   // redux
@@ -77,23 +89,34 @@ export const usePendingTransactions = () => {
   const transactionDetails = transactionInfo ? parseTransaction(transactionInfo) : undefined
   const transactionQueueNumber = pendingTransactions.findIndex(tx => tx.id === transactionInfo?.id) + 1
   const transactionsQueueLength = pendingTransactions.length
+
   const isERC20Approve = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
   const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
   const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
-  const isSolanaTransaction =
-    transactionInfo?.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-    transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+
+  const isSolanaTransaction = transactionInfo?.txType && [
+    BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+    BraveWallet.TransactionType.SolanaDappSignTransaction,
+    BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+    BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+    BraveWallet.TransactionType.SolanaSystemTransfer
+  ].includes(transactionInfo.txType)
+
+  const isSolanaDappTransaction = transactionInfo?.txType && [
+    BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+    BraveWallet.TransactionType.SolanaDappSignTransaction
+  ].includes(transactionInfo.txType)
+
+  const isAssociatedTokenAccountCreation =
     transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-  const isAssociatedTokenAccountCreation = transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-  const isFilecoinTransaction = transactionInfo?.txType === BraveWallet.TransactionType.Other && transactionInfo?.txDataUnion?.filTxData
+
+  const isFilecoinTransaction =
+    transactionInfo?.txType === BraveWallet.TransactionType.Other &&
+    transactionInfo?.txDataUnion?.filTxData
 
   // methods
-  const findAccountName = (address: string) => {
-    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
-  }
-
-  const onEditAllowanceSave = (allowance: string) => {
-    if (transactionInfo && transactionDetails) {
+  const onEditAllowanceSave = React.useCallback((allowance: string) => {
+    if (transactionInfo?.id && transactionDetails) {
       dispatch(WalletActions.updateUnapprovedTransactionSpendAllowance({
         txMetaId: transactionInfo.id,
         spenderAddress: transactionDetails.approvalTarget || '',
@@ -102,24 +125,24 @@ export const usePendingTransactions = () => {
           .toHex()
       }))
     }
-  }
+  }, [transactionInfo?.id, transactionDetails])
 
-  const updateUnapprovedTransactionNonce = (args: UpdateUnapprovedTransactionNonceType) => {
+  const updateUnapprovedTransactionNonce = React.useCallback((args: UpdateUnapprovedTransactionNonceType) => {
     dispatch(WalletActions.updateUnapprovedTransactionNonce(args))
-  }
+  }, [])
 
-  const queueNextTransaction = () => dispatch(WalletActions.queueNextTransaction())
+  const queueNextTransaction = React.useCallback(() => dispatch(WalletActions.queueNextTransaction()), [])
 
-  const rejectAllTransactions = () => dispatch(WalletActions.rejectAllTransactions())
+  const rejectAllTransactions = React.useCallback(() => dispatch(WalletActions.rejectAllTransactions()), [])
 
-  const updateUnapprovedTransactionGasFields = (payload: UpdateUnapprovedTransactionGasFieldsType) => {
+  const updateUnapprovedTransactionGasFields = React.useCallback((payload: UpdateUnapprovedTransactionGasFieldsType) => {
     dispatch(WalletActions.updateUnapprovedTransactionGasFields(payload))
-  }
+  }, [])
 
   // memos
   const fromOrb = React.useMemo(() => {
     return create({ seed: transactionDetails?.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails])
+  }, [transactionDetails?.sender])
 
   const toOrb = React.useMemo(() => {
     return create({
@@ -127,23 +150,21 @@ export const usePendingTransactions = () => {
       size: 8,
       scale: 10
     }).toDataURL()
-  }, [transactionDetails])
+  }, [transactionDetails?.recipient])
 
   const fromAccountName = React.useMemo(() => reduceAccountDisplayName(
-    (transactionInfo && findAccountName(transactionInfo.fromAddress)) ?? '',
+    (transactionInfo?.fromAddress && findAccountName(accounts, transactionInfo.fromAddress)) ?? '',
     11
-  ), [transactionInfo])
-
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
-  }, [])
+  ), [accounts, transactionInfo?.fromAddress])
 
   const transactionTitle = React.useMemo(
     (): string =>
-      transactionDetails?.isSwap
-        ? getLocale('braveWalletSwap')
-        : getLocale('braveWalletSend')
-    , [transactionDetails])
+      isSolanaDappTransaction
+        ? getLocale('braveWalletApproveTransaction')
+        : transactionDetails?.isSwap
+            ? getLocale('braveWalletSwap')
+            : getLocale('braveWalletSend')
+    , [isSolanaDappTransaction, transactionDetails?.isSwap])
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     if (!transactionDetails) {
@@ -208,16 +229,16 @@ export const usePendingTransactions = () => {
         .format()
       setCurrentTokenAllowance(allowance)
     }).catch(e => console.error(e))
-  }, [])
+  }, [transactionInfo?.txType, transactionDetails, getERC20Allowance])
 
   React.useEffect(() => {
     if (
-      transactionDetails &&
+      transactionDetails?.recipient &&
       transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
     ) {
       onFindTokenInfoByContractAddress(transactionDetails.recipient)
     }
-  }, [])
+  }, [transactionDetails?.recipient, transactionInfo?.txType])
 
   return {
     AssetIconWithPlaceholder,
@@ -232,6 +253,7 @@ export const usePendingTransactions = () => {
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
+    isSolanaDappTransaction,
     isSolanaTransaction,
     isAssociatedTokenAccountCreation,
     isFilecoinTransaction,
