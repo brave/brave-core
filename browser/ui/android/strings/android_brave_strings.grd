@@ -3021,19 +3021,22 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       <ph name="VALUE">%1$s<ex>0.0</ex></ph> B
     </message>
     <message name="IDS_TRANSFER_GIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
-      <ph name="VALUE">%1$s<ex>0.0</ex></ph> GiB
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> GB
     </message>
     <message name="IDS_TRANSFER_KIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
-      <ph name="VALUE">%1$s<ex>0.0</ex></ph> KiB
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> KB
     </message>
     <message name="IDS_TRANSFER_MIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
-      <ph name="VALUE">%1$s<ex>0.0</ex></ph> MiB
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> MB
     </message>
     <message name="IDS_TRANSFER_RX_TX" desc="Brave Vpn notification statistics text" translateable="false">
-      rx: <ph name="RX">%1$s</ph>, tx: <ph name="TX">%2$s</ph>
+      \u2193<ph name="RX">%1$s</ph>, \u2191<ph name="TX">%2$s</ph>
     </message>
     <message name="IDS_TRANSFER_TIBIBYTES" desc="Brave Vpn notification statistics text" translateable="false">
-      <ph name="VALUE">%1$s<ex>0.0</ex></ph> TiB
+      <ph name="VALUE">%1$s<ex>0.0</ex></ph> TB
+    </message>
+    <message name="IDS_DISCONNECT" desc="Brave Vpn notification disconnect text" translateable="false">
+      Disconnect
     </message>
     <message name="IDS_TRIAL" desc="Brave VPN trial text">
       Trial
