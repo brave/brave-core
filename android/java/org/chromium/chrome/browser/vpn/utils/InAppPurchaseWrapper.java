@@ -74,6 +74,11 @@ public class InAppPurchaseWrapper {
         return result;
     }
 
+    public static boolean isMonthlySubscription(String productId) {
+        return productId.equals(NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productId.equals(RELEASE_MONTHLY_SUBSCRIPTION);
+    }
+
     public void startBillingServiceConnection(Context context) {
         mBillingClient = BillingClient.newBuilder(context)
                                  .enablePendingPurchases()
