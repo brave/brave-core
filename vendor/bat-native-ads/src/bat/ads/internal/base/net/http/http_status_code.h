@@ -10,8 +10,8 @@
 
 namespace net {
 
-constexpr int HTTP_IM_A_TEAPOT = 418;
-constexpr int HTTP_UPGRADE_REQUIRED = 426;
+constexpr int kHttpImATeapot = 418;
+constexpr int kHttpUpgradeRequired = 426;
 
 }  // namespace net
 

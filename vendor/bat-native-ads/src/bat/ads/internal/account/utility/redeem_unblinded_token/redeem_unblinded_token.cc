@@ -89,7 +89,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (confirmation.credential.empty()) {
-    if (url_response.status_code == net::HTTP_IM_A_TEAPOT) {
+    if (url_response.status_code == net::kHttpImATeapot) {
       OnDidSendConfirmation(confirmation);
       return;
     } else if (url_response.status_code == net::HTTP_CONFLICT) {
@@ -98,7 +98,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     } else if (url_response.status_code == net::HTTP_BAD_REQUEST) {
       OnFailedToSendConfirmation(confirmation, /* should_retry */ false);
       return;
-    } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+    } else if (url_response.status_code == net::kHttpUpgradeRequired) {
       BLOG(1, "Failed to create confirmation as a browser upgrade is required");
       OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
       return;
@@ -153,7 +153,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     BLOG(1, "Payment token is not ready");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
-  } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  } else if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to fetch payment token as a browser upgrade is required");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
     return;
