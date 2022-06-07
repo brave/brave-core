@@ -714,7 +714,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2972581237482394796">&amp;Pāratsaukt</translation>
 <translation id="2977665033722899841">Pašlaik ir atlasīta rinda “<ph name="ROW_NAME"/>”. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Opera</translation>
-<translation id="1536541482996273580">Atvērt inkognito cilni</translation>
 <translation id="2985398929374701810">Ievadiet derīgu adresi</translation>
 <translation id="2986368408720340940">Šis saņemšanas veids nav pieejams. Izmēģiniet citu veidu.</translation>
 <translation id="2987034854559945715">Nav atbilstošu līdzekļu</translation>
@@ -2934,6 +2933,7 @@ Papildu informācija:
 <translation id="40442660395682483">Atvērt jaunu inkognito cilni privātai pārlūkošanai</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, nospiediet Tab un tad Enter, lai atvērtu jaunu inkognito cilni privātai pārlūkošanai</translation>
 <translation id="3711639027736550870">Atveriet inkognito cilnes pogu, nospiediet Enter, lai atvērtu jaunu inkognito cilni privātai pārlūkošanai</translation>
+<translation id="1536541482996273580">Atvērt inkognito cilni</translation>
 <translation id="5549245478906381817">Atvērt inkognito logu</translation>
 <translation id="5497977785983089120">Atvērt jaunu inkognito logu privātai pārlūkošanai</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, nospiediet Tab un tad Enter, lai atvērtu jaunu inkognito logu privātai pārlūkošanai</translation>

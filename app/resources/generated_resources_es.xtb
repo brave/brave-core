@@ -4341,7 +4341,7 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="5280426389926346830">¿Quieres crear un acceso directo?</translation>
 <translation id="5281013262333731149">Se abre en <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Para descargar y utilizar aplicaciones de Android, primero debes instalar esta actualización. Mientras se actualiza tu <ph name="DEVICE_TYPE"/>, no podrás usarlo. Tu <ph name="DEVICE_TYPE"/> se reiniciará cuando se complete la instalación.</translation>
-<translation id="5282733140964383898">Al habilitar la opción No hacer seguimiento, se incluirá una solicitud con tu tráfico de navegación. El efecto dependerá de si un sitio web responde a la solicitud y de cómo se interprete. Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anuncios que no están basados en otros sitios web que has visitado. Muchos sitios web seguirán recogiendo y utilizando tus datos de navegación para, por ejemplo, mejorar la seguridad, proporcionar contenido, servicios, anuncios y recomendaciones sobre sus sitios web, y generar estadísticas de informes. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Al habilitar la opción No hacer seguimiento, se incluirá una solicitud con tu tráfico de navegación. El efecto dependerá de si un sitio web responde a la solicitud y de cómo se interprete. Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anuncios que no están basados en otros sitios web que has visitado. Muchos sitios web seguirán recogiendo y utilizando tus datos de navegación para, por ejemplo, mejorar la seguridad, proporcionar contenido, servicios, anuncios y recomendaciones sobre sus sitios web, y generar estadísticas de informes. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">¡Vaya! El sistema no ha podido determinar el número de serie o el modelo del dispositivo.</translation>
 <translation id="5284445933715251131">Seguir descargando</translation>
 <translation id="5285635972691565180">Pantalla <ph name="DISPLAY_ID"/></translation>
@@ -4358,7 +4358,7 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="5297082477358294722">Se ha guardado la contraseña. Consulta y gestiona las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Cuando una persona que no seas tú mire tu pantalla, se mostrará el icono del ojo (visualización privada) en la parte inferior derecha de la pantalla</translation>
 <translation id="5298219193514155779">Tema creado por</translation>
-<translation id="5299109548848736476">No hacer seguimiento</translation>
+<translation id="1839179167864984545">No hacer seguimiento</translation>
 <translation id="5299558715747014286">Ver y gestionar tus grupos de pestañas</translation>
 <translation id="5300287940468717207">¿Quieres restablecer los permisos de los sitios?</translation>
 <translation id="5300426565656326054">Personalización de anuncios basada en el navegador</translation>
@@ -7825,7 +7825,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8785622406424941542">Lápiz óptico</translation>
 <translation id="8786824282808281903">Cuando se muestre este icono a tu hijo/a, se podrá usar una huella digital para identificar al usuario o para aprobar compras.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Grupo sin nombre - 1 pestaña}other{Grupo sin nombre - # pestañas}}</translation>
-<translation id="8791534160414513928">Enviar una solicitud de no seguimiento con tu tráfico de navegación</translation>
+<translation id="163839281363975279">Enviar una solicitud de no seguimiento con tu tráfico de navegación</translation>
 <translation id="879413103056696865">Mientras el punto de acceso esté activo, tu <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nueva ventana</translation>
 <translation id="8797459392481275117">No traducir nunca este sitio web</translation>
@@ -8006,7 +8006,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="89720367119469899">Esc</translation>
 <translation id="8842834450537919370">Consulta al administrador de tu red para asegurarte de que el cortafuegos no está bloqueando las descargas procedentes de los servidores de Brave.</translation>
 <translation id="8973557916016709913">Quitar el nivel de zoom</translation>
-<translation id="8973596347849323817">Personaliza este dispositivo para adaptarlo a tus necesidades. Puedes modificar las funciones de accesibilidad más tarde en Configuración.</translation>
+<translation id="8973596347849323817">Puedes personalizar este dispositivo para adaptarlo a tus necesidades. Estas funciones de accesibilidad se pueden cambiar más tarde en Configuración.</translation>
 <translation id="897414447285476047">El archivo de destino está incompleto debido a un problema relacionado con la conexión.</translation>
 <translation id="897525204902889653">Servicio de cuarentena</translation>
 <translation id="8975396729541388937">Puedes cancelar la suscripción en cualquier momento haciendo clic en el enlace de los correos que recibas.</translation>

@@ -4358,7 +4358,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5280426389926346830">Buat Pintasan?</translation>
 <translation id="5281013262333731149">Dibuka dalam: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Untuk memuat turun dan menggunakan apl Android, anda perlu memasang kemas kini yang diperlukan ini dahulu. Semasa <ph name="DEVICE_TYPE"/> anda sedang dikemas kini, anda tidak boleh menggunakannya. <ph name="DEVICE_TYPE"/> anda akan dimulakan semula selepas pemasangan selesai.</translation>
-<translation id="5282733140964383898">Apabila anda mendayakan ‘Jangan Kesan’, permintaan akan disertakan dengan trafik penyemakan imbas anda. Sebarang kesan bergantung pada sama ada laman web menyambut permintaan tersebut dan cara permintaan tersebut ditafsirkan. Contohnya, sesetengah laman web mungkin menyambut permintaan ini dengan memaparkan kepada anda iklan yang tidak berdasarkan laman web lain yang pernah anda lawati. Sebahagian besar laman web tetap akan mengumpul dan menggunakan data penyemakan imbas anda - contohnya, untuk meningkatkan keselamatan, untuk menyediakan kandungan, perkhidmatan, iklan dan cadangan pada laman web mereka dan untuk menghasilkan perangkaan pelaporan. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Apabila anda mendayakan ‘Jangan Kesan’, permintaan akan disertakan dengan trafik penyemakan imbas anda. Sebarang kesan bergantung pada sama ada laman web menyambut permintaan tersebut dan cara permintaan tersebut ditafsirkan. Contohnya, sesetengah laman web mungkin menyambut permintaan ini dengan memaparkan kepada anda iklan yang tidak berdasarkan laman web lain yang pernah anda lawati. Sebahagian besar laman web tetap akan mengumpul dan menggunakan data penyemakan imbas anda - contohnya, untuk meningkatkan keselamatan, untuk menyediakan kandungan, perkhidmatan, iklan dan cadangan pada laman web mereka dan untuk menghasilkan perangkaan pelaporan. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Op! Sistem gagal menentukan model atau nombor siri peranti.</translation>
 <translation id="5284445933715251131">Teruskan Memuat Turun</translation>
 <translation id="5285635972691565180">Paparkan <ph name="DISPLAY_ID"/></translation>
@@ -4375,7 +4375,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5297082477358294722">Kata laluan disimpan. Lihat dan urus kata laluan yang disimpan dalam <ph name="SAVED_PASSWORDS_STORE"/> anda.</translation>
 <translation id="5297946558563358707">Apabila orang lain melihat skrin anda, tunjukkan ikon mata Privasi di bahagian bawah sebelah kanan skrin anda</translation>
 <translation id="5298219193514155779">Tema dicipta oleh</translation>
-<translation id="5299109548848736476">Jangan Kesan</translation>
+<translation id="1839179167864984545">Jangan Kesan</translation>
 <translation id="5299558715747014286">Lihat dan urus kumpulan tab anda</translation>
 <translation id="5300287940468717207">Tetapkan semula kebenaran tapak?</translation>
 <translation id="5300426565656326054">Pemeribadian iklan berasaskan penyemak imbas</translation>
@@ -7843,7 +7843,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8785622406424941542">Stilus</translation>
 <translation id="8786824282808281903">Apabila anak anda melihat ikon ini, cap jari boleh digunakan untuk pengenalan atau meluluskan pembelian.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Kumpulan Tidak Bernama – 1 Tab}other{Kumpulan Tidak Bernama – # Tab}}</translation>
-<translation id="8791534160414513928">Hantar permintaan 'Jangan Kesan' dengan trafik penyemakan imbas anda</translation>
+<translation id="163839281363975279">Hantar permintaan 'Jangan Kesan' dengan trafik penyemakan imbas anda</translation>
 <translation id="879413103056696865">Semasa tempat liputan dihidupkan, <ph name="PHONE_NAME"/> anda akan:</translation>
 <translation id="8795916974678578410">Tetingkap Baharu</translation>
 <translation id="8797459392481275117">Jangan Sekali-kali Terjemahkan Tapak Ini</translation>

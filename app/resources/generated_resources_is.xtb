@@ -4395,7 +4395,7 @@ Annars skaltu skrá þig út núna svo breytingarnar á þessum reikningi taki g
 <translation id="5280426389926346830">Búa til flýtileið?</translation>
 <translation id="5281013262333731149">Opnast í: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Þú þarft að setja upp nauðsynlega uppfærslu áður en þú getur sótt og notað Android forrit. Ekki er hægt að nota <ph name="DEVICE_TYPE"/> meðan á uppfærslunni stendur. <ph name="DEVICE_TYPE"/> verður endurræst að uppsetningu lokinni.</translation>
-<translation id="5282733140964383898">Ef kveikt er á „Ekki rekja“ er beiðni látin fylgja með vefumferðinni þinni. Áhrifin velta á því hvort vefsvæði verður við beiðninni og hvernig beiðnin er túlkuð. Sum vefsvæði kunna t.d. að bregðast við beiðninni með því að birta þér auglýsingar sem ekki byggjast á öðrum vefsvæðum sem þú hefur heimsótt. Mörg vefsvæði munu áfram safna vefnotkunargögnunum þínum og nota þau, t.d. til að auka öryggi, birta efni, veita þjónustu, birta auglýsingar og tillögur á vefsvæðinu og útbúa talnagögn um notkun. <ph name="BEGIN_LINK"/>Frekari upplýsingar<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Ef kveikt er á „Ekki rekja“ er beiðni látin fylgja með vefumferðinni þinni. Áhrifin velta á því hvort vefsvæði verður við beiðninni og hvernig beiðnin er túlkuð. Sum vefsvæði kunna t.d. að bregðast við beiðninni með því að birta þér auglýsingar sem ekki byggjast á öðrum vefsvæðum sem þú hefur heimsótt. Mörg vefsvæði munu áfram safna vefnotkunargögnunum þínum og nota þau, t.d. til að auka öryggi, birta efni, veita þjónustu, birta auglýsingar og tillögur á vefsvæðinu og útbúa talnagögn um notkun. <ph name="BEGIN_LINK"/>Frekari upplýsingar<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Úbbs! Kerfið gat ekki ákvarðað tækisauðkenni eða raðnúmer.</translation>
 <translation id="5284445933715251131">Halda áfram að sækja</translation>
 <translation id="5285635972691565180">Skjár <ph name="DISPLAY_ID"/></translation>
@@ -4413,7 +4413,7 @@ Annars skaltu skrá þig út núna svo breytingarnar á þessum reikningi taki g
 <translation id="5297082477358294722">Aðgangsorðið var vistað. Þú getur skoðað og haft umsjón með vistuðum aðgangsorðum á <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Þegar einhver annar lítur á skjáinn hjá þér birtist augatáknið fyrir persónuvernd neðst til hægri á skjánum</translation>
 <translation id="5298219193514155779">Höfundur þema:</translation>
-<translation id="5299109548848736476">Ekki rekja</translation>
+<translation id="1839179167864984545">Ekki rekja</translation>
 <translation id="5299558715747014286">Skoða og stjórna flipahópum</translation>
 <translation id="5300287940468717207">Endurstilla heimildir vefsvæðis?</translation>
 <translation id="5300426565656326054">Sérsniðnar auglýsingar út frá vafravirkni</translation>
@@ -7920,7 +7920,7 @@ Geymdu lykilskrána á öruggum stað. Þú þarft hana til að búa til nýjar 
 <translation id="8785622406424941542">Penni</translation>
 <translation id="8786824282808281903">Þegar barnið sér þetta tákn er hægt að nota fingrafar til auðkenningar eða til að samþykkja kaup.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Hópur án heitis - 1 flipi}one{Hópur án heitis - # flipi}other{Hópur án heitis - # flipar}}</translation>
-<translation id="8791534160414513928">Senda beiðnina „Ekki rekja“ með vefumferð</translation>
+<translation id="163839281363975279">Senda beiðnina „Ekki rekja“ með vefumferð</translation>
 <translation id="879413103056696865">Þegar kveikt er á heitum reit mun <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nýr gluggi</translation>
 <translation id="8797459392481275117">Aldrei þýða þetta vefsvæði</translation>
@@ -8382,7 +8382,7 @@ Geymdu lykilskrána á öruggum stað. Þú þarft hana til að búa til nýjar 
 <translation id="947667444780368238"><ph name="ORIGIN"/> getur ekki opnað skrár í þessari möppu vegna þess að hún inniheldur kerfisskrár</translation>
 <translation id="950307215746360464">Uppsetningarleiðbeiningar</translation>
 <translation id="951991426597076286">Hafna</translation>
-<translation id="952471655966876828">Tækið tengist sjálfkrafa þegar kveikt er á því og verið er að nota það</translation>
+<translation id="952471655966876828">Tækið tengist sjálfkrafa þegar kveikt er á því og það notað</translation>
 <translation id="953434574221655299">Mega vita hvenær þú notar tækið þitt</translation>
 <translation id="956500788634395331">Tækið er varið gegn viðbótum sem gætu verið hættulegar</translation>
 <translation id="957960681186851048">Þetta vefsvæði reyndi að sækja margar skrár sjálfkrafa</translation>
