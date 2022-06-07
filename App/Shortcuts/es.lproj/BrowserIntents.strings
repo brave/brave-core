@@ -5,7 +5,7 @@
 "1n1yx4" = "No se puede abrir ${websiteURL} en una nueva pestaña.";
 
 /* (No Comment) */
-"1QT5y6" = "Abrir un sitio web";
+"1QT5y6" = "Abre un sitio web en una nueva pestaña";
 
 /* (No Comment) */
 "3oC6Qm" = "Abrir un sitio web en una nueva pestaña";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Esto abrirá ${websiteURL} desde los marcadores.";
 
 /* (No Comment) */
-"qkzovY" = "Abre un sitio web en una nueva pestaña";
-
-/* (No Comment) */
 "t7aARA" = "No se puede abrir ${websiteURL} en una nueva pestaña.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Esto abrirá ${websiteURL} desde el historial.";
-
-/* (No Comment) */
-"xgP5Po" = "con el sitio web";
 
 /* (No Comment) */
 "Xx8bbW" = "URL del sitio web";

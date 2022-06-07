@@ -5,7 +5,7 @@
 "1n1yx4" = "${websiteURL} yeni bir sekmede açılamıyor.";
 
 /* (No Comment) */
-"1QT5y6" = "Web Sitesi Aç";
+"1QT5y6" = "Yeni Sekmede web sitesi aç";
 
 /* (No Comment) */
 "3oC6Qm" = "Yeni Sekmede Web Sitesi Aç";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Bu işlem, ${websiteURL} bağlantısını Yer İşaretlerinden açacaktır.";
 
 /* (No Comment) */
-"qkzovY" = "Yeni Sekmede web sitesi aç";
-
-/* (No Comment) */
 "t7aARA" = "${websiteURL} yeni bir sekmede açılamıyor.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Bu işlem, ${websiteURL} bağlantısını Geçmişten açacaktır.";
-
-/* (No Comment) */
-"xgP5Po" = "web sitesi kullanımı";
 
 /* (No Comment) */
 "Xx8bbW" = "Web Sitesi URL'si";

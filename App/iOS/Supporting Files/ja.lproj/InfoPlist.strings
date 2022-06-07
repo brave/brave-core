@@ -16,7 +16,7 @@
 "NSLocationWhenInUseUsageDescription" = "訪問先のウェブサイトが位置情報を要求する場合があります。";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "ビデオを撮影してアップロードすることができます。";
+"NSMicrophoneUsageDescription" = "Brave使用中にマイクの使用を許可します。";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "写真を保存することができます。";

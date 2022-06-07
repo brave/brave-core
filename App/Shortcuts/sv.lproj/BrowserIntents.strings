@@ -5,7 +5,7 @@
 "1n1yx4" = "Kan inte öppna ${websiteURL} på en ny flik.";
 
 /* (No Comment) */
-"1QT5y6" = "Öppna en webbplats";
+"1QT5y6" = "Öppna en webbplats på ny flik";
 
 /* (No Comment) */
 "3oC6Qm" = "Öppna en webbplats på ny flik";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Detta öppnar ${websiteURL} från Bokmärken.";
 
 /* (No Comment) */
-"qkzovY" = "Öppna en webbplats på ny flik";
-
-/* (No Comment) */
 "t7aARA" = "Kan inte öppna ${websiteURL} på en ny flik.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Detta öppnar ${websiteURL} från Historik.";
-
-/* (No Comment) */
-"xgP5Po" = "använder webbplats";
 
 /* (No Comment) */
 "Xx8bbW" = "Webbplats-URL";

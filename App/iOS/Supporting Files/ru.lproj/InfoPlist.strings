@@ -16,7 +16,7 @@
 "NSLocationWhenInUseUsageDescription" = "Посещаемые сайты могут запрашивать местоположение.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Вы сможете снимать и загружать видео.";
+"NSMicrophoneUsageDescription" = "Разрешает использовать микрофон при работе с Brave.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Вы сможете сохранять фото.";

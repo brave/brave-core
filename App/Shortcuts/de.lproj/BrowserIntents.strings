@@ -5,7 +5,7 @@
 "1n1yx4" = "${websiteURL} kann nicht in einem neuen Tab geöffnet werden.";
 
 /* (No Comment) */
-"1QT5y6" = "Website öffnen";
+"1QT5y6" = "Website in neuem Tab öffnen";
 
 /* (No Comment) */
 "3oC6Qm" = "Website in neuem Tab öffnen";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Dadurch wird ${websiteURL} aus den Lesezeichen geöffnet.";
 
 /* (No Comment) */
-"qkzovY" = "Website in neuem Tab öffnen";
-
-/* (No Comment) */
 "t7aARA" = "${websiteURL} kann nicht in einem neuen Tab geöffnet werden.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Dadurch wird ${websiteURL} aus dem Verlauf geöffnet.";
-
-/* (No Comment) */
-"xgP5Po" = "verwende Website";
 
 /* (No Comment) */
 "Xx8bbW" = "Website-URL";
