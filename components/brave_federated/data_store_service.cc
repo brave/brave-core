@@ -5,15 +5,14 @@
 
 #include "brave/components/brave_federated/data_store_service.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/brave_federated/data_stores/data_store.h"
-#include "brave/components/brave_federated/tasks.h"
+#include "brave/components/brave_federated/data_stores/async_data_store.h"
+#include "brave/components/brave_federated/tasks_constants.h"
 
 namespace {
 
@@ -21,8 +20,8 @@ namespace {
 
 namespace brave_federated {
 
-DataStoreService::DataStoreService(const base::FilePath& database_path)
-    : db_path_(database_path), weak_factory_(this) {}
+DataStoreService::DataStoreService(const base::FilePath& db_path)
+    : db_path_(db_path), weak_factory_(this) {}
 
 DataStoreService::~DataStoreService() {
   EnforceRetentionPolicies();
@@ -35,17 +34,15 @@ void DataStoreService::OnInitComplete(bool success) {
 }
 
 void DataStoreService::Init() {
-  data_stores_.clear();
-
   auto callback = base::BindOnce(&DataStoreService::OnInitComplete,
                                  weak_factory_.GetWeakPtr());
   std::unique_ptr<AsyncDataStore> ad_timing_data_store =
       std::make_unique<AsyncDataStore>(db_path_);
-  ad_timing_data_store->Init(kAdNotificationTaskId, kAdNotificationTaskName,
+  ad_timing_data_store->Init(kNotificationAdTaskId, kNotificationAdTaskName,
                              kMaxNumberOfRecords, kMaxRetentionDays,
                              std::move(callback));
 
-  data_stores_.emplace(kAdNotificationTaskName,
+  data_stores_.emplace(kNotificationAdTaskName,
                        std::move(ad_timing_data_store));
 }
 

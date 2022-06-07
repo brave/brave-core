@@ -13,11 +13,11 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_federated/data_stores/data_store.h"
-#include "brave/components/brave_federated/data_stores/async_data_store.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace brave_federated {
+
+class AsyncDataStore;
+
 // DataStoreService is the shared interface between all adopters applications
 // (ads, news, etc.) and the task-specific data stores, which contains the task
 // logs that are used to train and evaluate task-specific models.

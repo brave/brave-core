@@ -55,7 +55,7 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_federated/data_store_service.h"
-#include "brave/components/brave_federated/data_stores/data_store.h"
+#include "brave/components/brave_federated/data_stores/async_data_store.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"

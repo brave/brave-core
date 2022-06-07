@@ -5,16 +5,13 @@
 
 #include "brave/components/brave_federated/data_stores/data_store.h"
 
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/containers/flat_map.h"
 #include "base/numerics/safe_conversions.h"
-#include "base/sequence_checker.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #include "sql/recovery.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
@@ -53,7 +50,7 @@ void BindCovariateToStatement(
     base::Time created_at,
     sql::Statement* s) {
   s->BindInt64(0, training_instance_id);
-  s->BindInt64(1, static_cast<int>(covariate.covariate_type));
+  s->BindInt64(1, static_cast<int>(covariate.type));
   s->BindInt64(2, static_cast<int>(covariate.data_type));
   s->BindString(3, covariate.value);
   s->BindInt64(4, created_at.ToInternalValue());
@@ -87,7 +84,7 @@ bool DataStore::Init(int task_id,
       base::BindRepeating(&DatabaseErrorCallback, &db_, database_path_));
 
   // Attach the database to our index file.
-  return db_.Open(database_path_) && EnsureTableExists();
+  return db_.Open(database_path_) && MaybeCreateTable();
 }
 
 bool DataStore::AddTrainingInstance(
@@ -99,9 +96,9 @@ bool DataStore::AddTrainingInstance(
                          task_name_.c_str())
           .c_str()));
   max_statement.Step();
-  int training_instance_id = max_statement.ColumnInt(0) + 1;
+  const int training_instance_id = max_statement.ColumnInt(0) + 1;
 
-  base::Time created_at = base::Time::Now();
+  const base::Time created_at = base::Time::Now();
 
   for (const auto& covariate : training_instance->covariates) {
     sql::Statement insert_statement(db_.GetUniqueStatement(
@@ -112,7 +109,8 @@ bool DataStore::AddTrainingInstance(
             task_name_.c_str())
             .c_str()));
 
-    BindCovariateToStatement(*covariate, training_instance_id, created_at, &insert_statement);
+    BindCovariateToStatement(*covariate, training_instance_id, created_at,
+                             &insert_statement);
     insert_statement.Run();
   }
 
@@ -132,9 +130,9 @@ DataStore::TrainingData DataStore::LoadTrainingData() {
 
   training_instances.clear();
   while (load_statement.Step()) {
-    int training_instance_id = load_statement.ColumnInt(1);
+    const int training_instance_id = load_statement.ColumnInt(1);
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->covariate_type = (mojom::CovariateType)load_statement.ColumnInt(2);
+    covariate->type = (mojom::CovariateType)load_statement.ColumnInt(2);
     covariate->data_type = (mojom::DataType)load_statement.ColumnInt(3);
     covariate->value = load_statement.ColumnString(4);
 
@@ -170,7 +168,7 @@ void DataStore::EnforceRetentionPolicy() {
   delete_statement.Run();
 }
 
-bool DataStore::EnsureTableExists() {
+bool DataStore::MaybeCreateTable() {
   if (db_.DoesTableExist(task_name_))
     return true;
 

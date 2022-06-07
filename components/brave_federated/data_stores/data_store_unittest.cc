@@ -43,7 +43,7 @@ class DataStoreTest : public testing::Test {
   void SetUp() override;
   void TearDown() override;
 
-  void ClearDB();
+  void ClearDatabase();
   size_t CountRecords() const;
   size_t CountTrainingInstances() const;
 
@@ -54,7 +54,7 @@ class DataStoreTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  DataStore* data_store_;
+  DataStore* data_store_ = nullptr;
 };
 
 void DataStoreTest::SetUp() {
@@ -63,29 +63,29 @@ void DataStoreTest::SetUp() {
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("test_data_store")));
   data_store_ = new DataStore(db_path);
   ASSERT_TRUE(data_store_->Init(0, "test_federated_task", 50, 30));
-  ClearDB();
+  ClearDatabase();
 }
 
 void DataStoreTest::TearDown() {
   data_store_ = nullptr;
 }
 
-void DataStoreTest::ClearDB() {
+void DataStoreTest::ClearDatabase() {
   EXPECT_TRUE(data_store_->DeleteTrainingData());
 }
 
 size_t DataStoreTest::CountRecords() const {
-  sql::Statement s(data_store_->db_.GetUniqueStatement(
+  sql::Statement statement(data_store_->db_.GetUniqueStatement(
       "SELECT count(*) FROM test_federated_task"));
-  EXPECT_TRUE(s.Step());
-  return static_cast<size_t>(s.ColumnInt(0));
+  EXPECT_TRUE(statement.Step());
+  return static_cast<size_t>(statement.ColumnInt(0));
 }
 
 size_t DataStoreTest::CountTrainingInstances() const {
-  sql::Statement s(data_store_->db_.GetUniqueStatement(
+  sql::Statement statement(data_store_->db_.GetUniqueStatement(
       "SELECT count(DISTINCT training_instance_id) FROM test_federated_task"));
-  EXPECT_TRUE(s.Step());
-  return static_cast<size_t>(s.ColumnInt(0));
+  EXPECT_TRUE(statement.Step());
+  return static_cast<size_t>(statement.ColumnInt(0));
 }
 
 DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
@@ -94,7 +94,7 @@ DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
   for (const auto& test_entry : kTestTrainingData) {
     int training_instance_id = test_entry.training_instance_id;
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->covariate_type = (mojom::CovariateType)test_entry.feature_name;
+    covariate->type = (mojom::CovariateType)test_entry.feature_name;
     covariate->data_type = (mojom::DataType)test_entry.feature_type;
     covariate->value = test_entry.feature_value;
 
@@ -109,7 +109,7 @@ bool DataStoreTest::AddTrainingInstance(
   mojom::TrainingInstancePtr training_instance = mojom::TrainingInstance::New();
   for (const auto& covariate_data : covariates) {
     mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->covariate_type = covariate_data->covariate_type;
+    covariate->type = covariate_data->type;
     covariate->data_type = covariate_data->data_type;
     covariate->value = covariate_data->value;
     training_instance->covariates.push_back(std::move(covariate));
@@ -119,7 +119,7 @@ bool DataStoreTest::AddTrainingInstance(
 }
 
 void DataStoreTest::InitializeDataStore() {
-  ClearDB();
+  ClearDatabase();
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
   for (const auto& training_instance : training_data) {
     AddTrainingInstance(std::move(training_instance.second));
@@ -132,7 +132,7 @@ void DataStoreTest::InitializeDataStore() {
 // -------------------------------------------------------------------------------------
 
 TEST_F(DataStoreTest, AddTrainingInstance) {
-  ClearDB();
+  ClearDatabase();
   EXPECT_EQ(0U, CountRecords());
   DataStore::TrainingData training_data = TrainingDataFromTestInfo();
   EXPECT_TRUE(AddTrainingInstance(std::move(training_data[0])));

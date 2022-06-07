@@ -6,13 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_ASYNC_DATA_STORE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_ASYNC_DATA_STORE_H_
 
-#include "base/callback.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/task/thread_pool.h"
-#include "base/threading/sequence_bound.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include <string>
 
-namespace brave_federated { 
+#include "base/callback.h"
+#include "base/files/file_path.h"
+#include "base/threading/sequence_bound.h"
+#include "brave/components/brave_federated/data_stores/data_store.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+
+namespace brave_federated {
+
+class DataStore;
 
 // Wrapper around DataStore class to handle SequenceBound async logic
 class AsyncDataStore {
@@ -39,6 +43,6 @@ class AsyncDataStore {
   const base::SequenceBound<DataStore> data_store_;
 };
 
-} // namespace brave_federated
+}  // namespace brave_federated
 
 #endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_ASYNC_DATA_STORE_H_

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
 
+#include <utility>
+
 #include "base/callback.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -48,4 +50,4 @@ void AsyncDataStore::EnforceRetentionPolicy() {
   data_store_.AsyncCall(&DataStore::EnforceRetentionPolicy);
 }
 
-} // namespace brave_federated
+}  // namespace brave_federated

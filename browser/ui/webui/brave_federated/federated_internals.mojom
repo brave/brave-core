@@ -7,13 +7,9 @@ module federated_internals.mojom;
 
 import "brave/components/brave_federated/public/interfaces/brave_federated.mojom";
 
-struct InternalsCovariate {
-  int32 training_instance_id;
-  brave_federated.mojom.Covariate covariate;
-};
-
 struct InternalsTrainingInstance {
-  array<InternalsCovariate> covariates;
+  int32 id;
+  array<brave_federated.mojom.Covariate> covariates;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

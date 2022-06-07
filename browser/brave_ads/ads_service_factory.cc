@@ -30,7 +30,7 @@
 #endif
 
 namespace {
-  constexpr char kAdNotificationTimingTask[] = "ad_notification_timing_task";
+  constexpr char kNotificationAdTimingTask[] = "ad_notification_timing_task";
 }
 
 namespace brave_ads {
@@ -82,7 +82,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
   if (federated_service) {
     ad_notification_async_data_store =
         federated_service->GetDataStoreService()->GetDataStore(
-            kAdNotificationTimingTask);
+            kNotificationAdTimingTask);
   }
 
   auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(

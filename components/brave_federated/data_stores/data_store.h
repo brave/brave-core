@@ -17,9 +17,6 @@
 
 namespace brave_federated {
 
-FORWARD_DECLARE_TEST(AdNotificationTimingDataStoreTest,
-                     CheckSchemaColumnExistence);
-
 class DataStore {
  public:
   explicit DataStore(const base::FilePath& database_path);
@@ -41,11 +38,6 @@ class DataStore {
   void EnforceRetentionPolicy();
 
  protected:
-  friend class DataStoreTest;
-  friend class AdNotificationTimingDataStoreTest;
-  FRIEND_TEST_ALL_PREFIXES(AdNotificationTimingDataStoreTest,
-                           CheckSchemaColumnExistence);
-
   sql::Database db_;
   base::FilePath database_path_;
 
@@ -55,7 +47,7 @@ class DataStore {
   int max_retention_days_;
 
  private:
-  bool EnsureTableExists();
+  bool MaybeCreateTable();
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

@@ -175,7 +175,7 @@ CovariateManager::GetTrainingInstance() const {
     brave_federated::mojom::CovariatePtr covariate =
         brave_federated::mojom::Covariate::New();
     covariate->data_type = entry->GetDataType();
-    covariate->covariate_type = entry->GetType();
+    covariate->type = entry->GetType();
     covariate->value = entry->GetValue();
     training_instance->covariates.push_back(std::move(covariate));
   }

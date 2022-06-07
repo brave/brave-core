@@ -9,6 +9,8 @@ static_library("brave_federated") {
     "data_store_service.h",
     "data_stores/data_store.cc",
     "data_stores/data_store.h",
+    "data_stores/async_data_store.cc",
+    "data_stores/async_data_store.h",
     "eligibility_service.cc",
     "eligibility_service.h",
     "eligibility_service_observer.h",

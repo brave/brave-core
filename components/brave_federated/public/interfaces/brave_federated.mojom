@@ -52,7 +52,7 @@ enum DataType {
 
 struct Covariate {
   DataType data_type;
-  CovariateType covariate_type;
+  CovariateType type;
   string value;
 };
 
