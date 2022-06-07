@@ -68,10 +68,9 @@ void Transfer::TransferAd(const int32_t tab_id,
   transferring_ad_tab_id_ = tab_id;
 
   const base::Time transfer_ad_at = timer_.Start(
-      kTransferAdAfter,
+      FROM_HERE, kTransferAdAfter,
       base::BindOnce(&Transfer::OnTransferAd, base::Unretained(this), tab_id,
-                     redirect_chain),
-      FROM_HERE);
+                     redirect_chain));
 
   NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
 }

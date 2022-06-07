@@ -132,8 +132,8 @@ void Issuers::FetchAfterDelay() {
   DCHECK(!retry_timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
-      GetFetchDelay(), base::BindOnce(&Issuers::Fetch, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, GetFetchDelay(),
+      base::BindOnce(&Issuers::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
 }
@@ -147,8 +147,8 @@ void Issuers::RetryAfterDelay() {
   DCHECK(!timer_.IsRunning());
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter, base::BindOnce(&Issuers::OnRetry, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, kRetryAfter,
+      base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);

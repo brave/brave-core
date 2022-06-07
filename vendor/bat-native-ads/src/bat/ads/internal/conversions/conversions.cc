@@ -544,8 +544,8 @@ void Conversions::StartTimer(
   }
 
   const base::Time process_queue_at = timer_.Start(
-      delay, base::BindOnce(&Conversions::ProcessQueue, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, delay,
+      base::BindOnce(&Conversions::ProcessQueue, base::Unretained(this)));
 
   BLOG(1, "Convert " << conversion_queue_item.ad_type << " with campaign id "
                      << conversion_queue_item.campaign_id

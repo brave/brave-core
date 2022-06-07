@@ -93,9 +93,8 @@ void Confirmations::Retry() {
 
   DCHECK(!retry_timer_.IsRunning());
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      kRetryAfter,
-      base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)),
-      FROM_HERE);
+      FROM_HERE, kRetryAfter,
+      base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
 
   BLOG(1,
        "Retry sending failed confirmations " << FriendlyDateAndTime(retry_at));

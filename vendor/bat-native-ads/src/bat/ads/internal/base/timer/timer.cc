@@ -10,12 +10,12 @@
 
 #include "base/check.h"
 #include "base/time/time.h"
-#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave_base/random.h"
 
 namespace ads {
 
-Timer::Timer() : timer_(std::make_unique<base::OneShotTimer>()) {
+Timer::Timer() : timer_(std::make_unique<base::WallClockTimer>()) {
   DCHECK(timer_);
 }
 
@@ -23,40 +23,28 @@ Timer::~Timer() {
   Stop();
 }
 
-void Timer::SetForTesting(std::unique_ptr<base::OneShotTimer> timer) {
-  timer_ = std::move(timer);
-}
-
-base::Time Timer::Start(const base::TimeDelta delay,
-                        base::OnceClosure user_task,
-                        const base::Location& location) {
+base::Time Timer::Start(const base::Location& location,
+                        const base::TimeDelta delay,
+                        base::OnceClosure user_task) {
   Stop();
 
-  timer_->Start(location, delay, std::move(user_task));
-
-  const base::Time time = base::Time::Now() + delay;
-
-  return time;
+  const base::Time fire_at = base::Time::Now() + delay;
+  timer_->Start(location, fire_at, std::move(user_task));
+  return fire_at;
 }
 
-base::Time Timer::StartWithPrivacy(const base::TimeDelta delay,
-                                   base::OnceClosure user_task,
-                                   const base::Location& location) {
-  const int64_t delay_in_seconds = delay.InSeconds();
-
+base::Time Timer::StartWithPrivacy(const base::Location& location,
+                                   const base::TimeDelta delay,
+                                   base::OnceClosure user_task) {
   const int64_t rand_delay_in_seconds =
-      static_cast<int64_t>(brave_base::random::Geometric(delay_in_seconds));
+      static_cast<int64_t>(brave_base::random::Geometric(delay.InSeconds()));
 
-  return Start(base::Seconds(rand_delay_in_seconds), std::move(user_task),
-               location);
+  return Start(location, base::Seconds(rand_delay_in_seconds),
+               std::move(user_task));
 }
 
 bool Timer::IsRunning() const {
   return timer_->IsRunning();
-}
-
-void Timer::FireNow() {
-  return timer_->FireNow();
 }
 
 bool Timer::Stop() {

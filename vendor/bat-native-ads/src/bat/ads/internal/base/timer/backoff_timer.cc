@@ -11,39 +11,29 @@
 
 namespace ads {
 
-BackoffTimer::BackoffTimer() {
-  max_backoff_delay_ = base::Hours(1);
-}
+BackoffTimer::BackoffTimer() = default;
 
 BackoffTimer::~BackoffTimer() = default;
 
-void BackoffTimer::SetForTesting(std::unique_ptr<base::OneShotTimer> timer) {
-  timer_.SetForTesting(std::move(timer));
-}
-
-base::Time BackoffTimer::Start(const base::TimeDelta delay,
-                               base::OnceClosure user_task,
-                               const base::Location& location) {
+base::Time BackoffTimer::Start(const base::Location& location,
+                               const base::TimeDelta delay,
+                               base::OnceClosure user_task) {
   timer_.Stop();
 
-  return timer_.Start(CalculateDelay(delay), std::move(user_task), location);
+  return timer_.Start(location, CalculateDelay(delay), std::move(user_task));
 }
 
-base::Time BackoffTimer::StartWithPrivacy(const base::TimeDelta delay,
-                                          base::OnceClosure user_task,
-                                          const base::Location& location) {
+base::Time BackoffTimer::StartWithPrivacy(const base::Location& location,
+                                          const base::TimeDelta delay,
+                                          base::OnceClosure user_task) {
   timer_.Stop();
 
   const base::TimeDelta backoff_delay = CalculateDelay(delay);
-  return timer_.StartWithPrivacy(backoff_delay, std::move(user_task), location);
+  return timer_.StartWithPrivacy(location, backoff_delay, std::move(user_task));
 }
 
 bool BackoffTimer::IsRunning() const {
   return timer_.IsRunning();
-}
-
-void BackoffTimer::FireNow() {
-  return timer_.FireNow();
 }
 
 bool BackoffTimer::Stop() {
