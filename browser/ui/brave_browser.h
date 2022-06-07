@@ -63,6 +63,12 @@ class BraveBrowser : public Browser {
   void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
 
  private:
+  friend class BraveTestLauncherDelegate;
+  friend class WindowClosingConfirmBrowserTest;
+
+  // static
+  static void SuppressBrowserWindowClosingDialogForTesting(bool suppress);
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
 #endif
