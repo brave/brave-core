@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">错误：不支持此地区</translation>
 <translation id="5382684862562314222">您所在地区的 Uphold 尚不支持 BAT。</translation>
 <translation id="9074594632540931067">错误：BAT 不可用</translation>
-<translation id="413458922997276130">您在 Uphold 的账户目前已被屏蔽。</translation>
-<translation id="3579959767665130790">错误：账户被屏蔽</translation>
-<translation id="6554308597291659562">在启用完整的 Uphold 账户功能之前，Uphold 需要收集更多关于您的信息。请在您的 Uphold 账户中提交此信息后再试一次。</translation>
-<translation id="6996157559236886133">错误：Uphold 账户功能受限</translation>
-<translation id="819370426249314592">您在 Uphold 的账户仍处于待处理状态。</translation>
-<translation id="4530453398914580957">错误：待处理账户</translation>
-<translation id="2388470740942086608">您在 Uphold 的账户目前受到限制。</translation>
-<translation id="3605236342612716051">错误：受限账户</translation>
 <translation id="3274650021044762770">验证浏览器请求以将 Brave 奖励与 <ph name="PROVIDER"/> 账户关联时出错。您可以<ph name="BEGIN_LINK"/>联系支持团队<ph name="END_LINK"/>获得更多帮助。</translation>
 <translation id="1316066811927496401">错误：无法验证请求</translation>
 <translation id="1737873393693460829">开启 [[title]]，即意味着您同意了 <ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/> 和 <ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave 将使用 Infura 从以太坊名称服务向智能合约发出以太坊 JSON-RPC 调用，以解决 .eth 域名查找请求。如果您启用此功能，Infura 将看到您尝试访问的 .eth 域，但他们将无法看到其他域。请参阅 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用条款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隐私权政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
 <translation id="7378412287463452336">使用 Infura 服务器继续操作</translation>
 <translation id="2356070529366658676">询问</translation>
-<translation id="2218918398178303658">通过 HTTPS 的 DNS</translation>
 <translation id="1448289340149908413">以太坊</translation>
 <translation id="2468755552460246661">已被阻止的域</translation>
 <translation id="6393849031898466746">此站点可能试图通过其他网站跟踪你</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">未能获取交易类型</translation>
 <translation id="2080935885647755539">未能获取 EIP-1559 交易的 gas 费用</translation>
 <translation id="4843814354611030845">用户拒绝了交易</translation>
-<translation id="1462494615260983714">交易处理出错</translation>
 <translation id="4886059598718763020">“<ph name="VALUE"/>”未被授权签署消息</translation>
 <translation id="8719220598078667817">未能签署交易</translation>
 <translation id="875506212625074179">RPC 服务的链 ID 响应无效</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">交易可能超前了</translation>
 <translation id="632241521608275119">滑点公差</translation>
 <translation id="4500473291496079954">到期时间</translation>
-<translation id="8093033115658137576">0x 地址或 url</translation>
+<translation id="2236833281018938257">0x 地址或 url</translation>
 <translation id="2860280209982026951">Brave 使用 <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> 作为 DEX 聚合器。</translation>
 <translation id="151946611346774041">0x 将处理以太坊地址和 IP 地址以完成交易（包括获取报价）。0x 只会将这些数据用于处理交易的目的。</translation>
 <translation id="4626407663177532837">报价包含 0.875% 的 Brave 费用</translation>
@@ -1153,6 +1143,7 @@
 <translation id="3327639091470204775">无法连接至 Trezor 桥</translation>
 <translation id="6672377693827764095">内部错误，无法获取账户</translation>
 <translation id="6889920539620318793">设为活动</translation>
+<translation id="1462494615260983714">交易处理出错</translation>
 <translation id="8933250418452564886">找不到硬件交易，请重试</translation>
 <translation id="5999974802900788338">从您的硬件设备收到错误，可能您需要在设备上确认交易</translation>
 <translation id="8523768065044261559">处理交易出错，请重试</translation>
@@ -1271,4 +1262,5 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="6996157559236886133">错误：Uphold 账户功能受限</translation>
 </translationbundle>

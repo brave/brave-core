@@ -767,7 +767,7 @@ Uygulamalara vermiş olduğunuz izinler bu hesap için geçerli olabilir. Androi
 <translation id="1736419249208073774">Keşfet</translation>
 <translation id="1737968601308870607">Hata bildir</translation>
 <translation id="1739684185846730053">Privacy Sandbox denemeleri, hâlâ aktif geliştirme aşamasında olup belirli bölgelerde kullanılmaktadır. Şimdilik, siteler üçüncü taraf çerezler gibi geçerli web teknolojilerini kullanmaya devam ederken Privacy Sandbox'ı deneyebilir.</translation>
-<translation id="1741190788710022490">Uyarlamalı şarj</translation>
+<translation id="1741190788710022490">Uyarlanabilir şarj</translation>
 <translation id="174123615272205933">Özel</translation>
 <translation id="1741314857973421784">Devam</translation>
 <translation id="1743970419083351269">İndirme Çubuğunu Kapat</translation>
@@ -4339,7 +4339,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="5280426389926346830">Kısayol Oluşturulsun mu?</translation>
 <translation id="5281013262333731149"><ph name="OPEN_BROWSER"/> tarayıcısında açılır</translation>
 <translation id="528208740344463258">Android uygulamalarını indirmek ve kullanmak için öncelikle bu gerekli güncellemeyi yüklemeniz gerekir. Güncelleme işlemi sırasında <ph name="DEVICE_TYPE"/> cihazınızı kullanamazsınız. Yükleme tamamlandıktan sonra <ph name="DEVICE_TYPE"/> cihazınız yeniden başlatılır.</translation>
-<translation id="5282733140964383898">"Do Not Track" seçeneğinin etkinleştirilmesi, göz atma trafiğinize bir isteğin ekleneceği anlamına gelir. Bunun etkileri, bir web sitesinin bu isteğe yanıt verip vermemesine ve isteği ne şekilde yorumladığına bağlıdır. Örneğin bazı web siteleri bu isteğe yanıt olarak, daha önce ziyaret ettiğiniz diğer web sitelerine dayalı olmayan reklamlar gösterebilir. Pek çok web sitesi yine de göz atma verilerinizi toplamaya ve kullanmaya devam edecektir. Bunu örneğin, güvenliği artırmak, kendi web sitelerinde içerik, hizmet, reklam ve öneriler sunmak ve raporlama istatistikleri oluşturmak için yaparlar. <ph name="BEGIN_LINK"/>Daha fazla bilgi edinin<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">"Do Not Track" seçeneğinin etkinleştirilmesi, göz atma trafiğinize bir isteğin ekleneceği anlamına gelir. Bunun etkileri, bir web sitesinin bu isteğe yanıt verip vermemesine ve isteği ne şekilde yorumladığına bağlıdır. Örneğin bazı web siteleri bu isteğe yanıt olarak, daha önce ziyaret ettiğiniz diğer web sitelerine dayalı olmayan reklamlar gösterebilir. Pek çok web sitesi yine de göz atma verilerinizi toplamaya ve kullanmaya devam edecektir. Bunu örneğin, güvenliği artırmak, kendi web sitelerinde içerik, hizmet, reklam ve öneriler sunmak ve raporlama istatistikleri oluşturmak için yaparlar. <ph name="BEGIN_LINK"/>Daha fazla bilgi edinin<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Hata! Sistem, cihaz modelini veya seri numarasını belirleyemedi.</translation>
 <translation id="5284445933715251131">İndirmeye Devam Et</translation>
 <translation id="5285635972691565180">Ekran <ph name="DISPLAY_ID"/></translation>
@@ -4356,7 +4356,7 @@ Sunucunun mesajı: <ph name="SERVER_MSG"/></translation>
 <translation id="5297082477358294722">Şifre kaydedildi. Kayıtlı şifrelerinizi <ph name="SAVED_PASSWORDS_STORE"/> üzerinde görüntüleyebilir ve yönetebilirsiniz.</translation>
 <translation id="5297946558563358707">Başka birisi ekranınıza baktığında sağ altta Gizlilik göz simgesi gösterilir</translation>
 <translation id="5298219193514155779">Temayı oluşturan:</translation>
-<translation id="5299109548848736476">Do Not Track</translation>
+<translation id="1839179167864984545">Do Not Track</translation>
 <translation id="5299558715747014286">Sekme gruplarınızı görüntüleyip yönetin</translation>
 <translation id="5300287940468717207">Site izinleri sıfırlansın mı?</translation>
 <translation id="5300426565656326054">Tarayıcıya dayalı reklam kişiselleştirme</translation>
@@ -7823,7 +7823,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8785622406424941542">Ekran kalemi</translation>
 <translation id="8786824282808281903">Çocuğunuz bu simgeyi gördüğünde, kimlik doğrulamak veya satın alma işlemlerini onaylamak için parmak izi kullanılabilir.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Adsız Grup - 1 Sekme}other{Adsız Grup - # Sekme}}</translation>
-<translation id="8791534160414513928">Göz atma trafiğimle birlikte bir "Do Not Track" isteği gönder</translation>
+<translation id="163839281363975279">Göz atma trafiğimle birlikte bir "Do Not Track" isteği gönder</translation>
 <translation id="879413103056696865">Hotspot açıkken <ph name="PHONE_NAME"/> telefonunuz:</translation>
 <translation id="8795916974678578410">Yeni Pencere</translation>
 <translation id="8797459392481275117">Bu Siteyi Hiçbir Zaman Çevirme</translation>

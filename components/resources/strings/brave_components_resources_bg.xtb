@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Грешка: регионът не се поддържа</translation>
 <translation id="5382684862562314222">BAT все още не се поддържа във вашия регион в Uphold.</translation>
 <translation id="9074594632540931067">Грешка: BAT не е наличен</translation>
-<translation id="413458922997276130">Вашият акаунт в Uphold в момента е блокиран.</translation>
-<translation id="3579959767665130790">Грешка: блокиран акаунт</translation>
-<translation id="6554308597291659562">Преди да активирате пълната функционалност на акаунт в Uphold, той трябва да събере допълнителна информация за вас. Опитайте отново, след като изпратите тази информация в акаунта си в Uphold.</translation>
-<translation id="6996157559236886133">Грешка: ограничена функционалност на акаунта в Uphold</translation>
-<translation id="819370426249314592">Вашият акаунт в Uphold все още е изчакващ.</translation>
-<translation id="4530453398914580957">Грешка: изчакващ акаунт</translation>
-<translation id="2388470740942086608">Вашият акаунт в Uphold в момента е ограничен.</translation>
-<translation id="3605236342612716051">Грешка: ограничен акаунт</translation>
 <translation id="3274650021044762770">Възникна проблем при валидирането на заявката на браузъра ви за свързване на Brave наградите с вашия акаунт в <ph name="PROVIDER"/>. Можете да <ph name="BEGIN_LINK"/>се свържете с поддръжката<ph name="END_LINK"/> за допълнителна помощ.</translation>
 <translation id="1316066811927496401">Грешка: Заявката не може да бъде валидирана</translation>
 <translation id="1737873393693460829">С включването на [[title]] вие се съгласявате с <ph name="BEGIN_LINK1"/>Условията за ползване<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политиката за поверителност<ph name="END_LINK2"/>.</translation>
@@ -668,10 +660,12 @@
 <translation id="1164622162816276433">24-часов обем</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Активиране на поддръжката на Unstoppable Domains в Brave?</translation>
+<translation id="2173151783558384314">Brave ще използва Infura, за да извършва Ethereum JSON-RPC повиквания към интелигентния договор от Unstoppable Domains за разрешаване на заявки за търсене на имена на .crypto домейни (както и .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Ако разрешите това, Infura ще вижда тези конкретни домейни, които се опитвате да посетите, но няма да може да вижда други домейни. Вижте <ph name="BEGIN_INFURA_TOU_LINK"/>Условията за употреба на Infura<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Правилата за защита на личните данни на Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Активирайте поддръжка на Ethereum Name Service (ENS) в Brave?</translation>
+<translation id="8328137586971750853">Brave ще използва Infura за извършване на Ethereum JSON-RPC повиквания към интелигентния договор от Ethereum Name Service за разрешаване на заявки за търсене на имена на .eth домейни. Ако разрешите това, Infura ще вижда .eth домейна, който се опитвате да посетите, но няма да може да вижда други домейни. Вижте <ph name="BEGIN_INFURA_TOU_LINK"/>Условията за употреба на Infura<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Правилата за защита на личните данни на Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Продължете с помощта на сървъра на Infura</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
-<translation id="2218918398178303658">DNS по HTTPS</translation>
 <translation id="1448289340149908413">Етериум</translation>
 <translation id="2468755552460246661">Домейнът е блокиран</translation>
 <translation id="6393849031898466746">Този сайт може да опита да ви проследи през други сайтове.</translation>
@@ -796,6 +790,7 @@
 <translation id="9161147058107529840">Очакван параметър на обект.</translation>
 <translation id="1875861420974447980">Този идентификатор на веригата в момента се използва</translation>
 <translation id="167698752210114155">Възникна вътрешна грешка</translation>
+<translation id="2326876601333401685">Този RPC метод не се поддържа.</translation>
 <translation id="1128992132632883337">Възникна грешка при анализа на отговора</translation>
 <translation id="1680597601664421644">Импортираната мнемоника не е валидна за портфейл в Brave</translation>
 <translation id="4641919696349069826">Заявката вече се обработва</translation>
@@ -816,7 +811,6 @@
 <translation id="4232775951515678071">Неуспешно получаване на типа трансакция</translation>
 <translation id="2080935885647755539">Неуспешно получаване на таксата за газ за трансакция EIP-1559</translation>
 <translation id="4843814354611030845">Потребителят отказа трансакцията</translation>
-<translation id="1462494615260983714">Грешка при обработването на трансакцията</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ няма пълномощия да подписва съобщение</translation>
 <translation id="8719220598078667817">Неуспешно подписване на трансакцията</translation>
 <translation id="875506212625074179">Невалиден отговор на идентификатора на веригата от услуга за RPC</translation>
@@ -864,11 +858,12 @@
 <translation id="1191686659164947414">Трансакцията може да бъде предварителна</translation>
 <translation id="632241521608275119">Толерантност към слипидж</translation>
 <translation id="4500473291496079954">Изтича след</translation>
-<translation id="8093033115658137576">0x адрес или URL адрес</translation>
+<translation id="2236833281018938257">0x адрес или URL адрес</translation>
 <translation id="2860280209982026951">Brave използва <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> като DEX агрегатор.</translation>
 <translation id="151946611346774041">0x ще обработи Етириум адреса и IP адреса, за да изпълни трансакция (включително получаване на котировки). 0x ще използва тези данни САМО за целите на обработката на трансакции.</translation>
 <translation id="4626407663177532837">Офертата включва такса на Brave от 0,875%.</translation>
 <translation id="8368540604723748428">Твърде много знаци след десетичната запетая</translation>
+<translation id="6575120282593094155">Все още нямате акаунт в <ph name="ACCOUNT_TYPE"/>. Желете ли да си създадете такъв сега?</translation>
 <translation id="2704606927547763573">Копирано</translation>
 <translation id="1420318137760245955">Добре дошли в новия портфейл в Brave</translation>
 <translation id="8303434745767477417">Управлявайте криптовалута. Проследявайте ефективността на портфолиото и взаимодействайте с децентрализирани приложения web3. Търгувайте, инвестирайте, взимайте и давайте назаем с DeFi. Разботи добре от поверителния браузър Brave. Без разширения и изтегляне.</translation>
@@ -1035,6 +1030,7 @@
 <translation id="5821668936183240062">следващ</translation>
 <translation id="793994607260936590">първи</translation>
 <translation id="4709524402122994378">транзакции</translation>
+<translation id="4591079278963448049">Съответният токен акаунт все още не съществува. За създаването и финансирането му ще бъде изразходвано малко количество SOL.</translation>
 <translation id="523862956770478816">Разрешения на сайта</translation>
 <translation id="1575262454612599115">Свързани са <ph name="NUMBER_OF_ACCOUNTS"/> сметки</translation>
 <translation id="4305817255990598646">Превключване</translation>
@@ -1146,6 +1142,7 @@
 <translation id="3327639091470204775">Не може да се свърже с моста Trezor</translation>
 <translation id="6672377693827764095">Вътрешна грешка, неуспешно извличане на сметките</translation>
 <translation id="6889920539620318793">Задаване като активна</translation>
+<translation id="1462494615260983714">Грешка при обработването на трансакцията</translation>
 <translation id="8933250418452564886">Не можахме да намерим хардуерна трансакция, моля, опитайте отново</translation>
 <translation id="5999974802900788338">Получена е грешка от хардуерно устройство, вероятно трябва да потвърдите трансакцията на устройство ви</translation>
 <translation id="8523768065044261559">Грешка при обработването на трансакцията, моля, опитайте отново</translation>
@@ -1165,9 +1162,13 @@
 <translation id="7829441065063984927">7 дни крипто раздаване, награди за ~500 хиляди USD.</translation>
 <translation id="8292716346768453265">Влезте още сега!</translation>
 <translation id="6423985584914773314">FIL адресът не е валиден</translation>
+<translation id="3898731124813934210">Купуване с Wyre</translation>
+<translation id="5522073372365069684">Купуване с Ramp</translation>
 <translation id="8528916244724490964">Всички мрежи</translation>
 <translation id="2781668117338732220">Допълнителни мрежи</translation>
 <translation id="2816106784624007524">Ограничението за газ трябва да бъде цяло число, по-голямо от 0</translation>
+<translation id="3354376789153561654">Данните за трансакция в полето „to“ трябва да бъдат посочени</translation>
+<translation id="8728991256628663004">Данните за трансакция в полето „from“ трябва да са валиден Filecoin адрес</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -1212,6 +1213,7 @@
 <translation id="2325196879156848326">Неуспешно свързване</translation>
 <translation id="745054660363064771">Не може да се установи връзка със сървъра</translation>
 <translation id="3936826714240735937">Избор на друг сървър</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> не можа да се свърже със сървъра на<ph name="REGION_NAME"/>. Можете да опитате отново или да изберете друг.</translation>
 <translation id="1024255913009642477">Вече закупихте VPN?</translation>
 <translation id="8814357473522731680">Предоставено от</translation>
 <translation id="5747552184818312860">Изтича на</translation>
@@ -1224,11 +1226,24 @@
 <translation id="1751947227857853925">Бързи и неограничени до 100 Mbps</translation>
 <translation id="1400240082805528049">Поддръжка 24/7</translation>
 <translation id="8463313539532697053">Един момент. Зареждане…</translation>
+<translation id="4613076894734402086">Редактиране на начин на плащане</translation>
+<translation id="1898254156730880135">Изглежда, че последното ви плащане не е преминало. Достъпът до този абонамент ще бъде спрян, докато проблемът с плащането не бъде разрешен. Опитайте се да редактирате начина си на плащане или се свържете с отдела по поддръжка на Brave.</translation>
+<translation id="1839021455997460752">Вашият имейл адрес</translation>
+<translation id="5154702632169343078">Относно</translation>
+<translation id="6625978880678465492">Моля, изберете причина</translation>
 <translation id="6687228121145903051">Неуспешно свързване с VPN (друга грешка)</translation>
 <translation id="9184988385244077767">Няма връзка с интернет</translation>
 <translation id="21570240866965662">Връзката е бавна</translation>
 <translation id="1219475260382643267">Уебсайтът не работи</translation>
 <translation id="7138678301420049075">Друго</translation>
+<translation id="1387340358507240698">Опишете проблема</translation>
+<translation id="501818585183973587">Изберете информацията, която сте склонни да споделите</translation>
+<translation id="3195618332367441234">Колкото повече информация споделите, толкова по-лесно ще бъде за екипа по поддръжка да ви съдейства.</translation>
+<translation id="5682143294773821728">Име на хоста на VPN:</translation>
+<translation id="24242621812020123">Версия на приложението:</translation>
+<translation id="6676791921618140305">Версия на операционната система:</translation>
+<translation id="1156325797949437777">Поддръжката се предоставя в сътрудничество с Guardian.</translation>
+<translation id="3307461350293459700">VPN връзката беше неуспешна. Моля, опитайте да се свържете отново и не забравяйте да щракнете върху бутона Allow, за да разрешите VPN конфигурацията на Brave.</translation>
 <translation id="7586151660465233733">Включване на повече пазари<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Преглед на пазарите и търгуване с криптовалута в FTX</translation>
 <translation id="5963745988819586370">Пазари</translation>
@@ -1246,4 +1261,5 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="6996157559236886133">Грешка: ограничена функционалност на акаунта в Uphold</translation>
 </translationbundle>

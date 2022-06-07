@@ -4348,7 +4348,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="5280426389926346830">Kas soovite luua otsetee?</translation>
 <translation id="5281013262333731149">Avaneb brauseris: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Androidi rakenduste allalaadimiseks ja kasutamiseks peate esmalt installima selle kohustusliku värskenduse. Seadme <ph name="DEVICE_TYPE"/> värskendamise ajal ei saa te seda kasutada. <ph name="DEVICE_TYPE"/> taaskäivitatakse pärast installimise lõpulejõudmist.</translation>
-<translation id="5282733140964383898">Valiku „Ära jälgi” lubamine tähendab, et päring lisatakse teie sirvimisliiklusse. Selle toimimine oleneb sellest, kas veebisait reageerib päringule ja kuidas päringut tõlgendatakse. Näiteks võivad mõned veebisaidid päringule reageerida nii, et näitavad teile reklaame, mis ei paikne teie külastatud muudel veebisaitidel. Paljud veebisaidid siiski koguvad ning kasutavad teie sirvimisandmeid, näiteks turvalisuse täiustamiseks, sisu, teenuste, reklaamide ja soovituste pakkumiseks oma veebisaitidel ning statistikaaruande loomiseks. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Valiku „Ära jälgi” lubamine tähendab, et päring lisatakse teie sirvimisliiklusse. Selle toimimine oleneb sellest, kas veebisait reageerib päringule ja kuidas päringut tõlgendatakse. Näiteks võivad mõned veebisaidid päringule reageerida nii, et näitavad teile reklaame, mis ei paikne teie külastatud muudel veebisaitidel. Paljud veebisaidid siiski koguvad ning kasutavad teie sirvimisandmeid, näiteks turvalisuse täiustamiseks, sisu, teenuste, reklaamide ja soovituste pakkumiseks oma veebisaitidel ning statistikaaruande loomiseks. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Vabandust! Süsteemil ei õnnestunud seadme mudelit või seerianumbrit määrata.</translation>
 <translation id="5284445933715251131">Jätka allalaadimist</translation>
 <translation id="5285635972691565180">Kuva <ph name="DISPLAY_ID"/></translation>
@@ -4365,7 +4365,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="5297082477358294722">Parool salvestati. Vaadake ja hallake salvestatud paroole siin: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kui keegi teine vaatab teie ekraanikuva, kuvatakse ekraani paremas alanurgas silmakujuline privaatsusikoon</translation>
 <translation id="5298219193514155779">Teema on loonud</translation>
-<translation id="5299109548848736476">Ära jälgi</translation>
+<translation id="1839179167864984545">Ära jälgi</translation>
 <translation id="5299558715747014286">Teie vahelehegruppide vaatamine ja haldamine</translation>
 <translation id="5300287940468717207">Kas soovite saidi load lähtestada?</translation>
 <translation id="5300426565656326054">Brauseripõhine reklaamide isikupärastamine</translation>
@@ -7832,7 +7832,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8785622406424941542">Elektronpliiats</translation>
 <translation id="8786824282808281903">Kui teie laps näeb seda ikooni, saab sõrmejälge kasutada tuvastamiseks või ostude kinnitamiseks.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Nimeta grupp – 1 vaheleht}other{Nimeta grupp – # vahelehte}}</translation>
-<translation id="8791534160414513928">Saada sirvimisliiklusega taotlus „Ära jälgi”</translation>
+<translation id="163839281363975279">Saada sirvimisliiklusega taotlus „Ära jälgi”</translation>
 <translation id="879413103056696865">Kui leviala on sisse lülitatud, teeb teie telefon <ph name="PHONE_NAME"/> järgmist.</translation>
 <translation id="8795916974678578410">Uus aken</translation>
 <translation id="8797459392481275117">Ära kunagi seda saiti tõlgi</translation>

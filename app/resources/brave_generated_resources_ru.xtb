@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Открыть ссылку в Приватном окне Brave с Tor</translation>
 <translation id="3229091547987707389">Импортировать папку и открыть общий доступ</translation>
 <translation id="5029193871181468990">Скрыть значок Brave Наград</translation>
-<translation id="4613486011786721686">Скрывает значок кошелька Brave на панели инструментов.</translation>
+<translation id="7595540212376041331">Скрывает значок кошелька Brave на панели инструментов.</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
@@ -108,8 +108,6 @@
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
-<translation id="6040143037577758943">Закрыть</translation>
-<translation id="5600566490506283344">Уведомление о рекламе Brave</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса</translation>
 <translation id="1516554614404600536">Подсказки Brave</translation>
@@ -222,7 +220,6 @@
 <translation id="2761825942249694703">Это настройки щитов по умолчанию. Они применяются ко всем веб-сайтам, пока вы не измените что-либо на панели «Щиты» определенного сайта. Эти изменения не повлияет на существующие настройки для каждого сайта.</translation>
 <translation id="1485394570478670912">Большинство объявлений будет блокироваться. Однако это не касается рекламы Brave Private Ads, ее параметры можно изменить здесь:</translation>
 <translation id="6388201778088078932">настройки.</translation>
-<translation id="4395160081588457461">Смотрите и ощущайте</translation>
 <translation id="4800195524776354947">Показывать количество заблокированных элементов на значке Shields</translation>
 <translation id="5510493033031835532">Автоматически перенаправлять с AMP-страниц</translation>
 <translation id="5197219128592971597">Всегда открывать оригинальные страницы вместо ускоренных мобильных версий (AMP)</translation>
@@ -480,4 +477,8 @@
 <translation id="5318548116565208315">Аватар конфета кукуруза</translation>
 <translation id="1959966725083452288">Аватар королевская конфета</translation>
 <translation id="2039034364578911089">Аватар конфетный ниндзя</translation>
+<translation id="4613486011786721686">Скрывает значок кошелька Brave на панели инструментов.</translation>
+<translation id="6040143037577758943">Закрыть</translation>
+<translation id="5600566490506283344">Уведомление о рекламе Brave</translation>
+<translation id="4395160081588457461">Смотрите и ощущайте</translation>
 </translationbundle>

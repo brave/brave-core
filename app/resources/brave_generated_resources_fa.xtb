@@ -69,7 +69,7 @@
 <translation id="3425600262621021599">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="3229091547987707389">وارد کردن و اشتراک‌گذاری یک دایرکتوری</translation>
 <translation id="5029193871181468990">مخفی کردن نماد Brave Rewards</translation>
-<translation id="4613486011786721686">پنهان کردن نماد «کیف پول Brave» در نوار ابزار</translation>
+<translation id="7595540212376041331">پنهان کردن نماد «کیف پول Brave» در نوار ابزار</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="3161744659507801211">هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود.</translation>
@@ -107,8 +107,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> زبانه</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
-<translation id="6040143037577758943">بستن</translation>
-<translation id="5600566490506283344">اعلان آگهی Brave</translation>
 <translation id="4174337572777167894">پروژه کشف وب</translation>
 <translation id="8659271182272561965">در جستجوی ناشناس مشارکت کنید تا داده‌های جستجو و مرور را برای جستجوی Brave پالایش کنید.</translation>
 <translation id="1516554614404600536">نکته‌ابزار Brave</translation>
@@ -221,7 +219,6 @@
 <translation id="2761825942249694703">این‌ها تنظیمات پیش‌فرض «سپر ایمنی» هستند. برای همه وب‌سایت‌ها اعمال می‌شوند مگراینکه موردی را در پانل «سپرایمنی» در سایت خاصی تغییر دهید. تغییر این موارد، تأثیری بر تنظیمات موجود هر سایت نمی‌گذارد.</translation>
 <translation id="1485394570478670912">با این کار اکثر آگهی‌ها در وب‌سایت‌ها مسدود می‌شوند، اما «Brave Private Ads» ‏— مسدود نمی‌شود. این آگهی‌ها در اینجا کنترل می‌شود</translation>
 <translation id="6388201778088078932">تنظیمات.</translation>
-<translation id="4395160081588457461">ظاهر و جلوه</translation>
 <translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
 <translation id="5510493033031835532">تغییر مسیر خودکار صفحات AMP</translation>
 <translation id="5197219128592971597">به‌جای نسخه‌های صفحه تلفن همراه تسریع‌شده Google، همیشه از نشانی‌های وب صفحه اصلی (غیر AMP) بازدید کنید</translation>
@@ -479,4 +476,8 @@
 <translation id="5318548116565208315">آواتار ذرت آب‌نبات</translation>
 <translation id="1959966725083452288">آواتار سلطنتی آب‌نبات</translation>
 <translation id="2039034364578911089">آواتار نینجای آب‌نبات</translation>
+<translation id="4613486011786721686">پنهان کردن نماد «کیف پول Brave» در نوار ابزار</translation>
+<translation id="6040143037577758943">بستن</translation>
+<translation id="5600566490506283344">اعلان آگهی Brave</translation>
+<translation id="4395160081588457461">ظاهر و جلوه</translation>
 </translationbundle>

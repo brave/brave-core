@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Tõrge: piirkonda ei toetata</translation>
 <translation id="5382684862562314222">Teie piirkonnas Uphold veel BAT-i ei toeta.</translation>
 <translation id="9074594632540931067">Tõrge: BAT pole saadaval</translation>
-<translation id="413458922997276130">Teie Upholdi konto on praegu blokeeritud.</translation>
-<translation id="3579959767665130790">Tõrge: blokeeritud konto</translation>
-<translation id="6554308597291659562">Enne Upholdi konto täisfunktsionaalsuse võimaldamist peab Uphold koguma teie kohta veidi rohkem teavet. Proovige uuesti, kui olete selle teabe oma Upholdi kontol esitanud.</translation>
-<translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
-<translation id="819370426249314592">Teie Upholdi konto on veel ootel.</translation>
-<translation id="4530453398914580957">Tõrge: ootel konto</translation>
-<translation id="2388470740942086608">Teie Upholdi konto on praegu piiratud õigustega.</translation>
-<translation id="3605236342612716051">Tõrge: piiratud õigustega konto</translation>
 <translation id="3274650021044762770">Ilmnes probleem teie brauseri taotluse valideerimisel, et ühendada Brave'i Preemiad teenusepakkuja <ph name="PROVIDER"/> kontoga. Kui vajate veel abi, võite pöörduda <ph name="BEGIN_LINK"/>kasutajatoe<ph name="END_LINK"/> poole.</translation>
 <translation id="1316066811927496401">Tõrge: taotlust ei õnnestunud valideerida.</translation>
 <translation id="1737873393693460829">Lülitades sisse funktsiooni [[title]], nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave kasutab Infurat Ethereumi JSON-RPC kutsete väljastamiseks Ethereumi nimeteenuse nutilepingusse domeeninime .eth leidmispäringute lahendamiseks. Kui selle lubate, näeb Infura .eth domeene, mida üritate külastada, kuid ei näe muid domeene. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Jätka Infura serveri kasutamisega</translation>
 <translation id="2356070529366658676">Küsi</translation>
-<translation id="2218918398178303658">DNS HTTPS-i kaudu</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domeen on tõkestatud</translation>
 <translation id="6393849031898466746">See veebisait võib proovida teid muudel veebisaitidel jälgida</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Tehingu tüübi toomine nurjus</translation>
 <translation id="2080935885647755539">Gaasitasu toomine EIP-1559 tehingu jaoks nurjus</translation>
 <translation id="4843814354611030845">Kasutaja lükkas tehingu tagasi</translation>
-<translation id="1462494615260983714">Tõrge tehingu töötlemisel</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ ei oma sõnumi allkirjastamise luba</translation>
 <translation id="8719220598078667817">Tehingu allkirjastamine nurjus</translation>
 <translation id="875506212625074179">RPC-teenuse ahela ID vastus on sobimatu</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Tehing võib olla ennetatud</translation>
 <translation id="632241521608275119">Varieeruvuse tolerants</translation>
 <translation id="4500473291496079954">Aegumisaeg</translation>
-<translation id="8093033115658137576">0x aadress või URL</translation>
+<translation id="2236833281018938257">0x aadress või URL</translation>
 <translation id="2860280209982026951">Brave'is on DEX-i agregaatorina kasutusel <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>.</translation>
 <translation id="151946611346774041">0x töötleb Ethereumi aadressi ja IP-aadressi, et sooritada tehing (sealhulgas saada hinnapakkumisi). 0x kasutab neid andmeid AINULT tehingute töötlemise eesmärgil.</translation>
 <translation id="4626407663177532837">Hinnapakkumine sisaldab 0,875% Brave'i tasu.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Trezori sillaga ei õnnestunud ühendust luua</translation>
 <translation id="6672377693827764095">Sisetõrge, kontode toomine ei õnnestu</translation>
 <translation id="6889920539620318793">Määra aktiivseks</translation>
+<translation id="1462494615260983714">Tõrge tehingu töötlemisel</translation>
 <translation id="8933250418452564886">Riistvaratehingut ei õnnestunud leida, proovige uuesti</translation>
 <translation id="5999974802900788338">Riistvaraseadmest saadi tõrge, arvatavasti peate oma seadmes tehingu kinnitama</translation>
 <translation id="8523768065044261559">Tõrge tehingu töötlemisel, proovige uuesti</translation>
@@ -1270,4 +1261,5 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
 </translationbundle>

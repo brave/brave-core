@@ -4361,7 +4361,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5280426389926346830">Sukurti spartųjį klavišą?</translation>
 <translation id="5281013262333731149">Atidaroma naršyklėje „<ph name="OPEN_BROWSER"/>“</translation>
 <translation id="528208740344463258">Kad galėtumėte atsisiųsti ir naudoti „Android“ programas, pirmiausia turite įdiegti šį būtiną naujinį. Kol „<ph name="DEVICE_TYPE"/>“ atnaujinamas, negalite jo naudoti. Užbaigus diegimą „<ph name="DEVICE_TYPE"/>“ bus paleistas iš naujo.</translation>
-<translation id="5282733140964383898">Įgalinus parinktį „Nestebėti“ užklausa bus įtraukta į naršymo srautą. Poveikis priklauso nuo to, ar svetainė atsako į užklausą ir kaip ji interpretuojama. Pvz., kai kurios svetainės gali atsakyti į šią užklausą rodydamos skelbimus, nepagrįstus kitomis svetainėmis, kuriose lankėtės. Daugybė svetainių vis tiek rinks ir naudos jūsų naršymo duomenis, pvz., siekdamos pagerinti saugumą, teikti svetainėse turinį, paslaugas, skelbimus ir rekomendacijas bei generuoti ataskaitų statistiką. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Įgalinus parinktį „Nestebėti“ užklausa bus įtraukta į naršymo srautą. Poveikis priklauso nuo to, ar svetainė atsako į užklausą ir kaip ji interpretuojama. Pvz., kai kurios svetainės gali atsakyti į šią užklausą rodydamos skelbimus, nepagrįstus kitomis svetainėmis, kuriose lankėtės. Daugybė svetainių vis tiek rinks ir naudos jūsų naršymo duomenis, pvz., siekdamos pagerinti saugumą, teikti svetainėse turinį, paslaugas, skelbimus ir rekomendacijas bei generuoti ataskaitų statistiką. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Oi! Sistemai nepavyko nustatyti įrenginio modelio ar serijos numerio.</translation>
 <translation id="5284445933715251131">Tęsti atsisiuntimą</translation>
 <translation id="5285635972691565180"><ph name="DISPLAY_ID"/> ekranas</translation>
@@ -4378,7 +4378,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5297082477358294722">Slaptažodis išsaugotas. Peržiūrėkite ir tvarkykite išsaugotus slaptažodžius <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kai kas nors kitas žiūri į ekraną, ekrano apačioje kairėje rodoma piktograma „Privatumo akis“</translation>
 <translation id="5298219193514155779">Temą sukūrė</translation>
-<translation id="5299109548848736476">Nestebėti</translation>
+<translation id="1839179167864984545">Nestebėti</translation>
 <translation id="5299558715747014286">Peržiūrėti ir tvarkyti jūsų skirtukų grupes</translation>
 <translation id="5300287940468717207">Iš naujo nustatyti svetainės leidimus?</translation>
 <translation id="5300426565656326054">Skelbimų suasmeninimas pagal naršyklę</translation>
@@ -7849,7 +7849,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8785622406424941542">Rašiklis</translation>
 <translation id="8786824282808281903">Kai vaikas matys šią piktogramą, naudojant kontrolinį kodą bus galima nustatyti tapatybę arba patvirtinti pirkimo operacijas.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Grupė be pavadinimo – vienas skirtukas}one{Grupė be pavadinimo – # skirtukas}few{Grupė be pavadinimo – # skirtukai}many{Grupė be pavadinimo – # skirtuko}other{Grupė be pavadinimo – # skirtukų}}</translation>
-<translation id="8791534160414513928">Su naršymo srautu siųsti užklausą „Nestebėti“</translation>
+<translation id="163839281363975279">Su naršymo srautu siųsti užklausą „Nestebėti“</translation>
 <translation id="879413103056696865">Kai viešosios interneto prieigos taškas bus įjungtas, „<ph name="PHONE_NAME"/>“:</translation>
 <translation id="8795916974678578410">Naujas langas</translation>
 <translation id="8797459392481275117">Niekada neversti šios svetainės</translation>

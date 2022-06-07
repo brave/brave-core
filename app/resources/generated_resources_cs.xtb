@@ -4342,7 +4342,7 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="5280426389926346830">Vytvořit zástupce?</translation>
 <translation id="5281013262333731149">Otevře se v: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Abyste mohli stahovat a používat aplikace pro Android, nejdříve musíte nainstalovat tuto povinnou aktualizaci. <ph name="DEVICE_TYPE"/> během aktualizace nelze používat. Po dokončení instalace se <ph name="DEVICE_TYPE"/> restartuje.</translation>
-<translation id="5282733140964383898">Nastavení „Do Not Track“ (Nesledovat) znamená, že k vašemu provozu při prohlížení bude přidán speciální požadavek. Efekt tohoto požadavku však závisí na tom, zda na něj web reaguje a jak jej interpretuje. Některé weby na tento požadavek mohou reagovat například tím, že při zobrazování reklam nebudou používat informace o tom, které jiné weby jste navštívili. Mnohé weby budou nadále sbírat a používat vaše údaje o prohlížení – např. za účelem zlepšení zabezpečení, poskytování obsahu, služeb, reklam a doporučení na svých webových stránkách a generování přehledových statistik. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Nastavení „Do Not Track“ (Nesledovat) znamená, že k vašemu provozu při prohlížení bude přidán speciální požadavek. Efekt tohoto požadavku však závisí na tom, zda na něj web reaguje a jak jej interpretuje. Některé weby na tento požadavek mohou reagovat například tím, že při zobrazování reklam nebudou používat informace o tom, které jiné weby jste navštívili. Mnohé weby budou nadále sbírat a používat vaše údaje o prohlížení – např. za účelem zlepšení zabezpečení, poskytování obsahu, služeb, reklam a doporučení na svých webových stránkách a generování přehledových statistik. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Jejda, systému se nepodařilo určit model nebo sériové číslo zařízení.</translation>
 <translation id="5284445933715251131">Pokračovat ve stahování</translation>
 <translation id="5285635972691565180">Obrazovka <ph name="DISPLAY_ID"/></translation>
@@ -4359,7 +4359,7 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="5297082477358294722">Heslo bylo uloženo. K zobrazení a správě uložených hesel můžete použít svůj <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Když se na obrazovku dívá někdo další, zobrazit v pravém dolním rohu obrazovky ikona oka</translation>
 <translation id="5298219193514155779">Autor motivu</translation>
-<translation id="5299109548848736476">Do Not Track</translation>
+<translation id="1839179167864984545">Do Not Track</translation>
 <translation id="5299558715747014286">Zobrazit a spravovat skupiny karet</translation>
 <translation id="5300287940468717207">Resetovat oprávnění webů?</translation>
 <translation id="5300426565656326054">Personalizace reklam na základě prohlížeče</translation>
@@ -7824,7 +7824,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8785622406424941542">Dotykové pero</translation>
 <translation id="8786824282808281903">Když dítě uvidí tuto ikonu, k identifikaci nebo schválení nákupu lze použít otisk prstu.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Skupina bez názvu – 1 karta}few{Skupina bez názvu – # karty}many{Skupina bez názvu – # karty}other{Skupina bez názvu – # karet}}</translation>
-<translation id="8791534160414513928">Posílat při procházení webů požadavek Do Not Track</translation>
+<translation id="163839281363975279">Posílat při procházení webů požadavek Do Not Track</translation>
 <translation id="879413103056696865">Při zapnutém hotspotu váš telefon <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nové okno</translation>
 <translation id="8797459392481275117">Tento web nikdy nepřekládat</translation>

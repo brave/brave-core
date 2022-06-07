@@ -4344,7 +4344,7 @@ stlačením klávesov Ctrl + Alt + zníženie jasu zobrazenie oddialite.</tr
 <translation id="5280426389926346830">Vytvoriť odkaz?</translation>
 <translation id="5281013262333731149">Otvára sa v prehliadači <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Ak chcete stiahnuť a používať aplikácie pre Android, najprv musíte nainštalovať požadovanú aktualizáciu. Počas aktualizácie nemôžete <ph name="DEVICE_TYPE"/> používať. Po jej dokončení sa <ph name="DEVICE_TYPE"/> reštartuje.</translation>
-<translation id="5282733140964383898">Ak povolíte možnosť Nesledovať, žiadosť sa zahrnie do údajov prehliadania. Záleží na tom, či webové stránky na túto žiadosť zareagujú a akým spôsobom ju interpretujú. Niektoré webové stránky môžu napríklad na túto žiadosť odpovedať zobrazením reklám, ktoré nie sú založené na iných navštívených webových stránkach. Veľa webových stránok bude aj naďalej zhromažďovať a používať vaše dáta prehliadania – napríklad na zlepšenie zabezpečenia, na poskytovanie obsahu, služieb, reklám a odporúčaní na webových stránkach a na generovanie štatistík. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Ak povolíte možnosť Nesledovať, žiadosť sa zahrnie do údajov prehliadania. Záleží na tom, či webové stránky na túto žiadosť zareagujú a akým spôsobom ju interpretujú. Niektoré webové stránky môžu napríklad na túto žiadosť odpovedať zobrazením reklám, ktoré nie sú založené na iných navštívených webových stránkach. Veľa webových stránok bude aj naďalej zhromažďovať a používať vaše dáta prehliadania – napríklad na zlepšenie zabezpečenia, na poskytovanie obsahu, služieb, reklám a odporúčaní na webových stránkach a na generovanie štatistík. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Ojoj! Systém nedokázal rozpoznať model zariadenia alebo sériové číslo.</translation>
 <translation id="5284445933715251131">Pokračovať v sťahovaní</translation>
 <translation id="5285635972691565180">Obrazovka <ph name="DISPLAY_ID"/></translation>
@@ -4361,7 +4361,7 @@ stlačením klávesov Ctrl + Alt + zníženie jasu zobrazenie oddialite.</tr
 <translation id="5297082477358294722">Heslo bolo uložené. Uložené heslá si môžete zobraziť a spravovať v časti <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Nastavte, aby sa v pravom dolnom rohu vašej obrazovky zobrazila ikona ochrany súkromného zobrazenia, keď sa na obrazovku pozerá iná osoba</translation>
 <translation id="5298219193514155779">Autor motívu:</translation>
-<translation id="5299109548848736476">Nesledovať</translation>
+<translation id="1839179167864984545">Nesledovať</translation>
 <translation id="5299558715747014286">Zobrazovať a spravovať skupiny kariet</translation>
 <translation id="5300287940468717207">Chcete resetovať povolenia webov?</translation>
 <translation id="5300426565656326054">Prispôsobenie reklám založené na prehliadači</translation>
@@ -7829,7 +7829,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8785622406424941542">Dotykové pero</translation>
 <translation id="8786824282808281903">Keď sa dieťaťu zobrazí táto ikona, bude možné na identifikáciu alebo schválenie nákupov použiť odtlačok prsta.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Skupina bez názvu – 1 karta}few{Skupina bez názvu – # karty}many{Unnamed Group - # Tabs}other{Skupina bez názvu – # kariet}}</translation>
-<translation id="8791534160414513928">Posielať pri prehliadaní webov požiadavku Do Not Track</translation>
+<translation id="163839281363975279">Posielať pri prehliadaní webov požiadavku Do Not Track</translation>
 <translation id="879413103056696865">Keď je hotspot zapnutý, telefón <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Nové okno</translation>
 <translation id="8797459392481275117">Tento web nikdy neprekladať</translation>

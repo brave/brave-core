@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
 <translation id="3229091547987707389">디렉토리 가져오기 및 공유</translation>
 <translation id="5029193871181468990">Brave Rewards 아이콘 숨기기</translation>
-<translation id="4613486011786721686">툴바에서 Brave 월렛 아이콘 숨기기</translation>
+<translation id="7595540212376041331">툴바에서 Brave 월렛 아이콘 숨기기</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="3161744659507801211">경고: Brave는 확장 기능이 여러분의 브라우징 기록을 기록하는 것을 막을 수 없습니다.</translation>
@@ -108,8 +108,6 @@
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
-<translation id="6040143037577758943">닫기</translation>
-<translation id="5600566490506283344">Brave 광고 알림</translation>
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
@@ -222,7 +220,6 @@
 <translation id="2761825942249694703">이는 기본 Shields 설정입니다. 특정 사이트에 대해 Shields 패널에서 무언가를 바꾸지 않는 한 모든 웹사이트에 적용됩니다. 이를 바꾼다고 해도 기존 사이트별 설정에는 영향을 미치지 않습니다.</translation>
 <translation id="1485394570478670912">이렇게 하면 다음 옵션에서 관리하는 Brave Private Ads가 아닌 대부분의 광고가 웹사이트에서 차단됩니다.</translation>
 <translation id="6388201778088078932">설정.</translation>
-<translation id="4395160081588457461">보고 느끼기</translation>
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
 <translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
 <translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
@@ -480,4 +477,8 @@
 <translation id="5318548116565208315">아바타 봉봉 콘</translation>
 <translation id="1959966725083452288">아바타 봉봉 로열</translation>
 <translation id="2039034364578911089">아바타 봉봉 닌자</translation>
+<translation id="4613486011786721686">툴바에서 Brave 월렛 아이콘 숨기기</translation>
+<translation id="6040143037577758943">닫기</translation>
+<translation id="5600566490506283344">Brave 광고 알림</translation>
+<translation id="4395160081588457461">보고 느끼기</translation>
 </translationbundle>

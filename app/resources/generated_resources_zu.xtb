@@ -4380,7 +4380,7 @@ I-<ph name="DOMAIN"/> idinga ukuba ugcine ikhadi lakho elimsathi lifakiwe.</tran
 <translation id="5280426389926346830">Dala isinqamuleli?</translation>
 <translation id="5281013262333731149">Ivula ku-: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Ukuze ulande uphinde usebenzise izinhlelo zokusebenza ze-Android, okokuqala kumele ufake lesi sibuyekezo esidingekayo. Ngenkathi i-<ph name="DEVICE_TYPE"/> yakho ibuyekezwa, awukwazi ukuyisebenzisa. Ngemuva kokuqedwa kokufakwa, i-<ph name="DEVICE_TYPE"/> yakho izoqala kabusha.</translation>
-<translation id="5282733140964383898">Ukunika amandla okuthi ‘Ungalandeli’ kusho ukuthi isicelo sizofakwa nethrafikho yakho yokuphequlula. Noma umuntu umthelela uncike kokuthi noma ngabe iwebhusayithi iphendula kusicela, nokuthi isicelo siqondeka kanjani.
+<translation id="4039256732955431945">Ukunika amandla okuthi ‘Ungalandeli’ kusho ukuthi isicelo sizofakwa nethrafikho yakho yokuphequlula. Noma umuntu umthelela uncike kokuthi noma ngabe iwebhusayithi iphendula kusicela, nokuthi isicelo siqondeka kanjani.
 
 Isibonelo, amanye amawebhusayithi angahle aphendule kulesi sicelo ngokukubonisa izikhangiso ezingasuselwe kwamanye amawebhusayithi owavakashele. Amawebhusayithi amaningi asaqoqa futhi asebenzisae idatha yokuphequlula - isibonelo ukuthuthukisa ukuvikeleka, ukunikezela ngokuqukethwe, amasevisi, izikhangiso nezincomo kumawebhusayithi wabo, kanye nokudala izibalo zokubika. <ph name="BEGIN_LINK"/>Funda kabanzi<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Eshu!  Isistimu yehlulekile ukucacisa imodeli yedivayisi noma inombolo yomkhiqizo.</translation>
@@ -4400,7 +4400,7 @@ Isibonelo, amanye amawebhusayithi angahle aphendule kulesi sicelo ngokukubonisa 
 <translation id="5297082477358294722">Iphasiwedi ilondoloziwe. Buka futhi uphathe amaphasiwedi ku-<ph name="SAVED_PASSWORDS_STORE"/> yakho.</translation>
 <translation id="5297946558563358707">Uma omunye umuntu ebheka isikrini sakho, bonisa isithonjana seso Lobumfihlo ezansi kwesokudla sesikrini sakho</translation>
 <translation id="5298219193514155779">Itimu idalwe ngu-</translation>
-<translation id="5299109548848736476">Ungalandeleli</translation>
+<translation id="1839179167864984545">Ungalandeleli</translation>
 <translation id="5299558715747014286">Buka futhi uphathe amaqembu akho wethebhu</translation>
 <translation id="5300287940468717207">Setha kabusha izimvume?</translation>
 <translation id="5300426565656326054">Ukwenza ngokwezifiso izikhangiso okusekelwe kubhrawuza</translation>
@@ -7886,7 +7886,7 @@ I-<ph name="DOMAIN"/> idinga ukuba ugcine ikhadi lakho elimsathi lifakiwe.}}</tr
 <translation id="8785622406424941542">I-Stylus</translation>
 <translation id="8786824282808281903">Lapho ingane yakho ibona lesi sithonjana, isigxivizo somunwe singatshenziselwa ukuhlonza noma ukuvumela ukuthenga.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Iqembu Elingaqanjwanga - Ithebhu e-1}one{Iqembu Elingaqanjwanga - Amathebhu angu-#}other{Iqembu Elingaqanjwanga - Amathebhu angu-#}}</translation>
-<translation id="8791534160414513928">Thumela isicelo "Sokungalandeleli" nethrafikhi yakho yokundlulisa amehlo</translation>
+<translation id="163839281363975279">Thumela isicelo "Sokungalandeleli" nethrafikhi yakho yokundlulisa amehlo</translation>
 <translation id="879413103056696865">Ngenkathi i-hotspot ivulekile, i-<ph name="PHONE_NAME"/> yakho izokwazi:</translation>
 <translation id="8795916974678578410">Iwindi elisha</translation>
 <translation id="8797459392481275117">Ungalokothi uhumushe leli sayithi</translation>

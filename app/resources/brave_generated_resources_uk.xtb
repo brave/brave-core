@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
 <translation id="3229091547987707389">Імпорт і поширення каталогу</translation>
 <translation id="5029193871181468990">Приховати іконку нагород Brave</translation>
-<translation id="4613486011786721686">Приховувати значок Brave Wallet на панелі інструментів</translation>
+<translation id="7595540212376041331">Приховувати значок Brave Wallet на панелі інструментів</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>
 <translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
 <translation id="3161744659507801211">Попередження: Brave не може завадити розширенням записувати вашу історію пошуку.</translation>
@@ -108,8 +108,6 @@
 <translation id="2571596981920752023">Вкладки: <ph name="NUMBER_OF_TABS"/></translation>
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
-<translation id="6040143037577758943">Закрити</translation>
-<translation id="5600566490506283344">Рекламне сповіщення Brave</translation>
 <translation id="4174337572777167894">Проєкт з аналізу мережі</translation>
 <translation id="8659271182272561965">Унесіть результати будь-якого анонімного пошуку й дані перегляду, щоб уточнити пошуковий запит Brave.</translation>
 <translation id="1516554614404600536">Підказки Brave</translation>
@@ -222,7 +220,6 @@
 <translation id="2761825942249694703">Це налаштування Shields за замовчуванням. Вони застосовуються до всіх сайтів, якщо ви не зробите певні зміни в панелі Shields на певному сайті. Ці зміни не вплинуть на ваші наявні налаштування для кожного сайту.</translation>
 <translation id="1485394570478670912">Цей засіб дасть змогу блокувати більшість реклами на вебсайтах, крім Brave Private Ads, якими керують</translation>
 <translation id="6388201778088078932">налаштування.</translation>
-<translation id="4395160081588457461">Дивіться та amp;amp; відчувайте</translation>
 <translation id="4800195524776354947">Показати кількість блокованих зображень на іконці Щитів</translation>
 <translation id="5510493033031835532">Автоматичне переспрямування сторінок AMP</translation>
 <translation id="5197219128592971597">Завжди відвідуйте оригінальні (не AMP) URL-адреси сторінок, а не мобільні версії сторінок з прискоренням Google</translation>
@@ -480,4 +477,8 @@
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="4613486011786721686">Приховувати значок Brave Wallet на панелі інструментів</translation>
+<translation id="6040143037577758943">Закрити</translation>
+<translation id="5600566490506283344">Рекламне сповіщення Brave</translation>
+<translation id="4395160081588457461">Дивіться та amp;amp; відчувайте</translation>
 </translationbundle>

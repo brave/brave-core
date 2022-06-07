@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
 <translation id="3229091547987707389">นำเข้าและแชร์ไดเรกทอรี</translation>
 <translation id="5029193871181468990">ซ่อนไอคอน Brave Rewards</translation>
-<translation id="4613486011786721686">ซ่อนไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
+<translation id="7595540212376041331">ซ่อนไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ดูใน Web Extensions Store</translation>
 <translation id="3161744659507801211">คำเตือน: Brave ไม่สามารถป้องกันไม่ให้ส่วนขยายต่างๆ บันทึกประวัติการท่องเว็บของคุณ</translation>
@@ -108,8 +108,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> แท็บ</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
-<translation id="6040143037577758943">ปิด</translation>
-<translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -222,7 +220,6 @@
 <translation id="2761825942249694703">นี่คือการตั้งค่า Shields เริ่มต้น การตั้งค่าเหล่านี้จะมีผลกับเว็บไซต์ทั้งหมด เว้นแต่ว่าคุณจะเปลี่ยนแปลงอะไรบางอย่างในแผง Shields บนไซต์ใดไซต์หนึ่งโดยเฉพาะ การเปลี่ยนแปลงค่าเหล่านี้จะไม่มีผลกับการตั้งค่าต่อไซต์ที่มีอยู่แล้วของคุณ</translation>
 <translation id="1485394570478670912">วิธีนี้จะบล็อกโฆษณาส่วนใหญ่บนเว็บไซต์ แต่ไม่รวม Brave Private Ads ซึ่งได้รับการควบคุมใน</translation>
 <translation id="6388201778088078932">การตั้งค่า</translation>
-<translation id="4395160081588457461">ภาพ &amp; ความรู้สึก</translation>
 <translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
 <translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
@@ -480,4 +477,8 @@
 <translation id="5318548116565208315">อวทาร์ Bonbon Corn</translation>
 <translation id="1959966725083452288">อวทาร์ Bonbon Royal</translation>
 <translation id="2039034364578911089">อวทาร์ Bonbon Ninja</translation>
+<translation id="4613486011786721686">ซ่อนไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
+<translation id="6040143037577758943">ปิด</translation>
+<translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
+<translation id="4395160081588457461">ภาพ &amp; ความรู้สึก</translation>
 </translationbundle>

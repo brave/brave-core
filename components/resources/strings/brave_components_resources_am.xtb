@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">ስህተት፥ ክልሉ አልተደገፈም</translation>
 <translation id="5382684862562314222">BAT በ Uphold ላይ ባለው ክልልዎ ውስጥ አልተፈቀደም።</translation>
 <translation id="9074594632540931067">ስህተት፡ BAT አይገኝም</translation>
-<translation id="413458922997276130">በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ ታግዷል።</translation>
-<translation id="3579959767665130790">ስህተት፡ የታገደ መለያ</translation>
-<translation id="6554308597291659562">ሙሉ Uphold መለያ ተግባርን ከማንቃትዎ በፊት ስለእርስዎ ትንሽ ተጨማሪ መረጃ ለመሰብሰብ Uphold ያስፈልጋል። እባክዎ ይህን መረጃ ወደ የመጠባበቂያ መለያዎ ካስገቡ በኋላ እንደገና ይሞክሩ።</translation>
-<translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
-<translation id="819370426249314592">በ Uphold ላይ ያለው መለያዎ አሁንም በመጠባበቅ ላይ ነው።</translation>
-<translation id="4530453398914580957">ስህተት፡ በመጠባበቅ ላይ ያለ መለያ</translation>
-<translation id="2388470740942086608">በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ የተገደበ ነው።</translation>
-<translation id="3605236342612716051">ስህተት፡ የተገደበ መለያ</translation>
 <translation id="3274650021044762770">የብሬቭ ሽልማቶችን ከእርስዎ<ph name="PROVIDER"/> መለያ ጋር ለማገናኘት የማሰሻዎን ጥያቄ ማረጋገጥ ላይ ችግር አጋጥሟል። ለተጨማሪ እርዳታ <ph name="BEGIN_LINK"/>ድጋፍ ሰጭ<ph name="END_LINK"/> ማግኘት ይችላሉ።</translation>
 <translation id="1316066811927496401">ስህተት: ጥያቄዎ ተቀባይነት አላገኘም</translation>
 <translation id="1737873393693460829">[[title]] 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
@@ -688,7 +680,6 @@
 4 <ph name="END_INFURA_PRIVACY_LINK"/></translation>
 <translation id="7378412287463452336">የInfura አገልጋይ መጠቀሙን ቀጥል</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
-<translation id="2218918398178303658">ከ HTTPS ይልቅ DNS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">ጎራው ታግዷል</translation>
 <translation id="6393849031898466746">ይህ ጣቢያ በሌሎች ጣቢያዎች ላይ እርስዎን ለመከታተል ሊሞክር ይችላል</translation>
@@ -834,7 +825,6 @@
 <translation id="4232775951515678071">የግብይቱን ዓይነት ማግኘት አልተሳካም</translation>
 <translation id="2080935885647755539">ለ EIP-1559 ግብይት የነዳጅ ክፍያ ማግኘት አልተሳካም</translation>
 <translation id="4843814354611030845">ተጠቃሚ ግብይቱን ውድቅ አድርጎታል</translation>
-<translation id="1462494615260983714">ግብይቱን በማስኬድ ላይ የተፈጠረ ስህተት</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' መልእክት እንዲፈርም አልተፈቀደለትም</translation>
 <translation id="8719220598078667817">ግብይቱን ለመፈረም አልተቻለም</translation>
 <translation id="875506212625074179">ከRPC አገልግሎት የመጣ የተሳሳተ የሰንሰለት መታወቂያ ምላሽ</translation>
@@ -882,7 +872,7 @@
 <translation id="1191686659164947414">ግብይት ግንባር ቀደም ሊሆን ይችላል</translation>
 <translation id="632241521608275119">ተቀባይነት ያለው የዋጋ መንሸራተት</translation>
 <translation id="4500473291496079954">የሚያበቃበት ግዜ</translation>
-<translation id="8093033115658137576">0x ኣድራሻ ወይም url</translation>
+<translation id="2236833281018938257">0x ኣድራሻ ወይም url</translation>
 <translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ን የሚጠቀመው እንደ DEX ሰብሳቢ ነው።</translation>
 <translation id="151946611346774041">ግብይቱን ለማሟላት (ዋጋዎችን ማግኘትን ጨምሮ) 0x የEthereum አድራሻ እና የIP አድራሻ ሂደት ያደርጋል። 0x ይህንን ውሂብ የሚተቀመው ግብይቶችን ለማስኬድ ዓላማ ብቻ ነው</translation>
 <translation id="4626407663177532837">ጥቅሱ 0.875% የBrave ክፍያን ያካትታል።</translation>
@@ -1169,6 +1159,7 @@
 <translation id="3327639091470204775">ከትሬዞር ድልድይ ጋር ማያያዝ አልተቻለም</translation>
 <translation id="6672377693827764095">የውስጥ ስህተት፣ መለያዎች ማግኘት አልተቻለም።</translation>
 <translation id="6889920539620318793">እንደ ገቢር አቀናብር</translation>
+<translation id="1462494615260983714">ግብይቱን በማስኬድ ላይ የተፈጠረ ስህተት</translation>
 <translation id="8933250418452564886">የሃርድዌር ግብይት ማግኘት አልተቻለም፣ እባክዎ እንደገና ይሞክሩ</translation>
 <translation id="5999974802900788338">ከሃርድዌር መሳሪያ የመጣ ስህተት፣ ምናልባት በመሳሪያዎ ላይ ያለውን ግብይት ማረጋገጥ ይኖርቦታል</translation>
 <translation id="8523768065044261559">ግብይቱን የማስኬድ ሂደት ላይ ስህተት ተገኘ፣ እባክዎ እንደገና ይሞክሩ</translation>
@@ -1290,4 +1281,5 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
 </translationbundle>

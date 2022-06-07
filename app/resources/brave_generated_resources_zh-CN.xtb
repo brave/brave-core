@@ -69,7 +69,7 @@
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
 <translation id="3229091547987707389">导入并分享目录</translation>
 <translation id="5029193871181468990">隐藏 Brave 奖励图标</translation>
-<translation id="4613486011786721686">在工具栏上隐藏 Brave 钱包按钮</translation>
+<translation id="7595540212376041331">在工具栏上隐藏 Brave 钱包按钮</translation>
 <translation id="4928988318462976765">网络扩展程序商店</translation>
 <translation id="9181207987584064303">在网络扩展程序商店中查看</translation>
 <translation id="3161744659507801211">警告：Brave 无法阻止扩展程序记录您的浏览活动。</translation>
@@ -107,8 +107,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 个标签页</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
-<translation id="6040143037577758943">关闭</translation>
-<translation id="5600566490506283344">Brave 广告通知</translation>
 <translation id="4174337572777167894">Web 发现项目</translation>
 <translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
@@ -221,7 +219,6 @@
 <translation id="2761825942249694703">这些是默认屏蔽设置，适用于所有网站（除非您更改了某特定网站的屏蔽面板中的某些设置）。更改这些设置不会影响您现有的每个站点的设置。</translation>
 <translation id="1485394570478670912">这会拦截网站上的多数广告，但不包括 Brave Private Ads。那些广告由以下设定控制：</translation>
 <translation id="6388201778088078932">控制的）。</translation>
-<translation id="4395160081588457461">外观感觉</translation>
 <translation id="4800195524776354947">在屏蔽图标上显示被拦截的项目的数量</translation>
 <translation id="5510493033031835532">自动重定向 AMP 页面</translation>
 <translation id="5197219128592971597">始终访问原始（非 AMP）页面 URL，而非谷歌的”加速移动页面“版本</translation>
@@ -479,4 +476,8 @@
 <translation id="5318548116565208315">邦邦 Corn 的头像</translation>
 <translation id="1959966725083452288">邦邦 Royal 的头像</translation>
 <translation id="2039034364578911089">邦邦 Ninja 的头像</translation>
+<translation id="4613486011786721686">在工具栏上隐藏 Brave 钱包按钮</translation>
+<translation id="6040143037577758943">关闭</translation>
+<translation id="5600566490506283344">Brave 广告通知</translation>
+<translation id="4395160081588457461">外观感觉</translation>
 </translationbundle>

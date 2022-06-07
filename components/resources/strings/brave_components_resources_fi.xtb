@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Virhe: Aluetta ei tueta</translation>
 <translation id="5382684862562314222">BATtia ei vielä tueta alueesi Uphold-lompakoissa.</translation>
 <translation id="9074594632540931067">Virhe: BAT ei ole saatavilla</translation>
-<translation id="413458922997276130">Uphold-tilisi on tällä hetkellä estetty.</translation>
-<translation id="3579959767665130790">Virhe: Estetty tili</translation>
-<translation id="6554308597291659562">Upholdin on kerättävä sinusta vähän lisätietoja, ennen kuin koko Uphold-tilin toiminnallisuus voidaan ottaa käyttöön. Yritä uudelleen, kun olet lähettänyt nämä tiedot Uphold-tilillesi.</translation>
-<translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
-<translation id="819370426249314592">Uphold-tilisi odottaa vielä käsittelyä.</translation>
-<translation id="4530453398914580957">Virhe: Odottava tili</translation>
-<translation id="2388470740942086608">Uphold-tilisi on tällä hetkellä rajoitettu.</translation>
-<translation id="3605236342612716051">Virhe: Rajoitettu tili</translation>
 <translation id="3274650021044762770">Ilmeni ongelma, kun selaimesi pyyntöä liittää Brave-palkintosi <ph name="PROVIDER"/>-tiliisi vahvistettiin. Voit <ph name="BEGIN_LINK"/>ottaa yhteyttä tukeen<ph name="END_LINK"/> saadaksesi apua.</translation>
 <translation id="1316066811927496401">Virhe: pyyntöä ei voitu vahvistaa</translation>
 <translation id="1737873393693460829">Käynnistämällä [[title]] hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave tulee käyttämään Infuraa lähettääkseen Ethereum JSON-RPC -kutsuja älykkääseen sopimukseen Ethereum-nimipalvelusta selvittääkseen .eth-verkkotunnuksen nimen hakupyynnöt. Jos otat tämän käyttöön, Infura näkee .eth-verkkotunnuksen, jossa yrität käydä, mutta se ei pysty näkemään muita verkkotunnuksia. Katso Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoja<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöä<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Jatka Infura-palvelimella</translation>
 <translation id="2356070529366658676">Kysy</translation>
-<translation id="2218918398178303658">DNS yli HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Verkkotunnus estetty</translation>
 <translation id="6393849031898466746">Tämä sivusto voi yrittää seurata sinua muilla sivustoilla</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Tyypin haku maksutapahtumaa varten epäonnistui</translation>
 <translation id="2080935885647755539">Gas-maksujen haku EIP-1559-maksutapahtumaa varten epäonnistui</translation>
 <translation id="4843814354611030845">Käyttäjä hylkäsi kauppatapahtuman</translation>
-<translation id="1462494615260983714">Virhe maksutapahtuman käsittelyssä</translation>
 <translation id="4886059598718763020"><ph name="VALUE"/>' ei ole valtuutettu allekirjoittamaan viestiä</translation>
 <translation id="8719220598078667817">Maksutapahtuman allekirjoitus epäonnistui</translation>
 <translation id="875506212625074179">Virheellinen ketjun tunnuksen vastaus RPC-palvelulta</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Maksutapahtuma voidaan suorittaa etukäteen</translation>
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
 <translation id="4500473291496079954">Vanhenee:</translation>
-<translation id="8093033115658137576">0x-osoite tai -url</translation>
+<translation id="2236833281018938257">0x-osoite tai -url</translation>
 <translation id="2860280209982026951">Brave käyttää <ph name="LINK_BEFORE"/>0x:ää<ph name="LINK_AFTER"/> DEX-aggregaattorina.</translation>
 <translation id="151946611346774041">0x käsittelee Ethereum-osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien hintatarjousten saaminen). 0x käyttää näitä tietoja VAIN tapahtumien käsittelyyn.</translation>
 <translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Trezor-siltaan ei saatu yhteyttä</translation>
 <translation id="6672377693827764095">Sisäinen virhe, tilejä ei voitu noutaa</translation>
 <translation id="6889920539620318793">Aseta aktiiviseksi</translation>
+<translation id="1462494615260983714">Virhe maksutapahtuman käsittelyssä</translation>
 <translation id="8933250418452564886">Laitteistotapahtumaa ei löydy, yritä uudelleen</translation>
 <translation id="5999974802900788338">Vastaanotettu virhe laitteistolaitteelta, sinun on luultavasti vahvistettava tapahtuma laitteellasi</translation>
 <translation id="8523768065044261559">Virhe tapahtuman käsittelyssä, yritä uudelleen</translation>
@@ -1235,11 +1226,24 @@
 <translation id="1751947227857853925">Nopea ja rajoittamaton, jopa 100 Mbit/s</translation>
 <translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
 <translation id="8463313539532697053">Odota hetki, lataus käynnissä…</translation>
+<translation id="4613076894734402086">Muokkaa maksutapaa</translation>
+<translation id="1898254156730880135">Näyttää siltä, että viimeisin maksusi ei mennyt läpi. Pääsy tähän tilaukseen keskeytetään, kunnes maksuongelma on ratkaistu. Muokkaa maksutapaasi tai ota yhteyttä Brave-tukeen.</translation>
+<translation id="1839021455997460752">Sähköpostiosoitteesi</translation>
+<translation id="5154702632169343078">Aihe</translation>
+<translation id="6625978880678465492">Valitse syy</translation>
 <translation id="6687228121145903051">VPN:ään ei saada yhteyttä (muu virhe)</translation>
 <translation id="9184988385244077767">Ei Internet-yhteyttä yhdistämisen jälkeen</translation>
 <translation id="21570240866965662">Hidas yhteys</translation>
 <translation id="1219475260382643267">Verkkosivusto ei toimi</translation>
 <translation id="7138678301420049075">Muu</translation>
+<translation id="1387340358507240698">Kuvaile ongelmaasi</translation>
+<translation id="501818585183973587">Valitse ne tiedot, jotka voit jakaa kanssamme</translation>
+<translation id="3195618332367441234">Mitä enemmän tietoja jaat, sitä helpompi on tukihenkilöstön auttaa sinua.</translation>
+<translation id="5682143294773821728">VPN:n isäntänimi</translation>
+<translation id="24242621812020123">Sovellusversio:</translation>
+<translation id="6676791921618140305">OS-versio:</translation>
+<translation id="1156325797949437777">Tuki tarjotaan yhteistyössä Guardianin kanssa.</translation>
+<translation id="3307461350293459700">VPN-yhteys epäonnistui. Yritä muodostaa yhteys uudelleen ja varmista, että napsautat Salli-painiketta ottaaksesi Braven VPN-määrityksen käyttöön.</translation>
 <translation id="7586151660465233733">Lisää markkinoita sivustolla <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Katso markkinoita ja käy kauppaa kryptolla FTX:ssä</translation>
 <translation id="5963745988819586370">Markkinat</translation>
@@ -1257,4 +1261,5 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
 </translationbundle>

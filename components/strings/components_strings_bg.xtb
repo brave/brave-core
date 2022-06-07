@@ -712,7 +712,6 @@
 <translation id="2972581237482394796">&amp;Възстановяване</translation>
 <translation id="2977665033722899841">Понастоящем сте избрали реда „<ph name="ROW_NAME"/>“. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Опера</translation>
-<translation id="1536541482996273580">Отваряне на раздел в режим „инкогнито“</translation>
 <translation id="2985398929374701810">Въведете валиден адрес</translation>
 <translation id="2986368408720340940">Този начин на вземане не се поддържа. Опитайте с друг.</translation>
 <translation id="2987034854559945715">Няма съответстващи функции</translation>
@@ -2932,6 +2931,7 @@
 <translation id="40442660395682483">Отворете нов раздел „Поверително“, за да разглеждате поверително</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, натиснете Tab, след което Enter, за да отворите нов раздел „Поверително“, за да разглеждате поверително</translation>
 <translation id="3711639027736550870">Бутон за отваряне на раздел „Поверително“, натиснете Enter, за да отворите нов раздел „Поверително“, за да разглеждате поверително</translation>
+<translation id="1536541482996273580">Отваряне на раздел „Поверително“</translation>
 <translation id="5549245478906381817">Отворете поверителен прозорец</translation>
 <translation id="5497977785983089120">Отворете нов поверителен прозорец, за да сърфирате в поверителен режим</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, натиснете „Tab,“ след това „Enter“, за да отворите нов поверителен прозорец, за да сърфирате в поверителен режим</translation>

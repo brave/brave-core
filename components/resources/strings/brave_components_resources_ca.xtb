@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Error: regió no compatible</translation>
 <translation id="5382684862562314222">El BAT a les carteres Uphold encara no s'admet a la teva regió.</translation>
 <translation id="9074594632540931067">Error: BAT no disponible</translation>
-<translation id="413458922997276130">El teu compte a Uphold actualment està bloquejat.</translation>
-<translation id="3579959767665130790">Error: compte bloquejat</translation>
-<translation id="6554308597291659562">Es requereix Uphold per recopilar una mica més d'informació sobre vos abans d'habilitar la funcionalitat de compte d'Uphold complet. Torneu-ho a provar una vegada que hàgiu enviat aquesta informació al vostre compte d'Uphold.</translation>
-<translation id="6996157559236886133">Error: Funcionalitat limitada del compte d'Uphold</translation>
-<translation id="819370426249314592">El teu compte a Uphold encarà està pendent.</translation>
-<translation id="4530453398914580957">Error: compte pendent</translation>
-<translation id="2388470740942086608">El teu compte a Uphold actualment està restringit.</translation>
-<translation id="3605236342612716051">Error: compte restringit</translation>
 <translation id="3274650021044762770">Hi ha hagut un problema en validar la sol·licitud del teu navegador per connectar el compte de Recompenses de Brave al teu compte d'<ph name="PROVIDER"/>. Pots <ph name="BEGIN_LINK"/>contactar amb l'equip de suport<ph name="END_LINK"/> per obtenir més ajuda.</translation>
 <translation id="1316066811927496401">Error: la sol·licitud no s'ha pogut validar</translation>
 <translation id="1737873393693460829">En activar [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
@@ -668,10 +660,12 @@
 <translation id="1164622162816276433">Volum 24HR</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Vols activar el suport de Unstoppable Domains a Brave?</translation>
+<translation id="2173151783558384314">Brave usarà Infura per emetre sol·licituds a Ethereum JSON-RPC al contracte intel·ligent de Dominis Instoppable per resoldre .crypto (i també .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Si ho habilites, Infura veurà els dominis específics que intentes visitar però no podran veure altres dominis. Consulta <ph name="BEGIN_INFURA_TOU_LINK"/>les condicions d'ús<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>la política de privadesa<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
 <translation id="6513892817556267573">Servei de noms Ethereum</translation>
 <translation id="4335039108389860301">Vols activar el suport del servei de noms Ethereum (ENS) a Brave?</translation>
+<translation id="8328137586971750853">Brave usarà Infura per emetre sol·licituds a Ethereum JSON-RPC al contracte intel·ligent del Servei de Noms d'Ethereum per resoldre les peticions de cerca del nom de domini .eth. Si ho habilites, Infura veurà el domini .eth que intentes visitar però no podran veure altres dominis. Consulta <ph name="BEGIN_INFURA_TOU_LINK"/>les condicions d'ús<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>la política de privadesa<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
+<translation id="7378412287463452336">Continua utilitzant el servidor Infura</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
-<translation id="2218918398178303658">DNS mitjançant HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domini bloquejat</translation>
 <translation id="6393849031898466746">Aquesta pàgina web pot intentar seguir-vos a altres pàgines</translation>
@@ -796,6 +790,7 @@
 <translation id="9161147058107529840">S'espera paràmetre d'objecte únic.</translation>
 <translation id="1875861420974447980">Aquest cadena ID està en ús actualment</translation>
 <translation id="167698752210114155">S'ha produït un error intern</translation>
+<translation id="2326876601333401685">Aquest mètode RPC no és compatible.</translation>
 <translation id="1128992132632883337">Hi ha hagut un error en analitzar la resposta</translation>
 <translation id="1680597601664421644">El mnemotècnic que s'està important no és vàlid per a la Brave Wallet</translation>
 <translation id="4641919696349069826">Ja hi ha una sol·licitud en curs</translation>
@@ -816,7 +811,6 @@
 <translation id="4232775951515678071">No ha estat possible obtenir el tipus de transacció</translation>
 <translation id="2080935885647755539">No ha estat possible obtenir la tarifa del gas per a la transacció EIP-1559</translation>
 <translation id="4843814354611030845">L'usuari ha refusat la transacció</translation>
-<translation id="1462494615260983714">Error en processar la transacció</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' no té autorització per signar el missatge</translation>
 <translation id="8719220598078667817">No ha estat possible signar la transacció</translation>
 <translation id="875506212625074179">Resposta d'ID de cadena no vàlida del servei RPC</translation>
@@ -864,11 +858,12 @@
 <translation id="1191686659164947414">La transacció pot estar al capdavant</translation>
 <translation id="632241521608275119">Tolerància a la disminució</translation>
 <translation id="4500473291496079954">Caduca en</translation>
-<translation id="8093033115658137576">0x adreça o URL</translation>
+<translation id="2236833281018938257">0x adreça o URL</translation>
 <translation id="2860280209982026951">Brave utilitza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> com a agregador DEX.</translation>
 <translation id="151946611346774041">0x processarà l'adreça ethereum i l'adreça IP per complir una transacció (incloent-hi les cotitzacions). 0x NOMÉS utilitzarà aquestes dades amb l'objectiu de processar transaccions.</translation>
 <translation id="4626407663177532837">El pressupost inclou una taxa de 0,875% de Brave.</translation>
 <translation id="8368540604723748428">Massa xifres decimals</translation>
+<translation id="6575120282593094155">Encara no tens un compte <ph name="ACCOUNT_TYPE"/>. Vols crear-ne un ara?</translation>
 <translation id="2704606927547763573">Copiada</translation>
 <translation id="1420318137760245955">Benvinguts a la nova cartera de Brave</translation>
 <translation id="8303434745767477417">Mantingueu actius en criptomoneda sota la vostra custòdia. Feu un seguiment del rendiment de la cartera i interactueu amb aplicacions descentralitzades de Web3. Comercialitzeu, invertiu, manlleveu i presteu amb DeFi. Tot des del navegador de privadesa de Brave. Sense extensions ni descàrregues.</translation>
@@ -1035,6 +1030,7 @@
 <translation id="5821668936183240062">següent</translation>
 <translation id="793994607260936590">primer</translation>
 <translation id="4709524402122994378">transaccions</translation>
+<translation id="4591079278963448049">El compte testimoni associat encara no existeix. Es gastarà una petita quantitat de SOL per crear-lo i finançar-lo.</translation>
 <translation id="523862956770478816">Permisos del lloc</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> comptes connectats</translation>
 <translation id="4305817255990598646">Canvia</translation>
@@ -1146,6 +1142,7 @@
 <translation id="3327639091470204775">No s'ha pogut connectar al pont de Trezor</translation>
 <translation id="6672377693827764095">Error intern, no s'han pogut obtenir els comptes</translation>
 <translation id="6889920539620318793">Estableix com a actiu</translation>
+<translation id="1462494615260983714">Error en processar la transacció</translation>
 <translation id="8933250418452564886">No s'ha pogut trobar la transacció del hardware, torna-ho a provar</translation>
 <translation id="5999974802900788338">S'ha rebut un error del dispositiu de hardware, probablement cal confirmar la transacció del dispositiu</translation>
 <translation id="8523768065044261559">Error en processar la transacció, torna-ho a provar</translation>
@@ -1165,9 +1162,13 @@
 <translation id="7829441065063984927">7 dies de regals de criptomonedes, 500.000 $ en premis.</translation>
 <translation id="8292716346768453265">Entreu ara!</translation>
 <translation id="6423985584914773314">No és una adreça FIL vàlida</translation>
+<translation id="3898731124813934210">Compra amb Wyre</translation>
+<translation id="5522073372365069684">Compra amb Ramp</translation>
 <translation id="8528916244724490964">Totes les xarxes</translation>
 <translation id="2781668117338732220">Xarxes secundàries</translation>
 <translation id="2816106784624007524">El límit de gas ha de ser un número enter més gran que 0</translation>
+<translation id="3354376789153561654">S'ha d'especificar la dada de transacció 'to'</translation>
+<translation id="8728991256628663004">La dada de transacció 'from' ha de ser una adreça vàlida de Filecoin</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -1212,6 +1213,7 @@
 <translation id="2325196879156848326">Connexió fallida</translation>
 <translation id="745054660363064771">No es pot connectar al servidor</translation>
 <translation id="3936826714240735937">Tria un altre servidor</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> no s'ha pogut connectar al servidor <ph name="REGION_NAME"/>. Pots intentar-ho de nou més tard, o bé triar-ne un altre.</translation>
 <translation id="1024255913009642477">Ja has comprat un VPN?</translation>
 <translation id="8814357473522731680">Impulsat per</translation>
 <translation id="5747552184818312860">Data de caducitat</translation>
@@ -1224,11 +1226,24 @@
 <translation id="1751947227857853925">Ràpid i il·limitat fins a 100 Mbps</translation>
 <translation id="1400240082805528049">Suport 24/7</translation>
 <translation id="8463313539532697053">Un moment mentre es carrega…</translation>
+<translation id="4613076894734402086">Edita la forma de pagament</translation>
+<translation id="1898254156730880135">Sembla que el teu pagament més recent no s'ha realitzat. L'accés a aquesta subscripció s'aturarà fins que es resolgui el problema del pagament. Prova d'editar el teu mètode de pagament, o posa't en contacte amb l'assistència de Brave.</translation>
+<translation id="1839021455997460752">La teva adreça electrònica</translation>
+<translation id="5154702632169343078">Assumpte</translation>
+<translation id="6625978880678465492">Tria un motiu</translation>
 <translation id="6687228121145903051">No s'ha pogut connectar a la VPN (Altres errors)</translation>
 <translation id="9184988385244077767">No hi havia Internet en connectar-se</translation>
 <translation id="21570240866965662">Connexió lenta</translation>
 <translation id="1219475260382643267">El lloc web no funciona</translation>
 <translation id="7138678301420049075">Altres</translation>
+<translation id="1387340358507240698">Descriu el teu problema</translation>
+<translation id="501818585183973587">Selecciona la informació que vols compartir amb nosaltres</translation>
+<translation id="3195618332367441234">Com més informació comparteixis, més fàcil serà que el personal d'assistència t t'ajudi.</translation>
+<translation id="5682143294773821728">Nom de l'amfitrió VPN:</translation>
+<translation id="24242621812020123">Versió de l'aplicació:</translation>
+<translation id="6676791921618140305">Versió del SO:</translation>
+<translation id="1156325797949437777">Assistència proporcionada en col·laboració amb Guardian.</translation>
+<translation id="3307461350293459700">Ha fallat la connexió VPN. Torna a intentar connectar-te i assegura't de fer clic a Permet activar la configuració VPN de Brave.</translation>
 <translation id="7586151660465233733">Més mercats a <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Veure mercats i fer transaccions amb criptomoneda a FTX</translation>
 <translation id="5963745988819586370">Mercats</translation>
@@ -1246,4 +1261,5 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="6996157559236886133">Error: Funcionalitat limitada del compte d'Uphold</translation>
 </translationbundle>

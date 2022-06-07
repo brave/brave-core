@@ -269,7 +269,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="6915252145142862992">Aquesta és una instal·lació secundària de Brave i no pot definir-se com a navegador predeterminat.</translation>
 <translation id="1975057837349076194">Si alguna opció de configuració no es mostra en aquesta pàgina, consulta la <ph name="LINK_BEGIN"/>
       configuració de Chrome OS<ph name="LINK_END"/>.</translation>
-<translation id="1743665722170667430">Les extensions, les aplicacions i els temes de fonts desconegudes poden malmetre el dispositiu. Brave recomana que només n'instal·lis de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>.</translation>
 <translation id="7685904775439037072">Un cop Brave tingui accés, els llocs web et podran demanar accés.</translation>
 <translation id="828406390101464081">Els següents comptes no tenen la sessió iniciada en cap perfil de Brave. Si vols utilitzar un compte en un altre perfil, primer has de suprimir aquest perfil.</translation>
 <translation id="2061155704815580583">Brave necessita permís d'accés a la ubicació per a aquest lloc web</translation>
@@ -329,6 +328,7 @@ Els permisos que ja jeu donat als llocs web i a les aplicacions poden aplicar-se
 <translation id="5359574361379286250">Si voleu utilitzar aquest compte només una vegada, podeu utilitzar <ph name="GUEST_LINK_BEGIN"/>el mode convidat<ph name="GUEST_LINK_END"/> al navegador Brave. Si voleu afegir un compte per a algú altre,<ph name="LINK_BEGIN"/>afegiu un nou perfil<ph name="LINK_END"/> al vostre <ph name="DEVICE_TYPE"/>.
 
 Els permisos que ja heu donat als llocs web i a les aplicacions poden aplicar-se a aquest compte. Podeu gestionar les cadenes de sincronització de Brave <ph name="SETTINGS_LINK_BEGIN"/>Configuració<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="1743665722170667430">Les extensions, aplicacions i temes de fonts desconegudes poden danyar el dispositiu. Brave només recomana instal·lar-les des de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
 <translation id="1299765473362724475">Advertència: Brave no pot evitar que les extensions registrin el vostre historial de navegació. Per desactivar aquesta extensió en el mode d'ncògnit, desmarqueu la selecció d'aquesta opció.</translation>
 <translation id="1448049584457347995">Perquè Brave sigui més segur, hem desactivat algunes de les extensions que no apareixen a <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i que és possible que s'hagin afegit sense que ho sapigueu.</translation>
 <translation id="8848045066928358658">Per tal que Brave sigui més segur, hem desactivat algunes de les extensions que no figuren a <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i que és possible que s'hagin afegit sense que ho sapigueu.</translation>

@@ -1236,7 +1236,7 @@
 <translation id="2187675480456493911">已与您帐号中的其他设备同步。其他用户修改的设置不会进行同步。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="2187895286714876935">服务器证书导入错误</translation>
 <translation id="2187906491731510095">扩展程序已更新</translation>
-<translation id="2188881192257509750">打开 <ph name="APPLICATION"/></translation>
+<translation id="2188881192257509750">打开<ph name="APPLICATION"/></translation>
 <translation id="2189787291884708275">分享标签页中的音频</translation>
 <translation id="2190069059097339078">WiFi 凭据获取工具</translation>
 <translation id="219008588003277019">Native Client 模块：<ph name="NEXE_NAME"/></translation>
@@ -4330,7 +4330,7 @@
 <translation id="5280426389926346830">创建快捷方式？</translation>
 <translation id="5281013262333731149">会在<ph name="OPEN_BROWSER"/>中打开</translation>
 <translation id="528208740344463258">要下载并使用 Android 应用，请先安装这项必不可少的更新。在您的<ph name="DEVICE_TYPE"/>进行更新期间，您将无法使用此设备。待安装完毕后，您的<ph name="DEVICE_TYPE"/>将会重启。</translation>
-<translation id="5282733140964383898">如果您启用了“不跟踪”，即意味着您的浏览流量中将会包含一个请求。所造成的任何影响均取决于网站是否回应该请求以及如何解读该请求。例如：某些网站在收到该请求后，可能会向您展示广告（这些广告并不是根据您访问过的其他网站展示的）。许多网站仍会出于一些目的收集并使用您的浏览数据，例如，为了提高安全性，为了提供相关内容、服务、广告和推荐内容，以及为了生成报告统计信息。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">如果您启用了“不跟踪”，即意味着您的浏览流量中将会包含一个请求。所造成的任何影响均取决于网站是否回应该请求以及如何解读该请求。例如：某些网站在收到该请求后，可能会向您展示广告（这些广告并不是根据您访问过的其他网站展示的）。许多网站仍会出于一些目的收集并使用您的浏览数据，例如，为了提高安全性，为了提供相关内容、服务、广告和推荐内容，以及为了生成报告统计信息。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">糟糕！系统未能确定设备型号或序列号。</translation>
 <translation id="5284445933715251131">继续下载</translation>
 <translation id="5285635972691565180">显示屏 <ph name="DISPLAY_ID"/></translation>
@@ -4347,7 +4347,7 @@
 <translation id="5297082477358294722">密码已保存。您可以查看和管理 <ph name="SAVED_PASSWORDS_STORE"/>中保存的密码。</translation>
 <translation id="5297946558563358707">当有其他人注视您的屏幕时，屏幕右下角会显示“隐私保护”眼睛图标</translation>
 <translation id="5298219193514155779">主题背景创建者：</translation>
-<translation id="5299109548848736476">不跟踪</translation>
+<translation id="1839179167864984545">不跟踪</translation>
 <translation id="5299558715747014286">查看和管理您的标签页组</translation>
 <translation id="5300287940468717207">要重置网站权限吗？</translation>
 <translation id="5300426565656326054">基于浏览器的广告个性化</translation>
@@ -7810,7 +7810,7 @@
 <translation id="8785622406424941542">触控笔</translation>
 <translation id="8786824282808281903">当您的孩子看到此图标时，他/她可以使用指纹验证身份或批准购买交易。</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{未命名群组 - 1 个标签页}other{未命名群组 - # 个标签页}}</translation>
-<translation id="8791534160414513928">随浏览流量一起发送“不跟踪”请求</translation>
+<translation id="163839281363975279">随浏览流量一起发送“不跟踪”请求</translation>
 <translation id="879413103056696865">开启热点后，您的 <ph name="PHONE_NAME"/> 将会：</translation>
 <translation id="8795916974678578410">打开新的窗口</translation>
 <translation id="8797459392481275117">一律不翻译此网站</translation>

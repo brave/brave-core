@@ -257,14 +257,6 @@
 <translation id="8218538368080510976">गड़बड़ी: इस क्षेत्र के लिए सपोर्ट नहीं करता है</translation>
 <translation id="5382684862562314222">आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.</translation>
 <translation id="9074594632540931067">एरर: बैट अनुपलब्ध है</translation>
-<translation id="413458922997276130">Uphold पर आपका अकाउंट अभी ब्लॉक्ड है.</translation>
-<translation id="3579959767665130790">एरर: ब्लॉक किया गया अकाउंट</translation>
-<translation id="6554308597291659562">Uphold को पूरे यूफोल्ड अकाउंट की कार्यक्षमता को इनेबल करने से पहले आपके बारे में थोड़ी अधिक जानकारी इकठ्ठा करने की ज़रुरत है. अपने Uphold अकाउंट में यह जानकारी जमा करने के बाद कृपया फिर से कोशिश करें.</translation>
-<translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट सुविधाएँ</translation>
-<translation id="819370426249314592">Uphold पर आपका अकाउंट अभी भी पेंडिंग है.</translation>
-<translation id="4530453398914580957">एरर: पेंडिंग अकाउंट</translation>
-<translation id="2388470740942086608">Uphold पर इस समय आपके अकाउंट पर रोक लगी हुई है.</translation>
-<translation id="3605236342612716051">एरर: रोक लगाया हुआ अकाउंट</translation>
 <translation id="3274650021044762770">आपके Brave Rewards को आपके <ph name="PROVIDER"/>अकाउंट से जोड़ने के आपके ब्राउज़र के अनुरोध को सत्यापित करने में समस्या हुई. अधिक सहायता के लिए आप <ph name="BEGIN_LINK"/> सहायता केंद्र <ph name="END_LINK"/> से संपर्क कर सकते हैं.</translation>
 <translation id="1316066811927496401">एरर: अनुरोध सत्यापित नहीं किया जा सका</translation>
 <translation id="1737873393693460829">[[title]] को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>
@@ -669,13 +661,12 @@
 <translation id="1164622162816276433">24 घंटे वॉल्यूम</translation>
 <translation id="7534079972563542000">Unstoppable डोमेन</translation>
 <translation id="4492298165410552103">क्या हम Brave में Unstoppable डोमेन का समर्थन सक्षम करें?</translation>
-<translation id="2173151783558384314">अनस्टोपेबल डोमेन से स्मार्ट कॉन्ट्रैक्ट करने के लिए Brave, Infura का इस्तेमाल करके Ethereum JSON-RPC कॉल जारी करेगा ताकि .crypto (और साथ ही .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) डोमेन नेम के लुकअप के अनुरोधों को हल किया जा सके. अगर आप इसे चालू करते हैं, तो Infura वो डोमेन दिखाई देंगे जिन पर आप जाने की कोशिश कर रहे हैं, लेकिन वे दूसरे डोमेन नहीं देख पाएँगे. Infura के <ph name="BEGIN_INFURA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_INFURA_TOU_LINK"/> और <ph name="BEGIN_INFURA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_INFURA_PRIVACY_LINK"/> देखें.</translation>
+<translation id="2173151783558384314">अनस्टॉपेबल डोमेन से स्मार्ट कॉन्ट्रैक्ट करने के लिए Brave, Infura का इस्तेमाल करके Ethereum JSON-RPC कॉल जारी करेगा ताकि .crypto (और साथ ही .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) डोमेन नेम के लुकअप के अनुरोधों को हल किया जा सके. अगर आप इसे चालू करते हैं, तो Infura को वो डोमेन दिखाई देंगे जिन पर आप जाने की कोशिश कर रहे हैं, लेकिन वे दूसरे डोमेन नहीं देख पाएँगे. Infura के <ph name="BEGIN_INFURA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_INFURA_TOU_LINK"/> और <ph name="BEGIN_INFURA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_INFURA_PRIVACY_LINK"/> देखें.</translation>
 <translation id="6513892817556267573">Ethereum नाम सेवा</translation>
 <translation id="4335039108389860301">क्या हम Brave में Ethereum नाम सेवा (ENS) का समर्थन सक्षम करें?</translation>
-<translation id="8328137586971750853">Ethereum नेम सर्विस से स्मार्ट कॉन्ट्रैक्ट करने के लिए Brave, Infura का इस्तेमाल करके Ethereum JSON-RPC कॉल जारी करेगा ताकि .eth डोमेन नेम के लुकअप के अनुरोधों को हल किया जा सके. अगर आप इसे चालू करते हैं, तो Infura वो .eth डोमेन दिखाई देगा जिस पर आप जाने की कोशिश कर रहे हैं, लेकिन वे दूसरे डोमेन नहीं देख पाएँगे. Infura के <ph name="BEGIN_INFURA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_INFURA_TOU_LINK"/> और <ph name="BEGIN_INFURA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_INFURA_PRIVACY_LINK"/> देखें.</translation>
+<translation id="8328137586971750853">Ethereum नेम सर्विस से स्मार्ट कॉन्ट्रैक्ट करने के लिए Brave, Infura का इस्तेमाल करके Ethereum JSON-RPC कॉल जारी करेगा ताकि .eth डोमेन नेम के लुकअप के अनुरोधों को हल किया जा सके. अगर आप इसे चालू करते हैं, तो Infura को वो .eth डोमेन दिखाई देगा जिस पर आप जाने की कोशिश कर रहे हैं, लेकिन वे दूसरे डोमेन नहीं देख पाएँगे. Infura के <ph name="BEGIN_INFURA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_INFURA_TOU_LINK"/> और <ph name="BEGIN_INFURA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_INFURA_PRIVACY_LINK"/> देखें.</translation>
 <translation id="7378412287463452336">Infura सर्वर का इस्तेमाल करके आगे बढ़ें</translation>
 <translation id="2356070529366658676">पूछें</translation>
-<translation id="2218918398178303658">HTTPS के ऊपर DNS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">डोमेन ब्लॉक है</translation>
 <translation id="6393849031898466746">यह साइट आपको अन्य साइटों पर ट्रैक करने का प्रयास कर सकती है</translation>
@@ -821,7 +812,6 @@
 <translation id="4232775951515678071">ट्रांज़ैक्शन का प्रकार नहीं मिल पाया</translation>
 <translation id="2080935885647755539">EIP-1559 लेन-देन के लिए गैस शुल्क की जानकारी नहीं मिल सकी</translation>
 <translation id="4843814354611030845">यूज़र ने लेन-देन को रिजेक्ट कर दिया है</translation>
-<translation id="1462494615260983714">लेन-देन प्रोसेस करने में गड़बड़ी हुई</translation>
 <translation id="4886059598718763020"><ph name="VALUE"/> के पास मैसेज साइन करने का अधिकार नहीं है</translation>
 <translation id="8719220598078667817">लेन-देन पर हस्ताक्षर नहीं हो पाया</translation>
 <translation id="875506212625074179">RPC सर्विस से अमान्य चेन ID रिस्पांस</translation>
@@ -869,7 +859,7 @@
 <translation id="1191686659164947414">लेन-देन कोई फ्रंटरनिंग की गतिविधि हो सकती है</translation>
 <translation id="632241521608275119">फिसलन सहनशीलता</translation>
 <translation id="4500473291496079954">में समाप्त होने वाला है</translation>
-<translation id="8093033115658137576">0x से शुरू होने वाला पता या यूआरएल (url)</translation>
+<translation id="2236833281018938257">0x से शुरू होने वाला पता या यूआरएल (url)</translation>
 <translation id="2860280209982026951">Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>का उपयोग DEX एग्रीगेटर के तौर पर  करता है.</translation>
 <translation id="151946611346774041">0x लेनदेन को पूरा करने के लिए एथेरियम पते और IP पते को प्रोसेस करेगा (उद्धरण प्राप्त करने सहित). 0x केवल इस डेटा का उपयोग लेनदेन को प्रोसेस करने के लिए करेगा.</translation>
 <translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
@@ -1153,6 +1143,7 @@
 <translation id="3327639091470204775">Trezor ब्रिज से नहीं कनेक्ट हो पाया</translation>
 <translation id="6672377693827764095">आंतरिक गड़बड़ी, अकाउंट की जानकारी नहीं निकाली जा सकी</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
+<translation id="1462494615260983714">लेन-देन प्रोसेस करने में गड़बड़ी हुई</translation>
 <translation id="8933250418452564886">हार्डवेयर लेनदेन खोजने में असमर्थ, कृपया दोबारा कोशिश करें</translation>
 <translation id="5999974802900788338">हार्डवेयर डिवाइस से प्राप्त एरर, शायद आपको अपने डिवाइस पर लेनदेन की पुष्टि करने की आवश्यकता है</translation>
 <translation id="8523768065044261559">लेन-देन प्रोसेस करने में गड़बड़ी हुई, कृपया दोबारा कोशिश करें</translation>
@@ -1172,13 +1163,13 @@
 <translation id="7829441065063984927">7 दिन तक मुफ़्त क्रिप्टो, इनाम में ~$5 लाख</translation>
 <translation id="8292716346768453265">अभी शामिल हों!</translation>
 <translation id="6423985584914773314">यह कोई मान्य FIL पता नहीं है</translation>
-<translation id="3898731124813934210">Wyre के साथ खरीदारी करें</translation>
-<translation id="5522073372365069684">Ramp के साथ खरीदारी करें</translation>
+<translation id="3898731124813934210">Wyre के ज़रिए खरीदें</translation>
+<translation id="5522073372365069684">Ramp के ज़रिए खरीदें</translation>
 <translation id="8528916244724490964">सभी नेटवर्क</translation>
 <translation id="2781668117338732220">सेकंडरी नेटवर्क</translation>
 <translation id="2816106784624007524">गैस की सीमा 0 से बड़ी कोई संख्या होनी चाहिए</translation>
 <translation id="3354376789153561654">लेनदेन का डेटा 'कहाँ भेजना है' यह बताना ज़रूरी है</translation>
-<translation id="8728991256628663004">लेनदेन का डेटा 'जहाँ से आया है' वह एक मान्य फ़ाइलकॉइन पता होना चाहिए</translation>
+<translation id="8728991256628663004">लेनदेन का डेटा 'जहाँ से आया है' वह एक मान्य Filecoin का पता होना चाहिए</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1252,7 +1243,7 @@
 <translation id="5682143294773821728">VPN होस्ट का नाम :</translation>
 <translation id="24242621812020123">ऐप वर्ज़न :</translation>
 <translation id="6676791921618140305">OS वर्ज़न :</translation>
-<translation id="1156325797949437777">सपोर्ट की सेवा गार्डियन के साथ पार्टनरशिप से दी जाती है.</translation>
+<translation id="1156325797949437777">सपोर्ट के लिए गार्डियन के साथ पार्टनरशिप की गई है.</translation>
 <translation id="3307461350293459700">VPN कनेक्शन नहीं हो पाया। फिर से कनेक्ट करने की कोशिश करें और पक्का करें कि आप 'इजाज़त दें' पर क्लिक करें ताकि Brave का VPN कॉन्फ़िगरेशन चालू हो सके.</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> पर और मार्केट</translation>
 <translation id="952067063131306699">FTX पर मार्केट देखें और क्रिप्टो ट्रेड करें</translation>
@@ -1271,4 +1262,5 @@
 <translation id="6973157709854838218">अपना बैलेंस छुपाएं</translation>
 <translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 <translation id="242959166945779492">आपके अकाउंट में कोई बैलेंस नहीं है. खरीदने के लिए FTX पर जाएं.</translation>
+<translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट सुविधाएँ</translation>
 </translationbundle>

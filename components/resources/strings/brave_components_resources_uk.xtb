@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Помилка: регіон не підтримується</translation>
 <translation id="5382684862562314222">BAT не підтримується у вашому регіоні в гаманцях Uphold.</translation>
 <translation id="9074594632540931067">Помилка: кошти BAT недоступні</translation>
-<translation id="413458922997276130">Ваш обліковий запис в Uphold наразі заблоковано.</translation>
-<translation id="3579959767665130790">Помилка: обліковий запис заблоковано</translation>
-<translation id="6554308597291659562">Uphold потрібен, щоб зібрати трохи більше інформації про вас, перш ніж увімкнути повну функціональність облікового запису Uphold. Спробуйте ще раз, щойно ви надішлете цю інформацію у свій обліковий запис Uphold.</translation>
-<translation id="6996157559236886133">Помилка: обмежена функціональність облікового запису Uphold</translation>
-<translation id="819370426249314592">Ваш обліковий запис в Uphold усе ще обробляється.</translation>
-<translation id="4530453398914580957">Помилка: обліковий запис обробляється</translation>
-<translation id="2388470740942086608">Ваш обліковий запис в Uphold наразі обмежено.</translation>
-<translation id="3605236342612716051">Помилка: обліковий запис обмежено</translation>
 <translation id="3274650021044762770">Під час перевірки запиту браузера на підключення профілю Brave Rewards до вашого облікового запису <ph name="PROVIDER"/> сталася помилка. Ви можете звернутися за допомогою <ph name="BEGIN_LINK"/>до служби підтримки<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Помилка: неможливо підтвердити запит</translation>
 <translation id="1737873393693460829">Активуючи [[title]], ви погоджуєтесь із <ph name="BEGIN_LINK1"/>Умовами використання<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>Політикою конфіденційності<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave використовуватиме Infura для вирішення викликів Ethereum JSON-RPC до смартконтракту з Ethereum Name Service для вирішення запитів пошуку домену .eth. Якщо ви це ввімкнете, Infura побачить домен .eth, який ви намагаєтесь відвідати, але не зможе побачити інші домени. Перегляньте <ph name="BEGIN_INFURA_TOU_LINK"/>умови використання<ph name="END_INFURA_TOU_LINK"/> та <ph name="BEGIN_INFURA_PRIVACY_LINK"/>політику конфіденційності<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="7378412287463452336">Продовжити з використанням сервера Infura</translation>
 <translation id="2356070529366658676">Запитати</translation>
-<translation id="2218918398178303658">DNS поверх HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Домен заблоковано</translation>
 <translation id="6393849031898466746">Цей вебсайт може спробувати відстежити вас на інших вебсайтах</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Не вдалось отримати тип цієї транзакції</translation>
 <translation id="2080935885647755539">Помилка під час отримання комісій за транзакцію EIP-1559</translation>
 <translation id="4843814354611030845">Користувач відхилив транзакцію</translation>
-<translation id="1462494615260983714">Помилка опрацювання транзакції</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' не має повноважень для підписання повідомлення</translation>
 <translation id="8719220598078667817">Не вдалося підписати транзакцію</translation>
 <translation id="875506212625074179">Недійсна відповідь ID мережі від сервісу RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">До транзакції може застосовуватися фронтранінг</translation>
 <translation id="632241521608275119">Толерантність до прослизання</translation>
 <translation id="4500473291496079954">Спливає через</translation>
-<translation id="8093033115658137576">Адреса 0x чи url</translation>
+<translation id="2236833281018938257">Адреса 0x чи url</translation>
 <translation id="2860280209982026951">Brave використовує <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> як агрегатор DEX.</translation>
 <translation id="151946611346774041">0x обробить адресу Ethereum та IP-адресу для проведення транзакції (зокрема отримання розцінок). 0x використовуватиме ці дані ВИКЛЮЧНО для обробки транзакцій.</translation>
 <translation id="4626407663177532837">Розцінка включає збір Brave у розмірі 0,875 %.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Не вдалося підключитися до моста Trezor</translation>
 <translation id="6672377693827764095">Внутрішня помилка, не вдається отримати облікові записи</translation>
 <translation id="6889920539620318793">Установити як активну</translation>
+<translation id="1462494615260983714">Помилка опрацювання транзакції</translation>
 <translation id="8933250418452564886">Не вдалося знайти апаратний засіб для транзакції, повторіть спробу</translation>
 <translation id="5999974802900788338">Отримано повідомлення про помилку від апаратного пристрою, можливо, потрібно підтвердити транзакцію на вашому пристрої</translation>
 <translation id="8523768065044261559">Під час обробки транзакції сталася помилка, повторіть спробу</translation>
@@ -1270,4 +1261,5 @@
 <translation id="6973157709854838218">Приховати баланси по вашим рахункам з екрана</translation>
 <translation id="4548946945059463969">Відобразити баланси на екрані</translation>
 <translation id="242959166945779492">У вас немає залишків на рахунку. Відвідайте FTX, щоб поповнити його.</translation>
+<translation id="6996157559236886133">Помилка: обмежена функціональність облікового запису Uphold</translation>
 </translationbundle>

@@ -4359,7 +4359,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="5280426389926346830">Gumawa ng Shortcut?</translation>
 <translation id="5281013262333731149">Bubukas sa: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Para mag-download at gumamit ng mga Android app, kailangan mo munang i-install ang kinakailangang update na ito. Habang nag-a-update ang iyong <ph name="DEVICE_TYPE"/>, hindi mo ito magagamit. Kapag nakumpleto na ang pag-install, magre-restart ang iyong <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="5282733140964383898">Kapag na-enable mo ang “Huwag Subaybayan,” magsasama ng isang kahilingan sa trapiko ng iyong pagba-browse. Ang anumang magiging epekto ay dedepende sa pagtugon at pagbibigay-kahulugan ng website sa nabanggit na kahilingan. Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan ng pagpapakita sa iyo ng mga ad na hindi ibinatay sa iba pang nabisita mo nang website. Kokolektahin at gagamitin pa rin ng maraming website ang iyong data sa pag-browse - halimbawa, para mapahusay ang seguridad, makapagpakita ng content, mga ad, at rekomendasyon sa kanilang mga website, at makabuo ng mga istatistika sa pag-uulat. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Kapag na-enable mo ang “Huwag Subaybayan,” magsasama ng isang kahilingan sa trapiko ng iyong pagba-browse. Ang anumang magiging epekto ay dedepende sa pagtugon at pagbibigay-kahulugan ng website sa nabanggit na kahilingan. Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan ng pagpapakita sa iyo ng mga ad na hindi ibinatay sa iba pang nabisita mo nang website. Kokolektahin at gagamitin pa rin ng maraming website ang iyong data sa pag-browse - halimbawa, para mapahusay ang seguridad, makapagpakita ng content, mga ad, at rekomendasyon sa kanilang mga website, at makabuo ng mga istatistika sa pag-uulat. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Oops!  Hindi natukoy ng system ang modelo o serial number ng device.</translation>
 <translation id="5284445933715251131">Ituloy ang Pag-download</translation>
 <translation id="5285635972691565180">Display <ph name="DISPLAY_ID"/></translation>
@@ -4376,7 +4376,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="5297082477358294722">Na-save ang password. Tingnan at pamahalaan ang mga naka-save na password sa iyong <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kapag may ibang tumingin sa iyong screen, ipakita ang icon na mata ng Privacy sa kanang bahagi sa ibaba ng iyong screen</translation>
 <translation id="5298219193514155779">Ang tema ay nilikha ni</translation>
-<translation id="5299109548848736476">Huwag Subaybayan</translation>
+<translation id="1839179167864984545">Huwag Subaybayan</translation>
 <translation id="5299558715747014286">Tingnan at pamahalaan ang iyong mga grupo ng tab</translation>
 <translation id="5300287940468717207">I-reset ang mga pahintulot sa site?</translation>
 <translation id="5300426565656326054">Pag-personalize ng ad na nakabatay sa browser</translation>
@@ -7845,7 +7845,7 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="8785622406424941542">Stylus</translation>
 <translation id="8786824282808281903">Kapag nakita ng iyong anak ang icon na ito, puwedeng gumamit ng fingerprint para sa pagtukoy o para aprubahan ang mga pagbili.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Grupong Walang Pangalan - 1 Tab}one{Grupong Walang Pangalan - # Tab}other{Grupong Walang Pangalan - # na Tab}}</translation>
-<translation id="8791534160414513928">Magpadala ng kahilingang ‘Huwag Subaybayan’ kasama ng iyong trapiko ng pagba-browse</translation>
+<translation id="163839281363975279">Magpadala ng kahilingang ‘Huwag Subaybayan’ kasama ng iyong trapiko ng pagba-browse</translation>
 <translation id="879413103056696865">Habang naka-on ang hotspot, gagawin ng iyong <ph name="PHONE_NAME"/> ang mga sumusunod:</translation>
 <translation id="8795916974678578410">New Window</translation>
 <translation id="8797459392481275117">Huwag Kailanman Isalin Ang Site na Ito</translation>

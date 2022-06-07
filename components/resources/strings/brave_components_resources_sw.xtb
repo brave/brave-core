@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Hitilafu: Eneo halitumiki</translation>
 <translation id="5382684862562314222">BAT bado haitumiki katika eneo lako kwenye pochi za Uphold.</translation>
 <translation id="9074594632540931067">Hitilafu: BAT haipatikani</translation>
-<translation id="413458922997276130">Akaunti yako kwenye Uphold imefungwa kwa sasa.</translation>
-<translation id="3579959767665130790">Hitilafu: Akaunti imefungwa</translation>
-<translation id="6554308597291659562">Uphold inatakiwa kukusanya maelezo zaidi kukuhusu kabla ya kuwezesha utendakazi kamili wa akaunti ya Uphold. Tafadhali jaribu tena baada ya kuwasilisha maelezo haya kwenye akaunti yako ya Uphold.</translation>
-<translation id="6996157559236886133">Hitilafu: Utendakazi uliozuiliwa wa akaunti ya Uphold</translation>
-<translation id="819370426249314592">Akaunti yako kwenye Uphold bado inasubiri.</translation>
-<translation id="4530453398914580957">Hitilafu: Akaunti inayosubiri</translation>
-<translation id="2388470740942086608">Akaunti yako kwenye Uphold imewekewa vikwazo kwa sasa.</translation>
-<translation id="3605236342612716051">Hitilafu: Akaunti imewekewa vikwazo</translation>
 <translation id="3274650021044762770">Kulikuwa na hitilafu wakati wa kuhalalisha ombi la kivinjari chako la kuunganisha Zawadi za Brave kwenye akaunti yako ya <ph name="PROVIDER"/>. Unaweza <ph name="BEGIN_LINK"/>kuwasiliana na wasaidizi wa <ph name="END_LINK"/> kwa usaidizi zaidi.</translation>
 <translation id="1316066811927496401">Hitilafu: Ombi halikuweza kuthibitishwa</translation>
 <translation id="1737873393693460829">Kwa kuwasha [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave itakuwa inatumia Infura kutoa amri za Ethereum JSON-RPC kwa mkataba mahiri kutoka kwa Ethereum Name Service ili kutatua maombi ya ukaguzi wa jina ya kikoa cha .eth unachojaribu kutembelea lakini hawataweza kuona vikoa vingine. Tazama <ph name="BEGIN_INFURA_TOU_LINK"/>masharti ya matumizi<ph name="END_INFURA_TOU_LINK"/> na <ph name="BEGIN_INFURA_PRIVACY_LINK"/>sera ya faragha<ph name="END_INFURA_PRIVACY_LINK"/> ya Infura.</translation>
 <translation id="7378412287463452336">Endelea ukitumia seva ya Infura</translation>
 <translation id="2356070529366658676">Uliza</translation>
-<translation id="2218918398178303658">DNS kupitia HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Kikoa Kimezuiwa</translation>
 <translation id="6393849031898466746">Tovuti hii inaweza kujaribu kukufuatilia kwenye tovuti nyingine zote</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Imeshindwa kupata aina ya muamala</translation>
 <translation id="2080935885647755539">Imeshindwa kupata ada za gesi kwa muamala wa EIP-1559</translation>
 <translation id="4843814354611030845">Mtumiaji amekataa muamala</translation>
-<translation id="1462494615260983714">Hitilafu imetokea wakati wa kuchakata muamala</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' hajaidhinishwa kutia sahihi ujumbe</translation>
 <translation id="8719220598078667817">Imeshindwa kusaini muamala</translation>
 <translation id="875506212625074179">Jibu batili la kitambulisho cha mtungo kutoka kwa huduma ya RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Muamala unaweza kuwekwa kwenye foleni</translation>
 <translation id="632241521608275119">Ustahimili wa Slippage</translation>
 <translation id="4500473291496079954">Itaisha baada ya</translation>
-<translation id="8093033115658137576">Anwani au url ya 0x</translation>
+<translation id="2236833281018938257">Anwani au url ya 0x</translation>
 <translation id="2860280209982026951">Brave hutumia <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kama kijumlishaji cha DEX.</translation>
 <translation id="151946611346774041">0x itachakata anwani ya Ethereum na anwani ya IP ili kutimiza muamala (ikiwa ni pamoja na kupata makadirio ya gharama). 0x itatumia data hii kwa madhumuni ya kuchakata miamala TU.</translation>
 <translation id="4626407663177532837">Ukadiriaji wa gharama unajumuisha ada ya Brave ya 0.875%.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Imeshindwa kuunganisha Trezor bridge</translation>
 <translation id="6672377693827764095">Hitilafu ya ndani, Imeshindwa kupata akaunti</translation>
 <translation id="6889920539620318793">Weka iwe amilifu</translation>
+<translation id="1462494615260983714">Hitilafu imetokea wakati wa kuchakata muamala</translation>
 <translation id="8933250418452564886">Imeshindwa kupata muamala wa maunzi, tafadhali jaribu tena</translation>
 <translation id="5999974802900788338">Hitilafu imepokewa kutoka kwa kifaa cha maunzi, huenda unahitaji kuthibitisha muamala kwenye kifaa chako</translation>
 <translation id="8523768065044261559">Hitilafu imetokea wakati wa kuchakata muamala, tafadhali jaribu tena</translation>
@@ -1270,4 +1261,5 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="6996157559236886133">Hitilafu: Utendakazi uliozuiliwa wa akaunti ya Uphold</translation>
 </translationbundle>

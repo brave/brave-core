@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Kesalahan: Wilayah tidak didukung</translation>
 <translation id="5382684862562314222">BAT belum didukung di dompet Uphold wilayah Anda.</translation>
 <translation id="9074594632540931067">Kesalahan: BAT tidak tersedia</translation>
-<translation id="413458922997276130">Akun Anda di Uphold saat ini diblokir.</translation>
-<translation id="3579959767665130790">Kesalahan: Akun yang diblokir</translation>
-<translation id="6554308597291659562">Uphold perlu mengumpulkan sedikit lebih banyak informasi tentang Anda sebelum memungkinkan fungsionalitas penuh akun Uphold. Silakan coba kembali setelah Anda mengirimkan informasi ini di akun Uphold Anda.</translation>
-<translation id="6996157559236886133">Kesalahan: Fungsionalitas terbatas akun Uphold</translation>
-<translation id="819370426249314592">Akun Anda di Uphold saat ini ditangguhkan.</translation>
-<translation id="4530453398914580957">Kesalahan: Akun yang ditangguhkan</translation>
-<translation id="2388470740942086608">Akun Anda di Uphold saat ini dibatasi.</translation>
-<translation id="3605236342612716051">Kesalahan: Akun yang dibatasi</translation>
 <translation id="3274650021044762770">Terdapat masalah saat memvalidasi permintaan peramban Anda untuk menghubungkan Brave Rewards ke akun <ph name="PROVIDER"/> Anda. Anda dapat <ph name="BEGIN_LINK"/>menghubungi dukungan pelanggan<ph name="END_LINK"/> untuk bantuan lebih lanjut.</translation>
 <translation id="1316066811927496401">Kesalahan: Permintaan tidak dapat divalidasi</translation>
 <translation id="1737873393693460829">Dengan mengaktifkan [[title]], Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave akan menggunakan Infura untuk menerbitkan panggilan Ethereum JSON-RPC ke kontrak pintar dari Ethereum Name Service untuk menyelesaikan permohonan pencarian nama domain .eth. Jika Anda mengaktifkan hal ini, Infura akan melihat domain .eth yang ingin Anda kunjungi namun mereka tidak akan melihat domain lainnya. Bacalah <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>kebijakan privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="7378412287463452336">Lanjutkan dengan menggunakan peladen Infura</translation>
 <translation id="2356070529366658676">Tanya</translation>
-<translation id="2218918398178303658">DNS atas HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domain Diblokir</translation>
 <translation id="6393849031898466746">Situs ini mungkin akan mencoba untuk melacak Anda ke seluruh situs lainnya.</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Gagal mendapatkan jenis untuk transaksi</translation>
 <translation id="2080935885647755539">Gagal mendapatkan biaya bensin untuk transaksi EIP-1559</translation>
 <translation id="4843814354611030845">Pengguna menolak transaksi</translation>
-<translation id="1462494615260983714">Terjadi kesalahan dalam memproses transaksi</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' tidak memiliki otorisasi untuk menandatangani pesan</translation>
 <translation id="8719220598078667817">Gagal  menandatangani transaksi</translation>
 <translation id="875506212625074179">Respons ID rantai yang tidak valid dari layanan RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Transaksi mungkin di muka</translation>
 <translation id="632241521608275119">Toleransi selip</translation>
 <translation id="4500473291496079954">Kedaluwarsa pada</translation>
-<translation id="8093033115658137576">0x alamat atau url</translation>
+<translation id="2236833281018938257">0x alamat atau url</translation>
 <translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregrator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan tagihan). 0x HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.</translation>
 <translation id="4626407663177532837">Penawaran termasuk 0,875% biaya Brave.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Tidak dapat terhubung ke jembatan Trezor</translation>
 <translation id="6672377693827764095">Kesalahan internal, Tidak Dapat mengambil akun</translation>
 <translation id="6889920539620318793">Ditetapkan sebagai aktif</translation>
+<translation id="1462494615260983714">Terjadi kesalahan dalam memproses transaksi</translation>
 <translation id="8933250418452564886">Transaksi peranti keras tidak dapat ditemukan, silakan coba lagi</translation>
 <translation id="5999974802900788338">Menerima pesan kesalahan dari perangkat keras, mungkin Anda perlu mengonfirmasi transaksi di perangkat Anda</translation>
 <translation id="8523768065044261559">Terjadi kesalahan dalam memproses transaksi, silakan coba lagi</translation>
@@ -1176,8 +1167,8 @@
 <translation id="8528916244724490964">Semua Jaringan</translation>
 <translation id="2781668117338732220">Jaringan Sekunder</translation>
 <translation id="2816106784624007524">Batas bensin harus berupa integer yang lebih besar dari 0</translation>
-<translation id="3354376789153561654">Data transaksi 'ke' harus dituliskan</translation>
-<translation id="8728991256628663004">Data transaksi 'dari' harus berupa alamat Filecoin yang valid</translation>
+<translation id="3354376789153561654">Data transaksi 'to' harus dituliskan</translation>
+<translation id="8728991256628663004">Data transaksi 'from' harus berupa alamat Filecoin yang valid</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="3745016858329272300">Info Umum</translation>
 <translation id="4045404575593562245">Peristiwa Kendali Tor</translation>
@@ -1270,4 +1261,5 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="6996157559236886133">Kesalahan: Fungsionalitas terbatas akun Uphold</translation>
 </translationbundle>

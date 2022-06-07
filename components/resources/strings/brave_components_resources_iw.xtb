@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">שגיאה: האזור אינו נתמך</translation>
 <translation id="5382684862562314222">BAT עדין לא נתמך באזור שלך ב-Uphold.</translation>
 <translation id="9074594632540931067">שגיאה: BAT אינו זמין</translation>
-<translation id="413458922997276130">החשבון שלך ב-Uphold חסום כעת.</translation>
-<translation id="3579959767665130790">שגיאה: חשבון חסום</translation>
-<translation id="6554308597291659562">Uphold נדרש לאסוף קצת יותר מידע אודותכם לפני הפעלת הפונקציונליות המלאה של חשבון Uphold. אנא נסו שנית לאחר ששלחת מידע זה אל חשבון Uphold שלכם.</translation>
-<translation id="6996157559236886133">שגיאה: פונקציונליות מוגבלת של חשבון Uphold</translation>
-<translation id="819370426249314592">החשבון שלך ב-Uphold עדין בהשהייה.</translation>
-<translation id="4530453398914580957">שגיאה: חשבון בהשהייה</translation>
-<translation id="2388470740942086608">החשבון שלך ב-Uphold מוגבל כעת.</translation>
-<translation id="3605236342612716051">שגיאה: חשבון מוגבל</translation>
 <translation id="3274650021044762770">הייתה בעיה באימות בקשת הדפדפן שלך לחבר Brave Rewards שלך    <ph name="PROVIDER"/>חֶשְׁבּוֹן. אתה יכול <ph name="BEGIN_LINK"/>צור קשר עם תמיכת הלקוחות<ph name="END_LINK"/> לקבלת עזרה נוספת.</translation>
 <translation id="1316066811927496401">שגיאה: לא ניתן לאמת את הבקשה</translation>
 <translation id="1737873393693460829">על ידי הפעלת [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
@@ -671,10 +663,9 @@
 <translation id="2173151783558384314">Brave ישתמש ב-Infura כדי להנפיק קריאות אתריום JSON-RPC לחוזה החכם מ-Unstoppable Domains כדי לפתור בקשות לחיפוש את שם הדומיין crypto. (וכמו גם את .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). כאשר ההגדרה מופעלת, Infura תראה את הדומיינים הספציפיים שבהם ניסית לבקר אך הם לא יוכלו לראות דומיינים אחרים. יש לעיין בתנאי השימוש <ph name="END_INFURA_TOU_LINK"/> ואת <ph name="BEGIN_INFURA_PRIVACY_LINK"/>מדיניות הפרטיות <ph name="END_INFURA_PRIVACY_LINK"/> של Infura <ph name="BEGIN_INFURA_TOU_LINK"/>.</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="4335039108389860301">לאפשר תמיכה ב-Ethereum Name Service (ENS) ב-Brave?</translation>
-<translation id="8328137586971750853">Brave ישתמש ב-Infura כדי להנפיק קריאות אתריום JSON-RPC לחוזה החכם משירות Ethereum Name כדי לפתור בקשות לחיפוש את שם הדומיין eth. כאשר ההגדרה מופעלת, Infura תראה את הדומיינים הספציפיים שבהם ניסית לבקר אך הם לא יוכלו לראות דומיינים אחרים. יש לעיין <ph name="BEGIN_INFURA_TOU_LINK"/>בתנאי השימוש<ph name="END_INFURA_TOU_LINK"/> ואת <ph name="BEGIN_INFURA_PRIVACY_LINK"/> מדיניות הפרטיות <ph name="END_INFURA_PRIVACY_LINK"/> של Infura.</translation>
+<translation id="8328137586971750853">Brave ישתמש ב-Infura כדי להנפיק קריאות אתריום JSON-RPC לחוזה החכם משירות Ethereum Name כדי לפתור בקשות לחיפוש את שם הדומיין eth. כאשר ההגדרה מופעלת, Infura תראה את הדומיינים הספציפיים שבהם ניסית לבקר אך הם לא יוכלו לראות דומיינים אחרים. יש לעיין <ph name="BEGIN_INFURA_TOU_LINK"/>בתנאי השימוש<ph name="END_INFURA_TOU_LINK"/> ואת <ph name="BEGIN_INFURA_PRIVACY_LINK"/>מדיניות הפרטיות<ph name="END_INFURA_PRIVACY_LINK"/> של Infura.</translation>
 <translation id="7378412287463452336">המשך להשתמש בשרת Infura</translation>
 <translation id="2356070529366658676">שאל</translation>
-<translation id="2218918398178303658">DNS על פני HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">הדומיין חסום</translation>
 <translation id="6393849031898466746">ייתכן שאתר זה ינסה לעקוב אחריך באתרים אחרים</translation>
@@ -822,7 +813,6 @@
 <translation id="4232775951515678071">קבלת הסוג של העסקה נכשלה</translation>
 <translation id="2080935885647755539">השגת עמלת הדלק לעסקת EIP-1559 נכשלה</translation>
 <translation id="4843814354611030845">המשתמש דחה את העסקה</translation>
-<translation id="1462494615260983714">שגיאה בעיבוד העסקה</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>'אינו מורשה לחתום על הודעה</translation>
 <translation id="8719220598078667817">חתימת העסקה נכשלה</translation>
 <translation id="875506212625074179">תגובת מזהה שרשרת לא חוקית משירות RPC</translation>
@@ -870,7 +860,7 @@
 <translation id="1191686659164947414">העסקה ניתנת להטרמה</translation>
 <translation id="632241521608275119">רגישות למעידה</translation>
 <translation id="4500473291496079954">בתוקף עד</translation>
-<translation id="8093033115658137576">0x כתובת או url</translation>
+<translation id="2236833281018938257">0x כתובת או url</translation>
 <translation id="2860280209982026951">Brave משתמש ב<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> כאגרגטור של נתוני DEX .</translation>
 <translation id="151946611346774041">העיבוד של כתובת Ethereum וכתובת ה-IP יתבצע באמצעות Ox כדי להשלים עסקה (כולל קבלת הצעות מחיר). המידע ישמש את Ox אך ורק למטרות הטיפול בעסקה.</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
@@ -1154,6 +1144,7 @@
 <translation id="3327639091470204775">לא ניתן להתחבר לגשר Trezor</translation>
 <translation id="6672377693827764095">שגיאה פנימית, לא ניתן לאחזר החשבונות</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
+<translation id="1462494615260983714">שגיאה בעיבוד העסקה</translation>
 <translation id="8933250418452564886">לא ניתן למצוא עסקת חומרה, יש לנסות שוב</translation>
 <translation id="5999974802900788338">התקבלה שגיאה מהתקן חומרה, ייתכן שעליך לאשר את העסקה במכשיר שלך</translation>
 <translation id="8523768065044261559">שגיאה בטיפול בעסקה, יש לנסות שוב</translation>
@@ -1272,4 +1263,5 @@
 <translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
 <translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 <translation id="242959166945779492">אין לך יתרות בחשבון. בקר ב-FTX לרכישת יתרה.</translation>
+<translation id="6996157559236886133">שגיאה: פונקציונליות מוגבלת של חשבון Uphold</translation>
 </translationbundle>

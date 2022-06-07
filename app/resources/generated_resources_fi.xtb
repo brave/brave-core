@@ -4354,7 +4354,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5280426389926346830">Luodaanko pikakuvake?</translation>
 <translation id="5281013262333731149">Avataan täällä: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Tämä pakollinen päivitys täytyy asentaa, ennen kuin voit ladata ja käyttää Android-sovelluksia. <ph name="DEVICE_TYPE"/> ei ole käytettävissä päivityksen aikana. <ph name="DEVICE_TYPE"/> käynnistetään uudelleen asennuksen jälkeen.</translation>
-<translation id="5282733140964383898">Do Not Track ‑valinta lisää pyynnön selaustietoliikenteeseesi. Sen vaikutus riippuu siitä, miten verkkosivustot vastaavat pyyntöön ja tulkitsevat sitä. Jotkin verkkosivustot esimerkiksi vastaavat pyyntöön näyttämällä sinulle mainoksia, jotka eivät perustu käyttämiisi verkkosivustoihin. Monet verkkosivustot keräävät silti selaustietojasi esimerkiksi parantaakseen tietoturvaa, tarjotakseen sisältöä, mainoksia ja suosituksia verkkosivustoilleen sekä luodakseen raportointitietoja. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Do Not Track ‑valinta lisää pyynnön selaustietoliikenteeseesi. Sen vaikutus riippuu siitä, miten verkkosivustot vastaavat pyyntöön ja tulkitsevat sitä. Jotkin verkkosivustot esimerkiksi vastaavat pyyntöön näyttämällä sinulle mainoksia, jotka eivät perustu käyttämiisi verkkosivustoihin. Monet verkkosivustot keräävät silti selaustietojasi esimerkiksi parantaakseen tietoturvaa, tarjotakseen sisältöä, mainoksia ja suosituksia verkkosivustoilleen sekä luodakseen raportointitietoja. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Hups! Järjestelmä ei voinut määrittää tämän laitteen mallia tai sarjanumeroa.</translation>
 <translation id="5284445933715251131">Jatka latausta</translation>
 <translation id="5285635972691565180">Näyttö <ph name="DISPLAY_ID"/></translation>
@@ -4371,7 +4371,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5297082477358294722">Salasana tallennettu. Katso ja ylläpidä tallennettuja salasanoja: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kun joku muu katsoo näyttöäsi, näytön oikeassa alareunassa näkyy Yksityisyys-silmäkuvake</translation>
 <translation id="5298219193514155779">Teeman loi</translation>
-<translation id="5299109548848736476">Do Not Track</translation>
+<translation id="1839179167864984545">Do Not Track</translation>
 <translation id="5299558715747014286">Katso ja ylläpidä välilehtiryhmiä</translation>
 <translation id="5300287940468717207">Nollataanko sivuston käyttöoikeudet?</translation>
 <translation id="5300426565656326054">Selainpohjainen mainosten personointi</translation>
@@ -7837,7 +7837,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8785622406424941542">Näyttökynä</translation>
 <translation id="8786824282808281903">Kun lapsi näkee tämän kuvakkeen, sormenjälkeä voi käyttää tunnistamiseen tai ostosten hyväksymiseen.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Nimetön ryhmä – 1 välilehti}other{Nimetön ryhmä – # välilehteä}}</translation>
-<translation id="8791534160414513928">Lähetä selaustietojesi mukana Do Not Track -pyyntö</translation>
+<translation id="163839281363975279">Lähetä selaustietojesi mukana Do Not Track -pyyntö</translation>
 <translation id="879413103056696865">Kun hotspot on päällä, <ph name="PHONE_NAME"/> tekee seuraavaa:</translation>
 <translation id="8795916974678578410">Uusi ikkuna</translation>
 <translation id="8797459392481275117">Älä käännä tätä sivustoa</translation>

@@ -4355,7 +4355,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5280426389926346830">Létrehozza a parancsikont?</translation>
 <translation id="5281013262333731149">Itt nyílik meg: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Androidos alkalmazások letöltéséhez és használatához először telepítenie kell ezt a kötelező frissítést. Miközben <ph name="DEVICE_TYPE"/> eszköze frissít, nem használhatja. A telepítés befejeződését követően <ph name="DEVICE_TYPE"/> eszköze újraindul.</translation>
-<translation id="5282733140964383898">A „Nincs nyomon követés” funkció engedélyezése azzal jár, hogy a rendszer kérelmet is csatol a böngészési forgalomhoz. Ennek hatása attól függ, hogy a webhely válaszol-e a kérelemre, és hogyan értelmezi a kérelmet.
+<translation id="4039256732955431945">A „Nincs nyomon követés” funkció engedélyezése azzal jár, hogy a rendszer kérelmet is csatol a böngészési forgalomhoz. Ennek hatása attól függ, hogy a webhely válaszol-e a kérelemre, és hogyan értelmezi a kérelmet.
 Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jelenítenek meg, amelyek nem a már felkeresett egyéb webhelyeken alapulnak. Számos webhely ilyenkor is begyűjti és felhasználja a böngészési adatokat például a biztonság növelése, továbbá tartalom, szolgáltatások, hirdetések és ajánlások biztosítása, valamint jelentésekhez használt statisztika előállítása céljából. <ph name="BEGIN_LINK"/>További információ.<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Hoppá! A rendszer nem tudta megállapítani az eszköz modelljét vagy sorozatszámát.</translation>
 <translation id="5284445933715251131">Letöltés folytatása</translation>
@@ -4373,7 +4373,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="5297082477358294722">Jelszó elmentve. A mentett jelszavakat itt láthatja és kezelheti: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297946558563358707">Az „Adatvédelmi szem” ikon megjelenítése a képernyő jobb alsó sarkában, amikor valaki más az Ön képernyőjére néz</translation>
 <translation id="5298219193514155779">Téma készítője:</translation>
-<translation id="5299109548848736476">Nincs nyomon követés</translation>
+<translation id="1839179167864984545">Nincs nyomon követés</translation>
 <translation id="5299558715747014286">Lapcsoportok megtekintése és kezelése</translation>
 <translation id="5300287940468717207">Visszaállítja a webhelyengedélyeket?</translation>
 <translation id="5300426565656326054">Hirdetések böngészőalapú személyre szabása</translation>
@@ -7840,7 +7840,7 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
 <translation id="8785622406424941542">Érintőceruza</translation>
 <translation id="8786824282808281903">Amikor a gyermeke ezt az ikont látja, az ujjlenyomata használható azonosításra vagy vásárlás jóváhagyására.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Névtelen csoport – 1 lap}other{Névtelen csoport – # lap}}</translation>
-<translation id="8791534160414513928">„Nincs nyomon követés” kérés küldése a böngészési forgalommal</translation>
+<translation id="163839281363975279">„Nincs nyomon követés” kérés küldése a böngészési forgalommal</translation>
 <translation id="879413103056696865">Amíg a hotspot be van kapcsolva, az Ön <ph name="PHONE_NAME"/> telefonja:</translation>
 <translation id="8795916974678578410">Új ablak</translation>
 <translation id="8797459392481275117">Ezt a webhelyet soha ne fordítsa le</translation>
