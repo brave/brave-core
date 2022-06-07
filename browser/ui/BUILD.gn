@@ -284,7 +284,7 @@ source_set("ui") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_federated",
-    "//brave/components/brave_federated/public/interfaces:mojom",
+    "//brave/components/brave_federated/public/interfaces",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",

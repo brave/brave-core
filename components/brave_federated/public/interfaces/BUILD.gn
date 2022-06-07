@@ -2,6 +2,6 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
   sources = [ "brave_federated.mojom" ]
-
+  webui_module_path = "/"
   public_deps = [ "//mojo/public/mojom/base" ]
 }

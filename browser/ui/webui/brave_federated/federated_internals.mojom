@@ -9,7 +9,7 @@ import "brave/components/brave_federated/public/interfaces/brave_federated.mojom
 
 struct InternalsCovariate {
   int32 training_instance_id;
-  Covariate covariate;
+  brave_federated.mojom.Covariate covariate;
 };
 
 struct InternalsTrainingInstance {

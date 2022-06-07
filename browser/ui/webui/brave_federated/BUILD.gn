@@ -9,11 +9,8 @@ mojom("mojo_bindings") {
   sources = [ "federated_internals.mojom" ]
   webui_module_path = "/"
   public_deps = [
+    "//brave/components/brave_federated/public/interfaces",
     "//mojo/public/mojom/base",
     "//ui/base/mojom",
-  ]
-
-  deps = [
-    "//brave/components/brave_federated/public/interfaces:mojom"
   ]
 }
