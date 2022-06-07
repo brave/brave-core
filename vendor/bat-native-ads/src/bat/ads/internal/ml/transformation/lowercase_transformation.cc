@@ -32,7 +32,7 @@ std::unique_ptr<Data> LowercaseTransformation::Apply(
 
   std::string lowercase_text = base::ToLowerASCII(text_data->GetText());
 
-  return std::make_unique<TextData>(TextData(lowercase_text));
+  return std::make_unique<TextData>(std::move(lowercase_text));
 }
 
 }  // namespace ml

@@ -97,8 +97,7 @@ PredictionMap TextProcessing::Apply(
 
 const PredictionMap TextProcessing::GetTopPredictions(
     const std::string& html) const {
-  TextData text_data(html);
-  PredictionMap predictions = Apply(std::make_unique<TextData>(text_data));
+  PredictionMap predictions = Apply(std::make_unique<TextData>(html));
   double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions.size()));
   PredictionMap rtn;
