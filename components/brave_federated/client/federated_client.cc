@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_federated/client/federated_client.h"
 
-#include <chrono>
 #include <thread>
 
 #include <iostream>
@@ -21,6 +20,7 @@
 
 #include "brave/components/brave_federated/client/model.h"
 #include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
+#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
 
 #include "brave/third_party/flower/src/cc/flwr/include/start.h"
 namespace brave_federated {
@@ -43,8 +43,10 @@ void FederatedClient::Start() {
   std::cout << "Starting the client..." << std::endl;
 
   this->communication_in_progress_ = true;
+  
   flwr_communication.AsyncCall(&start::start_client)
       .WithArgs(server_add, this, 536870912);
+
 }
 
 void FederatedClient::Stop() {
@@ -77,7 +79,7 @@ flwr::ParametersRes FederatedClient::get_parameters() {
   std::vector<float> pred_weights = this->model_->PredWeights();
   float pred_b = this->model_->Bias();
   std::list<std::string> tensors;
-
+  
   std::ostringstream oss1, oss2;  // Possibly unnecessary
   oss1.write(reinterpret_cast<const char*>(pred_weights.data()),
              pred_weights.size() * sizeof(float));
@@ -87,6 +89,7 @@ flwr::ParametersRes FederatedClient::get_parameters() {
   tensors.push_back(oss2.str());
 
   std::string tensor_str = "cpp_float";
+  std::cout << tensors.size() << std::endl;
   return flwr::Parameters(tensors, tensor_str);
 }
 
@@ -103,10 +106,6 @@ void FederatedClient::set_parameters(flwr::Parameters params) {
     std::vector<float> weights(weights_float,
                                weights_float + num_bytes / sizeof(float));
     this->model_->SetPredWeights(weights);
-    for (size_t j = 0; j < this->model_->PredWeights().size(); j++) {
-      std::cout << "  m" << j << "_server = " << std::fixed
-                << this->model_->PredWeights()[j] << std::endl;
-    }
 
     // Layer 2 = Bias
     auto layer_2 = std::next(layer, 1);
@@ -114,8 +113,6 @@ void FederatedClient::set_parameters(flwr::Parameters params) {
     const char* bias_char = (*layer_2).c_str();
     const float* bias_float = reinterpret_cast<const float*>(bias_char);
     this->model_->SetBias(bias_float[0]);
-    std::cout << "  b_server = " << std::fixed << this->model_->Bias()
-              << std::endl;
   }
 }
 
@@ -131,6 +128,8 @@ flwr::PropertiesRes FederatedClient::get_properties(flwr::PropertiesIns ins) {
  */
 flwr::FitRes FederatedClient::fit(flwr::FitIns ins) {
   std::cout << "Fitting..." << std::endl;
+  auto config = ins.getConfig();
+  
   flwr::FitRes resp;
 
   flwr::Parameters p = ins.getParameters();
@@ -163,10 +162,10 @@ flwr::EvaluateRes FederatedClient::evaluate(flwr::EvaluateIns ins) {
   resp.setLoss(std::get<1>(result));
 
   flwr::Scalar accuracy = flwr::Scalar();
-  accuracy.setFloat(std::get<2>(result));
-  std::map<std::string, flwr::Scalar> metric = {{"accuracy", accuracy}};
+  accuracy.setDouble((double)std::get<2>(result));
+  std::map<std::string, flwr::Scalar> metric = {{"accuracy", accuracy}, };
   resp.setMetrics(metric);
-
+  auto m = resp.getMetrics();
   return resp;
 }
 
