@@ -1240,13 +1240,6 @@ void RemoveHiddenNetwork(PrefService* prefs,
   });
 }
 
-std::string GetCurrentFilecoinNetworkPrefix(PrefService* prefs) {
-  return (GetCurrentChainId(prefs, mojom::CoinType::FIL) ==
-          brave_wallet::mojom::kFilecoinMainnet)
-             ? mojom::kFilecoinMainnet
-             : mojom::kFilecoinTestnet;
-}
-
 std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
   const base::Value* selected_networks =
       prefs->GetDictionary(kBraveWalletSelectedNetworks);

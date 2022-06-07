@@ -44,30 +44,6 @@
  *
  * "filecoin":
  *   {
- *     "account_metas":
- *     {
- *         "f":
- *         {
- *             "m/44'/461'/0'/0/0":
- *             {
- *                 "account_address": "f1r...fseq",
- *                 "account_name": "Filecoin Account 1"
- *             },
- *             "m/44'/461'/0'/0/1":
- *             {
- *                 "account_address": "f1w7li...upi",
- *                 "account_name": "Filecoin Account 2"
- *             }
- *         },
- *         "t":
- *         {
- *             "m/44'/461'/0'/0/0":
- *             {
- *                 "account_address": "t1rvi..zcfseq",
- *                 "account_name": "Filecoin Account 1"
- *             }
- *         }
- *     },
  *     "selected_account": "t1....ac",
  *     "imported_accounts": {
  *       "f": [
@@ -619,14 +595,7 @@ void KeyringService::SetAccountMetaForKeyring(
       GetPrefForKeyringUpdate(prefs, kAccountMetas, id);
   if (!account_metas)
     return;
-  if (id == mojom::kFilecoinKeyringId) {
-    std::string prefix = GetCurrentFilecoinNetworkPrefix(prefs);
-    if (!account_metas->FindKey(prefix))
-      account_metas->SetKey(prefix, base::Value(base::Value::Type::DICTIONARY));
-    account_metas = account_metas->FindKey(prefix);
-    if (!account_metas)
-      return;
-  }
+
   if (!account_metas->FindKey(account_path))
     account_metas->SetKey(account_path,
                           base::Value(base::Value::Type::DICTIONARY));
@@ -641,27 +610,15 @@ void KeyringService::SetAccountMetaForKeyring(
 }
 
 // static
-const base::Value* KeyringService::GetAccountMetasForKeyring(
-    PrefService* prefs,
-    const std::string& id) {
-  const base::Value* account_metas =
-      GetPrefForKeyring(prefs, kAccountMetas, id);
-  if (!account_metas)
-    return nullptr;
-  if (id == mojom::kFilecoinKeyringId) {
-    return account_metas->FindKey(GetCurrentFilecoinNetworkPrefix(prefs));
-  }
-  return account_metas;
-}
-
-// static
 std::string KeyringService::GetAccountNameForKeyring(
     PrefService* prefs,
     const std::string& account_path,
     const std::string& id) {
-  const base::Value* account_metas = GetAccountMetasForKeyring(prefs, id);
+  const base::Value* account_metas =
+      GetPrefForKeyring(prefs, kAccountMetas, id);
   if (!account_metas)
     return std::string();
+
   const base::Value* name =
       account_metas->FindPath(account_path + "." + kAccountName);
   if (!name)
@@ -675,7 +632,11 @@ std::string KeyringService::GetAccountAddressForKeyring(
     PrefService* prefs,
     const std::string& account_path,
     const std::string& id) {
-  const base::Value* account_metas = GetAccountMetasForKeyring(prefs, id);
+  const base::Value* account_metas =
+      GetPrefForKeyring(prefs, kAccountMetas, id);
+  if (!account_metas)
+    return std::string();
+
   const base::Value* address =
       account_metas->FindPath(account_path + "." + kAccountAddress);
   if (!address)
@@ -1391,12 +1352,7 @@ size_t KeyringService::GetAccountMetasNumberForKeyring(
       GetPrefForKeyring(prefs_, kAccountMetas, id);
   if (!account_metas)
     return 0;
-  if (id == mojom::kFilecoinKeyringId) {
-    std::string prefix = GetCurrentFilecoinNetworkPrefix(prefs_);
-    account_metas = account_metas->FindKey(prefix);
-    if (!account_metas)
-      return 0;
-  }
+
   return account_metas->DictSize();
 }
 
@@ -1850,10 +1806,7 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
     keyrings_[mojom::kDefaultKeyringId] = std::make_unique<EthereumKeyring>();
   } else if (keyring_id == mojom::kFilecoinKeyringId) {
     DCHECK(::brave_wallet::IsFilecoinEnabled());
-    auto keyring = std::make_unique<FilecoinKeyring>(
-        GetCurrentFilecoinNetworkPrefix(prefs_));
-    json_rpc_service_->AddObserver(keyring->GetReceiver());
-    keyrings_[mojom::kFilecoinKeyringId] = std::move(keyring);
+    keyrings_[mojom::kFilecoinKeyringId] = std::make_unique<FilecoinKeyring>();
   } else if (keyring_id == mojom::kSolanaKeyringId) {
     keyrings_[mojom::kSolanaKeyringId] = std::make_unique<SolanaKeyring>();
   }

@@ -85,8 +85,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static std::string GetAccountNameForKeyring(PrefService* prefs,
                                               const std::string& account_path,
                                               const std::string& id);
-  static const base::Value* GetAccountMetasForKeyring(PrefService* prefs,
-                                                      const std::string& id);
   static std::string GetAccountAddressForKeyring(
       PrefService* prefs,
       const std::string& account_path,
@@ -290,10 +288,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, HardwareAccounts);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
-                           AccountMetasForFilecoinKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
-                           SwitchAccountsOnNetworkChange);
 
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
