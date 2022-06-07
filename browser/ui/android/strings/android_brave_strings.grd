@@ -2360,7 +2360,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Reset VPN configuration
     </message>
     <message name="IDS_RESET_VPN_CONFIG_DIALOG_MESSAGE" desc="Brave Vpn reset configuration dialog message">
-      Are you sure you want to reset vpn configuration?
+      Are you sure you want to reset VPN configuration?
     </message>
     <message name="IDS_AUTOMATIC" desc="Brave Vpn default server location text">
       Automatic
