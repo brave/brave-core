@@ -13,6 +13,7 @@ source_set("browser_tests") {
     "disabled_features/navigator_bluetooth_browsertest.cc",
     "disabled_features/navigator_storage_browsertest.cc",
     "disabled_features/reporting_observer_browsertest.cc",
+    "disabled_features/window_name_browsertest.cc",
   ]
 
   deps = [
