@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">HTTPS ಮುಖೇನ DNS ಬಳಸಿಕೊಂಡು .crypto ಡೊಮೇನ್ ಹೆಸರು ವೀಕ್ಷಣೆ ವಿನಂತಿಯನ್ನು ಪರಿಹರಿಸುವ ನಿಟ್ಟಿನಲ್ಲಿ, Cloudflare ಬಳಸುವ ಮೂಲಕ .crypto ಡೊಮೇನ್‍ಗಳಿಗೆ ನೀವು ಭೇಟಿ ನೀಡುವುದನ್ನು Brave ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು. ನೀವು ಅದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ .crypto ಡೊಮೇನ್ ಅನ್ನು Cloudflare ನೋಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ, ಆದರೆ ಅವರಿಗೆ ಬೇರೆ ಇತರೆ ಡೊಮೇನ್‍ಗಳನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>ಬಳಕೆ ನಿಯಮಗಳು<ph name="END_CF_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_CF_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_CF_PRIVACY_LINK"/> ಯನ್ನು ನೋಡಿ.</translation>
 <translation id="618766505813078707">HTTPS ಮುಖೇನ DNS ಬಳಸಿಕೊಂಡು .eth ಡೊಮೇನ್ ಹೆಸರು ವೀಕ್ಷಣೆ ವಿನಂತಿಯನ್ನು ಪರಿಹರಿಸುವ ನಿಟ್ಟಿನಲ್ಲಿ, Cloudflare ಬಳಸುವ ಮೂಲಕ .eth ಡೊಮೇನ್‍ಗಳಿಗೆ ನೀವು ಭೇಟಿ ನೀಡುವುದನ್ನು Brave ಸಕ್ರಿಯಗೊಳಿಸಬಹುದು. ನೀವು ಅದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವ .eth ಡೊಮೇನ್ ಅನ್ನು Cloudflare ನೋಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ, ಆದರೆ ಅವರಿಗೆ ಬೇರೆ ಇತರೆ ಡೊಮೇನ್‍ಗಳನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>ಬಳಕೆ ನಿಯಮಗಳು<ph name="END_CF_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_CF_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_CF_PRIVACY_LINK"/> ಯನ್ನು ನೋಡಿ.</translation>
 <translation id="5636651007798897342">Cloudflare ಸರ್ವರ್ ಬಳಸಿ ಮುಂದುವರೆಯಿಸಿ</translation>
+<translation id="413458922997276130">ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.</translation>
+<translation id="3579959767665130790">ದೋಷ: ನಿಬಂಧಿಸಿದ ಖಾತೆ</translation>
+<translation id="6554308597291659562">ಸಂಪೂರ್ಣ Uphold ಖಾತೆಯ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವುದಕ್ಕೂ ಮೊದಲು ನಿಮ್ಮ ಕುರಿತು ಸ್ವಲ್ಪ ಹೆಚ್ಚಿನ ಮಾಹಿತಿಯನ್ನು Uphold ಸಂಗ್ರಹಿಸಬೇಕಾಗುತ್ತದೆ. ನಿಮ್ಮ Uphold ಖಾತೆಯಲ್ಲಿ ಈ ಮಾಹಿತಿಯನ್ನು ನೀವು ಒಮ್ಮೆ ಸಲ್ಲಿಸಿದಾಗ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="6996157559236886133">ದೋಷ: ಸೀಮಿತ Uphold ಖಾತೆ ಕಾರ್ಯಕ್ಷಮತೆ</translation>
+<translation id="819370426249314592">ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆ ಇನ್ನೂ ಬಾಕಿ ಉಳಿದಿದೆ.</translation>
+<translation id="4530453398914580957">ದೋಷ: ಬಾಕಿ ಇರುವ ಖಾತೆ</translation>
+<translation id="2388470740942086608">ನಿಮ್ಮ ಖಾತೆ ಅಪ್‌ಹೋಲ್ಡ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.</translation>
+<translation id="3605236342612716051">ದೋಷ: ನಿರ್ಬಂಧಿತ ಖಾತೆ</translation>
+<translation id="2218918398178303658">HTTPS ಮೂಲಕ DNS</translation>
+<translation id="8093033115658137576">0x ವಿಳಾಸ ಅಥವಾ url</translation>
 </translationbundle>

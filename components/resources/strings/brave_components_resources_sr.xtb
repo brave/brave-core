@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave vam može omogućiti da posetite .crypto domene pomoću Cloudflare-a kako biste razrešili zahteve za pronalaženje naziva .crypto domena korišćenjem DNS preko HTTPS. Ako ovo omogućite, Cloudflare će videti .crypto domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Pogledajte Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>uslove korišćenja<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>smernice za privatnost<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave vam može omogućiti da posetite .eth domene pomoću Cloudflare-a da biste razrešili zahteve za pronalaženje naziva .eth domena korišćenjem DNS preko HTTPS. Ako ovo omogućite, Cloudflare će videti .eth domen koji pokušavate da posetite, ali neće biti u mogućnosti da vidi druge domene. Pogledajte Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>uslove korišćenja<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>smernice za privatnost<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Nastavite koristeći Cloudflare server</translation>
+<translation id="413458922997276130">Vaš Uphold nalog je trenutno blokiran.</translation>
+<translation id="3579959767665130790">Greška: Blokiran nalog</translation>
+<translation id="6554308597291659562">Platformi Uphold je potrebno još malo informacija o vama pre nego što vaš Uphold nalog postane potpuno funkcionalan. Pokušajte ponovo nakon što dostavite potrebne informacije za vaš Uphold nalog.</translation>
+<translation id="6996157559236886133">Greška:  Ograničena funkcionalnost Uphold naloga</translation>
+<translation id="819370426249314592">Vaš Uphold nalog je još na čekanju.</translation>
+<translation id="4530453398914580957">Greška: Nalog na čekanju</translation>
+<translation id="2388470740942086608">Vaš Uphold nalog je trenutno ograničen.</translation>
+<translation id="3605236342612716051">Greška: Ograničen nalog</translation>
+<translation id="2218918398178303658">DNS preko HTTPS</translation>
+<translation id="8093033115658137576">Ox adresa ili url</translation>
 </translationbundle>

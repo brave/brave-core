@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave дозволяє вам відвідувати домени .crypto, використовуючи Cloudflare для вирішення запитів пошуку доменів .crypto за допомогою DNS через HTTPS. Якщо ви це ввімкнете, Cloudflare побачить домен .crypto, який ви намагаєтесь відвідати, але не зможе побачити інші домени. Перегляньте <ph name="BEGIN_CF_TOU_LINK"/>умови використання<ph name="END_CF_TOU_LINK"/> та <ph name="BEGIN_CF_PRIVACY_LINK"/>політику конфіденційності<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="618766505813078707">Brave дозволяє вам відвідувати домени .eth, використовуючи Cloudflare для вирішення запитів пошуку доменів .eth за допомогою DNS через HTTPS. Якщо ви це ввімкнете, Cloudflare побачить домен .eth, який ви намагаєтесь відвідати, але не зможе побачити інші домени. Перегляньте <ph name="BEGIN_CF_TOU_LINK"/>умови використання<ph name="END_CF_TOU_LINK"/> та <ph name="BEGIN_CF_PRIVACY_LINK"/>політику конфіденційності<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="5636651007798897342">Продовжити, використовуючи сервер Cloudflare</translation>
+<translation id="413458922997276130">Ваш обліковий запис в Uphold наразі заблоковано.</translation>
+<translation id="3579959767665130790">Помилка: обліковий запис заблоковано</translation>
+<translation id="6554308597291659562">Uphold потрібен, щоб зібрати трохи більше інформації про вас, перш ніж увімкнути повну функціональність облікового запису Uphold. Спробуйте ще раз, щойно ви надішлете цю інформацію у свій обліковий запис Uphold.</translation>
+<translation id="6996157559236886133">Помилка: обмежена функціональність облікового запису Uphold</translation>
+<translation id="819370426249314592">Ваш обліковий запис в Uphold усе ще обробляється.</translation>
+<translation id="4530453398914580957">Помилка: обліковий запис обробляється</translation>
+<translation id="2388470740942086608">Ваш обліковий запис в Uphold наразі обмежено.</translation>
+<translation id="3605236342612716051">Помилка: обліковий запис обмежено</translation>
+<translation id="2218918398178303658">DNS поверх HTTPS</translation>
+<translation id="8093033115658137576">Адреса 0x чи url</translation>
 </translationbundle>

@@ -1265,4 +1265,14 @@
 <translation id="618766505813078707">Brave може да Ви позволи да посещавате .eth домейни, като използвате Cloudflare за разрешаване на заявките за търсене на домейн .eth, използвайки DNS през HTTPS. Ако разрешите това, Cloudflare ще види домейна .eth, който се опитвате да посетите, но няма да може да види други домейни.
 Вижте <ph name="BEGIN_CF_TOU_LINK"/>условията за ползване<ph name="END_CF_TOU_LINK"/> и <ph name="BEGIN_CF_PRIVACY_LINK"/>политиката за поверителност<ph name="END_CF_PRIVACY_LINK"/>. на Cloudflare</translation>
 <translation id="5636651007798897342">Продължете с помощта на сървър на Cloudflare</translation>
+<translation id="413458922997276130">Вашият акаунт в Uphold в момента е блокиран.</translation>
+<translation id="3579959767665130790">Грешка: блокиран акаунт</translation>
+<translation id="6554308597291659562">Преди да активирате пълната функционалност на акаунт в Uphold, той трябва да събере допълнителна информация за вас. Опитайте отново, след като изпратите тази информация в акаунта си в Uphold.</translation>
+<translation id="6996157559236886133">Грешка: ограничена функционалност на акаунта в Uphold</translation>
+<translation id="819370426249314592">Вашият акаунт в Uphold все още е изчакващ.</translation>
+<translation id="4530453398914580957">Грешка: изчакващ акаунт</translation>
+<translation id="2388470740942086608">Вашият акаунт в Uphold в момента е ограничен.</translation>
+<translation id="3605236342612716051">Грешка: ограничен акаунт</translation>
+<translation id="2218918398178303658">DNS по HTTPS</translation>
+<translation id="8093033115658137576">0x адрес или URL адрес</translation>
 </translationbundle>

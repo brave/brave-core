@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Mabibigyang-daan ka ng Brave na bisitahin ang mga .crypto na domain sa pamamagitan ng paggamit ng Cloudflare para resolbahin ang mga kahilingan sa paghahanap ng .crypto na domain name gamit ang DNS sa halip na HTTPS. Kung ie-enable mo ito, makikita ng Cloudflare ang .crypto na domain na sinusubukan mong bisitahin pero hindi nito makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_CF_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_CF_TOU_LINK"/> at <ph name="BEGIN_CF_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_CF_PRIVACY_LINK"/> ng Cloudflare.</translation>
 <translation id="618766505813078707">Mabibigyang-daan ka ng Brave na bisitahin ang mga .eth na domain sa pamamagitan ng paggamit ng Cloudflare para resolbahin ang mga kahilingan sa paghahanap ng .eth na domain name gamit ang DNS sa halip na HTTPS. Kung ie-enable mo ito, makikita ng Cloudflare ang .eth na domain na sinusubukan mong bisitahin pero hindi nito makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_CF_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_CF_TOU_LINK"/> at <ph name="BEGIN_CF_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_CF_PRIVACY_LINK"/> ng Cloudflare.</translation>
 <translation id="5636651007798897342">Magpatuloy gamit ang server ng Cloudflare</translation>
+<translation id="413458922997276130">Kasalukuyang naka-block ang iyong account sa Uphold.</translation>
+<translation id="3579959767665130790">Error: Naka-block na account</translation>
+<translation id="6554308597291659562">Ang Uphold ay nangangailangang mag-ipon ng kaunti pang impormasyon tungkol sa'yo bago paganahin ang buong kakayanan ng iyong Uphold na account. Pakiusap subukang muli kapag napasa mo na ang impormasyon na ito sa iyong Uphold account.</translation>
+<translation id="6996157559236886133">Error: Limitadong kakayanan ng Uphold account</translation>
+<translation id="819370426249314592">Pending pa rin ang iyong account sa Uphold.</translation>
+<translation id="4530453398914580957">Error: Pending na account</translation>
+<translation id="2388470740942086608">Kasalukuyang restricted ang iyong account sa Uphold.</translation>
+<translation id="3605236342612716051">Error: Restricted na account</translation>
+<translation id="2218918398178303658">DNS sa HTTPS</translation>
+<translation id="8093033115658137576">0x address o url</translation>
 </translationbundle>

@@ -1265,4 +1265,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3470923752115324276">Brave ทำให้คุณเข้าชมโดเมน .crypto ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .crypto โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .crypto ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
 <translation id="618766505813078707">Brave ทำให้คุณเข้าชมโดเมน .eth ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .eth โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .eth ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
 <translation id="5636651007798897342">ดำเนินการโดยใช้เซิร์ฟเวอร์ Cloudflare</translation>
+<translation id="413458922997276130">บัญชีของคุณที่ Uphold ถูกบล็อกอยู่ในขณะนี้</translation>
+<translation id="3579959767665130790">เกิดข้อผิดพลาด: บัญชีถูกบล็อก</translation>
+<translation id="6554308597291659562">จำเป็นต้องมี Uphold เพื่อรวบรวมข้อมูลเพิ่มเติมเล็กน้อยเกี่ยวกับคุณก่อนที่จะเปิดใช้งานฟังก์ชันบัญชี Uphold อย่างเต็มรูปแบบ กรุณาลองใหม่อีกครั้งเมื่อคุณส่งข้อมูลนี้ในบัญชี Uphold ของคุณแล้ว</translation>
+<translation id="6996157559236886133">ข้อผิดพลาด: จำกัดฟังก์ชันการทำงานของบัญชี Uphold</translation>
+<translation id="819370426249314592">บัญชีของคุณที่ Uphold ยังคงรอดำเนินการอยู่</translation>
+<translation id="4530453398914580957">เกิดข้อผิดพลาด: บัญชีอยู่ระหว่างรอดำเนินการ</translation>
+<translation id="2388470740942086608">บัญชีของคุณที่ Uphold ถูกจำกัดอยู่ในขณะนี้</translation>
+<translation id="3605236342612716051">เกิดข้อผิดพลาด: บัญชีถูกจำกัด</translation>
+<translation id="2218918398178303658">DNS ผ่านทาง HTTPS</translation>
+<translation id="8093033115658137576">ที่อยู่หรือ URL 0x</translation>
 </translationbundle>

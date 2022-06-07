@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave vous permet de visiter des domaines .crypto en utilisant Cloudflare pour résoudre les demandes de recherche de nom de domaine .crypto à l'aide de DNS sur HTTPS. Si vous activez cette fonction, Cloudflare verra le domaine .crypto que vous essayez de visiter, mais il ne pourra pas voir les autres domaines. Consultez les <ph name="BEGIN_CF_TOU_LINK"/>conditions d'utilisation<ph name="END_CF_TOU_LINK"/> et la <ph name="BEGIN_CF_PRIVACY_LINK"/>politique de confidentialité<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
 <translation id="618766505813078707">Brave vous permet de visiter des domaines .eth en utilisant Cloudflare pour résoudre les demandes de recherche de nom de domaine .eth à l'aide de DNS sur HTTPS. Si vous activez cette fonction, Cloudflare verra le domaine .eth que vous essayez de visiter, mais il ne pourra pas voir les autres domaines. Consultez les <ph name="BEGIN_CF_TOU_LINK"/>conditions d'utilisation<ph name="END_CF_TOU_LINK"/> et la <ph name="BEGIN_CF_PRIVACY_LINK"/>politique de confidentialité<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
 <translation id="5636651007798897342">Continuer avec un serveur Cloudflare</translation>
+<translation id="413458922997276130">Votre compte sur Uphold est actuellement bloqué.</translation>
+<translation id="3579959767665130790">Erreur : Compte bloqué</translation>
+<translation id="6554308597291659562">Uphold doit recueillir d'autres renseignements vous concernant avant que toutes les fonctionnalités du compte Uphold soient accessibles. Veuillez réessayer après avoir renseigné ces données dans votre compte Uphold.</translation>
+<translation id="6996157559236886133">Erreur : fonctionnalités du compte Uphold limitées</translation>
+<translation id="819370426249314592">Votre compte sur Uphold est toujours en attente.</translation>
+<translation id="4530453398914580957">Erreur : Compte en attente</translation>
+<translation id="2388470740942086608">Votre compte sur Uphold est actuellement limité.</translation>
+<translation id="3605236342612716051">Erreur : Compte limité</translation>
+<translation id="2218918398178303658">DNS via HTTPS</translation>
+<translation id="8093033115658137576">adresse ou url 0x</translation>
 </translationbundle>

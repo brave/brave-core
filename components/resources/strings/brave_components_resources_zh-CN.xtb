@@ -1265,4 +1265,14 @@
 <translation id="3470923752115324276">Brave 可以让您用 Cloudflare 访问  .crypto 域 ，以便能够用 HTTPS 上的 DNS 来解析 .crypto 域名查找请求。如果启用此功能，Cloudflare 将看到您尝试访问的 .crypto 域，但他们将无法看到其他域。请查看 Cloudflare 的 <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>。</translation>
 <translation id="618766505813078707">Brave 可以让您用 Cloudflare 访问.eth域 ，以便能够用 HTTPS 上的 DNS 来解析.eth 域名查找请求。如果启用此功能，Cloudflare 将看到您尝试访问的 .eth域，但他们将无法看到其他域。请查看 Cloudflare 的 <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>。</translation>
 <translation id="5636651007798897342">使用 Cloudflare 服务器继续</translation>
+<translation id="413458922997276130">您在 Uphold 的账户目前已被屏蔽。</translation>
+<translation id="3579959767665130790">错误：账户被屏蔽</translation>
+<translation id="6554308597291659562">在启用完整的 Uphold 账户功能之前，Uphold 需要收集更多关于您的信息。请在您的 Uphold 账户中提交此信息后再试一次。</translation>
+<translation id="6996157559236886133">错误：Uphold 账户功能受限</translation>
+<translation id="819370426249314592">您在 Uphold 的账户仍处于待处理状态。</translation>
+<translation id="4530453398914580957">错误：待处理账户</translation>
+<translation id="2388470740942086608">您在 Uphold 的账户目前受到限制。</translation>
+<translation id="3605236342612716051">错误：受限账户</translation>
+<translation id="2218918398178303658">通过 HTTPS 的 DNS</translation>
+<translation id="8093033115658137576">0x 地址或 url</translation>
 </translationbundle>

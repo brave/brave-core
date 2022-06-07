@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave maakt het mogelijk om .crypto domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .crypto domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .crypto domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave maakt het mogelijk om .eth domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .eth domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Ga verder met de Cloudflare server</translation>
+<translation id="413458922997276130">Je account in Uphold is momenteel geblokkeerd.</translation>
+<translation id="3579959767665130790">Fout: geblokkeerd account</translation>
+<translation id="6554308597291659562">Uphold is vereist om wat meer informatie te verzamelen over u voordat de volledige Uphold-accountfunctionaliteit wordt ingeschakeld. Probeer het opnieuw wanneer u deze informatie hebt ingediend in uw Uphold-account.</translation>
+<translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
+<translation id="819370426249314592">Je account in Uphold is nog steeds in behandeling.</translation>
+<translation id="4530453398914580957">Fout: account in behandeling</translation>
+<translation id="2388470740942086608">Je account in Uphold is momenteel beperkt.</translation>
+<translation id="3605236342612716051">Fout: beperkt account</translation>
+<translation id="2218918398178303658">DNS met HTTPS</translation>
+<translation id="8093033115658137576">0x-adres of URL</translation>
 </translationbundle>

@@ -1265,4 +1265,14 @@
 <translation id="3470923752115324276">Cloudflare और HTTPS पर DNS के उपयोग से .crypto डोमेन नाम के लुकअप के अनुरोधों को हल करके Brave आपको .crypto डोमेन पर जाने में सक्षम कर सकता है। यदि आप इसे सक्षम करते हैं तो Cloudflare वह .crypto डोमेन देखेगा जिसे आप देखने का प्रयास कर रहे हैं लेकिन वे अन्य डोमेन नहीं देख पाएंगे। Cloudflare की <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/> देखें।</translation>
 <translation id="618766505813078707">Brave आपको Cloudflare और HTTPS पर DNS का उपयोग करके .eth डोमेन नाम के लुकअप के अनुरोधों को हल करने और .eth डोमेन देखने में सक्षम कर सकता है। यदि आप इसे सक्षम करते हैं तो Cloudflare को वह .eth डोमेन दिखेगा जिसे आप देखने का प्रयास कर रहे हैं लेकिन वे अन्य डोमेन नहीं देख पाएंगे। Cloudflare की <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/> देखें।</translation>
 <translation id="5636651007798897342">Cloudflare सर्वर का उपयोग करके आगे बढ़ें</translation>
+<translation id="413458922997276130">Uphold पर आपका अकाउंट अभी ब्लॉक्ड है.</translation>
+<translation id="3579959767665130790">एरर: ब्लॉक किया गया अकाउंट</translation>
+<translation id="6554308597291659562">Uphold को पूरे यूफोल्ड अकाउंट की कार्यक्षमता को इनेबल करने से पहले आपके बारे में थोड़ी अधिक जानकारी इकठ्ठा करने की ज़रुरत है. अपने Uphold अकाउंट में यह जानकारी जमा करने के बाद कृपया फिर से कोशिश करें.</translation>
+<translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट सुविधाएँ</translation>
+<translation id="819370426249314592">Uphold पर आपका अकाउंट अभी भी पेंडिंग है.</translation>
+<translation id="4530453398914580957">एरर: पेंडिंग अकाउंट</translation>
+<translation id="2388470740942086608">Uphold पर इस समय आपके अकाउंट पर रोक लगी हुई है.</translation>
+<translation id="3605236342612716051">एरर: रोक लगाया हुआ अकाउंट</translation>
+<translation id="2218918398178303658">HTTPS के ऊपर DNS</translation>
+<translation id="8093033115658137576">0x से शुरू होने वाला पता या यूआरएल (url)</translation>
 </translationbundle>

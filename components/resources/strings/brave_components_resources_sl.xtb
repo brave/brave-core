@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave vam lahko omogoči obisk domen .crypto z uporabo Cloudflare-a za reševanje zahtev za iskanje domen .crypto z uporabo DNS prek HTTPS. Če to omogočite, bo Cloudflare videl domeno .crypto, ki jo želite obiskati, ne bo pa mogel videti drugih domen. Oglejte si Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>pogoje uporabe<ph name="END_CF_TOU_LINK"/> in <ph name="BEGIN_CF_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave vam lahko omogoči obisk domen .eth z uporabo Cloudflareja za reševanje zahtev za iskanje domen .eth z uporabo DNS prek HTTPS. Če to omogočite, bo Cloudflare videl domeno .eth, ki jo poskušate obiskati, ne bo pa mogel videti drugih domen. Oglejte si Cloudflare-ove <ph name="BEGIN_CF_TOU_LINK"/>pogoje uporabe<ph name="END_CF_TOU_LINK"/> in <ph name="BEGIN_CF_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Nadaljujte s strežnikom Cloudflare</translation>
+<translation id="413458922997276130">Vaš račun pri Uphold je trenutno blokiran.</translation>
+<translation id="3579959767665130790">Napaka: blokiran račun</translation>
+<translation id="6554308597291659562">Uphold mora zbrati nekaj več informacij o vas, preden omogočite celotno funkcionalnost računa Uphold. Poskusite znova, ko vnesete te podatke v svoj račun Uphold.</translation>
+<translation id="6996157559236886133">Napaka: omejena funkcionalnost računa Uphold</translation>
+<translation id="819370426249314592">Vaš račun pri Upholdu je na čakanju.</translation>
+<translation id="4530453398914580957">Napaka: račun na čakanju</translation>
+<translation id="2388470740942086608">Vaš račun pri Uphold ima trenutno omejen dostop.</translation>
+<translation id="3605236342612716051">Napaka: omejen račun</translation>
+<translation id="2218918398178303658">DNS preko HTTPS</translation>
+<translation id="8093033115658137576">0x naslov ali url</translation>
 </translationbundle>

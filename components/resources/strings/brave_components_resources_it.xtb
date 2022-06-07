@@ -1264,4 +1264,14 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="3470923752115324276">Brave può permetterti di visitare i domini .crypto utilizzando Cloudflare per risolvere le richieste di ricerca del nome di dominio .crypto tramite DNS su HTTPS. Se lo abiliti, Cloudflare vedrà il dominio .crypto che stai tentando di visitare ma non sarà in grado di vedere altri domini. Consulta le <ph name="BEGIN_CF_TOU_LINK"/>condizioni d'uso<ph name="END_CF_TOU_LINK"/> e l'<ph name="BEGIN_CF_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_CF_PRIVACY_LINK"/> di Cloudflare.</translation>
 <translation id="618766505813078707">Brave può permetterti di visitare i domini .eth utilizzando Cloudflare per risolvere le richieste di ricerca del nome di dominio .eth tramite DNS su HTTPS. Se lo abiliti, Cloudflare vedrà il dominio .eth che stai tentando di visitare ma non sarà in grado di vedere altri domini. Consulta le <ph name="BEGIN_CF_TOU_LINK"/>condizioni d'uso<ph name="END_CF_TOU_LINK"/> e l'<ph name="BEGIN_CF_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_CF_PRIVACY_LINK"/> di Cloudflare.</translation>
 <translation id="5636651007798897342">Procedi utilizzando il server Cloudflare</translation>
+<translation id="413458922997276130">Al momento il tuo account su Uphold è bloccato.</translation>
+<translation id="3579959767665130790">Errore: account bloccato</translation>
+<translation id="6554308597291659562">Prima di abilitare la funzionalità completa del conto, Uphold deve raccogliere qualche altra informazione su di te. Riprova dopo aver trasmesso queste informazioni al tuo account Uphold.</translation>
+<translation id="6996157559236886133">Errore: funzionalità del conto Uphold limitata</translation>
+<translation id="819370426249314592">Il tuo account su Uphold è ancora in sospeso.</translation>
+<translation id="4530453398914580957">Errore: account in sospeso</translation>
+<translation id="2388470740942086608">Al momento il tuo account su Uphold è limitato.</translation>
+<translation id="3605236342612716051">Errore: account limitato</translation>
+<translation id="2218918398178303658">DNS over HTTPS</translation>
+<translation id="8093033115658137576">Indirizzo 0x o URL</translation>
 </translationbundle>

@@ -1266,4 +1266,14 @@
 <translation id="3470923752115324276">Braveは、「DNS over HTTPS（DoH）」を使用する.cryptoドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.cryptoドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.cryptoドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="618766505813078707">Braveは、「DNS over HTTPS（DoH）」を使用する.ethドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.ethドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="5636651007798897342">Cloudflareサーバーを使用して続行する</translation>
+<translation id="413458922997276130">現在、Upholdのアカウントがブロックされています。</translation>
+<translation id="3579959767665130790">エラー: ブロックされたアカウント</translation>
+<translation id="6554308597291659562">Upholdが、Upholdのアカウント機能を完全に有効にする前にお客様についての情報収集を要求しています。Upholdアカウントで情報を送信してからもう一度お試しください。</translation>
+<translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
+<translation id="819370426249314592">Upholdのアカウントが保留中です。</translation>
+<translation id="4530453398914580957">エラー: アカウントの保留</translation>
+<translation id="2388470740942086608">現在、Upholdのアカウントが制限されています。</translation>
+<translation id="3605236342612716051">エラー: 制限されたアカウント</translation>
+<translation id="2218918398178303658">DNS over HTTPS</translation>
+<translation id="8093033115658137576">0xアドレスまたはURL</translation>
 </translationbundle>

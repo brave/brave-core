@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave, .crypto etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .crypto etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .crypto etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
 <translation id="618766505813078707">Brave, .eth etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .eth etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .eth etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
 <translation id="5636651007798897342">Cloudflare sunucusu kullanarak ilerleyin</translation>
+<translation id="413458922997276130">Uphold'daki hesabınız şu anda engelli.</translation>
+<translation id="3579959767665130790">Hata: Engelli hesap</translation>
+<translation id="6554308597291659562">Uphold hesabı işlevlerinin tamamının etkinleşmesinden önce, Uphold'un hakkınızda biraz daha bilgi toplaması gereklidir. Lütfen Uphold hesabınızda bu bilgileri verdikten sonra tekrar deneyin.</translation>
+<translation id="6996157559236886133">Hata: Sınırlı Uphold hesabı işlevleri</translation>
+<translation id="819370426249314592">Uphold'daki hesabınız hala beklemede.</translation>
+<translation id="4530453398914580957">Hata: Bekleyen hesap</translation>
+<translation id="2388470740942086608">Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.</translation>
+<translation id="3605236342612716051">Hata: Kısıtlanmış hesap</translation>
+<translation id="2218918398178303658">HTTPS üzerinde DNS</translation>
+<translation id="8093033115658137576">0x adresi veya url'si</translation>
 </translationbundle>

@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.crypto بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.crypto را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎crypto را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
 <translation id="618766505813078707">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.eth بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.eth را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎.eth را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
 <translation id="5636651007798897342">ادامه با استفاده از سرور Cloudflare</translation>
+<translation id="413458922997276130">درحال‌حاضر حسابتان در Uphold مسدود شده است.</translation>
+<translation id="3579959767665130790">خطا: حساب مسدودشده</translation>
+<translation id="6554308597291659562">Uphold ملزم است که قبل از فعال‌سازی عملکرد کامل حساب Uphold، کمی اطلاعات بیشتری درباره شما جمع‌آوری کند. لطفاً بعد از ارسال این اطلاعات در حساب Uphold خود، دوباره امتحان کنید.</translation>
+<translation id="6996157559236886133">خطا: عملکرد حساب Uphold محدود است</translation>
+<translation id="819370426249314592">حسابتان در Uphold هنوز تأیید نشده است.</translation>
+<translation id="4530453398914580957">خطا: حساب درانتظار تأیید</translation>
+<translation id="2388470740942086608">درحال‌حاضر حسابتان در Uphold محدود شده است.</translation>
+<translation id="3605236342612716051">خطا: حساب محدودشده</translation>
+<translation id="2218918398178303658">DNS ازطریق HTTPS</translation>
+<translation id="8093033115658137576">آدرس یا آدرس وب 0x</translation>
 </translationbundle>

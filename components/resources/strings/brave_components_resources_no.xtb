@@ -1263,4 +1263,14 @@
 <translation id="3470923752115324276">Brave kan la deg besøke .crypto-domener ved å bruke Cloudflare til å utføre forespørsler om oppslag av .crypto-domenenavn med DNS over HTTPS. Hvis du slår på dette, kan Cloudflare se .crypto-domenene du prøver å besøke, men ikke andre domener. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>vilkår for bruk<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>personvernerklæring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave kan la deg besøke .eth-domener ved å bruke Cloudflare til å utføre forespørsler om oppslag av .eth-domenenavn med DNS over HTTPS. Hvis du slår på dette, kan Cloudflare se .eth-domenene du prøver å besøke, men ikke andre domener. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>vilkår for bruk<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>personvernerklæring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Gå videre ved bruk av Cloudflare-tjener</translation>
+<translation id="413458922997276130">Kontoen din hos Uphold er for øyeblikket blokkert.</translation>
+<translation id="3579959767665130790">Feil: Blokkert konto</translation>
+<translation id="6554308597291659562">Uphold kreves for å samle inn litt mer informasjon om deg før du får tilgang til den fullstendige Uphold-kontofunksjonaliteten. Prøv igjen når du har sendt inn denne informasjonen i Uphold-kontoen din.</translation>
+<translation id="6996157559236886133">Feil: Begrenset Uphold-kontofunksjonalitet</translation>
+<translation id="819370426249314592">Kontoen din hos Uphold venter fortsatt.</translation>
+<translation id="4530453398914580957">Feil: Ventende konto</translation>
+<translation id="2388470740942086608">Kontoen din hos Uphold er for øyeblikket begrenset.</translation>
+<translation id="3605236342612716051">Feil: Begrenset konto</translation>
+<translation id="2218918398178303658">DNS over HTTPS</translation>
+<translation id="8093033115658137576">0x-adresse eller nettadresse</translation>
 </translationbundle>

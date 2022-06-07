@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave giver dig mulighed for at besøge .crypto-domæner med Cloudflare til løsning af opslagsanmodninger for .crypto-domænenavne ved hjælp af DNS over HTTPS. Hvis du aktiverer dette, vil Cloudflare se det .crypto-domæne, du forsøger at besøge, men de vil ikke kunne se andre domæner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>brugsvilkår<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave giver dig mulighed for at besøge .eth-domæner med Cloudflare til at løse opslagsanmodninger for .eth-domænenavne ved hjælp af DNS over HTTPS. Hvis du aktiverer dette, vil Cloudflare se det .eth-domæne, du forsøger at besøge, men vil ikke kunne se andre domæner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>brugsvilkår<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Fortsæt med Cloudflare-server</translation>
+<translation id="413458922997276130">Din konto på Uphold er i øjeblikket blokeret.</translation>
+<translation id="3579959767665130790">Fejl: Blokeret konto</translation>
+<translation id="6554308597291659562">Uphold skal indsamle lidt flere oplysninger om dig, inden du kan aktivere Upholds fulde kontofunktionalitet. Prøv igen, når du har afgivet disse oplysninger på din Uphold-konto.</translation>
+<translation id="6996157559236886133">Fejl: begrænset kontofunktionalitet i Uphold</translation>
+<translation id="819370426249314592">Din konto på Udhold afventer stadig</translation>
+<translation id="4530453398914580957">Fejl: Afventende konto</translation>
+<translation id="2388470740942086608">Din konto hos Uphold er i øjeblikket begrænset.</translation>
+<translation id="3605236342612716051">Fejl: Konto med begrænsninger</translation>
+<translation id="2218918398178303658">DNS over HTTPS</translation>
+<translation id="8093033115658137576">0x-adresse eller -url</translation>
 </translationbundle>

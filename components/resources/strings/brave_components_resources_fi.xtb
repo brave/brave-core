@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Braven avulla voit vierailla .crypto-verkkotunnuksissa käyttämällä Cloudflarea selvittämään .crypto-verkkotunnuksen nimitarkistuspyynnöt käyttämällä DNS:ää HTTPS:n kautta. Jos otat tämän käyttöön, Cloudflare näkee avaamasi .crypto-verkkotunnuksen, mutta ei muita verkkotunnuksia. Lue Cloudflaren <ph name="BEGIN_CF_TOU_LINK"/>käyttöehdot<ph name="END_CF_TOU_LINK"/> ja <ph name="BEGIN_CF_PRIVACY_LINK"/>tietosuojakäytäntö<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Braven avulla voit vierailla .eth-verkkotunnuksissa käyttämällä Cloudflarea selvittämään .eth-verkkotunnuksen nimitarkistuspyynnöt käyttämällä DNS:ää HTTPS:n kautta. Jos otat tämän käyttöön, Cloudflare näkee avaamasi .eth-verkkotunnuksen, mutta ei muita verkkotunnuksia. Lue Cloudflaren <ph name="BEGIN_CF_TOU_LINK"/>käyttöehdot<ph name="END_CF_TOU_LINK"/> ja <ph name="BEGIN_CF_PRIVACY_LINK"/>tietosuojakäytäntö<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Jatka Cloudflare-palvelimella</translation>
+<translation id="413458922997276130">Uphold-tilisi on tällä hetkellä estetty.</translation>
+<translation id="3579959767665130790">Virhe: Estetty tili</translation>
+<translation id="6554308597291659562">Upholdin on kerättävä sinusta vähän lisätietoja, ennen kuin koko Uphold-tilin toiminnallisuus voidaan ottaa käyttöön. Yritä uudelleen, kun olet lähettänyt nämä tiedot Uphold-tilillesi.</translation>
+<translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
+<translation id="819370426249314592">Uphold-tilisi odottaa vielä käsittelyä.</translation>
+<translation id="4530453398914580957">Virhe: Odottava tili</translation>
+<translation id="2388470740942086608">Uphold-tilisi on tällä hetkellä rajoitettu.</translation>
+<translation id="3605236342612716051">Virhe: Rajoitettu tili</translation>
+<translation id="2218918398178303658">DNS yli HTTPS</translation>
+<translation id="8093033115658137576">0x-osoite tai -url</translation>
 </translationbundle>

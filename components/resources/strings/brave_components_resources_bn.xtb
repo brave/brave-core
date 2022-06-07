@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">.crypto ডোমেইন নাম খোঁজার অনুরোধ বাস্তবায়নে Brave HTTPS-র DNS-এর সহায়তায় Cloudflare ব্যবহার করে আপনাকে .crypto ডোমেইনগুলোতে পরিদর্শনে সহায়তা করতে পারে। আপনি এটি সক্রিয় করলে, আপনি যে .crypto ডোমেইনটি দেখার চেষ্টা করছেন Cloudflare তা দেখতে পারবে কিন্তু তারা অন্যান্য ডোমেইন দেখতে পারবে না। Cloudflare-এর <ph name="BEGIN_CF_TOU_LINK"/>ব্যবহার বিধি<ph name="END_CF_TOU_LINK"/> ও <ph name="BEGIN_CF_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_CF_PRIVACY_LINK"/> দেখুন।</translation>
 <translation id="618766505813078707">.eth ডোমেইন নাম খোঁজার অনুরোধ বাস্তবায়নে Brave HTTPS-র DNS-এর সহায়তায় Cloudflare ব্যবহার করে আপনাকে .eth ডোমেইনগুলোতে পরিদর্শনে সহায়তা করতে পারে। আপনি এটি সক্রিয় করলে, আপনি যে .eth ডোমেইনটি দেখার চেষ্টা করছেন Cloudflare তা দেখতে পারবে কিন্তু তারা অন্যান্য ডোমেইন দেখতে পারবে না। Cloudflare-এর <ph name="BEGIN_CF_TOU_LINK"/>ব্যবহার বিধি<ph name="END_CF_TOU_LINK"/> ও <ph name="BEGIN_CF_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_CF_PRIVACY_LINK"/> দেখুন।</translation>
 <translation id="5636651007798897342">Cloudflare সার্ভার ব্যবহার করে অগ্রসর হোন</translation>
+<translation id="413458922997276130">আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে ব্লক রয়েছে।</translation>
+<translation id="3579959767665130790">ত্রুটি: ব্লক থাকা অ্যাকাউন্ট</translation>
+<translation id="6554308597291659562">Uphold অ্যাকাউন্টের পূর্ণ কার্যকারিতা সক্রিয় করার আগে Uphold-কে আপনার আরও কিছু তথ্য সংগ্রহ করতে হবে। আপনি আপনার Uphold অ্যাকাউন্টে এই তথ্য দিয়ে থাকলে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="6996157559236886133">ত্রুটি: সীমিত Uphold অ্যাকাউন্ট কার্যকারিতা</translation>
+<translation id="819370426249314592">আপহোল্ডে আপনার অ্যাকাউন্ট এখনও বাকি রয়েছে।</translation>
+<translation id="4530453398914580957">ত্রুটি: বাকি থাকা অ্যাকাউন্ট</translation>
+<translation id="2388470740942086608">আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।</translation>
+<translation id="3605236342612716051">ত্রুটি: সীমাবদ্ধ অ্যাকাউন্ট</translation>
+<translation id="2218918398178303658">HTTPS এর ওপরে DNS</translation>
+<translation id="8093033115658137576">0x ঠিকানা অথবা url</translation>
 </translationbundle>

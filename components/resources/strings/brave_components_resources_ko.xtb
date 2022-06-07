@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave를 사용하면 HTTPS를 통해 DNS를 사용하는 .crypto 도메인명 조회 요청을 해결하도록 Cloudflare를 사용하여 .crypto 도메인에 방문할 수 있습니다. 이를 활성화하면 Cloudflare 측에서 사용자가 방문하려는 .crypto 도메인을 볼 수 있지만, 다른 도메인은 볼 수 없습니다. Cloudflare의 <ph name="BEGIN_CF_TOU_LINK"/>이용 약관<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>개인 정보 보호 정책<ph name="END_CF_PRIVACY_LINK"/> 보기.</translation>
 <translation id="618766505813078707">Brave를 사용하면 HTTPS를 통해 DNS를 사용하는 .eth 도메인명 조회 요청을 해결하도록 Cloudflare를 사용하여 .eth 도메인에 방문할 수 있습니다. 이를 활성화하면 Cloudflare 측에서 사용자가 방문하려는 .eth 도메인을 볼 수 있지만, 다른 도메인은 볼 수 없습니다. Cloudflare의 <ph name="BEGIN_CF_TOU_LINK"/>이용 약관<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>개인 정보 보호 정책<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Cloudflare 서버를 이용하여 계속 진행</translation>
+<translation id="413458922997276130">귀하의 Uphold 계정이 현재 차단되어 있습니다.</translation>
+<translation id="3579959767665130790">오류: 차단된 계정</translation>
+<translation id="6554308597291659562">Uphold 계정의 기능을 온전히 활성화하려면 귀하에 대한 정보를 Uphold에서 몇 가지 더 수집해야 합니다. Uphold 계정에서 이 정보를 제출한 후 다시 시도하세요.</translation>
+<translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
+<translation id="819370426249314592">귀하의 Uphold 계정이 아직 보류 중입니다.</translation>
+<translation id="4530453398914580957">오류: 계정 보류 중</translation>
+<translation id="2388470740942086608">귀하의 Uphold 계정이 현재 이용 제한되어 있습니다.</translation>
+<translation id="3605236342612716051">오류: 이용 제한된 계정</translation>
+<translation id="2218918398178303658">HTTPS상의 DNS</translation>
+<translation id="8093033115658137576">0x 주소 또는 URL</translation>
 </translationbundle>

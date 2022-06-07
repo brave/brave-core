@@ -1265,4 +1265,14 @@
 <translation id="3470923752115324276">Το Brave μπορεί να σας επιτρέψει να επισκεφθείτε τομείς .crypto χρησιμοποιώντας το Cloudflare για να επιλύσετε αιτήματα αναζήτησης ονόματος τομέα .crypto χρησιμοποιώντας DNS μέσω HTTPS. Εάν το ενεργοποιήσετε, το Cloudflare θα δει τον τομέα .crypto τον οποίο προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε <ph name="BEGIN_CF_TOU_LINK"/>τους όρους χρήσης <ph name="END_CF_TOU_LINK"/> και <ph name="BEGIN_CF_PRIVACY_LINK"/>την πολιτική απορρήτου<ph name="END_CF_PRIVACY_LINK"/> του Cloudflare.</translation>
 <translation id="618766505813078707">Το Brave μπορεί να σας επιτρέψει να επισκεφθείτε τομείς .eth χρησιμοποιώντας το Cloudflare για να επιλύσετε αιτήματα αναζήτησης ονόματος τομέων .eth χρησιμοποιώντας DNS μέσω HTTPS. Εάν το ενεργοποιήσετε, το Cloudflare θα δει τον τομέα .eth τον οποίο προσπαθείτε να επισκεφτείτε, αλλά δεν θα μπορεί να δει άλλους τομείς. Δείτε <ph name="BEGIN_CF_TOU_LINK"/>τους όρους χρήσης <ph name="END_CF_TOU_LINK"/> και <ph name="BEGIN_CF_PRIVACY_LINK"/>την πολιτική απορρήτου<ph name="END_CF_PRIVACY_LINK"/> του Cloudflare.</translation>
 <translation id="5636651007798897342">Συνεχίστε χρησιμοποιώντας το διακομιστή Cloudflare</translation>
+<translation id="413458922997276130">Ο λογαριασμός στο Uphold είναι προς το παρόν αποκλεισμένος.</translation>
+<translation id="3579959767665130790">Σφάλμα: Αποκλεισμένος λογαριασμός</translation>
+<translation id="6554308597291659562">Απαιτείται το Uphold για τη συλλογή περισσότερων πληροφοριών για εσάς προτού ενεργοποιηθεί η πλήρης λειτουργία του λογαριασμού Uphold. Δοκιμάστε ξανά αφού υποβάλετε αυτές τις πληροφορίες στον λογαριασμό σας Uphold.</translation>
+<translation id="6996157559236886133">Σφάλμα: Περιορισμένη λειτουργικότητα λογαριασμού Uphold</translation>
+<translation id="819370426249314592">Ο λογαριασμός σας στο Uphold εκκρεμεί ακόμα.</translation>
+<translation id="4530453398914580957">Σφάλμα: Λογαριασμός σε εκκρεμότητα</translation>
+<translation id="2388470740942086608">Ο λογαριασμός σας στο Uphold είναι προς το παρόν περιορισμένος.</translation>
+<translation id="3605236342612716051">Σφάλμα: Περιορισμένος λογαριασμός</translation>
+<translation id="2218918398178303658">DNS μέσω HTTPS</translation>
+<translation id="8093033115658137576">Διεύθυνση 0x ή διεύθυνση URL</translation>
 </translationbundle>

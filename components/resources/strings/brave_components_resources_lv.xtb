@@ -1264,4 +1264,14 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="3470923752115324276">Brave var nodrošināt iespēju apmeklēt .crypto domēnus, izmantojot Cloudflare, lai atrisinātu .crypto domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .crypto domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave var nodrošināt iespēju apmeklēt .eth domēnus, izmantojot Cloudflare, lai atrisinātu .eth domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .eth domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Turpināt izmantot Cloudflare serveri</translation>
+<translation id="413458922997276130">Jūsu Uphold konts ir bloķēts.</translation>
+<translation id="3579959767665130790">Kļūda: bloķēts konts</translation>
+<translation id="6554308597291659562">Uphold ir nepieciešams, lai ievāktu par jums vairāk informāciju, pirms tiek nodrošināta pilna Uphold konta funkcionalitāte. Lūdzu, mēģiniet vēlreiz, kad esat iesniedzis šo informāciju savā Uphold kontā.</translation>
+<translation id="6996157559236886133">Kļūda: ierobežota Uphold konta funkcionalitāte</translation>
+<translation id="819370426249314592">Jūsu Uphold konts vēl nav apstiprināts.</translation>
+<translation id="4530453398914580957">Kļūda: neapstiprināts konts</translation>
+<translation id="2388470740942086608">Jūsu Uphold konts šobrīd ir ierobežots.</translation>
+<translation id="3605236342612716051">Kļūda: ierobežots konts</translation>
+<translation id="2218918398178303658">DNS ir pārāks par HTTPS</translation>
+<translation id="8093033115658137576">0x adrese vai url</translation>
 </translationbundle>

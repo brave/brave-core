@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave 可使用 Cloudflare 來透過 DNS，而不是 HTTPS 處理 .crypto 域名的查詢要求，讓您造訪 .crypto 網域。如您啟用此功能，Cloudflare 將會看到您想造訪的 .crypto 網域，但無法看到其他網域。請見 Cloudflare 的<ph name="BEGIN_CF_TOU_LINK"/>使用條款<ph name="END_CF_TOU_LINK"/>與<ph name="BEGIN_CF_PRIVACY_LINK"/>隱私政策<ph name="END_CF_PRIVACY_LINK"/>。</translation>
 <translation id="618766505813078707">Brave 可使用 Cloudflare 來透過 DNS，而不是 HTTPS 處理 .eth 域名的查詢要求，讓您造訪 .eth 網域。如您啟用此功能，Cloudflare 將會看到您想造訪的 .eth 網域，但無法看到其他網域。請見 Cloudflare 的<ph name="BEGIN_CF_TOU_LINK"/>使用條款<ph name="END_CF_TOU_LINK"/>與<ph name="BEGIN_CF_PRIVACY_LINK"/>隱私政策<ph name="END_CF_PRIVACY_LINK"/>。</translation>
 <translation id="5636651007798897342">使用 Cloudflare 伺服器繼續</translation>
+<translation id="413458922997276130">您的 Uphold 帳號目前已遭封鎖。</translation>
+<translation id="3579959767665130790">錯誤：帳號已遭封鎖</translation>
+<translation id="6554308597291659562">在啟用完整 Uphold 帳戶功能前，Uphold 須收集更多您的資訊。請在 Uphold 帳戶中提交這項資訊後再試。</translation>
+<translation id="6996157559236886133">錯誤：Uphold 帳戶功能受限</translation>
+<translation id="819370426249314592">您的 Uphold 帳號仍處於擱置狀態。</translation>
+<translation id="4530453398914580957">錯誤：帳號擱置中</translation>
+<translation id="2388470740942086608">您的 Uphold 帳號目前遭受限制。</translation>
+<translation id="3605236342612716051">錯誤：帳號受到限制</translation>
+<translation id="2218918398178303658">透過 HTTPS 的 DNS</translation>
+<translation id="8093033115658137576">0x 位址或 url</translation>
 </translationbundle>

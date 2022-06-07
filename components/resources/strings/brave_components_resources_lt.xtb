@@ -1270,4 +1270,14 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="3470923752115324276">„Brave“ gali leisti apsilankyti .crypto domenuose naudojant „Cloudflare“, kai reikia spręsti .crypto domeno vardo paieškos užklausas naudojant DNS per HTTPS. Jei tai įjungsite, „Cloudflare“ matys .crypto domeną, kurį bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Cloudflare“ <ph name="BEGIN_CF_TOU_LINK"/>naudojimo sąlygas<ph name="END_CF_TOU_LINK"/> ir <ph name="BEGIN_CF_PRIVACY_LINK"/>privatumo politiką<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">„Brave“ gali leisti apsilankyti .eth domenuose naudojant „Cloudflare“, kai reikia spręsti .eth domeno vardo paieškos užklausas naudojant DNS per HTTPS. Jei tai įjungsite, „Cloudflare“ matys .eth domeną, kurį bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Cloudflare“ <ph name="BEGIN_CF_TOU_LINK"/>naudojimo sąlygas<ph name="END_CF_TOU_LINK"/> ir <ph name="BEGIN_CF_PRIVACY_LINK"/>privatumo politiką<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Toliau naudoti „Cloudflare“ serverį</translation>
+<translation id="413458922997276130">Jūsų „Uphold“ paskyra šiuo metu užblokuota.</translation>
+<translation id="3579959767665130790">Klaida: užblokuota paskyra</translation>
+<translation id="6554308597291659562">„Uphold“ turi surinkti dar šiek tiek informacijos apie jus, kad galėtų įjungti visas „Uphold“ paskyros funkcijas. Pateikę šią informaciją savo „Uphold“ paskyroje, bandykite dar kartą.</translation>
+<translation id="6996157559236886133">Klaida: apribotos „Uphold“ paskyros funkcijos</translation>
+<translation id="819370426249314592">Jūsų „Uphold“ paskyra vis dar laukianti.</translation>
+<translation id="4530453398914580957">Klaida: laukiama paskyros</translation>
+<translation id="2388470740942086608">Jūsų „Uphold“ paskyra šiuo metu apribota.</translation>
+<translation id="3605236342612716051">Klaida: apribota paskyra</translation>
+<translation id="2218918398178303658">DNS per HTTPS</translation>
+<translation id="8093033115658137576">0x adresas arba URL</translation>
 </translationbundle>

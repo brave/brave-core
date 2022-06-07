@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave et pot permetre visitar dominis .crypto mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .crypto utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .crypto que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
 <translation id="618766505813078707">Brave et pot permetre visitar dominis .eth mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .eth utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .eth que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
 <translation id="5636651007798897342">Continua utilitzant el servidor Cloudflare</translation>
+<translation id="413458922997276130">El teu compte a Uphold actualment està bloquejat.</translation>
+<translation id="3579959767665130790">Error: compte bloquejat</translation>
+<translation id="6554308597291659562">Es requereix Uphold per recopilar una mica més d'informació sobre vos abans d'habilitar la funcionalitat de compte d'Uphold complet. Torneu-ho a provar una vegada que hàgiu enviat aquesta informació al vostre compte d'Uphold.</translation>
+<translation id="6996157559236886133">Error: Funcionalitat limitada del compte d'Uphold</translation>
+<translation id="819370426249314592">El teu compte a Uphold encarà està pendent.</translation>
+<translation id="4530453398914580957">Error: compte pendent</translation>
+<translation id="2388470740942086608">El teu compte a Uphold actualment està restringit.</translation>
+<translation id="3605236342612716051">Error: compte restringit</translation>
+<translation id="2218918398178303658">DNS mitjançant HTTPS</translation>
+<translation id="8093033115658137576">0x adreça o URL</translation>
 </translationbundle>

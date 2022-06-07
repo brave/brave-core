@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave vám môže umožniť navštíviť domény .crypto pomocou Cloudflare na vyriešenie požiadaviek na vyhľadanie názvu domény .crypto pomocou DNS cez HTTPS. Ak povolíte túto možnosť, Cloudflare uvidí doménu .crypto, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_CF_TOU_LINK"/>podmienky používania<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
 <translation id="618766505813078707">Brave vám umožní navštíviť domény .eth pomocou Cloudflare na vyriešenie požiadaviek na vyhľadanie názvu domény .eth pomocou DNS cez HTTPS. Ak to povolíte, Cloudflare uvidí doménu .eth, ktorú sa pokúšate navštíviť, ale nebude môcť vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_CF_TOU_LINK"/>podmienky používania<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
 <translation id="5636651007798897342">Pokračovať pomocou servera Cloudflare</translation>
+<translation id="413458922997276130">Váš účet na Uphold je momentálne zablokovaný.</translation>
+<translation id="3579959767665130790">Chyba: Zablokovaný účet</translation>
+<translation id="6554308597291659562">Spoločnosť Uphold musí zhromaždiť trochu viac informácií o vašej osobe, kým povolí plnú funkčnosť účtu Uphold. Odošlite tieto informácie do účtu Uphold a následne to skúste znova.</translation>
+<translation id="6996157559236886133">Chyba: Obmedzená funkčnosť účtu Uphold</translation>
+<translation id="819370426249314592">O vašom účte na Uphold sa ešte nerozhodlo.</translation>
+<translation id="4530453398914580957">Chyba: Čakajúci účet</translation>
+<translation id="2388470740942086608">Váš účet na Uphold je momentálne obmedzený.</translation>
+<translation id="3605236342612716051">Chyba: Obmedzený účet</translation>
+<translation id="2218918398178303658">DNS cez HTTPS</translation>
+<translation id="8093033115658137576">Adresa 0x alebo adresa URL</translation>
 </translationbundle>

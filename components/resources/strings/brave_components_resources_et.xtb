@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave saab anda teile võimaluse külastada .crypto-domeene, kasutades .crypto-domeeni hostinime leidmise päringute resolvimiseks Cloudflare'i ja DNS-i HTTPS-i kaudu. Kui selle lubate, näeb Cloudflare .crypto-domeeni, mida proovite külastada, kuid mitte muid domeene. Vaadake Cloudflare'i <ph name="BEGIN_CF_TOU_LINK"/>kasutustingimusi<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave saab anda teile võimaluse külastada .eth-domeene, kasutades .eth-domeeni hostinime leidmise päringute resolvimiseks Cloudflare'i ja DNS-i HTTPS-i kaudu. Kui selle lubate, näeb Cloudflare .eth-domeeni, mida proovite külastada, kuid mitte muid domeene. Vaadake Cloudflare'i <ph name="BEGIN_CF_TOU_LINK"/>kasutustingimusi<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Jätka Cloudflare'i serveri kasutamist</translation>
+<translation id="413458922997276130">Teie Upholdi konto on praegu blokeeritud.</translation>
+<translation id="3579959767665130790">Tõrge: blokeeritud konto</translation>
+<translation id="6554308597291659562">Enne Upholdi konto täisfunktsionaalsuse võimaldamist peab Uphold koguma teie kohta veidi rohkem teavet. Proovige uuesti, kui olete selle teabe oma Upholdi kontol esitanud.</translation>
+<translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
+<translation id="819370426249314592">Teie Upholdi konto on veel ootel.</translation>
+<translation id="4530453398914580957">Tõrge: ootel konto</translation>
+<translation id="2388470740942086608">Teie Upholdi konto on praegu piiratud õigustega.</translation>
+<translation id="3605236342612716051">Tõrge: piiratud õigustega konto</translation>
+<translation id="2218918398178303658">DNS HTTPS-i kaudu</translation>
+<translation id="8093033115658137576">0x aadress või URL</translation>
 </translationbundle>

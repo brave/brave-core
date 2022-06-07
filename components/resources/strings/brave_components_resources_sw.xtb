@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave inaweza kukuwezesha kutembelea vikoa vya .crypto kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .crypto kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .crypto unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
 <translation id="618766505813078707">Brave inaweza kukuwezesha kutembelea vikoa vya .eth kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .eth kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .eth unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
 <translation id="5636651007798897342">Endelea kutumia seva ya Cloudflare</translation>
+<translation id="413458922997276130">Akaunti yako kwenye Uphold imefungwa kwa sasa.</translation>
+<translation id="3579959767665130790">Hitilafu: Akaunti imefungwa</translation>
+<translation id="6554308597291659562">Uphold inatakiwa kukusanya maelezo zaidi kukuhusu kabla ya kuwezesha utendakazi kamili wa akaunti ya Uphold. Tafadhali jaribu tena baada ya kuwasilisha maelezo haya kwenye akaunti yako ya Uphold.</translation>
+<translation id="6996157559236886133">Hitilafu: Utendakazi uliozuiliwa wa akaunti ya Uphold</translation>
+<translation id="819370426249314592">Akaunti yako kwenye Uphold bado inasubiri.</translation>
+<translation id="4530453398914580957">Hitilafu: Akaunti inayosubiri</translation>
+<translation id="2388470740942086608">Akaunti yako kwenye Uphold imewekewa vikwazo kwa sasa.</translation>
+<translation id="3605236342612716051">Hitilafu: Akaunti imewekewa vikwazo</translation>
+<translation id="2218918398178303658">DNS kupitia HTTPS</translation>
+<translation id="8093033115658137576">Anwani au url ya 0x</translation>
 </translationbundle>

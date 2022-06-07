@@ -1265,4 +1265,14 @@
 <translation id="3470923752115324276">يمكّنك Brave من زيارة نطاقات crypto. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم نطاق crypto. باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسوف يتعرف خادم كلاود فلير على نطاق crypto. الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام كلاود فلير <ph name="BEGIN_CF_TOU_LINK"/><ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">يمكّنك Brave من زيارة نطاقات eth. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم المجال باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسيتمكن خادم كلاود فلير من التعرف على نطاق .eth.الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام <ph name="BEGIN_CF_TOU_LINK"/> كلاود فلير <ph name="END_CF_TOU_LINK"/> aو<ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">تابع باستخدام خادم كلاود فلير</translation>
+<translation id="413458922997276130">حسابك في Uphold محظور حاليًا.</translation>
+<translation id="3579959767665130790">خطأ: حساب محظور</translation>
+<translation id="6554308597291659562">منصة Uphold مطلوبة لجمع المزيد من المعلومات عنك قبل تمكين وظائف حساب Uphold الكاملة. يُرجى المحاولة مرة أخرى بمجرد إرسال هذه المعلومات في حساب Uphold الخاص بك.</translation>
+<translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
+<translation id="819370426249314592">لا يزال حسابك في Uphold معلقًا.</translation>
+<translation id="4530453398914580957">خطأ: حساب معلق</translation>
+<translation id="2388470740942086608">حسابك في Uphold مقيد حاليًا.</translation>
+<translation id="3605236342612716051">خطأ: حساب مقيد</translation>
+<translation id="2218918398178303658">بروتوكول DNS عبر HTTPS</translation>
+<translation id="8093033115658137576">عنوان 0x أو عنوان محدد موقع الموارد الموحد (url)</translation>
 </translationbundle>

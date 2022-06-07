@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave kan göra det möjligt för dig att besöka .crypto-domäner genom att använda Cloudflare för att lösa .crypto-domänförfrågningar med DNS via HTTPS. Om du aktiverar detta kommer Cloudflare att se .crypto-domänen som du försöker besöka men de kommer inte att kunna se andra domäner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>användarvillkor<ph name="END_CF_TOU_LINK"/> och <ph name="BEGIN_CF_PRIVACY_LINK"/>integritetspolicy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave kan göra det möjligt för dig att besöka .eth-domäner genom att använda Cloudflare för att lösa .eth-domänförfrågningar med DNS via HTTPS. Om du aktiverar detta kommer Cloudflare att se .eth-domänen som du försöker besöka men de kommer inte att kunna se andra domäner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>användarvillkor<ph name="END_CF_TOU_LINK"/> och <ph name="BEGIN_CF_PRIVACY_LINK"/>integritetspolicy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Fortsätt med Cloudflare-server</translation>
+<translation id="413458922997276130">Ditt konto på Uphold är blockerat för närvarande.</translation>
+<translation id="3579959767665130790">Fel: Blockerat konto</translation>
+<translation id="6554308597291659562">Uphold krävs för att samla in lite mer information om dig innan du aktiverar full funktionalitet för Uphold-kontot. Försök igen när du har skickat den här informationen i ditt Uphold-konto.</translation>
+<translation id="6996157559236886133">Fel: Begränsad funktionalitet för Uphold-konto</translation>
+<translation id="819370426249314592">Ditt konto på Uphold väntar fortfarande.</translation>
+<translation id="4530453398914580957">Fel: Väntande konto</translation>
+<translation id="2388470740942086608">Ditt konto på Uphold är begränsat för närvarande.</translation>
+<translation id="3605236342612716051">Fel: Begränsat konto</translation>
+<translation id="2218918398178303658">DNS över HTTPS</translation>
+<translation id="8093033115658137576">0x adresser eller url</translation>
 </translationbundle>

@@ -1264,4 +1264,14 @@
 <translation id="3470923752115324276">Brave dapat memungkinkan Anda mengunjungi domain .eth dengan menggunakan Cloudflare untuk menelusuri permintaan pencarian nama domain .crypto menggunakan DNS di atas HTTPS. Jika Anda mengaktifkan ini, Cloudflare akan melihat domain .crypto yang ingin Anda kunjungi tetapi mereka tidak akan dapat melihat domain lain. Baca <ph name="BEGIN_CF_TOU_LINK"/>ketentuan penggunaan<ph name="END_CF_TOU_LINK"/> dan <ph name="BEGIN_CF_PRIVACY_LINK"/>kebijakan privasi<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="618766505813078707">Brave dapat memungkinkan Anda mengunjungi domain .eth dengan menggunakan Cloudflare untuk menelusuri permintaan pencarian nama domain .eth menggunakan DNS di atas HTTPS. Jika Anda mengaktifkan ini, Cloudflare akan melihat domain .eth yang ingin Anda kunjungi tetapi mereka tidak akan dapat melihat domain lain. Baca <ph name="BEGIN_CF_TOU_LINK"/>ketentuan penggunaan<ph name="END_CF_TOU_LINK"/> dan <ph name="BEGIN_CF_PRIVACY_LINK"/>kebijakan privasi<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="5636651007798897342">Lanjutkan menggunakan server Cloudflare</translation>
+<translation id="413458922997276130">Akun Anda di Uphold saat ini diblokir.</translation>
+<translation id="3579959767665130790">Kesalahan: Akun yang diblokir</translation>
+<translation id="6554308597291659562">Uphold perlu mengumpulkan sedikit lebih banyak informasi tentang Anda sebelum memungkinkan fungsionalitas penuh akun Uphold. Silakan coba kembali setelah Anda mengirimkan informasi ini di akun Uphold Anda.</translation>
+<translation id="6996157559236886133">Kesalahan: Fungsionalitas terbatas akun Uphold</translation>
+<translation id="819370426249314592">Akun Anda di Uphold saat ini ditangguhkan.</translation>
+<translation id="4530453398914580957">Kesalahan: Akun yang ditangguhkan</translation>
+<translation id="2388470740942086608">Akun Anda di Uphold saat ini dibatasi.</translation>
+<translation id="3605236342612716051">Kesalahan: Akun yang dibatasi</translation>
+<translation id="2218918398178303658">DNS atas HTTPS</translation>
+<translation id="8093033115658137576">0x alamat atau url</translation>
 </translationbundle>
