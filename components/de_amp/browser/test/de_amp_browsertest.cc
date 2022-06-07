@@ -36,11 +36,11 @@
 #endif
 
 const char kTestHost[] = "a.test.com";
-const char kTestAmpPage[] = "/test";
+const char kTestAmpPage[] = "/test_amp_page";
 const char kTestRedirectingAmpPage1[] = "/redirecting_amp_page_1";
 const char kTestRedirectingAmpPage2[] = "/redirecting_amp_page_2";
-const char kTestSimpleNonAmpPage[] = "/simple";
-const char kTestCanonicalPage[] = "/simple_canonical";
+const char kTestSimpleNonAmpPage[] = "/simple_page";
+const char kTestCanonicalPage[] = "/simple_canonical_page";
 const char kTestAmpBody[] =
     R"(
     <html amp>
@@ -171,8 +171,14 @@ std::unique_ptr<net::test_server::HttpResponse> HandleServerRedirect(
     net::HttpStatusCode code,
     const std::string& source,
     const std::string& dest,
+    const std::string& body,
     const net::test_server::HttpRequest& request) {
   GURL request_url = request.GetURL();
+
+  if (request.headers.find("X-Brave-De-AMP") != request.headers.end()) {
+    // This should never happen, abort test
+    return nullptr;
+  }
 
   if (request_url.path() == source) {
     auto http_response =
@@ -185,7 +191,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleServerRedirect(
         dest.c_str()));
     return http_response;
   } else {
-    return nullptr;
+    return BuildHttpResponseForAmpPage(body, source, request);
   }
 }
 
@@ -233,18 +239,16 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpPagesPointingAtEachOther) {
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalRedirectsToAmp) {
   TogglePref(true);
-  https_server_->RegisterRequestHandler(
-      base::BindRepeating(HandleRequest, kTestCanonicalPage, kTestAmpBody));
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleServerRedirect, net::HttpStatusCode::HTTP_PERMANENT_REDIRECT,
-      kTestCanonicalPage, kTestAmpPage));
+      kTestCanonicalPage, kTestAmpPage, kTestAmpBody));
   ASSERT_TRUE(https_server_->Start());
 
   const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   const GURL canonical_url =
       https_server_->GetURL(kTestHost, kTestCanonicalPage);
 
-  NavigateToURLAndWaitForRedirects(amp_url, canonical_url);
+  NavigateToURLAndWaitForRedirects(amp_url, amp_url);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonHttpScheme) {
