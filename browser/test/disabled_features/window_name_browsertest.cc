@@ -92,3 +92,18 @@ IN_PROC_BROWSER_TEST_F(BraveWindowNameBrowserTest, CrossOrigin) {
   // during navigation.
   EXPECT_EQ("", EvalJs(web_contents(), kWindowNameScript));
 }
+
+IN_PROC_BROWSER_TEST_F(BraveWindowNameBrowserTest, CrossOriginAndBack) {
+  GURL url1 = https_server_.GetURL("a.test", "/set_window_name.html");
+  GURL url2 = https_server_.GetURL("b.test", "/get_window_name.html");
+
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
+  EXPECT_EQ("foo", EvalJs(web_contents(), kWindowNameScript));
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
+  // Since these URLs are in different origins, window.name should be cleared
+  // during navigation.
+  EXPECT_EQ("", EvalJs(web_contents(), kWindowNameScript));
+  web_contents()->GetController().GoBack();
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+  EXPECT_EQ("foo", EvalJs(web_contents(), kWindowNameScript));
+}
