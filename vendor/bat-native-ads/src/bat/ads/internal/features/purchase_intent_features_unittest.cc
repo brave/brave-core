@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/features/purchase_intent_features.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -31,7 +29,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTreshold) {
   // Act
 
   // Assert
-  EXPECT_EQ(3u, GetPurchaseIntentThreshold());
+  EXPECT_EQ(3, GetPurchaseIntentThreshold());
 }
 
 TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTimeWindowInSeconds) {

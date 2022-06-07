@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/settings/settings.h"
 
-#include <cstdint>
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
@@ -38,13 +37,13 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, 3);
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, 3);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const int ads_per_hour = settings::GetAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 3;
+  const int expected_ads_per_hour = 3;
 
   EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
 }
@@ -63,10 +62,10 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const int ads_per_hour = settings::GetAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 2;
+  const int expected_ads_per_hour = 2;
 
   EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
 }
@@ -85,10 +84,10 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const int ads_per_hour = settings::GetAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 0;
+  const int expected_ads_per_hour = 0;
 
   EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
 }
@@ -107,10 +106,10 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
                                                     disabled_features);
 
   // Act
-  const uint64_t ads_per_hour = settings::GetAdsPerHour();
+  const int ads_per_hour = settings::GetAdsPerHour();
 
   // Assert
-  const uint64_t expected_ads_per_hour = 10;
+  const int expected_ads_per_hour = 10;
 
   EXPECT_EQ(expected_ads_per_hour, ads_per_hour);
 }

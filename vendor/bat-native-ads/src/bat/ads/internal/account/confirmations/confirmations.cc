@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 
-#include <cstdint>
 #include <vector>
 
 #include "base/check_op.h"

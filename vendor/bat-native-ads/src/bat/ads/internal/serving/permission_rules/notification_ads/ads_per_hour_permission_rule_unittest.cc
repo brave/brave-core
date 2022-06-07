@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/serving/permission_rules/notification_ads/ads_per_hour_permission_rule.h"
 
-#include <cstdint>
-
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -39,9 +37,9 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
@@ -58,8 +56,8 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  const int64_t ads_per_hour = 5;
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
+  const int ads_per_hour = 5;
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
@@ -74,9 +72,9 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AlwaysAllowAdOnIOS) {
 
 TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour - 1);
@@ -92,9 +90,9 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest, AllowAdIfDoesNotExceedCap) {
 TEST_F(BatAdsAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);
@@ -112,9 +110,9 @@ TEST_F(BatAdsAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int64_t ads_per_hour = 5;
+  const int ads_per_hour = 5;
 
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kAdsPerHour, ads_per_hour);
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kAdsPerHour, ads_per_hour);
 
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
                  ads_per_hour);

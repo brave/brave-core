@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
 #include "bat/ads/internal/account/deposits/deposits_database_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -92,8 +90,7 @@ void SetCatalogVersion(const int version) {
 }
 
 base::TimeDelta GetCatalogPing() {
-  const int64_t ping =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogPing);
+  const int ping = AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogPing);
   return base::Milliseconds(ping);
 }
 

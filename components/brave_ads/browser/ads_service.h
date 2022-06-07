@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -84,8 +85,8 @@ class AdsService : public KeyedService {
 
   virtual void SetAllowConversionTracking(const bool should_allow) = 0;
 
-  virtual int64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(const int64_t ads_per_hour) = 0;
+  virtual int GetAdsPerHour() const = 0;
+  virtual void SetAdsPerHour(const int ads_per_hour) = 0;
 
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
@@ -118,7 +119,7 @@ class AdsService : public KeyedService {
                             const std::vector<GURL>& redirect_chain,
                             const std::string& text) = 0;
 
-  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
+  virtual void OnUserGesture(const uint32_t page_transition_type) = 0;
 
   virtual void OnMediaStart(const SessionID& tab_id) = 0;
   virtual void OnMediaStop(const SessionID& tab_id) = 0;

@@ -34,7 +34,7 @@ class UserActivityManager final : public BrowserManagerObserver,
   static bool HasInstance();
 
   void RecordEvent(const UserActivityEventType event_type);
-  void RecordEventForPageTransition(const int32_t type);
+  void RecordEventForPageTransition(const uint32_t type);
 
   UserActivityEventList GetHistoryForTimeWindow(
       const base::TimeDelta time_window) const;

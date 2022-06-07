@@ -93,8 +93,8 @@ void Database::RunTransaction(mojom::DBTransactionPtr transaction,
 }
 
 mojom::DBCommandResponse::Status Database::Initialize(
-    const int32_t version,
-    const int32_t compatible_version,
+    const int version,
+    const int compatible_version,
     mojom::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -210,8 +210,8 @@ mojom::DBCommandResponse::Status Database::Read(
 }
 
 mojom::DBCommandResponse::Status Database::Migrate(
-    const int32_t version,
-    const int32_t compatible_version) {
+    const int version,
+    const int compatible_version) {
   if (!is_initialized_) {
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }

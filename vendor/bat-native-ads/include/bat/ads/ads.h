@@ -93,7 +93,7 @@ class ADS_EXPORT Ads {
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
+  virtual void OnUserGesture(const uint32_t page_transition_type) = 0;
 
   // Called when a user is no longer idle. |idle_time| is the amount of time in
   // seconds that the user was idle. |was_locked| should be |true| if the screen

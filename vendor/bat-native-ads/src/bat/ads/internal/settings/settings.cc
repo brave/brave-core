@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/settings/settings.h"
 
-#include <cstdint>
-
 #include "base/cxx17_backports.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/serving/serving_features.h"
@@ -16,19 +14,13 @@ namespace ads {
 namespace settings {
 
 int GetAdsPerHour() {
-  int64_t ads_per_hour =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kAdsPerHour);
-
+  int ads_per_hour = AdsClientHelper::Get()->GetIntegerPref(prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
-    ads_per_hour =
-        static_cast<uint64_t>(features::GetDefaultNotificationAdsPerHour());
+    ads_per_hour = features::GetDefaultNotificationAdsPerHour();
   }
 
-  const int64_t clamped_ads_per_hour = base::clamp(
-      ads_per_hour, static_cast<int64_t>(kMinimumNotificationAdsPerHour),
-      static_cast<int64_t>(kMaximumNotificationAdsPerHour));
-
-  return static_cast<int>(clamped_ads_per_hour);
+  return base::clamp(ads_per_hour, kMinimumNotificationAdsPerHour,
+                     kMaximumNotificationAdsPerHour);
 }
 
 }  // namespace settings

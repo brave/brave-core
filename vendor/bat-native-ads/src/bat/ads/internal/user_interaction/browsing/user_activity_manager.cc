@@ -91,7 +91,7 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
   LogEvent(event_type);
 }
 
-void UserActivityManager::RecordEventForPageTransition(const int32_t type) {
+void UserActivityManager::RecordEventForPageTransition(const uint32_t type) {
   const PageTransitionType page_transition_type =
       static_cast<PageTransitionType>(type);
 
