@@ -62,6 +62,10 @@ constexpr char kUnsignedTxArrayStr[] =
     "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,131,191,83,201,108,193,222,255,"
     "176,67,136,209,219,42,6,169,240,137,142,185,169,6,17,87,123,6,42,55,162,"
     "64,120,91,1,1,2,0,0,12,2,0,0,0,128,150,152,0,0,0,0,0";
+constexpr char kEncodedUnsignedTxArrayStr[] =
+    "QwE1cGTGKt9G9zyqwBzqPp711HGUJH15frCMMWp9ooU4DjCQpVSrFxeGxfqnMmw91nWkdFY42H"
+    "Wnqqyw2fXYk4kspucEtan8vrRAUPRAr2ansqm52VZe8ocdZudeoXJqHYNPjuPYBawsYFKms5Wu"
+    "NBVNFy4UTURd";
 
 // Result of the above transaction signed by kFirstAccount.
 constexpr char kSignedTxArrayStr[] =
@@ -93,6 +97,18 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   })");
   return std::move(http_response);
 }
+
+// signMessage
+constexpr char kMessage[] = "bravey baby!";
+constexpr char kEncodedMessage[] = "98,114,97,118,121,32,98,97,98,121,33";
+constexpr char kExpectedSignature[] =
+    "98,100,65,130,165,105,247,254,176,58,137,184,149,50,202,4,239,34,179,15,"
+    "99,184,125,255,9,227,4,118,70,108,153,191,78,251,150,104,239,24,191,139,"
+    "242,54,150,144,96,249,42,106,199,171,222,72,108,190,206,193,130,47,125,"
+    "239,173,127,238,11";
+constexpr char kExpectedEncodedSignature[] =
+    "5KVxa2RGmhE2Ldfctr42MQCrAQrT2NTFcoCD65KUNRYki6CPctUzsnR2xm4sPLzeQvSdCS6Gib"
+    "4ScfYJUJQrNE4C";
 
 class TestTxServiceObserver : public mojom::TxServiceObserver {
  public:
@@ -318,6 +334,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
                                           message.c_str(), encoding.c_str())));
   }
 
+  void CallSolanaRequest(const std::string& json) {
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StringPrintf(R"(solanaRequest(%s))", json.c_str())));
+  }
+
   std::string GetSignMessageResult() {
     return EvalJs(web_contents(), "getSignMessageResult()",
                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
@@ -361,6 +383,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   std::string GetSignAllTransactionsResult() {
     return EvalJs(web_contents(), "getSignAllTransactionsResult()",
+                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        .ExtractString();
+  }
+
+  std::string GetRequestResult() {
+    return EvalJs(web_contents(), "getRequestResult()",
                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
         .ExtractString();
   }
@@ -463,9 +491,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
   UserGrantPermission(true);
   ASSERT_TRUE(IsSolanaConnected());
 
-  constexpr char message[] = "bravey baby!";
   size_t request_index = 0;
-  CallSolanaSignMessage(message, "utf8");
+  CallSolanaSignMessage(kMessage, "utf8");
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
@@ -476,14 +503,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
   EXPECT_EQ(GetSignMessageResult(),
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
-  constexpr char expected_signature[] =
-      "98,100,65,130,165,105,247,254,176,58,137,184,149,50,202,4,239,34,179,15,"
-      "99,184,125,255,9,227,4,118,70,108,153,191,78,251,150,104,239,24,191,139,"
-      "242,54,150,144,96,249,42,106,199,171,222,72,108,190,206,193,130,47,125,"
-      "239,173,127,238,11";
-
   for (const std::string& encoding : {"utf8", "hex", "invalid", ""}) {
-    CallSolanaSignMessage(message, encoding);
+    CallSolanaSignMessage(kMessage, encoding);
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
             ->IsShowingBubble());
@@ -491,7 +512,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
     brave_wallet_service_->NotifySignMessageRequestProcessed(true,
                                                              request_index++);
     WaitForResultReady();
-    EXPECT_EQ(GetSignMessageResult(), expected_signature);
+    EXPECT_EQ(GetSignMessageResult(), kExpectedSignature);
   }
 }
 
@@ -677,6 +698,91 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
       true, request_index++);
   WaitForResultReady();
   EXPECT_EQ(GetSignAllTransactionsResult(), "success");
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
+  RestoreWallet();
+  AddAccount();
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  // connect and accept
+  CallSolanaRequest(R"({method: "connect"})");
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  permissions::BraveWalletPermissionContext::AcceptOrCancel(
+      std::vector<std::string>{kFirstAccount}, web_contents());
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(), kFirstAccount);
+  ASSERT_TRUE(IsSolanaConnected());
+
+  // disconnect
+  CallSolanaRequest(R"({method: "disconnect"})");
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(), "success");
+  ASSERT_FALSE(IsSolanaConnected());
+
+  // eagerly connect
+  CallSolanaRequest(R"({method: "connect", params: { onlyIfTrusted: true }})");
+  EXPECT_FALSE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(), kFirstAccount);
+  ASSERT_TRUE(IsSolanaConnected());
+
+  // signMessage
+  CallSolanaRequest(base::StringPrintf(R"(
+    {method: "signMessage", params: { message: new Uint8Array([%s]) }})",
+                                       kEncodedMessage));
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0);
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(), kExpectedEncodedSignature);
+
+  // signTransaction
+  CallSolanaRequest(base::StringPrintf(R"(
+    {method: "signTransaction", params: { message: '%s' }})",
+                                       kEncodedUnsignedTxArrayStr));
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(true, 0);
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(), kEncodedSignature);
+
+  // signAndSendTransaction
+  CallSolanaRequest(base::StringPrintf(R"(
+    {method: "signAndSendTransaction", params: { message: '%s' }})",
+                                       kEncodedUnsignedTxArrayStr));
+  observer()->WaitForNewUnapprovedTx();
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  auto infos = GetAllTransactionInfo();
+  ASSERT_EQ(infos.size(), 1u);
+  ApproveTransaction(infos[0]->id);
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(), kEncodedSignature);
+
+  // signAllTransactions
+  CallSolanaRequest(base::StringPrintf(R"(
+    {method: "signAllTransactions", params: { message: ['%s', '%s'] }})",
+                                       kEncodedUnsignedTxArrayStr,
+                                       kEncodedUnsignedTxArrayStr));
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(true, 0);
+  WaitForResultReady();
+  EXPECT_EQ(GetRequestResult(),
+            base::StrCat({kEncodedSignature, ",", kEncodedSignature}));
 }
 
 }  // namespace brave_wallet
