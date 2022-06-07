@@ -4343,7 +4343,7 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="5280426389926346830">Creezi o comandă rapidă?</translation>
 <translation id="5281013262333731149">Se deschide în <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Ca să descarci și să folosești aplicații Android, mai întâi trebuie să instalezi această actualizare obligatorie. În timp ce dispozitivul <ph name="DEVICE_TYPE"/> se actualizează, nu îl poți folosi. Dispozitivul <ph name="DEVICE_TYPE"/> va reporni după ce se finalizează instalarea.</translation>
-<translation id="5282733140964383898">Dacă activezi funcția „Nu urmări”, o solicitare va fi inclusă împreună cu traficul de navigare. Efectele depind de răspunsul site-ului la solicitare și de modul în care solicitarea este interpretată. De exemplu, unele site-uri pot răspunde la această solicitare afișând anunțuri care nu sunt bazate pe alte site-uri accesate de tine. Numeroase site-uri vor culege și vor utiliza în continuare datele tale de navigare, de exemplu, pentru a îmbunătăți securitatea, pentru a oferi conținut, servicii, anunțuri și recomandări și pentru a genera statistici de raportare. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Dacă activezi funcția „Nu urmări”, o solicitare va fi inclusă împreună cu traficul de navigare. Efectele depind de răspunsul site-ului la solicitare și de modul în care solicitarea este interpretată. De exemplu, unele site-uri pot răspunde la această solicitare afișând anunțuri care nu sunt bazate pe alte site-uri accesate de tine. Numeroase site-uri vor culege și vor utiliza în continuare datele tale de navigare, de exemplu, pentru a îmbunătăți securitatea, pentru a oferi conținut, servicii, anunțuri și recomandări și pentru a genera statistici de raportare. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Hopa! Sistemul nu a detectat modelul sau numărul de serie al dispozitivului.</translation>
 <translation id="5284445933715251131">Continuă descărcarea</translation>
 <translation id="5285635972691565180">Ecranul <ph name="DISPLAY_ID"/></translation>
@@ -4360,7 +4360,7 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="5297082477358294722">Parola a fost salvată. Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Când altcineva îți privește ecranul, afișează pictograma Confidențialitate în formă de ochi în dreapta ecranului</translation>
 <translation id="5298219193514155779">Temă creată de</translation>
-<translation id="5299109548848736476">Nu urmăriți</translation>
+<translation id="1839179167864984545">Nu urmăriți</translation>
 <translation id="5299558715747014286">să vadă și gestioneze grupurile de file</translation>
 <translation id="5300287940468717207">Resetezi permisiunile la nivel de site?</translation>
 <translation id="5300426565656326054">Personalizarea anunțurilor bazată pe browser</translation>
@@ -7827,7 +7827,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="8785622406424941542">Creion</translation>
 <translation id="8786824282808281903">Când copilul tău vede această pictogramă, poate folosi amprenta pentru identificare sau pentru a aproba achiziții.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Grup nedenumit – o filă}few{Grup nedenumit – # file}other{Grup nedenumit – # de file}}</translation>
-<translation id="8791534160414513928">Trimite o solicitare „Nu urmări” odată cu traficul de navigare</translation>
+<translation id="163839281363975279">Trimite o solicitare „Nu urmări” odată cu traficul de navigare</translation>
 <translation id="879413103056696865">Cât timp hotspotul este activat, <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Fereastră nouă</translation>
 <translation id="8797459392481275117">Nu traduce niciodată acest site</translation>

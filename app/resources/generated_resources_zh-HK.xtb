@@ -4358,7 +4358,7 @@
 <translation id="5280426389926346830">要建立捷徑嗎？</translation>
 <translation id="5281013262333731149">在 <ph name="OPEN_BROWSER"/> 中開啟</translation>
 <translation id="528208740344463258">如要下載並使用 Android 應用程式，請先安裝此必要更新。<ph name="DEVICE_TYPE"/> 更新時，您將無法使用裝置。安裝完成後，<ph name="DEVICE_TYPE"/> 將會重新啟動。</translation>
-<translation id="5282733140964383898">啟用「不追蹤」即表示您的瀏覽流量將包含一個要求，其效用視乎網站會否回應要求，以及如何解讀要求。例如，部分網站可能會在顯示廣告時，選擇不根據您所瀏覽的網站記錄來顯示廣告。不過，許多網站仍會基於各種目的而收集並使用您的瀏覽資料，藉此提高安全性、提供網站上的各種內容、服務、廣告和推薦項目；以及產生報告統計資料。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">啟用「不追蹤」即表示您的瀏覽流量將包含一個要求，其效用視乎網站會否回應要求，以及如何解讀要求。例如，部分網站可能會在顯示廣告時，選擇不根據您所瀏覽的網站記錄來顯示廣告。不過，許多網站仍會基於各種目的而收集並使用您的瀏覽資料，藉此提高安全性、提供網站上的各種內容、服務、廣告和推薦項目；以及產生報告統計資料。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">糟糕！系統無法識別裝置型號或序號。</translation>
 <translation id="5284445933715251131">繼續下載</translation>
 <translation id="5285635972691565180">顯示屏 <ph name="DISPLAY_ID"/></translation>
@@ -4375,7 +4375,7 @@
 <translation id="5297082477358294722">密碼已儲存。查看和管理儲存在「<ph name="SAVED_PASSWORDS_STORE"/>」的密碼。</translation>
 <translation id="5297946558563358707">當有人窺探您的螢幕時，螢幕右下方會顯示「私隱權」眼睛圖示</translation>
 <translation id="5298219193514155779">主題製作者</translation>
-<translation id="5299109548848736476">不要追蹤</translation>
+<translation id="1839179167864984545">不要追蹤</translation>
 <translation id="5299558715747014286">查看及管理分頁群組</translation>
 <translation id="5300287940468717207">要重設網站權限嗎？</translation>
 <translation id="5300426565656326054">基於瀏覽器的廣告個人化</translation>
@@ -7840,7 +7840,7 @@
 <translation id="8785622406424941542">觸控筆</translation>
 <translation id="8786824282808281903">當子女看到此圖示時，可以使用指紋識別身份或核准購物交易。</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{未命名的群組 - 1 個分頁}other{未命名的群組 - # 個分頁}}</translation>
-<translation id="8791534160414513928">將「不追蹤」要求與瀏覽流量一併傳送</translation>
+<translation id="163839281363975279">將「不追蹤」要求與瀏覽流量一併傳送</translation>
 <translation id="879413103056696865">開啟熱點時，您的 <ph name="PHONE_NAME"/> 將會：</translation>
 <translation id="8795916974678578410">開啟新視窗</translation>
 <translation id="8797459392481275117">永不翻譯此網站的內容</translation>

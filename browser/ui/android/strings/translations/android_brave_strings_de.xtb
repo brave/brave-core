@@ -30,7 +30,6 @@
 <translation id="3894650624018948468">Lösungsmethoden</translation>
 <translation id="2356070529366658676">Fragen</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
-<translation id="2218918398178303658">DNS über HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="6252490671914511928">Die wichtigsten Themen des Tages in einem absolut privaten Feed, nur für Sie zusammengestellt.</translation>
 <translation id="7266075701303521777">Brave-Nachrichten werden werbefinanziert mit vollständig privaten und anonymisierten Anzeigen, die auf Ihrem Gerät abgeglichen werden.</translation>
@@ -113,12 +112,12 @@
 <translation id="1166682575529520472">Monatlich</translation>
 <translation id="1628742278973105368">Das erste monatliche Trinkgeld wird gesendet am:</translation>
 <translation id="298349922412901215">HINWEIS: Dieser Ersteller hat sich noch nicht registriert, um Beiträge von Brave-Nutzern zu erhalten. Wir werden weiter versuchen, Beiträge weiterzugeben, bis der Ersteller sich registriert hat oder bis 90 Tage vergangen sind.</translation>
-<translation id="6602036279006002239">HINWEIS: Dieser Ersteller ist derzeit nicht konfiguriert, Trinkgelder aus deinem Wallet zu erhalten. Ihre Trinkgelder verbleiben als ausstehend in Ihrer Wallet und es wird 90 Tage lang automatisch weiter versucht.</translation>
+<translation id="635752162765375187">HINWEIS: Dieser Ersteller ist derzeit nicht konfiguriert, Trinkgelder aus deinem Wallet zu erhalten. Ihre Trinkgelder verbleiben als ausstehend in Ihrer Wallet und es wird 90 Tage lang automatisch weiter versucht.</translation>
 <translation id="1910721550319506122">Willkommen!</translation>
 <translation id="3165726837666415756">Sie können diese Seite unterstützen, indem Sie eine Spende senden. Dies ist ein Dankeschön für die großartigen Inhalte. Bestätigte Content Creators erhalten ihre Spenden in der ersten Woche eines jeden Kalendermonats.</translation>
 <translation id="1704859330137112950">Wenn Sie möchten, können Sie monatliche Spenden einrichten, um diese Seite durchgängig zu unterstützen.</translation>
 <translation id="245015745140252435">Höhe der Spende</translation>
-<translation id="3370968821559864204">Wallet-Guthaben:</translation>
+<translation id="7873874596836611687">Wallet-Guthaben:</translation>
 <translation id="2573313946367623146">meine Spende senden</translation>
 <translation id="3250511771491660127">Monatlich wiederholen</translation>
 <translation id="7658239707568436148">Abbrechen</translation>
@@ -138,7 +137,7 @@
 <translation id="8220228041552340594">OKTOBER</translation>
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DEZEMBER</translation>
-<translation id="3780605330121608425">Ihre Wallet</translation>
+<translation id="4258022280942725182">Ihre Wallet</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -172,8 +171,8 @@
 <translation id="8689997599821157251">Sie haben verdient</translation>
 <translation id="7550470870580166294">Unzureichendes Guthaben</translation>
 <translation id="2775064702681588061">Ihr Brave-Rewards-Konto wartet auf eine Einzahlung.</translation>
-<translation id="765834632354589737">Wallet-Backup erstellen</translation>
-<translation id="1713542052890184975">Bitte erstellen Sie ein Backup Ihrer Brave-Wallet.</translation>
+<translation id="2630264552940126640">Wallet-Backup erstellen</translation>
+<translation id="238922425564381955">Bitte erstellen Sie ein Backup Ihrer Brave-Wallet.</translation>
 <translation id="2323069945529668668">Hoppla!</translation>
 <translation id="7510166204621526816">Der Brave-Rewards-Server antwortet nicht. Wir werden dieses Problem schnellstmöglich beheben.</translation>
 <translation id="683765328936486920">auf YouTube</translation>
@@ -189,7 +188,6 @@
 <translation id="279635009973773843">LÄDT GERÄTE ...</translation>
 <translation id="6394333525003604181">VERLASSE DIE SYNCHRONISIERUNGSKETTE ...</translation>
 <translation id="2569646144216067185">Anzahl der Wörter: <ph name="WORD_COUNT"/></translation>
-<translation id="4282642752844565114">Falsche Anzahl der Wörter</translation>
 <translation id="7507533586185621084">Falscher Synchronisierungscode</translation>
 <translation id="8284063834901328650">Falscher Synchronisierungs-QR-Code</translation>
 <translation id="859506441384380749">Dieser Code wurde von einer veralteten Version von Brave generiert; bitte führen Sie zuerst ein Upgrade für Ihr anderes Gerät durch</translation>
@@ -282,7 +280,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8697510149346635496">BAT abheben, die Sie mit dem Ansehen von Werbung verdienen, die Ihre Privatsphäre respektiert.</translation>
 <translation id="1481480653609649134">Kaufen Sie zusätzlich BAT mit Kreditkarten und anderen Quellen</translation>
 <translation id="9096003370755878766">Heben Sie die BAT ab, die Sie unter Umständen zu Ihrer Brave Rewards-Wallet hinzugefügt haben.</translation>
-<translation id="8267327690882073581">Wallet verifizieren</translation>
 <translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>
 <translation id="6569877533335686968">Aufrechterhalten</translation>
 <translation id="734105583050813665">Bitflyer</translation>
@@ -352,32 +349,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5516010970279932133">Vorgeschlagene Websites in der Autovervollständigung anzeigen</translation>
 <translation id="5370478469168390143">Daten online speichern</translation>
 <translation id="1118508688433541158">Browsen Sie schneller und blockieren Sie Anzeigen mit Brave</translation>
-<translation id="6589609065569680305">Tracker &amp; Werbung wurden auf dieser Seite blockiert.</translation>
-<translation id="1283922192221545319">Brave Shields hat gerade Ihre Privatsphäre geschützt.</translation>
-<translation id="3286927551967858325">Anschauen</translation>
-<translation id="6227291358910554399">Werbeanzeigen werden blockiert, wenn Sie auf dieser Website Videos anzeigen.</translation>
-<translation id="7802980684512102010">Videos ohne Werbung verbrauchen weniger Datenvolumen.</translation>
-<translation id="2046475855484346614">10+ Tracker &amp; Werbeanzeigen wurden auf dieser Seite blockiert.</translation>
-<translation id="5806208250835099572">Brave Shields schützt Ihre Online-Privatsphäre auf allen Website.</translation>
-<translation id="5617673581653540121">Ihre Verbindung ist jetzt verschlüsselt.</translation>
-<translation id="4055107796760496928">Wenn verfügbar, stuft Brave Ihr Verbindung automatisch zu einer sicheren Option hoch.</translation>
-<translation id="8869714780588464835">Teilen Sie diese guten Neuigkeiten mit anderen</translation>
 <translation id="7427391215172269363">Ich spare jeden Tag Daten, indem ich mit Brave im Internet surfe.</translation>
-<translation id="5372054974373489308">1000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="2338952568654182692">5000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="5289711064670408815">10.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="7150609425870119925">25.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="7856423737692274943">75.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="7252948690584461484">100.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="7579633043057546002">250.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="8710984962087186365">500.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="4383614608366907253">1.000.000 Tracker &amp; Anzeigen blockiert!</translation>
-<translation id="6819535527112707811">Herzliche Glückwünsche, Sie sind etwas ganz Besonderes.</translation>
-<translation id="5819231438994979709">Herzliche Glückwünsche. Sie sind jetzt Teil eines exklusiven Clubs.</translation>
-<translation id="5174835622895450943">Herzliche Glückwünsche. Sie sind nun ein Profi.</translation>
-<translation id="4625546020186631261">Herzliche Glückwünsche. Sie sind Meister geworden.</translation>
-<translation id="4288835546846020774">Herzliche Glückwünsche. Sie sind Großmeister geworden.</translation>
-<translation id="6863752373888328811">Herzliche Glückwünsche. Sie sind legendär.</translation>
 <translation id="4776948189086901857">Brave funktioniert überall</translation>
 <translation id="1606322780901645965">Laden Sie für ein schnelleres und privateres Web Brave auf brave.com herunter</translation>
 <translation id="8374242949413616101">Privatsphäreschutz</translation>
@@ -411,9 +383,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.🔋</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
-<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.🔥</translation>
-<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.🔋</translation>
-<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.💨💨</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
 <translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
@@ -440,7 +409,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2735834606413553397">Öffentliche Adresse wurde in die Zwischenablage kopiert.</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="2977461003134694205">Statistiken zur Privatsphäre</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="2956070106555335453">Zusammenfassung</translation>
 <translation id="1366855498335432549">Einzahlung</translation>
 <translation id="1301340234286078471">Umtauschen</translation>
@@ -513,16 +481,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2642661895835126239">Pflanzt Bäume, lebt in Berlin</translation>
 <translation id="177282784098234156">Privat, unabhängig und nutzerzentriert</translation>
 <translation id="1410130669636877548">Einige Suchmaschinen schützen Ihre Daten besser als andere, wenn Sie etwas im Internet suchen.</translation>
-<translation id="1078265935778232285">Willkommen beim Brave Browser</translation>
-<translation id="6824713633331856331">Helfen Sie uns anonym zu lernen</translation>
-<translation id="6116685031674149112">Brave schützt Ihre Daten und\nschätzt Ihre Zustimmung zu Folgendem:</translation>
-<translation id="4394483075076204916">Tragen Sie dazu bei, Brave zu verbessern, und schicken Sie uns komplett anonyme <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
-<translation id="6478996494082389936">private Produktanalytik.</translation>
 <translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
 <translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
-<translation id="7625138338483121345">Brave als Standardbrowser festlegen</translation>
-<translation id="4511485286950743564">Mit Brave als Standard öffnet sich jeder Link, auf den Sie klicken, mit Braves Datenschutzbestimmungen.</translation>
-<translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -586,7 +546,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5493402808936397665">Biometrie aktivieren, um ohne Passwort Zugriff auf dein Wallet zu haben.</translation>
 <translation id="8030647312184163932">Fingerabdruck entsperren</translation>
 <translation id="4090490645603511157">Verwenden Sie Biometrie, um Ihre Wallet schnell zu entsperren, ohne Ihr Passwort einzugeben.</translation>
-<translation id="5379398699598690674">Wallet (beta)</translation>
+<translation id="1544192797660353713">Wallet (beta)</translation>
 <translation id="6901810042765869341">Gib deine Formulierung zur Wiederherstellung ein, um dein Brave Wallet Krypto-Konto wiederherzustellen.</translation>
 <translation id="9120654436199628567">Krypto-Konto wiederherstellen</translation>
 <translation id="4811736040444856406">Formulierung zur Wiederherstellung anzeigen</translation>
@@ -650,7 +610,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8239147115686034860">Brave Wallet automatisch sperren</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="4993345308607970390">Brave Wallet zurücksetzen</translation>
-<translation id="6369495274982305511">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
+<translation id="4322846864135539519">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
 <translation id="4862812525895306758">Transaktion löschen &amp; Nonce-Info</translation>
 <translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
 <translation id="5421107279168565467">Möchten Sie die Transaktions- und Nonce-Informationen wirklich zurücksetzen? Diese Option wird hauptsächlich von Entwicklern verwendet, die einen lokalen Testserver betreiben. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
@@ -692,7 +652,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden und Ihre Internetverbindung wird nicht gesichert.</translation>
 <translation id="2429299231491852747">Verbindungsanfrage annehmen</translation>
 <translation id="3428909627460825679">VPN-Profilerstellung fehlgeschlagen. Bitte versuchen Sie es erneut.</translation>
-<translation id="1326227401245340613">Die Überprüfung des Kaufs ist fehlgeschlagen. Bitte versuchen Sie es erneut.</translation>
+<translation id="1264320790738638119">Die Überprüfung des Kaufs ist fehlgeschlagen. Bitte versuchen Sie es erneut.</translation>
 <translation id="8905950042180169719">VPN läuft im Hintergrund</translation>
 <translation id="8681480718817027245">Abonnement</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -728,8 +688,8 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="669072536454692117">Abonnement erfolgreich aufgebraucht</translation>
 <translation id="1187506504156101449">Kaufbestätigung fehlgeschlagen:</translation>
 <translation id="8420522105268941892">Sie haben das Abonnement bereits abgeschlossen. Versuchen Sie, das Abonnement wiederherzustellen.</translation>
-<translation id="74771564105268111">FEHLER!!\nVerursacht durch einen Benutzer, der den Kaufvorgang abgebrochen hat.</translation>
-<translation id="7312462922610983743">FEHLER!!\nKauf fehlgeschlagen.</translation>
+<translation id="404414664190867625">FEHLER!!\nVerursacht durch einen Benutzer, der den Kaufvorgang abgebrochen hat.</translation>
+<translation id="3515141458161417228">FEHLER!!\nKauf fehlgeschlagen.</translation>
 <translation id="6452181791372256707">Ablehnen</translation>
 <translation id="8030852056903932865">Genehmigen</translation>
 <translation id="1597199892790541240">Gasgebühren</translation>
@@ -819,7 +779,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3494964159182650590">Belohnungs-Übersicht</translation>
 <translation id="590733288489975971">Belohnungen aus Ads</translation>
 <translation id="207268487070188114">Einmaliges Trinkgeld</translation>
-<translation id="64394831139134288">Meine Wallet</translation>
 <translation id="8494748383523030337">Ihr Kontostand</translation>
 <translation id="7091980679045978090">Geschätzter Verdienst</translation>
 <translation id="1346059596910821859">Spenden</translation>
@@ -880,7 +839,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="85136472535634474">VPN-Einstellungen öffnen</translation>
 <translation id="8352805003811526272">Konfiguration wird zurückgesetzt …</translation>
 <translation id="6809312301323611382">Sie haben bereits denselben Server ausgewählt.</translation>
-<translation id="7694991972030057904">Berechtigungsanfrage abgebrochen</translation>
+<translation id="5665084657857645952">Berechtigungsanfrage abgebrochen</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> Transaktionen ablehnen</translation>
 <translation id="523862956770478816">Site-Berechtigungen</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> Konten verbunden</translation>

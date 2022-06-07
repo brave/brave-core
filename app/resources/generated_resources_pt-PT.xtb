@@ -4343,7 +4343,7 @@ Pretende pará-lo?</translation>
 <translation id="5280426389926346830">Pretende criar um atalho?</translation>
 <translation id="5281013262333731149">Abre em: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Para transferir e utilizar aplicações para Android, tem de instalar primeiro esta atualização obrigatória. Enquanto o seu <ph name="DEVICE_TYPE"/> estiver a ser atualizado, não o pode utilizar. Quando a instalação estiver concluída, o <ph name="DEVICE_TYPE"/> será reiniciado.</translation>
-<translation id="5282733140964383898">Se ativar a funcionalidade "Não Monitorizar", será incluído um pedido no seu tráfego de navegação. Os possíveis efeitos dependerão da resposta ao pedido por parte de um Website e da forma como o pedido é interpretado. Por exemplo, alguns Sites poderão mostrar anúncios que não sejam baseados noutros Sites visitados por si como resposta a este pedido. Muitos Sites continuarão a recolher e utilizar os seus dados de navegação com o objetivo de melhorar a segurança, fornecer conteúdos, serviços, anúncios e recomendações nos seus Sites e gerar estatísticas de relatórios. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Se ativar a funcionalidade "Não Monitorizar", será incluído um pedido no seu tráfego de navegação. Os possíveis efeitos dependerão da resposta ao pedido por parte de um Website e da forma como o pedido é interpretado. Por exemplo, alguns Sites poderão mostrar anúncios que não sejam baseados noutros Sites visitados por si como resposta a este pedido. Muitos Sites continuarão a recolher e utilizar os seus dados de navegação com o objetivo de melhorar a segurança, fornecer conteúdos, serviços, anúncios e recomendações nos seus Sites e gerar estatísticas de relatórios. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Ups! O sistema não conseguiu determinar o modelo ou o número de série do dispositivo.</translation>
 <translation id="5284445933715251131">Continuar a transferir</translation>
 <translation id="5285635972691565180">Ecrã <ph name="DISPLAY_ID"/></translation>
@@ -4360,7 +4360,7 @@ Pretende pará-lo?</translation>
 <translation id="5297082477358294722">Palavra-passe guardada. Veja e faça a gestão das palavras-passe guardadas em <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Quando alguém olhar para o ecrã, mostrar o ícone de olho de privacidade na parte inferior direita do ecrã</translation>
 <translation id="5298219193514155779">Tema criado por</translation>
-<translation id="5299109548848736476">Não monitorizar</translation>
+<translation id="1839179167864984545">Não monitorizar</translation>
 <translation id="5299558715747014286">Ver e gerir grupos de separadores</translation>
 <translation id="5300287940468717207">Pretende repor as autorizações do site?</translation>
 <translation id="5300426565656326054">Personalização de anúncios com base no navegador</translation>
@@ -7828,7 +7828,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8785622406424941542">Caneta stylus</translation>
 <translation id="8786824282808281903">Quando a criança vê este ícone, é possível utilizar uma impressão digital para identificação ou para aprovar compras.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Grupo sem nome – 1 separador}other{Grupo sem nome – # separadores}}</translation>
-<translation id="8791534160414513928">Enviar um pedido "Não rastrear" com o seu tráfego de navegação</translation>
+<translation id="163839281363975279">Enviar um pedido "Não rastrear" com o seu tráfego de navegação</translation>
 <translation id="879413103056696865">Enquanto a zona Wi-Fi estiver ativada, o <ph name="PHONE_NAME"/> irá:</translation>
 <translation id="8795916974678578410">Nova janela</translation>
 <translation id="8797459392481275117">Nunca traduzir este site</translation>

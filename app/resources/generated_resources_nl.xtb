@@ -4339,7 +4339,7 @@ Foutcode: <ph name="ERROR_CODE"/>.</translation>
 <translation id="5280426389926346830">Snelkoppeling maken?</translation>
 <translation id="5281013262333731149">Wordt geopend in: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Als je Android-apps wilt downloaden en gebruiken, moet je eerst deze vereiste update installeren. Je kunt je <ph name="DEVICE_TYPE"/> tijdens het updaten niet gebruiken. Je <ph name="DEVICE_TYPE"/> wordt opnieuw opgestart nadat de installatie is voltooid.</translation>
-<translation id="5282733140964383898">Als je Niet bijhouden aanzet, wordt hiervoor een verzoek opgenomen in je browseverkeer. Het resultaat daarvan hangt af van of een website reageert op het verzoek en hoe het verzoek wordt geïnterpreteerd. Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken die niet zijn gebaseerd op andere websites die je hebt bezocht. Toch blijven veel websites je browsegegevens nog verzamelen en gebruiken, bijvoorbeeld voor het verbeteren van de beveiliging, het leveren van content, services, advertenties en aanbevelingen op hun websites en voor het genereren van rapportagestatistieken. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Als je Niet bijhouden aanzet, wordt hiervoor een verzoek opgenomen in je browseverkeer. Het resultaat daarvan hangt af van of een website reageert op het verzoek en hoe het verzoek wordt geïnterpreteerd. Zo kunnen sommige websites op dit verzoek reageren door advertenties te bekijken die niet zijn gebaseerd op andere websites die je hebt bezocht. Toch blijven veel websites je browsegegevens nog verzamelen en gebruiken, bijvoorbeeld voor het verbeteren van de beveiliging, het leveren van content, services, advertenties en aanbevelingen op hun websites en voor het genereren van rapportagestatistieken. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Het systeem kan het model of serienummer van het apparaat niet bepalen.</translation>
 <translation id="5284445933715251131">Doorgaan met downloaden</translation>
 <translation id="5285635972691565180">Scherm <ph name="DISPLAY_ID"/></translation>
@@ -4356,7 +4356,7 @@ Foutcode: <ph name="ERROR_CODE"/>.</translation>
 <translation id="5297082477358294722">Het wachtwoord is opgeslagen. Bekijk en beheer opgeslagen wachtwoorden in je <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Het privacy-oogicoon rechtsonder in het scherm tonen als iemand anders naar je scherm kijkt</translation>
 <translation id="5298219193514155779">Thema gemaakt door</translation>
-<translation id="5299109548848736476">Niet bijhouden</translation>
+<translation id="1839179167864984545">Niet bijhouden</translation>
 <translation id="5299558715747014286">Je tabbladgroepen bekijken en beheren</translation>
 <translation id="5300287940468717207">Sitemachtigingen resetten?</translation>
 <translation id="5300426565656326054">Browsergebaseerde advertentiepersonalisatie</translation>
@@ -7817,7 +7817,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8785622406424941542">Stylus</translation>
 <translation id="8786824282808281903">Als je kind dit icoon ziet, kan er een vingerafdruk worden gebruikt voor identificatie of om aankopen goed te keuren.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Naamloze groep - 1 tabblad}other{Naamloze groep - # tabbladen}}</translation>
-<translation id="8791534160414513928">Een verzoek voor niet bijhouden met je browseverkeer verzenden</translation>
+<translation id="163839281363975279">Een verzoek voor niet bijhouden met je browseverkeer verzenden</translation>
 <translation id="879413103056696865">Wanneer de hotspot aanstaat, doet je <ph name="PHONE_NAME"/> het volgende:</translation>
 <translation id="8795916974678578410">Nieuw venster</translation>
 <translation id="8797459392481275117">Deze site nooit vertalen</translation>
