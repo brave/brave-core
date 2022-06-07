@@ -17,8 +17,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/common/brave_paths.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
@@ -222,9 +222,9 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
 
   // No bridges by default.
   auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
-  EXPECT_FALSE(bridges_config.use_bridges);
-  EXPECT_EQ(tor::BridgesConfig::BuiltinType::kNone, bridges_config.use_builtin);
-  EXPECT_TRUE(bridges_config.bridges.empty());
+  EXPECT_EQ(tor::BridgesConfig::Usage::kNotUsed, bridges_config.use_bridges);
+  EXPECT_TRUE(bridges_config.provided_bridges.empty());
+  EXPECT_TRUE(bridges_config.requested_bridges.empty());
 
   // Open Tor window, wait for the Tor process to start.
   auto tor = WaitForTorLaunched();
@@ -243,8 +243,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
   // Enable bridges
   DownloadTorPluggableTransports();
 
-  bridges_config.use_bridges = true;
-  bridges_config.bridges.push_back(
+  bridges_config.use_bridges = tor::BridgesConfig::Usage::kProvide;
+  bridges_config.provided_bridges.push_back(
       "snowflake 192.0.2.3:1 2B280B23E1107BB62ABFC40DDCC8824814F80A72");
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
 
@@ -256,7 +256,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, PRE_SetupBridges) {
       g_brave_browser_process->tor_pluggable_transport_updater()->IsReady());
 
   // Add obfs config.
-  bridges_config.bridges.push_back(
+  bridges_config.provided_bridges.push_back(
       "obfs4 144.217.20.138:80 FB70B257C162BF1038CA669D568D76F5B7F0BABB "
       "cert=vYIV5MgrghGQvZPIi1tJwnzorMgqgmlKaB77Y3Z9Q/"
       "v94wZBOAXkW+fdx4aSxLVnKO+xNw iat-mode=0");
@@ -294,8 +294,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   DownloadTorPluggableTransports();
 
   auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
-  bridges_config.use_bridges = true;
-  bridges_config.bridges.push_back(
+  bridges_config.use_bridges = tor::BridgesConfig::Usage::kProvide;
+  bridges_config.provided_bridges.push_back(
       "snowflake 192.0.2.3:1 2B280B23E1107BB62ABFC40DDCC8824814F80A72");
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
 
@@ -308,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   WaitForProcess(tor::kSnowflakeExecutableName);
 
   // Reset bridges
-  bridges_config.use_bridges = false;
+  bridges_config.use_bridges = tor::BridgesConfig::Usage::kNotUsed;
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
   WaitProcessExit(tor::kSnowflakeExecutableName);
 }

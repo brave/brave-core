@@ -169,7 +169,8 @@ void TorLauncherFactory::SetupBridges(tor::BridgesConfig bridges_config) {
                              base::DoNothing());
       break;
     case tor::BridgesConfig::Usage::kProvide:
-      control_->SetupBridges(bridges_config.bridges, base::DoNothing());
+      control_->SetupBridges(bridges_config.provided_bridges,
+                             base::DoNothing());
       break;
   }
 }

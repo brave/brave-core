@@ -46,7 +46,7 @@ struct BridgesConfig {
   Usage use_bridges = Usage::kNotUsed;
   BuiltinType use_builtin = BuiltinType::kObfs4;
   std::vector<std::string> requested_bridges;
-  std::vector<std::string> bridges;
+  std::vector<std::string> provided_bridges;
 };
 
 void MigrateLastUsedProfileFromLocalStatePrefs(PrefService* local_state);

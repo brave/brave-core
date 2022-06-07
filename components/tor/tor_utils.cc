@@ -118,7 +118,7 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
     for (const auto& bridge : *bridges) {
       if (!bridge.is_string())
         continue;
-      result.bridges.push_back(bridge.GetString());
+      result.provided_bridges.push_back(bridge.GetString());
     }
   }
   if (auto* requested_bridges = dict.FindList(kRequestedBriges)) {
@@ -138,7 +138,7 @@ base::Value::Dict BridgesConfig::ToDict() const {
   result.Set(kUseBuiltinBridgesKey, static_cast<int>(use_builtin));
 
   base::Value::List list;
-  for (const auto& bridge : bridges) {
+  for (const auto& bridge : provided_bridges) {
     list.Append(bridge);
   }
   result.Set(kBridgesKey, std::move(list));

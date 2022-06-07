@@ -16,9 +16,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
 
   // No bridges by default.
   auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
-  EXPECT_FALSE(bridges_config.use_bridges);
-  EXPECT_EQ(tor::BridgesConfig::BuiltinType::kNone, bridges_config.use_builtin);
-  EXPECT_TRUE(bridges_config.bridges.empty());
+  EXPECT_EQ(tor::BridgesConfig::Usage::kNotUsed, bridges_config.use_bridges);
+  EXPECT_TRUE(bridges_config.provided_bridges.empty());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorEnableDisable) {
@@ -31,11 +30,10 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorEnableDisable) {
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, ChangeBridges) {
   tor::BridgesConfig bridges_config;
-  bridges_config.use_bridges = true;
-  EXPECT_EQ(tor::BridgesConfig::BuiltinType::kNone, bridges_config.use_builtin);
-  bridges_config.bridges.push_back("bridge1");
-  bridges_config.bridges.push_back("bridge2");
-  bridges_config.bridges.push_back("bridge3");
+  bridges_config.use_bridges = tor::BridgesConfig::Usage::kProvide;
+  bridges_config.provided_bridges.push_back("bridge1");
+  bridges_config.provided_bridges.push_back("bridge2");
+  bridges_config.provided_bridges.push_back("bridge3");
 
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
   EXPECT_EQ(bridges_config.ToValue(),
