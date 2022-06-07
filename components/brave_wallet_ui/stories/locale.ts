@@ -533,5 +533,14 @@ provideStrings({
   braveWalletTransactionConfirmingTitle: 'Transaction is processing',
   // [FIXME]: change the wording after ETH2.
   braveWalletTransactionConfirmingDescription: 'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
-  braveWalletTransactionConfirmingText: 'Confirming'
+  braveWalletTransactionConfirmingText: 'Confirming',
+
+  // Solana ProgramID Names
+  braveWalletSolanaSystemProgram: 'System Program',
+  braveWalletSolanaConfigProgram: 'Config Program',
+  braveWalletSolanaStakeProgram: 'Stake Program',
+  braveWalletSolanaVoteProgram: 'Vote Program',
+  braveWalletSolanaBPFLoader: 'BPF Loader',
+  braveWalletSolanaEd25519Program: 'Ed25519 Program',
+  braveWalletSolanaSecp256k1Program: 'Secp256k1 Program'
 })

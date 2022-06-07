@@ -622,6 +622,15 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
     {"braveWalletEditGasLimitError", IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR},
     {"braveWalletApproveTransaction", IDS_BRAVE_WALLET_APPROVE_TRANSACTION},
+    {"braveWalletSolanaSystemProgram", IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM},
+    {"braveWalletSolanaConfigProgram", IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM},
+    {"braveWalletSolanaStakeProgram", IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM},
+    {"braveWalletSolanaVoteProgram", IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM},
+    {"braveWalletSolanaBPFLoader", IDS_BRAVE_WALLET_SOLANA_BP_FLOADER},
+    {"braveWalletSolanaEd25519Program",
+     IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM},
+    {"braveWalletSolanaSecp256k1Program",
+     IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM},
     {"braveWalletNetworkFilterSecondary",
      IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY}};
 

@@ -473,4 +473,11 @@
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>  
   <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message> 
   <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">Approve transaction</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System Program">System Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config Program">Config Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM" desc="Name of Solana Stake Program">Stake Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM" desc="Name of Solana Vote Program">Vote Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_BP_FLOADER" desc="Name of Solana BPF Loader">BPF Loader</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM" desc="Name of Solana Ed25519 Program">Ed25519 Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 Program">Secp256k1 Program</message>  
 </grit-part>
