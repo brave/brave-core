@@ -21,7 +21,7 @@ struct RSSFeedLocation: Hashable {
 extension FeedDataSource {
   // MARK: - RSS Sources
 
-  var rssFeedLocations: [RSSFeedLocation] {
+  @MainActor var rssFeedLocations: [RSSFeedLocation] {
     RSSFeedSource.all().compactMap {
       guard let url = URL(string: $0.feedUrl) else { return nil }
       return RSSFeedLocation(title: $0.title, url: url)
