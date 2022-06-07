@@ -92,7 +92,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         } else {
             menu.findItem(R.id.request_brave_vpn_row_menu_id).setVisible(false);
-            menu.findItem(R.id.divider_line_id).setVisible(false);
         }
 
         // Brave's items are only visible for page menu.
@@ -112,11 +111,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // Always hide share row menu item in app menu if it's not on tablet.
         if (!mIsTablet) menu.findItem(R.id.share_row_menu_id).setVisible(false);
 
-        MenuItem setAsDefault =
-                menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
+        MenuItem setAsDefault = menu.findItem(R.id.set_default_browser);
         if (shouldShowIconBeforeItem()) {
+            setAsDefault.setVisible(true);
             setAsDefault.setIcon(
                     AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_set_as_default));
+        } else {
+            setAsDefault.setVisible(true);
         }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
