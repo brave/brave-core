@@ -6,6 +6,7 @@
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
 #include "bat/ads/internal/base/numbers/number_util.h"
+#include "bat/ads/internal/base/platform/platform_helper.h"
 
 namespace ads {
 

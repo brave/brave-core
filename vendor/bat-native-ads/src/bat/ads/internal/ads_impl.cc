@@ -56,6 +56,7 @@
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"

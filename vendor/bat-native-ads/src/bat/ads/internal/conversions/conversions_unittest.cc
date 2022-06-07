@@ -18,6 +18,7 @@
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
+#include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "bat/ads/pref_names.h"
 

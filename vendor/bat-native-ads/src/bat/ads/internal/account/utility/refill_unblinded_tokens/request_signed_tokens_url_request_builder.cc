@@ -14,7 +14,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/base/crypto/crypto_util.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 

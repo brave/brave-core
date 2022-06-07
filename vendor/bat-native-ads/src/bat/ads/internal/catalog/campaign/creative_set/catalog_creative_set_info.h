@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_os_info_aliases.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_segment_info_aliases.h"
 #include "bat/ads/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info_aliases.h"
