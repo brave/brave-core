@@ -35,7 +35,7 @@ FederatedClient::~FederatedClient() {
 void FederatedClient::Start() {
   base::SequenceBound<start> flwr_communication(
       base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN}));
 
   // Define a server address
