@@ -710,7 +710,6 @@ En cas contrari, la configuració de privadesa el bloquejarà. Això permetrà q
 <translation id="2972581237482394796">&amp;Refés</translation>
 <translation id="2977665033722899841">S'ha seleccionat <ph name="ROW_NAME"/>. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Òpera</translation>
-<translation id="1536541482996273580">Obre una pestanya d'incògnit</translation>
 <translation id="2985398929374701810">Introdueix una adreça vàlida</translation>
 <translation id="2986368408720340940">Aquest mètode de recollida no està disponible. Prova'n un altre.</translation>
 <translation id="2987034854559945715">No hi ha cap funció que coincideixi</translation>
@@ -2925,6 +2924,7 @@ Detalls addicionals:
 <translation id="40442660395682483">Obre una nova pestanya privada per navegar de manera privada</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premeu el tabulador i després Retorn per obrir una nova pestanya privada a fi de navegar de forma privada</translation>
 <translation id="3711639027736550870">Obriu el botó de la pestanya privada i premeu Retorn per obrir una nova pestanya privada i navegar de manera privada</translation>
+<translation id="1536541482996273580">Obre una pestanya privada</translation>
 <translation id="5549245478906381817">Obrir una finestra privada</translation>
 <translation id="5497977785983089120">Obrir una nova finestra privada per navegar de manera privada</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premeu Tabulador i després Retorn per obrir una nova finestra privada i així poder navegar de forma privada</translation>

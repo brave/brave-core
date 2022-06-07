@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Pogreška: regija nije podržana</translation>
 <translation id="5382684862562314222">Još se ne podržava BAT u vašoj regiji putem usluge Uphold.</translation>
 <translation id="9074594632540931067">Greška: BAT nije dostupan</translation>
-<translation id="413458922997276130">Vaš račun za uslugu Uphold trenutačno je blokiran.</translation>
-<translation id="3579959767665130790">Greška: blokiran račun</translation>
-<translation id="6554308597291659562">Društvo Uphold mora prikupiti nešto više informacija o vama prije nego što vam može omogućiti potpunu funkcionalnost računa za platformu Uphold. Pokušajte ponovno nakon što pošaljete te informacije svom računu za platformu Uphold.</translation>
-<translation id="6996157559236886133">Pogreška: Ograničena funkcionalnost računa za uslugu Uphold</translation>
-<translation id="819370426249314592">Vaš račun za uslugu Uphold još uvijek je na čekanju.</translation>
-<translation id="4530453398914580957">Greška: račun na čekanju</translation>
-<translation id="2388470740942086608">Vaš račun za uslugu Uphold trenutačno je ograničen.</translation>
-<translation id="3605236342612716051">Greška: ograničen račun</translation>
 <translation id="3274650021044762770">Nastao je problem pri potvrđivanju zahtjeva preglednika za povezivanje Nagrada Brave s računom <ph name="PROVIDER"/>. Možete se <ph name="BEGIN_LINK"/> obratiti službi za korisničku podršku <ph name="END_LINK"/> za pomoć.</translation>
 <translation id="1316066811927496401">Pogreška: Nije moguće potvrditi zahtjev</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]] pristajete na <ph name="BEGIN_LINK1"/>uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>pravilnik o privatnosti<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Preglednikom Brave upotrebljava se Infura za upućivanje poziva Ethereum JSON-RPC pametnom ugovoru od Ethereum Name Service za rješavanje zahtjeva za traženjem naziva domene .eth. Ako to omogućite, društvo Infura može vidjeti domenu .eth koju pokušavate posjetiti, ali ne može vidjeti ostale domene. Pogledajte <ph name="BEGIN_INFURA_TOU_LINK"/>Uvjete uporabe<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Pravilnik o zaštiti privatnosti<ph name="END_INFURA_PRIVACY_LINK"/> društva Infura.</translation>
 <translation id="7378412287463452336">Nastavi služeći se poslužiteljem Infura</translation>
 <translation id="2356070529366658676">Upitaj</translation>
-<translation id="2218918398178303658">DNS umjesto HTTPS-a</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Blokirana domena</translation>
 <translation id="6393849031898466746">Može vas se pratiti ovim mrežnim mjestom kada ste na drugim mrežnim mjestima</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Neuspješno dohvaćanje vrste za transakciju</translation>
 <translation id="2080935885647755539">Neuspješno dohvaćanje naknada za transakciju EIP-1559</translation>
 <translation id="4843814354611030845">Korisnik odbio transakciju</translation>
-<translation id="1462494615260983714">Pogreška obrade transakcije</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>” nema ovlasti za potpisivanje poruke</translation>
 <translation id="8719220598078667817">Neuspješno potpisivanje transakcije</translation>
 <translation id="875506212625074179">Odgovor usluge RPC o nevažećem ID-u lanca</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Transakcija može podlijeći unaprijednom trgovanju</translation>
 <translation id="632241521608275119">Tolerancija prekoračenja</translation>
 <translation id="4500473291496079954">Istječe za</translation>
-<translation id="8093033115658137576">Adresa 0x ili URL</translation>
+<translation id="2236833281018938257">Adresa 0x ili URL</translation>
 <translation id="2860280209982026951">Preglednikom Brave upotrebljava se <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kao agregator DEX.</translation>
 <translation id="151946611346774041">Protokolom 0x obrađuju se adresa Ethereum i IP adresa radi obavljanja transakcije (uključujući dobivanje ponuda). Protokolom 0x upotrebljavaju se ovi podatci ISKLJUČIVO za svrhe obrađivanja transakcija.</translation>
 <translation id="4626407663177532837">Ponudom se uključuje naknada od 0,875 % za preglednik Brave.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Nemogućnost povezivanja s mostom Trezor</translation>
 <translation id="6672377693827764095">Interna pogreška, nemogućnost dohvaćanja računa</translation>
 <translation id="6889920539620318793">Postavi kao aktivno</translation>
+<translation id="1462494615260983714">Pogreška obrade transakcije</translation>
 <translation id="8933250418452564886">Nije moguće pronaći hardversku transakciju, pokušajte ponovno</translation>
 <translation id="5999974802900788338">Primljena pogreška od hardverskog uređaja, vjerojatno trebate potvrditi transakciju na svom uređaju</translation>
 <translation id="8523768065044261559">Pogreška obrade transakcije, pokušajte ponovno</translation>
@@ -1273,4 +1264,14 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="3470923752115324276">Preglednikom Brave može vam se omogućiti posjećivanje domena .crypto uporabom poslužitelja Cloudflare radi rješavanja zahtjeva traženja naziva domena .crypto uporabom protokola DNS umjesto protokola HTTPS. Ako to omogućite, poduzeće Cloudflare može vidjeti domenu .crypto koju pokušavate posjetiti, ali ne može vidjeti ostale domene. Pogledajte <ph name="BEGIN_CF_TOU_LINK"/>uvjete uporabe<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>pravilnik privatnosti<ph name="END_CF_PRIVACY_LINK"/> poduzeća Cloudflare.</translation>
 <translation id="618766505813078707">Preglednikom Brave može vam se omogućiti posjećivanje domena .eth uporabom poslužitelja Cloudflare radi rješavanja zahtjeva traženja naziva domena .eth uporabom protokola DNS umjesto protokola HTTPS. Ako to omogućite, poduzeće Cloudflare može vidjeti domenu .eth koju pokušavate posjetiti, ali ne može vidjeti ostale domene. Pogledajte <ph name="BEGIN_CF_TOU_LINK"/>uvjete uporabe<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>pravilnik privatnosti<ph name="END_CF_PRIVACY_LINK"/> poduzeća Cloudflare.</translation>
 <translation id="5636651007798897342">Nastavi služeći se poslužiteljem Cloudflare</translation>
+<translation id="413458922997276130">Vaš račun za uslugu Uphold trenutačno je blokiran.</translation>
+<translation id="3579959767665130790">Greška: blokiran račun</translation>
+<translation id="6554308597291659562">Društvo Uphold mora prikupiti nešto više informacija o vama prije nego što vam može omogućiti potpunu funkcionalnost računa za platformu Uphold. Pokušajte ponovno nakon što pošaljete te informacije svom računu za platformu Uphold.</translation>
+<translation id="6996157559236886133">Pogreška: Ograničena funkcionalnost računa za uslugu Uphold</translation>
+<translation id="819370426249314592">Vaš račun za uslugu Uphold još uvijek je na čekanju.</translation>
+<translation id="4530453398914580957">Greška: račun na čekanju</translation>
+<translation id="2388470740942086608">Vaš račun za uslugu Uphold trenutačno je ograničen.</translation>
+<translation id="3605236342612716051">Greška: ograničen račun</translation>
+<translation id="2218918398178303658">DNS umjesto HTTPS-a</translation>
+<translation id="8093033115658137576">Adresa 0x ili URL</translation>
 </translationbundle>

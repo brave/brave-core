@@ -70,7 +70,7 @@
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3229091547987707389">একটি ডিরেক্টরি পাঠান এবং শেয়ার করুন</translation>
 <translation id="5029193871181468990">Brave রিওয়ার্ড আইকন লুকান</translation>
-<translation id="4613486011786721686">টুলবারে Brave ওয়ালেট আইকন লুকান</translation>
+<translation id="7595540212376041331">টুলবারে Brave ওয়ালেট আইকন লুকান</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 <translation id="3161744659507801211">সতর্কতা: Brave আপনার ব্রাউজিং ইতিহাস রেকর্ডিং থেকে এক্সটেনশনগুলিকে আটকাতে পারে না।</translation>
@@ -108,8 +108,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>টি ট্যাব</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
-<translation id="6040143037577758943">বন্ধ</translation>
-<translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
 <translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
 <translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
@@ -222,7 +220,6 @@
 <translation id="2761825942249694703">ডিফল্ট শীল্ড সেটিংস। একটি নির্দিষ্ট সাইটে শীল্ডস প্যানেলে আপনি কিছু পরিবর্তন না করা পর্যন্ত সেগুলি সমস্ত ওয়েবসাইটে প্রযোজ্য। এগুলির পরিবর্তন আপনার বিদ্যমান পার-সাইট সেটিংসকে ক্ষতিগ্রস্ত করবে না।</translation>
 <translation id="1485394570478670912">এটি ওয়েবসাইটগুলিতে বেশিরভাগ বিজ্ঞাপনকে ব্লক করবে, Brave Private Ads-কে নয় — সেগুলি নিয়ন্ত্রিত এখানে</translation>
 <translation id="6388201778088078932">সেটিংস।</translation>
-<translation id="4395160081588457461">দেখুন &amp; অনুভব করুন</translation>
 <translation id="4800195524776354947">শিল্ডস আইকনে অবরুদ্ধ উপকরণগুলির সংখ্যা দেখান</translation>
 <translation id="5510493033031835532">AMP পৃষ্ঠাগুলি অটো-রিডাইরেক্ট করুন</translation>
 <translation id="5197219128592971597">Google-এর অ্যাক্সিলারেটেড মোবাইল পৃষ্ঠা সংস্করণের পরিবর্তে সর্বদা আসল (নন-AMP) পৃষ্ঠার URL দেখুন</translation>
@@ -486,4 +483,8 @@
 
 আপনি কি এটি করার ব্যাপারে নিশ্চিত?</translation>
 <translation id="868529041590572443">দেশীয় মুদ্রা সম্পর্কিত সমস্ত তথ্য পূরণ করুন</translation>
+<translation id="4613486011786721686">টুলবারে Brave ওয়ালেট আইকন লুকান</translation>
+<translation id="6040143037577758943">বন্ধ</translation>
+<translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
+<translation id="4395160081588457461">দেখুন &amp; অনুভব করুন</translation>
 </translationbundle>

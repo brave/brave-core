@@ -259,14 +259,6 @@
 <translation id="8218538368080510976">エラー: サポートされていない地域です</translation>
 <translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
 <translation id="9074594632540931067">エラー: BATの利用不可</translation>
-<translation id="413458922997276130">現在、Upholdのアカウントがブロックされています。</translation>
-<translation id="3579959767665130790">エラー: ブロックされたアカウント</translation>
-<translation id="6554308597291659562">Upholdが、Upholdのアカウント機能を完全に有効にする前にお客様についての情報収集を要求しています。Upholdアカウントで情報を送信してからもう一度お試しください。</translation>
-<translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
-<translation id="819370426249314592">Upholdのアカウントが保留中です。</translation>
-<translation id="4530453398914580957">エラー: アカウントの保留</translation>
-<translation id="2388470740942086608">現在、Upholdのアカウントが制限されています。</translation>
-<translation id="3605236342612716051">エラー: 制限されたアカウント</translation>
 <translation id="3274650021044762770">Braveリワードをお使いの<ph name="PROVIDER"/>アカウントに接続するためのブラウザリクエストの検証中に問題が発生しました。<ph name="BEGIN_LINK"/>サポートに連絡<ph name="END_LINK"/>してヘルプを依頼してください。</translation>
 <translation id="1316066811927496401">エラー: リクエストを検証できませんでした</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
@@ -677,7 +669,6 @@
 <translation id="8328137586971750853">BraveはInfuraを使用して、Ethereum Name ServiceからスマートコントラクトにEthereum JSON-RPCの呼び出しをかけることで、.ethドメイン名のルックアップ要求を解決します。これを有効にすると、Infuraはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることができなくなります。Infuraの<ph name="BEGIN_INFURA_TOU_LINK"/>利用規約<ph name="END_INFURA_TOU_LINK"/>および<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="7378412287463452336">Infuraサーバーを使用して続行する</translation>
 <translation id="2356070529366658676">確認する</translation>
-<translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">イーサリアム</translation>
 <translation id="2468755552460246661">ドメインがブロックされました</translation>
 <translation id="6393849031898466746">このサイトは他のサイトであなたの行動を追跡する可能性があります</translation>
@@ -823,7 +814,6 @@
 <translation id="4232775951515678071">トランザクションのタイプを取得できませんでした</translation>
 <translation id="2080935885647755539">EIP-1559 トランザクションのガス費用を取得できませんでした</translation>
 <translation id="4843814354611030845">ユーザーがトランザクションを拒否しました</translation>
-<translation id="1462494615260983714">トランザクションの処理中にエラーが発生しました</translation>
 <translation id="4886059598718763020">「<ph name="VALUE"/>」は署名を許可されていません</translation>
 <translation id="8719220598078667817">トランザクションの署名に失敗しました</translation>
 <translation id="875506212625074179">RPCサービスからのチェーンIDレスポンスが無効です</translation>
@@ -871,7 +861,7 @@
 <translation id="1191686659164947414">トランザクションがフロントランニングされている可能性があります</translation>
 <translation id="632241521608275119">価格変動の許容値</translation>
 <translation id="4500473291496079954">有効期限:</translation>
-<translation id="8093033115658137576">0xアドレスまたはURL</translation>
+<translation id="2236833281018938257">0xアドレスまたはURL</translation>
 <translation id="2860280209982026951">BraveはDEXアグリゲーターとして<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>を使用しています。</translation>
 <translation id="151946611346774041">0xは、取引を完了するためにイーサリアムのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
@@ -1155,6 +1145,7 @@
 <translation id="3327639091470204775">Trezorブリッジに接続できませんでした</translation>
 <translation id="6672377693827764095">内部エラーが発生しました。アカウントを取得できません</translation>
 <translation id="6889920539620318793">アクティブに設定</translation>
+<translation id="1462494615260983714">トランザクションの処理中にエラーが発生しました</translation>
 <translation id="8933250418452564886">ハードウェアのトランザクションが見つかりません。もう一度お試しください</translation>
 <translation id="5999974802900788338">ハードウェアデバイスからエラーを受信しました。デバイスでトランザクションの確認が必要となる可能性があります</translation>
 <translation id="8523768065044261559">トランザクションの処理中にエラーが発生しました。もう一度お試しください</translation>
@@ -1275,4 +1266,14 @@
 <translation id="3470923752115324276">Braveは、「DNS over HTTPS（DoH）」を使用する.cryptoドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.cryptoドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.cryptoドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="618766505813078707">Braveは、「DNS over HTTPS（DoH）」を使用する.ethドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.ethドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることはできません。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="5636651007798897342">Cloudflareサーバーを使用して続行する</translation>
+<translation id="413458922997276130">現在、Upholdのアカウントがブロックされています。</translation>
+<translation id="3579959767665130790">エラー: ブロックされたアカウント</translation>
+<translation id="6554308597291659562">Upholdが、Upholdのアカウント機能を完全に有効にする前にお客様についての情報収集を要求しています。Upholdアカウントで情報を送信してからもう一度お試しください。</translation>
+<translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
+<translation id="819370426249314592">Upholdのアカウントが保留中です。</translation>
+<translation id="4530453398914580957">エラー: アカウントの保留</translation>
+<translation id="2388470740942086608">現在、Upholdのアカウントが制限されています。</translation>
+<translation id="3605236342612716051">エラー: 制限されたアカウント</translation>
+<translation id="2218918398178303658">DNS over HTTPS</translation>
+<translation id="8093033115658137576">0xアドレスまたはURL</translation>
 </translationbundle>

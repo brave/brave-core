@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Kļūda: neatbalstīts reģions</translation>
 <translation id="5382684862562314222">BAT jūsu reģionā Uphold makos vēl netiek atbalstīts.</translation>
 <translation id="9074594632540931067">Kļūda: BAT nav pieejams</translation>
-<translation id="413458922997276130">Jūsu Uphold konts ir bloķēts.</translation>
-<translation id="3579959767665130790">Kļūda: bloķēts konts</translation>
-<translation id="6554308597291659562">Uphold ir nepieciešams, lai ievāktu par jums vairāk informāciju, pirms tiek nodrošināta pilna Uphold konta funkcionalitāte. Lūdzu, mēģiniet vēlreiz, kad esat iesniedzis šo informāciju savā Uphold kontā.</translation>
-<translation id="6996157559236886133">Kļūda: ierobežota Uphold konta funkcionalitāte</translation>
-<translation id="819370426249314592">Jūsu Uphold konts vēl nav apstiprināts.</translation>
-<translation id="4530453398914580957">Kļūda: neapstiprināts konts</translation>
-<translation id="2388470740942086608">Jūsu Uphold konts šobrīd ir ierobežots.</translation>
-<translation id="3605236342612716051">Kļūda: ierobežots konts</translation>
 <translation id="3274650021044762770">Radās problēma, apstiprinot jūsu pārlūka pieprasījumu savienot Brave Rewards ar jūsu <ph name="PROVIDER"/> kontu. Jūs varat <ph name="BEGIN_LINK"/>sazināties ar atbalsta dienestu<ph name="END_LINK"/>, lai saņemtu palīdzību.</translation>
 <translation id="1316066811927496401">Kļūda: pieprasījumu nevarēja apstiprināt</translation>
 <translation id="1737873393693460829">Ieslēdzot [[title]], jūs piekrītat <ph name="BEGIN_LINK1"/>pakalpojumu sniegšanas noteikumiem<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>konfidencialitātes politikai<ph name="END_LINK2"/>.</translation>
@@ -475,7 +467,7 @@
 <translation id="8802504113265057166">[[currency]], kas netiek izmantota līdz derīguma termiņa beigām, tiks automātiski atgriezta programmā Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Piešķīruma derīguma beigu termiņš</translation>
 <translation id="1389143276807887637">importēt</translation>
-<translation id="6302422639282249274">Pārvaldīt Brave balvas</translation>
+<translation id="6302422639282249274">Pārvaldīt Brave Rewards</translation>
 <translation id="211044356803193224">Ikmēneša dzeramnaudas!</translation>
 <translation id="2487641031722095938">Jums šodien veicas!</translation>
 <translation id="6255773350565723852">Drīzumā saņemsiet savu marķiera piešķīrumu.</translation>
@@ -495,10 +487,10 @@
 <translation id="156591572855748524">Reklāmu vēsture par 30 dienām</translation>
 <translation id="4923459931733593730">Maksājums</translation>
 <translation id="3138528956349114724">Piespraustās vietnes tagad ir</translation>
-<translation id="7562713189950710660">Ikmēneša dzeramnaudas darbojas, kā norādīts turpmāk.</translation>
+<translation id="7562713189950710660">Ikmēneša dzeramnaudas darbojas šādi:</translation>
 <translation id="1404790274772315264">Ikmēneša dzeramnaudas netiek ņemtas no automātiskās ziedošanas maksājuma. Tās ir atsevišķas.</translation>
 <translation id="9099396904827413228">Katrai vietnei tiek maksāts noteikts apjoms katru mēnesi.</translation>
-<translation id="7018976623064894683">Ikmēneša dzeramnaudas katru mēnesi tiek visas maksātas vienlaikus. Ja izmantojat automātisko ziedošanu, dzeramnaudas tiek izmaksātas tajā pašā laikā, kad ikmēneša automātiskie ziedojumi.</translation>
+<translation id="7018976623064894683">Ikmēneša dzeramnaudas katru mēnesi visas tiek maksātas vienlaikus. Ja izmantojat automātisko ziedošanu, dzeramnaudas tiek izmaksātas tajā pašā laikā, kad ikmēneša automātiskie ziedojumi.</translation>
 <translation id="1135093233619227159">Jūs varat noņemt vietni no ikmēneša dzeramnaudu saņemšanas Dzeramnaudu panelī.</translation>
 <translation id="5082474983463379713">Lūdzu, ņemiet vērā:</translation>
 <translation id="1430915738399379752">Drukāt</translation>
@@ -650,7 +642,7 @@
 <translation id="8624961452383848703">Es vēlos konvertēt...</translation>
 <translation id="1544192797660353713">Maks</translation>
 <translation id="616639131065447379">Laipni lūdzam Brave kripto makos!</translation>
-<translation id="1740464057879304704">Crypto Wallets ļauj jums darboties ar kriptovalūtu un saistītiem aktīviem, izmantojot Brave. Crypto Wallets atbalsta tādus Ethereum žetonus kā ETH un BAT, kā arī kolekcijas žetonus, un ļauj darboties ar Ðapps un citiem viedajiem līgumiem. Tas ir paredzēts cilvēkiem, kuri pārzina Ethereum un citas blokķēdes sistēmas – vai vēlas to apgūt.</translation>
+<translation id="1740464057879304704">Crypto Wallets ļauj jums darboties ar kriptovalūtu un saistītiem aktīviem, izmantojot Brave. Crypto Wallets atbalsta tādus Ethereum žetonus kā ETH un BAT, kā arī kolekcijas žetonus, un ļauj darboties ar Ðapps un citiem viedajiem līgumiem. Tas ir paredzēts cilvēkiem, kuri pārzina Ethereum un citas blokķēdes sistēmas vai vēlas tās apgūt.</translation>
 <translation id="4855440621031541830">Izmantojiet kripto makus tikai tad, ja piekrītat, ka pilnībā atbildat par visiem ar šī pakalpojuma izmantošanu saistītajiem riskiem un Brave Software nekādā veidā neatbild par jebkādiem zaudējumiem, tai skaitā nejaušiem vai secīgiem zaudējumiem, kas jums var rasties šī pakalpojuma lietošanas rezultātā, un tam nav nekādu saistību attiecībā uz šādiem zaudējumiem.</translation>
 <translation id="3187473319809074178">Tie visi ir pilnībā nošķirti no</translation>
 <translation id="8327818101454798856">Ja vēlējāties atbalstīt savas iecienītākās vietnes, dodieties uz tām.</translation>
@@ -668,10 +660,12 @@
 <translation id="1164622162816276433">24 h apjoms</translation>
 <translation id="7534079972563542000">Neapturamie domēni</translation>
 <translation id="4492298165410552103">Vai iespējot neapturamo domēnu atbalstu sistēmā Brave?</translation>
+<translation id="2173151783558384314">Brave izmanto Infura, lai nosūtītu Ethereum JSON-RPC pieprasījumus Unstoppable Domains viedajam līgumam, lai atrisinātu .crypto (un .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin) domēna nosaukuma uzmeklēšanas pieprasījumus. Ja to iespējojat, Infura redz attiecīgos domēnus, kurus mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Infura <ph name="BEGIN_INFURA_TOU_LINK"/> lietošanas noteikumus <ph name="END_INFURA_TOU_LINK"/> un<ph name="BEGIN_INFURA_PRIVACY_LINK"/> privātuma politiku<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Vai iespējot Ethereum Name Service (ENS) atbalstu sistēmā Brave?</translation>
+<translation id="8328137586971750853">Brave izmanto Infura, lai veiktu Ethereum JSON-RPC pieprasījumus Ethereum Name Service viedajam līgumam, lai atrisinātu .eth domēna nosaukuma uzmeklēšanas pieprasījumus. Ja to iespējojat, Infura redz .eth domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Infura <ph name="BEGIN_INFURA_TOU_LINK"/> lietošanas noteikumus <ph name="END_INFURA_TOU_LINK"/> un <ph name="BEGIN_INFURA_PRIVACY_LINK"/> privātuma politiku<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="7378412287463452336">Turpināt izmantot Infura serveri</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
-<translation id="2218918398178303658">DNS ir pārāks par HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domēns bloķēts</translation>
 <translation id="6393849031898466746">Šī vietne var mēģināt jūs izsekot citās vietnēs</translation>
@@ -796,6 +790,7 @@
 <translation id="9161147058107529840">Jābūt vienam objekta parametram.</translation>
 <translation id="1875861420974447980">Pašreiz tiek izmantots šis ķēdes ID</translation>
 <translation id="167698752210114155">Radās iekšēja kļūda</translation>
+<translation id="2326876601333401685">Šī RPC metode netiek atbalstīta.</translation>
 <translation id="1128992132632883337">Radās atbildes analīzes kļūda</translation>
 <translation id="1680597601664421644">Importētā mnemonika Brave makam nav derīga</translation>
 <translation id="4641919696349069826">Pieprasījums jau tiek apstrādāts</translation>
@@ -811,17 +806,16 @@
 <translation id="9195349857587166771">Darījuma dati “maxFeePerGas” nav derīgi.</translation>
 <translation id="8809307000287364168">Darījuma dati “maxPriorityFeePerGas” nav derīgi.</translation>
 <translation id="7381733147588397055">Nevarēja konvertēt darījumu datus</translation>
-<translation id="3829038878925630240">Jānorāda darījuma dati “from”</translation>
+<translation id="3829038878925630240">Jānorāda darījuma dati “no”</translation>
 <translation id="4732386285392573809">Neizdevās uzzināt darījuma Gas cenu.</translation>
 <translation id="4232775951515678071">Neizdevās uzzināt darījuma veidu.</translation>
 <translation id="2080935885647755539">Neizdevās iegūt degvielas cenu EIP-1559 darījumam</translation>
 <translation id="4843814354611030845">Lietotājs noraidīja darījumu</translation>
-<translation id="1462494615260983714">Kļūda darījuma apstrādē</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' nav pilnvarots parakstīt ziņojumu</translation>
 <translation id="8719220598078667817">Neizdevās parakstīt darījumu</translation>
 <translation id="875506212625074179">Nederīga ķēdes ID atbilde no RPC pakalpojuma</translation>
 <translation id="5486744676117070166">Neizdevās iegūt nākamo šī brīža vērtību</translation>
-<translation id="6180576227145734714">Darījuma datiem “to” ir jābūt derīgai adresei, ja norādīts</translation>
+<translation id="6180576227145734714">Darījuma datiem “uz” ir jābūt derīgai adresei, ja norādīts</translation>
 <translation id="4958950550253325418">DeFi lietotnes</translation>
 <translation id="735961408871282410">NFT tirgi</translation>
 <translation id="7740287852186792672">Meklēšanas rezultāti</translation>
@@ -864,11 +858,12 @@
 <translation id="1191686659164947414">Darījums, iespējams, ir iepriekš zināms</translation>
 <translation id="632241521608275119">Pieļaujamā novirze</translation>
 <translation id="4500473291496079954">Derīgums beidzas pēc</translation>
-<translation id="8093033115658137576">0x adrese vai url</translation>
+<translation id="2236833281018938257">0x adrese vai url</translation>
 <translation id="2860280209982026951">Brave izmanto<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kā DEX apkopotāju.</translation>
 <translation id="151946611346774041">0x apstrādā Ethereum adresi un IP adresi, lai veiktu darījumu (tai skaitā cenu saņemšanu). 0x šos datus izmanto VIENĪGI darījumu apstrādei.</translation>
 <translation id="4626407663177532837">Piedāvājuma cenā ir iekļauta Brave maksa 0,875% apmērā.</translation>
 <translation id="8368540604723748428">Pārāk daudz decimāldaļskaitļu</translation>
+<translation id="6575120282593094155">Jums vēl nav <ph name="ACCOUNT_TYPE"/> konta. Vai izveidot tagad?</translation>
 <translation id="2704606927547763573">Nokopēts</translation>
 <translation id="1420318137760245955">Laipni lūdzam jaunajā Brave makā</translation>
 <translation id="8303434745767477417">Turiet kripto līdzekļus savā īpašumā. Sekojiet portfeļa efektivitātei un darbojieties ar tīmekļa 3 DApps. Tirgojieties, ieguldiet, aizņemieties un aizdodiet ar DeFi. Brave privātuma pārlūks to atbalsta. Bez paplašinājumiem, bez lejupielādes.</translation>
@@ -1035,6 +1030,7 @@
 <translation id="5821668936183240062">tālāk</translation>
 <translation id="793994607260936590">pirmais</translation>
 <translation id="4709524402122994378">darījumi</translation>
+<translation id="4591079278963448049">Saistītais marķiera konts vēl neeksistē. Tā izveidei un finansēšanai tiks izmantots neliels daudzums SOL.</translation>
 <translation id="523862956770478816">Vietnes atļaujas</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> savienoti konti</translation>
 <translation id="4305817255990598646">Pārslēgt</translation>
@@ -1127,7 +1123,7 @@
 <translation id="862585889767884824">no</translation>
 <translation id="9106265941552476098">Noraidīt <ph name="TRANSACTION_LENGTH"/> darījumus</translation>
 <translation id="1118876217803190221">Nepietiekama bilance</translation>
-<translation id="275990379543116961">Nepietiek līdzekļu Gas segšanai.</translation>
+<translation id="275990379543116961">Nepietiek līdzekļu Gas segšanai</translation>
 <translation id="3292453499915466604">Nepietiekama likviditāte</translation>
 <translation id="805808215102934711">Aktivizēt<ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Nezināma kļūda</translation>
@@ -1146,6 +1142,7 @@
 <translation id="3327639091470204775">Nav iespējams savienot ar Trezot tiltu</translation>
 <translation id="6672377693827764095">Iekšējā kļūda, kontus nevarēja iegūt</translation>
 <translation id="6889920539620318793">Iestatīt kā aktīvu</translation>
+<translation id="1462494615260983714">Kļūda darījuma apstrādē</translation>
 <translation id="8933250418452564886">Nevar atrast aparatūras darījumu, mēģiniet vēlreiz</translation>
 <translation id="5999974802900788338">Saņemta kļūda no aparatūras ierīces, iespējams, jums savā ierīcē jāapstiprina darījums</translation>
 <translation id="8523768065044261559">Kļūda, apstrādājot darījumu, mēģiniet vēlreiz</translation>
@@ -1165,9 +1162,13 @@
 <translation id="7829441065063984927">7 kriptovalūtu dāvanu dienas, balvās apmēram $500 000.</translation>
 <translation id="8292716346768453265">Piedalieties tagad!</translation>
 <translation id="6423985584914773314">Nederīga FIL adrese</translation>
+<translation id="3898731124813934210">Pirkt ar Wyre</translation>
+<translation id="5522073372365069684">Pirkt ar Ramp</translation>
 <translation id="8528916244724490964">Visi tīkli</translation>
 <translation id="2781668117338732220">Sekundārie tīkli</translation>
 <translation id="2816106784624007524">Gas robežvērtībai jābūt veselam skaitlim, kas lielāks par 0</translation>
+<translation id="3354376789153561654">Ir jānorāda darījuma dati "uz"</translation>
+<translation id="8728991256628663004">Darījuma datiem "no" ir jābūt derīgai Filecoin adresei</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>
@@ -1212,6 +1213,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="2325196879156848326">Savienojums neizdevās</translation>
 <translation id="745054660363064771">Nevar savienoties ar serveri</translation>
 <translation id="3936826714240735937">Izvēlēties citu serveri</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> nevarēja pievienoties <ph name="REGION_NAME"/> serverim. Varat mēģināt vēlreiz vai izvēlēties citu.</translation>
 <translation id="1024255913009642477">Vai jūs jau iegādājāties VPN?</translation>
 <translation id="8814357473522731680">Nodrošina</translation>
 <translation id="5747552184818312860">Termiņš</translation>
@@ -1224,11 +1226,24 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="1751947227857853925">Ātrs un neierobežots līdz 100 Mb/s.</translation>
 <translation id="1400240082805528049">Atbalsts visu diennakti</translation>
 <translation id="8463313539532697053">Uzgaidiet mirkli, kamēr notiek ielāde…</translation>
+<translation id="4613076894734402086">Labot maksāšanas metodi</translation>
+<translation id="1898254156730880135">Šķiet, jūsu pēdējais maksājums neizdevās. Piekļuve šim abonementam tiks apturēta līdz maksājuma problēmas atrisināšanai. Mēģiniet labot maksāšanas metodi vai sazinieties ar Brave atbalsta dienestu.</translation>
+<translation id="1839021455997460752">Jūsu e-pasta adrese</translation>
+<translation id="5154702632169343078">Temats</translation>
+<translation id="6625978880678465492">Lūdzu, izvēlieties iemeslu</translation>
 <translation id="6687228121145903051">Nevar izveidot savienojumu ar VPN (cita kļūda).</translation>
 <translation id="9184988385244077767">Nav interneta, kad savienojums ir izveidots</translation>
 <translation id="21570240866965662">Lēns savienojums.</translation>
-<translation id="1219475260382643267">Vietne nedarbojas.</translation>
+<translation id="1219475260382643267">Vietne nedarbojas</translation>
 <translation id="7138678301420049075">Cits</translation>
+<translation id="1387340358507240698">Aprakstiet problēmu</translation>
+<translation id="501818585183973587">Atlasiet informāciju, kuru vēlaties kopīgot ar mums</translation>
+<translation id="3195618332367441234">Jo vairāk informācijas kopīgosiet, jo vieglāk atbalsta personāls varēs jums palīdzēt.</translation>
+<translation id="5682143294773821728">VPN resursdatora nosaukums:</translation>
+<translation id="24242621812020123">Lietotnes versija:</translation>
+<translation id="6676791921618140305">Operētājsistēmas versija:</translation>
+<translation id="1156325797949437777">Atbalsts tiek sniegts sadarbībā ar Guardian.</translation>
+<translation id="3307461350293459700">VPN savienojums neizdevās. Mēģiniet pievienoties vēlreiz un pārliecinieties, ka noklikšķiniet "Atļaut", lai iespējotu Brave VPN konfigurāciju.</translation>
 <translation id="7586151660465233733">Vairāk tirgu vietnē <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Skatīt tirgus un pārdot kriptovalūtu FTX</translation>
 <translation id="5963745988819586370">Tirgi</translation>
@@ -1249,4 +1264,14 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="3470923752115324276">Brave var nodrošināt iespēju apmeklēt .crypto domēnus, izmantojot Cloudflare, lai atrisinātu .crypto domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .crypto domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave var nodrošināt iespēju apmeklēt .eth domēnus, izmantojot Cloudflare, lai atrisinātu .eth domēna nosaukuma uzmeklēšanas pieprasījumus, izmantojot DNS protokolā HTTPS. Ja to iespējojat, Cloudflare redz .eth domēnu, kuru mēģināt apmeklēt, bet neredz citus domēnus. Skatiet Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>lietošanas noteikumus<ph name="END_CF_TOU_LINK"/> un <ph name="BEGIN_CF_PRIVACY_LINK"/>privātuma politiku<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Turpināt izmantot Cloudflare serveri</translation>
+<translation id="413458922997276130">Jūsu Uphold konts ir bloķēts.</translation>
+<translation id="3579959767665130790">Kļūda: bloķēts konts</translation>
+<translation id="6554308597291659562">Uphold ir nepieciešams, lai ievāktu par jums vairāk informāciju, pirms tiek nodrošināta pilna Uphold konta funkcionalitāte. Lūdzu, mēģiniet vēlreiz, kad esat iesniedzis šo informāciju savā Uphold kontā.</translation>
+<translation id="6996157559236886133">Kļūda: ierobežota Uphold konta funkcionalitāte</translation>
+<translation id="819370426249314592">Jūsu Uphold konts vēl nav apstiprināts.</translation>
+<translation id="4530453398914580957">Kļūda: neapstiprināts konts</translation>
+<translation id="2388470740942086608">Jūsu Uphold konts šobrīd ir ierobežots.</translation>
+<translation id="3605236342612716051">Kļūda: ierobežots konts</translation>
+<translation id="2218918398178303658">DNS ir pārāks par HTTPS</translation>
+<translation id="8093033115658137576">0x adrese vai url</translation>
 </translationbundle>

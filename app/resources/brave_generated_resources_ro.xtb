@@ -69,7 +69,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
 <translation id="3229091547987707389">Importați și distribuiți un director</translation>
-<translation id="4613486011786721686">Ascundeți pictograma Brave Wallet de pe bara de instrumente</translation>
+<translation id="5029193871181468990">Ascundeți pictograma privind recompensele Brave</translation>
+<translation id="7595540212376041331">Ascundeți pictograma Brave Wallet de pe bara de instrumente</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="3161744659507801211">Atenție: Brave nu poate împiedica extensiile să îți înregistreze istoricul de navigare.</translation>
@@ -101,10 +102,12 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1324417023773393937">Browserul Brave</translation>
 <translation id="7276554663454265692">Puteți modifica <ph name="SETTING_TEXT"/> în orice moment din setările browserului.</translation>
 <translation id="6873781976650514089">această setare</translation>
+<translation id="8915916167043355778">Închideți tot</translation>
+<translation id="4870911314065352661">Închideți toate filele?</translation>
+<translation id="7551864359422178684">Aveți <ph name="NUMBER_OF_TABS"/> file deschise în această fereastră de browser.</translation>
+<translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> file</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
-<translation id="6040143037577758943">Închide</translation>
-<translation id="5600566490506283344">Notificare Brave Ad</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Contribuiți cu date anonime privind căutarea și navigarea, pentru a îmbunătăți căutarea Brave.</translation>
 <translation id="1516554614404600536">Sfat Brave</translation>
@@ -195,6 +198,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8721331068159819483">La fel ca macOS</translation>
 <translation id="1692470335103807198">Obține mai multe teme</translation>
 <translation id="2906510232093002459">Imagini implicite Brave</translation>
+<translation id="2396127686705429331">Afișați butonul pentru marcaje</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
 <translation id="5802665280774361839">Afișează completarea automată în bara de adrese</translation>
 <translation id="597020512043916976">Afișează principalele site-uri în sugestiile de completare automată</translation>
@@ -216,7 +220,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2761825942249694703">Acestea sunt setările implicite pentru scuturi. Ele se aplică tuturor site-urilor în afară de cazul în care modificați ceva în panoul Scuturi de pe un anumit site. Modificarea acestora nu va afecta setările existente per site.</translation>
 <translation id="1485394570478670912">Această setare va bloca majoritatea reclamelor de pe site-uri, dar nu și Brave Private Ads, care sunt controlate în</translation>
 <translation id="6388201778088078932">setări.</translation>
-<translation id="4395160081588457461">Priviți &amp; simțiți</translation>
 <translation id="4800195524776354947">Ascunde numărul de elemente blocate afișat pe pictograma Shields</translation>
 <translation id="5510493033031835532">Redireacționați automat paginile AMP</translation>
 <translation id="5197219128592971597">Accesați mereu adresele URL originale ale paginilor (non-AMP), în loc de versiunile Google Accelerated Mobile Page</translation>
@@ -274,9 +277,14 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="5570470519803062774">Setări Site și Shields</translation>
 <translation id="410351446219883937">Redare automată</translation>
+<translation id="3512883292907992390">Permiteți site-urilor să redea automat videoclipurile</translation>
+<translation id="1876603079388924308">Nu permiteți site-urilor să redea automat videoclipurile</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="6583467242903731748">Întreabă când un site dorește să acceseze API-ul unui furnizor de Ethereum</translation>
 <translation id="7017590444693657895">Nu permiteți site-urilor să acceseze API-urile furnizorilor de Ethereum</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="4539536028173362640">Anunță-mă când un site dorește să acceseze API-ul furnizorului Solana</translation>
+<translation id="2777102601740875941">Nu permiteți site-urilor să acceseze API=ul furnizorului Solana</translation>
 <translation id="6414370348346025511">Protecția standard este pornită.</translation>
 <translation id="5565355416171743213">Începeți să utilizați sincronizarea</translation>
 <translation id="4332558599726753990">Setare Sincronizare</translation>
@@ -319,6 +327,11 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2339730291919608488">Părăsire lanț de sincronizare</translation>
 <translation id="115699408012835975">Dacă resetați sincronizarea, va trebui să reintroduceți un cod de sincronizare de la alt dispozitiv pentru a vă sincroniza cu acesta. Sigur doriți să continuați?</translation>
 <translation id="6092564993102418148">Sigur doriți să eliminați dispozitivul selectat din lanțul de sincronizare?</translation>
+<translation id="4400414577602898435">Avertisment: procedând astfel, veți distribui datele dvs. Brave, posibil chiar parolele dvs., cu dispozitivul care a generat aceste cuvinte cod.
+
+    Vă rugăm să verificați din nou dacă aceste cuvinte cod au fost generate de un dispozitiv pe care îl dețineți dvs.
+
+    Sigur doriți să faceți acest lucru?</translation>
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
@@ -356,6 +369,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="594766067816395072">Informațiile privind tranzacțiile din portofel au fost resetate.</translation>
 <translation id="1426410128494586442">Da</translation>
 <translation id="2556708692502648323">Rețele portofele</translation>
+<translation id="3159419679550543837">Afișați rețelele de test</translation>
 <translation id="8205945804087322170">Adăugați o rețea nouă</translation>
 <translation id="1330032157352961756">Identificatorul noului lanț</translation>
 <translation id="3423620355610881890">Un număr zecimal pozitiv</translation>
@@ -376,6 +390,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6301398959353668507">Acest câmp nu poate rămâne gol.</translation>
 <translation id="7504462451153306677">Format incorect, identificatorul lanțului este un număr pozitiv</translation>
 <translation id="650071759190249039">Eroare internă: nu se poate adăuga rețeaua.</translation>
+<translation id="336035846712292194">Vă rugăm să introduceți informațiile despre moneda nativă.</translation>
 <translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
 <translation id="2234108191702901162">Nu se poate adăuga rețeaua</translation>
 <translation id="8996633027318264334">Sigur doriți să ștergeți rețeaua <ph name="KEY_NAME"/>?</translation>
@@ -426,6 +441,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="7690058578502751948">În Brave, se poate utiliza numai un gateway IPFS valid, cu izolarea originii activată</translation>
 <translation id="3411013544209536575">Plăți ajutor</translation>
 <translation id="2775956301559569472">Afișează mesajul Wayback Machine pe paginile 404</translation>
+<translation id="3095201688102519917">Avertizează-mă înainte de a închide o fereastră cu mai multe file</translation>
 <translation id="6624718837376802990">Avatar Recompense Tăioase</translation>
 <translation id="6617313057407561765">Avatar Brave Tăios</translation>
 <translation id="6754445808455578019">Avatar Ocean Tăios</translation>
@@ -467,4 +483,8 @@ Verificați încă o dată dacă aceste cuvinte-cod au fost generate de un dispo
 
 Sigur doriți să faceți acest lucru?</translation>
 <translation id="868529041590572443">Introduceți toate informațiile despre moneda nativă</translation>
+<translation id="4613486011786721686">Ascundeți pictograma Brave Wallet de pe bara de instrumente</translation>
+<translation id="6040143037577758943">Închide</translation>
+<translation id="5600566490506283344">Notificare Brave Ad</translation>
+<translation id="4395160081588457461">Priviți &amp; simțiți</translation>
 </translationbundle>

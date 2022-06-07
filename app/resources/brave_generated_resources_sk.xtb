@@ -70,7 +70,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3425600262621021599">Otvoriť odkaz v súkromnom okne Brave s Torom</translation>
 <translation id="3229091547987707389">Importovať a zdieľať adresár</translation>
 <translation id="5029193871181468990">Skryť ikonu Brave Rewards</translation>
-<translation id="4613486011786721686">Skryť ikonu Brave Wallet na paneli s nástrojmi</translation>
+<translation id="7595540212376041331">Skryť ikonu Brave Wallet na paneli s nástrojmi</translation>
 <translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
 <translation id="9181207987584064303">Zobraziť v Obchode webových rozšírení</translation>
 <translation id="3161744659507801211">Varovanie: Brave nemôže zabrániť rozšíreniam v zaznamenávaní vašej histórie prehliadania.</translation>
@@ -108,8 +108,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> kariet</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
-<translation id="6040143037577758943">Zavrieť</translation>
-<translation id="5600566490506283344">Upozornenie na reklamu Brave</translation>
 <translation id="4174337572777167894">Project Web Discovery</translation>
 <translation id="8659271182272561965">Prispejte nejakýmí údajmi anonymného vyhľadávania a prezerania a upresnite tak vyhľadávanie Brave.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
@@ -222,7 +220,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2761825942249694703">Toto sú predvolené nastavenia Štítov. Vzťahujú sa na všetky webové stránky, kým niečo nezmeníte v paneli Štíty na konkrétnej stránke. Zmena týchto nastavení neovplyvní vaše existujúce nastavenia stránky.</translation>
 <translation id="1485394570478670912">Zablokuje to väčšinu reklám na webových stránkach, nie Brave Private Ads; tie sú kontrolované v</translation>
 <translation id="6388201778088078932">nastavenia.</translation>
-<translation id="4395160081588457461">Pozrieť &amp; cítiť</translation>
 <translation id="4800195524776354947">Zobraziť počet blokovaných položiek na ikone Štíty</translation>
 <translation id="5510493033031835532">Webové stránky AMP s automatickým presmerovaním</translation>
 <translation id="5197219128592971597">Namiesto verzií Accelerated Mobile Page od spoločnosti Google vždy navštevujte pôvodné (iné ako AMP) URL adresy webových stránok.</translation>
@@ -486,4 +483,8 @@ Preverte si, že tieto kódové slová vygenerovalo zariadenie, ktoré vlastnít
 
 Naozaj chcete pokračovať?</translation>
 <translation id="868529041590572443">Vyplňte všetky informácie o natívnej mene</translation>
+<translation id="4613486011786721686">Skryť ikonu Brave Wallet na paneli s nástrojmi</translation>
+<translation id="6040143037577758943">Zavrieť</translation>
+<translation id="5600566490506283344">Upozornenie na reklamu Brave</translation>
+<translation id="4395160081588457461">Pozrieť &amp; cítiť</translation>
 </translationbundle>

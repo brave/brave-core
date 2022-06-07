@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Chyba: región nie je podporovaný</translation>
 <translation id="5382684862562314222">BAT na Uphold zatiaľ nie je podporovaný vo vašom regióne.</translation>
 <translation id="9074594632540931067">Chyba: BAT nedostupný</translation>
-<translation id="413458922997276130">Váš účet na Uphold je momentálne zablokovaný.</translation>
-<translation id="3579959767665130790">Chyba: Zablokovaný účet</translation>
-<translation id="6554308597291659562">Spoločnosť Uphold musí zhromaždiť trochu viac informácií o vašej osobe, kým povolí plnú funkčnosť účtu Uphold. Odošlite tieto informácie do účtu Uphold a následne to skúste znova.</translation>
-<translation id="6996157559236886133">Chyba: Obmedzená funkčnosť účtu Uphold</translation>
-<translation id="819370426249314592">O vašom účte na Uphold sa ešte nerozhodlo.</translation>
-<translation id="4530453398914580957">Chyba: Čakajúci účet</translation>
-<translation id="2388470740942086608">Váš účet na Uphold je momentálne obmedzený.</translation>
-<translation id="3605236342612716051">Chyba: Obmedzený účet</translation>
 <translation id="3274650021044762770">Pri overovaní požiadavky vášho prehliadača na pripojenie Brave Rewards k vášmu účtu<ph name="PROVIDER"/> sa vyskytol problém. So žiadosťou o pomoc <ph name="BEGIN_LINK"/>kontaktujte<ph name="END_LINK"/> podporu.</translation>
 <translation id="1316066811927496401">Chyba: požiadavku nebolo možné overiť</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave bude používať službu Infura na prenos hovorov Ethereum JSON-RPC do smart kontraktu z Ethereum Name Service na vyriešenie požiadaviek na vyhľadanie názvu domény .eth. Ak povolíte túto možnosť, Infura uvidí doménu .eth, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/>služby Infura.</translation>
 <translation id="7378412287463452336">Pokračovať pomocou servera Infura</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
-<translation id="2218918398178303658">DNS cez HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Doména blokovaná</translation>
 <translation id="6393849031898466746">Táto lokalita sa môže pokúsiť sledovať vás na iných lokalitách</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Typ transakcie sa nepodarilo získať</translation>
 <translation id="2080935885647755539">Nepodarilo sa získať poplatky za benzín pre transakciu EIP-1559</translation>
 <translation id="4843814354611030845">Používateľ zamietol transakciu</translation>
-<translation id="1462494615260983714">Chyba pri spracovaní transakcie</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>“ nemá oprávnenie na podpísanie správy</translation>
 <translation id="8719220598078667817">Transakciu sa nepodarilo podpísať</translation>
 <translation id="875506212625074179">Neplatná odpoveď ID reťazca zo služby RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Pri tejto transakcii je možný frontrunning</translation>
 <translation id="632241521608275119">Tolerancia sklzu</translation>
 <translation id="4500473291496079954">Platnosť vyprší o</translation>
-<translation id="8093033115658137576">Adresa 0x alebo adresa URL</translation>
+<translation id="2236833281018938257">Adresa 0x alebo adresa URL</translation>
 <translation id="2860280209982026951">Brave používa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ako agregátor DEX.</translation>
 <translation id="151946611346774041">Ox spracuje adresu Etherea a IP adresu na vykonanie transakcie (vrátane získania kotácií). 0x bude tieto údaje používať IBA na účely spracovania transakcií.</translation>
 <translation id="4626407663177532837">Cenová ponuka zahŕňa poplatok Brave vo výške 0,875 %.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Nepodarilo sa pripojiť k premosteniu Trezor</translation>
 <translation id="6672377693827764095">Interná chyba, nepodarilo sa načítať účty</translation>
 <translation id="6889920539620318793">Nastaviť ako aktívne</translation>
+<translation id="1462494615260983714">Chyba pri spracovaní transakcie</translation>
 <translation id="8933250418452564886">Nie je možné nájsť transakciu hardvéru, skúste to znova</translation>
 <translation id="5999974802900788338">Na hardvérovom zariadení sa vyskytla chyba, pravdepodobne musíte potvrdiť transakciu na svojom zariadení</translation>
 <translation id="8523768065044261559">Pri spracovaní transakcie sa vyskytla chyba, skúste to znova</translation>
@@ -1273,4 +1264,14 @@
 <translation id="3470923752115324276">Brave vám môže umožniť navštíviť domény .crypto pomocou Cloudflare na vyriešenie požiadaviek na vyhľadanie názvu domény .crypto pomocou DNS cez HTTPS. Ak povolíte túto možnosť, Cloudflare uvidí doménu .crypto, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_CF_TOU_LINK"/>podmienky používania<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
 <translation id="618766505813078707">Brave vám umožní navštíviť domény .eth pomocou Cloudflare na vyriešenie požiadaviek na vyhľadanie názvu domény .eth pomocou DNS cez HTTPS. Ak to povolíte, Cloudflare uvidí doménu .eth, ktorú sa pokúšate navštíviť, ale nebude môcť vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_CF_TOU_LINK"/>podmienky používania<ph name="END_CF_TOU_LINK"/> a <ph name="BEGIN_CF_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_CF_PRIVACY_LINK"/> služby Cloudflare.</translation>
 <translation id="5636651007798897342">Pokračovať pomocou servera Cloudflare</translation>
+<translation id="413458922997276130">Váš účet na Uphold je momentálne zablokovaný.</translation>
+<translation id="3579959767665130790">Chyba: Zablokovaný účet</translation>
+<translation id="6554308597291659562">Spoločnosť Uphold musí zhromaždiť trochu viac informácií o vašej osobe, kým povolí plnú funkčnosť účtu Uphold. Odošlite tieto informácie do účtu Uphold a následne to skúste znova.</translation>
+<translation id="6996157559236886133">Chyba: Obmedzená funkčnosť účtu Uphold</translation>
+<translation id="819370426249314592">O vašom účte na Uphold sa ešte nerozhodlo.</translation>
+<translation id="4530453398914580957">Chyba: Čakajúci účet</translation>
+<translation id="2388470740942086608">Váš účet na Uphold je momentálne obmedzený.</translation>
+<translation id="3605236342612716051">Chyba: Obmedzený účet</translation>
+<translation id="2218918398178303658">DNS cez HTTPS</translation>
+<translation id="8093033115658137576">Adresa 0x alebo adresa URL</translation>
 </translationbundle>

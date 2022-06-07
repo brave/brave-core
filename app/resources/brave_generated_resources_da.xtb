@@ -71,7 +71,7 @@ vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="3229091547987707389">Importér og del en mappe</translation>
 <translation id="5029193871181468990">Skjul Braves Belønningsikon</translation>
-<translation id="4613486011786721686">Skjul Brave Wallet-ikonet på værktøjslinjen</translation>
+<translation id="7595540212376041331">Skjul Brave Wallet-ikonet på værktøjslinjen</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke forhindre udvidelser i at gemme din browserhistorik.</translation>
@@ -109,8 +109,6 @@ vindue med Tor</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
-<translation id="6040143037577758943">Luk</translation>
-<translation id="5600566490506283344">Brave annoncenotifikation</translation>
 <translation id="4174337572777167894">Web Discovery-projekt</translation>
 <translation id="8659271182272561965">Bidrag med anonym søge- &amp; browsingdata for at forbedre Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -223,7 +221,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2761825942249694703">Dette er standardindstillingerne for Shields. De gælder for alle websider, medmindre du ændrer noget i Shields-kontrolpanelet på en bestemt side. En ændring af dette vil ikke påvirke dine eksisterende individuelle sideindstillinger.</translation>
 <translation id="1485394570478670912">Dette vil blokere de fleste reklamer på websider, men ikke Brave Private Ads — de kontrolleres i</translation>
 <translation id="6388201778088078932">indstillinger.</translation>
-<translation id="4395160081588457461">Se og mærk</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
 <translation id="5510493033031835532">Omdirigér automatisk AMP-sider</translation>
 <translation id="5197219128592971597">Besøg altid originale (ikke-AMP) URL'er i stedet for Googles Accelerated Mobile Page-versioner)</translation>
@@ -487,4 +484,8 @@ Dobbelttjek, at disse adgangskoder blev genereret på en enhed, du ejer.
 
 Er du sikker på, du vil gennemføre?</translation>
 <translation id="868529041590572443">Angiv al information om lokalvaluta</translation>
+<translation id="4613486011786721686">Skjul Brave Wallet-ikonet på værktøjslinjen</translation>
+<translation id="6040143037577758943">Luk</translation>
+<translation id="5600566490506283344">Brave annoncenotifikation</translation>
+<translation id="4395160081588457461">Se og mærk</translation>
 </translationbundle>

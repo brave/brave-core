@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Error: Hindi sinusuportahan ang rehiyon</translation>
 <translation id="5382684862562314222">Hindi pa sinusuportahan ang BAT sa iyong rehiyon sa Uphold.</translation>
 <translation id="9074594632540931067">Error: Hindi available ang BAT</translation>
-<translation id="413458922997276130">Kasalukuyang naka-block ang iyong account sa Uphold.</translation>
-<translation id="3579959767665130790">Error: Naka-block na account</translation>
-<translation id="6554308597291659562">Ang Uphold ay nangangailangang mag-ipon ng kaunti pang impormasyon tungkol sa'yo bago paganahin ang buong kakayanan ng iyong Uphold na account. Pakiusap subukang muli kapag napasa mo na ang impormasyon na ito sa iyong Uphold account.</translation>
-<translation id="6996157559236886133">Error: Limitadong kakayanan ng Uphold account</translation>
-<translation id="819370426249314592">Pending pa rin ang iyong account sa Uphold.</translation>
-<translation id="4530453398914580957">Error: Pending na account</translation>
-<translation id="2388470740942086608">Kasalukuyang restricted ang iyong account sa Uphold.</translation>
-<translation id="3605236342612716051">Error: Restricted na account</translation>
 <translation id="3274650021044762770">Nagkaproblema sa pag-validate sa kahilingan ng iyong browser na ikonekta ang Mga Reward ng Brave sa iyong <ph name="PROVIDER"/> account. Puwede kang <ph name="BEGIN_LINK"/>makipag-ugnayan sa suporta<ph name="END_LINK"/> para sa higit pang tulong.</translation>
 <translation id="1316066811927496401">Error: Hindi ma-validate ang kahilingan</translation>
 <translation id="1737873393693460829">Sa pamamagitan ng pag-on sa [[title]], sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Gagamit ang Brave ng Infura para magbigay ng mga Ethereum JSON-RPC na pagtawag sa smart contract mula sa Mga Hindi Napipigilang Domain para lutasin ang mga kahilingan sa paghahanap ng .eth na domain name. Kung io-on mo ito, makikita ng Infura ang .eth na domain na sinusubukan mong bisitahin pero hindi nila makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_INFURA_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_INFURA_TOU_LINK"/> at <ph name="BEGIN_INFURA_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_INFURA_PRIVACY_LINK"/> ng Infura.</translation>
 <translation id="7378412287463452336">Magpatuloy gamit ang server ng Infura</translation>
 <translation id="2356070529366658676">Magtanong</translation>
-<translation id="2218918398178303658">DNS sa HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Na-block ang Domain</translation>
 <translation id="6393849031898466746">Posibleng subukan ng site na ito na subaybayan ka sa iba pang site</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Hindi nakuha ang uri para sa transaksyon</translation>
 <translation id="2080935885647755539">Hindi nakuha ang mga bayad sa gas para sa EIP-1559 ma transaksyon</translation>
 <translation id="4843814354611030845">Tinanggihan ng user ang transaksyon</translation>
-<translation id="1462494615260983714">Nagka-error sa pagpoproseso ng transaksyon</translation>
 <translation id="4886059598718763020">Hindi awtorisadong pumirma ng mensahe ang '<ph name="VALUE"/>'</translation>
 <translation id="8719220598078667817">Hindi na-sign ang transaksyon</translation>
 <translation id="875506212625074179">Invalid na tugon ng chain ID mula sa serbisyo ng RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Maaaring frontrun ang transaksyon</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
 <translation id="4500473291496079954">Mag-e-expire sa loob ng</translation>
-<translation id="8093033115658137576">0x address o url</translation>
+<translation id="2236833281018938257">0x address o url</translation>
 <translation id="2860280209982026951">Ginagamit ng Brave ang <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> bilang DEX aggregator.</translation>
 <translation id="151946611346774041">Ipoproseso ng 0x ang Ethereum address at IP address para magawa ang isang transaksyon (kasama na ang pagkuha ng mga quote). Gagamitin LANG ng 0x ang data na ito para sa mga layunin ng pagpoproseso ng mga transaksyon.</translation>
 <translation id="4626407663177532837">Ang quote ay may kasamang Brave fee na 0.875%.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Hindi makakonekta sa Trezor bridge</translation>
 <translation id="6672377693827764095">Internal na error, hindi makuha ang mga account</translation>
 <translation id="6889920539620318793">Itakda bilang aktibo</translation>
+<translation id="1462494615260983714">Nagka-error sa pagpoproseso ng transaksyon</translation>
 <translation id="8933250418452564886">Hindi mahanap ang transaksyon ng hardware, pakisubukan ulit</translation>
 <translation id="5999974802900788338">Nakatanggap ng error mula sa hardware device, posibleng kailangan mong kumpirmahin ang transaksyon sa iyong device</translation>
 <translation id="8523768065044261559">Error sa pagpoproseso sa transaksyon, pakisubukan ulit</translation>
@@ -1273,4 +1264,14 @@
 <translation id="3470923752115324276">Mabibigyang-daan ka ng Brave na bisitahin ang mga .crypto na domain sa pamamagitan ng paggamit ng Cloudflare para resolbahin ang mga kahilingan sa paghahanap ng .crypto na domain name gamit ang DNS sa halip na HTTPS. Kung ie-enable mo ito, makikita ng Cloudflare ang .crypto na domain na sinusubukan mong bisitahin pero hindi nito makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_CF_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_CF_TOU_LINK"/> at <ph name="BEGIN_CF_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_CF_PRIVACY_LINK"/> ng Cloudflare.</translation>
 <translation id="618766505813078707">Mabibigyang-daan ka ng Brave na bisitahin ang mga .eth na domain sa pamamagitan ng paggamit ng Cloudflare para resolbahin ang mga kahilingan sa paghahanap ng .eth na domain name gamit ang DNS sa halip na HTTPS. Kung ie-enable mo ito, makikita ng Cloudflare ang .eth na domain na sinusubukan mong bisitahin pero hindi nito makikita ang iba pang domain. Tingnan ang <ph name="BEGIN_CF_TOU_LINK"/>mga tuntunin ng paggamit<ph name="END_CF_TOU_LINK"/> at <ph name="BEGIN_CF_PRIVACY_LINK"/>patakaran sa privacy<ph name="END_CF_PRIVACY_LINK"/> ng Cloudflare.</translation>
 <translation id="5636651007798897342">Magpatuloy gamit ang server ng Cloudflare</translation>
+<translation id="413458922997276130">Kasalukuyang naka-block ang iyong account sa Uphold.</translation>
+<translation id="3579959767665130790">Error: Naka-block na account</translation>
+<translation id="6554308597291659562">Ang Uphold ay nangangailangang mag-ipon ng kaunti pang impormasyon tungkol sa'yo bago paganahin ang buong kakayanan ng iyong Uphold na account. Pakiusap subukang muli kapag napasa mo na ang impormasyon na ito sa iyong Uphold account.</translation>
+<translation id="6996157559236886133">Error: Limitadong kakayanan ng Uphold account</translation>
+<translation id="819370426249314592">Pending pa rin ang iyong account sa Uphold.</translation>
+<translation id="4530453398914580957">Error: Pending na account</translation>
+<translation id="2388470740942086608">Kasalukuyang restricted ang iyong account sa Uphold.</translation>
+<translation id="3605236342612716051">Error: Restricted na account</translation>
+<translation id="2218918398178303658">DNS sa HTTPS</translation>
+<translation id="8093033115658137576">0x address o url</translation>
 </translationbundle>

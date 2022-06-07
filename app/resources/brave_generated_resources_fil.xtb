@@ -70,7 +70,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="3425600262621021599">Buksan ang link sa pribadong window ng Brave gamit ang Tor</translation>
 <translation id="3229091547987707389">Mag-import at magbahgi ng directory</translation>
 <translation id="5029193871181468990">Itago ang icon ng Brave Rewards</translation>
-<translation id="4613486011786721686">Itago ang icon ng Brave Wallet sa toolbar</translation>
+<translation id="7595540212376041331">Itago ang icon ng Brave Wallet sa toolbar</translation>
 <translation id="4928988318462976765">Store ng Mga Web Extension</translation>
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
 <translation id="3161744659507801211">Babala: Hindi mapipigilan ng Brave ang mga extension sa pag-record ng iyong history ng pag-browse.</translation>
@@ -108,8 +108,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
 <translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
-<translation id="6040143037577758943">Isara</translation>
-<translation id="5600566490506283344">Notification ng Brave Ad</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Mag-ambag ng ilang anonymous na paghahanap at data mula sa pag-browse para pahusayin ang Brave Search.</translation>
 <translation id="1516554614404600536">Tooltip ng Brave</translation>
@@ -222,7 +220,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="2761825942249694703">Ito ang mga default na setting ng Shields. Nalalapat ang mga ito sa lahat ng website maliban kung may babaguhin ka sa Shields panel sa isang partikular na site. Ang pagbago sa mga ito ay hindi makakaapekto sa kasalukuyan mong mga per-site na setting.</translation>
 <translation id="1485394570478670912">Iba-block nito ang karamihan ng mga ad sa mga website, hindi ang Brave Private Ads — kinokontrol ang mga iyon sa</translation>
 <translation id="6388201778088078932">mga setting.</translation>
-<translation id="4395160081588457461">Hitsura at dating</translation>
 <translation id="4800195524776354947">Ipakita ang bilang ng naka-block na item sa icon na Mga Shield</translation>
 <translation id="5510493033031835532">Mag-auto-redirect ng mga AMP page</translation>
 <translation id="5197219128592971597">Palaging bisitahin ang mga orihinal (non-AMP) na URL ng page, sa halip ng mga Accelerated Mobile Page na bersyon ng Google</translation>
@@ -486,4 +483,8 @@ Paki-double check kung na-generate ang salitang code ng device na pagmamay-ari m
 
 Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="868529041590572443">Pakilagay ang lahat ng impormasyon tungkol sa native na currency</translation>
+<translation id="4613486011786721686">Itago ang icon ng Brave Wallet sa toolbar</translation>
+<translation id="6040143037577758943">Isara</translation>
+<translation id="5600566490506283344">Notification ng Brave Ad</translation>
+<translation id="4395160081588457461">Hitsura at dating</translation>
 </translationbundle>

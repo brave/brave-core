@@ -714,7 +714,6 @@
 <translation id="2972581237482394796">&amp;Repetă</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/> selectat(ă). <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Operă</translation>
-<translation id="1536541482996273580">Deschide o filă incognito</translation>
 <translation id="2985398929374701810">Introdu o adresă validă</translation>
 <translation id="2986368408720340940">Această metodă de preluare nu este disponibilă. Încearcă altă metodă.</translation>
 <translation id="2987034854559945715">Nu există funcții care corespund</translation>
@@ -2938,6 +2937,7 @@ Detalii suplimentare:
 <translation id="40442660395682483">Deschideți o filă nouă Incognito pentru a naviga în condiții de confidențialitate</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apăsați tasta Tab, apoi Enter pentru a deschide o filă Incognito nouă și pentru a naviga în condiții de confidențialitate</translation>
 <translation id="3711639027736550870">Deschideți butonul pentru deschiderea unei ferestre Incognito, apăsați Enter pentru a deschide o filă Incognito nouă și navigați în condiții de confidențialitate.</translation>
+<translation id="1536541482996273580">Deschideți o filă incognito</translation>
 <translation id="5549245478906381817">Deschide o fereastră privată</translation>
 <translation id="5497977785983089120">Deschide o fereastră nouă privată pentru a naviga în modul privat</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, apasă Tab apoi Enter pentru a deschide o fereastră nouă privată pentru a naviga în modul privat</translation>

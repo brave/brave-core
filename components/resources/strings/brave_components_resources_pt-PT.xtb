@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Erro: região não compatível</translation>
 <translation id="5382684862562314222">Os token BAT ainda não são suportados em carteiras Uphold na sua região.</translation>
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
-<translation id="413458922997276130">A sua conta Uphold está atualmente bloqueada.</translation>
-<translation id="3579959767665130790">Erro: conta bloqueada</translation>
-<translation id="6554308597291659562">É necessário que a Uphold recolha um pouco mais de informações suas antes de ativar a funcionalidade da conta Uphold totalmente. Tente novamente após ter submetido esta informação na sua conta Uphold.</translation>
-<translation id="6996157559236886133">Erro: funcionalidade da conta Uphold limitada</translation>
-<translation id="819370426249314592">A sua conta Uphold ainda está pendente.</translation>
-<translation id="4530453398914580957">Erro: conta pendente</translation>
-<translation id="2388470740942086608">A sua conta Uphold está atualmente restrita.</translation>
-<translation id="3605236342612716051">Erro: conta restrita</translation>
 <translation id="3274650021044762770">Houve um problema ao validar o pedido do navegador para associar as Recompensas Brave à conta <ph name="PROVIDER"/>. <ph name="BEGIN_LINK"/>Entre em contacto com o apoio ao cliente<ph name="END_LINK"/> para obter mais ajuda.</translation>
 <translation id="1316066811927496401">Erro: não foi possível validar o pedido</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], aceita os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">O Brave irá utilizar o Infura para emitir chamadas JSON-RPC de Ethereum para o contrato inteligente do Ethereum Name Service de resolução de pedidos de pesquisa do nome de domínio .eth. Se ativar esta opção, o Infura verá o domínio .eth que pretende visitar, mas não verá outros. Consulte <ph name="BEGIN_INFURA_TOU_LINK"/>os termos de utilização<ph name="END_INFURA_TOU_LINK"/> e <ph name="BEGIN_INFURA_PRIVACY_LINK"/>a política de privacidade<ph name="END_INFURA_PRIVACY_LINK"/> do Infura.</translation>
 <translation id="7378412287463452336">Continuar com o servidor Infura</translation>
 <translation id="2356070529366658676">Perguntar</translation>
-<translation id="2218918398178303658">DNS por HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domínio Bloqueado</translation>
 <translation id="6393849031898466746">Este site poderá tentar acompanhá-lo noutros sites</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Falha ao obter o tipo para a transação</translation>
 <translation id="2080935885647755539">Falha ao obter as taxas para a transação EIP-1559</translation>
 <translation id="4843814354611030845">O utilizador rejeitou a transação</translation>
-<translation id="1462494615260983714">Erro ao processar a transação</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' não tem autorização para assinar a mensagem</translation>
 <translation id="8719220598078667817">Falha ao assinar transação</translation>
 <translation id="875506212625074179">Resposta de ID da cadeia do serviço de RPC inválida</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Esta transação pode ser uma prática de "front running"</translation>
 <translation id="632241521608275119">Tolerância de desvio</translation>
 <translation id="4500473291496079954">Expira em</translation>
-<translation id="8093033115658137576">endereço ou url 0x</translation>
+<translation id="2236833281018938257">endereço ou url 0x</translation>
 <translation id="2860280209982026951">O Brave usa <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">0x processará o endereço Ethereum e o endereço IP para realizar uma transação (incluindo a obtenção de cotações). 0x usará estes dados APENAS para processar transações.</translation>
 <translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Não foi possível conectar-se à ponte Trezor</translation>
 <translation id="6672377693827764095">Erro interno. Não é possível obter as contas</translation>
 <translation id="6889920539620318793">Definido como ativo</translation>
+<translation id="1462494615260983714">Erro ao processar a transação</translation>
 <translation id="8933250418452564886">Não foi possível encontrar a transação de hardware — tente novamente</translation>
 <translation id="5999974802900788338">Erro recebido do dispositivo de hardware: é possível que tenha de confirmar a transação no seu dispositivo</translation>
 <translation id="8523768065044261559">Erro ao processar a transação — tente novamente</translation>
@@ -1176,8 +1167,8 @@
 <translation id="8528916244724490964">Todas as redes</translation>
 <translation id="2781668117338732220">Redes secundárias</translation>
 <translation id="2816106784624007524">O limite de gasolina tem de ser um número inteiro superior a 0</translation>
-<translation id="3354376789153561654">O destinatário dos dados da transação tem de ser especificado</translation>
-<translation id="8728991256628663004">O remetente dos dados da transação tem de ser um endereço Filecoin válido</translation>
+<translation id="3354376789153561654">Os dados da transação "to" têm de ser especificados</translation>
+<translation id="8728991256628663004">Os dados da transação "from" têm de corresponder a um endereço Filecoin válido</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação geral</translation>
 <translation id="4045404575593562245">Eventos de controlo do Tor</translation>
@@ -1273,4 +1264,14 @@
 <translation id="3470923752115324276">O Brave pode permitir-lhe usar domínios .crypto pela Cloudflare para a resolução de pesquisa do nome de domínio .crypto pelo uso de DNS sobre HTTPS. Caso o permita, Cloudflare verificará o domínio .crypto que quer visitar, mas não lhe será possível visualizar outros domínios.  Visualizar o que Cloudflare diz sobre <ph name="BEGIN_CF_TOU_LINK"/>termos de utilização<ph name="END_CF_TOU_LINK"/> e <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">O Brave pode permitir-lhe vistar domínios .eth pela Cloudflare para a resolução de pesquisa do nome de domínio .eth pelo uso de DNS sobre HTTPS. Caso o permita, Cloudflare verificará o domínio .eth que visa visitar mas não lhe será possível visualizar outros domínios.  Visualizar o que Cloudflare diz sobre <ph name="BEGIN_CF_TOU_LINK"/>termos de utilização<ph name="END_CF_TOU_LINK"/> e <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Continuar pelo uso do servidor Cloudflare</translation>
+<translation id="413458922997276130">A sua conta Uphold está atualmente bloqueada.</translation>
+<translation id="3579959767665130790">Erro: conta bloqueada</translation>
+<translation id="6554308597291659562">É necessário que a Uphold recolha um pouco mais de informações suas antes de ativar a funcionalidade da conta Uphold totalmente. Tente novamente após ter submetido esta informação na sua conta Uphold.</translation>
+<translation id="6996157559236886133">Erro: funcionalidade da conta Uphold limitada</translation>
+<translation id="819370426249314592">A sua conta Uphold ainda está pendente.</translation>
+<translation id="4530453398914580957">Erro: conta pendente</translation>
+<translation id="2388470740942086608">A sua conta Uphold está atualmente restrita.</translation>
+<translation id="3605236342612716051">Erro: conta restrita</translation>
+<translation id="2218918398178303658">DNS por HTTPS</translation>
+<translation id="8093033115658137576">endereço ou url 0x</translation>
 </translationbundle>

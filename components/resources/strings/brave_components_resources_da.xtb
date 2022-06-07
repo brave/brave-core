@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Fejl: Region ikke understøttet</translation>
 <translation id="5382684862562314222">BAT understøttes endnu ikke i din region på Uphold.</translation>
 <translation id="9074594632540931067">Fejl: BAT ikke tilgængelig</translation>
-<translation id="413458922997276130">Din konto på Uphold er i øjeblikket blokeret.</translation>
-<translation id="3579959767665130790">Fejl: Blokeret konto</translation>
-<translation id="6554308597291659562">Uphold skal indsamle lidt flere oplysninger om dig, inden du kan aktivere Upholds fulde kontofunktionalitet. Prøv igen, når du har afgivet disse oplysninger på din Uphold-konto.</translation>
-<translation id="6996157559236886133">Fejl: begrænset kontofunktionalitet i Uphold</translation>
-<translation id="819370426249314592">Din konto på Udhold afventer stadig</translation>
-<translation id="4530453398914580957">Fejl: Afventende konto</translation>
-<translation id="2388470740942086608">Din konto hos Uphold er i øjeblikket begrænset.</translation>
-<translation id="3605236342612716051">Fejl: Konto med begrænsninger</translation>
 <translation id="3274650021044762770">Der opstod et problem med godkendelse a din browsers anmodning om at tilslutte Brave Rewards til din <ph name="PROVIDER"/>-konto. Du kan <ph name="BEGIN_LINK"/>kontakte support<ph name="END_LINK"/> for at få hjælp.</translation>
 <translation id="1316066811927496401">Fejl: Anmodningen kunne ikke godkendes</translation>
 <translation id="1737873393693460829">Ved at aktivere [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave bruger Infura til at sende Ethereum JSON-RPC-opkald til smartkontakter fra Ethereum Name Service for at løse opslagsanmodninger for .eth-domænenavne. Hvis du aktiverer dette, vil Infura se det .eth-domæne, du forsøger at besøge, men vil ikke kunne se andre domæner. Se Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brugsvilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Fortsæt med Infura-server</translation>
 <translation id="2356070529366658676">Spørg</translation>
-<translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domæne blokeret</translation>
 <translation id="6393849031898466746">Denne webside kan registrere din trafik på andre websider</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Kunne ikke finde typen for denne transaktion</translation>
 <translation id="2080935885647755539">Kunne ikke hente gasgebyrer for EIP-1559-transaktion</translation>
 <translation id="4843814354611030845">Brugeren afviste transaktionen</translation>
-<translation id="1462494615260983714">Fejl i behandlingen af transaktionen</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' er ikke autoriseret til at underskrive denne besked</translation>
 <translation id="8719220598078667817">Kunne ikke underskrive transaktion</translation>
 <translation id="875506212625074179">Ugyldigt kæde-ID-svar fra RPC-tjeneste</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Transaktionen kan blive udsat for frontrun</translation>
 <translation id="632241521608275119">Afvigelsestolerance</translation>
 <translation id="4500473291496079954">Udløber om</translation>
-<translation id="8093033115658137576">0x-adresse eller -url</translation>
+<translation id="2236833281018938257">0x-adresse eller -url</translation>
 <translation id="2860280209982026951">Brave bruger <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> som en DEX-aggregator.</translation>
 <translation id="151946611346774041">0x vil behanle Ethereum-adressen og IP-adresen for at gennemføre en transaktion (deriblandt modtagelse af tilbud). 0x vil KUN bruge disse data i forbindelse med behandling af transaktioner.</translation>
 <translation id="4626407663177532837">Priser inkluderer et Brave-gebyr på 0,875 %.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Kunne ikke oprette forbindelse til Trezor-bro</translation>
 <translation id="6672377693827764095">Intern fejl. Kunne ikke hente konti</translation>
 <translation id="6889920539620318793">Markér som aktiv</translation>
+<translation id="1462494615260983714">Fejl i behandlingen af transaktionen</translation>
 <translation id="8933250418452564886">Hardware-transaktionen blev ikke fundet, prøv venligst igen</translation>
 <translation id="5999974802900788338">Fejl modtaget fra hardware-enhed. Du skal formentlig bekræfte transaktionen på din enhed</translation>
 <translation id="8523768065044261559">Fejl i behandlingen af transaktionen, prøv venligst igen</translation>
@@ -1273,4 +1264,14 @@
 <translation id="3470923752115324276">Brave giver dig mulighed for at besøge .crypto-domæner med Cloudflare til løsning af opslagsanmodninger for .crypto-domænenavne ved hjælp af DNS over HTTPS. Hvis du aktiverer dette, vil Cloudflare se det .crypto-domæne, du forsøger at besøge, men de vil ikke kunne se andre domæner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>brugsvilkår<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave giver dig mulighed for at besøge .eth-domæner med Cloudflare til at løse opslagsanmodninger for .eth-domænenavne ved hjælp af DNS over HTTPS. Hvis du aktiverer dette, vil Cloudflare se det .eth-domæne, du forsøger at besøge, men vil ikke kunne se andre domæner. Se Cloudflares <ph name="BEGIN_CF_TOU_LINK"/>brugsvilkår<ph name="END_CF_TOU_LINK"/> og <ph name="BEGIN_CF_PRIVACY_LINK"/>databeskyttelsespolitik<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Fortsæt med Cloudflare-server</translation>
+<translation id="413458922997276130">Din konto på Uphold er i øjeblikket blokeret.</translation>
+<translation id="3579959767665130790">Fejl: Blokeret konto</translation>
+<translation id="6554308597291659562">Uphold skal indsamle lidt flere oplysninger om dig, inden du kan aktivere Upholds fulde kontofunktionalitet. Prøv igen, når du har afgivet disse oplysninger på din Uphold-konto.</translation>
+<translation id="6996157559236886133">Fejl: begrænset kontofunktionalitet i Uphold</translation>
+<translation id="819370426249314592">Din konto på Udhold afventer stadig</translation>
+<translation id="4530453398914580957">Fejl: Afventende konto</translation>
+<translation id="2388470740942086608">Din konto hos Uphold er i øjeblikket begrænset.</translation>
+<translation id="3605236342612716051">Fejl: Konto med begrænsninger</translation>
+<translation id="2218918398178303658">DNS over HTTPS</translation>
+<translation id="8093033115658137576">0x-adresse eller -url</translation>
 </translationbundle>

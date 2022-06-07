@@ -69,7 +69,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2638041073279639246">Atidaryti saitą privačiame lange su Tor</translation>
 <translation id="3425600262621021599">Atidaryti saitą Brave privačiame lange su Tor</translation>
 <translation id="3229091547987707389">Importuoti ir bendrinti katalogą</translation>
-<translation id="4613486011786721686">Slėpti „Brave“ piniginės piktogramą įrankių juostoje</translation>
+<translation id="5029193871181468990">Slėpti „Brave Rewards“ piktogramą</translation>
+<translation id="7595540212376041331">Slėpti „Brave“ piniginės piktogramą įrankių juostoje</translation>
 <translation id="4928988318462976765">Plėtinių parduotuvė</translation>
 <translation id="9181207987584064303">Žiūrėti plėtinių parduotuvėje</translation>
 <translation id="3161744659507801211">Įspėjimas: „Brave“ negali uždrausti plėtiniams įrašyti naršymo istorijos.</translation>
@@ -101,10 +102,12 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1324417023773393937">„Brave“ naršyklė</translation>
 <translation id="7276554663454265692"><ph name="SETTING_TEXT"/> bet kada galite pakeisti naršyklės nuostatose.</translation>
 <translation id="6873781976650514089">Šią nuostatą</translation>
+<translation id="8915916167043355778">Uždaryti viską</translation>
+<translation id="4870911314065352661">Uždaryti visus skirtukus?</translation>
+<translation id="7551864359422178684">Šiame naršyklės lange esate atvėrę <ph name="NUMBER_OF_TABS"/> skirtukus (-ų).</translation>
+<translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> skirtukai (-ų)</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
-<translation id="6040143037577758943">Uždaryti</translation>
-<translation id="5600566490506283344">„Brave Ad“ pranešimas</translation>
 <translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
 <translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis bei padėkite patikslinti „Brave“ paieškos rezultatus.</translation>
 <translation id="1516554614404600536">„Brave“ patarimas apie įrankį</translation>
@@ -195,6 +198,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8721331068159819483">Atitinka „MacOS“</translation>
 <translation id="1692470335103807198">Gauti daugiau temų</translation>
 <translation id="2906510232093002459">„Brave“ numatytieji vaizdai</translation>
+<translation id="2396127686705429331">Rodyti žymių mygtuką</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
 <translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
 <translation id="597020512043916976">Rodyti populiariausias svetaines automatinio užbaigimo pasiūlymuose</translation>
@@ -216,7 +220,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2761825942249694703">Tai numatytosios skydo nuostatos. Jos taikomos visoms svetainėms, nebent atliekate pakeitimų tam tikros svetainės skydų skiltyje. Atlikus tokius pakeitimus nustatytos kitoms svetainėms nuostatos išliks tokios pačios.</translation>
 <translation id="1485394570478670912">Tai svetainėse užblokuos daugumą reklamų, bet ne privačias „Brave Ads“, kurios valdomos dalyje</translation>
 <translation id="6388201778088078932">nuostatos.</translation>
-<translation id="4395160081588457461">Išvaizda ir turinys</translation>
 <translation id="4800195524776354947">Skydų piktogramoje rodyti užblokuotų elementų skaičių</translation>
 <translation id="5510493033031835532">Automatiškai peradresuoti AMP puslapius</translation>
 <translation id="5197219128592971597">Visada naudoti originalius (ne AMP) puslapių URL adresus, o ne „Google Accelerated Mobile Page“ versijas</translation>
@@ -274,9 +277,14 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1144810021918451336">Neapsaugo nuo pavojingų svetainių, siuntų ir plėtinių.</translation>
 <translation id="5570470519803062774">Svetainės ir skydų nuostatos</translation>
 <translation id="410351446219883937">Leisti automatiškai</translation>
+<translation id="3512883292907992390">Leisti svetainėms automatiškai paleisti vaizdo įrašus</translation>
+<translation id="1876603079388924308">Svetainės blokuojamos, kad automatiškai neleistų vaizdo įrašų</translation>
 <translation id="1448289340149908413">Eteris</translation>
 <translation id="6583467242903731748">Klausti, kai svetainė nori pasiekti eterio tiekėjo API</translation>
 <translation id="7017590444693657895">Blokuoti svetaines, kad nebūtų pasiekiamas eterio tiekėjo API</translation>
+<translation id="5390923430722428146">Solana</translation>
+<translation id="4539536028173362640">Klausti, kai svetainė nori pasiekti „Solana“ tiekėjo API</translation>
+<translation id="2777102601740875941">Blokuoti svetaines, kad nebūtų pasiekiamas „Solana“ tiekėjo API</translation>
 <translation id="6414370348346025511">Įjungta standartinė apsauga.</translation>
 <translation id="5565355416171743213">Pradėti naudotis sinchronizavimu</translation>
 <translation id="4332558599726753990">Sinchronizavimo konfigūravimas</translation>
@@ -319,6 +327,11 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2339730291919608488">Išeiti iš sinchronizavimo grandinės</translation>
 <translation id="115699408012835975">Jei iš naujo nustatysite „Sync“, turėsite iš naujo įvesti sinchronizavimo kodą iš kito įrenginio, kad su juo būtų sinchronizuota. Ar tikrai norite tęsti?</translation>
 <translation id="6092564993102418148">Ar tikrai norite pašalinti pasirinktą įrenginį iš sinchronizavimo grandinės?</translation>
+<translation id="4400414577602898435">Įspėjimas: pasirinkus šią parinktį su šiuos žodinius kodus sukūrusiu įrenginiu bus bendrinami jūsų „Brave“ duomenys, galbūt ir jūsų slaptažodžiai.
+
+Įsitikinkite, ar šie žodiniai kodai buvo sukurti jums priklausančiame įrenginyje.
+
+Ar tikrai norite tai padaryti?</translation>
 <translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
 <translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
@@ -356,6 +369,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="594766067816395072">Jūsų piniginės operacijų informacija atkurta.</translation>
 <translation id="1426410128494586442">Taip</translation>
 <translation id="2556708692502648323">Piniginės tinklai</translation>
+<translation id="3159419679550543837">Rodyti bandomuosius tinklus</translation>
 <translation id="8205945804087322170">Pridėti naują tinklą</translation>
 <translation id="1330032157352961756">Naujos grandinės ID</translation>
 <translation id="3423620355610881890">Teigiamas dešimtainis skaičius</translation>
@@ -376,6 +390,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6301398959353668507">Šis laukas negali būti tuščias.</translation>
 <translation id="7504462451153306677">Netinkamas formatas, grandinės ID yra teigiamas skaičius</translation>
 <translation id="650071759190249039">Vidinė klaida, nepavyko pridėti tinklo.</translation>
+<translation id="336035846712292194">Prašome įvesti visą informaciją apie vietinę valiutą</translation>
 <translation id="1062463687579789365">Piniginės tinklų tinkinimas</translation>
 <translation id="2234108191702901162">Nepavyko pridėti tinklo</translation>
 <translation id="8996633027318264334">Ar tikrai norite ištrinti <ph name="KEY_NAME"/>?</translation>
@@ -426,6 +441,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7690058578502751948">„Brave“ galima naudoti tik IPFS tinklų sietuvą, kuriame įjungta kilmės vietos izoliavimo funkcija.</translation>
 <translation id="3411013544209536575">Žinyno patarimai</translation>
 <translation id="2775956301559569472">Rodyti „Wayback Machine“ raginimus 404 puslapiuose</translation>
+<translation id="3095201688102519917">Įspėti prieš uždarant langą su keliais skirtukais</translation>
 <translation id="6624718837376802990">Avataras „Edgy Rewards“</translation>
 <translation id="6617313057407561765">Avataras „Edgy Brave“</translation>
 <translation id="6754445808455578019">Avataras „Edgy Ocean“</translation>
@@ -467,4 +483,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 
 Ar tikrai norite tai padaryti?</translation>
 <translation id="868529041590572443">Užpildykite visą informaciją apie vietinę valiutą</translation>
+<translation id="4613486011786721686">Slėpti „Brave“ piniginės piktogramą įrankių juostoje</translation>
+<translation id="6040143037577758943">Uždaryti</translation>
+<translation id="5600566490506283344">„Brave Ad“ pranešimas</translation>
+<translation id="4395160081588457461">Išvaizda ir turinys</translation>
 </translationbundle>

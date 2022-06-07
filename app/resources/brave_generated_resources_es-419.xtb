@@ -71,7 +71,7 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="3425600262621021599">Abrir vínculo en una ventana privada de Brave con Tor</translation>
 <translation id="3229091547987707389">Importar y compartir un directorio</translation>
 <translation id="5029193871181468990">Ocultar ícono de Recompensas de Brave</translation>
-<translation id="4613486011786721686">Ocultar el ícono de Billetera de Brave en la barra de herramientas</translation>
+<translation id="7595540212376041331">Ocultar el ícono de Billetera de Brave en la barra de herramientas</translation>
 <translation id="4928988318462976765">Tienda virtual de extensiones</translation>
 <translation id="9181207987584064303">Ver en la Tienda virtual de extensiones</translation>
 <translation id="3161744659507801211">Advertencia: Brave no puede evitar que las extensiones registren tu historial de búsqueda.</translation>
@@ -109,8 +109,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> pestañas</translation>
 <translation id="2515126961943087659">Servicio publicitario BAT</translation>
 <translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
-<translation id="6040143037577758943">Cerrar</translation>
-<translation id="5600566490506283344">Notificación de anuncio de Brave</translation>
 <translation id="4174337572777167894">Proyecto de descubrimiento web</translation>
 <translation id="8659271182272561965">Contribuya con algunos datos de búsqueda y navegación anónimos para refinar Brave Search.</translation>
 <translation id="1516554614404600536">Información sobre herramientas de Brave</translation>
@@ -223,7 +221,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="2761825942249694703">Esta es la configuración predeterminada de los escudos. Se aplica a todos los sitios web, a menos que modifiques algo en el panel de escudos de un sitio particular. Estos cambios no afectarán la configuración de los demás sitios.</translation>
 <translation id="1485394570478670912">Esto bloqueará la mayor parte de los anuncios de los sitios web, aunque no los anuncios privados de Brave. Estos últimos se controlan desde la</translation>
 <translation id="6388201778088078932">configuración.</translation>
-<translation id="4395160081588457461">Opciones de diseño</translation>
 <translation id="4800195524776354947">Mostrar la cantidad de elementos bloqueados en el ícono de Escudos</translation>
 <translation id="5510493033031835532">Redirigir automáticamente las páginas AMP</translation>
 <translation id="5197219128592971597">Utiliza siempre las URL de la página original en lugar de las páginas móviles aceleradas (AMP) de Google</translation>
@@ -487,4 +484,8 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 
 ¿Confirma que quiere hacerlo?</translation>
 <translation id="868529041590572443">Introduzca toda la información relativa a la divisa nativa</translation>
+<translation id="4613486011786721686">Ocultar el ícono de Billetera de Brave en la barra de herramientas</translation>
+<translation id="6040143037577758943">Cerrar</translation>
+<translation id="5600566490506283344">Notificación de anuncio de Brave</translation>
+<translation id="4395160081588457461">Opciones de diseño</translation>
 </translationbundle>

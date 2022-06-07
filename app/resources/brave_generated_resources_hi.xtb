@@ -71,7 +71,7 @@
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3229091547987707389">एक डायरेक्टरी इम्पोर्ट और शेयर करें</translation>
 <translation id="5029193871181468990">Brave रिवॉर्ड आइकन को छिपाएँ</translation>
-<translation id="4613486011786721686">टूल बार पर Brave वॉलेट के आइकन को छिपाएँ</translation>
+<translation id="7595540212376041331">टूल बार पर Brave वॉलेट के आइकन को छिपाएँ</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="3161744659507801211">ध्यान दें: Brave, एक्सटेंशन को आपके ब्राउज़िंग विवरण को रिकॉर्ड करने से नहीं रोक सकता है।</translation>
@@ -103,14 +103,12 @@
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
 <translation id="7276554663454265692">आप ब्राउज़र सेटिंग में जाकर कभी भी <ph name="SETTING_TEXT"/> बदल सकते हैं</translation>
 <translation id="6873781976650514089">यह सेटिंग</translation>
-<translation id="8915916167043355778">सभी को बंद करें</translation>
+<translation id="8915916167043355778">सभी बंद करें</translation>
 <translation id="4870911314065352661">क्या आप सभी टैब बंद करना चाहते हैं?</translation>
 <translation id="7551864359422178684">आपकी इस ब्राउज़र विंडो में <ph name="NUMBER_OF_TABS"/> टैब खुले हुए हैं.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> टैब</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
-<translation id="6040143037577758943">बंद करें</translation>
-<translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
 <translation id="4174337572777167894">वेब डिस्कवरी प्रोजेक्ट</translation>
 <translation id="8659271182272561965">कुछ अनाम सर्च में योगदान करें &amp; Brave Search को बेहतर बनाने के लिए ब्राउज़िंग डेटा.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -234,7 +232,7 @@ Binance
 प्रायोजित चित्र
 अधिक थीम प्राप्त करें</translation>
 <translation id="2906510232093002459">Brave डिफ़ॉल्ट इमेजिस</translation>
-<translation id="2396127686705429331">बुकमार्क आईकन दिखाएँ</translation>
+<translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
 <translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
@@ -256,7 +254,6 @@ Binance
 <translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
 <translation id="1485394570478670912">यह वेबसाइटों पर ज़्यादातर विज्ञापनों को ब्लॉक कर देगा, Brave निजी विज्ञापनों को नहीं — जिन्हें कंट्रोल किया जाता है</translation>
 <translation id="6388201778088078932">सेटिंग।</translation>
-<translation id="4395160081588457461">देखो &amp; महसूस करो</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
 <translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
@@ -314,14 +311,14 @@ Binance
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
 <translation id="410351446219883937">स्वतः प्ले</translation>
-<translation id="3512883292907992390">वेबसाइट को वीडियो अपने-आप शुरू करने की इजाज़त दें</translation>
-<translation id="1876603079388924308">साइट को वीडियो अपने-आप प्ले करने से रोकें</translation>
+<translation id="3512883292907992390">वेबसाइट को अपने-आप वीडियो प्ले करने की इजाज़त दें</translation>
+<translation id="1876603079388924308">साइट को अपने-आप वीडियो प्ले करने से रोकें</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="6583467242903731748">पूछें कि कोई साइट एथेरियम प्रदाता API का उपयोग कब करना चाहता है</translation>
 <translation id="7017590444693657895">साइटों को एथेरियम प्रदाता API तक पहुँचने से रोकें</translation>
 <translation id="5390923430722428146">Solana</translation>
-<translation id="4539536028173362640">पूछें कि साइट Solana प्रोवाइडर API को कब ऐक्सेस करना चाहती है</translation>
-<translation id="2777102601740875941">साइट को Solana प्रोवाइडर API को ऐक्सेस करने से रोकें</translation>
+<translation id="4539536028173362640">पूछें कि Solana प्रोवाइडर API को साइट कब ऐक्सेस करना चाहती है</translation>
+<translation id="2777102601740875941">साइट को Solana प्रोवाइडर API का ऐक्सेस करने से रोकें</translation>
 <translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
 <translation id="5565355416171743213">सिंक का उपयोग करना शुरू करें</translation>
 <translation id="4332558599726753990">सिंक सेटअप</translation>
@@ -520,4 +517,8 @@ Binance
 
 क्या आप वाकई यह करना चाहते हैं?</translation>
 <translation id="868529041590572443">मूल करेंसी के बारे में सभी जानकारी भरें</translation>
+<translation id="4613486011786721686">टूल बार पर Brave वॉलेट के आइकन को छिपाएँ</translation>
+<translation id="6040143037577758943">बंद करें</translation>
+<translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
+<translation id="4395160081588457461">देखो &amp; महसूस करो</translation>
 </translationbundle>

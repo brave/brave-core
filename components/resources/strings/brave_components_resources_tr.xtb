@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Hata: Bölge desteklenmiyor</translation>
 <translation id="5382684862562314222">Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.</translation>
 <translation id="9074594632540931067">Hata: BAT kullanılamıyor</translation>
-<translation id="413458922997276130">Uphold'daki hesabınız şu anda engelli.</translation>
-<translation id="3579959767665130790">Hata: Engelli hesap</translation>
-<translation id="6554308597291659562">Uphold hesabı işlevlerinin tamamının etkinleşmesinden önce, Uphold'un hakkınızda biraz daha bilgi toplaması gereklidir. Lütfen Uphold hesabınızda bu bilgileri verdikten sonra tekrar deneyin.</translation>
-<translation id="6996157559236886133">Hata: Sınırlı Uphold hesabı işlevleri</translation>
-<translation id="819370426249314592">Uphold'daki hesabınız hala beklemede.</translation>
-<translation id="4530453398914580957">Hata: Bekleyen hesap</translation>
-<translation id="2388470740942086608">Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.</translation>
-<translation id="3605236342612716051">Hata: Kısıtlanmış hesap</translation>
 <translation id="3274650021044762770">Tarayıcınızın Brave Ödüllerini <ph name="PROVIDER"/> hesabınıza bağlama talebi doğrulanırken bir sorun oluştu. Daha fazla yardım için <ph name="BEGIN_LINK"/>destekle iletişime geçebilirsiniz.<ph name="END_LINK"/></translation>
 <translation id="1316066811927496401">Hata: Talep doğrulanamadı</translation>
 <translation id="1737873393693460829">[[title]] öğesini açarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave, .eth etki alanı adı arama isteklerini çözmek için Ethereum Name Service'ten aldığı akıllı kontrata Ethereum JSON-RPC çağrıları iletmek için Infura'yı kullanacaktır. Bunu etkinleştirirseniz, Infura ziyaret etmeye çalıştığınız .eth etki alanını görebilecek ama diğer etki alanlarını göremeyecektir. Infura'nın <ph name="BEGIN_INFURA_TOU_LINK"/>kullanım şartlarına<ph name="END_INFURA_TOU_LINK"/> ve <ph name="BEGIN_INFURA_PRIVACY_LINK"/>gizlilik ilkesine<ph name="END_INFURA_PRIVACY_LINK"/> bakın.</translation>
 <translation id="7378412287463452336">Infura sunucusunu kullanarak ilerleyin</translation>
 <translation id="2356070529366658676">Sor</translation>
-<translation id="2218918398178303658">HTTPS üzerinde DNS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Etki Alanı Engellendi</translation>
 <translation id="6393849031898466746">Bu site, diğer sitelerdeki hareketinizi izleme girişiminde bulunabilir</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">İşlem için tip alınamadı</translation>
 <translation id="2080935885647755539">EIP-1559 işlemi için GAS ücretleri alınamadı</translation>
 <translation id="4843814354611030845">Kullanıcı işlemi reddetti</translation>
-<translation id="1462494615260983714">İşlem işlenirken hata</translation>
 <translation id="4886059598718763020">"<ph name="VALUE"/>" mesajı imzalamaya yetkili değil</translation>
 <translation id="8719220598078667817">İşlem imzalanamadı</translation>
 <translation id="875506212625074179">RPC hizmetinden geçersiz zincir kimliği yanıtı</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">İşlem frontrunning manipülasyonuna uğramış olabilir</translation>
 <translation id="632241521608275119">Slipaj toleransı</translation>
 <translation id="4500473291496079954">Süre dolumu:</translation>
-<translation id="8093033115658137576">0x adresi veya url'si</translation>
+<translation id="2236833281018938257">0x adresi veya url'si</translation>
 <translation id="2860280209982026951">Brave, <ph name="LINK_BEFORE"/>0x'i<ph name="LINK_AFTER"/> bir DEX toplayıcısı olarak kullanır.</translation>
 <translation id="151946611346774041">0x, bir işlemi yerine getirmek için (teklif alma da dahil) Ethereum adresini ve IP adresini işleyecektir. 0x bu veriyi SADECE işlemleri gerçekleştirme amacıyla kullanacaktır.</translation>
 <translation id="4626407663177532837">Teklif %0,875 Brave ücretini de içerir.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Trezor köprüsüne bağlanılamıyor</translation>
 <translation id="6672377693827764095">İç hata, Hesaplar getirilemiyor</translation>
 <translation id="6889920539620318793">Aktif olarak ayarla</translation>
+<translation id="1462494615260983714">İşlem işlenirken hata</translation>
 <translation id="8933250418452564886">Donanım işlemi bulunamadı, lütfen tekrar deneyin</translation>
 <translation id="5999974802900788338">Donanım cihazından hata alındı, işlemi cihazınızdan onaylamanız gerekiyor olabilir</translation>
 <translation id="8523768065044261559">İşlemin gerçekleştirilmesinde hata, lütfen tekrar deneyin</translation>
@@ -1273,4 +1264,14 @@
 <translation id="3470923752115324276">Brave, .crypto etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .crypto etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .crypto etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
 <translation id="618766505813078707">Brave, .eth etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .eth etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .eth etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
 <translation id="5636651007798897342">Cloudflare sunucusu kullanarak ilerleyin</translation>
+<translation id="413458922997276130">Uphold'daki hesabınız şu anda engelli.</translation>
+<translation id="3579959767665130790">Hata: Engelli hesap</translation>
+<translation id="6554308597291659562">Uphold hesabı işlevlerinin tamamının etkinleşmesinden önce, Uphold'un hakkınızda biraz daha bilgi toplaması gereklidir. Lütfen Uphold hesabınızda bu bilgileri verdikten sonra tekrar deneyin.</translation>
+<translation id="6996157559236886133">Hata: Sınırlı Uphold hesabı işlevleri</translation>
+<translation id="819370426249314592">Uphold'daki hesabınız hala beklemede.</translation>
+<translation id="4530453398914580957">Hata: Bekleyen hesap</translation>
+<translation id="2388470740942086608">Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.</translation>
+<translation id="3605236342612716051">Hata: Kısıtlanmış hesap</translation>
+<translation id="2218918398178303658">HTTPS üzerinde DNS</translation>
+<translation id="8093033115658137576">0x adresi veya url'si</translation>
 </translationbundle>

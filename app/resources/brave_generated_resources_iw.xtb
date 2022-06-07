@@ -69,7 +69,7 @@
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3229091547987707389">ייבוא ושתף ספרייה</translation>
 <translation id="5029193871181468990">הסתרת סמל Brave Rewards</translation>
-<translation id="4613486011786721686">הסתרה של אייקון הארנק בסרגל הפעולות</translation>
+<translation id="7595540212376041331">הסתרה של אייקון הארנק בסרגל הפעולות</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="3161744659507801211">אזהרה: Brave אינו יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלכם.</translation>
@@ -108,8 +108,6 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> כרטיסיות</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
-<translation id="6040143037577758943">סגור</translation>
-<translation id="5600566490506283344">התראת Brave Ad</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -221,7 +219,6 @@
 <translation id="2761825942249694703">אלו הן הגדרות ברירת המחדל של Shields. הן חלות על כל אתרי האינטרנט, אלא אם תבצעו שינוי כלשהו בפאנל של Shields באתר מסוים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
 <translation id="1485394570478670912">פעולה זו תחסום את מרבית המודעות באתרים, לא את Brave Private Ads הנשלטות על ידי</translation>
 <translation id="6388201778088078932">הגדרות.</translation>
-<translation id="4395160081588457461">Look &amp; feel</translation>
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
 <translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
 <translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
@@ -483,4 +480,8 @@
 אנא וודא שמילות קוד אלה נוצרו על ידי מכשיר שבבעלותך
 הנך בטוח שברצונך לעשות זאת?</translation>
 <translation id="868529041590572443">נא להזין את כל המידע על המטבע המקומי</translation>
+<translation id="4613486011786721686">הסתרה של אייקון הארנק בסרגל הפעולות</translation>
+<translation id="6040143037577758943">סגור</translation>
+<translation id="5600566490506283344">התראת Brave Ad</translation>
+<translation id="4395160081588457461">Look &amp; feel</translation>
 </translationbundle>

@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Eroare: regiune neacceptată</translation>
 <translation id="5382684862562314222">Uphold nu acceptă încă BAT în regiunea dvs.</translation>
 <translation id="9074594632540931067">Eroare: token-ul BAT nu este disponibil</translation>
-<translation id="413458922997276130">Contul dvs. Uphold este blocat în prezent.</translation>
-<translation id="3579959767665130790">Eroare: cont blocat</translation>
-<translation id="6554308597291659562">Uphold are nevoie de puțin mai multe informații despre dvs. înainte de a activa toate funcțiile contului Uphold. Încercați din nou după ce ați trimis aceste informații în contul dvs. Uphold.</translation>
-<translation id="6996157559236886133">Eroare: cont Uphold limitat</translation>
-<translation id="819370426249314592">Contul dvs. Uphold este încă în așteptare.</translation>
-<translation id="4530453398914580957">Eroare: cont în așteptare</translation>
-<translation id="2388470740942086608">Contul dvs. Uphold este restricționat în prezent.</translation>
-<translation id="3605236342612716051">Eroare: cont restricționat</translation>
 <translation id="3274650021044762770">A apărut o problemă la validarea solicitării browserului de conectare a recompenselor Brave la contul dvs. <ph name="PROVIDER"/>. Puteți <ph name="BEGIN_LINK"/>contacta departamentul de asistență<ph name="END_LINK"/> pentru ajutor suplimentar.</translation>
 <translation id="1316066811927496401">Eroare: solicitarea nu a putut fi validată</translation>
 <translation id="1737873393693460829">Prin activarea [[title]], acceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
@@ -668,10 +660,12 @@
 <translation id="1164622162816276433">Volum 24HR</translation>
 <translation id="7534079972563542000">Domenii Unstoppable</translation>
 <translation id="4492298165410552103">Activați Unstoppable Domains în Brave?</translation>
+<translation id="2173151783558384314">Brave va utiliza Infura pentru a efectua apeluri Ethereum JSON-RPC către contractul inteligent de la  domeniile Unstoppable, pentru a rezolva solicitările de căutare nume de domenii .crypto (și, de asemenea, .x, .coin, .nft, .dao, .wallet, .888, .blockchain și .bitcoin). Dacă activați această opțiune, Infura va vedea domeniile pe care încercați să le accesați, dar nu veți putea vedea alte domenii. Vedeți <ph name="BEGIN_INFURA_TOU_LINK"/>termenii de utilizare<ph name="END_INFURA_TOU_LINK"/> și <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Activați Ethereum Name Service (ENS) în Brave?</translation>
+<translation id="8328137586971750853">Brave va utiliza Infura pentru a efectua apeluri Ethereum JSON-RPC către contractul inteligent de la Ethereum Name Service, pentru a rezolva solicitările de căutare nume de domenii .eth. Dacă activați această opțiune, Infura va vedea domeniile pe care încercați să le accesați, dar nu veți putea vedea alte domenii. Vedeți <ph name="BEGIN_INFURA_TOU_LINK"/>termenii de utilizare<ph name="END_INFURA_TOU_LINK"/> și <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="7378412287463452336">Continuați folosind serverul Infura</translation>
 <translation id="2356070529366658676">Întreabă-mă</translation>
-<translation id="2218918398178303658">DNS prin HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domeniu blocat</translation>
 <translation id="6393849031898466746">Acest site ar putea încerca să vă urmărească pe alte site-uri pe care le accesați</translation>
@@ -796,6 +790,7 @@
 <translation id="9161147058107529840">Se preconiza un singur parametru de obiect.</translation>
 <translation id="1875861420974447980">Acest ID de lanț este deja utilizat</translation>
 <translation id="167698752210114155">A apărut o eroare internă</translation>
+<translation id="2326876601333401685">Metoda RPC nu este acceptată.</translation>
 <translation id="1128992132632883337">A survenit o eroare de analizare a răspunsului</translation>
 <translation id="1680597601664421644">Codul mnemonic importat nu este valid pentru portofelul Brave</translation>
 <translation id="4641919696349069826">Există deja o solicitare în desfășurare</translation>
@@ -816,7 +811,6 @@
 <translation id="4232775951515678071">Nu s-a reușit obținerea tipului tranzacției</translation>
 <translation id="2080935885647755539">Nu s-a reușit obținerea taxelor gas pentru tranzacția EIP-1559</translation>
 <translation id="4843814354611030845">Utilizatorul a respins tranzacția</translation>
-<translation id="1462494615260983714">Eroare la procesarea tranzacției</translation>
 <translation id="4886059598718763020">„<ph name="VALUE"/>” nu deține autorizarea de a semna mesajul</translation>
 <translation id="8719220598078667817">Imposibil de semnat tranzacția</translation>
 <translation id="875506212625074179">Răspuns ID lanț nevalid de la serviciul RPC</translation>
@@ -864,11 +858,12 @@
 <translation id="1191686659164947414">Tranzacția poate fi realizată anticipat, pe baza unor informații confidențiale care nu sunt disponibile public</translation>
 <translation id="632241521608275119">Marjă de toleranță</translation>
 <translation id="4500473291496079954">Expiră în</translation>
-<translation id="8093033115658137576">Adresă sau URL 0x</translation>
+<translation id="2236833281018938257">Adresă sau URL 0x</translation>
 <translation id="2860280209982026951">Brave utilizează <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ca agregator de schimb descentralizat.</translation>
 <translation id="151946611346774041">0x va procesa adresa Ethereum și adresa IP pentru executarea tranzacției (inclusiv obținerea ofertelor). 0x va utiliza aceste date DOAR în scopul procesării tranzacțiilor.</translation>
 <translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="8368540604723748428">Prea multe zecimale</translation>
+<translation id="6575120282593094155">Nu aveți încă un cont <ph name="ACCOUNT_TYPE"/> . Creați unul acum?</translation>
 <translation id="2704606927547763573">Copiat</translation>
 <translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
 <translation id="8303434745767477417">Țineți criptomonedele în custodia dvs. Urmăriți performanța portofoliului și interacționați cu aplicații descentralizate web 3. Tranzacționați, investiți, oferiți și obțineți împrumuturi cu DeFi, totul din browserul Brave, care protejează confidențialitatea dvs. Nu aveți nevoie de extensii și nu trebuie să descărcați nimic.</translation>
@@ -1035,6 +1030,7 @@
 <translation id="5821668936183240062">înainte</translation>
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">tranzacții</translation>
+<translation id="4591079278963448049">Contul de token asociat nu există încă. O sumă mică de SOL va fi cheltuită pentru a-l crea și finanța.</translation>
 <translation id="523862956770478816">Permisiuni site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> conturi conectate</translation>
 <translation id="4305817255990598646">Comutați</translation>
@@ -1146,6 +1142,7 @@
 <translation id="3327639091470204775">Nu este posibilă conectarea la Trezor Bridge</translation>
 <translation id="6672377693827764095">Eroare internă: nu se pot obține conturile</translation>
 <translation id="6889920539620318793">Setați ca activă</translation>
+<translation id="1462494615260983714">Eroare la procesarea tranzacției</translation>
 <translation id="8933250418452564886">Nu se găsește tranzacția hardware. Încercați din nou</translation>
 <translation id="5999974802900788338">S-a primit o eroare de la dispozitivul hardware. Probabil că trebuie să confirmați tranzacția pe dispozitivul dvs.</translation>
 <translation id="8523768065044261559">Eroare la procesarea tranzacției. Încercați din nou</translation>
@@ -1165,9 +1162,13 @@
 <translation id="7829441065063984927">7 zile de premii crypto, ~$500k puși la bătaie.</translation>
 <translation id="8292716346768453265">Intrați acum!</translation>
 <translation id="6423985584914773314">Nu este o adresă FIL validă</translation>
+<translation id="3898731124813934210">Cumpărați cu Wyre</translation>
+<translation id="5522073372365069684">Cumpărați cu Ramp</translation>
 <translation id="8528916244724490964">Toate rețelele</translation>
 <translation id="2781668117338732220">Rețele secundare</translation>
 <translation id="2816106784624007524">Limita Gas trebuie să fie un număr întreg mai mare decât 0</translation>
+<translation id="3354376789153561654">Datele tranzacției „to” trebuie specificate</translation>
+<translation id="8728991256628663004">Datele tranzacției „from” trebuie să fie o adresă Filecoin validă</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
@@ -1212,6 +1213,7 @@
 <translation id="2325196879156848326">Eroare de conexiune</translation>
 <translation id="745054660363064771">Nu este posibilă conectarea la server</translation>
 <translation id="3936826714240735937">Selectați un alt server</translation>
+<translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> nu s-a putut conecta la serverul <ph name="REGION_NAME"/>. Puteți încerca din nou sau puteți alege un alt server.</translation>
 <translation id="1024255913009642477">Ați achiziționat deja VPN?</translation>
 <translation id="8814357473522731680">Oferit de</translation>
 <translation id="5747552184818312860">Expiră</translation>
@@ -1224,12 +1226,24 @@
 <translation id="1751947227857853925">Rapid și nelimitat, până la 100 Mbps</translation>
 <translation id="1400240082805528049">Asistență non-stop</translation>
 <translation id="8463313539532697053">Așteptați puțin până se încarcă...</translation>
+<translation id="4613076894734402086">Modificați metoda de plată</translation>
+<translation id="1898254156730880135">Se pare că cea mai recentă plată nu a reușit. Accesul la acest abonament va fi întrerupt până când problema legată de plată va fi remediată. Încercați să modificați metoda de plată sau contactați asistența Brave.</translation>
+<translation id="1839021455997460752">Adresa dvs. e-mail</translation>
 <translation id="5154702632169343078">Subiect</translation>
+<translation id="6625978880678465492">Selectați un motiv</translation>
 <translation id="6687228121145903051">Nu este posibilă conectarea la VPN (altă eroare)</translation>
 <translation id="9184988385244077767">Fără internet în momentul conectării</translation>
 <translation id="21570240866965662">Viteză mică</translation>
 <translation id="1219475260382643267">Site-ul nu funcționează</translation>
 <translation id="7138678301420049075">Altele</translation>
+<translation id="1387340358507240698">Descrieți problema dvs.</translation>
+<translation id="501818585183973587">Selectați informațiile pe care sunteți de acord să ni le furnizați</translation>
+<translation id="3195618332367441234">Cu cât distribuiți mai multe informații, cu atât îi va fi mai ușor echipei noastre de asistență să vă ajute</translation>
+<translation id="5682143294773821728">Numele gazdei VPN:</translation>
+<translation id="24242621812020123">Versiune aplicație:</translation>
+<translation id="6676791921618140305">Versiunea sistemului de operare:</translation>
+<translation id="1156325797949437777">Asistență oferită în parteneriat cu Guardian.</translation>
+<translation id="3307461350293459700">Nu s-a putut realiza o conexiune VPN. Încercați să vă conectați din nou și asigurați-vă că dați clic pe Permiteți, pentru a activa configurarea VPN-ului Brave.</translation>
 <translation id="7586151660465233733">Mai multe piețe pe <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vedeți piețe și tranzacționați criptomonede pe FTX</translation>
 <translation id="5963745988819586370">Piețe</translation>
@@ -1250,4 +1264,14 @@
 <translation id="3470923752115324276">Cu ajutorul Brave, puteți accesa domenii .crypto folosind Cloudflare pentru a rezolva solicitările de căutare a numelui domeniului .crypto folosind DNS prin HTTPS. Dacă activați aceasta, Cloudflare va vedea domeniul .crypto pe care încercați să-l accesați, dar ei nu vor putea vedea alte domenii. Accesați <ph name="BEGIN_CF_TOU_LINK"/>condițiile de utilizare<ph name="END_CF_TOU_LINK"/> și <ph name="BEGIN_CF_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="618766505813078707">Cu ajutorul Brave, puteți accesa domenii .eth folosind Cloudflare pentru a rezolva solicitările de căutare a numelui domeniului .eth folosind DNS prin HTTPS. Dacă activați aceasta, Cloudflare va vedea domeniul .crypto pe care încercați să-l accesați, dar ei nu vor putea vedea alte domenii. Consultați <ph name="BEGIN_CF_TOU_LINK"/>condițiile de cutilizare<ph name="END_CF_TOU_LINK"/> și <ph name="BEGIN_CF_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
 <translation id="5636651007798897342">Continuați folosind serverul Cloudflare</translation>
+<translation id="413458922997276130">Contul dvs. Uphold este blocat în prezent.</translation>
+<translation id="3579959767665130790">Eroare: cont blocat</translation>
+<translation id="6554308597291659562">Uphold are nevoie de puțin mai multe informații despre dvs. înainte de a activa toate funcțiile contului Uphold. Încercați din nou după ce ați trimis aceste informații în contul dvs. Uphold.</translation>
+<translation id="6996157559236886133">Eroare: cont Uphold limitat</translation>
+<translation id="819370426249314592">Contul dvs. Uphold este încă în așteptare.</translation>
+<translation id="4530453398914580957">Eroare: cont în așteptare</translation>
+<translation id="2388470740942086608">Contul dvs. Uphold este restricționat în prezent.</translation>
+<translation id="3605236342612716051">Eroare: cont restricționat</translation>
+<translation id="2218918398178303658">DNS prin HTTPS</translation>
+<translation id="8093033115658137576">Adresă sau URL 0x</translation>
 </translationbundle>

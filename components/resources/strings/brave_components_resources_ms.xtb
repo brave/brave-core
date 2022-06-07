@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Ralat: Wilayah tidak disokong</translation>
 <translation id="5382684862562314222">BAT belum lagi disokong di rantau anda di Uphold.</translation>
 <translation id="9074594632540931067">Ralat: BAT tidak tersedia</translation>
-<translation id="413458922997276130">Akaun anda di Uphold disekat pada masa ini.</translation>
-<translation id="3579959767665130790">Ralat: Akaun disekat</translation>
-<translation id="6554308597291659562">Uphold perlu mengumpulkan sedikit lagi maklumat tentang anda sebelum mendayakan kefungsian akaun Uphold sepenuhnya. Sila cuba lagi selepas anda menghantar maklumat ini dalam akaun Uphold anda.</translation>
-<translation id="6996157559236886133">Ralat: Kefungsian akaun Uphold yang terhad</translation>
-<translation id="819370426249314592">Akaun anda di Uphold masih belum selesai.</translation>
-<translation id="4530453398914580957">Ralat: Akaun belum selesai</translation>
-<translation id="2388470740942086608">Akaun anda di Uphold dihad pada masa ini.</translation>
-<translation id="3605236342612716051">Ralat: Akaun dihadkan</translation>
 <translation id="3274650021044762770">Terdapat masalah dalam membuat pengesahan terhadap permintaan penyemak imbas anda untuk menghubungkan Brave Rewards dengan akaun <ph name="PROVIDER"/> anda. Anda boleh <ph name="BEGIN_LINK"/>menghubungi sokongan<ph name="END_LINK"/> untuk mendapatkan bantuan lanjut.</translation>
 <translation id="1316066811927496401">Ralat: Permintaan tidak dapat disahkan</translation>
 <translation id="1737873393693460829">Dengan menekan buka pada [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave akan menggunakan Infura untuk mengeluarkan panggilan Ethereum JSON-RPC kepada kontrak pintar daripada Ethereum Name Service bagi menyelesaikan permintaan carian nama domain .eth. Jika anda mendayakan tetapan ini, Infura dapat melihat domain .eth yang cuba anda lawati tetapi Infura tidak dapat melihat domain lain. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>dasar privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="7378412287463452336">Teruskan penggunaan pelayan Infura</translation>
 <translation id="2356070529366658676">Tanya</translation>
-<translation id="2218918398178303658">DNS melalui HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domain Disekat</translation>
 <translation id="6393849031898466746">Tapak ini mungkin cuba menjejaki anda merentasi tapak lain</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Gagal mendapatkan jenis untuk transaksi</translation>
 <translation id="2080935885647755539">Gagal mendapatkan fi gas untuk transaksi EIP-1559</translation>
 <translation id="4843814354611030845">Pengguna menolak transaksi</translation>
-<translation id="1462494615260983714">Ralat memproses transaksi</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' tidak dibenarkan untuk menandatangan mesej</translation>
 <translation id="8719220598078667817">Gagal menandatangani transaksi</translation>
 <translation id="875506212625074179">Respons ID rantaian tidak sah daripada perkhidmatan RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Transaksi mungkin digunakan terlebih dahulu</translation>
 <translation id="632241521608275119">Toleransi gelinciran</translation>
 <translation id="4500473291496079954">Tamat tempoh dalam</translation>
-<translation id="8093033115658137576">alamat 0x atau url</translation>
+<translation id="2236833281018938257">alamat 0x atau url</translation>
 <translation id="2860280209982026951">Brave menggunakan <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> sebagai agregator DEX.</translation>
 <translation id="151946611346774041">0x akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). 0x HANYA akan menggunakan data ini untuk tujuan pemprosesan transaksi.</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Tidak dapat menyambung ke jambatan Trezor</translation>
 <translation id="6672377693827764095">Ralat dalaman, Gagal untuk mendapatkan akaun</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
+<translation id="1462494615260983714">Ralat memproses transaksi</translation>
 <translation id="8933250418452564886">Tidak dapat mencari transaksi perkakasan, sila cuba lagi</translation>
 <translation id="5999974802900788338">Menerima ralat dari peranti perkakasan, mungkin anda perlu mengesahkan transaksi pada peranti anda</translation>
 <translation id="8523768065044261559">Ralat memproses transaksi, sila cuba lagi</translation>
@@ -1273,4 +1264,14 @@
 <translation id="3470923752115324276">Brave boleh membenarkan anda untuk melawat domain .crypto dengan menggunakan Cloudflare untuk menyelesaikan permintaan carian nama domain .crypto menggunakan DNS melalui HTTPS. Jika anda mengaktifkan ciri-ciri ini, Cloudflare akan melihat domain .crypto yang anda cuba untuk melawat, tetapi mereka tidak dapat melihat domain lain. Lihat Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="618766505813078707">Brave boleh membenarkan anda untuk melawat domain .eth dengan menggunakan Cloudflare untuk menyelesaikan permintaan carian nama domain .eth menggunakan DNS melalui HTTPS. Jika anda mengaktifkan ciri-ciri ini, Cloudflare akan melihat domain .eth yang anda cuba untuk melawat, tetapi mereka tidak dapat melihat domain lain. Lihat Cloudflare <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>.</translation>
 <translation id="5636651007798897342">Teruskan dengan menggunakan pelayan Cloudflare</translation>
+<translation id="413458922997276130">Akaun anda di Uphold disekat pada masa ini.</translation>
+<translation id="3579959767665130790">Ralat: Akaun disekat</translation>
+<translation id="6554308597291659562">Uphold perlu mengumpulkan sedikit lagi maklumat tentang anda sebelum mendayakan kefungsian akaun Uphold sepenuhnya. Sila cuba lagi selepas anda menghantar maklumat ini dalam akaun Uphold anda.</translation>
+<translation id="6996157559236886133">Ralat: Kefungsian akaun Uphold yang terhad</translation>
+<translation id="819370426249314592">Akaun anda di Uphold masih belum selesai.</translation>
+<translation id="4530453398914580957">Ralat: Akaun belum selesai</translation>
+<translation id="2388470740942086608">Akaun anda di Uphold dihad pada masa ini.</translation>
+<translation id="3605236342612716051">Ralat: Akaun dihadkan</translation>
+<translation id="2218918398178303658">DNS melalui HTTPS</translation>
+<translation id="8093033115658137576">alamat 0x atau url</translation>
 </translationbundle>
