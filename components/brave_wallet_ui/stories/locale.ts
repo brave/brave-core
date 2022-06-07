@@ -495,5 +495,35 @@ provideStrings({
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
-  braveWalletNetworkFilterSecondary: 'Secondary Networks'
+  braveWalletNetworkFilterSecondary: 'Secondary Networks',
+
+  // Transaction post-confirmation
+
+  // Submitted
+  braveWalletTransactionSubmittedTitle: 'Transaction submitted',
+  braveWalletTransactionSubmittedDescription: 'Transaction has been successfully sent to the network and awaits confirmation.',
+
+  // Failed
+  braveWalletTransactionFailedHeaderTitle: '$1 was returned to your wallet',
+  braveWalletTransactionFailedTitle: 'Transaction failed',
+  braveWalletTransactionFailedDescription: 'Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.',
+  braveWalletTransactionFailedSwapNextCTA: 'New trade',
+  braveWalletTransactionFailedNextCTA: 'New transaction',
+  braveWalletTransactionFailedViewErrorCTA: 'View error',
+  braveWalletTransactionFailedReceiptCTA: 'Receipt',
+  braveWalletTransactionFailedModalTitle: 'Error code',
+  braveWalletTransactionFailedModalClose: 'Close',
+
+  // Complete
+  braveWalletTransactionCompleteSwapHeaderTitle: 'Swapped $1 to $2',
+  braveWalletTransactionCompleteTitle: 'Transaction complete!',
+  braveWalletTransactionCompleteSwapDescription: '$1 has been successfully deposited into your wallet.',
+  braveWalletTransactionCompleteNextCTA: 'Done',
+  braveWalletTransactionCompleteReceiptCTA: 'Receipt',
+
+  // Confirming
+  braveWalletTransactionConfirmingTitle: 'Transaction is processing',
+  // [FIXME]: change the wording after ETH2.
+  braveWalletTransactionConfirmingDescription: 'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
+  braveWalletTransactionConfirmingText: 'Confirming'
 })
