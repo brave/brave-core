@@ -7,6 +7,7 @@
     android:background="@color/wallet_bg"
     android:paddingHorizontal="12dp"
     android:paddingTop="48dp"
+    android:paddingBottom="20dp"
     tools:context=".browser.crypto_wallet.fragments.dapps.SignMessageFragment">
 
     <ImageView

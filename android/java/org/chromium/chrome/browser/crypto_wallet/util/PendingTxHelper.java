@@ -76,6 +76,9 @@ public class PendingTxHelper implements TxServiceObserver {
 
     public void fetchTransactions(Runnable runWhenDone) {
         isFetchingTx = true;
+        mTransactionInfos.clear();
+        mCacheTransactionInfos.clear();
+        mTxInfos.clear();
         _mTransactionInfos.postValue(Collections.emptyList());
         _mSelectedPendingRequest.postValue(null);
         AsyncUtils.MultiResponseHandler allTxMultiResponse =
@@ -171,7 +174,6 @@ public class PendingTxHelper implements TxServiceObserver {
     }
 
     private void updateTransactionList() {
-        mTransactionInfos.clear();
         for (TransactionInfo[] transactionInfoArr : mTxInfos.values()) {
             Collections.addAll(mTransactionInfos, transactionInfoArr);
         }

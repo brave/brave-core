@@ -169,6 +169,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
     private TextView mBraveRewardsNotificationsCount;
     private ImageView mBraveRewardsOnboardingIcon;
+    private View mBraveWalletBadge;
     private boolean mShieldsLayoutIsColorBackground;
     private int mCurrentToolbarColor;
 
@@ -224,6 +225,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
         mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
         mHomeButton = (HomeButton) findViewById(R.id.home_button);
+        mBraveWalletBadge = findViewById(R.id.wallet_notfication_badge);
 
         if (mHomeButton != null) {
             mHomeButton.setOnLongClickListener(this);
@@ -1254,6 +1256,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 isProgressBarVisibleSupplier, historyDelegate, partnerHomepageEnabledSupplier,
                 offlineDownloader);
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+    }
+
+    public void updateWalletBadgeVisibility(boolean visible) {
+        assert mBraveWalletBadge!=null;
+        mBraveWalletBadge.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void updateMenuButtonState() {
