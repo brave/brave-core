@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Error: Región no admitida</translation>
 <translation id="5382684862562314222">Uphold aún no admite BAT en tu región.</translation>
 <translation id="9074594632540931067">Error: no hay BAT</translation>
-<translation id="413458922997276130">Actualmente, tu cuenta de Uphold está bloqueada.</translation>
-<translation id="3579959767665130790">Error: cuenta bloqueada</translation>
-<translation id="6554308597291659562">Uphold necesita recopilar algunos datos más sobre ti antes de habilitar todas las funcionalidades de la cuenta. Vuelve a intentarlo una vez que hayas enviado la información a tu cuenta de Uphold.</translation>
-<translation id="6996157559236886133">Error: Cuenta de Uphold con funcionalidades limitadas</translation>
-<translation id="819370426249314592">Tu cuenta de Uphold aún está pendiente.</translation>
-<translation id="4530453398914580957">Error: cuenta pendiente</translation>
-<translation id="2388470740942086608">Actualmente, tu cuenta de Uphold está restringida.</translation>
-<translation id="3605236342612716051">Error: cuenta restringida</translation>
 <translation id="3274650021044762770">Se ha producido un problema al validar la solicitud del navegador para vincular Recompensas de Brave con tu cuenta de <ph name="PROVIDER"/>. Si necesitas ayuda, puedes <ph name="BEGIN_LINK"/>contactar con el servicio de asistencia<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Error: no se ha podido validar la solicitud</translation>
 <translation id="1737873393693460829">Al activar [[title]], aceptas las <ph name="BEGIN_LINK1"/>Condiciones de uso<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>Política de privacidad<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave usará Infura para hacer llamadas a JSON-RPC de Ethereum al contrato inteligente de Ethereum Name Service para resolver solicitudes de búsqueda de dominos .eth. Si activas esto, Infuraverá el dominio .eth que intentas visitar, pero no podrá ver otros domininos. Consulta las <ph name="BEGIN_INFURA_TOU_LINK"/>condiciones de uso<ph name="END_INFURA_TOU_LINK"/> y la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privacidad<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
 <translation id="7378412287463452336">Continuar usando el servidor Infura</translation>
 <translation id="2356070529366658676">Preguntar</translation>
-<translation id="2218918398178303658">DNS sobre HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Dominio bloqueado</translation>
 <translation id="6393849031898466746">Es posible que este sitio intente rastrear tu actividad en otros sitios</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">No se ha podido obtener el tipo para la transacción</translation>
 <translation id="2080935885647755539">No se han podido obtener las comisiones de gas para la transacción EIP-1559</translation>
 <translation id="4843814354611030845">El usuario ha rechazado la transacción</translation>
-<translation id="1462494615260983714">Se ha producido un error al procesar la transacción</translation>
 <translation id="4886059598718763020">"<ph name="VALUE"/>" no cuenta con autorización para firmar el mensaje</translation>
 <translation id="8719220598078667817">No se ha podido firmar la transacción</translation>
 <translation id="875506212625074179">Respuesta de identificador de cadena no válida del servicio RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">La transacción podría tener carácter ventajista</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 <translation id="4500473291496079954">Caduca dentro de</translation>
-<translation id="8093033115658137576">Dirección o URL 0x</translation>
+<translation id="2236833281018938257">Dirección o URL 0x</translation>
 <translation id="2860280209982026951">Brave utiliza <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">0x procesará la dirección Ethereum y la dirección IP para completar una transacción (se ocupará incluso de calcular los presupuestos). 0x SOLO utilizará estos datos con el propósito de procesar las transacciones.</translation>
 <translation id="4626407663177532837">El presupuesto incluye una comisión de Brave del 0,875 %.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">No ha sido posible establecer conexión con el puente de Trezor</translation>
 <translation id="6672377693827764095">Error interno. No ha sido posible obtener las cuentas.</translation>
 <translation id="6889920539620318793">Establecer como activo</translation>
+<translation id="1462494615260983714">Se ha producido un error al procesar la transacción</translation>
 <translation id="8933250418452564886">No se ha podido encontrar la transacción del hardware. Inténtalo de nuevo</translation>
 <translation id="5999974802900788338">Se ha recibido un error del dispositivo de hardware. Probablemente tengas que confirmar la transacción en tu dispositivo</translation>
 <translation id="8523768065044261559">Se ha producido un error al procesar la transacción. Inténtalo de nuevo</translation>

@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Erro: região não compatível</translation>
 <translation id="5382684862562314222">O uso de BAT ainda não é aceito na sua região no Uphold.</translation>
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
-<translation id="413458922997276130">Sua conta do Uphold está bloqueada no momento.</translation>
-<translation id="3579959767665130790">Erro: conta bloqueada</translation>
-<translation id="6554308597291659562">O Uphold precisa coletar mais algumas informações sobre você antes de ativar todas as funcionalidades da conta do Uphold. Tente novamente depois de enviar essas informações na sua conta do Uphold.</translation>
-<translation id="6996157559236886133">Erro: funcionalidades da conta do Uphold limitadas</translation>
-<translation id="819370426249314592">Sua conta do Uphold ainda está pendente.</translation>
-<translation id="4530453398914580957">Erro: conta pendente</translation>
-<translation id="2388470740942086608">Sua conta do Uphold está restrita no momento.</translation>
-<translation id="3605236342612716051">Erro: conta restrita</translation>
 <translation id="3274650021044762770">Houve um problema ao validar a solicitação do seu navegador para conectar sua conta das Recompensas Brave à sua conta do <ph name="PROVIDER"/>. Você pode <ph name="BEGIN_LINK"/>entrar em contato com o suporte<ph name="END_LINK"/> para obter ajuda.</translation>
 <translation id="1316066811927496401">Erro: não foi possível validar a solicitação</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], você concorda com os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e com a <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">O Brave utilizará o Infura para emitir chamadas JSON-RPC de Ethereum ao contrato inteligente da Ethereum Name Service para resolver solicitações de pesquisa do nome de domínio .eth. Se você ativar essa opção, o Infura verá o domínio .eth que você está tentando acessar, mas não verá outros domínios. Consulte os <ph name="BEGIN_INFURA_TOU_LINK"/>termos de uso<ph name="END_INFURA_TOU_LINK"/> e a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>política de privacidade<ph name="END_INFURA_PRIVACY_LINK"/> do Infura.</translation>
 <translation id="7378412287463452336">Continuar usando o servidor Infura</translation>
 <translation id="2356070529366658676">Perguntar</translation>
-<translation id="2218918398178303658">DNS via HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domínio bloqueado</translation>
 <translation id="6393849031898466746">Este site poderá tentar rastrear você em outros sites</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Houve uma falha ao obter o tipo da transação</translation>
 <translation id="2080935885647755539">Houve uma falha ao obter as taxas de gás para a transação de EIP-1559</translation>
 <translation id="4843814354611030845">O usuário rejeitou a transação</translation>
-<translation id="1462494615260983714">Erro ao processar a transação</translation>
 <translation id="4886059598718763020">"<ph name="VALUE"/>" não tem autorização para assinar a mensagem</translation>
 <translation id="8719220598078667817">Houve uma falha ao assinar a transação</translation>
 <translation id="875506212625074179">Resposta inválida de ID da cadeia do serviço de RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Esta transação pode ser uma prática de "front running"</translation>
 <translation id="632241521608275119">Tolerância de slippage</translation>
 <translation id="4500473291496079954">Expira em</translation>
-<translation id="8093033115658137576">Endereço ou URL 0x</translation>
+<translation id="2236833281018938257">Endereço ou URL 0x</translation>
 <translation id="2860280209982026951">O Brave usa a <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">A 0x processará o endereço Ethereum e o endereço IP para realizar uma transação (incluindo a obtenção de cotações). A 0x usará esses dados SOMENTE para fins de processamento de transações.</translation>
 <translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Não foi possível se conectar à ponte Trezor</translation>
 <translation id="6672377693827764095">Erro interno. Não foi possível obter as contas.</translation>
 <translation id="6889920539620318793">Definir como ativa</translation>
+<translation id="1462494615260983714">Erro ao processar a transação</translation>
 <translation id="8933250418452564886">Não foi possível encontrar a transação de hardware. Tente novamente.</translation>
 <translation id="5999974802900788338">Erro recebido do dispositivo de hardware. Você provavelmente precisa confirmar a transação no seu dispositivo.</translation>
 <translation id="8523768065044261559">Erro ao processar a transação. Tente novamente.</translation>
@@ -1176,8 +1167,8 @@
 <translation id="8528916244724490964">Todas as redes</translation>
 <translation id="2781668117338732220">Redes secundárias</translation>
 <translation id="2816106784624007524">O limite de gás precisa ser um número inteiro superior a 0</translation>
-<translation id="3354376789153561654">O destinatário dos dados da transação precisa ser especificado</translation>
-<translation id="8728991256628663004">O remetente dos dados da transação precisa ser um endereço Filecoin válido</translation>
+<translation id="3354376789153561654">O "to" dos dados da transação precisa ser especificado</translation>
+<translation id="8728991256628663004">O "from" dos dados da transação precisa ser um endereço Filecoin válido</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação Geral</translation>
 <translation id="4045404575593562245">Eventos de Controle do Tor</translation>

@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Fout: regio niet ondersteund</translation>
 <translation id="5382684862562314222">BAT wordt in Uphold nog niet ondersteund in jouw regio.</translation>
 <translation id="9074594632540931067">Fout: BAT niet beschikbaar</translation>
-<translation id="413458922997276130">Je account in Uphold is momenteel geblokkeerd.</translation>
-<translation id="3579959767665130790">Fout: geblokkeerd account</translation>
-<translation id="6554308597291659562">Uphold is vereist om wat meer informatie te verzamelen over u voordat de volledige Uphold-accountfunctionaliteit wordt ingeschakeld. Probeer het opnieuw wanneer u deze informatie hebt ingediend in uw Uphold-account.</translation>
-<translation id="6996157559236886133">Fout: beperkte Uphold-accountfunctionaliteit</translation>
-<translation id="819370426249314592">Je account in Uphold is nog steeds in behandeling.</translation>
-<translation id="4530453398914580957">Fout: account in behandeling</translation>
-<translation id="2388470740942086608">Je account in Uphold is momenteel beperkt.</translation>
-<translation id="3605236342612716051">Fout: beperkt account</translation>
 <translation id="3274650021044762770">Er is een probleem opgetreden bij het valideren van het verzoek van uw browser om Brave Beloningen te koppelen aan uw <ph name="PROVIDER"/>-account. U kunt <ph name="BEGIN_LINK"/>contact opnemen met de ondersteuning <ph name="END_LINK"/> als u meer hulp nodig hebt.</translation>
 <translation id="1316066811927496401">Fout: verzoek kan niet worden gevalideerd</translation>
 <translation id="1737873393693460829">Door [[title]] in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave maakt gebruik van Infura om Ethereum JSON-RPC-aanroepen tot het smart contract van Ethereum Name Service uit te voeren om opgevraagde .eth-domeinnamen op te lossen. Als u dit inschakelt, ziet Infura het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
 <translation id="7378412287463452336">Ga verder met de Infura-server</translation>
 <translation id="2356070529366658676">Vragen</translation>
-<translation id="2218918398178303658">DNS met HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domein geblokkeerd</translation>
 <translation id="6393849031898466746">Deze website houdt mogelijk je activiteiten bij op andere websites</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Fout bij het ophalen van het type voor de transactie</translation>
 <translation id="2080935885647755539">Fout bij ophalen van gasvergoeding voor EIP-1559-transactie</translation>
 <translation id="4843814354611030845">Transactie geweigerd door gebruiker</translation>
-<translation id="1462494615260983714">Fout bij verwerken van transactie</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' heeft geen toestemming om bericht te ondertekenen</translation>
 <translation id="8719220598078667817">Fout bij ondertekenen van transactie</translation>
 <translation id="875506212625074179">Ongeldige respons van keten-ID vanuit RPC-service</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Frontrunning van transactie is mogelijk</translation>
 <translation id="632241521608275119">Risicotolerantie</translation>
 <translation id="4500473291496079954">Vervalt over</translation>
-<translation id="8093033115658137576">0x-adres of URL</translation>
+<translation id="2236833281018938257">0x-adres of URL</translation>
 <translation id="2860280209982026951">Brave gebruikt <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-aggregator.</translation>
 <translation id="151946611346774041">0x verwerkt het Ethereum-adres en het IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens ALLEEN met het doel om transacties te verwerken.</translation>
 <translation id="4626407663177532837">Offerte is inclusief 0,875% Brave-kosten.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Kan geen verbinding maken met de Trezor-brug</translation>
 <translation id="6672377693827764095">Interne fout, accounts kunnen niet worden opgehaald</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
+<translation id="1462494615260983714">Fout bij verwerken van transactie</translation>
 <translation id="8933250418452564886">Kan hardwaretransactie niet vinden, probeer het opnieuw</translation>
 <translation id="5999974802900788338">Foutmelding ontvangen van hardware; mogelijk moet je de transactie op je apparaat bevestigen</translation>
 <translation id="8523768065044261559">Fout bij verwerken van transactie, probeer het opnieuw</translation>

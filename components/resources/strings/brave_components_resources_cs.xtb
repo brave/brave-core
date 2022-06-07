@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Chyba: Oblast není podporována</translation>
 <translation id="5382684862562314222">Služba BAT zatím není ve vašem regionu v systému Uphold podporována.</translation>
 <translation id="9074594632540931067">Chyba: Služba BAT není dostupná</translation>
-<translation id="413458922997276130">Váš účet je v systému Uphold momentálně zablokován.</translation>
-<translation id="3579959767665130790">Chyba: Zablokovaný účet</translation>
-<translation id="6554308597291659562">V účtu Uphold je požadováno shromáždění několika informací o vás, než povolíme kompletní funkčnost účtu Uphold. Zkuste to znovu, jakmile tyto informace odešlete ze svého účtu Uphold.</translation>
-<translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
-<translation id="819370426249314592">Váš účet je v systému Uphold stále nedokončený.</translation>
-<translation id="4530453398914580957">Chyba: Nedokončený účet</translation>
-<translation id="2388470740942086608">Váš účet je v systému Uphold momentálně uzavřený.</translation>
-<translation id="3605236342612716051">Chyba: Uzavřený účet</translation>
 <translation id="3274650021044762770">Při ověřování požadavku prohlížeče na připojení odměn Brave k vašemu účtu<ph name="PROVIDER"/> došlo k chybě. Pro pomoc se můžete <ph name="BEGIN_LINK"/>obrátit na podporu<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Chyba: požadavek se nepodařilo ověřit</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadřujete souhlas s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Zásadami ochrany osobních údajů<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Služba Brave bude používat server Infura k vydávání požadavků na vyhledávání doménových jmen .eth na inteligentní smlouvu Ethereum JSON-RPC ze služby Ethereum Name Service. Pokud tuto funkci povolíte, Infura uvidí doménu .eth, kterou se snažíte navštívit, ale nebude schopna vidět jiné domény. Viz <ph name="BEGIN_INFURA_TOU_LINK"/> podmínky použití <ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/> zásady ochrany osobních údajů <ph name="END_INFURA_PRIVACY_LINK"/> společnosti Infura.</translation>
 <translation id="7378412287463452336">Pokračovat prostřednictvím serveru Infura</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
-<translation id="2218918398178303658">DNS přes HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Doména je blokovaná</translation>
 <translation id="6393849031898466746">Tato stránka se může pokusit vás sledovat i na jiných stránkách</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Nepodařilo se získat typ transakce</translation>
 <translation id="2080935885647755539">Pro transakci EIP-1559 se nepodařilo získat poplatky za plyn</translation>
 <translation id="4843814354611030845">Uživatel transakci zamítl</translation>
-<translation id="1462494615260983714">Chyba při zpracování transakce</translation>
 <translation id="4886059598718763020">"<ph name="VALUE"/>" není oprávněn zprávu podepsat</translation>
 <translation id="8719220598078667817">Transakci se nepodařilo podepsat</translation>
 <translation id="875506212625074179">Neplatná odezva řetězce ID ze služby RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Je možné, že u transakce probíhá front running</translation>
 <translation id="632241521608275119">Tolerance posunu</translation>
 <translation id="4500473291496079954">Platnost vyprší</translation>
-<translation id="8093033115658137576">Adresa 0x nebo URL</translation>
+<translation id="2236833281018938257">Adresa 0x nebo URL</translation>
 <translation id="2860280209982026951">Brave používá <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregátor DEX.</translation>
 <translation id="151946611346774041">0x zpracuje adresu Etherea a IP adresu pro provedení transakce (včetně získání cenových nabídek). 0x bude tyto údaje používat POUZE pro účely zpracování transakcí.</translation>
 <translation id="4626407663177532837">Cenová nabídka zahrnuje poplatek pro Brave ve výši $0,875 %.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Nebylo možné se připojit k Trezor Bridge</translation>
 <translation id="6672377693827764095">Interní chyba, nelze načíst účty</translation>
 <translation id="6889920539620318793">Nastavit jako aktivní</translation>
+<translation id="1462494615260983714">Chyba při zpracování transakce</translation>
 <translation id="8933250418452564886">Nepodařilo se najít hardwarovou transakci, zkuste to znovu</translation>
 <translation id="5999974802900788338">Byla přijata chyba z hardwarového zařízení, pravděpodobně je třeba potvrdit transakci v zařízení</translation>
 <translation id="8523768065044261559">Chyba při zpracování transakce, zkuste to znovu</translation>

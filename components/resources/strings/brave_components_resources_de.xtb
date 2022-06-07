@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Fehler: Region nicht unterstützt</translation>
 <translation id="5382684862562314222">BAT wird in Ihrer Region auf Uphold noch nicht unterstützt.</translation>
 <translation id="9074594632540931067">Fehler: BAT nicht verfügbar</translation>
-<translation id="413458922997276130">Ihr Konto bei Uphold ist derzeit gesperrt.</translation>
-<translation id="3579959767665130790">Fehler: Gesperrtes Konto</translation>
-<translation id="6554308597291659562">Uphold muss einige weitere Informationen über Sie sammeln, bevor die volle Funktionalität des Uphold-Kontos aktiviert werden kann. Bitte versuchen Sie es erneut, sobald Sie diese Informationen in Ihrem Uphold-Konto übermittelt haben.</translation>
-<translation id="6996157559236886133">Fehler: Eingeschränkte Funktionalität des Uphold-Kontos</translation>
-<translation id="819370426249314592">Ihr Konto bei Uphold ist noch ausstehend.</translation>
-<translation id="4530453398914580957">Fehler: Ausstehendes Konto</translation>
-<translation id="2388470740942086608">Ihr Konto bei Uphold ist derzeit eingeschränkt.</translation>
-<translation id="3605236342612716051">Fehler: Eingeschränktes Konto</translation>
 <translation id="3274650021044762770">Bei der Überprüfung der Anfrage Ihres Browsers, Ihre Brave Belohnungen mit Ihrem <ph name="PROVIDER"/>-Konto zu verbinden, ist ein Problem aufgetreten. Sie können <ph name="BEGIN_LINK"/>sich an den Support wenden<ph name="END_LINK"/>, um weitere Hilfe zu erhalten.</translation>
 <translation id="1316066811927496401">Fehler: Anfrage konnte nicht validiert werden</translation>
 <translation id="1737873393693460829">Durch Aktivieren von [[title]] akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave verwendet Infura, um Ethereum-JSON-RPC-Aufrufe an den Smart Contract vom Ethereum Name Service zu senden, um Domainnamensuchanforderungen für .eth aufzulösen. Wenn Sie dies aktivieren, wird Infura die .eth-Domain anzeigen, die Sie besuchen möchten, andere Domains können jedoch nicht angezeigt werden. Weitere Informationen finden Sie in den <ph name="BEGIN_INFURA_TOU_LINK"/>Nutzungsbedingungen<ph name="END_INFURA_TOU_LINK"/> und der <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Datenschutzerklärung<ph name="END_INFURA_PRIVACY_LINK"/> von Infura.</translation>
 <translation id="7378412287463452336">Weiter mit Infura-Server</translation>
 <translation id="2356070529366658676">Fragen</translation>
-<translation id="2218918398178303658">DNS über HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domain blockiert</translation>
 <translation id="6393849031898466746">Diese Website versucht möglicherweise, Sie über andere Websites hinweg zu verfolgen</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Fehler beim Abrufen des Typs für die Transaktion</translation>
 <translation id="2080935885647755539">Fehler beim Abrufen der Gebühren für die EIP-1559-Transaktion</translation>
 <translation id="4843814354611030845">Nutzer hat die Transaktion abgelehnt</translation>
-<translation id="1462494615260983714">Fehler beim Verarbeiten der Transaktion</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' ist nicht zum Unterzeichnen der Nachricht berechtigt</translation>
 <translation id="8719220598078667817">Transaktion konnte nicht signiert werden</translation>
 <translation id="875506212625074179">Ungültige Chain-ID-Antwort vom RPC-Dienst</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Transaktion kann Frontrun sein</translation>
 <translation id="632241521608275119">Schlupftoleranz</translation>
 <translation id="4500473291496079954">Läuft ab in</translation>
-<translation id="8093033115658137576">0x Adresse oder URL</translation>
+<translation id="2236833281018938257">0x Adresse oder URL</translation>
 <translation id="2860280209982026951">Brave verwendet <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> als DEX-Aggregator.</translation>
 <translation id="151946611346774041">0x verarbeitet die Ethereum-Adresse und die IP-Adresse, um eine Transaktion auszuführen (einschließlich des Abrufens von Angeboten). 0x wird diese Daten NUR zur Abwicklung von Transaktionen verwenden.</translation>
 <translation id="4626407663177532837">Angebot beinhaltet eine Brave-Gebühr von 0,875 %.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Keine Verbindung zur Trezor-Brücke möglich</translation>
 <translation id="6672377693827764095">Interner Fehler, Konten können nicht abgerufen werden</translation>
 <translation id="6889920539620318793">Als aktiv setzen</translation>
+<translation id="1462494615260983714">Fehler beim Verarbeiten der Transaktion</translation>
 <translation id="8933250418452564886">Hardwaretransaktion kann nicht gefunden werden. Bitte versuchen Sie es erneut</translation>
 <translation id="5999974802900788338">Fehler vom Hardwaregerät erhalten, wahrscheinlich müssen Sie die Transaktion auf Ihrem Gerät bestätigen</translation>
 <translation id="8523768065044261559">Fehler beim Verarbeiten der Transaktion, bitte versuchen Sie es erneut</translation>
@@ -1176,8 +1167,8 @@
 <translation id="8528916244724490964">Alle Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="2816106784624007524">Das Gebührenlimit muss eine ganze Zahl größer als 0 sein</translation>
-<translation id="3354376789153561654">Transaktionsdaten für „An“ müssen angegeben werden.</translation>
-<translation id="8728991256628663004">Transaktionsdaten für „Von“ müssen eine gültige Filecoin-Adresse beinhalten.</translation>
+<translation id="3354376789153561654">Transaktionsdaten für „to“ müssen angegeben werden.</translation>
+<translation id="8728991256628663004">Transaktionsdaten für „from“ müssen eine gültige Filecoin-Adresse beinhalten.</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>

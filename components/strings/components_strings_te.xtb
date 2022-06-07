@@ -827,7 +827,7 @@
 <translation id="3261488570342242926">వర్చువల్ కార్డ్‌ల గురించి తెలుసుకోండి</translation>
 <translation id="3893393287627341086">'Brave సెట్టింగ్‌లను మేనేజ్ చేయండి' బటన్, మీ Brave సెట్టింగ్‌లకు వెళ్లడానికి Enterను నొక్కండి</translation>
 <translation id="3266793032086590337">విలువ (వైరుధ్యం)</translation>
-<translation id="3268451620468152448">ఓపెన్ టాబ్‌లు</translation>
+<translation id="3268451620468152448">ఓపెన్ ట్యాబ్‌లు</translation>
 <translation id="3270156322180235608">విమాన ప్రయాణం</translation>
 <translation id="3270847123878663523">&amp;మళ్లీ క్రమం చేయడాన్ని రద్దు చేయి</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> దీనికి కనెక్ట్ చేయాలనుకుంటోంది</translation>
@@ -1310,7 +1310,7 @@
 <translation id="4682496302933121474">పేజీని అనువదించాలా?</translation>
 <translation id="468314109939257734">వర్చువల్ కార్డ్ నంబర్‌ను చూడండి</translation>
 <translation id="4691835149146451662">ఆర్కిటెక్చర్-A (ఎన్వలప్)</translation>
-<translation id="4692623383562244444">శోధన ఇంజిన్‌లు</translation>
+<translation id="4692623383562244444">సెర్చ్ ఇంజిన్‌లు</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">పక్కన</translation>
 <translation id="4702656508969495934">లైవ్ క్యాప్షన్ కనిపిస్తోంది, ఫోకస్ చేయడానికి విండో మార్పిడిని ఉపయోగించండి</translation>
@@ -1347,7 +1347,7 @@
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{పాప్-అప్ బ్లాక్ చేయబడింది}other{# పాప్-అప్‌లు బ్లాక్ చేయబడ్డాయి}}</translation>
 <translation id="4780366598804516005">మెయిల్‌బాక్స్ 1</translation>
 <translation id="752757955979594126">Brave ఖాతాను మేనేజ్ చేయండి</translation>
-<translation id="4785689107224900852">ఈ టాబ్‌కు మారండి</translation>
+<translation id="4785689107224900852">ఈ ట్యాబ్‌కు మారండి</translation>
 <translation id="4786804728079074733">వాలీబాల్</translation>
 <translation id="4791134497475588553">ఇన్‌స్టాల్ చేయబడిన Linux యాప్‌లు మరియు వాటిని చివరిగా ఎప్పుడు ఉపయోగించినది తెలిపే వివరాలు</translation>
 <translation id="4792686369684665359">మీరు సమర్పించబోయే సమాచారం సురక్షితమైనది కాదు</translation>

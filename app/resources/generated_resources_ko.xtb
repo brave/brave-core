@@ -4357,7 +4357,7 @@ https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="5280426389926346830">바로가기를 만드시겠습니까?</translation>
 <translation id="5281013262333731149"><ph name="OPEN_BROWSER"/>에서 열기</translation>
 <translation id="528208740344463258">Android 앱을 다운로드하고 사용하려면 우선 필수 업데이트를 설치해야 합니다. 업데이트 중에는 <ph name="DEVICE_TYPE"/> 기기를 사용할 수 없습니다. 설치가 완료되면 <ph name="DEVICE_TYPE"/> 기기가 다시 시작됩니다.</translation>
-<translation id="5282733140964383898">'추적 안함'을 사용 설정하면 요청이 탐색 트래픽에 포함됩니다. 웹사이트가 요청에 응답하는지와 요청이 어떻게 해석되는가에 따라 결과가 달라집니다. 예를 들어, 어떤 웹사이트는 사용자의 웹사이트 방문 기록과 관계없는 광고를 표시하는 방식으로 요청에 응답할 수 있습니다. 이 설정을 사용해도 대부분의 웹사이트에서는 보안을 강화하거나 웹사이트에서 콘텐츠, 서비스, 광고 및 추천 정보를 제공하거나 보고서 통계를 생성하는 등의 목적으로 사용자의 인터넷 사용 기록을 수집하고 사용됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">'추적 안함'을 사용 설정하면 요청이 탐색 트래픽에 포함됩니다. 웹사이트가 요청에 응답하는지와 요청이 어떻게 해석되는가에 따라 결과가 달라집니다. 예를 들어, 어떤 웹사이트는 사용자의 웹사이트 방문 기록과 관계없는 광고를 표시하는 방식으로 요청에 응답할 수 있습니다. 이 설정을 사용해도 대부분의 웹사이트에서는 보안을 강화하거나 웹사이트에서 콘텐츠, 서비스, 광고 및 추천 정보를 제공하거나 보고서 통계를 생성하는 등의 목적으로 사용자의 인터넷 사용 기록을 수집하고 사용됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">시스템이 기기 모델 또는 일련번호를 확인하는 데 실패했습니다.</translation>
 <translation id="5284445933715251131">다운로드 계속</translation>
 <translation id="5285635972691565180"><ph name="DISPLAY_ID"/> 표시</translation>
@@ -4374,7 +4374,7 @@ https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="5297082477358294722">비밀번호가 저장되었습니다. <ph name="SAVED_PASSWORDS_STORE"/>에서 저장된 비밀번호를 보고 관리하세요.</translation>
 <translation id="5297946558563358707">다른 사람이 내 화면을 보면 화면 오른쪽 하단에 개인 정보 보호 눈 모양 아이콘이 표시됩니다.</translation>
 <translation id="5298219193514155779">테마 제작자</translation>
-<translation id="5299109548848736476">추적 안함</translation>
+<translation id="1839179167864984545">추적 안함</translation>
 <translation id="5299558715747014286">탭 그룹 확인 및 관리</translation>
 <translation id="5300287940468717207">사이트 권한을 재설정하시겠습니까?</translation>
 <translation id="5300426565656326054">브라우저 기반 광고 개인 최적화</translation>
@@ -7842,7 +7842,7 @@ https://support.google.com/chromebook/?p=sm</translation>
 <translation id="8785622406424941542">스타일러스</translation>
 <translation id="8786824282808281903">자녀에게 이 아이콘이 표시되면 자녀가 본인의 지문으로 신원을 확인하거나 구매를 승인할 수 있습니다</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{이름이 지정되지 않은 그룹 - 탭 1개}other{이름이 지정되지 않은 그룹 - 탭 #개}}</translation>
-<translation id="8791534160414513928">탐색 트래픽과 함께 ‘추적 안함’ 요청 전송</translation>
+<translation id="163839281363975279">탐색 트래픽과 함께 ‘추적 안함’ 요청 전송</translation>
 <translation id="879413103056696865">핫스팟이 사용 설정되어 있는 동안 <ph name="PHONE_NAME"/>이(가) 다음과 같이 작동함</translation>
 <translation id="8795916974678578410">새 창</translation>
 <translation id="8797459392481275117">이 사이트 번역 안함</translation>

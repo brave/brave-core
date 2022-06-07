@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">خطا: منطقه پشتیبانی نمی‌شود</translation>
 <translation id="5382684862562314222">توکن بت هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.</translation>
 <translation id="9074594632540931067">خطا: توکن بت دردسترس نیست</translation>
-<translation id="413458922997276130">درحال‌حاضر حسابتان در Uphold مسدود شده است.</translation>
-<translation id="3579959767665130790">خطا: حساب مسدودشده</translation>
-<translation id="6554308597291659562">Uphold ملزم است که قبل از فعال‌سازی عملکرد کامل حساب Uphold، کمی اطلاعات بیشتری درباره شما جمع‌آوری کند. لطفاً بعد از ارسال این اطلاعات در حساب Uphold خود، دوباره امتحان کنید.</translation>
-<translation id="6996157559236886133">خطا: عملکرد حساب Uphold محدود است</translation>
-<translation id="819370426249314592">حسابتان در Uphold هنوز تأیید نشده است.</translation>
-<translation id="4530453398914580957">خطا: حساب درانتظار تأیید</translation>
-<translation id="2388470740942086608">درحال‌حاضر حسابتان در Uphold محدود شده است.</translation>
-<translation id="3605236342612716051">خطا: حساب محدودشده</translation>
 <translation id="3274650021044762770">هنگام اعتبارسنجی درخواست مرورگر شما برای اتصال پاداش‌های Brave به حساب <ph name="PROVIDER"/> مشکلی رخ داد. برای راهنمایی بیشتر، می‌توانید با <ph name="BEGIN_LINK"/>پشتیبانی تماس بگیرید<ph name="END_LINK"/> .</translation>
 <translation id="1316066811927496401">خطا: امکان اعتبارسنجی درخواست وجود ندارد</translation>
 <translation id="1737873393693460829">با روشن کردن [[title]]، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave از Infura برای صدور فراخوان‌های Ethereum JSON-RPC در قرارداد هوشمند از «سرویس نام Ethereum» برای حل و فصل درخواست‌های جستجوی نام دامنه eth. استفاده خواهد کرد. اگر آن را فعال کنید، Infura می‌تواند دامنه‌هایی را که سعی دارید بازدید کنید ببیند، اما قادر به دیدن سایر دامنه‌ها نخواهد بود. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده<ph name="END_INFURA_TOU_LINK"/>و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/>Infira مراجعه کنید.</translation>
 <translation id="7378412287463452336">ادامه با استفاده از سرور Infura</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
-<translation id="2218918398178303658">DNS ازطریق HTTPS</translation>
 <translation id="1448289340149908413">اتریوم</translation>
 <translation id="2468755552460246661">دامنه مسدود شد</translation>
 <translation id="6393849031898466746">ممکن است این سایت تلاش کند شما را در سایت‌های دیگر ردیابی کند</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">دریافت نوع برای تراکنش انجام نشد</translation>
 <translation id="2080935885647755539">کارمزد گس برای تراکنش EIP-1559 دریافت نشد</translation>
 <translation id="4843814354611030845">کاربر تراکنش را رد کرد</translation>
-<translation id="1462494615260983714">خطا در پردازش تراکنش</translation>
 <translation id="4886059598718763020">«<ph name="VALUE"/>» اجازه ندارد پیام را امضا کند</translation>
 <translation id="8719220598078667817">امضای معامله انجام نشد</translation>
 <translation id="875506212625074179">پاسخ شناسه زنجیره‌ای نامعتبر از سرویس RPC</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">ممکن است تراکنش فرانت ران شده باشد</translation>
 <translation id="632241521608275119">نوسانات قیمت</translation>
 <translation id="4500473291496079954">انقضا در</translation>
-<translation id="8093033115658137576">آدرس یا آدرس وب 0x</translation>
+<translation id="2236833281018938257">آدرس یا آدرس وب 0x</translation>
 <translation id="2860280209982026951">Brave از <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> به‌عنوان گردآورنده DEX استفاده می‌کند.</translation>
 <translation id="151946611346774041">0x نشانی اتریوم و نشانی IP را پردازش می‌کند تا تراکنش را تکمیل کند (دریافت نرخ لحظه‌ای را شامل می‌شود). 0x از این داده‌ها «فقط» برای اهادف پردازش تراکنش‌ها استفاده می‌کند.</translation>
 <translation id="4626407663177532837">مظنه شامل 0.875 درصد از هزینه Brave است.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">امکان انصال به پل Trezor وجود ندارد</translation>
 <translation id="6672377693827764095">خطای داخلی، واکشی حساب‌ها امکان‌پذیر نیست</translation>
 <translation id="6889920539620318793">تنظیم به‌عنوان فعال</translation>
+<translation id="1462494615260983714">خطا در پردازش تراکنش</translation>
 <translation id="8933250418452564886">تراکنش سخت‌افزار یافت نشد، لطفاً دوباره تلاش کنید</translation>
 <translation id="5999974802900788338">خطایی از دستگاه سخت‌افزار دریافت شد، احتمالاً باید تراکنش را در دستگاهتان تأیید کنید</translation>
 <translation id="8523768065044261559">خطایی در پردازش تراکنش رخ داد، لطفاً دوباره تلاش کنید</translation>

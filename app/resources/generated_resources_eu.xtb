@@ -4101,7 +4101,7 @@ Txartel adimenduna sartuta edukitzea eskatzen du <ph name="DOMAIN"/> domeinuak.<
 <translation id="50080882645628821">Kendu profila</translation>
 <translation id="5008936837313706385">Jardueraren izena</translation>
 <translation id="5009463889040999939">Profilaren izena aldatzen. Agian minutu batzuk beharko dira.</translation>
-<translation id="5010043101506446253">Autoritate ziurtagiri-emailea</translation>
+<translation id="5010043101506446253">Ziurtagiri-emailea</translation>
 <translation id="501057610015570208">"kiosk_only" manifestu-atributua duen aplikazio bat instalatu behar da ChromeOS Flex sistemaren kiosko moduan</translation>
 <translation id="5015344424288992913">Proxya ebazten…</translation>
 <translation id="5016491575926936899">Testu-mezuak bidal ditzakezu ordenagailutik, bai eta Interneteko konexioa partekatu, elkarrizketa batean jasotzen diren jakinarazpenei erantzun, eta telefonoa erabilita <ph name="DEVICE_TYPE"/> gailua desblokeatu ere.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Lortu informazio gehiago<ph name="LINK_END"/></translation>
@@ -4363,7 +4363,7 @@ Txartel adimenduna sartuta edukitzea eskatzen du <ph name="DOMAIN"/> domeinuak.<
 <translation id="5280426389926346830">Lasterbide bat sortu nahi al duzu?</translation>
 <translation id="5281013262333731149"><ph name="OPEN_BROWSER"/> arakatzailean irekitzen da</translation>
 <translation id="528208740344463258">Android-erako aplikazioak deskargatu eta erabiltzeko, beharrezko eguneratze hau instalatu behar duzu lehendabizi. Ezingo duzu erabili <ph name="DEVICE_TYPE"/> gailua eguneratzea instalatu bitartean. Instalatzen amaitutakoan, berrabiarazi egingo da <ph name="DEVICE_TYPE"/> gailua.</translation>
-<translation id="5282733140964383898">"Ez jarraitu" gaitzen baduzu, arakatze-trafikoan eskaera bat sartuko da. Horren eragina zeraren araberakoa da, webguneek eskaera horri erantzuten dioten ala ez eta eskaera nola interpretatzen den. Adibidez, webgune batzuek bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita erantzungo dute. Webgune askok arakatze-datuak bilduko dituzte dena den, adibidez, segurtasuna hobetzeko, euren webguneetan edukia, zerbitzuak, iragarkiak eta gomendioak hornitzeko, eta txostenen estatistikak sortzeko. <ph name="BEGIN_LINK"/>Lortu informazio gehiago<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">"Ez jarraitu" gaitzen baduzu, arakatze-trafikoan eskaera bat sartuko da. Horren eragina zeraren araberakoa da, webguneek eskaera horri erantzuten dioten ala ez eta eskaera nola interpretatzen den. Adibidez, webgune batzuek bisitatu dituzun webguneetan oinarritzen ez diren iragarkiak bidalita erantzungo dute. Webgune askok arakatze-datuak bilduko dituzte dena den, adibidez, segurtasuna hobetzeko, euren webguneetan edukia, zerbitzuak, iragarkiak eta gomendioak hornitzeko, eta txostenen estatistikak sortzeko. <ph name="BEGIN_LINK"/>Lortu informazio gehiago<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Sistemak ezin izan du zehaztu gailuaren modeloa edo serie-zenbakia.</translation>
 <translation id="5284445933715251131">Jarraitu deskargatzen</translation>
 <translation id="5285635972691565180"><ph name="DISPLAY_ID"/> pantaila</translation>
@@ -4381,7 +4381,7 @@ Txartel adimenduna sartuta edukitzea eskatzen du <ph name="DOMAIN"/> domeinuak.<
 <translation id="5297082477358294722">Gorde da pasahitza. Ikusi eta kudeatu gordetako pasahitzak hemen: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Beste norbaitek pantailari begiratzen dionean, erakutsi Pribatutasun-begia ikonoa pantailaren behealdean, eskuinetara</translation>
 <translation id="5298219193514155779">Gaiaren sortzailea:</translation>
-<translation id="5299109548848736476">Ez egin jarraipenik</translation>
+<translation id="1839179167864984545">Ez egin jarraipenik</translation>
 <translation id="5299558715747014286">Ikusi eta kudeatu fitxa taldeak</translation>
 <translation id="5300287940468717207">Webgunearen baimenak berrezarri nahi dituzu?</translation>
 <translation id="5300426565656326054">Iragarkiak arakatzailean oinarrituta pertsonalizatzea</translation>
@@ -7862,7 +7862,7 @@ Txartel adimenduna sartuta edukitzea eskatzen du <ph name="DOMAIN"/> domeinuak.}
 <translation id="8785622406424941542">Arkatza</translation>
 <translation id="8786824282808281903">Haurrak ikono hau ikusten duenean, hatz-marka bat erabil daiteke identitatea identifikatzeko edo erosketak onartzeko.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Talde izengabea: 1 fitxa}other{Talde izengabea: # fitxa}}</translation>
-<translation id="8791534160414513928">Arakatze-trafikoari buruzko informazioarekin batera, bidali "Ez egin jarraipena" eskaera</translation>
+<translation id="163839281363975279">Arakatze-trafikoari buruzko informazioarekin batera, bidali "Ez egin jarraipena" eskaera</translation>
 <translation id="879413103056696865">Wifi-gunea aktibatuta dagoen bitartean, <ph name="PHONE_NAME"/> telefonoak hau egingo du:</translation>
 <translation id="8795916974678578410">Leiho berria</translation>
 <translation id="8797459392481275117">Ez itzuli inoiz webgune hau</translation>
@@ -8045,7 +8045,7 @@ Txartel adimenduna sartuta edukitzea eskatzen du <ph name="DOMAIN"/> domeinuak.}
 <translation id="89720367119469899">Ihes-tekla</translation>
 <translation id="8842834450537919370">Galdetu sarearen administratzaileari suebakia Brave-ren zerbitzariaren deskargak blokeatzen ari den.</translation>
 <translation id="8973557916016709913">Kendu zooma</translation>
-<translation id="8973596347849323817">Doitu gailua zure beharretara. Ezarpenak atalean alda ditzakezu Erabilerraztasun-eginbideak.</translation>
+<translation id="8973596347849323817">Doitu gailua zure beharretara. Ezarpenak atalean alda ditzakezu erabilerraztasun-eginbideak.</translation>
 <translation id="897414447285476047">Helmugako fitxategia ez dago osorik konexio-arazo bat izan delako.</translation>
 <translation id="897525204902889653">Berrogeialdi-zerbitzua</translation>
 <translation id="8975396729541388937">Harpidetza kentzeko, sakatu horretarako esteka jasotzen dituzun mezu elektronikoetan.</translation>
