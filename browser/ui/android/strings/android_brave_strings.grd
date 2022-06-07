@@ -3083,6 +3083,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TRIAL" desc="Brave VPN trial text">
       Trial
     </message>
+    <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
+      Show Top sites
+    </message>
   </messages>
   </release>
 </grit>
