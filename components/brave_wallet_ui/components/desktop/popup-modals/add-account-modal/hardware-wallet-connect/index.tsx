@@ -32,7 +32,7 @@ import {
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
-import { HardwareDerivationScheme, LedgerDerivationPaths, DerivationBatchSize } from '../../../../../common/hardware/types'
+import { HardwareDerivationScheme, LedgerDerivationPaths, FilecoinNetwork, DerivationBatchSize } from '../../../../../common/hardware/types'
 import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 import { WalletPageActions } from '../../../../../page/actions'
 import { BraveWallet, CreateAccountOptionsType, WalletState } from '../../../../../constants/types'
@@ -68,9 +68,6 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   // redux
   const dispatch = useDispatch()
   const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
-  const selectedFilecoinNetwork = useSelector(({ wallet }: { wallet: WalletState }) => {
-    return wallet.defaultNetworks.find((network) => { return network.coin === BraveWallet.CoinType.FIL })
-})
   const savedAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
 
   // state
@@ -82,11 +79,28 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
     LedgerDerivationPaths.LedgerLive
   )
-
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-  const filecoinNetwork = selectedFilecoinNetwork?.chainId.toLowerCase() === BraveWallet.FILECOIN_MAINNET.toLowerCase() ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
+  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
 
   // methods
+  const onFilecoinNetworkChanged = React.useCallback((network: FilecoinNetwork) => {
+    setFilecoinNetwork(network)
+    onConnectHardwareWallet({
+      hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
+      startIndex: 0,
+      stopIndex: DerivationBatchSize,
+      network: network,
+      coin: BraveWallet.CoinType.FIL
+    }).then((result) => {
+      setAccounts(result)
+    }).catch((error) => {
+      setConnectionError(getErrorMessage(error, selectedAccountType.name))
+      setShowAccountsList(false)
+    }).finally(
+      () => setIsConnecting(false)
+    )
+  }, [onConnectHardwareWallet, selectedAccountType])
+
   const onAddHardwareAccounts = React.useCallback((selected: BraveWallet.HardwareWalletAccount[]) => {
     dispatch(WalletPageActions.addHardwareAccounts(selected))
     onSuccess()
@@ -201,6 +215,7 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
         getBalance={getBalance}
         selectedNetwork={selectedNetwork}
         filecoinNetwork={filecoinNetwork}
+        onChangeFilecoinNetwork={onFilecoinNetworkChanged}
         selectedAccountType={selectedAccountType}
       />
     )
