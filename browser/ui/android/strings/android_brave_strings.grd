@@ -2205,10 +2205,10 @@ Are you sure you want to do this?
       All plans include a free 7-day trial!
     </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION" desc="Brave VPN plan text">
-      Monthly subscription
+      Monthly subscription <ph name="TRIAL_TEXT">%1$s</ph>
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION" desc="Brave VPN plan text">
-      Yearly subscription
+      Yearly subscription <ph name="TRIAL_TEXT">%1$s</ph>
     </message>
     <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
       Renews monthly
@@ -3016,6 +3016,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SHOW_TOP_SITES" desc="New tab page settings title">
       Show Top sites
+    </message>
+    <message name="IDS_TRIAL" desc="Brave VPN trial text">
+      Trial
     </message>
   </messages>
   </release>
