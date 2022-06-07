@@ -173,6 +173,17 @@ public class BraveVpnUtils {
         return 0L;
     }
 
+    public static int getPaymentState(String json) {
+        try {
+            JSONObject purchase = new JSONObject(json);
+            int paymentState = purchase.getInt("paymentState");
+            return paymentState;
+        } catch (JSONException e) {
+            Log.e(TAG, "BraveVpnUtils -> getPaymentState JSONException error " + e);
+        }
+        return 0;
+    }
+
     public static List<BraveVpnServerRegion> getServerLocations(String jsonServerLocations) {
         List<BraveVpnServerRegion> vpnServerRegions = new ArrayList<>();
         if (TextUtils.isEmpty(jsonServerLocations)) {
