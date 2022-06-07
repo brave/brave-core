@@ -1,10 +1,11 @@
 import * as React from 'react'
-
+import { useSelector } from 'react-redux'
 import {
   BraveWallet,
   AddAccountNavTypes,
   WalletAccountType,
-  CreateAccountOptionsType
+  CreateAccountOptionsType,
+  WalletState
 } from '../../../../constants/types'
 import { Select } from 'brave-ui/components'
 import { PopupModal } from '../..'
@@ -32,9 +33,7 @@ import {
 import { HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
 import {
-  FilecoinNetwork,
-  FilecoinNetworkTypes,
-  FilecoinNetworkLocaleMapping
+  FilecoinNetwork
 } from '../../../../common/hardware/types'
 
 export interface Props {
@@ -81,16 +80,15 @@ const AddAccountModal = (props: Props) => {
   const [password, setPassword] = React.useState<string>('')
   const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
-  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
-
+  const selectedFilecoinNetwork = useSelector(({ wallet }: { wallet: WalletState }) => {
+    return wallet.defaultNetworks.find((network) => { return network.coin === BraveWallet.CoinType.FIL })
+  })
   const suggestedAccountName = React.useMemo(() => {
     const accountTypeLength = accounts.filter((account) => account.coin === selectedAccountType?.coin).length + 1
     return `${selectedAccountType?.name} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
   }, [accounts, selectedAccountType])
 
-  const onChangeFilecoinNetwork = (network: FilecoinNetwork) => {
-    setFilecoinNetwork(network)
-  }
+  const filecoinNetwork = selectedFilecoinNetwork?.chainId.toLowerCase() === BraveWallet.FILECOIN_MAINNET.toLowerCase() ? BraveWallet.FILECOIN_MAINNET : BraveWallet.FILECOIN_TESTNET
 
   const importError = React.useMemo(() => {
     return hasImportError
@@ -234,23 +232,7 @@ const AddAccountModal = (props: Props) => {
             <>
               <ImportDisclaimer>
                 <DisclaimerText>{getLocale('braveWalletImportAccountDisclaimer')}</DisclaimerText>
-              </ImportDisclaimer>
-              {selectedAccountType?.coin === BraveWallet.CoinType.FIL ? (
-                <>
-                  <SelectWrapper>
-                    <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
-                      {FilecoinNetworkTypes.map((network, index) => {
-                        const networkLocale = FilecoinNetworkLocaleMapping[network]
-                        return (
-                          <div data-value={network} key={index}>
-                            {networkLocale}
-                          </div>
-                        )
-                      })}
-                    </Select>
-                  </SelectWrapper>
-                </>
-              ) : (
+              </ImportDisclaimer>(
                 <>
                   {selectedAccountType?.coin === BraveWallet.CoinType.ETH &&
                     <SelectWrapper>
@@ -269,7 +251,6 @@ const AddAccountModal = (props: Props) => {
                   }
                 </>
               )
-              }
               {importError &&
                 <ErrorText>{getLocale('braveWalletImportAccountError')}</ErrorText>
               }
@@ -337,7 +318,6 @@ const AddAccountModal = (props: Props) => {
               }
               selectedNetwork={selectedNetwork}
               filecoinNetwork={filecoinNetwork}
-              onChangeFilecoinNetwork={onChangeFilecoinNetwork}
             />
           }
         </StyledWrapper>

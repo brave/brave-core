@@ -28,7 +28,6 @@ export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
-  onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
   preAddedHardwareWalletAccounts: WalletAccountType[]
   selectedAccountType: CreateAccountOptionsType
   selectedNetwork: BraveWallet.NetworkInfo
@@ -49,6 +48,7 @@ export default function (props: Props) {
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
     LedgerDerivationPaths.LedgerLive
   )
+
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
   const getErrorMessage = (error: any, accountTypeName: string) => {
     if (error.statusCode && error.statusCode === 27404) { // Unknown Error
@@ -64,23 +64,6 @@ export default function (props: Props) {
     }
 
     return { error: error.message, userHint: '' }
-  }
-  const onFilecoinNetworkChanged = (network: FilecoinNetwork) => {
-    props.onChangeFilecoinNetwork(network)
-    props.onConnectHardwareWallet({
-      hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
-      startIndex: 0,
-      stopIndex: DerivationBatchSize,
-      network: network,
-      coin: BraveWallet.CoinType.FIL
-    }).then((result) => {
-      setAccounts(result)
-    }).catch((error) => {
-      setConnectionError(getErrorMessage(error, selectedAccountType.name))
-      setShowAccountsList(false)
-    }).finally(
-      () => setIsConnecting(false)
-    )
   }
   const onChangeDerivationScheme = (scheme: HardwareDerivationScheme) => {
     setSelectedDerivationScheme(scheme)
@@ -187,7 +170,6 @@ export default function (props: Props) {
         getBalance={getBalance}
         selectedNetwork={selectedNetwork}
         filecoinNetwork={filecoinNetwork}
-        onChangeFilecoinNetwork={onFilecoinNetworkChanged}
         selectedAccountType={selectedAccountType}
       />
     )
