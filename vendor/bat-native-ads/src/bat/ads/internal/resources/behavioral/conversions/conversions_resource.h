@@ -12,24 +12,23 @@
 #include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 namespace resource {
 
-class Conversions final : public ResourceInterface<const ConversionsInfo*> {
+class Conversions final {
  public:
   Conversions();
-  ~Conversions() override;
+  ~Conversions();
 
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
 
-  bool IsInitialized() const override;
+  bool IsInitialized() const;
 
   void Load();
 
-  const ConversionsInfo* get() const override;
+  const ConversionsInfo* get() const;
 
  private:
   void OnLoadAndParseResource(ParsingResultPtr<ConversionsInfo> result);

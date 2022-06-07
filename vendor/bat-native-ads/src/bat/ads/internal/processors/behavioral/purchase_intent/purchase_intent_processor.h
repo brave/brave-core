@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/internal/processors/processor_interface.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "url/gurl.h"
 
@@ -27,14 +26,14 @@ struct PurchaseIntentSiteInfo;
 
 namespace processor {
 
-class PurchaseIntent final : public ProcessorInterface<GURL> {
+class PurchaseIntent final {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
-  ~PurchaseIntent() override;
+  ~PurchaseIntent();
   PurchaseIntent(const PurchaseIntent&) = delete;
   PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
-  void Process(const GURL& url) override;
+  void Process(const GURL& url);
 
  private:
   targeting::PurchaseIntentSignalInfo ExtractSignal(const GURL& url) const;

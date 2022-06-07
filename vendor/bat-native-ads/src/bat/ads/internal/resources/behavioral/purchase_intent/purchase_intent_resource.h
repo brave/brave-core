@@ -10,7 +10,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 
@@ -20,20 +19,19 @@ struct PurchaseIntentInfo;
 
 namespace resource {
 
-class PurchaseIntent final
-    : public ResourceInterface<const targeting::PurchaseIntentInfo*> {
+class PurchaseIntent final {
  public:
   PurchaseIntent();
-  ~PurchaseIntent() override;
+  ~PurchaseIntent();
 
   PurchaseIntent(const PurchaseIntent&) = delete;
   PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
-  bool IsInitialized() const override;
+  bool IsInitialized() const;
 
   void Load();
 
-  const targeting::PurchaseIntentInfo* get() const override;
+  const targeting::PurchaseIntentInfo* get() const;
 
  private:
   void OnLoadAndParseResource(

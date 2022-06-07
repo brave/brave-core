@@ -10,7 +10,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 
@@ -22,20 +21,19 @@ class TextProcessing;
 
 namespace resource {
 
-class TextClassification final
-    : public ResourceInterface<ml::pipeline::TextProcessing*> {
+class TextClassification final {
  public:
   TextClassification();
-  ~TextClassification() override;
+  ~TextClassification();
 
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
 
-  bool IsInitialized() const override;
+  bool IsInitialized() const;
 
   void Load();
 
-  ml::pipeline::TextProcessing* get() const override;
+  ml::pipeline::TextProcessing* get() const;
 
  private:
   void OnLoadAndParseResource(

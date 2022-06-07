@@ -11,24 +11,23 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "bat/ads/internal/resources/parsing_result.h"
-#include "bat/ads/internal/resources/resource_interface.h"
 
 namespace ads {
 namespace resource {
 
-class AntiTargeting final : public ResourceInterface<AntiTargetingInfo> {
+class AntiTargeting final {
  public:
   AntiTargeting();
-  ~AntiTargeting() override;
+  ~AntiTargeting();
 
   AntiTargeting(const AntiTargeting&) = delete;
   AntiTargeting& operator=(const AntiTargeting&) = delete;
 
-  bool IsInitialized() const override;
+  bool IsInitialized() const;
 
   void Load();
 
-  AntiTargetingInfo get() const override;
+  AntiTargetingInfo get() const;
 
  private:
   void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
