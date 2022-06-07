@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmati
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -307,6 +309,13 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 }
             });
             refreshListContentUi();
+        }
+
+        if (mTxInfo.originInfo != null && URLUtil.isValidUrl(mTxInfo.originInfo.originSpec)) {
+            TextView domain = view.findViewById(R.id.domain);
+            domain.setVisibility(View.VISIBLE);
+            domain.setText(Utils.geteTLD(
+                    new GURL(mTxInfo.originInfo.originSpec), mTxInfo.originInfo.eTldPlusOne));
         }
     }
 

@@ -1502,6 +1502,11 @@ public class Utils {
 
     public static Spanned geteTLD(String etldPlusOne) {
         GURL url = getCurentTabUrl();
+
+        return Utils.geteTLD(url, etldPlusOne);
+    }
+
+    public static Spanned geteTLD(GURL url, String etldPlusOne) {
         StringBuilder builder = new StringBuilder();
         builder.append(url.getScheme()).append("://").append(url.getHost());
         int index = builder.indexOf(etldPlusOne);
