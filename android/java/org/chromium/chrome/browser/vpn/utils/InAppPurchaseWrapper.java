@@ -189,7 +189,7 @@ public class InAppPurchaseWrapper {
     }
 
     BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
-        private int retryCount = 0;
+        private int retryCount;
         @Override
         public void onBillingServiceDisconnected() {
             retryCount++;
