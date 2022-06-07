@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.vpn.wireguard;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.wireguard.android.backend.Backend;
 import com.wireguard.android.backend.BackendException;
@@ -24,10 +26,11 @@ import com.wireguard.android.backend.Tunnel;
 import com.wireguard.config.Config;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
+import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
+import org.chromium.chrome.browser.vpn.DisconnectVpnBroadcastReceiver;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
@@ -89,6 +92,13 @@ public class WireguardServiceImpl
     }
 
     private Notification getBraveVpnNotification(String notificationText) {
+        Intent disconnectVpnIntent = new Intent(mContext, DisconnectVpnBroadcastReceiver.class);
+        disconnectVpnIntent.setAction(DisconnectVpnBroadcastReceiver.DISCONNECT_VPN_ACTION);
+        PendingIntent disconnectVpnPendingIntent =
+                PendingIntent.getBroadcast(mContext, 0, disconnectVpnIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                                | IntentUtils.getPendingIntentMutabilityFlag(true));
+
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mContext, BraveActivity.CHANNEL_ID);
         notificationBuilder.setSmallIcon(R.drawable.ic_vpn)
@@ -99,6 +109,9 @@ public class WireguardServiceImpl
                 .setContentText(notificationText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .addAction(R.drawable.ic_vpn,
+                        mContext.getResources().getString(R.string.disconnect),
+                        disconnectVpnPendingIntent)
                 .setOnlyAlertOnce(true);
 
         return notificationBuilder.build();
@@ -120,7 +133,11 @@ public class WireguardServiceImpl
                     try {
                         Statistics statistics = mBackend.getStatistics(mTunnelModel);
                         updateVpnNotification(String.format(
-                                mContext.getResources().getString(R.string.transfer_rx_tx),
+                                HtmlCompat
+                                        .fromHtml(mContext.getResources().getString(
+                                                          R.string.transfer_rx_tx),
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY)
+                                        .toString(),
                                 WireguardUtils.formatBytes(mContext, statistics.totalRx()),
                                 WireguardUtils.formatBytes(mContext, statistics.totalTx())));
                     } catch (Exception e) {
