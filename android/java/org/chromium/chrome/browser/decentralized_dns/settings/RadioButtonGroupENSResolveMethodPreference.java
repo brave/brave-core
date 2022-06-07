@@ -22,7 +22,7 @@ import java.util.Collections;
 
 public class RadioButtonGroupENSResolveMethodPreference
         extends Preference implements RadioGroup.OnCheckedChangeListener {
-    static final int OPTIONS_SIZE = ResolveMethodTypes.MAX_VALUE; // Exclude Ethereum.
+    static final int OPTIONS_SIZE = ResolveMethodTypes.MAX_VALUE + 1;
 
     private @ResolveMethodTypes int mSetting;
     private RadioButtonWithDescription mSettingRadioButton;
@@ -65,7 +65,7 @@ public class RadioButtonGroupENSResolveMethodPreference
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         for (int i = 0; i < OPTIONS_SIZE; i++) {
-            if (mButtons.get(i).isChecked()) {
+            if (mButtons.get(i) != null && mButtons.get(i).isChecked()) {
                 mSetting = i;
                 mSettingRadioButton = mButtons.get(i);
                 break;
