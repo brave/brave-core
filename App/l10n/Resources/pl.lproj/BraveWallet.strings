@@ -52,6 +52,21 @@
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Nie można dodać tokenu niestandardowego";
 
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "To umożliwi korzystanie z tej sieci w ramach portfela Brave.";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "Pozwolić tej stronie na dodanie sieci?";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "Dodaj sieć";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "Czy chcesz zaimportować ten token?";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "Dodaj sugerowany token";
+
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "Ustawienia zaawansowane";
 
@@ -60,6 +75,9 @@
 
 /* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
 "wallet.amountInCurrency" = "Kwota w %@";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "Akceptuj";
 
 /* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
 "wallet.assetDetailSubtitle" = "Cena %1$@ (%2$@)";
@@ -157,6 +175,9 @@
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Dane o cenach dostarczane przez CoinGecko";
 
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "Potwierdź";
+
 /* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
 "wallet.confirmationViewAllowSpendSubtitle" = "Udzielając tego uprawnienia, zezwalasz tej aplikacji na pobranie Twojego %@ i zautomatyzowanie transakcji dla Ciebie.";
 
@@ -186,6 +207,9 @@
 
 /* A button title when a user will continue to the next step of something */
 "wallet.continueButtonTitle" = "Kontynuuj";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "Adres kontraktu";
 
 /* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
 "wallet.copyAddressButtonTitle" = "Kopiuj adres";
@@ -457,6 +481,9 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "Niewystarczająca płynność";
 
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "Dowiedz się więcej";
+
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Zablokuj";
 
@@ -471,6 +498,27 @@
 
 /* An error message will pop up when the user tries to add a custom network that its id already exists. */
 "wallet.networkIdDuplicationErrMsg" = "Ten identyfikator sieci już istnieje";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "Nazwa sieci";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "Adres URL";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "Wyświetl adresy dozwolonych kont (wymagane)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "Łącz tylko z zaufanymi stronami.";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Połącz z portfelem Brave";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "Połącz";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "Dalej";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Brak kont";
@@ -643,6 +691,9 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ustawienia";
 
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "Domyślna podstawowa waluta";
+
 /* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
 "wallet.settingsEnableBiometricsFooter" = "Włącz, jeśli chcesz korzystać z biometryki (identyfikacja twarzą/dotykiem), do odblokowywania portfela";
 
@@ -693,6 +744,15 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Pokaż klucz prywatny";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "Podpisz";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "Wymagany jest Twój podpis";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "Wymagany podpis";
 
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "Pomiń";
@@ -748,6 +808,18 @@
 /* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
 "wallet.swapSelectedTokens" = "Wymień zaznaczone tokeny";
 
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "Zmień";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "To przełącza sieć na poprzednio dodaną sieć";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "Pozwolić stronie na przełączenie sieci?";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "Przełącz sieć";
+
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Dzisiaj";
 
@@ -774,9 +846,6 @@
 
 /* Text body of confirmation prompt when there's a backlog of wallet transactions */
 "wallet.transactionBacklogBody" = "Próbujesz zacząć nową transakcję podczas gdy już została wysłana transakcja, która nie została jeszcze potwierdzona. To zablokuje wszystkie nowe transakcje od zostania wysłanymi.";
-
-/* Button to learn more about incomplete/pending wallet transactions. */
-"wallet.transactionBacklogLearnMoreButton" = "Dowiedz się więcej";
 
 /* Title of confirmation prompt when there's a backlog of wallet transactions */
 "wallet.transactionBacklogTitle" = "Zaległe transakcje";
@@ -867,6 +936,12 @@
 
 /* The title of the verify recovery phrase screen */
 "wallet.verifyRecoveryPhraseTitle" = "Weryfikuj frazę odzyskiwania";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "Zobacz szczegóły";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "Szczegóły sieci";
 
 /* A button title to view a given transaction on the block explorer for the current network/chain. */
 "wallet.viewOnBlockExplorer" = "Wyświetl w przeglądarce łańcucha bloków";

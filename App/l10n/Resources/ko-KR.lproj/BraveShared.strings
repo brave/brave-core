@@ -70,6 +70,12 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "사용자 이름";
 
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "AMP 페이지 자동 리디렉션";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 항상 방문합니다.";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "제3자 쿠키 차단";
 
@@ -115,8 +121,8 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "자바스크립트를 차단합니다(사이트가 깨져 보일 수 있음).";
 
-/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "모든 탭 북마크";
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "%lld개 탭에 북마크 추가";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "북마크 폴더";
@@ -188,10 +194,10 @@
 "Cache" = "캐시";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Brave를 기본으로 설정하면 클릭한 모든 링크가 Brave의 프라이버시 보호가 적용되어 열립니다.";
+"callout.defaultBrowserCalloutDescription" = "Brave를 기본으로 설정하면 탭한 모든 링크가 Brave의 프라이버시 보호가 적용되어 열립니다.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "기본값으로 설정";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "기본 브라우저로 설정";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "이미 기본으로 설정하셨나요?";
@@ -200,7 +206,7 @@
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "건너뛰기";
 
 /* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Brave를 기본 브라우저로 설정";
+"callout.defaultBrowserTitle" = "프라이버시. 심플하게.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "동영상 보기";
@@ -397,6 +403,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "다운로드한 파일이 여기에 표시됩니다.";
 
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "활성 탭 복제";
+
 /* History tableview section header that indicated history items earlier than last month */
 "Earlier" = "더 이전";
 
@@ -534,6 +543,9 @@
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "유니버설 링크로 외부 앱을 열 수 있게 허용";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "강제 붙여넣기";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "앗! 문제가 발생했습니다. 다시 시도하세요.";
@@ -772,50 +784,35 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewards를 켜면 %@에 동의하는 것으로 간주됩니다.";
 
-/* The description of the popover showing trackers that were blocked. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "어느 사이트에서든 Shield를 탭하면 Brave가 차단한 콘텐츠를 볼 수 있습니다.";
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ 외 %2$lld개의 광고 및 트래커 차단됨";
 
-/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave가 %1$@ 차단함: %2$@.";
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "모든 페이지에서 Brave가 Shields로 차단한 악성 콘텐츠를 모두 확인해보세요.";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave가 %1$@ 외 트래커 %2$d개 차단함: %3$@.";
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Brave Shields를 보려면 탭";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave가 %1$@ 외 트래커 %2$d개 차단함: %3$@.";
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "광고 및 트래커 차단됨";
 
-/* DEscription for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneDescription" = "메뉴에서 설정과 매우 뛰어난 프라이버시 관련 기능을 확인해보세요!";
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "\"기본 브라우저 앱\"을 살펴보세요.";
 
-/* Title for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneTitle" = "설정이 완료되었습니다!";
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "설정으로 이동 중...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "트래커와 광고를 차단하여 웹사이트에서 데이터를 적게 사용하여 로딩이 빨라집니다.";
 
-/* Button Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenButtonTitle" = "시작합니다";
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Brave의 차별점:\n광고 없음. 트래커 없음. 더욱 빠른 페이지 로드.";
 
-/* Description for Privacy Screen in Onboarding */
-"onboarding.privacyScreenDescription" = "한 단계만 더 거치면 온라인 프라이버시를 최대화할 수 있습니다. 준비되셨나요?";
-
-/* Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenTitle" = "쉬운 프라이버시 보호";
-
-/* Additional Description for Ready Screen in Onboarding */
-"onboarding.readyScreenAdditionalDescription" = "...그러면 트래커와 광고가 사라지는 것이 가시적으로 확인됩니다.";
-
-/* Description for Ready Screen in Onboarding */
-"onboarding.readyScreenDescription" = "아래 유명 사이트를 선택하거나 직접 입력해보세요...";
-
-/* Title for Ready Screen in Onboarding */
-"onboarding.readyScreenTitle" = "브라우징할 준비가 되셨습니다!";
-
-/* The title of the row asking user to enter a website url */
-"onboarding.searchViewEnterWebsiteRowTitle" = "웹사이트 입력";
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "웹사이트 이름 또는 URL 타이핑";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "반갑습니다, Brave입니다!";
+"onboarding.welcomeScreenTitle" = "반갑습니다, Brave입니다";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "모두 열기(%i)";
@@ -1900,6 +1897,36 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "- %@";
 
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "기본 웹페이지 확대 수준";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "확대 수준을 변경한 웹사이트가 여기 목록에 표시됩니다. 현재 확대/축소 비율을 지정한 웹사이트가 없습니다.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "추가된 웹사이트 없음";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "페이지 확대";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "다른 모든 웹사이트";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "모두 재설정";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "웹사이트 확대 수준 재설정";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "페이지별 설정";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "페이지 확대 설정";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "페이지 확대";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "이 동영상을 재생목록에 추가하시겠습니까?";
 
@@ -2285,7 +2312,7 @@
 "privacyHub.riskiestWebsiteBody" = "**%1$@** 방문 시마다 평균 **%2$lld**개의 트래커 및 광고 탐지됨";
 
 /* Title of a website that contained the most trackers per visit. */
-"privacyHub.riskiestWebsiteTitle" = "방문한 웹사이트 중 가장 위험한 곳";
+"privacyHub.riskiestWebsiteTitle" = "트래커가 가장 많은 사이트";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "프라이버시 허브에는 Shields의 차단 횟수가 표시됩니다. 설정은 새 탭 페이지의 Shields 카운터에 영향을 주지 않습니다. 비공개 창에서는 Shields 데이터가 집계되지 않습니다.";

@@ -5,7 +5,7 @@
 "1n1yx4" = "Kan ikke åpne ${websiteURL} i en ny fane.";
 
 /* (No Comment) */
-"1QT5y6" = "Åpne en nettside";
+"1QT5y6" = "Åpne et nettsted i ny fane";
 
 /* (No Comment) */
 "3oC6Qm" = "Åpne et nettsted i ny fane";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Dette åpner ${websiteURL} fra bokmerkene.";
 
 /* (No Comment) */
-"qkzovY" = "Åpne et nettsted i ny fane";
-
-/* (No Comment) */
 "t7aARA" = "Kan ikke åpne ${websiteURL} i en ny fane.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Dette åpner ${websiteURL} fra nettloggen.";
-
-/* (No Comment) */
-"xgP5Po" = "via nettstedet";
 
 /* (No Comment) */
 "Xx8bbW" = "Nettstedets adresse";

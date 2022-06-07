@@ -70,6 +70,12 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Användarnamn";
 
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Omdirigera AMP-sidor automatiskt";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Besök alltid ursprungliga (icke-AMP) sid-URL:er istället för Googles versioner av Accelerated Mobile Page";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blockera cookies från 3:e part";
 
@@ -115,8 +121,8 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera).";
 
-/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "Bokmärk alla flikar";
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Lägg till bokmärke för %lld-flikar";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Bokmärkesmapp";
@@ -188,10 +194,10 @@
 "Cache" = "Cache";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Om du har Brave som standardwebbläsare öppnas alla länkar du klickar på med Braves integritetsskydd.";
+"callout.defaultBrowserCalloutDescription" = "Med Brave som standard öppnas varje länk med Braves integritetsskydd.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Välj som standard";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Ange som standardwebbläsare";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Är det redan din standardwebbläsare?";
@@ -200,7 +206,7 @@
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "Hoppa över det här";
 
 /* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Gör Brave till standardwebbläsare";
+"callout.defaultBrowserTitle" = "Integritet. Helt enkelt.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Se videon";
@@ -397,6 +403,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Hämtade filer kommer att visas här.";
 
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Duplicera aktiv flik";
+
 /* History tableview section header that indicated history items earlier than last month */
 "Earlier" = "Tidigare";
 
@@ -534,6 +543,9 @@
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Tillåt att universella länkar öppnas i externa appar";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Tvinga inklistring";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Någonting gick fel. Vänligen försök igen.";
@@ -772,50 +784,35 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Genom att aktivera Rewards godkänner du %@.";
 
-/* The description of the popover showing trackers that were blocked. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Tryck på skölden på vilken webbplats som helst för att se allt vi blockerat.";
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ och %2$lld andra annonser och spårare blockerade";
 
-/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave blockerade %1$@ på: %2$@.";
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Se alla dåliga saker som Brave har blockerat på varje sida med Shields";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave blockerade %1$@ och %2$d andra spårare på: %3$@.";
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Tryck för att visa Brave Shields";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave blockerade %1$@ och %2$d annan spårare på: %3$@.";
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Blockerade annonser och spårare";
 
-/* DEscription for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneDescription" = "Kolla in menyn för inställningar och andra praktiska integritetsfunktioner!";
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Hitta \"Standardapp för webbläsare\"";
 
-/* Title for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneTitle" = "Allt klart!";
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Du tas till Inställningar ...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Webbplatser använder färre data och laddar mycket snabbare när spårare och annonser blockeras.";
 
-/* Button Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenButtonTitle" = "Nu kör vi!";
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Se den skillnaden med Brave:\nInga annonser. Inga spårare. Mycket snabbare sidladdning.";
 
-/* Description for Privacy Screen in Onboarding */
-"onboarding.privacyScreenDescription" = "Du är bara ett steg bort från den bästa onlineintegriteten någonsin. Är du redo?";
-
-/* Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenTitle" = "Integritet  enkelt och smidigt";
-
-/* Additional Description for Ready Screen in Onboarding */
-"onboarding.readyScreenAdditionalDescription" = "…och se spårare och annonser gå upp i rök.";
-
-/* Description for Ready Screen in Onboarding */
-"onboarding.readyScreenDescription" = "Välj en populär webbplats nedan eller skriv in din egen…";
-
-/* Title for Ready Screen in Onboarding */
-"onboarding.readyScreenTitle" = "Webbläsaren är klar att använda!";
-
-/* The title of the row asking user to enter a website url */
-"onboarding.searchViewEnterWebsiteRowTitle" = "Skriv in en webbplats";
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Skriv webbplatsens namn eller URL";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Välkommen till Brave!";
+"onboarding.welcomeScreenTitle" = "Välkommen till Brave";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Öppna alla (%i)";
@@ -1900,6 +1897,36 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "på %@";
 
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Zoomnivå för webbsida som standard";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "När en webbplats zoomnivå har ändrats kommer webbplatsen att visas i listan här. För närvarande finns det inga webbplatser som zoomas in eller ut.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Inga webbplatser tillagda";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "Zoom för sida";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Alla andra webbplatser";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Återställ alla";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Återställ zoomnivåer för webbplats";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Specifika sidinställningar";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Zoominställningar för sida";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Zoom för sida";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "Vill du lägga till den här videon i din spellista?";
 
@@ -2285,7 +2312,7 @@
 "privacyHub.riskiestWebsiteBody" = "**%1$@** hade i genomsnitt **%2$lld** spårare och annonser blockerade per besök";
 
 /* Title of a website that contained the most trackers per visit. */
-"privacyHub.riskiestWebsiteTitle" = "Den mest riskfyllda webbplatsen du har besökt";
+"privacyHub.riskiestWebsiteTitle" = "Webbplats med flest spårare";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Sekretesshubben visar en beräkning av vad Shields har blockerat. Inställningen påverkar inte Shields-räknaren på en ny fliksida. Shields-data räknas inte i privata fönster.";

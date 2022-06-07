@@ -5,7 +5,7 @@
 "1n1yx4" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
 
 /* (No Comment) */
-"1QT5y6" = "웹사이트 열기";
+"1QT5y6" = "새 탭에서 웹사이트 열기";
 
 /* (No Comment) */
 "3oC6Qm" = "새 탭에서 웹사이트 열기";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "북마크에서 ${websiteURL} 페이지가 열립니다.";
 
 /* (No Comment) */
-"qkzovY" = "새 탭에서 웹사이트 열기";
-
-/* (No Comment) */
 "t7aARA" = "새 탭에서 ${websiteURL} 페이지를 열 수 없습니다.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "기록에서 ${websiteURL} 페이지가 열립니다.";
-
-/* (No Comment) */
-"xgP5Po" = "웹사이트 사용";
 
 /* (No Comment) */
 "Xx8bbW" = "웹사이트 URL";

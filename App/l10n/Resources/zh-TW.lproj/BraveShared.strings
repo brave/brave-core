@@ -70,6 +70,12 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "使用者名稱";
 
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "自動重新導向 AMP 頁面";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "一律造訪原始 (非 AMP) 頁面 URL，而不開啟 Google 的 Accelerated Mobile Page 版本";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "封鎖第 3 方 Cookie";
 
@@ -115,8 +121,8 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)。";
 
-/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "為所有分頁加上書籤";
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "為 %lld 個分頁新增書籤";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "書籤資料夾";
@@ -188,7 +194,7 @@
 "Cache" = "快取";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "使用 Brave 作為預設瀏覽器，您所點選的每個連結都會在 Brave 的隱私保護下開啟。";
+"callout.defaultBrowserCalloutDescription" = "將 Brave 設為預設瀏覽器的話，您所輕觸的每個連結都會在 Brave 的隱私保護下開啟。";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設瀏覽器";
@@ -200,7 +206,7 @@
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "略過";
 
 /* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "將 Brave 設為您的預設瀏覽器";
+"callout.defaultBrowserTitle" = "隱私不再遙不可及。";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "觀看影片";
@@ -397,6 +403,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "下載的檔案將於此顯示。";
 
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "複製已開啟的分頁";
+
 /* History tableview section header that indicated history items earlier than last month */
 "Earlier" = "更早";
 
@@ -534,6 +543,9 @@
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "允許所有連結在外部應用程式中開啟";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "強制貼上";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "糟糕！ 出問題了。 請再試一次。";
@@ -772,50 +784,35 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "開啟「獎勵」即表示您同意%@。";
 
-/* The description of the popover showing trackers that were blocked. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "點選任何網站上的盾牌圖示，即可查看我們已封鎖的所有追蹤器。";
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "已封鎖 %1$@ 和其他 %2$lld 個廣告和追蹤器";
 
-/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave 在以下網站上封鎖了 %1$@：%2$@。";
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "在每個頁面上都能使用 Shields 查看 Brave 封鎖的所有不速之客。";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave 在以下網站上封鎖了 %1$@ 和另外 %2$d 個追蹤器：%3$@。";
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "輕觸即可查看 Brave Shields";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave 在以下網站上封鎖了 %1$@ 和另外 %2$d 個追蹤器：%3$@。";
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個廣告和追蹤器遭到封鎖";
 
-/* DEscription for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneDescription" = "查看選單中的各項設定和其他值得一試的隱私功能！";
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "尋找「預設瀏覽器應用程式」";
 
-/* Title for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneTitle" = "完成了！";
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "正在前往「設定」...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "封鎖追蹤器和廣告可讓網站的數據用量減少，載入速度加快。";
 
-/* Button Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenButtonTitle" = "繼續前進";
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "體驗 Brave 的與眾不同：\n沒有廣告，沒有追蹤器，頁面載入速度大幅提升。";
 
-/* Description for Privacy Screen in Onboarding */
-"onboarding.privacyScreenDescription" = "您只差一步就能享有最佳線上隱私體驗。準備好了嗎？";
-
-/* Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenTitle" = "輕鬆保護隱私";
-
-/* Additional Description for Ready Screen in Onboarding */
-"onboarding.readyScreenAdditionalDescription" = "...見證追蹤器和廣告消失在您眼前。";
-
-/* Description for Ready Screen in Onboarding */
-"onboarding.readyScreenDescription" = "選取下方的熱門網站，或自行輸入網站...";
-
-/* Title for Ready Screen in Onboarding */
-"onboarding.readyScreenTitle" = "現在可以開始瀏覽！";
-
-/* The title of the row asking user to enter a website url */
-"onboarding.searchViewEnterWebsiteRowTitle" = "輸入網站";
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "輸入網站名稱或 URL";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "歡迎使用 Brave！";
+"onboarding.welcomeScreenTitle" = "歡迎使用 Brave";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "開啟全部 (%i)";
@@ -1900,6 +1897,36 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "(%@)";
 
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "預設網頁縮放比例";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "一旦網站的縮放比例有所變動，網站就會以清單的形式顯示在這裡。目前沒有任何網站的頁面經過放大或縮小。";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "未新增任何網站";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "頁面縮放";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "其他所有網站";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "全部重設";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "重設網站縮放比例";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "特定頁面設定";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "頁面縮放設定";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "頁面縮放";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "你想新增此影片至播放清單嗎？";
 
@@ -2285,7 +2312,7 @@
 "privacyHub.riskiestWebsiteBody" = "**%1$@** 每次造訪平均有 **%2$lld** 個追蹤器和廣告遭封鎖";
 
 /* Title of a website that contained the most trackers per visit. */
-"privacyHub.riskiestWebsiteTitle" = "您所造訪風險最高的網站";
+"privacyHub.riskiestWebsiteTitle" = "追蹤器最多的網站";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "隱私中心會顯示防護封鎖的數量。設定不會影響新分頁上的防護計數器。防護資料不會計入隱私視窗。";

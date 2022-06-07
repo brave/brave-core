@@ -5,7 +5,7 @@
 "1n1yx4" = "Não foi possível abrir ${websiteURL} em uma nova aba.";
 
 /* (No Comment) */
-"1QT5y6" = "Abrir um site";
+"1QT5y6" = "Abrir um site em uma nova aba";
 
 /* (No Comment) */
 "3oC6Qm" = "Abrir um site em uma nova aba";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Isso abrirá ${websiteURL} dos favoritos.";
 
 /* (No Comment) */
-"qkzovY" = "Abrir um site em uma nova aba";
-
-/* (No Comment) */
 "t7aARA" = "Não foi possível abrir ${websiteURL} em uma nova aba.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Isso abrirá ${websiteURL} do histórico.";
-
-/* (No Comment) */
-"xgP5Po" = "usando o site";
 
 /* (No Comment) */
 "Xx8bbW" = "URL do site";

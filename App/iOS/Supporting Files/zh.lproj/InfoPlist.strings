@@ -16,7 +16,7 @@
 "NSLocationWhenInUseUsageDescription" = "您访问的网站可能需要您的位置。";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "这可使您拍照和上传照片。";
+"NSMicrophoneUsageDescription" = "允许在使用 Brave 时使用麦克风。";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "这可使您保存照片。";

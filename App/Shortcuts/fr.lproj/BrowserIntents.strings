@@ -5,7 +5,7 @@
 "1n1yx4" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
 
 /* (No Comment) */
-"1QT5y6" = "Ouvrir un site Web";
+"1QT5y6" = "Ouvrir un site Web dans un nouvel onglet";
 
 /* (No Comment) */
 "3oC6Qm" = "Ouvrir un site Web dans un nouvel onglet";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Cette action ouvrira ${websiteURL} à partir des marque-pages.";
 
 /* (No Comment) */
-"qkzovY" = "Ouvrir un site Web dans un nouvel onglet";
-
-/* (No Comment) */
 "t7aARA" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Cette action ouvrira ${websiteURL} depuis l'historique.";
-
-/* (No Comment) */
-"xgP5Po" = "à l'aide du site Web";
 
 /* (No Comment) */
 "Xx8bbW" = "URL du site Web";

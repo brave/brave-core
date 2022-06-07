@@ -5,7 +5,7 @@
 "1n1yx4" = "新しいタブで${websiteURL}を開くことができません。";
 
 /* (No Comment) */
-"1QT5y6" = "ウェブサイトを開く";
+"1QT5y6" = "新しいタブでウェブサイトを開く";
 
 /* (No Comment) */
 "3oC6Qm" = "新しいタブでウェブサイトを開く";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "${websiteURL}をブックマークから開きます。";
 
 /* (No Comment) */
-"qkzovY" = "新しいタブでウェブサイトを開く";
-
-/* (No Comment) */
 "t7aARA" = "新しいタブで${websiteURL}を開くことができません。";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "${websiteURL}を履歴から開きます。";
-
-/* (No Comment) */
-"xgP5Po" = "ウェブサイトを利用";
 
 /* (No Comment) */
 "Xx8bbW" = "ウェブサイトのURL";

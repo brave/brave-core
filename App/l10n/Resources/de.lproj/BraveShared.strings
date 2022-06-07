@@ -70,6 +70,12 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Benutzername";
 
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "AMP-Seiten automatisch umleiten";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Immer Original-Seiten-URLs (nicht AMP) besuchen statt den beschleunigten Mobilseiten von Google";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Cookies von Dritten blockieren";
 
@@ -115,8 +121,8 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Blockiert Javascript (beeinträchtigt möglicherweise bestimmte Sites).";
 
-/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "Alle Tabs zu den Lesezeichen hinzufügen";
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Lesezeichen für %lld Tabs hinzufügen";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Lesezeichenordner";
@@ -188,10 +194,10 @@
 "Cache" = "Cache";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Wenn Brave als Standard gewählt wurde, wird jeder Link, den Sie anklicken, mit dem Datenschutzmechanismen von Brave geöffnet.";
+"callout.defaultBrowserCalloutDescription" = "Wenn Brave als Standard gewählt wurde, wird jeder Link, den Sie antippen, mit den Datenschutzmechanismen von Brave geöffnet.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Als Standard festlegen";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Als Standard-Browser festlegen";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Bereits als Standard festgelegt?";
@@ -200,7 +206,7 @@
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "Überspringen";
 
 /* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Legen Sie Brave als Standardbrowser fest";
+"callout.defaultBrowserTitle" = "Privatsphäre leicht gemacht.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Video ansehen";
@@ -397,6 +403,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Heruntergeladene Dateien werden hier angezeigt.";
 
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Aktiven Tab duplizieren";
+
 /* History tableview section header that indicated history items earlier than last month */
 "Earlier" = "Ältere";
 
@@ -534,6 +543,9 @@
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Erlauben, dass universelle Links in externen Apps geöffnet werden";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Einfügen erzwingen";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Hoppla! Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.";
@@ -772,50 +784,35 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Mit der Aktivierung von Rewards erklären Sie sich einverstanden mit den %@.";
 
-/* The description of the popover showing trackers that were blocked. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Tippen Sie von einer beliebigen Website auf das Schild, um alle Elemente zu sehen, die wir blockiert haben.";
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ und %2$lld andere Anzeigen und Tracker blockiert";
 
-/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave hat %1$@ blockiert auf: %2$@.";
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Sehen Sie sich mit Brave-Schutz alle Elemente an, die Brave auf jeder Seite blockiert hat.";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave hat %1$@ und %2$d andere Tracker blockiert auf: %3$@.";
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Tippen, um Brave-Schutz anzuzeigen";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave hat %1$@ und %2$d anderen Tracker blockiert auf: %3$@.";
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Anzeigen und Trackers blockiert";
 
-/* DEscription for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneDescription" = "Im Menü finden Sie die Einstellungen und andere tolle Datenschutzfunktionen!";
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Nach „Standardbrowser“ suchen";
 
-/* Title for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneTitle" = "Geschafft!";
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Zu den Einstellungen …";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Durch die Blockierung von Trackern und Anzeigen verbrauchen Websites eine geringere Datenmenge und laden deutlich schneller.";
 
-/* Button Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenButtonTitle" = "Los geht's";
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Sehen Sie, welchen Unterschied Brave macht:\nKeine Anzeigen, Keine Tracker. Deutlich schnellere Ladezeiten.";
 
-/* Description for Privacy Screen in Onboarding */
-"onboarding.privacyScreenDescription" = "Sie sind nur einen Schritt vom besten Online-Datenschutz entfernt. Bereit?";
-
-/* Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenTitle" = "Datenschutz leicht gemacht";
-
-/* Additional Description for Ready Screen in Onboarding */
-"onboarding.readyScreenAdditionalDescription" = "… und sehen Sie zu, wie Tracker und Anzeigen verschwinden.";
-
-/* Description for Ready Screen in Onboarding */
-"onboarding.readyScreenDescription" = "Wählen Sie unten eine beliebte Website aus oder geben Sie Ihre eigene ein …";
-
-/* Title for Ready Screen in Onboarding */
-"onboarding.readyScreenTitle" = "Jetzt können Sie lossurfen!";
-
-/* The title of the row asking user to enter a website url */
-"onboarding.searchViewEnterWebsiteRowTitle" = "Geben Sie eine Website ein";
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Geben Sie den Namen einer Website oder eine URL ein";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Willkommen bei Brave!";
+"onboarding.welcomeScreenTitle" = "Willkommen bei Brave";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Alle (%i) öffnen";
@@ -1900,6 +1897,36 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "auf %@";
 
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Standard-Zoomebene für Websites";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Wenn die Zoomebene verändert wurde, wird die Website in dieser Liste angezeigt. Derzeit wurde auf keine Websites Zoom angewendet.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Keine Websites hinzugefügt";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "Seitenzoom";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Alle anderen Websites";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Alle zurücksetzen";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Zoomebenen für Websites zurücksetzen";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Spezielle Seiteneinstellungen";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Zoomeinstellungen für Seiten";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Seitenzoom";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "Möchten Sie dieses Video zu Ihrer Playlist hinzufügen?";
 
@@ -2285,7 +2312,7 @@
 "privacyHub.riskiestWebsiteBody" = "Auf **%1$@** wurden durchschnittlich **%2$lld** Tracker und Anzeigen pro Besuch blockiert.";
 
 /* Title of a website that contained the most trackers per visit. */
-"privacyHub.riskiestWebsiteTitle" = "Von Ihnen besuchte Website mit dem höchsten Risiko";
+"privacyHub.riskiestWebsiteTitle" = "Website mit den meisten Trackern";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Der Datenschutzhub zeigt an, welche Elemente der Brave-Schutz blockiert hat. Die Einstellung hat keine Auswirkung auf die Schutz-Anzahl in neuen Tabs. In privaten Fenstern werden keine Schutz-Daten erfasst.";

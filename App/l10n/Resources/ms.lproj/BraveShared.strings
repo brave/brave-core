@@ -70,6 +70,12 @@
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nama pengguna";
 
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Ubah Hala Auto Halaman AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Sentiasa lawati URL halaman asal (bukan AMP) berbanding versi Halaman Mudah Alih Dipercepat Google";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Sekat kuki pihak ke 3";
 
@@ -115,8 +121,8 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Menyekat JavaScript (mungkin merosakkan tapak).";
 
-/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
-"BookmarkAllTabsTitle" = "Tandakan Semua Tab";
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Tambah Penanda Halaman untuk Tab %lld";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder Penanda Buku";
@@ -188,10 +194,10 @@
 "Cache" = "Cache";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Apabila Brave ditetapkan sebagai lalai, setiap pautan yang anda klik akan dibuka dengan perlindungan privasi Brave.";
+"callout.defaultBrowserCalloutDescription" = "Dengan Brave sebagai lalai, setiap pautan yang anda ketik dibuka dengan perlindungan privasi Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan sebagai lalai";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan sebagai pelayar lalai";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Sudah ditetapkan sebagai lalai?";
@@ -200,7 +206,7 @@
 "callout.defaultBrowserCalloutSecondaryButtonTitle" = "Langkau langkah ini";
 
 /* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Tetapkan Brave sebagai pelayar lalai anda";
+"callout.defaultBrowserTitle" = "Privasi. Dihasilkan Secara Mudah.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Tonton video";
@@ -397,6 +403,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Fail-fail yang dimuat turun akan kelihatan di sini.";
 
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Menduplikasikan Tab Aktif";
+
 /* History tableview section header that indicated history items earlier than last month */
 "Earlier" = "Lebih Awal";
 
@@ -534,6 +543,9 @@
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Benarkan pautan universal untuk dibuka dalam aplikasi luaran";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Paksa Tampal";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Oops! Ralat telah berlaku. Sila cuba lagi.";
@@ -772,50 +784,35 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan menghidupkan Ganjaran, anda bersetuju dengan %@.";
 
-/* The description of the popover showing trackers that were blocked. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionThree" = "Ketik Shield daripada mana-mana laman untuk melihat semua bahan yang kami sekat.";
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ dan %2$lld iklan lain & penjejak disekat";
 
-/* The alternate description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverDescriptionTwo" = "Brave menyekat %1$@ pada: %2$@.";
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Lihat semua perkara kurang baik yang disekat oleh Brave, pada setiap halaman, dengan Shields.";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverMultipleTrackerDescription" = "Brave menyekat %1$@ dan %2$d penjejak yang lain pada: %3$@.";
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Ketik untuk melihat Brave Shields";
 
-/* The description of the popover showing trackers that were blocked. %@ and %d are placeholders for a tracker name and count. */
-"onboarding.blockedAdsOnboardingPopoverSingleTrackerDescription" = "Brave menyekat %1$@ dan %2$d penjejak yang lain pada: %3$@.";
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Iklan & penjejak disekat";
 
-/* DEscription for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneDescription" = "Semak menu untuk tetapan dan pelbagai lagi ciri privasi yang menarik!";
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Cari 'Apl Pelayar Lalai'";
 
-/* Title for the NTP pop-over that describes the onboarding is done */
-"onboarding.ntpOnboardingPopoverDoneTitle" = "Sedia!";
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Membawa anda ke Tetapan...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Dengan menyekat penjejak & iklan, laman web menggunakan kurang data dan memuat dengan lebih pantas.";
 
-/* Button Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenButtonTitle" = "Ayuh!";
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Lihat perbezaan Brave:\nTiada iklan. Tiada penjejak. Muatan halaman yang lebih cepat.";
 
-/* Description for Privacy Screen in Onboarding */
-"onboarding.privacyScreenDescription" = "Anda cuma selangkah lagi untuk mencapai privasi terbaik dalam talian. Sedia?";
-
-/* Title for Privacy Screen in Onboarding */
-"onboarding.privacyScreenTitle" = "Privasi dipermudahkan";
-
-/* Additional Description for Ready Screen in Onboarding */
-"onboarding.readyScreenAdditionalDescription" = "...kemudian, lihat semua penjejak & iklan tersebut lenyap.";
-
-/* Description for Ready Screen in Onboarding */
-"onboarding.readyScreenDescription" = "Pilih laman popular di bawah atau masukkan sendiri...";
-
-/* Title for Ready Screen in Onboarding */
-"onboarding.readyScreenTitle" = "Anda sudah sedia untuk layari!";
-
-/* The title of the row asking user to enter a website url */
-"onboarding.searchViewEnterWebsiteRowTitle" = "Layari laman web";
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Taip nama laman web atau URL";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Selamat datang ke Brave!";
+"onboarding.welcomeScreenTitle" = "Selamat Datang ke Brave";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
@@ -1900,6 +1897,36 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "pada %@";
 
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Tahap Zum Halaman-Web Lalai";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Apabila Tahap-Zum laman web berubah, laman web akan muncul pada senarai di sini. Pada masa ini, tiada laman web yang zum dekat atau zum keluar.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Tiada Laman Web Ditambah";
+
+/* Title of the Web-Page Zoom settings menu */
+"pagezoom.settings.menu-title" = "Zum Halaman";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Semua Laman Web Lain";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Tetapkan Semula Semua";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Tetapkan Semula Tahap Zum Laman Web";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Tetapan Halaman Khusus";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Tetapan Zum Halaman";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Zum Halaman";
+
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "Adakah anda mahu menambah video ini ke senarai main anda?";
 
@@ -2285,7 +2312,7 @@
 "privacyHub.riskiestWebsiteBody" = "**%1$@** mempunyai purata **%2$lld** penjejak & iklan yang disekat pada setiap lawatan";
 
 /* Title of a website that contained the most trackers per visit. */
-"privacyHub.riskiestWebsiteTitle" = "Laman web paling berisiko yang anda lawati";
+"privacyHub.riskiestWebsiteTitle" = "Tapak dengan penjejak terbanyak";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Hab Privasi memaparkan jumlah laman yang disekat oleh Shields. Tetapan tidak akan mempengaruhi bilangan Shields pada halaman tab baharu. Data Shields tidak dikira dalam tetingkap peribadi.";

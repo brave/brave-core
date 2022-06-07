@@ -16,7 +16,7 @@
 "NSLocationWhenInUseUsageDescription" = "Hjemmesidene du besøker kan be om å få vite hvor du befinner deg.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Dette lar deg ta opp videoer og laste dem opp.";
+"NSMicrophoneUsageDescription" = "Dette gjør det mulig å bruke mikrofonen din når du bruker Brave.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Dette lar deg lagre bilder.";

@@ -52,6 +52,21 @@
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "カスタムトークンを追加できません";
 
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "このネットワークがBrave Walletで使用されます。";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "このサイトにネットワークの追加を許可しますか？";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "ネットワークを追加";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "このトークンをインポートしますか？";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "推奨トークンを追加";
+
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "詳細設定";
 
@@ -60,6 +75,9 @@
 
 /* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
 "wallet.amountInCurrency" = "%@ の量";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "承認";
 
 /* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
 "wallet.assetDetailSubtitle" = "%1$@ (%2$@) の価格";
@@ -157,6 +175,9 @@
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "価格データはCoinGeckoから提供されています";
 
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "確認する";
+
 /* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
 "wallet.confirmationViewAllowSpendSubtitle" = "この許可を付与することにより、このアプリがお客様の%@を引き出しトランザクションを自動化することを許可するものとします。";
 
@@ -186,6 +207,9 @@
 
 /* A button title when a user will continue to the next step of something */
 "wallet.continueButtonTitle" = "続ける";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "コントラクトアドレス";
 
 /* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
 "wallet.copyAddressButtonTitle" = "アドレスをコピーする";
@@ -457,6 +481,9 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "流動性が不足しています";
 
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "詳しく";
+
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "ロックする";
 
@@ -471,6 +498,27 @@
 
 /* An error message will pop up when the user tries to add a custom network that its id already exists. */
 "wallet.networkIdDuplicationErrMsg" = "チェーンIDはすでに存在します";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "ネットワーク名";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "ネットワークURL";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "許可済みのアカウントのアドレスを表示 (必須)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "信頼できるサイトのみを接続してください。";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Brave Walletに接続";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "接続";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "次へ";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "アカウントがありません";
@@ -643,6 +691,9 @@
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "設定";
 
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "デフォルトのベース通貨";
+
 /* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
 "wallet.settingsEnableBiometricsFooter" = "ウォレットのブロック解除に生体認証（Face ID / Touch ID）を使用するには、トグルボタンをオンにします";
 
@@ -693,6 +744,15 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "プライベートキーを表示する";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "署名";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "署名が要求されています";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "署名が必要です";
 
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "スキップ";
@@ -748,6 +808,18 @@
 /* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
 "wallet.swapSelectedTokens" = "選択したトークンをスワップ";
 
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "切り替える";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "ネットワークを、以前に追加されたネットワークに変更します";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "このサイトにネットワークの変更を許可しますか？";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "ネットワークを変更";
+
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "（本日）";
 
@@ -774,9 +846,6 @@
 
 /* Text body of confirmation prompt when there's a backlog of wallet transactions */
 "wallet.transactionBacklogBody" = "以前送信されたトランザクションが未確認のまま、新しいトランザクションを開始しようとしています。新しいトランザクションの送信は、ブロックされます。";
-
-/* Button to learn more about incomplete/pending wallet transactions. */
-"wallet.transactionBacklogLearnMoreButton" = "詳しく";
 
 /* Title of confirmation prompt when there's a backlog of wallet transactions */
 "wallet.transactionBacklogTitle" = "トランザクションのバックログ";
@@ -867,6 +936,12 @@
 
 /* The title of the verify recovery phrase screen */
 "wallet.verifyRecoveryPhraseTitle" = "リカバリーフレーズを認証する";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "詳細を表示";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "ネットワークの詳細";
 
 /* A button title to view a given transaction on the block explorer for the current network/chain. */
 "wallet.viewOnBlockExplorer" = "ブロックエクスプローラーで確認する";

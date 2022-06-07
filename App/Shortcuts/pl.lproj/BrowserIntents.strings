@@ -5,7 +5,7 @@
 "1n1yx4" = "Nie można otworzyć ${URLstrony} w nowej karcie.";
 
 /* (No Comment) */
-"1QT5y6" = "Otwórz stronę";
+"1QT5y6" = "Otwórz stronę w nowej karcie";
 
 /* (No Comment) */
 "3oC6Qm" = "Otwórz stronę w nowej karcie";
@@ -59,9 +59,6 @@
 "pvi3Ug" = "Ta opcja otworzy ${URLstrony} z zakładek.";
 
 /* (No Comment) */
-"qkzovY" = "Otwórz stronę w nowej karcie";
-
-/* (No Comment) */
 "t7aARA" = "Nie można otworzyć ${URLstrony} w nowej karcie.";
 
 /* (No Comment) */
@@ -81,9 +78,6 @@
 
 /* (No Comment) */
 "wZqW4o" = "Ta opcja otworzy ${URLstrony} z historii wyszukiwania.";
-
-/* (No Comment) */
-"xgP5Po" = "korzystanie ze strony";
 
 /* (No Comment) */
 "Xx8bbW" = "URL strony";
