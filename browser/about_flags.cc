@@ -422,22 +422,6 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
-#if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_SHIELDS_FEATURE_ENTRIES                                    \
-    {"brave-shields-v2",                                                 \
-     flag_descriptions::kBraveShieldsV2Name,                             \
-     flag_descriptions::kBraveShieldsV2Description,                      \
-     kOsDesktop,                                                         \
-     FEATURE_VALUE_TYPE(brave_shields::features::kBraveShieldsPanelV2)}, \
-    {"brave-shields-v1",                                                 \
-     flag_descriptions::kBraveShieldsV1Name,                             \
-     flag_descriptions::kBraveShieldsV1Description,                      \
-     kOsDesktop,                                                         \
-     FEATURE_VALUE_TYPE(brave_shields::features::kBraveShieldsPanelV1)},
-#else
-#define BRAVE_SHIELDS_FEATURE_ENTRIES
-#endif
-
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
@@ -561,5 +545,4 @@ constexpr char kRestrictWebSocketsPoolDescription[] =
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
     SPEEDREADER_FEATURE_ENTRIES                                             \
-    BRAVE_SHIELDS_FEATURE_ENTRIES                                        \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES

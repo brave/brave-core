@@ -21,7 +21,6 @@
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -105,11 +104,6 @@ void BraveActionsContainer::Init() {
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
   AddActionViewForShields();
-  // Populate actions
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShieldsPanelV1)) {
-    actions_[brave_extension_id].position_ = 1;
-  }
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 
   // React to Brave Rewards preferences changes.
@@ -265,15 +259,12 @@ void BraveActionsContainer::UpdateActionState(const std::string& id) {
 }
 
 void BraveActionsContainer::AddActionViewForShields() {
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveShieldsPanelV2)) {
-    shields_action_btn_ =
-        AddChildViewAt(std::make_unique<BraveShieldsActionView>(
-                           browser_->profile(), browser_->tab_strip_model()),
-                       1);
-    shields_action_btn_->SetPreferredSize(GetToolbarActionSize());
-    shields_action_btn_->Init();
-  }
+  shields_action_btn_ =
+      AddChildViewAt(std::make_unique<BraveShieldsActionView>(
+                         browser_->profile(), browser_->tab_strip_model()),
+                     1);
+  shields_action_btn_->SetPreferredSize(GetToolbarActionSize());
+  shields_action_btn_->Init();
 }
 
 void BraveActionsContainer::Update() {
@@ -366,7 +357,6 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   extension_action_observer_.Observe(extension_action_api_);
   brave_action_observer_.Observe(brave_action_api_);
   // Check if extensions already loaded
-  AddAction(brave_extension_id);
   AddAction(brave_rewards_extension_id);
 }
 

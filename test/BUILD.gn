@@ -660,7 +660,6 @@ if (!is_android) {
       "//brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h",
       "//brave/browser/ephemeral_storage/ephemeral_storage_qa_browsertest.cc",
       "//brave/browser/ephemeral_storage/hsts_partitioning_browsertest.cc",
-      "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
       "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
       "//brave/browser/extensions/brave_base_local_data_files_browsertest.cc",
       "//brave/browser/extensions/brave_base_local_data_files_browsertest.h",
