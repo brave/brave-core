@@ -113,11 +113,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         MenuItem setAsDefault = menu.findItem(R.id.set_default_browser);
         if (shouldShowIconBeforeItem()) {
-            setAsDefault.setVisible(true);
             setAsDefault.setIcon(
                     AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_set_as_default));
-        } else {
-            setAsDefault.setVisible(true);
         }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)

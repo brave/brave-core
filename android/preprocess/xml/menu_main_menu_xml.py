@@ -19,8 +19,7 @@ def _ProcessXML(root):
 
   set_as_default_node_str = '<item xmlns:android="http://schemas.android.com/apk/res/android" '\
     'android:id="@+id/set_default_browser" ' \
-    'android:title="@string/menu_set_default_browser" ' \
-    'android:visibility="gone" />'
+    'android:title="@string/menu_set_default_browser" />'
   set_as_default_node = ET.fromstring(set_as_default_node_str, parser=ET.XMLParser(encoding="utf-8"))
   set_as_default_child = parent.find('item/[@android:id="@+id/preferences_id"]', namespaces=ns)
   set_as_default_idx = list(parent).index(set_as_default_child)
