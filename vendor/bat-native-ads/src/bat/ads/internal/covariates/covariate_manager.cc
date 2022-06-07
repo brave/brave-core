@@ -110,8 +110,6 @@ AverageClickthroughRateTimeWindows& GetAverageClickthroughRateTimeWindows() {
 
 }  // namespace
 
-// TODO(https://github.com/brave/brave-browser/issues/22310): Refactor
-// CovariateManager to Covariates
 CovariateManager::CovariateManager() {
   DCHECK(!g_covariate_logs_instance);
   g_covariate_logs_instance = this;

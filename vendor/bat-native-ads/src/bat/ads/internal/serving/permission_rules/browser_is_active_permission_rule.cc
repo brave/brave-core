@@ -6,7 +6,7 @@
 #include "bat/ads/internal/serving/permission_rules/browser_is_active_permission_rule.h"
 
 #include "bat/ads/internal/base/platform/platform_helper.h"
-#include "bat/ads/internal/browser_manager/browser_manager.h"
+#include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rule_features.h"
 
 namespace ads {

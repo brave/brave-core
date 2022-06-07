@@ -12,7 +12,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/base/timer/timer.h"
-#include "bat/ads/internal/tab_manager/tab_manager_observer.h"
+#include "bat/ads/internal/tabs/tab_manager_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 
 namespace base {

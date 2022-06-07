@@ -37,10 +37,11 @@ class BatAdsSubdivisionTargetingExclusionRuleTest : public UnitTestBase {
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
-  ads_client_mock_->SetStringPref(
+  AdsClientHelper::Get()->SetStringPref(
       prefs::kAutoDetectedAdsSubdivisionTargetingCode, "US-FL");
 
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "AUTO");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -56,7 +57,8 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedForMultipleGeoTargets) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "US-FL");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -73,10 +75,11 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  ads_client_mock_->SetStringPref(
+  AdsClientHelper::Get()->SetStringPref(
       prefs::kAutoDetectedAdsSubdivisionTargetingCode, "US-FL");
 
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "AUTO");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -92,7 +95,8 @@ TEST_F(
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "US-FL");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -109,7 +113,8 @@ TEST_F(
     BatAdsSubdivisionTargetingExclusionRuleTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "US-FL");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -125,10 +130,11 @@ TEST_F(
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedAndNotInitialized) {
   // Arrange
-  ads_client_mock_->SetStringPref(
+  AdsClientHelper::Get()->SetStringPref(
       prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
 
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "AUTO");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -144,7 +150,8 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "US-FL");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -193,8 +200,8 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
-                                  "DISABLED");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "DISABLED");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -210,8 +217,8 @@ TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
 TEST_F(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
-                                  "DISABLED");
+  AdsClientHelper::Get()->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                        "DISABLED");
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

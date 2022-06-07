@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/tabs/tab_manager.h"
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/tab_manager/tab_info.h"
+#include "bat/ads/internal/tabs/tab_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
