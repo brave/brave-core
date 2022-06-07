@@ -30,7 +30,6 @@
 <translation id="3894650624018948468">Resol el mètode</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="4176463684765177261">Desactivat</translation>
-<translation id="2218918398178303658">DNS mitjançant HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="6252490671914511928">Les històries més destacades d'avui a un feed completament privat, només per a tu.</translation>
 <translation id="7266075701303521777">Les notícies de Brave estan patrocinades amb anuncis completament privats i anònims que coincideixin amb el dispositiu.</translation>
@@ -113,12 +112,12 @@
 <translation id="1166682575529520472">Mensual</translation>
 <translation id="1628742278973105368">La teva primera propina del mes s'enviarà a:</translation>
 <translation id="298349922412901215">NOTA: Aquest creador encara no s'ha registrat per rebre les aportacions dels usuaris de Brave. El teu navegador seguirà intentant fer una aportació fins que es verifiqui, o fins que passin 90 dies.</translation>
-<translation id="6602036279006002239">NOTA: Aquest creador no està configurat per rebre consells de la cartera. Qualsevol consell que feu romandrà pendent a la cartera i es reintentarà automàticament durant 90 dies.</translation>
+<translation id="635752162765375187">NOTA: Aquest creador no està configurat per rebre consells de la cartera. Qualsevol consell que feu romandrà pendent a la cartera i es reintentarà automàticament durant 90 dies.</translation>
 <translation id="1910721550319506122">Benvingut!</translation>
 <translation id="3165726837666415756">Pots donar suport a aquest lloc web deixant-hi una propina. És una manera de donar-los les gràcies pel seu bon contingut. Els creadors de contingut verificats reben les seves propines durant la primera setmana de cada mes natural.</translation>
 <translation id="1704859330137112950">Si vols, pots programar propines mensuals per donar suport a aquest lloc de forma continuada.</translation>
 <translation id="245015745140252435">Quantitat de Propina</translation>
-<translation id="3370968821559864204">saldo de la cartera:</translation>
+<translation id="7873874596836611687">saldo de la cartera:</translation>
 <translation id="2573313946367623146">envia la meva propina</translation>
 <translation id="3250511771491660127">Fes això mensualment</translation>
 <translation id="7658239707568436148">Cancel·lar</translation>
@@ -138,7 +137,7 @@
 <translation id="8220228041552340594">OCTUBRE</translation>
 <translation id="8280223431922155812">NOVEMBRE</translation>
 <translation id="4254029385847607686">DESEMBRE</translation>
-<translation id="3780605330121608425">La teva cartera</translation>
+<translation id="4258022280942725182">La teva cartera</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
@@ -173,8 +172,8 @@ aquest mes...</translation>
 <translation id="8689997599821157251">Has guanyat</translation>
 <translation id="7550470870580166294">Fons insuficients</translation>
 <translation id="2775064702681588061">El teu compte de Premis de Brave està esperant un dipòsit.</translation>
-<translation id="765834632354589737">Còpia de seguretat del moneder</translation>
-<translation id="1713542052890184975">Si et plau, fes una còpia de seguretat del teu moneder.</translation>
+<translation id="2630264552940126640">Còpia de seguretat del moneder</translation>
+<translation id="238922425564381955">Si et plau, fes una còpia de seguretat del teu moneder.</translation>
 <translation id="2323069945529668668">Ah oh!</translation>
 <translation id="7510166204621526816">El servidor Brave Rewards no respon. Ho arreglarem tan aviat com sigui possible.</translation>
 <translation id="683765328936486920">al YouTube</translation>
@@ -192,7 +191,6 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="279635009973773843">CARREGANT DISPOSITIUS...</translation>
 <translation id="6394333525003604181">SORTINT DE LA CADENA DE SINCRONITZACIÓ...</translation>
 <translation id="2569646144216067185">Nombre de paraules: <ph name="WORD_COUNT"/></translation>
-<translation id="4282642752844565114">Nombre de paraules incorrecte</translation>
 <translation id="7507533586185621084">Codi de sincronització incorrecte</translation>
 <translation id="8284063834901328650">Codi QR de sincronització incorrecte</translation>
 <translation id="859506441384380749">Aquest codi s'ha generat amb una versió obsoleta de Brave, actualitza primer l'altre dispositiu</translation>
@@ -285,7 +283,6 @@ Segur que vols continuar?</translation>
 <translation id="8697510149346635496">Retirar BAT que guanyis per veure anuncis respectuosos amb la privacitat</translation>
 <translation id="1481480653609649134">Comprar BAT addicional amb targetes de crèdit o altres mètodes</translation>
 <translation id="9096003370755878766">Retirar BAT que hagis afegit al teu moneder de Gratificacions Brave</translation>
-<translation id="8267327690882073581">Verificar el moneder</translation>
 <translation id="1554282356558968486">El nostre servei de moneder és proveït per</translation>
 <translation id="6569877533335686968">Mantenir</translation>
 <translation id="734105583050813665">Bitflyer</translation>
@@ -355,32 +352,7 @@ Segur que vols continuar?</translation>
 <translation id="5516010970279932133">Mostra els llocs suggerits a una compleció automàtica</translation>
 <translation id="5370478469168390143">Guardeu les dades en línea</translation>
 <translation id="1118508688433541158">Navegueu més ràpid i bloquejeu anuncis amb Brave</translation>
-<translation id="6589609065569680305">Rastrejadors i anuncis bloquejats en aquesta pàgina</translation>
-<translation id="1283922192221545319">Brave Shields acaba de protegir la vostra privadesa.</translation>
-<translation id="3286927551967858325">Doneu-hi un cop d'ull</translation>
-<translation id="6227291358910554399">Els anuncis es bloquegen mentre es visualitzen vídeos en aquest lloc web.</translation>
-<translation id="7802980684512102010">Els vídeos sense anuncis utilitzen menys dades.</translation>
-<translation id="2046475855484346614">Més de 10 rastrejadors i anuncis bloquejats en aquesta pàgina</translation>
-<translation id="5806208250835099572">Brave Shields protegeix la vostra privadesa en línia a tots els llocs web.</translation>
-<translation id="5617673581653540121">La vostra connexió està ara xifrada.</translation>
-<translation id="4055107796760496928">Si està disponible, Brave us actualitza automàticament a una connexió segura.</translation>
-<translation id="8869714780588464835">Comparteix les notícies</translation>
 <translation id="7427391215172269363">Cada dia estalvio dades navegant la web amb Brave.</translation>
-<translation id="5372054974373489308">S'han bloquejat 1.000 rastrejadors &amp; anuncis!</translation>
-<translation id="2338952568654182692">S'han bloquejat 5.000 rastrejadors &amp; anuncis!</translation>
-<translation id="5289711064670408815">S'han bloquejat 10.000 rastrejadors &amp; anuncis!</translation>
-<translation id="7150609425870119925">S'han bloquejat 25.000 rastrejadors &amp; anuncis!</translation>
-<translation id="7856423737692274943">S'han bloquejat 75.000 rastrejadors &amp; anuncis!</translation>
-<translation id="7252948690584461484">S'han bloquejat 100.000 rastrejadors &amp; anuncis!</translation>
-<translation id="7579633043057546002">S'han bloquejat 250.000 rastrejadors &amp; anuncis!</translation>
-<translation id="8710984962087186365">S'han bloquejat 500.000 rastrejadors &amp; anuncis!</translation>
-<translation id="4383614608366907253">S'han bloquejat 1.000.000 rastrejadors &amp; anuncis!</translation>
-<translation id="6819535527112707811">Enhorabona, ets molt especial.</translation>
-<translation id="5819231438994979709">Enhorabona. Formes’ part d'un club exclusiu</translation>
-<translation id="5174835622895450943">Enhorabona. T'has unit als pros.</translation>
-<translation id="4625546020186631261">Enhorabona. T’has convertit en mestre.</translation>
-<translation id="4288835546846020774">Enhorabona. T'’has convertit en Gran Mestre.</translation>
-<translation id="6863752373888328811">Enhorabona. Ets un llegendari.</translation>
 <translation id="4776948189086901857">Brave funciona a tot arreu</translation>
 <translation id="1606322780901645965">Baixeu Brave a brave.com al vostre portàtil o tauleta per aconseguir una navegació web més ràpida i privada</translation>
 <translation id="8374242949413616101">Protecció de privadesa</translation>
@@ -414,9 +386,6 @@ Segur que vols continuar?</translation>
 <translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.🔋</translation>
 <translation id="1945330434665345785">Heu bloquejat <ph name="COUNT"/> rastrejadors &amp; anuncis amb navegador Brave la setmana passada.</translation>
 <translation id="2883868922264431515">Guanyeu tokens visualitzant anuncis que respectin la privadesa i donin suport als vostres llocs web preferits.</translation>
-<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.🔥</translation>
-<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.🔋</translation>
-<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Comenceu a navegar per veure els informes de privadesa</translation>
 <translation id="9080777565335515917">Definiu Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="1390943217516275883">Permet a Brave mostrar les teves estadístiques de privadesa</translation>
@@ -443,7 +412,6 @@ Segur que vols continuar?</translation>
 <translation id="2735834606413553397">S'ha copiat l'adreça pública al porta-retalls.</translation>
 <translation id="7144878232160441200">Torna-ho a intentar</translation>
 <translation id="2977461003134694205">Estadístiques de Privacitat</translation>
-<translation id="6966052266404721769">Binance</translation>
 <translation id="2956070106555335453">Resum</translation>
 <translation id="1366855498335432549">Dipositar</translation>
 <translation id="1301340234286078471">Convertir</translation>
@@ -517,16 +485,8 @@ Segur que vols continuar?</translation>
 <translation id="2642661895835126239">Planta arbres, establert a Berlín</translation>
 <translation id="177282784098234156">privat, independent, primer l'usuari</translation>
 <translation id="1410130669636877548">Alguns motors de recerca protegeixen la vostra privacitat millor que altres quan navegueu per la xarxa.</translation>
-<translation id="1078265935778232285">Et donem la benvinguda al navegador Brave</translation>
-<translation id="6824713633331856331">Ajudeu-nos a millorar de forma anònima</translation>
-<translation id="6116685031674149112">Brave protegeix la vostra privacitat i aprecia el vostre consentiment pel següent:</translation>
-<translation id="4394483075076204916">Ajuda a millorar Brave enviant <ph name="PRIVATE_PRODUCT_ANALYSIS"/> completament anònims</translation>
-<translation id="6478996494082389936">anàlisi de producte privat.</translation>
 <translation id="5187052478998910855">Necessiteu un recordatori sobre Rewards?</translation>
 <translation id="8622329973403382303">Feu un tour ràpid per a repassar com podeu passar a la història com una superestrella de Rewards!</translation>
-<translation id="7625138338483121345">Estableix Brave com a navegador predeterminat</translation>
-<translation id="4511485286950743564">Si Brave és el teu navegador predeterminat, tots els enllaços en què facis clic s'obriran amb les proteccions de privadesa de Brave.</translation>
-<translation id="9218430445555521422">Estableix com a predeterminat</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -590,7 +550,7 @@ Segur que vols continuar?</translation>
 <translation id="5493402808936397665">Permeteu que la biometria desbloquegi ràpidament la vostra cartera sense introduir la contrasenya.</translation>
 <translation id="8030647312184163932">Desbloqueig amb l'empremta</translation>
 <translation id="4090490645603511157">Utilitza les dades biomètriques per desbloquejar ràpidament el moneder sense introduir la contrasenya.</translation>
-<translation id="5379398699598690674">Moneder (beta)</translation>
+<translation id="1544192797660353713">Moneder (beta)</translation>
 <translation id="6901810042765869341">Introduïu la frase de recuperació per restaurar el vostre compte de criptomonedes de la cartera de Brave.</translation>
 <translation id="9120654436199628567">Restaura el compte de criptomonedes</translation>
 <translation id="4811736040444856406">Mostra la frase de recuperació</translation>
@@ -654,7 +614,7 @@ Segur que vols continuar?</translation>
 <translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
 <translation id="4993345308607970390">Reinicia la Brave Wallet</translation>
-<translation id="6369495274982305511">Confirmes que vols restablir la cartera? Si la teva cartera no té una còpia de seguretat, la reinicialització et farà perdre totes les dades del compte (incloent-hi els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
+<translation id="4322846864135539519">Confirmes que vols restablir la cartera? Si la teva cartera no té una còpia de seguretat, la reinicialització et farà perdre totes les dades del compte (incloent-hi els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
 <translation id="4862812525895306758">Esborra la informació de les transaccions i de nonce</translation>
 <translation id="5693968582510626466">Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local</translation>
 <translation id="5421107279168565467">Segur que voleu restablir la informació de les transaccions i de nonce? Aquesta opció l'utilitzen principalment els desenvolupadors que executen un servidor de proves local. Escriviu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
@@ -696,7 +656,7 @@ Segur que vols continuar?</translation>
 Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra connexió a Internet no estarà protegida.</translation>
 <translation id="2429299231491852747">Accepteu la sol·licitud de connexió</translation>
 <translation id="3428909627460825679">S'ha produït un error en crear el perfil de VPN. Torneu-ho a provar.</translation>
-<translation id="1326227401245340613">S'ha produït un error en verificar la compra. Torneu-ho a provar.</translation>
+<translation id="1264320790738638119">S'ha produït un error en verificar la compra. Torneu-ho a provar.</translation>
 <translation id="8905950042180169719">La VPN s'està executant en segon pla</translation>
 <translation id="8681480718817027245">Subscripció</translation>
 <translation id="7805768142964895445">Estat</translation>
@@ -732,8 +692,8 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="669072536454692117">La subscripció s'ha consumit correctament</translation>
 <translation id="1187506504156101449">No ha estat possible acceptar la compra:</translation>
 <translation id="8420522105268941892">Ja esteu subscrits a la subscripció. Proveu de restaurar la subscripció.</translation>
-<translation id="74771564105268111">ERROR!!\nCausat per un usuari que ha cancel·lat el flux de compra.</translation>
-<translation id="7312462922610983743">ERROR!!\nS'ha produït un error en la compra…</translation>
+<translation id="404414664190867625">ERROR!!\nCausat per un usuari que ha cancel·lat el flux de compra.</translation>
+<translation id="3515141458161417228">ERROR!!\nS'ha produït un error en la compra…</translation>
 <translation id="6452181791372256707">Rebutja</translation>
 <translation id="8030852056903932865">Aprovar</translation>
 <translation id="1597199892790541240">Preu del gas</translation>
@@ -823,7 +783,6 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="3494964159182650590">Resum de recompenses</translation>
 <translation id="590733288489975971">Brave Rewards de Brave Ads</translation>
 <translation id="207268487070188114">Propina d'una sola vegada</translation>
-<translation id="64394831139134288">La meva cartera</translation>
 <translation id="8494748383523030337">El vostre Saldo</translation>
 <translation id="7091980679045978090">Guanys estimats</translation>
 <translation id="1346059596910821859">Propina</translation>
@@ -884,7 +843,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="85136472535634474">Obre la configuració de la VPN</translation>
 <translation id="8352805003811526272">Restablint la configuració…</translation>
 <translation id="6809312301323611382">Ja heu seleccionat el mateix servidor.</translation>
-<translation id="7694991972030057904">Permís cancel·lat</translation>
+<translation id="5665084657857645952">Permís cancel·lat</translation>
 <translation id="9106265941552476098">Refusa les transaccions <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="523862956770478816">Permisos del lloc</translation>
 <translation id="2141313140218636977"><ph name="VALUE"/> comptes connectats</translation>

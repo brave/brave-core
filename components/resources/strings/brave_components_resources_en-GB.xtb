@@ -256,14 +256,6 @@
 <translation id="8218538368080510976">Error: region not supported</translation>
 <translation id="5382684862562314222">BAT is not yet supported in your region on Uphold.</translation>
 <translation id="9074594632540931067">Error: BAT unavailable</translation>
-<translation id="413458922997276130">Your account at Uphold is currently blocked.</translation>
-<translation id="3579959767665130790">Error: blocked account</translation>
-<translation id="6554308597291659562">Uphold is required to collect a little more information about you before enabling full Uphold account functionality. Please try again once you've submitted this information in your Uphold account.</translation>
-<translation id="6996157559236886133">Error: Limited Uphold account functionality</translation>
-<translation id="819370426249314592">Your account at Uphold is still pending.</translation>
-<translation id="4530453398914580957">Error: pending account</translation>
-<translation id="2388470740942086608">Your account at Uphold is currently restricted.</translation>
-<translation id="3605236342612716051">Error: restricted account</translation>
 <translation id="3274650021044762770">There was a problem validating your browser's request to connect Brave Rewards to your <ph name="PROVIDER"/> account. You can <ph name="BEGIN_LINK"/>contact support<ph name="END_LINK"/> for more help.</translation>
 <translation id="1316066811927496401">Error: Request could not be validated</translation>
 <translation id="1737873393693460829">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
@@ -674,7 +666,6 @@
 <translation id="8328137586971750853">Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Ethereum Name Service to resolve .eth domain name look-up requests. If you enable this, Infura will see the .eth domain that you're trying to visit, but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK"/>terms of use<ph name="END_INFURA_TOU_LINK"/> and <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacy policy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Proceed using Infura server</translation>
 <translation id="2356070529366658676">Ask</translation>
-<translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domain blocked</translation>
 <translation id="6393849031898466746">This site may attempt to track you across other sites</translation>
@@ -820,7 +811,6 @@
 <translation id="4232775951515678071">Failed to get the type for the transaction</translation>
 <translation id="2080935885647755539">Failed to get the gas fees for EIP-1559 transaction</translation>
 <translation id="4843814354611030845">User rejected the transaction</translation>
-<translation id="1462494615260983714">Error processing the transaction</translation>
 <translation id="4886059598718763020">'<ph name="VALUE"/>' is not authorized to sign message</translation>
 <translation id="8719220598078667817">Failed to sign transaction</translation>
 <translation id="875506212625074179">Invalid chain ID response from RPC service</translation>
@@ -868,7 +858,7 @@
 <translation id="1191686659164947414">Transaction may be frontrun</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
 <translation id="4500473291496079954">Expires in</translation>
-<translation id="8093033115658137576">0x address or url</translation>
+<translation id="2236833281018938257">0x address or url</translation>
 <translation id="2860280209982026951">Brave uses <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> as a DEX aggregator.</translation>
 <translation id="151946611346774041">0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</translation>
 <translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
@@ -1152,6 +1142,7 @@
 <translation id="3327639091470204775">Unable to connect to the Trezor bridge</translation>
 <translation id="6672377693827764095">Internal error, unable to fetch accounts</translation>
 <translation id="6889920539620318793">Set as active</translation>
+<translation id="1462494615260983714">Error processing the transaction</translation>
 <translation id="8933250418452564886">Unable to find hardware transaction, please try again</translation>
 <translation id="5999974802900788338">Received error from hardware device, probably you need to confirm the transaction on your device</translation>
 <translation id="8523768065044261559">Error processing the transaction, please try again</translation>

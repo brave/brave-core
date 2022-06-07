@@ -63,7 +63,7 @@
 <translation id="1166682575529520472">மாதாந்திர</translation>
 <translation id="1910721550319506122">வாருங்கள்!</translation>
 <translation id="245015745140252435">துணுக்குதவி தொகை</translation>
-<translation id="3370968821559864204">பணப்பை கையிருப்பு:</translation>
+<translation id="7873874596836611687">பணப்பை கையிருப்பு:</translation>
 <translation id="2573313946367623146">என் துணுக்குதவியை அனுப்பு</translation>
 <translation id="3250511771491660127">இதை மாதந்திரமாக்கு</translation>
 <translation id="7658239707568436148">ரத்துசெய்</translation>
@@ -81,7 +81,7 @@
 <translation id="8220228041552340594">அக்டொபர்</translation>
 <translation id="8280223431922155812">நவம்பர்</translation>
 <translation id="4254029385847607686">டிசம்பர்</translation>
-<translation id="3780605330121608425">உம் பணப்பை</translation>
+<translation id="4258022280942725182">உம் பணப்பை</translation>
 <translation id="1165667598801520610">நிதி சேர்</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
 <translation id="8918760045046434238">துணுக்குதவியை அனுப்பு...</translation>
@@ -98,8 +98,8 @@
 <translation id="3453206261112715431">இலவச கிள்ளாக்கு நல்கை</translation>
 <translation id="6417420737057016607">பிரேவ் விளம்பரங்கள்</translation>
 <translation id="7550470870580166294">போதாத நிதிகள்</translation>
-<translation id="765834632354589737">பணப்பையைப் பிரதியெடு</translation>
-<translation id="1713542052890184975">உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.</translation>
+<translation id="2630264552940126640">பணப்பையைப் பிரதியெடு</translation>
+<translation id="238922425564381955">உம் பிரேவ் பணப்பையைப் பிரதியெடுக்கவும்.</translation>
 <translation id="2323069945529668668">அட டா!</translation>
 <translation id="7510166204621526816">பிரேவ் வெகுமதிகள் தேக்கம் பதிலளிக்கவில்லை. கூடிய விரைவில் இதை சரிசெய்திடுவோம்.</translation>
 <translation id="683765328936486920">யூடியூபில்</translation>
@@ -112,7 +112,6 @@
 <translation id="4157741509680155021">ஒத்திசைவு சங்கிலியிலுள்ள சாதனங்கள்</translation>
 <translation id="279635009973773843">சாதனங்களை ஏற்றுகிறது...</translation>
 <translation id="6394333525003604181">ஒத்திசைவு சங்கிலியை விட்டு விலகுகிறது...</translation>
-<translation id="4282642752844565114">தவறான சொற்கள் எண்ணிக்கை</translation>
 <translation id="7507533586185621084">தவறான ஒத்திசைவு குறியீடு</translation>
 <translation id="8284063834901328650">தவறான ஒத்திசைவு விரைவுக்குறி</translation>
 <translation id="3149880132460839085">பிரேவ் ஒத்திசைவு</translation>
@@ -186,7 +185,6 @@
 <translation id="5299848999918506028">நன்றி!</translation>
 <translation id="1275664486910646411">தன்னிறைவுசெய்தலில் உயர்மட்ட தளங்களைக் காட்டு</translation>
 <translation id="5516010970279932133">தன்னிறைவுசெய்தலில் பரிந்துரைக்கப்பட்ட தளங்களைக் காட்டு</translation>
-<translation id="3286927551967858325">ஒரு பார்வை பார்</translation>
 <translation id="8374242949413616101">தனியுரிமை பாதுகாப்பு</translation>
 <translation id="4955406228638026265">உன் சம்மதமின்றி விளம்பரங்கள் &amp; தடமறிகள் உம்மைப்பற்றிய தகவலைச் சேகரிப்பதிலிருந்து பிரேவ் நிறுத்துகிறது.</translation>
 <translation id="752842701893882688">தரவு மற்றும் மின்கலம் சேமி</translation>
@@ -221,8 +219,6 @@
 <translation id="8967385052772844086">முழு தனியுரிமை அறிக்கையை பார்</translation>
 <translation id="8295049095570748497">உருசியாவில் ஒரு முதன்மையான தேடுபொறி</translation>
 <translation id="1410130669636877548">நீங்கள் வலையில் தேடும்போது சில தேடுபொறிகள் மற்றவையுடன் சிறப்பாக உம் தனியுரிமையை காக்கும்.</translation>
-<translation id="7625138338483121345">Braveஐ இயல்பு உலாவியாக அமைக்கவும்</translation>
-<translation id="9218430445555521422">இயல்புநிலையாக அமை</translation>
 <translation id="3479552764303398839">இப்பொழுது இல்லை</translation>
 <translation id="8798099450830957504">இயல்புநிலை</translation>
 <translation id="1822560017823072927">இயல்புநிலை பொதுசன மற்றும் தனிப்பட்ட இடைமுகப்புகள்</translation>
@@ -232,7 +228,7 @@
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="7665369617277396874">கணக்கைச் சேர்</translation>
-<translation id="5379398699598690674">பணப்பை (வெள்ளோட்டம்)</translation>
+<translation id="1544192797660353713">பணப்பை (வெள்ளோட்டம்)</translation>
 <translation id="3943857333388298514">ஒட்டு</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
 <translation id="3157931365184549694">மீட்டமை</translation>

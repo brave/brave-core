@@ -269,7 +269,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="6915252145142862992">Tämä on Bravein toissijainen asennus, eikä sitä voi asettaa oletusselaimeksi.</translation>
 <translation id="1975057837349076194">Jos asetus ei näy tällä sivulla, siirry <ph name="LINK_BEGIN"/>
       Brave-käyttöjärjestelmän asetuksiin<ph name="LINK_END"/>.</translation>
-<translation id="1743665722170667430">Jos laajennukset, sovellukset ja teemat ovat tuntemattomista lähteistä, ne voivat vahingoittaa laitetta. Brave suosittelee niiden asentamista vain täältä: <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
 <translation id="7685904775439037072">Kun Braveilla on käyttöoikeus, sivustot voivat pyytää sitä sinulta.</translation>
 <translation id="828406390101464081">Näillä tileillä ei ole kirjauduttu sisään Brave-profiileille. Jos haluat käyttää tiliä toisella profiililla, poista ensin kyseinen profiili.</translation>
 <translation id="2061155704815580583">Brave tarvitsee sijaintiluvan tällä sivustolla</translation>
@@ -329,6 +328,7 @@ Verkkosivustoille ja sovelluksille aiemmin antamasi käyttöoikeudet voivat kosk
 <translation id="5359574361379286250">Jos haluat käyttää tätä tiliä vain kerran, voit käyttää Brave-selaimen <ph name="GUEST_LINK_BEGIN"/>vierastilaa<ph name="GUEST_LINK_END"/>. Jos haluat lisätä tilin toiselle käyttäjälle, <ph name="LINK_BEGIN"/>lisää uusi profiili<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/>.
 
 Verkkosivustoille ja sovelluksille aiemmin antamasi käyttöoikeudet voivat koskea tätä tiliä. Voit hallita Brave-synkronointiketjujasi valitsemalla <ph name="SETTINGS_LINK_BEGIN"/>Asetukset<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="1743665722170667430">Laajennukset, sovellukset ja teemat tuntemattomista lähteistä voivat vahingoittaa laitettasi. Brave suosittelee, että asennat ne vain kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
 <translation id="1299765473362724475">Varoitus: Brave ei voi estää laajennuksia tallentamasta selaushistoriaasi. Poista tämä valinta, jos haluat poistaa tämän laajennuksen käytöstä yksityisessä tilassa.</translation>
 <translation id="1448049584457347995">Paransimme Bravein turvallisuutta poistamalla käytöstä sovelluksia, joita ei löydy kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja jotka on voitu lisätä ilman lupaasi.</translation>
 <translation id="8848045066928358658">Paransimme Bravein turvallisuutta poistamalla käytöstä sovelluksia, joita <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ei tarjoa ja jotka on voitu lisätä ilman lupaasi.</translation>

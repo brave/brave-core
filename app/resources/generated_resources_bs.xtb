@@ -4393,7 +4393,7 @@ Domena <ph name="DOMAIN"/> zahtijeva da pametna kartica ostane umetnuta.</transl
 <translation id="5280426389926346830">Napraviti prečicu?</translation>
 <translation id="5281013262333731149">Otvara se u: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Za preuzimanje i korištenje Android aplikacija, prvo trebate instalirati potrebno ažuriranje. Dok se vaš uređaj <ph name="DEVICE_TYPE"/> ažurira, ne možete ga koristiti. Nakon što se završi instalacija, vaš uređaj <ph name="DEVICE_TYPE"/> će se ponovo pokrenuti.</translation>
-<translation id="5282733140964383898">Ako omogućite "Bez praćenja" taj će se zahtjev slati uz vaš saobraćaj pregledanja. Učinak ovisi o tome da li web lokacija reagira na zahtjev i kako se on tumači. Naprimjer, neke web lokacije mogu reagirati na ovaj zahtjev prikazivanjem oglasa koji se ne zasnivaju na drugim web lokacijama koje ste posjetili. Mnoge web lokacije će i dalje prikupljati i koristiti vaše podatke o pregledanju kako bi, naprimjer, poboljšale sigurnost, pružale sadržaje, usluge, oglase i preporuke na svojim web lokacijama te generirale statističke podatke za izvještaje. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">Ako omogućite "Bez praćenja" taj će se zahtjev slati uz vaš saobraćaj pregledanja. Učinak ovisi o tome da li web lokacija reagira na zahtjev i kako se on tumači. Naprimjer, neke web lokacije mogu reagirati na ovaj zahtjev prikazivanjem oglasa koji se ne zasnivaju na drugim web lokacijama koje ste posjetili. Mnoge web lokacije će i dalje prikupljati i koristiti vaše podatke o pregledanju kako bi, naprimjer, poboljšale sigurnost, pružale sadržaje, usluge, oglase i preporuke na svojim web lokacijama te generirale statističke podatke za izvještaje. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">Ups!  Sistem nije uspio odrediti model ili serijski broj uređaja.</translation>
 <translation id="5284445933715251131">Nastavi preuzimati</translation>
 <translation id="5285635972691565180">Ekran <ph name="DISPLAY_ID"/></translation>
@@ -4411,7 +4411,7 @@ Domena <ph name="DOMAIN"/> zahtijeva da pametna kartica ostane umetnuta.</transl
 <translation id="5297082477358294722">Lozinka je sačuvana. Prikažite i upravljajte lozinkama koje čuva <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kad netko drugi pogleda vaš ekran, u donjem desnom uglu ekrana prikazat će se ikona oka za zaštitu privatnosti</translation>
 <translation id="5298219193514155779">Temu je stvorio autor</translation>
-<translation id="5299109548848736476">Nemoj pratiti</translation>
+<translation id="1839179167864984545">Nemoj pratiti</translation>
 <translation id="5299558715747014286">Pregledajte grupe kartica i upravljajte njima</translation>
 <translation id="5300287940468717207">Poništiti odobrenja za web lokacije?</translation>
 <translation id="5300426565656326054">Personalizacija oglasa zasnovana na pregledniku</translation>
@@ -7920,7 +7920,7 @@ Domena <ph name="DOMAIN"/> zahtijeva da pametna kartica ostane umetnuta.}}</tran
 <translation id="8785622406424941542">Digitalna olovka</translation>
 <translation id="8786824282808281903">Kada vaše dijete vidi ovu ikonu, moguće je koristiti otisak prsta za identifikaciju ili odobravanje kupovina.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Neimenovana grupa – 1 kartica}one{Neimenovana grupa – # kartica}few{Neimenovana grupa – # kartice}other{Neimenovana grupa – # kartica}}</translation>
-<translation id="8791534160414513928">Pošalji zahtjev "Bez praćenja" uz saobraćaj pregledanja</translation>
+<translation id="163839281363975279">Pošalji zahtjev "Bez praćenja" uz saobraćaj pregledanja</translation>
 <translation id="879413103056696865">Dok je pristupna tačka uključena, telefon <ph name="PHONE_NAME"/> će:</translation>
 <translation id="8795916974678578410">Novi prozor</translation>
 <translation id="8797459392481275117">Nikada ne prevodi ovu web lokaciju</translation>

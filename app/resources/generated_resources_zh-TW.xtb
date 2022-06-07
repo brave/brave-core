@@ -4339,7 +4339,7 @@
 <translation id="5280426389926346830">要建立捷徑嗎？</translation>
 <translation id="5281013262333731149">在 <ph name="OPEN_BROWSER"/> 中開啟</translation>
 <translation id="528208740344463258">如要下載並使用 Android 應用程式，請先安裝這項必要更新。在 <ph name="DEVICE_TYPE"/> 更新期間，你無法使用裝置。安裝完成後，<ph name="DEVICE_TYPE"/> 將會重新啟動。</translation>
-<translation id="5282733140964383898">啟用「不追蹤」即表示要求將會包含在你的瀏覽流量中，所造成的影響取決於網站是否回應要求以及如何解讀要求。舉例來說，部分網站回應這類要求的方式，可能會是不根據你造訪其他網站的記錄來顯示廣告。不過，許多網站仍會收集並使用你的瀏覽資料，藉此提升安全性、提供網站上的內容、服務、廣告和推薦項目，以及產生報告統計資料等。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
+<translation id="4039256732955431945">啟用「不追蹤」即表示要求將會包含在你的瀏覽流量中，所造成的影響取決於網站是否回應要求以及如何解讀要求。舉例來說，部分網站回應這類要求的方式，可能會是不根據你造訪其他網站的記錄來顯示廣告。不過，許多網站仍會收集並使用你的瀏覽資料，藉此提升安全性、提供網站上的內容、服務、廣告和推薦項目，以及產生報告統計資料等。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="5283677936944177147">糟糕！系統無法判別裝置型號或序號。</translation>
 <translation id="5284445933715251131">繼續下載</translation>
 <translation id="5285635972691565180">螢幕 <ph name="DISPLAY_ID"/></translation>
@@ -4356,7 +4356,7 @@
 <translation id="5297082477358294722">密碼已儲存。你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼。</translation>
 <translation id="5297946558563358707">有人在窺探你的螢幕時，螢幕右下方會顯示「隱私權」眼睛圖示</translation>
 <translation id="5298219193514155779">主題製作者</translation>
-<translation id="5299109548848736476">不追蹤</translation>
+<translation id="1839179167864984545">不追蹤</translation>
 <translation id="5299558715747014286">查看及管理分頁群組</translation>
 <translation id="5300287940468717207">要重設網站權限嗎？</translation>
 <translation id="5300426565656326054">以瀏覽器為主的廣告個人化</translation>
@@ -7819,7 +7819,7 @@
 <translation id="8785622406424941542">觸控筆</translation>
 <translation id="8786824282808281903">如果你的孩子看到這個圖示，就表示他們可以透過指紋進行身分認證或購買交易。</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{未命名的群組 - 1 個分頁}other{未命名的群組 - # 個分頁}}</translation>
-<translation id="8791534160414513928">將「不追蹤」要求與瀏覽流量一併送出</translation>
+<translation id="163839281363975279">將「不追蹤」要求與瀏覽流量一併送出</translation>
 <translation id="879413103056696865">無線基地台開啟時，你的「<ph name="PHONE_NAME"/>」會：</translation>
 <translation id="8795916974678578410">開新視窗</translation>
 <translation id="8797459392481275117">一律不翻譯這個網站的內容</translation>
