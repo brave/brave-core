@@ -10,20 +10,18 @@
 #include <string>
 
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "bat/ads/internal/processors/processor_interface.h"
 
 namespace ads {
 namespace processor {
 
-class EpsilonGreedyBandit final
-    : public ProcessorInterface<BanditFeedbackInfo> {
+class EpsilonGreedyBandit final {
  public:
   EpsilonGreedyBandit();
-  ~EpsilonGreedyBandit() override;
+  ~EpsilonGreedyBandit();
   EpsilonGreedyBandit(const EpsilonGreedyBandit&) = delete;
   EpsilonGreedyBandit& operator=(const EpsilonGreedyBandit&) = delete;
 
-  void Process(const BanditFeedbackInfo& feedback) override;
+  void Process(const BanditFeedbackInfo& feedback);
 
  private:
   void InitializeArms() const;

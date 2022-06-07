@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "bat/ads/internal/processors/processor_interface.h"
 
 namespace ads {
 
@@ -19,14 +18,14 @@ class TextClassification;
 
 namespace processor {
 
-class TextClassification final : public ProcessorInterface<std::string> {
+class TextClassification final {
  public:
   explicit TextClassification(resource::TextClassification* resource);
-  ~TextClassification() override;
+  ~TextClassification();
   TextClassification(const TextClassification&) = delete;
   TextClassification& operator=(const TextClassification&) = delete;
 
-  void Process(const std::string& text) override;
+  void Process(const std::string& text);
 
  private:
   raw_ptr<resource::TextClassification> resource_ = nullptr;
