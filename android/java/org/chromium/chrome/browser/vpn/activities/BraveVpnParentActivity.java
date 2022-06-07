@@ -99,11 +99,13 @@ public abstract class BraveVpnParentActivity
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         if (isSuccess && mBraveVpnPrefModel != null) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
+            int paymentState = BraveVpnUtils.getPaymentState(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
                 BraveVpnPrefUtils.setPurchaseToken(mBraveVpnPrefModel.getPurchaseToken());
                 BraveVpnPrefUtils.setProductId(mBraveVpnPrefModel.getProductId());
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
+                BraveVpnPrefUtils.setPaymentState(paymentState);
                 if (!mIsVerification || BraveVpnPrefUtils.isResetConfiguration()) {
                     BraveVpnNativeWorker.getInstance().getSubscriberCredential(
                             BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
