@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "base/logging.h"
+#include "base/strings/string_split.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "crypto/random.h"
@@ -158,6 +159,17 @@ bool PassphraseToBytes32(const std::string& passphrase,
 }
 
 bool IsPassphraseValid(const std::string& passphrase) {
+  // This check is dedicated for old client to reject sync code from new client
+  // which has time limited code (25 words)
+  std::vector<std::string> words = base::SplitString(
+      passphrase, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  size_t num_words = words.size();
+  static constexpr size_t kPureWordsCount = 24u;
+  if (num_words != kPureWordsCount) {
+    return false;
+  }
+
   std::vector<uint8_t> bytes;
   return PassphraseToBytes32(passphrase, &bytes);
 }

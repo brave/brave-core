@@ -249,6 +249,8 @@ TEST(CryptoTest, Passphrase) {
   EXPECT_FALSE(IsPassphraseValid(""));
   EXPECT_FALSE(IsPassphraseValid(bip_passphrase + " something wrong"));
   EXPECT_FALSE(IsPassphraseValid(bip_invalid_passphrase));
+  // It makes more sense to check against additional word from bip39 list
+  EXPECT_FALSE(IsPassphraseValid(bip_passphrase + " annual"));
 }
 
 }  // namespace crypto
