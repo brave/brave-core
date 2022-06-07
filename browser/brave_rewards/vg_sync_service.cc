@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_rewards/vg_sync_service.h"
+#include "base/barrier_callback.h"
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/callback_helpers.h"
@@ -11,61 +13,41 @@
 #include "base/template_util.h"
 #include "base/thread_annotations.h"
 
-#include "brave/browser/brave_rewards/vg_sync_service.h"
+#include "third_party/abseil-cpp/absl/types/variant.h"
 
 #include <tuple>
 #include <utility>
-
-namespace internal {
-
-template <typename... Ts>
-class WhenArgsReadyCallbackInfo {
- public:
-  WhenArgsReadyCallbackInfo(base::OnceCallback<void(Ts...)> done)
-      : done_(std::move(done)) {}
-
-  template <typename T, std::size_t I>
-  void Run(T t) LOCKS_EXCLUDED(mutex_) {
-    base::ReleasableAutoLock lock(&mutex_);
-    std::get<I>(args_) = std::move(t);
-
-    if (std::apply([](auto&&... as) { return (... && as); }, args_)) {
-      auto args = std::move(args_);
-      lock.Release();
-      std::apply(
-          [done = std::move(done_)](auto... as) mutable {
-            std::move(done).Run(*std::move(as)...);
-          },
-          std::move(args));
-    }
-  }
-
- private:
-  base::Lock mutex_;
-  std::tuple<absl::optional<Ts>...> args_ GUARDED_BY(mutex_);
-  base::OnceCallback<void(Ts...)> done_;
-};
-
-template <typename... Ts, std::size_t... Is>
-auto WhenArgsReadyCallback(base::OnceCallback<void(Ts...)> done,
-                           std::index_sequence<Is...>) {
-  auto info =
-      std::make_shared<WhenArgsReadyCallbackInfo<Ts...>>(std::move(done));
-  return std::tuple{
-      base::BindOnce(&WhenArgsReadyCallbackInfo<Ts...>::template Run<Ts, Is>,
-                     Is == sizeof...(Ts) - 1 ? std::move(info) : info)...};
-}
-
-}  // namespace internal
 
 template <typename... Ts,
           template <typename>
           typename CallbackType,
           typename = base::EnableIfIsBaseCallback<CallbackType>>
-std::tuple<base::OnceCallback<void(Ts)>...> WhenArgsReadyCallback(
-    CallbackType<void(Ts...)> done) {
-  return internal::WhenArgsReadyCallback(std::move(done),
-                                         std::index_sequence_for<Ts...>());
+auto WhenArgsReadyCallback(CallbackType<void(Ts...)> done) {
+  auto arg_cb = base::BarrierCallback<absl::variant<Ts...>>(
+      sizeof...(Ts),
+      base::BindOnce(
+          [](base::OnceCallback<void(Ts...)> done,
+             std::vector<absl::variant<Ts...>> v) {
+            std::tuple<Ts...> args;
+
+            for (auto& arg : v) {
+              absl::visit(
+                  [&](auto a) { std::get<decltype(a)>(args) = std::move(a); },
+                  std::move(arg));
+            }
+
+            std::apply(
+                [done = std::move(done)](auto... as) mutable {
+                  std::move(done).Run(std::move(as)...);
+                },
+                std::move(args));
+          },
+          std::move(done)));
+
+  return std::tuple{
+      base::BindOnce([](base::OnceCallback<void(absl::variant<Ts...>)> arg_cb,
+                        Ts ts) { std::move(arg_cb).Run(std::move(ts)); },
+                     arg_cb)...};
 }
 
 namespace brave_rewards {
