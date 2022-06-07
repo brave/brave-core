@@ -27,8 +27,8 @@ cleanup()
     rm transifex.log
   fi
 
-  if [ -e ../Client/en.xcloc ]; then
-    rm -R ../Client/en.xcloc
+  if [ -e ../../Client/en.xcloc ]; then
+    rm -R ../../Client/en.xcloc
   fi
 
   if [ -e en.xliff ] ; then
@@ -52,12 +52,12 @@ fi
 cd $(dirname "$0")
 
 echo "Exporting strings from Xcode project..."
-(cd ../ && xcodebuild -exportLocalizations) >>output.log 2>&1
+(cd ../../ && xcodebuild -exportLocalizations) >>output.log 2>&1
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to export strings from Xcode project, please see output.log"
 fi
 
-mv -f ../Client/en.xcloc/Localized\ Contents/en.xliff . >>output.log 2>&1
+mv -f ../../Client/en.xcloc/Localized\ Contents/en.xliff . >>output.log 2>&1
 
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to export strings from Xcode project, please see output.log"
