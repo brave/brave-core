@@ -253,6 +253,8 @@ program
   .command('presubmit')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option('--all', 'run presubmit on all files')
+  .option('--files <file list>',
+    'semicolon-separated list files to run presubmit on')
   .action(util.presubmit)
 
 program

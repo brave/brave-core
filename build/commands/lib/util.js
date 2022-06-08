@@ -641,7 +641,9 @@ const util = {
     cmd = 'git'
     args = ['cl', 'presubmit', options.base, '--force']
     if (options.all)
-      args.append('--all')
+      args.push('--all')
+    if (options.files)
+      args.push('--files', options.files)
     util.run(cmd, args, cmd_options)
   },
 
@@ -655,13 +657,13 @@ const util = {
     cmd = 'git'
     args = ['cl', 'format', '--upstream=' + options.base]
     if (options.full)
-      args.append('--full')
+      args.push('--full')
     if (options.js)
-      args.append('--js')
+      args.push('--js')
      if (options.rust)
-      args.append('--rust-fmt')
+      args.push('--rust-fmt')
     if (options.swift)
-      args.append('--swift-format')
+      args.push('--swift-format')
     util.run(cmd, args, cmd_options)
   },
 

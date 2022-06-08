@@ -43,8 +43,8 @@ def override_check(scope, name=None):
 
 @contextlib.contextmanager
 def override_scope_function(scope, new_function, name=None):
-    """Scoped function override helper. Can override a scope method or a class
-    function."""
+    """Scoped function override helper. Can override a scope function or a class
+    method."""
     function_name = name or new_function.__name__
     original_function = getattr(scope, function_name, None)
     try:
