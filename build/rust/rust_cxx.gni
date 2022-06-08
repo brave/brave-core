@@ -56,6 +56,7 @@ set_defaults("rust_cxx") {
 template("rust_cxx") {
   assert(defined(invoker.input), "Must specify the Rust file to use as input.")
   action_foreach("${target_name}_gen") {
+    visibility = [ ":*" ]
     sources = invoker.input
 
     output_h = "{{source_gen_dir}}/{{source_file_part}}.h"
