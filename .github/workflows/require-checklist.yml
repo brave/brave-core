@@ -2,7 +2,7 @@ name: Require Reviewer Checklist
 
 on:
   pull_request:
-    types: [opened, reopened, edited, ready_for_review, review_requested]
+    types: [opened, reopened, edited, ready_for_review, review_requested, closed]
     branches: [master, 1.*]
 
 jobs:
