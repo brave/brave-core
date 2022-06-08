@@ -15,6 +15,7 @@
 #include "brave/components/p3a/brave_p3a_message_manager_utils.h"
 #include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
+#include "brave/components/p3a/brave_p3a_star_manager.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -85,6 +86,12 @@ void BraveP3AMessageManager::Init(
     UpdateRotationTimer();
   }
 
+  star_manager_.reset(new BraveP3AStarManager(
+      url_loader_factory,
+      base::BindRepeating(&BraveP3AMessageManager::OnStarMessageCreated,
+                          base::Unretained(this)),
+      GURL(config_.star_randomness_url), config_.use_local_randomness));
+
   VLOG(2) << "BraveP3AMessageManager parameters are:"
           << ", average_upload_interval_ = " << config_.average_upload_interval
           << ", randomize_upload_interval_ = "
@@ -145,6 +152,11 @@ void BraveP3AMessageManager::OnLogUploadComplete(int response_code,
   }
   upload_scheduler_->UploadFinished(ok);
 }
+
+void BraveP3AMessageManager::OnStarMessageCreated(
+    const char* histogram_name,
+    uint8_t epoch,
+    std::string serialized_message) {}
 
 void BraveP3AMessageManager::StartScheduledUpload() {
   VLOG(2) << "BraveP3AMessageManager::StartScheduledUpload at "

@@ -37,8 +37,7 @@ int main(int argc, char** argv) {
     return 3;
   }
 
-  std::vector<uint8_t> rand_resp_data(rand_resp_req.data.begin(),
-                                      rand_resp_req.data.end());
+  std::string rand_resp_data = std::string(rand_resp_req.data);
 
   auto msg_res =
       construct_message(rand_resp_data, *rrs_res.state, *public_key, {}, 50);

@@ -1,5 +1,6 @@
 declare_args() {
   brave_p3a_enabled = true
-  p3a_json_server_url = "https://p3a-json.brave.com"
-  p2a_json_server_url = "https://p2a-json.brave.com"
+  p3a_json_server_url = "https://p3a-json.brave.com/"
+  p2a_json_server_url = "https://p2a-json.brave.com/"
+  star_randomness_server_url = "https://star-randomness.brave.com/"
 }

@@ -26,6 +26,7 @@ namespace brave {
 class BraveP3AScheduler;
 class BraveP3AUploader;
 class BraveP3ANewUploader;
+class BraveP3AStarManager;
 
 class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
  public:
@@ -52,6 +53,10 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
 
   void OnLogUploadComplete(int response_code, int error_code, bool was_https);
 
+  void OnStarMessageCreated(const char* histogram_name,
+                            uint8_t epoch,
+                            std::string serialized_message);
+
   // Restart the uploading process (i.e. mark all values as unsent).
   void DoRotation();
 
@@ -71,6 +76,8 @@ class BraveP3AMessageManager : public BraveP3ALogStore::Delegate {
   // See `brave_p3a_new_uploader.h`
   std::unique_ptr<BraveP3ANewUploader> new_uploader_;
   std::unique_ptr<BraveP3AScheduler> upload_scheduler_;
+
+  std::unique_ptr<BraveP3AStarManager> star_manager_;
 
   // Once fired we restart the overall uploading process.
   base::WallClockTimer rotation_timer_;

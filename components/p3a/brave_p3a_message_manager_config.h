@@ -20,8 +20,11 @@ struct MessageManagerConfig {
 
   GURL p3a_upload_server_url;
   GURL p2a_upload_server_url;
+  GURL star_randomness_url;
 
   bool ignore_server_errors = false;
+
+  bool use_local_randomness = false;
 
   MessageManagerConfig();
 

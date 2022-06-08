@@ -28,6 +28,9 @@ constexpr char kP2AUploadServerUrl[] = "p2a-upload-server-url";
 // continue the normal process.
 constexpr char kP3AIgnoreServerErrors[] = "p3a-ignore-server-errors";
 
+constexpr char kP3AStarRandomnessUrl[] = "p3a-star-randomness-url";
+constexpr char kP3AUseLocalRandomness[] = "p3a-use-local-randomness";
+
 }  // namespace switches
 }  // namespace brave
 

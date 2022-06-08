@@ -18,6 +18,9 @@ class RawP3AValue;
 
 namespace brave {
 
+constexpr const char* kP3AMessageStarKeyValueSeparator = "|";
+constexpr const char* kP3AMessageStarLayerSeparator = ";";
+
 struct MessageMetainfo {
   MessageMetainfo();
   ~MessageMetainfo();
@@ -33,14 +36,11 @@ struct MessageMetainfo {
   std::string refcode;
 };
 
-// This is legacy and will be removed once we verify the JSON version works
-// fine with the backends.
-void GenerateP3AMessage(uint64_t metric_hash,
-                        uint64_t metric_value,
-                        const MessageMetainfo& meta,
-                        brave_pyxis::RawP3AValue* p3a_message);
-
 base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
+                                   uint64_t metric_value,
+                                   const MessageMetainfo& meta);
+
+std::string GenerateP3AStarMessage(std::string metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta);
 

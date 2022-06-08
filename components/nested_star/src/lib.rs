@@ -4,11 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 use cxx::{CxxString, CxxVector};
-use ffi::{ByteDataResult, PPOPRFPublicKeyResult, RandomnessRequestStateResult};
+use ffi::{ByteDataResult, PPOPRFPublicKeyResult, RandomnessRequestStateResult, StringDataResult};
 use nested_sta_rs::api::ppoprf::ppoprf::ServerPublicKey;
 use nested_sta_rs::api::*;
 use nested_sta_rs::errors::NestedSTARError;
 use nested_sta_rs::randomness::{testing::LocalFetcher, RequestState as RandomnessRequestState};
+use std::str;
 
 #[cxx::bridge(namespace = "nested_star")]
 mod ffi {
@@ -19,6 +20,11 @@ mod ffi {
 
     struct ByteDataResult {
         data: Vec<u8>,
+        error: String,
+    }
+
+    struct StringDataResult {
+        data: String,
         error: String,
     }
 
@@ -39,10 +45,10 @@ mod ffi {
             layers: &CxxVector<CxxString>,
             epoch: u8,
         ) -> RandomnessRequestStateResult;
-        fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> ByteDataResult;
+        fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> StringDataResult;
 
         fn construct_message(
-            randomness_response: &CxxVector<u8>,
+            randomness_response: &CxxString,
             rrs: &RandomnessRequestStateWrapper,
             verification_key: &PPOPRFPublicKeyWrapper,
             aux_bytes: &CxxVector<u8>,
@@ -50,7 +56,7 @@ mod ffi {
         ) -> ByteDataResult;
 
         // To be used for dev/testing only
-        fn generate_local_randomness(req: &Vec<u8>) -> ByteDataResult;
+        fn generate_local_randomness(req: &String) -> StringDataResult;
     }
 }
 
@@ -91,37 +97,43 @@ pub fn prepare_measurement(
     }
 }
 
-fn create_byte_data_result(res: Result<Vec<u8>, NestedSTARError>) -> ByteDataResult {
+fn create_string_data_result(res: Result<Vec<u8>, NestedSTARError>) -> StringDataResult {
     match res {
-        Ok(data) => ByteDataResult { data, error: String::new() },
-        Err(e) => ByteDataResult { data: Vec::new(), error: e.to_string() },
+        Ok(data) => match str::from_utf8(&data) {
+            Ok(dstr) => StringDataResult { data: dstr.to_string(), error: String::new() },
+            Err(e) => StringDataResult { data: String::new(), error: e.to_string() },
+        },
+        Err(e) => StringDataResult { data: String::new(), error: e.to_string() },
     }
 }
 
-pub fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> ByteDataResult {
+pub fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> StringDataResult {
     let res = client::construct_randomness_request(&rrs.0.as_ref().unwrap());
-    create_byte_data_result(res)
+    create_string_data_result(res)
 }
 
 pub fn construct_message(
-    randomness_response: &CxxVector<u8>,
+    randomness_response: &CxxString,
     rrs: &RandomnessRequestStateWrapper,
     verification_key: &PPOPRFPublicKeyWrapper,
     aux_bytes: &CxxVector<u8>,
     threshold: u32,
 ) -> ByteDataResult {
     let res = client::construct_message(
-        randomness_response.as_slice(),
+        randomness_response.as_bytes(),
         rrs.0.as_ref().unwrap(),
         &verification_key.0,
         aux_bytes.as_slice(),
         threshold,
     );
-    create_byte_data_result(res)
+    match res {
+        Ok(data) => ByteDataResult { data, error: String::new() },
+        Err(e) => ByteDataResult { data: Vec::new(), error: e.to_string() },
+    }
 }
 
-pub fn generate_local_randomness(req: &Vec<u8>) -> ByteDataResult {
+pub fn generate_local_randomness(req: &String) -> StringDataResult {
     let random_fetcher = LocalFetcher::new();
-    let res = random_fetcher.eval(req);
-    create_byte_data_result(res)
+    let res = random_fetcher.eval(req.as_bytes());
+    create_string_data_result(res)
 }
