@@ -19,9 +19,9 @@ import { isHardwareAccount } from '../../../utils/address-utils'
 import { findAccountName } from '../../../utils/account-utils'
 
 // Components
-import NavButton from '../buttons/nav-button'
-import { PanelTab } from '../panel-tab'
-import CreateSiteOrigin from '../../shared/create-site-origin'
+import NavButton from '../buttons/nav-button/index'
+import { PanelTab } from '../panel-tab/index'
+import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 
 // Styled Components
@@ -41,8 +41,7 @@ import {
 import {
   QueueStepRow,
   QueueStepButton,
-  QueueStepText,
-  Divider
+  QueueStepText
 } from '../confirm-transaction-panel/style'
 
 import {
@@ -243,7 +242,6 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
           <MessageBox>
             {txDatas.map(({ instructions, txType }, i) => {
               return <DetailColumn key={`${txType}-${i}`}>
-                <Divider />
                 {instructions?.map((instruction, index) => {
                   return <SolanaTransactionInstruction
                     key={index}

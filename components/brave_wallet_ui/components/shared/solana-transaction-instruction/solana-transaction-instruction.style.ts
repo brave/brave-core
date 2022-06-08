@@ -5,6 +5,12 @@
 
 import styled from 'styled-components'
 
+export const InstructionBox = styled.div`
+  border: 1px solid ${(p) => p.theme.color.divider01};
+  border-radius: 4px;
+  padding: 8px;
+`
+
 export const InstructionParamBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,13 +33,15 @@ export const InstructionParamBox = styled.div`
   text-align: left;
 
   & > var {
+    font-family: Poppins;
     font-weight: 600;
-    font-size: 14px;
     text-align: left;
     display: block;
+    margin-bottom: 4px;
   }
   
   & > samp {
+    font-family: Poppins;
     font-weight: 400;
     text-align: right;
   }

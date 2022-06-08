@@ -4,35 +4,32 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 
 // utils
 import Amount from '../../../utils/amount'
 import { getSolanaProgramIdName } from '../../../utils/solana-program-id-utils'
 
 // types
-import { SolanaInstructionParamKeys, TypedSolanaInstructionWithParams } from '../../../utils/solana-instruction-utils'
+import { getSolanaInstructionParamKeyName, SolanaInstructionParamKeys, TypedSolanaInstructionWithParams } from '../../../utils/solana-instruction-utils'
 
 // styles
 import { DetailColumn } from '../../desktop/portfolio-transaction-item/style'
+
 import {
   Divider,
   SectionRow,
   TransactionTitle,
   TransactionTypeText
 } from '../../extension/confirm-transaction-panel/style'
-import { InstructionParamBox } from './solana-transaction-instruction.style'
-import { LAMPORTS_PER_SOL } from '@solana/web3.js'
+
+import {
+  InstructionBox,
+  InstructionParamBox
+} from './solana-transaction-instruction.style'
 
 interface Props {
   typedInstructionWithParams: TypedSolanaInstructionWithParams
-}
-
-const getSolanaParamKeyName = (key: SolanaInstructionParamKeys) => {
-  return ({
-    fromPubkey: 'From Address: ',
-    toPubkey: 'To Address: ',
-    lamports: 'Transfer Amount: '
-  } as Partial<Record<SolanaInstructionParamKeys, string>>)[key] || key
 }
 
 export const SolanaTransactionInstruction: React.FC<Props> = ({
@@ -45,7 +42,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
     params
   }
 }) => {
-  return <>
+  return <InstructionBox>
     <SectionRow>
       <TransactionTitle>
         {getSolanaProgramIdName(programId)} - {type}
@@ -61,9 +58,9 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
             {
               Object.entries(params).map(([key, value]) => {
                 return <InstructionParamBox key={key}>
-                  <var>{getSolanaParamKeyName(
-                    key as SolanaInstructionParamKeys
-                  )}: </var>
+                  <var>
+                    {getSolanaInstructionParamKeyName(key as SolanaInstructionParamKeys)}
+                  </var>
                   <samp>{
                     (key as SolanaInstructionParamKeys === 'lamports'
                       ? new Amount(value.toString())
@@ -79,7 +76,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
         </DetailColumn>
       </>
     )}
-  </>
+  </InstructionBox>
 }
 
 export default SolanaTransactionInstruction

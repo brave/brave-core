@@ -76,3 +76,12 @@ export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData
   })
   return instructions || []
 }
+
+export const getSolanaInstructionParamKeyName = (key: SolanaInstructionParamKeys) => {
+  return ({
+    fromPubkey: 'From Address: ',
+    toPubkey: 'To Address: ',
+    lamports: 'Amount: ',
+    newAccountPubkey: 'New Account: '
+  } as Partial<Record<SolanaInstructionParamKeys, string>>)[key] || key
+}
