@@ -6,25 +6,23 @@
 import styled from 'styled-components'
 
 export const InstructionBox = styled.div`
+  width: 100%;
   border: 1px solid ${(p) => p.theme.color.divider01};
   border-radius: 4px;
   padding: 8px;
 `
 
 export const InstructionParamBox = styled.div`
+  width: 100%;
+
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: flex-start;
+  gap: 8px;
   
-  width: 100%;
   margin-bottom: 8px;
 
   word-break: break-all;
 
-  width: 100%;
-  display: block;
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
@@ -32,17 +30,20 @@ export const InstructionParamBox = styled.div`
   color: ${(p) => p.theme.color.text01};
   text-align: left;
 
-  & > var {
+  & > * {
     font-family: Poppins;
+    font-style: normal;
+    width: 100%;
+  } 
+
+  & > var {
+    margin-top: 4px;
     font-weight: 600;
     text-align: left;
     display: block;
-    margin-bottom: 4px;
   }
   
   & > samp {
-    font-family: Poppins;
     font-weight: 400;
-    text-align: right;
   }
 `

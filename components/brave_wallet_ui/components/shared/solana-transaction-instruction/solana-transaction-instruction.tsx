@@ -4,29 +4,30 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 
 // utils
 import Amount from '../../../utils/amount'
 import { getSolanaProgramIdName } from '../../../utils/solana-program-id-utils'
+import { findAccountName } from '../../../utils/account-utils'
 
 // types
+import { WalletState } from '../../../constants/types'
 import { getSolanaInstructionParamKeyName, SolanaInstructionParamKeys, TypedSolanaInstructionWithParams } from '../../../utils/solana-instruction-utils'
 
 // styles
-import { DetailColumn } from '../../desktop/portfolio-transaction-item/style'
-
 import {
   Divider,
   SectionRow,
-  TransactionTitle,
-  TransactionTypeText
+  TransactionTitle
 } from '../../extension/confirm-transaction-panel/style'
 
 import {
   InstructionBox,
   InstructionParamBox
 } from './solana-transaction-instruction.style'
+import Tooltip from '../tooltip'
 
 interface Props {
   typedInstructionWithParams: TypedSolanaInstructionWithParams
@@ -42,6 +43,10 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
     params
   }
 }) => {
+  // redux
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // render
   return <InstructionBox>
     <SectionRow>
       <TransactionTitle>
@@ -52,28 +57,36 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
     {Object.keys(params).length > 0 && (
       <>
         <Divider />
+          {
+            Object.entries(params).map(([key, value]) => {
+              const paramName = getSolanaInstructionParamKeyName(key as SolanaInstructionParamKeys)
+              const isAddressParam = key.toString().toLowerCase().includes('pubkey')
+              const formattedParamValue = (key as SolanaInstructionParamKeys === 'lamports'
+                // format lamports to SOL
+                ? new Amount(value.toString()).div(LAMPORTS_PER_SOL).formatAsAsset(9, 'SOL')
 
-        <DetailColumn>
-          <TransactionTypeText>
-            {
-              Object.entries(params).map(([key, value]) => {
-                return <InstructionParamBox key={key}>
-                  <var>
-                    {getSolanaInstructionParamKeyName(key as SolanaInstructionParamKeys)}
-                  </var>
-                  <samp>{
-                    (key as SolanaInstructionParamKeys === 'lamports'
-                      ? new Amount(value.toString())
-                      .div(LAMPORTS_PER_SOL)
-                      .formatAsAsset(9, 'SOL')
-                      : value
-                    ).toString()
-                  }</samp>
-                </InstructionParamBox>
-              })
-            }
-          </TransactionTypeText>
-        </DetailColumn>
+                // show friendly account address names
+                : isAddressParam ? findAccountName(accounts, value.toString()) ?? value
+
+                // unformatted param value
+                : value
+              ).toString()
+
+              return <InstructionParamBox key={key}>
+                <var>{paramName}</var>
+                {isAddressParam
+                  ? <Tooltip
+                      isAddress
+                      text={value.toString()}
+                      position='left'
+                    >
+                      {'Phantom' || formattedParamValue}
+                    </Tooltip>
+                  : <samp>{formattedParamValue}</samp>
+                }
+              </InstructionParamBox>
+            })
+          }
       </>
     )}
   </InstructionBox>

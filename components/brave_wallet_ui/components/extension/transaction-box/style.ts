@@ -63,7 +63,6 @@ export const DetailText = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
-  margin-left: 10px;
   word-break: break-all;
 `
 

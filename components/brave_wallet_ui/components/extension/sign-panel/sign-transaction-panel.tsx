@@ -236,7 +236,7 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
           <TabRow>
             <PanelTab
               isSelected={true}
-              text={getLocale('braveWalletSignTransactionMessageTitle')}
+              text={getLocale('braveWalletAccountSettingsDetails')}
             />
           </TabRow>
           <MessageBox>

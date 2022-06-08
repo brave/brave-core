@@ -16,7 +16,6 @@ import {
   CodeSnippet,
   CodeSnippetText,
   DetailColumn,
-  DetailRow,
   DetailText,
   TransactionText
 } from './style'
@@ -49,10 +48,10 @@ export const SolanaTransactionDetailBox = ({
 
   return (
     <>
-      <DetailRow>
+      <DetailColumn>
         <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
         <DetailText>{txKeys[txType]}</DetailText>
-      </DetailRow>
+      </DetailColumn>
 
       <DetailColumn>
         {instructions?.map((instruction, index) => {
