@@ -23,7 +23,7 @@ class FilTransaction;
 
 class FilecoinKeyring : public HDKeyring {
  public:
-  FilecoinKeyring();
+  FilecoinKeyring(const std::string& chain_id);
   ~FilecoinKeyring() override;
   FilecoinKeyring(const FilecoinKeyring&) = delete;
   FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
@@ -31,7 +31,6 @@ class FilecoinKeyring : public HDKeyring {
                                   std::vector<uint8_t>* private_key_out,
                                   mojom::FilecoinAddressProtocol* protocol_out);
   std::string ImportFilecoinAccount(const std::vector<uint8_t>& private_key,
-                                    const std::string& network,
                                     mojom::FilecoinAddressProtocol protocol);
   void RestoreFilecoinAccount(const std::vector<uint8_t>& input_key,
                               const std::string& address);
@@ -39,6 +38,8 @@ class FilecoinKeyring : public HDKeyring {
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
+  std::string network_;
+  std::string network_prefix_;
 };
 
 }  // namespace brave_wallet

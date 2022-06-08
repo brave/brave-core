@@ -91,15 +91,13 @@ class FilTxManagerUnitTest : public testing::Test {
     run_loop.Run();
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    keyring_service_->AddAccount("Account 1", mojom::CoinType::FIL,
-                                 base::DoNothing());
+    keyring_service_->AddFilecoinAccount("Account 1", mojom::kFilecoinTestnet,
+                                         base::DoNothing());
     base::RunLoop().RunUntilIdle();
   }
 
-  std::string from() {
-    return keyring_service_
-        ->GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-        ->GetAddress(0);
+  std::string from(const std::string& keyring_id) {
+    return keyring_service_->GetHDKeyringById(keyring_id)->GetAddress(0);
   }
 
   void SetInterceptor(const GURL& expected_url,
@@ -234,7 +232,8 @@ class FilTxManagerUnitTest : public testing::Test {
 };
 
 TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
-  std::string from_account = from();
+  std::string from_account =
+      from(brave_wallet::mojom::kFilecoinTestnetKeyringId);
   std::string to_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
   SetGasEstimateInterceptor(from_account, to_account);
   auto tx_data = mojom::FilTxData::New(
@@ -301,7 +300,8 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
 }
 
 TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
-  std::string from_account = from();
+  std::string from_account =
+      from(brave_wallet::mojom::kFilecoinTestnetKeyringId);
   std::string to_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
   SetGasEstimateInterceptor(from_account, to_account);
   auto tx_data = mojom::FilTxData::New(
@@ -351,7 +351,8 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
 }
 
 TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
-  std::string from_account = from();
+  std::string from_account =
+      from(brave_wallet::mojom::kFilecoinTestnetKeyringId);
   std::string to_account = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
   SetGasEstimateInterceptor(from_account, to_account);
   auto tx_data = mojom::FilTxData::New(

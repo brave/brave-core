@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 
 #include <utility>
+#include "base/logging.h"
 
 namespace brave_wallet {
 
@@ -134,6 +135,18 @@ HDKeyBase* HDKeyring::GetHDKeyFromAddress(const std::string& address) {
       return accounts_[i].get();
   }
   return nullptr;
+}
+
+bool HDKeyring::HasAddress(const std::string& address) {
+  for (size_t i = 0; i < accounts_.size(); ++i) {
+    if (GetAddress(i) == address)
+      return true;
+  }
+  return false;
+}
+
+bool HDKeyring::HasImportedAddress(const std::string& address) {
+  return imported_accounts_.find(address) != imported_accounts_.end();
 }
 
 }  // namespace brave_wallet
