@@ -15,6 +15,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/components/brave_wallet/renderer/resource_helper.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -34,6 +36,8 @@
 using brave_wallet::mojom::SolanaProviderError;
 
 namespace {
+
+static base::NoDestructor<std::string> g_provider_internal_script("");
 
 // error returns from browser process
 constexpr char kErrorMessage[] = "error from browser";
@@ -118,15 +122,30 @@ std::string GetRequstObject(const std::string& method) {
   return base::StringPrintf(R"({method: "%s", params: {}})", method.c_str());
 }
 
-std::string NonWriteableScript(const std::string& method,
+std::string NonWriteableScript(const std::string& provider,
+                               const std::string& method,
                                const std::string& args) {
   return base::StringPrintf(
-      R"(window.solana.%s = () => { return "brave" }
-         if (window.solana.%s%s === "brave")
+      R"(window.%s.%s = () => { return "brave" }
+         if (window.%s.%s%s === "brave")
            window.domAutomationController.send(false)
          else
            window.domAutomationController.send(true))",
-      method.c_str(), method.c_str(), args.c_str());
+      provider.c_str(), method.c_str(), provider.c_str(), method.c_str(),
+      args.c_str());
+}
+
+std::string NonConfigurableScript(const std::string& provider) {
+  return base::StringPrintf(
+      R"(try {
+         Object.defineProperty(window, '%s', {
+           writable: true,
+         });
+       } catch (e) {}
+       window.%s = 42;
+       typeof window.%s === 'object'
+        )",
+      provider.c_str(), provider.c_str(), provider.c_str());
 }
 
 std::string ConnectScript(const std::string& args) {
@@ -475,6 +494,13 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(base::FeatureList::IsEnabled(
         brave_wallet::features::kNativeBraveWalletFeature));
+
+    // setup _brave_solana
+    if (g_provider_internal_script->empty()) {
+      *g_provider_internal_script = brave_wallet::LoadDataResource(
+          IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
+    }
+    ASSERT_TRUE(ExecJs(web_contents(browser()), *g_provider_internal_script));
   }
 
   content::WebContents* web_contents(Browser* browser) const {
@@ -565,30 +591,32 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   // window.solana.*
-  auto result = EvalJs(web_contents(browser()),
-                       NonWriteableScript("on", R"(('connect', ()=>{}))"),
-                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result =
+      EvalJs(web_contents(browser()),
+             NonWriteableScript("solana", "on", R"(('connect', ()=>{}))"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result.value);
 
   auto result2 = EvalJs(web_contents(browser()),
-                        NonWriteableScript("emit", R"(('connect'))"),
+                        NonWriteableScript("solana", "emit", R"(('connect'))"),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result2.value);
 
-  auto result3 =
-      EvalJs(web_contents(browser()),
-             NonWriteableScript("removeListener", R"(('connect', ()=>{}))"),
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result3 = EvalJs(
+      web_contents(browser()),
+      NonWriteableScript("solana", "removeListener", R"(('connect', ()=>{}))"),
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result3.value);
 
-  auto result4 = EvalJs(web_contents(browser()),
-                        NonWriteableScript("removeAllListeners", R"(())"),
-                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  auto result4 =
+      EvalJs(web_contents(browser()),
+             NonWriteableScript("solana", "removeAllListeners", R"(())"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result4.value);
 
   auto result5 = EvalJs(
       web_contents(browser()),
-      NonWriteableScript("createPublickey",
+      NonWriteableScript("_brave_solana", "createPublickey",
                          base::StringPrintf(R"(('%s'))", kTestPublicKey)),
       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result5.value);
@@ -597,7 +625,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   auto result6 =
       EvalJs(web_contents(browser()),
              NonWriteableScript(
-                 "createTransaction",
+                 "_brave_solana", "createTransaction",
                  base::StringPrintf(R"((%s))", serialized_tx_str.c_str())),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result6.value);
@@ -714,7 +742,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
-      base::StrCat({"(window.solana.createTransaction(new Uint8Array([",
+      base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
                     serialized_tx_str, "])))"});
   auto result = EvalJs(web_contents(browser()), SignTransactionScript(tx),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
@@ -759,8 +787,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string txs = base::StrCat(
-      {"([window.solana.createTransaction(new Uint8Array([", serialized_tx_str,
-       "])), window.solana.createTransaction(new Uint8Array([",
+      {"([window._brave_solana.createTransaction(new Uint8Array([",
+       serialized_tx_str,
+       "])), window._brave_solana.createTransaction(new Uint8Array([",
        serialized_tx_str, "]))])"});
   auto result = EvalJs(web_contents(browser()), SignAllTransactionsScript(txs),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
@@ -768,7 +797,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 
   // allow extra parameters
   const std::string txs2 =
-      base::StrCat({"([window.solana.createTransaction(new Uint8Array([",
+      base::StrCat({"([window._brave_solana.createTransaction(new Uint8Array([",
                     serialized_tx_str, "]))], 1234)"});
   auto result2 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript(txs2),
@@ -793,7 +822,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 
   // not entirely solanaWeb3.Transaction[]
   const std::string txs3 =
-      base::StrCat({"([window.solana.createTransaction(new Uint8Array([",
+      base::StrCat({"([window._brave_solana.createTransaction(new Uint8Array([",
                     serialized_tx_str, "])), 1234])"});
   auto result5 =
       EvalJs(web_contents(browser()), SignAllTransactionsScript("({})"),
@@ -819,7 +848,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
-      base::StrCat({"(window.solana.createTransaction(new Uint8Array([",
+      base::StrCat({"(window._brave_solana.createTransaction(new Uint8Array([",
                     serialized_tx_str, "])))"});
   auto result =
       EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx),
@@ -997,17 +1026,12 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonConfigurable) {
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   GURL url = embedded_test_server()->GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string overwrite =
-      R"(try {
-         Object.defineProperty(window, 'solana', {
-           writable: true,
-         });
-       } catch (e) {}
-       window.solana = 42;
-       typeof window.solana === 'object'
-        )";
   EXPECT_TRUE(
-      content::EvalJs(web_contents(browser()), overwrite).ExtractBool());
+      content::EvalJs(web_contents(browser()), NonConfigurableScript("solana"))
+          .ExtractBool());
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()),
+                              NonConfigurableScript("_brave_solana"))
+                  .ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Block3PIframe) {

@@ -23,6 +23,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/components/brave_wallet/renderer/resource_helper.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -44,6 +46,8 @@
 namespace brave_wallet {
 
 namespace {
+
+static base::NoDestructor<std::string> g_provider_internal_script("");
 
 constexpr char kFirstAccount[] = "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu";
 
@@ -169,6 +173,13 @@ class SolanaProviderTest : public InProcessBrowserTest {
     tx_service_->AddObserver(observer()->GetReceiver());
 
     StartRPCServer(base::BindRepeating(&HandleRequest));
+
+    // setup _brave_solana
+    if (g_provider_internal_script->empty()) {
+      *g_provider_internal_script = brave_wallet::LoadDataResource(
+          IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
+    }
+    ASSERT_TRUE(ExecJs(web_contents(), *g_provider_internal_script));
   }
 
   void StartRPCServer(

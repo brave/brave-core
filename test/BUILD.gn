@@ -793,6 +793,7 @@ if (!is_android) {
       "//brave/components/brave_wallet/common:common_constants",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet/common:solana_utils",
+      "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
       "//brave/components/de_amp/browser/test:browser_tests",
       "//brave/components/de_amp/common:common",
       "//brave/components/debounce/browser",

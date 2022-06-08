@@ -34,6 +34,7 @@ namespace brave_wallet {
 namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
+static base::NoDestructor<std::string> g_provider_internal_script("");
 
 }  // namespace
 
@@ -43,6 +44,10 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(
         IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS);
+  }
+  if (g_provider_internal_script->empty()) {
+    *g_provider_internal_script = LoadDataResource(
+        IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_INTERNAL_SCRIPT_BUNDLE_JS);
   }
   EnsureConnected();
   v8_value_converter_->SetStrategy(&strategy_);
@@ -736,11 +741,13 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
 v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
+  // Internal object for CreatePublicKey and CreateTransaction
+  ExecuteScript(render_frame_->GetWebFrame(), *g_provider_internal_script);
   const base::Value public_key_value(base58_str);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(&public_key_value, context));
   v8::MaybeLocal<v8::Value> public_key_result =
-      CallMethodOfObject(render_frame_->GetWebFrame(), u"solana",
+      CallMethodOfObject(render_frame_->GetWebFrame(), u"_brave_solana",
                          u"createPublickey", std::move(args));
 
   return public_key_result.ToLocalChecked();
@@ -749,12 +756,14 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
 v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     v8::Local<v8::Context> context,
     const std::vector<uint8_t> serialized_tx) {
+  // Internal object for CreatePublicKey and CreateTransaction
+  ExecuteScript(render_frame_->GetWebFrame(), *g_provider_internal_script);
   const base::Value serialized_tx_value(serialized_tx);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(&serialized_tx_value, context));
 
   v8::MaybeLocal<v8::Value> transaction_result =
-      CallMethodOfObject(render_frame_->GetWebFrame(), u"solana",
+      CallMethodOfObject(render_frame_->GetWebFrame(), u"_brave_solana",
                          u"createTransaction", std::move(args));
 
   return transaction_result.ToLocalChecked();

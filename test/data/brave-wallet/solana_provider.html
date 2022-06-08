@@ -44,7 +44,7 @@
   }
 
   function solanaSignAndSendTransaction(serializedTx) {
-    const tx = window.solana.createTransaction(serializedTx)
+    const tx = window._brave_solana.createTransaction(serializedTx)
     window.solana.signAndSendTransaction(tx)
       .then(result => {
         signAndSendTransactionResult = result.signature
@@ -56,7 +56,7 @@
   }
 
   function solanaSignTransaction(serializedTx) {
-    const tx = window.solana.createTransaction(serializedTx)
+    const tx = window._brave_solana.createTransaction(serializedTx)
     window.solana.signTransaction(tx)
       .then(result => {
         signTransactionResult = result.serialize().join()
@@ -68,7 +68,7 @@
   }
 
   function solanaSignAllTransactions(serializedTx, expectedSignTx) {
-    const tx = window.solana.createTransaction(serializedTx)
+    const tx = window._brave_solana.createTransaction(serializedTx)
     const expectedTx = expectedSignTx.join()
     window.solana.signAllTransactions([tx, tx])
       .then(result => {
