@@ -220,10 +220,10 @@
     Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_LABEL" desc="Label for custom filters section">
-    Custom Filters
+    Create Custom filters
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_DESC" desc="Description for custom filters section">
-    Get technical by adding your own specific filters, one by line, in <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Adblock filter syntax<ph name="END_LINK">&lt;/a&gt;</ph>.
+    Add custom filters you've created, one per line, in the field below. Be sure to use the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Adblock filter syntax<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_LISTS_BUTTON_LABEL" desc="Label for button that adds filter lists URL">
     Add
@@ -247,10 +247,10 @@
     Save changes
   </message>
   <message name="IDS_BRAVE_ADBLOCK_TRACKING_FILTERS_LABEL" desc="Title for tracking filters">
-    Brave's tracking filters
+    Filter lists
   </message>
   <message name="IDS_BRAVE_ADBLOCK_TRACKING_FILTERS_DESC" desc="Description for tracking filters section">
-    View the filters that come <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>enabled by default<ph name="END_LINK">&lt;/a&gt;</ph> as part of Brave Shields.
+    Additional popular community lists. Note that enabling too many filters will degrade browsing speeds.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_DOWNLOAD_FAILED" desc="A label shown when a subscription has failed to download for the first time">
    Download failed
@@ -262,7 +262,10 @@
    Custom lists
   </message>
   <message name="IDS_BRAVE_ADBLOCK_SHOW_FULL_LISTS_BUTTON_LABEL" desc="A button label to expand full custom filter lists">
-    Show full lists
+    Show full list
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to ask the user to enter a URL">
+    Enter filter list URL
   </message>
 
   <!-- Settings / Brave Rewards -->
