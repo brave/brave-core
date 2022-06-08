@@ -1590,6 +1590,27 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
                      "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  std::string json = R"({"jsonrpc":"2.0","id":1,"result":"100000"})";
+  SetInterceptor(GetNetwork(mojom::kFilecoinMainnet, mojom::CoinType::FIL),
+                 "Filecoin.WalletBalance", "", json);
+  json_rpc_service_->GetBalance(
+      "addr", mojom::CoinType::FIL, mojom::kFilecoinMainnet,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", "100000"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInterceptor(GetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL),
+                 "Filecoin.WalletBalance", "", json);
+  json_rpc_service_->GetBalance(
+      "addr", mojom::CoinType::FIL, mojom::kFilecoinTestnet,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kSuccess, "", "100000"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
