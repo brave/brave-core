@@ -110,12 +110,11 @@ void BraveVpnDnsObserverService::ShowPolicyWarningMessage() {
     return;
   }
 
-#if !defined(OFFICIAL_BUILD)
   if (policy_callback_) {
     std::move(policy_callback_).Run();
     return;
   }
-#endif
+
   chrome::ShowWarningMessageBoxWithCheckbox(
       GetAnchorBrowserWindow(), l10n_util::GetStringUTF16(IDS_PRODUCT_NAME),
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_DNS_POLICY_ALERT),
