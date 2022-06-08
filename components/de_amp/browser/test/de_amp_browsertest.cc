@@ -156,7 +156,8 @@ std::unique_ptr<net::test_server::HttpResponse> BuildHttpResponseForAmpPage(
   return http_response;
 }
 
-std::unique_ptr<net::test_server::HttpResponse> HandleRequestForRedirectTest(
+std::unique_ptr<net::test_server::HttpResponse>
+HandleRequestForCyclicAmpPagesTest(
     const std::string& body,
     const net::test_server::HttpRequest& request) {
   if (request.relative_url == kTestRedirectingAmpPage1) {
@@ -167,7 +168,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForRedirectTest(
   return nullptr;
 }
 
-std::unique_ptr<net::test_server::HttpResponse> HandleServerRedirect(
+std::unique_ptr<net::test_server::HttpResponse> HandleRedirect(
     net::HttpStatusCode code,
     const std::string& source,
     const std::string& dest,
@@ -184,11 +185,26 @@ std::unique_ptr<net::test_server::HttpResponse> HandleServerRedirect(
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_code(code);
-    http_response->AddCustomHeader("Location", dest);
+    if (code != net::HttpStatusCode::HTTP_OK) {
+      http_response->AddCustomHeader("Location", dest);
+      http_response->set_content(base::StringPrintf(
+          "<html><head></head><body>Redirecting to %s</body></html>",
+          dest.c_str()));
+    } else {
+      auto js_load_body = base::StringPrintf(
+          R"(
+        <html>
+          <head>
+            <script type="text/javascript">
+              window.location.replace("https://%s:%s%s");
+            </script>
+          </head>
+        </html>
+      )",
+          kTestHost, request.GetURL().port().c_str(), dest.c_str());
+      http_response->set_content(js_load_body);
+    }
     http_response->set_content_type("text/html");
-    http_response->set_content(base::StringPrintf(
-        "<html><head></head><body>Redirecting to %s</body></html>",
-        dest.c_str()));
     return http_response;
   } else {
     return BuildHttpResponseForAmpPage(body, source, request);
@@ -228,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpPagesPointingAtEachOther) {
   TogglePref(true);
   https_server_->RegisterRequestHandler(
-      base::BindRepeating(HandleRequestForRedirectTest, kTestAmpBody));
+      base::BindRepeating(HandleRequestForCyclicAmpPagesTest, kTestAmpBody));
   ASSERT_TRUE(https_server_->Start());
   const GURL original_url =
       https_server_->GetURL(kTestHost, kTestRedirectingAmpPage1);
@@ -237,10 +253,10 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpPagesPointingAtEachOther) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
-IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalRedirectsToAmp) {
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalRedirectsToAmp301) {
   TogglePref(true);
   https_server_->RegisterRequestHandler(base::BindRepeating(
-      HandleServerRedirect, net::HttpStatusCode::HTTP_PERMANENT_REDIRECT,
+      HandleRedirect, net::HttpStatusCode::HTTP_PERMANENT_REDIRECT,
       kTestCanonicalPage, kTestAmpPage, kTestAmpBody));
   ASSERT_TRUE(https_server_->Start());
 
@@ -249,6 +265,38 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalRedirectsToAmp) {
       https_server_->GetURL(kTestHost, kTestCanonicalPage);
 
   NavigateToURLAndWaitForRedirects(amp_url, amp_url);
+  NavigateToURLAndWaitForRedirects(canonical_url, amp_url);
+}
+
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalRedirectsToAmp302) {
+  TogglePref(true);
+  https_server_->RegisterRequestHandler(
+      base::BindRepeating(HandleRedirect, net::HttpStatusCode::HTTP_FOUND,
+                          kTestCanonicalPage, kTestAmpPage, kTestAmpBody));
+  ASSERT_TRUE(https_server_->Start());
+
+  const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL canonical_url =
+      https_server_->GetURL(kTestHost, kTestCanonicalPage);
+
+  NavigateToURLAndWaitForRedirects(amp_url, amp_url);
+  NavigateToURLAndWaitForRedirects(canonical_url, amp_url);
+}
+
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalJSRedirectsToAmp) {
+  TogglePref(true);
+  // Load canonical page normally and then navigate to AMP page
+  https_server_->RegisterRequestHandler(
+      base::BindRepeating(HandleRedirect, net::HttpStatusCode::HTTP_OK,
+                          kTestCanonicalPage, kTestAmpPage, kTestAmpBody));
+  ASSERT_TRUE(https_server_->Start());
+
+  const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL canonical_url =
+      https_server_->GetURL(kTestHost, kTestCanonicalPage);
+
+  NavigateToURLAndWaitForRedirects(amp_url, amp_url);
+  NavigateToURLAndWaitForRedirects(canonical_url, amp_url);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonHttpScheme) {
