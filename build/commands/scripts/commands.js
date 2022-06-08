@@ -195,6 +195,8 @@ program
   .option('--extension <extension>', 'Scope this command to localize a Brave extension such as ethereum-remote-client')
   .option('--extension_path <extension_path>', 'Local path for extension')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
+  .option('--with_translations', 'Push local translations. WARNING: this will overwrite translations in Tansifex.')
+  .option('--with_missing_translations', 'Push local translations for strings that do not have translations in Transifex.')
   .action(pushL10n)
 
 program

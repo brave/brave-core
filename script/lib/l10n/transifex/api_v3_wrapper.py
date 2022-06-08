@@ -139,15 +139,16 @@ class TransifexAPIV3Wrapper(TransifexAPIV2Wrapper):
 
 
     def __get_resource_translation_id(self, resource_slug, lang_code,
-                                    string_hash):
+                                      string_hash):
         return (f'o:{self.organization_name}:p:{self.project_name}:'
                 f'r:{resource_slug}:s:{string_hash}:l:{lang_code}')
 
 
-    def __get_resource_translation(self, resource_slug, lang_code, string_key):
+    def __get_resource_translation(self, resource_slug, lang_code, string_hash):
         translation_id = self.__get_resource_translation_id(
-            resource_slug, lang_code, string_key)
-        return transifex_api.ResourceTranslation.get(id = translation_id)
+            resource_slug, lang_code, string_hash)
+        return transifex_api.ResourceTranslation.get(
+            id = translation_id)
 
 
     # TransifexAPIWrapper overrides
@@ -212,20 +213,35 @@ class TransifexAPIV3Wrapper(TransifexAPIV2Wrapper):
         resource_string.save('instructions')
 
 
-    def transifex_upload_string_l10n(self, resource_name, string_hash,
-                                     lang_code, translated_value):
+    def transifex_upload_string_l10n(self, resource_name, string_name,
+                                     string_hash, lang_code, translated_value,
+                                     missing_only):
         """Uploads the localized string in the given language for the string
            with the given hash."""
-        translation = self.__get_resource_translation(resource_name, lang_code,
-                                                    string_hash)
+        try:
+            translation = self.__get_resource_translation(
+                resource_name, lang_code, string_hash)
+        except: # pylint: disable=bare-except
+            print(f'WARNING: String {string_name} (hash {string_hash}) is not '\
+                  f'in resource {resource_name} for language {lang_code} in '\
+                  'Transifex.')
+            return
+        if (missing_only and translation.strings is not None and
+            len(translation.strings['other'])):
+            #print(f'String {string_name} (hash {string_hash}) already has a ' \
+            #      'translation for the language `{lang_code}` and ' \
+            #      '--with_missing_translations flag was specified')
+            return
         translation.strings = {'other': translated_value}
         translation.reviewed = True
         # `proofread` attribute cannot be set on project's not supporting
         # second review step - is the exception we'd get if try to set this.
-        # Currently, https://www.transifex.com/brave/brave/settings/workflow/
+        # Currently, https://www.transifex.com/brave/brave/settings/workflow
         # doesn't have `Proofread` option checked. Settings this in APIv2
         # doesn't appear to do anything when the option is turned off.
         # If we turn that option on make sure to add 'proofread' to the save
         # call below.
         # translation.proofread = True
         translation.save('strings', 'reviewed')
+        print(f'Uploaded translation for {lang_code}: {string_name} ' \
+              f'({string_hash})...')

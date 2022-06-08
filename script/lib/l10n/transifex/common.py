@@ -74,6 +74,16 @@ def transifex_name_from_greaselion_script_name(script_name):
     return ''
 
 
+def xtb_lang_to_transifex_lang(lang):
+    """Reformats language code from XTB format to Transifex format"""
+    lang = lang.replace('-', '_')
+    # The lang code "iw" is the old code for Hebrew, Transifex and GRDs use
+    # "he", but Chromium still uses "iw" inside the XTBs.
+    lang = lang.replace('iw', 'he')
+    lang = lang.replace('sr_Latn', 'sr_BA@latin')
+    return lang
+
+
 def get_strings_dict_from_xml_content(xml_content):
     """Obtains a dictionary mapping the string name to text from Android xml
        content"""

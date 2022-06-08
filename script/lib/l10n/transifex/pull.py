@@ -18,7 +18,8 @@ from lib.l10n.transifex.common import (get_acceptable_json_lang_codes,
                                        get_api_wrapper,
                                        get_strings_dict_from_xml_content,
                                        textify_from_transifex,
-                                       transifex_name_from_filename)
+                                       transifex_name_from_filename,
+                                       xtb_lang_to_transifex_lang)
 from lib.l10n.validation import validate_tags_in_one_string
 
 
@@ -116,16 +117,6 @@ def combine_override_xtb_into_original(source_string_path):
 
 # Helper functions
 # ----------------
-
-def xtb_lang_to_transifex_lang(lang):
-    """Reformats language code from XTB format to Transifex format"""
-    lang = lang.replace('-', '_')
-    # The lang code "iw" is the old code for Hebrew, Transifex and GRDs use
-    # "he", but Chromium still uses "iw" inside the XTBs.
-    lang = lang.replace('iw', 'he')
-    lang = lang.replace('sr_Latn', 'sr_BA@latin')
-    return lang
-
 
 def transifex_lang_to_xtb_lang(lang):
     """Reformats language code from Transifex format to XTB format"""
