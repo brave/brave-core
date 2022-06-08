@@ -846,6 +846,17 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     return true;
   }
 
+#if !BUILDFLAG(IS_ANDROID)
+  if (url->host() == kAdblockHost) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    replacements.SetHostStr(chrome::kChromeUISettingsHost);
+    replacements.SetPathStr(kContentFiltersPath);
+    *url = url->ReplaceComponents(replacements);
+    return false;
+  }
+#endif
+
   // no special win10 welcome page
   if (url->host() == chrome::kChromeUIWelcomeHost) {
     *url = GURL(chrome::kChromeUIWelcomeURL);
