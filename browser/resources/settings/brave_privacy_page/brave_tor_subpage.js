@@ -70,7 +70,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       this.UpdateUseBridges_(config.use_bridges)
       this.builtinBridges_ = config.use_builtin_bridges
       this.requestedBridges_ = config.requested_bridges
-      this.providedBridges_ = config.bridges
+      this.providedBridges_ = config.provided_bridges
 
       this.$.builtInBridgesType.value = this.builtinBridges_
 
@@ -106,7 +106,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       use_bridges: this.useBridges_,
       use_builtin_bridges: Number.parseInt(this.builtinBridges_, 10),
       requested_bridges: this.requestedBridges_,
-      bridges: this.providedBridges_,
+      provided_bridges: this.providedBridges_,
     }
     return bridgesConfig
   }

@@ -82,6 +82,11 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
     // protocol and a .onion hostname.
     if (!url.SchemeIsHTTPOrHTTPS() || !url.DomainIs("onion"))
       return content::NavigationThrottle::PROCEED;
+    // Process only 'tabs' web contents and don't touch other.
+    if (!OnionLocationTabHelper::FromWebContents(
+            navigation_handle()->GetWebContents())) {
+      return content::NavigationThrottle::PROCEED;
+    }
     // If user prefers opening it automatically
     if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
       delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url);

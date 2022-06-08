@@ -10,22 +10,31 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/bind.h"
-#include "base/callback_forward.h"
+#include "base/callback.h"
 #include "base/callback_helpers.h"
+#include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/tor//tor_profile_service_factory.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
+#include "chrome/browser/image_fetcher/image_decoder_impl.h"
+#include "components/image_fetcher/core/image_decoder.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 
 namespace {
@@ -148,7 +157,37 @@ class BridgeRequest : public content::WebContentsObserver {
   }
 
   void OnGetCaptchaImage(base::Value value) {
-    std::move(captcha_callback_).Run(std::move(value));
+    if (!value.is_dict() || !value.GetDict().FindString("captcha")) {
+      return std::move(captcha_callback_).Run(std::move(value));
+    }
+    std::string image_data;
+    base::Base64Decode(*value.GetDict().FindString("captcha"));
+    if (!base::Base64Decode(*value.GetDict().FindString("captcha"),
+                            &image_data)) {
+      return std::move(captcha_callback_).Run(std::move(value));
+    }
+    if (!image_decoder_) {
+      image_decoder_ = std::make_unique<ImageDecoderImpl>();
+    }
+
+    image_decoder_->DecodeImage(image_data, {},
+                                base::BindOnce(&BridgeRequest::OnCaptchaDecoded,
+                                               weak_factory_.GetWeakPtr()));
+  }
+
+  void OnCaptchaDecoded(const gfx::Image& image) {
+    // Re-encode image as PNG and send.
+    auto encoded = base::MakeRefCounted<base::RefCountedBytes>();
+    if (!gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
+                                           /*discard_transparency=*/false,
+                                           &encoded->data())) {
+      return std::move(captcha_callback_).Run(base::Value());
+    }
+
+    base::Value::Dict result;
+    result.Set("captcha",
+               "data:image/png;base64," + base::Base64Encode(encoded->data()));
+    std::move(captcha_callback_).Run(base::Value(std::move(result)));
   }
 
   void ParseBridges() {
@@ -169,6 +208,7 @@ class BridgeRequest : public content::WebContentsObserver {
   BridgesCallback result_callback_;
   State state_ = State::kLoadCaptcha;
   std::unique_ptr<content::WebContents> web_contents_;
+  std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
 
   base::WeakPtrFactory<BridgeRequest> weak_factory_{this};
 };

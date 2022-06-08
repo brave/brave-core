@@ -21,8 +21,8 @@
 namespace {
 constexpr const char kUseBridgesKey[] = "use_bridges";
 constexpr const char kUseBuiltinBridgesKey[] = "use_builtin_bridges";
-constexpr const char kRequestedBriges[] = "requested_bridges";
-constexpr const char kBridgesKey[] = "bridges";
+constexpr const char kRequestedBrigesKey[] = "requested_bridges";
+constexpr const char kProvidedBridgesKey[] = "provided_bridges";
 
 template <typename Enum>
 struct MinMaxTraits;
@@ -114,14 +114,14 @@ absl::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   result.use_builtin =
       CastToEnum<BuiltinType>(dict.FindInt(kUseBuiltinBridgesKey).value_or(0));
 
-  if (auto* bridges = dict.FindList(kBridgesKey)) {
+  if (auto* bridges = dict.FindList(kProvidedBridgesKey)) {
     for (const auto& bridge : *bridges) {
       if (!bridge.is_string())
         continue;
       result.provided_bridges.push_back(bridge.GetString());
     }
   }
-  if (auto* requested_bridges = dict.FindList(kRequestedBriges)) {
+  if (auto* requested_bridges = dict.FindList(kRequestedBrigesKey)) {
     for (const auto& bridge : *requested_bridges) {
       if (!bridge.is_string())
         continue;
@@ -141,13 +141,13 @@ base::Value::Dict BridgesConfig::ToDict() const {
   for (const auto& bridge : provided_bridges) {
     list.Append(bridge);
   }
-  result.Set(kBridgesKey, std::move(list));
+  result.Set(kProvidedBridgesKey, std::move(list));
 
   list = base::Value::List();
   for (const auto& bridge : requested_bridges) {
     list.Append(bridge);
   }
-  result.Set(kRequestedBriges, std::move(list));
+  result.Set(kRequestedBrigesKey, std::move(list));
 
   return result;
 }
