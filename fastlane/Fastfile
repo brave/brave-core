@@ -126,6 +126,7 @@ platform :ios do
   desc "All enterprise releases use this as the foundation"
   lane :enterprise do |options|
     build_app(
+      project: "App/Client.xcodeproj",
       scheme: "Enterprise",
       clean: true,
       output_directory: "build",
