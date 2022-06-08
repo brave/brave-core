@@ -100,6 +100,10 @@ bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
   if (!contents)
     return false;
 
+  // The pending entry is the one in progress i.e. the AMP link
+  // The visible entry is the one visible in the address bar. If the AMP link
+  // was clicked on a page, then this will be that page. If it's a direct
+  // navigation, visible entry will be the same as pending entry.
   auto* entry = contents->GetController().GetPendingEntry();
   if (!entry) {
     if (contents->GetController().GetVisibleEntry()) {
@@ -109,14 +113,16 @@ bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
     }
   }
 
-  // If the canonical/target URL is the same as the current pending URL being
-  // navigated to, we should stop De-AMPing. This is done to prevent redirect
-  // loops. https://github.com/brave/brave-browser/issues/22610
-  if (new_url == entry->GetURL()) {
+  // If we've already navigated to the canonical URL last time, we
+  // should stop De-AMPing. This is done to prevent redirect loops.
+  // https://github.com/brave/brave-browser/issues/22610
+  bool new_url_same_as_last_committed =
+      contents->GetController().GetLastCommittedEntry()
+          ? contents->GetController().GetLastCommittedEntry()->GetURL() ==
+                new_url
+          : false;
+  if (new_url_same_as_last_committed)
     return false;
-  }
-
-  DCHECK(entry->GetURL() == response_url);
 
   delegate_->CancelWithError(net::ERR_ABORTED);
 
@@ -132,6 +138,7 @@ bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
   auto redirect_chain = request_.navigation_redirect_chain;
   redirect_chain.pop_back();
   params.redirect_chain = std::move(redirect_chain);
+  // This is added to check for server redirect loops
   params.extra_headers += base::StringPrintf("%s: true\r\n", kDeAmpHeaderName);
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
