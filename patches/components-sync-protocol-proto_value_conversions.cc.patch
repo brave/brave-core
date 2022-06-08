@@ -1,0 +1,12 @@
+diff --git a/components/sync/protocol/proto_value_conversions.cc b/components/sync/protocol/proto_value_conversions.cc
+index be4594de5adc4e72c213ba464f74ae8165088c81..ef1d3c9c9e0f370cc4e55cf61404636362e46bb1 100644
+--- a/components/sync/protocol/proto_value_conversions.cc
++++ b/components/sync/protocol/proto_value_conversions.cc
+@@ -338,6 +338,7 @@ IMPLEMENT_PROTO_TO_VALUE(TypedUrlSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(UrlDirective)
+ IMPLEMENT_PROTO_TO_VALUE(UserConsentSpecifics)
+ IMPLEMENT_PROTO_TO_VALUE(UserEventSpecifics)
++BRAVE_IMPLEMENT_PROTO_TO_VALUE_VG_BODY_SPECIFICS_VG_SPEND_STATUS_SPECIFICS
+ IMPLEMENT_PROTO_TO_VALUE(WalletCreditCardCloudTokenData)
+ IMPLEMENT_PROTO_TO_VALUE(WalletMaskedCreditCard)
+ IMPLEMENT_PROTO_TO_VALUE(WalletMetadataSpecifics)
