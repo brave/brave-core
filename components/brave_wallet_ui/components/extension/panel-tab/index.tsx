@@ -9,7 +9,7 @@ export interface Props {
   onSubmit?: () => void
 }
 
-export const PanelTab = (props: Props) => {
+const PanelTab = (props: Props) => {
   const { onSubmit, text, isSelected } = props
   return (
     <StyledButton isSelected={isSelected} onClick={onSubmit}>

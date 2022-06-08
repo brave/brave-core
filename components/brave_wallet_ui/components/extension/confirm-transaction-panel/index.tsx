@@ -13,7 +13,9 @@ import { getLocale } from '../../../../common/locale'
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 
 // Components
-import { CreateSiteOrigin, Tooltip, withPlaceholderIcon } from '../../shared'
+import CreateSiteOrigin from '../../shared/create-site-origin/index'
+import Tooltip from '../../shared/tooltip/index'
+import withPlaceholderIcon from '../../shared/create-placeholder-icon'
 
 // Components
 import { NavButton, PanelTab, TransactionDetailBox } from '../'

@@ -20,7 +20,7 @@ import { findAccountName } from '../../../utils/account-utils'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
-import { PanelTab } from '../panel-tab/index'
+import PanelTab from '../panel-tab/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 
