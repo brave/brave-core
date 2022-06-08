@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -10,6 +10,7 @@
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
@@ -63,6 +64,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_ads::AdsServiceFactory::GetInstance();
   brave_federated::BraveFederatedServiceFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
+  brave_rewards::VgSyncServiceFactory::GetInstance();
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   brave_shields::CookiePrefServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
