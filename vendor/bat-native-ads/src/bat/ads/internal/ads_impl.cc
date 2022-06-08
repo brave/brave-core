@@ -28,7 +28,6 @@
 #include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
 #include "bat/ads/internal/base/search_engine/search_engine_util.h"
-#include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/browser/browser_manager.h"
@@ -283,8 +282,7 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
     return;
   }
 
-  const std::string stripped_text = StripNonAlphaCharacters(text);
-  text_classification_processor_->Process(stripped_text);
+  text_classification_processor_->Process(text);
 }
 
 void AdsImpl::OnUserGesture(const int32_t page_transition_type) {

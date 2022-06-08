@@ -238,10 +238,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   // Assert
   ASSERT_GT(predictions.size(), kMinPredictionsSize);
   ASSERT_LT(predictions.size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions.count("personal finance-personal finance"));
+  ASSERT_TRUE(predictions.count("crypto-crypto"));
   for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second <=
-                predictions.at("personal finance-personal finance"));
+    EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
   }
 }
 
