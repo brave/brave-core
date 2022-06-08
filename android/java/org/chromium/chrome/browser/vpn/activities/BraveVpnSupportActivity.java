@@ -19,11 +19,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.RadioGroup;
-import androidx.appcompat.widget.AppCompatRadioButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
@@ -77,7 +77,6 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
 
         Button btnContinueToEmail = findViewById(R.id.btn_continue_to_email);
         otherIssuesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (!btnContinueToEmail.isEnabled()) {
@@ -87,7 +86,6 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
             }
         });
 
-        
         btnContinueToEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
