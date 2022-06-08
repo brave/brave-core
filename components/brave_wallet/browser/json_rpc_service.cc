@@ -660,10 +660,7 @@ void JsonRpcService::GetBalance(const std::string& address,
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnFilGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-    // TODO(spyloggsster): Make sure network url is available when known
-    // Filcoin networks are added.
-    RequestInternal(fil::getBalance(address), true,
-                    network_urls_[mojom::CoinType::FIL],
+    RequestInternal(fil::getBalance(address), true, network_url,
                     std::move(internal_callback));
     return;
   }
