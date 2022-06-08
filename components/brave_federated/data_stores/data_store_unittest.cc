@@ -104,28 +104,25 @@ DataStore::TrainingData DataStoreTest::TrainingDataFromTestInfo() {
   return training_data;
 }
 
+void DataStoreTest::InitializeDataStore() {
+  ClearDatabase();
+  DataStore::TrainingData training_data = TrainingDataFromTestInfo();
+  for (auto& training_instance_pair : training_data) {
+    auto& training_instance = training_instance_pair.second;
+    AddTrainingInstance(std::move(training_instance));
+  }
+  EXPECT_EQ(std::size(kTestTrainingData), CountRecords());
+  EXPECT_EQ(std::size(training_data), CountTrainingInstances());
+}
+
 bool DataStoreTest::AddTrainingInstance(
     std::vector<mojom::CovariatePtr> covariates) {
   mojom::TrainingInstancePtr training_instance = mojom::TrainingInstance::New();
-  for (const auto& covariate_data : covariates) {
-    mojom::CovariatePtr covariate = mojom::Covariate::New();
-    covariate->type = covariate_data->type;
-    covariate->data_type = covariate_data->data_type;
-    covariate->value = covariate_data->value;
+  for (auto& covariate : covariates) {
     training_instance->covariates.push_back(std::move(covariate));
   }
 
   return data_store_->AddTrainingInstance(std::move(training_instance));
-}
-
-void DataStoreTest::InitializeDataStore() {
-  ClearDatabase();
-  DataStore::TrainingData training_data = TrainingDataFromTestInfo();
-  for (const auto& training_instance : training_data) {
-    AddTrainingInstance(std::move(training_instance.second));
-  }
-  EXPECT_EQ(std::size(kTestTrainingData), CountRecords());
-  EXPECT_EQ(std::size(training_data), CountTrainingInstances());
 }
 
 // Actual tests

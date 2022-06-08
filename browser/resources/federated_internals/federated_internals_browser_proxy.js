@@ -14,7 +14,7 @@ export class FederatedInternalsBrowserProxy {
   }
 
   getDataStoreInfo() {
-    return this.handler.GetDataStoreInfo();
+    return this.handler.getDataStoreInfo();
   }
 
   static getInstance() {

@@ -50,17 +50,13 @@ void FederatedInternalsPageHandler::OnDataStoreInfoAvailable(
     brave_federated::DataStore::TrainingData training_data) {
   std::vector<federated_internals::mojom::InternalsTrainingInstancePtr>
       internals_training_instances;
-  for (const auto& training_instance : training_data) {
+  for (auto& training_instance : training_data) {
     auto internals_training_instance =
         federated_internals::mojom::InternalsTrainingInstance::New();
     internals_training_instance->id = training_instance.first;
-    const auto& covariates = training_instance.second;
-    for (const auto& covariate : covariates) {
-      auto internals_covariate = brave_federated::mojom::Covariate::New();
-      internals_covariate->type = covariate->type;
-      internals_covariate->data_type = covariate->data_type;
-      internals_covariate->value = covariate->value;
-      internals_training_instance->covariates.push_back(std::move(internals_covariate));
+    auto& covariates = training_instance.second;
+    for (auto& covariate : covariates) {
+      internals_training_instance->covariates.push_back(std::move(covariate));
     }
 
     internals_training_instances.push_back(

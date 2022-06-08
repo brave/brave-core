@@ -38,6 +38,8 @@ class DataStore {
   void EnforceRetentionPolicy();
 
  protected:
+  friend class DataStoreTest;
+
   sql::Database db_;
   base::FilePath database_path_;
 
