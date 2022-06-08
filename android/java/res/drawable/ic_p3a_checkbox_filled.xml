@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M4,0L20,0A4,4 0,0 1,24 4L24,20A4,4 0,0 1,20 24L4,24A4,4 0,0 1,0 20L0,4A4,4 0,0 1,4 0z"
+      android:fillColor="@color/onboarding_p3a_checkbox_color"/>
+  <path
+      android:pathData="M18.5742,5.8405C18.2584,5.5648 17.8373,5.4546 17.4163,5.4546C16.9952,5.5097 16.6268,5.6751 16.3636,6.0059L10.1005,13.5034L7.0478,10.3611C6.4163,9.6995 5.4163,9.6995 4.8373,10.3611C4.5215,10.6918 4.3636,11.0777 4.3636,11.5188C4.3636,11.9598 4.5215,12.4008 4.8373,12.6765L9.1005,17.0868C9.4163,17.4175 9.7847,17.5829 10.2057,17.5829H10.2584C10.6794,17.5829 11.1005,17.3624 11.3636,17.0316L18.7321,8.211C19.2584,7.4944 19.2057,6.4469 18.5742,5.8405Z"
+      android:fillColor="#ffffff"/>
+</vector>

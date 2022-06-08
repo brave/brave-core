@@ -402,8 +402,47 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 
       <!-- Onboarding strings -->
+            <message name="IDS_WELCOME_TO_BRAVE" desc="Text for welcome onboarding">
+        Welcome to Brave
+      </message>
+      <message name="IDS_PRIVACY_ONBOARDING" desc="Text for privacy onboarding">
+        Privacy. Made simple.
+      </message>
+      <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
+        With Brave as default, every link you tap opens with Brave's privacy protections.
+      </message>
+      <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
+        Help make Brave better.
+      </message>
+      <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
+        Send anonymous diagnostic reports if you experience a crash or freeze.
+      </message>
+      <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
+        Share completely private and anonymous product insights about what features are being used by Brave's users.
+      </message>
+      <message name="IDS_TYPE_WEBSITE" desc="Text for searhbox tooltip title onboarding">
+        Type a website name or URL
+      </message>
+      <message name="IDS_SEARCHBOX_ONBOARDING" desc="Text for searhbox tooltip onboarding">
+        See the Brave difference: No ads. No trackers. Way faster page load.
+      </message>
+      <message name="IDS_SHIELD_ONBOARDING" desc="Text for shield tooltip onboarding">
+        Tap to view Brave Shields
+      </message>
+      <message name="IDS_SHIELD_TOOLTIP_DESC" desc="Text for shield tooltip description onboarding">
+        See all the bad stuff Brave blocked, on every page, with Shields.
+      </message>
+      <message name="IDS_SHIELD_BIGTECH_TRACKER_BLOCKED" desc="Text for shield tracker big tech blocked tooltip onboarding">
+        <ph name="BIG_TECH">%1$s<ex>google</ex></ph> and <ph name="TRACKER">%2$s<ex>1</ex></ph> other ads &amp; trackers blocked
+      </message>
+      <message name="IDS_SHIELD_TRACKER_BLOCKED" desc="Text for shield tracker blocked tooltip onboarding">
+        <ph name="TRACKER_COUNT">%1$s<ex>1</ex></ph> ads &amp; trackers blocked
+      </message>
       <message name="IDS_SKIP" desc="Text for skip button in onboarding">
         Skip
+      </message>
+      <message name="IDS_LEARN_MORE_ONBOARDING" desc="Text for learn more button onboarding">
+        Learn more
       </message>
       <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
         Troubleshooting onboarding
@@ -1207,83 +1246,8 @@ Are you sure you want to do this?
       <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
         Browse faster and block ads with Brave
       </message>
-      <message name="IDS_TOOLTIP_TITLE_1" desc="Shields tootltip title">
-        Trackers &amp; ads blocked on this page.
-      </message>
-      <message name="IDS_TOOLTIP_TEXT_1" desc="Shields tootltip text">
-        Brave Shields just protected your privacy.
-      </message>
-      <message name="IDS_TAKE_A_LOOK" desc="Shields tootltip button text">
-        Take a look
-      </message>
-      <message name="IDS_TOOLTIP_TITLE_2" desc="Shields tootltip title">
-        Ads are blocked while watching videos on this website.
-      </message>
-      <message name="IDS_TOOLTIP_TEXT_2" desc="Shields tootltip text">
-        Videos without ads use less data.
-      </message>
-      <message name="IDS_TOOLTIP_TITLE_3" desc="Shields tootltip title">
-        10+ trackers &amp; ads blocked on this page.
-      </message>
-      <message name="IDS_TOOLTIP_TEXT_3" desc="Shields tootltip text">
-        Brave Shields protects your online privacy on every site.
-      </message>
-      <message name="IDS_TOOLTIP_TITLE_4" desc="Shields tootltip title">
-        Your connection is now encrypted.
-      </message>
-      <message name="IDS_TOOLTIP_TEXT_4" desc="Shields tootltip text">
-        If available, Brave upgrades you to a secure connection automatically.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_BUTTON" desc="Shields tootltip button text">
-        Share the news
-      </message>
       <message name="IDS_BRAVE_STATS_SHARE_TEXT" desc="Text sent when sharing the stats">
         Every day I save data by browsing the Web with Brave.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER1_TITLE" desc="Shields tootltip title">
-        1000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER2_TITLE" desc="Shields tootltip title">
-        5000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER3_TITLE" desc="Shields tootltip title">
-        10,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER4_TITLE" desc="Shields tootltip title">
-        25,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER5_TITLE" desc="Shields tootltip title">
-        75,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER6_TITLE" desc="Shields tootltip title">
-        100,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER7_TITLE" desc="Shields tootltip title">
-        250,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER8_TITLE" desc="Shields tootltip title">
-        500,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER9_TITLE" desc="Shields tootltip title">
-        1,000,000 trackers &amp; ads blocked!
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_SPECIAL_TEXT" desc="Shields tootltip text">
-        Congratulations, you're pretty special.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_EXCLUSIVE_TEXT" desc="Shields tootltip text">
-        Congratulations. You’re part of an exclusive club.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_PRO_TEXT" desc="Shields tootltip text">
-        Congratulations. You joined the pros.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_MASTER_TEXT" desc="Shields tootltip text">
-        Congratulations. You’ve become a master.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_GRANDMASTER_TEXT" desc="Shields tootltip text">
-        Congratulations. You’ve become a Grand Master.
-      </message>
-      <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_LEGENDARY_TEXT" desc="Shields tootltip text">
-        Congratulations. You are legendary.
       </message>
       <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
         Brave works everywhere
@@ -1383,15 +1347,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_NOTIFICATION_REWARDS" desc="Rewards notification text">
         Earn tokens by viewing privacy-respecting ads and support your favorite websites.
-      </message>
-      <message name="IDS_NOTIFICATION_BRAVE_STATS_TRACKERS" desc="Rewards notification text">
-        Nice! You've blocked 250 trackers &amp; ads with Brave browser.🔥
-      </message>
-      <message name="IDS_NOTIFICATION_BRAVE_STATS_DATA" desc="Rewards notification text">
-        Nice! You've saved 10MB with Brave browser.🔋
-      </message>
-      <message name="IDS_NOTIFICATION_BRAVE_STATS_TIME" desc="Rewards notification text">
-        Nice! You've saved 10 Mins of loading time with Brave browser.💨💨
       </message>
       <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
         Start browsing to see privacy reporting
@@ -1696,35 +1651,11 @@ Are you sure you want to do this?
       <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
         Some search engines protect your privacy better than others when you search the web.
       </message>
-      <message name="IDS_P3A_ONBOARDING_TITLE_TEXT_1" desc="P3a Onboarding title text">
-        Welcome to Brave Browser
-      </message>
-      <message name="IDS_P3A_ONBOARDING_TITLE_TEXT_2" desc="P3a Onboarding title text">
-        Help us learn anonymously
-      </message>
-      <message name="IDS_P3A_ONBOARDING_TEXT" desc="P3a Onboarding text">
-        Brave protects your privacy and\nappreciates your consent to the following:
-      </message>
-      <message name="IDS_P3A_ONBOARDING_CHECKBOX_TEXT" desc="P3a onboarding checkbox text">
-        Help improve Brave by sending completely anonymized <ph name="PRIVATE_PRODUCT_ANALYSIS">%1$s</ph>
-      </message>
-      <message name="IDS_PRIVATE_PRODUCT_ANALYSIS_TEXT" desc="private product analysis text">
-        private product analytics.
-      </message>
       <message name="IDS_BRE_BANNER_TITLE_TEXT" desc="BRE banner title text">
         Need a refresher on Rewards?
       </message>
       <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
         Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
-      </message>
-      <message name="IDS_SET_DEFAULT_BROWSER_TITLE" desc="Set default browser modal title">
-        Make Brave your default browser
-      </message>
-      <message name="IDS_SET_DEFAULT_BROWSER_TEXT" desc="Set default browser modal text">
-        With Brave as default, every link you click opens with Brave’s privacy protections.
-      </message>
-      <message name="IDS_SET_BRAVE_DEFAULT_BROWSER" desc="Set default browser modal button text">
-        Set as default
       </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now

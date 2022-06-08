@@ -28,6 +28,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
@@ -57,7 +58,7 @@ public class BraveVpnUtils {
 
     public static boolean isBraveVpnFeatureEnable() {
         if ((ContextUtils.getApplicationContext().getPackageName().equals(
-                     BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
                     || BraveVpnPrefUtils.isBraveVpnFeatureEnabled())
                 && Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             return true;

@@ -9,11 +9,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.util.BraveConstants;
 
 /**
  * Triggered when Brave's package is replaced (e.g. when it is
@@ -31,7 +31,7 @@ public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiv
             // Set dormant users notifications
             if (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
                     || context.getPackageName().equals(
-                            BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+                            BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
                 OnboardingPrefManager.getInstance().setDormantUsersPrefs();
                 if (!OnboardingPrefManager.getInstance().isDormantUsersNotificationsStarted()) {
                     RetentionNotificationUtil.scheduleDormantUsersNotifications(context);

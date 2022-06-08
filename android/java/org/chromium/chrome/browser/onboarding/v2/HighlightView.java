@@ -7,52 +7,136 @@
 
 package org.chromium.chrome.browser.onboarding.v2;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 
-import org.chromium.chrome.R;
-import org.chromium.ui.base.DeviceFormFactor;
+import androidx.annotation.Keep;
+import androidx.core.content.ContextCompat;
 
 public class HighlightView extends FrameLayout {
 
     private static final int ALPHA_60_PERCENT = 153;
+    private static final int DEFAULT_ANIMATION_DURATION = 1000;
 
-    private Paint eraserPaint;
-    private Paint basicPaint;
+    private Paint mEraserPaint;
+    private Paint mBasicPaint;
 
-    private HighlightItem item;
+    private HighlightItem mItem;
+    private int mItemWidth;
+    private int mItemHeight;
 
-    private boolean shouldShowHighlight;
+    private boolean mShouldShowHighlight;
+    private boolean mIsAnimating;
+    private boolean mIsHighlightTransparent;
+    private AnimatorSet mAnimatorSet;
 
-    private Context context;
+    private Context mContext;
+
+    private float mInnerRadius;
+    private float mOuterRadius;
+    private int mColor = -1;
 
     public HighlightView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
+        mContext = context;
         PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY);
-        basicPaint = new Paint();
-        eraserPaint = new Paint();
-        eraserPaint.setColor(0xFFFFFF);
-        eraserPaint.setAlpha(0);
-        eraserPaint.setXfermode(xfermode);
-        eraserPaint.setAntiAlias(true);
+        mBasicPaint = new Paint();
+        mEraserPaint = new Paint();
+        if (mColor == -1) {
+            mColor = ContextCompat.getColor(context, android.R.color.white);
+        }
+
+        mEraserPaint.setColor(0xFFFFFF);
+        mEraserPaint.setAlpha(0);
+        mEraserPaint.setXfermode(xfermode);
+        mEraserPaint.setAntiAlias(true);
+    }
+
+    public void setColor(int color) {
+        mColor = color;
+        invalidate();
     }
 
     public void setHighlightItem(HighlightItem item) {
-        this.item = item;
+        mItem = item;
+        mItemWidth = item.getScreenRight() - item.getScreenLeft();
+        mItemHeight = item.getScreenBottom() - item.getScreenTop();
+
+        float radius =
+                mItemWidth > mItemHeight ? ((float) mItemWidth / 2) : ((float) mItemHeight / 2);
+        setInnerRadius(radius);
+        setOuterRadius(radius);
         invalidate();
     }
 
     public void setShouldShowHighlight(boolean shouldShowHighlight) {
-        this.shouldShowHighlight = shouldShowHighlight;
+        mShouldShowHighlight = shouldShowHighlight;
+    }
+
+    public void setHighlightTransparent(boolean isHighlightTransparent) {
+        mIsHighlightTransparent = isHighlightTransparent;
+    }
+
+    public void initializeAnimators() {
+        mAnimatorSet = new AnimatorSet();
+
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(
+                this, "innerRadius", mInnerRadius * 0.7f, mInnerRadius * 1.1f);
+        scaleXAnimator.setRepeatCount(ValueAnimator.INFINITE);
+
+        ObjectAnimator scaleBigAnimator = ObjectAnimator.ofFloat(
+                this, "outerRadius", mOuterRadius * 0.9f, mOuterRadius * 1.2f);
+
+        scaleBigAnimator.setRepeatCount(ValueAnimator.INFINITE);
+
+        mAnimatorSet.setDuration(DEFAULT_ANIMATION_DURATION);
+        mAnimatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        mAnimatorSet.playTogether(scaleXAnimator, scaleBigAnimator);
+    }
+
+    public void startAnimation() {
+        if (mIsAnimating) {
+            // already animating
+            return;
+        }
+        mAnimatorSet.start();
+        mIsAnimating = true;
+    }
+
+    public void stopAnimation() {
+        if (!mIsAnimating) {
+            // already not animating
+            return;
+        }
+        mAnimatorSet.end();
+        mIsAnimating = false;
+    }
+
+    @Keep
+    public void setInnerRadius(float radius) {
+        mInnerRadius = radius;
+        invalidate();
+    }
+
+    @Keep
+    public void setOuterRadius(float radius) {
+        mOuterRadius = radius;
+        invalidate();
     }
 
     @Override
@@ -62,58 +146,77 @@ public class HighlightView extends FrameLayout {
         Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas overlayCanvas = new Canvas(overlay);
-        overlayCanvas.drawColor(0xcc1E2029);
+        overlayCanvas.drawColor(0xB3000000);
 
-        if (item == null) {
+        if (mItem == null) {
             return;
         }
-
-        int width = item.getScreenRight() - item.getScreenLeft();
-        int height = item.getScreenBottom() - item.getScreenTop();
-        float radius = width > height ? ((float) width / 2) : ((float) height / 2);
 
         Paint innerBorderPaint = new Paint();
         innerBorderPaint.setStyle(Paint.Style.STROKE);
         innerBorderPaint.setStrokeWidth(2); // set stroke width
-        innerBorderPaint.setColor(Color.parseColor("#FFFFFF")); // set stroke color
+        innerBorderPaint.setColor(mColor); // set stroke color
         innerBorderPaint.setAntiAlias(true);
 
         Paint outterBorderPaint = new Paint();
         outterBorderPaint.setStyle(Paint.Style.STROKE);
         outterBorderPaint.setStrokeWidth(3); // set stroke width
-        outterBorderPaint.setColor(Color.parseColor("#FFFFFF")); // set stroke color
+        outterBorderPaint.setColor(mColor); // set stroke color
         outterBorderPaint.setAntiAlias(true);
-        if (shouldShowHighlight) {
-            int cx = item.getScreenLeft() + width / 2 - location[0];
-            int cy = item.getScreenTop() + height / 2 - location[1];
 
-            eraserPaint.setAlpha(0);
-            float innerRadiusScaleMultiplier = 0.8f;
-            overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, eraserPaint);
-            overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, innerBorderPaint);
-            
-            eraserPaint.setAlpha(ALPHA_60_PERCENT);
+        if (mShouldShowHighlight) {
+            int cx = mItem.getScreenLeft() + mItemWidth / 2 - location[0];
+            int cy = mItem.getScreenTop() + mItemHeight / 2 - location[1];
+
+            if (mIsHighlightTransparent) {
+                mEraserPaint.setAlpha(255);
+            } else {
+                mEraserPaint.setAlpha(0);
+            }
+
+            float innerRadiusScaleMultiplier = 0.7f;
+            overlayCanvas.drawCircle(
+                    cx, cy, mInnerRadius * innerRadiusScaleMultiplier, mEraserPaint);
+            overlayCanvas.drawCircle(
+                    cx, cy, mInnerRadius * innerRadiusScaleMultiplier, innerBorderPaint);
+
+            mEraserPaint.setAlpha(255);
             float outerRadiusScaleMultiplier = 1.2f;
-            overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
-            overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, outterBorderPaint);
+            overlayCanvas.drawCircle(
+                    cx, cy, mOuterRadius * outerRadiusScaleMultiplier, mEraserPaint);
+            overlayCanvas.drawCircle(
+                    cx, cy, mOuterRadius * outerRadiusScaleMultiplier, outterBorderPaint);
 
         } else {
-            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
-            int verticalOffset = isTablet ? 35 : 80;
-            eraserPaint.setAlpha(0);
-            RectF innerRect = new RectF(item.getScreenLeft() + 10,
-                    (item.getScreenTop() - verticalOffset) + 10, item.getScreenRight() - 10,
-                    item.getScreenBottom() - (isTablet ? 45 : 80));
-            overlayCanvas.drawRoundRect(innerRect, 12, 12, eraserPaint);
-            overlayCanvas.drawRoundRect(innerRect, 12, 12, innerBorderPaint);
+            if (mIsHighlightTransparent) {
+                mEraserPaint.setAlpha(255);
+            } else {
+                mEraserPaint.setAlpha(0);
+            }
+            innerBorderPaint.setStrokeWidth(6);
+            outterBorderPaint.setStrokeWidth(6);
 
-            eraserPaint.setAlpha(ALPHA_60_PERCENT);
-            RectF outerRect = new RectF(item.getScreenLeft(), item.getScreenTop() - verticalOffset,
-                    item.getScreenRight(), item.getScreenBottom() - (isTablet ? 35 : 70));
-            overlayCanvas.drawRoundRect(outerRect, 22, 22, eraserPaint);
-            overlayCanvas.drawRoundRect(outerRect, 22, 22, outterBorderPaint);
+            RectF innerRect = new RectF(mItem.getScreenLeft() + 10,
+                    (mItem.getScreenTop() - location[1]) + 10, mItem.getScreenRight() - 10,
+                    mItem.getScreenBottom() - 10 - location[1]);
+            overlayCanvas.drawRoundRect(innerRect, 12, 12, mEraserPaint);
+            if (mIsHighlightTransparent) {
+                overlayCanvas.drawRoundRect(innerRect, 12, 12, innerBorderPaint);
+            }
+
+            RectF outerRect = new RectF(mItem.getScreenLeft(), mItem.getScreenTop() - location[1],
+                    mItem.getScreenRight(), mItem.getScreenBottom() - location[1]);
+
+            if (!mIsHighlightTransparent) {
+                mEraserPaint.setAlpha(ALPHA_60_PERCENT);
+            }
+
+            overlayCanvas.drawRoundRect(outerRect, 22, 22, mEraserPaint);
+            if (!mIsHighlightTransparent) {
+                overlayCanvas.drawRoundRect(outerRect, 22, 22, outterBorderPaint);
+            }
         }
-        canvas.drawBitmap(overlay, 0, 0, basicPaint);
+        canvas.drawBitmap(overlay, 0, 0, mBasicPaint);
         super.dispatchDraw(canvas);
     }
 }

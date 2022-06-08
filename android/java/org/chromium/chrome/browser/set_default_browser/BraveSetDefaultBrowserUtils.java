@@ -25,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -52,28 +51,17 @@ public class BraveSetDefaultBrowserUtils {
         }
 
         return resolveInfo.activityInfo.packageName.equals(
-                       BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                       BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
                 || resolveInfo.activityInfo.packageName.equals(
-                        BraveActivity.BRAVE_BETA_PACKAGE_NAME)
+                        BraveConstants.BRAVE_BETA_PACKAGE_NAME)
                 || resolveInfo.activityInfo.packageName.equals(
-                        BraveActivity.BRAVE_NIGHTLY_PACKAGE_NAME);
+                        BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME);
     }
 
     public static void checkSetDefaultBrowserModal(AppCompatActivity activity) {
         if (!isBraveSetAsDefaultBrowser(activity) && !isBraveDefaultDontAsk()) {
-            boolean shouldShowDefaultBrowserModalAfterP3A =
-                    OnboardingPrefManager.getInstance().shouldShowDefaultBrowserModalAfterP3A();
-
-            if (shouldShowDefaultBrowserModalAfterP3A) {
-                Intent setDefaultBrowserIntent =
-                        new Intent(activity, SetDefaultBrowserActivity.class);
-                setDefaultBrowserIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                activity.startActivity(setDefaultBrowserIntent);
-
-                OnboardingPrefManager.getInstance().setShowDefaultBrowserModalAfterP3A(false);
-
-            } else if (SharedPreferencesManager.getInstance().readInt(
-                               BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+            if (SharedPreferencesManager.getInstance().readInt(
+                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                     == 5) {
                 showBraveSetDefaultBrowserDialog(activity, false);
 
@@ -125,7 +113,7 @@ public class BraveSetDefaultBrowserUtils {
         int roleManagerOpenCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && roleManagerOpenCount < 2) {
+        if (supportsDefaultRoleManager() && roleManagerOpenCount < 2) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
@@ -158,6 +146,10 @@ public class BraveSetDefaultBrowserUtils {
                 toast.show();
             }
         }
+    }
+
+    public static boolean supportsDefaultRoleManager() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     }
 
     private static boolean supportsDefault() {
