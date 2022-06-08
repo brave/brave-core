@@ -2187,6 +2187,7 @@ void JsonRpcService::OnSendFilecoinTransaction(
 
 void JsonRpcService::SendSolanaTransaction(
     const std::string& signed_tx,
+    absl::optional<SolanaTransaction::SendOptions> send_options,
     SendSolanaTransactionCallback callback) {
   if (signed_tx.empty()) {
     std::move(callback).Run(
@@ -2198,8 +2199,8 @@ void JsonRpcService::SendSolanaTransaction(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::sendTransaction(signed_tx), true,
-                  network_urls_[mojom::CoinType::SOL],
+  RequestInternal(solana::sendTransaction(signed_tx, std::move(send_options)),
+                  true, network_urls_[mojom::CoinType::SOL],
                   std::move(internal_callback));
 }
 
