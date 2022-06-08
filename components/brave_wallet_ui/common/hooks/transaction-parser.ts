@@ -107,18 +107,14 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
     const maxFeePerGas = txData?.maxFeePerGas || ''
     const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''
     const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
-    let gasFee: string
-    if (isSolTransaction) {
-      gasFee = new Amount(solFeeEstimates?.fee.toString() ?? '').format()
-    } else {
-      gasFee = isEIP1559Transaction
+    const gasFee = isSolTransaction ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
+      : isEIP1559Transaction
         ? new Amount(maxFeePerGas)
           .times(gasLimit)
           .format()
         : new Amount(gasPrice)
           .times(gasLimit)
           .format()
-    }
 
     return {
       gasLimit: Amount.normalize(gasLimit),
@@ -218,23 +214,15 @@ export function useTransactionParser (
       txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
       isSPLTransaction
 
-    let value = ''
-    if (isSolTransaction) {
-      value = solTxData?.amount.toString() ?? ''
-    } else if (isSolTransaction) {
-      value = solTxData?.lamports.toString() ?? ''
-    } else if (isFilTransaction) {
-      value = filTxData.value || ''
-    }
+    const value = isSPLTransaction ? solTxData?.amount.toString() ?? ''
+      : isSolTransaction ? solTxData?.lamports.toString() ?? ''
+      : isFilTransaction ? filTxData.value || ''
+      : ''
 
-    let to = ''
-    if (isSolTransaction) {
-      to = solTxData?.toWalletAddress ?? ''
-    } else if (isFilTransaction) {
-      to = filTxData.to ?? ''
-    } else {
-      to = txData?.baseData.to || ''
-    }
+    const to = isSolTransaction ? solTxData?.toWalletAddress ?? ''
+      : isFilTransaction ? filTxData.to ?? ''
+      : txData?.baseData.to || ''
+
     const nonce = txData?.baseData.nonce || ''
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = isSPLTransaction ? findToken(solTxData?.splTokenMintAddress ?? '') : findToken(to)
