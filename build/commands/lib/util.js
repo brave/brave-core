@@ -660,6 +660,8 @@ const util = {
       args.push('--full')
     if (options.js)
       args.push('--js')
+    if (options.python)
+      args.push('--python')
      if (options.rust)
       args.push('--rust-fmt')
     if (options.swift)

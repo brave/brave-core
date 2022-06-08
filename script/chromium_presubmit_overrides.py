@@ -56,13 +56,13 @@ def _modify_canned_checks(canned_checks):
     @chromium_presubmit_utils.override_check(canned_checks)
     def CheckPatchFormatted(original_check, input_api, output_api, *args,
                             **kwargs):
-        if 'result_factory' in kwargs:
-            del kwargs['result_factory']
-        result = original_check(input_api,
-                                output_api,
-                                *args,
-                                result_factory=output_api.PresubmitError,
-                                **kwargs)
+        kwargs = {
+            **kwargs,
+            'bypass_warnings': False,
+            'check_python': True,
+            'result_factory': output_api.PresubmitError,
+        }
+        result = original_check(input_api, output_api, *args, **kwargs)
         # If presubmit generates "Please run git cl format --js" message, we
         # should replace the command with "npm run format -- --js". The order of
         # these replacements ensure we do this properly.

@@ -11,6 +11,7 @@ import types
 def override_check(scope, name=None):
     """Replaces existing PRESUBMIT check. Can be used with globals() scope or a
     class scope (such as input_api.canned_checks)."""
+
     def decorator(new_func):
         is_dict_scope = isinstance(scope, dict)
         check_name = name or new_func.__name__
