@@ -35,6 +35,8 @@ interface ParsedTransactionFees {
   gasFeeFiat: string
   isEIP1559Transaction: boolean
   missingGasLimitError?: string
+  gasPremium?: string
+  gasFeeCap?: string
 }
 
 export interface ParsedTransaction extends ParsedTransactionFees {
@@ -99,14 +101,13 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
       txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-    const isFilTrtansaction = filTxData !== undefined
-    const gasLimit = isFilTrtansaction ? filTxData.gasLimit : txData?.baseData.gasLimit || ''
+    const isFilTransaction = filTxData !== undefined
+    const gasLimit = isFilTransaction ? filTxData.gasLimit : txData?.baseData.gasLimit || ''
     const gasPrice = txData?.baseData.gasPrice || ''
     const maxFeePerGas = txData?.maxFeePerGas || ''
     const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''
     const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
-    const gasFee = isSolTransaction
-      ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
+    const gasFee = isSolTransaction ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
       : isEIP1559Transaction
         ? new Amount(maxFeePerGas)
           .times(gasLimit)
@@ -126,7 +127,9 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
         .times(networkSpotPrice)
         .formatAsFiat(),
       isEIP1559Transaction,
-      missingGasLimitError: isSolTransaction ? undefined : checkForMissingGasLimitError(gasLimit)
+      missingGasLimitError: isSolTransaction ? undefined : checkForMissingGasLimitError(gasLimit),
+      gasPremium: isFilTransaction ? new Amount(filTxData.gasPremium).format() : '',
+      gasFeeCap: isFilTransaction ? new Amount(filTxData.gasFeeCap).format() : ''
     }
   }, [selectedNetwork, networkSpotPrice])
 }
@@ -202,21 +205,24 @@ export function useTransactionParser (
   }
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
-    const { txArgs, txDataUnion: { ethTxData1559: txData, solanaTxData: solTxData }, fromAddress, txType } = transactionInfo
+    const { txArgs, txDataUnion: { ethTxData1559: txData, solanaTxData: solTxData, filTxData }, fromAddress, txType } = transactionInfo
+    const isFilTransaction = filTxData !== undefined
     const isSPLTransaction =
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
     const isSolTransaction =
       txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
       isSPLTransaction
-    const value = isSPLTransaction
-      ? solTxData?.amount.toString() ?? ''
-      : isSolTransaction
-        ? solTxData?.lamports.toString() ?? ''
-        : txData?.baseData.value || ''
-    const to = isSolTransaction
-      ? solTxData?.toWalletAddress ?? ''
+
+    const value = isSPLTransaction ? solTxData?.amount.toString() ?? ''
+      : isSolTransaction ? solTxData?.lamports.toString() ?? ''
+      : isFilTransaction ? filTxData.value || ''
+      : txData?.baseData.value || ''
+
+    const to = isSolTransaction ? solTxData?.toWalletAddress ?? ''
+      : isFilTransaction ? filTxData.to ?? ''
       : txData?.baseData.to || ''
+
     const nonce = txData?.baseData.nonce || ''
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = isSPLTransaction ? findToken(solTxData?.splTokenMintAddress ?? '') : findToken(to)

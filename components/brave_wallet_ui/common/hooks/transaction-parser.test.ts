@@ -457,14 +457,16 @@ describe('useTransactionParser hook', () => {
             '0xde0b6b3a7640000' // 1 DOG
           ],
           txType: BraveWallet.TransactionType.ERC20Transfer,
-          txData: {
+          txDataUnion: {
             ...mockTransactionInfo.txDataUnion.ethTxData1559,
-            baseData: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
-              to: mockERC20Token.contractAddress,
-              value: '0x0', // 0 ETH
-              gasLimit: '0x5208', // 21000
-              gasPrice: '0x22ecb25c00' // 150 Gwei
+            ethTxData1559: {
+              baseData: {
+                ...mockTransactionInfo?.txDataUnion?.ethTxData1559?.baseData,
+                to: mockERC20Token.contractAddress,
+                value: '0x0', // 0 ETH
+                gasLimit: '0x5208', // 21000
+                gasPrice: '0x22ecb25c00' // 150 Gwei
+              }
             }
           }
         })
