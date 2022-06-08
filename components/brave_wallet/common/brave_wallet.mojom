@@ -701,6 +701,20 @@ struct DecryptRequest {
   string? unsafe_message;
 };
 
+struct OptionalMaxRetries {
+  uint64 max_retries;
+};
+
+struct OptionalSkipPreflight {
+  bool skip_preflight;
+};
+
+struct SolanaSendTransactionOptions {
+  OptionalMaxRetries? max_retries;
+  string? preflight_commitment;
+  OptionalSkipPreflight? skip_preflight;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1159,6 +1173,10 @@ struct SolanaTxData {
   uint64 amount;
   TransactionType tx_type;
   array<SolanaInstruction> instructions;
+
+  // Currently it might be specified by solana.signAndSendTransaction provider
+  // API as the options to be passed to sendTransaction RPC call.
+  SolanaSendTransactionOptions? send_options;
 };
 
 // This is used by BraveWalletProviderDelegate::RequestPermissions for us to

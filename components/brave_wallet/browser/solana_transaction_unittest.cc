@@ -321,7 +321,12 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_send_options(
+      SolanaTransaction::SendOptions(1, "confirmed", true));
 
+  auto mojom_send_options = mojom::SolanaSendTransactionOptions::New(
+      mojom::OptionalMaxRetries::New(1), "confirmed",
+      mojom::OptionalSkipPreflight::New(true));
   auto solana_tx_data = transaction.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
@@ -333,6 +338,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   EXPECT_EQ(solana_tx_data->amount, 0u);
   EXPECT_EQ(solana_tx_data->tx_type,
             mojom::TransactionType::SolanaSystemTransfer);
+  EXPECT_EQ(solana_tx_data->send_options, mojom_send_options);
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
@@ -374,6 +380,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
   transaction.set_to_wallet_address(to_account);
   transaction.set_lamports(10000000u);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_send_options(
+      SolanaTransaction::SendOptions(1, "confirmed", true));
 
   base::Value value = transaction.ToValue();
   auto expect_tx_value = base::JSONReader::Read(R"(
@@ -405,7 +413,12 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
         "spl_token_mint_address": "",
         "lamports": "10000000",
         "amount": "0",
-        "tx_type": 6
+        "tx_type": 6,
+        "send_options": {
+          "maxRetries": "1",
+          "preflightCommitment": "confirmed",
+          "skipPreflight": true
+        }
       }
   )");
 
