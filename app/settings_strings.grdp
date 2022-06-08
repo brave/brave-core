@@ -1910,13 +1910,13 @@
     Turn off
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK" desc="The label of the checkbox to enable/disable sending the 'Do Not track' header">
-    Send a "Do not track" request with your browsing traffic
+    Send a "Do Not Track" request with your browsing traffic
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TITLE" desc="The title of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
-    Do not track
+    Do Not Track
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TEXT" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
-    Enabling “Do not track” means that a request to not be tracked will be included each time you browse to a new website. Any effect depends on whether the website responds to this request, and how it's interpreted. For example, some websites may respond by only showing you ads that aren't based on other sites you've visited. Even with this “Do not track” request in place, many websites will still collect and use your browsing data. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
     Permissions and content settings
