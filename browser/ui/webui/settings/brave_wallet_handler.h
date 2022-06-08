@@ -36,7 +36,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void GetAutoLockMinutes(const base::Value::List& args);
   void RemoveEthereumChain(const base::Value::List& args);
   void ResetEthereumChain(const base::Value::List& args);
-  void GetCustomNetworksList(const base::Value::List& args);
+  void GetNetworksList(const base::Value::List& args);
   void AddEthereumChain(const base::Value::List& args);
   void SetActiveNetwork(const base::Value::List& args);
 

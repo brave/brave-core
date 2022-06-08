@@ -43,8 +43,8 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::ResetEthereumChain,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getCustomNetworksList",
-      base::BindRepeating(&BraveWalletHandler::GetCustomNetworksList,
+      "getNetworksList",
+      base::BindRepeating(&BraveWalletHandler::GetNetworksList,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "addEthereumChain",
@@ -81,7 +81,7 @@ void BraveWalletHandler::ResetEthereumChain(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
-void BraveWalletHandler::GetCustomNetworksList(const base::Value::List& args) {
+void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   PrefService* prefs = GetPrefs();
 

@@ -175,7 +175,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   }
 
   updateNetworks() {
-    this.browserProxy_.getCustomNetworksList().then(payload => {
+    this.browserProxy_.getNetworksList().then(payload => {
       if (!payload)
         return
       this.networks = payload.networks
