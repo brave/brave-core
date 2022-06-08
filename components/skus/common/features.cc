@@ -11,8 +11,14 @@
 namespace skus {
 namespace features {
 
-const base::Feature kSkusFeature{"SkusFeature",
-                                 base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kSkusFeature {
+  "SkusFeature",
+#if BUILDFLAG(IS_LINUX)
+      base::FEATURE_DISABLED_BY_DEFAULT
+#else
+      base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+};
 
 }  // namespace features
 }  // namespace skus
