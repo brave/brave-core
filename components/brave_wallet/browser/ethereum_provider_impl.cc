@@ -974,7 +974,8 @@ void EthereumProviderImpl::SendErrorOnRequest(const mojom::ProviderError& error,
 void EthereumProviderImpl::CommonRequestOrSendAsync(base::Value input_value,
                                                     RequestCallback callback) {
   mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
-  std::string error_message = "Generic processing error";
+  std::string error_message =
+      l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR);
   DCHECK(json_rpc_service_);
   std::string input_json;
   if (!base::JSONWriter::Write(input_value, &input_json) ||

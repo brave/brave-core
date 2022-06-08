@@ -229,8 +229,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
-              // This one is not localized
-              "Generic processing error");
+              l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
   }
 }
 

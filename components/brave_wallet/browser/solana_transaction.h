@@ -31,9 +31,12 @@ class SolanaTransaction {
                     uint64_t last_valid_block_height,
                     const std::string& fee_payer,
                     std::vector<SolanaInstruction>&& instructions);
+  SolanaTransaction(SolanaMessage&& message,
+                    const std::vector<uint8_t>& signatures);
   SolanaTransaction(const SolanaTransaction&);
   ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
+  bool operator!=(const SolanaTransaction&) const;
 
   // Serialize the message and sign it.
   std::string GetSignedTransaction(KeyringService* keyring_service) const;
@@ -48,6 +51,8 @@ class SolanaTransaction {
   static std::unique_ptr<SolanaTransaction> FromSolanaTxData(
       mojom::SolanaTxDataPtr solana_tx_data);
   static absl::optional<SolanaTransaction> FromValue(const base::Value& value);
+  static absl::optional<SolanaTransaction> FromSignedTransactionBytes(
+      const std::vector<uint8_t>& bytes);
 
   std::string to_wallet_address() const { return to_wallet_address_; }
   std::string spl_token_mint_address() const { return spl_token_mint_address_; }
@@ -55,6 +60,7 @@ class SolanaTransaction {
   uint64_t lamports() const { return lamports_; }
   uint64_t amount() const { return amount_; }
   SolanaMessage* message() { return &message_; }
+  const std::vector<uint8_t>& signatures() const { return signatures_; }
 
   void set_to_wallet_address(const std::string& to_wallet_address) {
     to_wallet_address_ = to_wallet_address;
@@ -69,6 +75,8 @@ class SolanaTransaction {
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
   SolanaMessage message_;
+  // Value will be assigned when FromSignedTransactionBytes is called.
+  std::vector<uint8_t> signatures_;
 
   // Data fields to be used for UI, they are filled currently when we create
   // SolanaTxData to transfer SOL or SPL tokens for UI.
