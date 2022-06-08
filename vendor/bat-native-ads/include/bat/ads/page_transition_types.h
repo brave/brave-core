@@ -30,8 +30,8 @@ enum PageTransitionType : uint32_t {
   // We also use this for other "explicit" navigation actions.
   kPageTransitionTyped = 1,
 
-  // User got to this page through a suggestion in the UI, for example)
-  // through the destinations page.
+  // User got to this page through a suggestion in the UI, for example through
+  // the destinations page.
   kPageTransitionAutoBookmark = 2,
 
   // User got to this page by typing in the URL bar and selecting an entry

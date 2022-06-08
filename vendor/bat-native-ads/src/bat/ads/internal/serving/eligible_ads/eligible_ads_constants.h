@@ -8,7 +8,7 @@
 
 namespace ads {
 
-const char kUntargeted[] = "untargeted";
+constexpr char kUntargeted[] = "untargeted";
 
 }  // namespace ads
 

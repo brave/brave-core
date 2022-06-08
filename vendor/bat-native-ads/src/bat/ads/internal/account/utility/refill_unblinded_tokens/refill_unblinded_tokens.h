@@ -15,16 +15,14 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/base/timer/backoff_timer.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
-namespace cbr {
-class BlindedToken;
-class Token;
-}  // namespace cbr
 }  // namespace privacy
 
 class RefillUnblindedTokens final {

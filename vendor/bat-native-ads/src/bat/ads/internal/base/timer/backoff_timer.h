@@ -7,11 +7,13 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BASE_TIMER_BACKOFF_TIMER_H_
 
 #include <cstdint>
-#include <memory>
 
-#include "base/location.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/base/timer/timer.h"
+
+namespace base {
+class Location;
+}  // namespace base
 
 namespace ads {
 
