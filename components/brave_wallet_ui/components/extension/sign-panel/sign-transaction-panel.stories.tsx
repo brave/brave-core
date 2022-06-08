@@ -38,7 +38,16 @@ _SignAllSolanaTxPanel.story = {
 }
 
 export const _SignSolanaTxPanel = () => {
-  return <WalletPanelStory>
+  return <WalletPanelStory
+    walletStateOverride={{
+      selectedPendingTransaction: mockSolDappSignAndSendTransactionRequest
+    }}
+    panelStateOverride={{
+      selectedPanel: 'signTransaction',
+      signTransactionRequests: [mockSolDappSignTransactionRequest],
+      signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
+    }}
+  >
     <SignTransactionPanel
       signMode='signTx'
     />
@@ -49,4 +58,8 @@ _SignSolanaTxPanel.story = {
   name: 'Sign Solana Transaction Panel'
 }
 
-export default _SignAllSolanaTxPanel
+export default {
+  parameters: {
+    layout: 'centered'
+  }
+}

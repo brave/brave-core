@@ -16,9 +16,11 @@ import { BraveWallet, PanelState, WalletState } from '../../../constants/types'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/address-utils'
+import { findAccountName } from '../../../utils/account-utils'
 
 // Components
-import { NavButton, PanelTab, SignPanel } from '../'
+import NavButton from '../buttons/nav-button'
+import { PanelTab } from '../panel-tab'
 import { CreateSiteOrigin } from '../../shared'
 
 // Styled Components
@@ -50,7 +52,6 @@ import {
   LearnMoreButton,
   URLText
 } from '../shared-panel-styles'
-import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 export interface Props {
   showWarning?: boolean
@@ -62,10 +63,10 @@ enum SignDataSteps {
   SignData = 1
 }
 
-export function SignTransactionPanel ({
+export const SignTransactionPanel = ({
   signMode,
   showWarning
-}: Props) {
+}: Props) => {
   // redux
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
@@ -74,13 +75,28 @@ export function SignTransactionPanel ({
   const signTransactionData = signMode === 'signTx' ? signTransactionRequests : signAllTransactionsRequests
 
   // state
-  const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignTransactionRequest | BraveWallet.SignAllTransactionsRequest | undefined>(signTransactionData[0])
+  const [signStep, setSignStep] = React.useState<SignDataSteps>(showWarning ? SignDataSteps.SignRisk : SignDataSteps.SignData)
+  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignTransactionRequest | BraveWallet.SignAllTransactionsRequest | undefined>(undefined)
 
-  const findAccountName = (address: string) => {
-    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
-  }
+  // memos
+  const orb = React.useMemo(() => {
+    return create({ seed: selectedQueueData?.fromAddress?.toLowerCase() ?? '', size: 8, scale: 16 }).toDataURL()
+  }, [selectedQueueData?.fromAddress])
 
+  const signTransactionQueueInfo = React.useMemo(() => {
+    return {
+      queueLength: signTransactionData.length,
+      queueNumber: signTransactionData.findIndex((data) => data.id === selectedQueueData?.id) + 1
+    }
+  }, [signTransactionData, selectedQueueData])
+
+  const isDisabled = React.useMemo((): boolean => signTransactionData.findIndex(
+    (data) =>
+      data.id === selectedQueueData?.id) !== 0
+    , [signTransactionData, selectedQueueData]
+  )
+
+  // methods
   const onCancel = () => {
     if (!selectedQueueData) {
       return
@@ -134,20 +150,6 @@ export function SignTransactionPanel ({
     }
   }
 
-  const orb = React.useMemo(() => {
-    return create({ seed: selectedQueueData?.fromAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedQueueData?.fromAddress])
-
-  React.useEffect(() => {
-    setSelectedQueueData(selectedQueueData)
-  }, [signTransactionData])
-
-  React.useMemo(() => {
-    if (showWarning) {
-      setSignStep(SignDataSteps.SignRisk)
-    }
-  }, [showWarning])
-
   const onContinueSigning = () => {
     setSignStep(SignDataSteps.SignData)
   }
@@ -155,13 +157,6 @@ export function SignTransactionPanel ({
   const onClickLearnMore = () => {
     window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
   }
-
-  const signTransactionQueueInfo = React.useMemo(() => {
-    return {
-      queueLength: signTransactionData.length,
-      queueNumber: signTransactionData.findIndex((data) => data.id === selectedQueueData?.id) + 1
-    }
-  }, [signTransactionData, selectedQueueData])
 
   const onQueueNextSignTransaction = () => {
     if (signTransactionQueueInfo.queueNumber === signTransactionQueueInfo.queueLength) {
@@ -171,14 +166,16 @@ export function SignTransactionPanel ({
     setSelectedQueueData(signTransactionData[signTransactionQueueInfo.queueNumber])
   }
 
-  const isDisabled = React.useMemo((): boolean => signTransactionData.findIndex(
-    (data) =>
-      data.id === selectedQueueData?.id) !== 0
-    , [signTransactionData, selectedQueueData]
-  )
+  // effects
+  React.useEffect(() => {
+    setSelectedQueueData(signTransactionData?.[0] || undefined)
+  }, [signTransactionData])
+
+  // render
 
   return (
     <StyledWrapper>
+
       <TopRow>
         <NetworkText>{'Solana'}</NetworkText>
         {signTransactionQueueInfo.queueLength > 1 &&
@@ -195,7 +192,9 @@ export function SignTransactionPanel ({
           </QueueStepRow>
         }
       </TopRow>
+
       <AccountCircle orb={orb} />
+
       {selectedQueueData &&
         <URLText>
           <CreateSiteOrigin
@@ -204,8 +203,11 @@ export function SignTransactionPanel ({
           />
         </URLText>
       }
-      <AccountNameText>{findAccountName(selectedQueueData?.fromAddress ?? '') ?? ''}</AccountNameText>
+
+      <AccountNameText>{findAccountName(accounts, selectedQueueData?.fromAddress || '') ?? ''}</AccountNameText>
+
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
+
       {signStep === SignDataSteps.SignRisk &&
         <WarningBox warningType='danger'>
           <WarningTitleRow>
@@ -216,6 +218,7 @@ export function SignTransactionPanel ({
           <LearnMoreButton onClick={onClickLearnMore}>{getLocale('braveWalletAllowAddNetworkLearnMoreButton')}</LearnMoreButton>
         </WarningBox>
       }
+
       {signStep === SignDataSteps.SignData &&
         <>
           <TabRow>
@@ -238,17 +241,6 @@ export function SignTransactionPanel ({
       <ButtonRow>
         <NavButton
           buttonType='secondary'
-          text={'copy data'}
-          onSubmit={() => {
-            copyToClipboard(`
-              mode: ${signMode}
-              raw: ${JSON.stringify(selectedQueueData)}
-            `)
-          }}
-          disabled={isDisabled}
-        />
-        <NavButton
-          buttonType='secondary'
           text={getLocale('braveWalletBackupButtonCancel')}
           onSubmit={onCancel}
           disabled={isDisabled}
@@ -264,4 +256,4 @@ export function SignTransactionPanel ({
   )
 }
 
-export default SignPanel
+export default SignTransactionPanel

@@ -14,13 +14,13 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
-
 // Components
-import { CreateSiteOrigin, Tooltip } from '../../shared'
-import { NavButton, PanelTab } from '../'
+import Tooltip from '../../shared/tooltip/index'
+import CreateSiteOrigin from '../../shared/create-site-origin/index'
+import PanelTab from '../panel-tab'
+import NavButton from '../buttons/nav-button'
 import { TransactionInfo } from './transaction-info'
 import { SolanaTransactionDetailBox } from '../transaction-box/solana-transaction-detail-box'
 
@@ -56,7 +56,6 @@ import {
 } from './style'
 
 type confirmPanelTabs = 'transaction' | 'details'
-
 export interface Props {
   onConfirm: () => void
   onReject: () => void
@@ -70,10 +69,10 @@ const onClickLearnMore = () => {
   })
 }
 
-export function ConfirmSolanaTransactionPanel ({
+export const ConfirmSolanaTransactionPanel = ({
   onConfirm,
   onReject
-}: Props) {
+}: Props) => {
   // redux
   const {
     activeOrigin,
@@ -240,25 +239,13 @@ export function ConfirmSolanaTransactionPanel ({
 
       {
         [
-          transactionDetails.contractAddressError,
-          transactionDetails.sameAddressError,
-          transactionDetails.missingGasLimitError
-        ].map((error, index) => <ErrorText key={`${index}-${error}`}>{error}</ErrorText>)
+          transactionDetails?.contractAddressError,
+          transactionDetails?.sameAddressError,
+          transactionDetails?.missingGasLimitError
+        ].map((error, index) => !!error && <ErrorText key={`${index}-${error}`}>{error}</ErrorText>)
       }
 
       <ButtonRow>
-      {/* <NavButton
-          buttonType='secondary'
-          text={'copy data'}
-          onSubmit={async () => {
-            await navigator.clipboard.writeText(`
-              raw: ${JSON.stringify({
-                selectedPendingTransaction: transactionInfo
-              })}
-            `)
-          }}
-          disabled={false}
-        /> */}
         <NavButton
           buttonType='reject'
           text={getLocale('braveWalletAllowSpendRejectButton')}
