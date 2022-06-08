@@ -222,8 +222,9 @@ export const ConfirmSolanaTransactionPanel = ({
         {selectedTab === 'transaction'
           ? <TransactionInfo />
           : <SolanaTransactionDetailBox
-              transactionInfo={transactionInfo}
-              transactionDetails={transactionDetails}
+              data={transactionInfo?.txDataUnion?.solanaTxData}
+              instructions={transactionDetails.instructions}
+              txType={transactionInfo.txType}
             />
         }
       </MessageBox>

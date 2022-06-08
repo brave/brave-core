@@ -8,7 +8,10 @@ import * as React from 'react'
 // utils
 import { getLocale } from '../../../../common/locale'
 
+// types
 import { BraveWallet } from '../../../constants/types'
+import { TypedSolanaInstructionWithParams } from '../../../utils/solana-instruction-utils'
+
 import {
   CodeSnippet,
   CodeSnippetText,
@@ -17,27 +20,22 @@ import {
   DetailText,
   TransactionText
 } from './style'
-import { ParsedTransaction } from '../../../common/hooks/transaction-parser'
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 
 export interface Props {
-  transactionInfo: BraveWallet.TransactionInfo
-  transactionDetails: ParsedTransaction
+  data: BraveWallet.SolanaTxData | undefined
+  instructions: TypedSolanaInstructionWithParams[] | undefined
+  txType: BraveWallet.TransactionType
 }
 
 const txKeys = Object.keys(BraveWallet.TransactionType)
 
 export const SolanaTransactionDetailBox = ({
-  transactionDetails,
-  transactionInfo
+  data,
+  instructions,
+  txType
 }: Props) => {
-  const {
-    txArgs,
-    txParams,
-    txType
-  } = transactionInfo
-  const data = transactionInfo.txDataUnion?.solanaTxData
-  const { instructions } = transactionDetails
+  // const data = solanaTxData
 
   if (!data) {
     return (
@@ -64,15 +62,6 @@ export const SolanaTransactionDetailBox = ({
           />
         })}
       </DetailColumn>
-
-      {txParams.map((param, i) =>
-        <CodeSnippetText
-          key={i}
-          as='code'
-        >
-          {param}:{' '}{txArgs[i] || ''}
-        </CodeSnippetText>
-      )}
     </>
   )
 }

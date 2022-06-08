@@ -42,7 +42,21 @@ type SolanaInstructionParams = Solana.AdvanceNonceParams
 
 export type SolanaInstructionParamKeys = keyof SolanaInstructionParams
 
-export const getSolanaSystemInstructionParamsAndType = (instruction: Solana.TransactionInstruction): TypedSolanaInstructionWithParams => {
+export const getSolanaSystemInstructionParamsAndType = ({
+  accountMetas,
+  data,
+  programId
+}: BraveWallet.SolanaInstruction): TypedSolanaInstructionWithParams => {
+  const instruction: Solana.TransactionInstruction = new Solana.TransactionInstruction({
+    data: Buffer.from(data),
+    programId: new Solana.PublicKey(programId),
+    keys: accountMetas.map((meta) => ({
+      isSigner: meta.isSigner,
+      isWritable: meta.isWritable,
+      pubkey: new Solana.PublicKey(meta.pubkey)
+    }))
+  })
+
   const instructionType = Solana.SystemInstruction.decodeInstructionType(instruction)
 
   const params = Solana.SystemInstruction[
@@ -57,23 +71,8 @@ export const getSolanaSystemInstructionParamsAndType = (instruction: Solana.Tran
 }
 
 export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
-  const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map(({
-    accountMetas,
-    data,
-    programId // base58 encoded string
-  }) => {
-    const instruction: Solana.TransactionInstruction = new Solana.TransactionInstruction({
-      data: Buffer.from(data),
-      programId: new Solana.PublicKey(programId),
-      keys: accountMetas.map((meta) => ({
-        isSigner: meta.isSigner,
-        isWritable: meta.isWritable,
-        pubkey: new Solana.PublicKey(meta.pubkey)
-      }))
-    })
-
+  const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map((instruction) => {
     return getSolanaSystemInstructionParamsAndType(instruction)
   })
-
   return instructions || []
 }

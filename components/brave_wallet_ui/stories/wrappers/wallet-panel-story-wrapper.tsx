@@ -47,7 +47,8 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
         ...(walletStateOverride || {})
       }),
       panel: createPanelReducer({
-        ...mockPanelState
+        ...mockPanelState,
+        ...(panelStateOverride || {})
       }),
       sendCrypto: createSendCryptoReducer(mockSendCryptoState)
     }))

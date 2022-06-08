@@ -21,7 +21,8 @@ import { findAccountName } from '../../../utils/account-utils'
 // Components
 import NavButton from '../buttons/nav-button'
 import { PanelTab } from '../panel-tab'
-import { CreateSiteOrigin } from '../../shared'
+import CreateSiteOrigin from '../../shared/create-site-origin'
+import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 
 // Styled Components
 import {
@@ -32,7 +33,6 @@ import {
   NetworkText,
   PanelTitle,
   MessageBox,
-  MessageText,
   ButtonRow,
   WarningTitleRow,
   WarningIcon
@@ -41,7 +41,8 @@ import {
 import {
   QueueStepRow,
   QueueStepButton,
-  QueueStepText
+  QueueStepText,
+  Divider
 } from '../confirm-transaction-panel/style'
 
 import {
@@ -52,6 +53,9 @@ import {
   LearnMoreButton,
   URLText
 } from '../shared-panel-styles'
+
+import { DetailColumn } from '../transaction-box/style'
+import { getSolanaSystemInstructionParamsAndType } from '../../../utils/solana-instruction-utils'
 
 export interface Props {
   signMode: 'signTx' | 'signAllTxs'
@@ -88,9 +92,18 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     }
   }, [signTransactionData, selectedQueueData])
 
-  const isDisabled = React.useMemo((): boolean => {
-    return !!signTransactionData.some((data) => data.id === selectedQueueData?.id)
-  }, [signTransactionData, selectedQueueData])
+  const isDisabled = React.useMemo((): boolean =>
+    signTransactionData.findIndex((data) => data.id === selectedQueueData?.id) !== 0,
+    [signTransactionData, selectedQueueData]
+  )
+
+  const txDatas = React.useMemo(() => {
+    return (
+      (selectedQueueData as BraveWallet.SignAllTransactionsRequest)?.txDatas
+        ? (selectedQueueData as BraveWallet.SignAllTransactionsRequest)?.txDatas.map(({ solanaTxData }) => solanaTxData)
+        : [(selectedQueueData as BraveWallet.SignTransactionRequest)?.txData?.solanaTxData]
+    ).filter((data): data is BraveWallet.SolanaTxData => !!data)
+  }, [selectedQueueData])
 
   // methods
   const onCancel = () => {
@@ -99,7 +112,9 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     }
 
     if (isHardwareAccount(accounts, selectedQueueData.fromAddress)) {
-      // dispatch(PanelActions.signMessageHardwareProcessed({
+      // TODO: waiting on SOL harware support
+      // dispatch(PanelActions.signAllTransactionsHardwareProcessed({})
+      // dispatch(PanelActions.signTransactionHardwareProcessed({
       //   success: false,
       //   id: selectedQueueData.id,
       //   signature: '',
@@ -128,7 +143,9 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
     }
 
     if (isHardwareAccount(accounts, selectedQueueData.fromAddress)) {
-      // dispatch(PanelActions.signMessageHardware(selectedQueueData))
+      // TODO: waiting on SOL harware support
+      // dispatch(PanelActions.signTransactionHardware(selectedQueueData))
+      // dispatch(PanelActions.signAllTransactionsHardware(selectedQueueData))
     } else {
       if (signMode === 'signTx') {
         dispatch(PanelActions.signTransactionProcessed({
@@ -224,13 +241,17 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
             />
           </TabRow>
           <MessageBox>
-            <MessageText>{
-              signMode === 'signAllTxs'
-                ? ((selectedQueueData as BraveWallet.SignAllTransactionsRequest)?.txDatas || []).map(d => {
-                  return `${Object.keys(BraveWallet.TransactionType)[d.solanaTxData?.txType || 0]} ${d.solanaTxData?.lamports.toString()}`
-                })
-                : 'signTx'
-            }</MessageText>
+            {txDatas.map(({ instructions, txType }, i) => {
+              return <DetailColumn key={`${txType}-${i}`}>
+                <Divider />
+                {instructions?.map((instruction, index) => {
+                  return <SolanaTransactionInstruction
+                    key={index}
+                    typedInstructionWithParams={getSolanaSystemInstructionParamsAndType(instruction)}
+                  />
+                })}
+              </DetailColumn>
+            })}
           </MessageBox>
         </>
       }
