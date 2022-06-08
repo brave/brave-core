@@ -217,7 +217,7 @@ export function useTransactionParser (
     const value = isSPLTransaction ? solTxData?.amount.toString() ?? ''
       : isSolTransaction ? solTxData?.lamports.toString() ?? ''
       : isFilTransaction ? filTxData.value || ''
-      : ''
+      : txData?.baseData.value || ''
 
     const to = isSolTransaction ? solTxData?.toWalletAddress ?? ''
       : isFilTransaction ? filTxData.to ?? ''
