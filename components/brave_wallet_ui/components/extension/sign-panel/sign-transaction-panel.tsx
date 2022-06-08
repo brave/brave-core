@@ -54,7 +54,6 @@ import {
 } from '../shared-panel-styles'
 
 export interface Props {
-  showWarning?: boolean
   signMode: 'signTx' | 'signAllTxs'
 }
 
@@ -63,10 +62,7 @@ enum SignDataSteps {
   SignData = 1
 }
 
-export const SignTransactionPanel = ({
-  signMode,
-  showWarning
-}: Props) => {
+export const SignTransactionPanel = ({ signMode }: Props) => {
   // redux
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
@@ -75,8 +71,10 @@ export const SignTransactionPanel = ({
   const signTransactionData = signMode === 'signTx' ? signTransactionRequests : signAllTransactionsRequests
 
   // state
-  const [signStep, setSignStep] = React.useState<SignDataSteps>(showWarning ? SignDataSteps.SignRisk : SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignTransactionRequest | BraveWallet.SignAllTransactionsRequest | undefined>(undefined)
+  const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignRisk)
+  const [selectedQueueData, setSelectedQueueData] = React.useState<
+    BraveWallet.SignTransactionRequest | BraveWallet.SignAllTransactionsRequest | undefined
+  >(undefined)
 
   // memos
   const orb = React.useMemo(() => {
@@ -90,11 +88,9 @@ export const SignTransactionPanel = ({
     }
   }, [signTransactionData, selectedQueueData])
 
-  const isDisabled = React.useMemo((): boolean => signTransactionData.findIndex(
-    (data) =>
-      data.id === selectedQueueData?.id) !== 0
-    , [signTransactionData, selectedQueueData]
-  )
+  const isDisabled = React.useMemo((): boolean => {
+    return !!signTransactionData.some((data) => data.id === selectedQueueData?.id)
+  }, [signTransactionData, selectedQueueData])
 
   // methods
   const onCancel = () => {
