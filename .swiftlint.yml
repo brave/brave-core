@@ -59,11 +59,11 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - build
   - UITests/EarlGrey.swift
   - Tests/
-  - Storage/
+  - Sources/Storage/
   - UITests/
   - XCUITests/
-  - BraveSharedTestUtils/
-  - DataTestsUtils/
+  - Sources/BraveSharedTestUtils/
+  - Sources/DataTestsUtils/
   - fastlane/
   - Client/Assets/Search/get_supported_locales.swift
   - .build
