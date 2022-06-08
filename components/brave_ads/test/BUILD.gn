@@ -140,7 +140,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/covariate_manager_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/average_clickthrough_rate_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/last_notification_ad_was_clicked_unittest.cc",
-    "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/notification_ad_clicked_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/notification_ad_event_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/notification_ad_served_at_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/number_of_user_activity_events_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/covariates/log_entries/time_since_last_user_activity_event_unittest.cc",

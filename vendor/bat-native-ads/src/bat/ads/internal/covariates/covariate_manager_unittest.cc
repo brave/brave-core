@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/covariates/log_entries/notification_ad_event.h"
 
 // npm run test -- brave_unit_tests --filter=BatAdsCovariateManagerTest*
 
@@ -33,7 +34,8 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstance) {
 TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
   // Arrange
   CovariateManager::Get()->SetNotificationAdServedAt(Now());
-  CovariateManager::Get()->SetNotificationAdClicked(true);
+  CovariateManager::Get()->SetNotificationAdEvent(
+      NotificationAdEvent::kClicked);
 
   // Act
   brave_federated::mojom::TrainingInstancePtr training_covariates =
