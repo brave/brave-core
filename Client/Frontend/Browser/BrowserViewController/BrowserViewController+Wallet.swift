@@ -251,7 +251,7 @@ extension Tab: BraveWalletProviderDelegate {
   }
   
   func showWalletOnboarding() {
-    // No usage for iOS
+    showPanel()
   }
 }
 
