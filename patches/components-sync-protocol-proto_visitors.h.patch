@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 55784eba3d383888f8db7a22f9d4034b9db82a78..37eea0b70c820ae221d5d5b2e99cb263930ef9c2 100644
+index 55784eba3d383888f8db7a22f9d4034b9db82a78..03a3564767636058f7d8a6fdf14b8008408652fc 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -400,6 +400,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
@@ -10,11 +10,11 @@ index 55784eba3d383888f8db7a22f9d4034b9db82a78..37eea0b70c820ae221d5d5b2e99cb263
    VISIT(sharing_fields);
    VISIT(invalidation_fields);
    VISIT(paask_fields);
-@@ -412,6 +413,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
-   VISIT(send_tab_to_self_receiving_enabled);
- }
- 
-+BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
- VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
-   VISIT(vapid_fcm_token);
-   VISIT_BYTES(vapid_p256dh);
+@@ -500,6 +501,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+   VISIT(typed_url);
+   VISIT(user_consent);
+   VISIT(user_event);
++  BRAVE_VISIT_ENTITY_SPECIFICS_VG_BODY_VG_SPEND_STATUS
+   VISIT(wallet_metadata);
+   VISIT(web_app);
+   VISIT(wifi_configuration);
