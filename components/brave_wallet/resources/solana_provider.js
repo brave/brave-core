@@ -25,24 +25,16 @@
     removeAllListeners: {
       value: SolanaEventEmitter.removeAllListeners,
       writable: false
-    },
-    createPublickey: {
-      value: (base58Str) => {
-        console.warn('This API is intended for internal use.')
-        const solanaWeb3 = require('@solana/web3.js')
-        const result = new Object()
-        result.publicKey = new solanaWeb3.PublicKey(base58Str)
-        return result
-      },
-      writable: false
-    },
-    createTransaction: {
-      value: (serializedTx) => {
-        console.warn('This API is intended for internal use.')
-        const solanaWeb3 = require('@solana/web3.js')
-        return solanaWeb3.Transaction.from(new Uint8Array(serializedTx))
-      },
-      writable: false
     }
   })
+
+  // This is to prevent window._brave_solana from being defined and set
+  // non-configurable before we call our internal functions.
+  window._brave_solana = {}
+  Object.defineProperty(window, '_brave_solana', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+  })
+
 })()
