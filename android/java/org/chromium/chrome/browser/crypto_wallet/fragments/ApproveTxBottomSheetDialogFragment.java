@@ -340,7 +340,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         }
         TextView fromTo = view.findViewById(R.id.from_to);
         fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                mAccountName, Utils.stripAccountAddress(to)));
+                mAccountName, Utils.stripAccountAddress(mTxInfo.fromAddress),
+                Utils.stripAccountAddress(to)));
         TextView amountAsset = view.findViewById(R.id.amount_asset);
         amountAsset.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_amount_asset),

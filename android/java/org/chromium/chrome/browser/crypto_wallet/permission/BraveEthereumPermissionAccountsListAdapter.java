@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -95,7 +96,7 @@ public class BraveEthereumPermissionAccountsListAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final int arrayPosition = position;
         holder.titleText.setText(mAccountInfo[arrayPosition].name);
-        holder.subTitleText.setText(stripAccountAddress(mAccountInfo[arrayPosition].address));
+        holder.subTitleText.setText(Utils.stripAccountAddress(mAccountInfo[arrayPosition].address));
         setBlockiesBitmapResource(holder.iconImg, mAccountInfo[arrayPosition].address);
         if (mCheckBoxStyle) {
             holder.accountCheck.setVisibility(View.VISIBLE);
@@ -205,15 +206,5 @@ public class BraveEthereumPermissionAccountsListAdapter
                 }
             });
         });
-    }
-
-    private String stripAccountAddress(String address) {
-        String newAddress = "";
-
-        if (address.length() > 6) {
-            newAddress = address.substring(0, 6) + "***" + address.substring(address.length() - 5);
-        }
-
-        return newAddress;
     }
 }

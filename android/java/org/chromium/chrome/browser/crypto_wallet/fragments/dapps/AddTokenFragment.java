@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.url.GURL;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -94,9 +96,16 @@ public class AddTokenFragment extends BaseDAppsFragment {
                     }
                 });
             }
-            mWebSite.setText(mCurrentAddSuggestTokenRequest.origin.originSpec);
+            fillOriginInfo(mCurrentAddSuggestTokenRequest.origin);
             initToken();
         });
+    }
+
+    private void fillOriginInfo(OriginInfo originInfo) {
+        if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
+            GURL url = new GURL(originInfo.originSpec);
+            mWebSite.setText(Utils.geteTLD(url, originInfo.eTldPlusOne));
+        }
     }
 
     private void updateNetwork() {
