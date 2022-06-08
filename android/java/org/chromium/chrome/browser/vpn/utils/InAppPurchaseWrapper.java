@@ -194,14 +194,18 @@ public class InAppPurchaseWrapper {
     }
 
     BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
+        private int retryCount;
         @Override
         public void onBillingServiceDisconnected() {
-            connectToBillingService();
+            retryCount++;
+            if (retryCount <= 3) {
+                connectToBillingService();
+            }
         }
-
         @Override
         public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                retryCount = 0;
                 querySkuDetailsAsync(NIGHTLY_SUBS_SKUS);
                 querySkuDetailsAsync(RELEASE_SUBS_SKUS);
             }
