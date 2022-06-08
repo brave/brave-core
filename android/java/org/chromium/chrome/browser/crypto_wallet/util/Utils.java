@@ -767,13 +767,17 @@ public class Utils {
     }
 
     public static String stripAccountAddress(String address) {
-        String newAddress = "";
+        return address;
+        // TODO(serg): Let's leave it for now as it could be we still
+        // want to show a short address
+        // String newAddress = "";
 
-        if (address.length() > 6) {
-            newAddress = address.substring(0, 6) + "***" + address.substring(address.length() - 5);
-        }
+        // if (address.length() > 6) {
+        //     newAddress = address.substring(0, 6) + "***" + address.substring(address.length() -
+        //     5);
+        // }
 
-        return newAddress;
+        // return newAddress;
     }
 
     public static boolean isJSONValid(String text) {

@@ -52,6 +52,19 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
+        android:id="@+id/domain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_cv_account_image_container"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="15sp" />
+
+    <TextView
         android:id="@+id/fragment_sign_msg_tv_account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,7 +76,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_sign_msg_cv_account_image_container"
+        app:layout_constraintTop_toBottomOf="@id/domain"
         tools:text="Ledger Nano" />
 
     <TextView
