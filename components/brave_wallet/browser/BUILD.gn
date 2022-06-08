@@ -137,7 +137,7 @@ static_library("browser") {
     "//brave/components/ipfs",
     "//brave/components/json/rs:cxx",
     "//brave/components/resources:strings_grit",
-    "//brave/components/weekly_storage:weekly_storage",
+    "//brave/components/time_period_storage",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",

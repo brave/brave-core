@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
-#include "brave/components/weekly_storage/weekly_event_storage.h"
+#include "brave/components/time_period_storage/weekly_event_storage.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"

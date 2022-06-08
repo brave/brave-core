@@ -14,6 +14,8 @@ constexpr char kBraveTodaySources[] = "brave.today.sources";
 constexpr char kBraveTodayDirectFeeds[] = "brave.today.userfeeds";
 constexpr char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
 constexpr char kBraveTodayOptedIn[] = "brave.today.opted_in";
+constexpr char kBraveTodayDaysInMonthUsedCount[] =
+    "brave.today.p3a_days_in_month_count";
 constexpr char kBraveTodayWeeklySessionCount[] =
     "brave.today.p3a_weekly_session_count";
 constexpr char kBraveTodayWeeklyCardViewsCount[] =
@@ -27,6 +29,11 @@ constexpr char kBraveTodayWeeklyAddedDirectFeedsCount[] =
 constexpr char kBraveTodayTotalCardViews[] = "brave.today.p3a_total_card_views";
 constexpr char kBraveTodayCurrSessionCardViews[] =
     "brave.today.p3a_curr_session_card_views";
+constexpr char kBraveTodayFirstSessionTime[] =
+    "brave.today.p3a_first_session_time";
+constexpr char kBraveTodayUsedSecondDay[] = "brave.today.p3a_used_second_day";
+constexpr char kBraveTodayLastSessionTime[] =
+    "brave.today.p3a_last_session_time";
 
 // Dictionary value keys
 constexpr char kBraveTodayDirectFeedsKeyTitle[] = "title";

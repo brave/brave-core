@@ -21,7 +21,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
-#include "brave/components/weekly_storage/weekly_storage.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 

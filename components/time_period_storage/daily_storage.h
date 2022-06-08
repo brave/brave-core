@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_WEEKLY_STORAGE_DAILY_STORAGE_H_
-#define BRAVE_COMPONENTS_WEEKLY_STORAGE_DAILY_STORAGE_H_
+#ifndef BRAVE_COMPONENTS_TIME_PERIOD_STORAGE_DAILY_STORAGE_H_
+#define BRAVE_COMPONENTS_TIME_PERIOD_STORAGE_DAILY_STORAGE_H_
 
 #include <list>
 #include <memory>
@@ -20,6 +20,7 @@ class PrefService;
 // Allows to track a sum of some
 // values added from time to time via |AddDelta| over the last 24 hours.
 // Requires |pref_name| to be already registered.
+// TODO(djandries): Refactor to extend TimePeriodStorage
 class DailyStorage {
  public:
   DailyStorage(PrefService* prefs, const char* pref_name);
@@ -52,4 +53,4 @@ class DailyStorage {
   std::list<DailyValue> daily_values_;
 };
 
-#endif  // BRAVE_COMPONENTS_WEEKLY_STORAGE_DAILY_STORAGE_H_
+#endif  // BRAVE_COMPONENTS_TIME_PERIOD_STORAGE_DAILY_STORAGE_H_
