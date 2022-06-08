@@ -54,6 +54,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       const std::vector<std::string>& encoded_serialized_msgs,
       SignAllTransactionsCallback callback) override;
   void SignAndSendTransaction(const std::string& encoded_serialized_msg,
+                              absl::optional<base::Value> send_options,
                               SignAndSendTransactionCallback callback) override;
   void SignMessage(const std::vector<uint8_t>& blob_msg,
                    const absl::optional<std::string>& display_encoding,

@@ -257,7 +257,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     base::Value result_out(base::Value::Type::DICTIONARY);
     base::RunLoop run_loop;
     provider_->SignAndSendTransaction(
-        encoded_serialized_message,
+        encoded_serialized_message, absl::nullopt,
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
                                        base::Value result) {

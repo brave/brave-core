@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
@@ -75,12 +76,23 @@ SolanaTransaction::SendOptions::FromValue(const base::Value& value) {
     return absl::nullopt;
 
   SolanaTransaction::SendOptions options;
-  auto* max_retries_string = options_dict->FindString(kMaxRetries);
-  uint64_t max_retries = 0;
-  if (max_retries_string &&
-      base::StringToUint64(*max_retries_string, &max_retries)) {
-    options.max_retries = max_retries;
+
+  if (auto* max_retries_string = options_dict->FindString(kMaxRetries)) {
+    // Type of maxRetries is string when it's from preference values.
+    uint64_t max_retries = 0;
+    if (base::StringToUint64(*max_retries_string, &max_retries)) {
+      options.max_retries = max_retries;
+    }
+  } else if (auto max_retries_number = options_dict->FindDouble(kMaxRetries)) {
+    // Type of maxRetries is number when it's from dApp requests.
+    // We cap the maximum to 2^53-1 here for double precision, it's safe here
+    // because it does not make sense for dApps to set maxRetries that large.
+    if (*max_retries_number >= 0 &&
+        *max_retries_number <= static_cast<double>(kMaxSafeIntegerUint64)) {
+      options.max_retries = max_retries_number;
+    }
   }
+
   auto* commitment = options_dict->FindString(kPreflightCommitment);
   if (commitment && IsValidCommitmentString(*commitment)) {
     options.preflight_commitment = *commitment;

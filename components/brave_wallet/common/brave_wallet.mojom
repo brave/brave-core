@@ -170,7 +170,14 @@ interface SolanaProvider {
   // { publicKey: <base58 encoded string>,
   //   signature:  <base58 encoded string>
   // }
-  SignAndSendTransaction(string encoded_serialized_msg)
+  // Optional argument send_options:
+  //   { maxRetries?: <number>,
+  //     preflightCommitment?: <string>,
+  //     skipPreflight?: <boolean>
+  //   }
+  SignAndSendTransaction(
+      string encoded_serialized_msg,
+      mojo_base.mojom.DeprecatedDictionaryValue? send_options)
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DeprecatedDictionaryValue result);
   // It takes a byte array and an optional display encoding for
