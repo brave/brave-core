@@ -93,7 +93,7 @@ void Catalog::OnFetch(const mojom::UrlResponse& url_response) {
     BLOG(1, "Catalog is up to date");
     FetchAfterDelay();
     return;
-  } else if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  } else if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to fetch catalog as a browser upgrade is required");
     NotifyFailedToUpdateCatalog();
     return;

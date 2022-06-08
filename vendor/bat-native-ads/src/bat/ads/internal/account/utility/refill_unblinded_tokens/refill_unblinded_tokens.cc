@@ -138,7 +138,7 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to request signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
@@ -190,7 +190,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to get signed tokens as a browser upgrade is required");
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;

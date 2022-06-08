@@ -313,7 +313,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, SendConfirmationIfAdsIsDisabled) {
   const URLEndpoints& endpoints = {
       {// Create confirmation request
        "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
-       {{net::HTTP_IM_A_TEAPOT, R"(
+       {{net::kHttpImATeapot, R"(
             {
               "id" : "d990ed8d-d739-49fb-811b-c2e02158fb60",
               "payload" : {},
