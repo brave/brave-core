@@ -17,10 +17,6 @@ import { findAccountName } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
 
-// components
-import { AssetIcon } from '../../components/buy-send-swap/select-asset-item/style'
-import { withPlaceholderIcon } from '../../components/shared'
-
 // Custom Hooks
 import { useTransactionParser } from './transaction-parser'
 import usePricing from './pricing'
@@ -33,8 +29,6 @@ import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
-
-const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
 
 export const usePendingTransactions = () => {
   // redux
@@ -241,7 +235,6 @@ export const usePendingTransactions = () => {
   }, [transactionDetails?.recipient, transactionInfo?.txType])
 
   return {
-    AssetIconWithPlaceholder,
     baseFeePerGas,
     currentTokenAllowance,
     findAssetPrice,
