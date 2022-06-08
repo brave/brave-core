@@ -59,12 +59,6 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
 
         RadioGroup otherIssuesRadioGroup = findViewById(R.id.other_issues_radiogroup);
 
-        AppCompatRadioButton otherIssueRadioButton1 = findViewById(R.id.other_issue_radiobutton_1);
-        AppCompatRadioButton otherIssueRadioButton2 = findViewById(R.id.other_issue_radiobutton_2);
-        AppCompatRadioButton otherIssueRadioButton3 = findViewById(R.id.other_issue_radiobutton_3);
-        AppCompatRadioButton otherIssueRadioButton4 = findViewById(R.id.other_issue_radiobutton_4);
-        AppCompatRadioButton otherIssueRadioButton5 = findViewById(R.id.other_issue_radiobutton_5);
-
         TextView otherIssuesText = findViewById(R.id.other_issues_text);
         otherIssuesText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +76,6 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         });
 
         Button btnContinueToEmail = findViewById(R.id.btn_continue_to_email);
-
         otherIssuesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
@@ -127,21 +120,9 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
                 }
 
                 bodyText.append("\n\nOther Issue\n");
-                if (otherIssueRadioButton1.isChecked()) {
-                    bodyText.append(otherIssueRadioButton1.getText() + "\n");
-                }
-                else if (otherIssueRadioButton2.isChecked()) {
-                    bodyText.append(otherIssueRadioButton2.getText() + "\n");
-                }
-                else if (otherIssueRadioButton3.isChecked()) {
-                    bodyText.append(otherIssueRadioButton3.getText() + "\n");
-                }
-                else if (otherIssueRadioButton4.isChecked()) {
-                    bodyText.append(otherIssueRadioButton4.getText() + "\n");
-                }
-                else if (otherIssueRadioButton5.isChecked()) {
-                    bodyText.append(otherIssueRadioButton5.getText() + "\n");
-                }
+                AppCompatRadioButton checkedRadioButton =
+                        findViewById(otherIssuesRadioGroup.getCheckedRadioButtonId());
+                bodyText.append(checkedRadioButton.getText() + "\n");
                 bodyText.append("\n\nPlatform\n")
                         .append("Android"
                                 + "\n");

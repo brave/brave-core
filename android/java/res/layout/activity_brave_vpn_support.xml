@@ -179,7 +179,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/rounded_holo_button"
+            android:background="@drawable/set_default_rounded_button_disabled"
             android:enabled="false"
             android:text="@string/continue_to_email"
             android:textAllCaps="false"
