@@ -572,10 +572,6 @@ interface AssetRatioService {
       AssetPriceTimeframe timeframe) =>
           (bool success, array<AssetTimePrice> values);
 
-  // Gas estimation APIs
-  GetEstimatedTime(string gas_price /* decimal string in wei */) =>
-      (bool success, string seconds);
-
   // Obtain token info via contract address through etherscan API.
   // This is only for Ethereum mainnet.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
