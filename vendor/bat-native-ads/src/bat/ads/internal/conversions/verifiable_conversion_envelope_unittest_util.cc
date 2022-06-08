@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 
-#include <cstdint>
 #include <vector>
 
 #include "base/base64.h"

@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -30,7 +29,7 @@ struct AntiTargetingInfo final {
       base::Value resource_value,
       std::string* error_message);
 
-  uint16_t version = 0;
+  int version = 0;
   AntiTargetingMap sites;
 };
 

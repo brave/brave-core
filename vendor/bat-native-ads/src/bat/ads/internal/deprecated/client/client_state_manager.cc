@@ -6,7 +6,6 @@
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 #include <algorithm>
-#include <cstdint>
 #include <functional>
 
 #include "base/check_op.h"

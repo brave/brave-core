@@ -29,8 +29,8 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(SetAllowConversionTracking, void(bool));
 
-  MOCK_CONST_METHOD0(GetAdsPerHour, int64_t());
-  MOCK_METHOD1(SetAdsPerHour, void(int64_t));
+  MOCK_CONST_METHOD0(GetAdsPerHour, int());
+  MOCK_METHOD1(SetAdsPerHour, void(int));
 
   MOCK_CONST_METHOD0(ShouldAllowAdsSubdivisionTargeting, bool());
   MOCK_CONST_METHOD0(GetAdsSubdivisionTargetingCode, std::string());
@@ -63,7 +63,7 @@ class MockAdsService : public AdsService {
                     const std::vector<GURL>&,
                     const std::string&));
 
-  MOCK_METHOD1(OnUserGesture, void(int32_t));
+  MOCK_METHOD1(OnUserGesture, void(uint32_t));
 
   MOCK_METHOD1(OnMediaStart, void(const SessionID&));
   MOCK_METHOD1(OnMediaStop, void(const SessionID&));

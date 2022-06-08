@@ -277,10 +277,10 @@ void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
   SetBooleanPref(ads::prefs::kShouldAllowConversionTracking, should_allow);
 }
 
-void AdsServiceImpl::SetAdsPerHour(const int64_t ads_per_hour) {
+void AdsServiceImpl::SetAdsPerHour(const int ads_per_hour) {
   DCHECK(ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
          ads_per_hour <= ads::kMaximumNotificationAdsPerHour);
-  SetInt64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
+  SetIntegerPref(ads::prefs::kAdsPerHour, ads_per_hour);
 }
 
 void AdsServiceImpl::SetAdsSubdivisionTargetingCode(
@@ -337,7 +337,7 @@ void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
   bat_ads_->OnTextLoaded(tab_id.id(), redirect_chain, text);
 }
 
-void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {
+void AdsServiceImpl::OnUserGesture(const uint32_t page_transition_type) {
   if (!connected()) {
     return;
   }
@@ -518,17 +518,16 @@ bool AdsServiceImpl::ShouldStart() const {
   return IsEnabled() || IsBraveNewsEnabled();
 }
 
-int64_t AdsServiceImpl::GetAdsPerHour() const {
-  int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+int AdsServiceImpl::GetAdsPerHour() const {
+  int ads_per_hour = GetIntegerPref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kServing, "default_ad_notifications_per_hour",
         ads::kDefaultNotificationAdsPerHour);
   }
 
-  return base::clamp(ads_per_hour,
-                     static_cast<int64_t>(ads::kMinimumNotificationAdsPerHour),
-                     static_cast<int64_t>(ads::kMaximumNotificationAdsPerHour));
+  return base::clamp(ads_per_hour, ads::kMinimumNotificationAdsPerHour,
+                     ads::kMaximumNotificationAdsPerHour);
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
@@ -1739,7 +1738,7 @@ void AdsServiceImpl::MigratePrefsVersion9To10() {
     return;
   }
 
-  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  const int ads_per_hour = GetIntegerPref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
@@ -1753,7 +1752,7 @@ void AdsServiceImpl::MigratePrefsVersion10To11() {
     return;
   }
 
-  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  const int ads_per_hour = GetIntegerPref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
     // |kDefaultNotificationAdsPerHour|

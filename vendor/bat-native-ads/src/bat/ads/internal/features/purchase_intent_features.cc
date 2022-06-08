@@ -18,7 +18,7 @@ namespace {
 constexpr char kFeatureName[] = "PurchaseIntent";
 
 constexpr char kFieldTrialParameterThreshold[] = "threshold";
-constexpr uint16_t kDefaultThreshold = 3;
+constexpr int kDefaultThreshold = 3;
 
 constexpr char kFieldTrialParameterTimeWindow[] = "time_window_in_seconds";
 constexpr base::TimeDelta kDefaultTimeWindow = base::Days(7);
@@ -37,7 +37,7 @@ bool IsPurchaseIntentEnabled() {
   return base::FeatureList::IsEnabled(kPurchaseIntent);
 }
 
-uint16_t GetPurchaseIntentThreshold() {
+int GetPurchaseIntentThreshold() {
   return GetFieldTrialParamByFeatureAsInt(
       kPurchaseIntent, kFieldTrialParameterThreshold, kDefaultThreshold);
 }

@@ -107,8 +107,8 @@ class AdsServiceImpl : public AdsService,
 
   void SetAllowConversionTracking(const bool should_allow) override;
 
-  int64_t GetAdsPerHour() const override;
-  void SetAdsPerHour(const int64_t ads_per_hour) override;
+  int GetAdsPerHour() const override;
+  void SetAdsPerHour(const int ads_per_hour) override;
 
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   std::string GetAdsSubdivisionTargetingCode() const override;
@@ -143,7 +143,7 @@ class AdsServiceImpl : public AdsService,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& text) override;
 
-  void OnUserGesture(const int32_t page_transition_type) override;
+  void OnUserGesture(const uint32_t page_transition_type) override;
 
   void OnMediaStart(const SessionID& tab_id) override;
   void OnMediaStop(const SessionID& tab_id) override;

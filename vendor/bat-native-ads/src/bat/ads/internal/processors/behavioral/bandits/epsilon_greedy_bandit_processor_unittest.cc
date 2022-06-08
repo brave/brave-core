@@ -57,8 +57,8 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeAllArmsFromResource) {
 
   EXPECT_EQ(30U, arms.size());
 
-  EXPECT_EQ(0u, arms.count("foo"));
-  EXPECT_EQ(0u, arms.count("bar"));
+  EXPECT_EQ(0U, arms.count("foo"));
+  EXPECT_EQ(0U, arms.count("bar"));
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {

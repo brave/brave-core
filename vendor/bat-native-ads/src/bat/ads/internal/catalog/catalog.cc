@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
-#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
