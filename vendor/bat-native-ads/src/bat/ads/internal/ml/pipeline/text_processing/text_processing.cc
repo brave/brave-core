@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/values.h"
+#include "bat/ads/internal/base/strings/string_strip_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
@@ -97,7 +98,9 @@ PredictionMap TextProcessing::Apply(
 
 const PredictionMap TextProcessing::GetTopPredictions(
     const std::string& html) const {
-  PredictionMap predictions = Apply(std::make_unique<TextData>(html));
+  std::string stripped_html = StripNonAlphaCharacters(html);
+  PredictionMap predictions =
+      Apply(std::make_unique<TextData>(std::move(stripped_html)));
   double expected_prob =
       1.0 / std::max(1.0, static_cast<double>(predictions.size()));
   PredictionMap rtn;
