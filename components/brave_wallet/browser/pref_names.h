@@ -20,6 +20,7 @@ extern const char kBraveWalletP3AFirstReportTime[];
 extern const char kBraveWalletP3AWeeklyStorage[];
 extern const char kBraveWalletKeyrings[];
 extern const char kBraveWalletCustomNetworks[];
+extern const char kBraveWalletHiddenNetworks[];
 extern const char kBraveWalletSelectedNetworks[];
 extern const char kBraveWalletUserAssets[];
 // Added 10/2021 to migrate contract address to an empty string for ETH.

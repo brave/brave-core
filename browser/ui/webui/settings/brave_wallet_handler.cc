@@ -54,6 +54,14 @@ void BraveWalletHandler::RegisterMessages() {
       "setActiveNetwork",
       base::BindRepeating(&BraveWalletHandler::SetActiveNetwork,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "addHiddenNetwork",
+      base::BindRepeating(&BraveWalletHandler::AddHiddenNetwork,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "removeHiddenNetwork",
+      base::BindRepeating(&BraveWalletHandler::RemoveHiddenNetwork,
+                          base::Unretained(this)));
 }
 
 void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
@@ -86,31 +94,32 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   PrefService* prefs = GetPrefs();
 
   base::Value::Dict result;
+
   auto& networks = result.Set("networks", base::Value::List())->GetList();
+  for (const auto& it :
+       brave_wallet::GetAllChains(prefs, brave_wallet::mojom::CoinType::ETH)) {
+    networks.Append(brave_wallet::EthNetworkInfoToValue(*it));
+  }
   auto& knownNetworks =
       result.Set("knownNetworks", base::Value::List())->GetList();
+  for (const auto& it : brave_wallet::GetAllKnownEthChains(prefs)) {
+    knownNetworks.Append(it->chain_id);
+  }
+
   auto& customNetworks =
       result.Set("customNetworks", base::Value::List())->GetList();
-
-  if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletEditKnownNetworksFeature)) {
-    for (const auto& it : brave_wallet::GetAllChains(
-             prefs, brave_wallet::mojom::CoinType::ETH)) {
-      networks.Append(brave_wallet::EthNetworkInfoToValue(*it));
-    }
-    for (const auto& it : brave_wallet::GetAllKnownEthChains(prefs)) {
-      knownNetworks.Append(it->chain_id);
-    }
-    for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
-      customNetworks.Append(it->chain_id);
-    }
-  } else {
-    for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
-      networks.Append(brave_wallet::EthNetworkInfoToValue(*it));
-    }
+  for (const auto& it : brave_wallet::GetAllEthCustomChains(prefs)) {
+    customNetworks.Append(it->chain_id);
   }
-  AllowJavascript();
 
+  auto& hiddenNetworks =
+      result.Set("hiddenNetworks", base::Value::List())->GetList();
+  for (const auto& it : brave_wallet::GetAllHiddenNetworks(
+           prefs, brave_wallet::mojom::CoinType::ETH)) {
+    hiddenNetworks.Append(it);
+  }
+
+  AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(std::move(result)));
 }
 
@@ -164,6 +173,24 @@ void BraveWalletHandler::SetActiveNetwork(const base::Value::List& args) {
                                        brave_wallet::mojom::CoinType::ETH)
                                  : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+void BraveWalletHandler::AddHiddenNetwork(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 2U);
+  PrefService* prefs = GetPrefs();
+  AllowJavascript();
+  brave_wallet::AddHiddenNetwork(prefs, brave_wallet::mojom::CoinType::ETH,
+                                 args[1].GetString());
+  ResolveJavascriptCallback(args[0], base::Value(true));
+}
+
+void BraveWalletHandler::RemoveHiddenNetwork(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 2U);
+  PrefService* prefs = GetPrefs();
+  AllowJavascript();
+  brave_wallet::RemoveHiddenNetwork(prefs, brave_wallet::mojom::CoinType::ETH,
+                                    args[1].GetString());
+  ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
 PrefService* BraveWalletHandler::GetPrefs() {

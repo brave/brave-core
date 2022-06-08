@@ -492,6 +492,11 @@ void JsonRpcService::GetAllNetworks(mojom::CoinType coin,
   std::move(callback).Run(GetAllChains(prefs_, coin));
 }
 
+void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
+                                       GetHiddenNetworksCallback callback) {
+  std::move(callback).Run(GetAllHiddenNetworks(prefs_, coin));
+}
+
 std::string JsonRpcService::GetNetworkUrl(mojom::CoinType coin) const {
   return network_urls_.contains(coin) ? network_urls_.at(coin).spec()
                                       : std::string();

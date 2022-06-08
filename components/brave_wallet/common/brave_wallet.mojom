@@ -723,6 +723,7 @@ interface JsonRpcService {
   SetNetwork(string chain_id, CoinType coin) => (bool success);
   GetNetwork(CoinType coin) => (NetworkInfo network);
   GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
+  GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
 
   // Obtains the current network's chain ID
   GetChainId(CoinType coin) => (string chain_id);
@@ -758,7 +759,7 @@ interface JsonRpcService {
   UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node for
-  // coin ETH and other nodes with corresponding coin types 
+  // coin ETH and other nodes with corresponding coin types
   Request(string json_payload, bool auto_retry_on_network_change, mojo_base.mojom.Value id, CoinType coin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Adds an observer for the events of JsonRpcService

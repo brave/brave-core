@@ -21,15 +21,19 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
+
+using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
@@ -1151,6 +1155,37 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
 
   // Should not crash.
   RemoveCustomNetwork(&prefs, "unknown network");
+}
+
+TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
+
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray<std::string>({}));
+
+  AddHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x123");
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray({"0x123"}));
+  AddHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x123");
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray({"0x123"}));
+
+  RemoveHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x555");
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray({"0x123"}));
+
+  AddHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x7");
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray({"0x123", "0x7"}));
+
+  RemoveHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x123");
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray({"0x7"}));
+
+  RemoveHiddenNetwork(&prefs, mojom::CoinType::ETH, "0x7");
+  EXPECT_THAT(GetAllHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray<std::string>({}));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetFirstValidChainURL) {

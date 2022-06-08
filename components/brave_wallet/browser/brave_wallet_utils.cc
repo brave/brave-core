@@ -1167,6 +1167,76 @@ void RemoveCustomNetwork(PrefService* prefs,
   });
 }
 
+std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
+                                              mojom::CoinType coin) {
+  if (coin != mojom::CoinType::ETH) {
+    NOTREACHED();
+    return {};
+  }
+
+  std::vector<std::string> result;
+  const base::Value* hidden_networks =
+      prefs->GetDictionary(kBraveWalletHiddenNetworks);
+  if (!hidden_networks)
+    return result;
+
+  auto* hidden_eth_networks =
+      hidden_networks->GetDict().FindList(kEthereumPrefKey);
+  if (!hidden_eth_networks)
+    return result;
+
+  for (const auto& it : *hidden_eth_networks) {
+    auto* chain_id = it.GetIfString();
+    if (chain_id)
+      result.push_back(std::move(*chain_id));
+  }
+
+  return result;
+}
+
+void AddHiddenNetwork(PrefService* prefs,
+                      mojom::CoinType coin,
+                      const std::string& chain_id) {
+  if (coin != mojom::CoinType::ETH) {
+    NOTREACHED();
+    return;
+  }
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  base::Value* dict = update.Get();
+  CHECK(dict);
+  base::Value* list = dict->FindKey(kEthereumPrefKey);
+  if (!list) {
+    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
+  }
+  CHECK(list);
+  if (!base::Contains(list->GetList(), base::Value(chain_id))) {
+    list->Append(base::Value(chain_id));
+  }
+}
+
+void RemoveHiddenNetwork(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id) {
+  if (coin != mojom::CoinType::ETH) {
+    NOTREACHED();
+    return;
+  }
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  base::Value* dict = update.Get();
+  CHECK(dict);
+  base::Value* list = dict->FindKey(kEthereumPrefKey);
+  if (!list)
+    return;
+  list->EraseListValueIf([&](const base::Value& v) {
+    auto* chain_id_string = v.GetIfString();
+    if (!chain_id_string)
+      return false;
+    return *chain_id_string == chain_id;
+  });
+}
+
 std::string GetCurrentFilecoinNetworkPrefix(PrefService* prefs) {
   return (GetCurrentChainId(prefs, mojom::CoinType::FIL) ==
           brave_wallet::mojom::kFilecoinMainnet)

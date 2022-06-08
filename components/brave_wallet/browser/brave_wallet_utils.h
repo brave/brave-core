@@ -122,6 +122,15 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
 void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove);
 
+std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
+                                              mojom::CoinType coin);
+void AddHiddenNetwork(PrefService* prefs,
+                      mojom::CoinType coin,
+                      const std::string& chain_id);
+void RemoveHiddenNetwork(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id);
+
 // Get a specific chain from all chains for certain coin.
 mojom::NetworkInfoPtr GetChain(PrefService* prefs,
                                const std::string& chain_id,

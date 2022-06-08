@@ -90,11 +90,18 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.updateNetworks()
   }
 
-  getNetworkItemClass(chainId) {
-    if (!this.isDefaultNetwork(chainId)) {
-      return "flex cr-padded-text hovered"
+  getNetworkItemClass(item) {
+    if (this.isDefaultNetwork(item.chainId)) {
+      return "flex cr-padded-text active-network"
     }
     return "flex cr-padded-text"
+  }
+
+  getHideButtonClass(hiddenNetworks, item) {
+    if (hiddenNetworks.indexOf(item.chainId) > -1) {
+      return "icon-visibility-off"
+    }
+    return "icon-visibility"
   }
 
   isDefaultNetwork(chainId) {
@@ -108,9 +115,11 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     return this.knownNetworks.indexOf(item.chainId) == -1
   }
 
-  canResetNetwork_(item) {
-    if (!this.knownNetworks.length) return false
+  canHideNetwork_(item) {
+    return !this.isDefaultNetwork(item.chainId);
+  }
 
+  canResetNetwork_(item) {
     return (
       this.knownNetworks.indexOf(item.chainId) > -1 &&
       this.customNetworks.indexOf(item.chainId) > -1
@@ -174,6 +183,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.showAddWalletNetworkDialog_ = true
   }
 
+  onEmptyDoubleClick(event) {
+    event.stopPropagation();
+  }
+
   updateNetworks() {
     this.browserProxy_.getNetworksList().then(payload => {
       if (!payload)
@@ -181,6 +194,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
       this.networks = payload.networks
       this.knownNetworks = payload.knownNetworks
       this.customNetworks = payload.customNetworks
+      this.hiddenNetworks = payload.hiddenNetworks
       this.notifyKeylist()
     })
   }
@@ -189,6 +203,19 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.showAddWalletNetworkDialog_ = false
     this.selectedNetwork = {}
     this.updateNetworks()
+  }
+
+  onHideButtonClicked_(event) {
+    const chainId = event.model.item.chainId
+    if (this.hiddenNetworks.indexOf(event.model.item.chainId) > -1) {
+      this.browserProxy_.removeHiddenNetwork(chainId).then((success) => {
+        this.updateNetworks()
+      })
+    } else {
+      this.browserProxy_.addHiddenNetwork(chainId).then((success) => {
+        this.updateNetworks()
+      })
+    }
   }
 
   onNetworkMenuTapped_(event) {

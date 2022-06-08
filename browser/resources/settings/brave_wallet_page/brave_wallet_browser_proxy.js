@@ -59,6 +59,14 @@ export class BraveWalletBrowserProxyImpl {
     return sendWithPromise('addEthereumChain', payload)
   }
 
+  addHiddenNetwork (payload) {
+    return sendWithPromise('addHiddenNetwork', payload)
+  }
+
+  removeHiddenNetwork (payload) {
+    return sendWithPromise('removeHiddenNetwork', payload)
+  }
+
   /** @override */
   getWeb3ProviderList () {
     return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
