@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/serving/permission_rules/permission_rules_base.h"
 
+#include "bat/ads/internal/serving/permission_rules/command_line_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/issuers_permission_rule.h"
 #include "bat/ads/internal/serving/permission_rules/permission_rule_util.h"
 #include "bat/ads/internal/serving/permission_rules/unblinded_tokens_permission_rule.h"
@@ -23,6 +24,11 @@ bool PermissionRulesBase::HasPermission() const {
 
   UnblindedTokensPermissionRule unblinded_tokens_permission_rule;
   if (!ShouldAllow(&unblinded_tokens_permission_rule)) {
+    return false;
+  }
+
+  CommandLinePermissionRule catalog_permission_rule;
+  if (!ShouldAllow(&catalog_permission_rule)) {
     return false;
   }
 

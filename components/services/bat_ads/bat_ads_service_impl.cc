@@ -43,6 +43,8 @@ void BatAdsServiceImpl::SetEnvironment(
 void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
                                    SetSysInfoCallback callback) {
   DCHECK(!is_initialized_);
+  ads::SysInfo().did_override_command_line_args_flag =
+      sys_info->did_override_command_line_args_flag;
   ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
   std::move(callback).Run();
 }

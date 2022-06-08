@@ -951,6 +951,8 @@ source_set("ads") {
     "src/bat/ads/internal/serving/permission_rules/browser_is_active_permission_rule.h",
     "src/bat/ads/internal/serving/permission_rules/catalog_permission_rule.cc",
     "src/bat/ads/internal/serving/permission_rules/catalog_permission_rule.h",
+    "src/bat/ads/internal/serving/permission_rules/command_line_permission_rule.cc",
+    "src/bat/ads/internal/serving/permission_rules/command_line_permission_rule.h",
     "src/bat/ads/internal/serving/permission_rules/do_not_disturb_permission_rule.cc",
     "src/bat/ads/internal/serving/permission_rules/do_not_disturb_permission_rule.h",
     "src/bat/ads/internal/serving/permission_rules/full_screen_mode_permission_rule.cc",
