@@ -5,8 +5,9 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveUI
 
-class QRCodePopupView: PopupView {
+class QRCodePopupView: UIKitPopupView {
 
   var qrCodeShareHandler: ((URL) -> Void)?
 
@@ -51,7 +52,7 @@ class QRCodePopupView: PopupView {
     $0.tintColor = .braveLabel
   }
 
-  init(url: URL) {
+  public init(url: URL) {
     self.url = url
     super.init(frame: .zero)
 

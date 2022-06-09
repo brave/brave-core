@@ -14,6 +14,8 @@ import WebKit
 import BraveCore
 import SwiftUI
 import BraveWallet
+import BraveUI
+import BraveVPN
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -21,27 +23,6 @@ extension TabBarVisibility: RepresentableOptionType {
     case .always: return Strings.alwaysShow
     case .landscapeOnly: return Strings.showInLandscapeOnly
     case .never: return Strings.neverShow
-    }
-  }
-}
-
-extension DataSource {
-  /// Get the index path of a Row to modify it
-  ///
-  /// Since they are structs we cannot obtain references to them to alter them, we must directly access them
-  /// from `sections[x].rows[y]`
-  func indexPath(rowUUID: String, sectionUUID: String) -> IndexPath? {
-    guard let section = sections.firstIndex(where: { $0.uuid == sectionUUID }),
-      let row = sections[section].rows.firstIndex(where: { $0.uuid == rowUUID })
-    else {
-      return nil
-    }
-    return IndexPath(row: row, section: section)
-  }
-
-  func reloadCell(row: Row, section: Static.Section, displayText: String) {
-    if let indexPath = indexPath(rowUUID: row.uuid, sectionUUID: section.uuid) {
-      sections[indexPath.section].rows[indexPath.row].detailText = displayText
     }
   }
 }

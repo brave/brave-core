@@ -7,14 +7,15 @@ import UIKit
 import Static
 import Shared
 import BraveShared
+import BraveUI
 
 private let log = Logger.browserLogger
 
-class BraveVPNSettingsViewController: TableViewController {
+public class BraveVPNSettingsViewController: TableViewController {
 
-  var faqButtonTapped: (() -> Void)?
+  public var faqButtonTapped: (() -> Void)?
 
-  init() {
+  public init() {
     super.init(style: .grouped)
   }
 
@@ -71,7 +72,7 @@ class BraveVPNSettingsViewController: TableViewController {
 
   private var serverList = [VPNRegion]()
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     title = Strings.VPN.vpnName

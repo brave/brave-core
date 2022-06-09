@@ -9,6 +9,7 @@ import BraveShared
 import Shared
 import Static
 import CoreServices
+import BraveUI
 
 private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 

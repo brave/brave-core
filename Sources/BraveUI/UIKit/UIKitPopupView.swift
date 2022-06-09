@@ -6,7 +6,7 @@ import UIKit
 import Shared
 import BraveShared
 
-enum PopupViewDismissType: Int {
+public enum PopupViewDismissType: Int {
   case dont
   case deny
   case noAnimation
@@ -16,30 +16,30 @@ enum PopupViewDismissType: Int {
   case scaleDown
 }
 
-enum PopupViewShowType: Int {
+public enum PopupViewShowType: Int {
   case normal
   case flyUp
   case flyDown
 }
 
-enum PopupViewAlignment: Int {
+public enum PopupViewAlignment: Int {
   case top
   case middle
   case bottom
 }
 
-enum PopupViewStyle: Int {
+public enum PopupViewStyle: Int {
   case dialog
   case sheet
 }
 
-protocol PopupViewDelegate {
-  func popupViewDidShow(_ popupView: PopupView)
-  func popupViewShouldDismiss(_ popupView: PopupView) -> Bool
-  func popupViewDidDismiss(_ popupView: PopupView)
+public protocol PopupViewDelegate {
+  func popupViewDidShow(_ popupView: UIKitPopupView)
+  func popupViewShouldDismiss(_ popupView: UIKitPopupView) -> Bool
+  func popupViewDidDismiss(_ popupView: UIKitPopupView)
 }
 
-class PopupView: UIView, UIGestureRecognizerDelegate {
+open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
   class ButtonData: NSObject {
     var title: String = ""
     var button: UIButton?
@@ -48,7 +48,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     var font: UIFont = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
   }
 
-  enum ButtonType {
+  public enum ButtonType {
     case primary
     case secondary
     case destructive
@@ -75,7 +75,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     }
   }
 
-  static let popupView = PopupView()
+  static let popupView = UIKitPopupView()
 
   fileprivate var keyboardState: KeyboardState?
 
@@ -128,7 +128,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
 
   var delegate: PopupViewDelegate?
 
-  override init(frame: CGRect) {
+  public override init(frame: CGRect) {
     super.init(frame: frame)
 
     backgroundColor = .clear
@@ -158,7 +158,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     KeyboardHelper.defaultHelper.addDelegate(self)
   }
 
-  required init(coder: NSCoder) {
+  public required init(coder: NSCoder) {
     super.init(coder: coder)!
   }
 
@@ -172,7 +172,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     return UIApplication.shared.delegate?.window as? UIWindow
   }
 
-  override func layoutSubviews() {
+  public override func layoutSubviews() {
     let contentSize: CGSize = contentView.frame.size
     let keyboardHeight = keyboardState?.intersectionHeightForView(applicationWindow ?? self) ?? 0
 
@@ -251,11 +251,11 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
 
   private var autoDismissTimer: Timer?
 
-  func show() {
+  public func show() {
     showWithType(showType: defaultShowType)
   }
 
-  func showWithType(showType: PopupViewShowType, autoDismissTime: TimeInterval? = nil) {
+  public func showWithType(showType: PopupViewShowType, autoDismissTime: TimeInterval? = nil) {
     if superview != nil { return }
 
     if let autoDismissTime = autoDismissTime {
@@ -335,11 +335,11 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     setNeedsLayout()
   }
 
-  func dismiss() {
+  public func dismiss() {
     dismissWithType(dismissType: defaultDismissType)
   }
 
-  func dismissWithType(dismissType: PopupViewDismissType) {
+  public func dismissWithType(dismissType: PopupViewDismissType) {
     if dismissType == .dont {
       return
     }
@@ -490,7 +490,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     }
   }
 
-  func setPopupContentView(view: UIView) {
+  public func setPopupContentView(view: UIView) {
     contentView?.removeFromSuperview()
     contentView = view
     contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -498,7 +498,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     setNeedsLayout()
   }
 
-  func addButton(title: String, type: ButtonType = .secondary, fontSize: CGFloat? = nil, tapped: (() -> PopupViewDismissType)?) {
+  public func addButton(title: String, type: ButtonType = .secondary, fontSize: CGFloat? = nil, tapped: (() -> PopupViewDismissType)?) {
     let buttonData: ButtonData = ButtonData()
     buttonData.title = title
     buttonData.handler = tapped
@@ -511,7 +511,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     setNeedsLayout()
   }
 
-  func setTitle(title: String, buttonIndex: Int) {
+  public func setTitle(title: String, buttonIndex: Int) {
     if buttonIndex >= dialogButtons.count {
       return
     }
@@ -524,13 +524,13 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     }
   }
 
-  func removeAllButtons() {
+  public func removeAllButtons() {
     dialogButtons.forEach { $0.button?.removeFromSuperview() }
     dialogButtons.removeAll()
     setNeedsLayout()
   }
 
-  func removeButtonAtIndex(buttonIndex: Int) {
+  public func removeButtonAtIndex(buttonIndex: Int) {
     if buttonIndex >= dialogButtons.count {
       return
     }
@@ -544,7 +544,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     setNeedsLayout()
   }
 
-  func numberOfButtons() -> Int {
+  public func numberOfButtons() -> Int {
     return dialogButtons.count
   }
 
@@ -569,7 +569,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
 
   // MARK: Background
 
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
     let point: CGPoint = touch.location(in: dialogView)
     return dialogView.point(inside: point, with: nil) == false
   }
@@ -596,8 +596,8 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
   func didDismissWithType(dismissType: PopupViewDismissType) {}
 }
 
-extension PopupView: KeyboardHelperDelegate {
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+extension UIKitPopupView: KeyboardHelperDelegate {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
     keyboardState = state
     if !automaticallyMovesWithKeyboard {
       return
@@ -606,7 +606,7 @@ extension PopupView: KeyboardHelperDelegate {
     _dialogFrameWithKeyboardHeight(height: keyboardHeight)
   }
 
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
     keyboardState = nil
     if !automaticallyMovesWithKeyboard {
       return

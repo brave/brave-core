@@ -7,6 +7,7 @@ import UIKit
 import Static
 import Shared
 import BraveShared
+import BraveUI
 
 // MARK: - PlayListSide
 

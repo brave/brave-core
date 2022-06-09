@@ -6,7 +6,7 @@ import UIKit
 import BraveShared
 import Lottie
 
-class AlertPopupView: PopupView {
+public class AlertPopupView: UIKitPopupView {
   fileprivate var dialogImage: UIView?
   fileprivate var titleLabel: UILabel!
   fileprivate var messageLabel: UILabel!
@@ -20,7 +20,7 @@ class AlertPopupView: PopupView {
   fileprivate let kAlertPopupScreenFraction: CGFloat = 0.8
   fileprivate let kPadding: CGFloat = 20.0
 
-  init(
+  public init(
     imageView: UIView?, title: String, message: String, inputType: UIKeyboardType? = nil,
     secureInput: Bool = false, inputPlaceholder: String? = nil, titleWeight: UIFont.Weight = UIFont.Weight.bold, titleSize: CGFloat = 24, dismissHandler: (() -> Bool)? = nil
   ) {
@@ -160,7 +160,7 @@ class AlertPopupView: PopupView {
     containerView.frame = containerViewFrame
   }
 
-  override func layoutSubviews() {
+    public override func layoutSubviews() {
     super.layoutSubviews()
 
     updateSubviews()
@@ -170,7 +170,7 @@ class AlertPopupView: PopupView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func showWithType(showType: PopupViewShowType, autoDismissTime: TimeInterval? = nil) {
+  public override func showWithType(showType: PopupViewShowType, autoDismissTime: TimeInterval? = nil) {
     super.showWithType(showType: showType, autoDismissTime: autoDismissTime)
 
     textField?.becomeFirstResponder()
@@ -178,7 +178,7 @@ class AlertPopupView: PopupView {
 }
 
 extension AlertPopupView: UITextFieldDelegate {
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true
   }

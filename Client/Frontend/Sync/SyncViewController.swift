@@ -5,13 +5,6 @@ import Shared
 import BraveShared
 import Data
 
-class RoundInterfaceButton: UIButton {
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    layer.cornerRadius = bounds.height / 2.0
-  }
-}
-
 class RoundInterfaceView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -23,7 +16,7 @@ class SyncViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
     view.backgroundColor = .secondaryBraveBackground
   }
 

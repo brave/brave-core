@@ -24,14 +24,12 @@
 		27D67623282DAD3700BCE16E /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
-		27F50CD7283699FA0009E407 /* GRDServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F50CD6283699FA0009E407 /* GRDServerManager.m */; };
 		27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */; };
 		27FA217B2837F95400FA2C45 /* Strings in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA217A2837F95400FA2C45 /* Strings */; };
 		27FA217D2837F9EE00FA2C45 /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA217C2837F9EE00FA2C45 /* BraveShared */; };
 		27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA217E2837FB0100FA2C45 /* BraveShared */; };
 		27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21802837FB0100FA2C45 /* BraveWallet */; };
 		27FA21832837FB0100FA2C45 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21822837FB0100FA2C45 /* Data */; };
-		27FA21852837FB0100FA2C45 /* GuardianVPN in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21842837FB0100FA2C45 /* GuardianVPN */; };
 		27FA21872837FB0100FA2C45 /* HTTPSE in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21862837FB0100FA2C45 /* HTTPSE */; };
 		27FA21892837FB0100FA2C45 /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21882837FB0100FA2C45 /* Shared */; };
 		27FA218B2837FB0100FA2C45 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218A2837FB0100FA2C45 /* Storage */; };
@@ -170,7 +168,6 @@
 		27F443952135E11200296C58 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F4439C2135E11200296C58 /* ShareExtension.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ShareExtension.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
-		27F50CD6283699FA0009E407 /* GRDServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GRDServerManager.m; path = ../Client/Frontend/BraveVPN/GRDAPI/GRDServerManager.m; sourceTree = SOURCE_ROOT; };
 		27FA21912838018E00FA2C45 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "Supporting Files/fr.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		27FA21922838018E00FA2C45 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "Supporting Files/es.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		27FA21932838018E00FA2C45 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = "Supporting Files/nb.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -305,7 +302,6 @@
 				27AD20C326851C5400889AA7 /* BraveCore.xcframework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
-				27FA21852837FB0100FA2C45 /* GuardianVPN in Frameworks */,
 				27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */,
 				27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */,
 				279A9BC22823370100F40FC6 /* ObjcExceptionBridging in Frameworks */,
@@ -415,20 +411,11 @@
 			path = ShareExtension;
 			sourceTree = "<group>";
 		};
-		27F50CC2283699790009E407 /* GuardianVPN */ = {
-			isa = PBXGroup;
-			children = (
-				27F50CD6283699FA0009E407 /* GRDServerManager.m */,
-			);
-			name = GuardianVPN;
-			sourceTree = "<group>";
-		};
 		27FDCE522835AE0800E78FAD /* l10n */ = {
 			isa = PBXGroup;
 			children = (
 				272A00F42847B682009F1DC9 /* README.md */,
 				27AAA14A283E89AF004C9B5E /* Strings.swift */,
-				27F50CC2283699790009E407 /* GuardianVPN */,
 				27FDCE882835AF5400E78FAD /* BraveWallet */,
 				27FDCE852835AF3500E78FAD /* Shared */,
 				27FDCE842835AF2B00E78FAD /* BraveShared */,
@@ -708,7 +695,6 @@
 				27FA217E2837FB0100FA2C45 /* BraveShared */,
 				27FA21802837FB0100FA2C45 /* BraveWallet */,
 				27FA21822837FB0100FA2C45 /* Data */,
-				27FA21842837FB0100FA2C45 /* GuardianVPN */,
 				27FA21862837FB0100FA2C45 /* HTTPSE */,
 				27FA21882837FB0100FA2C45 /* Shared */,
 				27FA218A2837FB0100FA2C45 /* Storage */,
@@ -928,7 +914,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27F50CD7283699FA0009E407 /* GRDServerManager.m in Sources */,
 				27FDCED82835B3D300E78FAD /* SharedStrings.swift in Sources */,
 				27FDCEDA2835B5AA00E78FAD /* BraveStrings.swift in Sources */,
 				27FDCEDC2835B66D00E78FAD /* WalletStrings.swift in Sources */,
@@ -2795,10 +2780,6 @@
 		27FA21822837FB0100FA2C45 /* Data */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Data;
-		};
-		27FA21842837FB0100FA2C45 /* GuardianVPN */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GuardianVPN;
 		};
 		27FA21862837FB0100FA2C45 /* HTTPSE */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -5,6 +5,7 @@ import Shared
 import Data
 import BraveShared
 import BraveCore
+import BraveUI
 
 /// Sometimes during heavy operations we want to prevent user from navigating back, changing screen etc.
 protocol NavigationPrevention {

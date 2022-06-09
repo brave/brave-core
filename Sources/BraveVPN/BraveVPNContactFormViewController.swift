@@ -11,6 +11,7 @@ import MessageUI
 // To get cellular carrier name
 import CoreTelephony
 import UIKit
+import BraveUI
 
 private let log = Logger.browserLogger
 

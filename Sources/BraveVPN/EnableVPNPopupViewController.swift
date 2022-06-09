@@ -6,14 +6,16 @@
 import UIKit
 import Shared
 import BraveShared
+import Lottie
+import BraveUI
 
-class EnableVPNPopupViewController: UIViewController {
+public class EnableVPNPopupViewController: UIViewController {
 
-  var enableVPNTapped: (() -> Void)?
+  public var enableVPNTapped: (() -> Void)?
 
   private let contentView = ContentView()
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     let backgroundView = UIView().then {
@@ -31,7 +33,7 @@ class EnableVPNPopupViewController: UIViewController {
     backgroundView.addGestureRecognizer(tapGesture)
   }
 
-  override func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     contentView.snp.remakeConstraints {
       if traitCollection.horizontalSizeClass == .compact
         && UIApplication.shared.statusBarOrientation.isPortrait {

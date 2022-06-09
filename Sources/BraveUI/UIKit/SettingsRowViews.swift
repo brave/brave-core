@@ -5,15 +5,14 @@
 import Foundation
 import Static
 import BraveShared
-import BraveUI
 import UIKit
 
 /// The same style switch accessory view as in Static framework, except will not be recreated each time the Cell
 /// is configured, since it will be stored as is in `Row.Accessory.view`
-class SwitchAccessoryView: UISwitch {
-  typealias ValueChange = (Bool) -> Void
+public class SwitchAccessoryView: UISwitch {
+  public typealias ValueChange = (Bool) -> Void
 
-  init(initialValue: Bool, valueChange: (ValueChange)? = nil) {
+  public init(initialValue: Bool, valueChange: (ValueChange)? = nil) {
     self.valueChange = valueChange
     super.init(frame: .zero)
     isOn = initialValue
@@ -33,7 +32,7 @@ class SwitchAccessoryView: UISwitch {
 
 extension Row {
   /// Creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
-  static func boolRow(title: String, detailText: String? = nil, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil, image: UIImage? = nil) -> Row {
+  public static func boolRow(title: String, detailText: String? = nil, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil, image: UIImage? = nil) -> Row {
     return Row(
       text: title,
       detailText: detailText,
@@ -45,7 +44,7 @@ extension Row {
   }
 
   /// Creates a switch toggle `Row` which holds local value and no preference update
-  static func boolRow(title: String, detailText: String? = nil, toggleValue: Bool, valueChange: @escaping ValueChange, cellReuseId: String) -> Row {
+  public static func boolRow(title: String, detailText: String? = nil, toggleValue: Bool, valueChange: @escaping ValueChange, cellReuseId: String) -> Row {
     return Row(
       text: title,
       detailText: detailText,
@@ -56,7 +55,7 @@ extension Row {
   }
 }
 
-class MultilineButtonCell: ButtonCell {
+public class MultilineButtonCell: ButtonCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,7 +67,7 @@ class MultilineButtonCell: ButtonCell {
   }
 }
 
-class CenteredButtonCell: ButtonCell, TableViewReusable {
+public class CenteredButtonCell: ButtonCell, TableViewReusable {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.textAlignment = .center
@@ -79,9 +78,9 @@ class CenteredButtonCell: ButtonCell, TableViewReusable {
   }
 }
 
-class MultilineValue1Cell: Value1Cell {
+public class MultilineValue1Cell: Value1Cell {
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.numberOfLines = 0
   }
@@ -91,11 +90,11 @@ class MultilineValue1Cell: Value1Cell {
   }
 }
 
-class ColoredDetailCell: UITableViewCell, Cell {
+public class ColoredDetailCell: UITableViewCell, Cell {
 
-  static let colorKey = "color"
+  public static let colorKey = "color"
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .value1, reuseIdentifier: reuseIdentifier)
   }
 
@@ -103,7 +102,7 @@ class ColoredDetailCell: UITableViewCell, Cell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func configure(row: Row) {
+  public func configure(row: Row) {
     textLabel?.text = row.text
     detailTextLabel?.text = row.detailText
     accessoryType = row.accessory.type
@@ -114,16 +113,16 @@ class ColoredDetailCell: UITableViewCell, Cell {
   }
 }
 
-class MultilineSubtitleCell: SubtitleCell {
+open class MultilineSubtitleCell: SubtitleCell {
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     textLabel?.numberOfLines = 0
     detailTextLabel?.numberOfLines = 0
     detailTextLabel?.textColor = .secondaryBraveLabel
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 }

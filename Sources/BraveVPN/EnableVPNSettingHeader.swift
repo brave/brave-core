@@ -6,11 +6,12 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveUI
 
-class EnableVPNSettingHeader: UIView {
+public class EnableVPNSettingHeader: UIView {
 
-  var enableVPNTapped: (() -> Void)?
-  var dismissHeaderTapped: (() -> Void)?
+  public var enableVPNTapped: (() -> Void)?
+  public var dismissHeaderTapped: (() -> Void)?
 
   private let mainStackView = UIStackView().then {
     $0.axis = .vertical

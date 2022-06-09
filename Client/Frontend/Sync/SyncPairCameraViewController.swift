@@ -6,6 +6,7 @@ import AVFoundation
 import BraveShared
 import BraveCore
 import Data
+import BraveUI
 
 protocol SyncPairControllerDelegate: AnyObject {
   func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String)

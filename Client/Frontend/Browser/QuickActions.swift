@@ -7,6 +7,7 @@ import Storage
 import UIKit
 import Shared
 import XCGLogger
+import BraveUI
 
 enum ShortcutType: String {
   case newTab = "NewTab"

@@ -8,6 +8,7 @@ import Shared
 import BraveShared
 import Data
 import UIKit
+import BraveVPN
 
 private let log = Logger.browserLogger
 
@@ -52,7 +53,9 @@ public struct PrivacyReportsManager {
     // the time interval to fetch them is longer than the local on-device blocked request processing.
     let timeInterval = AppConstants.buildChannel.isPublic ? 5.minutes : 1.minutes
     vpnAlertsTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { _ in
-      BraveVPN.processVPNAlerts()
+      if Preferences.PrivacyReports.captureVPNAlerts.value {
+        BraveVPN.processVPNAlerts()
+      }
     }
   }
   
