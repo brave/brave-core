@@ -50,7 +50,7 @@ public struct NewSiteConnectionView: View {
         }
       }
     }
-    OriginText(urlOrigin: urlOrigin)
+    Text(urlOrigin: urlOrigin)
       .font(.subheadline)
       .foregroundColor(Color(.braveLabel))
       .multilineTextAlignment(.center)

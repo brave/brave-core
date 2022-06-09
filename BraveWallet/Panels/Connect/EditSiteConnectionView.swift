@@ -108,7 +108,7 @@ struct EditSiteConnectionView: View {
       }
     }
     VStack(alignment: sizeCategory.isAccessibilityCategory ? .center : .leading, spacing: 2) {
-      OriginText(urlOrigin: urlOrigin)
+      Text(urlOrigin: urlOrigin)
         .font(.subheadline)
         .multilineTextAlignment(.center)
         .foregroundColor(Color(.bravePrimary))

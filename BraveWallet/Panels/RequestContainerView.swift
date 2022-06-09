@@ -60,6 +60,22 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )
+          case let .getEncryptionPublicKey(request):
+            EncryptionView(
+              request: .getEncryptionPublicKey(request),
+              cryptoStore: cryptoStore,
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              onDismiss: onDismiss
+            )
+          case let .decrypt(request):
+            EncryptionView(
+              request: .decrypt(request),
+              cryptoStore: cryptoStore,
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore,
+              onDismiss: onDismiss
+            )
           }
         }
       }

@@ -7,14 +7,11 @@ import BraveCore
 import SwiftUI
 import Strings
 
-/// View used to display a URLOrigin, bolding the eTLD+1.
-struct OriginText: View {
-  
-  let urlOrigin: URLOrigin
-  
-  var body: some View {
+extension Text {
+  /// Creates a text view that displays a URLOrigin, bolding the eTLD+1.
+  init(urlOrigin: URLOrigin) {
     if urlOrigin == WalletConstants.braveWalletOrigin {
-      Text(Strings.Wallet.braveWallet)
+      self = Text(Strings.Wallet.braveWallet)
     } else {
       let origin = urlOrigin.url?.absoluteString ?? ""
       let eTldPlusOne = urlOrigin.url?.baseDomain ?? ""
@@ -22,9 +19,9 @@ struct OriginText: View {
         let originStart = origin[origin.startIndex..<range.lowerBound]
         let etldPlusOne = origin[range.lowerBound..<range.upperBound]
         let originEnd = origin[range.upperBound...]
-        Text(originStart) + Text(etldPlusOne).bold() + Text(originEnd)
+        self = Text(originStart) + Text(etldPlusOne).bold() + Text(originEnd)
       } else {
-        Text(origin)
+        self = Text(origin)
       }
     }
   }

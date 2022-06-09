@@ -24,7 +24,7 @@ struct AddSuggestedTokenView: View {
           Text(Strings.Wallet.addSuggestedTokenSubtitle)
             .font(.headline)
             .foregroundColor(Color(.bravePrimary))
-          OriginText(urlOrigin: originInfo.origin)
+          Text(urlOrigin: originInfo.origin)
             .font(.footnote)
             .foregroundColor(Color(.braveLabel))
         }

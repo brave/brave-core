@@ -54,7 +54,7 @@ struct TransactionHeader: View {
         ))
       )
       if let originInfo = originInfo {
-        OriginText(urlOrigin: originInfo.origin)
+        Text(urlOrigin: originInfo.origin)
           .foregroundColor(Color(.braveLabel))
           .font(.subheadline)
           .padding(.top, 8) // match vertical padding for tx type, value & fiat VStack

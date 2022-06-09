@@ -32,26 +32,10 @@ struct AccountPrivateKeyView: View {
               )
               .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           )
-        VStack(spacing: 32) {
-          Text(key)
-            .multilineTextAlignment(.center)
-            .font(.system(.body, design: .monospaced))
-            .blur(radius: isKeyVisible ? 0 : 5)
-            .accessibilityHidden(!isKeyVisible)
-            .noCapture()
-          Button(action: {
-            UIPasteboard.general.setSecureString(key)
-          }) {
-            Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
-              .font(.subheadline)
-              .foregroundColor(Color(.braveBlurpleTint))
-          }
-        }
-        .padding(20)
-        .background(
-          Color(.secondaryBraveBackground).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-        )
-        .padding(40)
+        SensitiveTextView(text: key, isShowingText: $isKeyVisible)
+          .multilineTextAlignment(.center)
+          .font(.system(.body, design: .monospaced))
+          .padding(40)
 
         Button(action: {
           withAnimation {
