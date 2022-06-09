@@ -5,7 +5,11 @@
 
 import * as Solana from '@solana/web3.js'
 
+// utils
+import { getLocale } from '$web-common/locale'
 import { SOLANA_SYSTEM_INSTRUCTION_DECODERS } from '../common/constants/solana'
+
+// types
 import { BraveWallet } from '../constants/types'
 
 export type TypedSolanaInstructionWithParams = {
@@ -79,9 +83,9 @@ export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData
 
 export const getSolanaInstructionParamKeyName = (key: SolanaInstructionParamKeys) => {
   return ({
-    fromPubkey: 'From Address: ',
-    toPubkey: 'To Address: ',
-    lamports: 'Amount: ',
-    newAccountPubkey: 'New Account: '
+    fromPubkey: getLocale('braveWalletSolanaParamKeyFromPubkey'),
+    toPubkey: getLocale('braveWalletSolanaParamKeyToPubkey'),
+    lamports: getLocale('braveWalletSolanaParamKeyLamports'),
+    newAccountPubkey: getLocale('braveWalletSolanaParamKeyNewAccountPubkey')
   } as Partial<Record<SolanaInstructionParamKeys, string>>)[key] || key
 }

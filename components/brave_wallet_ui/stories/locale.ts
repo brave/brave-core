@@ -542,5 +542,12 @@ provideStrings({
   braveWalletSolanaVoteProgram: 'Vote Program',
   braveWalletSolanaBPFLoader: 'BPF Loader',
   braveWalletSolanaEd25519Program: 'Ed25519 Program',
-  braveWalletSolanaSecp256k1Program: 'Secp256k1 Program'
+  braveWalletSolanaSecp256k1Program: 'Secp256k1 Program',
+
+  // Solana Instruction Paramater Names
+  braveWalletSolanaParamKeyFromPubkey: 'From Address: ',
+  braveWalletSolanaParamKeyToPubkey: 'To Address: ',
+  braveWalletSolanaParamKeyLamports: 'Amount: ',
+  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: '
+
 })

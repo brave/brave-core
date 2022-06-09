@@ -479,5 +479,9 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM" desc="Name of Solana Vote Program">Vote Program</message>  
   <message name="IDS_BRAVE_WALLET_SOLANA_BP_FLOADER" desc="Name of Solana BPF Loader">BPF Loader</message>  
   <message name="IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM" desc="Name of Solana Ed25519 Program">Ed25519 Program</message>  
-  <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 Program">Secp256k1 Program</message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 Program">Secp256k1 Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_FROMPUBKEY" desc="Name of Solana instruction 'fromPubkey' param">From Address: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_TOPUBKEY" desc="Name of Solana instruction 'toPubkey' param">To Address: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Amount: </message>  
+  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_NEWACCOUNTPUBKEY" desc="Name of Solana instruction 'newAccountPubkey' param">New Account: </message>  
 </grit-part>
