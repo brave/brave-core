@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ auf %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Menü";
 
@@ -5,13 +8,16 @@
 "AppMenuCopyURLConfirmMessage" = "URL in Zwischenablage kopiert";
 
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
-"AppMenuViewDesktopSiteTitleString" = "Desktop-Version anfordern";
+"AppMenuViewDesktopSiteTitleString" = "Desktopversion anfordern";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
 "AppMenuViewMobileSiteTitleString" = "Mobilversion anfordern";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Zurück";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Zuletzt besuchte Lesezeichen anzeigen";
 
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Abbrechen";
@@ -24,6 +30,9 @@
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Download abbrechen";
+
+/* Cancel button */
+"CancelString" = "Abbrechen";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Alle Tabs schließen";
@@ -42,12 +51,6 @@
 
 /* The title for the button that lets you copy the url from the location bar. */
 "CopyAddressTitle" = "Adresse kopieren";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Eine Suchmaschine mit diesem Titel oder dieser URL wurde bereits hinzugefügt.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Bitte füllen Sie alle Felder korrekt aus.";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Download abgebrochen";
@@ -74,7 +77,7 @@
 "FindTitle" = "Suchen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Vor";
+"ForwardTitle" = "Weiter";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Aufrufen";
@@ -100,6 +103,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Neuer Tab";
 
+/* No comment provided by engineer. */
+"No server found" = "Kein Server gefunden";
+
 /* OK button */
 "OKString" = "OK";
 
@@ -113,7 +119,7 @@
 "PasteAndGoTitle" = "Einfügen und aufrufen";
 
 /* The title for the button that lets you paste into the location bar */
-"PasteTitle" = "Einfügen";
+"PasteTitle" = "Einfügen ";
 
 /* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
 "ReaderModeAvailableVoiceOverAnnouncement" = "Lesemodus verfügbar";
@@ -146,7 +152,7 @@
 "ScanQRCodeViewTitle" = "QR-Code scannen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Standortleiste auswählen";
+"SelectLocationBarTitle" = "Aufenthaltsorts Auswahlleiste";
 
 /* Alert dialog body when the user opens the home page for the first time. */
 "SetHomePageDialogMessage" = "Sie können dies jederzeit in den Einstellungen ändern.";
@@ -179,10 +185,16 @@
 "SettingsSearchEditButton" = "Bearbeiten";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Lesezeichen anzeigen";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Nächsten Tab anzeigen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Vorherigen Tab anzeigen";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Brave-Schutz öffnen";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Alle Tabs anzeigen";
@@ -198,27 +210,6 @@
 
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "%d Tab(s) geschlossen";
-
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Die neue Suchmaschine wird in der Schnellsuchleiste angezeigt.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Suchanbieter hinzufügen?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Abbrechen";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Suchmaschine wurde hinzugefügt.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Der Suchanbieter konnte nicht hinzugefügt werden.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Fehlgeschlagen";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
 
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
@@ -236,17 +227,14 @@
 "UnableToOpenURLErrorTitle" = "Seite kann nicht geöffnet werden";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "Anmeldedaten von %1$@ für %2$@ aktualisieren?";
+"UpdateLoginPrompt" = "Die Anmeldung %1$@ für %2$@ aktualisieren?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginUsernamePrompt" = "Anmeldedaten von %1$@ für %2$@ aktualisieren?";
+"UpdateLoginUsernamePrompt" = "Die Anmeldung %1$@ für %2$@ aktualisieren?";
 
 /* List section title for when to use Face ID */
 "UseFaceID" = "Face-ID verwenden";
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Touch-ID verwenden";
-
-/* No comment provided by engineer. */
-"No server found" = "Kein Server gefunden";
 

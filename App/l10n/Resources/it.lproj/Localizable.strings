@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ su %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Menu";
 
@@ -13,6 +16,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Indietro";
 
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Mostra gli ultimi segnalibri visitati.";
+
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Annulla";
 
@@ -24,6 +30,9 @@
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Annulla download";
+
+/* Cancel button */
+"CancelString" = "Annulla";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Chiudi tutte le schede";
@@ -43,12 +52,6 @@
 /* The title for the button that lets you copy the url from the location bar. */
 "CopyAddressTitle" = "Copia indirizzo";
 
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Un motore di ricerca con questo titolo o URL è già stato aggiunto.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Compila tutti i campi correttamente.";
-
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Download annullato";
 
@@ -59,7 +62,7 @@
 "DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
 
 /* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
-"DownloadMultipleFilesToastDescriptionText" = "1 su %d file";
+"DownloadMultipleFilesToastDescriptionText" = "1 file su %d";
 
 /* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
@@ -100,11 +103,14 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nuova scheda";
 
+/* No comment provided by engineer. */
+"No server found" = "Non è stato trovato nessun server";
+
 /* OK button */
 "OKString" = "OK";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Apri una nuova scheda";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Apri nuova scheda";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Apri la scheda selezionata";
@@ -122,7 +128,7 @@
 "ReaderModeResetFontSizeAccessibilityLabel" = "Reimposta dimensioni testo";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Ricarica la pagina";
+"ReloadPageTitle" = "Ricarica pagina";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
 "SaveLoginPrompt" = "Vuoi salvare la password per %@?";
@@ -170,13 +176,16 @@
 "SettingsNewTabHomePage" = "Mostra la pagina iniziale";
 
 /* Option in settings to show top sites when you open a new tab */
-"SettingsNewTabTopSites" = "Mostra i tuoi siti migliori";
+"SettingsNewTabTopSites" = "Mostra “I siti migliori”";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Fine";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchEditButton" = "Modifica";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Mostra i segnalibri";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Mostra la scheda successiva";
@@ -199,32 +208,11 @@
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "%d scheda/e chiusa/e";
 
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Il nuovo motore di ricerca apparirà nella barra di ricerca rapida.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Aggiungere provider di ricerca?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Annulla";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Motore di ricerca aggiunto!";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Impossibile aggiungere il provider di ricerca.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Operazione non riuscita";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
-
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Non è stato possibile aggiungere il pass su Wallet. Riprova.";
+"UnableToAddPassErrorMessage" = "Si è verificato un errore durante l’aggiunta del pass a Wallet. Riprova più tardi.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "Impossibile aggiungere il pass";
@@ -246,7 +234,4 @@
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Usa il Touch ID";
-
-/* No comment provided by engineer. */
-"No server found" = "Non è stato trovato nessun server";
 

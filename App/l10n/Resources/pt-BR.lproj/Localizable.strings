@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ no %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Menu";
 
@@ -13,6 +16,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Voltar";
 
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Mostrar últimos favoritos acessados";
+
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Cancelar";
 
@@ -24,6 +30,9 @@
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Cancelar download";
+
+/* Cancel button */
+"CancelString" = "Cancelar";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Fechar todas as abas";
@@ -42,12 +51,6 @@
 
 /* The title for the button that lets you copy the url from the location bar. */
 "CopyAddressTitle" = "Copiar endereço";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Um mecanismo de pesquisa com este título ou URL já foi adicionado.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Preencha todos os campos corretamente.";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Download cancelado";
@@ -95,10 +98,13 @@
 "LoginsHelperUpdateButtonTitle" = "Atualizar";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Nova aba privada";
+"NewPrivateTabTitle" = "Nova guia privada";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Nova aba";
+"NewTabTitle" = "Nova guia";
+
+/* No comment provided by engineer. */
+"No server found" = "Nenhum servidor encontrado";
 
 /* OK button */
 "OKString" = "OK";
@@ -179,10 +185,16 @@
 "SettingsSearchEditButton" = "Editar";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Mostrar favoritos";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Mostrar próxima aba";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Mostrar aba anterior";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Abrir Proteções do Brave";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Mostrar todas as abas";
@@ -198,27 +210,6 @@
 
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "%d aba(s) fechada(s)";
-
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "O novo mecanismo de pesquisa será exibido na barra de pesquisa rápida.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Adicionar provedor de pesquisa?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Cancelar";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Mecanismo de pesquisa adicionado!";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Não foi possível adicionar o provedor de pesquisa.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Houve uma falha";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
 
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
@@ -246,7 +237,4 @@
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Usar Touch ID";
-
-/* No comment provided by engineer. */
-"No server found" = "Nenhum servidor encontrado";
 

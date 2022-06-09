@@ -145,9 +145,6 @@
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "La quotazione include una commissione Brave dello %@.";
 
-/* The title shown on the wallet settings page. */
-"wallet.braveWallet" = "Portafoglio Brave";
-
 /* As in buying cryptocurrency */
 "wallet.buy" = "Acquista";
 
@@ -287,7 +284,7 @@
 "wallet.customNetworkUrlsPlaceholder" = "Inserisci uno o più URL";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "Personalizzato";
+"wallet.customTokenTitle" = "Personalizzata";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "Questa pagina vuole interagire con il Portafoglio di Brave";
@@ -381,6 +378,18 @@
 
 /* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
 "wallet.editPermissionsTitle" = "Modifica le autorizzazioni";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Connetti";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Cambia";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "account";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "account";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "Controlla i dati inseriti e riprova.";
@@ -487,11 +496,44 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Blocca";
 
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "account";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "account";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Tutte le autorizzazioni relative alla connessione al portafoglio saranno cancellate per tutti i siti.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Rimuovi";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "Vuoi cancellare tutte le autorizzazioni?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Tutte le autorizzazioni relative alla connessione al portafoglio saranno cancellate per questo sito.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailHeader" = "Account Ethereum connessi";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtra";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Rimuovi tutto";
+
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Commissione massima";
 
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Massima commissione di priorità";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Portafoglio Brave";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Personalizzazione delle reti dei wallet";
@@ -787,9 +829,6 @@
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Catena non supportata";
 
-/* The description of a swap button on the buy/send/swap modal */
-"wallet.swapDescription" = "Scambia token e asset.";
-
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x elaborerà l’indirizzo Ethereum e l’indirizzo IP per eseguire una transazione (incluso l’ottenimento di quotazioni). 0x utilizzerà questi dati SOLO ai fini dell’elaborazione delle transazioni.";
 
@@ -881,7 +920,7 @@
 "wallet.transactionSendTitle" = "Inviati: %1$@ %2$@ (%3$@)";
 
 /* A status that explains that the transaction has been approved by the user */
-"wallet.transactionStatusApproved" = "Approvata";
+"wallet.transactionStatusApproved" = "Approvati";
 
 /* A status that explains that the transaction has been completed/confirmed */
 "wallet.transactionStatusConfirmed" = "Confermata";
@@ -948,4 +987,25 @@
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Portafoglio";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Connetti";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+"wallet.walletTypeNone" = "Niente";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
+"wallet.web3PreferencesAllowSiteToRequestAccounts" = "Permetti ai siti di inviare richieste agli account";
+
+/* The title for the entry displaying the current preferred default wallet is. */
+"wallet.web3PreferencesDefaultWallet" = "Portafoglio predefinito";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Mostra le notifiche Web3";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Gestisci le connessioni del sito";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Preferenze Web3";
 

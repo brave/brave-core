@@ -1,9 +1,7 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "1Password-handling – fyll inn i nettleser";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Privacy - NFC Scan Usage Description */
 "NFCReaderUsageDescription" = "Appen trenger tilgang til NFC-lesing for å kommunisere med Yubikey.";
 
 /* Privacy - Camera Usage Description */
@@ -23,13 +21,4 @@
 
 /* (No Comment) */
 "OPML File" = "OPML-fil";
-
-/* (No Comment) */
-"ShortcutItemTitleNewPrivateTab" = "Ny privat fane";
-
-/* (No Comment) */
-"ShortcutItemTitleNewTab" = "Ny fane";
-
-/* (No Comment) */
-"ShortcutItemTitleQRCode" = "Skann QR-kode";
 

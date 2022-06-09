@@ -1,6 +1,12 @@
 /* About settings section title */
 "About" = "关于";
 
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "关于 Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "网站通常包含试图识别您和您的设备的 cookie 和脚本。它们想弄清楚您是谁，并在网上跟踪您，即跟踪您在每个站点上所执行的操作。\n\nBrave 会屏蔽这些操作，这样您就可以随意浏览，而不会被跟踪。";
+
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "这允许您将图像保存到您的手机相册中";
 
@@ -9,6 +15,12 @@
 
 /* Button to add a bookmark */
 "AddBookmark" = "添加书签";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "添加书签";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "添加到收藏夹";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "新建文件夹";
@@ -154,11 +166,47 @@
 /* Button to show the brave panel */
 "BravePanel" = "Brave 面板";
 
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave 奖励";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "打开";
+
 /* Brave Rewards settings title */
-"BraveRewardsTitle" = "Brave Rewards";
+"BraveRewardsTitle" = "Brave 奖励";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "进阶控件";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields 与隐私";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "被屏蔽的广告和其他令人毛骨悚然的内容";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "了解更多";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "更改全局防护默认值";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "全局控件";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "如果此站点显示为已损坏，请尝试关闭 Shields。";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "关闭";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "开启";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "轻击两次即可切换 Brave Shields";
 
 /* Sync page title */
 "BraveSync" = "同步";
@@ -168,6 +216,9 @@
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要在所有计划同步的设备上安装 Brave。要将它们链接在一起，请启动同步链，您将使用该同步链将所有设备安全地链接在一起。";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave 通话";
 
 /* Setting to enable the browser lock privacy feature */
 "BrowserLock" = "浏览器锁定";
@@ -191,7 +242,7 @@
 "BrowsingHistory" = "浏览历史";
 
 /* Settings item for clearing the cache */
-"Cache" = "高速缓存";
+"Cache" = "缓存";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "有 Brave 作为默认设置，您点击的每个链接都会在 Brave 的隐私保护下打开。";
@@ -229,6 +280,123 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "取消";
 
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "算法";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "任何";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "位数";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "字节";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "此证书有效";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "通用信息";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "通用名称";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "国家或地区";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "导出";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "域组成部分";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "加密";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "加密";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "指数";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "指纹";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "签发者名称";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "密钥长度";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "密钥用法";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "签发地";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "无";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "有效截止日期";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "有效开始日期";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "公司业务部门";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "公司";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "参数";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "公钥信息";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "公钥";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "序列号";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "使用了 %2$@ 加密算法的 %1$@ 算法";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "带有 %2$@ 算法的 %1$@ 签名";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "签名算法";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "签名";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "州/省";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "街道地址";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "主體名稱";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "用户号";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "有效日期";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "验证";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "版本";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "包装";
+
 /* No comment provided by engineer. */
 "ClearData" = "清除资料";
 
@@ -239,10 +407,10 @@
 "ClearPrivateDataAlertCancelButtonTitle" = "取消";
 
 /* No comment provided by engineer. */
-"ClearPrivateDataAlertMessage" = "确定吗？";
+"ClearPrivateDataAlertMessage" = "您确定吗？";
 
 /* The button that clears private data. */
-"ClearPrivateDataAlertOkButtonTitle" = "确定";
+"ClearPrivateDataAlertOkButtonTitle" = "好";
 
 /* No comment provided by engineer. */
 "ClearPrivateDataAlertTitle" = "清除数据";
@@ -260,7 +428,10 @@
 "ClearSyncedHistoryAlertMessage" = "此操作将清除您的所有数据，包括同步设备上的历史记录。";
 
 /* The confirmation button that clears history even when Sync is connected. */
-"ClearSyncedHistoryAlertOkButtoTitle" = "确定";
+"ClearSyncedHistoryAlertOkButtoTitle" = "好";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "客户端错误";
 
 /* Button title to close a menu. */
 "Close" = "关闭";
@@ -284,7 +455,7 @@
 "CommonShare" = "分享";
 
 /* No comment provided by engineer. */
-"Confirm" = "确定";
+"Confirm" = "确认";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie 控制";
@@ -319,8 +490,56 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "当前使用的搜索引擎";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "添加";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "编写搜索 URL，并将查询替换为 %1$s。\n例如： https://youtube.com/search?q=%2$s \n（如果站点支持 OpenSearch，则系统会在编辑此字段时会提供一个自动添加的选项。）";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "自动添加";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "在默认情况下删除自定义搜索引擎会自动切换默认引擎。";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "确定要删除 %@ 吗？";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "添加搜索引擎";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "新的搜索引擎会显示在快速搜索栏中。";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "新增搜寻提供者？";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "无法添加自定义搜索引擎。请稍后再试。";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "自定义搜索引擎错误";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "已经添加了具有此标题或 URL 的搜索引擎。";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "编写搜索 URL，并将查询替换为%s。";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "搜索网址查询错误";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "复制的文本应为以 'https://' 开头的有效安全网址。";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "请同时填写“标题”和“URL”字段。";
+
 /* Title for quick-search engines settings section. */
 "CustomSearchEngines" = "自定义搜索引擎";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "搜索引擎已添加！";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "估算数据 \n已保存";
@@ -386,7 +605,7 @@
 "DisplaySettingsSection" = "显示";
 
 /* No comment provided by engineer. */
-"Done" = "已完成";
+"Done" = "完成";
 
 /* cookie settings option */
 "DontBlockCookies" = "不要拦截 cookies";
@@ -497,7 +716,7 @@
 "ExternalAppURLAlertMessage" = "%@ 随即会启动一个外部应用。";
 
 /* Allow link to switch apps? */
-"ExternalAppURLAlertTitle" = "允许链接切换应用吗？";
+"ExternalAppURLAlertTitle" = "允许连接以切换应用吗？";
 
 /* Allow Brave to open the external app URL */
 "ExternalAppURLAllow" = "允许";
@@ -518,7 +737,7 @@
 "FindInPage" = "在页面中查找";
 
 /* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "已完成";
+"FindInPageDoneButtonAccessibilityLabel" = "完成";
 
 /* Find %@ text in page. */
 "FindInPageFormat" = "查找“%@”";
@@ -529,8 +748,17 @@
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "上一篇结果页";
 
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "在页面中查找";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "查找下一页";
+
 /* Section header for find in page option */
 "FindOnPageSectionHeader" = "在此页面";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "查找上一页";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "指纹识别方法";
@@ -609,6 +837,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "个人控制";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "付款请求中的详细信息无效";
 
 /* Sync Alert */
 "InvalidSyncCodeDescription" = "同步代码无效";
@@ -700,6 +931,18 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "月";
 
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "点按以领取免费代币。";
+
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "点击此处了解更多信息。";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "这是您的第一个 Brave 广告";
+
 /* Bookmark title / Device name */
 "Name" = "名称";
 
@@ -713,7 +956,7 @@
 "NewBookmarkTitle" = "新建书签";
 
 /* Title for new folder popup */
-"NewFolder" = "新文件夹";
+"NewFolder" = "新建文件夹";
 
 /* Default name for creating a new folder. */
 "NewFolderDefaultName" = "新建文件夹";
@@ -726,6 +969,21 @@
 
 /* New Tab title */
 "NewTab" = "新标签页";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "模式";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "夜间模式会同时影响网站外观和一般的系统外观。";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "开启/关闭黑夜模式";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "深色模式";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "否";
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "找不到搜索结果。";
@@ -784,1022 +1042,11 @@
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "开启 Rewards 即表示您同意 %@。";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ 和 %2$lld 个其他广告和跟踪器被屏蔽";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "使用 Shields 在每个页面上查看 Brave 阻止的所有不良内容。";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "点击查看 Brave Shields";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "广告和跟踪器被阻止";
-
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "寻找“默认浏览器应用”";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "带您进入设置...";
-
-/* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "屏蔽跟踪程序和广告后，可将网站数据用量减少，加载速度更快。";
-
-/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "看到 Brave 的不同：\n没有广告。没有跟踪器。页面加载速度更快。";
-
-/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverTitle" = "输入网站名称或 URL";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "欢迎使用 Brave";
-
-/* Context menu item for opening all folder bookmarks */
-"OpenAllBookmarks" = "打开所有（%i）";
-
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "打开 Brave Rewards 设置";
-
-/* Error description when there is an error while navigating to Files App */
-"OpenDownloadsFolderErrorDescription" = "在“文件”应用中打开“下载”文件夹时出现未知错误。";
-
-/* Context menu for opening image in new tab */
-"OpenImageInNewTab" = "在新标签中打开图片";
-
-/* Context menu option for opening a link in a new private tab */
-"OpenNewPrivateTabButtonTitle" = "在新的隐私标签页中打开";
-
-/* Context menu item for opening a link in a new tab */
-"OpenNewTabButtonTitle" = "在新标签页中打开";
-
-/* See http://mzl.la/1G7uHo7 */
-"OpenPhoneSettingsActionTitle" = "打开设置";
-
-/* Button title to that opens a website. */
-"OpenWebsite" = "开启网站";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "私密新闻订阅源中的今日头条新闻";
-
-/* Brave News Item Menu title */
-"optionsMenu.braveNewsItemTitle" = "新闻";
-
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "保留任何视频/流媒体的离线播放列表";
-
-/* Brave News Item Menu title */
-"optionsMenu.bravePlaylistItemTitle" = "播放列表";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "直接在浏览器中完成私密视频通话";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "Talk";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "在线保护您的完整设备";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "安全加密货币钱包，无需扩展程序";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Brave 功能";
-
-/* Section name for other privacy settings */
-"OtherPrivacySettingsSection" = "其他隐私设置";
-
-/* Section name for other settings. */
-"OtherSettingsSection" = "其他设置";
-
-/* Sync pair device settings section title */
-"Pair" = "配对";
-
-/* Title for passwords menu item */
-"PasswordsMenuItem" = "密码";
-
-/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
-"PhotoBy" = "摄影者：%@";
-
-/* Playlist menu item */
-"PlaylistMenuItem" = "播放列表";
-
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "添加至书签";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "关闭标签页";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "复制 URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "预览 %@";
-
-/* Settings privacy section title */
-"Privacy" = "隐私";
-
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
-"PrivacyPolicy" = "隐私政策";
-
-/* Private button title */
-"Private" = "隐私";
-
-/* No comment provided by engineer. */
-"PrivateBrowsing" = "私人浏览";
-
-/* Setting to keep app in private mode */
-"PrivateBrowsingOnly" = "仅限私人浏览";
-
-/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
-"PrivateBrowsingOnlyWarning" = "“仅私人浏览”模式会关闭所有当前选项卡，而且还会将你退出所有站点。";
-
-/* Private tab details */
-"PrivateTabBody" = "私人标签未保存在 Brave 上，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭那些网站时，其 Cookie 总是会消失，而不会在Brave  中留下任何痕迹。但是，下载会被保存。\n您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以看到您访问了哪些网站，而那些网站会指导您的公共 IP 地址（即使在私人标签中也是如此）。";
-
-/* Private tab detail text */
-"PrivateTabDetails" = "使用私人标签只会更改 Brave 在您设备上的操作，不会更改其他应用在您设备上的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置（通常是您所在的城市）。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私人标签时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私人标签可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私人标签 也无法保护您不受此影响。";
-
-/* Private tab information link */
-"PrivateTabLink" = "了解私人标签";
-
-/* Default engine for private search. */
-"PrivateTabSearch" = "私人标签";
-
-/* QR Code section title */
-"QRCode" = "二维码";
-
-/* Title for quick-search engines settings section. */
-"QuickSearchEngines" = "快速搜索引擎";
-
-/* Open the App Store to rate Brave. */
-"RateBrave" = "对 Brave 评分";
-
-/* Accessibility label for button increasing font size in display settings of reader mode */
-"ReaderModeBiggerFontButtonAccessibilityLabel" = "增大字体";
-
-/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeBiggerFontButtonTitle" = "+";
-
-/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
-"ReaderModeBrightSliderAccessibilityLabel" = "亮度";
-
-/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
-"ReaderModeDisplaySettingsButtonTitle" = "显示设置";
-
-/* Error displayed when reader mode cannot be enabled */
-"ReaderModeErrorConvertDisplayText" = "转换页面时出现错误";
-
-/* Font type setting in the reading view settings */
-"ReaderModeFontButtonSansSerifTitle" = "无衬线字体";
-
-/* Font type setting in the reading view settings */
-"ReaderModeFontButtonSerifTitle" = "衬线体";
-
-/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeFontSizeLabelText" = "Aa";
-
-/* Accessibility hint for the font type buttons in reader mode display settings */
-"ReaderModeFontTypeButtonAccessibilityHint" = "更改字体。";
-
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "正在加载内容…";
-
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadOriginalLinkText" = "加载原始页面";
-
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "该页面无法在阅读器视图中显示。";
-
-/* Title of a bar that show up when you enter reader mode. */
-"readerModeSettingsButton" = "阅读器模式";
-
-/* Accessibility label for button decreasing font size in display settings of reader mode */
-"ReaderModeSmallerFontButtonAccessibilityLabel" = "缩小字体";
-
-/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeSmallerFontButtonTitle" = "-";
-
-/* Accessibility hint for the color theme setting buttons in reader mode display settings */
-"ReaderModeThemeButtonAccessibilityHint" = "改变主题颜色";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "移除";
-
-/* Button to remove a favorite */
-"RemoveFavorite" = "移出收藏";
-
-/* Providers the user an email page where they can submit a but report. */
-"ReportABug" = "报告缺陷";
-
-/* Restore Tabs Affirmative Action */
-"RestoreTabAffirmativeButtonTitle" = "好";
-
-/* Restore Tabs Negative Action */
-"RestoreTabNegativeButtonTitle" = "不";
-
-/* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "看起来 Brave 先前崩溃了。您想恢复标签吗？";
-
-/* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "这很尴尬。";
-
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "借助 Brave Rewards，您可以查看来自 Brave Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "开启 Rewards";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "点击屏幕上的任意位置即可继续 Brave Talk。";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "您现在可以开始免费通话了";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "要开始免费通话，开启 Brave Rewards";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
-
-/* Button to show the rewards panel */
-"RewardsPanel" = "奖励面板";
-
-/* Label for the button used to save data */
-"SaveButtonTitle" = "保存";
-
-/* Settings item for clearing passwords and login data */
-"SavedLogins" = "已保存的登录";
-
-/* The title for the folder created when all bookmarks are being */
-"SavedTabsFolderTitle" = "保存的标签";
-
-/* Context menu item for saving an image */
-"SaveImageActionTitle" = "保存图片";
-
-/* Setting to enable the built-in password manager */
-"SaveLogins" = "保存登录";
-
-/* Scan sync code title */
-"Scan" = "扫描";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "我有一个同步代码";
-
-/* individual blocking statistic title */
-"ScriptsBlocked" = "脚本已被拦截";
-
-/* The placeholder text for bookmark search */
-"searchBookmarksTitle" = "搜索书签";
-
-/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
-"SearchEngineFormatText" = "%@ 搜索";
-
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "默认搜索引擎";
-
-/* Search engines section of settings */
-"SearchEngines" = "搜索引擎";
-
-/* Accessibility hint describing the action performed when a search suggestion is clicked */
-"SearchesForSuggestionButtonAccessibilityText" = "搜索建议";
-
-/* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "打开标签页 、书签和历史";
-
-/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
-"SearchInputViewClearButtonTitle" = "清除搜索";
-
-/* Accessibility label for entering search mode for logins */
-"SearchInputViewOverlayAccessibilityLabel" = "输入搜索模式";
-
-/* Accessibility label for the search input field in the Logins list */
-"SearchInputViewTextFieldAccessibilityLabel" = "搜索输入字段";
-
-/* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "搜索";
-
-/* Navigation title for search settings. */
-"SearchSettingNavTitle" = "搜索";
-
-/* Label for showing recent search setting. */
-"SearchSettingRecentSearchesCellTitle" = "显示最近的搜索";
-
-/* Label for search settings button. */
-"SearchSettingsButtonTitle" = "搜索设置";
-
-/* Label for show search suggestions setting. */
-"SearchSettingSuggestionCellTitle" = "显示搜索建议";
-
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
-"SearchSuggestionFromFormatText" = "%@的搜索建议";
-
-/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
-"searchSuggestionOpenTabActionTitle" = "转到此标签页";
-
-/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
-"SearchSuggestionSectionTitleFormat" = "%@ 搜索";
-
-/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
-"SearchSuggestionSectionTitleNoSearchFormat" = "搜索";
-
-/* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "搜索建议";
-
-/* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "使用 Brave 搜寻";
-
-/* Settings security section title */
-"Security" = "安全";
-
-/* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "发送崩溃报告，Brave 可以修复问题？";
-
-/* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "糟糕！Brave 崩溃了";
-
-/* Used as a button label for crash dialog prompt */
-"SendReportButtonTitle" = "发送报告";
-
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "现在，您可将 Brave 设置为您的 iOS 默认浏览器。点击此处打开设置。";
-
-/* Settings item to set the Brave as a default browser on the iOS device. */
-"setDefaultBrowserSettingsCell" = "设为默认浏览器";
-
-/* No comment provided by engineer. */
-"Settings" = "设置";
-
-/* Settings option to never close tabs automatically, must be done manually */
-"settings.autocloseTabsManualOption" = "手动";
-
-/* Settings option to close old tabs after 1 day */
-"settings.autocloseTabsOneDayOption" = "一天后";
-
-/* Settings option to close old tabs after 1 month */
-"settings.autocloseTabsOneMonthOption" = "一个月后";
-
-/* Settings option to close old tabs after 1 week */
-"settings.autocloseTabsOneWeekOption" = "一周后";
-
-/* Name of app setting that allows users to automatically close tabs. */
-"settings.autocloseTabsSetting" = "关闭标签";
-
-/* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "允许 Brave 自动关闭最近未查看的标签。";
-
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "无法加载页面。";
-
-/* Row name for licenses. */
-"SettingsLicenses" = "执照";
-
-/* Title for settings menu item */
-"SettingsMenuItem" = "设置";
-
-/* Context menu item for sharing a link URL */
-"ShareLinkActionTitle" = "分享链接";
-
-/* Title for sharing url menu item */
-"ShareWithMenuItem" = "分享对象...";
-
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shields 全局默认";
-
-/* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "这些是新站点的默认 Shields 设置。更改这些设置不会影响您现有的每个站点的设置。";
-
-/* shields overview message */
-"ShieldsOverview" = "利用网站屏幕，您在访问每个网站时可以控制是否拦截广告和跟踪程序。如果您希望查看某个特定网站的广告，则可以在此处启用这些广告。";
-
-/* shields overview footer message */
-"ShieldsOverviewFooter" = "注意：某些网站可能要求脚本正确工作，所以默认情况下会关闭此拦截。";
-
-/* Time Saved Days */
-"ShieldsTimeStatsDays" = "天";
-
-/* Time Saved Hours */
-"ShieldsTimeStatsHour" = "小时";
-
-/* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "分钟";
-
-/* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "秒";
-
-/* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleNewPrivateTab" = "新隐私标签页";
-
-/* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleNewTab" = "新标签页";
-
-/* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "扫描二维码";
-
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "显示书签快捷方式";
-
-/* Button to show the bookmarks list */
-"ShowBookmarks" = "显示书签";
-
-/* Show code words instead */
-"ShowCodeWords" = "显示码字代替";
-
-/* Button to show the history list */
-"ShowHistory" = "显示历史记录";
-
-/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
-"ShowInLandscapeOnly" = "仅横屏显示";
-
-/* Context menu item for showing link previews */
-"ShowLinkPreviewsActionTitle" = "显示链接预览";
-
-/* Accessibility Label for the tabs button in the browser toolbar */
-"ShowTabs" = "显示标签";
-
-/* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "显示标签栏";
-
-/* Brave panel topmost title */
-"SiteShieldSettings" = "屏蔽";
-
-/* Open search section of settings */
-"StandardTabSearch" = "标准标签";
-
-/* Support section title */
-"Support" = "支持";
-
-/* Message body of alert that seeks permission from user to suppress future JS alerts */
-"SuppressAlertsActionMessage" = "阻止该页面创建其他警报";
-
-/* Title of alert that seeks permission from user to suppress future JS alerts */
-"SuppressAlertsActionTitle" = "抑制警报";
-
-/* Sync settings section title */
-"Sync" = "同步";
-
-/* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "管理要在设备间同步的信息。这些设置仅会影响此设备。";
-
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "同步设置";
-
-/* Message for popup when the bookmark migration fails */
-"sync.v2MigrationErrorMessage" = "无法迁移书签。请稍后再试。";
-
-/* Title for popup when the bookmark migration fails */
-"sync.v2MigrationErrorTitle" = "错误";
-
-/* Message for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationMessage" = "要使用 Brave Sync，必须先迁移现有的书签才能使用新系统。此操作不会删除您的书签。";
-
-/* Button to perform bookmarks migration in order to support sync */
-"sync.v2MigrationOKButton" = "迁移";
-
-/* Title for popup to inform the user that bookmarks migration is required for sync */
-"sync.v2MigrationTitle" = "需要迁移";
-
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "添加新的设备";
-
-/* Add a Computer title */
-"SyncAddComputerTitle" = "添加计算机";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "同步链二维码";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "在您的第二个移动设备上，导航到“设置”面板中的“同步”，点击“扫描同步代码”按钮。用您的摄像头扫描下面的二维码。\n\n 将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "输入新的同步代码";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "在设备上，导航至“设置面板”的“同步”，然后点击按钮“%@”。输入下方显示的同步链密语。\n\n将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "输入密语";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "添加平板电脑或手机";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "选择设备类型";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "选择要同步到的设备类型。";
-
-/* Computer device button title */
-"SyncComputerDevice" = "计算机";
-
-/* Sync you browser settings across devices. */
-"SyncDevices" = "设备&设置";
-
-/* Sync Error Description */
-"syncExpiredError" = "已过期";
-
-/* Sync Error Description */
-"syncFutureVersionError" = "太新";
-
-/* Sync Error Description */
-"syncGenericError" = "抱歉，出错了";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "导入的书签";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "同步代理当前处于脱机状态或无法连接。请稍后再试。";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "同步通信错误";
-
-/* Sync Error Description */
-"syncInsecureVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
-
-/* Sync Error Description */
-"syncInvalidVersionError" = "无效格式";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "这样会与生成此二维码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认此二维码是由您所拥有的设备生成的。确定要这么做吗？";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "这样会与生成这些代码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认这些代码是由您所拥有的设备生成的。确定要这么做吗？";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "警告";
-
-/* Sync Error Description */
-"syncNewerVersionError" = "这是由其他设备上更新版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "检查您的网络连接并重试。";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "无法连接到同步";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "在所有设备上，本地设备数据将保持不变。同步链中的其他设备将保持同步。";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "确定在同步链中移除%@吗？";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "移除设备";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "设备";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "当前同步的数据将保留，但 Brave 的同步缓存中的所有数据将删除。您将需要启动一个新的同步链来再次同步设备数据。";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "删除同步链";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "移除%@将删除同步链。";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "从同步链中删除设备将不清除设备中先前同步的数据。";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "确定在同步链中移除%@吗？";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "移除此设备";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "要移除此设备吗？";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "此设备将与同步组断开连接，不再接收或发送同步数据。所有现有数据将保留在设备上。";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "下面的设备列表包括同步链中的所有设备。可以从任何其他设备管理每个设备。";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "我将使用摄像头...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "平板电脑或手机";
-
-/* This device cell */
-"SyncThisDevice" = "此设备";
-
-/* Sync to existing device */
-"SyncToDevice" = "同步到设备";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "使用现有已同步设备打开 Brave 设置，并浏览至“设置”>“同步”。选择“添加设备”，然后扫描屏幕上显示的码。";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "无法同步此设备";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "未成功";
-
-/* Accessibility label for action denoting closing a tab in tab list (tray) */
-"TabAccessibilityCloseActionLabel" = "关闭";
-
-/* Accessiblity hint for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityHint" = "开启或关闭隐私模式";
-
-/* Accessibility label for toggling on/off private mode */
-"TabPrivateModeToggleAccessibilityLabel" = "隐私模式";
-
-/* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "关闭";
-
-/* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "开启";
-
-/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
-"TabToolbarAccessibilityLabel" = "导航工具栏";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabToolbarAddTabButtonAccessibilityLabel" = "添加标签";
-
-/* Accessibility label for the Back button in the tab toolbar. */
-"TabToolbarBackButtonAccessibilityLabel" = "返回";
-
-/* Accessibility Label for the tab toolbar Forward button */
-"TabToolbarForwardButtonAccessibilityLabel" = "转发";
-
-/* Accessibility label for the lock icon, which is only present if the connection is secure */
-"TabToolbarLockImageAccessibilityLabel" = "安全连接";
-
-/* Accessibility Label for the browser toolbar Menu button */
-"TabToolbarMenuButtonAccessibilityLabel" = "菜单";
-
-/* Accessibility Label for the tab toolbar Playlist button */
-"TabToolbarPlaylistButtonAccessibilityLabel" = "播放列表";
-
-/* Accessibility label for the Reader View button */
-"TabToolbarReaderViewButtonAccessibilityLabel" = "阅读器视图";
-
-/* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "添加到阅读列表";
-
-/* Accessibility Label for the tab toolbar Reload button */
-"TabToolbarReloadButtonAccessibilityLabel" = "重新加载";
-
-/* The text shown in the URL bar on about:home */
-"TabToolbarSearchAddressPlaceholderText" = "搜索或输入地址";
-
-/* Accessibility Label for the browser toolbar Share button */
-"TabToolbarShareButtonAccessibilityLabel" = "分享";
-
-/* Accessibility Label for the tab toolbar Stop button */
-"TabToolbarStopButtonAccessibilityLabel" = "停止";
-
-/* Accessibility label for the Tabs Tray view. */
-"TabTrayAccessibilityLabel" = "标签托盘";
-
-/* Accessibility label for the Add Tab button in the Tab Tray. */
-"TabTrayAddTabAccessibilityLabel" = "添加标签";
-
-/* Accessibility hint for tab tray's displayed tab. */
-"TabTrayCellCloseAccessibilityHint" = "用三根手指向右或向左滑动可关闭标签。";
-
-/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
-"TabTrayClosingTabAccessibilityNotificationText" = "正在关闭标签";
-
-/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
-"TabTrayEmptyVoiceOverText" = "无标签";
-
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
-"TabTrayMultiTabPositionFormatVoiceOverText" = "%1$@标签 %3$@的%2$@";
-
-/* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "新标签";
-
-/* Title displayed for placeholder inside Search Bar in Tab Tray */
-"TabTraySearchBarTitle" = "搜索选项卡";
-
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
-"TabTraySingleTabPositionFormatVoiceOverText" = "%2$@的标签%1$@ ";
-
-/* No comment provided by engineer. */
-"TermsOfService" = "服务条款";
-
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
-"TermsOfUse" = "使用条款";
-
-/* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "分享...";
-
-/* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "与你的朋友分享 Brave 吧！";
-
-/* Selection to automatically color/style the user interface. */
-"ThemesAutomaticOption" = "自动";
-
-/* Selection to color/style the user interface with a dark theme */
-"ThemesDarkOption" = "暗";
-
-/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "主题外观";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "这些设置未应用到私有浏览模式。";
-
-/* Selection to color/style the user interface with a light theme. */
-"ThemesLightOption" = "亮";
-
-/* Name for app theme settings */
-"themesSettings" = "主题";
-
-/* No comment provided by engineer. */
-"Title" = "标题";
-
-/* History tableview section header */
-"Today" = "今天";
-
-/* Shields Trackers Stat */
-"TrackersrBlocked" = "拦截器 \n被拦截";
-
-/* Sync Alert */
-"UnableToConnectDescription" = "无法加入同步组。请检查输入的文字并重试。";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "无法连接";
-
-/* Bookmark URL */
-"URL" = "URL";
-
-/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
-"URLBarViewLocationTextViewAccessibilityLabel" = "地址和搜索";
-
-/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
-"UseRegionalAdblock" = "使用地区广告拦截";
-
-/* Version number of Brave shown in settings */
-"VersionTemplate" = "版本 %1$@ （%2$@）";
-
-/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
-"ViewOn" = "在 %@ 上查看";
-
-/* The date your wallet was created */
-"WalletCreationDate" = "钱包创建日期";
-
-/* Accessibility label for the main web content view */
-"WebContentAccessibilityLabel" = "网站内容";
-
-/* Word count title */
-"WordCount" = "字数：%i";
-
-/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
-"yearAbbreviation" = "年";
-
-/* Button title to confirm the deletion of a bookmarks folder */
-"YesDeleteButtonTitle" = "是的，确认删除";
-
-/* History tableview section header */
-"Yesterday" = "昨天";
-
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "关于 Brave Shields";
-
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "网站通常包含试图识别您和您的设备的 cookie 和脚本。它们想弄清楚您是谁，并在网上跟踪您，即跟踪您在每个站点上所执行的操作。\n\nBrave 会屏蔽这些操作，这样您就可以随意浏览，而不会被跟踪。";
-
-/* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Brave Rewards";
-
-/* No comment provided by engineer. */
-"BraveRewardsOpen" = "公开的设置";
-
-/* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "进阶控件";
-
-/* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "被屏蔽的广告和其他令人毛骨悚然的内容";
-
-/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "了解更多";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "更改全局防护默认值";
-
-/* No comment provided by engineer. */
-"BraveShieldsGlobalControls" = "全局控件";
-
-/* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "如果此站点显示为已损坏，请尝试关闭 Shields。";
-
-/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
-
-/* Context: The 'Down' in 'Brave Shields Down' */
-"BraveShieldsStatusValueDown" = "关闭";
-
-/* Context: The 'Up' in 'Brave Shields Up' */
-"BraveShieldsStatusValueUp" = "开启";
-
-/* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "轻击两次即可切换 Brave Shields";
-
-/* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave 通话";
-
-/* Title indicating whether the section for the algorithm used */
-"certificateViewer.algorithmTitle" = "算法";
-
-/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
-"certificateViewer.anyTitle" = "任何";
-
-/* A measurement unit used in computing to indicate or how memory is used. */
-"certificateViewer.bitsUnitTitle" = "位数";
-
-/* A measurement unit used in computing to indicate or how memory is used. */
-"certificateViewer.bytesUnitTitle" = "字节";
-
-/* The description for when an SSL certificate is valid */
-"certificateViewer.certificateIsValidTitle" = "此证书有效";
-
-/* Section Title displaying common information */
-"certificateViewer.commonInfoTitle" = "通用信息";
-
-/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
-"certificateViewer.commonNameTitle" = "通用名称";
-
-/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
-"certificateViewer.countryOrRegionTitle" = "国家或地区";
-
-/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
-"certificateViewer.deriveTitle" = "导出";
-
-/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
-"certificateViewer.domainComponentTitle" = "域组成部分";
-
-/* Title of the section indication which 'Encryption' algorithm was used. */
-"certificateViewer.encryptionTitle" = "加密";
-
-/* Title indicating whether or not a private key can be used to encrypt data */
-"certificateViewer.encryptTitle" = "加密";
-
-/* Title indicating whether the mathematical exponent used. x³, x², etc. */
-"certificateViewer.exponentTitle" = "指数";
-
-/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
-"certificateViewer.fingerPrintsTitle" = "指纹";
-
-/* Section Title for Issuer Name in the SSL Certificate */
-"certificateViewer.issuerNameTitle" = "签发者名称";
-
-/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
-"certificateViewer.keySizeTitle" = "密钥长度";
-
-/* Title indicating what the private or public key can be used for. */
-"certificateViewer.keyUsageTitle" = "密钥用法";
-
-/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
-"certificateViewer.localityTitle" = "签发地";
-
-/* Title indicating 'None' or no information or empty. */
-"certificateViewer.noneTitle" = "无";
-
-/* Certificate is 'not valid after' January 31st, 2022 for example. */
-"certificateViewer.notValidAfterTitle" = "有效截止日期";
-
-/* Certificate is 'not valid before' January 1st, 2022 for example. */
-"certificateViewer.notValidBeforeTitle" = "有效开始日期";
-
-/* Title of the section for Department of the Company. Example: Human Resources. */
-"certificateViewer.organizationalUnitTitle" = "公司业务部门";
-
-/* Title of the section for Name of the Company. Example: Brave Inc. */
-"certificateViewer.organizationTitle" = "公司";
-
-/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
-"certificateViewer.parametersTitle" = "参数";
-
-/* Information about a Public Key section title. */
-"certificateViewer.publicKeyInfoTitle" = "公钥信息";
-
-/* Title indicating whether the key used is public (not private) */
-"certificateViewer.publicKeyTitle" = "公钥";
-
-/* Certificates have a serial number to identify that it's unique */
-"certificateViewer.serialNumberTitle" = "序列号";
-
-/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
-"certificateViewer.signatureAlgorithmEncryptionDescription" = "使用了 %2$@ 加密算法的 %1$@ 算法";
-
-/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
-"certificateViewer.signatureAlgorithmSignatureDescription" = "带有 %2$@ 算法的 %1$@ 签名";
-
-/* Title for the section where we display information about the algorithm used to sign the certificate */
-"certificateViewer.signatureAlgorithmTitle" = "签名算法";
-
-/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
-"certificateViewer.signatureTitle" = "签名";
-
-/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
-"certificateViewer.stateOrProvinceTitle" = "州/省";
-
-/* Title of the section for the address of where the certificate came from. */
-"certificateViewer.streetAddressTitle" = "街道地址";
-
-/* Section Title for Subject Name in the SSL Certificate */
-"certificateViewer.subjectNameTitle" = "主题名称";
-
-/* Title of the section for the User's ID (Identifier). */
-"certificateViewer.userIDTitle" = "用户号";
-
-/* Title of section that determines if the dates on a certificate is valid. */
-"certificateViewer.validityDatesTitle" = "有效日期";
-
-/* Title indicating whether or not a private key can be used to verify data is legitimate */
-"certificateViewer.verifyTitle" = "验证";
-
-/* Certificates have a version number */
-"certificateViewer.versionNumberTitle" = "版本";
-
-/* Title indicating whether or not a private key can be used to wrap or enclose some data */
-"certificateViewer.wrapTitle" = "包装";
-
-/* Button title for Adding Engine in navigation Bar */
-"customSearchEngine.addButtonTitle" = "添加";
-
-/* Label explaining how to add search engine. */
-"customSearchEngine.addEngineDescription" = "编写搜索 URL，并将查询替换为 %1$s。\n例如： https://youtube.com/search?q=%2$s \n（如果站点支持 OpenSearch，则系统会在编辑此字段时会提供一个自动添加的选项。）";
-
-/* Button title for Auto Add in header */
-"customSearchEngine.autoAddTitle" = "自动添加";
-
-/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
-"customSearchEngine.deleteEngineAlertDescription" = "在默认情况下删除自定义搜索引擎会自动切换默认引擎。";
-
-/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
-"customSearchEngine.deleteEngineAlertTitle" = "确定要删除 %@ 吗？";
-
-/* Navigation Bar title */
-"customSearchEngine.navigationTitle" = "添加搜索引擎";
-
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "新的搜索引擎会显示在快速搜索栏中。";
-
-/* The title that asks the user to Add the search provider */
-"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "新增搜寻提供者？";
-
-/* A descriotion explaining that there is error while adding a search engine */
-"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "无法添加自定义搜索引擎。请稍后再试。";
-
-/* A title explaining that there is error while adding a search engine */
-"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "自定义搜索引擎错误";
-
-/* A message explaining a replica search engine is already added */
-"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "已经添加了具有此标题或 URL 的搜索引擎。";
-
-/* A description explaining that there is a formatting error in URL field */
-"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "编写搜索 URL，并将查询替换为%s。";
-
-/* A title explaining that there is a formatting error in URL field */
-"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "搜索网址查询错误";
-
-/* A description explaining the copied url should be secure */
-"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "复制的文本应为以 'https://' 开头的有效安全网址。";
-
-/* A descriotion explaining that the fields must filled while adding a search engine. */
-"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "请同时填写“标题”和“URL”字段。";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "搜索引擎已添加！";
-
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "点按以领取免费代币。";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
-
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "点击此处了解更多信息。";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "这是您的第一个 Brave 广告";
-
-/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
-"nightMode.modeTitle" = "模式";
-
-/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "夜间模式会同时影响网站外观和一般的系统外观。";
-
-/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.settingsDescription" = "开启/关闭黑夜模式";
-
-/* A table cell title for Night Mode - defining element for the toggle */
-"nightMode.settingsTitle" = "深色模式";
-
-/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
-"No" = "否";
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "一边浏览，一边赚取积分并奖励创作者，以获得精彩内容。";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "一边浏览，一边赚取积分并奖励创作者，以获得精彩内容。";
+"OBAdsOptInMessageJapan" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave Ads 来了！";
@@ -1817,7 +1064,7 @@
 "OBErrorDetails" = "创建钱包时出了点问题。请再试一次。";
 
 /* No comment provided by engineer. */
-"OBErrorOkay" = "好的";
+"OBErrorOkay" = "确认";
 
 /* A generic error title for onboarding */
 "OBErrorTitle" = "抱歉";
@@ -1865,7 +1112,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "隐私政策";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
+"OBRewardsTitle" = "Brave 奖励";
 
 /* Save button to save current selection */
 "OBSaveButton" = "保存";
@@ -1880,13 +1127,43 @@
 "OBShieldsDetail" = "拦截侵犯隐私的跟踪程序，让您能够浏览网络内容，无需担心被跟踪";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave 防护盾";
+"OBShieldsTitle" = "Brave Shields";
 
 /* Button to show the Brave Rewards Ads. */
 "OBShowMeButton" = "给我看看";
 
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "开始";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ 和 %2$lld 个其他广告和跟踪器被屏蔽";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "使用 Shields 在每个页面上查看 Brave 阻止的所有不良内容。";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "点击查看 Brave Shields";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "广告和跟踪器被阻止";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "寻找“默认浏览器应用”";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "带您进入设置...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "屏蔽跟踪程序和广告后，可将网站数据用量减少，加载速度更快。";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "看到 Brave 的不同：\n没有广告。没有跟踪器。页面加载速度更快。";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "输入网站名称或 URL";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "欢迎使用 Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "继续";
@@ -1896,6 +1173,66 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "在 %@ 上";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "打开所有（%i）";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "打开 Brave Rewards 设置";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "在“文件”应用中打开“下载”文件夹时出现未知错误。";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "在新标签中打开图片";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "在新的隐私标签页中打开";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "在新标签页中打开";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "打开设置";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "打开网站";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "私密新闻订阅源中的今日头条新闻";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "新闻";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "保留任何视频/流媒体的离线播放列表";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "播放列表";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "直接在浏览器中完成私密视频通话";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Talk";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "在线保护您的完整设备";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "安全加密货币钱包，无需扩展程序";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Brave 功能";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "其他隐私设置";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "其他设置";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "默认网页缩放级别";
@@ -1926,6 +1263,15 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "页面缩放";
+
+/* Sync pair device settings section title */
+"Pair" = "配对";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "密码";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "摄影者：%@";
 
 /* Alert Description for adding videos to playlist */
 "playList.addToPlayListAlertDescription" = "是否要将此视频添加至播放列表？";
@@ -2221,11 +1567,29 @@
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "无标题文件夹";
 
+/* Playlist menu item */
+"PlaylistMenuItem" = "播放列表";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "关闭 Context 菜单";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "关闭 Shields 菜单";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "添加至书签";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "关闭标签";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "复制 URL";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "预览 %@";
+
+/* Settings privacy section title */
+"Privacy" = "隐私";
 
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "所有时间列表";
@@ -2261,7 +1625,7 @@
 "privacyHub.allVPNAlertsButtonText" = "所有警报";
 
 /* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
-"privacyHub.blockedBy" = "被以下项阻止：";
+"privacyHub.blockedBy" = "封鎖操作方";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
 "privacyHub.blockedLabel" = "被阻止";
@@ -2362,6 +1726,90 @@
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "总数";
 
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "隐私政策";
+
+/* Private button title */
+"Private" = "隐私";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "私人浏览";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "仅限私人浏览";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "“仅私人浏览”模式会关闭所有当前选项卡，而且还会将你退出所有站点。";
+
+/* Private tab details */
+"PrivateTabBody" = "私人标签未保存在 Brave 上，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭那些网站时，其 Cookie 总是会消失，而不会在Brave  中留下任何痕迹。但是，下载会被保存。\n您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以看到您访问了哪些网站，而那些网站会指导您的公共 IP 地址（即使在私人标签中也是如此）。";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "使用私人标签只会更改 Brave 在您设备上的操作，不会更改其他应用在您设备上的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置（通常是您所在的城市）。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私人标签时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私人标签可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私人标签 也无法保护您不受此影响。";
+
+/* Private tab information link */
+"PrivateTabLink" = "了解私人标签";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "隐私标签页";
+
+/* QR Code section title */
+"QRCode" = "二维码";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "快速搜索引擎";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "对 Brave 评分";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "增大字体";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "亮度";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "显示设置";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "转换页面时出现错误";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "无衬线字体";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "衬线体";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "更改字体。";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "正在加载内容…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "加载原始页面";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "该页面无法在阅读器视图中显示。";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "阅读器模式";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "缩小字体";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "改变主题颜色";
+
 /* Recent Search Clear Button */
 "RecentSearchClear" = "清除";
 
@@ -2416,8 +1864,17 @@
 /* Recent Search suggestions title when prompting to turn on suggestions */
 "RecentSearchSuggestionsTitle" = "搜索建议";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "移除";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "移出收藏";
+
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "报告损坏的网站";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "报告缺陷";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：";
@@ -2433,6 +1890,33 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "恢复的收藏夹";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "确认";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "否";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "看起来 Brave 先前崩溃了。您想恢复标签吗？";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "这很尴尬。";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "借助 Brave Rewards，您可以查看来自 Brave Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "开启 Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "点击屏幕上的任意位置即可继续 Brave Talk。";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "您现在可以开始免费通话了";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "要开始免费通话，开启 Brave Rewards";
 
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "开启以帮助支持内容创建者";
@@ -2511,6 +1995,9 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "一次性转出现有代币";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
 
 /* No comment provided by engineer. */
 "rewards.settingsFooterMessage" = "暂时无法在此设备上使用 Brave Rewards。将您钱包里现有的资金转账到台式机钱包中可保留代币。";
@@ -2660,7 +2147,7 @@
 "RewardsInternalsLogsCount" = "显示了 %d 个日志";
 
 /* No comment provided by engineer. */
-"RewardsInternalsLogsTitle" = "日志";
+"RewardsInternalsLogsTitle" = "日志记录";
 
 /* No comment provided by engineer. */
 "RewardsInternalsNotEnrolled" = "未注册";
@@ -2776,8 +2263,152 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "钱包付款 ID";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "奖励面板";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "保存";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "保存的登录";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "保存的标签";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "保存图片";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "保存登录";
+
+/* Scan sync code title */
+"Scan" = "扫描";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "我有一个同步代码";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "脚本已被拦截";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "搜索书签";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@ 搜索";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "默认搜索引擎";
+
+/* Search engines section of settings */
+"SearchEngines" = "搜索引擎";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "搜索建议";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "打开标签页 、书签和历史";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "清除搜索";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "输入搜索模式";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "搜索输入字段";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "搜索";
+
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "添加自定义搜索引擎";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "搜索";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "显示最近的搜索";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "搜索设置";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "显示搜索建议";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "%@的搜索建议";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "切換至此分頁";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@ 搜索";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "搜索";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "搜索建议";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "使用 Brave 搜寻";
+
+/* Settings security section title */
+"Security" = "安全";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "发送崩溃报告，Brave 可以修复问题？";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "糟糕！Brave 崩溃了";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "发送报告";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "现在，您可将 Brave 设置为您的 iOS 默认浏览器。点击此处打开设置。";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "设为默认浏览器";
+
+/* No comment provided by engineer. */
+"Settings" = "设置";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "手动";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "一天后";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "一个月后";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "一周后";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "关闭标签";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "允许 Brave 自动关闭最近未查看的标签。";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "无法加载页面。";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "执照";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "设置";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "分享链接";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "分享对象...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "分享对象...";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkAnyTierTitle" = "恭喜您来到此隐私里程碑。";
@@ -2824,8 +2455,41 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "在此网站上观看视频时，广告被屏蔽。";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Brave Shields 全局默认";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "这些是新站点的默认 Shields 设置。更改这些设置不会影响您现有的每个站点的设置。";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "你正在没有 Brave 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
+
+/* shields overview message */
+"ShieldsOverview" = "利用网站屏幕，您在访问每个网站时可以控制是否拦截广告和跟踪程序。如果您希望查看某个特定网站的广告，则可以在此处启用这些广告。";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "注意：某些网站可能要求脚本正确工作，所以默认情况下会关闭此拦截。";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "天";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "小时";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "分钟";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "秒";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "新隐私标签页";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "新标签页";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "扫描二维码";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "打开 Brave 新闻并查看今日头条";
@@ -2932,17 +2596,65 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 快捷方式";
 
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "显示书签快捷方式";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "显示书签";
+
+/* Show code words instead */
+"ShowCodeWords" = "显示码字代替";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "显示下载";
+
+/* Button to show the history list */
+"ShowHistory" = "显示历史记录";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "显示历史记录";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "仅横屏显示";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "显示链接预览";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "显示标签";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "显示标签栏";
+
 /* No comment provided by engineer. */
 "SiteReportedBody" = "感谢您让 Brave 的开发人员知道该站点出了问题。我们将尽力解决这个问题！";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "谢谢您！";
 
+/* Brave panel topmost title */
+"SiteShieldSettings" = "屏蔽";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "我每天都通过使用 Brave 浏览网页来保存数据。";
 
 /* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "每天，我都会通过用 Brave 浏览网络来保存数据。";
+"socialSharing.shareDescriptionTitle" = "我每天都通过使用 Brave 浏览网页来保存数据。";
+
+/* Open search section of settings */
+"StandardTabSearch" = "标准标签";
+
+/* Support section title */
+"Support" = "支持";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "阻止该页面创建其他警报";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "抑制警报";
+
+/* Sync settings section title */
+"Sync" = "同步";
 
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "书签";
@@ -2953,14 +2665,290 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "已成功导入书签";
 
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "管理要在设备间同步的信息。这些设置仅会影响此设备。";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "同步设置";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "即将推出新的 Brave Sync，它将影响您的设置。赶快做好升级的准备吧。";
+
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "无法迁移书签。请稍后再试。";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "错误";
 
 /* Bookmarks migration website page description */
 "sync.v2MigrationInterstitialPageDescription" = "您的某些书签无法迁移。您可以手动将其重新添加。";
 
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "书签迁移";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "要使用 Brave Sync，必须先迁移现有的书签才能使用新系统。此操作不会删除您的书签。";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "迁移";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "需要迁移";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "添加新的设备";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "添加计算机";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "同步链二维码";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "在您的第二个移动设备上，导航到“设置”面板中的“同步”，点击“扫描同步代码”按钮。用您的摄像头扫描下面的二维码。\n\n 将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "输入新的同步代码";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "在设备上，导航至“设置面板”的“同步”，然后点击按钮“%@”。输入下方显示的同步链密语。\n\n将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "输入密语";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "添加平板电脑或手机";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "选择设备类型";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "选择要同步到的设备类型。";
+
+/* Computer device button title */
+"SyncComputerDevice" = "计算机";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "设备&设置";
+
+/* Sync Error Description */
+"syncExpiredError" = "已过期";
+
+/* Sync Error Description */
+"syncFutureVersionError" = "太新";
+
+/* Sync Error Description */
+"syncGenericError" = "抱歉，出错了";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "导入的书签";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "同步代理当前处于脱机状态或无法连接。请稍后再试。";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "同步通信错误";
+
+/* Sync Error Description */
+"syncInsecureVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
+
+/* Sync Error Description */
+"syncInvalidVersionError" = "无效格式";
+
+/* Default name for a device */
+"syncJoinChainCameraWarning" = "这样会与生成此二维码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认此二维码是由您所拥有的设备生成的。确定要这么做吗？";
+
+/* Default name for a device */
+"syncJoinChainCodewordsWarning" = "这样会与生成这些代码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认这些代码是由您所拥有的设备生成的。确定要这么做吗？";
+
+/* Title for pairing sync device */
+"syncJoinChainWarningTitle" = "警告";
+
+/* Sync Error Description */
+"syncNewerVersionError" = "这是由其他设备上更新版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "检查您的网络连接并重试。";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "无法连接到同步";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "在所有设备上，本地设备数据将保持不变。同步链中的其他设备将保持同步。";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "确定在同步链中移除%@吗？";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "移除设备";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "设备";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "当前同步的数据将保留，但 Brave 的同步缓存中的所有数据将删除。您将需要启动一个新的同步链来再次同步设备数据。";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "删除同步链";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "移除%@将删除同步链。";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "从同步链中删除设备将不清除设备中先前同步的数据。";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "确定在同步链中移除%@吗？";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "移除此设备";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "要移除此设备吗？";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "此设备将与同步组断开连接，不再接收或发送同步数据。所有现有数据将保留在设备上。";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "下面的设备列表包括同步链中的所有设备。可以从任何其他设备管理每个设备。";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "我将使用摄像头...";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "平板电脑或手机";
+
+/* This device cell */
+"SyncThisDevice" = "此设备";
+
+/* Sync to existing device */
+"SyncToDevice" = "同步到设备";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "使用现有已同步设备打开 Brave 设置，并浏览至“设置”>“同步”。选择“添加设备”，然后扫描屏幕上显示的码。";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "无法同步此设备";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "未成功";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "关闭";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "开启或关闭隐私模式";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "隐私模式";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "关";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "开";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "导航工具栏";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "添加标签";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "返回";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "向前";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "安全连接";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "菜单";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "播放列表";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "阅读器视图";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "添加到阅读列表";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "重新加载";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "搜索或输入地址";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "分享";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "标签托盘";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "添加标签";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "用三根手指向右或向左滑动可关闭标签。";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "正在关闭标签";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "无标签";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "%1$@标签 %3$@的%2$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "新标签页";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "搜索选项卡";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "%2$@的标签%1$@ ";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "服务条款";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "使用条款";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "共享...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "与你的朋友分享 Brave 吧！";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "自动选择器";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "暗";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "主题外观";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "这些设置未应用到私有浏览模式。";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "亮";
+
+/* Name for app theme settings */
+"themesSettings" = "主题";
+
+/* No comment provided by engineer. */
+"Title" = "标题";
+
+/* History tableview section header */
+"Today" = "今天";
 
 /* The button title for adding a user RSS feed */
 "today.addSource" = "添加源";
@@ -3091,8 +3079,32 @@
 /* The header above a list of the users RSS feed sources */
 "today.yourSources" = "您的 RSS 提要源";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "拦截器 \n被拦截";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "无法加入同步组。请检查输入的文字并重试。";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "无法连接";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "不支持的支付方式";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "地址和搜索";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "用户已取消";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "使用地区广告拦截";
 
 /* No comment provided by engineer. */
 "UserWalletCloseButtonTitle" = "关闭";
@@ -3102,6 +3114,12 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "抱歉，出错了";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "版本 %1$@ （%2$@）";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "在 %@ 上查看";
 
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "购买";
@@ -3233,7 +3251,7 @@
 "vpn.monthlySubTitle" = "每月订阅";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "已到期";
+"vpn.planExpired" = "已过期";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckmark247Support" = "24/7 支持";
@@ -3269,7 +3287,7 @@
 "vpn.resetVPNErrorTitle" = "错误";
 
 /* No comment provided by engineer. */
-"vpn.restorePurchases" = "恢复";
+"vpn.restorePurchases" = "还原";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "升级到 VPN，以保护您的连接并在各处阻止侵入式跟踪器。";
@@ -3311,13 +3329,13 @@
 "vpn.settingsSubscriptionStatus" = "状态";
 
 /* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "禁用";
+"vpn.settingsVPNDisabled" = "已阻止";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNEnabled" = "启用";
 
 /* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "过期";
+"vpn.settingsVPNExpired" = "已过期";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "即使在后台， Brave 也会继续保护您。";
@@ -3369,6 +3387,12 @@
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "一年";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "钱包创建日期";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "网站内容";
 
 /* Temporary data that is stored on the users device to speed up future requests and interactions. */
 "websiteData.dataRecordCache" = "缓存";
@@ -3442,18 +3466,18 @@
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "隐私统计数据";
 
+/* Word count title */
+"WordCount" = "字数：%i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "年";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "是";
 
-/* Client is in an invalid state which caused the error */
-"clientErrorMessage" = "客户端错误";
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "是，删除";
 
-/* Error message if details don't have the right type or values */
-"invalidDetailsMessage" = "付款请求中的详细信息无效";
-
-/* Error message if list of Payment Instruments doesn't include BAT */
-"unsupportedInstrumentMessage" = "不支持的支付方式";
-
-/* Error message if the payment workflow is canceled by the user */
-"userCancelledMessage" = "用户已取消";
+/* History tableview section header */
+"Yesterday" = "昨天";
 

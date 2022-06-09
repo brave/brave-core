@@ -1,3 +1,6 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ pada %2$@";
+
 /* Accessibility label for the Menu button. */
 "AppMenuButtonAccessibilityLabel" = "Menu";
 
@@ -13,6 +16,9 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Kembali";
 
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Tunjukkan Penanda Halaman Terakhir Dilawati";
+
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Batal";
 
@@ -23,7 +29,10 @@
 "CancelDownloadDialogResume" = "Pulih";
 
 /* Alert dialog title when the user taps the cancel download icon. */
-"CancelDownloadDialogTitle" = "Batal Muat Turu";
+"CancelDownloadDialogTitle" = "Batal Muat Turun";
+
+/* Cancel button */
+"CancelString" = "Batal";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Tutup Semua Tab";
@@ -38,16 +47,10 @@
 "ContextMenuButtonToastNewTabOpenedButtonText" = "Tukar";
 
 /* The label text in the Button Toast for switching to a fresh New Tab. */
-"ContextMenuButtonToastNewTabOpenedLabelText" = "Tab Baharu dibuka";
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Tab Baru dibuka";
 
 /* The title for the button that lets you copy the url from the location bar. */
 "CopyAddressTitle" = "Salin Alamat";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineDuplicateErrorMessage" = "Enjin carian dengan tajuk atau URL ini telah pun ditambahkan.";
-
-/* A message explaining fault in custom search engine form. */
-"CustomEngineFormErrorMessage" = "Sila isi semua medan dengan betul.";
 
 /* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
 "DownloadCancelledToastLabelText" = "Muat Turun Dibatal";
@@ -65,7 +68,7 @@
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Muat Turu";
+"DownloadsButtonTitle" = "Muat Turun";
 
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Buka pautan ini dalam apl App Store?";
@@ -92,19 +95,22 @@
 "LoginsHelperSaveLoginButtonTitle" = "Simpan Log Masuk";
 
 /* Button to update the user's password */
-"LoginsHelperUpdateButtonTitle" = "Kemas Kini";
+"LoginsHelperUpdateButtonTitle" = "Kemas kini";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Tab Peribadi Baru";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Tab Bahar";
+"NewTabTitle" = "Tab Baharu";
+
+/* No comment provided by engineer. */
+"No server found" = "Tiada pelayan ditemui";
 
 /* OK button */
 "OKString" = "OK";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Buka Tab Bahar";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Buka Tab Baharu";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Buka Tab Terpilih";
@@ -161,7 +167,7 @@
 "SetHomePageDialogYes" = "Tetapkan Laman Utama";
 
 /* General settings section title */
-"SettingsGeneralSectionTitle" = "Umu";
+"SettingsGeneralSectionTitle" = "Umum";
 
 /* Option in settings to show a blank page when you open a new tab */
 "SettingsNewTabBlankPage" = "Tunjukkan Halaman kosong";
@@ -179,10 +185,16 @@
 "SettingsSearchEditButton" = "Edit";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Tunjukkan Penanda Halaman";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "Tunjuk Tab Seterusnya";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Tunjuk Tab Sebelumnya";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Buka Brave Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Tunjuk Semua Tab";
@@ -198,27 +210,6 @@
 
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "%d tab(-tab) ditutup";
-
-/* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"ThirdPartySearchAddMessage" = "Enjin carian baharu akan muncul dalam bar carian cepat.";
-
-/* The title that asks the user to Add the search provider */
-"ThirdPartySearchAddTitle" = "Tambah Pembekal Carian?";
-
-/* The cancel button if you do not want to add a search engine. */
-"ThirdPartySearchCancelButton" = "Batal";
-
-/* The success message that appears after a user sucessfully adds a new search engine */
-"ThirdPartySearchEngineAdded" = "Enjin carian ditambah!";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedMessage" = "Pembekal carian tidak dapat ditambahkan.";
-
-/* A title explaining that we failed to add a search engine */
-"ThirdPartySearchFailedTitle" = "Gagal";
-
-/* The confirmation button */
-"ThirdPartySearchOkayButton" = "OK";
 
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
@@ -246,7 +237,4 @@
 
 /* List section title for when to use Touch ID */
 "UseTouchID" = "Guna ID Sentuhan";
-
-/* No comment provided by engineer. */
-"No server found" = "Tiada pelayan ditemui";
 

@@ -145,9 +145,6 @@
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "Цена включает комиссию Brave в размере %@.";
 
-/* The title shown on the wallet settings page. */
-"wallet.braveWallet" = "Brave Кошелек";
-
 /* As in buying cryptocurrency */
 "wallet.buy" = "Купить";
 
@@ -287,7 +284,7 @@
 "wallet.customNetworkUrlsPlaceholder" = "Укажите один или несколько URL";
 
 /* The title displayed on the add custom token screen */
-"wallet.customTokenTitle" = "Пользовательский токен";
+"wallet.customTokenTitle" = "Пользовательский";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "С этой страницы запрашивается доступ к Brave Кошельку";
@@ -358,12 +355,6 @@
 /* The footer title for edit nonce section in advanced settings screen. */
 "wallet.editNonceFooter" = "Если одноразовый код не последователен или содержит ошибки, транзакция не будет передана в сеть";
 
-/* The header title for edit nonce section in advanced settings screen. */
-"wallet.editNonceHeader" = "Одноразовый код";
-
-/* The placeholder for custom nonce textfield. */
-"wallet.editNoncePlaceholder" = "Введите собственный одноразовый код";
-
 /* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
 "wallet.editPermissionsAllowanceHeader" = "Установленный лимит расходов позволяет аккаунту «%@» использовать следующую сумму:";
 
@@ -381,6 +372,18 @@
 
 /* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
 "wallet.editPermissionsTitle" = "Изменение разрешений";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Подключиться";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Переключиться";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "Счета";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "Счет";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "Проверьте, правильно ли вы ввели данные, и повторите попытку.";
@@ -487,11 +490,44 @@
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Заблокировать";
 
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%2$@%: %1$lld";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "Счета";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "Счет";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Будут удалены разрешения на подключение Кошелька для всех сайтов.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Удалить";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "Удалить все разрешения?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Будут удалены все разрешения на подключение Кошелька для этого сайта.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailHeader" = "Подключенные счета Ethereum";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Укажите запрос";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Удалить все";
+
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Максимальная комиссия";
 
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Максимальная комиссия за приоритет";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Brave Кошелек";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Настройка сетей";
@@ -711,9 +747,6 @@
 
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "Эту функцию обычно используют разработчики, запускающие локальный сервер тестирования";
-
-/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionAlertTitle" = "Сбросить данные транзакции и одноразовый код?";
 
 /* The footer message below the button to reset transaction */
 "wallet.settingsResetTransactionFooter" = "Сброс данных транзакций может понадобится разработчикам или при очистке состояния на локальном сервере";
@@ -948,4 +981,25 @@
 
 /* The title shown on the menu to access Brave Wallet */
 "wallet.wallet" = "Brave Кошелек";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Подключиться";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings. */
+"wallet.walletTypeNone" = "Нет";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to rquest account's permission. */
+"wallet.web3PreferencesAllowSiteToRequestAccounts" = "Разрешить сайтам запрашивать счета";
+
+/* The title for the entry displaying the current preferred default wallet is. */
+"wallet.web3PreferencesDefaultWallet" = "Кошелек по умолчанию";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Отображать уведомления Web3";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Управлять подключениями сайта";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Настройки Web3";
 
