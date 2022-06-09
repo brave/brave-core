@@ -262,9 +262,16 @@ void BraveSyncHandler::HandleReset(const base::Value::List& args) {
 
 void BraveSyncHandler::HandlePermanentlyDeleteAccount(
     const base::Value::List& args) {
-  DLOG(ERROR) << "[BraveSync] " << __func__;
   AllowJavascript();
   CHECK_EQ(1U, args.size());
+
+  auto* sync_service = GetSyncService();
+  if (!sync_service) {
+    ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
+    return;
+  }
+
+  sync_service->PermanentlyDeleteAccount();
 
   ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
   return;

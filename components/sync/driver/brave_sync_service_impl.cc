@@ -175,4 +175,14 @@ SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTests() {
   return &crypto_;
 }
 
+void BraveSyncServiceImpl::OnAccountDeleted() {
+  DLOG(ERROR) << "[BraveSync] " << __func__;
+}
+
+void BraveSyncServiceImpl::PermanentlyDeleteAccount() {
+  DCHECK(engine_.get());
+  engine_->PermanentlyDeleteAccount(base::BindOnce(
+      &BraveSyncServiceImpl::OnAccountDeleted, weak_ptr_factory_.GetWeakPtr()));
+}
+
 }  // namespace syncer

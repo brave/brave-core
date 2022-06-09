@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/sync/engine/brave_sync_manager_impl.h"
+#include "components/sync/engine/sync_scheduler.h"
 
 namespace syncer {
 
@@ -18,6 +19,12 @@ void BraveSyncManagerImpl::StartSyncingNormally(base::Time last_poll_time) {
   SyncManagerImpl::StartSyncingNormally(last_poll_time);
   // Remove this hack when we have FCM invalidation integrated.
   RefreshTypes(ModelTypeSet::All());
+}
+
+void BraveSyncManagerImpl::PermanentlyDeleteAccount(
+    base::OnceClosure callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  scheduler_->SchedulePermanentlyDeleteAccount(std::move(callback));
 }
 
 }  // namespace syncer
