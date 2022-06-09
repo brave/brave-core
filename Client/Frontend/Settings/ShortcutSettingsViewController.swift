@@ -8,6 +8,7 @@ import Static
 import Shared
 import BraveShared
 import IntentsUI
+import BraveUI
 
 // MARK: - ShortcutSettingsViewController
 

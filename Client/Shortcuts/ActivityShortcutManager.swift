@@ -11,6 +11,7 @@ import CoreSpotlight
 import MobileCoreServices
 import UIKit
 import BrowserIntentsModels
+import BraveVPN
 
 private let log = Logger.browserLogger
 

@@ -9,7 +9,7 @@ import Shared
 
 private let log = Logger.browserLogger
 
-class VPNProductInfo: NSObject {
+public class VPNProductInfo: NSObject {
   // Prices are fetched once per launch and kept in memory.
   // If the prices could not be fetched, we retry after user tries to go to buy-vpn screen.
   static var monthlySubProduct: SKProduct?
@@ -17,7 +17,7 @@ class VPNProductInfo: NSObject {
 
   /// Whether we have enough product info to present to the user.
   /// If the user has bought the vpn already, it returns `true` since we do not need price details anymore.
-  static var isComplete: Bool {
+  public static var isComplete: Bool {
     switch BraveVPN.vpnState {
     case .purchased, .installed:
       return true
@@ -42,19 +42,19 @@ class VPNProductInfo: NSObject {
     static let all = Set<String>(arrayLiteral: monthlySub, yearlySub)
   }
 
-  override init() {
+  public override init() {
     productRequest = SKProductsRequest(productIdentifiers: ProductIdentifiers.all)
     super.init()
     productRequest.delegate = self
   }
 
-  func load() {
+  public func load() {
     productRequest.start()
   }
 }
 
 extension VPNProductInfo: SKProductsRequestDelegate {
-  func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+  public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
     response.products.forEach {
       switch $0.productIdentifier {
       case ProductIdentifiers.monthlySub:
@@ -67,7 +67,7 @@ extension VPNProductInfo: SKProductsRequestDelegate {
     }
   }
 
-  func request(_ request: SKRequest, didFailWithError error: Error) {
+  public func request(_ request: SKRequest, didFailWithError error: Error) {
     log.error("SKProductsRequestDelegate error: \(error)")
   }
 }

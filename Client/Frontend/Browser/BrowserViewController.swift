@@ -25,6 +25,7 @@ import FeedKit
 import SwiftUI
 import class Combine.AnyCancellable
 import BraveWallet
+import BraveVPN
 
 private let log = Logger.browserLogger
 

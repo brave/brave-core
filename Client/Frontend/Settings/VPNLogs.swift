@@ -2,6 +2,7 @@
 
 import UIKit
 import SnapKit
+import BraveVPN
 
 public class VPNLogsViewController: UIViewController {
 

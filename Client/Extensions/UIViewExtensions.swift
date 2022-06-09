@@ -94,24 +94,6 @@ extension UIView {
     return findSubViewWithFirstResponder(firstSubview)
   }
 
-  /// Creates empty view with specified height or width parameter.
-  /// Used mainly to make empty space for UIStackView
-  /// Note: on iOS 11+ setCustomSpacing(value, after: View) can be used instead.
-  static func spacer(_ direction: NSLayoutConstraint.Axis, amount: Int) -> UIView {
-    let spacer = UIView()
-    spacer.snp.makeConstraints { make in
-      switch direction {
-      case .vertical:
-        make.height.equalTo(amount)
-      case .horizontal:
-        make.width.equalTo(amount)
-      @unknown default:
-        assertionFailure()
-      }
-    }
-    return spacer
-  }
-
   /// Returns a line with height of 1pt. Used to imitate a separator line in custom views.
   static var separatorLine: UIView {
     let view = UIView().then {

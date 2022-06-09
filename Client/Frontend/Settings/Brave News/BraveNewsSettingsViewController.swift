@@ -9,6 +9,7 @@ import Shared
 import BraveShared
 import Data
 import BraveCore
+import BraveUI
 
 /// Displays relevant Brave News settings such as toggling the feature on/off, and selecting sources
 ///

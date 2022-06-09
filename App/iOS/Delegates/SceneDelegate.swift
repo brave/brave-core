@@ -13,6 +13,7 @@ import Data
 import Brave
 import BrowserIntentsModels
 import BraveWidgetsModels
+import BraveVPN
 
 private let log = Logger.browserLogger
 

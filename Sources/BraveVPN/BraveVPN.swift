@@ -28,7 +28,7 @@ public class BraveVPN {
 
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
-  static func initialize() {
+  public static func initialize() {
     // The vpn can live outside of the app.
     // When the app loads we should load it from preferences to track its state.
     NEVPNManager.shared().loadFromPreferences { error in
@@ -80,7 +80,7 @@ public class BraveVPN {
   private static var firstTimeUserConfigPending = false
 
   /// Lock to prevent user from spamming connect/disconnect button.
-  static var reconnectPending = false
+  public static var reconnectPending = false
 
   /// Status of creating vpn credentials on Guardian's servers.
   enum VPNUserCreationStatus {
@@ -118,7 +118,7 @@ public class BraveVPN {
   }
 
   /// A state in which the vpn can be.
-  enum State {
+  public  enum State {
     case notPurchased
     /// Purchased but not installed
     case purchased
@@ -128,7 +128,7 @@ public class BraveVPN {
     case expired(enabled: Bool)
 
     /// What view controller to show once user taps on `Enable VPN` button at one of places in the app.
-    var enableVPNDestinationVC: UIViewController? {
+    public var enableVPNDestinationVC: UIViewController? {
       switch self {
       case .notPurchased, .expired: return BuyVPNViewController(iapObserver: BraveVPN.iapObserver)
       case .purchased: return InstallVPNViewController()
@@ -139,7 +139,7 @@ public class BraveVPN {
   }
 
   /// Current state ot the VPN service.
-  static var vpnState: State {
+  public static var vpnState: State {
     // User hasn't bought or restored the vpn yet.
     // If vpn plan expired, this preference is not set to nil but the date is set to year 1970
     // to force the UI to show expired state.
@@ -164,7 +164,7 @@ public class BraveVPN {
 
   /// Returns true if the user is connected to Brave's vpn at the moment.
   /// This will return true if the user is connected to other VPN.
-  static var isConnected: Bool {
+  public static var isConnected: Bool {
     NEVPNManager.shared().connection.status == .connected
   }
 
@@ -213,7 +213,7 @@ public class BraveVPN {
   }
 
   /// Stores a in-memory list of vpn errors encountered during current browsing session.
-  private(set) static var errorLog = [(date: Date, message: String)]()
+  public private(set) static var errorLog = [(date: Date, message: String)]()
   private static let errorLogQueue = DispatchQueue(label: "com.brave.errorLogQueue")
 
   /// Prints out the error to the logger and stores it in a in memory array.
@@ -236,7 +236,7 @@ public class BraveVPN {
 
   /// Reconnects to the vpn. Checks for server health first, if it's bad it tries to connect to another host.
   /// The vpn must be configured prior to that otherwise it does nothing.
-  static func reconnect() {
+  public static func reconnect() {
     if reconnectPending {
       logAndStoreError("Can't reconnect the vpn while another reconnect is pending.")
       return
@@ -292,7 +292,7 @@ public class BraveVPN {
 
   /// Disconnects the vpn.
   /// The vpn must be configured prior to that otherwise it does nothing.
-  static func disconnect() {
+  public static func disconnect() {
     if reconnectPending {
       logAndStoreError("Can't disconnect the vpn while reconnect is still pending.")
       return
@@ -651,11 +651,7 @@ public class BraveVPN {
     }
   }
   
-  private static func shouldProcessVPNAlerts(considerDummyData: Bool) -> Bool {
-    if !Preferences.PrivacyReports.captureVPNAlerts.value {
-      return false
-    }
-    
+  private static func shouldProcessVPNAlerts(considerDummyData: Bool) -> Bool {    
     if considerDummyData { return true }
     
     switch vpnState {
@@ -666,7 +662,7 @@ public class BraveVPN {
     }
   }
 
-  static func processVPNAlerts() {
+  public static func processVPNAlerts() {
     if !shouldProcessVPNAlerts(considerDummyData: !AppConstants.buildChannel.isPublic) { return }
 
     Task {

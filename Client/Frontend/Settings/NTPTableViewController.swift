@@ -7,6 +7,7 @@ import Static
 import BraveShared
 import Shared
 import BraveCore
+import BraveUI
 
 class NTPTableViewController: TableViewController {
   enum BackgroundImageType: RepresentableOptionType {

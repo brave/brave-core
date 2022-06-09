@@ -10,6 +10,7 @@ import BraveShared
 import BraveCore
 import class SwiftUI.UIHostingController
 import UIKit
+import BraveUI
 
 private let log = Logger.browserLogger
 

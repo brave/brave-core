@@ -138,7 +138,7 @@
             if (servers.count < 1){
                 if (block){
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        block(nil, nil, NSLocalizedString(@"No server found", nil));
+                        block(nil, nil, @"No server found");
                     });
                 }
             } else {

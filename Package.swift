@@ -24,6 +24,7 @@ let package = Package(
     .library(name: "BrowserIntentsModels", targets: ["BrowserIntentsModels"]),
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
+    .library(name: "BraveVPN", targets: ["BraveVPN"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "CurrentBundleGenPlugin", targets: ["CurrentBundleGenPlugin"]),
   ],
@@ -57,7 +58,6 @@ let package = Package(
         "BraveUI",
         "Data",
         "Storage",
-        "GuardianVPN",
         "GCDWebServers",
         "HTTPSE",
         "Fuzi",
@@ -72,12 +72,12 @@ let package = Package(
         "XCGLogger",
         "BrowserIntentsModels",
         "BraveWidgetsModels",
+        "BraveVPN",
         .product(name: "Lottie", package: "lottie-ios"),
         .product(name: "Collections", package: "swift-collections"),
       ],
       path: "Client",
       exclude: [
-        "Frontend/BraveVPN/GRDAPI",
         "WebFilters/ShieldStats/Httpse",
         "Frontend/UserContent/UserScripts/AllFrames",
         "Frontend/UserContent/UserScripts/MainFrame",
@@ -129,7 +129,6 @@ let package = Package(
         .copy("Frontend/Reader/Reader.html"),
         .copy("Frontend/Reader/ReaderViewLoading.html"),
         .copy("MailSchemes.plist"),
-        .copy("Frontend/BraveVPN/vpncheckmark.json"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/ntp-data.json"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/alain_franchette_ocean.jpg"),
         .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/boris_baldinger.jpg"),
@@ -181,7 +180,7 @@ let package = Package(
       ],
       plugins: ["CurrentBundleGenPlugin"]
     ),
-    .target(name: "GuardianVPN", path: "Client/Frontend/BraveVPN/GRDAPI", publicHeadersPath: "."),
+    .target(name: "GuardianVPN", publicHeadersPath: "."),
     .target(
       name: "HTTPSE",
       path: "Client/WebFilters/ShieldStats/Httpse",
@@ -200,7 +199,7 @@ let package = Package(
         "SDWebImage",
         "SwiftKeychainWrapper",
         "SwiftyJSON",
-        "XCGLogger",
+        "XCGLogger"
       ],
       resources: [.copy("effective_tld_names.dat")]
     ),
@@ -236,7 +235,9 @@ let package = Package(
         "SnapKit",
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
         "Then",
-        "XCGLogger"
+        "XCGLogger",
+        "Static",
+        .product(name: "Lottie", package: "lottie-ios")
       ],
       plugins: ["CurrentBundleGenPlugin"]
     ),
@@ -285,6 +286,21 @@ let package = Package(
     ),
     .target(name: "BraveSharedTestUtils"),
     .target(name: "DataTestsUtils", dependencies: ["Data", "BraveShared"]),
+    .target(
+      name: "BraveVPN",
+      dependencies: [
+        "BraveShared",
+        "Strings",
+        "SnapKit",
+        "Then",
+        "XCGLogger",
+        "Data",
+        "GuardianVPN",
+        "BraveUI",
+        .product(name: "Lottie", package: "lottie-ios")
+      ],
+      plugins: ["CurrentBundleGenPlugin"]
+    ),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",

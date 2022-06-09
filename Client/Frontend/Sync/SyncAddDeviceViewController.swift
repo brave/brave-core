@@ -6,6 +6,7 @@ import BraveShared
 import BraveCore
 import Data
 import BraveWallet
+import BraveUI
 
 enum DeviceType {
   case mobile

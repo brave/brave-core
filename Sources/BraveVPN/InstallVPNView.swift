@@ -136,3 +136,4 @@ extension InstallVPNViewController {
     required init(coder: NSCoder) { fatalError() }
   }
 }
+

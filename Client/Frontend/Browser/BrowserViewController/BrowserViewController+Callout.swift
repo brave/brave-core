@@ -9,6 +9,7 @@ import BraveUI
 import Shared
 import SwiftKeychainWrapper
 import SwiftUI
+import BraveVPN
 
 // MARK: - Callouts
 

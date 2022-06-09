@@ -7,6 +7,7 @@ import UIKit
 import Shared
 import BraveShared
 import Lottie
+import BraveUI
 
 class InstallVPNViewController: UIViewController {
 
