@@ -1,8 +1,17 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 32d8f8db42fa945f832ebc59633dc3ee13a99ba2..78dbd2d50eb316e7562666f3076fccdce307432f 100644
+index 32d8f8db42fa945f832ebc59633dc3ee13a99ba2..b19f200d03dc4806bc8f542434a8f696e4b98975 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4144,6 +4144,7 @@ if (is_android) {
+@@ -914,6 +914,8 @@ mixed_component("base") {
+     "trace_event/trace_id_helper.h",
+     "traits_bag.h",
+     "tuple.h",
++    "types/expected.h",
++    "types/expected_internal.h",
+     "types/id_type.h",
+     "types/pass_key.h",
+     "types/strong_alias.h",
+@@ -4144,6 +4146,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/TaskTraits.java",
        "android/java/src/org/chromium/base/task/TaskTraitsExtensionDescriptor.java",
      ]

@@ -6,7 +6,7 @@ const desiredReplacementSeparator = '-'
 const patchExtension = '.patch'
 
 async function getModifiedPaths (gitRepoPath) {
-  const modifiedDiffArgs = ['diff', '--diff-filter=M', '--name-only', '--ignore-space-at-eol']
+  const modifiedDiffArgs = ['diff', '--diff-filter=MA', '--name-only', '--ignore-space-at-eol']
   const cmdOutput = await util.runAsync('git', modifiedDiffArgs, { cwd: gitRepoPath })
   return cmdOutput.split('\n').filter(s => s)
 }
