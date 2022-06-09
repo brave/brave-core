@@ -115,10 +115,10 @@ def _modify_canned_checks(canned_checks):
 # input_api before any real check is run.
 @chromium_presubmit_utils.override_check(
     globals(), chromium_presubmit_utils.get_first_check_name(globals()))
-def OverriddenFirstCheck(original_check, input_api, *args, **kwargs):
+def OverriddenFirstCheck(original_check, input_api, output_api):
     _modify_canned_checks(input_api.canned_checks)
     input_api.DEFAULT_FILES_TO_SKIP += _BRAVE_DEFAULT_FILES_TO_SKIP
-    return original_check(input_api, *args, **kwargs)
+    return original_check(input_api, output_api)
 
 
 # We don't use OWNERS files.
@@ -142,8 +142,7 @@ def CheckPydepsNeedsUpdating(*_, **__):
 # Changes from upstream:
 # 1. Add 'brave/' prefix for header guard checks to properly validate guards.
 @chromium_presubmit_utils.override_check(globals())
-def CheckForIncludeGuards(original_check, input_api, output_api, *args,
-                          **kwargs):
+def CheckForIncludeGuards(original_check, input_api, output_api):
     def AffectedSourceFiles(self, original_method, source_file):
         def PrependBrave(affected_file):
             # pylint: disable=protected-access
@@ -158,43 +157,77 @@ def CheckForIncludeGuards(original_check, input_api, output_api, *args,
 
     with chromium_presubmit_utils.override_scope_function(
             input_api, AffectedSourceFiles):
-        return original_check(input_api, output_api, *args, **kwargs)
+        return original_check(input_api, output_api)
 
 
 # Changes from upstream:
 # 1. Extend _KNOWN_TEST_DATA_AND_INVALID_JSON_FILE_PATTERNS with files to
 #    ignore.
 @chromium_presubmit_utils.override_check(globals())
-def CheckParseErrors(original_check, input_api, output_api, *args, **kwargs):
+def CheckParseErrors(original_check, input_api, output_api):
     # pylint: disable=undefined-variable
     _KNOWN_TEST_DATA_AND_INVALID_JSON_FILE_PATTERNS.append(r'tsconfig\.json$')
-    return original_check(input_api, output_api, *args, **kwargs)
+    return original_check(input_api, output_api)
 
 
 # Changes from upstream:
 # 1. Remove ^(chrome|components|content|extensions) filter to cover all files
 #    in the repository, because brave/ structure is slightly different.
 @chromium_presubmit_utils.override_check(globals())
-def CheckMPArchApiUsage(original_check, input_api, output_api, *args,
-                        **kwargs):
-    def AffectedFiles(self, original_method, include_deletes, *_, **__):
-        return original_method(include_deletes, self.FilterSourceFile)
+def CheckMPArchApiUsage(original_check, input_api, output_api):
+    def AffectedFiles(self, original_method, *args, **kwargs):
+        kwargs['file_filter'] = self.FilterSourceFile
+        return original_method(*args, **kwargs)
 
     with chromium_presubmit_utils.override_scope_function(
             input_api, AffectedFiles):
-        return original_check(input_api, output_api, *args, **kwargs)
+        return original_check(input_api, output_api)
+
+
+# Changes from upstream:
+# 1. Skip chromium_src/ files.
+@chromium_presubmit_utils.override_check(globals())
+def CheckForRelativeIncludes(original_check, input_api, output_api):
+    def AffectedFiles(self, original_method, *args, **kwargs):
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
+            r'^chromium_src[\\/]', )
+        file_filter = lambda x: self.FilterSourceFile(
+            x, files_to_skip=files_to_skip)
+        kwargs['file_filter'] = file_filter
+        return original_method(*args, **kwargs)
+
+    with chromium_presubmit_utils.override_scope_function(
+            input_api, AffectedFiles):
+        return original_check(input_api, output_api)
 
 
 # Changes from upstream:
 # 1. Skip chromium_src/ files.
 @chromium_presubmit_utils.override_check(globals())
 def CheckForCcIncludes(original_check, input_api, output_api):
-    def AffectedFiles(self, original_method, include_deletes, *_, **__):
+    def AffectedFiles(self, original_method, *args, **kwargs):
         files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
             r'^chromium_src[\\/]', )
-        sources = lambda x: self.FilterSourceFile(x,
-                                                  files_to_skip=files_to_skip)
-        return original_method(include_deletes, sources)
+        file_filter = lambda x: self.FilterSourceFile(
+            x, files_to_skip=files_to_skip)
+        kwargs['file_filter'] = file_filter
+        return original_method(*args, **kwargs)
+
+    with chromium_presubmit_utils.override_scope_function(
+            input_api, AffectedFiles):
+        return original_check(input_api, output_api)
+
+
+# Changes from upstream:
+# 1. Ignore java files, currently a lot of DEPS issues.
+@chromium_presubmit_utils.override_check(globals())
+def CheckUnwantedDependencies(original_check, input_api, output_api):
+    def AffectedFiles(self, original_method, *args, **kwargs):
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r'.*\.java$', )
+        file_filter = lambda x: self.FilterSourceFile(
+            x, files_to_skip=files_to_skip)
+        kwargs['file_filter'] = file_filter
+        return original_method(*args, **kwargs)
 
     with chromium_presubmit_utils.override_scope_function(
             input_api, AffectedFiles):
