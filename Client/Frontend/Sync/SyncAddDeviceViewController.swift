@@ -131,6 +131,7 @@ class SyncAddDeviceViewController: SyncViewController {
     modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
     modeControl.selectedSegmentTintColor = UIColor.braveOrange
+    modeControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     stackView.addArrangedSubview(modeControl)
 
     let titleDescriptionStackView = UIStackView()

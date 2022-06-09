@@ -157,5 +157,17 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func isBase58EncodedSolanaPubkey(_ key: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
+  
+  func eTldPlusOne(fromOrigin origin: URLOrigin, completion: @escaping (BraveWallet.OriginInfo) -> Void) {
+    completion(.init(origin: origin, originSpec: origin.url?.absoluteString ?? "", eTldPlusOne: origin.url?.baseDomain ?? ""))
+  }
+  
+  func webSites(withPermission coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void) {
+    completion([])
+  }
+  
+  func resetWebSitePermission(_ coin: BraveWallet.CoinType, formedWebsite: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
 }
 #endif

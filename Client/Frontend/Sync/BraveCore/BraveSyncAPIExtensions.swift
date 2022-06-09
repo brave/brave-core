@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import BraveShared
+import Shared
 
 extension BraveSyncAPI {
 
@@ -158,46 +159,5 @@ extension BraveSyncAPI {
     deinit {
       self.onRemoved(self)
     }
-  }
-}
-
-extension BraveSyncAPI {
-  func getQRCodeImageV2(_ size: CGSize) -> UIImage? {
-    let hexCode = hexSeed(fromSyncCode: getSyncCode())
-    if hexCode.isEmpty {
-      return nil
-    }
-
-    // Typically QR Codes use isoLatin1, but it doesn't matter here
-    // as we're not encoding any special characters
-    guard let syncCodeData = BraveSyncQRCodeModel(syncHexCode: hexCode).jsonData,
-      !syncCodeData.isEmpty
-    else {
-      return nil
-    }
-
-    guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
-      return nil
-    }
-
-    filter.do {
-      $0.setValue(syncCodeData, forKey: "inputMessage")
-      $0.setValue("H", forKey: "inputCorrectionLevel")
-    }
-
-    if let image = filter.outputImage,
-      image.extent.size.width > 0.0,
-      image.extent.size.height > 0.0 {
-      let scaleX = size.width / image.extent.size.width
-      let scaleY = size.height / image.extent.size.height
-      let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
-
-      return UIImage(
-        ciImage: image.transformed(by: transform),
-        scale: UIScreen.main.scale,
-        orientation: .up)
-    }
-
-    return nil
   }
 }
