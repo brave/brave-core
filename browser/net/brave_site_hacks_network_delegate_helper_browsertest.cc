@@ -222,9 +222,13 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
                        QueryStringFilterCrossSite) {
-  const std::string inputs[] = {
-      "", "foo=bar", "fbclid=1", "fbclid=2&key=value", "key=value&fbclid=3",
-  };
+  const std::string inputs[] = {"",
+                                "foo=bar",
+                                "fbclid=1",
+                                "fbclid=2&key=value",
+                                "key=value&fbclid=3",
+                                "mkt_tok=xyz&foo=bar",
+                                "mkt_tok=xyz&foo=bar&mkt_unsubscribe=1"};
   const std::string outputs[] = {
       // URLs without trackers should be untouched.
       "",
@@ -233,6 +237,10 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
       "",
       "key=value",
       "key=value",
+      // URLs with conditional trackers should have those removed
+      // only at the right time.
+      "foo=bar",
+      "mkt_tok=xyz&foo=bar&mkt_unsubscribe=1",
   };
 
   constexpr size_t input_count = std::size(inputs);
